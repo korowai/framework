@@ -33,8 +33,7 @@ services:
 
   sphinx:
     build:
-      context: ./docs
-      dockerfile: Dockerfile.sphinx
+      context: ./docs/sphinx/
     ports:
       - "8000:8000"
     volumes:

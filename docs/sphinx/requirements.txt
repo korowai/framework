@@ -1,0 +1,5 @@
+-i https://pypi.org/simple
+sphinx
+sphinx-autobuild
+sphinx_rtd_theme
+git+https://github.com/fabpot/sphinx-php.git@7312eccce9465640752e51373a480da700e02345#egg_name=sphinx-php

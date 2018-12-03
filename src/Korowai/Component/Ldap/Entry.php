@@ -13,7 +13,6 @@ namespace Korowai\Component\Ldap;
 
 use Korowai\Component\Ldap\Exception\AttributeException;
 
-
 /**
  * Represents single ldap entry with DN and attributes
  *

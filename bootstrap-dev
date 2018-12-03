@@ -218,7 +218,7 @@ class PhpDocInstaller extends AbstractInstaller
 class DockerComposerInstaller extends AbstractInstaller
 {
   protected function defaultUrl() {
-    $release = '1.17.0';
+    $release = '1.23.0';
     $fname = 'docker-compose-' . self::system(). '-' . self::machine();
     if('win' === strtolower(substr(self::system(),0,3))) {
       $fname = $fname . '.exe';

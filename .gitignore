@@ -1,16 +1,19 @@
-# Local stuff and temporary
+# Locally installed binaries
 /composer
 /phpdoc
 /docker-compose
 /tmp
-/build
+/build/
 /tests/cache
 
 # composer.lock
 composer.lock
 
-# phpunit
+# phpunit (we only commit phpunit.xml.dist)
 phpunit.xml
+
+# phpdoc (we only commit phpdoc.xml.dist)
+phpdoc.xml
 
 # IDEs and editors
 /.idea
@@ -33,6 +36,14 @@ phpunit.xml
 !.vscode/launch.json
 !.vscode/extensions.json
 
+# Pipenv, setuptools, etc.
+/pipenv
+.venv/
+/dist/
+*.egg-info
+*.tox
+*.deb
+/MANIFEST
 
 # Others
 /vendor

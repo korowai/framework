@@ -30,3 +30,20 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - /tmp/cc:/tmp/cc
     working_dir: /code
+
+  sphinx:
+    build:
+      context: ./docs
+      dockerfile: Dockerfile.sphinx
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./docs:/home/python/docs
+      - ./src:/home/python/src:ro
+
+  sami:
+    image: korowai-sami
+    ports:
+      - "8001:8001"
+    volumes:
+      - ./:/home/sami/project

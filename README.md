@@ -60,10 +60,20 @@ php vendor/bin/phpunit
 ./docker-compose down
 ```
 
-### Generating api documentation
+### Generating API documentation
 
 ```shell
 php phpdoc
 ```
 
 The generated API docs go to ``build/docs/api/``.
+
+### Generating sphinx documentation continuously
+
+```shell
+./docker-compose up sphinx-autobuild
+```
+
+The generated docs go to ``docs/_build/html`` and get exposed at
+
+  - ``http://localhost:80000``.

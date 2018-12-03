@@ -3,6 +3,7 @@
     "description": "Framework for Korowai project",
     "type": "library",
     "license": "MIT",
+    "minimum-stability": "dev",
     "authors": [
         {
             "name": "Paweł Tomulik",

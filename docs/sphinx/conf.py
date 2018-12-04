@@ -27,7 +27,7 @@ lexers['php-standalone'] = PhpLexer(startinline=True)
 # use PHP as primary domain
 primary_domain = 'php'
 
-api_url = '/api/local/%s'
+api_url = '/api/%s'
 
 # -- Project information -----------------------------------------------------
 

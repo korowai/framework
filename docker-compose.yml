@@ -20,29 +20,3 @@ services:
     image: korowai/openldap
     volumes:
       - ./src/Korowai/Component/Ldap/Resources/ldif/bootstrap.ldif:/container/service/slapd/assets/config/bootstrap/ldif/50-bootstrap.ldif
-
-  codeclimate:
-    image: codeclimate/codeclimate
-    environment:
-      - CODECLIMATE_CODE=${PWD}
-    volumes:
-      - .:/code
-      - /var/run/docker.sock:/var/run/docker.sock
-      - /tmp/cc:/tmp/cc
-    working_dir: /code
-
-  sphinx:
-    build:
-      context: ./docs/sphinx/
-    ports:
-      - "8000:8000"
-    volumes:
-      - ./docs:/home/python/docs
-      - ./src:/home/python/src:ro
-
-  sami:
-    image: korowai-sami
-    ports:
-      - "8001:8001"
-    volumes:
-      - ./:/home/sami/project

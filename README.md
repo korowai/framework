@@ -63,16 +63,22 @@ php vendor/bin/phpunit
 ### Generating API documentation
 
 ```shell
-php phpdoc
+./docker-compose -f docs/docker-compose.yml run --rm sami sami-build
+./docker-compose -f docs/docker-compose.yml down
 ```
 
-The generated API docs go to ``build/docs/api/``.
+or
+
+```shell
+cd docs && ../docker-compose run --rm sami sami-build
+../docker-compose down
+```
+
+The generated API docs go to ``docs/build/html/api/``.
 
 ### Generating sphinx documentation continuously
 
-```shell
-./docker-compose up sphinx-autobuild
-```
+TODO:
 
 The generated docs go to ``docs/_build/html`` and get exposed at
 

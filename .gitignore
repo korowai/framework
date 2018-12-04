@@ -3,8 +3,14 @@
 /phpdoc
 /docker-compose
 /tmp
-/build/
 /tests/cache
+
+# Files generated locally
+/build/
+/docs/build/
+/docs/cache/
+/docs/_build/
+/docs/_cache/
 
 # composer.lock
 composer.lock

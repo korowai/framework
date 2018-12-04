@@ -8,6 +8,6 @@ RUN . .venv/bin/activate && \
     python -m pip install --requirement requirements.txt
 EXPOSE 8000
 WORKDIR "/home/python/docs"
-CMD ["sphinx-autobuild", "--host", "0.0.0.0", "--port", "8000", "sphinx", "_build/html"]
+CMD ["sphinx-autobuild", "--host", "0.0.0.0", "--port", "8000", "sphinx", "build/html"]
 
 # vim: syntax=dockerfile:

@@ -15,6 +15,6 @@ $iterator = Finder::create()
 return new Sami($iterator, array(
   'theme'     => 'default',
   'title'     => 'Korowai Framework API',
-  'build_dir' => __DIR__ . '/../build/local/html/api',
-  'cache_dir' => __DIR__ . '/../cache/local/html/api'
+  'build_dir' => __DIR__ . '/../build/html/api',
+  'cache_dir' => __DIR__ . '/../cache/html/api'
 ));

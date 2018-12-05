@@ -23,7 +23,7 @@ return new Sami( $iterator, array(
   'theme'     => 'default',
   'versions'  => $versions,
   'title'     => 'Korowai Framework API',
-  'build_dir' => __DIR__ . '/../_build/html/api/%version%',
-  'cache_dir' => __DIR__ . '/../_cache/html/api/%version%',
+  'build_dir' => __DIR__ . '/../build/%version%/html/api',
+  'cache_dir' => __DIR__ . '/../cache/%version%/html/api',
   'remote_repository' => new GithubRemoteRepository('korowai/framework')
 ));

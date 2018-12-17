@@ -61,7 +61,7 @@ To handle particular LDAP errors in an application, exception code may be used
    // ...
    try {
       $result = $ldap->query('dc=nonexistent,dc=com', 'objectclass=*');
-   } catch(Korowai\Component\Ldap\Exception\LdapException $e) {
+   } catch(LdapException $e) {
       if($e->getCode() == 0x20) { /* No such object */
          $result = null;
       } else {

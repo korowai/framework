@@ -7,6 +7,6 @@ Korowai Components
    :caption: List of Components
    :maxdepth: 1
 
-   ldap/index
+   ldap
 
-.. <!--- vim: set syntax=rst spell -->
+.. <!--- vim: set syntax=rst spell: -->

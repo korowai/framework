@@ -1,13 +1,11 @@
 version: '3'
 services:
   sphinx:
-    build:
-      context: ./sphinx/
+    image: korowai/sphinx
     ports:
       - "8000:8000"
     volumes:
-      - ./:/home/python/docs
-      - ../src:/home/python/src:ro
+      - ../:/home/sphinx/project
 
   sami:
     image: korowai/sami

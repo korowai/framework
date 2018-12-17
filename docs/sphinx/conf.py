@@ -20,12 +20,13 @@ from sphinx.highlighting import lexers
 from pygments.lexers.web import PhpLexer
 
 # enable highlighting for PHP code not between ``<?php ... ?>`` by default
-lexers['php'] = PhpLexer(starinline=True)
+lexers['php'] = PhpLexer(startinline=True)
 lexers['php-annotations'] = PhpLexer(startinline=True)
 lexers['php-standalone'] = PhpLexer(startinline=True)
 
 # use PHP as primary domain
 primary_domain = 'php'
+highlight_language ='php'
 
 api_url = '/api/%s'
 
@@ -185,6 +186,7 @@ texinfo_documents = [
 
 # Example configuration for intersphinx: refer to the Python standard library.
 intersphinx_mapping = {'https://docs.python.org/': None}
+
 
 def setup(app):
     app.add_stylesheet('css/custom.css')

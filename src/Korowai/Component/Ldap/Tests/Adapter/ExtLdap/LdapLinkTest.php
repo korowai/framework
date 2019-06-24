@@ -380,8 +380,6 @@ class LdapLinkTest extends TestCase
 
     /**
      * @runInSeparateProcess
-     * @expectedException BadMethodCallException
-     * @expectedExceptionMessage Not implemented
      */
     public function test_count_references()
     {
@@ -394,6 +392,8 @@ class LdapLinkTest extends TestCase
 //                ->with('ldap link', 'ldap result')
 //                ->willReturn(333);
 
+        $this->expectException(\BadMethodCallException::class);
+        $this->expectExceptionMessage('Not implemented');
         $this->assertSame(333, $ldap->count_references($result));
     }
 

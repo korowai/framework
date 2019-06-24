@@ -3,23 +3,27 @@
  * This file is part of the Korowai package
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @package Korowai\Ldap
+ * @package Korowai\LdapService
  * @license Distributed under MIT license.
  */
 
 declare(strict_types=1);
 
-namespace Korowai\Component\Ldap\Tests;
+namespace Korowai\Framework\Ldap\Tests;
 
 use PHPUnit\Framework\TestCase;
-use Korowai\Component\Ldap\Entry;
-use Korowai\Component\Ldap\Exception\AttributeException;
+use Korowai\Framework\Ldap\LdapService;
+
+// use Korowai\Component\Ldap\Entry;
+// use Korowai\Component\Ldap\Exception\AttributeException;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class EntryTest extends TestCase
+class LdapServiceTest extends TestCase
 {
+    /**
+     */
     public function test_constructNoDn()
     {
         $this->expectException(\TypeError::class);
@@ -205,8 +209,6 @@ class EntryTest extends TestCase
         $entry->setAttribute('userid', 123);
     }
 
-    /**
-     */
     public function test_setAttribute_Invalid_3()
     {
         $entry = new Entry('dc=example,dc=com');

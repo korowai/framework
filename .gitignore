@@ -18,6 +18,9 @@ composer.lock
 # phpunit (we only commit phpunit.xml.dist)
 phpunit.xml
 
+# phpunit temporary files
+.phpunit.result.cache
+
 # phpdoc (we only commit phpdoc.xml.dist)
 phpdoc.xml
 

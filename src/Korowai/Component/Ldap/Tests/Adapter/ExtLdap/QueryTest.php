@@ -108,11 +108,6 @@ class QueryTest extends TestCase
         $this->assertSame($result, $query->getResult());
     }
 
-    /**
-     * @expectedException \Korowai\Component\Ldap\Exception\LdapException
-     * @expectedExceptionCode -1
-     * @expectedExceptionMessage Uninitialized LDAP link
-     */
     public function test_execute_UninitializedLink()
     {
         $link = $this->createLdapLinkMock(false);
@@ -124,14 +119,15 @@ class QueryTest extends TestCase
              ->method('list');
         $link->expects($this->never())
              ->method('search');
+
+        $this->expectException(\Korowai\Component\Ldap\Exception\LdapException::class);
+        $this->expectExceptionCode(-1);
+        $this->expectExceptionMessage('Uninitialized LDAP link');
         $this->assertSame($result, $query->execute());
     }
 
     /**
      * @runInSeparateProcess
-     * @expectedException \Korowai\Component\Ldap\Exception\LdapException
-     * @expectedExceptionCode 2
-     * @expectedExceptionMessage Error message
      */
     public function test_execute_Failure()
     {
@@ -153,6 +149,9 @@ class QueryTest extends TestCase
              ->with(2)
              ->willReturn("Error message");
 
+        $this->expectException(\Korowai\Component\Ldap\Exception\LdapException::class);
+        $this->expectExceptionCode(2);
+        $this->expectExceptionMessage('Error message');
         $query->execute();
     }
 

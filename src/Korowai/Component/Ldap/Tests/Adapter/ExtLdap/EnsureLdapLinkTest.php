@@ -23,18 +23,21 @@ class EnsureLdapLinkTest extends TestCase
 {
     use EnsureLdapLink;
 
-    /**
-     * @expectedException \Korowai\Component\Ldap\Exception\LdapException
-     * @expectedExceptionMessage Uninitialized LDAP link
-     * @expectedExceptionCode -1
-     */
     public function test_ensureLdapLink_Failure()
     {
+      $this->expectException(\Korowai\Component\Ldap\Exception\LdapException::class);
+      $this->expectExceptionMessage('Uninitialized LDAP link');
+      $this->expectExceptionCode(-1);
+
       $link = $this->createMock(LdapLink::class);
       $link->expects($this->once())
            ->method('isValid')
            ->with()
            ->willReturn(false);
+
+      $this->expectException(\Korowai\Component\Ldap\Exception\LdapException::class);
+      $this->expectExceptionMessage('Uninitialized LDAP link');
+      $this->expectExceptionCode(-1);
       static::ensureLdapLink($link);
     }
 

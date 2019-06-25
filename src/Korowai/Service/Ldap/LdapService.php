@@ -43,7 +43,7 @@ class LdapService
     }
 
     /**
-     * Set configuration for later use by createInstance().
+     * Set configuration for later use by createLdapInstance().
      *
      * @param array $config Configuration options used to configure every new
      *                      adapter instance created by createAdapter().
@@ -51,19 +51,33 @@ class LdapService
     public function configure(array $config)
     {
         $resolver = new OptionsResolver;
-        $this->configureOptionsResolver($resolver);
+        $dbResolver = new OptionsResolver;
+        $this->configureCommonOptionsResolver($resolver);
+        $this->configureDatabaseOptionsResolver($dbResolver);
 
-        $this->setConfig($config, $resolver);
+        $this->setConfig($config, $resolver, $dbResolver);
     }
 
     /**
-     * Configure OptionResolver. The $resolver shall be applied to every
-     * item in the $config array.
+     * Configure OptionsResolver for the service config.
      */
-    protected function configureOptionsResolver(OptionsResolver $resolver)
+    protected function configureCommonOptionsResolver(OptionsResolver $resolver)
+    {
+        $resolver->setRequired('databases');
+        $resolver->setAllowedTypes('databases', 'array[]');
+        $resolver->setNormalizer('databases', function (Options $options, $value) {
+            return [];
+        });
+    }
+
+    /**
+     * Configure OptionResolver for a single entry in $config['database'].
+     * The $resolver shall be applied to every item in the $config array.
+     */
+    protected function configureDatabaseOptionsResolver(OptionsResolver $resolver)
     {
         $resolver->setRequired('id');
-        $resolver->setRequired('server');
+        $resolver->setRequired('ldap');
         $resolver->setDefined('factory');
         $resolver->setRequired('name');
         $resolver->setDefined('description');
@@ -83,7 +97,7 @@ class LdapService
 
 
         $resolver->setAllowedTypes('id', 'int');
-        $resolver->setAllowedTypes('server', 'array');
+        $resolver->setAllowedTypes('ldap', 'array');
         $resolver->setAllowedTypes('factory', 'string');
         $resolver->setAllowedTypes('name', 'string');
         $resolver->setAllowedTypes('description',  'string');
@@ -96,27 +110,55 @@ class LdapService
     }
 
     /**
-     * Setup new config array.
+     * Resolve config options.
      *
      * @param array $config
+     * @param OptionsResolver $resolver
+     * @param OptionsResolver $dbResolver
      */
-    protected function setConfig(array $config, OptionsResolver $resolver)
+    protected function resolveConfig(array $config, OptionsResolver $resolver, OptionsResolver $dbResolver)
     {
-        $resolved = array_map(array($resolver, 'resolve'), array_values($config));
-        $ids = array_map(function ($db) { return $db['id']; }, $resolved);
-        $this->config = array_combine($ids, $resolved);
+        $resolved = $resolver->resolve($config);
+        $dbs = array_map(array($dbResolver, 'resolve'), array_values($config['databases']));
+        $ids = array_map(function ($db) { return $db['id']; }, $dbs);
+        if(count($ids) !== count(array_unique($ids))) {
+            // throw exceptino some ids got duplicated
+        }
+        $resolved['databases'] = array_combine($ids, $dbs);
+        return $resolved;
     }
 
     /**
-     * Return config for database identified by $id. If $id is missing, return
-     * whole config array for all databases.
+     * Setup new config array.
      *
-     * @param string $id
+     * @param array $config
+     * @param OptionsResolver $resolver
+     * @param OptionsResolver $dbResolver
+     */
+    protected function setConfig(array $config, OptionsResolver $resolver, OptionsResolver $dbResolver)
+    {
+        $this->config = $this->resolveConfig($config, $resolver, $dbResolver);
+    }
+
+    /**
+     * Return the whole config.
+     *
+     * @return array
+     */
+    public function getConfig()
+    {
+        return $this->config;
+    }
+
+    /**
+     * Return config for database identified by $id.
+     *
+     * @param int $id
      * @return array|null
      */
-    public function getConfig(string $id = null)
+    public function getDatabaseConfig(int $id)
     {
-        return null === $id ? $this->config : ($this->config[$id] ?? null);
+        return $this->config['databases'][$id] ?? null;
     }
 
     /**
@@ -135,28 +177,28 @@ class LdapService
      * @param string $id
      * @return \Korowai\Component\Ldap\LdapInterface|null
      */
-    public function getInstance(string $id)
+    public function getLdapInstance(string $id)
     {
         if(!isset($this->instances[$id])) {
-            if(null === ($config = $this->getConfig($id))) {
+            if(null === ($config = $this->getDatabaseConfig($id))) {
                 return null;
             }
-            $this->instances[$id] = $this->createInstance($config);
+            $this->instances[$id] = $this->createLdapInstance($config);
         }
         return $this->instances[$id];
     }
 
     /**
-     * Create Ldap instance according to $config
+     * Create Ldap instance according to $dbConfig
      *
-     * @param array $config
+     * @param array $dbConfig
      * @return LdapInstance
      */
-    public function createInstance(array $config) : LdapInstance
+    public function createLdapInstance(array $dbConfig) : LdapInstance
     {
-        $factory = $config['factory'] ?? null;
-        $ldap = Ldap::createWithConfig($config['server'], $factory);
-        return new LdapInstance($ldap, $config);
+        $factory = $dbConfig['factory'] ?? null;
+        $ldap = Ldap::createWithConfig($dbConfig['ldap'], $factory);
+        return new LdapInstance($ldap, $dbConfig);
     }
 }
 

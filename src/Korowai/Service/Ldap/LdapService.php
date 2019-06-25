@@ -166,7 +166,7 @@ class LdapService
      *
      * @return array
      */
-    public function getIds() : array
+    public function getLdapIds() : array
     {
         return array_keys($this->config);
     }
@@ -174,10 +174,10 @@ class LdapService
     /**
      * Get Ldap instance with given ID.
      *
-     * @param string $id
+     * @param int $id
      * @return \Korowai\Component\Ldap\LdapInterface|null
      */
-    public function getLdapInstance(string $id)
+    public function getLdapInstanceById(int $id)
     {
         if(!isset($this->instances[$id])) {
             if(null === ($config = $this->getDatabaseConfig($id))) {

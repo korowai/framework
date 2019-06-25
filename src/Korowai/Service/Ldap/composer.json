@@ -14,12 +14,13 @@
         }
     ],
     "require": {
-        "php": ">=7.0",
-        "symfony/options-resolver": ">=3.3"
+        "php": ">=7.1.3",
+        "symfony/options-resolver": ">=4.2",
+        "illuminate/support": ">=5.8"
     },
     "autoload": {
       "psr-4" : {
-        "Korowai\\Framework\\Service\\Ldap\\" : ""
+        "Korowai\\Service\\Ldap\\" : ""
       },
       "exclude-from-classmap": [
         "/Tests/"

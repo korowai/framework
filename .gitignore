@@ -54,6 +54,9 @@ phpdoc.xml
 *.deb
 /MANIFEST
 
+# Lumen generated
+/storage/logs/
+
 # Others
 /vendor
 /.idea

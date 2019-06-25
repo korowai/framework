@@ -14,7 +14,7 @@ return [
 
       // 'factory' => '\Korowai\Component\Ldap\Adapter\ExtLdap\AdapterFactory'
 
-      'server'      => [
+      'ldap'        => [
         'uri'       => 'ldap://ldap-service',               // server's host address
         'options'   => [
           'protocol_version' => 3

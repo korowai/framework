@@ -8,7 +8,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Framework\Service\Ldap;
+namespace Korowai\Service\Ldap;
 
 use Korowai\Component\Ldap\LdapInterface;
 use Korowai\Component\Ldap\AbstractLdap;
@@ -18,7 +18,7 @@ use Korowai\Component\Ldap\Adapter\EntryManagerInterface;
 use Korowai\Component\Ldap\Adapter\QueryInterface;
 use Korowai\Component\Ldap\Adapter\ResultInterface;
 use Korowai\Component\Ldap\Entry;
-use Korowai\Framework\Service\Ldap\LdapService;
+use Korowai\Service\Ldap\LdapService;
 
 class LdapInstance extends AbstractLdap
 {

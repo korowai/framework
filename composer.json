@@ -29,7 +29,7 @@
     "autoload": {
       "psr-4" : {
         "Korowai\\Component\\" : "src/Korowai/Component/",
-        "Korowai\\Framework\\" : "src/Korowai/Framework/"
+        "Korowai\\Service\\" : "src/Korowai/Service/"
       },
       "exclude-from-classmap": [
         "**/Tests/"

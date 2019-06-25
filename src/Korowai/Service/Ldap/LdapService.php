@@ -8,10 +8,10 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Framework\Service\Ldap;
+namespace Korowai\Service\Ldap;
 
 use Korowai\Component\Ldap\Ldap;
-use Korowai\Framework\Service\Ldap\LdapInstance;
+use Korowai\Service\Ldap\LdapInstance;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\Options;

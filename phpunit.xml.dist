@@ -13,8 +13,11 @@
     </php>
 
     <testsuites>
-        <testsuite name="Korowai Test Suite">
+        <testsuite name="Korowai Components Test Suite">
             <directory suffix="Test.php">./src/Korowai/Component/*/Tests/</directory>
+        </testsuite>
+        <testsuite name="Korowai Service Test Suite">
+            <directory suffix="Test.php">./src/Korowai/Service/*/Tests/</directory>
         </testsuite>
     </testsuites>
 
@@ -26,6 +29,10 @@
                 <directory>./src/Korowai/Component/*/Behat</directory>
                 <directory>./src/Korowai/Component/*/Resources</directory>
                 <directory>./src/Korowai/Component/*/vendor</directory>
+                <directory>./src/Korowai/Service/*/Tests</directory>
+                <directory>./src/Korowai/Service/*/Behat</directory>
+                <directory>./src/Korowai/Service/*/Resources</directory>
+                <directory>./src/Korowai/Service/*/vendor</directory>
             </exclude>
         </whitelist>
     </filter>

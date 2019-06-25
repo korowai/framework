@@ -30,6 +30,7 @@ class EntryTest extends TestCase
     {
         $this->expectException(\TypeError::class);
         $this->expectExceptionMessageRegExp('/Argument 1 .+::__construct\(\) .+ int given/');
+
         new Entry(123);
     }
 
@@ -58,6 +59,7 @@ class EntryTest extends TestCase
     {
         $this->expectException(\TypeError::class);
         $this->expectExceptionMessageRegExp('/Argument 2 .+::__construct\(\) .+ string given/');
+
         new Entry('dc=example,dc=com', 'foo');
     }
 
@@ -65,6 +67,7 @@ class EntryTest extends TestCase
     {
         $this->expectException(\TypeError::class);
         $this->expectExceptionMessageRegExp('/Argument 1 .+::validateAttribute\(\) .+ int given/');
+
         new Entry('dc=example,dc=com', ['foo']);
     }
 
@@ -72,6 +75,7 @@ class EntryTest extends TestCase
     {
         $this->expectException(\TypeError::class);
         $this->expectExceptionMessageRegExp('/Argument 2 .+::validateAttribute\(\) .+ string given/');
+
         new Entry('dc=example,dc=com', ['foo' => 'bar']);
     }
 
@@ -89,6 +93,7 @@ class EntryTest extends TestCase
 
         $this->expectException(\TypeError::class);
         $this->expectExceptionMessageRegExp('/Argument 1 .+::setDn\(\) .+ int given/');
+
         $entry->setDn(123);
     }
 
@@ -105,6 +110,7 @@ class EntryTest extends TestCase
 
         $this->expectException(\TypeError::class);
         $this->expectExceptionMessageRegExp('/Argument 1 .+::validateDn\(\) .+ int given/');
+
         $entry->validateDn(123);
     }
 
@@ -114,6 +120,7 @@ class EntryTest extends TestCase
 
         $this->expectException(\Korowai\Component\Ldap\Exception\AttributeException::class);
         $this->expectExceptionMessage("Entry 'dc=example,dc=com' has no attribute 'userid'");
+
         $entry->getAttribute('userid');
     }
 
@@ -159,6 +166,7 @@ class EntryTest extends TestCase
 
         $this->expectException(\TypeError::class);
         $this->expectExceptionMessageRegExp('/Argument 1 .+::setAttributes\(\) .+ string given/');
+
         $entry->setAttributes('userid');
     }
 
@@ -168,6 +176,7 @@ class EntryTest extends TestCase
 
         $this->expectException(\TypeError::class);
         $this->expectExceptionMessageRegExp('/Argument 1 .+::validateAttribute\(\) .+ int given/');
+
         $entry->setAttributes(array('userid'));
     }
 
@@ -177,6 +186,7 @@ class EntryTest extends TestCase
 
         $this->expectException(\TypeError::class);
         $this->expectExceptionMessageRegExp('/Argument 2 .+::validateAttribute\(\) .+ string given/');
+
         $entry->setAttributes(array('userid' => 'ptomulik'));
     }
 
@@ -193,6 +203,7 @@ class EntryTest extends TestCase
 
         $this->expectException(\TypeError::class);
         $this->expectExceptionMessageRegExp('/Argument 1 .+::setAttribute\(\) .+ int given/');
+
         $entry->setAttribute(123, array('ptomulik'));
     }
 
@@ -202,6 +213,7 @@ class EntryTest extends TestCase
 
         $this->expectException(\TypeError::class);
         $this->expectExceptionMessageRegExp('/Argument 2 .+::setAttribute\(\) .+ int given/');
+
         $entry->setAttribute('userid', 123);
     }
 
@@ -213,6 +225,7 @@ class EntryTest extends TestCase
 
         $this->expectException(\TypeError::class);
         $this->expectExceptionMessageRegExp('/Argument 2 .+::setAttribute\(\) .+ string given/');
+
         $entry->setAttribute('userid', 'ptomulik');
     }
 

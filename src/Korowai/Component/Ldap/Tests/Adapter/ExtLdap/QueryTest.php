@@ -123,6 +123,7 @@ class QueryTest extends TestCase
         $this->expectException(\Korowai\Component\Ldap\Exception\LdapException::class);
         $this->expectExceptionCode(-1);
         $this->expectExceptionMessage('Uninitialized LDAP link');
+
         $this->assertSame($result, $query->execute());
     }
 
@@ -152,6 +153,7 @@ class QueryTest extends TestCase
         $this->expectException(\Korowai\Component\Ldap\Exception\LdapException::class);
         $this->expectExceptionCode(2);
         $this->expectExceptionMessage('Error message');
+
         $query->execute();
     }
 

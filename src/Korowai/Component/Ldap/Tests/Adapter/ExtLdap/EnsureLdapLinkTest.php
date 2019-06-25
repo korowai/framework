@@ -25,10 +25,6 @@ class EnsureLdapLinkTest extends TestCase
 
     public function test_ensureLdapLink_Failure()
     {
-      $this->expectException(\Korowai\Component\Ldap\Exception\LdapException::class);
-      $this->expectExceptionMessage('Uninitialized LDAP link');
-      $this->expectExceptionCode(-1);
-
       $link = $this->createMock(LdapLink::class);
       $link->expects($this->once())
            ->method('isValid')

@@ -41,6 +41,7 @@ class AdapterFactoryTest extends TestCase
         $this->expectException(\Korowai\Component\Ldap\Exception\LdapException::class);
         $this->expectExceptionMessage('The LDAP PHP extension is not enabled');
         $this->expectExceptionCode(-1);
+
         new AdapterFactory();
     }
 
@@ -68,6 +69,7 @@ class AdapterFactoryTest extends TestCase
         $this->expectException(\Korowai\Component\Ldap\Exception\LdapException::class);
         $this->expectExceptionMessage('Error message');
         $this->expectExceptionCode(-1);
+
         $factory->createAdapter();
     }
 
@@ -90,6 +92,7 @@ class AdapterFactoryTest extends TestCase
         $this->expectException(\Korowai\Component\Ldap\Exception\LdapException::class);
         $this->expectExceptionMessage('Failed to create LDAP connection');
         $this->expectExceptionCode(-1);
+
         $factory->createAdapter();
     }
 
@@ -125,6 +128,7 @@ class AdapterFactoryTest extends TestCase
         $this->expectException(\Korowai\Component\Ldap\Exception\LdapException::class);
         $this->expectExceptionMessage('Error message');
         $this->expectExceptionCode(123);
+
         $factory->createAdapter();
     }
 

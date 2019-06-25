@@ -97,6 +97,7 @@ class LdapTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid argument 2 to Korowai\Component\Ldap\Ldap::createWithConfig: Foobar is not a name of existing class');
+
         $ldap = Ldap::createWithConfig(array(), 'Foobar');
     }
 
@@ -104,6 +105,7 @@ class LdapTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid argument 2 to Korowai\Component\Ldap\Ldap::createWithConfig: Korowai\Component\Ldap\Tests\SomeClass is not an implementation of Korowai\Component\Ldap\Adapter\AdapterFactoryInterface');
+
         $ldap = Ldap::createWithConfig(array(), SomeClass::class);
     }
 

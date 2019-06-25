@@ -95,9 +95,6 @@ class BindingTest extends TestCase
         $this->expectExceptionCode(-1);
         $this->expectExceptionMessage('Uninitialized LDAP link');
 
-        $this->expectException(\Korowai\Component\Ldap\Exception\LdapException::class);
-        $this->expectExceptionCode(-1);
-        $this->expectExceptionMessage('Uninitialized LDAP link');
         $c->bind();
     }
 
@@ -176,6 +173,7 @@ class BindingTest extends TestCase
         $this->expectException(\Korowai\Component\Ldap\Exception\LdapException::class);
         $this->expectExceptionCode(2);
         $this->expectExceptionMessage('Error message');
+
         $c->bind();
     }
 
@@ -247,6 +245,7 @@ class BindingTest extends TestCase
         $this->expectException(\Korowai\Component\Ldap\Exception\LdapException::class);
         $this->expectExceptionCode(2);
         $this->expectExceptionMessage('Error message');
+
         $c->getOption(0);
     }
 
@@ -393,6 +392,7 @@ class BindingTest extends TestCase
         $this->expectException(\Korowai\Component\Ldap\Exception\LdapException::class);
         $this->expectExceptionCode(2);
         $this->expectExceptionMessage('Error message');
+
         $c->unbind();
     }
 

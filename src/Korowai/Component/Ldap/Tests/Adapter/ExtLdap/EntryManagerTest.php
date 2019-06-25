@@ -84,6 +84,7 @@ class EntryManagerTest extends TestCase
         $this->expectException(\Korowai\Component\Ldap\Exception\LdapException::class);
         $this->expectExceptionCode(-1);
         $this->expectExceptionMessage('Uninitialized LDAP link');
+
         $mngr->add($entry);
     }
 
@@ -113,6 +114,7 @@ class EntryManagerTest extends TestCase
         $this->expectException(\Korowai\Component\Ldap\Exception\LdapException::class);
         $this->expectExceptionCode(2);
         $this->expectExceptionMessage('Error message');
+
         $mngr->add($entry);
     }
 
@@ -145,6 +147,7 @@ class EntryManagerTest extends TestCase
         $this->expectException(\Korowai\Component\Ldap\Exception\LdapException::class);
         $this->expectExceptionCode(-1);
         $this->expectExceptionMessage('Uninitialized LDAP link');
+
         $mngr->update($entry);
     }
 
@@ -174,6 +177,7 @@ class EntryManagerTest extends TestCase
         $this->expectException(\Korowai\Component\Ldap\Exception\LdapException::class);
         $this->expectExceptionCode(2);
         $this->expectExceptionMessage('Error message');
+
         $mngr->update($entry);
     }
 
@@ -232,6 +236,7 @@ class EntryManagerTest extends TestCase
         $this->expectException(\Korowai\Component\Ldap\Exception\LdapException::class);
         $this->expectExceptionCode(-1);
         $this->expectExceptionMessage('Uninitialized LDAP link');
+
         $mngr->rename($entry,'cn=korowai', true);
     }
 
@@ -260,6 +265,7 @@ class EntryManagerTest extends TestCase
         $this->expectException(\Korowai\Component\Ldap\Exception\LdapException::class);
         $this->expectExceptionCode(2);
         $this->expectExceptionMessage('Error message');
+
         $mngr->rename($entry,'cn=korowai', true);
     }
 
@@ -290,6 +296,7 @@ class EntryManagerTest extends TestCase
         $this->expectException(\Korowai\Component\Ldap\Exception\LdapException::class);
         $this->expectExceptionCode(-1);
         $this->expectExceptionMessage('Uninitialized LDAP link');
+
         $mngr->delete($entry);
     }
 
@@ -318,6 +325,7 @@ class EntryManagerTest extends TestCase
         $this->expectException(\Korowai\Component\Ldap\Exception\LdapException::class);
         $this->expectExceptionCode(2);
         $this->expectExceptionMessage('Error message');
+
         $mngr->delete($entry);
     }
 }

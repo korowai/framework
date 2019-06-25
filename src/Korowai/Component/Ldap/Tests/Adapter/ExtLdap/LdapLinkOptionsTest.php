@@ -140,10 +140,11 @@ class LdapLinkOptionsTest extends TestCase
 
     public function test_getOptionConstant_Inexistend()
     {
+        $no = new ClassWithLdapLinkOptions();
+
         $this->expectException(\Korowai\Component\Ldap\Exception\LdapException::class);
         $this->expectExceptionMessage("Unknown option 'inexistent'");
         $this->expectExceptionCode(-1);
-        $no = new ClassWithLdapLinkOptions();
         $no->getLdapLinkOptionConstant('inexistent');
     }
 

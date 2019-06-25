@@ -35,7 +35,7 @@ class LdapService
     /**
      * Initializes the LdapService
      */
-    public function __construct(array $config)
+    public function __construct(array $config = null)
     {
         if(isset($config)) {
             $this->configure($config);
@@ -64,11 +64,35 @@ class LdapService
     {
         $resolver->setRequired('id');
         $resolver->setRequired('server');
-        $resolver->setDefault('factory', null);
+        $resolver->setDefined('factory');
+        $resolver->setRequired('name');
+        $resolver->setDefined('description');
+        $resolver->setDefined('base');
+
+        $resolver->setDefault('bind', function (OptionsResolver $bindResolver) {
+            $bindResolver->setDefined(['dn', 'password']);
+            $bindResolver->setAllowedTypes('dn', 'string');
+            $bindResolver->setAllowedTypes('password', 'string');
+
+            if(function_exists('ldap_explode_dn')) {
+                $bindResolver->setAllowedValues('dn', function ($value) {
+                    return ldap_explode_dn($value, 0) !== false;
+                });
+            }
+        });
 
 
-        $resolver->setAllowedTypes('id', 'string');
+        $resolver->setAllowedTypes('id', 'int');
         $resolver->setAllowedTypes('server', 'array');
+        $resolver->setAllowedTypes('factory', 'string');
+        $resolver->setAllowedTypes('name', 'string');
+        $resolver->setAllowedTypes('description',  'string');
+        $resolver->setAllowedTypes('base', 'string');
+
+
+        $resolver->setAllowedValues('factory', function ($value) {
+            return is_subclass_of($value, \Korowai\Component\Ldap\Adapter\AdapterFactoryInterface::class);
+        });
     }
 
     /**
@@ -78,9 +102,9 @@ class LdapService
      */
     protected function setConfig(array $config, OptionsResolver $resolver)
     {
-        $opts = array_map(array($resolver, 'resolve'), array_values($config));
-        $keys = array_map(function ($db) { return $db['id']; }, $config);
-        $this->config = array_combine($keys, $opts);
+        $resolved = array_map(array($resolver, 'resolve'), array_values($config));
+        $ids = array_map(function ($db) { return $db['id']; }, $resolved);
+        $this->config = array_combine($ids, $resolved);
     }
 
     /**

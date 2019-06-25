@@ -11,8 +11,8 @@
         }
     ],
     "require": {
-        "php": "^7.0",
-        "symfony/options-resolver": "^3.3"
+        "php": "^7.1",
+        "symfony/options-resolver": ">=4.2"
     },
     "replace": {
       "korowai/ldap": "self.version",
@@ -23,8 +23,8 @@
         "php-mock/php-mock-phpunit": "^2.0.1",
         "phake/phake": "^3.0",
         "behat/behat": "^3.4",
-        "symfony/filesystem": "^3.3",
-        "symfony/finder": "^3.3"
+        "symfony/filesystem": ">=4.2",
+        "symfony/finder": ">=4.2"
     },
     "autoload": {
       "psr-4" : {

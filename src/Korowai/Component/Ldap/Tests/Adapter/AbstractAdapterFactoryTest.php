@@ -74,7 +74,6 @@ class AbstractAdapterFactoryTest extends TestCase
                 ->with($this->isInstanceOf(OptionsResolver::class))
                 ->willReturnCallback(function(OptionsResolver $r) use (&$resolver) {
                     $resolver = $r;
-                    $r->setDefaults(array('options' => array()));
                 });
 
         $factory->expects($this->once())

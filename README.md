@@ -19,7 +19,7 @@ LDAP database, which has tree structure.
 
 ### Runtime Requirements
 
-PHP>=7.0 is required. In addition to PHP, you may need to install these
+PHP>=7.1.3 is required. In addition to PHP, you may need to install these
 packages
 
 ```shell

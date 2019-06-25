@@ -43,13 +43,13 @@ abstract class AbstractAdapterFactory implements AdapterFactoryInterface
     public function configure(array $config)
     {
         $resolver = new OptionsResolver;
-        $nestedResolver = new OptionsResolver;
 
         $this->configureOptionsResolver($resolver);
-        $this->configureNestedOptionsResolver($nestedResolver);
+        $resolver->setDefault('options', function (OptionsResolver $nestedResolver) {
+            return $this->configureNestedOptionsResolver($nestedResolver);
+        });
 
         $this->config = $resolver->resolve($config);
-        $this->config['options'] = $nestedResolver->resolve($this->config['options']);
     }
 
     /**
@@ -81,7 +81,6 @@ abstract class AbstractAdapterFactory implements AdapterFactoryInterface
             'host' => 'localhost',
             'uri' => null,
             'encryption' => 'none',
-            'options' => array()
         ));
 
         $resolver->setDefault('port', function (Options $options) {
@@ -101,7 +100,6 @@ abstract class AbstractAdapterFactory implements AdapterFactoryInterface
         $resolver->setAllowedTypes('port', 'numeric');
         $resolver->setAllowedTypes('uri', 'string');
         $resolver->setAllowedValues('encryption', array('none', 'ssl', 'tls'));
-        $resolver->setAllowedTypes('options', 'array');
 
         $resolver->setAllowedValues('port', function ($port) {
             return $port > 0 && $port < 65536;

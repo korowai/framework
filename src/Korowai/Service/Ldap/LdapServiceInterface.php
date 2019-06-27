@@ -12,189 +12,183 @@ declare(strict_types=1);
 namespace Korowai\Service\Ldap;
 
 use Korowai\Component\Ldap\LdapInterface;
-use Korowai\Component\Ldap\AbstractLdap;
 use Korowai\Component\Ldap\Adapter\AdapterInterface;
 use Korowai\Component\Ldap\Adapter\BindingInterface;
 use Korowai\Component\Ldap\Adapter\EntryManagerInterface;
 use Korowai\Component\Ldap\Adapter\QueryInterface;
 use Korowai\Component\Ldap\Adapter\ResultInterface;
 use Korowai\Component\Ldap\Entry;
-use Korowai\Service\Ldap\LdapService;
 
-class LdapInstance extends AbstractLdap
+/**
+ * LDAP Service interface.
+ *
+ * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ */
+interface LdapServiceInterface
 {
     /**
-     * @var \Korowai\Component\Ldap\LdapInterface
-     */
-    protected $ldap;
-
-    /**
-     * @var string
-     */
-    protected $config;
-
-    /**
-     * Initializes the LdapInstance
-     */
-    public function __construct(LdapInterface $ldap, array $config)
-    {
-        $this->ldap = $ldap;
-        $this->config = $config;
-    }
-
-    /**
-     * Return config related to this instance.
+     * Configure the service.
      *
-     * @param string $id
-     * @return array|null
+     * @param array $config
      */
-    public function getConfig()
-    {
-        return $this->config;
-    }
+    public function configure(array $config);
 
     /**
-     * Get ID of this instance.
+     * Return the whole config (resolved).
      *
-     * @return string
+     * @return array
      */
-    public function getId() : string
-    {
-        return $this->config['id'];
-    }
+    public function getConfig() : array;
 
     /**
-     * Get Ldap interface
+     * Get an array of valid IDs.
      *
-     * @param string $id
+     * @return array
+     */
+    public function getDatabaseIds() : array;
+
+    /**
+     * Get database meta information.
+     *
+     * @return array
+     */
+    public function getDatabaseConfig(int $id) : array;
+
+    /**
+     * Get database meta information.
+     *
+     * @return array
+     */
+    public function getDatabaseMeta(int $id) : array;
+
+    /**
+     * Get Ldap instance with given ID. The instance is created if not exists.
+     *
+     * @param int $id
      * @return \Korowai\Component\Ldap\LdapInterface|null
      */
-    public function getLdap() : LdapInterface
-    {
-        return $this->ldap;
-    }
+    public function getLdap(int $id) : LdapInterface;
+
+    /**
+     * Delete Ldap instance with given ID.
+     *
+     * @param int $id
+     */
+    public function unsetLdap(int $id);
 
     /**
      * Returns LDAP adapter
+     *
+     * @param int $id LDAP database identifier
      * @return AdapterInterface Adapter
      */
-    public function getAdapter() : AdapterInterface
-    {
-        return $this->ldap->getAdapter();
-    }
+    public function getAdapter(int $id) : AdapterInterface;
 
     /**
      * Check whether the connection was already bound or not.
      *
      * @return bool
      */
-    public function isBound() : bool
-    {
-        return $this->ldap->isBound();
-    }
+    public function isBound(int $id) : bool;
 
     /**
      * Binds the connection against a DN and password
      *
+     * @param int $id           LDAP database identifier
      * @param string $dn        The user's DN
      * @param string $password  The associated password
      */
-    public function bind(string $dn = null, string $password = null)
-    {
-        return $this->ldap->bind(...func_get_args());
-    }
+    public function bind(int $id, string $dn = null, string $password = null);
 
     /**
      * Unbinds the connection
+     *
+     * @param int $id LDAP database identifier
      */
-    public function unbind()
-    {
-        return $this->ldap->unbind();
-    }
+    public function unbind(int $id);
 
     /**
      * Adds a new entry in the LDAP server.
      *
+     * @param int $id LDAP database identifier
      * @param Entry $entry
      *
      * @throws \Korowai\Component\Ldap\Exception\LdapException
      */
-    public function add(Entry $entry)
-    {
-        return $this->ldap->add($entry);
-    }
+    public function add(int $id, Entry $entry);
 
     /**
      * Updates entry in Ldap server.
      *
+     * @param int $id LDAP database identifier
      * @param Entry $entry
      * @param string $newRdn
      * @param bool $deleteOldRdn
      *
      * @throws \Korowai\Component\Ldap\Exception\LdapException
      */
-    public function rename(Entry $entry, string $newRdn, bool $deleteOldRdn = true)
-    {
-        return $this->ldap->rename($entry, $newRdn, $deleteOldRdn);
-    }
+    public function rename(int $id, Entry $entry, string $newRdn, bool $deleteOldRdn = true);
 
     /**
      * Renames an entry on the LDAP server.
      *
+     * @param int $id LDAP database identifier
      * @param Entry $entry
      *
      * @throws \Korowai\Component\Ldap\Exception\LdapException
      */
-    public function update(Entry $entry)
-    {
-        return $this->ldap->update($entry);
-    }
+    public function update(int $id, Entry $entry);
 
     /**
      * Removes entry from the Ldap server.
      *
+     * @param int $id LDAP database identifier
      * @param Entry $entry
      *
      * @throws \Korowai\Component\Ldap\Exception\LdapException
      */
-    public function delete(Entry $entry)
-    {
-        return $this->ldap->delete($entry);
-    }
+    public function delete(int $id, Entry $entry);
+
+    /**
+     * Create query, execute and return its result
+     *
+     * @param string $base_dn
+     * @param string $filter
+     * @param array $options
+     *
+     * @return ResultInterface Query result
+     */
+    public function query(int $id, string $base_dn, string $filter, array $options = array()) : ResultInterface;
 
     /**
      * Returns the current binding object.
      *
+     * @param int $id LDAP database identifier
+     *
      * @return \Korowai\Component\Ldap\Adapter\BindingInterface
      */
-    public function getBinding() : BindingInterface
-    {
-        return $this->ldap->getBinding();
-    }
+    public function getBinding(int $id) : BindingInterface;
 
     /**
      * Returns the current entry manager.
      *
+     * @param int $id LDAP database identifier
+     *
      * @return \Korowai\Component\Ldap\Adapter\EntryManagerInterface
      */
-    public function getEntryManager() : EntryManagerInterface
-    {
-        return $this->ldap->getEntryManager();
-    }
+    public function getEntryManager(int $id) : EntryManagerInterface;
 
     /**
      * Creates a search query
      *
+     * @param int $id LDAP database identifier
      * @param string $base_dn Base DN where the search will start
      * @param string $filter Filter used by ldap search
      * @param array $options Additional search options
      *
      * @return \Korowai\Component\Ldap\Adapter\EntryManagerInterface
      */
-    public function createQuery(string $base_dn, string $filter, array $options = array()) : QueryInterface
-    {
-        return $this->ldap->createQuery($base_dn, $filter, $options);
-    }
+    public function createQuery(int $id, string $base_dn, string $filter, array $options = array()) : QueryInterface;
 }
 
 // vim: syntax=php sw=4 ts=4 et:

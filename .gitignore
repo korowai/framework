@@ -61,6 +61,7 @@ phpdoc.xml
 /vendor
 /.idea
 /.vagrant
+/core
 Homestead.json
 Homestead.yaml
 yarn-error.log

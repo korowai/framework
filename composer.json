@@ -26,7 +26,8 @@
         "behat/behat": "^3.4",
         "symfony/filesystem": ">=4.2",
         "symfony/finder": ">=4.2",
-        "laravel/lumen-framework": ">=5.8"
+        "laravel/lumen-framework": ">=5.8",
+        "laravel/tinker": ">=1.0.8"
     },
     "autoload": {
       "psr-4" : {

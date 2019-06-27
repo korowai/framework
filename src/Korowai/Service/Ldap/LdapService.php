@@ -3,6 +3,7 @@
  * This file is part of the Korowai package
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @package Korowai\LdapService
  * @license Distributed under MIT license.
  */
 
@@ -11,26 +12,28 @@ declare(strict_types=1);
 namespace Korowai\Service\Ldap;
 
 use Korowai\Component\Ldap\Ldap;
-use Korowai\Service\Ldap\LdapInstance;
+use Korowai\Component\Ldap\LdapInterface;
+use Korowai\Service\Ldap\Exception\LdapServiceException;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\Options;
+use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 
-class LdapService
+class LdapService extends AbstractLdapService
 {
     /**
      * Ldap instances
      *
      * @var array
      */
-    protected $instances = array();
+    protected $ldaps = array();
 
     /**
-     * Config used to generate instances
+     * Configuration (resolved, except for the $config['databases'][]['ldap'])
      *
      * @var array
      */
-    protected $config;
+    protected $config = array();
 
     /**
      * Initializes the LdapService
@@ -43,7 +46,7 @@ class LdapService
     }
 
     /**
-     * Set configuration for later use by createLdapInstance().
+     * Set configuration for later use by createLdap().
      *
      * @param array $config Configuration options used to configure every new
      *                      adapter instance created by createAdapter().
@@ -65,7 +68,13 @@ class LdapService
     {
         $resolver->setRequired('databases');
         $resolver->setAllowedTypes('databases', 'array[]');
-        $resolver->setNormalizer('databases', function (Options $options, $value) {
+        $resolver->setNormalizer('databases', function (Options $options, $dbs) {
+
+            $ids = array_map(function ($db) { return $db['id']; }, $dbs);
+            if(count($ids) !== count(array_unique($ids))) {
+                throw new InvalidOptionsException('"id" must be unique across all "databases"');
+            }
+
             return [];
         });
     }
@@ -78,35 +87,39 @@ class LdapService
     {
         $resolver->setRequired('id');
         $resolver->setRequired('ldap');
+
         $resolver->setDefined('factory');
-        $resolver->setRequired('name');
-        $resolver->setDefined('description');
-        $resolver->setDefined('base');
 
-        $resolver->setDefault('bind', function (OptionsResolver $bindResolver) {
-            $bindResolver->setDefined(['dn', 'password']);
-            $bindResolver->setAllowedTypes('dn', 'string');
-            $bindResolver->setAllowedTypes('password', 'string');
-
-            if(function_exists('ldap_explode_dn')) {
-                $bindResolver->setAllowedValues('dn', function ($value) {
-                    return ldap_explode_dn($value, 0) !== false;
-                });
-            }
+        $resolver->setDefault('meta', function(OptionsResolver $metaResolver) {
+            $this->configureMetaOptionsResolver($metaResolver);
         });
-
-
-        $resolver->setAllowedTypes('id', 'int');
-        $resolver->setAllowedTypes('ldap', 'array');
-        $resolver->setAllowedTypes('factory', 'string');
-        $resolver->setAllowedTypes('name', 'string');
-        $resolver->setAllowedTypes('description',  'string');
-        $resolver->setAllowedTypes('base', 'string');
-
 
         $resolver->setAllowedValues('factory', function ($value) {
             return is_subclass_of($value, \Korowai\Component\Ldap\Adapter\AdapterFactoryInterface::class);
         });
+    }
+
+    protected function configureMetaOptionsResolver(OptionsResolver $resolver)
+    {
+          $resolver->setRequired('name');
+          $resolver->setDefined('description');
+          $resolver->setDefined('base');
+
+//          $resolver->setDefault('bind', function (OptionsResolver $bindResolver) {
+//              $bindResolver->setDefined(['dn', 'password']);
+//              $bindResolver->setAllowedTypes('dn', 'string');
+//              $bindResolver->setAllowedTypes('password', 'string');
+//
+//              if(function_exists('ldap_explode_dn')) {
+//                  $bindResolver->setAllowedValues('dn', function ($value) {
+//                      return ldap_explode_dn($value, 0) !== false;
+//                  });
+//              }
+//          });
+
+          $resolver->setAllowedTypes('name', 'string');
+          $resolver->setAllowedTypes('description',  'string');
+          $resolver->setAllowedTypes('base', 'string');
     }
 
     /**
@@ -122,7 +135,7 @@ class LdapService
         $dbs = array_map(array($dbResolver, 'resolve'), array_values($config['databases']));
         $ids = array_map(function ($db) { return $db['id']; }, $dbs);
         if(count($ids) !== count(array_unique($ids))) {
-            // throw exceptino some ids got duplicated
+            throw new InvalidOptionsException('"id" must be unique across all "databases"');
         }
         $resolved['databases'] = array_combine($ids, $dbs);
         return $resolved;
@@ -145,7 +158,7 @@ class LdapService
      *
      * @return array
      */
-    public function getConfig()
+    public function getConfig() : array
     {
         return $this->config;
     }
@@ -156,9 +169,24 @@ class LdapService
      * @param int $id
      * @return array|null
      */
-    public function getDatabaseConfig(int $id)
+    public function getDatabaseConfig(int $id) : array
     {
-        return $this->config['databases'][$id] ?? null;
+        if(!array_key_exists($id, $this->config['databases'])) {
+            throw new LdapServiceException("undefined LDAP database (id=${id})");
+        }
+        return $this->config['databases'][$id];
+    }
+
+    /**
+     * Get database meta information.
+     *
+     * @return array
+     * @throws \Korowai\Service\Ldap\Exception\LdapServiceException
+     */
+    public function getDatabaseMeta(int $id) : array
+    {
+        $db = $this->getDatabaseConfig($id);
+        return $db['meta'];
     }
 
     /**
@@ -166,9 +194,9 @@ class LdapService
      *
      * @return array
      */
-    public function getLdapIds() : array
+    public function getDatabaseIds() : array
     {
-        return array_keys($this->config);
+        return array_keys($this->config['databases']);
     }
 
     /**
@@ -176,29 +204,40 @@ class LdapService
      *
      * @param int $id
      * @return \Korowai\Component\Ldap\LdapInterface|null
+     * @throws \Korowai\Service\Ldap\Exception\LdapServiceException
      */
-    public function getLdapInstanceById(int $id)
+    public function getLdap(int $id) : LdapInterface
     {
-        if(!isset($this->instances[$id])) {
-            if(null === ($config = $this->getDatabaseConfig($id))) {
-                return null;
-            }
-            $this->instances[$id] = $this->createLdapInstance($config);
+        if(!isset($this->ldaps[$id])) {
+            $this->ldaps[$id] = $this->createLdapForId($id);
         }
-        return $this->instances[$id];
+        return $this->ldaps[$id];
+    }
+
+    /**
+     * Delete Ldap instance with given ID.
+     *
+     * @param int $id
+     * @return \Korowai\Component\Ldap\LdapInterface|null
+     */
+    public function unsetLdap(int $id)
+    {
+        if(array_key_exists($id, $this->ldaps)) {
+            unset($this->ldaps[$id]);
+        }
     }
 
     /**
      * Create Ldap instance according to $dbConfig
      *
-     * @param array $dbConfig
+     * @param int $id
      * @return LdapInstance
+     * @throws \Korowai\Service\Ldap\Exception\LdapServiceException
      */
-    public function createLdapInstance(array $dbConfig) : LdapInstance
+    protected function createLdapForId(int $id) : LdapInterface
     {
-        $factory = $dbConfig['factory'] ?? null;
-        $ldap = Ldap::createWithConfig($dbConfig['ldap'], $factory);
-        return new LdapInstance($ldap, $dbConfig);
+        $db = $this->getDatabaseConfig($id);
+        return Ldap::createWithConfig($db['ldap'], $db['factory'] ?? null);
     }
 }
 

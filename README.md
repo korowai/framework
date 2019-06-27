@@ -53,6 +53,12 @@ php vendor/bin/phpunit
 ./docker-compose down
 ```
 
+### Running interactive PHP shell
+
+```shell
+./docker-compose run --rm php-cli vendor/bin/psysh
+```
+
 ### Running CodeClimate
 
 ```shell

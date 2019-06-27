@@ -3,23 +3,25 @@
 return [
   'databases' => [
     [
-      'id'          => 1,                                   // identifies database within an application
-      'name'        => 'Test LDAP Database',                // short name for UI
-      'description' => 'Description for the LDAP Service',  // description for UI
-      'base'        => 'dc=example,dc=org',                 // default base DN
-      'bind'        => [
-        'dn'        => 'cn=admin,dc=example,dc=org',        // default bind DN
-        'password'  => 'admin'                              // default bind password
-      ],
+      'id' => 1,                                              // identifies database within an application
+      // 'factory' => '\Korowai\Component\Ldap\Adapter\ExtLdap\AdapterFactory',
 
-      // 'factory' => '\Korowai\Component\Ldap\Adapter\ExtLdap\AdapterFactory'
-
-      'ldap'        => [
-        'uri'       => 'ldap://ldap-service',               // server's host address
-        'options'   => [
+      'ldap' => [
+        'uri' => 'ldap://ldap-service',                       // server's host address
+        'options' => [                                        // extra LDAP options
           'protocol_version' => 3
         ]
-      ]
+      ],
+
+      'meta' => [
+        'name' => 'Test LDAP Database',                       // short name for UI
+        'description' => 'Description for the LDAP Service',  // description for UI
+        'base' => 'dc=example,dc=org',                        // default base DN
+//        'bind' => [
+//          'dn' => 'cn=admin,dc=example,dc=org',               // default bind DN
+//          'password' => 'admin'                               // default bind password
+//        ],
+      ],
     ],
     // You may define more LDAP servers
   ]

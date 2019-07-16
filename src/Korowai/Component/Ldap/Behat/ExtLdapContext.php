@@ -15,12 +15,16 @@ use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
+use Behat\Behat\Hook\Scope\BeforeScenarioScope;
+use Behat\Behat\Hook\Scope\AftereScenarioScope;
 
 use Korowai\Component\Ldap\Ldap;
 use Korowai\Component\Ldap\Exception\LdapException;
 
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 use PHPUnit\Framework\Assert;
+
+use LdapTools\Ldif\LdifParser;
 
 /**
  * Defines application features from the specific context.
@@ -41,6 +45,92 @@ class ExtLdapContext implements Context
     {
         $this->resetExceptions();
         $this->resetQueryResults();
+    }
+
+    /**
+     * @AfterScenario @altering
+     */
+    public function afterAltering()
+    {
+        $this->reinitializeLdapDatabase();
+    }
+
+    protected function reinitializeLdapDatabase()
+    {
+        $ldap = $this->bindToLdapService();
+        $this->deleteLdapData($ldap);
+        $this->initializeLdapData($ldap);
+        ldap_close($ldap);
+    }
+
+    protected function bindToLdapService()
+    {
+        $ldap = ldap_connect('ldap://ldap-service');
+        if($ldap === FALSE) {
+            throw new \RuntimeException("ldap_connect failed");
+        }
+
+        $status = ldap_set_option($ldap, LDAP_OPT_PROTOCOL_VERSION, 3);
+        if($status === FALSE) {
+            throw new \RuntimeException(ldap_error($ldap));
+        }
+        $status = ldap_set_option($ldap, LDAP_OPT_REFERRALS, false);
+        if($status === FALSE) {
+            throw new \RuntimeException(ldap_error($ldap));
+        }
+
+        $status = ldap_bind($ldap, 'cn=admin,dc=example,dc=org', 'admin');
+        if($status === FALSE) {
+            throw new \RuntimeException(ldap_error($ldap));
+        }
+
+        return $ldap;
+    }
+
+    protected function deleteLdapData($ldap)
+    {
+        $this->deleteLdapDescendants($ldap, 'dc=example,dc=org', '(&(objectclass=*)(!(cn=admin)))');
+    }
+
+    protected function deleteLdapDescendants($ldap, $base, $filter=null)
+    {
+        $children = @ldap_list($ldap, $base, $filter ?? '(objectclass=*)', ['dn'], 0, -1, -1, LDAP_DEREF_NEVER);
+        //var_dump(ldap_get_entries($ldap, $children));
+        $this->deleteLdapResult($ldap, $children);
+    }
+
+    protected function deleteLdapResult($ldap, $result)
+    {
+        if(!$result) {
+            return;
+        }
+
+        $reference = @ldap_first_reference($ldap, $result);
+        while($reference) {
+            if(ldap_parse_reference($ldap, $reference, $referrals)) {
+                var_dump(ldap_get_attributes($ldap, $reference));
+            }
+            $reference = ldap_next_reference($ldap, $reference);
+        }
+
+        $entries = ldap_get_entries($ldap, $result);
+        for($i=0; $i < $entries['count']; $i++) {
+            $dn = $entries[$i]['dn'];
+            $this->deleteLdapDescendants($ldap, $dn);
+            //ldap_delete($ldap, $dn);
+        }
+    }
+
+    protected function initializeLdapData($ldap)
+    {
+        $parser = new LdifParser();
+        $ldif = file_get_contents(__DIR__ . '/../Resources/ldif/bootstrap.ldif');
+        $ldif = $parser->parse($ldif);
+        foreach($ldif->toOperations() as $op) {
+            $func = $op->getLdapFunction();
+            $args = $op->getArguments();
+            call_user_func($func, $ldap, ...$args);
+        }
     }
 
     protected function resetExceptions()

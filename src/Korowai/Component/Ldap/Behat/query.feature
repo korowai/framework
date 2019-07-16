@@ -1,3 +1,4 @@
+@altering
 Feature: Query
 
   Scenario: Successful query for an empty yet subtree

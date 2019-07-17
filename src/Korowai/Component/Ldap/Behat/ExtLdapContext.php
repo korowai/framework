@@ -74,7 +74,7 @@ class ExtLdapContext implements Context
         if($status === FALSE) {
             throw new \RuntimeException(ldap_error($ldap));
         }
-        $status = ldap_set_option($ldap, LDAP_OPT_REFERRALS, false);
+        $status = ldap_set_option($ldap, LDAP_OPT_REFERRALS, 0);
         if($status === FALSE) {
             throw new \RuntimeException(ldap_error($ldap));
         }
@@ -108,7 +108,9 @@ class ExtLdapContext implements Context
         $reference = @ldap_first_reference($ldap, $result);
         while($reference) {
             if(ldap_parse_reference($ldap, $reference, $referrals)) {
-                var_dump(ldap_get_attributes($ldap, $reference));
+                var_dump($referrals);
+                //var_dump(ldap_get_attributes($ldap, $reference));
+                //var_dump(ldap_get_dn($ldap, $reference));
             }
             $reference = ldap_next_reference($ldap, $reference);
         }

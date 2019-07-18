@@ -17,6 +17,7 @@
     },
     "replace": {
       "korowai/ldap": "self.version",
+      "korowai/ldif": "self.version",
       "korowai/ldap-service": "self.version"
     },
     "require-dev": {
@@ -27,8 +28,7 @@
         "symfony/filesystem": ">=4.2",
         "symfony/finder": ">=4.2",
         "laravel/lumen-framework": ">=5.8",
-        "laravel/tinker": ">=1.0.8",
-        "ldaptools/ldaptools": ">=0.25.1"
+        "laravel/tinker": ">=1.0.8"
     },
     "autoload": {
       "psr-4" : {

@@ -11,94 +11,129 @@ declare(strict_types=1);
 
 namespace Korowai\Component\Ldap\Behat;
 
-//use LdapTools\Ldif\LdifParser;
+//use Korowai\Component\Ldap\Behat\LdifParser;
 
 /**
- * Defines application features from the specific context.
+ * Manages LDAP database used by Behat tests.
  */
-class ExtLdapService
+class ExtLdapManager
 {
-    const DEFAULT_URI = 'ldap://ldap-service';
-    const DEFAULT_BASE = 'dc=example,dc=org';
-    const DEFAULT_BINDDN = 'cn=admin,dc=example,dc=org';
-    const DEFAULT_BINDPW = 'admin';
-    const DEFAULT_OPTIONS = [
-          LDAP_OPT_PROTOCOL_VERSION => 3
-        , LDAP_OPT_SERVER_CONTROLS => [
-            ['oid' => LDAP_CONTROL_MANAGEDSAIT]
-          ]
-    ];
-    const DEFAULT_DELETE_EXCEPTIONS = [
-        'cn=admin,dc=example,dc=org'
-    ];
-
-
+//    const DEFAULT_CONFIG = [
+//        'connect' => ['ldap://ldap-service'],
+//        'bind' => ['cn=admin,dc=example,dc=org', 'admin'],
+//        'base' => 'dc=example,dc=org',
+//        'options' => [
+//            [LDAP_OPT_PROTOCOL_VERSION, 3],
+//            [LDAP_OPT_SERVER_CONTROLS, [['oid' => LDAP_CONTROL_MANAGEDSAIT]]]
+//        ],
+//        'precious' => [
+//            'cn=admin,dc=example,dc=org'
+//        ]
+//    ];
+//
+//
     private $ldap;
-    private $base;
 
-
-    public static function createInstance(string $uri=null, string $binddn=null, string $bindpw=null, array $options=null)
+    public static function createInstance(array $config)
     {
-        $ldap = self::ldapCreate($uri);
-        self::ldapSetOptions($ldap, $options);
-        self::ldapBind($ldap, $binddn, $bindpw);
+        $ldap = self::ldapCreate($config);
         return new self($ldap);
     }
 
-    protected static function ldapCreate(string $uri=null)
+    public static function ldapCreate(array $config)
     {
-        $ldap = ldap_connect($uri ?? self::DEFAULT_URI);
+        $ldap = self::ldapConnect(...$config['connect']);
+        self::ldapSetOptions($ldap, $config['options']);
+        self::ldapBind($ldap, ...$config['bind']);
+        return $ldap;
+    }
+
+    protected static function ldapConnect(...$args)
+    {
+        $ldap = ldap_connect(...$args);
         if($ldap === FALSE) {
-            throw new \RuntimeException("ldap_connect failed");
+            throw new \RuntimeException("ldap_connect() failed");
         }
         return $ldap;
     }
 
-    protected static function ldapSetOptions($ldap, array $options=null)
+    protected static function ldapSetOptions($ldap, array $options)
     {
         if(!is_resource($ldap)) {
             $klass = self::class;
-            throw new \RuntimeException("argument 1 to $klass::ldapSetOptions must be a resource");
+            $msg = "argument 1 to $klass::ldapSetOptions must be a resource";
+            throw new \RuntimeException($msg);
         }
-        foreach($options ?? self::DEFAULT_OPTIONS as $option => $value) {
-            if(ldap_set_option($ldap, $option, $value) === false) {
+        foreach($options as $args) {
+            if(ldap_set_option($ldap, ...$args) === false) {
                 throw new \RuntimeException(ldap_error($ldap));
             }
         }
     }
 
-    protected static function ldapBind($ldap, string $dn=null, string $pw=null)
+    protected static function ldapBind($ldap, ...$args)
     {
-        if(ldap_bind($ldap, $dn ?? self::DEFAULT_BINDDN, $pw ?? self::DEFAULT_BINDPW) === false) {
+        if(ldap_bind($ldap, ...$args) === false) {
             throw new \RuntimeException(ldap_error($ldap));
         }
     }
 
-    protected static function ldapDeleteSubtrees($ldap, string $base=null, string $filter=null, array $except=null)
+    public static function ldapDeleteSubtrees($ldap, string $dn, array $except=null, string $filter=null)
     {
-        $children = @ldap_list($ldap, $base ?? self::DEFAULT_BASE, $filter ?? '(objectclass=*)', ['dn'], 0, -1, -1, LDAP_DEREF_NEVER);
-        self::ldapDeleteResultEntries($ldap, $children, $filter, $except);
+        $f = $filter ?? 'objectclass=*';
+        $args = [$dn, $f, ['dn'], 0, -1, -1, LDAP_DEREF_NEVER];
+        if(PHP_VERSION_ID >= 70300) {
+            $args[] = [ ['oid' => LDAP_CONTROL_MANAGEDSAIT] ];
+        }
+        $result = @ldap_list($ldap, ...$args);
+        if($result === false) {
+            throw new \RuntimeException(ldap_error($ldap));
+        }
+        $entries = ldap_get_entries($ldap, $result);
+        $dns = array_unique(self::extractDns($entries));
+
+        $clean = true;
+        foreach($dns as $dn) {
+            $tree = self::ldapDeleteTree($ldap, $dn, $except, $filter);
+            $clean = $clean && $tree;
+        }
+        return $clean;
     }
 
-    protected static function ldapDeleteResultEntries($ldap, $result, string $filter=null, array $except=null)
+    public static function ldapDeleteTree($ldap, string $dn, array $except=null, string $filter=null)
     {
-        if(!$result) {
-            return;
-        }
-
-        $entries = ldap_get_entries($ldap, $result);
-        for($i=0; $i < $entries['count']; $i++) {
-            $dn = $entries[$i]['dn'];
-            self::ldapDeleteSubtrees($ldap, $dn, $filter, $except);
-            if(!in_array($dn, $except ?? self::DEFAULT_DELETE_EXCEPTIONS)) {
+        if(!in_array($dn, $except ?? [])) {
+            $clean = self::ldapDeleteSubtrees($ldap, $dn, $except, $filter);
+            if($clean) {
                 //@ldap_delete($ldap, $dn);
                 echo("deleting: $dn\n");
             }
+            return $clean;
         }
+        return false;
+    }
+
+    public static function extractDns(array $entries)
+    {
+        $fcn = function(array $entry) { return $entry['dn']; };
+        return array_map($fcn, self::extractEntries($entries));
+    }
+
+    public static function extractEntries(array $entries)
+    {
+        $fcn = function(int $i) use ($entries) { return $entries[$i]; };
+        return array_map($fcn, self::indexSequence(0, $entries['count']));
+    }
+
+    public static function indexSequence(int $start, int $count)
+    {
+        $sequence = range($start, $start + $count);
+        array_pop($sequence);
+        return $sequence;
     }
 
     /**
-     * Initializes the ExtLdapService instance.
+     * Initializes the ExtLdapManager instance.
      */
     public function __construct($ldap)
     {
@@ -118,15 +153,15 @@ class ExtLdapService
         return $this->ldap;
     }
 
-    /**
-     * Delete all LDAP nodes, except the $base and dn's listed in $except.
-     */
-    public function deleteSubtrees(string $base=null, string $filter=null, array $except=null)
-    {
-        self::ldapDeleteSubtrees($this->getResource(), $base, $filter, $except);
-    }
-
-
+//    /**
+//     * Delete all LDAP nodes, except the $base and dn's listed in $except.
+//     */
+//    public function deleteSubtrees(string $base, string $filter, array $except=null)
+//    {
+//        self::ldapDeleteSubtrees($this->getResource(), $base, $filter, $except);
+//    }
+//
+//
 //    protected function reinitializeLdapDatabase()
 //    {
 //        $ldap = $this->ldapBindService();

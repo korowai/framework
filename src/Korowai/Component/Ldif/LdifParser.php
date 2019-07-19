@@ -15,6 +15,7 @@ class LdifParser
 {
 
     use LdifParserUtil;
+    use PregWithExceptions;
 
 //    /**
 //     * @var string
@@ -70,8 +71,8 @@ class LdifParser
         // accept initial comments and seps
         self::acceptAstPieces($pieces, $i, $ast);
 
-        if(self::parseVersionSpec($pieces, $i, $ast, &$err) === false) {
-            if($err->getMessage() !== 'syntax error: expected "version:" token')) {
+        if(self::parseVersionSpec($pieces, $i, $ast, $err) === false) {
+            if($err->getMessage() !== 'syntax error: expected "version:" token') {
                 $this->errors[] = $err;
                 return false;
             }
@@ -137,22 +138,11 @@ class LdifParser
 
         $value = trim(substr($ll, 8));
 
-        set_error_handler(function ($errno, $errstr) {
-            throw new \RuntimeException($errstr);
-        });
-        try {
-            $status = preg_match('/^\d+$/', $value, $matches);
-        } finally {
-            restore_error_handler();
-        }
+        $status = self::preg_match('/^\d+$/', $value, $matches);
 
-        if($status === false) {
-            throw new \RuntimeException(preg_last_error());
-        } elseif($status === 0) {
-            $line = $p->getStartLine();
-            if(preg_match('/(?:\s|\r\n|\n)+/', substr($p->getContent(), 8), $m))
-                $line += substr_count($m[0], "\n");
-            }
+        if($status === 0) {
+            $prefix = self::preg_replace('/^(version:(?:\s|\r\n|\n)*).*/', '$1', $ll);
+            $line = $p->getLineOf(strlen($prefix));
             $err = new LdifParseError('syntax error: invalid version number "'. $value . '"', $line);
             return false;
         }
@@ -170,13 +160,13 @@ class LdifParser
 
     protected static function parseAttrvalRecord(array $pieces, int &$i, Ast\LdifFile $ast, LdifParseError &$err)
     {
-        if(self::checkPieceIndex($pieces, $i, $err)) {
-            return false;
-        }
-
-        $record = new Ast\LdifAttrvalRecord();
-
-        if(self::parseDnSpec($pieces, $i, $)
+//        if(self::checkPieceIndex($pieces, $i, $err)) {
+//            return false;
+//        }
+//
+//        $record = new Ast\LdifAttrvalRecord();
+//
+//        if(self::parseDnSpec($pieces, $i, $)
 
         $i++;
 

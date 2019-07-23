@@ -13,44 +13,24 @@ namespace Korowai\Component\Ldif;
 
 /**
  * Encapsulates a logical line of the LDIF source which may contain multiple
- * physical lines (line folding).
+ * physical lines (pieces).
  */
-class LogicalLine
+abstract class LdifSnip
 {
-    use PregWithExceptions;
-
     /**
      * @var string
      *
-     * The content of the logical line as given in file.
+     * The content of the logical line as given in original source.
      */
     protected $content;
 
     /**
      * @var int
      *
-     * The number of the physical line where the logical line begins in the original text.
+     * Zero-based index of the physical line where the logical line begins in
+     * the original text.
      */
     protected $startLine;
-
-    /**
-     * @var int
-     *
-     * The number of physical lines of this text.
-     */
-    protected $linesCount;
-
-
-    /**
-     * Initializes the object
-     *
-     * @param string $content
-     * @param int $startLine
-     */
-    public function __construct(string $content, int $startLine=0)
-    {
-        $this->init($content, $startLine);
-    }
 
 
     /**
@@ -63,7 +43,6 @@ class LogicalLine
     {
         $this->content = $content;
         $this->startLine = $startLine;
-        $this->linesCount = count(self::preg_split('/(\r\n|\n)/', $content));
     }
 
 
@@ -94,10 +73,7 @@ class LogicalLine
      *
      * @return int
      */
-    public function getLinesCount() : int
-    {
-        return $this->linesCount;
-    }
+    abstract public function getLinesCount() : int;
 
 
     /**
@@ -117,34 +93,7 @@ class LogicalLine
      *
      * @return int
      */
-    public function getLineOf(int $offset, bool $unwrapped=true) : int
-    {
-
-        $content = $this->getContent();
-        $status = self::preg_match_all('/((?:\r\n|\n) )/', $content, $matches, PREG_OFFSET_CAPTURE);
-        if($status === 0) {
-            return $this->getStartLine(); // $this is a single physical line
-        }
-
-        $i = 0;
-        $eat = 0;
-        $beg = 0;
-        foreach($matches[1] as $match) {
-            $end = $match[1] - $eat;
-
-            if($offset >= $beg && $offset < $end) {
-                break;
-            }
-
-            if($unwrapped) {
-                $eat += strlen($match[0]); // compensate for line folds
-            }
-            $beg = $end;
-            $i++;
-        }
-        return $i + $this->getStartLine();
-    }
-
+    abstract public function getLineAt(int $offset);
 
     /**
      * Same as getContent()
@@ -152,17 +101,6 @@ class LogicalLine
     public function __toString()
     {
         return $this->getContent();
-    }
-
-
-    /**
-     * Returns the logical line's content unfolded
-     *
-     * @return string
-     */
-    public function unfolded() : string
-    {
-        return self::preg_replace('/(\r\n|\n) /', '', $this->getContent());
     }
 }
 

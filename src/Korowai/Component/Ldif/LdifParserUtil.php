@@ -21,7 +21,7 @@ trait LdifParserUtil
             return false;
         }
 
-        $pieces = [];
+        $snips = [];
         $lastOffset = 0;
         $lineOffset = 0;
 
@@ -31,22 +31,22 @@ trait LdifParserUtil
             $lineOffset += substr_count($ldif, "\n", $lastOffset, $length);
 
             if($match[0] === "\n" or $match[0] === "\r\n") {
-                $pieces[] = new Ast\Sep($match[0], $lineOffset);
+                $snips[] = new LdifSep($match[0], $lineOffset);
             } else {
-                $line = new LogicalLine($match[0], $lineOffset);
-                $pieces[] = self::morphTrivialLine($line);
+                $line = new LdifLine($match[0], $lineOffset);
+                $snips[] = self::morphTrivialLine($line);
             }
 
             $lastOffset = $currOffset;
         }
 
-        return $pieces;
+        return $snips;
     }
 
 
     public static function morphTrivialLine($piece)
     {
-        if(is_a($piece, LogicalLine::class)) {
+        if(is_a($piece, LdifLine::class)) {
             $content = $piece->getContent();
             $start = $piece->getStartLine();
             $end = $piece->getEndLine();

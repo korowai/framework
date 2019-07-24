@@ -12,7 +12,7 @@ declare(strict_types=1);
 namespace Korowai\Component\Ldif;
 
 /**
- * Encapsulates a separator between LDIF logical lines.
+ * Encapsulates a separator between LDIF lines.
  */
 class LdifSep extends LdifSnip
 {
@@ -35,7 +35,9 @@ class LdifSep extends LdifSnip
      */
     public function init(string $content, int $startLine=0)
     {
-        assert($content == "\n" || $content == "\r\n");
+        if($conent !== "\n" && $content !== "\r\n") {
+            throw new \RuntimeException('an argument 1 to LdifSep::init() must be either "\n" or "\r\n"');
+        }
         parent::init($content, $startLine);
     }
 
@@ -54,7 +56,7 @@ class LdifSep extends LdifSnip
     /**
      * Returns the index of the physical line containing char at $offset.
      *
-     * @param int $offset refers a character in unfolded logical line string.
+     * @param int $offset ignored
      *
      * @return int
      */

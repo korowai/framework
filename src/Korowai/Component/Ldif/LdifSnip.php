@@ -12,8 +12,7 @@ declare(strict_types=1);
 namespace Korowai\Component\Ldif;
 
 /**
- * Encapsulates a logical line of the LDIF source which may contain multiple
- * physical lines (pieces).
+ * An abstract base class for a piece of LDIF file.
  */
 abstract class LdifSnip
 {

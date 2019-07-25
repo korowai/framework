@@ -6,12 +6,14 @@
  * @package Korowai\Ldif
  * @license Distributed under MIT license.
  */
-
 declare(strict_types=1);
 
-namespace Korowai\Component\Ldif\Ast;
+namespace Korowai\Component\Ldif\Exception;
 
-class Tree
+/**
+ * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ */
+class LdifException extends \RuntimeException
 {
 }
 

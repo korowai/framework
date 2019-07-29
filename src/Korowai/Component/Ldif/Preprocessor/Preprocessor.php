@@ -19,7 +19,7 @@ trait Preprocessor
     /**
      *
      */
-    public static function preMkJumps(array $pieces) : array
+    public static function ppMkJumps(array $pieces) : array
     {
         $jumps = [];
         $offset = 0;
@@ -30,36 +30,44 @@ trait Preprocessor
         return $jumps;
     }
 
-    public static function preCascadeJumps(array $old, array $new) : array
+    public static function ppCascadeJumps(array $old, array $new) : array
     {
         $jumps = [];
-        $ls = 0; // left shrink
-        $ts = 0; // total shrink
+        $ns = 0; // new shrink (introduced by $new)
+        $ts = 0; // total shrink (cumulation of $old and $new)
         for($i=0, $j=0; $i < count($old) || $j < count($new); ) {
-            if( $j < count($new)
-                && (    $i >= count($old)
-                    || ($new[$j][0] < $old[$i][0] - $ls &&
-                        $new[$j][1] < $old[$i][0] - $ls)
-                   )
-            ) {
-                // $new[$j] is on the left side of $old[$i]
-                $ls + =($new[$j][1] - $new[$j][0]);
-                $ts + =($new[$j][1] - $new[$j][0]);
+            if(     $j < count($new)
+                && ($i >= count($old) || $new[$j][1] < ($old[$i][0] - $ns))) {
+                //
+                // $new[$j] on the left side of $old[$i]
+                //
+                echo "1: $ns, $ts\n";
+                $ns += ($new[$j][1] - $new[$j][0]);
+                $ts += ($new[$j][1] - $new[$j][0]);
                 $jumps[] = [$new[$j][0], $new[$j][0] + $ts];
                 $j++;
             } elseif($j < count($new) && $i < count($old) &&
-                     $new[$j][0] <= $old[$i][0] - $ls &&
-                     $new[$j][1] >= $old[$i][0] - $ls) {
+                     $new[$j][0] <= $old[$i][0] - $ns &&
+                     $new[$j][1] >= $old[$i][0] - $ns) {
+                //
                 // $new[$j] encloses $old[$i]
-                $ls += ($new[$j][1] - $new[$j][0]);
+                //
+                echo "2: $ns, $ts\n";
+                $ns += ($new[$j][1] - $new[$j][0]);
                 $ts += (($new[$j][1] - $new[$j][0]) + ($old[$i][1] - $old[$i][0]));
                 $jumps[] = [$new[$j][0], $new[$j][0] + $ts];
                 $i++;
                 $j++;
             } elseif($i < count($old)) {
+                //
+                // $new[$j] on the right side of $old[$i]
+                //
+                echo "3: $ns, $ts\n";
                 $ts += ($old[$i][1] - $old[$i][0]);
-                $jumps[] = [$old[$i][0] - $ls, $old[$i][0] - $ls + $ts];
+                $jumps[] = [$old[$i][0] - $ns, $old[$i][0] - $ns + $ts];
                 $i++;
+            } else {
+                throw \RuntimeException("internal error");
             }
         }
         return $jumps;
@@ -71,20 +79,20 @@ trait Preprocessor
      * @param array $pieces
      * @param array $jumps
      */
-    public static function preAsmPieces(array $pieces, array &$jumps=null) : string
+    public static function ppAsmPieces(array $pieces, array &$jumps=null) : string
     {
         if($jumps === null) {
-            $jumps = self::preMkJumps($pieces);
+            $jumps = self::ppMkJumps($pieces);
         } else {
-            $jumps = self::preCascadeJumps($jumps, self::preMkJumps($pieces));
+            $jumps = self::ppCascadeJumps($jumps, self::ppMkJumps($pieces));
         }
         return implode(array_map(function ($p){return $p[0];}, $pieces));
     }
 
-    public static function preCutRe(string $re, string $src, array &$jumps=null) : string
+    public static function ppCutRe(string $re, string $src, array &$jumps=null) : string
     {
         $flags = PREG_SPLIT_OFFSET_CAPTURE | PREG_SPLIT_NO_EMPTY;
-        return self::preAsmPieces(preg_split($re, $src, -1, $flags), $jumps);
+        return self::ppAsmPieces(preg_split($re, $src, -1, $flags), $jumps);
     }
 
     /**
@@ -94,9 +102,9 @@ trait Preprocessor
      * @param array $jumps
      * @return string
      */
-    public static function preCutLnCont(string $src, array &$jumps=null) : string
+    public static function ppCutLnCont(string $src, array &$jumps=null) : string
     {
-        return self::preCutRe('/(?:\r\n|\n) /mu', $src, $jumps);
+        return self::ppCutRe('/(?:\r\n|\n) /mu', $src, $jumps);
 
     }
 
@@ -107,9 +115,9 @@ trait Preprocessor
      * @param array $jumps
      * @return string
      */
-    public static function preCutComments(string $src, array &$jumps=null) : string
+    public static function ppCutComments(string $src, array &$jumps=null) : string
     {
-        return self::preCutRe('/^#(?:[^\r\n]|(?:(?:\r\n|\n) ))*/mu', $src, $jumps);
+        return self::ppCutRe('/^#(?:[^\r\n])*(?:\r\n|\n)?/mu', $src, $jumps);
     }
 }
 

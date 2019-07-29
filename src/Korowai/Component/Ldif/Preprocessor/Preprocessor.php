@@ -47,16 +47,18 @@ trait Preprocessor
                 $jumps[] = [$new[$j][0], $new[$j][0] + $ts];
                 $j++;
             } elseif($j < count($new) && $i < count($old) &&
-                     $new[$j][0] <= $old[$i][0] - $ns &&
-                     $new[$j][1] >= $old[$i][0] - $ns) {
+                     $new[$j][0] <= $old[$i][0] - $ns) {
                 //
-                // $new[$j] encloses $old[$i]
+                // $new[$j] encloses $old[$i] (and perhaps $old[$i+1], ...)
                 //
                 echo "2: $ns, $ts\n";
                 $ns += ($new[$j][1] - $new[$j][0]);
-                $ts += (($new[$j][1] - $new[$j][0]) + ($old[$i][1] - $old[$i][0]));
+                $ts += ($new[$j][1] - $new[$j][0]);
+                do {
+                    $ts += ($old[$i][1] - $old[$i][0]);
+                    $i++;
+                } while($i < count($old) && $new[$j][1] >= $old[$i][0] - $ns);
                 $jumps[] = [$new[$j][0], $new[$j][0] + $ts];
-                $i++;
                 $j++;
             } elseif($i < count($old)) {
                 //
@@ -89,7 +91,7 @@ trait Preprocessor
         return implode(array_map(function ($p){return $p[0];}, $pieces));
     }
 
-    public static function ppCutRe(string $re, string $src, array &$jumps=null) : string
+    public static function ppRmRe(string $re, string $src, array &$jumps=null) : string
     {
         $flags = PREG_SPLIT_OFFSET_CAPTURE | PREG_SPLIT_NO_EMPTY;
         return self::ppAsmPieces(preg_split($re, $src, -1, $flags), $jumps);
@@ -102,10 +104,9 @@ trait Preprocessor
      * @param array $jumps
      * @return string
      */
-    public static function ppCutLnCont(string $src, array &$jumps=null) : string
+    public static function ppRmLnCont(string $src, array &$jumps=null) : string
     {
-        return self::ppCutRe('/(?:\r\n|\n) /mu', $src, $jumps);
-
+        return self::ppRmRe('/(?:\r\n|\n) /mu', $src, $jumps);
     }
 
     /**
@@ -115,9 +116,9 @@ trait Preprocessor
      * @param array $jumps
      * @return string
      */
-    public static function ppCutComments(string $src, array &$jumps=null) : string
+    public static function ppRmComments(string $src, array &$jumps=null) : string
     {
-        return self::ppCutRe('/^#(?:[^\r\n])*(?:\r\n|\n)?/mu', $src, $jumps);
+        return self::ppRmRe('/^#(?:[^\r\n])*(?:\r\n|\n)?/mu', $src, $jumps);
     }
 }
 

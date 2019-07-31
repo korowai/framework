@@ -69,14 +69,14 @@ php vendor/bin/phpunit
 ### Generating API documentation
 
 ```shell
-./docker-compose -f docs/docker-compose.yml run --rm sami sami-build
+./docker-compose -f docs/docker-compose.yml run --rm sami build
 ./docker-compose -f docs/docker-compose.yml down
 ```
 
 or
 
 ```shell
-cd docs && ../docker-compose run --rm sami sami-build
+cd docs && ../docker-compose run --rm sami build
 ../docker-compose down
 ```
 

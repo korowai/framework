@@ -35,6 +35,9 @@ class LdapInstance extends AbstractLdap
 
     /**
      * Initializes the LdapInstance
+     *
+     * @param LdapInterface $ldap
+     * @param array $config
      */
     public function __construct(LdapInterface $ldap, array $config)
     {
@@ -45,7 +48,6 @@ class LdapInstance extends AbstractLdap
     /**
      * Return config related to this instance.
      *
-     * @param string $id
      * @return array|null
      */
     public function getConfig()
@@ -66,7 +68,6 @@ class LdapInstance extends AbstractLdap
     /**
      * Get Ldap interface
      *
-     * @param string $id
      * @return \Korowai\Component\Ldap\LdapInterface|null
      */
     public function getLdap() : LdapInterface
@@ -76,6 +77,7 @@ class LdapInstance extends AbstractLdap
 
     /**
      * Returns LDAP adapter
+     *
      * @return AdapterInterface Adapter
      */
     public function getAdapter() : AdapterInterface
@@ -98,6 +100,8 @@ class LdapInstance extends AbstractLdap
      *
      * @param string $dn        The user's DN
      * @param string $password  The associated password
+     *
+     * @return bool
      */
     public function bind(string $dn = null, string $password = null)
     {
@@ -106,6 +110,8 @@ class LdapInstance extends AbstractLdap
 
     /**
      * Unbinds the connection
+     *
+     * @return bool
      */
     public function unbind()
     {

@@ -19,6 +19,7 @@ trait CallWithCustomErrorHandler
     /**
      * Temporarily sets custom error handler and invokes user provided method
      *
+     * @param callable $handler Error handler
      * @param string $name Method name
      * @param mixed $args Arguments
      * @return mixed Whatever the called method returns

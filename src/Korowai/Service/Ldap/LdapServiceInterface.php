@@ -152,6 +152,7 @@ interface LdapServiceInterface
     /**
      * Create query, execute and return its result
      *
+     * @param int $id
      * @param string $base_dn
      * @param string $filter
      * @param array $options

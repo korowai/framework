@@ -14,152 +14,180 @@ namespace Korowai\Component\Ldif\Tests\Preprocessor;
 use PHPUnit\Framework\TestCase;
 use Korowai\Component\Ldif\Preprocessor\PpFunctions;
 
-class T {
-    use PpFunctions {
-        ppMkJumps as public;
-        ppApplyJumps as public;
-        ppAsmPieces as public;
-        ppRmRe as public;
-        ppRmLnCont as public;
-        ppRmComments as public;
-    }
-};
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
 class PpFunctionsTest extends TestCase
 {
-    //
-    // ppMkJumps
-    //
-    public function test__ppMkJumps__00()
+    private function getTestObject()
     {
-        $jumps = T::ppMkJumps([]);
-        $this->assertEquals($jumps, []);
-    }
-
-    public function test__ppMkJumps__01()
-    {
-        $jumps = T::ppMkJumps([["a piece", 0]]);
-        $this->assertEquals($jumps, [[0,0]]);
-    }
-
-    public function test__ppMkJumps__02()
-    {
-        $jumps = T::ppMkJumps([["first piece", 0], ["second piece", 15]]);
-        $this->assertEquals($jumps, [[0,0], [11, 15]]);
-    }
-
-    public function test__ppMkJumps__03()
-    {
-        $jumps = T::ppMkJumps([["first piece", 4], ["second piece", 19]]);
-        $this->assertEquals($jumps, [[0,4], [11, 19]]);
-    }
-
-    //
-    // ppApplyJumps
-    //
-    public function test__ppApplyJumps__00()
-    {
-        $jumps = T::ppApplyJumps([], []);
-        $this->assertEquals($jumps, []);
-    }
-
-    public function test__ppApplyJumps__01()
-    {
-        $jumps = T::ppApplyJumps([[0,0]], []);
-        $this->assertEquals($jumps, [[0,0]]);
-    }
-
-    public function test__ppApplyJumps__02()
-    {
-        $jumps = T::ppApplyJumps([], [[0,0]]);
-        $this->assertEquals($jumps, [[0,0]]);
-    }
-
-    public function test__ppApplyJumps__03()
-    {
-        $jumps = T::ppApplyJumps([[0,0]], [[0,0]]);
-        $this->assertEquals($jumps, [[0,0]]);
-    }
-
-    public function test__ppApplyJumps__04()
-    {
-        $jumps = T::ppApplyJumps([[0,0], [10,15]], [[0,0], [4,8]]);
-        $this->assertEquals($jumps, [[0,0], [4,8], [6,15]]);
-    }
-
-    public function test__ppApplyJumps__05()
-    {
-        $jumps = T::ppApplyJumps([[0,0], [10,15]], [[0,0], [4,18]]);
-        $this->assertEquals($jumps, [[0,0], [4,23]]);
-    }
-
-    public function test__ppApplyJumps__06()
-    {
-        $jumps = T::ppApplyJumps([[0,0], [4,8]], [[0,0], [9,14]]);
-        $this->assertEquals($jumps, [[0,0], [4,8], [9,18]]);
-    }
-
-    public function test__ppApplyJumps__07()
-    {
-        $jumps = T::ppApplyJumps([[0,0], [5,10]], [[0,0], [2,4], [4,6]]);
-        $this->assertEquals($jumps, [[0,0], [2,4], [3,10], [4,13]]);
-    }
-
-    public function test__ppApplyJumps__08()
-    {
-        $jumps = T::ppApplyJumps([[0,0], [5,10]], [[0,0], [2,4], [3,6]]);
-        $this->assertEquals($jumps, [[0,0], [2,4], [3,13]]);
-    }
-
-    public function test__ppApplyJumps__09()
-    {
-        $jumps = T::ppApplyJumps([[0,0], [17,19], [24,28], [42,48]], [[0,12]]);
-        $this->assertEquals($jumps, [[0,12], [5,19], [12,28], [30, 48]]);
+        return new class {
+            use PpFunctions {
+                ppAsmPieces as public;
+                ppRmRe as public;
+                ppRmLnCont as public;
+                ppRmComments as public;
+            }
+        };
     }
 
     //
     // ppRmRe
     //
+    public function test__ppRmRe__noim__00()
+    {
+        $obj = $this->getTestObject();
+        $new = $obj::ppRmRe('/foo/', "");
+        $this->assertEquals($new, "");
+    }
+
+    public function test__ppRmRe__noim__01()
+    {
+        $obj = $this->getTestObject();
+        $new = $obj::ppRmRe('/\n /m', "first\n  second\n  third");
+        $this->assertEquals($new, "first second third");
+    }
+
     public function test__ppRmRe__00()
     {
-        $new = T::ppRmRe('/foo/', "", $jumps);
+        $obj = $this->getTestObject();
+        $new = $obj::ppRmRe('/foo/', "", $im);
         $this->assertEquals($new, "");
-        $this->assertEquals($jumps, []);
+        $this->assertEquals($im, []);
     }
 
     public function test__ppRmRe__01()
     {
-        $new = T::ppRmRe('/foo/', "bar geez", $jumps);
+        $obj = $this->getTestObject();
+        $new = $obj::ppRmRe('/foo/', "bar geez", $im);
         $this->assertEquals($new, "bar geez");
-        $this->assertEquals($jumps, [[0,0]]);
+        $this->assertEquals($im, [[0,0]]);
     }
 
     public function test__ppRmRe__02()
     {
-        $new = T::ppRmRe('/\n /m', "first\n  second\n  third", $jumps);
+        $obj = $this->getTestObject();
+        $new = $obj::ppRmRe('/\n /m', "first\n  second\n  third", $im);
         $this->assertEquals($new, "first second third");
-        $this->assertEquals($jumps, [[0,0], [5, 7], [12, 16]]);
+        $this->assertEquals($im, [[0,0], [5, 7], [12, 16]]);
     }
 
     public function test__ppRmRe__03()
     {
+        $obj = $this->getTestObject();
         //      00000000001 111111 111222222 22223333 3 33333444444 4444555555
         //      01234567890 123456 789012345 67890123 4 56789012345 6789012345
         $src = "# comment 1\nfirst\n  second\n  third\n\n# two-line\n  comment";
-        $str = T::ppRmRe('/\n /m',$src, $jumps);
+        $str = $obj::ppRmRe('/\n /m',$src, $im);
         //                         00000000001 1111111112222222222 3 3333333334444444444
         //                         01234567890 1234567890123456789 0 1234567890123456789
         $this->assertEquals($str, "# comment 1\nfirst second third\n\n# two-line comment");
-        $this->assertEquals($jumps, [[0,0], [17,19], [24,28], [42,48]]);
+        $this->assertEquals($im, [[0,0], [17,19], [24,28], [42,48]]);
 
-        $str = T::ppRmRe('/^#[^\n]*\n?/m', $str, $jumps);
+        $str = $obj::ppRmRe('/^#[^\n]*\n?/m', $str, $im);
         //                         000000000011111111 1 1
         //                         012345678901234567 8 9
         $this->assertEquals($str, "first second third\n\n");
-        $this->assertEquals($jumps, [[0,12], [5,19], [12,28], [30, 48]]);
+        $this->assertEquals($im, [[0,12], [5,19], [12,28], [30, 48]]);
+    }
+
+    //
+    // ppRmLnCont
+    //
+    public function test__ppRmLnCont__noim_00()
+    {
+        $obj = $this->getTestObject();
+
+        $src = "a text\nwithout\nln cont";
+        $str = $obj::ppRmLnCont($src);
+
+        $this->assertEquals($str, $src);
+    }
+
+    public function test__ppRmLnCont__noim_01()
+    {
+        $obj = $this->getTestObject();
+
+        $src = "a text\n  with\n  ln conts";
+        $str = $obj::ppRmLnCont($src);
+
+        $this->assertEquals($str, "a text with ln conts");
+    }
+
+    public function test__ppRmLnCont__00()
+    {
+        $obj = $this->getTestObject();
+
+        $src = "a text\nwithout\nln cont";
+        $str = $obj::ppRmLnCont($src, $im);
+
+        $this->assertEquals($str, $src);
+        $this->assertEquals($im, [[0,0]]);
+    }
+
+    public function test__ppRmLnCont__01()
+    {
+        $obj = $this->getTestObject();
+
+        //      000000 0000111 1111111222
+        //      012345 6789012 34567890123
+        $src = "a text\n  with\n  ln conts";
+        $str = $obj::ppRmLnCont($src, $im);
+
+        //                         00000000001111111111
+        //                         01234567890123456789
+        $this->assertEquals($str, "a text with ln conts");
+        $this->assertEquals($im, [[0,0], [6, 8], [11, 15]]);
+    }
+
+    //
+    // ppRmComments
+    //
+    public function test__ppRmComments__noim__00()
+    {
+        $obj = $this->getTestObject();
+
+        $src = "A text without comments";
+        $str = $obj::ppRmComments($src);
+
+        $this->assertEquals($str, $src);
+    }
+
+    public function test__ppRmComments__noim__01()
+    {
+        $obj = $this->getTestObject();
+
+        $src = "# comment 1\ndn: cn=admin,dc=example,dc=org\n\n# comment 2\ndn: ou=people,dc=example,dc=org";
+        $str = $obj::ppRmComments($src);
+
+        $this->assertEquals($str, "dn: cn=admin,dc=example,dc=org\n\ndn: ou=people,dc=example,dc=org");
+    }
+
+    public function test__ppRmComments__00()
+    {
+        $obj = $this->getTestObject();
+
+        $src = "A text without comments";
+        $str = $obj::ppRmComments($src, $im);
+
+        $this->assertEquals($str, $src);
+        $this->assertEquals($im, [[0,0]]);
+    }
+
+    public function test__ppRmComments__01()
+    {
+        $obj = $this->getTestObject();
+
+        //      00000000001 1111111112222222222333333333344 4 444444455555 55555666666666677777777778888888
+        //      01234567890 1234567890123456789012345678901 2 345678901234 56789012345678901234567890123456
+        $src = "# comment 1\ndn: cn=admin,dc=example,dc=org\n\n# comment 2\ndn: ou=people,dc=example,dc=org";
+        $str = $obj::ppRmComments($src, $im);
+
+        //                         000000000011111111112222222222 3 33333333344444444445555555555666
+        //                         012345678901234567890123456789 0 12345678901234567890123456789012
+        $this->assertEquals($str, "dn: cn=admin,dc=example,dc=org\n\ndn: ou=people,dc=example,dc=org");
+        $this->assertEquals($im, [[0,12], [32,56]]);
     }
 }
 

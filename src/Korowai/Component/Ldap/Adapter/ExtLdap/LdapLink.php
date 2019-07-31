@@ -159,6 +159,7 @@ class LdapLink
      * Send LDAP pagination control
      *
      * @param int $pagesize
+     * @param mixed $tail remaining arguments passed to ldap_control_paged_result().
      *
      * @link http://php.net/manual/en/function.ldap-control-paged-result.php ldap_control_paged_result()
      */
@@ -252,6 +253,7 @@ class LdapLink
      * Escape a string for use in an LDAP filter or DN
      *
      * @param string $value
+     * @param mixed $tail remaining arguments passed to ldap_escape()
      *
      * @link http://php.net/manual/en/function.ldap-escape.php ldap_escape()
      */
@@ -400,6 +402,7 @@ class LdapLink
      *
      * @param string $base_dn
      * @param string $filter
+     * @param mixed $tail remaining arguments passed to ldap_list()
      *
      * @link http://php.net/manual/en/function.ldap-list.php ldap_list()
      */
@@ -530,6 +533,7 @@ class LdapLink
      *
      * @param Result $result
      * @param int &$errcode
+     * @param mixed $tail remaining arguments passed to ldap_parse_result()
      *
      * @link http://php.net/manual/en/function.ldap-parse-result.php ldap_parse_result()
      */
@@ -543,6 +547,7 @@ class LdapLink
      *
      * @param string $base_dn
      * @param string $filter
+     * @param mixed $tail remaining arguments passed to ldap_read()
      *
      * @link http://php.net/manual/en/function.ldap-read.php ldap_read()
      */
@@ -582,6 +587,7 @@ class LdapLink
      *
      * @param string $base_dn
      * @param string $filter
+     * @param mixed $tail remaining arguments passed to ldap_search()
      *
      * @link http://php.net/manual/en/function.ldap-search.php ldap_search()
      */

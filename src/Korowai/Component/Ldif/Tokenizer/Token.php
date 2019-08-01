@@ -42,7 +42,7 @@ class Token
      *
      * @param int $position Offset (in bytes) where the token starts in $source.
      * @param int $length Length of the token (in bytes).
-     * @param int $type Token type.
+     * @param int $source ???
      */
     public function __construct(int $position, int $length, string $source)
     {
@@ -54,7 +54,7 @@ class Token
      *
      * @param int $position Offset (in bytes) where the token starts in a string.
      * @param int $length Length of the token (in bytes).
-     * @param int $type Token type.
+     * @param int $source ???.
      */
     public function init(int $position, int $length, string $source)
     {

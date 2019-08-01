@@ -12,7 +12,7 @@ declare(strict_types=1);
 namespace Korowai\Component\Ldif\Util;
 
 /**
- * Functions that support LDIF text preprocessing.
+ * Provides imApply() static function.
  */
 trait IndexMapApply
 {

@@ -9,10 +9,10 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Component\Ldif\Tests\Preprocessor;
+namespace Korowai\Component\Ldif\Tests\Util;
 
 use PHPUnit\Framework\TestCase;
-use Korowai\Component\Ldif\Preprocessor\PpFunctions;
+use Korowai\Component\Ldif\Util\PpFunctions;
 
 
 /**

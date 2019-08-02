@@ -17,10 +17,12 @@ namespace Korowai\Component\Ldif;
 class Parser
 {
     /**
-     * @param PpString $ldif
+     * @param Preprocessed $input
      */
-    public function parse(PpString $ldif)
+    public function parse(Preprocessed $input) : Parsed
     {
+        $parsed = new Parsed($input);
+        return $parsed;
     }
 }
 

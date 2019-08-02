@@ -21,9 +21,9 @@ namespace Korowai\Component\Ldif;
  * preprocessed string onto their corresponding line numbers in the source
  * string.
  */
-class PpString
+class Preprocessed
 {
-    use \Korowai\Component\Ldif\Util\IndexMapApply;
+    use Util\IndexMapApply;
 
     /**
      * @var string
@@ -44,6 +44,13 @@ class PpString
     protected $im;
 
     /**
+     * Input name (file name).
+     *
+     * @var string
+     */
+    protected $input;
+
+    /**
      * Line map. An array that helps mapping source text's character offsets
      * onto their corresponding line numbers.
      */
@@ -57,27 +64,30 @@ class PpString
     /**
      * Initializes the object
      *
-     * @param string $source
-     * @param string $string
-     * @param array $im
+     * @param string $source Source string
+     * @param string $string Preprocessed string
+     * @param array $im Index map produced by preprocessor
+     * @param string $input Input name (file name)
      */
-    public function __construct(string $source, string $string, array $im)
+    public function __construct(string $source, string $string, array $im, string $input=null)
     {
-        $this->init($source, $string, $im);
+        $this->init($source, $string, $im, $input);
     }
 
     /**
      * Initializes the object
      *
-     * @param string $source
-     * @param string $string
-     * @param array $im
+     * @param string $source Source string
+     * @param string $string Preprocessed string
+     * @param array $im Index map produced by preprocessor
+     * @param string $input Input name (file name)
      */
-    public function init(string $source, string $string, array $im)
+    public function init(string $source, string $string, array $im, string $input=null)
     {
         $this->source = $source;
         $this->string = $string;
         $this->im = $im;
+        $this->input = $input ?? '-';
         $this->sourceLines = null;
         $this->sourceLinesMap = null;
     }
@@ -106,13 +116,36 @@ class PpString
 
     /**
      * Returns the "array of im", as provided to constructor via $im
-     * parameters.
+     * parameter.
      *
      * @return array
      */
     public function getIndexMap() : array
     {
         return $this->im;
+    }
+
+    /**
+     * Returns the input name provided to constructor via $input parameter.
+     *
+     * @return string
+     */
+    public function getInputName() : string
+    {
+        return $this->input;
+    }
+
+    /**
+     * Sets the input name (file name).
+     *
+     * @param string $input
+     *
+     * @return Preprocessed
+     */
+    public function setInputName(string $input)
+    {
+        $this->input = $input;
+        return $this;
     }
 
     /**
@@ -186,7 +219,7 @@ class PpString
      * Given a character offset $i in the preprocessed string, returns its
      * corresponding line number (zero-based) in the original $source string.
      *
-     * @param int $i
+     * @param int $i Character offset in the preprocessed string
      *
      * @return int
      */
@@ -194,6 +227,42 @@ class PpString
     {
         $j = $this->getSourceIndex($i);
         return self::imApply($this->getSourceLinesMap(), $j);
+    }
+
+    /**
+     * Given a character offset $i in the preprocessed string, returns its
+     * corresponding line number in the $source string (zero-based) and the
+     * charcter offset relative to the beginning of the source line.
+     *
+     * @param int $i Character offset in the preprocessed string
+     *
+     * @return array 2-element array with line index at position 0 and
+     *               character offset at position 1.
+     */
+    public function getSourceLocation(int $i) : array
+    {
+        $j = $this->getSourceIndex($i);
+        $map = $this->getSourceLinesMap();
+        $line = self::imApply($map, $j, $lo);
+//        $arr = array_filter(function ($m) use ($line) {
+//            return $m[1] == $line;
+//        }, $map);
+//        if(count($arr) == 1) {
+//        }
+//        if($line < 0) {
+//            $offset = 0;
+//        } elseif($line >= count($map) {
+//            $lines = $this->getLines();
+//            $count = count($lines);
+//            if($count > 0) {
+//                $offset = strlen($lines[$count-1]);
+//            } else {
+//                $offset = 0;
+//            }
+//        } else {
+//            $offset = $j - $map[$line][0];
+//        }
+        return [$line, $offset];
     }
 
     protected function initSourceLines(string $source)

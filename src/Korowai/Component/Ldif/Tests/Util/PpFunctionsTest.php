@@ -12,7 +12,6 @@ declare(strict_types=1);
 namespace Korowai\Component\Ldif\Tests\Util;
 
 use PHPUnit\Framework\TestCase;
-use Korowai\Component\Ldif\Util\PpFunctions;
 
 
 /**
@@ -23,7 +22,7 @@ class PpFunctionsTest extends TestCase
     private function getTestObject()
     {
         return new class {
-            use PpFunctions {
+            use \Korowai\Component\Ldif\Util\PpFunctions {
                 ppAsmPieces as public;
                 ppRmRe as public;
                 ppRmLnCont as public;

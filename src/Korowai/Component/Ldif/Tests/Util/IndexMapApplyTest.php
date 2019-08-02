@@ -12,7 +12,6 @@ declare(strict_types=1);
 namespace Korowai\Component\Ldif\Tests\Util;
 
 use PHPUnit\Framework\TestCase;
-use Korowai\Component\Ldif\Util\IndexMapApply;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -22,7 +21,7 @@ class IndexMapApplyTest extends TestCase
     protected function getTestObj()
     {
         return new class {
-            use IndexMapApply {
+            use \Korowai\Component\Ldif\Util\IndexMapApply {
                 imApply as public;
             }
         };

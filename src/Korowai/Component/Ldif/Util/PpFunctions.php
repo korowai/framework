@@ -16,7 +16,7 @@ namespace Korowai\Component\Ldif\Util;
  */
 trait PpFunctions
 {
-    use \Korowai\Component\Ldif\Util\IndexMapCtors;
+    use IndexMapCtors;
 
 
     /**

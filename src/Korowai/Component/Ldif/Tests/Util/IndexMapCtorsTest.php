@@ -12,7 +12,6 @@ declare(strict_types=1);
 namespace Korowai\Component\Ldif\Tests\Util;
 
 use PHPUnit\Framework\TestCase;
-use Korowai\Component\Ldif\Util\IndexMapCtors;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -22,7 +21,7 @@ class IndexMapCtorsTest extends TestCase
     protected function getTestObj()
     {
         return new class {
-            use IndexMapCtors {
+            use \Korowai\Component\Ldif\Util\IndexMapCtors {
                 imForPieces as public;
                 imOverIm as public;
             }

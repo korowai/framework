@@ -16,18 +16,18 @@ namespace Korowai\Component\Ldif;
  */
 class Preprocessor
 {
-    use \Korowai\Component\Ldif\Util\PpFunctions;
+    use Util\PpFunctions;
 
     /**
      * @param string $source
      *
-     * @return PpString
+     * @return Preprocessed
      */
-    public function preprocess(string $source) : PpString
+    public function preprocess(string $source, string $filename=null) : Preprocessed
     {
         $string = self::ppRmLnCont($source, $im);
         $string = self::ppRmComments($string, $im);
-        return new PpString($source, $string, $im);
+        return new Preprocessed($source, $string, $im, $filename);
     }
 }
 

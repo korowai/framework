@@ -22,30 +22,32 @@ trait IndexMapApply
      *
      * @param array $im
      * @param int $i
+     * @param int $index Returns the index in $im used to compute the offset
      *
      * @return int
      */
-    protected static function imApply(array $im, int $i) : int
+    protected static function imApply(array $im, int $i, int &$index=null) : int
     {
         $cnt = count($im);
+
+        $lo = 0;
+        $hi = $cnt - 1;
 
         if($cnt === 0) {
             return $i;
         }
 
-        $lo = 0;
-        $hi = $cnt - 1;
-
         if ($i < $im[0][0]) {
             return $i;
         } elseif($i >= $im[$hi][0]) {
+            $index = $hi;
             $inc = $im[$hi][2] ?? 1;
             return $im[$hi][1] + ($i - $im[$hi][0]) * $inc;
         } else {
             $iter = 0;
             while($hi - $lo > 1) {
                 if($iter > 2 * $cnt) {
-                    throw new \RuntimeException("internal error");
+                    throw new \RuntimeException("internal error: iteration count exceeded");
                 }
                 $mid = floor(($lo + $hi) / 2);
                 if($i < $im[$mid][0]) {
@@ -55,6 +57,7 @@ trait IndexMapApply
                 }
                 $iter++;
             }
+            $index = $lo;
             $inc = $im[$lo][2] ?? 1;
             return $im[$lo][1] + ($i - $im[$lo][0]) * $inc;
         }

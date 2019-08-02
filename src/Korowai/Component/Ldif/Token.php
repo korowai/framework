@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Component\Ldif\Tokenizer;
+namespace Korowai\Component\Ldif;
 
 /**
  * An abstract base class for a piece of LDIF file.

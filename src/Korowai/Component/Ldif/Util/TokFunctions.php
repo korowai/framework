@@ -9,9 +9,9 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Component\Ldif\Tokenizer;
+namespace Korowai\Component\Ldif\Util;
 
-trait Tokenizer
+trait TokFunctions
 {
     public static function tokMatchRe(string $re, string $src, int $offset, string &$match=null)
     {

@@ -232,37 +232,42 @@ class Preprocessed
     /**
      * Given a character offset $i in the preprocessed string, returns its
      * corresponding line number in the $source string (zero-based) and the
-     * charcter offset relative to the beginning of the source line.
+     * character offset relative to the beginning of the source line.
      *
      * @param int $i Character offset in the preprocessed string
      *
      * @return array 2-element array with line index at position 0 and
      *               character offset at position 1.
      */
-    public function getSourceLocation(int $i) : array
+    public function getSourceLineAndCharIndex(int $i) : array
     {
         $j = $this->getSourceIndex($i);
         $map = $this->getSourceLinesMap();
-        $line = self::imApply($map, $j, $lo);
-//        $arr = array_filter(function ($m) use ($line) {
-//            return $m[1] == $line;
-//        }, $map);
-//        if(count($arr) == 1) {
-//        }
-//        if($line < 0) {
-//            $offset = 0;
-//        } elseif($line >= count($map) {
-//            $lines = $this->getLines();
-//            $count = count($lines);
-//            if($count > 0) {
-//                $offset = strlen($lines[$count-1]);
-//            } else {
-//                $offset = 0;
-//            }
-//        } else {
-//            $offset = $j - $map[$line][0];
-//        }
+        $line = self::imApply($map, $j, $index);
+        if(isset($index)) {
+            $offset = $j - $map[$index][0];
+        } else {
+            $offset = 0;
+        }
         return [$line, $offset];
+    }
+
+    /**
+     * Given a character offset $i in the preprocessed string, returns its
+     * corresponding line number in the $source string (zero-based) and the
+     * character offset relative to the beginning of the source line.
+     *
+     * @param int $i Character offset in the preprocessed string
+     *
+     * @return array 2-element array with line index at position 0 and
+     *               character offset at position 1.
+     */
+    public function getSourceLineAndMbCharIndex(int $i) : array
+    {
+        [$line, $byte] = $this->getSourceLineAndCharIndex($i);
+        $lineStr = $this->getSourceLine($line);
+        $char = mb_strlen(substr($lineStr, 0, $byte));
+        return [$line, $char];
     }
 
     protected function initSourceLines(string $source)

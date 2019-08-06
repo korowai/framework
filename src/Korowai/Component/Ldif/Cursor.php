@@ -12,16 +12,10 @@ declare(strict_types=1);
 namespace Korowai\Component\Ldif;
 
 /**
- * LDIF parse error. Encapsulates error message, input name and location of the
- * error in the input.
+ * Cursor object. Points at a character of preprocessed input.
  */
-class Error
+class Cursor
 {
-    /**
-     * @var string
-     */
-    protected $message;
-
     /**
      * @var Preprocessed
      */
@@ -36,25 +30,18 @@ class Error
     /**
      * Initializes the error object.
      *
-     * @param string $message Error message.
      * @param Preprocessed $input Preprocessed source code.
-     * @param int $offset Character offset in the $input, where the error occurred.
+     * @param int $offset Character offset (in bytes) the $input,
      */
-    public function __construct(string $message, Preprocessed $input, int $offset)
+    public function __construct(Preprocessed $input, int $offset)
     {
-        $this->message = $message;
-        $this->input = $input;
-        $this->offset = $offset;
+        $this->init($input, $offset);
     }
 
-    /**
-     * Returns the error message provided to constructor as $message
-     *
-     * @return string
-     */
-    public function getMessage() : string
+    public function init(Preprocessed $input, int $offset)
     {
-        return $this->message;
+        $this->input = $input;
+        $this->offset = $offset;
     }
 
     /**
@@ -81,8 +68,8 @@ class Error
      * Returns the source string of the $input.
      *
      * Equivalent to
-     * ``$err->getInput()->getSource()``,
-     * where ``$err`` is an Error object.
+     * ``$cur->getInput()->getSource()``,
+     * where ``$cur`` is a Cursor object.
      *
      * @return string
      */
@@ -95,8 +82,8 @@ class Error
      * Returns the character index in source string corresponding to $offset.
      *
      * Equivalent to
-     * ``$err->getInput()->getSourceIndex($err->getOffset())``,
-     * where ``$err`` is an Error object.
+     * ``$cur->getInput()->getSourceIndex($cur->getOffset())``,
+     * where ``$cur`` is a Cursor object.
      *
      * @return int
      */
@@ -109,8 +96,8 @@ class Error
      * Returns the source line index corresponding to $offset.
      *
      * Equivalent to
-     * ``$err->getInput()->getSourceLineIndex($err->getOffset())``,
-     * where ``$err`` is an Error object.
+     * ``$cur->getInput()->getSourceLineIndex($cur->getOffset())``,
+     * where ``$cur`` is a Cursor object.
      *
      * @return int
      */
@@ -123,8 +110,8 @@ class Error
      * Returns the whole source line as string where the error occurred.
      *
      * Equivalent to
-     * ``$err->getInput()->getSourceLine($err->getSourceLineIndex())``,
-     * where ``$err`` is an Error object.
+     * ``$cur->getInput()->getSourceLine($cur->getSourceLineIndex())``,
+     * where ``$cur`` is a Cursor object.
      *
      * @return string
      */
@@ -137,8 +124,8 @@ class Error
      * Returns the line + char offset as string where the error occurred.
      *
      * Equivalent to
-     * ``$err->getInput()->getSourceLineAndCharIndex($err->getOffset())``,
-     * where ``$err`` is an Error object.
+     * ``$cur->getInput()->getSourceLineAndCharIndex($cur->getOffset())``,
+     * where ``$cur`` is a Cursor object.
      *
      * @return array
      */
@@ -151,8 +138,8 @@ class Error
      * Returns the line + char offset as string where the error occurred.
      *
      * Equivalent to
-     * ``$err->getInput()->getSourceLineAndCharIndex($err->getOffset())``,
-     * where ``$err`` is an Error object.
+     * ``$cur->getInput()->getSourceLineAndMbCharIndex($cur->getOffset())``,
+     * where ``$cur`` is a Cursor object.
      *
      * @return array
      */
@@ -165,8 +152,8 @@ class Error
      * Returns input's name (file name) as string.
      *
      * Equivalent to
-     * ``$err->getInput()->getInputName()``
-     * where ``$err`` is an Error object.
+     * ``$cur->getInput()->getInputName()``
+     * where ``$cur`` is a Cursor object.
      *
      * @return string
      */

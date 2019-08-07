@@ -20,6 +20,7 @@ class Preprocessor
 
     /**
      * @param string $source
+     * @param string $filename
      *
      * @return Preprocessed
      */

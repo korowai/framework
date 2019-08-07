@@ -130,7 +130,7 @@ class Preprocessed
      *
      * @return string
      */
-    public function getInputName() : string
+    public function getSourceFileName() : string
     {
         return $this->input;
     }
@@ -168,7 +168,7 @@ class Preprocessed
      * @return int the resultant offset of the corresponding character in
      *             $source string
      */
-    public function getSourceIndex(int $i) : int
+    public function getSourceByteOffset(int $i) : int
     {
         return self::imApply($this->getIndexMap(), $i);
     }
@@ -225,7 +225,7 @@ class Preprocessed
      */
     public function getSourceLineIndex(int $i) : int
     {
-        $j = $this->getSourceIndex($i);
+        $j = $this->getSourceByteOffset($i);
         return self::imApply($this->getSourceLinesMap(), $j);
     }
 
@@ -239,9 +239,9 @@ class Preprocessed
      * @return array 2-element array with line index at position 0 and
      *               character offset at position 1.
      */
-    public function getSourceLineAndCharIndex(int $i) : array
+    public function getSourceLineAndByte(int $i) : array
     {
-        $j = $this->getSourceIndex($i);
+        $j = $this->getSourceByteOffset($i);
         $map = $this->getSourceLinesMap();
         $line = self::imApply($map, $j, $index);
         if(isset($index)) {
@@ -258,15 +258,17 @@ class Preprocessed
      * character offset relative to the beginning of the source line.
      *
      * @param int $i Character offset in the preprocessed string
+     * @param string $encoding
      *
      * @return array 2-element array with line index at position 0 and
      *               character offset at position 1.
      */
-    public function getSourceLineAndMbCharIndex(int $i) : array
+    public function getSourceLineAndChar(int $i, string $encoding=null) : array
     {
-        [$line, $byte] = $this->getSourceLineAndCharIndex($i);
+        [$line, $byte] = $this->getSourceLineAndByte($i);
         $lineStr = $this->getSourceLine($line);
-        $char = mb_strlen(substr($lineStr, 0, $byte));
+        $args = array_slice(func_get_args(), 1);
+        $char = mb_strlen(substr($lineStr, 0, $byte), ...$args);
         return [$line, $char];
     }
 

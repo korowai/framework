@@ -12,7 +12,7 @@ declare(strict_types=1);
 namespace Korowai\Component\Ldif;
 
 /**
- * Preprocessed string.
+ * Preprocessed input.
  *
  * Encapsulates preprocessed string together with its original (source) string.
  * The object is able to map character offsets pointing to characters of the
@@ -21,7 +21,7 @@ namespace Korowai\Component\Ldif;
  * preprocessed string onto their corresponding line numbers in the source
  * string.
  */
-class Preprocessed
+class CoupledInput implements CoupledInputInterface
 {
     use Util\IndexMapApply;
 
@@ -48,7 +48,7 @@ class Preprocessed
      *
      * @var string
      */
-    protected $input;
+    protected $sourceFileName;
 
     /**
      * Line map. An array that helps mapping source text's character offsets
@@ -67,11 +67,11 @@ class Preprocessed
      * @param string $source Source string
      * @param string $string Preprocessed string
      * @param array $im Index map produced by preprocessor
-     * @param string $input Input name (file name)
+     * @param string $sourceFileName Input name (file name)
      */
-    public function __construct(string $source, string $string, array $im, string $input=null)
+    public function __construct(string $source, string $string, array $im, string $sourceFileName=null)
     {
-        $this->init($source, $string, $im, $input);
+        $this->init($source, $string, $im, $sourceFileName);
     }
 
     /**
@@ -80,38 +80,40 @@ class Preprocessed
      * @param string $source Source string
      * @param string $string Preprocessed string
      * @param array $im Index map produced by preprocessor
-     * @param string $input Input name (file name)
+     * @param string $sourceFileName Input name (file name)
      */
-    public function init(string $source, string $string, array $im, string $input=null)
+    public function init(string $source, string $string, array $im, string $sourceFileName=null)
     {
         $this->source = $source;
         $this->string = $string;
         $this->im = $im;
-        $this->input = $input ?? '-';
+        $this->sourceFileName = $sourceFileName ?? '-';
         $this->sourceLines = null;
         $this->sourceLinesMap = null;
     }
 
     /**
-     * Returns the original source string, as provided to constructor via
-     * $source parameter.
-     *
-     * @return string
+     * {@inheritdoc}
      */
-    public function getSource() : string
+    public function getSourceString() : string
     {
         return $this->source;
     }
 
     /**
-     * Returns the preprocessed string, as provided to constructor via $string
-     * parameter.
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getString() : string
     {
         return $this->string;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSourceFileName() : string
+    {
+        return $this->sourceFileName;
     }
 
     /**
@@ -126,33 +128,7 @@ class Preprocessed
     }
 
     /**
-     * Returns the input name provided to constructor via $input parameter.
-     *
-     * @return string
-     */
-    public function getSourceFileName() : string
-    {
-        return $this->input;
-    }
-
-    /**
-     * Sets the input name (file name).
-     *
-     * @param string $input
-     *
-     * @return Preprocessed
-     */
-    public function setInputName(string $input)
-    {
-        $this->input = $input;
-        return $this;
-    }
-
-    /**
-     * Returns the preprocessed string, as provided to constructor via $string
-     * parameter.
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function __toString()
     {
@@ -160,13 +136,7 @@ class Preprocessed
     }
 
     /**
-     * Given a character offset $i in the preprocessed string, returns its
-     * corresponding character offset in the original $source string.
-     *
-     * @pararm int $i character offset in the preprocessed string
-     *
-     * @return int the resultant offset of the corresponding character in
-     *             $source string
+     * {@inheritdoc}
      */
     public function getSourceByteOffset(int $i) : int
     {
@@ -174,28 +144,69 @@ class Preprocessed
     }
 
     /**
-     * Returns array of strings resulted from splitting the $source into lines.
-     *
-     * @return array
+     * {@inheritdoc}
+     */
+    public function getSourceCharOffset(int $i, string $encoding=null) : int
+    {
+        $offset = $this->getSourceByteOffset($i);
+        $substr = substr($this->getSourceString(), 0, $offset);
+        return mb_strlen($substr, ...(array_slice(func_get_args(), 1)));
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function getSourceLines() : array
     {
         if(!isset($this->sourceLines)) {
-            $this->initSourceLines($this->getSource());
+            $this->initSourceLines($this->getSourceString());
         }
         return $this->sourceLines;
     }
 
     /**
-     * Returns $i'th line of the source string.
-     *
-     * @param int $i
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getSourceLine(int $i) : string
     {
         return ($this->getSourceLines())[$i];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSourceLineIndex(int $i) : int
+    {
+        $j = $this->getSourceByteOffset($i);
+        return self::imApply($this->getSourceLinesMap(), $j);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSourceLineAndByteOffset(int $i) : array
+    {
+        $j = $this->getSourceByteOffset($i);
+        $map = $this->getSourceLinesMap();
+        $line = self::imApply($map, $j, $index);
+        if(isset($index)) {
+            $offset = $j - $map[$index][0];
+        } else {
+            $offset = 0;
+        }
+        return [$line, $offset];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSourceLineAndCharOffset(int $i, string $encoding=null) : array
+    {
+        [$line, $byte] = $this->getSourceLineAndByteOffset($i);
+        $lineStr = $this->getSourceLine($line);
+        $args = array_slice(func_get_args(), 1);
+        $char = mb_strlen(substr($lineStr, 0, $byte), ...$args);
+        return [$line, $char];
     }
 
     /**
@@ -210,67 +221,24 @@ class Preprocessed
     public function getSourceLinesMap() : array
     {
         if(!isset($this->sourceLinesMap)) {
-            $this->initSourceLines($this->getSource());
+            $this->initSourceLines($this->getSourceString());
         }
         return $this->sourceLinesMap;
     }
 
     /**
-     * Given a character offset $i in the preprocessed string, returns its
-     * corresponding line number (zero-based) in the original $source string.
+     * Sets the source file name.
      *
-     * @param int $i Character offset in the preprocessed string
+     * @param string $sourceFileName
      *
-     * @return int
+     * @return CoupledInput
      */
-    public function getSourceLineIndex(int $i) : int
+    public function setSourceFileName(string $sourceFileName) : CoupledInput
     {
-        $j = $this->getSourceByteOffset($i);
-        return self::imApply($this->getSourceLinesMap(), $j);
+        $this->sourceFileName = $sourceFileName;
+        return $this;
     }
 
-    /**
-     * Given a character offset $i in the preprocessed string, returns its
-     * corresponding line number in the $source string (zero-based) and the
-     * character offset relative to the beginning of the source line.
-     *
-     * @param int $i Character offset in the preprocessed string
-     *
-     * @return array 2-element array with line index at position 0 and
-     *               character offset at position 1.
-     */
-    public function getSourceLineAndByte(int $i) : array
-    {
-        $j = $this->getSourceByteOffset($i);
-        $map = $this->getSourceLinesMap();
-        $line = self::imApply($map, $j, $index);
-        if(isset($index)) {
-            $offset = $j - $map[$index][0];
-        } else {
-            $offset = 0;
-        }
-        return [$line, $offset];
-    }
-
-    /**
-     * Given a character offset $i in the preprocessed string, returns its
-     * corresponding line number in the $source string (zero-based) and the
-     * character offset relative to the beginning of the source line.
-     *
-     * @param int $i Character offset in the preprocessed string
-     * @param string $encoding
-     *
-     * @return array 2-element array with line index at position 0 and
-     *               character offset at position 1.
-     */
-    public function getSourceLineAndChar(int $i, string $encoding=null) : array
-    {
-        [$line, $byte] = $this->getSourceLineAndByte($i);
-        $lineStr = $this->getSourceLine($line);
-        $args = array_slice(func_get_args(), 1);
-        $char = mb_strlen(substr($lineStr, 0, $byte), ...$args);
-        return [$line, $char];
-    }
 
     protected function initSourceLines(string $source)
     {

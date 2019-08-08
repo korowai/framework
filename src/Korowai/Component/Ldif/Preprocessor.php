@@ -22,13 +22,13 @@ class Preprocessor
      * @param string $source
      * @param string $filename
      *
-     * @return Preprocessed
+     * @return CoupledInput
      */
-    public function preprocess(string $source, string $filename=null) : Preprocessed
+    public function preprocess(string $source, string $filename=null) : CoupledInput
     {
         $string = self::ppRmLnCont($source, $im);
         $string = self::ppRmComments($string, $im);
-        return new Preprocessed($source, $string, $im, $filename);
+        return new CoupledInput($source, $string, $im, $filename);
     }
 }
 

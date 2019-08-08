@@ -63,9 +63,18 @@ class ParseError implements SourceLocationInterface
     /**
      * {@inheritdoc}
      */
-    public function getSource() : string
+    public function getSourceFileName() : string
     {
-        return $this->getLocation()->getSource();
+        return $this->getLocation()->getSourceFileName();
+    }
+
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSourceString() : string
+    {
+        return $this->getLocation()->getSourceString();
     }
 
     /**
@@ -79,7 +88,7 @@ class ParseError implements SourceLocationInterface
     /**
      * {@inheritdoc}
      */
-    public function getSourceCharOffset(string $encoding = null) : int
+    public function getSourceCharOffset(string $encoding=null) : int
     {
         return $this->getLocation()->getSourceCharOffset(...(func_get_args()));
     }
@@ -103,27 +112,19 @@ class ParseError implements SourceLocationInterface
     /**
      * {@inheritdoc}
      */
-    public function getSourceLineAndByte() : array
+    public function getSourceLineAndByteOffset() : array
     {
-        return $this->getLocation()->getSourceLineAndByte();
+        return $this->getLocation()->getSourceLineAndByteOffset();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getSourceLineAndChar(string $encoding=null) : array
+    public function getSourceLineAndCharOffset(string $encoding=null) : array
     {
-        return $this->getLocation()->getSourceLineAndChar(...(func_get_args()));
+        return $this->getLocation()->getSourceLineAndCharOffset(...(func_get_args()));
     }
 
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getSourceFileName() : string
-    {
-        return $this->getLocation()->getSourceFileName();
-    }
 
     /**
      * Returns the error location as a string.
@@ -132,7 +133,7 @@ class ParseError implements SourceLocationInterface
      */
     public function getSourceLocationString(array $line_and_char=null) : string
     {
-        [$line, $char] = ($line_and_char ?? $this->getSourceLineAndChar());
+        [$line, $char] = ($line_and_char ?? $this->getSourceLineAndCharOffset());
         return  $this->getSourceFileName() .':'. ($line + 1) .':'. ($char + 1);
     }
 
@@ -160,7 +161,7 @@ class ParseError implements SourceLocationInterface
      */
     public function getSourceLocationIndicator(array $line_and_char=null)
     {
-        $char = ($line_and_char ?? $this->getSourceLineAndChar())[1];
+        $char = ($line_and_char ?? $this->getSourceLineAndCharOffset())[1];
         return str_repeat(' ', $char) . '^';
     }
 
@@ -181,7 +182,7 @@ class ParseError implements SourceLocationInterface
      */
     public function getMultilineMessageLines() : array
     {
-        $line_and_char = $this->getSourceLineAndChar();
+        $line_and_char = $this->getSourceLineAndCharOffset();
         $location = $this->getSourceLocationString($line_and_char);
         return [
             $location .':'. $this->getMessage($line_and_char),

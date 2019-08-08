@@ -14,39 +14,25 @@ namespace Korowai\Component\Ldif;
 /**
  * Interface for cursor objects.
  */
-interface CursorInterface extends SourceLocationInterface
+interface CoupledCursorInterface extends CoupledLocationInterface
 {
-    /**
-     * Returns the cursor position in the string.
-     *
-     * @return int
-     */
-    public function getPosition() : int;
-
-    /**
-     * Returns the whole string.
-     *
-     * @return string
-     */
-    public function getString() : string;
-
     /**
      * Change the cursor position by $offset.
      *
      * @param int $offset
      *
-     * @return CursorInterface
+     * @return CoupledCursorInterface
      */
-    public function moveBy(int $offset) : CursorInterface;
+    public function moveBy(int $offset) : CoupledCursorInterface;
 
     /**
      * Move the cursor to a given $position.
      *
      * @param int $position
      *
-     * @return CursorInterface
+     * @return CoupledCursorInterface
      */
-    public function moveTo(int $position) : CursorInterface;
+    public function moveTo(int $position) : CoupledCursorInterface;
 }
 
 // vim: syntax=php sw=4 ts=4 et:

@@ -17,6 +17,20 @@ namespace Korowai\Component\Ldif;
 interface CursorInterface extends SourceLocationInterface
 {
     /**
+     * Returns the cursor position in the string.
+     *
+     * @return int
+     */
+    public function getPosition() : int;
+
+    /**
+     * Returns the whole string.
+     *
+     * @return string
+     */
+    public function getString() : string;
+
+    /**
      * Change the cursor position by $offset.
      *
      * @param int $offset

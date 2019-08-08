@@ -33,7 +33,7 @@ class PreprocessedCursor implements CursorInterface
      * @param Preprocessed $input Preprocessed source code.
      * @param int $position Character offset (in bytes) the $input,
      */
-    public function __construct(Preprocessed $input, int $position)
+    public function __construct(Preprocessed $input, int $position=0)
     {
         $this->init($input, $position);
     }
@@ -61,13 +61,50 @@ class PreprocessedCursor implements CursorInterface
     }
 
     /**
-     * Returns the cursor position in the preprocessed string.
-     *
-     * @return int
+     * {@inheritdoc}
      */
     public function getPosition() : int
     {
         return $this->position;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getString() : string
+    {
+        return $this->getInput()->getString();
+    }
+
+    /**
+     * Returns the substring on the right side of cursor.
+     *
+     * @param int $len substring length.
+     *
+     * @return string
+     */
+    public function getRightSubstr(int $len=null) : string
+    {
+        return substr($this->getString(), $this->getPosition(), ...(func_get_args()));
+    }
+
+    /**
+     * Returns the substring on the left side of cursor.
+     *
+     * @param int $len substring length.
+     *
+     * @return string
+     */
+    public function getLeftSubstr(int $len=null) : string
+    {
+        $pos = $this->getPosition();
+        if(isset($len)) {
+            $beg = max($pos - $len, 0);
+        } else {
+            $beg = 0;
+        }
+        $len = $pos - $beg;
+        return substr($this->getString(), $beg, $len);
     }
 
     /**

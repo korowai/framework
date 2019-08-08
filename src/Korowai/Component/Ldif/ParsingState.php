@@ -14,12 +14,12 @@ namespace Korowai\Component\Ldif;
 /**
  * LDIF parser.
  */
-class Parsed
+class ParsingState
 {
     /**
      * @var Preprocessed
      */
-    protected $input;
+    protected $cursor;
 
     /**
      * Concrete Syntax Tree - the main result of parsing.
@@ -36,29 +36,19 @@ class Parsed
     /**
      * Initializes the parser object
      */
-    public function __construct(Preprocessed $input, array $errors=null)
+    public function __construct(PreprocessedCursor $cursor, array $errors=null)
     {
-        $this->init($input, $errors);
+        $this->init($cursor, $errors);
     }
 
     /**
-     * Returns the preprocessed input provided to the constructor as $input.
+     * Returns the preprocessed input provided to the constructor as $cursor.
      *
      * @return Preprocessed
      */
-    public function getInput() : Preprocessed
+    public function getCursor() : PreprocessedCursor
     {
-        return $this->input;
-    }
-
-    /**
-     * Returns true if there are no errors.
-     *
-     * @return bool
-     */
-    public function isOk()
-    {
-        return count($this->errors) === 0;
+        return $this->cursor;
     }
 
     /**
@@ -71,9 +61,20 @@ class Parsed
         return $this->errors;
     }
 
-    protected function init(Preprocessed $input, array $errors=null)
+    /**
+     * Returns true if there are no errors.
+     *
+     * @return bool
+     */
+    public function isOk()
     {
-        $this->input = $input;
+        return count($this->errors) === 0;
+    }
+
+
+    protected function init(Preprocessed $cursor, array $errors=null)
+    {
+        $this->cursor = $cursor;
         $this->errors = $errors ?? [];
     }
 }

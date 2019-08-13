@@ -16,8 +16,6 @@ namespace Korowai\Component\Ldif;
  */
 class Preprocessor
 {
-    use Util\PpFunctions;
-
     /**
      * @param string $source
      * @param string $filename
@@ -26,8 +24,8 @@ class Preprocessor
      */
     public function preprocess(string $source, string $filename=null) : CoupledInput
     {
-        $string = self::ppRmLnCont($source, $im);
-        $string = self::ppRmComments($string, $im);
+        $string = Util\ppRmLnCont($source, $im);
+        $string = Util\ppRmComments($string, $im);
         return new CoupledInput($source, $string, $im, $filename);
     }
 }

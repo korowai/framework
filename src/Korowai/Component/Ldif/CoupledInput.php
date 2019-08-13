@@ -23,8 +23,6 @@ namespace Korowai\Component\Ldif;
  */
 class CoupledInput implements CoupledInputInterface
 {
-    use Util\IndexMapApply;
-
     /**
      * @var string
      */
@@ -140,7 +138,7 @@ class CoupledInput implements CoupledInputInterface
      */
     public function getSourceByteOffset(int $i) : int
     {
-        return self::imApply($this->getIndexMap(), $i);
+        return Util\imApply($this->getIndexMap(), $i);
     }
 
     /**
@@ -178,7 +176,7 @@ class CoupledInput implements CoupledInputInterface
     public function getSourceLineIndex(int $i) : int
     {
         $j = $this->getSourceByteOffset($i);
-        return self::imApply($this->getSourceLinesMap(), $j);
+        return Util\imApply($this->getSourceLinesMap(), $j);
     }
 
     /**
@@ -188,7 +186,7 @@ class CoupledInput implements CoupledInputInterface
     {
         $j = $this->getSourceByteOffset($i);
         $map = $this->getSourceLinesMap();
-        $line = self::imApply($map, $j, $index);
+        $line = Util\imApply($map, $j, $index);
         if(isset($index)) {
             $offset = $j - $map[$index][0];
         } else {

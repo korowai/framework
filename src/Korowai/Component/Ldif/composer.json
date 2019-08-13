@@ -21,6 +21,9 @@
       "psr-4" : {
         "Korowai\\Component\\Ldif\\" : ""
       },
+      "files" : [
+        "Util/functions.php"
+      ],
       "exclude-from-classmap": [
         "/Tests/"
       ]

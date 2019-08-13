@@ -11,7 +11,7 @@ declare(strict_types=1);
 
 namespace Korowai\Component\Ldif\Cst;
 
-use \Korowai\Component\Ldif\CursorInterface;
+use \Korowai\Component\Ldif\CoupledLocationInterface;
 
 /**
  * LDIF Concrete Syntax Tree Node.
@@ -19,29 +19,29 @@ use \Korowai\Component\Ldif\CursorInterface;
 abstract class AbstractNode implements NodeInterface
 {
     /**
-     * @var CursorInterface
+     * @var CoupledLocationInterface
      */
-    protected $cursor;
+    protected $location;
 
-    protected function initAbstractNode(CursorInterface $cursor)
+    protected function initAbstractNode(CoupledLocationInterface $location)
     {
-        $this->cursor = $cursor;
+        $this->location = $location;
     }
 
     /**
      * Initializes the object.
      */
-    public function __construct(CursorInterface $cursor)
+    public function __construct(CoupledLocationInterface $location)
     {
-        $this->initAbstractNode($cursor);
+        $this->initAbstractNode($location);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getCursor() : CursorInterface
+    public function getLocation() : CoupledLocationInterface
     {
-        return $this->cursor;
+        return $this->location;
     }
 
     /**

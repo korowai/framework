@@ -11,7 +11,7 @@ declare(strict_types=1);
 
 namespace Korowai\Component\Ldif\Cst;
 
-use \Korowai\Component\Ldif\CursorInterface;
+use \Korowai\Component\Ldif\CoupledLocationInterface;
 
 /**
  * LDIF Concrete Syntax Tree Node.
@@ -26,11 +26,11 @@ interface NodeInterface
     public function getNodeType() : string;
 
     /**
-     * Returns a cursor pointing at the beginning of the node.
+     * Returns a location pointing at the beginning of the node.
      *
-     * @return CursorInterface
+     * @return CoupledLocationInterface
      */
-    public function getCursor() : CursorInterface;
+    public function getLocation() : CoupledLocationInterface;
 
     /**
      * Returns array of child nodes.

@@ -16,6 +16,10 @@ namespace Korowai\Component\Ldif;
  */
 class Parser
 {
+    const RE_BASE64_CHAR = '[\+\/0-9=A-Za-z]';
+    const RE_SAFE_INIT_CHAR = '[\x01-\x09\x0B-\x0C\x0E-\x1F\x21-\x39\x3B\x3D-\x7F]';
+    const RE_SAFE_CHAR = '[\x01-\x09\x0B-\x0C\x0E-\x7F]';
+
     /**
      * @param string $ldif
      *
@@ -46,7 +50,16 @@ class Parser
     {
         $cursor = $state->getCursor();
         $this->skipWs($cursor);
-        $versionSpec = $this->parseVersionSpec($cursor);
+
+        try {
+            $begin = $cursor->getByteOffset();
+            $versionSpec = $this->parseVersionSpec($cursor);
+        } catch (ParseError $err) {
+            if($cursor->getByteOffset() != $begin) {
+                throw $err;
+            }
+            $versionSpec = null; // version-spec is optional
+        }
     }
 
     public function parseLdifContent()
@@ -57,27 +70,92 @@ class Parser
     {
     }
 
-    public function parseVersionSpec(CursorInterface $cursor)
+    public function parseAttrvalRecord()
+    {
+    }
+
+    public function parseChangeRecord()
+    {
+    }
+
+    public function parseDnSpec(CoupledCursorInterface $cursor) : Cst\DnSpec
+    {
+        $begin = clone $cursor;
+
+        $this->matchAheadOrThrow('/\Gdn:/', $cursor,
+            "syntax error: unexpected token (expected 'dn:')"
+        );
+
+        $matches = $this->matchAhead('/\G:/', $cursor);
+
+        $this->skipFill($cursor);
+
+        if(count($matches) === 0) {
+            // SAFE-STRING
+            $dn = $this->parseSafeString($cursor);
+        } else {
+            // BASE64-UTF8-STRING
+            $dn = $this->parseBase64UtfString($cursor);
+        }
+
+        return new Cst\DnSpec($begin, $dn);
+    }
+
+    public function parseSafeString(CoupledCursorInterface $cursor) : string
+    {
+        $pattern = '/\G'.self::RE_SAFE_INIT_CHAR.self::RE_SAFE_CHAR.'*/';
+        return $this->matchAheadOrThrow($pattern, $cursor,
+            "syntax error: unexpected token (expected SAFE-STRING)"
+        );
+    }
+
+    public function parseBase64String(CoupledCursorInterface $cursor, callable $validate=null) : string
+    {
+            $pattern = '/\G'.self::RE_BASE64_CHAR.'+/';
+            $matches = $this->matchAtOrThrow($pattern, $cursor,
+                "syntax error: unexpected token (expected BASE64-STRING)"
+            );
+            $str = base64_decode($matches[0], TRUE);
+            if($str === false) {
+                $msg = "syntax error: invalid BASE64 string";
+                throw new ParseError($cursor, $msg);
+            }
+            if(is_callable($validate)) {
+                call_user_func($validate, $str);
+            }
+            $cursor->moveBy(strlen($matches[0]));
+
+            return $matches[0];
+    }
+
+    public function parseBase64UtfString(CoupledCursorInterface $cursor) : string
+    {
+        return $this->parseBase64String($cursor, function ($string) {
+            if(mb_check_encoding($string, 'utf-8') === FALSE) {
+                $msg = "syntax error: the encoded string is not a valid UTF8";
+                throw new ParseError($cursor, $msg);
+            }
+        });
+    }
+
+    public function parseVersionSpec(CoupledCursorInterface $cursor) : Cst\VersionSpec
     {
         $begin = clone $cursor; // store beginning
 
-        $matches = $this->matchAheadAndSkip('/\Gversion:/', $cursor);
-        if(count($matches) === 0) {
-            $msg = "syntax error: unexpected token (expected 'version:')";
-            return new ParseError($msg, clone $cursor);
-        }
+        $this->matchAheadOrThrow('/\Gversion:/', $cursor,
+            "syntax error: unexpected token (expected 'version:')"
+        );
 
         $this->skipFill($cursor);                            // FILL
-        $matches = $this->matchAhead('/\G\d+/', $cursor);    // version-number
-        if(count($matches) === 0) {
-            $msg = "syntax error: unexpected token (expected version number)";
-            return new ParseError($msg, clone $cursor);
-        }
+
+        $matches = $this->matchAtOrThrow('/\G\d+/', $cursor,
+            "syntax error: unexpected token (expected version number)"
+        );
 
         $version = intval($matches[0][0]);
         if($version != 1) {
             $msg = "syntax error: unsupported version number: $version";
-            return new ParseError($msg, clone $cursor);
+            throw new ParseError($msg, clone $cursor);
         }
 
         $cursor->moveBy(strlen($matches[0][0]));
@@ -85,60 +163,100 @@ class Parser
         return new Cst\VersionSpec($begin, $version);
     }
 
+
     /**
      * Skip white spaces (including tabs and new-line characters).
      *
-     * @param CursorInterface $cursor
+     * @param CoupledCursorInterface $cursor
      */
-    public function skipWs(CursorInterface $cursor) : array
+    public function skipWs(CoupledCursorInterface $cursor) : array
     {
-        return $this->matchAheadAndSkip('/\G\s+/', $cursor);
+        return $this->matchAhead('/\G\s+/', $cursor);
     }
 
     /**
      * Skip zero or more whitespaces (FILL in RFC2849).
      *
-     * @param CursorInterface $cursor
+     * @param CoupledCursorInterface $cursor
      */
-    public function skipFill(CursorInterface $cursor) : array
+    public function skipFill(CoupledCursorInterface $cursor) : array
     {
-        return $this->matchAheadAndSkip('/\G */', $cursor);
+        return $this->matchAhead('/\G */', $cursor);
     }
 
     /**
-     * Matches the $cursor's string (starting at $cursor's position) against
-     * $pattern.
+     * Matches the string (starting at $location's position) against $pattern.
      *
      * @param string $pattern
-     * @param CursorInterface $cursor
+     * @param CoupledLocationInterface $location
      * @param int $flags Flags passed to ``preg_match()``.
      *
      * @return array Array of matches as returned by ``preg_match()``
      */
-    public function matchAhead(string $pattern, CursorInterface $cursor, int $flags=0) : array
+    public function matchAt(string $pattern, CoupledLocationInterface $location, int $flags=0) : array
     {
-        $subject = $cursor->getString();
-        $offset = $cursor->getPosition();
+        $subject = $location->getString();
+        $offset = $location->getByteOffset();
         return $this->matchString($pattern, $subject, $flags, $offset);
     }
 
     /**
-     * Matches the $cursor's string against $pattern (starting at $cursor's
-     * position) and skips the whole match (moves the cursor after the matched
-     * part of string).
+     * Matches the string starting at $cursor's position against $pattern and
+     * skips the whole match (moves the cursor after the matched part of
+     * string).
      *
      * @param string $pattern
-     * @param CursorInterface $cursor
+     * @param CoupledCursorInterface $cursor
      * @param int $flags Flags passed to ``preg_match()`` (note:
      *        ``PREG_OFFSET_CAPTURE`` is added unconditionally).
      *
      * @return array Array of matches as returned by ``preg_match()``
      */
-    public function matchAheadAndSkip(string $pattern, CursorInterface $cursor, int $flags=0) : array
+    public function matchAhead(string $pattern, CoupledCursorInterface $cursor, int $flags=0) : array
     {
-        $matches = $this->matchAhead($pattern, $cursor, PREG_OFFSET_CAPTURE | $flags);
+        $matches = $this->matchAt($pattern, $cursor, PREG_OFFSET_CAPTURE | $flags);
         if(count($matches) > 0) {
             $cursor->moveTo($matches[0][1] + strlen($matches[0][0]));
+        }
+        return $matches;
+    }
+
+    /**
+     * Matches the string starting at $location's position against $pattern as
+     * in ``matchAt()`` but throws ParseError if the string does not mach.
+     *
+     * @param string $pattern
+     * @param CoupledLocationInterface $location
+     * @param string $msg Error message for the exception
+     * @param int $flags Flags passed to ``preg_match()`` (note:
+     *        ``PREG_OFFSET_CAPTURE`` is added unconditionally).
+     *
+     */
+    public function matchAtOrThrow(string $pattern, CoupledLocationInterface $location, string $msg, int $flags=0)
+    {
+        $matches = $this->matchAt($pattern, $location, $flags);
+        if(count($matches) === 0) {
+            throw new ParseError(clone $location, $msg);
+        }
+        return $matches;
+    }
+
+    /**
+     * Matches the string starting at $cursor's position against $pattern as
+     * in ``matchAhead()`` but throws ParseError if the string does not mach.
+     *
+     * @param string $pattern
+     * @param CoupledCursorInterface $cursor
+     * @param string $msg Error message for the exception
+     * @param int $flags Flags passed to ``preg_match()`` (note:
+     *        ``PREG_OFFSET_CAPTURE`` is added unconditionally).
+     *
+     */
+    public function matchAheadOrThrow(string $pattern, CoupledCursorInterface $cursor, string $msg, int $flags=0)
+    {
+        $matches = $this->matchAhead($pattern, $cursor, $flags);
+        if(count($matches) === 0) {
+            throw new ParseError(clone $cursor, $msg);
         }
         return $matches;
     }

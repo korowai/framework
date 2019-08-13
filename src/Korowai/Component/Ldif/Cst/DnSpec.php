@@ -14,32 +14,32 @@ namespace Korowai\Component\Ldif\Cst;
 use \Korowai\Component\Ldif\CoupledLocationInterface;
 
 /**
- * version-spec node (RFC 2849)
+ * dn-spec node (RFC 2849)
  */
-class VersionSpec extends AbstractLeafNode
+class DnSpec extends AbstractLeafNode
 {
     /**
      * @var int
      */
-    protected $version;
+    protected $dn;
 
     /**
      * {@inheritdoc}
      */
     public function getNodeType() : string
     {
-        return 'version-spec';
+        return 'dn-spec';
     }
 
-    public function __construct(CoupledLocationInterface $location, int $version)
+    public function __construct(CoupledLocationInterface $location, string $dn)
     {
-        $this->initVersionSpec($location, $version);
+        $this->initDnSpec($location, $dn);
     }
 
-    protected function initVersionSpec(CoupledLocationInterface $location, int $version)
+    protected function initDnSpec(CoupledLocationInterface $location, string $dn)
     {
         $this->initAbstractNode($location);
-        $this->version = $version;
+        $this->dn = $dn;
     }
 
     /**
@@ -55,7 +55,7 @@ class VersionSpec extends AbstractLeafNode
      */
     public function getValue()
     {
-        return $this->version;
+        return $this->dn;
     }
 }
 

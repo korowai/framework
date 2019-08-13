@@ -15,12 +15,12 @@ namespace Korowai\Component\Ldif;
  * LDIF parse error. Encapsulates error message and the location of the error
  * in source code.
  */
-class ParseError implements SourceLocationInterface
+class ParseError extends \Exception implements SourceLocationInterface
 {
-    /**
-     * @var string
-     */
-    protected $message;
+//    /**
+//     * @var string
+//     */
+//    protected $message;
 
     /**
      * @var SourceLocationInterface
@@ -31,24 +31,19 @@ class ParseError implements SourceLocationInterface
     /**
      * Initializes the error object.
      *
-     * @param string $message Error message.
      * @param SourceLocationInterface $location Error location
+     * @param string $message Error message.
+     * @param int $code User-defined code.
+     * @param Exception $previous
      */
-    public function __construct(string $message, SourceLocationInterface $location)
+    public function __construct(SourceLocationInterface $location,
+                                string $message, int $code=0,
+                                \Exception $previous=null)
     {
-        $this->message = $message;
         $this->location = $location;
+        parent::__construct($message, $code, $previous);
     }
 
-    /**
-     * Returns the error message provided to constructor as $message
-     *
-     * @return string
-     */
-    public function getMessage() : string
-    {
-        return $this->message;
-    }
 
     /**
      * Returns the cursor pointing at error location.
@@ -185,7 +180,7 @@ class ParseError implements SourceLocationInterface
         $line_and_char = $this->getSourceLineAndCharOffset();
         $location = $this->getSourceLocationString($line_and_char);
         return [
-            $location .':'. $this->getMessage($line_and_char),
+            $location .':'. $this->getMessage(),
             $location .':'. $this->getSourceLine($line_and_char[0]),
             $location .':'. $this->getSourceLocationIndicator($line_and_char)
         ];
@@ -199,6 +194,14 @@ class ParseError implements SourceLocationInterface
     public function getMultilineMessage() : string
     {
         return implode("\n", $this->getMultilineMessageLines());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function __toString()
+    {
+        return $this->getSourceLocationString() .':'. $this->getMessage();
     }
 }
 

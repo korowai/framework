@@ -23,17 +23,26 @@ abstract class AbstractNode implements NodeInterface
      */
     protected $location;
 
-    protected function initAbstractNode(CoupledLocationInterface $location)
+    /**
+     * @var int
+     */
+    protected $strlen;
+
+    protected function initAbstractNode(CoupledLocationInterface $location, int $strlen)
     {
         $this->location = $location;
+        $this->strlen = $strlen;
     }
 
     /**
      * Initializes the object.
+     *
+     * @param CoupledLocationInterface $location
+     * @param int $strlen
      */
-    public function __construct(CoupledLocationInterface $location)
+    public function __construct(CoupledLocationInterface $location, int $strlen)
     {
-        $this->initAbstractNode($location);
+        $this->initAbstractNode($location, $strlen);
     }
 
     /**
@@ -42,6 +51,56 @@ abstract class AbstractNode implements NodeInterface
     public function getLocation() : CoupledLocationInterface
     {
         return $this->location;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getStrlen() : int
+    {
+        return $this->strlen;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSourceStrlen() : int
+    {
+        return strlen($this->getSourceSubstr());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSubstr() : string
+    {
+        $location = $this->getLocation();
+        $input = $location->getInput();
+        $begin = $location->getByteOffset();
+        $strlen = $this->getStrlen();
+        return substr($input->getString(), $begin, $strlen);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSourceSubstr() : string
+    {
+        $location = $this->getLocation();
+        $input = $location->getInput();
+
+        $substr = $this->getSubstr();
+
+        $mb_strlen = mb_strlen($substr);
+        $substr_1 = mb_substr($substr, 0, max($mb_strlen-1, 0));
+        $strlen_1 = strlen($substr_1);
+        $end = $location->getByteOffset() + $strlen_1;
+
+        $source = $location->getSourceString();
+        $mb_srcbeg = $location->getSourceCharOffset();
+        $mb_srcend = $input->getSourceCharOffset($end);
+
+        return mb_substr($source, $mb_srcbeg, 1 + $mb_srcend - $mb_srcbeg);
     }
 
     /**
@@ -58,6 +117,16 @@ abstract class AbstractNode implements NodeInterface
     public function getValue()
     {
         return null;
+    }
+
+    protected function getLastCharOffset() : int
+    {
+        $input = $this->getLocation()->getInput();
+        $offset = $this->getLocation()->getByteOffset();
+        $substr = $this->getSubstr();
+        $mb_strlen = mb_strlen($substr);
+        $substr_1 = mb_substr($substr, 0, max($mb_strlen-1, 0));
+        return strlen($substr_1);
     }
 }
 

@@ -98,15 +98,17 @@ class Parser
             $dn = $this->parseBase64UtfString($cursor);
         }
 
-        return new Cst\DnSpec($begin, $dn);
+        $strlen = $cursor->getByteOffset() - $begin->getByteOffset();
+        return new Cst\DnSpec($begin, $strlen, $dn);
     }
 
     public function parseSafeString(CoupledCursorInterface $cursor) : string
     {
         $pattern = '/\G'.self::RE_SAFE_INIT_CHAR.self::RE_SAFE_CHAR.'*/';
-        return $this->matchAheadOrThrow($pattern, $cursor,
+        $matches = $this->matchAheadOrThrow($pattern, $cursor,
             "syntax error: unexpected token (expected SAFE-STRING)"
         );
+        return $matches[0][0];
     }
 
     public function parseBase64String(CoupledCursorInterface $cursor, callable $validate=null) : string
@@ -160,7 +162,8 @@ class Parser
 
         $cursor->moveBy(strlen($matches[0][0]));
 
-        return new Cst\VersionSpec($begin, $version);
+        $strlen = $cursor->getByteOffset() - $begin->getByteOffset();
+        return new Cst\VersionSpec($begin, $strlen, $version);
     }
 
 
@@ -277,7 +280,7 @@ class Parser
     protected function matchString(string $pattern, string $subject, int $flags=0, int $offset=0) : array
     {
         $tail = array_slice(func_get_args(), 2);
-        if(preg_match($pattern, $subject, $matches, ...$tail) === false) {
+        if(Util\preg_match($pattern, $subject, $matches, ...$tail) === false) {
             throw new \RuntimeException("internal error: preg_match returned false");
         }
         return $matches;

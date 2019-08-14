@@ -241,7 +241,7 @@ class CoupledInput implements CoupledInputInterface
     protected function initSourceLines(string $source)
     {
         $re = '/(?:\r\n|\n)/m';
-        $pieces = preg_split($re, $source, -1, PREG_SPLIT_OFFSET_CAPTURE);
+        $pieces = Util\preg_split($re, $source, -1, PREG_SPLIT_OFFSET_CAPTURE);
 
         $cnt = count($pieces);
 

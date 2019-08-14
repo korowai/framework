@@ -31,14 +31,14 @@ class DnSpec extends AbstractLeafNode
         return 'dn-spec';
     }
 
-    public function __construct(CoupledLocationInterface $location, string $dn)
+    public function __construct(CoupledLocationInterface $location, int $strlen, string $dn)
     {
-        $this->initDnSpec($location, $dn);
+        $this->initDnSpec($location, $strlen, $dn);
     }
 
-    protected function initDnSpec(CoupledLocationInterface $location, string $dn)
+    protected function initDnSpec(CoupledLocationInterface $location, int $strlen, string $dn)
     {
-        $this->initAbstractNode($location);
+        $this->initAbstractNode($location, $strlen);
         $this->dn = $dn;
     }
 

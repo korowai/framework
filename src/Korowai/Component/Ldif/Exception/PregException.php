@@ -13,7 +13,7 @@ namespace Korowai\Component\Ldif\Exception;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class PregException extends \RuntimeException
+class PregException extends \ErrorException
 {
 }
 

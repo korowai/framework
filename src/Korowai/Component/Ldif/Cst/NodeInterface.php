@@ -33,6 +33,34 @@ interface NodeInterface
     public function getLocation() : CoupledLocationInterface;
 
     /**
+     * Returns the string length of the substring that makes up the node.
+     *
+     * @return int
+     */
+    public function getStrlen() : int;
+
+    /**
+     * Returns the string length of the source substring that makes up the node.
+     *
+     * @return int
+     */
+    public function getSourceStrlen() : int;
+
+    /**
+     * Returns the string length of the substring that makes up the node.
+     *
+     * @return int
+     */
+    public function getSubstr() : string;
+
+    /**
+     * Returns the string length of the source substring that makes up the node.
+     *
+     * @return int
+     */
+    public function getSourceSubstr() : string;
+
+    /**
      * Returns array of child nodes.
      *
      * If the node has no children, returns empty array.

@@ -36,56 +36,35 @@ function callWithErrorHandler(
 }
 
 /**
- * Returns a constant name for a given error code.
+ * Returns an error handler function which throws a predefined exception.
  *
- * @param int $err Error code
- * @return string
+ * The ``$exceptCtor`` must be a callable (function) which returns new
+ * exception object. It must have the following interface:
+ *
+ * ```php
+ *      function exceptCtor(string $message, int $severity, string $file, int $line) : \Exception
+ * ```
+ *
+ * @param callable $exceptCtor A function which creates exception to be thrown.
+ * @param int $severity
+ * @param string $message
+ * @param string $file
+ * @param int $line
+ *
+ * @return callable
  */
-function getPregErrConst(int $code) : string
-{
-    $constants = get_defined_constants(true)['pcre'];
-    $errors = array_filter($constants, function($v, $k) {
-        return strpos($k, "ERROR", -5) !== false && is_integer($v);
-    }, ARRAY_FILTER_USE_BOTH);
-    $errors = array_flip($errors);
-    return $errors[$code] ?? '';
-}
-
-/**
- * Like ``preg_match()``, but throws exception instead of returning errors.
- *
- * @param string $pattern
- * @param string $subject
- * @param array $matches
- * @param int $flags
- * @param int $offset
- *
- * @return int
- *
- * @throws \Korowai\Component\Ldif\Exception\PregException
- */
-function preg_match_x(
-    string $pattern,
-    string $subject,
-    array &$matches = null,
-    int $flags = 0,
-    int $offset = 0
+function exceptionErrorHandler(
+    callable $exceptCtor,
+    int $severity,
+    string $message,
+    string $file,
+    int $line
 ) {
-    $args = func_get_args();
-    if(count($args) >= 3) {
-        $args[2] = &$matches;
+    if(!(error_reporting() & $severity)) {
+        // This error code is not included in error_reporting
+        return false;
     }
-
-    $s = callWithErrorHandler('preg_match', $args, function($errno, $errstr) {
-        throw new PregException($errstr);
-    });
-
-    if($s === false) {
-        $msg = 'preg_match() failed: ' . getPregErrConst(preg_last_error());
-        throw new PregException($msg);
-    }
-
-    return $s;
+    throw call_user_func($exceptCtor, $severity, $message, $file, $line);
 }
 
 // vim: syntax=php sw=4 ts=4 et:

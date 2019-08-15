@@ -157,7 +157,7 @@ class Parser
         $version = intval($matches[0][0]);
         if($version != 1) {
             $msg = "syntax error: unsupported version number: $version";
-            throw new ParseError($msg, clone $cursor);
+            throw new ParseError(clone $cursor, $msg);
         }
 
         $cursor->moveBy(strlen($matches[0][0]));

@@ -33,7 +33,7 @@ class VersionSpec extends AbstractLeafNode
 
     public function __construct(CoupledLocationInterface $location, int $strlen, int $version)
     {
-        $this->initVersionSpec($location, $version);
+        $this->initVersionSpec($location, $strlen, $version);
     }
 
     protected function initVersionSpec(CoupledLocationInterface $location, int $strlen, int $version)

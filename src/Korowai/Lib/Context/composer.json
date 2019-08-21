@@ -1,6 +1,6 @@
 {
-    "name": "korowai/ldif",
-    "description": "Korowai LDIF component",
+    "name": "korowai/context",
+    "description": "Provides functionality similar to Python's 'with' clause and contextlib",
     "type": "library",
     "license": "MIT",
     "suport": {
@@ -14,16 +14,14 @@
         }
     ],
     "require": {
-        "php": ">=7.1.3",
-        "symfony/options-resolver": ">=4.2",
-        "korowai/context" : "self.version"
+        "php": ">=7.1.3"
     },
     "autoload": {
       "psr-4" : {
-        "Korowai\\Component\\Ldif\\" : ""
+        "Korowai\\Lib\\Context\\" : ""
       },
       "files" : [
-        "Util/functions.php"
+        "functions.php"
       ],
       "exclude-from-classmap": [
         "/Tests/"

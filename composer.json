@@ -18,7 +18,8 @@
     "replace": {
       "korowai/ldap": "self.version",
       "korowai/ldif": "self.version",
-      "korowai/ldap-service": "self.version"
+      "korowai/ldap-service": "self.version",
+      "korowai/context" : "self.version"
     },
     "require-dev": {
         "phpunit/phpunit": ">=7.0.0",
@@ -33,10 +34,12 @@
     "autoload": {
       "psr-4" : {
         "Korowai\\Component\\" : "src/Korowai/Component/",
-        "Korowai\\Service\\" : "src/Korowai/Service/"
+        "Korowai\\Service\\" : "src/Korowai/Service/",
+        "Korowai\\Lib\\" : "src/Korowai/Lib"
       },
       "files" : [
-        "src/Korowai/Component/Ldif/Util/functions.php"
+        "src/Korowai/Component/Ldif/Util/functions.php",
+        "src/Korowai/Lib/Context/functions.php"
       ],
       "exclude-from-classmap": [
         "**/Tests/"

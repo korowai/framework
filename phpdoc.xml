@@ -2,10 +2,10 @@
 <phpdoc>
   <title>Korowai Framework</title>
   <parser>
-    <target>build/docs/api</target>
+    <target>docs/build/html/api</target>
   </parser>
   <transformer>
-    <target>build/docs/api</target>
+    <target>docs/build/html/api</target>
   </transformer>
   <transformations>
     <template name="responsive-twig" />

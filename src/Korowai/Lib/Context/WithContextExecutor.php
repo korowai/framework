@@ -12,7 +12,7 @@ declare(strict_types=1);
 namespace Korowai\Lib\Context;
 
 /**
- * Interface for context managers.
+ * Executes user code within a predefined context.
  */
 class WithContextExecutor implements ExecutorInterface
 {

@@ -3,7 +3,7 @@
  * This file is part of the Korowai package
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @package Korowai\Context
+ * @package Korowai\ContextLib
  * @license Distributed under MIT license.
  */
 

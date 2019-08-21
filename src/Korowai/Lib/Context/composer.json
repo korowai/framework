@@ -1,5 +1,5 @@
 {
-    "name": "korowai/context",
+    "name": "korowai/contextlib",
     "description": "Provides functionality similar to Python's 'with' clause and contextlib",
     "type": "library",
     "license": "MIT",

@@ -3,7 +3,7 @@
  * This file is part of the Korowai package
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @package Korowai\Context
+ * @package Korowai\ContextLib
  * @license Distributed under MIT license.
  */
 
@@ -14,7 +14,7 @@ namespace Korowai\Lib\Context;
 /**
  * Interface for context managers.
  */
-class WithContextCaller
+class WithContextExecutor implements ExecutorInterface
 {
     /**
      * @var ContextManagerInterface
@@ -22,7 +22,9 @@ class WithContextCaller
     protected $context;
 
     /**
-     * Initializes the context manager caller
+     * Initializes the object
+     *
+     * @param ContextManagerInterface[] $context
      */
     public function __construct(array $context)
     {
@@ -35,7 +37,7 @@ class WithContextCaller
      * @param callable $func The user function to be called
      * @return mixed The value returned by ``$func``.
      */
-    public function call(callable $func)
+    public function do(callable $func)
     {
         $args = [];
 

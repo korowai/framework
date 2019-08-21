@@ -10,3 +10,4 @@ User Guide
 
    ../install
    ../components/index
+   ../lib/index

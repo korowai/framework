@@ -3,7 +3,7 @@
  * This file is part of the Korowai package
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @package Korowai\Context
+ * @package Korowai\ContextLib
  * @license Distributed under MIT license.
  */
 
@@ -12,9 +12,9 @@ declare(strict_types=1);
 namespace Korowai\Lib\Context;
 
 /**
- * A context manager that manages PHP resource such as opened file or a connection.
+ * A context manager that wraps a PHP resource.
  */
-class ResourceManager implements ContextManagerInterface
+class ResourceContextManager implements ContextManagerInterface
 {
     const DEFAULT_RESOURCE_DESTRUCTORS = [
         'bzip2' => '\bzclose',

@@ -19,7 +19,7 @@
       "korowai/ldap": "self.version",
       "korowai/ldif": "self.version",
       "korowai/ldap-service": "self.version",
-      "korowai/context" : "self.version"
+      "korowai/contextlib" : "self.version"
     },
     "require-dev": {
         "phpunit/phpunit": ">=7.0.0",

@@ -86,6 +86,6 @@ The generated API docs go to ``docs/build/html/api/``.
 
 TODO:
 
-The generated docs go to ``docs/_build/html`` and get exposed at
+The generated docs go to ``docs/build/html`` and get exposed at
 
-  - ``http://localhost:80000``.
+  - ``http://localhost:8000``.

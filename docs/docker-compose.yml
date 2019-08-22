@@ -1,4 +1,4 @@
-version: '3'
+version: '3.7'
 services:
   sphinx:
     image: korowai/sphinx
@@ -6,6 +6,7 @@ services:
       - "8000:8000"
     volumes:
       - ../:/home/sphinx/project
+    user: "${COMPOSE_USER:?you must set the COMPOSE_USER environment variable}"
 
   sami:
     image: korowai/sami
@@ -13,3 +14,10 @@ services:
       - "8001:8001"
     volumes:
       - ../:/home/sami/project
+    user: "${COMPOSE_USER:?you must set the COMPOSE_USER environment variable}"
+
+  phpdoc:
+    image: phpdoc/phpdoc
+    volumes:
+      - ../:/data
+    user: "${COMPOSE_USER:?you must set the COMPOSE_USER environment variable}"

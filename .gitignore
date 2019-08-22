@@ -4,6 +4,7 @@
 /docker-compose
 /tmp
 /tests/cache
+*.phar
 
 # Files generated locally
 /build/
@@ -12,17 +13,20 @@
 /docs/_build/
 /docs/_cache/
 
+# .env file for docker-compose
+/.env
+
 # composer.lock
 composer.lock
 
 # phpunit (we only commit phpunit.xml.dist)
-phpunit.xml
+/phpunit.xml
 
 # phpunit temporary files
 .phpunit.result.cache
 
 # phpdoc (we only commit phpdoc.xml.dist)
-phpdoc.xml
+/phpdoc.xml
 
 # IDEs and editors
 /.idea

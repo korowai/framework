@@ -17,7 +17,7 @@ services:
     user: "${COMPOSE_USER:?you must set the COMPOSE_USER environment variable}"
 
   phpdoc:
-    image: phpdoc/phpdoc
+    image: phpdoc/phpdoc:develop
     volumes:
       - ../:/data
     user: "${COMPOSE_USER:?you must set the COMPOSE_USER environment variable}"

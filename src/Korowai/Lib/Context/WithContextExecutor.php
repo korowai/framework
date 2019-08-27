@@ -37,7 +37,7 @@ class WithContextExecutor implements ExecutorInterface
      * @param callable $func The user function to be called
      * @return mixed The value returned by ``$func``.
      */
-    public function do(callable $func)
+    public function __invoke(callable $func)
     {
         $args = [];
 

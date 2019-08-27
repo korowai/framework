@@ -22,7 +22,7 @@ interface ExecutorInterface
      * @param callable $func The user function to be called
      * @return mixed The value returned by ``$func``.
      */
-    public function do(callable $func);
+    public function __invoke(callable $func);
 }
 
 // vim: syntax=php sw=4 ts=4 et:

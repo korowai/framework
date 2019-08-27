@@ -31,7 +31,7 @@ Execute your code with an open file
    :start-after: [withFopenDoFread]
    :lines: 1-3
 
-The file gets automatically closed just before the return from ``with()->do()``.
+The file gets automatically closed just before the return from the call.
 
 :class:`Korowai\\Lib\\Context\\ContextManagerInterface`
 

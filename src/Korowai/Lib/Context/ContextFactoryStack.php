@@ -29,7 +29,7 @@ class ContextFactoryStack implements ContextFactoryInterface
     /**
      * Initializes the object.
      */
-    protected function __initialize()
+    protected function initializeSingleton()
     {
         $this->clean();
     }
@@ -72,16 +72,13 @@ class ContextFactoryStack implements ContextFactoryInterface
      * Pops and returns the factory from the top of stack shortening the array
      * of factories by one element.
      *
-     * @return ContextFactoryInterface
-     * @throws ContextFactoryException
+     * If the stack is empty, returns null
+     *
+     * @return ContextFactoryInterface|null
      */
     public function pop() : ?ContextFactoryInterface
     {
-        if(count($this->factories) > 0) {
-            return array_pop($this->factories);
-        } else {
-            throw new ContextFactoryException("can't pop from empty stack");
-        }
+        return array_pop($this->factories);
     }
 
     /**

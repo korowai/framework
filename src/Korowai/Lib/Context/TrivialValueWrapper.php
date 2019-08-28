@@ -14,8 +14,8 @@ namespace Korowai\Lib\Context;
 /**
  * A trivial context manager which only wraps a single value.
  *
- * The __enter() method returns the ``$value`` passed as argument to
- * ``__construct()``, while __exit() returns false.
+ * The enterContext() method returns the ``$value`` passed as argument to
+ * ``__construct()``, while exitContext() returns false.
  */
 class TrivialValueWrapper implements ContextManagerInterface
 {
@@ -37,7 +37,7 @@ class TrivialValueWrapper implements ContextManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function __enter()
+    public function enterContext()
     {
         return $this->value;
     }
@@ -45,7 +45,7 @@ class TrivialValueWrapper implements ContextManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function __exit(?\Throwable $exception) : bool
+    public function exitContext(?\Throwable $exception) : bool
     {
         return false;
     }

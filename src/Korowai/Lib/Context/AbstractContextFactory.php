@@ -11,8 +11,6 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Context;
 
-use Exception\ContextFactoryException;
-
 /**
  * Abstract base class for custom context factories.
  */
@@ -39,7 +37,7 @@ abstract class AbstractContextFactory implements ContextFactoryInterface, Contex
     }
 
     /**
-     * @todo Write documentation
+     * Pops the factory from the last stack it was pushed into.
      */
     public function popFromStack()
     {
@@ -57,7 +55,7 @@ abstract class AbstractContextFactory implements ContextFactoryInterface, Contex
      *
      * @return $this
      */
-    public function __enter()
+    public function enterContext()
     {
         $this->pushToStack();
         return $this;
@@ -72,7 +70,7 @@ abstract class AbstractContextFactory implements ContextFactoryInterface, Contex
      *                              ``null``.
      * @return bool ``false``
      */
-    public function __exit(?\Throwable $exception) : bool
+    public function exitContext(?\Throwable $exception) : bool
     {
         $this->popFromStack();
         return false;

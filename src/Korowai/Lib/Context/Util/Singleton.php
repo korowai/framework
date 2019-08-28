@@ -29,7 +29,7 @@ trait Singleton
      */
     private function __construct()
     {
-        $this->__initialize();
+        $this->initializeSingleton();
     }
 
     /**
@@ -51,7 +51,7 @@ trait Singleton
      *
      * This method may be overwriten in the target class.
      */
-    protected function __initialize()
+    protected function initializeSingleton()
     {
     }
 

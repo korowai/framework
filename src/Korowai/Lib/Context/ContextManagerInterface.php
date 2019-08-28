@@ -25,7 +25,7 @@ interface ContextManagerInterface
      *
      * @return mixed
      */
-    public function __enter();
+    public function enterContext();
 
     /**
      * Exit the runtime context and return a Boolean flag indicating if any
@@ -42,7 +42,7 @@ interface ContextManagerInterface
      *                              ``null``.
      * @return bool
      */
-    public function __exit(?\Throwable $exception) : bool;
+    public function exitContext(?\Throwable $exception) : bool;
 }
 
 // vim: syntax=php sw=4 ts=4 et:

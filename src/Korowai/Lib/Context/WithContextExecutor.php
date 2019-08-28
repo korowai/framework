@@ -42,7 +42,7 @@ class WithContextExecutor implements ExecutorInterface
         $args = [];
 
         for($i = 0; $i < count($this->context); $i++) {
-            $args[] = $this->context[$i]->__enter();
+            $args[] = $this->context[$i]->enterContext();
         }
 
         $exception = null;
@@ -53,7 +53,7 @@ class WithContextExecutor implements ExecutorInterface
         }
 
         for($i = count($this->context)-1; $i >= 0; $i--) {
-            if($this->context[$i]->__exit($exception)) {
+            if($this->context[$i]->exitContext($exception)) {
                 $exception = null; // handled
             }
         }

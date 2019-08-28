@@ -14,7 +14,7 @@ namespace Korowai\Lib\Context\Exception;
 /**
  * @todoWrite documentation
  */
-class ContextFactoryPopException extends \RuntimeException
+class ContextFactoryException extends \RuntimeException
 {
 }
 

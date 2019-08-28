@@ -11,7 +11,7 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Context;
 
-use Exception\AlreadyInChainException;
+use Exception\ContextFactoryException;
 
 /**
  * Abstract base class for custom context factories.
@@ -19,40 +19,33 @@ use Exception\AlreadyInChainException;
 abstract class AbstractContextFactory implements ContextFactoryInterface, ContextManagerInterface
 {
     /**
-     * @var ContextFactoryChain
+     * @var array
      */
-    protected $pushedToChain = null;
+    protected $pushedToStacks = [];
 
 
     /**
-     * @todo Write documentation
+     * Pushes the factory to a factory stack.
      */
-    public function pushToChain($chain = null)
+    public function pushToStack(ContextFactoryStack $stack = null)
     {
-        if(isset($this->pushedToChain)) {
-            throw new AlreadyInChainException("The context factory is already in a factory chain");
+        if($stack === null) {
+            $stack = ContextFactoryStack::getInstance();
         }
 
-        if($chain === null) {
-            $chain = ContextFactoryChain::getInstance();
-        }
-
-        $chain->push($this);
-        $this->pushedToChain = $chain;
+        $stack->push($this);
+        array_push($this->pushedToStacks, $stack);
         return $this;
     }
 
     /**
      * @todo Write documentation
      */
-    public function popFromChain()
+    public function popFromStack()
     {
-        if(isset($this->pushedToChain)) {
-            if($this->pushedToChain->top() === $this) {
-                $this->pushedToChain->pop();
-                $this->pushedToChain = null;
-                return $this;
-            }
+        $stack = array_pop($this->pushedToStacks);
+        if(null !== $stack) {
+            return $stack->pop();
         }
         return null;
     }
@@ -60,20 +53,20 @@ abstract class AbstractContextFactory implements ContextFactoryInterface, Contex
     /**
      * Enter the runtime context.
      *
-     * Pushes $this object onto ContextFactoryChain.
+     * Pushes $this object onto ContextFactoryStack.
      *
      * @return $this
      */
     public function __enter()
     {
-        $this->pushToChain();
+        $this->pushToStack();
         return $this;
     }
 
     /**
      * Exit the runtime context.
      *
-     * Removes itself from the top of ContextFactoryChain.
+     * Removes itself from the top of ContextFactoryStack.
      *
      * @param \Throwable $exception The exception thrown from user function or
      *                              ``null``.
@@ -81,7 +74,7 @@ abstract class AbstractContextFactory implements ContextFactoryInterface, Contex
      */
     public function __exit(?\Throwable $exception) : bool
     {
-        $this->popFromChain();
+        $this->popFromStack();
         return false;
     }
 }

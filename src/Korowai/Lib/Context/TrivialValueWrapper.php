@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Component\Ldif;
+namespace Korowai\Lib\Context;
 
 /**
  * A trivial context manager which only wraps a single value.

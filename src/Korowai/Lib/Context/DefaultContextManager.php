@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Component\Ldif;
+namespace Korowai\Lib\Context;
 
 /**
  * A base class for classes that implement __enter() and __exit(). A

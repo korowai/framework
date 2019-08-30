@@ -149,7 +149,7 @@ class ResourceContextManager implements ContextManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function exitContext(?\Throwable $exception) : bool
+    public function exitContext(?\Throwable $exception = null) : bool
     {
         if(is_resource($this->resource)) {
             $this->destroyResource($this->resource);

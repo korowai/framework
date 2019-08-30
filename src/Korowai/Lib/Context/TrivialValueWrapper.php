@@ -45,7 +45,7 @@ class TrivialValueWrapper implements ContextManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function exitContext(?\Throwable $exception) : bool
+    public function exitContext(?\Throwable $exception = null) : bool
     {
         return false;
     }

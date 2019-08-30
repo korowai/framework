@@ -23,9 +23,22 @@ abstract class AbstractContextFactory implements ContextFactoryInterface, Contex
 
 
     /**
+     * Returns an array of stacks to which the factory was pushed (in order).
+     *
+     * If the factory was pushed multiple times to a stack, the stack will
+     * appear multiple times in the returned array.
+     *
+     * @return array
+     */
+    public function getPushedToStacks() : array
+    {
+        return $this->pushedToStacks;
+    }
+
+    /**
      * Pushes the factory to a factory stack.
      */
-    public function pushToStack(ContextFactoryStack $stack = null)
+    public function pushToStack(ContextFactoryStackInterface $stack = null)
     {
         if($stack === null) {
             $stack = ContextFactoryStack::getInstance();
@@ -51,7 +64,7 @@ abstract class AbstractContextFactory implements ContextFactoryInterface, Contex
     /**
      * Enter the runtime context.
      *
-     * Pushes $this object onto ContextFactoryStack.
+     * Pushes $this object onto context factory stack.
      *
      * @return $this
      */
@@ -64,7 +77,7 @@ abstract class AbstractContextFactory implements ContextFactoryInterface, Contex
     /**
      * Exit the runtime context.
      *
-     * Removes itself from the top of ContextFactoryStack.
+     * Removes itself from the top of context factory stack.
      *
      * @param \Throwable $exception The exception thrown from user function or
      *                              ``null``.

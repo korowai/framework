@@ -11,13 +11,11 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Context;
 
-use Exception\ContextFactoryException;
-
 /**
  * A composite context factory which collects other factories and organizes
  * them into a stack.
  */
-class ContextFactoryStack implements ContextFactoryInterface
+class ContextFactoryStack implements ContextFactoryStackInterface, ContextFactoryInterface
 {
     use Util\Singleton;
 
@@ -34,15 +32,15 @@ class ContextFactoryStack implements ContextFactoryInterface
         $this->clean();
     }
 
-    /**
-     * Returns the array of factories keept by the factory stack.
-     *
-     * @return array
-     */
-    public function getFactories() : array
-    {
-        return $this->factories;
-    }
+//    /**
+//     * Returns the array of factories keept by the factory stack.
+//     *
+//     * @return array
+//     */
+//    public function getFactories() : array
+//    {
+//        return $this->factories;
+//    }
 
     /**
      * Resets the stack to empty state.
@@ -81,51 +79,51 @@ class ContextFactoryStack implements ContextFactoryInterface
         return array_pop($this->factories);
     }
 
-    /**
-     * Removes all the occurrences of $factory from the stack.
-     *
-     * Uses comparison by identity to find and remove ocurrences of $factory.
-     *
-     * @param ContextFactoryInterface $factory
-     */
-    public function remove(ContextFactoryInterface $factory) : int
-    {
-        $this->factories = array_filter(
-            $this->factories,
-            function($item) use($factory) {
-                return $item !== $factory;
-            }
-        );
-    }
+//    /**
+//     * Removes all the occurrences of $factory from the stack.
+//     *
+//     * Uses comparison by identity to find and remove ocurrences of $factory.
+//     *
+//     * @param ContextFactoryInterface $factory
+//     */
+//    public function remove(ContextFactoryInterface $factory) : int
+//    {
+//        $this->factories = array_filter(
+//            $this->factories,
+//            function($item) use($factory) {
+//                return $item !== $factory;
+//            }
+//        );
+//    }
 
-    /**
-     * Count occurrences of $factory on the stack.
-     *
-     * Uses comparison by identity to find occurrences of $factory in the stack.
-     *
-     * @param ContextFactoryInterface $factory
-     * @return int
-     */
-    public function count(ContextFactoryInterface $factory) : int
-    {
-        return count(array_filter(
-            $this->factories,
-            function($item) use ($factory) {
-                return $item === $factory;
-            }
-        ));
-    }
+//    /**
+//     * Count occurrences of $factory on the stack.
+//     *
+//     * Uses comparison by identity to find occurrences of $factory in the stack.
+//     *
+//     * @param ContextFactoryInterface $factory
+//     * @return int
+//     */
+//    public function count(ContextFactoryInterface $factory) : int
+//    {
+//        return count(array_filter(
+//            $this->factories,
+//            function($item) use ($factory) {
+//                return $item === $factory;
+//            }
+//        ));
+//    }
 
-    /**
-     * Returns true if $factory is on stack.
-     *
-     * @param ContextFactoryInterface $factory
-     * @return bool
-     */
-    public function contains(ContextFactoryInterface $factory) : bool
-    {
-        return ($this->count($factory) > 0);
-    }
+//    /**
+//     * Returns true if $factory is on stack.
+//     *
+//     * @param ContextFactoryInterface $factory
+//     * @return bool
+//     */
+//    public function contains(ContextFactoryInterface $factory) : bool
+//    {
+//        return ($this->count($factory) > 0);
+//    }
 
     /**
      * Returns the stack size.

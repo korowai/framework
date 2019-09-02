@@ -14,15 +14,15 @@ namespace Korowai\Lib\Context\Tests;
 use PHPUnit\Framework\TestCase;
 
 use Korowai\Lib\Context\ContextFactoryInterface;
-use Korowai\Lib\Context\AbstractContextFactory;
+use Korowai\Lib\Context\AbstractManagedContextFactory;
 use Korowai\Lib\Context\ContextFactoryStackInterface;
 use Korowai\Lib\Context\ContextFactoryStack;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @coversDefaultClass \Korowai\Lib\Context\AbstractContextFactory
+ * @coversDefaultClass \Korowai\Lib\Context\AbstractManagedContextFactory
  */
-class AbstractContextFactoryTest extends TestCase
+class AbstractManagedContextFactoryTest extends TestCase
 {
     /**
      * @covers ::enterContext
@@ -30,7 +30,7 @@ class AbstractContextFactoryTest extends TestCase
      */
     public function test__enterContext_and_exitContext()
     {
-        $factory = $this->getMockBuilder(AbstractContextFactory::class)
+        $factory = $this->getMockBuilder(AbstractManagedContextFactory::class)
                         ->getMockForAbstractClass();
 
         $stack = ContextFactoryStack::getInstance();

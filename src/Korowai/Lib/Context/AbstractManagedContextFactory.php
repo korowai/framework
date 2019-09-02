@@ -12,16 +12,15 @@ declare(strict_types=1);
 namespace Korowai\Lib\Context;
 
 /**
- * Abstract base class for custom context factories.
+ * Abstract base class for managed custom context factories.
+ *
+ * A managed context factory implements enterContext() and exitContext(), so it
+ * also works as a context manager.
  */
-abstract class AbstractContextFactory implements ContextFactoryInterface, ContextManagerInterface
+abstract class AbstractManagedContextFactory implements ContextFactoryInterface, ContextManagerInterface
 {
     /**
-     * Enter the runtime context.
-     *
-     * Pushes $this object onto ContextFactoryStack.
-     *
-     * @return $this
+     * {@inheritdocs}
      */
     public function enterContext()
     {
@@ -30,13 +29,7 @@ abstract class AbstractContextFactory implements ContextFactoryInterface, Contex
     }
 
     /**
-     * Exit the runtime context.
-     *
-     * Removes itself from the top of ContextFactoryStack.
-     *
-     * @param \Throwable $exception The exception thrown from user function or
-     *                              ``null``.
-     * @return bool ``false``
+     * {@inheritdocs}
      */
     public function exitContext(?\Throwable $exception = null) : bool
     {

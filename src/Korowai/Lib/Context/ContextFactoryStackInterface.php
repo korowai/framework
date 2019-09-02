@@ -22,9 +22,9 @@ interface ContextFactoryStackInterface
     public function clean();
 
     /**
-     * Returns the factory from the top of stack.
+     * Returns the factory from the top of stack or null if the stack is empty.
      */
-    public function top();
+    public function top() : ?ContextFactoryInterface;
 
     /**
      * Pushes the $factory to the top of stack.

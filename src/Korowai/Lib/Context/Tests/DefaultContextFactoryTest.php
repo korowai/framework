@@ -71,7 +71,7 @@ class DefaultContextFactoryTest extends TestCase
     /**
      * @covers ::getContextManager
      */
-    public function test__getContextManager__withTrivalValue()
+    public function test__getContextManager__withValue()
     {
         $factory = DefaultContextFactory::getInstance();
 

@@ -1,6 +1,6 @@
 {
-    "name": "korowai/ldif",
-    "description": "Korowai LDIF component",
+    "name": "korowai/errorlib",
+    "description": "A library of utilities for error handling",
     "type": "library",
     "license": "MIT",
     "suport": {
@@ -14,15 +14,13 @@
         }
     ],
     "require": {
-        "php": ">=7.1.3",
-        "korowai/contextlib" : "self.version"
+        "php": ">=7.1.3"
     },
     "autoload": {
       "psr-4" : {
-        "Korowai\\Component\\Ldif\\" : ""
+        "Korowai\\Lib\\Context\\" : ""
       },
       "files" : [
-        "Util/functions.php"
       ],
       "exclude-from-classmap": [
         "/Tests/"

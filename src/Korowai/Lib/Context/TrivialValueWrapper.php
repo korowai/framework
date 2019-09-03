@@ -35,11 +35,20 @@ class TrivialValueWrapper implements ContextManagerInterface
     }
 
     /**
+     * Returns the value provided to constructor.
+     */
+    public function getValue()
+    {
+        return $this->value;
+    }
+
+
+    /**
      * {@inheritdoc}
      */
     public function enterContext()
     {
-        return $this->value;
+        return $this->getValue();
     }
 
     /**

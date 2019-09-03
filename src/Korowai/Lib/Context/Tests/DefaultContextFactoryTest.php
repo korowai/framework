@@ -106,7 +106,7 @@ class DefaultContextFactoryTest extends TestCase
         $cm = $factory->getContextManager('foo');
 
         $this->assertInstanceOf(TrivialValueWrapper::class, $cm);
-        $this->assertEquals('foo', $cm->enterContext());
+        $this->assertEquals('foo', $cm->getValue());
     }
 }
 

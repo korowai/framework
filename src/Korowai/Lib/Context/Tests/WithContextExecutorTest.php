@@ -35,6 +35,16 @@ class WithContextExecutorTest extends TestCase
 
     /**
      * @covers ::__construct
+     * @covers ::getContext()
+     */
+    public function test__construct()
+    {
+        $executor = new WithContextExecutor(['foo', 'bar']);
+        $this->assertEquals(['foo', 'bar'], $executor->getContext());
+    }
+
+    /**
+     * @covers ::__construct
      * @covers ::__invoke
      */
     public function test__invoke()

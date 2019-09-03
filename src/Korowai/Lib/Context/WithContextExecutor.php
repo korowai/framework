@@ -32,6 +32,16 @@ class WithContextExecutor implements ExecutorInterface
     }
 
     /**
+     * Returns the context provided to __construct()
+     *
+     * @return array
+     */
+    public function getContext() : array
+    {
+        return $this->context;
+    }
+
+    /**
      * Calls user function within context.
      *
      * @param callable $func The user function to be called

@@ -15,6 +15,7 @@ use PHPUnit\Framework\TestCase;
 
 use Korowai\Lib\Context\DefaultContextFactory;
 use Korowai\Lib\Context\ContextManagerInterface;
+use Korowai\Lib\Context\ContextFactoryInterface;
 use Korowai\Lib\Context\ResourceContextManager;
 use Korowai\Lib\Context\TrivialValueWrapper;
 
@@ -24,6 +25,14 @@ use Korowai\Lib\Context\TrivialValueWrapper;
  */
 class DefaultContextFactoryTest extends TestCase
 {
+    use \phpmock\phpunit\PHPMock;
+
+    public function test__implements__ContextFactoryInterface()
+    {
+        $interfaces = class_implements(DefaultContextFactory::class);
+        $this->assertContains(ContextFactoryInterface::class, $interfaces);
+    }
+
     public function test__constructorIsPrivate()
     {
         $ctor = DefaultContextFactory::class . '::__construct()';
@@ -51,6 +60,10 @@ class DefaultContextFactoryTest extends TestCase
     {
         $factory = DefaultContextFactory::getInstance();
 
+        $is_resource = $this->getFunctionMock('Korowai\\Lib\\Context', 'is_resource');
+
+        $is_resource->expects($this->never());
+
         $cm = $this->createMock(ContextManagerInterface::class);
         $cm->method('enterContext')->willReturn('foo');
         $cm->method('exitContext')->willReturn(false);
@@ -63,9 +76,18 @@ class DefaultContextFactoryTest extends TestCase
      */
     public function test__getContextManager__withResource()
     {
+        $is_resource = $this->getFunctionMock('Korowai\\Lib\\Context', 'is_resource');
+
+        $is_resource->expects($this->once())
+                    ->with('foo')
+                    ->willReturn(true);
+
         $factory = DefaultContextFactory::getInstance();
 
-        $this->assertTrue(true);
+        $cm = $factory->getContextManager('foo');
+
+        $this->assertInstanceOf(ResourceContextManager::class, $cm);
+        $this->assertEquals('foo', $cm->getResource());
     }
 
     /**
@@ -74,6 +96,12 @@ class DefaultContextFactoryTest extends TestCase
     public function test__getContextManager__withValue()
     {
         $factory = DefaultContextFactory::getInstance();
+
+        $is_resource = $this->getFunctionMock('Korowai\\Lib\\Context', 'is_resource');
+
+        $is_resource->expects($this->once())
+                    ->with('foo')
+                    ->willReturn(false);
 
         $cm = $factory->getContextManager('foo');
 

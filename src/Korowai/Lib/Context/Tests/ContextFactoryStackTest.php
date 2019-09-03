@@ -49,6 +49,18 @@ class ContextFactoryStackTest extends TestCase
         };
     }
 
+    public function test__implements__ContextFactoryStackInterface()
+    {
+        $interfaces = class_implements(ContextFactoryStack::class);
+        $this->assertContains(ContextFactoryStackInterface::class, $interfaces);
+    }
+
+    public function test__implements__ContextFactoryInterface()
+    {
+        $interfaces = class_implements(ContextFactoryStack::class);
+        $this->assertContains(ContextFactoryInterface::class, $interfaces);
+    }
+
     public function test__constructorIsPrivate()
     {
         $ctor = ContextFactoryStack::class . '::__construct()';

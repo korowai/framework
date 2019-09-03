@@ -46,6 +46,7 @@ class WithContextExecutor implements ExecutorInterface
         }
 
         $exception = null;
+        $return = null;
         try {
             $return = call_user_func_array($func, $args);
         } catch(\Throwable $e) {

@@ -11,24 +11,87 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Error;
 
-use Korowai\Lib\Context\ContextManagerInterface;
-
 /**
  * An error handler which raises custom exception.
  */
-class ExceptionErrorHandler implements ContextManagerInterface
+class ExceptionErrorHandler extends AbstractManagedErrorHandler
 {
     /**
-     * @var
+     * @var callable
      */
     protected $exceptionGenerator;
 
     /**
+     * Converts argument $arg to an exception generator.
+     *
+     * An exception generator is a function (or callable object) which creates
+     * and returns exception objects.
+     *
+     * @param mixed $arg Either a callable or a class name. If it's a callable
+     *                   then it gets returned as is, if it is a class name
+     *                   then a new callable is returned which creates and
+     *                   returns new instance of this class. The constructor of
+     *                   the class must have interface compatible with the
+     *                   constructor of PHP's ``\ErrorException`` class. If
+     *                   $arg is null, then ``\ErrorException`` is used as a
+     *                   class.
+     *
+     * @return callable
+     * @throws \InvalidArgumentException
+     */
+    public static function makeExceptionGenerator($arg = null) : callable
+    {
+        if(is_callable($arg)) {
+            return $arg;
+        }
+
+        if(is_null($arg)) {
+            $class = \ErrorException::class;
+        } else {
+            $class = $arg;
+        }
+
+        if(is_string($class) && class_exists($class)) {
+            return function(int $severity, string $message, string $file, int $line) use ($class) {
+                return new $class($message, 0, $severity, $file, $line);
+            };
+        }
+
+        throw new \InvalidArgumentException(
+            "argument 1 to " . __METHOD__  . "() must be a callable, a class" .
+            " name or null, " . gettype($arg) .  " given"
+        );
+    }
+
+    /**
+     * Creates and returns new ExceptionErrorHandler.
+     *
+     * If ``$arg`` is a callable it should have the prototype
+     *
+     * ```php
+     * function f(int $severity, string $message, string $file, int $line)
+     * ```
+     *
+     * and it should return new exception object.
+     *
+     * If it is a class name, the class should provide constructor
+     * having interface compatible with PHP's \ErrorException class.
+     *
+     * @param mixed $arg Either a callable or an exception's class name.
+     *
+     * @return ExceptionErrorHandler
+     */
+    public static function create($arg = null) : ExceptionErrorHandler
+    {
+        return new self(self::makeExceptionGenerator($arg));
+    }
+
+    /**
      * Initializes the object.
      *
-     * @param $exceptionGenerator
+     * @param callable $exceptionGenerator
      */
-    public function __construct($exceptionGenerator = null)
+    public function __construct(callable $exceptionGenerator)
     {
         $this->exceptionGenerator = $exceptionGenerator;
     }
@@ -36,16 +99,15 @@ class ExceptionErrorHandler implements ContextManagerInterface
     /**
      * Returns the $exceptionGenerator provided to constructor.
      *
-     * @return callable
+     * @return calable
      */
-    public function getExceptionGenerator()
+    public function getExceptionGenerator() : callable
     {
         return $this->exceptionGenerator;
     }
 
     /**
-     * Creates and returns new exception using $exceptionGenerator and
-     * parameters provided.
+     * Creates and returns new exception using the encapsulated $exceptionGenerator.
      *
      * @param int $severity The level of error raised
      * @param string $message The error message, as a string
@@ -55,19 +117,11 @@ class ExceptionErrorHandler implements ContextManagerInterface
     public function getException(int $severity, string $message, string $file, int $line)
     {
         $generator = $this->getExceptionGenerator();
-        if(is_callable($generator)) {
-            $args = [$severity, $message, $file, $line];
-            $exception = call_user_func_array($this->get(), $args);
-        } elseif(class_exists($generator)) {
-            $exception = new $generator($message, 0, $severity, $file, $line);
-        } else {
-            $exception = new \ErrorException($message, 0, $severity, $file, $line);
-        }
-        return $exception;
+        return call_user_func($generator, $severity, $message, $file, $line);
     }
 
     /**
-     * Actual error handler function which throws an exception.
+     * {@inheritdoc}
      */
     public function __invoke(int $severity, string $message, string $file, int $line) : bool
     {
@@ -77,24 +131,6 @@ class ExceptionErrorHandler implements ContextManagerInterface
         }
 
         throw $this->getException($severity, $message, $file, $line);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function enterContext()
-    {
-        set_error_handler($this);
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function exitContext(?\Throwable $exception = null) : bool
-    {
-        restore_error_handler();
-        return false;
     }
 }
 

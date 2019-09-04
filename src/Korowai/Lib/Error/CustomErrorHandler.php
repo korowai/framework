@@ -11,22 +11,15 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Error;
 
-use Korowai\Lib\Context\ContextManagerInterface;
-
 /**
- * Context manager for temporarily setting error handlers.
+ * Context-managed error handler that calls user-provided function.
  */
-class ErrorHandlerContextManager implements ContextManagerInterface
+class CustomErrorHandler extends AbstractManagedErrorHandler
 {
     /**
      * @var callable
      */
     protected $handler;
-
-    /**
-     * @var int
-     */
-    protected $errorTypes;
 
     /**
      * Initializes the object.
@@ -64,19 +57,9 @@ class ErrorHandlerContextManager implements ContextManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function enterContext()
+    public function __invoke(int $severity, string $message, string $file, int $line) : bool
     {
-        set_error_handler($this->getHandler(), $this->getErrorTypes());
-        return $this->handler;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function exitContext(?\Throwable $exception = null) : bool
-    {
-        restore_error_handler();
-        return false;
+        return call_user_func($this->getHandler(), $severity, $message, $file, $line);
     }
 }
 

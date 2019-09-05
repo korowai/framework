@@ -13,7 +13,7 @@ namespace Korowai\Component\Ldif\Tests;
 
 use PHPUnit\Framework\TestCase;
 use Korowai\Component\Ldif\Preprocessor;
-use Korowai\Component\Ldif\Preprocessed;
+use Korowai\Component\Ldif\CoupledInput;
 
 
 /**
@@ -26,8 +26,8 @@ class PreprocessorTest extends TestCase
         $source = "";
         $string = (new Preprocessor())->preprocess($source);
 
-        $this->assertInstanceOf(Preprocessed::class, $string);
-        $this->assertEquals($string->getSource(), $source);
+        $this->assertInstanceOf(CoupledInput::class, $string);
+        $this->assertEquals($string->getSourceString(), $source);
         $this->assertEquals($string->getString(), $source);
         $this->assertEquals($string->getIndexMap(), []);
     }
@@ -37,8 +37,8 @@ class PreprocessorTest extends TestCase
         $source = "dn: cn=admin,dc=example,dc=org\ncn: admin";
         $string = (new Preprocessor())->preprocess($source);
 
-        $this->assertInstanceOf(Preprocessed::class, $string);
-        $this->assertEquals($string->getSource(), $source);
+        $this->assertInstanceOf(CoupledInput::class, $string);
+        $this->assertEquals($string->getSourceString(), $source);
         $this->assertEquals($string->getString(), $source);
         $this->assertEquals($string->getIndexMap(), [[0,0]]);
     }
@@ -54,8 +54,8 @@ class PreprocessorTest extends TestCase
 
         $string = (new Preprocessor())->preprocess($source);
 
-        $this->assertInstanceOf(Preprocessed::class, $string);
-        $this->assertEquals($string->getSource(), $source);
+        $this->assertInstanceOf(CoupledInput::class, $string);
+        $this->assertEquals($string->getSourceString(), $source);
         $this->assertEquals($string->getString(), $result);
         $this->assertEquals($string->getIndexMap(), [[0,0], [24,26]]);
     }
@@ -71,8 +71,8 @@ class PreprocessorTest extends TestCase
 
         $string = (new Preprocessor())->preprocess($source);
 
-        $this->assertInstanceOf(Preprocessed::class, $string);
-        $this->assertEquals($string->getSource(), $source);
+        $this->assertInstanceOf(CoupledInput::class, $string);
+        $this->assertEquals($string->getSourceString(), $source);
         $this->assertEquals($string->getString(), $result);
         $this->assertEquals($string->getIndexMap(), [[0,12]]);
     }
@@ -88,8 +88,8 @@ class PreprocessorTest extends TestCase
 
         $string = (new Preprocessor())->preprocess($source);
 
-        $this->assertInstanceOf(Preprocessed::class, $string);
-        $this->assertEquals($string->getSource(), $source);
+        $this->assertInstanceOf(CoupledInput::class, $string);
+        $this->assertEquals($string->getSourceString(), $source);
         $this->assertEquals($string->getString(), $result);
         $this->assertEquals($string->getIndexMap(), [[0,0], [11,23]]);
     }
@@ -105,8 +105,8 @@ class PreprocessorTest extends TestCase
 
         $string = (new Preprocessor())->preprocess($source);
 
-        $this->assertInstanceOf(Preprocessed::class, $string);
-        $this->assertEquals($string->getSource(), $source);
+        $this->assertInstanceOf(CoupledInput::class, $string);
+        $this->assertEquals($string->getSourceString(), $source);
         $this->assertEquals($string->getString(), $result);
         $this->assertEquals($string->getIndexMap(), [[0,14], [24,40]]);
     }

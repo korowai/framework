@@ -81,9 +81,9 @@ class ExceptionErrorHandler extends AbstractManagedErrorHandler
      *
      * @return ExceptionErrorHandler
      */
-    public static function create($arg = null) : ExceptionErrorHandler
+    public static function create($arg = null, int $errorTypes = E_ALL | E_STRICT) : ExceptionErrorHandler
     {
-        return new self(self::makeExceptionGenerator($arg));
+        return new self(self::makeExceptionGenerator($arg), $errorTypes);
     }
 
     /**
@@ -91,9 +91,10 @@ class ExceptionErrorHandler extends AbstractManagedErrorHandler
      *
      * @param callable $exceptionGenerator
      */
-    public function __construct(callable $exceptionGenerator)
+    public function __construct(callable $exceptionGenerator, int $errorTypes = E_ALL | E_STRICT)
     {
         $this->exceptionGenerator = $exceptionGenerator;
+        parent::__construct($errorTypes);
     }
 
     /**

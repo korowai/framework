@@ -19,39 +19,29 @@ class CustomErrorHandler extends AbstractManagedErrorHandler
     /**
      * @var callable
      */
-    protected $handler;
+    protected $errorHandler;
 
     /**
      * Initializes the object.
      *
-     * @param callable $handler User-provided error handler function.
+     * @param callable $errorHandler User-provided error handler function.
      * @param int $errorTypes Can be used to mask the triggering of the error
      *                        handler function.
      */
-    public function __construct(callable $handler, int $errorTypes = E_ALL | E_STRICT)
+    public function __construct(callable $errorHandler, int $errorTypes = E_ALL | E_STRICT)
     {
-        $this->handler = $handler;
-        $this->errorTypes = $errorTypes;
+        $this->errorHandler = $errorHandler;
+        parent::__construct($errorTypes);
     }
 
     /**
-     * Returns the $handler provided to constructor.
+     * Returns the $errorHandler provided to constructor.
      *
      * @return callable
      */
-    public function getHandler() : callable
+    public function getErrorHandler() : callable
     {
-        return $this->handler;
-    }
-
-    /**
-     * Returns the $errorTypes provided to constructor.
-     *
-     * @return int
-     */
-    public function getErrorTypes() : int
-    {
-        return $this->errorTypes;
+        return $this->errorHandler;
     }
 
     /**
@@ -59,7 +49,7 @@ class CustomErrorHandler extends AbstractManagedErrorHandler
      */
     public function __invoke(int $severity, string $message, string $file, int $line) : bool
     {
-        return call_user_func($this->getHandler(), $severity, $message, $file, $line);
+        return call_user_func($this->getErrorHandler(), $severity, $message, $file, $line);
     }
 }
 

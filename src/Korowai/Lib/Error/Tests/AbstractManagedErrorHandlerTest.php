@@ -37,7 +37,44 @@ class AbstractManagedErrorHandlerTest extends TestCase
         $this->assertContains(ContextManagerInterface::class, $interfaces);
     }
 
-    public function 
+    public function test__construct__withoutArguments()
+    {
+        $handler = $this->getMockBuilder(AbstractManagedErrorHandler::class)
+                        ->getMockForAbstractClass();
+        $this->assertEquals(E_ALL | E_STRICT,  $handler->getErrorTypes());
+    }
+
+    public function test__construct__withArgument()
+    {
+        $handler = $this->getMockBuilder(AbstractManagedErrorHandler::class)
+                        ->setConstructorArgs([123])
+                        ->getMockForAbstractClass();
+        $this->assertEquals(123,  $handler->getErrorTypes());
+    }
+
+    public function test__enterContextt()
+    {
+        $handler = $this->getMockBuilder(AbstractManagedErrorHandler::class)
+                        ->setConstructorArgs([123])
+                        ->getMockForAbstractClass();
+
+        $set_error_handler = $this->getFunctionMock('Korowai\Lib\Error', 'set_error_handler');
+        $set_error_handler->expects($this->once())->with($handler, 123);
+
+        $this->assertSame($handler, $handler->enterContext());
+    }
+
+    public function test__exitContextt()
+    {
+        $handler = $this->getMockBuilder(AbstractManagedErrorHandler::class)
+                        ->setConstructorArgs([123])
+                        ->getMockForAbstractClass();
+
+        $restore_error_handler = $this->getFunctionMock('Korowai\Lib\Error', 'restore_error_handler');
+        $restore_error_handler->expects($this->once())->with();
+
+        $this->assertFalse($handler->exitContext(null));
+    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

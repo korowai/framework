@@ -14,7 +14,7 @@ namespace Korowai\Lib\Context;
 /**
  * A factory that associates classes with context managers.
  */
-class ClassContextFactory extends AbstractContextFactory
+class ClassContextFactory extends AbstractManagedContextFactory
 {
     /**
      * @var array
@@ -34,11 +34,22 @@ class ClassContextFactory extends AbstractContextFactory
 
     protected function initialize(array $wrappers)
     {
-        $this->wrappers = [];
+        $this->registry = [];
 
         foreach($wrappers as $key => $val) {
             $this->register($key, $val);
         }
+    }
+
+    /**
+     * Returns the internal registry which maps class names into their
+     * corresponding context manager generators.
+     *
+     * @return array
+     */
+    public function getRegistry() : array
+    {
+        return $this->registry;
     }
 
     /**
@@ -53,16 +64,17 @@ class ClassContextFactory extends AbstractContextFactory
     {
         if(is_callable($contextManager)) {
             $wrapper = $contextManager;
-        } elseif(class_exists($contextManager)) {
+        } elseif(is_string($contextManager) && class_exists($contextManager)) {
             $wrapper = function($arg) use ($contextManager) {
                 return new $contextManager($arg);
             };
         } else {
-            $msg = "argument 2 to ClassContextFactory::register() ".
-                   "must be a callable or a class name";
-            throw new \InvalidArgumentException($msg);
+            throw new \InvalidArgumentException(
+                'argument 2 to ' . __METHOD__ .  ' must be a callable or a' .
+                ' class name, ' .  gettype($contextManager) . ' given'
+            );
         }
-        $this->wrappers[ltrim($class, '\\')] = $wrapper;
+        $this->registry[ltrim($class, '\\')] = $wrapper;
         return $this;
     }
 
@@ -74,7 +86,7 @@ class ClassContextFactory extends AbstractContextFactory
      */
     public function remove(string $class) : ClassContextFactory
     {
-        unset($this->wrappers[$class]);
+        unset($this->registry[ltrim($class, '\\')]);
         return $this;
     }
 
@@ -85,7 +97,7 @@ class ClassContextFactory extends AbstractContextFactory
     {
         if(is_object($arg)) {
             $class = get_class($arg);
-            if(null !== ($wrapper = $this->wrappers[$class] ?? null)) {
+            if(null !== ($wrapper = $this->registry[$class] ?? null)) {
                 return call_user_func($wrapper, $arg);
             }
         }

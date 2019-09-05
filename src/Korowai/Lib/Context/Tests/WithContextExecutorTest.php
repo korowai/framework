@@ -322,7 +322,7 @@ class WithContextExecutorTest extends TestCase
             ));
         $cm1->expects($this->once())
             ->method('exitContext')
-            ->with(null)
+            ->with($throw)
             ->will($this->returnCallback(
                 function(?\Throwable $exception = null) use (&$exit, &$ex1) {
                     $ex1 = $exception;
@@ -338,10 +338,8 @@ class WithContextExecutorTest extends TestCase
             ->method('enterContext')
             ->with()
             ->will($this->returnCallback(
-                function () use ($in2, &$enter, $throw) {
+                function () use ($throw) {
                     throw $throw;
-                    $enter[] = 'cm2';
-                    return $in2;
                 }
             ));
         $cm2->expects($this->never())
@@ -370,7 +368,7 @@ class WithContextExecutorTest extends TestCase
         $this->assertFalse(isset($retval));
         $this->assertSame($throw, $caught);
 
-        $this->assertNull($ex1);
+        $this->assertSame($throw, $ex1);
         $this->assertNull($ex2);
 
         $this->assertEquals(['cm1'], $enter);

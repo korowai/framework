@@ -13,6 +13,7 @@ namespace Korowai\Component\Ldap\Tests;
 
 use PHPUnit\Framework\TestCase;
 use Korowai\Component\Ldap\Ldap;
+use Korowai\Component\Ldap\AbstractLdap;
 use Korowai\Component\Ldap\Adapter\AdapterInterface;
 use Korowai\Component\Ldap\Adapter\BindingInterface;
 use Korowai\Component\Ldap\Adapter\AdapterFactoryInterface;
@@ -64,7 +65,13 @@ class LdapTest extends TestCase
                     ->getMock();
     }
 
-    public function test_createWithAdapterFactory()
+    public function test__extends__AbstactLdap()
+    {
+        $parents = class_parents(Ldap::class);
+        $this->assertContains(AbstractLdap::class, $parents);
+    }
+
+    public function test__createWithAdapterFactory()
     {
         $factory = $this->getAdapterFactoryMock();
         $adapter = $this->getAdapterMock();
@@ -81,19 +88,19 @@ class LdapTest extends TestCase
         $this->assertSame($adapter, $ldap->getAdapter());
     }
 
-    public function test_createWithConfig_Defaults()
+    public function test__createWithConfig__Defaults()
     {
         $ldap = Ldap::createWithConfig();
         $this->assertInstanceOf(Adapter::class, $ldap->getAdapter());
     }
 
-    public function test_createWithConfig()
+    public function test__createWithConfig()
     {
         $ldap = Ldap::createWithConfig(array('host' => 'korowai.org'));
         $this->assertInstanceOf(Adapter::class, $ldap->getAdapter());
     }
 
-    public function test_createWithConfig_InexistentClass()
+    public function test__createWithConfig__InexistentClass()
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid argument 2 to Korowai\Component\Ldap\Ldap::createWithConfig: Foobar is not a name of existing class');
@@ -101,7 +108,7 @@ class LdapTest extends TestCase
         $ldap = Ldap::createWithConfig(array(), 'Foobar');
     }
 
-    public function test_createWithConfig_NotAFactoryClass()
+    public function test__createWithConfig__NotAFactoryClass()
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid argument 2 to Korowai\Component\Ldap\Ldap::createWithConfig: Korowai\Component\Ldap\Tests\SomeClass is not an implementation of Korowai\Component\Ldap\Adapter\AdapterFactoryInterface');
@@ -109,14 +116,14 @@ class LdapTest extends TestCase
         $ldap = Ldap::createWithConfig(array(), SomeClass::class);
     }
 
-    public function test_getAdapter()
+    public function test__getAdapter()
     {
         $adapter = $this->getAdapterMock();
         $ldap = new Ldap($adapter);
         $this->assertSame($adapter, $ldap->getAdapter());
     }
 
-    public function test_getBinding()
+    public function test__getBinding()
     {
         $adapter = $this->getAdapterMock();
         $ldap = new Ldap($adapter);
@@ -128,7 +135,7 @@ class LdapTest extends TestCase
         $this->assertSame($binding, $ldap->getBinding());
     }
 
-    public function test_getEntryManager()
+    public function test__getEntryManager()
     {
         $adapter = $this->getAdapterMock();
         $ldap = new Ldap($adapter);
@@ -140,7 +147,7 @@ class LdapTest extends TestCase
         $this->assertSame($em, $ldap->getEntryManager());
     }
 
-    public function test_bind_WithoutArgs()
+    public function test__bind__WithoutArgs()
     {
         $adapter = $this->getAdapterMock();
         $ldap = new Ldap($adapter);
@@ -161,7 +168,7 @@ class LdapTest extends TestCase
         $this->assertTrue($ldap->bind());
     }
 
-    public function test_bind_WithoutPassword()
+    public function test__bind__WithoutPassword()
     {
         $adapter = $this->getAdapterMock();
         $ldap = new Ldap($adapter);
@@ -182,7 +189,7 @@ class LdapTest extends TestCase
         $this->assertTrue($ldap->bind('dc=korowai,dc=org'));
     }
 
-    public function test_bind()
+    public function test__bind()
     {
         $adapter = $this->getAdapterMock();
         $ldap = new Ldap($adapter);
@@ -203,7 +210,7 @@ class LdapTest extends TestCase
         $this->assertTrue($ldap->bind('dc=korowai,dc=org', 's3cr3t'));
     }
 
-    public function test_isBound_True()
+    public function test__isBound__True()
     {
         $adapter = $this->getAdapterMock();
         $ldap = new Ldap($adapter);
@@ -224,7 +231,7 @@ class LdapTest extends TestCase
         $this->assertTrue($ldap->isBound());
     }
 
-    public function test_isBound_False()
+    public function test__isBound__False()
     {
         $adapter = $this->getAdapterMock();
         $ldap = new Ldap($adapter);
@@ -245,7 +252,7 @@ class LdapTest extends TestCase
         $this->assertFalse($ldap->isBound());
     }
 
-    public function test_unbind()
+    public function test__unbind()
     {
         $adapter = $this->getAdapterMock();
         $ldap = new Ldap($adapter);
@@ -266,7 +273,7 @@ class LdapTest extends TestCase
         $this->assertTrue($ldap->unbind());
     }
 
-    public function test_add()
+    public function test__add()
     {
         $adapter = $this->getAdapterMock();
         $ldap = new Ldap($adapter);
@@ -288,7 +295,7 @@ class LdapTest extends TestCase
         $this->assertSame('ok', $ldap->add($entry));
     }
 
-    public function test_update()
+    public function test__update()
     {
         $adapter = $this->getAdapterMock();
         $ldap = new Ldap($adapter);
@@ -310,7 +317,7 @@ class LdapTest extends TestCase
         $this->assertSame('ok', $ldap->update($entry));
     }
 
-    public function test_rename_WithoutDeleteOldRdn()
+    public function test__rename__WithoutDeleteOldRdn()
     {
         $adapter = $this->getAdapterMock();
         $ldap = new Ldap($adapter);
@@ -332,7 +339,7 @@ class LdapTest extends TestCase
         $this->assertSame('ok', $ldap->rename($entry, 'cn=korowai'));
     }
 
-    public function test_rename()
+    public function test__rename()
     {
         $adapter = $this->getAdapterMock();
         $ldap = new Ldap($adapter);
@@ -354,7 +361,7 @@ class LdapTest extends TestCase
         $this->assertSame('ok', $ldap->rename($entry, 'cn=korowai', false));
     }
 
-    public function test_delete()
+    public function test__delete()
     {
         $adapter = $this->getAdapterMock();
         $ldap = new Ldap($adapter);
@@ -376,7 +383,7 @@ class LdapTest extends TestCase
         $this->assertSame('ok', $ldap->delete($entry));
     }
 
-    public function test_createQuery_DefaultOptions()
+    public function test__createQuery__DefaultOptions()
     {
         $adapter = $this->getAdapterMock();
         $query = $this->getQueryMock();
@@ -390,7 +397,7 @@ class LdapTest extends TestCase
         $this->assertEquals($query, $ldap->createQuery('dc=example,dc=org', 'objectClass=*'));
     }
 
-    public function test_createQuery_CustomOptions()
+    public function test__createQuery__CustomOptions()
     {
         $adapter = $this->getAdapterMock();
         $query = $this->getQueryMock();

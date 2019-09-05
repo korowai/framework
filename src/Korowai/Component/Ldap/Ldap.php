@@ -171,7 +171,6 @@ class Ldap extends AbstractLdap
             $msg = $msg_pre . ": $factoryClass is not an implementation of ". AdapterFactoryInterface::class;
             throw new InvalidArgumentException($msg);
         }
-        return true;
     }
 }
 

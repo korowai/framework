@@ -290,6 +290,92 @@ class WithContextExecutorTest extends TestCase
         $this->assertEquals(['cm1', 'cm2'], $enter);
         $this->assertEquals(['cm2', 'cm1'], $exit);
     }
+
+    /**
+     * @covers ::__construct
+     * @covers ::__invoke
+     */
+    public function test__invoke__whenEnterContextThrows()
+    {
+        $in1 = ['foo'];
+        $in2 = ['bar'];
+
+        $ex1 = null;
+        $ex2 = null;
+
+        $enter = [];
+        $exit = [];
+
+        $throw = new ExceptionEB3IB4EL("testing exception");
+
+        $cm1 = $this->getMockBuilder(ContextManagerInterface::class)
+                    ->setMethods(['enterContext', 'exitContext'])
+                    ->getMock();
+        $cm1->expects($this->once())
+            ->method('enterContext')
+            ->with()
+            ->will($this->returnCallback(
+                function () use ($in1, &$enter) {
+                    $enter[] = 'cm1';
+                    return $in1;
+                }
+            ));
+        $cm1->expects($this->once())
+            ->method('exitContext')
+            ->with(null)
+            ->will($this->returnCallback(
+                function(?\Throwable $exception = null) use (&$exit, &$ex1) {
+                    $ex1 = $exception;
+                    $exit[] = 'cm1';
+                    return false;
+                }
+            ));
+
+        $cm2 = $this->getMockBuilder(ContextManagerInterface::class)
+                    ->setMethods(['enterContext', 'exitContext'])
+                    ->getMock();
+        $cm2->expects($this->once())
+            ->method('enterContext')
+            ->with()
+            ->will($this->returnCallback(
+                function () use ($in2, &$enter, $throw) {
+                    throw $throw;
+                    $enter[] = 'cm2';
+                    return $in2;
+                }
+            ));
+        $cm2->expects($this->never())
+            ->method('exitContext')
+            ->will($this->returnCallback(
+                function(?\Throwable $exception = null) use (&$exit, &$ex2) {
+                    $ex2 = $exception;
+                    $exit[] = 'cm2';
+                    return false;
+                }
+            ));
+
+        $executor = new WithContextExecutor([$cm1, $cm2]);
+
+        $caught = null;
+        try {
+            $retval = $executor(
+                function (array $arg1, array $arg2) {
+                    return 'ok';
+                }
+            );
+        } catch(ExceptionEB3IB4EL $e) {
+            $caught = $e;
+        }
+
+        $this->assertFalse(isset($retval));
+        $this->assertSame($throw, $caught);
+
+        $this->assertNull($ex1);
+        $this->assertNull($ex2);
+
+        $this->assertEquals(['cm1'], $enter);
+        $this->assertEquals(['cm1'], $exit);
+    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

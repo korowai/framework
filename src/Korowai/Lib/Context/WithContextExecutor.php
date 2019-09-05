@@ -51,21 +51,27 @@ class WithContextExecutor implements ExecutorInterface
     {
         $args = [];
 
-        for($i = 0; $i < count($this->context); $i++) {
-            $args[] = $this->context[$i]->enterContext();
-        }
-
         $exception = null;
         $return = null;
-        try {
-            $return = call_user_func_array($func, $args);
-        } catch(\Throwable $e) {
-            $exception = $e;
-        }
 
-        for($i = count($this->context)-1; $i >= 0; $i--) {
-            if($this->context[$i]->exitContext($exception)) {
-                $exception = null; // handled
+        try {
+
+            for($i = 0; $i < count($this->context); $i++) {
+                $args[] = $this->context[$i]->enterContext();
+            }
+
+            try {
+                $return = call_user_func_array($func, $args);
+            } catch(\Throwable $e) {
+                $exception = $e;
+            }
+
+        } finally {
+            // exit all the entered contexts
+            for($i--; $i >= 0; $i--) {
+                if($this->context[$i]->exitContext($exception)) {
+                    $exception = null; // handled
+                }
             }
         }
 

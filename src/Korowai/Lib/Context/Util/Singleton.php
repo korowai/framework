@@ -34,6 +34,7 @@ trait Singleton
 
     /**
      * Singleton's __clone() is hidden from user.
+     * @codeCoverageIgnore
      */
     private function __clone()
     {
@@ -41,6 +42,7 @@ trait Singleton
 
     /**
      * Singleton's __wakeup() is hidden from user.
+     * @codeCoverageIgnore
      */
     private function __wakeup()
     {

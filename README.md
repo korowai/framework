@@ -74,14 +74,18 @@ php vendor/bin/phpunit
 ./docker-compose -f docs/docker-compose.yml down
 ```
 
-or
+The generated API docs go to ``docs/build/html/api/``.
+
+### Generating API documentation continuously and serving via HTTP
 
 ```shell
-cd docs && ../docker-compose run --rm sami build
-../docker-compose down
+./docker-compose -f docs/docker-compose.yml up sami
+./docker-compose -f docs/docker-compose.yml down
 ```
 
-The generated API docs go to ``docs/build/html/api/``.
+The generated API docs go to ``docs/build/html/api/`` and get exposed at
+
+  - ``https://localhost:8001``.
 
 ### Generating sphinx documentation continuously
 

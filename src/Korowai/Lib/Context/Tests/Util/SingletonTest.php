@@ -45,6 +45,7 @@ class SingletonTest extends TestCase
 
     /**
      * @covers ::getInstance
+     * @covers ::__construct
      * @covers ::initializeSingleton
      */
     public function test__TrivialSingleton__getInstance()
@@ -98,6 +99,7 @@ class SingletonTest extends TestCase
 
     /**
      * @covers ::getInstance
+     * @covers ::__construct
      * @covers ::initializeSingleton
      */
     public function test__SingletonWithInitializer()

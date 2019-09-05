@@ -20,7 +20,6 @@ use Korowai\Lib\Context\ContextManagerInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @coversDefaultClass \Korowai\Lib\Context\ContextFactoryStack
  */
 class ContextFactoryStackTest extends TestCase
 {
@@ -72,23 +71,12 @@ class ContextFactoryStackTest extends TestCase
         new ContextFactoryStack();
     }
 
-    /**
-     * @covers ::getInstance
-     * @covers ::initializeSingleton
-     */
     public function test__getInstance()
     {
         $stack = ContextFactoryStack::getInstance();
         $this->assertSame(ContextFactoryStack::getInstance(), $stack);
     }
 
-    /**
-     * @covers ::clean
-     * @covers ::size
-     * @covers ::push
-     * @covers ::pop
-     * @covers ::top
-     */
     public function test__basicStackMethods()
     {
         $f0 = $this->getDummyContextFactory();
@@ -118,9 +106,6 @@ class ContextFactoryStackTest extends TestCase
         $this->assertEquals(0, $stack->size());
     }
 
-    /**
-     * @covers ::getContextManager
-     */
     public function test__getContextManager__onEmptyStack()
     {
         $stack = ContextFactoryStack::getInstance();
@@ -129,9 +114,6 @@ class ContextFactoryStackTest extends TestCase
         $this->assertNull($stack->getContextManager('an argument'));
     }
 
-    /**
-     * @covers ::getContextManager
-     */
     public function test__getContextManager()
     {
         $cm0 = $this->getDummyContextManager();

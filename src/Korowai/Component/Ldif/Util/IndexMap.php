@@ -12,7 +12,7 @@ declare(strict_types=1);
 namespace Korowai\Component\Ldif\Util;
 
 /**
- * Generates "index map" array for a string made pieces of other string.
+ * Generates "index map" array for a string made out of pieces of other string.
  *
  * Index map is used to map (byte) offsets in the resultant string onto
  * corresponding (byte) offsets in the original string.

@@ -70,7 +70,7 @@ class ClassContextFactory extends AbstractManagedContextFactory
             };
         } else {
             throw new \InvalidArgumentException(
-                'argument 2 to ' . __METHOD__ .  ' must be a callable or a' .
+                'argument 2 to ' . __METHOD__ .  '() must be a callable or a' .
                 ' class name, ' .  gettype($contextManager) . ' given'
             );
         }

@@ -96,6 +96,31 @@ class ClassContextFactoryTest extends TestCase
         $this->assertSame($obj2, $ctx2->wrapped);
     }
 
+    public function test__register__withContextManagerNotAClass()
+    {
+        $factory = new ClassContextFactory();
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'argument 2 to ' . ClassContextFactory::class . '::register()' . 
+            ' must be a callable or a class name, string given' 
+        );
+        $factory->register(ClassJG8MG9JQ::class, 'In-Ex-Is-Tent');
+    }
+
+    public function test__register__withContextManagerNotAString()
+    {
+        $factory = new ClassContextFactory();
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessageRegExp(
+            '/argument 2 to ' . preg_quote(ClassContextFactory::class) .
+            '::register\\(\\)' .
+            ' must be a callable or a class name, int(?:eger)? given/'
+        );
+        $factory->register(ClassJG8MG9JQ::class, 123);
+    }
+
     public function test__remove()
     {
         $wrappers = [

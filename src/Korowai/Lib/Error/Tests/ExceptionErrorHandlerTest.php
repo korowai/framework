@@ -22,7 +22,6 @@ class Exception2ZR5YS29 extends \ErrorException { };
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @coversDefaultClass \Korowai\Lib\Error\ExceptionErrorHandler
  */
 class ExceptionErrorHandlerTest extends TestCase
 {
@@ -159,6 +158,9 @@ class ExceptionErrorHandlerTest extends TestCase
         $this->assertEquals(123,  $handler->getErrorTypes());
     }
 
+    /**
+     * @runInSeparateProcess
+     */
     public function test__invoke__whenSeverityIsRelevant()
     {
         $error_reporting = $this->getFunctionMock('Korowai\\Lib\\Error', 'error_reporting');
@@ -171,6 +173,9 @@ class ExceptionErrorHandlerTest extends TestCase
         $handler(E_ERROR, 'foo', 'bar.php', 456);
     }
 
+    /**
+     * @runInSeparateProcess
+     */
     public function test__invoke__whenSeverityIsIrrelevant()
     {
         $error_reporting = $this->getFunctionMock('Korowai\\Lib\\Error', 'error_reporting');

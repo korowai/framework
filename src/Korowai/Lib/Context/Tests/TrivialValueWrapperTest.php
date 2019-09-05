@@ -18,7 +18,6 @@ use Korowai\Lib\Context\ContextManagerInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @coversDefaultClass \Korowai\Lib\Context\TrivialValueWrapper
  */
 class TrivialValueWrapperTest extends TestCase
 {
@@ -28,10 +27,6 @@ class TrivialValueWrapperTest extends TestCase
         $this->assertContains(ContextManagerInterface::class, $interfaces);
     }
 
-    /**
-     * @covers ::__construct
-     * @covers ::getValue
-     */
     public function test__construct()
     {
         $value = ['foo'];
@@ -39,9 +34,6 @@ class TrivialValueWrapperTest extends TestCase
         $this->assertSame($value, $cm->getValue());
     }
 
-    /**
-     * @covers ::enterContext
-     */
     public function test__enterContext()
     {
         $value = ['foo'];
@@ -49,9 +41,6 @@ class TrivialValueWrapperTest extends TestCase
         $this->assertSame($value, $cm->enterContext());
     }
 
-    /**
-     * @covers ::exitContext
-     */
     public function test__exitContext()
     {
         $value = ['foo'];

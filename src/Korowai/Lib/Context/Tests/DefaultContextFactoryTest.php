@@ -21,7 +21,6 @@ use Korowai\Lib\Context\TrivialValueWrapper;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @coversDefaultClass \Korowai\Lib\Context\DefaultContextFactory
  */
 class DefaultContextFactoryTest extends TestCase
 {
@@ -44,9 +43,6 @@ class DefaultContextFactoryTest extends TestCase
         new DefaultContextFactory();
     }
 
-    /**
-     * @covers ::getInstance
-     */
     public function test__getInstance()
     {
         $factory = DefaultContextFactory::getInstance();
@@ -54,7 +50,7 @@ class DefaultContextFactoryTest extends TestCase
     }
 
     /**
-     * @covers ::getContextManager
+     * @runInSeparateProcess
      */
     public function test__getContextManager__withContextManager()
     {
@@ -72,7 +68,7 @@ class DefaultContextFactoryTest extends TestCase
     }
 
     /**
-     * @covers ::getContextManager
+     * @runInSeparateProcess
      */
     public function test__getContextManager__withResource()
     {
@@ -91,7 +87,7 @@ class DefaultContextFactoryTest extends TestCase
     }
 
     /**
-     * @covers ::getContextManager
+     * @runInSeparateProcess
      */
     public function test__getContextManager__withValue()
     {

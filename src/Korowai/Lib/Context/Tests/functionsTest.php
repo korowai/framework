@@ -19,7 +19,6 @@ use Korowai\Lib\Context\TrivialValueWrapper;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @coversDefaultClass \Korowai\Lib\Context\WithContextExecutor
  */
 class function__with__Test extends TestCase
 {

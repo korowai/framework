@@ -20,7 +20,6 @@ use Korowai\Lib\Context\ContextManagerInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @coversDefaultClass \Korowai\Lib\Error\CustomErrorHandler
  */
 class CustomErrorHandlerTest extends TestCase
 {

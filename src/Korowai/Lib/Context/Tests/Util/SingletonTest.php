@@ -15,12 +15,12 @@ use Korowai\Lib\Context\Util\Singleton;
 
 use PHPUnit\Framework\TestCase;
 
-class TrivialSingleton
+class SingletonC91F82BJ
 {
     use Singleton;
 };
 
-class SingletonWithInitializer
+class Singleton76YO7MV5
 {
     use Singleton;
 
@@ -34,7 +34,6 @@ class SingletonWithInitializer
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @coversDefaultClass \Korowai\Lib\Context\Util\Singleton
  */
 class SingletonTest extends TestCase
 {
@@ -43,36 +42,25 @@ class SingletonTest extends TestCase
         return '/Call to private (?:method )?' . preg_quote($method) . '/';
     }
 
-    /**
-     * @covers ::getInstance
-     * @covers ::__construct
-     * @covers ::initializeSingleton
-     */
     public function test__TrivialSingleton__getInstance()
     {
-        $obj1 = TrivialSingleton::getInstance();
-        $obj2 = TrivialSingleton::getInstance();
+        $obj1 = SingletonC91F82BJ::getInstance();
+        $obj2 = SingletonC91F82BJ::getInstance();
         $this->assertSame($obj1, $obj2);
     }
 
-    /**
-     * @covers ::__construct
-     */
     public function test__TrivialSingleton__construct()
     {
-        $regex = $this->getPrivateErrorRegExp(TrivialSingleton::class . '::__construct()');
+        $regex = $this->getPrivateErrorRegExp(SingletonC91F82BJ::class . '::__construct()');
         $this->expectException(\Error::class);
         $this->expectExceptionMessageRegExp($regex);
 
-        new TrivialSingleton();
+        new SingletonC91F82BJ();
     }
 
-    /**
-     * @covers ::__clone
-     */
     public function test__TrivialSingleton__clone()
     {
-        $obj = TrivialSingleton::getInstance();
+        $obj = SingletonC91F82BJ::getInstance();
 
         $regex = $this->getPrivateErrorRegExp(get_class($obj) . '::__clone()');
 
@@ -82,12 +70,9 @@ class SingletonTest extends TestCase
         $obj->__clone();
     }
 
-    /**
-     * @covers ::__wakeup
-     */
     public function test__TrivialSingleton__wakeup()
     {
-        $obj = TrivialSingleton::getInstance();
+        $obj = SingletonC91F82BJ::getInstance();
 
         $regex = $this->getPrivateErrorRegExp(get_class($obj) . '::__wakeup()');
 
@@ -97,14 +82,9 @@ class SingletonTest extends TestCase
         $obj->__wakeup();
     }
 
-    /**
-     * @covers ::getInstance
-     * @covers ::__construct
-     * @covers ::initializeSingleton
-     */
     public function test__SingletonWithInitializer()
     {
-        $obj = SingletonWithInitializer::getInstance();
+        $obj = Singleton76YO7MV5::getInstance();
         $this->assertEquals('initialized', $obj->value);
     }
 }

@@ -19,7 +19,6 @@ use Korowai\Lib\Context\ContextManagerInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @coversDefaultClass \Korowai\Lib\Error\AbstractManagedErrorHandler
  */
 class AbstractManagedErrorHandlerTest extends TestCase
 {
@@ -52,6 +51,9 @@ class AbstractManagedErrorHandlerTest extends TestCase
         $this->assertEquals(123,  $handler->getErrorTypes());
     }
 
+    /**
+     * @runInSeparateProcess
+     */
     public function test__enterContextt()
     {
         $handler = $this->getMockBuilder(AbstractManagedErrorHandler::class)
@@ -64,6 +66,9 @@ class AbstractManagedErrorHandlerTest extends TestCase
         $this->assertSame($handler, $handler->enterContext());
     }
 
+    /**
+     * @runInSeparateProcess
+     */
     public function test__exitContextt()
     {
         $handler = $this->getMockBuilder(AbstractManagedErrorHandler::class)

@@ -21,7 +21,6 @@ use Korowai\Lib\Context\ContextFactoryStack;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @coversDefaultClass \Korowai\Lib\Context\AbstractManagedContextFactory
  */
 class AbstractManagedContextFactoryTest extends TestCase
 {
@@ -37,10 +36,6 @@ class AbstractManagedContextFactoryTest extends TestCase
         $this->assertContains(ContextManagerInterface::class, $interfaces);
     }
 
-    /**
-     * @covers ::enterContext
-     * @covers ::exitContext
-     */
     public function test__enterContext_and_exitContext()
     {
         $factory = $this->getMockBuilder(AbstractManagedContextFactory::class)

@@ -23,7 +23,6 @@ class ExceptionEB3IB4EL extends \Exception
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @coversDefaultClass \Korowai\Lib\Context\WithContextExecutor
  */
 class WithContextExecutorTest extends TestCase
 {
@@ -33,20 +32,12 @@ class WithContextExecutorTest extends TestCase
         $this->assertContains(ExecutorInterface::class, $interfaces);
     }
 
-    /**
-     * @covers ::__construct
-     * @covers ::getContext()
-     */
     public function test__construct()
     {
         $executor = new WithContextExecutor(['foo', 'bar']);
         $this->assertEquals(['foo', 'bar'], $executor->getContext());
     }
 
-    /**
-     * @covers ::__construct
-     * @covers ::__invoke
-     */
     public function test__invoke()
     {
         $in1 = ['foo'];
@@ -120,10 +111,6 @@ class WithContextExecutorTest extends TestCase
         $this->assertEquals(['cm2', 'cm1'], $exit);
     }
 
-    /**
-     * @covers ::__construct
-     * @covers ::__invoke
-     */
     public function test__invoke__withException_01()
     {
         $in1 = ['foo'];
@@ -205,10 +192,6 @@ class WithContextExecutorTest extends TestCase
         $this->assertEquals(['cm2', 'cm1'], $exit);
     }
 
-    /**
-     * @covers ::__construct
-     * @covers ::__invoke
-     */
     public function test__invoke__withException__02()
     {
         $in1 = ['foo'];
@@ -291,10 +274,6 @@ class WithContextExecutorTest extends TestCase
         $this->assertEquals(['cm2', 'cm1'], $exit);
     }
 
-    /**
-     * @covers ::__construct
-     * @covers ::__invoke
-     */
     public function test__invoke__whenEnterContextThrows()
     {
         $in1 = ['foo'];

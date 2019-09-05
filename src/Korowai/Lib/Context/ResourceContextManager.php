@@ -181,9 +181,15 @@ class ResourceContextManager implements ContextManagerInterface
         $func = self::DEFAULT_RESOURCE_DESTRUCTORS[$type] ?? null;
         if(is_string($func) && substr($func, 0, 2) === '->') {
             $func = substr($func, 2);
-            return function (object $resource) use ($func) {
-                return call_user_func(array($resource, $func));
-            };
+            if (PHP_VERSION_ID >= 70200) {
+                return function (object $resource) use ($func) {
+                    return call_user_func(array($resource, $func));
+                };
+            } else {
+                return function ($resource) use ($func) {
+                    return call_user_func(array($resource, $func));
+                };
+            }
         } elseif($type === 'stream' && is_null($func)) {
             $meta = stream_get_meta_data($resource);
             if($meta['stream_type'] === 'dir') {

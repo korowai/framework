@@ -30,7 +30,7 @@ class TrivialValueWrapperTest extends TestCase
 
     /**
      * @covers ::__construct
-     * @covers ::getResource
+     * @covers ::getValue
      */
     public function test__construct()
     {

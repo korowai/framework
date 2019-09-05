@@ -13,6 +13,9 @@ namespace Korowai\Component\Ldap\Tests;
 
 use PHPUnit\Framework\TestCase;
 use Korowai\Component\Ldap\AbstractLdap;
+use Korowai\Component\Ldap\LdapInterface;
+use Korowai\Component\Ldap\Adapter\QueryInterface;
+use Korowai\Component\Ldap\Adapter\ResultInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -27,11 +30,19 @@ class AbstractLdapTest extends TestCase
 
     public function test__query()
     {
-        $query = new class {
-            public function getResult() { return 'ok'; }
-        };
+        $result = $this->getMockBuilder(ResultInterface::class)
+                       ->getMockForAbstractClass();
 
-        $ldap = $this->createMockBuilder(AbstractLdap::class)
+        $query = $this->getMockBuilder(QueryInterface::class)
+                      ->setMethods(['getResult'])
+                      ->getMockForAbstractClass();
+
+        $query->expects($this->once())
+              ->method('getResult')
+              ->with()
+              ->willReturn($result);
+
+        $ldap = $this->getMockBuilder(AbstractLdap::class)
                      ->setMethods(['createQuery'])
                      ->getMockForAbstractClass();
 
@@ -41,7 +52,7 @@ class AbstractLdapTest extends TestCase
              ->with(...$args)
              ->willReturn($query);
 
-        $this->assertEquals('ok', $ldap->query(...$args));
+        $this->assertSame($result, $ldap->query(...$args));
     }
 }
 

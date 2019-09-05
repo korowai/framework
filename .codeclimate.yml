@@ -9,6 +9,10 @@ exclude_patterns:
   - "docs/"
   - "bin/"
   - "vendor/"
+  - "src/Korowai/*/*/Tests/"
+  - "src/Korowai/*/*/Behat/"
+  - "src/Korowai/*/*/Resources/"
+  - "src/Korowai/*/*/vendor/"
 ##plugins:
 ##  pep8:
 ##    enabled: true

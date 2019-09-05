@@ -74,6 +74,7 @@ class ContextFactoryStackTest extends TestCase
 
     /**
      * @covers ::getInstance
+     * @covers ::initializeSingleton
      */
     public function test__getInstance()
     {

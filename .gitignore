@@ -2,6 +2,7 @@
 /composer
 /phpdoc
 /docker-compose
+/sami
 /tmp
 /tests/cache
 *.phar

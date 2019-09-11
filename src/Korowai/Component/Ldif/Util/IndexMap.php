@@ -11,24 +11,27 @@ declare(strict_types=1);
 
 namespace Korowai\Component\Ldif\Util;
 
+/**
+ * Index map is used to map (byte) offsets in a preprocessed string onto
+ * corresponding (byte) offsets in the original string. The preprocessing is
+ * assumed to be a process of removing certain parts from source string or,
+ * in other words, assembling resultant string from pieces of the source
+ * string.
+ */
 class IndexMap
 {
     /**
      * @var array
      */
-    protected $im;
+    protected $indexMap;
 
     /**
      * @var int
      */
-    protected $inc;
+    protected $increment;
 
     /**
-     * Generates "index map" array for a string made out of pieces of other
-     * string.
-     *
-     * Index map is used to map (byte) offsets in the resultant string onto
-     * corresponding (byte) offsets in the original string.
+     * Creates IndexMap for a string made out of pieces of other string.
      *
      * ``$pieces`` must be an array where every element is an array consisting
      * of a substring of the original string at offset 0 and its string offset
@@ -39,10 +42,10 @@ class IndexMap
      *                      resultant string (see function description above)
      * @return array
      */
-    public static function fromPieces(array $pieces, int $inc = 1)
+    public static function createFromPieces(array $pieces, int $increment = 1)
     {
         $offset = 0;
-        $im = array_map(
+        $indexMap = array_map(
             function ($piece) use (&$offset) {
                 $entry = [$offset, $piece[1]];
                 $offset += strlen($piece[0]);
@@ -50,81 +53,102 @@ class IndexMap
             },
             $pieces
         );
-        return new self($im, $inc);
+        return new self($indexMap, $increment);
     }
 
     /**
      * Initializes the object.
      */
-    public function __construct(array $im, int $inc = 1)
+    public function __construct(array $indexMap, int $increment = 1)
     {
-        $this->im = $im;
-        $this->inc = $inc;
+        $this->indexMap = $indexMap;
+        $this->increment = $increment;
     }
 
     /**
-     * Applies index map $im to index value $i returning the mapped index
-     * corresponding to $i.
+     * Returns index map array maintained by the IndexMap object.
+     *
+     * @return array
+     */
+    public function getIndexMap() : array
+    {
+        return $this->indexMap;
+    }
+
+    /**
+     * Returns the default increment encapsulated by the IndexMap object.
+     *
+     * @return int
+     */
+    public function getIncrement() : int
+    {
+        return $this->increment;
+    }
+
+    /**
+     * Returns the mapped index corresponding to $i.
      *
      * @param int $i An offset to be mapped.
-     * @param int $index Returns the index in $im used to compute the offset
+     * @param int $index Returns the index of the entry in the internal index
+     *                   map array (getIndexMap()) used to compute the offset.
      *
      * @return int The result of mapping.
      */
     public function __invoke(int $i, int &$index = null) : int
     {
-        $cnt = count($this->im);
-        if ($cnt === 0 || $i < $this->im[0][0]) {
+        $indexMap = $this->getIndexMap();
+        $cnt = count($indexMap);
+        if ($cnt === 0 || $i < $indexMap[0][0]) {
             return $i;
-        } elseif($i >= $this->im[$cnt-1][0]) {
+        } elseif($i >= $indexMap[$cnt-1][0]) {
             $index = $cnt - 1;
         } else {
             $index = $this->bisect($i);
         }
 
-        $inc = $this->im[$index][2] ?? $this->inc;
-        return $this->im[$index][1] + ($i - $this->im[$index][0]) * $inc;
+        $increment = $indexMap[$index][2] ?? $this->getIncrement();
+        return $indexMap[$index][1] + ($i - $indexMap[$index][0]) * $increment;
     }
 
     /**
-     * Applies an index map array ($im) over this one.
+     * Applies an index map array ($indexMap) over this one.
      *
      * This shall be used to implement consecutive string manipulations, where
      * each step produces index map array.
      *
-     * @param array $im a new index map array to be applied to $this
+     * @param array $indexMap a new index map array to be applied to $this
      *
      */
-    public function apply(array $im)
+    public function apply(array $indexMap)
     {
         $new = [];
-        $old = $this->im;
-        $ns = 0; // new shrink (introduced by $im)
-        $ts = 0; // total shrink (cumulation of $old and $im)
-        for($i=0, $j=0; $i < count($old) || $j < count($im); ) {
-            if($j < count($im) && ($i >= count($old) || $im[$j][1] < ($old[$i][0] - $ns))) {
+        $old = $this->indexMap;
+        $ns = 0; // new shrink (introduced by $indexMap)
+        $ts = 0; // total shrink (cumulation of $old and $indexMap)
+        for($i=0, $j=0; $i < count($old) || $j < count($indexMap); ) {
+            if($j < count($indexMap) && ($i >= count($old) || $indexMap[$j][1] < ($old[$i][0] - $ns))) {
                 //
-                // $im[$j] on the left side of $old[$i]
+                // $indexMap[$j] on the left side of $old[$i]
                 //
-                $ts += ($im[$j][1] - $im[$j][0]);
-                $new[] = [$im[$j][0], $im[$j][0] + $ts];
-                $ns += ($im[$j][1] - $im[$j][0]);
+                $ts += ($indexMap[$j][1] - $indexMap[$j][0]);
+                $new[] = [$indexMap[$j][0], $indexMap[$j][0] + $ts];
+                $ns += ($indexMap[$j][1] - $indexMap[$j][0]);
                 $j++;
-            } elseif($j < count($im) && $i < count($old) && $im[$j][0] <= ($old[$i][0] - $ns)) {
+            } elseif($j < count($indexMap) && $i < count($old) && $indexMap[$j][0] <= ($old[$i][0] - $ns)) {
                 //
-                // $im[$j] encloses $old[$i] (and perhaps $old[$i+1], ...)
+                // $indexMap[$j] encloses $old[$i] (and perhaps $old[$i+1], ...)
                 //
-                $ts += ($im[$j][1] - $im[$j][0]);
+                $ts += ($indexMap[$j][1] - $indexMap[$j][0]);
                 do {
                     $ts += ($old[$i][1] - $old[$i][0]);
                     $i++;
-                } while($i < count($old) && ($old[$i][0] - $ns) <= $im[$j][1]);
-                $new[] = [$im[$j][0], $im[$j][0] + $ts];
-                $ns += ($im[$j][1] - $im[$j][0]);
+                } while($i < count($old) && ($old[$i][0] - $ns) <= $indexMap[$j][1]);
+                $new[] = [$indexMap[$j][0], $indexMap[$j][0] + $ts];
+                $ns += ($indexMap[$j][1] - $indexMap[$j][0]);
                 $j++;
             } elseif($i < count($old)) {
                 //
-                // $im[$j] on the right side of $old[$i]
+                // $indexMap[$j] on the right side of $old[$i]
                 //
                 $new[] = [$old[$i][0] - $ns, $old[$i][1]];
                 $ts += ($old[$i][1] - $old[$i][0]);
@@ -133,14 +157,14 @@ class IndexMap
                 throw \RuntimeException("internal error");
             }
         }
-        $this->im = $new;
+        $this->indexMap = $new;
 
         return $this;
     }
 
     protected function bisect(int $i)
     {
-        $cnt = count($this->im);
+        $cnt = count($this->indexMap);
 
         $lo = 0;
         $hi = $cnt - 1;
@@ -151,7 +175,7 @@ class IndexMap
                 throw new \RuntimeException("internal error: iteration count exceeded");
             }
             $mid = floor(($lo + $hi) / 2);
-            if($i < $this->im[$mid][0]) {
+            if($i < $this->indexMap[$mid][0]) {
                 $hi = $mid;
             } else {
                 $lo = $mid;
@@ -180,13 +204,13 @@ class IndexMap
  */
 function imFromPieces(array $pieces) : array
 {
-    $im = [];
+    $indexMap = [];
     $offset = 0;
     foreach($pieces as $piece) {
-        $im[] = [$offset, $piece[1]];
+        $indexMap[] = [$offset, $piece[1]];
         $offset += strlen($piece[0]);
     }
-    return $im;
+    return $indexMap;
 }
 
 /**
@@ -206,18 +230,18 @@ function imOverIm(array $old, array $new) : array
 }
 
 /**
- * Applies index map $im to index value $i returning the mapped index
+ * Applies index map $indexMap to index value $i returning the mapped index
  * corresponding to $i.
  *
- * @param array $im Index map array.
+ * @param array $indexMap Index map array.
  * @param int $i An offset to be mapped.
- * @param int $index Returns the index in $im used to compute the offset
+ * @param int $index Returns the index in $indexMap used to compute the offset
  *
  * @return int The result of mapping.
  */
-function imApply(array $im, int $i, int &$index=null) : int
+function imApply(array $indexMap, int $i, int &$index=null) : int
 {
-    $cnt = count($im);
+    $cnt = count($indexMap);
 
     $lo = 0;
     $hi = $cnt - 1;
@@ -226,12 +250,12 @@ function imApply(array $im, int $i, int &$index=null) : int
         return $i;
     }
 
-    if ($i < $im[0][0]) {
+    if ($i < $indexMap[0][0]) {
         return $i;
-    } elseif($i >= $im[$hi][0]) {
+    } elseif($i >= $indexMap[$hi][0]) {
         $index = $hi;
-        $inc = $im[$hi][2] ?? 1;
-        return $im[$hi][1] + ($i - $im[$hi][0]) * $inc;
+        $increment = $indexMap[$hi][2] ?? 1;
+        return $indexMap[$hi][1] + ($i - $indexMap[$hi][0]) * $increment;
     } else {
         $iter = 0;
         while($hi - $lo > 1) {
@@ -239,7 +263,7 @@ function imApply(array $im, int $i, int &$index=null) : int
                 throw new \RuntimeException("internal error: iteration count exceeded");
             }
             $mid = floor(($lo + $hi) / 2);
-            if($i < $im[$mid][0]) {
+            if($i < $indexMap[$mid][0]) {
                 $hi = $mid;
             } else {
                 $lo = $mid;
@@ -247,8 +271,8 @@ function imApply(array $im, int $i, int &$index=null) : int
             $iter++;
         }
         $index = $lo;
-        $inc = $im[$lo][2] ?? 1;
-        return $im[$lo][1] + ($i - $im[$lo][0]) * $inc;
+        $increment = $indexMap[$lo][2] ?? 1;
+        return $indexMap[$lo][1] + ($i - $indexMap[$lo][0]) * $increment;
     }
 }
 

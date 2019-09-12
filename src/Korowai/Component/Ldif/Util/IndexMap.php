@@ -395,7 +395,7 @@ function imSearch(array $im, int $i) : int
     }
 
     $iter = 0;
-    while($hi - $lo > 1 && $iter < $cnt) {
+    while($hi - $lo > 1) {
         if($iter > 2 * $cnt) {
             throw new \RuntimeException("internal error: iteration count exceeded");
         }

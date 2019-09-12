@@ -345,9 +345,9 @@ function imCombine(array $old, array $new) : array
             // $new[$s->j] on the right side of $old[$s->i]
             //
             $s->stepWhenAfter($old, $new);
-        } else {
+        } /*else {
             throw \RuntimeException("internal error");
-        }
+            } */
     }
     return $s->im;
 }

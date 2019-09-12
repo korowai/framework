@@ -287,7 +287,7 @@ class ImCombineState
        return $new[$this->j][0] <= ($old[$this->i][0] - $this->ns);
     }
 
-    public function stepWhenBefore(array $old, array $new)
+    public function stepBefore(array $old, array $new)
     {
         $this->ts += ($new[$this->j][1] - $new[$this->j][0]);
         $this->im[] = [$new[$this->j][0], $new[$this->j][0] + $this->ts];
@@ -295,7 +295,7 @@ class ImCombineState
         $this->j++;
     }
 
-    public function stepWhenEnclosing(array $old, array $new)
+    public function stepEnclosing(array $old, array $new)
     {
         $this->ts += ($new[$this->j][1] - $new[$this->j][0]);
         do {
@@ -307,11 +307,15 @@ class ImCombineState
         $this->j++;
     }
 
-    public function stepWhenAfter(array $old, array $new)
+    public function stepAfter(array $old, array $new)
     {
-        $this->im[] = [$old[$this->i][0] - $this->ns, $old[$this->i][1]];
-        $this->ts += ($old[$this->i][1] - $old[$this->i][0]);
-        $this->i++;
+        if($this->i < count($old)) {
+            $this->im[] = [$old[$this->i][0] - $this->ns, $old[$this->i][1]];
+            $this->ts += ($old[$this->i][1] - $old[$this->i][0]);
+            $this->i++;
+        } else {
+            throw \RuntimeException("internal error");
+        }
     }
 };
 
@@ -334,20 +338,18 @@ function imCombine(array $old, array $new) : array
             //
             // $new[$s->j] on the left side of $old[$s->i]
             //
-            $s->stepWhenBefore($old, $new);
+            $s->stepBefore($old, $new);
         } elseif($s->isNotAfter($old, $new)) {
             //
             // $new[$s->j] encloses $old[$s->i] (and perhaps $old[$s->i+1], ...)
             //
-            $s->stepWhenEnclosing($old, $new);
-        } elseif($s->i < count($old)) {
+            $s->stepEnclosing($old, $new);
+        } else {
             //
             // $new[$s->j] on the right side of $old[$s->i]
             //
-            $s->stepWhenAfter($old, $new);
-        } /*else {
-            throw \RuntimeException("internal error");
-            } */
+            $s->stepAfter($old, $new);
+        }
     }
     return $s->im;
 }

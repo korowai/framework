@@ -261,6 +261,58 @@ class ImCombineState
     public $j = 0;
     public $ns = 0; // new shrink (introduced by $new)
     public $ts = 0; // total shrink (accumulation of $old and $new)
+
+    public function finished(array $old, array $new)
+    {
+        return $this->i >= count($old) && $this->j >= count($new);
+    }
+
+    public function isBefore(array $old, array $new)
+    {
+        if($this->j >= count($new)) {
+            return false;
+        }
+        if($this->i >= count($old)) {
+            return true;
+        }
+        return $new[$this->j][1] < ($old[$this->i][0] - $this->ns);
+    }
+
+    public function isNotAfter(array $old, array $new)
+    {
+        if($this->j >= count($new) || $this->i >= count($old)) {
+            return false;
+        }
+
+       return $new[$this->j][0] <= ($old[$this->i][0] - $this->ns);
+    }
+
+    public function stepWhenBefore(array $old, array $new)
+    {
+        $this->ts += ($new[$this->j][1] - $new[$this->j][0]);
+        $this->im[] = [$new[$this->j][0], $new[$this->j][0] + $this->ts];
+        $this->ns += ($new[$this->j][1] - $new[$this->j][0]);
+        $this->j++;
+    }
+
+    public function stepWhenEnclosing(array $old, array $new)
+    {
+        $this->ts += ($new[$this->j][1] - $new[$this->j][0]);
+        do {
+            $this->ts += ($old[$this->i][1] - $old[$this->i][0]);
+            $this->i++;
+        } while($this->i < count($old) && ($old[$this->i][0] - $this->ns) <= $new[$this->j][1]);
+        $this->im[] = [$new[$this->j][0], $new[$this->j][0] + $this->ts];
+        $this->ns += ($new[$this->j][1] - $new[$this->j][0]);
+        $this->j++;
+    }
+
+    public function stepWhenAfter(array $old, array $new)
+    {
+        $this->im[] = [$old[$this->i][0] - $this->ns, $old[$this->i][1]];
+        $this->ts += ($old[$this->i][1] - $old[$this->i][0]);
+        $this->i++;
+    }
 };
 
 /**
@@ -277,22 +329,22 @@ class ImCombineState
 function imCombine(array $old, array $new) : array
 {
     $s = new ImCombineState;
-    for($s->i=0, $s->j=0; $s->i < count($old) || $s->j < count($new); ) {
-        if(imCombineIsBefore($s, $old, $new)) {
+    while(!$s->finished($old, $new)) {
+        if($s->isBefore($old, $new)) {
             //
             // $new[$s->j] on the left side of $old[$s->i]
             //
-            imCombineWhenBefore($s, $old, $new);
-        } elseif(imCombineIsNotAfter($s, $old, $new)) {
+            $s->stepWhenBefore($old, $new);
+        } elseif($s->isNotAfter($old, $new)) {
             //
             // $new[$s->j] encloses $old[$s->i] (and perhaps $old[$s->i+1], ...)
             //
-            imCombineWhenEnclosing($s, $old, $new);
+            $s->stepWhenEnclosing($old, $new);
         } elseif($s->i < count($old)) {
             //
             // $new[$s->j] on the right side of $old[$s->i]
             //
-            imCombineWhenAfter($s, $old, $new);
+            $s->stepWhenAfter($old, $new);
         } else {
             throw \RuntimeException("internal error");
         }
@@ -300,52 +352,6 @@ function imCombine(array $old, array $new) : array
     return $s->im;
 }
 
-function imCombineIsBefore(object $s, array $old, array $new)
-{
-    if($s->j >= count($new)) {
-        return false;
-    }
-    if($s->i >= count($old)) {
-        return true;
-    }
-    return $new[$s->j][1] < ($old[$s->i][0] - $s->ns);
-}
-
-function imCombineIsNotAfter(object $s, array $old, array $new)
-{
-    if($s->j >= count($new) || $s->i >= count($old)) {
-        return false;
-    }
-
-   return $new[$s->j][0] <= ($old[$s->i][0] - $s->ns);
-}
-
-function imCombineWhenBefore(object $s, array $old, array $new)
-{
-    $s->ts += ($new[$s->j][1] - $new[$s->j][0]);
-    $s->im[] = [$new[$s->j][0], $new[$s->j][0] + $s->ts];
-    $s->ns += ($new[$s->j][1] - $new[$s->j][0]);
-    $s->j++;
-}
-
-function imCombineWhenEnclosing(object $s, array $old, array $new)
-{
-    $s->ts += ($new[$s->j][1] - $new[$s->j][0]);
-    do {
-        $s->ts += ($old[$s->i][1] - $old[$s->i][0]);
-        $s->i++;
-    } while($s->i < count($old) && ($old[$s->i][0] - $s->ns) <= $new[$s->j][1]);
-    $s->im[] = [$new[$s->j][0], $new[$s->j][0] + $s->ts];
-    $s->ns += ($new[$s->j][1] - $new[$s->j][0]);
-    $s->j++;
-}
-
-function imCombineWhenAfter(object $s, array $old, array $new)
-{
-    $s->im[] = [$old[$s->i][0] - $s->ns, $old[$s->i][1]];
-    $s->ts += ($old[$s->i][1] - $old[$s->i][0]);
-    $s->i++;
-}
 
 /**
  * Applies index map $im to index value $i returning the mapped index

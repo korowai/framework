@@ -25,7 +25,7 @@ function ppAsmPieces(array $pieces, array &$im=null) : string
     if($im === null) {
         $im = $new_im;
     } else {
-        $im = imOverIm($im, $new_im);
+        $im = imCombine($im, $new_im);
     }
     return implode(array_map(function ($p){return $p[0];}, $pieces));
 }

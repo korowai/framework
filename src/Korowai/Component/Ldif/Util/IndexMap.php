@@ -254,6 +254,15 @@ function imFromPieces(array $pieces) : array
     return $indexMap;
 }
 
+class ImCombineState
+{
+    public $im = [];
+    public $i = 0;
+    public $j = 0;
+    public $ns = 0; // new shrink (introduced by $new)
+    public $ts = 0; // total shrink (accumulation of $old and $new)
+};
+
 /**
  * Combines one index map array ($new) with another one ($old).
  *
@@ -267,13 +276,7 @@ function imFromPieces(array $pieces) : array
  */
 function imCombine(array $old, array $new) : array
 {
-    $s = new class {
-        public $im = [];
-        public $i = 0;
-        public $j = 0;
-        public $ns = 0; // new shrink (introduced by $new)
-        public $ts = 0; // total shrink (accumulation of $old and $new)
-    };
+    $s = new ImCombineState;
     for($s->i=0, $s->j=0; $s->i < count($old) || $s->j < count($new); ) {
         if(imCombineIsBefore($s, $old, $new)) {
             //

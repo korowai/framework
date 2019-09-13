@@ -372,8 +372,6 @@ function imApply(array $im, int $i, int &$index = null) : int
     if ($cnt === 0 || $i < $im[0][0]) {
         $index = null;
         return $i;
-    } elseif($i >= $im[$cnt-1][0]) {
-        $index = $cnt -1 ;
     } else {
         $index = imSearch($im, $i);
     }

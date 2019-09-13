@@ -218,127 +218,94 @@ class IndexMapTest extends TestCase
     public function test__imApply__00()
     {
         $im = [[0, 0]];
-        $this->assertEquals(-2, imApply($im, -2, $index));
-        $this->assertNull($index);
-        $this->assertEquals(0, imApply($im, 0, $index));
+        $this->assertEquals(-2, imApply($im, -2, 1, $index));
         $this->assertEquals(0, $index);
-        $this->assertEquals(1, imApply($im, 1, $index));
+        $this->assertEquals(0, imApply($im, 0, 1, $index));
         $this->assertEquals(0, $index);
-        $this->assertEquals(2, imApply($im, 2, $index));
+        $this->assertEquals(1, imApply($im, 1, 1, $index));
         $this->assertEquals(0, $index);
-        $this->assertEquals(-1, imApply($im, -1, $index));
-        $this->assertNull($index);
+        $this->assertEquals(2, imApply($im, 2, 1, $index));
+        $this->assertEquals(0, $index);
+        $this->assertEquals(-1, imApply($im, -1, 1, $index));
+        $this->assertEquals(0, $index);
     }
 
     public function test__imApply__01()
     {
         $im = [[0,0], [4,6], [8,12]];
-        $this->assertEquals(-2, imApply($im, -2, $index));
-        $this->assertNull($index);
+        $this->assertEquals(-2, imApply($im, -2, 1, $index));
+        $this->assertEquals(0, $index);
 
-        $this->assertEquals(0, imApply($im, 0, $index));
+        $this->assertEquals(0, imApply($im, 0, 1, $index));
         $this->assertEquals(0, $index);
-        $this->assertEquals(1, imApply($im, 1, $index));
+        $this->assertEquals(1, imApply($im, 1, 1, $index));
         $this->assertEquals(0, $index);
-        $this->assertEquals(2, imApply($im, 2, $index));
+        $this->assertEquals(2, imApply($im, 2, 1, $index));
         $this->assertEquals(0, $index);
-        $this->assertEquals(3, imApply($im, 3, $index));
+        $this->assertEquals(3, imApply($im, 3, 1, $index));
         $this->assertEquals(0, $index);
-        $this->assertEquals(6, imApply($im, 4, $index));
+        $this->assertEquals(6, imApply($im, 4, 1, $index));
         $this->assertEquals(1, $index);
-        $this->assertEquals(7, imApply($im, 5, $index));
+        $this->assertEquals(7, imApply($im, 5, 1, $index));
         $this->assertEquals(1, $index);
-        $this->assertEquals(8, imApply($im, 6, $index));
+        $this->assertEquals(8, imApply($im, 6, 1, $index));
         $this->assertEquals(1, $index);
-        $this->assertEquals(9, imApply($im, 7, $index));
+        $this->assertEquals(9, imApply($im, 7, 1, $index));
         $this->assertEquals(1, $index);
-        $this->assertEquals(12, imApply($im, 8, $index));
+        $this->assertEquals(12, imApply($im, 8, 1, $index));
         $this->assertEquals(2, $index);
-        $this->assertEquals(13, imApply($im, 9, $index));
+        $this->assertEquals(13, imApply($im, 9, 1, $index));
         $this->assertEquals(2, $index);
-        $this->assertEquals(14, imApply($im, 10, $index));
+        $this->assertEquals(14, imApply($im, 10, 1, $index));
         $this->assertEquals(2, $index);
 
-        $this->assertEquals(-1, imApply($im, -1, $index));
-        $this->assertNull($index);
+        $this->assertEquals(-1, imApply($im, -1, 1, $index));
+        $this->assertEquals(0, $index);
     }
 
-//    public function test__imApply__02()
-//    {
-//        $im = [[0], [1], [5], [6]];
-//        $this->assertEquals(0, imApply($im, 0));
-//        $this->assertEquals(1, imApply($im, 1));
-//        $this->assertEquals(1, imApply($im, 2));
-//        $this->assertEquals(1, imApply($im, 3));
-//        $this->assertEquals(1, imApply($im, 4));
-//        $this->assertEquals(2, imApply($im, 5));
-//        $this->assertEquals(3, imApply($im, 6));
-//        $this->assertEquals(3, imApply($im, 7));
-//        $this->assertEquals(3, imApply($im, 8));
-//    }
-//
-//    public function test__imApply__03()
-//    {
-//        // duplicates
-//        $im = [[0], [0], [2], [2], [3], [3]];
-//        $this->assertEquals(1, imApply($im, 0));
-//        $this->assertEquals(1, imApply($im, 1));
-//        $this->assertEquals(3, imApply($im, 2));
-//        $this->assertEquals(5, imApply($im, 3));
-//    }
-//
-//    public function test__imApply__04()
-//    {
-//        // unsorted (pathological case, but must not hang)
-//        $im = [[0], [3], [2], [7]];
-//        $this->assertEquals(0, imApply($im, 0));
-//        $this->assertEquals(0, imApply($im, 1));
-//        $this->assertEquals(0, imApply($im, 2));
-//        $this->assertEquals(2, imApply($im, 3));
-//        $this->assertEquals(2, imApply($im, 4));
-//        $this->assertEquals(2, imApply($im, 5));
-//        $this->assertEquals(2, imApply($im, 6));
-//        $this->assertEquals(3, imApply($im, 7));
-//        $this->assertEquals(3, imApply($im, 8));
-//        $this->assertEquals(3, imApply($im, 9));
-//    }
-//
-//    public function test__imApply__05()
-//    {
-//        // unsorted (pathological case, but must not hang)
-//        $im = [[5], [3], [1], [0]];
-//        $this->assertEquals(3, imApply($im, 3));
-//        $this->assertEquals(3, imApply($im, 4));
-//        $this->assertEquals(3, imApply($im, 5));
-//        $this->assertEquals(3, imApply($im, 6));
-//    }
-//
-//    public function test__imApply__06()
-//    {
-//        // unsorted (pathological case, but must not hang)
-//        $im = [[5], [3], [1], [0]];
-//        $this->expectException(\RuntimeException::class);
-//        $this->expectExceptionMessage('internal error: imApply() failed');
-//        imApply($im, 0);
-//    }
-//
-//    public function test__imApply__07()
-//    {
-//        // unsorted (pathological case, but must not hang)
-//        $im = [[5], [3], [1], [0]];
-//        $this->expectException(\RuntimeException::class);
-//        $this->expectExceptionMessage('internal error: imApply() failed');
-//        imApply($im, 1);
-//    }
-//
-//    public function test__imApply__08()
-//    {
-//        // unsorted (pathological case, but must not hang)
-//        $im = [[5], [3], [1], [0]];
-//        $this->expectException(\RuntimeException::class);
-//        $this->expectExceptionMessage('internal error: imApply() failed');
-//        imApply($im, 2);
-//    }
+    public function test__imApply__02()
+    {
+        $im = [[0,0], [4,6], [8,12]];
+        $this->assertEquals(0, imApply($im, -2, 0, $index));
+        $this->assertEquals(0, $index);
+
+        $this->assertEquals(0, imApply($im, 0, 0, $index));
+        $this->assertEquals(0, $index);
+        $this->assertEquals(0, imApply($im, 1, 0, $index));
+        $this->assertEquals(0, $index);
+        $this->assertEquals(0, imApply($im, 2, 0, $index));
+        $this->assertEquals(0, $index);
+        $this->assertEquals(0, imApply($im, 3, 0, $index));
+        $this->assertEquals(0, $index);
+        $this->assertEquals(6, imApply($im, 4, 0, $index));
+        $this->assertEquals(1, $index);
+        $this->assertEquals(6, imApply($im, 5, 0, $index));
+        $this->assertEquals(1, $index);
+        $this->assertEquals(6, imApply($im, 6, 0, $index));
+        $this->assertEquals(1, $index);
+        $this->assertEquals(6, imApply($im, 7, 0, $index));
+        $this->assertEquals(1, $index);
+        $this->assertEquals(12, imApply($im, 8, 0, $index));
+        $this->assertEquals(2, $index);
+        $this->assertEquals(12, imApply($im, 9, 0, $index));
+        $this->assertEquals(2, $index);
+        $this->assertEquals(12, imApply($im, 10, 0, $index));
+        $this->assertEquals(2, $index);
+
+        $this->assertEquals(0, imApply($im, -1, 0, $index));
+        $this->assertEquals(0, $index);
+    }
+
+    public function test__imApply__03()
+    {
+        $im = [];
+        $this->assertEquals(-1, imApply($im, -1, 1, $index));
+        $this->assertNull($index);
+        $this->assertEquals(0, imApply($im, 0, 1, $index));
+        $this->assertNull($index);
+        $this->assertEquals(1, imApply($im, 1, 1, $index));
+        $this->assertNull($index);
+    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

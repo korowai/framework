@@ -34,10 +34,10 @@ class CoupledInput implements CoupledInputInterface
     protected $string;
 
     /**
-     * Index map. An array that helps mapping preprocessed text's character
-     * offsets onto corresponding offsets in the original string.
+     * Index map. Maps preprocessed text's character offsets onto corresponding
+     * offsets in the original string.
      *
-     * @var array
+     * @var IndexMap
      */
     protected $im;
 
@@ -49,8 +49,10 @@ class CoupledInput implements CoupledInputInterface
     protected $sourceFileName;
 
     /**
-     * Line map. An array that helps mapping source text's character offsets
-     * onto their corresponding line numbers.
+     * Line map. Maps source text's character offsets onto their corresponding
+     * line numbers.
+     *
+     * @var IndexMap
      */
     protected $sourceLinesMap;
 
@@ -67,7 +69,7 @@ class CoupledInput implements CoupledInputInterface
      * @param array $im Index map produced by preprocessor
      * @param string $sourceFileName Input name (file name)
      */
-    public function __construct(string $source, string $string, array $im, string $sourceFileName=null)
+    public function __construct(string $source, string $string, IndexMap $im, string $sourceFileName=null)
     {
         $this->init($source, $string, $im, $sourceFileName);
     }
@@ -80,7 +82,7 @@ class CoupledInput implements CoupledInputInterface
      * @param array $im Index map produced by preprocessor
      * @param string $sourceFileName Input name (file name)
      */
-    public function init(string $source, string $string, array $im, string $sourceFileName=null)
+    public function init(string $source, string $string, IndexMap $im, string $sourceFileName=null)
     {
         $this->source = $source;
         $this->string = $string;
@@ -120,7 +122,7 @@ class CoupledInput implements CoupledInputInterface
      *
      * @return array
      */
-    public function getIndexMap() : array
+    public function getIndexMap() : IndexMap
     {
         return $this->im;
     }
@@ -138,7 +140,7 @@ class CoupledInput implements CoupledInputInterface
      */
     public function getSourceByteOffset(int $i) : int
     {
-        return Util\imApply($this->getIndexMap(), $i);
+        return ($this->getIndexMap())($i);
     }
 
     /**
@@ -176,7 +178,7 @@ class CoupledInput implements CoupledInputInterface
     public function getSourceLineIndex(int $i) : int
     {
         $j = $this->getSourceByteOffset($i);
-        return Util\imApply($this->getSourceLinesMap(), $j);
+        return ($this->getSourceLinesMap())($j);
     }
 
     /**
@@ -186,9 +188,9 @@ class CoupledInput implements CoupledInputInterface
     {
         $j = $this->getSourceByteOffset($i);
         $map = $this->getSourceLinesMap();
-        $line = Util\imApply($map, $j, $index);
+        $line = $map($j, $index);
         if(isset($index)) {
-            $offset = $j - $map[$index][0];
+            $offset = $j - ($map->getArray())[$index][0];
         } else {
             $offset = 0;
         }
@@ -245,13 +247,13 @@ class CoupledInput implements CoupledInputInterface
 
         $cnt = count($pieces);
 
-        $lm = [[-PHP_INT_MAX, -1, 0]];
+        $lm = [[-PHP_INT_MAX, -1]];
         for($i = 0; $i < $cnt; $i++) {
-            $lm[] = [$pieces[$i][1], $i, 0];
+            $lm[] = [$pieces[$i][1], $i];
         }
 
         $this->sourceLines = array_map(function ($p) { return $p[0]; }, $pieces);
-        $this->sourceLinesMap = $lm;
+        $this->sourceLinesMap = new IndexMap($lm, 0);
     }
 }
 

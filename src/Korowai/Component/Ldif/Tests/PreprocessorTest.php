@@ -14,6 +14,7 @@ namespace Korowai\Component\Ldif\Tests;
 use PHPUnit\Framework\TestCase;
 use Korowai\Component\Ldif\Preprocessor;
 use Korowai\Component\Ldif\CoupledInput;
+use Korowai\Component\Ldif\IndexMap;
 
 
 /**
@@ -27,9 +28,13 @@ class PreprocessorTest extends TestCase
         $string = (new Preprocessor())->preprocess($source);
 
         $this->assertInstanceOf(CoupledInput::class, $string);
-        $this->assertEquals($string->getSourceString(), $source);
-        $this->assertEquals($string->getString(), $source);
-        $this->assertEquals($string->getIndexMap(), []);
+        $this->assertEquals($source, $string->getSourceString());
+        $this->assertEquals($source, $string->getString());
+
+        $im = $string->getIndexMap();
+        $this->assertInstanceOf(IndexMap::class, $im);
+        $this->assertEquals([], $im->getArray());
+        $this->assertEquals(1, $im->getIncrement());
     }
 
     public function test__preprocess_01()
@@ -38,9 +43,13 @@ class PreprocessorTest extends TestCase
         $string = (new Preprocessor())->preprocess($source);
 
         $this->assertInstanceOf(CoupledInput::class, $string);
-        $this->assertEquals($string->getSourceString(), $source);
-        $this->assertEquals($string->getString(), $source);
-        $this->assertEquals($string->getIndexMap(), [[0,0]]);
+        $this->assertEquals($source, $string->getSourceString());
+        $this->assertEquals($source, $string->getString());
+
+        $im = $string->getIndexMap();
+        $this->assertInstanceOf(IndexMap::class, $im);
+        $this->assertEquals([[0,0]], $im->getArray());
+        $this->assertEquals(1, $im->getIncrement());
     }
 
     public function test__preprocess_02()
@@ -55,9 +64,13 @@ class PreprocessorTest extends TestCase
         $string = (new Preprocessor())->preprocess($source);
 
         $this->assertInstanceOf(CoupledInput::class, $string);
-        $this->assertEquals($string->getSourceString(), $source);
-        $this->assertEquals($string->getString(), $result);
-        $this->assertEquals($string->getIndexMap(), [[0,0], [24,26]]);
+        $this->assertEquals($source, $string->getSourceString());
+        $this->assertEquals($result, $string->getString());
+
+        $im = $string->getIndexMap();
+        $this->assertInstanceOf(IndexMap::class, $im);
+        $this->assertEquals([[0,0], [24,26]], $im->getArray());
+        $this->assertEquals(1, $im->getIncrement());
     }
 
     public function test__preprocess_03()
@@ -74,7 +87,11 @@ class PreprocessorTest extends TestCase
         $this->assertInstanceOf(CoupledInput::class, $string);
         $this->assertEquals($string->getSourceString(), $source);
         $this->assertEquals($string->getString(), $result);
-        $this->assertEquals($string->getIndexMap(), [[0,12]]);
+
+        $im = $string->getIndexMap();
+        $this->assertInstanceOf(IndexMap::class, $im);
+        $this->assertEquals([[0,12]], $im->getArray());
+        $this->assertEquals(1, $im->getIncrement());
     }
 
     public function test__preprocess_04()
@@ -89,9 +106,13 @@ class PreprocessorTest extends TestCase
         $string = (new Preprocessor())->preprocess($source);
 
         $this->assertInstanceOf(CoupledInput::class, $string);
-        $this->assertEquals($string->getSourceString(), $source);
-        $this->assertEquals($string->getString(), $result);
-        $this->assertEquals($string->getIndexMap(), [[0,0], [11,23]]);
+        $this->assertEquals($source, $string->getSourceString());
+        $this->assertEquals($result, $string->getString());
+
+        $im = $string->getIndexMap();
+        $this->assertInstanceOf(IndexMap::class, $im);
+        $this->assertEquals([[0,0], [11,23]], $im->getArray());
+        $this->assertEquals(1, $im->getIncrement());
     }
 
     public function test__preprocess_05()
@@ -108,7 +129,11 @@ class PreprocessorTest extends TestCase
         $this->assertInstanceOf(CoupledInput::class, $string);
         $this->assertEquals($string->getSourceString(), $source);
         $this->assertEquals($string->getString(), $result);
-        $this->assertEquals($string->getIndexMap(), [[0,14], [24,40]]);
+
+        $im = $string->getIndexMap();
+        $this->assertInstanceOf(IndexMap::class, $im);
+        $this->assertEquals([[0,14], [24,40]], $im->getArray());
+        $this->assertEquals(1, $im->getIncrement());
     }
 }
 

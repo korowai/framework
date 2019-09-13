@@ -26,7 +26,7 @@ class Preprocessor
     {
         $string = Util\ppRmLnCont($source, $im);
         $string = Util\ppRmComments($string, $im);
-        return new CoupledInput($source, $string, $im, $filename);
+        return new CoupledInput($source, $string, new IndexMap($im), $filename);
     }
 }
 

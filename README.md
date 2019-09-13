@@ -63,8 +63,8 @@ php vendor/bin/phpunit
 ### Running CodeClimate
 
 ```shell
-./docker-compose run --rm codeclimate analyze
-./docker-compose down
+./docker-compose -f docker-compose.codeclimate.yml run --rm codeclimate analyze
+./docker-compose -f docker-compose.codeclimate.yml down
 ```
 
 ### Generating API documentation

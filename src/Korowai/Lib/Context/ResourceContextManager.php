@@ -180,27 +180,38 @@ class ResourceContextManager implements ContextManagerInterface
         $type = get_resource_type($resource);
         $func = self::DEFAULT_RESOURCE_DESTRUCTORS[$type] ?? null;
         if(is_string($func) && substr($func, 0, 2) === '->') {
-            $func = substr($func, 2);
-            if (PHP_VERSION_ID >= 70200) {
-                return function (object $resource) use ($func) {
-                    return call_user_func(array($resource, $func));
-                };
-            } else {
-                return function ($resource) use ($func) {
-                    return call_user_func(array($resource, $func));
-                };
-            }
+            $method = substr($func, 2);
+            return $this->mkObjectResourceDestructor($resource, $method);
         } elseif($type === 'stream' && is_null($func)) {
-            $meta = stream_get_meta_data($resource);
-            if($meta['stream_type'] === 'dir') {
-                return '\\closedir';
-            } else {
-                return '\\fclose';
-            }
+            return $this->getStreamResourceDestructor($resource);
         } else {
             return $func;
         }
     }
+
+    protected function mkObjectResourceDestructor($resource, string $method)
+    {
+        if (PHP_VERSION_ID >= 70200) {
+            return function (object $resource) use ($method) {
+                return call_user_func(array($resource, $method));
+            };
+        } else {
+            return function ($resource) use ($method) {
+                return call_user_func(array($resource, $method));
+            };
+        }
+    }
+
+    protected function getStreamResourceDestructor($resource)
+    {
+        $meta = stream_get_meta_data($resource);
+        if($meta['stream_type'] === 'dir') {
+            return '\\closedir';
+        } else {
+            return '\\fclose';
+        }
+    }
+
 }
 
 // vim: syntax=php sw=4 ts=4 et:

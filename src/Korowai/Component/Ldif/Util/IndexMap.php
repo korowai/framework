@@ -365,16 +365,17 @@ function imCombine(array $old, array $new) : array
  *
  * @return int The result of mapping.
  */
-function imApply(array $im, int $i, int &$index=null) : int
+function imApply(array $im, int $i, int &$index = null) : int
 {
     $cnt = count($im);
 
     if ($cnt === 0 || $i < $im[0][0]) {
+        $index = null;
         return $i;
     } elseif($i >= $im[$cnt-1][0]) {
         $index = $cnt -1 ;
     } else {
-        $index = imSearch($old, $i);
+        $index = imSearch($im, $i);
     }
 
     $inc = $im[$index][2] ?? 1;
@@ -397,29 +398,21 @@ function imApply(array $im, int $i, int &$index=null) : int
 function imSearch(array $im, int $i) : int
 {
     $cnt = count($im);
+    $l = 0;
+    $r = $cnt - 1;
 
-    $lo = 0;
-    $hi = $cnt - 1;
-
-    if($i < $im[0][0] || $i >= $im[$hi][0]) {
-        throw new \RuntimeException("argument 2 to " . __FUNCTION__ . " is out of range");
-    }
-
-    $iter = 0;
-    while($hi - $lo > 1) {
-        if($iter > 2 * $cnt) {
-            throw new \RuntimeException("internal error: iteration count exceeded");
-        }
-        $mid = floor(($lo + $hi) / 2);
-        if($i < $im[$mid][0]) {
-            $hi = $mid;
+    while ($l <= $r) {
+        $m = (int)floor(($l + $r) / 2);
+        if($im[$m][0] > $i) {
+            $r = $m - 1;
+        } elseif($m+1 < $cnt && $im[$m+1][0] <= $i) {
+            $l = $m + 1;
         } else {
-            $lo = $mid;
+            return $m;
         }
-        $iter++;
     }
 
-    return $lo;
+    throw new \RuntimeException("internal error: imSearch() failed");
 }
 
 // vim: syntax=php sw=4 ts=4 et:

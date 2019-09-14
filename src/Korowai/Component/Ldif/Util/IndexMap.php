@@ -181,15 +181,14 @@ function imApply(array $im, int $i, int $inc = 1, int &$index = null) : int
  */
 function imSearch(array $im, int $i) : int
 {
-    $cnt = count($im);
     $l = 0;
-    $r = $cnt - 1;
+    $r = count($im) - 1;
 
     while ($l <= $r) {
         $m = (int)floor(($l + $r) / 2);
         if($im[$m][0] > $i) {
             $r = $m - 1;
-        } elseif($m+1 < $cnt && $im[$m+1][0] <= $i) {
+        } elseif(($im[$m+1][0] ?? PHP_INT_MAX) <= $i) {
             $l = $m + 1;
         } else {
             return $m;

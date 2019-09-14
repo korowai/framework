@@ -17,7 +17,7 @@ namespace Korowai\Lib\Context;
 class WithContextExecutor implements ExecutorInterface
 {
     /**
-     * @var ContextManagerInterface
+     * @var ContextManagerInterface[]
      */
     protected $context;
 
@@ -49,33 +49,70 @@ class WithContextExecutor implements ExecutorInterface
      */
     public function __invoke(callable $func)
     {
-        $args = [];
-
         $exception = null;
         $return = null;
 
         $i = 0;
         try {
-            for(; $i < count($this->context); $i++) {
-                $args[] = $this->context[$i]->enterContext();
-            }
+            $args = $this->enterContext($i);
             $return = call_user_func_array($func, $args);
         } catch(\Throwable $e) {
             $exception = $e;
         }
 
         // exit all the entered contexts
-        for($i--; $i >= 0; $i--) {
-            if($this->context[$i]->exitContext($exception)) {
-                $exception = null; // handled
-            }
-        }
+        $exception = $this->exitContext($i, $exception);
 
         if(is_a($exception, \Throwable::class)) {
             throw $exception;
         }
 
         return $return;
+    }
+
+    /**
+     * Invokes ``enterContext()`` method on the context managers from
+     * ``$this->context`` array.
+     *
+     * @param int $i
+     *          Index used by the internal loop (passed by reference, so
+     *          its value is not lost when an exception is thrown).
+     *
+     * @return array
+     *          An array of arguments to be passed to user function.
+     */
+    protected function enterContext(int &$i) : array
+    {
+        $args = [];
+        for(;$i < count($this->context); $i++) {
+            $args[] = $this->context[$i]->enterContext();
+        }
+        return $args;
+    }
+
+    /**
+     * Invokes ``exitContext()`` method on the context managers from
+     * ``$this->context`` array.
+     *
+     * @param int $i
+     *          Index used by the internal loop (passed by reference, so its
+     *          value is not lost when an exception is thrown).
+     * @param \Throwable $exception
+     *          An exception thrown from enterContext() or form user's
+     *          callback.
+     *
+     * @return \Throwable
+     *          An exception or null (if the exception was handled by one of
+     *          the context managers).
+     */
+    protected function exitContext(int &$i, ?\Throwable $exception = null) : ?\Throwable
+    {
+        for($i--; $i >= 0; $i--) {
+            if($this->context[$i]->exitContext($exception)) {
+                $exception = null;
+            }
+        }
+        return $exception;
     }
 }
 

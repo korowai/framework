@@ -24,7 +24,7 @@ on_rtd = os.environ.get('READTHEDOCS') == 'True'
 if on_rtd:
     rtd_project = os.environ.get('READTHEDOCS_PROJECT')
     rtd_version = os.environ.get('READTHEDOCS_VERSION')
-    rtd_version = os.environ.get('READTHEDOCS_LANGUAGE')
+    rtd_language = os.environ.get('READTHEDOCS_LANGUAGE')
     url_base = '/%s/%s/' % (rtd_language, rtd_version)
 else:
     url_base = '/'

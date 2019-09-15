@@ -12,38 +12,53 @@ declare(strict_types=1);
 namespace Korowai\Component\Ldif\Util;
 
 /**
- * Index map is used to map (byte) offsets in a preprocessed string onto
- * corresponding (byte) offsets in the original string. The preprocessing is
- * assumed to be a process of removing certain parts from source string or,
- * in other words, assembling resultant string from certain pieces of the
- * source string.
+ * Maps (byte) offsets in a preprocessed string onto corresponding (byte)
+ * offsets in its source string.
+ *
+ * The preprocessing is assumed to be a process of removing certain substrings
+ * (comments, line continuation sequences, etc.) from a source string. An
+ * internal index map array ``$array`` keeps track of these removals. Each
+ * element ``$array[$i]`` is a two-element int array, where ``$array[$i][0]``
+ * is the (byte) offset of a character in the preprocessed string and
+ * ``$array[$i][1]`` is a (byte) offset of its corresponding character in
+ * the source string. The value ``$array[$i][1] - $array[$i][0]`` tells how
+ * many bytes were removed by the preprocessor in removals ``0``, ..., ``$i``.
+ *
+ * The IndexMap can also be used to map (byte) offsets of characters in a
+ * preprocessed string to their corresponding line numbers in the source
+ * string. In this case, one should set ``$increment = 0`` when creating
+ * IndexMap instance.
  */
 class IndexMap
 {
     /**
+     * The internal index map array.
      * @var array
      */
     protected $array;
 
     /**
+     * Increment, either one or zero.
      * @var int
      */
     protected $increment;
 
     /**
-     * Generates "index map" array for a string made out of pieces of other string.
-     *
-     * Index map is used to map (byte) offsets in the resultant string onto
-     * corresponding (byte) offsets in the original string.
+     * Generates index map array for a string made out of pieces of a source string.
      *
      * ``$pieces`` must be an array where every element is an array consisting of a
      * substring of the original string at offset 0 and its string offset into
      * original string at offset 1. Such an array is returned by
-     * ``preg_split(..., PREG_SPLIT_OFFSET_CAPTURE)``.
      *
-     * @param array $pieces Pieces of the original string that will form the
-     *                      resultant string (see function description above)
+     * ```php
+     * preg_split(..., PREG_SPLIT_OFFSET_CAPTURE);
+     * ```
+     *
+     * @param array $pieces
+     *      Pieces of the original string that will form the resultant string
+     *      (see function description above)
      * @return array
+     *      The index map array
      */
     public static function arrayFromPieces(array $pieces) : array
     {

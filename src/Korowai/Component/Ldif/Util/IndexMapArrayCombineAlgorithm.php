@@ -14,17 +14,62 @@ namespace Korowai\Component\Ldif\Util;
 
 /**
  * A helper object used by the IndexMap::arrayCombine() method.
+ *
+ * Usage
+ * ```php
+ * $combined = (new IndexMapArrayCombineAlgorithm)($old, $new);
+ * ```
  */
 class IndexMapArrayCombineAlgorithm
 {
+    /**
+     * The resultant index map array being produced by the algorithm.
+     * @var array
+     */
     protected $im;
+
+    /**
+     * Index for ``$old`` array.
+     * @var int
+     */
     protected $i;
+
+    /**
+     * Index for ``$new`` array.
+     * @var int
+     */
     protected $j;
-    protected $ns; // new shrink (introduced by $new)
-    protected $ts; // total shrink (accumulation of $old and $new)
+
+    /**
+     * New shrink (introduced by ``$new``)
+     * @var int
+     */
+    protected $ns;
+
+    /**
+     * Total shrink (an effect of ``$old`` and ``$new`` combined)
+     * @var int
+     */
+    protected $ts;
+
+    /**
+     * The first input index map array for the algorithm.
+     * @var array
+     */
     protected $old;
+
+    /**
+     * The second input index map array for the algorithm.
+     * @var array
+     */
     protected $new;
 
+    /**
+     * Reset the algorithm to initial state.
+     *
+     * @param array $old
+     * @param array $new
+     */
     protected function reset(array $old, array $new)
     {
         $this->im = [];
@@ -36,12 +81,23 @@ class IndexMapArrayCombineAlgorithm
         $this->new = $new;
     }
 
-    protected function finished()
+    /**
+     * Returns ``true`` if the algorithm already finished.
+     *
+     * @return bool
+     */
+    protected function finished() : bool
     {
         return $this->i >= count($this->old) && $this->j >= count($this->new);
     }
 
-    protected function isBefore()
+    /**
+     * Returns ``true``, if the removal defined by ``$new[$j]`` occurs before
+     * (on the left side of) ``$old[$i][0]``.
+     *
+     * @return bool
+     */
+    protected function isBefore() : bool
     {
         if ($this->j >= count($this->new)) {
             return false;
@@ -52,7 +108,13 @@ class IndexMapArrayCombineAlgorithm
         return $this->new[$this->j][1] < ($this->old[$this->i][0] - $this->ns);
     }
 
-    protected function isNotAfter()
+    /**
+     * Returns ``true``, if the removal defined by ``$new[$j]`` does not occur
+     * after (on the right side of) ``$old[$i][0]``.
+     *
+     * @return bool
+     */
+    protected function isNotAfter() : bool
     {
         if ($this->j >= count($this->new) || $this->i >= count($this->old)) {
             return false;
@@ -61,6 +123,10 @@ class IndexMapArrayCombineAlgorithm
         return $this->new[$this->j][0] <= ($this->old[$this->i][0] - $this->ns);
     }
 
+    /**
+     * Performs algorithm's step for the case, in which the removal defined by
+     * ``$new[$j]`` occurs before (on the left side of) ``$old[$i][0]``.
+     */
     protected function stepBefore()
     {
         $this->ts += ($this->new[$this->j][1] - $this->new[$this->j][0]);
@@ -69,6 +135,10 @@ class IndexMapArrayCombineAlgorithm
         $this->j++;
     }
 
+    /**
+     * Performs algorithm's step for the case, in which the removal defined by
+     * ``$new[$j]`` "encloses" ``$old[$i][0]``.
+     */
     protected function stepEnclosing()
     {
         $this->ts += ($this->new[$this->j][1] - $this->new[$this->j][0]);
@@ -81,6 +151,10 @@ class IndexMapArrayCombineAlgorithm
         $this->j++;
     }
 
+    /**
+     * Performs algorithm's step for the case, in which the removal defined by
+     * ``$new[$j]`` occurs after (on the right side of) ``$old[$i][0]``.
+     */
     protected function stepAfter()
     {
         if ($this->i < count($this->old)) {
@@ -92,7 +166,15 @@ class IndexMapArrayCombineAlgorithm
         }
     }
 
-    public function __invoke(array $old, array $new)
+    /**
+     * Run the algorithm.
+     *
+     * @param $old The index map array defining previous removals from the source string.
+     * @param $new The index map array defining new removals applied after $old were applied.
+     *
+     * @return array The resultand index map array.
+     */
+    public function __invoke(array $old, array $new) : array
     {
         $this->reset($old, $new);
 

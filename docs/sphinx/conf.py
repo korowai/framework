@@ -13,12 +13,21 @@
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
 
-#import os
+import os
 #import sys
 #sys.path.insert(0, os.path.abspath('.'))
 
 from sphinx.highlighting import lexers
 from pygments.lexers.web import PhpLexer
+
+on_rtd = os.environ.get('READTHEDOCS') == 'True'
+if on_rtd:
+    rtd_project = os.environ.get('READTHEDOCS_PROJECT')
+    rtd_version = os.environ.get('READTHEDOCS_VERSION')
+    rtd_version = os.environ.get('READTHEDOCS_LANGUAGE')
+    url_base = '/%s/%s/' % (rtd_language, rtd_version)
+else:
+    url_base = '/'
 
 # enable highlighting for PHP code not between ``<?php ... ?>`` by default
 lexers['php'] = PhpLexer(startinline=True)
@@ -29,7 +38,7 @@ lexers['php-standalone'] = PhpLexer(startinline=True)
 primary_domain = 'php'
 highlight_language ='php'
 
-api_url = '/api/%s'
+api_url = url_base + 'api/%s'
 
 # -- Project information -----------------------------------------------------
 

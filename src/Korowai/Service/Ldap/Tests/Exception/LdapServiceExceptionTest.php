@@ -1,5 +1,7 @@
 <?php
 /**
+ * @file src/Korowai/Service/Ldap/Tests/Exception/LdapServiceExceptionTest.php
+ *
  * This file is part of the Korowai package
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

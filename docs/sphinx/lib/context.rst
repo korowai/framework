@@ -19,7 +19,7 @@ Installation
 Basic Usage
 ^^^^^^^^^^^
 
-Import :method:`\\Korowai\\Lib\\Context\\with` function to the current scope
+Import :func:`Korowai\\Lib\\Context\\with` function to the current scope
 
 .. literalinclude:: ../examples/lib/context/basic_with_usage.php
    :start-after: [use]
@@ -34,6 +34,7 @@ Execute your code with an open file
 The file gets automatically closed just before the return from the call.
 
 :class:`Korowai\\Lib\\Context\\ContextManagerInterface`
+
 
 .. toctree::
    :maxdepth: 1

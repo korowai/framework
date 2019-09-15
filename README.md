@@ -3,6 +3,7 @@
 [![Build Status](https://travis-ci.org/korowai/framework.svg?branch=master)](https://travis-ci.org/korowai/framework)
 [![Coverage Status](https://coveralls.io/repos/github/korowai/framework/badge.svg?branch=devel)](https://coveralls.io/github/korowai/framework?branch=devel)
 [![Maintainability](https://api.codeclimate.com/v1/badges/e022fc1ea75dbbe42966/maintainability)](https://codeclimate.com/github/korowai/framework/maintainability)
+[![Documentation Status](https://readthedocs.org/projects/korowai-framework/badge/?version=latest)](https://korowai-framework.readthedocs.io/en/latest/?badge=latest)
 
 Open Source software for exploring LDAP directories.
 

@@ -23,7 +23,7 @@
       "korowai/errorlib" : "self.version"
     },
     "require-dev": {
-        "phpunit/phpunit": "^8",
+        "phpunit/phpunit": ">=7.5.16",
         "php-mock/php-mock-phpunit": ">=2.4.0",
         "phake/phake": "^3.0",
         "behat/behat": "^3.4",

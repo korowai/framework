@@ -62,7 +62,7 @@ trait Singleton
      */
     public static function getInstance() : self
     {
-        if(!isset(self::$instance)) {
+        if (!isset(self::$instance)) {
             self::$instance = new self();
         }
         return self::$instance;

@@ -17,11 +17,6 @@ namespace Korowai\Component\Ldif;
  */
 class ParseError extends \Exception implements SourceLocationInterface
 {
-//    /**
-//     * @var string
-//     */
-//    protected $message;
-
     /**
      * @var SourceLocationInterface
      */
@@ -36,10 +31,12 @@ class ParseError extends \Exception implements SourceLocationInterface
      * @param int $code User-defined code.
      * @param Exception $previous
      */
-    public function __construct(SourceLocationInterface $location,
-                                string $message, int $code=0,
-                                \Exception $previous=null)
-    {
+    public function __construct(
+        SourceLocationInterface $location,
+        string $message,
+        int $code = 0,
+        \Exception $previous = null
+    ) {
         $this->location = $location;
         parent::__construct($message, $code, $previous);
     }
@@ -83,7 +80,7 @@ class ParseError extends \Exception implements SourceLocationInterface
     /**
      * {@inheritdoc}
      */
-    public function getSourceCharOffset(string $encoding=null) : int
+    public function getSourceCharOffset(string $encoding = null) : int
     {
         return $this->getLocation()->getSourceCharOffset(...(func_get_args()));
     }
@@ -99,7 +96,7 @@ class ParseError extends \Exception implements SourceLocationInterface
     /**
      * {@inheritdoc}
      */
-    public function getSourceLine(int $index=null) : string
+    public function getSourceLine(int $index = null) : string
     {
         return $this->getLocation()->getSourceLine(...func_get_args());
     }
@@ -115,7 +112,7 @@ class ParseError extends \Exception implements SourceLocationInterface
     /**
      * {@inheritdoc}
      */
-    public function getSourceLineAndCharOffset(string $encoding=null) : array
+    public function getSourceLineAndCharOffset(string $encoding = null) : array
     {
         return $this->getLocation()->getSourceLineAndCharOffset(...(func_get_args()));
     }
@@ -126,7 +123,7 @@ class ParseError extends \Exception implements SourceLocationInterface
      *
      * @return string
      */
-    public function getSourceLocationString(array $line_and_char=null) : string
+    public function getSourceLocationString(array $line_and_char = null) : string
     {
         [$line, $char] = ($line_and_char ?? $this->getSourceLineAndCharOffset());
         return  $this->getSourceFileName() .':'. ($line + 1) .':'. ($char + 1);
@@ -154,7 +151,7 @@ class ParseError extends \Exception implements SourceLocationInterface
      *
      * @return string
      */
-    public function getSourceLocationIndicator(array $line_and_char=null)
+    public function getSourceLocationIndicator(array $line_and_char = null)
     {
         $char = ($line_and_char ?? $this->getSourceLineAndCharOffset())[1];
         return str_repeat(' ', $char) . '^';

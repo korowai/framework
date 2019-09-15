@@ -11,6 +11,8 @@ declare(strict_types=1);
 
 namespace Korowai\Component\Ldif;
 
+use Korowai\Component\Ldif\Util\IndexMap;
+
 /**
  * LDIF preprocessor.
  */
@@ -22,7 +24,7 @@ class Preprocessor
      *
      * @return CoupledInput
      */
-    public function preprocess(string $source, string $filename=null) : CoupledInput
+    public function preprocess(string $source, string $filename = null) : CoupledInput
     {
         $string = Util\ppRmLnCont($source, $im);
         $string = Util\ppRmComments($string, $im);

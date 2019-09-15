@@ -12,19 +12,12 @@ declare(strict_types=1);
 namespace Korowai\Component\Ldap\Adapter\ExtLdap;
 
 use Korowai\Component\Ldap\Adapter\ResultEntryIteratorInterface;
-use Korowai\Component\Ldap\Adapter\ExtLdap\Result;
-use Korowai\Component\Ldap\Adapter\ExtLdap\ResultEntry;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class ResultEntryIterator implements ResultEntryIteratorInterface
+class ResultEntryIterator extends AbstractResultIterator implements ResultEntryIteratorInterface
 {
-    /** @var Result */
-    private $result;
-    /** @var ResultEntry */
-    private $entry;
-
     /**
      * Constructs ResultEntryIterator
      *
@@ -36,22 +29,9 @@ class ResultEntryIterator implements ResultEntryIteratorInterface
      *
      * The ``$result`` object is used by ``rewind()`` method.
      */
-    public function __construct(Result $result, $entry)
+    public function __construct(Result $result, ?ResultEntry $entry)
     {
-        $this->result = $result;
-        $this->entry = $entry;
-    }
-
-    /**
-     * Returns the ``$result`` provided to ``__construct()`` when the object
-     * was created.
-     *
-     * @return Result The result object provided as ``$result`` argument to
-     *         ``__construct()``.
-     */
-    public function getResult()
-    {
-        return $this->result;
+        parent::__construct($result, $entry);
     }
 
     /**
@@ -60,47 +40,17 @@ class ResultEntryIterator implements ResultEntryIteratorInterface
      */
     public function getEntry()
     {
-        return $this->entry;
+        return $this->getPointed();
     }
 
-    /**
-     * Return the current element, that is the current entry
-     */
-    public function current()
+    protected function getMethodForFirst()
     {
-        return $this->entry;
+        return 'first_entry';
     }
 
-    /**
-     * Return the key of the current element, that is DN of the current entry
-     */
-    public function key()
+    protected function getMethodForNext()
     {
-        return $this->entry->getDn();
-    }
-
-    /**
-     * Move forward to next element
-     */
-    public function next()
-    {
-        $this->entry = $this->entry->next_entry();
-    }
-
-    /**
-     * Rewind the iterator to the first element
-     */
-    public function rewind()
-    {
-        $this->entry = $this->result->first_entry();
-    }
-
-    /**
-     * Checks if current position is valid
-     */
-    public function valid()
-    {
-        return ($this->entry instanceof ResultEntry);
+        return 'next_entry';
     }
 }
 

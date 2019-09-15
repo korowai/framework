@@ -23,9 +23,9 @@ class DefaultContextFactory implements ContextFactoryInterface
      */
     public function getContextManager($arg) : ?ContextManagerInterface
     {
-        if(is_a($arg, ContextManagerInterface::class)) {
+        if (is_a($arg, ContextManagerInterface::class)) {
             return $arg;
-        } elseif(is_resource($arg)) {
+        } elseif (is_resource($arg)) {
             return new ResourceContextManager($arg);
         } else {
             return new TrivialValueWrapper($arg);

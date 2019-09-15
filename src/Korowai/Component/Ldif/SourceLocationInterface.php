@@ -61,7 +61,7 @@ interface SourceLocationInterface
      *
      * @return string
      */
-    public function getSourceLine(int $index=null) : string;
+    public function getSourceLine(int $index = null) : string;
 
     /**
      * Returns the line index and byte offset (relative to the beginning of the
@@ -87,7 +87,7 @@ interface SourceLocationInterface
      * @return array Two-element array with line number stored at position 0
      *               and character offset at position 1.
      */
-    public function getSourceLineAndCharOffset(string $encoding=null) : array;
+    public function getSourceLineAndCharOffset(string $encoding = null) : array;
 }
 
 // vim: syntax=php sw=4 ts=4 et:

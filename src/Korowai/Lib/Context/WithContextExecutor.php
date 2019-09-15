@@ -56,14 +56,14 @@ class WithContextExecutor implements ExecutorInterface
         try {
             $args = $this->enterContext($i);
             $return = call_user_func_array($func, $args);
-        } catch(\Throwable $e) {
+        } catch (\Throwable $e) {
             $exception = $e;
         }
 
         // exit all the entered contexts
         $exception = $this->exitContext($i, $exception);
 
-        if(is_a($exception, \Throwable::class)) {
+        if (is_a($exception, \Throwable::class)) {
             throw $exception;
         }
 
@@ -84,7 +84,7 @@ class WithContextExecutor implements ExecutorInterface
     protected function enterContext(int &$i) : array
     {
         $args = [];
-        for(;$i < count($this->context); $i++) {
+        for (; $i < count($this->context); $i++) {
             $args[] = $this->context[$i]->enterContext();
         }
         return $args;
@@ -107,8 +107,8 @@ class WithContextExecutor implements ExecutorInterface
      */
     protected function exitContext(int &$i, ?\Throwable $exception = null) : ?\Throwable
     {
-        for($i--; $i >= 0; $i--) {
-            if($this->context[$i]->exitContext($exception)) {
+        for ($i--; $i >= 0; $i--) {
+            if ($this->context[$i]->exitContext($exception)) {
                 $exception = null;
             }
         }

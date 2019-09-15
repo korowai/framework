@@ -86,10 +86,14 @@ class Result extends AbstractResult
         return $this->result;
     }
 
+    // @codingStandardsIgnoreStart
+    // phpcs:disable Generic.NamingConventions.CamelCapsFunctionName
+
     /**
      * Retrieve the LDAP pagination cookie
      *
-     * @link http://php.net/manual/en/function.ldap-control-paged-result-response.php ldap_control_paged_result_response()
+     * @link http://php.net/manual/en/function.ldap-control-paged-result-response.php
+     *       ldap_control_paged_result_response()
      */
     public function control_paged_result_response(&...$args)
     {
@@ -175,6 +179,9 @@ class Result extends AbstractResult
     {
         return $this->link->sort($this, $sortfilter);
     }
+
+    // phpcs:enable Generic.NamingConventions.CamelCapsFunctionName
+    // @codingStandardsIgnoreEnd
 
     /**
      * {@inheritdoc}

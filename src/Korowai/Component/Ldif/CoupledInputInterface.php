@@ -70,7 +70,7 @@ interface CoupledInputInterface
      * @return int the resultant offset of the corresponding character in
      *             $source string
      */
-    public function getSourceCharOffset(int $i, string $encoding=null) : int;
+    public function getSourceCharOffset(int $i, string $encoding = null) : int;
 
     /**
      * Returns array of strings resulted from splitting the $source into lines.
@@ -121,7 +121,7 @@ interface CoupledInputInterface
      * @return array 2-element array with line index at position 0 and
      *               character offset at position 1.
      */
-    public function getSourceLineAndCharOffset(int $i, string $encoding=null) : array;
+    public function getSourceLineAndCharOffset(int $i, string $encoding = null) : array;
 }
 
 // vim: syntax=php sw=4 ts=4 et:

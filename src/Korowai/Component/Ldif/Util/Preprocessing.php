@@ -19,15 +19,17 @@ namespace Korowai\Component\Ldif\Util;
  *
  * @return string Imploded pieces
  */
-function ppAsmPieces(array $pieces, array &$im=null) : string
+function ppAsmPieces(array $pieces, array &$im = null) : string
 {
-    $new_im = imFromPieces($pieces);
-    if($im === null) {
+    $new_im = IndexMap::arrayFromPieces($pieces);
+    if ($im === null) {
         $im = $new_im;
     } else {
-        $im = imCombine($im, $new_im);
+        $im = IndexMap::arrayCombine($im, $new_im);
     }
-    return implode(array_map(function ($p){return $p[0];}, $pieces));
+    return implode(array_map(function ($p) {
+        return $p[0];
+    }, $pieces));
 }
 
 /**
@@ -39,7 +41,7 @@ function ppAsmPieces(array $pieces, array &$im=null) : string
  *
  * @return string new string with removed parts that matched $re.
  */
-function ppRmRe(string $re, string $src, array &$im=null) : string
+function ppRmRe(string $re, string $src, array &$im = null) : string
 {
     $flags = PREG_SPLIT_OFFSET_CAPTURE | PREG_SPLIT_NO_EMPTY;
     $pieces = preg_split($re, $src, -1, $flags);
@@ -53,7 +55,7 @@ function ppRmRe(string $re, string $src, array &$im=null) : string
  * @param array &$im an (input/output) "index map" array
  * @return string the resultant string with line continuations removed
  */
-function ppRmLnCont(string $src, array &$im=null) : string
+function ppRmLnCont(string $src, array &$im = null) : string
 {
     return ppRmRe('/(?:\r\n|\n) /mu', $src, $im);
 }
@@ -66,7 +68,7 @@ function ppRmLnCont(string $src, array &$im=null) : string
  * @param array &$im an (input/output) "index map" array
  * @return string the resultant string with comments removed
  */
-function ppRmComments(string $src, array &$im=null) : string
+function ppRmComments(string $src, array &$im = null) : string
 {
     return ppRmRe('/^#(?:[^\r\n])*(?:\r\n|\n)?/mu', $src, $im);
 }

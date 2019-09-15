@@ -33,7 +33,7 @@ class CoupledLocation implements CoupledLocationInterface
      * @param CoupledInputInterface $input Preprocessed source code.
      * @param int $position Character offset (in bytes) the $input,
      */
-    public function __construct(CoupledInputInterface $input, int $position=0)
+    public function __construct(CoupledInputInterface $input, int $position = 0)
     {
         $this->init($input, $position);
     }
@@ -79,7 +79,7 @@ class CoupledLocation implements CoupledLocationInterface
     /**
      * {@inheritdoc}
      */
-    public function getCharOffset(string $encoding=null) : int
+    public function getCharOffset(string $encoding = null) : int
     {
         $substring = substr($this->getString(), 0, $this->getByteOffset());
         return mb_strlen($substring, ...(func_get_args()));
@@ -92,7 +92,7 @@ class CoupledLocation implements CoupledLocationInterface
 //     *
 //     * @return string
 //     */
-//    public function getRightSubstr(int $len=null) : string
+//    public function getRightSubstr(int $len = null) : string
 //    {
 //        return substr($this->getString(), $this->getByteOffset(), ...(func_get_args()));
 //    }
@@ -104,7 +104,7 @@ class CoupledLocation implements CoupledLocationInterface
 //     *
 //     * @return string
 //     */
-//    public function getLeftSubstr(int $len=null) : string
+//    public function getLeftSubstr(int $len = null) : string
 //    {
 //        $pos = $this->getByteOffset();
 //        if(isset($len)) {
@@ -143,7 +143,7 @@ class CoupledLocation implements CoupledLocationInterface
     /**
      * {@inheritdoc}
      */
-    public function getSourceCharOffset(string $encoding=null) : int
+    public function getSourceCharOffset(string $encoding = null) : int
     {
         return $this->getInput()->getSourceCharOffset($this->getByteOffset(), ...(func_get_args()));
     }
@@ -159,7 +159,7 @@ class CoupledLocation implements CoupledLocationInterface
     /**
      * {@inheritdoc}
      */
-    public function getSourceLine(int $index=null) : string
+    public function getSourceLine(int $index = null) : string
     {
         return $this->getInput()->getSourceLine($index ?? $this->getSourceLineIndex());
     }
@@ -175,7 +175,7 @@ class CoupledLocation implements CoupledLocationInterface
     /**
      * {@inheritdoc}
      */
-    public function getSourceLineAndCharOffset(string $encoding=null) : array
+    public function getSourceLineAndCharOffset(string $encoding = null) : array
     {
         return $this->getInput()->getSourceLineAndCharOffset($this->getByteOffset(), ...(func_get_args()));
     }

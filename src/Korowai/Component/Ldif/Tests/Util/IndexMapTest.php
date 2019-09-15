@@ -9,302 +9,275 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Component\Ldif\Tests\Util;
-
-use function Korowai\Component\Ldif\Util\imFromPieces;
-use function Korowai\Component\Ldif\Util\imCombine;
-use function Korowai\Component\Ldif\Util\imApply;
-use function Korowai\Component\Ldif\Util\imSearch;
+namespace Korowai\Component\Ldif\Tests;
 
 use PHPUnit\Framework\TestCase;
+use Korowai\Component\Ldif\Util\IndexMap;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
 class IndexMapTest extends TestCase
 {
-    //
-    // imFromPieces
-    //
-    public function test__imFromPieces__00()
+    public function test__construct__00()
     {
-        $im = imFromPieces([]);
-        $this->assertEquals([], $im);
+        $im = new IndexMap([[0,0],[2,4]]);
+        $this->assertEquals([[0,0], [2,4]], $im->getArray());
+        $this->assertEquals(1, $im->getIncrement());
     }
 
-    public function test__imFromPieces__01()
+    public function test__construct__01()
     {
-        $im = imFromPieces([["a piece", 0]]);
-        $this->assertEquals([[0,0]], $im);
-    }
-
-    public function test__imFromPieces__02()
-    {
-        $im = imFromPieces([["first piece", 0], ["second piece", 15]]);
-        $this->assertEquals([[0,0], [11, 15]], $im);
-    }
-
-    public function test__imFromPieces__03()
-    {
-        $im = imFromPieces([["first piece", 4], ["second piece", 19]]);
-        $this->assertEquals([[0,4], [11, 19]], $im);
+        $im = new IndexMap([[0,0],[2,4]], 0);
+        $this->assertEquals([[0,0], [2,4]], $im->getArray());
+        $this->assertEquals(0, $im->getIncrement());
     }
 
     //
-    // imCombine
+    // createFromPieces
     //
-    public function test__imCombine__00()
+    public function test__createFromPieces__00()
     {
-        $im = imCombine([], []);
-        $this->assertEquals([], $im);
+        $im = IndexMap::createFromPieces([]);
+        $this->assertInstanceOf(IndexMap::class, $im);
+        $this->assertEquals([], $im->getArray());
+        $this->assertEquals(1, $im->getIncrement());
     }
 
-    public function test__imCombine__01()
+    public function test__createFromPieces__01()
     {
-        $im = imCombine([[0,0]], []);
-        $this->assertEquals([[0,0]], $im);
+        $im = IndexMap::createFromPieces([["a piece", 0]]);
+        $this->assertInstanceOf(IndexMap::class, $im);
+        $this->assertEquals([[0,0]], $im->getArray());
+        $this->assertEquals(1, $im->getIncrement());
     }
 
-    public function test__imCombine__02()
+    public function test__createFromPieces__02()
     {
-        $im = imCombine([], [[0,0]]);
-        $this->assertEquals([[0,0]], $im);
+        $im = IndexMap::createFromPieces([["first piece", 0], ["second piece", 15]]);
+        $this->assertInstanceOf(IndexMap::class, $im);
+        $this->assertEquals([[0,0], [11, 15]], $im->getArray());
+        $this->assertEquals(1, $im->getIncrement());
     }
 
-    public function test__imCombine__03()
+    public function test__createFromPieces__03()
     {
-        $im = imCombine([[0,0]], [[0,0]]);
-        $this->assertEquals([[0,0]], $im);
-    }
-
-    public function test__imCombine__04()
-    {
-        $im = imCombine([[0,0], [10,15]], [[0,0], [4,8]]);
-        $this->assertEquals([[0,0], [4,8], [6,15]], $im);
-    }
-
-    public function test__imCombine__05()
-    {
-        $im = imCombine([[0,0], [10,15]], [[0,0], [4,18]]);
-        $this->assertEquals([[0,0], [4,23]], $im);
-    }
-
-    public function test__imCombine__06()
-    {
-        $im = imCombine([[0,0], [4,8]], [[0,0], [9,14]]);
-        $this->assertEquals([[0,0], [4,8], [9,18]], $im);
-    }
-
-    public function test__imCombine__07()
-    {
-        $im = imCombine([[0,0], [5,10]], [[0,0], [2,4], [4,6]]);
-        $this->assertEquals([[0,0], [2,4], [3,10], [4,13]], $im);
-    }
-
-    public function test__imCombine__08()
-    {
-        $im = imCombine([[0,0], [5,10]], [[0,0], [2,4], [3,6]]);
-        $this->assertEquals([[0,0], [2,4], [3,13]], $im);
-    }
-
-    public function test__imCombine__09()
-    {
-        $im = imCombine([[0,0], [17,19], [24,28], [42,48]], [[0,12]]);
-        $this->assertEquals([[0,12], [5,19], [12,28], [30, 48]], $im);
+        $im = IndexMap::createFromPieces([["first piece", 4], ["second piece", 19]]);
+        $this->assertInstanceOf(IndexMap::class, $im);
+        $this->assertEquals([[0,4], [11, 19]], $im->getArray());
+        $this->assertEquals(1, $im->getIncrement());
     }
 
     //
-    // imSearch
+    // combineWithArray
     //
-    public function test__imSearch__00()
+    public function test__combineWithArray__00()
     {
-        $im = [[0]];
-        $this->assertEquals(0, imSearch($im, 0));
-        $this->assertEquals(0, imSearch($im, 1));
-        $this->assertEquals(0, imSearch($im, 2));
+        $im = new IndexMap([]);
+        $this->assertSame($im, $im->combineWithArray([]));
+        $this->assertEquals([], $im->getArray());
     }
 
-    public function test__imSearch__01()
+    public function test__combineWithArray__01()
     {
-        $im = [[0], [1], [2], [3]];
-        $this->assertEquals(0, imSearch($im, 0));
-        $this->assertEquals(1, imSearch($im, 1));
-        $this->assertEquals(2, imSearch($im, 2));
-        $this->assertEquals(3, imSearch($im, 3));
-        $this->assertEquals(3, imSearch($im, 4));
-        $this->assertEquals(3, imSearch($im, 5));
+        $im = new IndexMap([[0,0]]);
+        $this->assertSame($im, $im->combineWithArray([]));
+        $this->assertEquals([[0,0]], $im->getArray());
     }
 
-    public function test__imSearch__02()
+    public function test__combineWithArray__02()
     {
-        $im = [[0], [1], [5], [6]];
-        $this->assertEquals(0, imSearch($im, 0));
-        $this->assertEquals(1, imSearch($im, 1));
-        $this->assertEquals(1, imSearch($im, 2));
-        $this->assertEquals(1, imSearch($im, 3));
-        $this->assertEquals(1, imSearch($im, 4));
-        $this->assertEquals(2, imSearch($im, 5));
-        $this->assertEquals(3, imSearch($im, 6));
-        $this->assertEquals(3, imSearch($im, 7));
-        $this->assertEquals(3, imSearch($im, 8));
+        $im = new IndexMap([]);
+        $this->assertSame($im, $im->combineWithArray([[0,0]]));
+        $this->assertEquals([[0,0]], $im->getArray());
     }
 
-    public function test__imSearch__03()
+    public function test__combineWithArray__03()
     {
-        // duplicates
-        $im = [[0], [0], [2], [2], [3], [3]];
-        $this->assertEquals(1, imSearch($im, 0));
-        $this->assertEquals(1, imSearch($im, 1));
-        $this->assertEquals(3, imSearch($im, 2));
-        $this->assertEquals(5, imSearch($im, 3));
+        $im = new IndexMap([[0,0]]);
+        $this->assertSame($im, $im->combineWithArray([[0,0]]));
+        $this->assertEquals([[0,0]], $im->getArray());
     }
 
-    public function test__imSearch__04()
+    public function test__combineWithArray__04()
     {
-        // unsorted (pathological case, but must not hang)
-        $im = [[0], [3], [2], [7]];
-        $this->assertEquals(0, imSearch($im, 0));
-        $this->assertEquals(0, imSearch($im, 1));
-        $this->assertEquals(0, imSearch($im, 2));
-        $this->assertEquals(2, imSearch($im, 3));
-        $this->assertEquals(2, imSearch($im, 4));
-        $this->assertEquals(2, imSearch($im, 5));
-        $this->assertEquals(2, imSearch($im, 6));
-        $this->assertEquals(3, imSearch($im, 7));
-        $this->assertEquals(3, imSearch($im, 8));
-        $this->assertEquals(3, imSearch($im, 9));
+        $im = new IndexMap([[0,0], [10,15]]);
+        $this->assertSame($im, $im->combineWithArray([[0,0], [4,8]]));
+        $this->assertEquals([[0,0], [4,8], [6,15]], $im->getArray());
     }
 
-    public function test__imSearch__05()
+    public function test__combineWithArray__05()
     {
-        // unsorted (pathological case, but must not hang)
-        $im = [[5], [3], [1], [0]];
-        $this->assertEquals(3, imSearch($im, 3));
-        $this->assertEquals(3, imSearch($im, 4));
-        $this->assertEquals(3, imSearch($im, 5));
-        $this->assertEquals(3, imSearch($im, 6));
+        $im = new IndexMap([[0,0], [10,15]]);
+        $this->assertSame($im, $im->combineWithArray([[0,0], [4,18]]));
+        $this->assertEquals([[0,0], [4,23]], $im->getArray());
     }
 
-    public function test__imSearch__06()
+    public function test__combineWithArray__06()
     {
-        // unsorted (pathological case, but must not hang)
-        $im = [[5], [3], [1], [0]];
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('internal error: imSearch() failed');
-        imSearch($im, 0);
+        $im = new IndexMap([[0,0], [4,8]]);
+        $this->assertSame($im, $im->combineWithArray([[0,0], [9,14]]));
+        $this->assertEquals([[0,0], [4,8], [9,18]], $im->getArray());
     }
 
-    public function test__imSearch__07()
+    public function test__combineWithArray__07()
     {
-        // unsorted (pathological case, but must not hang)
-        $im = [[5], [3], [1], [0]];
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('internal error: imSearch() failed');
-        imSearch($im, 1);
+        $im = new IndexMap([[0,0], [5,10]]);
+        $this->assertSame($im, $im->combineWithArray([[0,0], [2,4], [4,6]]));
+        $this->assertEquals([[0,0], [2,4], [3,10], [4,13]], $im->getArray());
     }
 
-    public function test__imSearch__08()
+    public function test__combineWithArray__08()
     {
-        // unsorted (pathological case, but must not hang)
-        $im = [[5], [3], [1], [0]];
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('internal error: imSearch() failed');
-        imSearch($im, 2);
+        $im = new IndexMap([[0,0], [5,10]]);
+        $this->assertSame($im, $im->combineWithArray([[0,0], [2,4], [3,6]]));
+        $this->assertEquals([[0,0], [2,4], [3,13]], $im->getArray());
+    }
+
+    public function test__combineWithArray__09()
+    {
+        $im = new IndexMap([[0,0], [17,19], [24,28], [42,48]]);
+        $this->assertsame($im, $im->combineWithArray([[0,12]]));
+        $this->assertEquals([[0,12], [5,19], [12,28], [30, 48]], $im->getArray());
     }
 
     //
-    // imApply
+    // combineWith()
     //
-    public function test__imApply__00()
+    public function test__combineWith__00()
     {
-        $im = [[0, 0]];
-        $this->assertEquals(-2, imApply($im, -2, 1, $index));
+        // combineWithArray() is already tested, so we only check that
+        // combineWith() calls the combineWithArray() correctly.
+        $im = $this->getMockBuilder(IndexMap::class)
+                   ->setMethods(['combineWithArray'])
+                   ->disableOriginalConstructor()
+                   ->getMock();
+        $im->expects($this->once())
+           ->method('combineWithArray')
+           ->with([[10,20], [30,40]])
+           ->will($this->returnSelf());
+
+        $jm = new IndexMap([[10,20], [30,40]]);
+
+        $this->assertSame($im, $im->combineWith($jm));
+    }
+
+    //
+    // apply
+    //
+    public function test__apply__00()
+    {
+        $im = new IndexMap([[0, 0]]);
+        $this->assertEquals(-2, $im->apply(-2, $index));
         $this->assertEquals(0, $index);
-        $this->assertEquals(0, imApply($im, 0, 1, $index));
+        $this->assertEquals(0, $im->apply(0, $index));
         $this->assertEquals(0, $index);
-        $this->assertEquals(1, imApply($im, 1, 1, $index));
+        $this->assertEquals(1, $im->apply(1, $index));
         $this->assertEquals(0, $index);
-        $this->assertEquals(2, imApply($im, 2, 1, $index));
+        $this->assertEquals(2, $im->apply(2, $index));
         $this->assertEquals(0, $index);
-        $this->assertEquals(-1, imApply($im, -1, 1, $index));
+        $this->assertEquals(-1, $im->apply(-1, $index));
         $this->assertEquals(0, $index);
     }
 
-    public function test__imApply__01()
+    public function test__apply__01()
     {
-        $im = [[0,0], [4,6], [8,12]];
-        $this->assertEquals(-2, imApply($im, -2, 1, $index));
+        $im = new IndexMap([[0,0], [4,6], [8,12]]);
+        $this->assertEquals(-2, $im->apply(-2, $index));
         $this->assertEquals(0, $index);
 
-        $this->assertEquals(0, imApply($im, 0, 1, $index));
+        $this->assertEquals(0, $im->apply(0, $index));
         $this->assertEquals(0, $index);
-        $this->assertEquals(1, imApply($im, 1, 1, $index));
+        $this->assertEquals(1, $im->apply(1, $index));
         $this->assertEquals(0, $index);
-        $this->assertEquals(2, imApply($im, 2, 1, $index));
+        $this->assertEquals(2, $im->apply(2, $index));
         $this->assertEquals(0, $index);
-        $this->assertEquals(3, imApply($im, 3, 1, $index));
+        $this->assertEquals(3, $im->apply(3, $index));
         $this->assertEquals(0, $index);
-        $this->assertEquals(6, imApply($im, 4, 1, $index));
+        $this->assertEquals(6, $im->apply(4, $index));
         $this->assertEquals(1, $index);
-        $this->assertEquals(7, imApply($im, 5, 1, $index));
+        $this->assertEquals(7, $im->apply(5, $index));
         $this->assertEquals(1, $index);
-        $this->assertEquals(8, imApply($im, 6, 1, $index));
+        $this->assertEquals(8, $im->apply(6, $index));
         $this->assertEquals(1, $index);
-        $this->assertEquals(9, imApply($im, 7, 1, $index));
+        $this->assertEquals(9, $im->apply(7, $index));
         $this->assertEquals(1, $index);
-        $this->assertEquals(12, imApply($im, 8, 1, $index));
+        $this->assertEquals(12, $im->apply(8, $index));
         $this->assertEquals(2, $index);
-        $this->assertEquals(13, imApply($im, 9, 1, $index));
+        $this->assertEquals(13, $im->apply(9, $index));
         $this->assertEquals(2, $index);
-        $this->assertEquals(14, imApply($im, 10, 1, $index));
+        $this->assertEquals(14, $im->apply(10, $index));
         $this->assertEquals(2, $index);
 
-        $this->assertEquals(-1, imApply($im, -1, 1, $index));
+        $this->assertEquals(-1, $im->apply(-1, $index));
         $this->assertEquals(0, $index);
     }
 
-    public function test__imApply__02()
+    public function test__apply__02()
     {
-        $im = [[0,0], [4,6], [8,12]];
-        $this->assertEquals(0, imApply($im, -2, 0, $index));
+        $im = new IndexMap([[0,0], [4,6], [8,12]], 0);
+        $this->assertEquals(0, $im->apply(-2, $index));
         $this->assertEquals(0, $index);
 
-        $this->assertEquals(0, imApply($im, 0, 0, $index));
+        $this->assertEquals(0, $im->apply(0, $index));
         $this->assertEquals(0, $index);
-        $this->assertEquals(0, imApply($im, 1, 0, $index));
+        $this->assertEquals(0, $im->apply(1, $index));
         $this->assertEquals(0, $index);
-        $this->assertEquals(0, imApply($im, 2, 0, $index));
+        $this->assertEquals(0, $im->apply(2, $index));
         $this->assertEquals(0, $index);
-        $this->assertEquals(0, imApply($im, 3, 0, $index));
+        $this->assertEquals(0, $im->apply(3, $index));
         $this->assertEquals(0, $index);
-        $this->assertEquals(6, imApply($im, 4, 0, $index));
+        $this->assertEquals(6, $im->apply(4, $index));
         $this->assertEquals(1, $index);
-        $this->assertEquals(6, imApply($im, 5, 0, $index));
+        $this->assertEquals(6, $im->apply(5, $index));
         $this->assertEquals(1, $index);
-        $this->assertEquals(6, imApply($im, 6, 0, $index));
+        $this->assertEquals(6, $im->apply(6, $index));
         $this->assertEquals(1, $index);
-        $this->assertEquals(6, imApply($im, 7, 0, $index));
+        $this->assertEquals(6, $im->apply(7, $index));
         $this->assertEquals(1, $index);
-        $this->assertEquals(12, imApply($im, 8, 0, $index));
+        $this->assertEquals(12, $im->apply(8, $index));
         $this->assertEquals(2, $index);
-        $this->assertEquals(12, imApply($im, 9, 0, $index));
+        $this->assertEquals(12, $im->apply(9, $index));
         $this->assertEquals(2, $index);
-        $this->assertEquals(12, imApply($im, 10, 0, $index));
+        $this->assertEquals(12, $im->apply(10, $index));
         $this->assertEquals(2, $index);
 
-        $this->assertEquals(0, imApply($im, -1, 0, $index));
+        $this->assertEquals(0, $im->apply(-1, $index));
         $this->assertEquals(0, $index);
     }
 
-    public function test__imApply__03()
+    public function test__apply__03()
     {
-        $im = [];
-        $this->assertEquals(-1, imApply($im, -1, 1, $index));
+        $im = new IndexMap([]);
+        $this->assertEquals(-1, $im->apply(-1, $index));
         $this->assertNull($index);
-        $this->assertEquals(0, imApply($im, 0, 1, $index));
+        $this->assertEquals(0, $im->apply(0, $index));
         $this->assertNull($index);
-        $this->assertEquals(1, imApply($im, 1, 1, $index));
+        $this->assertEquals(1, $im->apply(1, $index));
         $this->assertNull($index);
+    }
+
+    //
+    // __invoke()
+    //
+    public function test__invoke__00()
+    {
+        // apply() is already tested, so we only check that __invoke() calls
+        // apply() correctly.
+        $im = $this->getMockBuilder(IndexMap::class)
+                   ->setMethods(['apply'])
+                   ->disableOriginalConstructor()
+                   ->getMock();
+        $im->expects($this->once())
+           ->method('apply')
+           ->with(3)
+           ->willReturnCallback(function(int $i, int &$index = null) {
+               $index = 123;
+               return 7;
+           });
+
+        $this->assertEquals(7, $im(3,$index));
+        $this->assertEquals(123, $index);
     }
 }
 

@@ -36,7 +36,7 @@ class ClassContextFactory extends AbstractManagedContextFactory
     {
         $this->registry = [];
 
-        foreach($wrappers as $key => $val) {
+        foreach ($wrappers as $key => $val) {
             $this->register($key, $val);
         }
     }
@@ -62,10 +62,10 @@ class ClassContextFactory extends AbstractManagedContextFactory
      */
     public function register(string $class, $contextManager) : ClassContextFactory
     {
-        if(is_callable($contextManager)) {
+        if (is_callable($contextManager)) {
             $wrapper = $contextManager;
-        } elseif(is_string($contextManager) && class_exists($contextManager)) {
-            $wrapper = function($arg) use ($contextManager) {
+        } elseif (is_string($contextManager) && class_exists($contextManager)) {
+            $wrapper = function ($arg) use ($contextManager) {
                 return new $contextManager($arg);
             };
         } else {
@@ -95,9 +95,9 @@ class ClassContextFactory extends AbstractManagedContextFactory
      */
     public function getContextManager($arg) : ?ContextManagerInterface
     {
-        if(is_object($arg)) {
+        if (is_object($arg)) {
             $class = get_class($arg);
-            if(null !== ($wrapper = $this->registry[$class] ?? null)) {
+            if (null !== ($wrapper = $this->registry[$class] ?? null)) {
                 return call_user_func($wrapper, $arg);
             }
         }

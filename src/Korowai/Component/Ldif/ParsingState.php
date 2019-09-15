@@ -36,7 +36,7 @@ class ParsingState
     /**
      * Initializes the parser object
      */
-    public function __construct(PreprocessedCursor $cursor, array $errors=null)
+    public function __construct(PreprocessedCursor $cursor, array $errors = null)
     {
         $this->init($cursor, $errors);
     }
@@ -72,7 +72,7 @@ class ParsingState
     }
 
 
-    protected function init(Preprocessed $cursor, array $errors=null)
+    protected function init(Preprocessed $cursor, array $errors = null)
     {
         $this->cursor = $cursor;
         $this->errors = $errors ?? [];

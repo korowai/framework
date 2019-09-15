@@ -40,7 +40,7 @@ class LdapService extends AbstractLdapService
      */
     public function __construct(array $config = null)
     {
-        if(isset($config)) {
+        if (isset($config)) {
             $this->configure($config);
         }
     }
@@ -70,8 +70,10 @@ class LdapService extends AbstractLdapService
         $resolver->setAllowedTypes('databases', 'array[]');
         $resolver->setNormalizer('databases', function (Options $options, $dbs) {
 
-            $ids = array_map(function ($db) { return $db['id']; }, $dbs);
-            if(count($ids) !== count(array_unique($ids))) {
+            $ids = array_map(function ($db) {
+                return $db['id'];
+            }, $dbs);
+            if (count($ids) !== count(array_unique($ids))) {
                 throw new InvalidOptionsException('"id" must be unique across all "databases"');
             }
 
@@ -90,7 +92,7 @@ class LdapService extends AbstractLdapService
 
         $resolver->setDefined('factory');
 
-        $resolver->setDefault('meta', function(OptionsResolver $metaResolver) {
+        $resolver->setDefault('meta', function (OptionsResolver $metaResolver) {
             $this->configureMetaOptionsResolver($metaResolver);
         });
 
@@ -110,7 +112,7 @@ class LdapService extends AbstractLdapService
 //              $bindResolver->setAllowedTypes('dn', 'string');
 //              $bindResolver->setAllowedTypes('password', 'string');
 //
-//              if(function_exists('ldap_explode_dn')) {
+//              if (function_exists('ldap_explode_dn')) {
 //                  $bindResolver->setAllowedValues('dn', function ($value) {
 //                      return ldap_explode_dn($value, 0) !== false;
 //                  });
@@ -118,7 +120,7 @@ class LdapService extends AbstractLdapService
 //          });
 
           $resolver->setAllowedTypes('name', 'string');
-          $resolver->setAllowedTypes('description',  'string');
+          $resolver->setAllowedTypes('description', 'string');
           $resolver->setAllowedTypes('base', 'string');
     }
 
@@ -133,8 +135,10 @@ class LdapService extends AbstractLdapService
     {
         $resolved = $resolver->resolve($config);
         $dbs = array_map(array($dbResolver, 'resolve'), array_values($config['databases']));
-        $ids = array_map(function ($db) { return $db['id']; }, $dbs);
-        if(count($ids) !== count(array_unique($ids))) {
+        $ids = array_map(function ($db) {
+            return $db['id'];
+        }, $dbs);
+        if (count($ids) !== count(array_unique($ids))) {
             throw new InvalidOptionsException('"id" must be unique across all "databases"');
         }
         $resolved['databases'] = array_combine($ids, $dbs);
@@ -171,7 +175,7 @@ class LdapService extends AbstractLdapService
      */
     public function getDatabaseConfig(int $id) : array
     {
-        if(!array_key_exists($id, $this->config['databases'])) {
+        if (!array_key_exists($id, $this->config['databases'])) {
             throw new LdapServiceException("undefined LDAP database (id=${id})");
         }
         return $this->config['databases'][$id];
@@ -208,7 +212,7 @@ class LdapService extends AbstractLdapService
      */
     public function getLdap(int $id) : LdapInterface
     {
-        if(!isset($this->ldaps[$id])) {
+        if (!isset($this->ldaps[$id])) {
             $this->ldaps[$id] = $this->createLdapForId($id);
         }
         return $this->ldaps[$id];
@@ -222,7 +226,7 @@ class LdapService extends AbstractLdapService
      */
     public function unsetLdap(int $id)
     {
-        if(array_key_exists($id, $this->ldaps)) {
+        if (array_key_exists($id, $this->ldaps)) {
             unset($this->ldaps[$id]);
         }
     }

@@ -60,7 +60,7 @@ function exceptionErrorHandler(
     string $file,
     int $line
 ) {
-    if(!(error_reporting() & $severity)) {
+    if (!(error_reporting() & $severity)) {
         // This error code is not included in error_reporting
         return false;
     }

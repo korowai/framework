@@ -14,7 +14,7 @@ namespace Korowai\Component\Ldif\Tests;
 use PHPUnit\Framework\TestCase;
 use Korowai\Component\Ldif\Preprocessor;
 use Korowai\Component\Ldif\CoupledInput;
-use Korowai\Component\Ldif\IndexMap;
+use Korowai\Component\Ldif\Util\IndexMap;
 
 
 /**

@@ -80,6 +80,9 @@ class LdapLink
         return static::isLdapLinkResource($this->link);
     }
 
+    // @codingStandardsIgnoreStart
+    // phpcs:disable Generic.NamingConventions.CamelCapsFunctionName
+
     /**
      * Add entries to LDAP directory
      *
@@ -654,6 +657,9 @@ class LdapLink
     {
         return @ldap_unbind($this->link);
     }
+
+    // phpcs:enable Generic.NamingConventions.CamelCapsFunctionName
+    // @codingStandardsIgnoreEnd
 }
 
 // vim: syntax=php sw=4 ts=4 et:

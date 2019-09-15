@@ -86,9 +86,9 @@ class ContextFactoryStack implements ContextFactoryStackInterface, ContextFactor
      */
     public function getContextManager($arg) : ?ContextManagerInterface
     {
-        for($i = count($this->factories) - 1; $i >= 0; $i--) {
+        for ($i = count($this->factories) - 1; $i >= 0; $i--) {
             $factory = $this->factories[$i];
-            if(null !== ($cm = $factory->getContextManager($arg))) {
+            if (null !== ($cm = $factory->getContextManager($arg))) {
                 return $cm;
             }
         }

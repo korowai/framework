@@ -54,7 +54,7 @@ abstract class AbstractLdapService implements LdapServiceInterface
      */
     public function bind(int $id, string $dn = null, string $password = null)
     {
-        return $this->getLdap($id)->bind(...array_slice(func_get_args(),1));
+        return $this->getLdap($id)->bind(...array_slice(func_get_args(), 1));
     }
 
     /**

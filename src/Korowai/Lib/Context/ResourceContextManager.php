@@ -104,7 +104,7 @@ class ResourceContextManager implements ContextManagerInterface
         'pspell' => null,
         'pspell config' => null,
         'shmop' => '\\shmop_close',
-        'sockets file descriptor set'	=> '\\close',
+        'sockets file descriptor set' => '\\close',
         'sockets i/o vector' => null,
         //'stream' => ['dir' => '\\closedir', 'STDIO' => '\fclose'],
         //'stream' => '\\pclose',
@@ -160,7 +160,7 @@ class ResourceContextManager implements ContextManagerInterface
     public function exitContext(?\Throwable $exception = null) : bool
     {
         $resource = $this->getResource();
-        if(is_resource($resource)) {
+        if (is_resource($resource)) {
             $this->destroyResource($resource);
         }
         return false;
@@ -169,7 +169,7 @@ class ResourceContextManager implements ContextManagerInterface
     protected function destroyResource($resource)
     {
         $dtor = $this->getResourceDestructor($resource);
-        if($dtor === null) {
+        if ($dtor === null) {
             return null;
         }
         return call_user_func($dtor, $resource);
@@ -179,10 +179,10 @@ class ResourceContextManager implements ContextManagerInterface
     {
         $type = get_resource_type($resource);
         $func = self::DEFAULT_RESOURCE_DESTRUCTORS[$type] ?? null;
-        if(is_string($func) && substr($func, 0, 2) === '->') {
+        if (is_string($func) && substr($func, 0, 2) === '->') {
             $method = substr($func, 2);
             return $this->mkObjectResourceDestructor($resource, $method);
-        } elseif($type === 'stream' && is_null($func)) {
+        } elseif ($type === 'stream' && is_null($func)) {
             return $this->getStreamResourceDestructor($resource);
         } else {
             return $func;
@@ -205,13 +205,12 @@ class ResourceContextManager implements ContextManagerInterface
     protected function getStreamResourceDestructor($resource)
     {
         $meta = stream_get_meta_data($resource);
-        if($meta['stream_type'] === 'dir') {
+        if ($meta['stream_type'] === 'dir') {
             return '\\closedir';
         } else {
             return '\\fclose';
         }
     }
-
 }
 
 // vim: syntax=php sw=4 ts=4 et:

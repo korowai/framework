@@ -35,7 +35,7 @@ interface CoupledLocationInterface extends SourceLocationInterface
      *
      * @return int
      */
-    public function getCharOffset(string $encoding=null) : int;
+    public function getCharOffset(string $encoding = null) : int;
 }
 
 // vim: syntax=php sw=4 ts=4 et:

@@ -60,6 +60,9 @@ class ResultEntry extends AbstractResultEntry
         return $this->result;
     }
 
+    // @codingStandardsIgnoreStart
+    // phpcs:disable Generic.NamingConventions.CamelCapsFunctionName
+
     /**
      * Return first attribute
      *
@@ -129,6 +132,9 @@ class ResultEntry extends AbstractResultEntry
     {
         return $this->result->getLink()->next_entry($this);
     }
+
+    // phpcs:enable Generic.NamingConventions.CamelCapsFunctionName
+    // @codingStandardsIgnoreEnd
 
     /**
      * It always returns same instance. When used for the first

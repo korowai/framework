@@ -11,10 +11,7 @@ declare(strict_types=1);
 
 namespace Korowai\Component\Ldif\Util;
 
-require_once __DIR__.'/ErrorHandling.php';
-
 use Korowai\Component\Ldif\Exception\PregException;
-
 
 /**
  * Returns a constant name for a given error code.
@@ -25,7 +22,7 @@ use Korowai\Component\Ldif\Exception\PregException;
 function getPregErrConst(int $code) : string
 {
     $constants = get_defined_constants(true)['pcre'];
-    $errors = array_filter($constants, function($v, $k) {
+    $errors = array_filter($constants, function ($v, $k) {
         return strpos($k, "ERROR", -5) !== false && is_integer($v);
     }, ARRAY_FILTER_USE_BOTH);
     $errors = array_flip($errors);
@@ -47,7 +44,7 @@ function pregErrorHandler(
     int $line
 ) {
     return exceptionErrorHandler(
-        function(int $severity, string $message, string $file, int $line) {
+        function (int $severity, string $message, string $file, int $line) {
             return new PregException($message, 0, $severity, $file, $line);
         },
         $severity,
@@ -86,7 +83,7 @@ function callPregFunc1(string $func, array $args, int $depth = 0)
             return pregErrorHandler($severity, $message, $file, $line);
         }
     );
-    if($retval === false) {
+    if ($retval === false) {
         throwLastPregError(ltrim($func, '\\'), E_ERROR, $file, $line);
     }
     return $retval;
@@ -113,7 +110,7 @@ function preg_match(
     int $offset = 0
 ) {
     $args = func_get_args();
-    if(count($args) >= 3) {
+    if (count($args) >= 3) {
         $args[2] = &$matches;
     }
     return callPregFunc1('\preg_match', $args, 1);

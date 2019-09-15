@@ -41,18 +41,18 @@ class ExceptionErrorHandler extends AbstractManagedErrorHandler
      */
     public static function makeExceptionGenerator($arg = null) : callable
     {
-        if(is_callable($arg)) {
+        if (is_callable($arg)) {
             return $arg;
         }
 
-        if(is_null($arg)) {
+        if (is_null($arg)) {
             $class = \ErrorException::class;
         } else {
             $class = $arg;
         }
 
-        if(is_string($class) && class_exists($class)) {
-            return function(int $severity, string $message, string $file, int $line) use ($class) {
+        if (is_string($class) && class_exists($class)) {
+            return function (int $severity, string $message, string $file, int $line) use ($class) {
                 return new $class($message, 0, $severity, $file, $line);
             };
         }
@@ -126,7 +126,7 @@ class ExceptionErrorHandler extends AbstractManagedErrorHandler
      */
     public function __invoke(int $severity, string $message, string $file, int $line) : bool
     {
-        if(!(error_reporting() & $severity)) {
+        if (!(error_reporting() & $severity)) {
             // This error code is not included in error_reporting
             return false;
         }

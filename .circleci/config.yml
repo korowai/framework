@@ -15,7 +15,7 @@ jobs:
 
       - run:
           name: Build API docs
-          command: ./sami.phar build docs/sami/sami.conf.php
+          command: ./sami.phar update --force docs/sami/sami.conf.php
 
 workflows:
   version: 2.1

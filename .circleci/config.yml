@@ -6,9 +6,8 @@ jobs:
     steps:
       - checkout
       - run:
-          - curl -s -L -o /usr/local/bin/sami http://get.sensiolabs.org/sami.phar
-          - chmod a+x /usr/local/bin/sami
-          - sami update docs/sami/sami.conf.php
+          - php bootstrap-dev
+          - php composer install
 
 workflows:
   version: 2.1

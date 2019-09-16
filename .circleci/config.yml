@@ -1,0 +1,8 @@
+version: 2.1
+jobs:
+  build-api-doc:
+    docker:
+      - image: circleci/node:latest
+    steps:
+      - checkout
+      - run: ls -la

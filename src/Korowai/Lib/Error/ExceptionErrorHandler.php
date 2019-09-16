@@ -80,6 +80,7 @@ class ExceptionErrorHandler extends AbstractManagedErrorHandler
      * having interface compatible with PHP's \ErrorException class.
      *
      * @param mixed $arg Either a callable or an exception's class name.
+     * @param int $errorTypes Error types handled by the new handler.
      *
      * @return ExceptionErrorHandler
      */
@@ -92,6 +93,7 @@ class ExceptionErrorHandler extends AbstractManagedErrorHandler
      * Initializes the object.
      *
      * @param callable $exceptionGenerator
+     * @param int $errorTypes Error types to be handled by this handler.
      */
     public function __construct(callable $exceptionGenerator, int $errorTypes = E_ALL | E_STRICT)
     {

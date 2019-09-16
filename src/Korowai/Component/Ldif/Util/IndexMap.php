@@ -233,7 +233,7 @@ class IndexMap
      * This shall be used to implement consecutive string manipulations, where
      * each step produces index map.
      *
-     * @param array $new a new index map array to be applied to $this
+     * @param array $array a new index map array to be combined with $this
      *
      */
     public function combineWithArray(array $array) : IndexMap
@@ -248,7 +248,7 @@ class IndexMap
      * This shall be used to implement consecutive string manipulations, where
      * each step produces index map array.
      *
-     * @param array $new a new index map array to be applied to $this
+     * @param IndexMap $im a new index map to be combined with $this
      *
      */
     public function combineWith(IndexMap $im) : IndexMap

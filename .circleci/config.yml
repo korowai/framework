@@ -20,7 +20,7 @@ jobs:
 
       - run:
           name: Build API docs
-          command: php vendor/bin/sami docs/sami/sami.conf.php
+          command: echo "$GITHUB_TOKEN" && php vendor/bin/sami docs/sami/sami.conf.php
 
 workflows:
   version: 2.1

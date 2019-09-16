@@ -1,5 +1,4 @@
 name: korowai-framework
 channels:
   - defaults
-dependencies:
-  - php
+dependencies: []

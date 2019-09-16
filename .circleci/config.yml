@@ -24,7 +24,7 @@ jobs:
 
       - store_artifacts:
           path: docs/build/html/api.tar.gz
-          destination: apidoc_tarball
+          destination: "api.tar.gz"
 
   build_user_docs:
     docker:

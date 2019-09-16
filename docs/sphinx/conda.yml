@@ -6,4 +6,4 @@ dependencies:
   - sphinx
   - sphinx_rtd_theme
   - pip:
-    - "git+https://github.com/korowai/sphinx-php.git@korowai#egg_name=sphinx-php"
+    - git+https://github.com/korowai/sphinx-php.git@korowai#egg_name=sphinx-php

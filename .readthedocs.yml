@@ -24,4 +24,4 @@ python:
     - requirements: docs/sphinx/requirements.txt
 
 conda:
-  environment: .readthedocs/environment.yml
+  environment: docs/sphinx/conda.yml

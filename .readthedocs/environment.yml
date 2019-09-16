@@ -1,5 +1,0 @@
-name: korowai-framework
-channels:
-  - defaults
-dependencies:
-  - pip

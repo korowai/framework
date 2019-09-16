@@ -23,8 +23,8 @@ jobs:
             (cd docs/build/html && tar -czf "api.tar.gz" api)
 
       - store_artifacts:
-        path: docs/build/html/api.tar.gz
-        destination: api.tar.gz
+          path: docs/build/html/api.tar.gz
+          destination: apidoc_tarball
 
   build_user_docs:
     docker:

@@ -18,9 +18,6 @@
       "korowai/contextlib" : "self.version",
       "korowai/errorlib" : "self.version"
     },
-    "repositories" : [
-      { "type": "vcs", "url": "https://github.com/korowai/sami" }
-    ],
     "require": {
         "php": ">=7.1.3",
         "symfony/options-resolver": ">=4.2",
@@ -34,8 +31,7 @@
         "symfony/filesystem": ">=4.2",
         "symfony/finder": ">=4.2",
         "laravel/lumen-framework": ">=5.8",
-        "laravel/tinker": ">=1.0.8",
-        "sami/sami": "dev-korowai"
+        "laravel/tinker": ">=1.0.8"
     },
     "autoload": {
       "psr-4" : {

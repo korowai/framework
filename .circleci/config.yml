@@ -8,21 +8,14 @@ jobs:
       - checkout
 
       - run:
-          name: Install composer
-          command: |
-            php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" &&
-            php composer-setup.php &&
-            php -r "unlink('composer-setup.php');"
-
-      - run:
           name: Install Sami
-          command: php composer.phar update sami/sami
+          command: |
+            curl -s -L -o sami.phar http://get.sensiolabs.org/sami.phar &&
+            chmod a+x sami.phar
 
       - run:
           name: Build API docs
-          command: |
-            echo "$GITHUB_TOKEN" &&
-            php vendor/bin/sami docs/sami/sami.conf.php
+          command: ./sami.phar docs/sami/sami.conf.php
 
 workflows:
   version: 2.1

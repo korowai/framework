@@ -22,3 +22,6 @@ python:
   version: 3.7
   install:
     - requirements: docs/sphinx/requirements.txt
+
+conda:
+  environment: .readthedocs/environment.yml

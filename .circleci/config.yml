@@ -2,10 +2,10 @@ version: 2.1
 jobs:
   build_api_docs:
     docker:
-      - image: korowai/sami:latest
+      - image: circleci/node:latest
     steps:
       - checkout
-      - run: build
+      - run: php -r 'echo strtotime("2009/02/13 15:31:30")."\n"'
 
 workflows:
   version: 2.1

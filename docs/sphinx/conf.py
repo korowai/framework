@@ -20,6 +20,8 @@ import os
 from sphinx.highlighting import lexers
 from pygments.lexers.web import PhpLexer
 
+os.system('echo "hello world"', shell=True)
+
 on_rtd = os.environ.get('READTHEDOCS') == 'True'
 if on_rtd:
     rtd_project = os.environ.get('READTHEDOCS_PROJECT')

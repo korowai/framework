@@ -1,8 +1,14 @@
 version: 2.1
 jobs:
-  build:
+  build_api_docs:
     docker:
-      - image: circleci/node:latest
+      - image: korowai/sami:latest
     steps:
       - checkout
-      - run: ls -la
+      - run: build
+
+workflows:
+  version: 2.1
+  build_docs:
+    jobs:
+      - build_api_docs

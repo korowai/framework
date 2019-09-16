@@ -22,6 +22,11 @@ jobs:
       - image: circleci/python:3.7
     steps:
       - checkout
+
+      - run:
+          name: Setup virtualenv
+          command: python -m venv ~/.venv && . ~/.venv/bin/activate
+
       - run:
           name: Install sphinx
           command: |

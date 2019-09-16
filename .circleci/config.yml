@@ -5,7 +5,7 @@ jobs:
       - image: circleci/php:7.3.5-cli
     steps:
       - checkout
-      - run: php -r 'echo strtotime("2009/02/13 15:31:30")."\n"'
+      - run: php -r 'echo strtotime("2009/02/13 15:31:30")."\n";'
 
 workflows:
   version: 2.1

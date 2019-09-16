@@ -19,12 +19,18 @@ jobs:
 
   build_user_docs:
     docker:
-      - image: korowai/sphinx:latest
+      - image: circleci/python:3.7
     steps:
       - checkout
       - run:
+          name: Install sphinx
+          command: |
+            python -m pip install -U pip &&
+            python -m pip install -r docs/sphinx/requirements.txt
+
+      - run:
           name: Build user docs
-          command: build
+          command: sphinx-build docs/sphinx docs/build/html
 
 workflows:
   version: 2.1

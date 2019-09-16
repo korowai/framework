@@ -17,8 +17,18 @@ jobs:
           name: Build API docs
           command: ./sami.phar update --force -vvv docs/sami/sami.conf.php
 
+  build_user_docs:
+    docker:
+      - image: korowai/sphinx:latest
+    steps:
+      - checkout
+      - run:
+          name: Build user docs
+          command: build
+
 workflows:
   version: 2.1
   build_docs:
     jobs:
       - build_api_docs
+      - build_user_docs

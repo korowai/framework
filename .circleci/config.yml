@@ -1,6 +1,6 @@
 version: 2.1
 jobs:
-  build-api-doc:
+  build:
     docker:
       - image: circleci/node:latest
     steps:

@@ -1,6 +1,7 @@
 # Locally installed binaries
 /composer
 /phpdoc
+/circleci
 /docker-compose
 /sami
 /tmp

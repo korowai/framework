@@ -5,9 +5,21 @@ jobs:
       - image: circleci/php:7.3.5-cli
     steps:
       - checkout
+
       - run:
-          - php bootstrap-dev
-          - php composer install
+          name: Install composer
+          command: |
+            php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" &&
+            php composer-setup.php &&
+            php -r "unlink('composer-setup.php');"
+
+      - run:
+          name: Install Sami
+          command: php composer.phar update sami/sami
+
+      - run:
+          name: Build API docs
+          command: php vendor/bin/sami docs/sami/sami.conf.php
 
 workflows:
   version: 2.1

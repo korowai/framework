@@ -47,11 +47,6 @@ jobs:
           command: ./sami.phar update --force -vvv docs/sami/sami.conf.php
 
       - run:
-          name: Make an API doc tarball
-          command: |
-            (cd docs/build/html && tar -czf "api.tar.gz" api)
-
-      - run:
           name: Deploy to Source Forge
           <<: *sf_deploy_command
 

@@ -84,7 +84,6 @@ jobs:
 
   behat_test:
     machine: true
-    working_directory: /tmp/behat_test
 
     steps:
       - checkout

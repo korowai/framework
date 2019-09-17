@@ -1,20 +1,5 @@
 version: 2.1
 
-sf_deploy_env: &sf_deploy_env
-  SF_DEPL_HOST: web.sourceforge.net
-  SF_DOCS_DIR: /home/project-web/korowai-framework/htdocs/docs
-
-sf_deploy_command: &sf_deploy_command
-  command: |
-    sudo apt-get -y update && sudo apt-get -y install rsync &&
-    ssh-keyscan "${SF_DEPL_HOST}" >> ~/.ssh/known_hosts &&
-    ( cd "${DOCS_DIR}" && rsync -aivz --delete ./ "${SF_DEPL_USER}@${SF_DEPL_HOST}:${SF_DOCS_DIR}/${CIRCLE_BRANCH}/" );
-
-
-ssh_keys: &ssh_keys
-  fingerprints:
-    - "f8:01:5a:e4:53:1c:dc:9e:f8:a4:dc:b3:a0:e3:80:95"
-
 jobs:
   build_sami_docs:
     docker:
@@ -24,7 +9,7 @@ jobs:
       - checkout
 
       - run:
-          name: Install Sami
+          name: Install sami
           command: |
             curl -s -L -o sami.phar http://get.sensiolabs.org/sami.phar &&
             chmod a+x sami.phar
@@ -57,7 +42,7 @@ jobs:
             python -m pip install -U --progress-bar off -r docs/sphinx/requirements.txt
 
       - run:
-          name: Build user docs
+          name: Build sphinx docs
           command: |
             . ~/.venv/bin/activate &&
             sphinx-build docs/sphinx docs/build/html
@@ -73,18 +58,23 @@ jobs:
 
     environment:
       DOCS_DIR: docs/build/html
-      <<: *sf_deploy_env
+      SF_DEPL_HOST: web.sourceforge.net
+      SF_DOCS_DIR: /home/project-web/korowai-framework/htdocs/docs
 
     steps:
       - attach_workspace:
           at: docs/build/html
 
       - add_ssh_keys:
-          <<: *ssh_keys
+          fingerprints:
+            - "f8:01:5a:e4:53:1c:dc:9e:f8:a4:dc:b3:a0:e3:80:95"
 
       - run:
           name: Deploy to Source Forge
-          <<: *sf_deploy_command
+          command: |
+            sudo apt-get -y update && sudo apt-get -y install rsync &&
+            ssh-keyscan "${SF_DEPL_HOST}" >> ~/.ssh/known_hosts &&
+            ( cd "${DOCS_DIR}" && rsync -aivz --delete ./ "${SF_DEPL_USER}@${SF_DEPL_HOST}:${SF_DOCS_DIR}/${CIRCLE_BRANCH}/" );
 
 workflows:
   version: 2.1

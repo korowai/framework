@@ -83,24 +83,24 @@ jobs:
             ( cd "${DOCS_DIR}" && rsync -aivz --delete ./ "${SF_USER}@${SF_HOST}:${SF_DOCS_DIR}/${CIRCLE_BRANCH}/" );
 
   behat_test:
-    machine:
-      image: ubuntu-1604:201903-01
+    docker:
+      image: circleci/php:7.1.3-cli
 
     steps:
-      - checkout
+      - setup_remote_docker
 
-      - run:
-          name: Build docker images
-          command: docker-compose build
+      - checkout
 
       - run:
           name: Bootstrap project and install dependencies
           command: |
-            sudo apt-get update &&
-            sudo apt-cache pkgnames php &&
-            sudo apt-get install php7.0 &&
-            php bootstrap-dev &&
-            php composer install
+            composer install
+            #php bootstrap-dev &&
+            #php composer install
+
+      - run:
+          name: Pull docker-compose images
+          command: docker-compose pull
 
       - run:
           name: Running tests

@@ -3,7 +3,7 @@ version: 2.1
 sf_del_env: &sf_depl_env
   SF_DEPL_HOST: web.sourceforge.net
   SF_DOCS_DIR: /home/project-web/korowai-framework/htdocs/docs
-  SF_DOCS_BRANCHES: "master\|devel"
+  SF_DOCS_BRANCHES: "master\\|devel"
 
 
 jobs:

@@ -22,6 +22,12 @@ jobs:
           command: |
             (cd docs/build/html && tar -czf "api.tar.gz" api)
 
+      - run:
+          name: Deploy to Source Forge
+          command: |
+            git symbolic-ref --short HEAD &&
+            rsync --version
+
   build_user_docs:
     docker:
       - image: circleci/python:3.7

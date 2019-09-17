@@ -5,6 +5,9 @@ sf_del_env: &sf_depl_env
   SF_DOCS_DIR: /home/project-web/korowai-framework/htdocs/docs
   SF_DOCS_BRANCHES: "master\\|devel"
 
+ssh_keys: &ssh_keys
+  fingerprints:
+    - "f8:01:5a:e4:53:1c:dc:9e:f8:a4:dc:b3:a0:e3:80:95"
 
 jobs:
   build_api_docs:
@@ -18,8 +21,7 @@ jobs:
       - checkout
 
       - add_ssh_keys:
-        fingerprints:
-          - "f8:01:5a:e4:53:1c:dc:9e:f8:a4:dc:b3:a0:e3:80:95"
+          <<: *ssh_keys
 
       - run:
           name: Install Sami
@@ -56,8 +58,7 @@ jobs:
       - checkout
 
       - add_ssh_keys:
-        fingerprints:
-          - "f8:01:5a:e4:53:1c:dc:9e:f8:a4:dc:b3:a0:e3:80:95"
+          <<: *ssh_keys
 
       - run:
           name: Setup virtualenv

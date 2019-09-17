@@ -1,9 +1,20 @@
 version: 2.1
 
-sf_del_env: &sf_depl_env
+sf_deploy_env: &sf_deploy_env
   SF_DEPL_HOST: web.sourceforge.net
   SF_DOCS_DIR: /home/project-web/korowai-framework/htdocs/docs
   SF_DOCS_BRANCHES: "master\\|devel"
+
+sf_deploy_command: &sf_deploy_command
+  command: |
+    sudo apt-get -y update && sudo apt-get -y install rsync &&
+    ssh-keyscan "${SF_DEPL_HOST}" >> ~/.ssh/known_hosts &&
+    if echo "${CIRCLE_BRANCH}" | grep "${SF_DOCS_BRANCHES}" > '/dev/null';
+    then
+      ( cd docs/build/html/api &&
+        rsync -aivz --delete ./ "${SF_DEPL_USER}@${SF_DEPL_HOST}:${SF_DOCS_DIR}/${CIRCLE_BRANCH}/${DOCS_TYPE}/" );
+    fi;
+
 
 ssh_keys: &ssh_keys
   fingerprints:
@@ -15,7 +26,9 @@ jobs:
       - image: circleci/php:7.3.5-cli
 
     environment:
-      <<: *sf_depl_env
+      DOCS_TYPE: api
+      DOCS_DIR: docs/build/html/api
+      <<: *sf_deploy_env
 
     steps:
       - checkout
@@ -40,25 +53,21 @@ jobs:
 
       - run:
           name: Deploy to Source Forge
-          command: |
-            ssh-keyscan "$SF_DEPL_HOST" >> ~/.ssh/known_hosts &&
-            if echo "$CIRCLE_BRANCH" | grep "${SF_DOCS_BRANCHES}" > '/dev/null';
-            then
-              ( cd docs/build/html/api &&
-                rsync -aivz --delete ./ ${SF_DEPL_USER}@${SF_DEPL_HOST}:${SF_DOCS_DIR}/${CIRCLE_BRANCH}/api/ );
-            fi;
+          <<: *sf_deploy_command
 
   build_user_docs:
     docker:
       - image: circleci/python:3.7
 
     environment:
-      <<: *sf_depl_env
+      <<: *sf_deploy_env
 
     steps:
       - checkout
 
       - add_ssh_keys:
+          DOCS_TYPE: user
+          DOCS_DIR: docs/build/html
           <<: *ssh_keys
 
       - run:
@@ -80,14 +89,7 @@ jobs:
 
       - run:
           name: Deploy to Source Forge
-          command: |
-            apt-get -y update && apt-get -y install rsync &&
-            ssh-keyscan "$SF_DEPL_HOST" >> ~/.ssh/known_hosts &&
-            if echo "$CIRCLE_BRANCH" | grep "${SF_DOCS_BRANCHES}" > '/dev/null';
-            then
-              ( cd docs/build/html/ &&
-                rsync -aivz --delete ./ ${SF_DEPL_USER}@${SF_DEPL_HOST}:${SF_DOCS_DIR}/${CIRCLE_BRANCH}/user/ );
-            fi;
+          <<: *sf_deploy_command
 
 workflows:
   version: 2.1

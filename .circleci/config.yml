@@ -12,7 +12,7 @@ sf_deploy_command: &sf_deploy_command
       sudo apt-get -y update && sudo apt-get -y install rsync &&
       ssh-keyscan "${SF_DEPL_HOST}" >> ~/.ssh/known_hosts &&
       ( cd "${DOCS_DIR}" &&
-        rsync -aivz --delete ./ "${SF_DEPL_USER}@${SF_DEPL_HOST}:${SF_DOCS_DIR}/${CIRCLE_BRANCH}/${DOCS_TYPE}/" );
+        rsync -aivz --delete ./ "${SF_DEPL_USER}@${SF_DEPL_HOST}:${SF_DOCS_DIR}/${CIRCLE_BRANCH}/" );
     fi;
 
 
@@ -23,39 +23,11 @@ ssh_keys: &ssh_keys
 jobs:
   build_api_docs:
     docker:
-      - image: circleci/php:7.3.5-cli
+      - image: docker:latest-git
+      - image: korowai/sami:latest
+      - image: korowai/sphinx:latest
 
     environment:
-      DOCS_TYPE: api
-      DOCS_DIR: docs/build/html/api
-      <<: *sf_deploy_env
-
-    steps:
-      - checkout
-
-      - add_ssh_keys:
-          <<: *ssh_keys
-
-      - run:
-          name: Install Sami
-          command: |
-            curl -s -L -o sami.phar http://get.sensiolabs.org/sami.phar &&
-            chmod a+x sami.phar
-
-      - run:
-          name: Build API docs
-          command: ./sami.phar update --force -vvv docs/sami/sami.conf.php
-
-      - run:
-          name: Deploy to Source Forge
-          <<: *sf_deploy_command
-
-  build_user_docs:
-    docker:
-      - image: circleci/python:3.7
-
-    environment:
-      DOCS_TYPE: user
       DOCS_DIR: docs/build/html
       <<: *sf_deploy_env
 
@@ -66,29 +38,152 @@ jobs:
           <<: *ssh_keys
 
       - run:
-          name: Setup virtualenv
-          command: python -m venv ~/.venv
+          name: Bootstrap project
+          command: ./.circleci/bootstrap-dev.sh
 
       - run:
-          name: Install sphinx
-          command: |
-            . ~/.venv/bin/activate &&
-            python -m pip install -U --progress-bar off pip &&
-            python -m pip install -U --progress-bar off -r docs/sphinx/requirements.txt
+          name: Build Sphinx docs
+          command: docker-compose -f docs/docker-compose.yml run --rm sphinx build
 
       - run:
-          name: Build user docs
-          command: |
-            . ~/.venv/bin/activate &&
-            sphinx-build docs/sphinx docs/build/html
+          name: Build Sami docs
+          command: docker-compose -f docs/docker-compose.yml run --rm sami build
 
       - run:
           name: Deploy to Source Forge
           <<: *sf_deploy_command
 
+##  build_user_docs:
+##    docker:
+##      - image: circleci/python:3.7
+##
+##    environment:
+##      DOCS_TYPE: user
+##      DOCS_DIR: docs/build/html
+##      <<: *sf_deploy_env
+##
+##    steps:
+##      - checkout
+##
+##      - add_ssh_keys:
+##          <<: *ssh_keys
+##
+##      - run:
+##          name: Setup virtualenv
+##          command: python -m venv ~/.venv
+##
+##      - run:
+##          name: Install sphinx
+##          command: |
+##            . ~/.venv/bin/activate &&
+##            python -m pip install -U --progress-bar off pip &&
+##            python -m pip install -U --progress-bar off -r docs/sphinx/requirements.txt
+##
+##      - run:
+##          name: Build user docs
+##          command: |
+##            . ~/.venv/bin/activate &&
+##            sphinx-build docs/sphinx docs/build/html
+##
+##      - run:
+##          name: Deploy to Source Forge
+##          <<: *sf_deploy_command
+
 workflows:
   version: 2.1
   build_docs:
     jobs:
-      - build_api_docs
-      - build_user_docs
+      - build_docs
+
+##sf_deploy_env: &sf_deploy_env
+##  SF_DEPL_HOST: web.sourceforge.net
+##  SF_DOCS_DIR: /home/project-web/korowai-framework/htdocs/docs
+##  SF_DOCS_BRANCHES: "^master\\|devel$"
+##
+##sf_deploy_command: &sf_deploy_command
+##  command: |
+##    if echo "${CIRCLE_BRANCH}" | grep "${SF_DOCS_BRANCHES}" > '/dev/null';
+##    then
+##      sudo apt-get -y update && sudo apt-get -y install rsync &&
+##      ssh-keyscan "${SF_DEPL_HOST}" >> ~/.ssh/known_hosts &&
+##      ( cd "${DOCS_DIR}" &&
+##        rsync -aivz --delete ./ "${SF_DEPL_USER}@${SF_DEPL_HOST}:${SF_DOCS_DIR}/${CIRCLE_BRANCH}/${DOCS_TYPE}/" );
+##    fi;
+##
+##
+##ssh_keys: &ssh_keys
+##  fingerprints:
+##    - "f8:01:5a:e4:53:1c:dc:9e:f8:a4:dc:b3:a0:e3:80:95"
+##
+##jobs:
+##  build_api_docs:
+##    docker:
+##      - image: circleci/php:7.3.5-cli
+##
+##    environment:
+##      DOCS_TYPE: api
+##      DOCS_DIR: docs/build/html/api
+##      <<: *sf_deploy_env
+##
+##    steps:
+##      - checkout
+##
+##      - add_ssh_keys:
+##          <<: *ssh_keys
+##
+##      - run:
+##          name: Install Sami
+##          command: |
+##            curl -s -L -o sami.phar http://get.sensiolabs.org/sami.phar &&
+##            chmod a+x sami.phar
+##
+##      - run:
+##          name: Build API docs
+##          command: ./sami.phar update --force -vvv docs/sami/sami.conf.php
+##
+##      - run:
+##          name: Deploy to Source Forge
+##          <<: *sf_deploy_command
+##
+##  build_user_docs:
+##    docker:
+##      - image: circleci/python:3.7
+##
+##    environment:
+##      DOCS_TYPE: user
+##      DOCS_DIR: docs/build/html
+##      <<: *sf_deploy_env
+##
+##    steps:
+##      - checkout
+##
+##      - add_ssh_keys:
+##          <<: *ssh_keys
+##
+##      - run:
+##          name: Setup virtualenv
+##          command: python -m venv ~/.venv
+##
+##      - run:
+##          name: Install sphinx
+##          command: |
+##            . ~/.venv/bin/activate &&
+##            python -m pip install -U --progress-bar off pip &&
+##            python -m pip install -U --progress-bar off -r docs/sphinx/requirements.txt
+##
+##      - run:
+##          name: Build user docs
+##          command: |
+##            . ~/.venv/bin/activate &&
+##            sphinx-build docs/sphinx docs/build/html
+##
+##      - run:
+##          name: Deploy to Source Forge
+##          <<: *sf_deploy_command
+##
+##workflows:
+##  version: 2.1
+##  build_docs:
+##    jobs:
+##      - build_api_docs
+##      - build_user_docs

@@ -81,6 +81,7 @@ jobs:
       - run:
           name: Deploy to Source Forge
           command: |
+            apt-get -y update && apt-get -y install rsync &&
             ssh-keyscan "$SF_DEPL_HOST" >> ~/.ssh/known_hosts &&
             if echo "$CIRCLE_BRANCH" | grep "${SF_DOCS_BRANCHES}" > '/dev/null';
             then

@@ -41,7 +41,7 @@ jobs:
       - run:
           name: Deploy to Source Forge
           command: |
-            ssh-keyscan "SF_DEPL_HOST" >> ~/.ssh/known_hosts &&
+            ssh-keyscan "$SF_DEPL_HOST" >> ~/.ssh/known_hosts &&
             if echo "$CIRCLE_BRANCH" | grep "${SF_DOCS_BRANCHES}" > '/dev/null';
             then
               ( cd docs/build/html/api &&
@@ -81,7 +81,7 @@ jobs:
       - run:
           name: Deploy to Source Forge
           command: |
-            ssh-keyscan "SF_DEPL_HOST" >> ~/.ssh/known_hosts &&
+            ssh-keyscan "$SF_DEPL_HOST" >> ~/.ssh/known_hosts &&
             if echo "$CIRCLE_BRANCH" | grep "${SF_DOCS_BRANCHES}" > '/dev/null';
             then
               ( cd docs/build/html &&

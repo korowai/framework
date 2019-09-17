@@ -1,11 +1,25 @@
 version: 2.1
 
+sf_del_env: &sf_depl_env
+  SF_DEPL_HOST: web.sourceforge.net
+  SF_DOCS_DIR: /home/project-web/korowai-framework/htdocs/docs
+  SF_DOCS_BRANCHES: "master\|devel"
+
+
 jobs:
   build_api_docs:
     docker:
       - image: circleci/php:7.3.5-cli
+
+    environment:
+      <<: *sf_depl_env
+
     steps:
       - checkout
+
+      - add_ssh_keys:
+        fingerprints:
+          - "f8:01:5a:e4:53:1c:dc:9e:f8:a4:dc:b3:a0:e3:80:95"
 
       - run:
           name: Install Sami
@@ -25,14 +39,25 @@ jobs:
       - run:
           name: Deploy to Source Forge
           command: |
-            git symbolic-ref --short HEAD &&
-            rsync --version
+            if echo "$CIRCLE_BRANCH" | grep "${SF_DOCS_BRANCHES}" > '/dev/null';
+            then
+              ( cd docs/build/html/api &&
+                rsync -aivz --delete ${SF_DEPL_USER}@${SF_DEPL_HOST}:${SF_DOCS_DIR}/${CIRCLE_BRANCH}/api/ );
+            fi;
 
   build_user_docs:
     docker:
       - image: circleci/python:3.7
+
+    environment:
+      <<: *sf_depl_env
+
     steps:
       - checkout
+
+      - add_ssh_keys:
+        fingerprints:
+          - "f8:01:5a:e4:53:1c:dc:9e:f8:a4:dc:b3:a0:e3:80:95"
 
       - run:
           name: Setup virtualenv
@@ -50,6 +75,15 @@ jobs:
           command: |
             . ~/.venv/bin/activate &&
             sphinx-build docs/sphinx docs/build/html
+
+      - run:
+          name: Deploy to Source Forge
+          command: |
+            if echo "$CIRCLE_BRANCH" | grep "${SF_DOCS_BRANCHES}" > '/dev/null';
+            then
+              ( cd docs/build/html &&
+                rsync -aivz --delete ${SF_DEPL_USER}@${SF_DEPL_HOST}:${SF_DOCS_DIR}/${CIRCLE_BRANCH}/user/ );
+            fi;
 
 workflows:
   version: 2.1

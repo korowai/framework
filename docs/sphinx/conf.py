@@ -21,13 +21,17 @@ from sphinx.highlighting import lexers
 from pygments.lexers.web import PhpLexer
 
 on_rtd = os.environ.get('READTHEDOCS') == 'True'
+on_circleci = os.environ.get('CIRCLECI') == 'true'
 if on_rtd:
     rtd_project = os.environ.get('READTHEDOCS_PROJECT')
     rtd_version = os.environ.get('READTHEDOCS_VERSION')
     rtd_language = os.environ.get('READTHEDOCS_LANGUAGE')
-    url_base = '/%s/%s/' % (rtd_language, rtd_version)
+    api_url_base = 'https://%s.sourceforge.io/docs/%s/api/' % (rtd_project, rtd_version)
+elif on_circleci:
+    ci_branch =  os.environ.get('CIRCLE_BRANCH')
+    api_url_base = '/docs/%s/api/' % ci_branch
 else:
-    url_base = '/'
+    api_url_base = '/api/'
 
 # enable highlighting for PHP code not between ``<?php ... ?>`` by default
 lexers['php'] = PhpLexer(startinline=True)
@@ -38,7 +42,7 @@ lexers['php-standalone'] = PhpLexer(startinline=True)
 primary_domain = 'php'
 highlight_language ='php'
 
-api_url = url_base + 'api/%s'
+api_url = api_url_base + '%s'
 
 # -- Project information -----------------------------------------------------
 

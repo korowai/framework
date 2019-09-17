@@ -94,8 +94,9 @@ jobs:
 
       - run:
           name: Bootstrap project and install dependencies
-          command: docker-compose run --rm php-cli ./bootstrap-dev
-          command: docker-compose run --rm php-cli ./composer install
+          command: |
+            docker-compose run --rm php-cli ./bootstrap-dev &&
+            docker-compose run --rm php-cli ./composer install
 
       - run:
           name: Running tests

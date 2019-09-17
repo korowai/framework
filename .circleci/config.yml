@@ -22,10 +22,6 @@ jobs:
           command: |
             (cd docs/build/html && tar -czf "api.tar.gz" api)
 
-      - store_artifacts:
-          path: docs/build/html/api.tar.gz
-          destination: "api.tar.gz"
-
   build_user_docs:
     docker:
       - image: circleci/python:3.7

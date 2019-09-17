@@ -11,7 +11,7 @@ sf_deploy_command: &sf_deploy_command
     then
       sudo apt-get -y update && sudo apt-get -y install rsync &&
       ssh-keyscan "${SF_DEPL_HOST}" >> ~/.ssh/known_hosts &&
-      ( cd docs/build/html/api &&
+      ( cd "${DOCS_DIR}"&&
         rsync -aivz --delete ./ "${SF_DEPL_USER}@${SF_DEPL_HOST}:${SF_DOCS_DIR}/${CIRCLE_BRANCH}/${DOCS_TYPE}/" );
     fi;
 

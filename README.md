@@ -25,7 +25,7 @@ PHP>=7.1.3 is required. In addition to PHP, you may need to install these
 packages
 
 ```shell
-apt-get install php-xml php-mbstring
+apt-get install php-ldap php-xml php-mbstring
 ```
 
 ## Notes for developers

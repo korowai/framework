@@ -5,6 +5,8 @@ jobs:
     docker:
       - image: circleci/php:7.3.5-cli
 
+    working_directory: /tmp/build_docs
+
     steps:
       - checkout
 
@@ -26,6 +28,8 @@ jobs:
   build_sphinx_docs:
     docker:
       - image: circleci/python:3.7
+
+    working_directory: /tmp/build_docs
 
     steps:
       - checkout
@@ -56,6 +60,8 @@ jobs:
     docker:
       - image: circleci/python:3.7
 
+    working_directory: /tmp/build_docs
+
     environment:
       DOCS_DIR: docs/build/html
       SF_HOST: web.sourceforge.net
@@ -76,8 +82,33 @@ jobs:
             ssh-keyscan "${SF_HOST}" >> ~/.ssh/known_hosts &&
             ( cd "${DOCS_DIR}" && rsync -aivz --delete ./ "${SF_USER}@${SF_HOST}:${SF_DOCS_DIR}/${CIRCLE_BRANCH}/" );
 
+  behat_test:
+    machine: true
+    working_directory: /tmp/behat_test
+
+    steps:
+      - checkout
+
+      - run:
+          name: Build docker images
+          command: docker-compose build
+
+      - run:
+          name: Bootstrap project and install dependencies
+          command: docker-compose run --rm php-cli ./bootstrap-dev
+          command: docker-compose run --rm php-cli ./composer install
+
+      - run:
+          name: Running tests
+          command: docker-compose run --rm php-cli vendor/bin/behat
+
+      - run:
+          name: Shuting down docker conainers
+          command: docker-compose down
+
 workflows:
   version: 2.1
+
   build_docs:
     jobs:
       - build_sami_docs
@@ -91,3 +122,7 @@ workflows:
               only:
                 - master
                 - devel
+
+  test:
+    jobs:
+      - behat_test

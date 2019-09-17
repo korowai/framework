@@ -97,7 +97,7 @@ jobs:
           name: Bootstrap project and install dependencies
           command: |
             php bootstrap-dev &&
-            php compose install
+            php composer install
 
       - run:
           name: Running tests

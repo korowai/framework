@@ -11,7 +11,7 @@ sf_deploy_command: &sf_deploy_command
     then
       sudo apt-get -y update && sudo apt-get -y install rsync &&
       ssh-keyscan "${SF_DEPL_HOST}" >> ~/.ssh/known_hosts &&
-      ( cd "${DOCS_DIR}"&&
+      ( cd "${DOCS_DIR}" &&
         rsync -aivz --delete ./ "${SF_DEPL_USER}@${SF_DEPL_HOST}:${SF_DOCS_DIR}/${CIRCLE_BRANCH}/${DOCS_TYPE}/" );
     fi;
 
@@ -55,14 +55,14 @@ jobs:
       - image: circleci/python:3.7
 
     environment:
+      DOCS_TYPE: user
+      DOCS_DIR: docs/build/html
       <<: *sf_deploy_env
 
     steps:
       - checkout
 
       - add_ssh_keys:
-          DOCS_TYPE: user
-          DOCS_DIR: docs/build/html
           <<: *ssh_keys
 
       - run:

@@ -45,9 +45,6 @@ jobs:
     steps:
       - checkout
 
-      - add_ssh_keys:
-          <<: *ssh_keys
-
       - run:
           name: Setup virtualenv
           command: python -m venv ~/.venv
@@ -81,6 +78,9 @@ jobs:
     steps:
       - attach_workspace:
           at: docs/build/html
+
+      - add_ssh_keys:
+          <<: *ssh_keys
 
       - run:
           name: Deploy to Source Forge

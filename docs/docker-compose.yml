@@ -1,7 +1,7 @@
 version: '3.7'
 services:
   sphinx:
-    image: korowai/sphinx
+    image: "korowai/sphinx:${COMPOSE_SPHINX_TAG:-latest}"
     ports:
       - "8000:8000"
     volumes:
@@ -9,7 +9,7 @@ services:
     user: "${COMPOSE_USER:?you must set the COMPOSE_USER environment variable}"
 
   sami:
-    image: korowai/sami
+    image: "korowai/sami:${COMPOSE_SAMI_TAG:-latest}"
     ports:
       - "8001:8001"
     volumes:
@@ -17,7 +17,7 @@ services:
     user: "${COMPOSE_USER:?you must set the COMPOSE_USER environment variable}"
 
   phpdoc:
-    image: phpdoc/phpdoc:develop
+    image: "phpdoc/phpdoc:${COMPOSE_PHPDOC_TAG:-develop}"
     volumes:
       - ../:/data
     user: "${COMPOSE_USER:?you must set the COMPOSE_USER environment variable}"

@@ -100,7 +100,7 @@ jobs:
       - run:
           name: Bootstrap project and install composer dependencies
           command: |
-            docker-compose run --rm --entrypoint=php php-cli bootstrap-dev &&
+            echo "COMPOSE_USER=`id -u`:`id -g`" > .env &&
             docker-compose run --rm --entrypoint=composer php-cli install
 
       - run:

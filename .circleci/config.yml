@@ -94,10 +94,6 @@ jobs:
       - checkout
 
       - run:
-          name: Pull docker-compose images
-          command: docker-compose pull
-
-      - run:
           name: Bootstrap project and install composer dependencies
           command: |
             php bootstrap-dev &&

@@ -1,12 +1,12 @@
-version: '3'
+version: '3.7'
 services:
   php-cli:
     image: korowai/php:cli
     depends_on:
       - ldap-service
     volumes:
-      - .:/korowai
-    working_dir: /korowai
+      - .:/home/php/project
+    user: "${COMPOSE_USER:?you must set the COMPOSE_USER environment variable}"
     entrypoint: [ "dockerize", "-wait", "tcp://ldap-service:389", "-timeout", "10s" ]
 
   http-service:

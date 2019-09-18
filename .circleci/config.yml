@@ -89,8 +89,8 @@ jobs:
     working_directory: /tmp/behat_test
 ##    machine:
 ##      image: ubuntu-1604:201903-01
-
-    working_directory: /tmp/behat_test
+##
+##    working_directory: /tmp/behat_test
 
     steps:
       - setup_remote_docker

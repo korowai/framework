@@ -93,7 +93,7 @@ jobs:
 ##    working_directory: /tmp/behat_test
 
     steps:
-      - setup_remote_docker
+##      - setup_remote_docker
 
       - checkout
 

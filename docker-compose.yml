@@ -15,7 +15,7 @@ services:
     build:
       context: docker/user/debian
       args:
-        KRW_IMG: "korowai/php:${KRW_CLI_TAG:-cli}"
+        KRW_IMG: "korowai/php:${KRW_PHP_TAG:-cli}"
         KRW_UID: "${KRW_UID:-6789}"
         KRW_GID: "${KRW_GID:-6789}"
     volumes:
@@ -26,7 +26,7 @@ services:
     build:
       context: docker/user/debian
       args:
-        KRW_IMG: "korowai/php:${KRW_CLI_TAG:-cli}"
+        KRW_IMG: "korowai/php:${KRW_PHP_TAG:-cli}"
         KRW_UID: "${KRW_UID:-6789}"
         KRW_GID: "${KRW_GID:-6789}"
     depends_on:

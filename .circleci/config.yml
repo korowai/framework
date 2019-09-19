@@ -86,7 +86,7 @@ jobs:
 ##    machine: true
     docker:
       - image: circleci/php:7.3-cli
-    working_directory: /home/behat_test
+    working_directory: /tmp/behat_test
 
     steps:
       - setup_remote_docker:

@@ -83,29 +83,32 @@ jobs:
             ( cd "${DOCS_DIR}" && rsync -aivz --delete ./ "${SF_USER}@${SF_HOST}:${SF_DOCS_DIR}/${CIRCLE_BRANCH}/" );
 
   behat_test:
-##    docker:
-##      - image: circleci/php:7.3-cli
-##
-##    working_directory: /tmp/behat_test
-    machine:
-      image: ubuntu-1604:201903-01
-
+    docker:
+      - image: circleci/php:7.3-cli
     working_directory: /tmp/behat_test
 
-    steps:
-##      - setup_remote_docker
+##    machine:
+##      image: ubuntu-1604:201903-01
+##    working_directory: /tmp/behat_test
 
-      - checkout
+    steps:
+      - setup_remote_docker
+
+      - run:
+          name: Checkout in the remote docker environment
+          command: |
+            docker-compose run --rm --entrypoint=bash php-cli --
+              git clone $CIRCLE_REPOSITORY_URL project
 
       - run:
           name: Bootstrap project and install composer dependencies
           command: |
-            echo "COMPOSE_USER=`id -u`:`id -g`" | tee .env &&
+            cat .env.dist | sed -e "s/@UID@/`id -u`/" -e "s/@GID@/`id -g`/" | tee .env &&
             docker-compose run --rm --entrypoint=composer php-cli install
 
       - run:
           name: Running tests
-          command: docker-compose run --rm php-cli vendor/bin/behat
+          command: docker-compose run --rm php-test vendor/bin/behat
 
       - run:
           name: Shuting down docker conainers

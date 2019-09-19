@@ -8,7 +8,7 @@ services:
         KRW_UID: "${KRW_UID:-6789}"
         KRW_GID: "${KRW_GID:-6789}"
     volumes:
-      - .:/home/korowai/code
+      - .:${KRW_CODE:-/home/korowai/code}
     user: "${KRW_UID:-6789}:${KRW_GID:-6789}"
 
   php-cli:
@@ -19,7 +19,7 @@ services:
         KRW_UID: "${KRW_UID:-6789}"
         KRW_GID: "${KRW_GID:-6789}"
     volumes:
-      - .:/home/korowai/code
+      - .:${KRW_CODE:-/home/korowai/code}
     user: "${KRW_UID:-6789}:${KRW_GID:-6789}"
 
   php-test:
@@ -32,7 +32,7 @@ services:
     depends_on:
       - ldap-service
     volumes:
-      - .:/home/korowai/code
+      - .:${KRW_CODE:-/home/korowai/code}
     user: "${KRW_UID:-6789}:${KRW_GID:-6789}"
     entrypoint: [ "dockerize", "-wait", "tcp://ldap-service:389", "-timeout", "10s" ]
 

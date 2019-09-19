@@ -99,13 +99,12 @@ jobs:
       - run:
           name: Checkout in the remote docker environment
           command: |
-            docker-compose run --rm --entrypoint=bash php-cli --
-              git clone $CIRCLE_REPOSITORY_URL project
+            cat .env.dist | sed -e "s/@UID@/`id -u`/" -e "s/@GID@/`id -g`/" | tee .env &&
+            docker-compose run --rm --entrypoint=sh php-cli < .circleci/checkout_from_php_cli
 
       - run:
           name: Bootstrap project and install composer dependencies
           command: |
-            cat .env.dist | sed -e "s/@UID@/`id -u`/" -e "s/@GID@/`id -g`/" | tee .env &&
             docker-compose run --rm --entrypoint=composer php-cli install
 
       - run:

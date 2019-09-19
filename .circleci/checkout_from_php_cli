@@ -1,0 +1,55 @@
+#!/bin/sh
+set -e
+
+# Workaround old docker images with incorrect $HOME
+# check https://github.com/docker/docker/issues/2968 for details
+if [ "${HOME}" = "/" ]
+then
+  export HOME=$(getent passwd $(id -un) | cut -d: -f6)
+fi
+
+mkdir -p ~/.ssh
+
+ssh-keyscan -H github.com >> ~/.ssh/known_hosts
+ssh-keyscan -H bitbucket.org >> ~/.ssh/known_hosts
+
+(umask 077; touch ~/.ssh/id_rsa)
+chmod 0600 ~/.ssh/id_rsa
+(cat <<EOF > ~/.ssh/id_rsa
+$CHECKOUT_KEY
+EOF
+)
+
+# use git+ssh instead of https
+git config --global url."ssh://git@github.com".insteadOf "https://github.com" || true
+git config --global gc.auto 0 || true
+
+if [ -e /home/php/project/.git ]
+then
+  cd /home/php/project
+  git remote set-url origin "$CIRCLE_REPOSITORY_URL" || true
+else
+  mkdir -p /home/php/project
+  cd /home/php/project
+  git clone "$CIRCLE_REPOSITORY_URL" .
+fi
+
+if [ -n "$CIRCLE_TAG" ]
+then
+  git fetch --force origin "refs/tags/${CIRCLE_TAG}"
+else
+  git fetch --force origin "devel:remotes/origin/devel"
+fi
+
+
+if [ -n "$CIRCLE_TAG" ]
+then
+  git reset --hard "$CIRCLE_SHA1"
+  git checkout -q "$CIRCLE_TAG"
+elif [ -n "$CIRCLE_BRANCH" ]
+then
+  git reset --hard "$CIRCLE_SHA1"
+  git checkout -q -B "$CIRCLE_BRANCH"
+fi
+
+git reset --hard "$CIRCLE_SHA1"

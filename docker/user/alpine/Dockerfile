@@ -17,7 +17,8 @@ ENV KRW_USER=$KRW_USER \
     KRW_CODE=$KRW_CODE
 
 RUN addgroup -g $KRW_GID $KRW_GROUP && \
-    adduser -h $KRW_HOME -G $KRW_GROUP -u $KRW_UID -D $KRW_USER
+    adduser -h $KRW_HOME -G $KRW_GROUP -u $KRW_UID -D $KRW_USER && \
+    mkdir $KRW_CODE && chown $KRW_USER:$KRW_GROUP $KRW_CODE
 
 USER $KRW_USER
 

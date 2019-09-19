@@ -99,11 +99,11 @@ jobs:
             cat .env.dist | sed -e "s/@UID@/`id -u`/" -e "s/@GID@/`id -g`/" | tee .env &&
             cat .circleci/checkout_from_remote_docker | \
               docker-compose run --rm --entrypoint=sh \
-                --env CHECKOUT_KEY="$CHECKOUT_KEY" \
-                --env CIRCLE_BRANCH="$CIRCLE_BRANCH" \
-                --env CIRCLE_REPOSITORY_URL="$CIRCLE_REPOSITORY_URL" \
-                --env CIRCLE_SHA1="$CIRCLE_SHA1" \
-                --env CIRCLE_TAG="$CIRCLE_TAG" \
+                -e CHECKOUT_KEY="$CHECKOUT_KEY" \
+                -e CIRCLE_BRANCH="$CIRCLE_BRANCH" \
+                -e CIRCLE_REPOSITORY_URL="$CIRCLE_REPOSITORY_URL" \
+                -e CIRCLE_SHA1="$CIRCLE_SHA1" \
+                -e CIRCLE_TAG="$CIRCLE_TAG" \
               git
 
       - run:

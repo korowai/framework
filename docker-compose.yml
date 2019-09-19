@@ -7,8 +7,8 @@ services:
         KRW_IMG: alpine/git:latest
         KRW_UID: "${KRW_UID:-1000}"
         KRW_GID: "${KRW_GID:-1000}"
-    volumes:
-      - .:/home/korowai/code
+##    volumes:
+##      - .:/home/korowai/code
     user: "${KRW_UID:-1000}:${KRW_GID:-1000}"
 
   php-cli:

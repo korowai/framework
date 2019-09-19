@@ -30,6 +30,8 @@ ssh-keygen -t rsa -b 4096 -P ""  -f ~/.ssh/id_rsa
 git config --global url."ssh://git@github.com".insteadOf "https://github.com" || true
 git config --global gc.auto 0 || true
 
+echo "\$CIRCLE_REPOSITORY_URL: $CIRCLE_REPOSITORY_URL"
+
 if [ -e .git ]
 then
   git remote set-url origin "$CIRCLE_REPOSITORY_URL" || true

@@ -1,17 +1,13 @@
 #!/bin/sh
 set -e
 
-echo "\$HOME: $HOME"
-echo "\$UID: `id -u`"
-echo "\$GID: `id -g`"
-echo "\$USER: `id`"
-ls -l /home/ || true
-
-# Workaround old docker images with incorrect $HOME
+# Old docker images with incorrect $HOME are not supported
 # check https://github.com/docker/docker/issues/2968 for details
 if [ "${HOME}" = "/" ]
 then
-  export HOME=$(getent passwd $(id -un) | cut -d: -f6)
+  echo "Old docker images with incorrect \$HOME are not supported" >&2;
+  exit 1;
+  #export HOME=$(getent passwd $(id -un) | cut -d: -f6)
 fi
 
 
@@ -31,7 +27,7 @@ EOF
 git config --global url."ssh://git@github.com".insteadOf "https://github.com" || true
 git config --global gc.auto 0 || true
 
-cd /home/php/project
+cd ~/project
 if [ -e .git ]
 then
   git remote set-url origin "$CIRCLE_REPOSITORY_URL" || true

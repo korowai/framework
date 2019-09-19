@@ -83,31 +83,33 @@ jobs:
             ( cd "${DOCS_DIR}" && rsync -aivz --delete ./ "${SF_USER}@${SF_HOST}:${SF_DOCS_DIR}/${CIRCLE_BRANCH}/" );
 
   behat_test:
-    docker:
-      - image: circleci/php:7.3-cli
-        ##    working_directory: /tmp/behat_test
+    machine: true
+##    docker:
+##      - image: circleci/php:7.3-cli
+##        ##    working_directory: /tmp/behat_test
 
     steps:
-      - setup_remote_docker:
-          version: 18.09.3
+##      - setup_remote_docker:
+##          version: 18.09.3
 
       - checkout
 
-      - run:
-          name: Checkout source in the remote docker environment
-          command: |
-            cat .env.dist | sed -e "s/@UID@/`id -u`/" -e "s/@GID@/`id -g`/" | tee .env &&
-            cat .circleci/checkout_from_remote_docker | \
-              docker-compose run --rm --entrypoint=sh \
-                -e CIRCLE_BRANCH="$CIRCLE_BRANCH" \
-                -e CIRCLE_REPOSITORY_URL="$CIRCLE_REPOSITORY_URL" \
-                -e CIRCLE_SHA1="$CIRCLE_SHA1" \
-                -e CIRCLE_TAG="$CIRCLE_TAG" \
-              git
+##      - run:
+##          name: Checkout source in the remote docker environment
+##          command: |
+##            cat .env.dist | sed -e "s/@UID@/`id -u`/" -e "s/@GID@/`id -g`/" | tee .env &&
+##            cat .circleci/checkout_from_remote_docker | \
+##              docker-compose run --rm --entrypoint=sh \
+##                -e CIRCLE_BRANCH="$CIRCLE_BRANCH" \
+##                -e CIRCLE_REPOSITORY_URL="$CIRCLE_REPOSITORY_URL" \
+##                -e CIRCLE_SHA1="$CIRCLE_SHA1" \
+##                -e CIRCLE_TAG="$CIRCLE_TAG" \
+##              git
 
       - run:
           name: Bootstrap project and install composer dependencies
           command: |
+            cat .env.dist | sed -e "s/@UID@/`id -u`/" -e "s/@GID@/`id -g`/" | tee .env &&
             docker-compose run --rm --entrypoint=composer php-cli install
 
       - run:

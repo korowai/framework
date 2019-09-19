@@ -5,9 +5,7 @@ set -e
 # check https://github.com/docker/docker/issues/2968 for details
 if [ "${HOME}" = "/" ]
 then
-  echo "Old docker images with incorrect \$HOME are not supported" >&2;
-  exit 1;
-  #export HOME=$(getent passwd $(id -un) | cut -d: -f6)
+  export HOME="/home/php"
 fi
 
 

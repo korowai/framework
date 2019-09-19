@@ -10,6 +10,8 @@ set -e
 
 id
 
+ls -lah
+
 mkdir -p ~/.ssh
 
 ssh-keyscan -H github.com >> ~/.ssh/known_hosts

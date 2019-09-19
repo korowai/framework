@@ -1,12 +1,18 @@
 #!/bin/sh
 set -e
 
+echo "\$HOME: $HOME"
+echo "\$UID: `id -u`"
+echo "\$GID: `id -g`"
+echo "\$USER: `id`"
+
 # Workaround old docker images with incorrect $HOME
 # check https://github.com/docker/docker/issues/2968 for details
 if [ "${HOME}" = "/" ]
 then
   export HOME=$(getent passwd $(id -un) | cut -d: -f6)
 fi
+
 
 mkdir -p ~/.ssh
 

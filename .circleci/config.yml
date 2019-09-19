@@ -100,7 +100,7 @@ jobs:
           name: Checkout in the remote docker environment
           command: |
             cat .env.dist | sed -e "s/@UID@/`id -u`/" -e "s/@GID@/`id -g`/" | tee .env &&
-            docker-compose run --rm --entrypoint=sh php-cli < .circleci/checkout_from_php_cli
+            cat .circleci/checkout_from_php_cli | docker-compose run --rm --entrypoint=sh php-cli
 
       - run:
           name: Bootstrap project and install composer dependencies

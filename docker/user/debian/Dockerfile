@@ -4,8 +4,8 @@ MAINTAINER Paweł Tomulik <ptomulik@meil.pw.edu.pl>
 
 ARG KRW_USER='korowai'
 ARG KRW_GROUP='korowai'
-ARG KRW_UID=1000
-ARG KRW_GID=1000
+ARG KRW_UID=6789
+ARG KRW_GID=6789
 ARG KRW_HOME=/home/${KRW_USER}
 ARG KRW_CODE=${KRW_HOME}/code
 

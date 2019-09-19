@@ -5,35 +5,35 @@ services:
       context: docker/user/alpine
       args:
         KRW_IMG: alpine/git:latest
-        KRW_UID: "${KRW_UID:-1000}"
-        KRW_GID: "${KRW_GID:-1000}"
-##    volumes:
-##      - .:/home/korowai/code
-    user: "${KRW_UID:-1000}:${KRW_GID:-1000}"
+        KRW_UID: "${KRW_UID:-6789}"
+        KRW_GID: "${KRW_GID:-6789}"
+    volumes:
+      - .:/home/korowai/code
+    user: "${KRW_UID:-6789}:${KRW_GID:-6789}"
 
   php-cli:
     build:
       context: docker/user/debian
       args:
         KRW_IMG: "korowai/php:${KRW_CLI_TAG:-cli}"
-        KRW_UID: "${KRW_UID:-1000}"
-        KRW_GID: "${KRW_GID:-1000}"
+        KRW_UID: "${KRW_UID:-6789}"
+        KRW_GID: "${KRW_GID:-6789}"
     volumes:
       - .:/home/korowai/code
-    user: "${KRW_UID:-1000}:${KRW_GID:-1000}"
+    user: "${KRW_UID:-6789}:${KRW_GID:-6789}"
 
   php-test:
     build:
       context: docker/user/debian
       args:
         KRW_IMG: "korowai/php:${KRW_CLI_TAG:-cli}"
-        KRW_UID: "${KRW_UID:-1000}"
-        KRW_GID: "${KRW_GID:-1000}"
+        KRW_UID: "${KRW_UID:-6789}"
+        KRW_GID: "${KRW_GID:-6789}"
     depends_on:
       - ldap-service
     volumes:
       - .:/home/korowai/code
-    user: "${KRW_UID:-1000}:${KRW_GID:-1000}"
+    user: "${KRW_UID:-6789}:${KRW_GID:-6789}"
     entrypoint: [ "dockerize", "-wait", "tcp://ldap-service:389", "-timeout", "10s" ]
 
   http-service:

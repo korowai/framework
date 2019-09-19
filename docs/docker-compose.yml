@@ -6,7 +6,7 @@ services:
       - "8000:8000"
     volumes:
       - ../:/home/sphinx/project
-    user: "${KRW_UID:-1000}:${KRW_GID:-1000}"
+    user: "${KRW_UID:-6789}:${KRW_GID:-6789}"
 
   sami:
     image: "korowai/sami:${KRW_SAMI_TAG:-latest}"
@@ -14,10 +14,10 @@ services:
       - "8001:8001"
     volumes:
       - ../:/home/sami/project
-    user: "${KRW_UID:-1000}:${KRW_GID:-1000}"
+    user: "${KRW_UID:-6789}:${KRW_GID:-6789}"
 
   phpdoc:
     image: "phpdoc/phpdoc:${KRW_PHPDOC_TAG:-develop}"
     volumes:
       - ../:/data
-    user: "${KRW_UID:-1000}:${KRW_GID:-1000}"
+    user: "${KRW_UID:-6789}:${KRW_GID:-6789}"

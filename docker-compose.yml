@@ -1,18 +1,26 @@
 version: '3.7'
 services:
   php-cli:
-    image: "korowai/php:${COMPOSE_CLI_TAG:-cli}"
+    build:
+      context: docker/php-cli
+      args:
+        PHP_UID: "${COMPOSE_UID:-1000}"
+        PHP_GID: "${COMPOSE_GID:-1000}"
     volumes:
       - .:/home/php/project
-    user: "${COMPOSE_USER:-1000:1000}"
+    user: "${COMPOSE_UID:-1000}:${COMPOSE_GID:-1000}"
 
   php-test:
-    image: "korowai/php:${COMPOSE_CLI_TAG:-cli}"
+    build:
+      context: docker/php-cli
+      args:
+        PHP_UID: "${COMPOSE_UID:-1000}"
+        PHP_GID: "${COMPOSE_GID:-1000}"
     depends_on:
       - ldap-service
     volumes:
       - .:/home/php/project
-    user: "${COMPOSE_USER:-1000:1000}"
+    user: "${COMPOSE_UID:-1000}:${COMPOSE_GID:-1000}"
     entrypoint: [ "dockerize", "-wait", "tcp://ldap-service:389", "-timeout", "10s" ]
 
   http-service:

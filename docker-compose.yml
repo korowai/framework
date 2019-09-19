@@ -1,36 +1,49 @@
 version: '3.7'
 services:
+  git:
+    build:
+      context: docker/user/alpine
+      args:
+        KRW_IMG: alpine/git:latest
+        KRW_UID: "${KRW_UID:-1000}"
+        KRW_GID: "${KRW_GID:-1000}"
+    volumes:
+      - .:/home/korowai/code
+    user: "${KRW_UID:-1000}:${KRW_GID:-1000}"
+
   php-cli:
     build:
-      context: docker/php-cli
+      context: docker/user/debian
       args:
-        PHP_UID: "${COMPOSE_UID:-1000}"
-        PHP_GID: "${COMPOSE_GID:-1000}"
+        KRW_IMG: "korowai/php:${KRW_CLI_TAG:-cli}"
+        KRW_UID: "${KRW_UID:-1000}"
+        KRW_GID: "${KRW_GID:-1000}"
     volumes:
-      - .:/home/php/project
-    user: "${COMPOSE_UID:-1000}:${COMPOSE_GID:-1000}"
+      - .:/home/korowai/code
+    user: "${KRW_UID:-1000}:${KRW_GID:-1000}"
 
   php-test:
     build:
-      context: docker/php-cli
+      context: docker/user/debian
       args:
-        PHP_UID: "${COMPOSE_UID:-1000}"
-        PHP_GID: "${COMPOSE_GID:-1000}"
+        KRW_IMG: "korowai/php:${KRW_CLI_TAG:-cli}"
+        KRW_UID: "${KRW_UID:-1000}"
+        KRW_GID: "${KRW_GID:-1000}"
     depends_on:
       - ldap-service
     volumes:
-      - .:/home/php/project
-    user: "${COMPOSE_UID:-1000}:${COMPOSE_GID:-1000}"
+      - .:/home/korowai/code
+    user: "${KRW_UID:-1000}:${KRW_GID:-1000}"
     entrypoint: [ "dockerize", "-wait", "tcp://ldap-service:389", "-timeout", "10s" ]
 
   http-service:
-    image: "korowai/php:${COMPOSE_APACHE_TAG:-apache}"
+    image: "korowai/php:${KRW_APACHE_TAG:-apache}"
     volumes:
       - .:/korowai
     working_dir: /korowai
 
   ldap-service:
     command: [ --copy-service, --loglevel, debug]
-    image: "korowai/openldap:${COMPOSE_OPENLDAP_TAG:-latest}"
+    image: "korowai/openldap:${KRW_OPENLDAP_TAG:-latest}"
     volumes:
       - ./src/Korowai/Component/Ldap/Resources/ldif/bootstrap.ldif:/container/service/slapd/assets/config/bootstrap/ldif/50-bootstrap.ldif

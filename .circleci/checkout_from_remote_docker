@@ -3,16 +3,16 @@ set -e
 
 # Old docker images with incorrect $HOME are not supported
 # check https://github.com/docker/docker/issues/2968 for details
-if [ "${HOME}" = "/" ]
-then
-  export HOME=$(getent passwd $(id -un) | cut -d: -f6)
-fi
+##if [ "${HOME}" = "/" ]
+##then
+##  export HOME=$(getent passwd $(id -un) | cut -d: -f6)
+##fi
 
 
-mkdir -p ~/.ssh
+##mkdir -p ~/.ssh
 
-ssh-keyscan -H github.com >> ~/.ssh/known_hosts
-ssh-keyscan -H bitbucket.org >> ~/.ssh/known_hosts
+##ssh-keyscan -H github.com >> ~/.ssh/known_hosts
+##ssh-keyscan -H bitbucket.org >> ~/.ssh/known_hosts
 
 (umask 077; touch ~/.ssh/id_rsa)
 chmod 0600 ~/.ssh/id_rsa

@@ -85,11 +85,7 @@ jobs:
   behat_test:
     docker:
       - image: circleci/php:7.3-cli
-    working_directory: /tmp/behat_test
-
-##    machine:
-##      image: ubuntu-1604:201903-01
-##    working_directory: /tmp/behat_test
+        ##    working_directory: /tmp/behat_test
 
     steps:
       - setup_remote_docker:
@@ -98,10 +94,10 @@ jobs:
       - checkout
 
       - run:
-          name: Checkout in the remote docker environment
+          name: Checkout source in the remote docker environment
           command: |
             cat .env.dist | sed -e "s/@UID@/`id -u`/" -e "s/@GID@/`id -g`/" | tee .env &&
-            cat .circleci/checkout_from_php_cli | docker-compose run --rm --entrypoint=sh php-cli
+            cat .circleci/checkout_from_remote_docker | docker-compose run --rm --entrypoint=sh git
 
       - run:
           name: Bootstrap project and install composer dependencies

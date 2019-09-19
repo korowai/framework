@@ -253,27 +253,38 @@ function updateDotEnvFile()
 {
   $dotenv = __DIR__.'/.env';
   if(file_exists($dotenv)) {
+    fprintf(STDERR, "info: %s\n", "file $dotenv already exists, skipping creation");
     return false;
   }
 
-  $content = [
-    "# Substitution variables for docker-compose\n",
-    "COMPOSE_USER=" . (string)getmyuid() . ":" . (string)getmygid() . "\n"
-  ];
+  $dist = __DIR__.'/.env.dist';
+
+  $uid = (string)getmyuid();
+  $gid = (string)getmygid();
+
+  $content = file_get_contents($dist);
+  $content = preg_replace('/@UID@/', $uid, $content);
+  $content = preg_replace('/@GID@/', $gid, $content);
 
   file_put_contents($dotenv, $content);
+
+  return true;
 }
 
 try {
 
-  ComposerInstaller::instance()->install();
-  PhpDocInstaller::instance()->install();
-  DockerComposerInstaller::instance()->install();
+  $opts = getopt('', ['no-install']);
+
+  if (!isset($opts['no-install'])) {
+    ComposerInstaller::instance()->install();
+    PhpDocInstaller::instance()->install();
+    DockerComposerInstaller::instance()->install();
+  }
   updateDotEnvFile();
 
 } catch(BootstrapError $e) {
 
-  error_log($e->getMessage());
+  fprintf(STDERR, "error: %s\n", $e->getMessage());
   exit(1);
 
 }

@@ -17,12 +17,12 @@ mkdir -p ~/.ssh
 ssh-keyscan -H github.com >> ~/.ssh/known_hosts
 ssh-keyscan -H bitbucket.org >> ~/.ssh/known_hosts
 
-##(umask 077; touch ~/.ssh/id_rsa)
-##chmod 0600 ~/.ssh/id_rsa
-##(cat <<EOF > ~/.ssh/id_rsa
-##$CHECKOUT_KEY
-##EOF
-##)
+(umask 077; touch ~/.ssh/id_rsa)
+chmod 0600 ~/.ssh/id_rsa
+(cat <<EOF > ~/.ssh/id_rsa
+$CHECKOUT_KEY
+EOF
+)
 
 # use git+ssh instead of https
 git config --global url."ssh://git@github.com".insteadOf "https://github.com" || true

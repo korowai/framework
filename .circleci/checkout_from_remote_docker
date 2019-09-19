@@ -8,6 +8,7 @@ set -e
 ##  export HOME=$(getent passwd $(id -un) | cut -d: -f6)
 ##fi
 
+id
 
 mkdir -p ~/.ssh
 

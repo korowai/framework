@@ -94,6 +94,8 @@ jobs:
     steps:
       - setup_remote_docker
 
+      - checkout
+
       - run:
           name: Checkout in the remote docker environment
           command: |

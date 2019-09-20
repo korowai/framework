@@ -23,7 +23,7 @@ class CallerExceptionErrorHandler extends ExceptionErrorHandler
     /**
      * Initializes the object.
      *
-     * @param callable $errorHandler
+     * @param callable $exceptionGenerator
      * @param int $distance
      * @param int $errorTypes
      */

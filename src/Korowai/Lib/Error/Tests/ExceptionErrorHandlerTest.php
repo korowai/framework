@@ -21,8 +21,6 @@ use Korowai\Lib\Error\ErrorHandlerInterface;
 use Korowai\Lib\Context\ContextManagerInterface;
 use function Korowai\Lib\Context\with;
 
-class Exception2ZR5YS29 extends \ErrorException { };
-
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
@@ -50,11 +48,11 @@ class ExceptionErrorHandlerTest extends TestCase
 
     public function test__makeExceptionGenerator__withClass()
     {
-        $generator = ExceptionErrorHandler::makeExceptionGenerator(Exception2ZR5YS29::class);
+        $generator = ExceptionErrorHandler::makeExceptionGenerator(ExceptionA98DB973::class);
         $this->assertIsCallable($generator);
 
         $exception = call_user_func($generator, 123, 'foo', 'bar.php', 456);
-        $this->assertInstanceOf(Exception2ZR5YS29::class, $exception);
+        $this->assertInstanceOf(ExceptionA98DB973::class, $exception);
 
         $this->assertEquals(123, $exception->getSeverity());
         $this->assertEquals('foo', $exception->getMessage());
@@ -119,9 +117,9 @@ class ExceptionErrorHandlerTest extends TestCase
 
     public function test__invoke__whenSeverityIsRelevant()
     {
-        $handler = $this->createHandler(Exception2ZR5YS29::class);
+        $handler = $this->createHandler(ExceptionA98DB973::class);
 
-        $this->expectException(Exception2ZR5YS29::class);
+        $this->expectException(ExceptionA98DB973::class);
         $this->expectExceptionMessage('foo');
 
         call_user_func_array($handler, [E_USER_ERROR, 'foo', 'bar.php', 456]);
@@ -139,9 +137,9 @@ class ExceptionErrorHandlerTest extends TestCase
         //
         //      set_error_handler($self, $errorTypes).
         //
-        $handler = $this->createHandler(Exception2ZR5YS29::class, E_USER_ERROR);
+        $handler = $this->createHandler(ExceptionA98DB973::class, E_USER_ERROR);
 
-        $this->expectException(Exception2ZR5YS29::class);
+        $this->expectException(ExceptionA98DB973::class);
         $this->expectExceptionMessage('foo');
 
         $this->assertFalse(call_user_func_array($handler, [E_USER_NOTICE, 'foo', 'bar.php', 456]));
@@ -149,9 +147,9 @@ class ExceptionErrorHandlerTest extends TestCase
 
     public function test__trigger__whenSeverityIsRelevant()
     {
-        $handler = $this->createHandler(Exception2ZR5YS29::class, E_ALL | E_STRICT);
+        $handler = $this->createHandler(ExceptionA98DB973::class, E_ALL | E_STRICT);
 
-        $this->expectException(Exception2ZR5YS29::class);
+        $this->expectException(ExceptionA98DB973::class);
         $this->expectExceptionMessage('foo');
         $this->expectExceptionCode(0);
 
@@ -160,7 +158,7 @@ class ExceptionErrorHandlerTest extends TestCase
             with($handler)(function ($eh) {
                 @trigger_error('foo', E_USER_ERROR);
             });
-        } catch (Exception2ZR5YS29 $e) {
+        } catch (ExceptionA98DB973 $e) {
             $this->assertEquals(E_USER_ERROR, $e->getSeverity());
             $this->assertEquals(__file__, $e->getFile());
             $this->assertEquals($caller_line, $e->getLine());
@@ -170,7 +168,7 @@ class ExceptionErrorHandlerTest extends TestCase
 
     public function test__trigger__whenSeverityIsIrrelevant()
     {
-        $handler = $this->createHandler(Exception2ZR5YS29::class, E_USER_ERROR);
+        $handler = $this->createHandler(ExceptionA98DB973::class, E_USER_ERROR);
 
         $result = with($handler)(function ($eh) {
             @trigger_error('foo', E_USER_NOTICE);

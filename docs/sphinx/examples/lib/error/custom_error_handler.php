@@ -2,7 +2,7 @@
 /* [code] */
 /* [use] */
 use function Korowai\Lib\Context\with;
-use Korowai\Lib\Error\ErrorHandler;
+use function Korowai\Lib\Error\errorHandler;
 /* [/use] */
 
 /* [watch] */
@@ -18,7 +18,7 @@ function watch(int $severity, string $message, string $file, int $line) : bool
 /* [/watch] */
 
 /* [test] */
-with(new ErrorHandler(watch::class))(function ($eh) {
+with(errorHandler(watch::class))(function ($eh) {
     @trigger_error('the weather is nice', E_USER_NOTICE);
     @trigger_error('rain is coming', E_USER_WARNING);
 });

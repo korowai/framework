@@ -40,7 +40,7 @@
     "autoload": {
       "psr-4" : {
         "Korowai\\Component\\" : "src/Korowai/Component/",
-        "Korowai\\Lib\\" : "src/Korowai/Lib"
+        "Korowai\\Lib\\" : "src/Korowai/Lib/"
       },
       "files" : [
         "src/Korowai/Lib/Context/functions.php",
@@ -53,8 +53,8 @@
     },
     "autoload-dev": {
       "psr-4" : {
-        "Korowai\\Component\\Ldap\\Behat\\":  "src/Korowai/Component/Ldap/Behat",
-        "Korowai\\Docs\\Behat\\":  "docs/sphinx/Behat"
+        "Korowai\\Component\\Ldap\\Behat\\":  "src/Korowai/Component/Ldap/Behat/",
+        "Korowai\\Docs\\Behat\\":  "docs/sphinx/Behat/"
       }
     }
 }

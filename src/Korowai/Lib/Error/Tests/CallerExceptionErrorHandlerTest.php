@@ -19,9 +19,6 @@ use Korowai\Lib\Error\CallerExceptionErrorHandler;
 use Korowai\Lib\Error\ExceptionErrorHandler;
 use function Korowai\Lib\Context\with;
 
-class ErrorExceptionVTLZSMV3 extends \ErrorException
-{
-}
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -135,18 +132,18 @@ class CallerExceptionErrorHandlerTest extends TestCase
 
     public function test__invoke__direct()
     {
-        $generator = ExceptionErrorHandler::makeExceptionGenerator(\ErrorException::class);
+        $generator = ExceptionErrorHandler::makeExceptionGenerator(ExceptionA98DB973::class);
 
         // The following two lines MUST be tied together!
         $caller_line = __line__ + 1;
         $handler = new CallerExceptionErrorHandler($generator, 0);
 
-        $this->expectException(\ErrorException::class);
+        $this->expectException(ExceptionA98DB973::class);
         $this->expectExceptionMessage('test error message');
 
         try {
             call_user_func_array($handler, [E_USER_ERROR, 'test error message', 'foo.php', 456]);
-        } catch(\ErrorException $e) {
+        } catch(ExceptionA98DB973 $e) {
             $this->assertEquals(__file__, $e->getFile());
             $this->assertEquals($caller_line, $e->getLine());
             $this->assertEquals(E_USER_ERROR, $e->getSeverity());
@@ -156,16 +153,16 @@ class CallerExceptionErrorHandlerTest extends TestCase
 
     public function test__invoke__fromOneLevelRecursion()
     {
-        $generator = ExceptionErrorHandler::makeExceptionGenerator(\ErrorException::class);
+        $generator = ExceptionErrorHandler::makeExceptionGenerator(ExceptionA98DB973::class);
 
         // The following two lines MUST be tied together!
-        $this->expectException(\ErrorException::class);
+        $this->expectException(ExceptionA98DB973::class);
         $this->expectExceptionMessage('test error message');
 
         try {
             $caller_line = __line__ + 1;
             $this->invokeRecursive(1, $generator, 1);
-        } catch(\ErrorException $e) {
+        } catch(ExceptionA98DB973 $e) {
             $this->assertEquals(__file__, $e->getFile());
             $this->assertEquals($caller_line, $e->getLine());
             $this->assertEquals(E_USER_ERROR, $e->getSeverity());
@@ -175,16 +172,16 @@ class CallerExceptionErrorHandlerTest extends TestCase
 
     public function test__invoke__fromTwoLevelsRecursion()
     {
-        $generator = ExceptionErrorHandler::makeExceptionGenerator(\ErrorException::class);
+        $generator = ExceptionErrorHandler::makeExceptionGenerator(ExceptionA98DB973::class);
 
         // The following two lines MUST be tied together!
-        $this->expectException(\ErrorException::class);
+        $this->expectException(ExceptionA98DB973::class);
         $this->expectExceptionMessage('test error message');
 
         try {
             $caller_line = __line__ + 1;
             $this->invokeRecursive(2, $generator, 2);
-        } catch(\ErrorException $e) {
+        } catch(ExceptionA98DB973 $e) {
             $this->assertEquals(__file__, $e->getFile());
             $this->assertEquals($caller_line, $e->getLine());
             $this->assertEquals(E_USER_ERROR, $e->getSeverity());
@@ -194,17 +191,17 @@ class CallerExceptionErrorHandlerTest extends TestCase
 
     public function test__invoke__fromDifferentPlaceThanCreated()
     {
-        $generator = ExceptionErrorHandler::makeExceptionGenerator(\ErrorException::class);
+        $generator = ExceptionErrorHandler::makeExceptionGenerator(ExceptionA98DB973::class);
         $caller_line = __line__ + 1;
         $handler = $this->createRecursive(2, $generator, 2);
 
         // The following two lines MUST be tied together!
-        $this->expectException(\ErrorException::class);
+        $this->expectException(ExceptionA98DB973::class);
         $this->expectExceptionMessage('test error message');
 
         try {
             call_user_func_array($handler, [E_USER_ERROR, 'test error message', 'foo.php', 456]);
-        } catch(\ErrorException $e) {
+        } catch(ExceptionA98DB973 $e) {
             $this->assertEquals(__file__, $e->getFile());
             $this->assertEquals($caller_line, $e->getLine());
             $this->assertEquals(E_USER_ERROR, $e->getSeverity());
@@ -214,16 +211,16 @@ class CallerExceptionErrorHandlerTest extends TestCase
 
     public function test__trigger__fromOneLevelRecursion()
     {
-        $generator = ExceptionErrorHandler::makeExceptionGenerator(\ErrorException::class);
+        $generator = ExceptionErrorHandler::makeExceptionGenerator(ExceptionA98DB973::class);
 
         // The following two lines MUST be tied together!
-        $this->expectException(\ErrorException::class);
+        $this->expectException(ExceptionA98DB973::class);
         $this->expectExceptionMessage('test error message');
 
         try {
             $caller_line = __line__ + 1;
             $this->triggerRecursive(1, $generator, 1);
-        } catch(\ErrorException $e) {
+        } catch(ExceptionA98DB973 $e) {
             $this->assertEquals(__file__, $e->getFile());
             $this->assertEquals($caller_line, $e->getLine());
             $this->assertEquals(E_USER_ERROR, $e->getSeverity());
@@ -233,16 +230,16 @@ class CallerExceptionErrorHandlerTest extends TestCase
 
     public function test__trigger__fromTwoLevelsRecursion()
     {
-        $generator = ExceptionErrorHandler::makeExceptionGenerator(\ErrorException::class);
+        $generator = ExceptionErrorHandler::makeExceptionGenerator(ExceptionA98DB973::class);
 
         // The following two lines MUST be tied together!
-        $this->expectException(\ErrorException::class);
+        $this->expectException(ExceptionA98DB973::class);
         $this->expectExceptionMessage('test error message');
 
         try {
             $caller_line = __line__ + 1;
             $this->triggerRecursive(2, $generator, 2);
-        } catch(\ErrorException $e) {
+        } catch(ExceptionA98DB973 $e) {
             $this->assertEquals(__file__, $e->getFile());
             $this->assertEquals($caller_line, $e->getLine());
             $this->assertEquals(E_USER_ERROR, $e->getSeverity());
@@ -252,19 +249,19 @@ class CallerExceptionErrorHandlerTest extends TestCase
 
     public function test__trigger__fromDifferentPlaceThanCreated()
     {
-        $generator = ExceptionErrorHandler::makeExceptionGenerator(\ErrorException::class);
+        $generator = ExceptionErrorHandler::makeExceptionGenerator(ExceptionA98DB973::class);
         $caller_line = __line__ + 1;
         $handler = $this->createRecursive(2, $generator, 2);
 
         // The following two lines MUST be tied together!
-        $this->expectException(\ErrorException::class);
+        $this->expectException(ExceptionA98DB973::class);
         $this->expectExceptionMessage('test error message');
 
         try {
             with($handler)(function ($eh) {
                 @trigger_error('test error message', E_USER_ERROR);
             });
-        } catch(\ErrorException $e) {
+        } catch(ExceptionA98DB973 $e) {
             $this->assertEquals(__file__, $e->getFile());
             $this->assertEquals($caller_line, $e->getLine());
             $this->assertEquals(E_USER_ERROR, $e->getSeverity());

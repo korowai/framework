@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Lib/Context/functions.php
+ * @file src/Korowai/Lib/Error/functions.php
  *
  * This file is part of the Korowai package
  *
@@ -21,6 +21,20 @@ namespace Korowai\Lib\Error;
 function emptyErrorHandler() : EmptyErrorHandler
 {
     return EmptyErrorHandler::getInstance();
+}
+
+/**
+* A shortcut to new ErrorHandler(...).
+*
+* @param callable $errorHandler User-provided error handler function.
+* @param int $errorTypes Can be used to mask the triggering of the error
+*                        handler function.
+*
+* @return ErrorHandler
+*/
+function errorHandler(callable $errorHandler, int $errorTypes = E_ALL | E_STRICT) : ErrorHandler
+{
+    return new ErrorHandler($errorHandler, $errorTypes);
 }
 
 /**
@@ -46,6 +60,23 @@ function exceptionErrorHandler($arg = null, int $errorTypes = E_ALL | E_STRICT) 
 {
     $exceptionGenerator = ExceptionErrorHandler::makeExceptionGenerator($arg);
     return new ExceptionErrorHandler($exceptionGenerator, $errorTypes);
+}
+
+/**
+ * A shortcut to new CallerErrorHandler(...).
+ *
+ * @param callable $errorHandler
+ * @param int $distance
+ * @param int $errorTypes
+ *
+ * @return CallerErrorHandler
+ */
+function callerErrorHandler(
+    callable $errorHandler,
+    int $distance = 1,
+    int $errorTypes = E_ALL | E_STRICT
+) : CallerErrorHandler {
+    return new CallerErrorHandler($errorHandler, 1 + $distance, $errorTypes);
 }
 
 /**

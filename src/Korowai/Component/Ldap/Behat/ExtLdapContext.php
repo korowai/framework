@@ -186,7 +186,7 @@ class ExtLdapContext implements Context
 
     public function decodeJsonPyStringNode(PyStringNode $pystring)
     {
-        return json_decode($pystring->getRaw(), true);
+        return json_decode($pystring->getRaw(), true, 512, JSON_THROW_ON_ERROR);
     }
 
     /**

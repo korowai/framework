@@ -48,7 +48,7 @@ Feature: Query
         }
         """
 
-  Scenario: Successful query with the 'scope=base' option
+  Scenario: Successful query with the 'scope=base' option and default filter
     Given I am connected to uri "ldap://ldap-service"
     And I am bound with binddn "cn=admin,dc=example,dc=org" and password "admin"
     When I query with basedn "ou=people,dc=example,dc=org", filter "(objectclass=*)" and options '{"scope": "base"}'
@@ -59,5 +59,51 @@ Feature: Query
           "ou=people,dc=example,dc=org": {
             "objectclass": ["top", "organizationalUnit"],
             "ou": ["people"] }
+        }
+        """
+
+  Scenario: Successful query with the 'scope=one' option and default filter
+    Given I am connected to uri "ldap://ldap-service"
+    And I am bound with binddn "cn=admin,dc=example,dc=org" and password "admin"
+    When I query with basedn "dc=example,dc=org", filter "(objectclass=*)" and options '{"scope": "one"}'
+    Then I should see no exception
+    And I should have last result entries
+        """
+        {
+          "ou=people,dc=example,dc=org": {
+            "objectclass": ["top", "organizationalUnit"],
+            "ou": ["people"] },
+          "dc=empty,dc=example,dc=org": {
+            "objectclass": ["top", "dcObject", "organization"],
+            "dc": ["empty"],
+            "o": ["Empty, Example Org."]},
+          "dc=subtree,dc=example,dc=org": {
+            "objectclass": ["top", "dcObject", "organization"],
+            "dc": ["subtree"],
+            "o": ["Subtree, Example Org."]},
+          "cn=admin,dc=example,dc=org": {
+            "objectclass": ["simpleSecurityObject", "organizationalRole"],
+            "cn": ["admin"],
+            "description": ["LDAP administrator"],
+            "userpassword": ["{SSHA}5XfmyvDTCnU9R9/9nVzc6FI+cRGBzrKt"]}
+        }
+        """
+
+  Scenario: Successful query with the 'scope=one' option and custom filter
+    Given I am connected to uri "ldap://ldap-service"
+    And I am bound with binddn "cn=admin,dc=example,dc=org" and password "admin"
+    When I query with basedn "dc=example,dc=org", filter "(objectclass=dcObject)" and options '{"scope": "one"}'
+    Then I should see no exception
+    And I should have last result entries
+        """
+        {
+          "dc=empty,dc=example,dc=org": {
+            "objectclass": ["top", "dcObject", "organization"],
+            "dc": ["empty"],
+            "o": ["Empty, Example Org."]},
+          "dc=subtree,dc=example,dc=org": {
+            "objectclass": ["top", "dcObject", "organization"],
+            "dc": ["subtree"],
+            "o": ["Subtree, Example Org."]}
         }
         """

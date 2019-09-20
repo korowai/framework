@@ -9,4 +9,4 @@ script:
   - mkdir -p build/logs
   - php vendor/bin/phpunit --coverage-clover build/logs/clover.xml -c phpunit.xml.dist
 after_success:
-  - bash<(curl -s https://codecov.io/bash)
+  - curl -s https://codecov.io/bash | bash

@@ -46,4 +46,4 @@ services:
     command: [ --copy-service, --loglevel, debug]
     image: "korowai/openldap:${KRW_OPENLDAP_TAG:-latest}"
     volumes:
-      - ./src/Korowai/Component/Ldap/Resources/ldif/bootstrap.ldif:/container/service/slapd/assets/config/bootstrap/ldif/50-bootstrap.ldif
+      - ./packages/ldaplib/Resources/ldif/bootstrap.ldif:/container/service/slapd/assets/config/bootstrap/ldif/50-bootstrap.ldif

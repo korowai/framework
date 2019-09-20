@@ -9,11 +9,11 @@ To install whole Korowai Framework for your project, type
 
       php composer.phar require "korowai/framework:dev-master"
 
-If you only need a component, for example ``korowai/ldap``, then
+If you only need a component, for example ``korowai/ldaplib``, then
 
 .. code-block:: shell
 
-      php composer.phar require "korowai/ldap:dev-master"
+      php composer.phar require "korowai/ldaplib:dev-master"
 
 .. note::
 

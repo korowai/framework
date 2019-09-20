@@ -16,7 +16,7 @@ namespace Korowai\Docs\Behat;
 use Behat\Behat\Context\Context;
 use PHPUnit\Framework\Assert;
 
-use Korowai\Component\Ldap\Behat\ExtLdapContext;
+use Korowai\Lib\Ldap\Behat\ExtLdapContext;
 
 class DocExampleContext implements Context
 {

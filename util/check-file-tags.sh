@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 set -e
 
@@ -8,10 +8,24 @@ top="$here/..";
 pushd $top > /dev/null
 
 find src/ -type f -name '*.php' | while read f; do
-    t=`head -10 "$f" | awk '/^ \* @file / {print $3}'`;
+    e=`echo " * @file $f"`;
     l=`head -10 "$f" | awk '/^ \* @file / {print $0}'`;
-    if [ "$f" != "$t" ] ; then
-      echo "$f: $l";
+    if [ "$e" != "$l" ] ; then
+      lq=`echo "$l" | sed -e 's#\*#\\\\*#g'`
+      eq=`echo "$e" | sed -e 's#\*#\\*#g'`
+      echo "sed -e ""'""s#^$lq#$eq#g""'"" -i $f";
+    fi
+done
+
+find packages/ -type f -name '*.php' | while read f; do
+##    e=`echo " \* @file $f" | `;
+    e=`echo  " * @file $f"`
+    e=`echo "$e" | sed -e 's#^ \* @file \.\?packages/[^/]\+/# * @file #'`;
+    l=`head -10 "$f" | awk '/^ \* @file / {print $0}'`;
+    if [ "$e" != "$l" ] ; then
+      lq=`echo "$l" | sed -e 's#\*#\\\\*#g'`
+      eq=`echo "$e" | sed -e 's#\*#\\*#g'`
+      echo "sed -e ""'""s#^$lq#$eq#g""'"" -i $f";
     fi
 done
 

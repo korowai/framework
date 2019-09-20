@@ -2,7 +2,7 @@ Feature: Examples
 
   @initLdapDbBeforeScenario
   @initLdapDbAfterScenario
-  Scenario Outline: Examples for korowai/ldap
+  Scenario Outline: Examples for korowai/ldaplib
     Given I executed doc example <example_file>
     Then I should see stdout from <stdout_file>
     And I should see stderr from <stderr_file>
@@ -10,13 +10,13 @@ Feature: Examples
 
     Examples:
       | example_file                             | stdout_file                                 | stderr_file                                 | exit_code |
-      | "component/ldap/ldap_intro.php"          | "component/ldap/ldap_intro.stdout"          | "component/ldap/ldap_intro.stderr"          | 0         |
-      | "component/ldap/adapter_manual_inst.php" | "component/ldap/adapter_manual_inst.stdout" | "component/ldap/adapter_manual_inst.stderr" | 0         |
-      | "component/ldap/adapter_factory_1.php"   | "component/ldap/adapter_factory_1.stdout"   | "component/ldap/adapter_factory_1.stderr"   | 0         |
-      | "component/ldap/adapter_factory_2.php"   | "component/ldap/adapter_factory_2.stdout"   | "component/ldap/adapter_factory_2.stderr"   | 0         |
-      | "component/ldap/attribute_exception.php" | "component/ldap/attribute_exception.stdout" | "component/ldap/attribute_exception.stderr" | 1         |
-      | "component/ldap/ldap_exception_1.php"    | "component/ldap/ldap_exception_1.stdout"    | "component/ldap/ldap_exception_1.stderr"    | 1         |
-      | "component/ldap/ldap_exception_2.php"    | "component/ldap/ldap_exception_2.stdout"    | "component/ldap/ldap_exception_2.stderr"    | 2         |
+      | "lib/ldap/ldap_intro.php"          | "lib/ldap/ldap_intro.stdout"          | "lib/ldap/ldap_intro.stderr"          | 0         |
+      | "lib/ldap/adapter_manual_inst.php" | "lib/ldap/adapter_manual_inst.stdout" | "lib/ldap/adapter_manual_inst.stderr" | 0         |
+      | "lib/ldap/adapter_factory_1.php"   | "lib/ldap/adapter_factory_1.stdout"   | "lib/ldap/adapter_factory_1.stderr"   | 0         |
+      | "lib/ldap/adapter_factory_2.php"   | "lib/ldap/adapter_factory_2.stdout"   | "lib/ldap/adapter_factory_2.stderr"   | 0         |
+      | "lib/ldap/attribute_exception.php" | "lib/ldap/attribute_exception.stdout" | "lib/ldap/attribute_exception.stderr" | 1         |
+      | "lib/ldap/ldap_exception_1.php"    | "lib/ldap/ldap_exception_1.stdout"    | "lib/ldap/ldap_exception_1.stderr"    | 1         |
+      | "lib/ldap/ldap_exception_2.php"    | "lib/ldap/ldap_exception_2.stdout"    | "lib/ldap/ldap_exception_2.stderr"    | 2         |
 
   Scenario Outline: Examples for korowai/contextlib
     Given I executed doc example <example_file>

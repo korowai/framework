@@ -1,3 +1,3 @@
-A korowai library is a package containing highly reusable, general-purpose code.
+A korowai library is a package containing reusable code.
 
 .. <!--- vim: set syntax=rst spell: -->

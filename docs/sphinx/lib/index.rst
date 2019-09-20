@@ -9,5 +9,6 @@ Korowai Libraries
 
    context
    error
+   ldap
 
 .. <!--- vim: set syntax=rst spell: -->

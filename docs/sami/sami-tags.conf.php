@@ -5,6 +5,11 @@ use Sami\Version\GitVersionCollection;
 use Sami\RemoteRepository\GitHubRemoteRepository;
 use Symfony\Component\Finder\Finder;
 
+$srcdirs = ['src', 'packages'];
+$srcdirs = array_map(function ($p) {
+  return __DIR__ . "/../../" . $p;
+}, $srcdirs);
+
 $iterator = Finder::create()
   ->files()
   ->name("*.php")
@@ -12,7 +17,7 @@ $iterator = Finder::create()
   ->exclude("Resources")
   ->exclude("Behat")
   ->exclude("vendor")
-  ->in($dir = __DIR__ . "/../../src");
+  ->in($srcdirs);
 
 $versions = GitVersionCollection::create($dir)
           ->addFromTags()

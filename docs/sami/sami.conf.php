@@ -3,6 +3,11 @@
 use Sami\Sami;
 use Symfony\Component\Finder\Finder;
 
+$srcdirs = ['src', 'packages'];
+$srcdirs = array_map(function ($p) {
+  return __DIR__ . "/../../" . $p;
+}, $srcdirs);
+
 $iterator = Finder::create()
   ->files()
   ->name("*.php")
@@ -10,7 +15,7 @@ $iterator = Finder::create()
   ->exclude("Resources")
   ->exclude("Behat")
   ->exclude("vendor")
-  ->in(__DIR__ . "/../../src");
+  ->in($srcdirs);
 
 return new Sami($iterator, array(
   'theme'     => 'default',

@@ -25,9 +25,3 @@ services:
     volumes:
       - ../:${KRW_CODE:-/code}
     user: "${KRW_UID:-6789}:${KRW_GID:-6789}"
-
-  phpdoc:
-    image: "phpdoc/phpdoc:${KRW_PHPDOC_TAG:-develop}"
-    volumes:
-      - ../:/data
-    user: "${KRW_UID:-6789}:${KRW_GID:-6789}"

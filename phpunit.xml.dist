@@ -13,25 +13,19 @@
     </php>
 
     <testsuites>
-        <testsuite name="Korowai Libraries Test Suite">
-            <directory suffix="Test.php">./src/Korowai/Lib/*/Tests/</directory>
-        </testsuite>
-        <testsuite name="Korowai Components Test Suite">
-            <directory suffix="Test.php">./src/Korowai/Component/*/Tests/</directory>
-        </testsuite>
-        <testsuite name="Korowai Service Test Suite">
-            <directory suffix="Test.php">./src/Korowai/Service/*/Tests/</directory>
+        <testsuite name="Korowai Packages Test Suite">
+            <directory suffix="Test.php">./packages/*/Tests/</directory>
         </testsuite>
     </testsuites>
 
     <filter>
         <whitelist>
-            <directory>./src/Korowai/</directory>
+            <directory>./packages/</directory>
             <exclude>
-                <directory>./src/Korowai/*/*/Tests</directory>
-                <directory>./src/Korowai/*/*/Behat</directory>
-                <directory>./src/Korowai/*/*/Resources</directory>
-                <directory>./src/Korowai/*/*/vendor</directory>
+                <directory>./packages/*/Tests</directory>
+                <directory>./packages/*/Behat</directory>
+                <directory>./packages/*/Resources</directory>
+                <directory>./packages/*/vendor</directory>
             </exclude>
         </whitelist>
     </filter>

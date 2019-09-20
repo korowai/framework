@@ -13,4 +13,4 @@ script:
 after_success:
   - travis_retry php vendor/bin/php-coveralls -v
 notifications:
-  webhooks: https://coveralls.io/webhook?repo_token=p8LC98gfbLpn6dOXtyo5oRbz7UiaFuyWh
+  webhooks: https://coveralls.io/webhook

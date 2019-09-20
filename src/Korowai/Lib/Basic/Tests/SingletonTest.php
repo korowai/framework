@@ -11,9 +11,9 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Lib\Context\Tests\Util;
+namespace Korowai\Lib\Basic\Tests;
 
-use Korowai\Lib\Context\Util\Singleton;
+use Korowai\Lib\Basic\Singleton;
 
 use PHPUnit\Framework\TestCase;
 

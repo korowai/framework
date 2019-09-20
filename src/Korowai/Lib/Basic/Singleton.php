@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Lib\Context\Util;
+namespace Korowai\Lib\Basic;
 
 /**
  * A trait for singleton classes.

@@ -18,7 +18,7 @@ namespace Korowai\Lib\Error;
  */
 class EmptyErrorHandler implements ErrorHandlerInterface
 {
-    use \Korowai\Lib\Context\Util\Singleton;
+    use \Korowai\Lib\Basic\Singleton;
 
     /**
      * {@inheritdoc}

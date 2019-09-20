@@ -23,7 +23,7 @@ namespace Korowai\Lib\Context;
  */
 class ContextFactoryStack implements ContextFactoryStackInterface, ContextFactoryInterface
 {
-    use Util\Singleton;
+    use \Korowai\Lib\Basic\Singleton;
 
     /**
      * @var ContextFactoryInterface[]

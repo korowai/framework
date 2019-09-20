@@ -15,6 +15,7 @@
       "korowai/ldap": "self.version",
       "korowai/ldif": "self.version",
       "korowai/ldap-service": "self.version",
+      "korowai/basiclib" : "self.version",
       "korowai/contextlib" : "self.version",
       "korowai/errorlib" : "self.version"
     },

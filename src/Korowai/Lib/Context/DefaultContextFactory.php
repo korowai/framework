@@ -13,12 +13,13 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Context;
 
+
 /**
  * Default context factory.
  */
 class DefaultContextFactory implements ContextFactoryInterface
 {
-    use Util\Singleton;
+    use \Korowai\Lib\Basic\Singleton;
 
     /**
      * {@inheritdoc}

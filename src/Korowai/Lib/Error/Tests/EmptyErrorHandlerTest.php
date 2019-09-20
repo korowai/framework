@@ -28,7 +28,7 @@ class EmptyErrorHandlerTest extends TestCase
 
     protected function getClassUnderTest()
     {
-        return ErrorHandlerInterface::class;
+        return EmptyErrorHandler::class;
     }
 
     public function test__implements__ErrorHandlerInterface()

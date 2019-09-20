@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Context;
 
-
 /**
  * Default context factory.
  */

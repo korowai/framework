@@ -61,7 +61,7 @@ class AdapterFactory extends AbstractAdapterFactory
 
     private function createLdapLink()
     {
-        $handler = ExceptionErrorHandler::create(function($severity, $message, ...$args) {
+        $handler = ExceptionErrorHandler::create(function ($severity, $message, ...$args) {
             return new LdapException($message, -1, $severity, ...$args);
         });
         $link = with($handler)(function ($eh) {

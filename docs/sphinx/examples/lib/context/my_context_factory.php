@@ -1,10 +1,12 @@
 <?php
+/* [code] */
 /* [use] */
 use function Korowai\Lib\Context\with;
 use Korowai\Lib\Context\AbstractManagedContextFactory;
 use Korowai\Lib\Context\ContextManagerInterface;
+/* [/use] */
 
-/* [myCounterClass] */
+/* [MyCounter] */
 class MyCounter
 {
     public $value;
@@ -14,8 +16,9 @@ class MyCounter
         $this->value = $value;
     }
 }
+/* [/MyCounter] */
 
-/* [myCounterManagerClass] */
+/* [MyCounterManager] */
 class MyCounterManager implements ContextManagerInterface
 {
     public $counter;
@@ -39,8 +42,9 @@ class MyCounterManager implements ContextManagerInterface
         return false;
     }
 }
+/* [/MyCounterManager] */
 
-/* [myContextFactoryClass] */
+/* [MyContextFactory] */
 class MyContextFactory extends AbstractManagedContextFactory
 {
     public function getContextManager($arg) : ?ContextManagerInterface
@@ -51,8 +55,9 @@ class MyContextFactory extends AbstractManagedContextFactory
         return null;
     }
 }
+/* [/MyContextFactory] */
 
-/* [testCode] */
+/* [test] */
 with(new MyContextFactory(), new MyCounter(0))(function ($cf, $cnt) {
     echo "before: " . $cnt->value . "\n";
     with($cnt)(function ($cnt) {
@@ -60,5 +65,7 @@ with(new MyContextFactory(), new MyCounter(0))(function ($cf, $cnt) {
     });
     echo "after: " . $cnt->value . "\n";
 });
+/* [/test] */
+/* [/code] */
 
 // vim: syntax=php sw=4 ts=4 et:

@@ -17,27 +17,12 @@ namespace Korowai\Lib\Context;
  * Abstract base class for managed custom context factories.
  *
  * A managed context factory implements enterContext() and exitContext(), so it
- * also works as a context manager.
+ * works as a context manager. A class that extends AbstractManagedContextFactory
+ * must still implement the getContextManager() method.
  */
 abstract class AbstractManagedContextFactory implements ContextFactoryInterface, ContextManagerInterface
 {
-    /**
-     * {@inheritdocs}
-     */
-    public function enterContext()
-    {
-        ContextFactoryStack::getInstance()->push($this);
-        return $this;
-    }
-
-    /**
-     * {@inheritdocs}
-     */
-    public function exitContext(?\Throwable $exception = null) : bool
-    {
-        ContextFactoryStack::getInstance()->pop();
-        return false;
-    }
+    use FactoryContextMethods;
 }
 
 // vim: syntax=php sw=4 ts=4 et:

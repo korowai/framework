@@ -1,17 +1,22 @@
 <?php
+/* [code] */
 /* [use] */
 use function Korowai\Lib\Context\with;
 use function Korowai\Lib\Error\emptyErrorHandler;
+/* [/use] */
 
-/* [makeTroubleFunction] */
-function make_trouble()
+/* [trouble] */
+function trouble()
 {
     trigger_error('you have a problem');
 }
+/* [/trouble] */
 
-/* [testCode] */
+/* [test] */
 with(emptyErrorHandler())(function ($eh) {
-    make_trouble();
+    trouble();
 });
+/* [/test] */
+/* [/code] */
 
 // vim: syntax=php sw=4 ts=4 et:

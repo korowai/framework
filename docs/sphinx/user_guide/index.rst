@@ -9,5 +9,5 @@ User Guide
    :maxdepth: 2
 
    ../install
-   ../components/index
+   ../component/index
    ../lib/index

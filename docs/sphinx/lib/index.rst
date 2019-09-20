@@ -4,7 +4,7 @@ Korowai Libraries
 .. include:: intro.rst.inc
 
 .. toctree::
-   :caption: List of Components
+   :caption: List of Libraries
    :maxdepth: 1
 
    context

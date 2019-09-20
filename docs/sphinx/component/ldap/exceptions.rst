@@ -34,6 +34,7 @@ It's being thrown when accessing nonexistent attribute of an
 LDAP :class:`Korowai\\Component\\Ldap\\Entry`. For example
 
 .. literalinclude:: ../../examples/component/ldap/attribute_exception.php
+   :linenos:
    :start-after: [getAttributeInexistent]
    :lines: 1
 
@@ -46,23 +47,27 @@ thrown when an LDAP operation fails. The exception message and code are taken
 from the LDAP backend.
 
 .. literalinclude:: ../../examples/component/ldap/ldap_exception_1.php
-   :start-after: [tryQueryInexistent]
-   :lines: 1-6
+   :linenos:
+   :start-after: [try-catch]
+   :end-before: [/try-catch]
 
 The output from above example is the following
 
 .. literalinclude:: ../../examples/component/ldap/ldap_exception_1.stderr
+   :linenos:
    :language: none
 
 To handle particular LDAP errors in an application, exception code may be used
 
 .. literalinclude:: ../../examples/component/ldap/ldap_exception_2.php
-   :start-after: [tryQueryInexistent]
-   :lines: 1-11
+   :linenos:
+   :start-after: [try-catch]
+   :end-before: [/try-catch]
 
 The output from above example is the following
 
 .. literalinclude:: ../../examples/component/ldap/ldap_exception_2.stderr
+   :linenos:
    :language: none
 
 Standard LDAP result codes (including error codes) are defined in several

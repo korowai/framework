@@ -19,15 +19,17 @@ illustrate this, we'll slightly modify the example from the section named
 managers for all context arguments
 
 .. literalinclude:: ../../examples/lib/context/exception_handling.php
-   :start-after: [myIntClass]
-   :lines: 1-21
+   :linenos:
+   :start-after: [MyInt]
+   :end-before: [/MyInt]
 
 Instead of doing anything useful, we'll just throw our custom exception
 ``MyException`` from the context (later):
 
 .. literalinclude:: ../../examples/lib/context/exception_handling.php
-   :start-after: [myExceptionClass]
-   :lines: 1-4
+   :linenos:
+   :start-after: [MyException]
+   :end-before: [/MyException]
 
 The exception handling and unroll process may be demonstrated with the
 following snippet. We expect all the values 1, 2, and 3 to be printed at enter
@@ -35,18 +37,23 @@ and the same numbers in reversed order printed when context exits. Finally, we
 should also receive ``MyException``.
 
 .. literalinclude:: ../../examples/lib/context/exception_handling.php
-   :start-after: [testCode]
-   :lines: 1-8
+   :linenos:
+   :start-after: [try-catch]
+   :end-before: [/try-catch]
 
-The output (stdout) from above snippet shall be
+The outputs from above snippet shall be
 
-.. literalinclude:: ../../examples/lib/context/exception_handling.stdout
-   :language: none
+- stdout:
 
-and the standard error stderr will receive
+   .. literalinclude:: ../../examples/lib/context/exception_handling.stdout
+      :linenos:
+      :language: none
 
-.. literalinclude:: ../../examples/lib/context/exception_handling.stderr
-   :language: none
+- stderr:
+
+   .. literalinclude:: ../../examples/lib/context/exception_handling.stderr
+      :linenos:
+      :language: none
 
 
 Handling exceptions in exitContext
@@ -60,16 +67,18 @@ propagated to the context caller). To demonstrate this, let's consider the
 following modified ``MyInt`` class
 
 .. literalinclude:: ../../examples/lib/context/exit_true.php
-   :start-after: [myIntClass]
-   :lines: 1-23
+   :linenos:
+   :start-after: [MyInt]
+   :end-before: [/MyInt]
 
 The object may be configured to return ``true`` or ``false``. What happens when
-one of the context managers returns ``true`` may be explained by the following
+one of the context managers returns ``true``, may be explained by the following
 snippet
 
 .. literalinclude:: ../../examples/lib/context/exit_true.php
-   :start-after: [testCode]
-   :lines: 1-3
+   :linenos:
+   :start-after: [test]
+   :end-before: [/test]
 
 When unrolling, the objects ``MyInt(4)`` and ``MyInt(3, true)`` receive an
 instance of ``MyException`` as ``$exception``, then ``MyInt(3, true)`` returns
@@ -80,6 +89,7 @@ exception and outputs the following text
 
 
 .. literalinclude:: ../../examples/lib/context/exit_true.stdout
+   :linenos:
    :language: none
 
 .. <!--- vim: set syntax=rst spell: -->

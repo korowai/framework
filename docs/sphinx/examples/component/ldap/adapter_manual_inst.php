@@ -1,5 +1,5 @@
 <?php
-/* [use] */
+/* [code] */
 use Korowai\Component\Ldap\Ldap;
 use Korowai\Component\Ldap\Adapter\ExtLdap\LdapLink;
 use Korowai\Component\Ldap\Adapter\ExtLdap\Adapter;
@@ -10,5 +10,6 @@ $adapter = new Adapter($link);
 $ldap = new Ldap($adapter);
 // ...
 $ldap->bind('cn=admin,dc=example,dc=org', 'admin');
+/* [/code] */
 
 // vim: syntax=php sw=4 ts=4 et:

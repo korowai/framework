@@ -3,7 +3,7 @@
    single: Lib; Error
 
 
-.. _ErrorLibrary:
+.. _TheErrorLibrary:
 
 The Error Library
 -----------------
@@ -20,44 +20,46 @@ Installation
 Purpose
 ^^^^^^^
 
-The main purpose of Error library is to provide handy utilities to
-(temporarily) change flow of errors/exceptions within a PHP application.
-It is designed to play nicely with our :ref:`Context Library <ContextLibrary>`,
-so one can temporarily redirect PHP errors to custom handlers in one place
-without altering other parts of code.
+The main purpose of Error library is to provide handy utilities to control the
+flow of PHP errors within an application. It is designed to play nicely with
+our :ref:`Context Library <TheContextLibrary>`, so one can temporarily redirect
+PHP errors to custom handlers in one location without altering other parts of
+code.
 
-The Error library is used to implement our own variants of several functions
-which normally used to trigger PHP errors. Our implementations redirect these
-errors to our own exception-throwing error handlers, so we're no longer forced
-to check return values from functions for errors.
+:ref:`TheKorowaiFramework` uses :ref:`TheErrorLibrary` to implement variants of
+PHP functions to throw predefined exceptions when the original functions
+trigger errors.
 
 Basic Example
 ^^^^^^^^^^^^^
 
 In the following example we'll redirect errors from one invocation of a
-problematic function to a no-op error handler. The example will use the
-following symbols
+problematic function to a no-op error handler. The example uses the
+following functions
 
 .. literalinclude:: ../examples/lib/error/basic_example.php
+   :linenos:
    :start-after: [use]
-   :lines: 1-2
+   :end-before: [/use]
 
 and the problematic function is
 
 .. literalinclude:: ../examples/lib/error/basic_example.php
-   :start-after: [makeTroubleFunction]
-   :lines: 1-4
+   :linenos:
+   :start-after: [trouble]
+   :end-before: [/trouble]
 
 The function could normally cause some noise. For example, it could call
-default or an application-wide error handler. Calling it with ``@`` only mutes
-error messages, but the handler is still invoked. We can prevent this by
-temporarily enabling our own empty handler. This is easily achieved with
-:ref:`Contexts <ContextLibrary>` and
+default or an application-wide error handler. Invoking it with ``@`` only
+disables error messages, but the handler is still invoked. We can prevent this
+by temporarily replacing original handler with our own empty handler. This is
+easily achieved with :ref:`Contexts <TheContextLibrary>` and
 :class:`Korowai\\Lib\\Error\\EmptyErrorHandler`.
 
 .. literalinclude:: ../examples/lib/error/basic_example.php
-   :start-after: [testCode]
-   :lines: 1-3
+   :linenos:
+   :start-after: [test]
+   :end-before: [/test]
 
 
 .. toctree::
@@ -65,7 +67,9 @@ temporarily enabling our own empty handler. This is easily achieved with
    :hidden:
    :glob:
 
-   error/*
+   error/custom_error_handler
+   error/exception_error_handler
+   error/caller_error_handler
 
 
 .. <!--- vim: set syntax=rst spell: -->

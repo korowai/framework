@@ -1,5 +1,7 @@
 .. _korowai-framework-documentation:
 
+.. _TheKorowaiFramework:
+
 #################
 Korowai Framework
 #################
@@ -7,12 +9,12 @@ Korowai Framework
 .. include:: intro.rst.inc
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
    :caption: Table of Contents
    :titlesonly:
 
    install
-   components/index
+   component/index
    lib/index
    devel_guide/index
 

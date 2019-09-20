@@ -19,58 +19,73 @@ Installation
 Basic Usage
 ^^^^^^^^^^^
 
-:ref:`TheLdapComponent` provides :class:`Korowai\\Component\\Ldap\\Ldap` class
-with methods to authenticate and query against an LDAP server. An instance of
-:class:`Korowai\\Component\\Ldap\\Ldap` may be easily created with
+:ref:`Ldap Component <TheLdapComponent>` provides
+:class:`Korowai\\Component\\Ldap\\Ldap` class to authenticate and
+query against an LDAP server. 
+
+.. literalinclude:: ../examples/component/ldap/ldap_intro.php
+   :linenos:
+   :start-after: [use]
+   :end-before: [/use]
+
+An instance of :class:`Korowai\\Component\\Ldap\\Ldap` may be easily created with
 :method:`Ldap::createWithConfig() <Korowai\\Component\\Ldap\\Ldap::createWithConfig>`.
 
 .. literalinclude:: ../examples/component/ldap/ldap_intro.php
-   :start-after: [use]
-   :lines: 1-3
+   :linenos:
+   :start-after: [createWithConfig]
+   :end-before: [/createWithConfig]
 
-The next step is to get authenticated against some DN in the database. This is
-called binding and can be performed with
-:method:`Korowai\\Component\\Ldap\\Ldap::bind` method.
+To establish connection and authenticate, the
+:method:`Korowai\\Component\\Ldap\\Ldap::bind` method can be used.
 
 .. literalinclude:: ../examples/component/ldap/ldap_intro.php
+   :linenos:
    :start-after: [bind]
-   :lines: 1-2
+   :end-before: [/bind]
 
 Once bound, we can search in the database with
 :method:`Korowai\\Component\\Ldap\\AbstractLdap::query` method.
 
 .. literalinclude:: ../examples/component/ldap/ldap_intro.php
+   :linenos:
    :start-after: [query]
-   :lines: 1-2
+   :end-before: [/query]
 
-The returned object provides access to entries selected by the query. It
-implements :class:`Korowai\\Component\\Ldap\\Adapter\\ResultInterface` which,
+The ``$result`` object returned by :method:`Korowai\\Component\\Ldap\\AbstractLdap::query`
+provides access to entries selected by the query. It (``$result``) implements
+the :class:`Korowai\\Component\\Ldap\\Adapter\\ResultInterface` which,
 in turn, includes the standard :phpclass:`\IteratorAggregate` interface. This
 means, you may iterate over the result entries in a usual way
 
 .. literalinclude:: ../examples/component/ldap/ldap_intro.php
+   :linenos:
    :start-after: [foreach]
-   :lines: 1-3
+   :end-before: [/foreach]
 
-An array of entries can be retrieved with result's
+Alternatively, an array of entries can be retrieved with a single call to
 :method:`Korowai\\Component\\Ldap\\Adapter\\ResultInterface::getEntries` method
 
 .. literalinclude:: ../examples/component/ldap/ldap_intro.php
+   :linenos:
    :start-after: [getEntries]
-   :lines: 1
+   :end-before: [/getEntries]
 
 By default, entries' distinguished names (DN) are used as array keys
+in the returned ``$entries``
 
 .. literalinclude:: ../examples/component/ldap/ldap_intro.php
+   :linenos:
    :start-after: [entry]
-   :lines: 1
+   :end-before: [/entry]
 
 Each entry is an :class:`Korowai\\Component\\Ldap\\Entry` object and
 contains attributes. It can me modified in memory
 
 .. literalinclude:: ../examples/component/ldap/ldap_intro.php
+   :linenos:
    :start-after: [setAttribute]
-   :lines: 1
+   :end-before: [/setAttribute]
 
 .. note:: The Ldap component uses lower-cased keys to access entry attributes.
           Attributes in :class:`Korowai\\Component\\Ldap\\Entry` are always
@@ -81,8 +96,9 @@ Once modified, the entry may be written back to the LDAP database with
 :method:`Korowai\\Component\\Ldap\\Ldap::update` method.
 
 .. literalinclude:: ../examples/component/ldap/ldap_intro.php
+   :linenos:
    :start-after: [update]
-   :lines: 1
+   :end-before: [/update]
 
 
 .. toctree::

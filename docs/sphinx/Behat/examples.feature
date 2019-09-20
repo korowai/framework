@@ -42,6 +42,9 @@ Feature: Examples
     And I should see exit code <exit_code>
 
     Examples:
-      | example_file                              | stdout_file                                  | stderr_file                                  | exit_code |
-      | "lib/error/basic_example.php"             | "lib/error/basic_example.stdout"             | "lib/error/basic_example.stderr"             | 0         |
-
+      | example_file                              | stdout_file                                   | stderr_file                                   | exit_code |
+      | "lib/error/basic_example.php"             | "lib/error/basic_example.stdout"              | "lib/error/basic_example.stderr"              | 0         |
+      | "lib/error/custom_error_handler.php"      | "lib/error/custom_error_handler.stdout"       | "lib/error/custom_error_handler.stderr"       | 0         |
+      | "lib/error/simple_exception_thrower.php"  | "lib/error/simple_exception_thrower.stdout"   | "lib/error/simple_exception_thrower.stderr"   | 1         |
+      | "lib/error/caller_error_handler.php"      | "lib/error/caller_error_handler.stdout"       | "lib/error/caller_error_handler.stderr"       | 0         |
+      | "lib/error/caller_error_thrower.php"      | "lib/error/caller_error_thrower.stdout"       | "lib/error/caller_error_thrower.stderr"       | 1         |

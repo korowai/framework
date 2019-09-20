@@ -30,6 +30,12 @@ class ExceptionErrorHandlerTest extends TestCase
 {
     use \phpmock\phpunit\PHPMock;
 
+    public function createHandler($arg = null, ...$tail)
+    {
+        $generator = ExceptionErrorHandler::makeExceptionGenerator($arg);
+        return new ExceptionErrorHandler($generator, ...$tail);
+    }
+
     public function test__extends__AbstractManagedErrorHandler()
     {
         $parents = class_parents(ExceptionErrorHandler::class);
@@ -94,56 +100,6 @@ class ExceptionErrorHandlerTest extends TestCase
         ExceptionErrorHandler::makeExceptionGenerator('inexistent class');
     }
 
-    public function test__create__withCallable()
-    {
-        $func = function() {};
-        $handler = ExceptionErrorHandler::create($func);
-        $this->assertInstanceOf(ExceptionErrorHandler::class, $handler);
-        $this->assertSame($func, $handler->getExceptionGenerator());
-        $this->assertEquals(E_ALL | E_STRICT, $handler->getErrorTypes());
-    }
-
-    public function test__create__withCallableAndErrorTypes()
-    {
-        $func = function() {};
-        $handler = ExceptionErrorHandler::create($func, 123);
-        $this->assertInstanceOf(ExceptionErrorHandler::class, $handler);
-        $this->assertSame($func, $handler->getExceptionGenerator());
-        $this->assertEquals(123, $handler->getErrorTypes());
-    }
-
-    public function test__create__withClass()
-    {
-        $handler = ExceptionErrorHandler::create(Exception2ZR5YS29::class);
-        $generator = $handler->getExceptionGenerator();
-        $this->assertIsCallable($generator);
-        $this->assertEquals(E_ALL | E_STRICT, $handler->getErrorTypes());
-
-        $exception = call_user_func($generator, 123, 'foo', 'bar.php', 456);
-        $this->assertInstanceOf(Exception2ZR5YS29::class, $exception);
-
-        $this->assertEquals(123, $exception->getSeverity());
-        $this->assertEquals('foo', $exception->getMessage());
-        $this->assertEquals('bar.php', $exception->getFile());
-        $this->assertEquals(456, $exception->getLine());
-    }
-
-    public function test__create__withNull()
-    {
-        $handler = ExceptionErrorHandler::create(null);
-        $generator = $handler->getExceptionGenerator();
-        $this->assertIsCallable($generator);
-        $this->assertEquals(E_ALL | E_STRICT, $handler->getErrorTypes());
-
-        $exception = call_user_func($generator, 123, 'foo', 'bar.php', 456);
-        $this->assertInstanceOf(\ErrorException::class, $exception);
-
-        $this->assertEquals(123, $exception->getSeverity());
-        $this->assertEquals('foo', $exception->getMessage());
-        $this->assertEquals('bar.php', $exception->getFile());
-        $this->assertEquals(456, $exception->getLine());
-    }
-
     public function test__construct__withoutErrorTypes()
     {
         $func = function () {};
@@ -163,7 +119,7 @@ class ExceptionErrorHandlerTest extends TestCase
 
     public function test__invoke__whenSeverityIsRelevant()
     {
-        $handler = ExceptionErrorHandler::create(Exception2ZR5YS29::class, E_ALL | E_STRICT);
+        $handler = $this->createHandler(Exception2ZR5YS29::class);
 
         $this->expectException(Exception2ZR5YS29::class);
         $this->expectExceptionMessage('foo');
@@ -183,7 +139,7 @@ class ExceptionErrorHandlerTest extends TestCase
         //
         //      set_error_handler($self, $errorTypes).
         //
-        $handler = ExceptionErrorHandler::create(Exception2ZR5YS29::class, E_USER_ERROR);
+        $handler = $this->createHandler(Exception2ZR5YS29::class, E_USER_ERROR);
 
         $this->expectException(Exception2ZR5YS29::class);
         $this->expectExceptionMessage('foo');
@@ -193,7 +149,7 @@ class ExceptionErrorHandlerTest extends TestCase
 
     public function test__trigger__whenSeverityIsRelevant()
     {
-        $handler = ExceptionErrorHandler::create(Exception2ZR5YS29::class, E_ALL | E_STRICT);
+        $handler = $this->createHandler(Exception2ZR5YS29::class, E_ALL | E_STRICT);
 
         $this->expectException(Exception2ZR5YS29::class);
         $this->expectExceptionMessage('foo');
@@ -214,7 +170,7 @@ class ExceptionErrorHandlerTest extends TestCase
 
     public function test__trigger__whenSeverityIsIrrelevant()
     {
-        $handler = ExceptionErrorHandler::create(Exception2ZR5YS29::class, E_USER_ERROR);
+        $handler = $this->createHandler(Exception2ZR5YS29::class, E_USER_ERROR);
 
         $result = with($handler)(function ($eh) {
             @trigger_error('foo', E_USER_NOTICE);

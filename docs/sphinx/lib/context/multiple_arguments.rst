@@ -17,7 +17,7 @@ Multiple arguments may be passed to :func:`Korowai\\Lib\\Context\\with`:
 
 For every value ``$cm1``, ``$cm2``, ..., passed to
 :func:`Korowai\\Lib\\Context\\with` a corresponding value is passed as an
-argument to the user-provided callback. Assuming, ``cm1``, ``cm2``, ..., are
+argument to the user-provided callback. Assuming, ``$cm1``, ``$cm2``, ..., are
 *Context Managers*, the corresponding arguments of the user-provided callback
 will receive
 
@@ -35,14 +35,16 @@ the reverse order when exiting the context
 Let's use the following simple context manager to illustrate this
 
 .. literalinclude:: ../../examples/lib/context/multiple_args.php
-   :start-after: [myIntClass]
-   :lines: 1-21
+   :linenos:
+   :start-after: [MyInt]
+   :end-before: [/MyInt]
 
 The order or argument processing may be then illustrated by the following test
 
 .. literalinclude:: ../../examples/lib/context/multiple_args.php
-   :start-after: [testCode]
-   :lines: 1-3
+   :linenos:
+   :start-after: [test]
+   :end-before: [/test]
 
 The output from above snippet will be
 

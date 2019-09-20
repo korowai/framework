@@ -3,7 +3,7 @@
    single: Lib; Context
 
 
-.. _ContextLibrary:
+.. _TheContextLibrary:
 
 The Context Library
 -------------------
@@ -60,16 +60,18 @@ The example requires the function :func:`Korowai\\Lib\\Context\\with` to be
 imported to current scope
 
 .. literalinclude:: ../examples/lib/context/basic_with_usage.php
+   :linenos:
    :start-after: [use]
-   :lines: 1
+   :end-before: [/use]
 
 Once it's done, the following three-liner can be used to open file and read its
 contents. The file gets closed automatically as soon, as the user callback
 returns (or throws an exception).
 
 .. literalinclude:: ../examples/lib/context/basic_with_usage.php
-   :start-after: [withFopenDoStreamGetContents]
-   :lines: 1-3
+   :linenos:
+   :start-after: [test]
+   :end-before: [/test]
 
 
 .. toctree::

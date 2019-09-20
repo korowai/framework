@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Lib/Error/CustomErrorHandler.php
+ * @file src/Korowai/Lib/Error/ErrorHandler.php
  *
  * This file is part of the Korowai package
  *
@@ -16,7 +16,7 @@ namespace Korowai\Lib\Error;
 /**
  * Context-managed error handler that calls user-provided function.
  */
-class CustomErrorHandler extends AbstractManagedErrorHandler
+class ErrorHandler extends AbstractManagedErrorHandler
 {
     /**
      * @var callable

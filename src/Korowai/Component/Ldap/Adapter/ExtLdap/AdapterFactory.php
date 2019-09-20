@@ -25,7 +25,7 @@ use Korowai\Component\Ldap\Adapter\ExtLdap\LastLdapException;
 
 use function Korowai\Lib\Context\with;
 use function Korowai\Lib\Error\emptyErrorHandler;
-use Korowai\Lib\Error\ExceptionErrorHandler;
+use function Korowai\Lib\Error\exceptionErrorHandler;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -61,7 +61,7 @@ class AdapterFactory extends AbstractAdapterFactory
 
     private function createLdapLink()
     {
-        $handler = ExceptionErrorHandler::create(function ($severity, $message, ...$args) {
+        $handler = exceptionErrorHandler(function ($severity, $message, ...$args) {
             return new LdapException($message, -1, $severity, ...$args);
         });
         $link = with($handler)(function ($eh) {

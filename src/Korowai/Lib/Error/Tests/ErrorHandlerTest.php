@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Lib/Error/Tests/CustomErrorHandlerTest.php
+ * @file src/Korowai/Lib/Error/Tests/ErrorHandlerTest.php
  *
  * This file is part of the Korowai package
  *
@@ -15,24 +15,24 @@ namespace Korowai\Lib\Error\Tests;
 
 use PHPUnit\Framework\TestCase;
 
-use Korowai\Lib\Error\CustomErrorHandler;
+use Korowai\Lib\Error\ErrorHandler;
 use Korowai\Lib\Error\AbstractManagedErrorHandler;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class CustomErrorHandlerTest extends TestCase
+class ErrorHandlerTest extends TestCase
 {
     public function test__extends__AbstractManagedErrorHandler()
     {
-        $parents = class_parents(CustomErrorHandler::class);
+        $parents = class_parents(ErrorHandler::class);
         $this->assertContains(AbstractManagedErrorHandler::class, $parents);
     }
 
     public function test__construct__withoutErrorTypes()
     {
         $func = function () {};
-        $handler = new CustomErrorHandler($func);
+        $handler = new ErrorHandler($func);
         $this->assertSame($func, $handler->getErrorHandler());
         $this->assertEquals(E_ALL | E_STRICT,  $handler->getErrorTypes());
     }
@@ -40,7 +40,7 @@ class CustomErrorHandlerTest extends TestCase
     public function test__construct__withErrorTypes()
     {
         $func = function () {};
-        $handler = new CustomErrorHandler($func, 123);
+        $handler = new ErrorHandler($func, 123);
 
         $this->assertSame($func, $handler->getErrorHandler());
         $this->assertEquals(123,  $handler->getErrorTypes());
@@ -51,7 +51,7 @@ class CustomErrorHandlerTest extends TestCase
         $called = 0;
         $args = [];
 
-        $handler = new CustomErrorHandler(
+        $handler = new ErrorHandler(
             function (int $severity, string $message, string $file, int $line)
             use (&$called, &$args) : bool {
                 $called += 1;

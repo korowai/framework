@@ -1,9 +1,11 @@
 <?php
+/* [code] */
 /* [use] */
 use Korowai\Lib\Context\ContextManagerInterface;
 use function Korowai\Lib\Context\with;
+/* [/use] */
 
-/* [myIntClass] */
+/* [MyInt] */
 class MyInt implements ContextManagerInterface
 {
     public $value;
@@ -25,10 +27,13 @@ class MyInt implements ContextManagerInterface
         return false;
     }
 }
+/* [/MyInt] */
 
-/* [testCode] */
+/* [test] */
 with(new MyInt(1), new MyInt(2), new MyInt(3))(function (int ...$args) {
     echo '$args: ' . implode(', ', $args) . "\n";
 });
+/* [/test] */
+/* [/code] */
 
 // vim: syntax=php sw=4 ts=4 et:

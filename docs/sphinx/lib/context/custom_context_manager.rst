@@ -32,28 +32,30 @@ string and provides it as an argument to user-provided callback when using
 Import symbols required for this example
 
 .. literalinclude:: ../../examples/lib/context/my_value_wrapper.php
+   :linenos:
    :start-after: [use]
-   :lines: 1-2
+   :end-before: [/use]
 
 The class implementation will be rather simple. Its ``enterContext()`` and
 ``exitContext()`` will just print messages to inform us that the context was
 entered/exited.
 
 .. literalinclude:: ../../examples/lib/context/my_value_wrapper.php
-   :start-after: [myValueWrapperClass]
-   :lines: 1-21
+   :linenos:
+   :start-after: [MyValueWrapper]
+   :end-before: [/MyValueWrapper]
 
 The new context manager is ready to use. It may be tested as follows
 
 .. literalinclude:: ../../examples/lib/context/my_value_wrapper.php
-   :start-after: [withMyValueWrapperEchoValue]
-   :lines: 1-3
+   :linenos:
+   :start-after: [test]
+   :end-before: [/test]
 
 Obviously, the expected output will be
 
 .. literalinclude:: ../../examples/lib/context/my_value_wrapper.stdout
+   :linenos:
    :language: console
-
-
 
 .. <!--- vim: set syntax=rst spell: -->

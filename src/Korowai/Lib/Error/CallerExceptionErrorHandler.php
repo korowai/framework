@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Lib/Error/CallerErrorHandler.php
+ * @file src/Korowai/Lib/Error/CallerExceptionErrorHandler.php
  *
  * This file is part of the Korowai package
  *
@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Korowai\Lib\Error;
 
 /**
- * Context-managed error handler that calls user-provided function with predefined $file and $line arguments.
+ * Context-managed error handler that throws an exception with predefined $file and $line arguments.
  */
-class CallerErrorHandler extends ErrorHandler
+class CallerExceptionErrorHandler extends ExceptionErrorHandler
 {
     use CallerErrorHandlerMethods;
 
@@ -27,10 +27,10 @@ class CallerErrorHandler extends ErrorHandler
      * @param int $distance
      * @param int $errorTypes
      */
-    public function __construct(callable $errorHandler, int $distance = 1, int $errorTypes = E_ALL | E_STRICT)
+    public function __construct(callable $exceptionGenerator, int $distance = 1, int $errorTypes = E_ALL | E_STRICT)
     {
         $this->initCallerErrorHandler(1 + $distance);
-        parent::__construct($errorHandler, $errorTypes);
+        parent::__construct($exceptionGenerator, $errorTypes);
     }
 }
 

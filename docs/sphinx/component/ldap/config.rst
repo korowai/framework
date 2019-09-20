@@ -8,7 +8,7 @@
 Ldap Configuration
 ------------------
 
-:class:`Korowai\\Component\\Ldap\\Ldap` instances are created according to
+:class:`Korowai\\Component\\Ldap\\Ldap` instances are configured according to
 settings provided with ``$config`` array (an argument to
 :method:`Ldap::createWithConfig() <Korowai\\Component\\Ldap\\Ldap::createWithConfig>`).
 The ``$config`` array is internally passed to an
@@ -17,6 +17,9 @@ supporting adapter object. Some settings are "standard" and shall be accepted
 by any adapter type. Other options may be specific to a particular adapter type
 (such as the default :class:`ExtLdap\\Adapter <Korowai\\Component\\Ldap\\Adapter\\ExtLdap\\Adapter>`,
 where the adapter-specific options are stored in ``$config['options']``).
+
+Common LDAP settings
+^^^^^^^^^^^^^^^^^^^^
 
 The following table lists configuration settings supported by any adapter.
 
@@ -50,6 +53,10 @@ The following table lists configuration settings supported by any adapter.
      - ``array()``
      - An array of additional connection options (adapter-specific).
 
+
+LDAP options specific to ExtLdap adapter
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 The ``$config['options']`` specific to
 :class:`ExtLdap\\Adapter <Korowai\\Component\\Ldap\\Adapter\\ExtLdap\\Adapter>`
 are listed below. For more details see PHP function
@@ -68,6 +75,7 @@ are listed below. For more details see PHP function
      - ``string|int``
      - Specifies how alias dereferencing is done when performing a search. The
        option's value can be specified as one of the following constants:
+
          - ``'never'`` (``LDAP_DEREF_NEVER``): aliases are never dereferenced,
          - ``searching`` (``LDAP_DEREF_SEARCHING``): aliases are dereferenced
            in subordinates of the base object, but not in locating the base

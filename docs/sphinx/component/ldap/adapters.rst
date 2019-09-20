@@ -7,32 +7,19 @@
 Ldap Adapters
 -------------
 
-:ref:`TheLdapComponent` uses adapters to interact with the actual LDAP
-implementation. An adapter is a class that converts the interface of that
-particular implementation to the unified interface defined by
+:ref:`TheLdapComponent` uses *adapters* to interact with the actual LDAP
+client library. An adapter is a class that converts the interface of that
+particular implementation to
 :class:`Korowai\\Component\\Ldap\\Adapter\\AdapterInterface`. This pattern
-allows for different LDAP implementations to be used by the Ldap component in
-a pluggable manner.
+allows for different LDAP implementations to be used by :ref:`TheLdapComponent`
+in a pluggable manner.
 
-
-Every :class:`Korowai\\Component\\Ldap\\Ldap` instance wraps an instance of
+Each :class:`Korowai\\Component\\Ldap\\Ldap` instance wraps an instance of
 :class:`Korowai\\Component\\Ldap\\Adapter\\AdapterInterface` (the *adapter*)
-and interacts with its LDAP back-end through the *adapter*. The adapter
-instance is feed to :class:`Korowai\\Component\\Ldap\\Ldap`'s constructor when
+and interacts with particular LDAP implementation through this *adapter*. The
+*adapter* is feed to :class:`Korowai\\Component\\Ldap\\Ldap`'s constructor when
 it's being created. The whole process of adapter instantiation is done behind
 the scenes.
-
-Although not recommended, a "manual" adapter instantiation is possible:
-
-.. literalinclude:: ../../examples/component/ldap/adapter_manual_inst.php
-   :start-after: [use]
-
-In the above code, default adapter, the
-:class:`ExtLdap\\Adapter <Korowai\\Component\\Ldap\\Adapter\\ExtLdap\\Adapter>`
-is used. This adapter uses the built-in `PHP ldap extension`_ via the
-:class:`Korowai\\Component\\Ldap\\Adapter\\ExtLdap\\LdapLink` class.
-Custom adapter classes can be implemented to support custom LDAP
-implementations.
 
 .. _LdapAdapterFactory:
 
@@ -59,14 +46,18 @@ shall be provided to :class:`Korowai\\Component\\Ldap\\Ldap`'s static method
 :method:`Korowai\\Component\\Ldap\\Ldap::createWithAdapterFactory`:
 
 .. literalinclude:: ../../examples/component/ldap/adapter_factory_1.php
-   :start-after: [use]
+   :linenos:
+   :start-after: [code]
+   :end-before: [/code]
 
 Alternatively, factory class name may be passed to
 :method:`Korowai\\Component\\Ldap::createWithConfig`
 method:
 
 .. literalinclude:: ../../examples/component/ldap/adapter_factory_2.php
-   :start-after: [use]
+   :linenos:
+   :start-after: [code]
+   :end-before: [/code]
 
 In this case, a temporary instance of adapter factory is created internally,
 configured with ``$config`` and then used to create the actual adapter

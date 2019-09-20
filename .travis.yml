@@ -3,8 +3,6 @@ php:
   - '7.1'
   - '7.2'
   - '7.3'
-env:
-  - CODECOV_TOKEN="e1a8b56d-a3ca-49ea-ab06-c7cbd0115658"
 install:
   - travis_retry composer install --no-interaction
 script:

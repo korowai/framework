@@ -1,19 +1,29 @@
-version: '3.7'
+version: '3.2'
 services:
   sphinx:
-    image: "korowai/sphinx:${KRW_SPHINX_TAG:-latest}"
+    build:
+      context: ../docker/user
+      args:
+        KRW_IMG: "korowai/sphinx:${KRW_SPHINX_TAG:-latest}"
+        KRW_UID: "${KRW_UID:-6789}"
+        KRW_GID: "${KRW_GID:-6789}"
     ports:
       - "8000:8000"
     volumes:
-      - ../:/home/sphinx/project
+      - ../:${KRW_CODE:-/code}
     user: "${KRW_UID:-6789}:${KRW_GID:-6789}"
 
   sami:
-    image: "korowai/sami:${KRW_SAMI_TAG:-latest}"
+    build:
+      context: ../docker/user
+      args:
+        KRW_IMG: "korowai/sami:${KRW_SAMI_TAG:-latest}"
+        KRW_UID: "${KRW_UID:-6789}"
+        KRW_GID: "${KRW_GID:-6789}"
     ports:
       - "8001:8001"
     volumes:
-      - ../:/home/sami/project
+      - ../:${KRW_CODE:-/code}
     user: "${KRW_UID:-6789}:${KRW_GID:-6789}"
 
   phpdoc:

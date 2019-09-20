@@ -1,5 +1,5 @@
-@initDbBeforeScenario
-@initDbAfterScenario
+@initDbBeforeFeature
+@initDbAfterFeature
 Feature: Query
 
   Scenario: Successful query for an empty yet subtree

@@ -2,6 +2,7 @@
    single: Ldap
    single: Components; Ldap
 
+.. _TheLdapComponent:
 
 The Ldap Component
 ------------------
@@ -18,20 +19,17 @@ Installation
 Basic Usage
 ^^^^^^^^^^^
 
-One can begin with the :class:`Korowai\\Component\\Ldap\\Ldap` class which
-provides methods to authenticate and query against an LDAP server.
-
-An instance of :class:`Korowai\\Component\\Ldap\\Ldap` may be easily created
-with :method:`Ldap::createWithConfig() <Korowai\\Component\\Ldap\\Ldap::createWithConfig>`
-static method.
+:ref:`TheLdapComponent` provides :class:`Korowai\\Component\\Ldap\\Ldap` class
+with methods to authenticate and query against an LDAP server. An instance of
+:class:`Korowai\\Component\\Ldap\\Ldap` may be easily created with
+:method:`Ldap::createWithConfig() <Korowai\\Component\\Ldap\\Ldap::createWithConfig>`.
 
 .. literalinclude:: ../examples/component/ldap/ldap_intro.php
    :start-after: [use]
-   :lines: 1-4
+   :lines: 1-3
 
-The returned value is an instance of :class:`Korowai\\Component\\Ldap\\Ldap`
-class. The next step is to get authenticated against some DN in the
-database. This is called binding and can be performed with
+The next step is to get authenticated against some DN in the database. This is
+called binding and can be performed with
 :method:`Korowai\\Component\\Ldap\\Ldap::bind` method.
 
 .. literalinclude:: ../examples/component/ldap/ldap_intro.php
@@ -45,32 +43,30 @@ Once bound, we can search in the database with
    :start-after: [query]
    :lines: 1-2
 
-The returned object provides access to all entries found by query. It implements
-:class:`Korowai\\Component\\Ldap\\Adapter\\ResultInterface` which, in turn,
-includes the standard `IteratorAggregate <http://php.net/manual/en/class.iteratoraggregate.php>`_
-interface. This means, you may iterate over the result entries in a usual way
+The returned object provides access to entries selected by the query. It
+implements :class:`Korowai\\Component\\Ldap\\Adapter\\ResultInterface` which,
+in turn, includes the standard :phpclass:`\IteratorAggregate` interface. This
+means, you may iterate over the result entries in a usual way
 
 .. literalinclude:: ../examples/component/ldap/ldap_intro.php
    :start-after: [foreach]
    :lines: 1-3
 
-An array of result entries can be retrieved with
+An array of entries can be retrieved with result's
 :method:`Korowai\\Component\\Ldap\\Adapter\\ResultInterface::getEntries` method
-of the returned result object.
 
 .. literalinclude:: ../examples/component/ldap/ldap_intro.php
    :start-after: [getEntries]
    :lines: 1
 
-This shall return an array. By default, entries' distinguished names (DN) are
-used as array keys.
+By default, entries' distinguished names (DN) are used as array keys
 
 .. literalinclude:: ../examples/component/ldap/ldap_intro.php
    :start-after: [entry]
    :lines: 1
 
-Each entry is an instance of class :class:`Korowai\\Component\\Ldap\\Entry` and
-is actually a container for attributes. The entry can me modified in memory.
+Each entry is an :class:`Korowai\\Component\\Ldap\\Entry` object and
+contains attributes. It can me modified in memory
 
 .. literalinclude:: ../examples/component/ldap/ldap_intro.php
    :start-after: [setAttribute]
@@ -94,6 +90,8 @@ Once modified, the entry may be written back to the LDAP database with
    :hidden:
    :glob:
 
-   ldap/*
+   ldap/config
+   ldap/exceptions
+   ldap/adapters
 
 .. <!--- vim: set syntax=rst spell: -->

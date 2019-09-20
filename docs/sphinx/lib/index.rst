@@ -8,5 +8,6 @@ Korowai Libraries
    :maxdepth: 1
 
    context
+   error
 
 .. <!--- vim: set syntax=rst spell: -->

@@ -2,8 +2,7 @@
 /* [use] */
 use Korowai\Component\Ldap\Ldap;
 
-$config = array('uri' => 'ldap://ldap-service');
-$ldap = Ldap::createWithConfig($config);
+$ldap = Ldap::createWithConfig(['uri' => 'ldap://ldap-service']);
 
 /* [bind] */
 /* Bind to 'cn=admin,dc=example,dc=org' using password 'admin'. */
@@ -25,7 +24,9 @@ $entries = $result->getEntries();
 $entry = $entries['uid=jsmith,ou=people,dc=example,dc=org'];
 
 /* [setAttribute] */
-$entry->setAttribute('uidnumber', array(1234));
+$entry->setAttribute('uidnumber', [1234]);
 
 /* [update] */
 $ldap->update($entry);
+
+// vim: syntax=php sw=4 ts=4 et:

@@ -16,14 +16,13 @@ namespace Korowai\Component\Ldap\Tests\Adapter;
 use PHPUnit\Framework\TestCase;
 use Korowai\Component\Ldap\Adapter\ExtLdap\LdapLinkOptions;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 
-class ClassWithLdapLinkOptions
+class LdapLinkOptions1YQ4YR18
 {
-    use LdapLinkOptions;
-
-    public function exposedConfigureLdapLinkOptions(OptionsResolver $resolver)
-    {
-        return $this->configureLdapLinkOptions($resolver);
+    use LdapLinkOptions {
+        configureLdapLinkOptions as public;
+        configureLdapLinkOption as public;
     }
 }
 
@@ -32,9 +31,16 @@ class ClassWithLdapLinkOptions
  */
 class LdapLinkOptionsTest extends TestCase
 {
-    public function test_getOptionConstantName()
+    protected function getConfiguredResolver()
     {
-        $no = new ClassWithLdapLinkOptions();
+        $resolver = new OptionsResolver();
+        (new LdapLinkOptions1YQ4YR18())->configureLdapLinkOptions($resolver);
+        return $resolver;
+    }
+
+    public function test__getOptionConstantName()
+    {
+        $no = new LdapLinkOptions1YQ4YR18();
 
         $this->assertSame('LDAP_OPT_DEREF', $no->getLdapLinkOptionConstantName('deref'));
         $this->assertSame('LDAP_OPT_SIZELIMIT', $no->getLdapLinkOptionConstantName('sizelimit'));
@@ -51,7 +57,7 @@ class LdapLinkOptionsTest extends TestCase
         $this->assertSame('LDAP_OPT_SERVER_CONTROLS', $no->getLdapLinkOptionConstantName('server_controls'));
         $this->assertSame('LDAP_OPT_CLIENT_CONTROLS', $no->getLdapLinkOptionConstantName('client_controls'));
 
-        if(PHP_VERSION_ID >= 70100) {
+        if (PHP_VERSION_ID >= 70100) {
             // Session
             $this->assertSame('LDAP_OPT_X_KEEPALIVE_IDLE', $no->getLdapLinkOptionConstantName('keepalive_idle'));
             $this->assertSame('LDAP_OPT_X_KEEPALIVE_PROBES', $no->getLdapLinkOptionConstantName('keepalive_probes'));
@@ -64,7 +70,7 @@ class LdapLinkOptionsTest extends TestCase
         $this->assertSame('LDAP_OPT_X_SASL_AUTHCID', $no->getLdapLinkOptionConstantName('sasl_authcid'));
         $this->assertSame('LDAP_OPT_X_SASL_AUTHZID', $no->getLdapLinkOptionConstantName('sasl_authzid'));
 
-        if(PHP_VERSION_ID >= 70100) {
+        if (PHP_VERSION_ID >= 70100) {
             // TLS (API_VERSION > 2000)
             $this->assertSame('LDAP_OPT_X_TLS_CACERTDIR', $no->getLdapLinkOptionConstantName('tls_cacertdir'));
             $this->assertSame('LDAP_OPT_X_TLS_CACERTFILE', $no->getLdapLinkOptionConstantName('tls_cacertfile'));
@@ -78,20 +84,20 @@ class LdapLinkOptionsTest extends TestCase
             $this->assertSame('LDAP_OPT_X_TLS_RANDOM_FILE', $no->getLdapLinkOptionConstantName('tls_random_file'));
         }
 
-        if(PHP_VERSION_ID >= 07005) {
+        if (PHP_VERSION_ID >= 70050) {
             $this->assertSame('LDAP_OPT_X_TLS_REQUIRE_CERT', $no->getLdapLinkOptionConstantName('tls_require_cert'));
         }
     }
 
-    public function test_getOptionConstantName_Inexistend()
+    public function test__getOptionConstantName__inexistend()
     {
-        $no = new ClassWithLdapLinkOptions();
+        $no = new LdapLinkOptions1YQ4YR18();
         $this->assertNull($no->getLdapLinkOptionConstantName('inexistent'));
     }
 
-    public function test_getOptionConstant()
+    public function test__getOptionConstant()
     {
-        $no = new ClassWithLdapLinkOptions();
+        $no = new LdapLinkOptions1YQ4YR18();
 
         $this->assertSame(LDAP_OPT_DEREF, $no->getLdapLinkOptionConstant('deref'));
         $this->assertSame(LDAP_OPT_SIZELIMIT, $no->getLdapLinkOptionConstant('sizelimit'));
@@ -108,7 +114,7 @@ class LdapLinkOptionsTest extends TestCase
         $this->assertSame(LDAP_OPT_SERVER_CONTROLS, $no->getLdapLinkOptionConstant('server_controls'));
         $this->assertSame(LDAP_OPT_CLIENT_CONTROLS, $no->getLdapLinkOptionConstant('client_controls'));
 
-        if(PHP_VERSION_ID >= 70100) {
+        if (PHP_VERSION_ID >= 70100) {
             // Session
             $this->assertSame(LDAP_OPT_X_KEEPALIVE_IDLE, $no->getLdapLinkOptionConstant('keepalive_idle'));
             $this->assertSame(LDAP_OPT_X_KEEPALIVE_PROBES, $no->getLdapLinkOptionConstant('keepalive_probes'));
@@ -121,7 +127,7 @@ class LdapLinkOptionsTest extends TestCase
         $this->assertSame(LDAP_OPT_X_SASL_AUTHCID, $no->getLdapLinkOptionConstant('sasl_authcid'));
         $this->assertSame(LDAP_OPT_X_SASL_AUTHZID, $no->getLdapLinkOptionConstant('sasl_authzid'));
 
-        if(PHP_VERSION_ID >= 70100) {
+        if (PHP_VERSION_ID >= 70100) {
             // TLS (API_VERSION > 2000)
             $this->assertSame(LDAP_OPT_X_TLS_CACERTDIR, $no->getLdapLinkOptionConstant('tls_cacertdir'));
             $this->assertSame(LDAP_OPT_X_TLS_CACERTFILE, $no->getLdapLinkOptionConstant('tls_cacertfile'));
@@ -135,14 +141,14 @@ class LdapLinkOptionsTest extends TestCase
             $this->assertSame(LDAP_OPT_X_TLS_RANDOM_FILE, $no->getLdapLinkOptionConstant('tls_random_file'));
         }
 
-        if(PHP_VERSION_ID >= 07005) {
+        if (PHP_VERSION_ID >= 70050) {
             $this->assertSame(LDAP_OPT_X_TLS_REQUIRE_CERT, $no->getLdapLinkOptionConstant('tls_require_cert'));
         }
     }
 
-    public function test_getOptionConstant_Inexistend()
+    public function test__getOptionConstant_inexistend()
     {
-        $no = new ClassWithLdapLinkOptions();
+        $no = new LdapLinkOptions1YQ4YR18();
 
         $this->expectException(\Korowai\Component\Ldap\Exception\LdapException::class);
         $this->expectExceptionMessage("Unknown option 'inexistent'");
@@ -150,64 +156,75 @@ class LdapLinkOptionsTest extends TestCase
         $no->getLdapLinkOptionConstant('inexistent');
     }
 
-    public function test_getLdapLinkOptionDeclarations()
+    public function test__getLdapLinkOptionDeclarations()
     {
-        $no = new ClassWithLdapLinkOptions();
+        $no = new LdapLinkOptions1YQ4YR18();
 
         $options =  $no->getLdapLinkOptionDeclarations();
 
-        $this->assertEquals(array('types' => 'int',     'constant' => 'LDAP_OPT_DEREF'),                $options['deref']);
-        $this->assertEquals(array('types' => 'int',     'constant' => 'LDAP_OPT_SIZELIMIT'),            $options['sizelimit']);
-        $this->assertEquals(array('types' => 'int',     'constant' => 'LDAP_OPT_TIMELIMIT'),            $options['timelimit']);
-        $this->assertEquals(array('types' => 'int',     'constant' => 'LDAP_OPT_NETWORK_TIMEOUT'),      $options['network_timeout']);
-        $this->assertEquals(array('types' => 'int',     'constant' => 'LDAP_OPT_PROTOCOL_VERSION', 'default' => 3),     $options['protocol_version']);
-        $this->assertEquals(array('types' => 'int',     'constant' => 'LDAP_OPT_ERROR_NUMBER'),         $options['error_number']);
-        $this->assertEquals(array('types' => 'bool',    'constant' => 'LDAP_OPT_REFERRALS'),            $options['referrals']);
-        $this->assertEquals(array('types' => 'bool',    'constant' => 'LDAP_OPT_RESTART'),              $options['restart']);
-        $this->assertEquals(array('types' => 'string',  'constant' => 'LDAP_OPT_HOST_NAME'),            $options['host_name']);
-        $this->assertEquals(array('types' => 'string',  'constant' => 'LDAP_OPT_ERROR_STRING'),         $options['error_string']);
-        $this->assertEquals(array('types' => 'string',  'constant' => 'LDAP_OPT_DIAGNOSTIC_MESSAGE'),   $options['diagnostic_message']);
-        $this->assertEquals(array('types' => 'string',  'constant' => 'LDAP_OPT_MATCHED_DN'),           $options['matched_dn']);
-        $this->assertEquals(array('types' => 'array',   'constant' => 'LDAP_OPT_SERVER_CONTROLS'),      $options['server_controls']);
-        $this->assertEquals(array('types' => 'array',   'constant' => 'LDAP_OPT_CLIENT_CONTROLS'),      $options['client_controls']);
+        $v1 = ['never' => LDAP_DEREF_NEVER,
+               'searching' => LDAP_DEREF_SEARCHING,
+               'finding' => LDAP_DEREF_FINDING,
+               'always' => LDAP_DEREF_ALWAYS];
+        $v2 = ['none' => LDAP_OPT_X_TLS_CRL_NONE,
+               'peer' => LDAP_OPT_X_TLS_CRL_PEER,
+               'all' => LDAP_OPT_X_TLS_CRL_ALL];
+        $v3 = ['never' => LDAP_OPT_X_TLS_NEVER,
+               'hard' => LDAP_OPT_X_TLS_HARD,
+               'demand' => LDAP_OPT_X_TLS_DEMAND,
+               'allow' => LDAP_OPT_X_TLS_ALLOW,
+               'try' => LDAP_OPT_X_TLS_TRY];
 
-        if(PHP_VERSION_ID >= 70100) {
+        $this->assertEquals(['types' => ['string','int'], 'constant' => 'LDAP_OPT_DEREF', 'values' => $v1], $options['deref']);
+        $this->assertEquals(['types' => 'int',     'constant' => 'LDAP_OPT_SIZELIMIT'],              $options['sizelimit']);
+        $this->assertEquals(['types' => 'int',     'constant' => 'LDAP_OPT_TIMELIMIT'],              $options['timelimit']);
+        $this->assertEquals(['types' => 'int',     'constant' => 'LDAP_OPT_NETWORK_TIMEOUT'],        $options['network_timeout']);
+        $this->assertEquals(['types' => 'int',     'constant' => 'LDAP_OPT_PROTOCOL_VERSION', 'default' => 3, 'values' => [2, 3]], $options['protocol_version']);
+        $this->assertEquals(['types' => 'int',     'constant' => 'LDAP_OPT_ERROR_NUMBER'],           $options['error_number']);
+        $this->assertEquals(['types' => 'bool',    'constant' => 'LDAP_OPT_REFERRALS'],              $options['referrals']);
+        $this->assertEquals(['types' => 'bool',    'constant' => 'LDAP_OPT_RESTART'],                $options['restart']);
+        $this->assertEquals(['types' => 'string',  'constant' => 'LDAP_OPT_HOST_NAME'],              $options['host_name']);
+        $this->assertEquals(['types' => 'string',  'constant' => 'LDAP_OPT_ERROR_STRING'],           $options['error_string']);
+        $this->assertEquals(['types' => 'string',  'constant' => 'LDAP_OPT_DIAGNOSTIC_MESSAGE'],     $options['diagnostic_message']);
+        $this->assertEquals(['types' => 'string',  'constant' => 'LDAP_OPT_MATCHED_DN'],             $options['matched_dn']);
+        $this->assertEquals(['types' => 'array',   'constant' => 'LDAP_OPT_SERVER_CONTROLS'],        $options['server_controls']);
+        $this->assertEquals(['types' => 'array',   'constant' => 'LDAP_OPT_CLIENT_CONTROLS'],        $options['client_controls']);
+
+        if (PHP_VERSION_ID >= 70100) {
             // Session
-            $this->assertEquals(array('types' => 'int', 'constant' => 'LDAP_OPT_X_KEEPALIVE_IDLE'),     $options['keepalive_idle']);
-            $this->assertEquals(array('types' => 'int', 'constant' => 'LDAP_OPT_X_KEEPALIVE_PROBES'),   $options['keepalive_probes']);
-            $this->assertEquals(array('types' => 'int', 'constant' => 'LDAP_OPT_X_KEEPALIVE_INTERVAL'), $options['keepalive_interval']);
+            $this->assertEquals(['types' => 'int', 'constant' => 'LDAP_OPT_X_KEEPALIVE_IDLE'],       $options['keepalive_idle']);
+            $this->assertEquals(['types' => 'int', 'constant' => 'LDAP_OPT_X_KEEPALIVE_PROBES'],     $options['keepalive_probes']);
+            $this->assertEquals(['types' => 'int', 'constant' => 'LDAP_OPT_X_KEEPALIVE_INTERVAL'],   $options['keepalive_interval']);
         }
 
         // SASL
-        $this->assertEquals(array('types' => 'string',  'constant' => 'LDAP_OPT_X_SASL_MECH'),          $options['sasl_mech']);
-        $this->assertEquals(array('types' => 'string',  'constant' => 'LDAP_OPT_X_SASL_REALM'),         $options['sasl_realm']);
-        $this->assertEquals(array('types' => 'string',  'constant' => 'LDAP_OPT_X_SASL_AUTHCID'),       $options['sasl_authcid']);
-        $this->assertEquals(array('types' => 'string',  'constant' => 'LDAP_OPT_X_SASL_AUTHZID'),       $options['sasl_authzid']);
+        $this->assertEquals(['types' => 'string',  'constant' => 'LDAP_OPT_X_SASL_MECH'],            $options['sasl_mech']);
+        $this->assertEquals(['types' => 'string',  'constant' => 'LDAP_OPT_X_SASL_REALM'],           $options['sasl_realm']);
+        $this->assertEquals(['types' => 'string',  'constant' => 'LDAP_OPT_X_SASL_AUTHCID'],         $options['sasl_authcid']);
+        $this->assertEquals(['types' => 'string',  'constant' => 'LDAP_OPT_X_SASL_AUTHZID'],         $options['sasl_authzid']);
 
-        if(PHP_VERSION_ID >= 70100) {
+        if (PHP_VERSION_ID >= 70100) {
             // TLS (API_VERSION > 2000)
-            $this->assertEquals(array('types' => 'string',  'constant' => 'LDAP_OPT_X_TLS_CACERTDIR'),  $options['tls_cacertdir']);
-            $this->assertEquals(array('types' => 'string',  'constant' => 'LDAP_OPT_X_TLS_CACERTFILE'), $options['tls_cacertfile']);
-            $this->assertEquals(array('types' => 'string',  'constant' => 'LDAP_OPT_X_TLS_CERTFILE'),   $options['tls_certfile']);
-            $this->assertEquals(array('types' => 'string',  'constant' => 'LDAP_OPT_X_TLS_CIPHER_SUITE'), $options['tls_cipher_suite']);
-            $this->assertEquals(array('types' => 'int',     'constant' => 'LDAP_OPT_X_TLS_CRLCHECK'),   $options['tls_crlcheck']);
-            $this->assertEquals(array('types' => 'string',  'constant' => 'LDAP_OPT_X_TLS_CRLFILE'),    $options['tls_crlfile']);
-            $this->assertEquals(array('types' => 'string',  'constant' => 'LDAP_OPT_X_TLS_DHFILE'),     $options['tls_dhfile']);
-            $this->assertEquals(array('types' => 'string',  'constant' => 'LDAP_OPT_X_TLS_KEYFILE'),    $options['tls_keyfile']);
-            $this->assertEquals(array('types' => 'int',     'constant' => 'LDAP_OPT_X_TLS_PROTOCOL_MIN'), $options['tls_protocol_min']);
-            $this->assertEquals(array('types' => 'string',  'constant' => 'LDAP_OPT_X_TLS_RANDOM_FILE'), $options['tls_random_file']);
+            $this->assertEquals(['types' => 'string',  'constant' => 'LDAP_OPT_X_TLS_CACERTDIR'],    $options['tls_cacertdir']);
+            $this->assertEquals(['types' => 'string',  'constant' => 'LDAP_OPT_X_TLS_CACERTFILE'],   $options['tls_cacertfile']);
+            $this->assertEquals(['types' => 'string',  'constant' => 'LDAP_OPT_X_TLS_CERTFILE'],     $options['tls_certfile']);
+            $this->assertEquals(['types' => 'string',  'constant' => 'LDAP_OPT_X_TLS_CIPHER_SUITE'], $options['tls_cipher_suite']);
+            $this->assertEquals(['types' => ['string', 'int'], 'constant' => 'LDAP_OPT_X_TLS_CRLCHECK', 'values' => $v2], $options['tls_crlcheck']);
+            $this->assertEquals(['types' => 'string',  'constant' => 'LDAP_OPT_X_TLS_CRLFILE'],      $options['tls_crlfile']);
+            $this->assertEquals(['types' => 'string',  'constant' => 'LDAP_OPT_X_TLS_DHFILE'],       $options['tls_dhfile']);
+            $this->assertEquals(['types' => 'string',  'constant' => 'LDAP_OPT_X_TLS_KEYFILE'],      $options['tls_keyfile']);
+            $this->assertEquals(['types' => 'int',     'constant' => 'LDAP_OPT_X_TLS_PROTOCOL_MIN'], $options['tls_protocol_min']);
+            $this->assertEquals(['types' => 'string',  'constant' => 'LDAP_OPT_X_TLS_RANDOM_FILE'],  $options['tls_random_file']);
         }
 
-        if(PHP_VERSION_ID >= 07005) {
-            $this->assertEquals(array('types' => 'int', 'constant' => 'LDAP_OPT_X_TLS_REQUIRE_CERT'), $options['tls_require_cert']);
+        if (PHP_VERSION_ID >= 70050) {
+            $this->assertEquals(['types' => ['string', 'int'], 'constant' => 'LDAP_OPT_X_TLS_REQUIRE_CERT', 'values' => $v3], $options['tls_require_cert']);
         }
     }
 
-    public function test_configureLdapLinkOptions()
+    public function test__configureLdapLinkOptions()
     {
-        $resolver = new OptionsResolver();
-        $no = new ClassWithLdapLinkOptions();
-        $no->exposedConfigureLdapLinkOptions($resolver);
+        $resolver = $this->getConfiguredResolver();
 
         $this->assertTrue($resolver->isDefined('deref'));
         $this->assertTrue($resolver->isDefined('sizelimit'));
@@ -224,7 +241,7 @@ class LdapLinkOptionsTest extends TestCase
         $this->assertTrue($resolver->isDefined('server_controls'));
         $this->assertTrue($resolver->isDefined('client_controls'));
 
-        if(PHP_VERSION_ID >= 70100) {
+        if (PHP_VERSION_ID >= 70100) {
             // Session
             $this->assertTrue($resolver->isDefined('keepalive_idle'));
             $this->assertTrue($resolver->isDefined('keepalive_probes'));
@@ -237,7 +254,7 @@ class LdapLinkOptionsTest extends TestCase
         $this->assertTrue($resolver->isDefined('sasl_authcid'));
         $this->assertTrue($resolver->isDefined('sasl_authzid'));
 
-        if(PHP_VERSION_ID >= 70100) {
+        if (PHP_VERSION_ID >= 70100) {
             // TLS (API_VERSION > 2000)
             $this->assertTrue($resolver->isDefined('tls_cacertdir'));
             $this->assertTrue($resolver->isDefined('tls_cacertfile'));
@@ -251,20 +268,93 @@ class LdapLinkOptionsTest extends TestCase
             $this->assertTrue($resolver->isDefined('tls_random_file'));
         }
 
-        if(PHP_VERSION_ID >= 07005) {
+        if (PHP_VERSION_ID >= 70050) {
             $this->assertTrue($resolver->isDefined('tls_require_cert'));
         }
     }
 
-    public function test_configureLdapLinkOptions_Defaults()
+    public function test__configureLdapLinkOptions__Defaults()
     {
-        $resolver = new OptionsResolver();
-        $no = new ClassWithLdapLinkOptions();
-        $no->exposedConfigureLdapLinkOptions($resolver);
-
-        $this->assertSame(array('protocol_version' => 3), $resolver->resolve(array()));
+        $resolver = $this->getConfiguredResolver();
+        $this->assertSame(['protocol_version' => 3], $resolver->resolve([]));
     }
 
+    public function test__configureLdapLinkOption__WithNonArrayValues()
+    {
+        $decl = [
+            'types' => 'string',
+            'values' => function ($s) { return substr($s, 0, 3) === 'foo'; }
+        ];
+        $resolver = new OptionsResolver();
+        $options = new LdapLinkOptions1YQ4YR18();
+        $options->configureLdapLinkOption($resolver, 'foo', $decl);
+
+        $this->assertEquals(['foo' => 'foomatic'], $resolver->resolve(['foo' => 'foomatic']));
+
+        $this->expectException(InvalidOptionsException::class);
+        $resolver->resolve(['foo' => 'barmatic']);
+    }
+
+    public function test__option__deref()
+    {
+        $resolver = $this->getConfiguredResolver();
+        $this->assertNull(($resolver->resolve([]))['deref'] ?? null);
+
+        // never
+        $this->assertEquals(LDAP_DEREF_NEVER, $resolver->resolve(['deref' => LDAP_DEREF_NEVER])['deref']);
+        $this->assertEquals(LDAP_DEREF_NEVER, $resolver->resolve(['deref' => 'never'])['deref']);
+        // searching
+        $this->assertEquals(LDAP_DEREF_SEARCHING, $resolver->resolve(['deref' => LDAP_DEREF_SEARCHING])['deref']);
+        $this->assertEquals(LDAP_DEREF_SEARCHING, $resolver->resolve(['deref' => 'searching'])['deref']);
+        // finding
+        $this->assertEquals(LDAP_DEREF_FINDING, $resolver->resolve(['deref' => LDAP_DEREF_FINDING])['deref']);
+        $this->assertEquals(LDAP_DEREF_FINDING, $resolver->resolve(['deref' => 'finding'])['deref']);
+        // always
+        $this->assertEquals(LDAP_DEREF_ALWAYS, $resolver->resolve(['deref' => LDAP_DEREF_ALWAYS])['deref']);
+        $this->assertEquals(LDAP_DEREF_ALWAYS, $resolver->resolve(['deref' => 'always'])['deref']);
+    }
+
+    public function test__option__tls_crlcheck()
+    {
+        $resolver = $this->getConfiguredResolver();
+        $this->assertNull(($resolver->resolve([]))['tls_crlcheck'] ?? null);
+
+        if (PHP_VERSION_ID >= 70100) {
+            // none
+            $this->assertEquals(LDAP_OPT_X_TLS_CRL_NONE, $resolver->resolve(['tls_crlcheck' => LDAP_OPT_X_TLS_CRL_NONE])['tls_crlcheck']);
+            $this->assertEquals(LDAP_OPT_X_TLS_CRL_NONE, $resolver->resolve(['tls_crlcheck' => 'none'])['tls_crlcheck']);
+            // peer
+            $this->assertEquals(LDAP_OPT_X_TLS_CRL_PEER, $resolver->resolve(['tls_crlcheck' => LDAP_OPT_X_TLS_CRL_PEER])['tls_crlcheck']);
+            $this->assertEquals(LDAP_OPT_X_TLS_CRL_PEER, $resolver->resolve(['tls_crlcheck' => 'peer'])['tls_crlcheck']);
+            // all
+            $this->assertEquals(LDAP_OPT_X_TLS_CRL_ALL, $resolver->resolve(['tls_crlcheck' => LDAP_OPT_X_TLS_CRL_ALL])['tls_crlcheck']);
+            $this->assertEquals(LDAP_OPT_X_TLS_CRL_ALL, $resolver->resolve(['tls_crlcheck' => 'all'])['tls_crlcheck']);
+        }
+    }
+
+    public function test__option__tls_require_cert()
+    {
+        $resolver = $this->getConfiguredResolver();
+        $this->assertNull(($resolver->resolve([]))['tls_require_cert'] ?? null);
+
+        if (PHP_VERSION_ID >= 70050) {
+            // never
+            $this->assertEquals(LDAP_OPT_X_TLS_NEVER, $resolver->resolve(['tls_require_cert' => LDAP_OPT_X_TLS_NEVER])['tls_require_cert']);
+            $this->assertEquals(LDAP_OPT_X_TLS_NEVER, $resolver->resolve(['tls_require_cert' => 'never'])['tls_require_cert']);
+            // hard
+            $this->assertEquals(LDAP_OPT_X_TLS_HARD, $resolver->resolve(['tls_require_cert' => LDAP_OPT_X_TLS_HARD])['tls_require_cert']);
+            $this->assertEquals(LDAP_OPT_X_TLS_HARD, $resolver->resolve(['tls_require_cert' => 'hard'])['tls_require_cert']);
+            // demand
+            $this->assertEquals(LDAP_OPT_X_TLS_DEMAND, $resolver->resolve(['tls_require_cert' => LDAP_OPT_X_TLS_DEMAND])['tls_require_cert']);
+            $this->assertEquals(LDAP_OPT_X_TLS_DEMAND, $resolver->resolve(['tls_require_cert' => 'demand'])['tls_require_cert']);
+            // allow
+            $this->assertEquals(LDAP_OPT_X_TLS_ALLOW, $resolver->resolve(['tls_require_cert' => LDAP_OPT_X_TLS_ALLOW])['tls_require_cert']);
+            $this->assertEquals(LDAP_OPT_X_TLS_ALLOW, $resolver->resolve(['tls_require_cert' => 'allow'])['tls_require_cert']);
+            // try
+            $this->assertEquals(LDAP_OPT_X_TLS_TRY, $resolver->resolve(['tls_require_cert' => LDAP_OPT_X_TLS_TRY])['tls_require_cert']);
+            $this->assertEquals(LDAP_OPT_X_TLS_TRY, $resolver->resolve(['tls_require_cert' => 'try'])['tls_require_cert']);
+        }
+    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

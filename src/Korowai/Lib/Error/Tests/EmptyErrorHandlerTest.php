@@ -16,7 +16,8 @@ namespace Korowai\Lib\Error\Tests;
 use PHPUnit\Framework\TestCase;
 
 use Korowai\Lib\Error\EmptyErrorHandler;
-use Korowai\Lib\Error\ErrorHandlerInterface;
+//use Korowai\Lib\Error\ErrorHandlerInterface;
+use Korowai\Lib\Error\AbstractManagedErrorHandler;
 use Korowai\Lib\Context\ContextManagerInterface;
 
 /**
@@ -31,10 +32,26 @@ class EmptyErrorHandlerTest extends TestCase
         return EmptyErrorHandler::class;
     }
 
-    public function test__implements__ErrorHandlerInterface()
+//    public function test__implements__ErrorHandlerInterface()
+//    {
+//        $interfaces = class_implements(EmptyErrorHandler::class);
+//        $this->assertContains(ErrorHandlerInterface::class, $interfaces);
+//    }
+
+    public function test__extends__AbstractManagedErrorHandler()
     {
-        $interfaces = class_implements(EmptyErrorHandler::class);
-        $this->assertContains(ErrorHandlerInterface::class, $interfaces);
+        $parents = class_parents(EmptyErrorHandler::class);
+        $this->assertContains(AbstractManagedErrorHandler::class, $parents);
+    }
+
+    public function test__getErrorTypes()
+    {
+        $this->assertEquals(E_ALL | E_STRICT, EmptyErrorHandler::getInstance()->getErrorTypes());
+    }
+
+    public function test__invoke()
+    {
+        $this->assertTrue((EmptyErrorHandler::getInstance())(0, '', 'foo.php', 123));
     }
 }
 

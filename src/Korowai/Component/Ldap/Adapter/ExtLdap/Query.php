@@ -82,11 +82,11 @@ class Query extends AbstractQuery
                 $func = 'search';
                 break;
             default:
-                // This should be actualy caught by OptionsResolver
+                // This should be actualy covered by OptionsResolver in AbstractQuery::__construct()
                 throw new \RuntimeException(sprintf('Unsupported search scope "%s"', $options['scope']));
         }
 
-        static::ensureLdapLink($this->link);
+        static::ensureLdapLink($this->getLink());
         return with(EmptyErrorHandler::getInstance())(function ($eh) use ($func) {
             return $this->doExecuteQueryImpl($func);
         });
@@ -96,9 +96,9 @@ class Query extends AbstractQuery
     {
         $options = $this->getOptions();
         $result = call_user_func(
-            array($this->link, $func),
-            $this->base_dn,
-            $this->filter,
+            array($this->getLink(), $func),
+            $this->getBaseDn(),
+            $this->getFilter(),
             $options['attributes'],
             $options['attrsOnly'],
             $options['sizeLimit'],
@@ -106,7 +106,7 @@ class Query extends AbstractQuery
             static::getDerefOption($options)
         );
         if (false === $result) {
-            throw static::lastLdapException($this->link);
+            throw static::lastLdapException($this->getLink());
         }
         return $result;
     }

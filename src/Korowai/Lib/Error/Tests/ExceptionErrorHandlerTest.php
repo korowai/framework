@@ -19,6 +19,7 @@ use Korowai\Lib\Error\ExceptionErrorHandler;
 use Korowai\Lib\Error\AbstractManagedErrorHandler;
 use Korowai\Lib\Error\ErrorHandlerInterface;
 use Korowai\Lib\Context\ContextManagerInterface;
+use function Korowai\Lib\Context\with;
 
 class Exception2ZR5YS29 extends \ErrorException { };
 
@@ -162,19 +163,65 @@ class ExceptionErrorHandlerTest extends TestCase
 
     public function test__invoke__whenSeverityIsRelevant()
     {
-        $handler = ExceptionErrorHandler::create(Exception2ZR5YS29::class, E_ERROR);
+        $handler = ExceptionErrorHandler::create(Exception2ZR5YS29::class, E_ALL | E_STRICT);
 
         $this->expectException(Exception2ZR5YS29::class);
         $this->expectExceptionMessage('foo');
 
-        $handler(E_ERROR, 'foo', 'bar.php', 456);
+        call_user_func_array($handler, [E_USER_ERROR, 'foo', 'bar.php', 456]);
     }
 
     public function test__invoke__whenSeverityIsIrrelevant()
     {
-        $handler = ExceptionErrorHandler::create(Exception2ZR5YS29::class, E_ERROR);
+        // The __invoke() itself doesn't filter errors against $errorTypes. It
+        // throws its exceptions unconditionally. It's PHP's job to filter
+        // errors passed to handler against $errorTypes, because
+        //
+        //      AbstractManagedExceptionHandler::enterContext()
+        //
+        // already calls
+        //
+        //      set_error_handler($self, $errorTypes).
+        //
+        $handler = ExceptionErrorHandler::create(Exception2ZR5YS29::class, E_USER_ERROR);
 
-        $this->assertFalse($handler(E_NOTICE, 'foo', 'bar.php', 456));
+        $this->expectException(Exception2ZR5YS29::class);
+        $this->expectExceptionMessage('foo');
+
+        $this->assertFalse(call_user_func_array($handler, [E_USER_NOTICE, 'foo', 'bar.php', 456]));
+    }
+
+    public function test__trigger__whenSeverityIsRelevant()
+    {
+        $handler = ExceptionErrorHandler::create(Exception2ZR5YS29::class, E_ALL | E_STRICT);
+
+        $this->expectException(Exception2ZR5YS29::class);
+        $this->expectExceptionMessage('foo');
+        $this->expectExceptionCode(0);
+
+        $caller_line = __line__ + 3;
+        try {
+            with($handler)(function ($eh) {
+                @trigger_error('foo', E_USER_ERROR);
+            });
+        } catch (Exception2ZR5YS29 $e) {
+            $this->assertEquals(E_USER_ERROR, $e->getSeverity());
+            $this->assertEquals(__file__, $e->getFile());
+            $this->assertEquals($caller_line, $e->getLine());
+            throw $e;
+        }
+    }
+
+    public function test__trigger__whenSeverityIsIrrelevant()
+    {
+        $handler = ExceptionErrorHandler::create(Exception2ZR5YS29::class, E_USER_ERROR);
+
+        $result = with($handler)(function ($eh) {
+            @trigger_error('foo', E_USER_NOTICE);
+            return 'test return value';
+        });
+
+        $this->assertEquals('test return value', $result);
     }
 }
 

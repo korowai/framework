@@ -6,10 +6,8 @@
 Ldap Exceptions
 ---------------
 
-Ldap component uses exceptions quite extensively. Most of errors are reported
-to caller by throwing exceptions.
-
-Custom exceptions of the Ldap component are defined in
+:ref:`Ldap Component <TheLdapComponent>` uses exceptions to report most of
+errors. Exceptions used by :ref:`TheLdapComponent` are defined in
 :namespace:`Korowai\\Component\\Ldap\\Exception <Korowai\\Component\\Ldap\\Exception>`
 namespace. The following exception classes are currently defined:
 
@@ -21,10 +19,10 @@ namespace. The following exception classes are currently defined:
      - Base Exception
      - Thrown when
    * - :class:`Korowai\\Component\\Ldap\\Exception\\AttributeException`
-     - `OutOfRangeException <https://php.net/OutOfRangeException>`_
+     - :phpclass:`\OutOfRangeException`
      - accessing nonexistent attribute of an LDAP :class:`Korowai\\Component\\Ldap\\Entry`
    * - :class:`Korowai\\Component\\Ldap\\Exception\\LdapException`
-     - `RuntimeException <https://php.net/RuntimeException>`_
+     - :phpclass:`\ErrorException`
      - an error occurs during an LDAP operation
 
 
@@ -35,39 +33,37 @@ Derived from `OutOfRangeException <https://php.net/OutOfRangeException>`_.
 It's being thrown when accessing nonexistent attribute of an
 LDAP :class:`Korowai\\Component\\Ldap\\Entry`. For example
 
-.. code-block:: php
-
-   $entry->getAttribute('nonexistent'); // This will throw AttributeException
+.. literalinclude:: ../../examples/component/ldap/attribute_exception.php
+   :start-after: [getAttributeInexistent]
+   :lines: 1
 
 
 LdapException
 ^^^^^^^^^^^^^
 
-Derived from `RuntimeException <https://php.net/RuntimeException>`_. It's being
-thrown when an LDAP operation fails. The exception message and code are copied
-from the LDAP error message and code.
+Derived from `ErrorException <https://php.net/ErrorException>`_. It's being
+thrown when an LDAP operation fails. The exception message and code are taken
+from the LDAP backend.
 
-.. code-block:: php
+.. literalinclude:: ../../examples/component/ldap/ldap_exception_1.php
+   :start-after: [tryQueryInexistent]
+   :lines: 1-6
 
-   // This may throw LdapException with "No such object"
-   $ldap->query('dc=nonexistent,dc=com', 'objectclass=*');
+The output from above example is the following
 
+.. literalinclude:: ../../examples/component/ldap/ldap_exception_1.stderr
+   :language: none
 
 To handle particular LDAP errors in an application, exception code may be used
 
-.. code-block:: php
+.. literalinclude:: ../../examples/component/ldap/ldap_exception_2.php
+   :start-after: [tryQueryInexistent]
+   :lines: 1-11
 
-   use Korowai\Component\Ldap\Exception\LdapException;
-   // ...
-   try {
-      $result = $ldap->query('dc=nonexistent,dc=com', 'objectclass=*');
-   } catch(LdapException $e) {
-      if($e->getCode() == 0x20) { /* No such object */
-         $result = null;
-      } else {
-         throw $e;
-      }
-   }
+The output from above example is the following
+
+.. literalinclude:: ../../examples/component/ldap/ldap_exception_2.stderr
+   :language: none
 
 Standard LDAP result codes (including error codes) are defined in several
 documents including `RFC 4511`_, `RFC 3928`_, `RFC 3909`_, `RFC 4528`_, and

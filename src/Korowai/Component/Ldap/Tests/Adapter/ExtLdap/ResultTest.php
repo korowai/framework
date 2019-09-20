@@ -35,21 +35,21 @@ class ResultTest extends TestCase
         return $this->getFunctionMock('\\Korowai\\Component\\Ldap\\Adapter\ExtLdap', ...$args);
     }
 
-    public function test_getResource()
+    public function test__getResource()
     {
         $link = $this->createMock(LdapLink::class);
         $result = new Result('ldap result', $link);
         $this->assertSame('ldap result', $result->getResource());
     }
 
-    public function test_getLink()
+    public function test__getLink()
     {
         $link = $this->createMock(LdapLink::class);
         $result = new Result('ldap result', $link);
         $this->assertSame($link, $result->getLink());
     }
 
-    public function test_control_paged_result_response()
+    public function test__control_paged_result_response()
     {
         $link = Phake::mock(LdapLink::class);
         $result = new Result('ldap result', $link);
@@ -76,7 +76,7 @@ class ResultTest extends TestCase
         $this->assertSame(123, $estimated);
     }
 
-    public function test_count_entries()
+    public function test__count_entries()
     {
         $link = $this->createMock(LdapLink::class);
         $result = new Result('ldap result', $link);
@@ -88,7 +88,19 @@ class ResultTest extends TestCase
         $this->assertSame(123, $result->count_entries());
     }
 
-    public function test_first_entry()
+    public function test__count_references()
+    {
+        $link = $this->createMock(LdapLink::class);
+        $result = new Result('ldap result', $link);
+
+        $link->expects($this->once())
+             ->method('count_references')
+             ->with($this->identicalTo($result))
+             ->willReturn(123);
+        $this->assertSame(123, $result->count_references());
+    }
+
+    public function test__first_entry()
     {
         $link = $this->createMock(LdapLink::class);
         $result = new Result('ldap result', $link);
@@ -100,7 +112,7 @@ class ResultTest extends TestCase
         $this->assertSame('first entry', $result->first_entry());
     }
 
-    public function test_first_reference()
+    public function test__first_reference()
     {
         $link = $this->createMock(LdapLink::class);
         $result = new Result('ldap result', $link);
@@ -115,7 +127,7 @@ class ResultTest extends TestCase
     /**
      * @runInSeparateProcess
      */
-    public function test_free_result()
+    public function test__free_result()
     {
         $link = $this->createMock(LdapLink::class);
         $result = new Result('ldap result', $link);
@@ -127,7 +139,7 @@ class ResultTest extends TestCase
         $this->assertSame('ok', $result->free_result());
     }
 
-    public function test_get_entries()
+    public function test__get_entries()
     {
         $link = $this->createMock(LdapLink::class);
         $result = new Result('ldap result', $link);
@@ -139,7 +151,7 @@ class ResultTest extends TestCase
         $this->assertSame(array('entries'), $result->get_entries());
     }
 
-    public function test_parse_result()
+    public function test__parse_result()
     {
         $link = Phake::mock(LdapLink::class);
         $result = new Result('ldap result', $link);
@@ -170,7 +182,7 @@ class ResultTest extends TestCase
         $this->assertSame(array('Referrals'), $referrals);
     }
 
-    public function test_sort()
+    public function test__sort()
     {
         $link = $this->createMock(LdapLink::class);
         $result = new Result('ldap result', $link);
@@ -182,7 +194,7 @@ class ResultTest extends TestCase
         $this->assertSame(array('sorted'), $result->sort('sortfilter'));
     }
 
-    public function test_getResultEntryIterator()
+    public function test__getResultEntryIterator()
     {
         $link = $this->createMock(LdapLink::class);
         $entry = $this->createMock(ResultEntry::class);
@@ -198,7 +210,7 @@ class ResultTest extends TestCase
         $this->assertSame($entry, $iter->getEntry());
     }
 
-    public function test_getResultEntryIterator_NullFirstEntry()
+    public function test__getResultEntryIterator__NullFirstEntry()
     {
         $link = $this->createMock(LdapLink::class);
         $result = new Result('ldap result', $link);
@@ -213,7 +225,7 @@ class ResultTest extends TestCase
         $this->assertNull($iter->getEntry());
     }
 
-    public function test_getResultReferenceIterator()
+    public function test__getResultReferenceIterator()
     {
         $link = $this->createMock(LdapLink::class);
         $ref = $this->createMock(ResultReference::class);
@@ -229,7 +241,7 @@ class ResultTest extends TestCase
         $this->assertSame($ref, $iter->getReference());
     }
 
-    public function test_getResultReferenceIterator_NullFirstReference()
+    public function test__getResultReferenceIterator__NullFirstReference()
     {
         $link = $this->createMock(LdapLink::class);
         $result = new Result('ldap result', $link);
@@ -247,7 +259,7 @@ class ResultTest extends TestCase
     /**
      * @runInSeparateProcess
      */
-    public function test_destruct_Invalid()
+    public function test__destruct__Invalid()
     {
         $link = $this->createMock(LdapLink::class);
         $result = new Result('ldap result', $link);
@@ -262,7 +274,7 @@ class ResultTest extends TestCase
     /**
      * @runInSeparateProcess
      */
-    public function test_destruct_Valid()
+    public function test__destruct__Valid()
     {
         $link = $this->createMock(LdapLink::class);
         $result = new Result('FAKE LDAP RESULT', $link);

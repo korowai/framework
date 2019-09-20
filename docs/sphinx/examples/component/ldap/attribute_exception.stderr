@@ -1,0 +1,1 @@
+AttributeException: Entry 'cn=admin,dc=example,dc=org' has no attribute 'inexistent'

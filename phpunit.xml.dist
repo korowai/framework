@@ -19,6 +19,9 @@
         <testsuite name="Korowai Components Test Suite">
             <directory suffix="Test.php">./src/Korowai/Component/*/Tests/</directory>
         </testsuite>
+        <testsuite name="Korowai Service Test Suite">
+            <directory suffix="Test.php">./src/Korowai/Service/*/Tests/</directory>
+        </testsuite>
     </testsuites>
 
     <filter>

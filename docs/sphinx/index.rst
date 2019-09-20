@@ -12,7 +12,8 @@ Korowai Framework
    :titlesonly:
 
    install
-   user_guide/index
+   components/index
+   lib/index
    devel_guide/index
 
 

@@ -13,13 +13,8 @@ declare(strict_types=1);
 
 namespace Korowai\Component\Ldap\Behat;
 
-use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\PyStringNode;
-use Behat\Gherkin\Node\TableNode;
-use Behat\Behat\Hook\Scope\BeforeScenarioScope;
-use Behat\Behat\Hook\Scope\AftereScenarioScope;
-
 use Korowai\Component\Ldap\Ldap;
 use Korowai\Component\Ldap\Exception\LdapException;
 

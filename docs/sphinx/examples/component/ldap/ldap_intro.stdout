@@ -1,0 +1,100 @@
+ou=people,dc=example,dc=org => Array
+(
+    [objectclass] => Array
+        (
+            [0] => top
+            [1] => organizationalUnit
+        )
+
+    [ou] => Array
+        (
+            [0] => people
+        )
+
+)
+uid=jsmith,ou=people,dc=example,dc=org => Array
+(
+    [uid] => Array
+        (
+            [0] => jsmith
+        )
+
+    [uidnumber] => Array
+        (
+            [0] => 5678
+        )
+
+    [objectclass] => Array
+        (
+            [0] => top
+            [1] => inetOrgPerson
+            [2] => shadowAccount
+            [3] => posixAccount
+        )
+
+    [cn] => Array
+        (
+            [0] => John Smith
+        )
+
+    [displayname] => Array
+        (
+            [0] => John Smith
+        )
+
+    [gecos] => Array
+        (
+            [0] => John Smith,,,
+        )
+
+    [gidnumber] => Array
+        (
+            [0] => 5000
+        )
+
+    [givenname] => Array
+        (
+            [0] => John
+        )
+
+    [sn] => Array
+        (
+            [0] => Smith
+        )
+
+    [homedirectory] => Array
+        (
+            [0] => /home/jsmith
+        )
+
+    [initials] => Array
+        (
+            [0] => J. S
+        )
+
+    [loginshell] => Array
+        (
+            [0] => /bin/bash
+        )
+
+    [mail] => Array
+        (
+            [0] => jsmith@example.org
+        )
+
+    [roomnumber] => Array
+        (
+            [0] => 114
+        )
+
+    [telephonenumber] => Array
+        (
+            [0] => +12 34 567 8908
+        )
+
+    [userpassword] => Array
+        (
+            [0] => secret
+        )
+
+)

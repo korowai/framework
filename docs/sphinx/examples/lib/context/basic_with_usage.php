@@ -2,7 +2,9 @@
 /* [use] */
 use function Korowai\Lib\Context\with;
 
-/* [withFopenDoFread] */
-with(fopen(__DIR__.'/hello.txt', 'r'))(function($fd) {
-  echo fread($fd, 20)."\n";
+/* [withFopenDoStreamGetContents] */
+with(fopen(__DIR__.'/hello.txt', 'r'))(function ($fd) {
+  echo stream_get_contents($fd)."\n";
 });
+
+// vim: syntax=php sw=4 ts=4 et:

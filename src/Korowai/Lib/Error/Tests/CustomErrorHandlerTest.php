@@ -17,8 +17,6 @@ use PHPUnit\Framework\TestCase;
 
 use Korowai\Lib\Error\CustomErrorHandler;
 use Korowai\Lib\Error\AbstractManagedErrorHandler;
-use Korowai\Lib\Error\ErrorHandlerInterface;
-use Korowai\Lib\Context\ContextManagerInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

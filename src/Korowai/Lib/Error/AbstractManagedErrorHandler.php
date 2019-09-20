@@ -26,7 +26,7 @@ abstract class AbstractManagedErrorHandler implements ErrorHandlerInterface, Con
     /**
      * @var int
      */
-    protected $errorTypes;
+    protected $errorTypes = E_ALL | E_STRICT;
 
     /**
      * Initializes the object

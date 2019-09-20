@@ -31,34 +31,7 @@ use PHPUnit\Framework\Assert;
  */
 class ExtLdapContext implements Context
 {
-    private $ldap;
-    private $exceptions;
-
-    private static $ldapServiceConfig = [
-        'host' => 'ldap-service',
-        'username' => 'cn=admin,dc=example,dc=org',
-        'password' => 'admin',
-        'bindRequiresDn' => true,
-        'accountDomainName' => 'example.org',
-        'baseDn' => 'dc=example,dc=org'
-    ];
-    private static $ldapServiceManager = null;
-
-    public static function getLdapServiceConfig()
-    {
-        return self::$ldapServiceConfig;
-    }
-
-    public static function getLdapServiceManager()
-    {
-        if (is_null(self::$ldapServiceManager)) {
-            $ldap = new \Zend\Ldap\Ldap(self::getLdapServiceConfig());
-            @ldap_set_option($ldap->getResource(), LDAP_OPT_SERVER_CONTROLS, [['oid' => LDAP_CONTROL_MANAGEDSAIT]]);
-            $ldap->bind();
-            self::$ldapServiceManager = $ldap;
-        }
-        return self::$ldapServiceManager;
-    }
+    use LdapHelper, CommonHelpers;
 
     /**
      * Initializes context.
@@ -69,11 +42,12 @@ class ExtLdapContext implements Context
      */
     public function __construct()
     {
-        $this->resetExceptions();
-        $this->resetQueryResults();
+        $this->initLdapHelper();
     }
 
     /**
+     * Clear and initialize data in the ldap database.
+     *
      * @BeforeScenario @initDbBeforeScenario
      * @BeforeSuite @initDbBeforeSuite
      * @BeforeFeature @initDbBeforeFeature
@@ -83,105 +57,9 @@ class ExtLdapContext implements Context
      */
     public static function initDb()
     {
-        $ldap = self::getLdapServiceManager();
-        self::deleteLdapDescendants($ldap, 'dc=example,dc=org', '(&(objectclass=*)(!(cn=admin)))');
-        return self::addFromLdifFile($ldap, __DIR__.'/../Resources/ldif/bootstrap.ldif');
-    }
-
-    protected static function deleteLdapDescendants($ldap, $base, $filter=null)
-    {
-        $deleted = [];
-        $result = $ldap->search($filter ?? '(objectclass=*)', $base, \Zend\Ldap\Ldap::SEARCH_SCOPE_ONE, ['dn']);
-        if($result) {
-            foreach ($result as $entry) {
-                $ldap->delete($entry['dn'], true);
-                $deleted[] = $entry['dn'];
-            }
-        }
-        return $deleted;
-    }
-
-    protected static function addFromLdifFile($ldap, $file)
-    {
-        $ldif = file_get_contents($file);
-        return self::addFromLdifString($ldap, $ldif);
-    }
-
-    protected static function addFromLdifString($ldap, $ldif)
-    {
-        $entries = \Zend\Ldap\Ldif\Encoder::decode($ldif);
-        foreach ($entries as $entry) {
-            $ldap->add($entry['dn'], $entry);
-        }
-    }
-
-    protected function resetExceptions()
-    {
-        $this->exceptions = array();
-    }
-
-    protected function resetQueryResults()
-    {
-        $this->results = array();
-    }
-
-    protected function appendException($e)
-    {
-        $this->exceptions[] = $e;
-    }
-
-    protected function appendResult($result)
-    {
-        $this->results[] = $result;
-    }
-
-    protected function lastException()
-    {
-        if (count($this->exceptions) < 1) {
-            return null;
-        } else {
-            return $this->exceptions[count($this->exceptions)-1];
-        }
-    }
-
-    protected function lastResult()
-    {
-        if (count($this->results) < 1) {
-            return null;
-        } else {
-            return $this->results[count($this->results)-1];
-        }
-    }
-
-    protected function createLdapLinkWithConfig($config)
-    {
-        try {
-            $this->ldap = Ldap::createWithConfig($config);
-        } catch (\Exception $e) {
-            $this->appendException($e);
-        }
-    }
-
-    protected function bindWithArgs(...$args)
-    {
-        try {
-            return $this->ldap->bind(...$args);
-        } catch (\Exception $e) {
-            $this->appendException($e);
-            return false;
-        }
-    }
-
-    protected function queryWithArgs(...$args)
-    {
-        try {
-            $result = $this->ldap->query(...$args);
-        } catch (\Exception $e) {
-            $this->appendException($e);
-            return false;
-        }
-        $this->appendResult($result);
-        return $result;
+        $db = LdapService::getInstance();
+        $db->deleteAllData();
+        $db->addFromLdifFile(__DIR__.'/../Resources/ldif/bootstrap.ldif');
     }
 
     public function decodeJsonPyStringNode(PyStringNode $pystring)
@@ -195,7 +73,7 @@ class ExtLdapContext implements Context
      */
     public function decodeJsonString($string)
     {
-        return json_decode($string, true);
+        return json_decode($string, true, 512, JSON_THROW_ON_ERROR);
     }
 
     /**
@@ -386,8 +264,8 @@ class ExtLdapContext implements Context
      */
     public function iShouldHaveLastResultEntries(PyStringNode $pystring)
     {
-        $expected = $this->decodeJsonPyStringNode($pystring);
-        $actual = array_map(
+        $expected_entries = $this->decodeJsonPyStringNode($pystring);
+        $actual_entries = array_map(
             function ($e) {
                 return $e->getAttributes();
             },
@@ -395,36 +273,15 @@ class ExtLdapContext implements Context
         );
 
         # handle passwords
-        foreach ($expected as $dn => $ee) {
+        foreach ($expected_entries as $dn => $ee) {
             $expected_password = $ee['userpassword'][0] ?? null;
-            $actual_password = $actual[$dn]['userpassword'][0] ?? null;
+            $actual_password = $actual_entries[$dn]['userpassword'][0] ?? null;
             if (is_string($expected_password) && is_string($actual_password)) {
-                $expected[$dn]['userpassword'][0] = self::encryptExpectedPassword($expected_password, $actual_password);
+                $encrypted = self::encryptForComparison($expected_password, $actual_password);
+                $expected_entries[$dn]['userpassword'][0] = $encrypted;
             }
         }
-        Assert::assertEquals($expected, $actual);
-    }
-
-    protected static function encryptExpectedPassword(string $expected_password, string $actual_password)
-    {
-        if (preg_match('/^\{([A-Z0-9]{3,5})\}(.+)$/', $actual_password, $matches)) {
-            $tag = $matches[1];
-            $actual_hash = $matches[2];
-            if (strtoupper($tag) == 'CRYPT') {
-                $expected_hash = crypt($expected_password, $actual_hash);
-            } elseif (strtoupper($tag) == 'MD5') {
-                $expected_hash = base64_encode(md5($expected_password, true));
-            } elseif (strtoupper($tag) == 'SHA1') {
-                $expected_hash =  base64_encode(sha1($expected_password, true));
-            } elseif (strtoupper($tag) == 'SSHA') {
-                $salt = substr(base64_decode($actual_hash), 20);
-                $expected_hash = base64_encode(sha1($expected_password.$salt, true) . $salt);
-            } else {
-                throw new \RuntimeException("unsupported password hash format: $tag");
-            }
-            $expected_password = '{' . $tag . '}' . $expected_hash;
-        }
-        return $expected_password;
+        Assert::assertEquals($expected_entries, $actual_entries);
     }
 }
 

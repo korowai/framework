@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Component/Ldif/Util/Preprocessing.php
+ * @file src/Korowai/Lib/Ldif/Util/Preprocessing.php
  *
  * This file is part of the Korowai package
  *
@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Component\Ldif\Util;
+namespace Korowai\Lib\Ldif\Util;
 
 /**
  * Assembles pieces produced by ppRmRe() and updates "index map" array.

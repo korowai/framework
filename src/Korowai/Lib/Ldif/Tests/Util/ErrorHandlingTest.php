@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Component/Ldif/Tests/Util/ErrorHandlingTest.php
+ * @file src/Korowai/Lib/Ldif/Tests/Util/ErrorHandlingTest.php
  *
  * This file is part of the Korowai package
  *
@@ -11,9 +11,9 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Component\Ldif\Tests\Util;
+namespace Korowai\Lib\Ldif\Tests\Util;
 
-use function Korowai\Component\Ldif\Util\callWithErrorHandler;
+use function Korowai\Lib\Ldif\Util\callWithErrorHandler;
 
 use PHPUnit\Framework\TestCase;
 

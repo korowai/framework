@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Component/Ldap/Behat/ExtLdapContext.php
+ * @file src/Korowai/Component/Ldap/Behat/ExceptionLog.php
  *
  * This file is part of the Korowai package
  *

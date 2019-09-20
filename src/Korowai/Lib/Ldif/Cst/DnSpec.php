@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Component/Ldif/Cst/DnSpec.php
+ * @file src/Korowai/Lib/Ldif/Cst/DnSpec.php
  *
  * This file is part of the Korowai package
  *
@@ -11,9 +11,9 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Component\Ldif\Cst;
+namespace Korowai\Lib\Ldif\Cst;
 
-use \Korowai\Component\Ldif\CoupledLocationInterface;
+use \Korowai\Lib\Ldif\CoupledLocationInterface;
 
 /**
  * dn-spec node (RFC 2849)

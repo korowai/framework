@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Component/Ldif/ParseError.php
+ * @file src/Korowai/Lib/Ldif/ParseError.php
  *
  * This file is part of the Korowai package
  *
@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Component\Ldif;
+namespace Korowai\Lib\Ldif;
 
 /**
  * LDIF parse error. Encapsulates error message and the location of the error

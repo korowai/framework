@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Component/Ldif/CoupledInput.php
+ * @file src/Korowai/Lib/Ldif/CoupledInput.php
  *
  * This file is part of the Korowai package
  *
@@ -11,9 +11,9 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Component\Ldif;
+namespace Korowai\Lib\Ldif;
 
-use Korowai\Component\Ldif\Util\IndexMap;
+use Korowai\Lib\Ldif\Util\IndexMap;
 
 /**
  * Preprocessed input.

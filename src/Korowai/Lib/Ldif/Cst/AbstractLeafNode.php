@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Component/Ldif/Cst/AbstractLeafNode.php
+ * @file src/Korowai/Lib/Ldif/Cst/AbstractLeafNode.php
  *
  * This file is part of the Korowai package
  *
@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Component\Ldif\Cst;
+namespace Korowai\Lib\Ldif\Cst;
 
 /**
  * LDIF Concrete Syntax Tree Node.

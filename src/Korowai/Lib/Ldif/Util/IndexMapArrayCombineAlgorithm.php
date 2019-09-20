@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Component/Ldif/Util/IndexMapArrayCombineAlgorithm.php
+ * @file src/Korowai/Lib/Ldif/Util/IndexMapArrayCombineAlgorithm.php
  *
  * This file is part of the Korowai package
  *
@@ -12,7 +12,7 @@
 declare(strict_types=1);
 
 
-namespace Korowai\Component\Ldif\Util;
+namespace Korowai\Lib\Ldif\Util;
 
 /**
  * A helper object used by the IndexMap::arrayCombine() method.

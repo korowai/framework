@@ -1,4 +1,7 @@
 <?php
+/**
+ * @file src/Korowai/Service/Ldap/config/ldap.php
+ */
 
 return [
   'databases' => [

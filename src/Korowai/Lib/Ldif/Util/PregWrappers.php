@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Component/Ldif/Util/PregWrappers.php
+ * @file src/Korowai/Lib/Ldif/Util/PregWrappers.php
  *
  * This file is part of the Korowai package
  *
@@ -11,9 +11,9 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Component\Ldif\Util;
+namespace Korowai\Lib\Ldif\Util;
 
-use Korowai\Component\Ldif\Exception\PregException;
+use Korowai\Lib\Ldif\Exception\PregException;
 
 /**
  * Returns a constant name for a given error code.
@@ -102,7 +102,7 @@ function callPregFunc1(string $func, array $args, int $depth = 0)
  *
  * @return int
  *
- * @throws \Korowai\Component\Ldif\Exception\PregException
+ * @throws \Korowai\Lib\Ldif\Exception\PregException
  */
 function preg_match(
     string $pattern,
@@ -129,7 +129,7 @@ function preg_match(
  *
  * @return int
  *
- * @throws \Korowai\Component\Ldif\Exception\PregException
+ * @throws \Korowai\Lib\Ldif\Exception\PregException
  */
 function preg_split(
     string $pattern,

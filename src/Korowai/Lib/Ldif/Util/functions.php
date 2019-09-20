@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Component/Ldif/Util/functions.php
+ * @file src/Korowai/Lib/Ldif/Util/functions.php
  *
  * This file is part of the Korowai package
  *
@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Component\Ldif\Util;
+namespace Korowai\Lib\Ldif\Util;
 
 require_once __DIR__.'/Preprocessing.php';
 require_once __DIR__.'/ErrorHandling.php';

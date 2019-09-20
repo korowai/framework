@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Component/Ldif/Util/ErrorHandling.php
+ * @file src/Korowai/Lib/Ldif/Util/ErrorHandling.php
  *
  * This file is part of the Korowai package
  *
@@ -11,9 +11,9 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Component\Ldif\Util;
+namespace Korowai\Lib\Ldif\Util;
 
-use Korowai\Component\Ldif\Exception\PregException;
+use Korowai\Lib\Ldif\Exception\PregException;
 
 /**
  * Invokes a function with a custom error handler.

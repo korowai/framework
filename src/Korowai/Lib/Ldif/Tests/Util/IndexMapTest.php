@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Component/Ldif/Tests/Util/IndexMapTest.php
+ * @file src/Korowai/Lib/Ldif/Tests/Util/IndexMapTest.php
  *
  * This file is part of the Korowai package
  *
@@ -11,10 +11,10 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Component\Ldif\Tests;
+namespace Korowai\Lib\Ldif\Tests;
 
 use PHPUnit\Framework\TestCase;
-use Korowai\Component\Ldif\Util\IndexMap;
+use Korowai\Lib\Ldif\Util\IndexMap;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

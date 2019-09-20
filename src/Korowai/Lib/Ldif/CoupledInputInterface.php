@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Component/Ldif/CoupledInputInterface.php
+ * @file src/Korowai/Lib/Ldif/CoupledInputInterface.php
  *
  * This file is part of the Korowai package
  *
@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Component\Ldif;
+namespace Korowai\Lib\Ldif;
 
 /**
  * @todo Write documentation

@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Component/Ldif/Tests/Util/PreprocessingTest.php
+ * @file src/Korowai/Lib/Ldif/Tests/Util/PreprocessingTest.php
  *
  * This file is part of the Korowai package
  *
@@ -11,12 +11,12 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Component\Ldif\Tests\Util;
+namespace Korowai\Lib\Ldif\Tests\Util;
 
-use function Korowai\Component\Ldif\Util\ppAsmPieces;
-use function Korowai\Component\Ldif\Util\ppRmRe;
-use function Korowai\Component\Ldif\Util\ppRmLnCont;
-use function Korowai\Component\Ldif\Util\ppRmComments;
+use function Korowai\Lib\Ldif\Util\ppAsmPieces;
+use function Korowai\Lib\Ldif\Util\ppRmRe;
+use function Korowai\Lib\Ldif\Util\ppRmLnCont;
+use function Korowai\Lib\Ldif\Util\ppRmComments;
 
 use PHPUnit\Framework\TestCase;
 

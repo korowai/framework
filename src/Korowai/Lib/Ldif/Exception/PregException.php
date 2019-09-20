@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Component/Ldif/Exception/PregException.php
+ * @file src/Korowai/Lib/Ldif/Exception/PregException.php
  *
  * This file is part of the Korowai package
  *
@@ -10,7 +10,7 @@
  */
 declare(strict_types=1);
 
-namespace Korowai\Component\Ldif\Exception;
+namespace Korowai\Lib\Ldif\Exception;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

@@ -39,52 +39,14 @@ class Singleton76YO7MV5
  */
 class SingletonTest extends TestCase
 {
-    protected function getPrivateErrorRegExp(string $method)
+    use SingletonTestMethods;
+
+    protected function getClassUnderTest()
     {
-        return '/Call to private (?:method )?' . preg_quote($method) . '/';
+       return SingletonC91F82BJ::class;
     }
 
-    public function test__TrivialSingleton__getInstance()
-    {
-        $obj1 = SingletonC91F82BJ::getInstance();
-        $obj2 = SingletonC91F82BJ::getInstance();
-        $this->assertSame($obj1, $obj2);
-    }
-
-    public function test__TrivialSingleton__construct()
-    {
-        $regex = $this->getPrivateErrorRegExp(SingletonC91F82BJ::class . '::__construct()');
-        $this->expectException(\Error::class);
-        $this->expectExceptionMessageRegExp($regex);
-
-        new SingletonC91F82BJ();
-    }
-
-    public function test__TrivialSingleton__clone()
-    {
-        $obj = SingletonC91F82BJ::getInstance();
-
-        $regex = $this->getPrivateErrorRegExp(get_class($obj) . '::__clone()');
-
-        $this->expectException(\Error::class);
-        $this->expectExceptionMessageRegExp($regex);
-
-        $obj->__clone();
-    }
-
-    public function test__TrivialSingleton__wakeup()
-    {
-        $obj = SingletonC91F82BJ::getInstance();
-
-        $regex = $this->getPrivateErrorRegExp(get_class($obj) . '::__wakeup()');
-
-        $this->expectException(\Error::class);
-        $this->expectExceptionMessageRegExp($regex);
-
-        $obj->__wakeup();
-    }
-
-    public function test__SingletonWithInitializer()
+    public function test__initializeSingleton()
     {
         $obj = Singleton76YO7MV5::getInstance();
         $this->assertEquals('initialized', $obj->value);

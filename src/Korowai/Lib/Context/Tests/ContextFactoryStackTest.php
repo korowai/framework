@@ -25,6 +25,13 @@ use Korowai\Lib\Context\ContextManagerInterface;
  */
 class ContextFactoryStackTest extends TestCase
 {
+    use \Korowai\Lib\Basic\Tests\SingletonTestMethods;
+
+    protected function getClassUnderTest()
+    {
+        return ContextFactoryStack::class;
+    }
+
     protected function getDummyContextFactory()
     {
         return new class implements ContextFactoryInterface {
@@ -60,23 +67,6 @@ class ContextFactoryStackTest extends TestCase
     {
         $interfaces = class_implements(ContextFactoryStack::class);
         $this->assertContains(ContextFactoryInterface::class, $interfaces);
-    }
-
-    public function test__constructorIsPrivate()
-    {
-        $ctor = ContextFactoryStack::class . '::__construct()';
-        $re = '/Call to private (?:method )?' .preg_quote($ctor). '/';
-
-        $this->expectException(\Error::class);
-        $this->expectExceptionMessageRegExp($re);
-
-        new ContextFactoryStack();
-    }
-
-    public function test__getInstance()
-    {
-        $stack = ContextFactoryStack::getInstance();
-        $this->assertSame(ContextFactoryStack::getInstance(), $stack);
     }
 
     public function test__basicStackMethods()

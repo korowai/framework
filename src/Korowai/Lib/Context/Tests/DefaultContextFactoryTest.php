@@ -27,28 +27,17 @@ use Korowai\Lib\Context\TrivialValueWrapper;
 class DefaultContextFactoryTest extends TestCase
 {
     use \phpmock\phpunit\PHPMock;
+    use \Korowai\Lib\Basic\Tests\SingletonTestMethods;
+
+    protected function getClassUnderTest()
+    {
+        return DefaultContextFactory::class;
+    }
 
     public function test__implements__ContextFactoryInterface()
     {
         $interfaces = class_implements(DefaultContextFactory::class);
         $this->assertContains(ContextFactoryInterface::class, $interfaces);
-    }
-
-    public function test__constructorIsPrivate()
-    {
-        $ctor = DefaultContextFactory::class . '::__construct()';
-        $re = '/Call to private (?:method )?' .preg_quote($ctor). '/';
-
-        $this->expectException(\Error::class);
-        $this->expectExceptionMessageRegExp($re);
-
-        new DefaultContextFactory();
-    }
-
-    public function test__getInstance()
-    {
-        $factory = DefaultContextFactory::getInstance();
-        $this->assertSame(DefaultContextFactory::getInstance(), $factory);
     }
 
     /**

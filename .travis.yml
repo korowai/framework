@@ -11,4 +11,4 @@ install:
 script:
   - vendor/bin/phpunit --coverage-clover build/logs/clover.xml
 after_success:
-  - travis_retry php coveralls.phar -v
+  - php coveralls.phar -v

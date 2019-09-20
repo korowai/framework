@@ -31,7 +31,7 @@
         "phpunit/phpunit": ">=7.5.16",
         "php-mock/php-mock-phpunit": ">=2.4.0",
         "php-coveralls/php-coveralls": ">=2.1",
-        "phpunit/phpcov": ">=6.0.0",
+        "phpunit/phpcov": ">=5.0.0",
         "phake/phake": "^3.0",
         "behat/behat": "^3.4",
         "symfony/filesystem": ">=4.2",

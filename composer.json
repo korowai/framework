@@ -34,7 +34,8 @@
         "symfony/filesystem": ">=4.2",
         "symfony/finder": ">=4.2",
         "laravel/lumen-framework": ">=5.8",
-        "laravel/tinker": ">=1.0.8"
+        "laravel/tinker": ">=1.0.8",
+        "zendframework/zend-ldap": "*"
     },
     "autoload": {
       "psr-4" : {

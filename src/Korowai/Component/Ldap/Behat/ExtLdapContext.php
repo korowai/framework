@@ -26,8 +26,6 @@ use Korowai\Component\Ldap\Exception\LdapException;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 use PHPUnit\Framework\Assert;
 
-use LdapTools\Ldif\LdifParser;
-
 /**
  * Defines application features from the specific context.
  */
@@ -35,6 +33,32 @@ class ExtLdapContext implements Context
 {
     private $ldap;
     private $exceptions;
+
+    private static $ldapServiceConfig = [
+        'host' => 'ldap-service',
+        'username' => 'cn=admin,dc=example,dc=org',
+        'password' => 'admin',
+        'bindRequiresDn' => true,
+        'accountDomainName' => 'example.org',
+        'baseDn' => 'dc=example,dc=org'
+    ];
+    private static $ldapServiceManager = null;
+
+    public static function getLdapServiceConfig()
+    {
+        return self::$ldapServiceConfig;
+    }
+
+    public static function getLdapServiceManager()
+    {
+        if (is_null(self::$ldapServiceManager)) {
+            $ldap = new \Zend\Ldap\Ldap(self::getLdapServiceConfig());
+            @ldap_set_option($ldap->getResource(), LDAP_OPT_SERVER_CONTROLS, [['oid' => LDAP_CONTROL_MANAGEDSAIT]]);
+            $ldap->bind();
+            self::$ldapServiceManager = $ldap;
+        }
+        return self::$ldapServiceManager;
+    }
 
     /**
      * Initializes context.
@@ -50,90 +74,44 @@ class ExtLdapContext implements Context
     }
 
     /**
-     * @AfterScenario @altering
+     * @BeforeScenario @initDbBeforeScenario
+     * @BeforeSuite @initDbBeforeSuite
+     * @BeforeFeature @initDbBeforeFeature
+     * @AfterScenario @initDbAfterScenario
+     * @AfterSuite @initDbAfterSuite
+     * @AfterFeature @initDbAfterFeature
      */
-    public function afterAltering()
+    public static function initDb()
     {
-        $this->reinitializeLdapDatabase();
+        $ldap = self::getLdapServiceManager();
+        self::deleteLdapDescendants($ldap, 'dc=example,dc=org', '(&(objectclass=*)(!(cn=admin)))');
+        return self::addFromLdifFile($ldap, __DIR__.'/../Resources/ldif/bootstrap.ldif');
     }
 
-    protected function reinitializeLdapDatabase()
+    protected static function deleteLdapDescendants($ldap, $base, $filter=null)
     {
-        $ldap = $this->bindToLdapService();
-        $this->deleteLdapData($ldap);
-        $this->initializeLdapData($ldap);
-        ldap_close($ldap);
-    }
-
-    protected function bindToLdapService()
-    {
-        $ldap = ldap_connect('ldap://ldap-service');
-        if($ldap === FALSE) {
-            throw new \RuntimeException("ldap_connect failed");
-        }
-
-        $status = ldap_set_option($ldap, LDAP_OPT_PROTOCOL_VERSION, 3);
-        if($status === FALSE) {
-            throw new \RuntimeException(ldap_error($ldap));
-        }
-        $status = ldap_set_option($ldap, LDAP_OPT_REFERRALS, 0);
-        if($status === FALSE) {
-            throw new \RuntimeException(ldap_error($ldap));
-        }
-
-        $status = ldap_bind($ldap, 'cn=admin,dc=example,dc=org', 'admin');
-        if($status === FALSE) {
-            throw new \RuntimeException(ldap_error($ldap));
-        }
-
-        return $ldap;
-    }
-
-    protected function deleteLdapData($ldap)
-    {
-        $this->deleteLdapDescendants($ldap, 'dc=example,dc=org', '(&(objectclass=*)(!(cn=admin)))');
-    }
-
-    protected function deleteLdapDescendants($ldap, $base, $filter=null)
-    {
-        $children = @ldap_list($ldap, $base, $filter ?? '(objectclass=*)', ['dn'], 0, -1, -1, LDAP_DEREF_NEVER);
-        //var_dump(ldap_get_entries($ldap, $children));
-        $this->deleteLdapResult($ldap, $children);
-    }
-
-    protected function deleteLdapResult($ldap, $result)
-    {
-        if(!$result) {
-            return;
-        }
-
-        $reference = @ldap_first_reference($ldap, $result);
-        while($reference) {
-            if(ldap_parse_reference($ldap, $reference, $referrals)) {
-                var_dump($referrals);
-                //var_dump(ldap_get_attributes($ldap, $reference));
-                //var_dump(ldap_get_dn($ldap, $reference));
+        $deleted = [];
+        $result = $ldap->search($filter ?? '(objectclass=*)', $base, \Zend\Ldap\Ldap::SEARCH_SCOPE_ONE, ['dn']);
+        if($result) {
+            foreach ($result as $entry) {
+                $ldap->delete($entry['dn'], true);
+                $deleted[] = $entry['dn'];
             }
-            $reference = ldap_next_reference($ldap, $reference);
         }
-
-        $entries = ldap_get_entries($ldap, $result);
-        for($i=0; $i < $entries['count']; $i++) {
-            $dn = $entries[$i]['dn'];
-            $this->deleteLdapDescendants($ldap, $dn);
-            //ldap_delete($ldap, $dn);
-        }
+        return $deleted;
     }
 
-    protected function initializeLdapData($ldap)
+    protected static function addFromLdifFile($ldap, $file)
     {
-        $parser = new LdifParser();
-        $ldif = file_get_contents(__DIR__ . '/../Resources/ldif/bootstrap.ldif');
-        $ldif = $parser->parse($ldif);
-        foreach($ldif->toOperations() as $op) {
-            $func = $op->getLdapFunction();
-            $args = $op->getArguments();
-            call_user_func($func, $ldap, ...$args);
+        $ldif = file_get_contents($file);
+        return self::addFromLdifString($ldap, $ldif);
+    }
+
+    protected static function addFromLdifString($ldap, $ldif)
+    {
+        $entries = \Zend\Ldap\Ldif\Encoder::decode($ldif);
+        foreach ($entries as $entry) {
+            $ldap->add($entry['dn'], $entry);
         }
     }
 

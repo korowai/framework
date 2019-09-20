@@ -15,7 +15,7 @@ namespace Korowai\Component\Ldap\Exception;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class LdapException extends \RuntimeException
+class LdapException extends \ErrorException
 {
 }
 

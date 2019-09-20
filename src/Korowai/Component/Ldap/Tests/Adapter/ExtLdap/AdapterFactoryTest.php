@@ -48,9 +48,6 @@ class AdapterFactoryTest extends TestCase
     }
 
 
-    /**
-     * @runInSeparateProcess
-     */
     public function test_createAdapter_ConnectFailure_1()
     {
         $this->getLdapFunctionMock("ldap_connect")

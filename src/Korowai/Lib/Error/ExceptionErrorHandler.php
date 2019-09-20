@@ -130,8 +130,8 @@ class ExceptionErrorHandler extends AbstractManagedErrorHandler
      */
     public function __invoke(int $severity, string $message, string $file, int $line) : bool
     {
-        if (!(error_reporting() & $severity)) {
-            // This error code is not included in error_reporting
+        if (!($this->getErrorTypes() & $severity)) {
+            // This error code is not included in errorTypes
             return false;
         }
 

@@ -21,9 +21,11 @@ use Korowai\Component\Ldap\Adapter\ExtLdap\Adapter;
 
 use Korowai\Component\Ldap\Adapter\ExtLdap\LdapLinkOptions;
 use Korowai\Component\Ldap\Adapter\ExtLdap\EnsureLdapLink;
-use Korowai\Component\Ldap\Adapter\CallWithCustomErrorHandler;
-use Korowai\Component\Ldap\Adapter\CallWithEmptyErrorHandler;
 use Korowai\Component\Ldap\Adapter\ExtLdap\LastLdapException;
+
+use function Korowai\Lib\Context\with;
+use Korowai\Lib\Error\ExceptionErrorHandler;
+use Korowai\Lib\Error\EmptyErrorHandler;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -35,8 +37,6 @@ class AdapterFactory extends AbstractAdapterFactory
     use LdapLinkOptions;
     use EnsureLdapLink;
     use LastLdapException;
-    use CallWithCustomErrorHandler;
-    use CallWithEmptyErrorHandler;
 
     /**
      * Creates instance of AdapterFactory
@@ -61,13 +61,12 @@ class AdapterFactory extends AbstractAdapterFactory
 
     private function createLdapLink()
     {
-        $link = $this->callWithCustomErrorHandler(
-            // intercept error message from ldap-ext
-            function ($errno, $errstr) {
-                throw new LdapException($errstr, -1);
-            },
-            'createLdapLinkImpl'
-        );
+        $handler = ExceptionErrorHandler::create(function($severity, $message, ...$args) {
+            return new LdapException($message, -1, $severity, ...$args);
+        });
+        $link = with($handler)(function ($eh) {
+            return $this->createLdapLinkImpl();
+        });
         if (!$link) {
             // throw this exception in case ldap-ext forgot to trigger_error
             throw new LdapException('Failed to create LDAP connection', -1);
@@ -93,7 +92,9 @@ class AdapterFactory extends AbstractAdapterFactory
     private function setLdapLinkOption(LdapLink $link, int $option, $value)
     {
         static::ensureLdapLink($link);
-        $this->callWithEmptyErrorHandler('setLdapLinkOptionImpl', $link, $option, $value);
+        with(EmptyErrorHandler::getInstance())(function ($eh) use ($link, $option, $value) {
+            $this->setLdapLinkOptionImpl($link, $option, $value);
+        });
     }
 
     private function setLdapLinkOptionImpl(LdapLink $link, int $option, $value)

@@ -15,17 +15,18 @@ namespace Korowai\Component\Ldap\Adapter\ExtLdap;
 
 use Korowai\Component\Ldap\Adapter\BindingInterface;
 use Korowai\Component\Ldap\Exception\LdapException;
-use Korowai\Component\Ldap\Adapter\CallWithEmptyErrorHandler;
 
 use Korowai\Component\Ldap\Adapter\ExtLdap\LdapLink;
 use Korowai\Component\Ldap\Adapter\ExtLdap\LastLdapException;
+
+use function Korowai\Lib\Context\with;
+use Korowai\Lib\Error\EmptyErrorHandler;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
 class Binding implements BindingInterface
 {
-    use CallWithEmptyErrorHandler;
     use LastLdapException;
 
     /** @var bool */
@@ -148,7 +149,9 @@ class Binding implements BindingInterface
     private function callImplMethod($name, ...$args)
     {
         $this->ensureLink();
-        return $this->callWithEmptyErrorHandler($name, ...$args);
+        return with(EmptyErrorHandler::getInstance())(function ($eh) use ($name, $args) {
+            return call_user_func_array([$this, $name], $args);
+        });
     }
 
     /**

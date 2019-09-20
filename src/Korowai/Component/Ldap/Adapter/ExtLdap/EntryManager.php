@@ -17,16 +17,17 @@ use Korowai\Component\Ldap\Adapter\EntryManagerInterface;
 use Korowai\Component\Ldap\Entry;
 use Korowai\Component\Ldap\Adapter\ExtLdap\LdapLink;
 
-use Korowai\Component\Ldap\Adapter\CallWithEmptyErrorHandler;
 use Korowai\Component\Ldap\Adapter\ExtLdap\EnsureLdapLink;
 use Korowai\Component\Ldap\Adapter\ExtLdap\LastLdapException;
+
+use function Korowai\Lib\Context\with;
+use Korowai\Lib\Error\EmptyErrorHandler;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
 class EntryManager implements EntryManagerInterface
 {
-    use CallWithEmptyErrorHandler;
     use EnsureLdapLink;
     use LastLdapException;
 
@@ -96,7 +97,9 @@ class EntryManager implements EntryManagerInterface
     private function callImplMethod($name, ...$args)
     {
         static::ensureLdapLink($this->link);
-        return $this->callWithEmptyErrorHandler($name, ...$args);
+        return with(EmptyErrorHandler::getInstance())(function ($eh) use ($name, $args) {
+            return call_user_func_array([$this, $name], $args);
+        });
     }
 
     /**

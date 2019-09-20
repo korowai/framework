@@ -23,7 +23,7 @@ class LdapExceptionTest extends TestCase
 {
     public function testBaseClass()
     {
-        $this->assertInstanceOf(\RuntimeException::class, new LdapException());
+        $this->assertInstanceOf(\ErrorException::class, new LdapException());
     }
 
     public function test_getMessage()

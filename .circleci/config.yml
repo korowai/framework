@@ -97,7 +97,9 @@ jobs:
 
       - run:
           name: Running tests
-          command: docker-compose run --rm php-test vendor/bin/behat
+          command: |
+            docker-compose up -d ldap-service && \
+            docker-compose run --rm php-test vendor/bin/behat
 
       - run:
           name: Shuting down docker conainers

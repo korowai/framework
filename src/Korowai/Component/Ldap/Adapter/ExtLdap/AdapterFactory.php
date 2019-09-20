@@ -24,8 +24,8 @@ use Korowai\Component\Ldap\Adapter\ExtLdap\EnsureLdapLink;
 use Korowai\Component\Ldap\Adapter\ExtLdap\LastLdapException;
 
 use function Korowai\Lib\Context\with;
+use function Korowai\Lib\Error\emptyErrorHandler;
 use Korowai\Lib\Error\ExceptionErrorHandler;
-use Korowai\Lib\Error\EmptyErrorHandler;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -92,7 +92,7 @@ class AdapterFactory extends AbstractAdapterFactory
     private function setLdapLinkOption(LdapLink $link, int $option, $value)
     {
         static::ensureLdapLink($link);
-        with(EmptyErrorHandler::getInstance())(function ($eh) use ($link, $option, $value) {
+        with(emptyErrorHandler())(function ($eh) use ($link, $option, $value) {
             $this->setLdapLinkOptionImpl($link, $option, $value);
         });
     }

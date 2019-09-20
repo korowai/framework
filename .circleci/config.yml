@@ -99,6 +99,7 @@ jobs:
           name: Running tests
           command: |
             docker-compose up -d ldap-service &&
+            docker-compose run --rm php-test php -r 'sleep(10);' &&
             docker-compose run --rm php-test vendor/bin/behat
 
       - run:
@@ -122,6 +123,7 @@ jobs:
           name: Running tests
           command: |
             docker-compose up -d ldap-service &&
+            docker-compose run --rm php-test php -r 'sleep(10);' &&
             docker-compose run --rm php-test vendor/bin/behat -c docs/behat.yml
 
       - run:

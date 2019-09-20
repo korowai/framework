@@ -31,6 +31,15 @@ interface ErrorHandlerInterface
      *              continues.
      */
     public function __invoke(int $severity, string $message, string $file, int $line) : bool;
+
+    /**
+     * Returns an integer used to mask the triggering of the error handler.
+     *
+     * When the handler is activated it usually calls ``set_error_handler($this, $this->getErrorTypes())``
+     *
+     * @return int
+     */
+    public function getErrorTypes() : int;
 }
 
 // vim: syntax=php sw=4 ts=4 et:

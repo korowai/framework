@@ -1,7 +1,7 @@
 <?php
 /* [use] */
 use function Korowai\Lib\Context\with;
-use Korowai\Lib\Error\EmptyErrorHandler;
+use function Korowai\Lib\Error\emptyErrorHandler;
 
 /* [makeTroubleFunction] */
 function make_trouble()
@@ -10,7 +10,7 @@ function make_trouble()
 }
 
 /* [testCode] */
-with(EmptyErrorHandler::getInstance())(function ($eh) {
+with(emptyErrorHandler())(function ($eh) {
     make_trouble();
 });
 

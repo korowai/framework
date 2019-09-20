@@ -13,33 +13,22 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Error;
 
+use Korowai\Lib\Context\ContextManagerInterface;
+
 /**
  * Context-managed error handler disabler.
  */
-class EmptyErrorHandler extends AbstractManagedErrorHandler
+final class EmptyErrorHandler implements ErrorHandlerInterface, ContextManagerInterface
 {
     use \Korowai\Lib\Basic\Singleton;
+    use ContextManagerMethods;
 
     /**
-     * Sets this object as error handler using PHP function ``set_error_handler()`` and returns ``$this``.
-     *
-     * @return AbstractManagedErrorHandler
+     * {@inheritdoc}
      */
-    public function enterContext()
+    public function getErrorTypes() : int
     {
-        set_error_handler($this);
-        return $this;
-    }
-
-    /**
-     * Restores original error handler using PHP function \restore_error_hander() and returns ``false``.
-     *
-     * @return bool Always ``false``.
-     */
-    public function exitContext(?\Throwable $exception = null) : bool
-    {
-        restore_error_handler();
-        return false;
+        return E_ALL | E_STRICT;
     }
 
     /**

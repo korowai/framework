@@ -20,7 +20,7 @@ use Korowai\Component\Ldap\Adapter\ResultInterface;
 use Korowai\Component\Ldap\Adapter\ExtLdap\LastLdapException;
 
 use function Korowai\Lib\Context\with;
-use Korowai\Lib\Error\EmptyErrorHandler;
+use function Korowai\Lib\Error\emptyErrorHandler;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\Options;
@@ -87,7 +87,7 @@ class Query extends AbstractQuery
         }
 
         static::ensureLdapLink($this->getLink());
-        return with(EmptyErrorHandler::getInstance())(function ($eh) use ($func) {
+        return with(emptyErrorHandler())(function ($eh) use ($func) {
             return $this->doExecuteQueryImpl($func);
         });
     }

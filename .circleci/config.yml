@@ -98,7 +98,7 @@ jobs:
       - run:
           name: Running tests
           command: |
-            docker-compose up -d ldap-service && \
+            docker-compose up -d ldap-service &&
             docker-compose run --rm php-test vendor/bin/behat
 
       - run:

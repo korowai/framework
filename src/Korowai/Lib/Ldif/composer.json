@@ -1,6 +1,6 @@
 {
-    "name": "korowai/ldif",
-    "description": "Korowai LDIF component",
+    "name": "korowai/ldiflib",
+    "description": "Korowai LDIF library",
     "type": "library",
     "license": "MIT",
     "suport": {
@@ -19,7 +19,7 @@
     },
     "autoload": {
       "psr-4" : {
-        "Korowai\\Component\\Ldif\\" : ""
+        "Korowai\\Lib\\Ldif\\" : ""
       },
       "files" : [
         "Util/functions.php"

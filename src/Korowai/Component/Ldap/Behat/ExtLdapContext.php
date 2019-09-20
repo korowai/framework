@@ -386,14 +386,45 @@ class ExtLdapContext implements Context
      */
     public function iShouldHaveLastResultEntries(PyStringNode $pystring)
     {
-        $entries = $this->decodeJsonPyStringNode($pystring);
+        $expected = $this->decodeJsonPyStringNode($pystring);
         $actual = array_map(
             function ($e) {
                 return $e->getAttributes();
             },
             $this->lastResult()->getEntries()
         );
-        Assert::assertEquals($entries, $actual);
+
+        # handle passwords
+        foreach ($expected as $dn => $ee) {
+            $expected_password = $ee['userpassword'][0] ?? null;
+            $actual_password = $actual[$dn]['userpassword'][0] ?? null;
+            if (is_string($expected_password) && is_string($actual_password)) {
+                $expected[$dn]['userpassword'][0] = self::encryptExpectedPassword($expected_password, $actual_password);
+            }
+        }
+        Assert::assertEquals($expected, $actual);
+    }
+
+    protected static function encryptExpectedPassword(string $expected_password, string $actual_password)
+    {
+        if (preg_match('/^\{([A-Z0-9]{3,5})\}(.+)$/', $actual_password, $matches)) {
+            $tag = $matches[1];
+            $actual_hash = $matches[2];
+            if (strtoupper($tag) == 'CRYPT') {
+                $expected_hash = crypt($expected_password, $actual_hash);
+            } elseif (strtoupper($tag) == 'MD5') {
+                $expected_hash = base64_encode(md5($expected_password, true));
+            } elseif (strtoupper($tag) == 'SHA1') {
+                $expected_hash =  base64_encode(sha1($expected_password, true));
+            } elseif (strtoupper($tag) == 'SSHA') {
+                $salt = substr(base64_decode($actual_hash), 20);
+                $expected_hash = base64_encode(sha1($expected_password.$salt, true) . $salt);
+            } else {
+                throw new \RuntimeException("unsupported password hash format: $tag");
+            }
+            $expected_password = '{' . $tag . '}' . $expected_hash;
+        }
+        return $expected_password;
     }
 }
 

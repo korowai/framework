@@ -85,7 +85,7 @@ Feature: Query
             "objectclass": ["simpleSecurityObject", "organizationalRole"],
             "cn": ["admin"],
             "description": ["LDAP administrator"],
-            "userpassword": ["{SSHA}5XfmyvDTCnU9R9/9nVzc6FI+cRGBzrKt"]}
+            "userpassword": ["admin"]}
         }
         """
 

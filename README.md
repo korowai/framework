@@ -1,7 +1,8 @@
 # Korowai Framework
 
-[![Build Status](https://travis-ci.org/korowai/framework.svg?branch=master)](https://travis-ci.org/korowai/framework)
-[![codecov](https://codecov.io/gh/korowai/framework/branch/master/graph/badge.svg)](https://codecov.io/gh/korowai/framework)
+[![Build Status (TravisCI)](https://travis-ci.org/korowai/framework.svg?branch=master)](https://travis-ci.org/korowai/framework)
+[![BUild Status (CircleCI)](https://circleci.com/gh/korowai/framework.svg?style=svg)](https://circleci.com/gh/korowai/framework)
+[![Codecov](https://codecov.io/gh/korowai/framework/branch/master/graph/badge.svg)](https://codecov.io/gh/korowai/framework)
 [![Maintainability](https://api.codeclimate.com/v1/badges/e022fc1ea75dbbe42966/maintainability)](https://codeclimate.com/github/korowai/framework/maintainability)
 [![Documentation Status](https://readthedocs.org/projects/korowai-framework/badge/?version=latest)](https://korowai-framework.readthedocs.io/en/latest/?badge=latest)
 
@@ -16,6 +17,10 @@ isolated territory.
 
 Korowai life highly dependent on trees. Similarly, some admins' work depends on
 LDAP database, which has tree structure.
+
+## Online documentation
+
+See [documentation on ReadTheDocs](https://korowai-framework.readthedocs.io/).
 
 ## Notes for users
 

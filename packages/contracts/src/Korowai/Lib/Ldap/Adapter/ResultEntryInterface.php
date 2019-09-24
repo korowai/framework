@@ -13,8 +13,7 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldap\Adapter;
 
-use Korowai\Lib\Ldap\Adapter\ResultAttributeIteratorInterface;
-use Korowai\Lib\Ldap\Entry;
+use Korowai\Lib\Ldap\EntryInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -36,12 +35,11 @@ interface ResultEntryInterface
     public function getAttributes() : array;
 
     /**
-     * Creates an ``Entry`` from this object. Equivalent to
-     * ``return new Entry($this->getDn(), $this->getAttributes())``.
+     * Creates an actual ``Entry`` object from this object.
      *
-     * @return Entry A new instance of Entry
+     * @return EntryInterface A new instance of EntryInterface
      */
-    public function toEntry() : Entry;
+    public function toEntry() : EntryInterface;
 
     /**
      * Returns an iterator over entry's attributes.

@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Korowai\Lib\Ldap\Adapter;
 
 use Korowai\Lib\Ldap\Adapter\ResultInterface;
-use Korowai\Lib\Ldap\Exception\LdapException;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -25,8 +24,6 @@ interface QueryInterface
      * Executes query and returns result.
      *
      * @return ResultInterface
-     *
-     * @throws LdapException
      */
     public function execute() : ResultInterface;
 
@@ -35,8 +32,6 @@ interface QueryInterface
      * necessary.
      *
      * @return ResultInterface
-     *
-     * @throws LdapException
      */
     public function getResult() : ResultInterface;
 }

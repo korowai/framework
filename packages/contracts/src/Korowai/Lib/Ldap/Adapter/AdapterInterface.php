@@ -13,12 +13,6 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldap\Adapter;
 
-use Korowai\Lib\Ldap\Adapter\BindingInterface;
-use Korowai\Lib\Ldap\Adapter\EntryManagerInterface;
-use Korowai\Lib\Ldap\Adapter\QueryInterface;
-
-use Symfony\Component\OptionsResolver\OptionsResolver;
-
 /**
  * Provides access to an LDAP implementation via set of supplementary
  * interfaces.

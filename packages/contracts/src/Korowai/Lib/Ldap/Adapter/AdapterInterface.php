@@ -40,9 +40,19 @@ interface AdapterInterface
      * @param string $filter Filter used by ldap search
      * @param array $options Additional search options
      *
-     * @return QueryInterface
+     * @return SearchQueryInterface
      */
-    public function createQuery(string $base_dn, string $filter, array $options = array()) : QueryInterface;
+    public function createSearchQuery(string $base_dn, string $filter, array $options = array()) : SearchQueryInterface;
+    /**
+     * Creates a compare query.
+     *
+     * @param string $dn DN of the target entry
+     * @param string $attribute Target attribute
+     * @param string $value Value used for comparison
+     *
+     * @return CompareQueryInterface
+     */
+    public function createCompareQuery(string $dn, string $attribute, string $value) : CompareQueryInterface;
 }
 
 // vim: syntax=php sw=4 ts=4 et:

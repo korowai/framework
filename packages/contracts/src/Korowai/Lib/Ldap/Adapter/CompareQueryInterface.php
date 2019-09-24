@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Lib/Ldap/Adapter/QueryInterface.php
+ * @file src/Korowai/Lib/Ldap/Adapter/CompareQueryInterface.php
  *
  * This file is part of the Korowai package
  *
@@ -16,14 +16,14 @@ namespace Korowai\Lib\Ldap\Adapter;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-interface QueryInterface
+interface CompareQueryInterface
 {
     /**
      * Executes query and returns result.
      *
-     * @return ResultInterface
+     * @return bool
      */
-    public function execute() : ResultInterface;
+    public function execute() : bool;
 
     /**
      * Returns the result of last execution of the query, calls execute() if
@@ -31,7 +31,7 @@ interface QueryInterface
      *
      * @return ResultInterface
      */
-    public function getResult() : ResultInterface;
+    public function getResult() : bool;
 }
 
 // vim: syntax=php sw=4 ts=4 et:

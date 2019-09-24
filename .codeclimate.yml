@@ -13,7 +13,7 @@ exclude_patterns:
   - "**/Behat/"
   - "**/Resources/"
   - "**/vendor/"
-  - "packages/ldaplib/Adapter/ExtLdap/LdapLink.php"
+  - "packages/ldaplib/src/Korowai/Lib/Ldap/Adapter/ExtLdap/LdapLink.php"
 plugins:
   phpcodesniffer:
     enabled: true

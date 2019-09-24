@@ -20,6 +20,7 @@
         "wikimedia/composer-merge-plugin": "^1.4"
     },
     "replace": {
+        "korowai/contracts": "self.version",
         "korowai/ldaplib": "self.version",
         "korowai/basiclib" : "self.version",
         "korowai/contextlib" : "self.version",

@@ -1,11 +1,11 @@
 <?php
 /**
- * @file src/Korowai/Lib/Ldap/Adapter/ResultAttributeIteratorInterface.php
+ * @file src/Korowai/Lib/Ldap/Adapter/ResultReferenceInterface.php
  *
  * This file is part of the Korowai package
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @package korowai\ldaplib
+ * @package korowai\contracts
  * @license Distributed under MIT license.
  */
 
@@ -16,8 +16,13 @@ namespace Korowai\Lib\Ldap\Adapter;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-interface ResultAttributeIteratorInterface extends \Iterator
+interface ResultReferenceInterface
 {
+    /**
+     * Returns referrals
+     * @return array An array of referrals
+     */
+    public function getReferrals();
 }
 
 // vim: syntax=php sw=4 ts=4 et:

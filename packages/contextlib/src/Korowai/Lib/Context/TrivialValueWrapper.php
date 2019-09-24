@@ -1,6 +1,6 @@
 <?php
 /**
- * @file packages/contextlib/TrivialValueWrapper.php
+ * @file src/Korowai/Lib/Context/TrivialValueWrapper.php
  *
  * This file is part of the Korowai package
  *

@@ -1,6 +1,6 @@
 <?php
 /**
- * @file packages/contextlib/FactoryContextMethods.php
+ * @file src/Korowai/Lib/Context/FactoryContextMethods.php
  *
  * This file is part of the Korowai package
  *

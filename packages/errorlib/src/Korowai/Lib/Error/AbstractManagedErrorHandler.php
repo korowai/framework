@@ -1,6 +1,6 @@
 <?php
 /**
- * @file packages/errorlib/AbstractManagedErrorHandler.php
+ * @file src/Korowai/Lib/Error/AbstractManagedErrorHandler.php
  *
  * This file is part of the Korowai package
  *

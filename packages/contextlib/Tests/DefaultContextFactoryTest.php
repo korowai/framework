@@ -1,6 +1,6 @@
 <?php
 /**
- * @file packages/contextlib/Tests/DefaultContextFactoryTest.php
+ * @file Tests/DefaultContextFactoryTest.php
  *
  * This file is part of the Korowai package
  *

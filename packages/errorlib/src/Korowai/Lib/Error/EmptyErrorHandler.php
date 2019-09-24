@@ -1,6 +1,6 @@
 <?php
 /**
- * @file packages/errorlib/EmptyErrorHandler.php
+ * @file src/Korowai/Lib/Error/EmptyErrorHandler.php
  *
  * This file is part of the Korowai package
  *

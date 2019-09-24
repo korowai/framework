@@ -1,6 +1,6 @@
 <?php
 /**
- * @file packages/contextlib/Tests/WithContextExecutorTest.php
+ * @file Tests/WithContextExecutorTest.php
  *
  * This file is part of the Korowai package
  *

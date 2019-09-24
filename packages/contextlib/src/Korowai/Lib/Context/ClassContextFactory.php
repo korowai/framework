@@ -1,6 +1,6 @@
 <?php
 /**
- * @file packages/contextlib/ClassContextFactory.php
+ * @file src/Korowai/Lib/Context/ClassContextFactory.php
  *
  * This file is part of the Korowai package
  *

@@ -1,6 +1,6 @@
 <?php
 /**
- * @file packages/contextlib/Tests/functionsTest.php
+ * @file Tests/functionsTest.php
  *
  * This file is part of the Korowai package
  *

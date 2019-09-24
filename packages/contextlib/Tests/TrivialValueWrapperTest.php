@@ -1,6 +1,6 @@
 <?php
 /**
- * @file packages/contextlib/Tests/TrivialValueWrapperTest.php
+ * @file Tests/TrivialValueWrapperTest.php
  *
  * This file is part of the Korowai package
  *

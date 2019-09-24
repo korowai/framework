@@ -1,6 +1,6 @@
 <?php
 /**
- * @file packages/contextlib/WithContextExecutor.php
+ * @file src/Korowai/Lib/Context/WithContextExecutor.php
  *
  * This file is part of the Korowai package
  *

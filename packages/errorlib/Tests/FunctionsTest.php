@@ -1,6 +1,6 @@
 <?php
 /**
- * @file packages/errorlib/Tests/FunctionsTest.php
+ * @file Tests/FunctionsTest.php
  *
  * This file is part of the Korowai package
  *

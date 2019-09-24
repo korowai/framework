@@ -1,6 +1,6 @@
 <?php
 /**
- * @file packages/contextlib/ContextFactoryStackInterface.php
+ * @file src/Korowai/Lib/Context/ContextFactoryStackInterface.php
  *
  * This file is part of the Korowai package
  *

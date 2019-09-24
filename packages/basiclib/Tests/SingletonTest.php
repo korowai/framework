@@ -1,6 +1,6 @@
 <?php
 /**
- * @file packages/basiclib/Tests/SingletonTest.php
+ * @file Tests/SingletonTest.php
  *
  * This file is part of the Korowai package
  *

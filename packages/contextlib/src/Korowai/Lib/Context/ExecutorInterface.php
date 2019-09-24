@@ -1,6 +1,6 @@
 <?php
 /**
- * @file packages/contextlib/ExecutorInterface.php
+ * @file src/Korowai/Lib/Context/ExecutorInterface.php
  *
  * This file is part of the Korowai package
  *

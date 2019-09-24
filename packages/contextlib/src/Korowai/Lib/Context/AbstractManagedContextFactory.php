@@ -1,6 +1,6 @@
 <?php
 /**
- * @file packages/contextlib/AbstractManagedContextFactory.php
+ * @file src/Korowai/Lib/Context/AbstractManagedContextFactory.php
  *
  * This file is part of the Korowai package
  *

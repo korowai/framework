@@ -16,7 +16,6 @@ namespace Korowai\Lib\Ldap;
 use Korowai\Lib\Ldap\Adapter\BindingInterface;
 use Korowai\Lib\Ldap\Adapter\EntryManagerInterface;
 use Korowai\Lib\Ldap\Adapter\AdapterInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * LDAP interface

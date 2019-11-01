@@ -8,7 +8,7 @@ use Korowai\Lib\Ldap\Exception\AttributeException;
 $ldap = Ldap::createWithConfig(['uri' => 'ldap://ldap-service']);
 $ldap->bind('cn=admin,dc=example,dc=org', 'admin');
 
-foreach($ldap->query('dc=example,dc=org', 'cn=admin') as $entry) {
+foreach($ldap->search('dc=example,dc=org', 'cn=admin') as $entry) {
     try {
         /* [getAttributeInexistent] */
         $entry->getAttribute('inexistent');

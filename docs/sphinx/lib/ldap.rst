@@ -45,14 +45,14 @@ To establish connection and authenticate, the
    :end-before: [/bind]
 
 Once bound, we can search in the database with
-:method:`Korowai\\Lib\\Ldap\\AbstractLdap::query` method.
+:method:`Korowai\\Lib\\Ldap\\AbstractLdap::search` method.
 
 .. literalinclude:: ../examples/lib/ldap/ldap_intro.php
    :linenos:
-   :start-after: [query]
-   :end-before: [/query]
+   :start-after: [search]
+   :end-before: [/search]
 
-The ``$result`` object returned by :method:`Korowai\\Lib\\Ldap\\AbstractLdap::query`
+The ``$result`` object returned by :method:`Korowai\\Lib\\Ldap\\AbstractLdap::search`
 provides access to entries selected by the query. It (``$result``) implements
 the :class:`Korowai\\Lib\\Ldap\\Adapter\\ResultInterface` which,
 in turn, includes the standard :phpclass:`\IteratorAggregate` interface. This

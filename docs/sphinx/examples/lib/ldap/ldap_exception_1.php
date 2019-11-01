@@ -10,7 +10,7 @@ $ldap->bind('cn=admin,dc=example,dc=org', 'admin');
 
 /* [try-catch] */
 try {
-    $ldap->query('dc=inexistent,dc=org', 'cn=admin');
+    $ldap->search('dc=inexistent,dc=org', 'cn=admin');
 } catch (LdapException $e) {
     fprintf(STDERR, "LdapException(0x%x): %s\n", $e->getCode(), $e->getMessage());
     exit(1);

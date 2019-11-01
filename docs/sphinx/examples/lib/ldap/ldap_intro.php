@@ -13,10 +13,10 @@ $ldap = Ldap::createWithConfig(['uri' => 'ldap://ldap-service']);
 $ldap->bind('cn=admin,dc=example,dc=org', 'admin');
 /* [/bind] */
 
-/* [query] */
+/* [search] */
 /* The returned result implements ResultInterface. */
-$result = $ldap->query('ou=people,dc=example,dc=org', 'objectclass=*');
-/* [/query] */
+$result = $ldap->search('ou=people,dc=example,dc=org', 'objectclass=*');
+/* [/search] */
 
 /* [foreach] */
 foreach($result as $dn => $entry) {

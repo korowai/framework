@@ -89,8 +89,7 @@ contains attributes. It can me modified in memory
 
 .. note:: The Ldap library uses lower-cased keys to access entry attributes.
           Attributes in :class:`Korowai\\Lib\\Ldap\\Entry` are always
-          array-valued. This simplifies handling the multi-valued LDAP
-          attribues.
+          array-valued.
 
 Once modified, the entry may be written back to the LDAP database with
 :method:`Korowai\\Lib\\Ldap\\Ldap::update` method.

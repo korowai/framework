@@ -56,7 +56,7 @@ php vendor/bin/phpunit
 ### Running integration tests
 
 ```shell
-./docker-compose run --rm php-cli vendor/bin/behat
+./docker-compose run --rm php-test vendor/bin/behat
 ./docker-compose down
 ```
 

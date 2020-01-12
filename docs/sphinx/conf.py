@@ -47,7 +47,7 @@ api_url = api_url_base + '%s'
 # -- Project information -----------------------------------------------------
 
 project = 'Korowai Framework'
-copyright = '2018, Paweł Tomulik'
+copyright = '2018-2020, Paweł Tomulik'
 author = 'Paweł Tomulik'
 
 # The short X.Y version

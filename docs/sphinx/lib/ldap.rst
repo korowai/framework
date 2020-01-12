@@ -108,5 +108,6 @@ Once modified, the entry may be written back to the LDAP database with
    ldap/config
    ldap/exceptions
    ldap/adapters
+   ldap/mocking
 
 .. <!--- vim: set syntax=rst spell: -->

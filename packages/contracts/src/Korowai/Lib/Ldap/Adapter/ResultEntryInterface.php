@@ -18,15 +18,8 @@ use Korowai\Lib\Ldap\EntryInterface;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-interface ResultEntryInterface
+interface ResultEntryInterface extends ResultRecordInterface
 {
-    /**
-     * Returns Distinguished Name (DN) of the result entry
-     *
-     * @return string Distinguished Name of the result entry
-     */
-    public function getDn() : string;
-
     /**
      * Returns entry attributes as an array. The keys in array are lower-case.
      *

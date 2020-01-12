@@ -8,11 +8,12 @@ Ldap Adapters
 -------------
 
 :ref:`TheLdapLibrary` uses *adapters* to interact with the actual LDAP
-client library. An adapter is a class that converts the interface of that
-particular implementation to
+implementation (client library). An adapter is a class that converts the
+interface of that particular implementation to
 :class:`Korowai\\Lib\\Ldap\\Adapter\\AdapterInterface`. This pattern
 allows for different LDAP implementations to be used by :ref:`TheLdapLibrary`
-in a pluggable manner.
+in a pluggable manner. :ref:`TheLdapLibrary` itself provides an adapter named
+*ExtLdap* which makes use of the standard `PHP ldap extension`_.
 
 Each :class:`Korowai\\Lib\\Ldap\\Ldap` instance wraps an instance of
 :class:`Korowai\\Lib\\Ldap\\Adapter\\AdapterInterface` (the *adapter*)

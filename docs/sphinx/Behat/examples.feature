@@ -9,7 +9,7 @@ Feature: Examples
     And I should see exit code <exit_code>
 
     Examples:
-      | example_file                             | stdout_file                                 | stderr_file                                 | exit_code |
+      | example_file                       | stdout_file                           | stderr_file                           | exit_code |
       | "lib/ldap/ldap_intro.php"          | "lib/ldap/ldap_intro.stdout"          | "lib/ldap/ldap_intro.stderr"          | 0         |
       | "lib/ldap/adapter_manual_inst.php" | "lib/ldap/adapter_manual_inst.stdout" | "lib/ldap/adapter_manual_inst.stderr" | 0         |
       | "lib/ldap/adapter_factory_1.php"   | "lib/ldap/adapter_factory_1.stdout"   | "lib/ldap/adapter_factory_1.stderr"   | 0         |
@@ -17,6 +17,7 @@ Feature: Examples
       | "lib/ldap/attribute_exception.php" | "lib/ldap/attribute_exception.stdout" | "lib/ldap/attribute_exception.stderr" | 1         |
       | "lib/ldap/ldap_exception_1.php"    | "lib/ldap/ldap_exception_1.stdout"    | "lib/ldap/ldap_exception_1.stderr"    | 1         |
       | "lib/ldap/ldap_exception_2.php"    | "lib/ldap/ldap_exception_2.stdout"    | "lib/ldap/ldap_exception_2.stderr"    | 2         |
+      | "lib/ldap/mock_searchquery.php"    | "lib/ldap/mock_searchquery.stdout"    | "lib/ldap/mock_searchquery.stderr"    | 0         |
 
   Scenario Outline: Examples for korowai/contextlib
     Given I executed doc example <example_file>

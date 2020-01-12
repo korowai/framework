@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Lib/Ldap/Adapter/ResultReferenceInterface.php
+ * @file src/Korowai/Lib/Ldap/Adapter/ResultRecordInterface.php
  *
  * This file is part of the Korowai package
  *
@@ -15,14 +15,17 @@ namespace Korowai\Lib\Ldap\Adapter;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ *
+ * An interface for either entry or reference returned by LDAP search.
  */
-interface ResultReferenceInterface extends ResultRecordInterface
+interface ResultRecordInterface
 {
     /**
-     * Returns referrals
-     * @return array An array of referrals
+     * Returns Distinguished Name (DN) of the result entry
+     *
+     * @return string Distinguished Name of the result entry
      */
-    public function getReferrals() : array;
+    public function getDn() : string;
 }
 
 // vim: syntax=php sw=4 ts=4 et:

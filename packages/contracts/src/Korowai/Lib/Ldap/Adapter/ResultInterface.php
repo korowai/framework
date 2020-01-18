@@ -33,6 +33,20 @@ interface ResultInterface extends \IteratorAggregate
     public function getResultReferenceIterator() : ResultReferenceIteratorInterface;
 
     /**
+     * Get an array of result entries.
+     *
+     * @return array
+     */
+    public function getResultEntries() : array;
+
+    /**
+     * Get an array of result references.
+     *
+     * @return array
+     */
+    public function getResultReferences() : array;
+
+    /**
      * Get an array of Entries from ldap result
      *
      * @return array Entries

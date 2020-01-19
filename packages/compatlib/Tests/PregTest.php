@@ -60,7 +60,7 @@ class PregTest extends TestCase
 
         try {
             $line = 1 + __line__;
-            Preg::callPregFunc('\preg_match', ['*', 'foo'], 0);
+            Preg::callPregFunc('\preg_match', ['*', 'foo']);
         } catch (PregException $e) {
             $this->assertSame(__file__, $e->getFile());
             $this->assertSame($line, $e->getLine());
@@ -76,7 +76,7 @@ class PregTest extends TestCase
 
         try {
             $line = 1 + __line__;
-            Preg::callPregFunc('\preg_match', ['/(?:\D+|<\d+>)*[!?]/', 'foobar foobar foobar'], 0);
+            Preg::callPregFunc('\preg_match', ['/(?:\D+|<\d+>)*[!?]/', 'foobar foobar foobar']);
         } catch (PregException $e) {
             $this->assertSame(__file__, $e->getFile());
             $this->assertSame($line, $e->getLine());

@@ -65,17 +65,16 @@ class Preg
     }
 
     /**
-     * Invokes *$func* with error_handler that throws PregException. Checks return
-     * value for error and throws PregException if error is detected.
+     * Invokes *$func* and throws PregExceotion if error is detected (preg_last_error())..
      *
      * @param  callable $func
      * @param  array $args
-     * @param  in $distance
+     * @param  int $distance
      *
      * @return mixed
      * @throws PregException
      */
-    public static function callPregFunc(callable $func, array $args, int $distance = 1)
+    public static function callPregFunc(callable $func, array $args, int $distance = 0)
     {
         // PCRE invokes PHP error handler (see set_error_handler()) before the
         // PCRE last error code (preg_last_error()) is set. So, we can't just

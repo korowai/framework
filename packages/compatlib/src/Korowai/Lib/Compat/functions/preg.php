@@ -41,7 +41,7 @@ function preg_filter(
     if (count($args) >= 5) {
         $args[4] = &$count;
     }
-    return Preg::callPregFunc('\preg_filter', $args);
+    return Preg::callPregFunc('\preg_filter', $args, 1);
 }
 
 /**
@@ -62,7 +62,7 @@ function preg_grep(
     int $flags = 0
 ) : array {
     $args = func_get_args();
-    return Preg::callPregFunc('\preg_grep', $args);
+    return Preg::callPregFunc('\preg_grep', $args, 1);
 }
 
 /**
@@ -90,7 +90,7 @@ function preg_match(
     if (count($args) >= 3) {
         $args[2] = &$matches;
     }
-    return Preg::callPregFunc('\preg_match', $args);
+    return Preg::callPregFunc('\preg_match', $args, 1);
 }
 
 /**
@@ -118,7 +118,7 @@ function preg_match_all(
     if (count($args) >= 3) {
         $args[2] = &$matches;
     }
-    return Preg::callPregFunc('\preg_match_all', $args);
+    return Preg::callPregFunc('\preg_match_all', $args, 1);
 }
 
 /**
@@ -146,7 +146,7 @@ function preg_replace(
     if (count($args) >= 5) {
         $args[4] = &$count;
     }
-    return Preg::callPregFunc('\preg_replace', $args);
+    return Preg::callPregFunc('\preg_replace', $args, 1);
 }
 
 /**
@@ -174,7 +174,7 @@ function preg_replace_callback(
     if (count($args) >= 5) {
         $args[4] = &$count;
     }
-    return Preg::callPregFunc('\preg_replace_callback', $args);
+    return Preg::callPregFunc('\preg_replace_callback', $args, 1);
 }
 
 /**
@@ -200,7 +200,7 @@ function preg_replace_callback_array(
     if (count($args) >= 4) {
         $args[3] = &$count;
     }
-    return Preg::callPregFunc('\preg_replace_callback_array', $args);
+    return Preg::callPregFunc('\preg_replace_callback_array', $args, 1);
 }
 
 /**
@@ -224,7 +224,7 @@ function preg_split(
     int $flags = 0
 ) {
     $args = func_get_args();
-    return Preg::callPregFunc('\preg_split', $args);
+    return Preg::callPregFunc('\preg_split', $args, 1);
 }
 
 // phpcs:enable Generic.NamingConventions.CamelCapsFunctionName

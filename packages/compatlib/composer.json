@@ -26,7 +26,7 @@
         "Korowai\\Lib\\Compat\\" : "src/Korowai/Lib/Compat/"
       },
       "files" : [
-        "src/Korowai/Lib/Compat/functions.php"
+        "src/Korowai/Lib/Compat/functions/preg.php"
       ],
       "exclude-from-classmap": [
         "/Tests/"

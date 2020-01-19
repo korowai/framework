@@ -1,6 +1,6 @@
 <?php
 /**
- * @file Tests/PregExceptionTest.php
+ * @file Tests/Exception/PregExceptionTest.php
  *
  * This file is part of the Korowai package
  *

@@ -1,12 +1,11 @@
 <?php
-/**
- * @file src/Korowai/Lib/Ldap/Adapter/AdapterFactoryInterface.php
+
+/*
+ * This file is part of Korowai framework.
  *
- * This file is part of the Korowai package
+ * (c) Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  *
- * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @package korowai\contracts
- * @license Distributed under MIT license.
+ * Distributed under MIT license.
  */
 
 declare(strict_types=1);
@@ -23,7 +22,7 @@ interface AdapterFactoryInterface
     /**
      * Set configuration for later use by createAdapter().
      *
-     * @param array $config Configuration options used to configure every new
+     * @param  array $config Configuration options used to configure every new
      *                      adapter instance created by createAdapter().
      */
     public function configure(array $config);

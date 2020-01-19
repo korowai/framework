@@ -4,10 +4,10 @@
 
 
 Ldap Exceptions
----------------
+===============
 
-:ref:`Ldap Library <TheLdapLibrary>` uses exceptions to report most of
-errors. Exceptions used by :ref:`TheLdapLibrary` are defined in
+:ref:`Ldap Library <lib.ldap>` uses exceptions to report most of
+errors. Exceptions used by :ref:`lib.ldap` are defined in
 :namespace:`Korowai\\Lib\\Ldap\\Exception <Korowai\\Lib\\Ldap\\Exception>`
 namespace. The following exception classes are currently defined:
 
@@ -27,7 +27,7 @@ namespace. The following exception classes are currently defined:
 
 
 AttributeException
-^^^^^^^^^^^^^^^^^^
+------------------
 
 Derived from `OutOfRangeException <https://php.net/OutOfRangeException>`_.
 It's being thrown when accessing nonexistent attribute of an
@@ -40,7 +40,7 @@ LDAP :class:`Korowai\\Lib\\Ldap\\Entry`. For example
 
 
 LdapException
-^^^^^^^^^^^^^
+-------------
 
 Derived from `ErrorException <https://php.net/ErrorException>`_. It's being
 thrown when an LDAP operation fails. The exception message and code are taken

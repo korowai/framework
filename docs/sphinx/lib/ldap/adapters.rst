@@ -1,18 +1,18 @@
 .. index::
-   :single: Ldap; Adapter
-   :single: Lib; Ldap; Adapter
+   single: Ldap; Adapter
+   single: Lib; Ldap; Adapter
 
-.. _LdapAdapters:
+.. _lib.ldap.adapters:
 
 Ldap Adapters
--------------
+=============
 
-:ref:`TheLdapLibrary` uses *adapters* to interact with the actual LDAP
+:ref:`lib.ldap` uses *adapters* to interact with the actual LDAP
 implementation (client library). An adapter is a class that converts the
 interface of that particular implementation to
 :class:`Korowai\\Lib\\Ldap\\Adapter\\AdapterInterface`. This pattern
-allows for different LDAP implementations to be used by :ref:`TheLdapLibrary`
-in a pluggable manner. :ref:`TheLdapLibrary` itself provides an adapter named
+allows for different LDAP implementations to be used by :ref:`lib.ldap`
+in a pluggable manner. :ref:`lib.ldap` itself provides an adapter named
 *ExtLdap* which makes use of the standard `PHP ldap extension`_.
 
 Each :class:`Korowai\\Lib\\Ldap\\Ldap` instance wraps an instance of
@@ -22,10 +22,10 @@ and interacts with particular LDAP implementation through this *adapter*. The
 it's being created. The whole process of adapter instantiation is done behind
 the scenes.
 
-.. _LdapAdapterFactory:
+.. _lib.ldap.adapterfactory:
 
 Adapter Factory
-^^^^^^^^^^^^^^^
+---------------
 
 An adapter class is accompanied with its adapter factory. This configurable
 object creates adapter instances. Adapter factories implement

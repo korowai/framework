@@ -1,12 +1,11 @@
 <?php
-/**
- * @file src/Korowai/Lib/Context/ContextFactoryInterface.php
+
+/*
+ * This file is part of Korowai framework.
  *
- * This file is part of the Korowai package
+ * (c) Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  *
- * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @package korowai\contracts
- * @license Distributed under MIT license.
+ * Distributed under MIT license.
  */
 
 declare(strict_types=1);
@@ -19,7 +18,7 @@ namespace Korowai\Lib\Context;
 interface ContextFactoryInterface
 {
     /**
-     * @param mixed $arg An argument to be turned into a context manager.
+     * @param  mixed $arg An argument to be turned into a context manager.
      *
      * @return ContextManagerInterface
      */

@@ -1,12 +1,11 @@
 <?php
-/**
- * @file src/Korowai/Lib/Ldap/Adapter/BindingInterface.php
+
+/*
+ * This file is part of Korowai framework.
  *
- * This file is part of the Korowai package
+ * (c) Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  *
- * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @package korowai\contracts
- * @license Distributed under MIT license.
+ * Distributed under MIT license.
  */
 
 declare(strict_types=1);
@@ -30,8 +29,8 @@ interface BindingInterface
     /**
      * Binds the connection against a DN and password
      *
-     * @param string $dn        The user's DN
-     * @param string $password  The associated password
+     * @param  string $dn        The user's DN
+     * @param  string $password  The associated password
      */
     public function bind(string $dn = null, string $password = null);
 

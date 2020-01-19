@@ -1,12 +1,11 @@
 <?php
-/**
- * @file src/Korowai/Lib/Ldap/Adapter/CompareQueryInterface.php
+
+/*
+ * This file is part of Korowai framework.
  *
- * This file is part of the Korowai package
+ * (c) Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  *
- * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @package korowai\contracts
- * @license Distributed under MIT license.
+ * Distributed under MIT license.
  */
 
 declare(strict_types=1);
@@ -29,7 +28,7 @@ interface CompareQueryInterface
      * Returns the result of last execution of the query, calls execute() if
      * necessary.
      *
-     * @return ResultInterface
+     * @return bool
      */
     public function getResult() : bool;
 }

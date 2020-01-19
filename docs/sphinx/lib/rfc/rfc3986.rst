@@ -1,0 +1,16 @@
+.. index::
+   single: Rfc3986
+   single: Rfc; Rfc3986
+
+.. _lib.rfc.rfc3986:
+
+Rfc3986
+=======
+
+The class :class:`Korowai\\Lib\\Rfc\\Rfc3986` provides rules for parsing
+URIs as defined in RFC3986_. See API docs of
+:class:`Korowai\\Lib\\Rfc\\Rfc3986`.
+
+.. _RFC3986: https://tools.ietf.org/html/rfc3986
+
+.. <!--- vim: set syntax=rst spell: -->

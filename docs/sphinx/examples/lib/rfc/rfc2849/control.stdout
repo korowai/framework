@@ -1,0 +1,41 @@
+failed: "foo:"
+-
+matched: "control: 1.2.3\n"
+matches: {"0":"control: 1.2.3\n","ctl_type":"1.2.3"}
+-
+matched: "control: 1.2.3: safe\n"
+matches: {"0":"control: 1.2.3: safe\n","ctl_type":"1.2.3","value_safe":"safe"}
+-
+matched: "control: 1.2.3:: YmFzZTY0\n"
+matches: {"0":"control: 1.2.3:: YmFzZTY0\n","ctl_type":"1.2.3","value_b64":"YmFzZTY0"}
+-
+matched: "control: 1.2.3 true\n"
+matches: {"0":"control: 1.2.3 true\n","ctl_type":"1.2.3","ctl_crit":"true"}
+-
+matched: "control: 1.2.3 true: safe\n"
+matches: {"0":"control: 1.2.3 true: safe\n","ctl_type":"1.2.3","ctl_crit":"true","value_safe":"safe"}
+-
+matched: "control: 1.2.3 true:: YmFzZTY0\n"
+matches: {"0":"control: 1.2.3 true:: YmFzZTY0\n","ctl_type":"1.2.3","ctl_crit":"true","value_b64":"YmFzZTY0"}
+-
+matched: "control: @#$\n"
+matches: {"0":"control: @#$\n","ctl_type_error":"@#$"}
+-
+matched: "control: 1.2.3: błąd\n"
+matches: {"0":"control: 1.2.3: błąd\n","ctl_type":"1.2.3","value_safe_error":"łąd"}
+-
+matched: "control: 1.2.3:: Ym***TY0\n"
+matches: {"0":"control: 1.2.3:: Ym***TY0\n","ctl_type":"1.2.3","value_b64_error":"***TY0"}
+-
+matched: "control: 1.2.3 foo\n"
+matches: {"0":"control: 1.2.3 foo\n","ctl_crit_error":"foo"}
+-
+matched: "control: 1.2.3 foo: safe\n"
+matches: {"0":"control: 1.2.3 foo: safe\n","ctl_crit_error":"foo: safe"}
+-
+matched: "control: 1.2.3 true: błąd\n"
+matches: {"0":"control: 1.2.3 true: błąd\n","ctl_type":"1.2.3","ctl_crit":"true","value_safe_error":"łąd"}
+-
+matched: "control: 1.2.3 true:: Ym***TY0\n"
+matches: {"0":"control: 1.2.3 true:: Ym***TY0\n","ctl_type":"1.2.3","ctl_crit":"true","value_b64_error":"***TY0"}
+-

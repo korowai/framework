@@ -50,7 +50,7 @@ abstract class AbstractInstaller {
   abstract protected function tmpFileNamePrefix();
   abstract protected function runInstallCmd();
 
-  protected function defaultInstallDir() { return '.'; }
+  protected function defaultInstallDir() { return 'bin'; }
   protected function defaultTmpDir() { return 'tmp'; }
 
   static public function system()
@@ -97,6 +97,13 @@ abstract class AbstractInstaller {
     }
     if(file_exists($this->tmpfile)) {
       unlink($this->tmpfile);
+    }
+
+    if(!file_exists($this->install_dir)) {
+        if(!mkdir($this->install_dir)) {
+            $msg = "Failed to create '" . $this->install_dir . "': " (error_get_last()['message']);
+            throw new BootstrapError($msg);
+        }
     }
   }
 
@@ -217,7 +224,7 @@ class DockerComposerInstaller extends AbstractInstaller
   use SingletonSupport;
 
   protected function defaultUrl() {
-    $release = '1.23.0';
+    $release = '1.26.0';
     $fname = 'docker-compose-' . self::system(). '-' . self::machine();
     if('win' === strtolower(substr(self::system(),0,3))) {
       $fname = $fname . '.exe';
@@ -248,45 +255,50 @@ class DockerComposerInstaller extends AbstractInstaller
   }
 }
 
-
-function updateDotEnvFile()
+class PhiveInstaller extends AbstractInstaller
 {
-  $dotenv = __DIR__.'/.env';
-  if(file_exists($dotenv)) {
-    fprintf(STDERR, "info: %s\n", "file $dotenv already exists, skipping creation");
-    return false;
+  use SingletonSupport;
+
+  protected function defaultUrl() {
+      return 'https://phar.io/releases/phive.phar';
   }
+  protected function defaultSigUrl() {
+      return null;
+      //return 'https://phar.io/releases/phive.phar.asc';
+  }
+  protected function defaultFileName() {
+      return 'phive';
+  }
+  protected function tmpFileNamePrefix() { return 'phive-'; }
 
-  $dist = __DIR__.'/.env.dist';
-
-  $uid = (string)getmyuid();
-  $gid = (string)getmygid();
-
-  $content = file_get_contents($dist);
-  $content = preg_replace('/@UID@/', $uid, $content);
-  $content = preg_replace('/@GID@/', $gid, $content);
-
-  file_put_contents($dotenv, $content);
-
-  return true;
+  protected function runInstallCmd()
+  {
+    $destfile = implode(DIRECTORY_SEPARATOR, array($this->install_dir, $this->filename));
+    if(!copy($this->tmpfile, $destfile)) {
+      $msg = "Failed to copy file '". $this->tmpfile ."' => '". $destfile ."': ". (error_get_last()['message']);
+      throw new BootstrapError($msg);
+    }
+    if(!chmod($destfile, 0755)) {
+      $msg = "Failed to chmod on '". $destfile ."': ". (error_get_last()['message']);
+      throw new BootstrapError($msg);
+    }
+  }
 }
+
 
 try {
 
   $opts = getopt('', ['no-install']);
 
   if (!isset($opts['no-install'])) {
+    PhiveInstaller::instance()->install();
     ComposerInstaller::instance()->install();
-    PhpDocInstaller::instance()->install();
     DockerComposerInstaller::instance()->install();
   }
-  updateDotEnvFile();
-
 } catch(BootstrapError $e) {
 
   fprintf(STDERR, "error: %s\n", $e->getMessage());
   exit(1);
-
 }
 
 ?>

@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<psalm
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="https://getpsalm.org/schema/config"
+    xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+    xmlns:xi="http://www.w3.org/2001/XInclude"
+    cacheDirectory=".psalm/cache"
+    totallyTyped="false"
+>
+    <projectFiles>
+        <directory name="packages/basiclib" />
+        <directory name="packages/compatlib" />
+        <directory name="packages/contextlib" />
+        <directory name="packages/contracts" />
+        <directory name="packages/errorlib" />
+        <directory name="packages/ldaplib" />
+        <directory name="packages/ldiflib" />
+        <directory name="packages/rfclib" />
+        <directory name="packages/testing" />
+        <ignoreFiles>
+          <directory name="packages/basiclib/tests" />
+          <directory name="packages/compatlib/tests" />
+          <directory name="packages/contextlib/tests" />
+          <directory name="packages/contracts/tests" />
+          <directory name="packages/errorlib/tests" />
+          <directory name="packages/ldaplib/tests" />
+          <directory name="packages/ldiflib/tests" />
+          <directory name="packages/rfclib/tests" />
+          <directory name="packages/rfclib/tests-nocov" />
+          <directory name="packages/testing/tests" />
+        </ignoreFiles>
+    </projectFiles>
+
+    <issueHandlers>
+        <LessSpecificReturnType errorLevel="info" />
+
+        <!-- level 3 issues - slightly lazy code writing, but provably low false-negatives -->
+
+        <DeprecatedMethod errorLevel="info" />
+        <DeprecatedProperty errorLevel="info" />
+        <DeprecatedClass errorLevel="info" />
+        <DeprecatedConstant errorLevel="info" />
+        <DeprecatedInterface errorLevel="info" />
+        <DeprecatedTrait errorLevel="info" />
+
+        <InternalMethod errorLevel="info" />
+        <InternalProperty errorLevel="info" />
+        <InternalClass errorLevel="info" />
+
+        <MissingClosureReturnType errorLevel="info" />
+        <MissingReturnType errorLevel="info" />
+        <MissingPropertyType errorLevel="info" />
+        <InvalidDocblock errorLevel="info" />
+        <MisplacedRequiredParam errorLevel="info" />
+
+        <PropertyNotSetInConstructor errorLevel="info" />
+        <MissingConstructor errorLevel="info" />
+        <MissingClosureParamType errorLevel="info" />
+        <MissingParamType errorLevel="info" />
+
+        <RedundantCondition errorLevel="info" />
+
+        <DocblockTypeContradiction errorLevel="info" />
+        <RedundantConditionGivenDocblockType errorLevel="info" />
+
+        <UnresolvableInclude errorLevel="info" />
+
+        <RawObjectIteration errorLevel="info" />
+
+        <InvalidStringClass errorLevel="info" />
+    </issueHandlers>
+</psalm>

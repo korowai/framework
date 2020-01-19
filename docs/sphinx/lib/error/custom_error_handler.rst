@@ -1,18 +1,17 @@
 .. index::
-   :single: Context; Custom Error Handlers
-   :single: Lib; Context; Custom Error Handlers
-
+   single: Context; Custom Error Handlers
+   single: Lib; Context; Custom Error Handlers
 .. _CustomErrorHandlers:
 
 Custom Error Handlers
----------------------
+=====================
 
-With :ref:`TheErrorLibrary` and :ref:`Contexts <TheContextLibrary>` you can
+With :ref:`lib.error` and :ref:`Contexts <lib.context>` you can
 easily use your own functions as error handlers for particular calls. A class
 named :class:`Korowai\\Lib\\Error\\ErrorHandler` serves the purpose.
 
 Simple example with custom error handler
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+----------------------------------------
 
 The example uses the following symbols
 

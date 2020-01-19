@@ -1,0 +1,14 @@
+failed: "foo:"
+-
+matched: "newrdn: dc=example\n"
+matches: {"0":"newrdn: dc=example\n","value_safe":"dc=example"}
+-
+matched: "newrdn: dc=pomyłka\n"
+matches: {"0":"newrdn: dc=pomyłka\n","value_safe_error":"łka"}
+-
+matched: "newrdn:: ZGM9YWNtZQ==\n"
+matches: {"0":"newrdn:: ZGM9YWNtZQ==\n","value_b64":"ZGM9YWNtZQ=="}
+-
+matched: "newrdn:: ZGM9***tZQ==\n"
+matches: {"0":"newrdn:: ZGM9***tZQ==\n","value_b64_error":"***tZQ=="}
+-

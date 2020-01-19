@@ -1,0 +1,14 @@
+failed: "foo:"
+-
+matched: "dn: dc=example,dc=org\n"
+matches: {"0":"dn: dc=example,dc=org","value_safe":"dc=example,dc=org"}
+-
+matched: "dn: dc=pomyłka,dc=org\n"
+matches: {"0":"dn: dc=pomyłka,dc=org","value_safe_error":"łka,dc=org"}
+-
+matched: "dn:: ZGM9YXNtZSxkYz1jb20=\n"
+matches: {"0":"dn:: ZGM9YXNtZSxkYz1jb20=","value_b64":"ZGM9YXNtZSxkYz1jb20="}
+-
+matched: "dn:: ZGM9YXNt***kYz1jb20=\n"
+matches: {"0":"dn:: ZGM9YXNt***kYz1jb20=","value_b64_error":"***kYz1jb20="}
+-

@@ -1,12 +1,11 @@
 <?php
-/**
- * @file src/Korowai/Lib/Context/ExecutorInterface.php
+
+/*
+ * This file is part of Korowai framework.
  *
- * This file is part of the Korowai package
+ * (c) Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  *
- * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @package korowai\contracts
- * @license Distributed under MIT license.
+ * Distributed under MIT license.
  */
 
 declare(strict_types=1);
@@ -21,7 +20,7 @@ interface ExecutorInterface
     /**
      * Invokes user function.
      *
-     * @param callable $func The user function to be called
+     * @param  callable $func The user function to be called
      * @return mixed The value returned by ``$func``.
      */
     public function __invoke(callable $func);

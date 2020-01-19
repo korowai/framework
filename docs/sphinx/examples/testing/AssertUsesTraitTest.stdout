@@ -1,0 +1,16 @@
+PHPUnit 8.5.2 by Sebastian Bergmann and contributors.
+
+.F                                                                  2 / 2 (100%)
+
+Time: 1.37 seconds, Memory: 179.88 MB
+
+There was 1 failure:
+
+1) AssertUsesTraitTest::testAssertUsesTraitFailure
+Failed asserting that RuntimeException uses trait ExampleTrait.
+
+/code/packages/testing/Testing/Assertions/ClassAssertions.php:138
+/code/docs/sphinx/examples/testing/AssertUsesTraitTest.php:19
+
+FAILURES!
+Tests: 2, Assertions: 3, Failures: 1.

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/4.1/phpunit.xsd"
+         xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/8.4/phpunit.xsd"
          backupGlobals="false"
          colors="true"
          bootstrap="vendor/autoload.php"
@@ -14,7 +14,7 @@
 
     <testsuites>
         <testsuite name="Korowai Packages Test Suite">
-            <directory suffix="Test.php">./packages/*/Tests/</directory>
+            <directory suffix="Test.php">./packages/*/tests/</directory>
         </testsuite>
     </testsuites>
 
@@ -22,11 +22,16 @@
         <whitelist>
             <directory>./packages/</directory>
             <exclude>
-                <directory>./packages/*/Tests</directory>
-                <directory>./packages/*/Behat</directory>
-                <directory>./packages/*/Resources</directory>
-                <directory>./packages/*/vendor</directory>
+              <directory suffix="Test.php">./packages/*/tests</directory>
+              <directory suffix="Test.php">./packages/*/tests-nocov</directory>
+              <directory>./packages/*/Behat</directory>
+              <directory>./packages/*/Resources</directory>
+              <directory>./packages/*/vendor</directory>
             </exclude>
         </whitelist>
     </filter>
+    <logging>
+      <log type="coverage-clover" target="build/logs/clover.xml"/>
+      <log type="coverage-html" target="build/logs/html"/>
+    </logging>
 </phpunit>

@@ -1,9 +1,10 @@
 .. index::
-   :single: Context; Custom Context Manager
-   :single: Lib; Context; Custom Context Manager
+   single: Context; Custom Context Manager
+   single: Lib; Context; Custom Context Manager
+.. _lib.context.custom-context-managers:
 
 Custom Context Managers
------------------------
+=======================
 
 A custom context manager can be created by implementing the
 :class:`Korowai\\Lib\\Context\\ContextManagerInterface`. The new context
@@ -21,7 +22,7 @@ manager class must implement two methods:
 
 
 Simple Value Wrapper
-^^^^^^^^^^^^^^^^^^^^
+--------------------
 
 In the following example we implement simple context manager, which wraps a
 string and provides it as an argument to user-provided callback when using
@@ -56,6 +57,6 @@ Obviously, the expected output will be
 
 .. literalinclude:: ../../examples/lib/context/my_value_wrapper.stdout
    :linenos:
-   :language: console
+   :language: none
 
 .. <!--- vim: set syntax=rst spell: -->

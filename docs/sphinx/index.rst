@@ -6,23 +6,32 @@
 Korowai Framework
 #################
 
-.. include:: intro.rst.inc
+Korowai Framework is a framework and a library of reusable components used by
+the Korowai_ project.
 
 .. toctree::
-   :maxdepth: 2
    :caption: Table of Contents
-   :titlesonly:
+   :maxdepth: 3
+   :numbered: 2
 
    install
-   lib/index
+   lib/basic/index
+   lib/context/index
+   lib/error/index
+   lib/ldap/index
+   lib/ldif/index
+   lib/rfc/index
+   testing/index
    devel_guide/index
 
-
+******************
 Indices and tables
-==================
+******************
 
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+
+.. _Korowai: https://github.com/korowai/korowai
 
 .. <!--- vim: set syntax=rst spell: -->

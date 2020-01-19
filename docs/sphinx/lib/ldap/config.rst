@@ -1,25 +1,25 @@
 .. index::
-   :single: Ldap; Configuration
-   :single: Lib; Ldap; Configuration
+   single: Ldap; Configuration
+   single: Lib; Ldap; Configuration
 
 
-.. _LdapConfiguration:
+.. _lib.ldap.configuration:
 
 Ldap Configuration
-------------------
+==================
 
 :class:`Korowai\\Lib\\Ldap\\Ldap` instances are configured according to
 settings provided with ``$config`` array (an argument to
 :method:`Ldap::createWithConfig() <Korowai\\Lib\\Ldap\\Ldap::createWithConfig>`).
 The ``$config`` array is internally passed to an
-:ref:`adapter factory <LdapAdapterFactory>` to create the
+:ref:`adapter factory <lib.ldap.adapterfactory>` to create the
 supporting adapter object. Some settings are "standard" and shall be accepted
 by any adapter type. Other options may be specific to a particular adapter type
 (such as the default :class:`ExtLdap\\Adapter <Korowai\\Lib\\Ldap\\Adapter\\ExtLdap\\Adapter>`,
 where the adapter-specific options are stored in ``$config['options']``).
 
 Common LDAP settings
-^^^^^^^^^^^^^^^^^^^^
+--------------------
 
 The following table lists configuration settings supported by any adapter.
 
@@ -55,7 +55,7 @@ The following table lists configuration settings supported by any adapter.
 
 
 LDAP options specific to ExtLdap adapter
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+----------------------------------------
 
 The ``$config['options']`` specific to
 :class:`ExtLdap\\Adapter <Korowai\\Lib\\Ldap\\Adapter\\ExtLdap\\Adapter>`

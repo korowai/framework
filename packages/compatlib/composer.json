@@ -16,25 +16,27 @@
         }
     ],
     "require": {
-        "php": ">=7.1.3",
+        "php": ">=7.2",
         "korowai/contracts": "*",
         "korowai/contextlib": "*",
         "korowai/errorlib": "*"
     },
     "autoload": {
       "psr-4" : {
-        "Korowai\\Lib\\Compat\\" : "src/Korowai/Lib/Compat/"
+        "Korowai\\Lib\\Compat\\" : "src//"
       },
       "files" : [
-        "src/Korowai/Lib/Compat/functions/preg.php"
+        "src//functions/preg.php"
       ],
       "exclude-from-classmap": [
-        "/Tests/"
+        "/tests/",
+        "/Testing/"
       ]
     },
     "autoload-dev": {
       "psr-4" : {
-        "Korowai\\Lib\\Compat\\Tests\\" : "Tests/"
+        "Korowai\\Tests\\Lib\\Compat\\" : "tests/",
+        "Korowai\\Testing\\Compatlib\\" : "Testing/"
       }
     }
 }

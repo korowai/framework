@@ -16,16 +16,21 @@
       "source": "https://github.com/korowai/framework"
     },
     "require": {
-        "php": ">=7.1.3"
+        "php": ">=7.2"
     },
     "autoload": {
       "psr-4" : {
-        "Korowai\\" : "src/Korowai/"
-      }
+        "Korowai\\Lib\\" : "src/Korowai/Lib/"
+      },
+      "exclude-from-classmap": [
+        "/tests/",
+        "/Testing/"
+      ]
     },
     "autoload-dev": {
       "psr-4" : {
-        "Korowai\\Contracts\\Tests\\" : "Tests/"
+        "Korowai\\Tests\\" : "tests/Korowai/",
+        "Korowai\\Testing\\Contracts\\": "Testing/"
       }
     }
 }

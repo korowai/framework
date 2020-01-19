@@ -1,0 +1,15 @@
+PHPUnit 8.5.2 by Sebastian Bergmann and contributors.
+
+.F                                                                  2 / 2 (100%)
+
+Time: 40 ms, Memory: 4.00 MB
+
+There was 1 failure:
+
+1) ImplementsInterfaceTest::testImplementsInterfaceFailure
+Failed asserting that ImplementsInterfaceTest implements interface Throwable.
+
+/code/docs/sphinx/examples/testing/implementsInterfaceTest.php:13
+
+FAILURES!
+Tests: 2, Assertions: 3, Failures: 1.

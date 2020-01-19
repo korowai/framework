@@ -1,12 +1,11 @@
 <?php
-/**
- * @file src/Korowai/Lib/Error/ErrorHandlerInterface.php
+
+/*
+ * This file is part of Korowai framework.
  *
- * This file is part of the Korowai package
+ * (c) Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  *
- * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @package korowai\contracts
- * @license Distributed under MIT license.
+ * Distributed under MIT license.
  */
 
 declare(strict_types=1);
@@ -21,10 +20,10 @@ interface ErrorHandlerInterface
     /**
      * Actual error handler function.
      *
-     * @param int $severity Level of the error raised.
-     * @param string $message Error message.
-     * @param string $file File name the the error was raised in.
-     * @param int $line Line number the error was raised at.
+     * @param  int $severity Level of the error raised.
+     * @param  string $message Error message.
+     * @param  string $file File name the the error was raised in.
+     * @param  int $line Line number the error was raised at.
      *
      *
      * @return bool If it returns ``false``, then the normal error handler

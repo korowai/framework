@@ -2,8 +2,4 @@
 
 set -e
 
-php vendor/bin/phpunit \
-  --coverage-clover build/logs/clover.xml \
-  --coverage-html build/coverage/html \
-  -c phpunit.xml.dist \
-  "$@"
+php vendor/bin/phpunit -c phpunit.xml.dist "$@"

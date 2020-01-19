@@ -6,6 +6,8 @@
 /sami
 /tmp
 /tests/cache
+/bin
+/tools
 *.phar
 
 # Files generated locally
@@ -15,8 +17,9 @@
 /docs/_build/
 /docs/_cache/
 
-# .env file for docker-compose
+# Config
 /.env
+/docker/.env
 
 # composer.lock
 composer.lock
@@ -27,8 +30,14 @@ composer.lock
 # phpunit temporary files
 .phpunit.result.cache
 
+# php-cs-fixer temporary files
+/.php_cs.cache
+
 # phpdoc (we only commit phpdoc.xml.dist)
 /phpdoc.xml
+
+# vimeo/psalm
+.psalm/cache
 
 # IDEs and editors
 /.idea
@@ -51,21 +60,11 @@ composer.lock
 !.vscode/launch.json
 !.vscode/extensions.json
 
-# Pipenv, setuptools, etc.
-/pipenv
-.venv/
-/dist/
-*.egg-info
-*.tox
-*.deb
-/MANIFEST
-
 # Lumen generated
 /storage/logs/
 
 # Others
 /vendor
-/.idea
 /.vagrant
 /core
 Homestead.json

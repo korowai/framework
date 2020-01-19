@@ -1,0 +1,8 @@
+failed: "foo:"
+-
+matched: "changetype: add\n"
+matches: {"0":"changetype: add\n","chg_type":"add"}
+-
+matched: "changetype: bar\n"
+matches: {"0":"changetype: bar\n","chg_type_error":"bar"}
+-

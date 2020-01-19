@@ -1,0 +1,11 @@
+version: '3'
+services:
+  codeclimate:
+    image: "codeclimate/codeclimate:${KRW_CODECLIMATE_TAG:-latest}"
+    environment:
+      - CODECLIMATE_CODE=${KRW_TOP_SRCDIR}
+    volumes:
+      - ..:${KRW_CODE:-/code}
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /tmp/cc:/tmp/cc
+    working_dir: "${KRW_CODE:-/code}"

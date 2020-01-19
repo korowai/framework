@@ -1,0 +1,6 @@
+result: 1
+captures: {"dn":"dn"}
+valueCaptures: {"dn":"dn"}
+errorCaptures: []
+findCapturedValues: {"dn":"cn=admin,dc=example,dc=org"}
+findCapturedErrors: []

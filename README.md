@@ -44,7 +44,7 @@ apt-get install php-ldap php-xml php-mbstring
 After you've just cloned
 
 ```shell
-php bootstrap-dev && php composer install
+php bootstrap-dev && php bin/composer install
 ```
 
 ### Running unit tests
@@ -56,28 +56,35 @@ php vendor/bin/phpunit
 ### Running integration tests
 
 ```shell
-./docker-compose run --rm php-test vendor/bin/behat
-./docker-compose down
+docker/compose run --rm php-test vendor/bin/behat
+docker/compose down
+```
+
+### Running sphinx examples tests
+
+```shell
+docker/compose run --rm php-test vendor/bin/behat -c docs/behat.yml
+docker/compose down
 ```
 
 ### Running interactive PHP shell
 
 ```shell
-./docker-compose run --rm php-cli vendor/bin/psysh
+docker/compose run --rm php-cli vendor/bin/psysh
 ```
 
 ### Running CodeClimate
 
 ```shell
-./docker-compose -f docker-compose.codeclimate.yml run --rm codeclimate analyze
-./docker-compose -f docker-compose.codeclimate.yml down
+docker/codeclimate run --rm codeclimate analyze
+docker/codeclimate down
 ```
 
 ### Generating API documentation
 
 ```shell
-./docker-compose -f docs/docker-compose.yml run --rm sami build
-./docker-compose -f docs/docker-compose.yml down
+docker/docs run --rm sami build
+docker/docs down
 ```
 
 The generated API docs go to ``docs/build/html/api/``.
@@ -85,18 +92,21 @@ The generated API docs go to ``docs/build/html/api/``.
 ### Generating API documentation continuously and serving via HTTP
 
 ```shell
-./docker-compose -f docs/docker-compose.yml up sami
-./docker-compose -f docs/docker-compose.yml down
+docker/docs up sami
+docker/docs down
 ```
 
 The generated API docs go to ``docs/build/html/api/`` and get exposed at
 
   - ``https://localhost:8001``.
 
-### Generating sphinx documentation continuously
+### Generating sphinx documentation continuously and serving via HTTP
 
-TODO:
+```shell
+docker/docs up sphinx
+docker/docs down
+```
 
 The generated docs go to ``docs/build/html`` and get exposed at
 
-  - ``http://localhost:8000``.
+  - ``http://localhost:8002``.

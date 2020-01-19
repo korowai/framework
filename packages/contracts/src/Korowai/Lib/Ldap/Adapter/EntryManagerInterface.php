@@ -1,12 +1,11 @@
 <?php
-/**
- * @file src/Korowai/Lib/Ldap/Adapter/EntryManagerInterface.php
+
+/*
+ * This file is part of Korowai framework.
  *
- * This file is part of the Korowai package
+ * (c) Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  *
- * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @package korowai\contracts
- * @license Distributed under MIT license.
+ * Distributed under MIT license.
  */
 
 declare(strict_types=1);
@@ -38,8 +37,8 @@ interface EntryManagerInterface
      * Renames an entry on the Ldap server
      *
      * @param EntryInterface $entry
-     * @param string $newRdn
-     * @param bool $deleteOldRdn
+     * @param  string $newRdn
+     * @param  bool $deleteOldRdn
      */
     public function rename(EntryInterface $entry, string $newRdn, bool $deleteOldRdn = true);
 

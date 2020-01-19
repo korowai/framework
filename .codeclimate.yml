@@ -4,17 +4,36 @@ version: "2"
 ##  argument-count:
 ##    config:
 ##      threshold: 5
+patterns:
+  - "src/"
+  - "packages/"
 exclude_patterns:
   - "build/"
   - "docs/"
   - "bin/"
   - "vendor/"
+  - "**/tests/"
+  - "**/tests-nocov/"
   - "**/Tests/"
   - "**/Behat/"
   - "**/Resources/"
   - "**/vendor/"
-  - "packages/ldaplib/src/Korowai/Lib/Ldap/Adapter/ExtLdap/LdapLink.php"
-  - "packages/compatlib/src/Korowai/Lib/Compat/functions/preg.php"
+  - "packages/ldaplib/src/Adapter/ExtLdap/LdapLink.php"
+  - "packages/rfclib/Testing/RuleSet*.php"
+  - "packages/compatlib/src/functions/preg.php"
 plugins:
   phpcodesniffer:
+    enabled: true
+
+  duplication:
+    enabled: true
+    config:
+      languages:
+        php:
+          filters:
+            - "(Const VALUE_SAFE ___)"
+            - "(Const VALUE_BASE64 ___)"
+            - "(Const VALUE_URL ___)"
+
+  fixme:
     enabled: true

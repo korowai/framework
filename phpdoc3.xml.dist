@@ -11,7 +11,8 @@
         <path>src</path>
       </source>
       <ignore>
-        <path>*/Tests/*</path>
+        <path>*/tests/*</path>
+        <path>*/tests-nocov/*</path>
         <path>*/Behat/*</path>
       </ignore>
       <visibility>public</visibility>

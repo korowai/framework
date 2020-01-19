@@ -890,6 +890,8 @@ EXCLUDE_SYMLINKS       = NO
 # exclude all test directories for example use the pattern */test/*
 
 EXCLUDE_PATTERNS       = */Tests/* \
+                         */tests/* \
+                         */tests-nocov/* \
                          */Resources/* \
                          */Behat/* \
                          */vendor/*

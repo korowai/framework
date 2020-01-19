@@ -1,12 +1,11 @@
 <?php
-/**
- * @file src/Korowai/Lib/Ldap/Adapter/AdapterInterface.php
+
+/*
+ * This file is part of Korowai framework.
  *
- * This file is part of the Korowai package
+ * (c) Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  *
- * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @package korowai\contracts
- * @license Distributed under MIT license.
+ * Distributed under MIT license.
  */
 
 declare(strict_types=1);
@@ -36,19 +35,19 @@ interface AdapterInterface
     /**
      * Creates a search query.
      *
-     * @param string $base_dn Base DN where the search will start
-     * @param string $filter Filter used by ldap search
-     * @param array $options Additional search options
+     * @param  string $base_dn Base DN where the search will start
+     * @param  string $filter Filter used by ldap search
+     * @param  array $options Additional search options
      *
      * @return SearchQueryInterface
      */
-    public function createSearchQuery(string $base_dn, string $filter, array $options = array()) : SearchQueryInterface;
+    public function createSearchQuery(string $base_dn, string $filter, array $options = []) : SearchQueryInterface;
     /**
      * Creates a compare query.
      *
-     * @param string $dn DN of the target entry
-     * @param string $attribute Target attribute
-     * @param string $value Value used for comparison
+     * @param  string $dn DN of the target entry
+     * @param  string $attribute Target attribute
+     * @param  string $value Value used for comparison
      *
      * @return CompareQueryInterface
      */

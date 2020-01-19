@@ -19,6 +19,17 @@ Feature: Examples
       | "lib/ldap/ldap_exception_2.php"    | "lib/ldap/ldap_exception_2.stdout"    | "lib/ldap/ldap_exception_2.stderr"    | 2         |
       | "lib/ldap/mock_searchquery.php"    | "lib/ldap/mock_searchquery.stdout"    | "lib/ldap/mock_searchquery.stderr"    | 0         |
 
+  Scenario Outline: Examples for korowai/basiclib
+    Given I executed doc example <example_file>
+    Then I should see stdout from <stdout_file>
+    And I should see stderr from <stderr_file>
+    And I should see exit code <exit_code>
+
+    Examples:
+      | example_file                              | stdout_file                                  | stderr_file                                  | exit_code |
+      | "lib/basic/trivial_singleton.php"         | "lib/basic/trivial_singleton.stdout"         | "lib/basic/trivial_singleton.stderr"         | 0         |
+      | "lib/basic/count_singleton.php"           | "lib/basic/count_singleton.stdout"           | "lib/basic/count_singleton.stderr"           | 0         |
+
   Scenario Outline: Examples for korowai/contextlib
     Given I executed doc example <example_file>
     Then I should see stdout from <stdout_file>
@@ -36,7 +47,7 @@ Feature: Examples
       | "lib/context/exception_handling.php"      | "lib/context/exception_handling.stdout"      | "lib/context/exception_handling.stderr"      | 1         |
       | "lib/context/exit_true.php"               | "lib/context/exit_true.stdout"               | "lib/context/exit_true.stderr"               | 0         |
 
-  Scenario Outline: Examples for korowai/errorib
+  Scenario Outline: Examples for korowai/errorlib
     Given I executed doc example <example_file>
     Then I should see stdout from <stdout_file>
     And I should see stderr from <stderr_file>
@@ -49,3 +60,41 @@ Feature: Examples
       | "lib/error/simple_exception_thrower.php"  | "lib/error/simple_exception_thrower.stdout"   | "lib/error/simple_exception_thrower.stderr"   | 1         |
       | "lib/error/caller_error_handler.php"      | "lib/error/caller_error_handler.stdout"       | "lib/error/caller_error_handler.stderr"       | 0         |
       | "lib/error/caller_error_thrower.php"      | "lib/error/caller_error_thrower.stdout"       | "lib/error/caller_error_thrower.stderr"       | 1         |
+
+  Scenario Outline: Examples for korowai/rfclib
+    Given I executed doc example <example_file>
+    Then I should see stdout from <stdout_file>
+    And I should see stderr from <stderr_file>
+    And I should see exit code <exit_code>
+
+    Examples:
+      | example_file                              | stdout_file                                   | stderr_file                                   | exit_code |
+      | "lib/rfc/rfc_rules.php"                   | "lib/rfc/rfc_rules.stdout"                    | "lib/rfc/rfc_rules.stderr"                    | 0         |
+      | "lib/rfc/rfc2849/version_spec.php"        | "lib/rfc/rfc2849/version_spec.stdout"         | "lib/rfc/rfc2849/version_spec.stderr"         | 0         |
+      | "lib/rfc/rfc2849/dn_spec.php"             | "lib/rfc/rfc2849/dn_spec.stdout"              | "lib/rfc/rfc2849/dn_spec.stderr"              | 0         |
+      | "lib/rfc/rfc2849/changerecord_init.php"   | "lib/rfc/rfc2849/changerecord_init.stdout"    | "lib/rfc/rfc2849/changerecord_init.stderr"    | 0         |
+      | "lib/rfc/rfc2849/mod_spec_init.php"       | "lib/rfc/rfc2849/mod_spec_init.stdout"        | "lib/rfc/rfc2849/mod_spec_init.stderr"        | 0         |
+      | "lib/rfc/rfc2849/control.php"             | "lib/rfc/rfc2849/control.stdout"              | "lib/rfc/rfc2849/control.stderr"              | 0         |
+      | "lib/rfc/rfc2849/newrdn_spec.php"         | "lib/rfc/rfc2849/newrdn_spec.stdout"          | "lib/rfc/rfc2849/newrdn_spec.stderr"          | 0         |
+      | "lib/rfc/rfc2849/newsuperior_spec.php"    | "lib/rfc/rfc2849/newsuperior_spec.stdout"     | "lib/rfc/rfc2849/newsuperior_spec.stderr"     | 0         |
+      | "lib/rfc/rfc2849/attrval_spec.php"        | "lib/rfc/rfc2849/attrval_spec.stdout"         | "lib/rfc/rfc2849/attrval_spec.stderr"         | 0         |
+      | "lib/rfc/rfc2849/value_spec.php"          | "lib/rfc/rfc2849/value_spec.stdout"           | "lib/rfc/rfc2849/value_spec.stderr"           | 0         |
+
+  Scenario Outline: Examples for korowai/testing
+    Given I tested <example_file> with PHPUnit
+    Then I should see PHPUnit stdout from <stdout_file>
+    And I should see stderr from <stderr_file>
+    And I should see exit code <exit_code>
+
+    Examples:
+      | example_file                                  | stdout_file                                     | stderr_file                                     | exit_code |
+      | "testing/AssertExtendsClassTest.php"          | "testing/AssertExtendsClassTest.stdout"         | "testing/AssertExtendsClassTest.stderr"         | 1         |
+      | "testing/AssertHasPregCapturesTest.php"       | "testing/AssertHasPregCapturesTest.stdout"      | "testing/AssertHasPregCapturesTest.stderr"      | 1         |
+      | "testing/AssertHasPropertiesSameAsTest.php"   | "testing/AssertHasPropertiesSameAsTest.stdout"  | "testing/AssertHasPropertiesSameAsTest.stderr"  | 1         |
+      | "testing/AssertImplementsInterfaceTest.php"   | "testing/AssertImplementsInterfaceTest.stdout"  | "testing/AssertImplementsInterfaceTest.stderr"  | 1         |
+      | "testing/AssertUsesTraitTest.php"             | "testing/AssertUsesTraitTest.stdout"            | "testing/AssertUsesTraitTest.stderr"            | 1         |
+      | "testing/extendsClassTest.php"                | "testing/extendsClassTest.stdout"               | "testing/extendsClassTest.stderr"               | 1         |
+      | "testing/hasPregCapturesTest.php"             | "testing/hasPregCapturesTest.stdout"            | "testing/hasPregCapturesTest.stderr"            | 1         |
+      | "testing/hasPropertiesIdenticalToTest.php"    | "testing/hasPropertiesIdenticalToTest.stdout"   | "testing/hasPropertiesIdenticalToTest.stderr"   | 1         |
+      | "testing/implementsInterfaceTest.php"         | "testing/implementsInterfaceTest.stdout"        | "testing/implementsInterfaceTest.stderr"        | 1         |
+      | "testing/usesTraitTest.php"                   | "testing/usesTraitTest.stdout"                  | "testing/usesTraitTest.stderr"                  | 1         |

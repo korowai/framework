@@ -1,19 +1,19 @@
-.. index::
-   :single: Context; Custom Error Handlers
-   :single: Lib; Context; Custom Error Handlers
 
-.. _ExceptionErrorHandlers:
+.. index::
+   single: Context; Exception Error Handlers
+   single: Lib; Context; Exception Error Handlers
+.. _lib.error.exception-error-handlers:
 
 Exception Error Handlers
-------------------------
+========================
 
-:ref:`ExceptionErrorHandlers` are error handlers that throw predefined
-exceptions in response to PHP errors. :ref:`TheErrorLibrary` provides
+:ref:`lib.error.exception-error-handlers` are error handlers that throw predefined
+exceptions in response to PHP errors. :ref:`lib.error` provides
 :class:`Korowai\\Lib\\Error\\ExceptionErrorHandler` class to easily create
 exception-throwing error handlers.
 
 A simple example with ExceptionErrorHandler
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+-------------------------------------------
 
 In this example we'll set up a context to throw :phpclass:`\\ErrorException` in
 response to PHP errors of severity ``E_USER_ERROR``. We'll use following two
@@ -39,6 +39,7 @@ The output from our example is like
 - stderr
 
    .. literalinclude:: ../../examples/lib/error/simple_exception_thrower.stderr
+      :linenos:
       :language: none
 
 .. <!--- vim: set syntax=rst spell: -->

@@ -1,0 +1,20 @@
+failed: "$$$\n"
+-
+matched: "cn: safe\n"
+matches: {"0":"cn: safe\n","attr_desc":"cn","value_safe":"safe"}
+-
+matched: "cn:: YmFzZTY0\n"
+matches: {"0":"cn:: YmFzZTY0\n","attr_desc":"cn","value_b64":"YmFzZTY0"}
+-
+matched: "cn:< file:///cn.txt\n"
+matches: {"0":"cn:< file:///cn.txt\n","attr_desc":"cn","value_url":"file:///cn.txt","uri_reference":"file:///cn.txt","uri":"file:///cn.txt","scheme":"file","hier_part":"///cn.txt","authority":"","host":"","reg_name":"","path_abempty":"/cn.txt"}
+-
+matched: "cn: błąd\n"
+matches: {"0":"cn: błąd\n","attr_desc":"cn","value_safe_error":"łąd"}
+-
+matched: "cn:: YmF***Y0\n"
+matches: {"0":"cn:: YmF***Y0\n","attr_desc":"cn","value_b64_error":"***Y0"}
+-
+matched: "cn:< file:błąd.txt\n"
+matches: {"0":"cn:< file:błąd.txt\n","attr_desc":"cn","uri_reference":"file:b","uri":"file:b","scheme":"file","hier_part":"b","path_rootless":"b","value_url_error":"łąd.txt"}
+-

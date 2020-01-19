@@ -1,0 +1,40 @@
+{
+    "name": "korowai/compatlib",
+    "description": "A compatibility layer between korowai and PHP libraries",
+    "type": "library",
+    "license": "MIT",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "suport": {
+      "issues": "https://github.com/korowai/framework/issues",
+      "source": "https://github.com/korowai/framework"
+    },
+    "authors": [
+        {
+            "name": "Paweł Tomulik",
+            "email": "ptomulik@meil.pw.edu.pl"
+        }
+    ],
+    "require": {
+        "php": ">=7.1.3",
+        "korowai/contracts": "*",
+        "korowai/contextlib": "*",
+        "korowai/errorlib": "*"
+    },
+    "autoload": {
+      "psr-4" : {
+        "Korowai\\Lib\\Compat\\" : "src/Korowai/Lib/Compat/"
+      },
+      "files" : [
+        "src/Korowai/Lib/Compat/functions.php"
+      ],
+      "exclude-from-classmap": [
+        "/Tests/"
+      ]
+    },
+    "autoload-dev": {
+      "psr-4" : {
+        "Korowai\\Lib\\Compat\\Tests\\" : "Tests/"
+      }
+    }
+}

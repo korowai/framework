@@ -14,6 +14,7 @@ exclude_patterns:
   - "**/Resources/"
   - "**/vendor/"
   - "packages/ldaplib/src/Korowai/Lib/Ldap/Adapter/ExtLdap/LdapLink.php"
+  - "packages/compatlib/src/Korowai/Lib/Compat/functions/preg.php"
 plugins:
   phpcodesniffer:
     enabled: true

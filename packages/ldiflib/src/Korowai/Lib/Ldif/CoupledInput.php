@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Korowai\Lib\Ldif;
 
 use Korowai\Lib\Ldif\Util\IndexMap;
+use function Korowai\Lib\Compat\preg_split;
 
 /**
  * Preprocessed input.
@@ -171,6 +172,14 @@ class CoupledInput implements CoupledInputInterface
     /**
      * {@inheritdoc}
      */
+    public function getSourceLinesCount() : int
+    {
+        return count($this->getSourceLines());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getSourceLine(int $i) : string
     {
         return ($this->getSourceLines())[$i];
@@ -216,13 +225,13 @@ class CoupledInput implements CoupledInputInterface
     /**
      * Returns the sourceLinesMap array.
      *
-     * The sourceLinesMap array is used to map character offsets in the source
-     * string onto their corresponding line numbers (zero based). The array is
-     * internally used by ``getSrouceLineIndex()``.
+     * The sourceLinesMap is used to map character offsets in the source
+     * string onto their corresponding line numbers (zero based). The map is
+     * internally used by ``getSourceLineIndex()``.
      *
-     * @return array
+     * @return InexMap
      */
-    public function getSourceLinesMap() : array
+    public function getSourceLinesMap() : IndexMap
     {
         if (!isset($this->sourceLinesMap)) {
             $this->initSourceLines($this->getSourceString());
@@ -247,7 +256,7 @@ class CoupledInput implements CoupledInputInterface
     protected function initSourceLines(string $source)
     {
         $re = '/(?:\r\n|\n)/m';
-        $pieces = Util\preg_split($re, $source, -1, PREG_SPLIT_OFFSET_CAPTURE);
+        $pieces = preg_split($re, $source, -1, PREG_SPLIT_OFFSET_CAPTURE);
 
         $cnt = count($pieces);
 

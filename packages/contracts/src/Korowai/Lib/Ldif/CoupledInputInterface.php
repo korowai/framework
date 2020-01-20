@@ -82,6 +82,13 @@ interface CoupledInputInterface
     public function getSourceLines() : array;
 
     /**
+     * Returns the number of source lines.
+     *
+     * @return int
+     */
+    public function getSourceLinesCount() : int;
+
+    /**
      * Returns $i'th line of the source string.
      *
      * @param int $i

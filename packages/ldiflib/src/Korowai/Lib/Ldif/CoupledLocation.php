@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Korowai\Lib\Ldif;
 
 /**
- * Cursor object. Points at a character of preprocessed input.
+ * Points at a character of preprocessed input.
  */
 class CoupledLocation implements CoupledLocationInterface
 {

@@ -175,8 +175,8 @@ class CoupledInputTest extends TestCase
     public function test__sourceLines(CoupledInput $input, array $expLines, array $expLinesMap)
     {
         $this->assertSame($expLines, $input->getSourceLines());
-        $this->assertSame($expLinesMap, $input->getSourceLinesMap()->getArray());
         $this->assertSame(count($expLines), $input->getSourceLinesCount());
+        $this->assertSame($expLinesMap, $input->getSourceLinesMap()->getArray());
         $this->assertSame(0, $input->getSourceLinesMap()->getIncrement());
     }
 
@@ -237,13 +237,6 @@ class CoupledInputTest extends TestCase
                 new CoupledInput("l 1\n#l 2\r\nl 3\n", "l 1\nl 3\n", new IndexMap([[0,0], [4,10]])),
                 [0 => 0, 1 => 0, 2 => 0, 3 => 0, 4 => 2, 5 => 2, 6 => 2, 7 => 2, 8 => 3, 9 => 3]
             ],
-
-            /*[
-                //                000 00000 0 0111 1    000 0000 00
-                //                012 34567 8 9012 3    012 3456 78
-                new CoupledInput("l 1\n#l 2\r\nl 3\n", "l 1\nl 3\n", new IndexMap([[4,10]])),
-                [0 => 0, 1 => 0, 2 => 0, 3 => 0, 4 => 2, 5 => 2, 6 => 2, 7 => 2, 8 => 3, 9 => 3]
-            ],*/
         ];
     }
 
@@ -255,6 +248,166 @@ class CoupledInputTest extends TestCase
         foreach ($cases as $i => $j) {
             $this->assertSame($j, $input->getSourceLineIndex($i));
         }
+    }
+
+    public function sourceLineAndByteOffsetCases()
+    {
+        return [
+            [
+                new CoupledInput("", "", new IndexMap([])),
+                [0 => [0,0], 1 => [0,1]],
+            ],
+
+            [
+                //                012 3    012 3
+                new CoupledInput("l 1\n", "l 1\n", new IndexMap([])),
+                //    l           _           1           \n
+                [0 => [0,0], 1 => [0,1], 2 => [0,2], 3 => [0,3], 4 => [1,0], 5 => [1,1]],
+            ],
+
+            [
+                //                000 00000 0 0111 1    000 0000 00
+                //                012 34567 8 9012 3    012 3456 78
+                new CoupledInput("l 1\n#l 2\r\nl 3\n", "l 1\nl 3\n", new IndexMap([[0,0], [4,10]])),
+                [
+                    0 => [0,0], // l
+                    1 => [0,1], // <space>
+                    2 => [0,2], // 1
+                    3 => [0,3], // \n
+                    4 => [2,0], // l
+                    5 => [2,1], // <space>
+                    6 => [2,2], // 3
+                    7 => [2,3], // \n
+                    8 => [3,0], // EOF
+                    9 => [3,1], // EOF
+                ]
+            ],
+
+            [
+                //                000 00000 1 1111 1    000 0000 01
+                //                013 45689 0 1234 6    013 4567 90
+                new CoupledInput("lód\n#łan\r\nryż\n", "lód\nryż\n", new IndexMap([[0,0], [5,12]])),
+                [
+                    0 => [0,0], // l
+                    1 => [0,1], // ó
+                    3 => [0,3], // d
+                    4 => [0,4], // \n
+                    5 => [2,0], // r
+                    6 => [2,1], // y
+                    7 => [2,2], // ż
+                    9 => [2,4], // \n
+                   10 => [3,0], // EOF
+                   11 => [3,1], // EOF
+                ]
+            ],
+
+        ];
+    }
+
+    /**
+     * @dataProvider sourceLineAndByteOffsetCases
+     */
+    public function test__getSourceLineAndByteOffset(CoupledInput $input, array $cases)
+    {
+        foreach ($cases as $i => $expect) {
+            [$expLine, $expOffset] = $expect;
+            [$line, $offset] = $input->getSourceLineAndByteOffset($i);
+            $this->assertSame($expLine, $line);
+            $this->assertSame($expOffset, $offset);
+        }
+    }
+
+    public function test__getSourceLineAndByteOffset__withEmptyMap()
+    {
+        $input = new class ("", "", new IndexMap([])) extends CoupledInput {
+            public function getSourceLinesMap() : IndexMap
+            {
+                return new IndexMap([], 0);
+            }
+        };
+
+        $this->assertSame([-1,0], $input->getSourceLineAndByteOffset(-1));
+        $this->assertSame([ 0,0], $input->getSourceLineAndByteOffset( 0));
+        $this->assertSame([ 1,0], $input->getSourceLineAndByteOffset( 1));
+    }
+
+    public function sourceLineAndCharOffsetCases()
+    {
+        return [
+            [
+                new CoupledInput("", "", new IndexMap([])),
+                [0 => [0,0], 1 => [0,0]],
+            ],
+
+            [
+                //                012 3    012 3
+                new CoupledInput("l 1\n", "l 1\n", new IndexMap([])),
+                //    l           _           1           \n
+                [0 => [0,0], 1 => [0,1], 2 => [0,2], 3 => [0,3], 4 => [1,0], 5 => [1,0]],
+            ],
+
+            [
+                //                000 00000 0 0111 1    000 0000 00
+                //                012 34567 8 9012 3    012 3456 78
+                new CoupledInput("l 1\n#l 2\r\nl 3\n", "l 1\nl 3\n", new IndexMap([[0,0], [4,10]])),
+                [
+                    0 => [0,0], // l
+                    1 => [0,1], // <space>
+                    2 => [0,2], // 1
+                    3 => [0,3], // \n
+                    4 => [2,0], // l
+                    5 => [2,1], // <space>
+                    6 => [2,2], // 3
+                    7 => [2,3], // \n
+                    8 => [3,0], // EOF
+                    9 => [3,0], // EOF
+                ]
+            ],
+
+            [
+                //                000 00000 1 1111 1    000 0000 01
+                //                013 45689 0 1234 6    013 4567 90
+                new CoupledInput("lód\n#łan\r\nryż\n", "lód\nryż\n", new IndexMap([[0,0], [5,12]])),
+                [
+                    0 => [0,0], // l
+                    1 => [0,1], // ó
+                    3 => [0,2], // d
+                    4 => [0,3], // \n
+                    5 => [2,0], // r
+                    6 => [2,1], // y
+                    7 => [2,2], // ż
+                    9 => [2,3], // \n
+                   10 => [3,0], // EOF
+                   11 => [3,0], // EOF
+                ]
+            ],
+
+        ];
+    }
+
+    /**
+     * @dataProvider sourceLineAndCharOffsetCases
+     */
+    public function test__getSourceLineAndCharOffset(CoupledInput $input, array $cases)
+    {
+        foreach ($cases as $i => $expect) {
+            [$expLine, $expOffset] = $expect;
+            [$line, $offset] = $input->getSourceLineAndCharOffset($i);
+            $this->assertSame($expLine, $line);
+            $this->assertSame($expOffset, $offset);
+        }
+    }
+
+    public function test__sourceFileName()
+    {
+        $im = new IndexMap([]);
+        $input = new CoupledInput('', '', $im);
+        $this->assertSame('-', $input->getSourceFileName());
+
+        $input = new CoupledInput('', '', $im, 'foo.ldif');
+        $this->assertSame('foo.ldif', $input->getSourceFileName());
+        $input->setSourceFileName('bar.ldif');
+        $this->assertSame('bar.ldif', $input->getSourceFileName());
     }
 }
 

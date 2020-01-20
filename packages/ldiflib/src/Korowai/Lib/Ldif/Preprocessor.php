@@ -22,7 +22,7 @@ use function Korowai\Lib\Compat\preg_split;
 class Preprocessor
 {
     /**
-     * Assembles pieces produced by rmRe() and updates "index map" array.
+     * Assembles pieces produced by rmRe() and updates index map *$im* accordingly.
      *
      * @param  array $pieces
      * @param  IndexMap $im
@@ -39,7 +39,7 @@ class Preprocessor
     }
 
     /**
-     * Removes parts of the string that match a regular expression $re.
+     * Removes parts of the string that match a regular expression *$re*.
      *
      * @param  string $re the regular expression to be matched
      * @param  string $src the original string
@@ -82,6 +82,8 @@ class Preprocessor
     }
 
     /**
+     * Runs preprocessor on source string.
+     *
      * @param string $source
      * @param string $filename
      *

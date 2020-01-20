@@ -20,12 +20,13 @@
         "wikimedia/composer-merge-plugin": "^1.4"
     },
     "replace": {
-        "korowai/contracts": "self.version",
-        "korowai/ldaplib": "self.version",
-        "korowai/ldiflib": "self.version",
         "korowai/basiclib" : "self.version",
+        "korowai/compatlib": "self.version",
         "korowai/contextlib" : "self.version",
-        "korowai/errorlib" : "self.version"
+        "korowai/contracts": "self.version",
+        "korowai/errorlib" : "self.version",
+        "korowai/ldaplib": "self.version",
+        "korowai/ldiflib": "self.version"
     },
     "require-dev": {
         "phpunit/phpunit": ">=7.5.16",

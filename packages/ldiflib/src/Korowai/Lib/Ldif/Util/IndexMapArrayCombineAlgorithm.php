@@ -49,10 +49,10 @@ class IndexMapArrayCombineAlgorithm
     protected $ns;
 
     /**
-     * Total shrink (an effect of ``$old`` and ``$new`` combined)
+     * Old shrink (introduced by ``$old``)
      * @var int
      */
-    protected $ts;
+    protected $os;
 
     /**
      * The first input index map array for the algorithm.
@@ -77,8 +77,8 @@ class IndexMapArrayCombineAlgorithm
         $this->im = [];
         $this->i = 0;
         $this->j = 0;
-        $this->ns =0 ;
-        $this->ts = 0;
+        $this->os = 0;
+        $this->ns = 0;
         $this->old = $old;
         $this->new = $new;
     }
@@ -107,7 +107,7 @@ class IndexMapArrayCombineAlgorithm
         if ($this->i >= count($this->old)) {
             return true;
         }
-        return $this->new[$this->j][1] < ($this->old[$this->i][0] - $this->ns);
+        return ($this->new[$this->j][1] + $this->ns) < $this->old[$this->i][0];
     }
 
     /**
@@ -122,7 +122,7 @@ class IndexMapArrayCombineAlgorithm
             return false;
         }
 
-        return $this->new[$this->j][0] <= ($this->old[$this->i][0] - $this->ns);
+        return !(($this->new[$this->j][0] + $this->ns) > $this->old[$this->i][0]);
     }
 
     /**
@@ -131,9 +131,12 @@ class IndexMapArrayCombineAlgorithm
      */
     protected function stepBefore()
     {
-        $this->ts += ($this->new[$this->j][1] - $this->new[$this->j][0]);
-        $this->im[] = [$this->new[$this->j][0], $this->new[$this->j][0] + $this->ts];
-        $this->ns += ($this->new[$this->j][1] - $this->new[$this->j][0]);
+        if ($this->j >= count($this->new)) {
+            // this should never happen, however...
+            throw new \RuntimeException("internal error");
+        }
+        $this->im[] = [$this->new[$this->j][0], $this->new[$this->j][1] + $this->os];
+        $this->ns = ($this->new[$this->j][1] - $this->new[$this->j][0]);
         $this->j++;
     }
 
@@ -143,13 +146,16 @@ class IndexMapArrayCombineAlgorithm
      */
     protected function stepEnclosing()
     {
-        $this->ts += ($this->new[$this->j][1] - $this->new[$this->j][0]);
+        if ($this->i >= count($this->old) || $this->j >= count($this->new)) {
+            // this should never happen, however...
+            throw new \RuntimeException("internal error");
+        }
         do {
-            $this->ts += ($this->old[$this->i][1] - $this->old[$this->i][0]);
             $this->i++;
-        } while ($this->i < count($this->old) && ($this->old[$this->i][0] - $this->ns) <= $this->new[$this->j][1]);
-        $this->im[] = [$this->new[$this->j][0], $this->new[$this->j][0] + $this->ts];
-        $this->ns += ($this->new[$this->j][1] - $this->new[$this->j][0]);
+        } while ($this->i < count($this->old) && $this->old[$this->i][0] <= ($this->new[$this->j][1] + $this->ns));
+        $this->ns = ($this->new[$this->j][1] - $this->new[$this->j][0]);
+        $this->os = ($this->old[$this->i-1][1] - $this->old[$this->i-1][0]);
+        $this->im[] = [$this->new[$this->j][0], $this->new[$this->j][1] + $this->os];
         $this->j++;
     }
 
@@ -159,13 +165,13 @@ class IndexMapArrayCombineAlgorithm
      */
     protected function stepAfter()
     {
-        if ($this->i < count($this->old)) {
-            $this->im[] = [$this->old[$this->i][0] - $this->ns, $this->old[$this->i][1]];
-            $this->ts += ($this->old[$this->i][1] - $this->old[$this->i][0]);
-            $this->i++;
-        } else {
+        if ($this->i >= count($this->old)) {
+            // this should never happen, however...
             throw new \RuntimeException("internal error");
         }
+        $this->im[] = [$this->old[$this->i][0] - $this->ns, $this->old[$this->i][1]];
+        $this->os = ($this->old[$this->i][1] - $this->old[$this->i][0]);
+        $this->i++;
     }
 
     /**

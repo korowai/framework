@@ -26,7 +26,6 @@
         "Korowai\\Lib\\Ldif\\" : "src/Korowai/Lib/Ldif/"
       },
       "files" : [
-        "src/Korowai/Lib/Ldif/Util/preprocessing.php"
       ],
       "exclude-from-classmap": [
         "/Tests/"

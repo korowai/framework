@@ -41,6 +41,135 @@ class IndexMapTest extends TestCase
         $this->assertSame($expect, $array);
     }
 
+    public function arrayIndexMapCases()
+    {
+        // For given index map array and increment (optional), define how
+        // particular offsets are expected to be mapped.
+        return [
+            [
+                [[[0,0]]], [
+                    -2 => [-2, 0],
+                     0 => [ 0, 0],
+                     1 => [ 1, 0],
+                     2 => [ 2, 0],
+                    -1 => [-1, 0],
+                ]
+            ],
+            [
+                [[[0,0], [4,6], [8,12]]], [
+                    -2 => [-2, 0],
+                     0 => [ 0, 0],
+                     1 => [ 1, 0],
+                     2 => [ 2, 0],
+                     3 => [ 3, 0],
+                     4 => [ 6, 1],
+                     5 => [ 7, 1],
+                     6 => [ 8, 1],
+                     7 => [ 9, 1],
+                     8 => [12, 2],
+                     9 => [13, 2],
+                    10 => [14, 2],
+                    -1 => [-1, 0],
+                ]
+            ],
+            [
+                [[[0,0], [4,6], [8,12]], 0], [
+                    -2 => [ 0, 0],
+                     0 => [ 0, 0],
+                     1 => [ 0, 0],
+                     2 => [ 0, 0],
+                     3 => [ 0, 0],
+                     4 => [ 6, 1],
+                     5 => [ 6, 1],
+                     6 => [ 6, 1],
+                     7 => [ 6, 1],
+                     8 => [12, 2],
+                     9 => [12, 2],
+                    10 => [12, 2],
+                    -1 => [ 0, 0],
+                ]
+            ],
+            [
+                [[]], [
+                    -1 => [-1, null],
+                     0 => [ 0, null],
+                     1 => [ 1, null],
+                ]
+            ]
+        ];
+    }
+
+    /**
+     * @dataProvider arrayIndexMapCases
+     */
+    public function test__arrayApply(array $args, array $cases)
+    {
+        $im = $args[0];
+        $inc = $args[1] ?? 1;
+        foreach ($cases as $i => $case) {
+            $expect = $case[0];
+            $expectIndex = $case[1];
+            $this->assertSame($expect, IndexMap::arrayApply($im, $i, $inc, $index));
+            $this->assertSame($expectIndex, $index);
+        }
+    }
+
+    public function arraySearchCases()
+    {
+        return [
+            [
+                [[0,0]], [
+                     0 => 0,
+                     1 => 0,
+                    41 => 0
+                ]
+            ],
+            [
+                [[0,0], [3,10], [5,19]], [
+                     0 => 0,
+                     1 => 0,
+                     2 => 0,
+                     3 => 1,
+                     4 => 1,
+                     5 => 2,
+                     6 => 2,
+                    41 => 2
+                ]
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider arraySearchCases
+     */
+    public function test__arraySearch($im, $cases)
+    {
+        foreach ($cases as $i => $j) {
+            $this->assertSame($j, IndexMap::arraySearch($im, $i));
+        }
+    }
+
+    public function arraySearchFailingCases()
+    {
+        return [
+            [ [], 0 ],
+            [ [], 1 ],
+            [ [[0,0]], -1 ],
+            [ [[1,12]],  0 ],
+        ];
+    }
+
+    /**
+     * @dataProvider arraySearchFailingCases
+     */
+    public function test__arraySearch__exception($im, $i)
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('internal error: arraySearch() failed');
+
+        IndexMap::arraySearch($im, $i);
+    }
+
     /**
      * @dataProvider arrayFromPieces
      */
@@ -83,60 +212,9 @@ class IndexMapTest extends TestCase
 
     public function indexMapCases()
     {
-        // For given IndexMap instance, define how particular offsets are
-        // expected to be mapped.
-        return [
-            [
-                new IndexMap([[0, 0]]), [
-                    -2 => [-2, 0],
-                     0 => [ 0, 0],
-                     1 => [ 1, 0],
-                     2 => [ 2, 0],
-                    -1 => [-1, 0],
-                ]
-            ],
-            [
-                new IndexMap([[0,0], [4,6], [8,12]]), [
-                    -2 => [-2, 0],
-                     0 => [ 0, 0],
-                     1 => [ 1, 0],
-                     2 => [ 2, 0],
-                     3 => [ 3, 0],
-                     4 => [ 6, 1],
-                     5 => [ 7, 1],
-                     6 => [ 8, 1],
-                     7 => [ 9, 1],
-                     8 => [12, 2],
-                     9 => [13, 2],
-                    10 => [14, 2],
-                    -1 => [-1, 0],
-                ]
-            ],
-            [
-                new IndexMap([[0,0], [4,6], [8,12]], 0), [
-                    -2 => [ 0, 0],
-                     0 => [ 0, 0],
-                     1 => [ 0, 0],
-                     2 => [ 0, 0],
-                     3 => [ 0, 0],
-                     4 => [ 6, 1],
-                     5 => [ 6, 1],
-                     6 => [ 6, 1],
-                     7 => [ 6, 1],
-                     8 => [12, 2],
-                     9 => [12, 2],
-                    10 => [12, 2],
-                    -1 => [ 0, 0],
-                ]
-            ],
-            [
-                new IndexMap([]), [
-                    -1 => [-1, null],
-                     0 => [ 0, null],
-                     1 => [ 1, null],
-                ]
-            ]
-        ];
+        return array_map(function(array $item) {
+            return [new IndexMap(...($item[0])), $item[1]];
+        }, $this->arrayIndexMapCases());
     }
 
     /**
@@ -144,10 +222,10 @@ class IndexMapTest extends TestCase
      */
     public function test__apply(IndexMap $im, array $cases)
     {
-        foreach ($cases as $arg => $case) {
+        foreach ($cases as $i => $case) {
             $expect = $case[0];
             $expectIndex = $case[1];
-            $this->assertSame($expect, $im->apply($arg, $index));
+            $this->assertSame($expect, $im->apply($i, $index));
             $this->assertSame($expectIndex, $index);
         }
     }

@@ -28,13 +28,18 @@ class IndexMapArrayCombineAlgorithmTest extends TestCase
             [ [],                                   [],                                 []                      ],
             [ [[0,0]],                              [[0,0]],                            []                      ],
             [ [[0,0]],                              [],                                 [[0,0]]                 ],
+            [ [[2,4], [3,6], [4,9]],                [[2,4], [5,9]],                     [[3,4]]                 ],
+            [ [[0,0], [5,7], [12,16]],              [],                                 [[0,0], [5,7], [12,16]] ],
+            [ [[0,0], [5,7], [12,16]],              [[0,0]],                            [[0,0], [5,7], [12,16]] ],
+            [ [[0,0], [5,7], [12,16], [15,20]],     [[0,0], [19,20]],                   [[0,0], [5,7], [12,16]] ],
             [ [[0,0]],                              [[0,0]],                            [[0,0]]                 ],
             [ [[0,0], [4,8], [6,15]],               [[0,0], [10,15]],                   [[0,0], [4,8]]          ],
             [ [[0,0], [4,23]],                      [[0,0], [10,15]],                   [[0,0], [4,18]]         ],
             [ [[0,0], [4,8], [9,18]],               [[0,0], [4,8]],                     [[0,0], [9,14]]         ],
-            [ [[0,0], [2,4], [3,10], [4,13]],       [[0,0], [5,10]],                    [[0,0], [2,4], [4,6]]   ],
-            [ [[0,0], [2,4], [3,13]],               [[0,0], [5,10]],                    [[0,0], [2,4], [3,6]]   ],
+            [ [[0,0], [2,4], [3,10], [4,11]],       [[0,0], [5,10]],                    [[0,0], [2,4], [4,6]]   ],
+            [ [[0,0], [2,4], [3,11]],               [[0,0], [5,10]],                    [[0,0], [2,4], [3,6]]   ],
             [ [[0,12], [5,19], [12,28], [30, 48]],  [[0,0], [17,19], [24,28], [42,48]], [[0,12]]                ],
+            [ [[2,10]],                             [[3,5], [5,9]],                     [[2,6]]                 ],
         ];
     }
 
@@ -47,22 +52,65 @@ class IndexMapArrayCombineAlgorithmTest extends TestCase
         $this->assertSame($expected, $combine($old, $new));
     }
 
-    public function test__invoke__internalError()
+    public function internalErrorCases()
     {
-        // for code coverage
-        $combine = new class extends Algorithm {
-            public function __invoke(array $old, array $new) : array
-            {
-                $this->reset($old, $new);
-                $this->stepAfter();
-                return [];
-            }
-        };
+        return [
+            [
+                new class extends Algorithm {
+                    public function __invoke(array $old, array $new) : array
+                    {
+                        $this->reset($old, $new);
+                        $this->stepBefore();
+                        return [];
+                    }
+                },
+                [[0,0]], [],
+            ],
+            [
+                new class extends Algorithm {
+                    public function __invoke(array $old, array $new) : array
+                    {
+                        $this->reset($old, $new);
+                        $this->stepAfter();
+                        return [];
+                    }
+                },
+                [], [[0,0]]
+            ],
+            [
+                new class extends Algorithm {
+                    public function __invoke(array $old, array $new) : array
+                    {
+                        $this->reset($old, $new);
+                        $this->stepEnclosing();
+                        return [];
+                    }
+                },
+                [[0,0]], []
+            ],
+            [
+                new class extends Algorithm {
+                    public function __invoke(array $old, array $new) : array
+                    {
+                        $this->reset($old, $new);
+                        $this->stepEnclosing();
+                        return [];
+                    }
+                },
+                [], [[0,0]]
+            ],
+        ];
+    }
 
+    /**
+     * @dataProvider internalErrorCases
+     */
+    public function test__invoke__internalError($combine, $old, $new)
+    {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('internal error');
 
-        $combine([], []);
+        $combine($old, $new);
     }
 }
 

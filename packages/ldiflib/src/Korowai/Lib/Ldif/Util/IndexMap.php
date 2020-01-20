@@ -80,23 +80,6 @@ class IndexMap
 
 
     /**
-     * Combines one index map array ($new) with another one ($old).
-     *
-     * This shall be used to implement consecutive string manipulations, where
-     * each step produces index map array.
-     *
-     * @param array $old original index map array from previous steps
-     * @param array $new a new index map array to be applied to $old
-     *
-     * @return array
-     */
-    public static function arrayCombine(array $old, array $new) : array
-    {
-        return (new IndexMapArrayCombineAlgorithm)($old, $new);
-    }
-
-
-    /**
      * Applies index map array $im to index value $i returning the mapped index
      * corresponding to $i.
      *
@@ -270,7 +253,6 @@ class IndexMap
     {
         $combine = $this->getArrayCombineAlgorithm();
         $this->array = $combine($this->getArray(), $array);
-        //$this->array = self::arrayCombine($this->getArray(), $array);
         return $this;
     }
 

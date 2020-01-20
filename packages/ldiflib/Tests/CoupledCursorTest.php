@@ -45,15 +45,14 @@ class CoupledCursorTest extends TestCase
 
         $this->assertSame(0, $cursor->getByteOffset());
 
-        $cursor->moveBy(2);
+        $this->assertSame($cursor, $cursor->moveBy(2));
         $this->assertSame(2, $cursor->getByteOffset());
 
-        $cursor->moveBy(3);
+        $this->assertSame($cursor, $cursor->moveBy(3));
         $this->assertSame(5, $cursor->getByteOffset());
 
-        $cursor->moveBy(-2);
+        $this->assertSame($cursor, $cursor->moveBy(-2));
         $this->assertSame(3, $cursor->getByteOffset());
-        $this->assertSame(5, $cursor->getByteOffset());
     }
 
     public function test__moveTo()
@@ -63,10 +62,10 @@ class CoupledCursorTest extends TestCase
 
         $this->assertSame(0, $cursor->getByteOffset());
 
-        $cursor->moveTo(2);
+        $this->assertSame($cursor, $cursor->moveTo(2));
         $this->assertSame(2, $cursor->getByteOffset());
 
-        $cursor->moveTo(3);
+        $this->assertSame($cursor, $cursor->moveTo(3));
         $this->assertSame(3, $cursor->getByteOffset());
     }
 }

@@ -19,7 +19,7 @@ use function Korowai\Lib\Compat\preg_split;
 /**
  * LDIF preprocessor.
  */
-class Preprocessor
+class Preprocessor implements PreprocessorInterface
 {
     /**
      * Assembles pieces produced by rmRe() and updates index map *$im* accordingly.
@@ -82,14 +82,9 @@ class Preprocessor
     }
 
     /**
-     * Runs preprocessor on source string.
-     *
-     * @param string $source
-     * @param string $filename
-     *
-     * @return CoupledInput
+     * {@inheritdoc}
      */
-    public function preprocess(string $source, string $filename = null) : CoupledInput
+    public function preprocess(string $source, string $filename = null) : CoupledInputInterface
     {
         $string = static::rmLnCont($source, ($im = new IndexMap([])));
         $string = static::rmComments($string, $im);

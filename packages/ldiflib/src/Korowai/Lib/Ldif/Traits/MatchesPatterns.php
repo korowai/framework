@@ -70,7 +70,7 @@ trait MatchesPatterns
      * @param  string $pattern
      * @param  CoupledLocationInterface $location
      * @param  string $msg Error message for the exception
-     * @param  int $flags Passed to ``preg_match()`` (note: ``PREG_OFFSET_CAPTURE`` is added unconditionally).
+     * @param  int $flags Passed to ``preg_match()``.
      *
      * @throws ParserError When pattern does not match
      * @throws PregException When error occurs in ``preg_match()``

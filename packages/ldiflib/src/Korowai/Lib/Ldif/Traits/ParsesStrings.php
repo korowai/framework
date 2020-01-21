@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Korowai\Lib\Ldif\Traits;
 
 use Korowai\Lib\Ldif\CoupledCursorInterface;
+use Korowai\Lib\Ldif\CoupledLocationInterface;
 use Korowai\Lib\Ldif\ParserError;
 
 /**
@@ -21,9 +22,9 @@ use Korowai\Lib\Ldif\ParserError;
  */
 trait ParsesStrings
 {
-    const RE_BASE64_CHAR = '[\+\/0-9=A-Za-z]';
-    const RE_SAFE_INIT_CHAR = '[\x01-\x09\x0B-\x0C\x0E-\x1F\x21-\x39\x3B\x3D-\x7F]';
-    const RE_SAFE_CHAR = '[\x01-\x09\x0B-\x0C\x0E-\x7F]';
+    protected static $re_base64_char = '[\+\/0-9=A-Za-z]';
+    protected static $re_safe_init_char = '[\x01-\x09\x0B-\x0C\x0E-\x1F\x21-\x39\x3B\x3D-\x7F]';
+    protected static $re_safe_char = '[\x01-\x09\x0B-\x0C\x0E-\x7F]';
 
 
     abstract public function matchAtOrThrow(
@@ -49,7 +50,7 @@ trait ParsesStrings
      */
     public function parseSafeString(CoupledCursorInterface $cursor) : string
     {
-        $re = '/\G'.self::RE_SAFE_INIT_CHAR.self::RE_SAFE_CHAR.'*/';
+        $re = '/\G'.self::$re_safe_init_char.self::$re_safe_char.'*/';
         $matches = $this->matchAheadOrThrow($re, $cursor, "syntax error: unexpected token (expected SAFE-STRING)");
         return $matches[0][0];
     }
@@ -63,7 +64,7 @@ trait ParsesStrings
      */
     public function parseBase64String(CoupledCursorInterface $cursor, callable $validate = null) : string
     {
-        $re = '/\G'.self::RE_BASE64_CHAR.'+/';
+        $re = '/\G'.self::$re_base64_char.'+/';
         $matches = $this->matchAtOrThrow($re, $cursor, "syntax error: unexpected token (expected BASE64-STRING)");
         $str = base64_decode($matches[0], true);
         if ($str === false) {

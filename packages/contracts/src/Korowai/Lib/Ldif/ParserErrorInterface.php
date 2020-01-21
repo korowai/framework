@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Lib/Ldif/ParserError.php
+ * @file src/Korowai/Lib/Ldif/ParserErrorInterface.php
  *
  * This file is part of the Korowai package
  *

@@ -25,7 +25,7 @@ interface ParserInterface
      *
      * @return ParserStateInterface
      */
-    public function parse(CoupledInputInterface $input) : ParserStateInterface;
+    public function parse(ParserStateInterface $state) : bool;
 }
 
 // vim: syntax=php sw=4 ts=4 et:

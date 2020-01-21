@@ -13,6 +13,10 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldif\Traits;
 
+use Korowai\Lib\Ldif\CoupledCursorInterface;
+use Korowai\Lib\Ldif\ParserStateInterface;
+use Korowai\Lib\Ldif\ParserError;
+
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
@@ -22,8 +26,9 @@ trait ParsesLdifFile
 
     /**
      * @todo Write documentation.
+     * @param ParserStateInterface $state
      */
-    public function parseLdifFile(ParserStateInterface $state)
+    public function parseLdifFile(ParserStateInterface $state) : bool
     {
         $cursor = $state->getCursor();
         $this->skipWs($cursor);

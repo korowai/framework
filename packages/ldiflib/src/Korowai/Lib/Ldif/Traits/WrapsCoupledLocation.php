@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Lib/Ldif/Traits/WrapsSourceLocation.php
+ * @file src/Korowai/Lib/Ldif/Traits/WrapsCoupledLocation.php
  *
  * This file is part of the Korowai package
  *
@@ -13,39 +13,37 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldif\Traits;
 
-use Korowai\Lib\Ldif\SourceLocationInterface;
+use Korowai\Lib\Ldif\CoupledLocationInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-trait WrapsSourceLocation
+trait WrapsCoupledLocation
 {
-    use ExposesSourceLocation;
+    use ExposesCoupledLocation;
 
     /**
-     * @var SourceLocationInterface
+     * @var CoupledLocationInterface
      */
     protected $location;
 
     /**
-     * Sets the SourceLocationInterface instance to this object.
-     *
-     * @param SourceLocationInterface $location
+     * Sets instance of CoupledLocationInterface to this wrapper.
      *
      * @return $this
      */
-    public function setSourceLocation(SourceLocationInterface $location)
+    public function setLocation(CoupledLocationInterface $location)
     {
         $this->location = $location;
         return $this;
     }
 
     /**
-     * Returns the cursor pointing at error location.
+     * Returns the encapsulated instance of CoupledLocationInterface.
      *
-     * @return SourceLocationInterface|null
+     * @return CoupledLocationInterface|null
      */
-    public function getSourceLocation() : ?SourceLocationInterface
+    public function getLocation() : ?CoupledLocationInterface
     {
         return $this->location;
     }

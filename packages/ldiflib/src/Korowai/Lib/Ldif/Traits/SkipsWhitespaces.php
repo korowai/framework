@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Lib/Ldif/SkipsWhitespaces.php
+ * @file src/Korowai/Lib/Ldif/Traits/SkipsWhitespaces.php
  *
  * This file is part of the Korowai package
  *
@@ -11,10 +11,10 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Lib\Ldif;
+namespace Korowai\Lib\Ldif\Traits;
 
 use Korowai\Lib\Ldif\CoupledCursorInterface;
-use Korowai\Lib\Compat\Exception\PregException
+use Korowai\Lib\Compat\Exception\PregException;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

@@ -93,12 +93,13 @@ trait ParsesVersionSpec
             return false;
         }
 
-        $version = intval($matches[0][0]);
-        if ($version != 1) {
-            $error = new ParserError(clone $cursor, "syntax error: unsupported version number: $version");
+        $val = intval($matches[0]);
+        if ($val != 1) {
+            $error = new ParserError(clone $cursor, "syntax error: unsupported version number: $val");
             $state->appendError($error);
             return false;
         }
+        $version = $val;
 
         $cursor->moveBy(strlen($matches[0][0]));
         return true;

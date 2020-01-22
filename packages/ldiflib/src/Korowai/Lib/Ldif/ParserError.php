@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldif;
 
-use Korowai\Lib\Ldif\Traits\WrapsSourceLocation;
+use Korowai\Lib\Ldif\Traits\DecoratesSourceLocationInterface;
 
 /**
  * LDIF parser error. Encapsulates error message and the location of the error
@@ -21,7 +21,7 @@ use Korowai\Lib\Ldif\Traits\WrapsSourceLocation;
  */
 class ParserError extends \Exception implements ParserErrorInterface
 {
-    use WrapsSourceLocation;
+    use DecoratesSourceLocationInterface;
 
     /**
      * Initializes the error object.

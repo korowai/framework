@@ -15,7 +15,7 @@ namespace Korowai\Lib\Ldif\Tests;
 
 use Korowai\Lib\Ldif\CoupledLocation;
 use Korowai\Lib\Ldif\CoupledLocationInterface;
-use Korowai\Lib\Ldif\CoupledInput;
+use Korowai\Lib\Ldif\CoupledInputInterface;
 
 use PHPUnit\Framework\TestCase;
 
@@ -33,7 +33,8 @@ class CoupledLocationTest extends TestCase
 
     public function test__construct()
     {
-        $input = $this->createMock(CoupledInput::class);
+        $input = $this->getMockBuilder(CoupledInputInterface::class)
+                      ->getMockForAbstractClass();
         $location = new CoupledLocation($input, 12);
 
         $this->assertSame($input, $location->getInput());
@@ -42,7 +43,8 @@ class CoupledLocationTest extends TestCase
 
     public function test__getString()
     {
-        $input = $this->createMock(CoupledInput::class);
+        $input = $this->getMockBuilder(CoupledInputInterface::class)
+                      ->getMockForAbstractClass();
         $input->expects($this->once())
               ->method('getString')
               ->with()
@@ -83,7 +85,8 @@ class CoupledLocationTest extends TestCase
      */
     public function test__getCharOffset(string $string, array $cases)
     {
-        $input = $this->createMock(CoupledInput::class);
+        $input = $this->getMockBuilder(CoupledInputInterface::class)
+                      ->getMockForAbstractClass();
         $input->expects($this->any())
               ->method('getString')
               ->with()
@@ -97,7 +100,8 @@ class CoupledLocationTest extends TestCase
 
     public function test__getSourceFileName()
     {
-        $input = $this->createMock(CoupledInput::class);
+        $input = $this->getMockBuilder(CoupledInputInterface::class)
+                      ->getMockForAbstractClass();
         $input->expects($this->once())
               ->method('getSourceFileName')
               ->with()
@@ -109,7 +113,8 @@ class CoupledLocationTest extends TestCase
 
     public function test__getSourceString()
     {
-        $input = $this->createMock(CoupledInput::class);
+        $input = $this->getMockBuilder(CoupledInputInterface::class)
+                      ->getMockForAbstractClass();
         $input->expects($this->once())
               ->method('getSourceString')
               ->with()
@@ -121,7 +126,8 @@ class CoupledLocationTest extends TestCase
 
     public function test__getSourceByteOffset()
     {
-        $input = $this->createMock(CoupledInput::class);
+        $input = $this->getMockBuilder(CoupledInputInterface::class)
+                      ->getMockForAbstractClass();
         $input->expects($this->once())
               ->method('getSourceByteOffset')
               ->with(2)
@@ -133,7 +139,8 @@ class CoupledLocationTest extends TestCase
 
     public function test__getSourceCharOffset()
     {
-        $input = $this->createMock(CoupledInput::class);
+        $input = $this->getMockBuilder(CoupledInputInterface::class)
+                      ->getMockForAbstractClass();
         $input->expects($this->once())
               ->method('getSourceCharOffset')
               ->with(4, 'U')
@@ -145,7 +152,8 @@ class CoupledLocationTest extends TestCase
 
     public function test__getSourceLineIndex()
     {
-        $input = $this->createMock(CoupledInput::class);
+        $input = $this->getMockBuilder(CoupledInputInterface::class)
+                      ->getMockForAbstractClass();
         $input->expects($this->once())
               ->method('getSourceLineIndex')
               ->with(4)
@@ -157,7 +165,8 @@ class CoupledLocationTest extends TestCase
 
     public function test__getSourceLine()
     {
-        $input = $this->createMock(CoupledInput::class);
+        $input = $this->getMockBuilder(CoupledInputInterface::class)
+                      ->getMockForAbstractClass();
         $input->expects($this->once())
               ->method('getSourceLineIndex')
               ->with(4)
@@ -173,7 +182,8 @@ class CoupledLocationTest extends TestCase
 
     public function test__getSourceLineAndByteOffset()
     {
-        $input = $this->createMock(CoupledInput::class);
+        $input = $this->getMockBuilder(CoupledInputInterface::class)
+                      ->getMockForAbstractClass();
         $input->expects($this->once())
               ->method('getSourceLineAndByteOffset')
               ->with(4)
@@ -185,7 +195,8 @@ class CoupledLocationTest extends TestCase
 
     public function test__getSourceLineAndCharOffset()
     {
-        $input = $this->createMock(CoupledInput::class);
+        $input = $this->getMockBuilder(CoupledInputInterface::class)
+                      ->getMockForAbstractClass();
         $input->expects($this->once())
               ->method('getSourceLineAndCharOffset')
               ->with(4, 'U')

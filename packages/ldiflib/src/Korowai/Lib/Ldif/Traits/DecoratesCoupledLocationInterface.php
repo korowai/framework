@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Lib/Ldif/Traits/WrapsCoupledLocation.php
+ * @file src/Korowai/Lib/Ldif/Traits/DecoratesCoupledLocationInterface.php
  *
  * This file is part of the Korowai package
  *
@@ -18,9 +18,9 @@ use Korowai\Lib\Ldif\CoupledLocationInterface;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-trait WrapsCoupledLocation
+trait DecoratesCoupledLocationInterface
 {
-    use ExposesCoupledLocation;
+    use ExposesCoupledLocationInterface;
 
     /**
      * @var CoupledLocationInterface

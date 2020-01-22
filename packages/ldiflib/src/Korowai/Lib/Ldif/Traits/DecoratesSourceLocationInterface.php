@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Lib/Ldif/Traits/WrapsSourceLocation.php
+ * @file src/Korowai/Lib/Ldif/Traits/DecoratesSourceLocationInterface.php
  *
  * This file is part of the Korowai package
  *
@@ -18,9 +18,9 @@ use Korowai\Lib\Ldif\SourceLocationInterface;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-trait WrapsSourceLocation
+trait DecoratesSourceLocationInterface
 {
-    use ExposesSourceLocation;
+    use ExposesSourceLocationInterface;
 
     /**
      * @var SourceLocationInterface

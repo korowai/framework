@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Lib/Ldif/Traits/ExposesCoupledLocation.php
+ * @file src/Korowai/Lib/Ldif/Traits/ExposesCoupledLocationInterface.php
  *
  * This file is part of the Korowai package
  *
@@ -15,13 +15,14 @@ namespace Korowai\Lib\Ldif\Traits;
 
 use Korowai\Lib\Ldif\CoupledLocationInterface;
 use Korowai\Lib\Ldif\SourceLocationInterface;
+use Korowai\Lib\Ldif\CoupledInputInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-trait ExposesCoupledLocation
+trait ExposesCoupledLocationInterface
 {
-    use ExposesSourceLocation;
+    use ExposesSourceLocationInterface;
 
     abstract public function getLocation() : ?CoupledLocationInterface;
 
@@ -57,6 +58,14 @@ trait ExposesCoupledLocation
     public function getCharOffset(string $encoding = null) : int
     {
         return $this->getLocation()->getCharOffset(...(func_get_args()));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getInput() : CoupledInputInterface
+    {
+        return $this->getLocation()->getInput();
     }
 }
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * @file Tests/Traits/WrapsCoupledLocationTest.php
+ * @file Tests/Traits/DecoratesCoupledLocationInterfaceTest.php
  *
  * This file is part of the Korowai package
  *
@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldif\Traits\Tests;
 
-use Korowai\Lib\Ldif\Traits\WrapsCoupledLocation;
-use Korowai\Lib\Ldif\Traits\ExposesCoupledLocation;
+use Korowai\Lib\Ldif\Traits\DecoratesCoupledLocationInterface;
+use Korowai\Lib\Ldif\Traits\ExposesCoupledLocationInterface;
 use Korowai\Lib\Ldif\CoupledLocationInterface;
 
 use PHPUnit\Framework\TestCase;
@@ -23,17 +23,17 @@ use PHPUnit\Framework\TestCase;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class WrapsCoupledLocationTest extends TestCase
+class DecoratesCoupledLocationInterfaceTest extends TestCase
 {
     public function getTestObject()
     {
-        return new class { use WrapsCoupledLocation; };
+        return new class { use DecoratesCoupledLocationInterface; };
     }
 
-    public function test__uses__ExposesCoupledLocation()
+    public function test__uses__ExposesCoupledLocationInterface()
     {
-        $uses = class_uses(WrapsCoupledLocation::class);
-        $this->assertContains(ExposesCoupledLocation::class, $uses);
+        $uses = class_uses(DecoratesCoupledLocationInterface::class);
+        $this->assertContains(ExposesCoupledLocationInterface::class, $uses);
     }
 
     public function test__coupledLocation()

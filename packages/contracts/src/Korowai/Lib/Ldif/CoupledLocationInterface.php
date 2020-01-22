@@ -38,6 +38,13 @@ interface CoupledLocationInterface extends SourceLocationInterface
      * @return int
      */
     public function getCharOffset(string $encoding = null) : int;
+
+    /**
+     * Returns the CoupledInputInterface containing the character at location.
+     *
+     * @return CoupledInputInterface|null
+     */
+    public function getInput() : CoupledInputInterface;
 }
 
 // vim: syntax=php sw=4 ts=4 et:

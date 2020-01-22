@@ -1,6 +1,6 @@
 <?php
 /**
- * @file Tests/Traits/WrapsSourceLocationTest.php
+ * @file Tests/Traits/DecoratesSourceLocationInterfaceTest.php
  *
  * This file is part of the Korowai package
  *
@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldif\Traits\Tests;
 
-use Korowai\Lib\Ldif\Traits\WrapsSourceLocation;
-use Korowai\Lib\Ldif\Traits\ExposesSourceLocation;
+use Korowai\Lib\Ldif\Traits\DecoratesSourceLocationInterface;
+use Korowai\Lib\Ldif\Traits\ExposesSourceLocationInterface;
 use Korowai\Lib\Ldif\SourceLocationInterface;
 
 use PHPUnit\Framework\TestCase;
@@ -23,17 +23,17 @@ use PHPUnit\Framework\TestCase;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class WrapsSourceLocationTest extends TestCase
+class DecoratesSourceLocationInterfaceTest extends TestCase
 {
     public function getTestObject()
     {
-        return new class { use WrapsSourceLocation; };
+        return new class { use DecoratesSourceLocationInterface; };
     }
 
-    public function test__uses__ExposesSourceLocation()
+    public function test__uses__ExposesSourceLocationInterface()
     {
-        $uses = class_uses(WrapsSourceLocation::class);
-        $this->assertContains(ExposesSourceLocation::class, $uses);
+        $uses = class_uses(DecoratesSourceLocationInterface::class);
+        $this->assertContains(ExposesSourceLocationInterface::class, $uses);
     }
 
     public function test__sourceLocation()

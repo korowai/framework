@@ -15,7 +15,7 @@ namespace Korowai\Lib\Ldif\Tests;
 
 use Korowai\Lib\Ldif\ParserError;
 use Korowai\Lib\Ldif\ParserErrorInterface;
-use Korowai\Lib\Ldif\Traits\WrapsSourceLocation;
+use Korowai\Lib\Ldif\Traits\DecoratesSourceLocationInterface;
 use Korowai\Lib\Ldif\SourceLocationInterface;
 
 use PHPUnit\Framework\TestCase;
@@ -44,10 +44,10 @@ class ParserErrorTest extends TestCase
         $this->assertContains(\Exception::class, $parents);
     }
 
-    public function test__uses__WrapsSourceLocation()
+    public function test__uses__DecoratesSourceLocationInterface()
     {
         $traits = class_uses(ParserError::class);
-        $this->assertContains(WrapsSourceLocation::class, $traits);
+        $this->assertContains(DecoratesSourceLocationInterface::class, $traits);
     }
 
     public function test__construct()

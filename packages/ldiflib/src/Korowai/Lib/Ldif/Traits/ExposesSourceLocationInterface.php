@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Lib/Ldif/Traits/ExposesSourceLocation.php
+ * @file src/Korowai/Lib/Ldif/Traits/ExposesSourceLocationInterface.php
  *
  * This file is part of the Korowai package
  *
@@ -18,7 +18,7 @@ use Korowai\Lib\Ldif\SourceLocationInterface;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-trait ExposesSourceLocation
+trait ExposesSourceLocationInterface
 {
     abstract public function getSourceLocation() : ?SourceLocationInterface;
 

@@ -15,7 +15,7 @@ namespace Korowai\Lib\Ldif\Tests;
 
 use Korowai\Lib\Ldif\Preprocessor;
 use Korowai\Lib\Ldif\PreprocessorInterface;
-use Korowai\Lib\Ldif\CoupledInput;
+use Korowai\Lib\Ldif\Input;
 use Korowai\Lib\Ldif\Util\IndexMap;
 
 use PHPUnit\Framework\TestCase;
@@ -249,7 +249,7 @@ class PreprocessorTest extends TestCase
 
         $result = $pp->preprocess(...$args);
 
-        $this->assertInstanceOf(CoupledInput::class, $result);
+        $this->assertInstanceOf(Input::class, $result);
         $this->assertSame($args[0], $result->getSourceString());
         $this->assertSame($expString, $result->getString());
 

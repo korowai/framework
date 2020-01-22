@@ -22,9 +22,9 @@ interface ParserStateInterface
      * Returns the cursor pointing to the current position within
      * source/preprocessed string.
      *
-     * @return CoupledCursorInterface
+     * @return CursorInterface
      */
-    public function getCursor() : CoupledCursorInterface;
+    public function getCursor() : CursorInterface;
 
     /**
      * Returns errors detected by parser so far.

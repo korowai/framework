@@ -1,6 +1,6 @@
 <?php
 /**
- * @file Tests/Traits/DecoratesCoupledLocationInterfaceTest.php
+ * @file Tests/Traits/DecoratesLocationInterfaceTest.php
  *
  * This file is part of the Korowai package
  *
@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldif\Traits\Tests;
 
-use Korowai\Lib\Ldif\Traits\DecoratesCoupledLocationInterface;
-use Korowai\Lib\Ldif\Traits\ExposesCoupledLocationInterface;
-use Korowai\Lib\Ldif\CoupledLocationInterface;
+use Korowai\Lib\Ldif\Traits\DecoratesLocationInterface;
+use Korowai\Lib\Ldif\Traits\ExposesLocationInterface;
+use Korowai\Lib\Ldif\LocationInterface;
 
 use PHPUnit\Framework\TestCase;
 
@@ -23,22 +23,22 @@ use PHPUnit\Framework\TestCase;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class DecoratesCoupledLocationInterfaceTest extends TestCase
+class DecoratesLocationInterfaceTest extends TestCase
 {
     public function getTestObject()
     {
-        return new class { use DecoratesCoupledLocationInterface; };
+        return new class { use DecoratesLocationInterface; };
     }
 
-    public function test__uses__ExposesCoupledLocationInterface()
+    public function test__uses__ExposesLocationInterface()
     {
-        $uses = class_uses(DecoratesCoupledLocationInterface::class);
-        $this->assertContains(ExposesCoupledLocationInterface::class, $uses);
+        $uses = class_uses(DecoratesLocationInterface::class);
+        $this->assertContains(ExposesLocationInterface::class, $uses);
     }
 
     public function test__coupledLocation()
     {
-        $location = $this->getMockBuilder(CoupledLocationInterface::class)
+        $location = $this->getMockBuilder(LocationInterface::class)
                          ->getMockForAbstractClass();
 
         $obj = $this->getTestObject();

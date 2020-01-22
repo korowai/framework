@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Lib/Ldif/CoupledInputInterface.php
+ * @file src/Korowai/Lib/Ldif/InputInterface.php
  *
  * This file is part of the Korowai package
  *
@@ -16,7 +16,7 @@ namespace Korowai\Lib\Ldif;
 /**
  * @todo Write documentation
  */
-interface CoupledInputInterface
+interface InputInterface
 {
     /**
      * Returns the original source string, as provided to constructor via
@@ -59,7 +59,7 @@ interface CoupledInputInterface
      * @return int the resultant offset of the corresponding character in
      *             $source string
      */
-    public function getSourceByteOffset(int $i) : int;
+    public function getSourceOffset(int $i) : int;
 
     /**
      * Given a byte offset $i in the preprocessed string, returns its
@@ -117,7 +117,7 @@ interface CoupledInputInterface
      * @return array 2-element array with line index at position 0 and
      *               character offset at position 1.
      */
-    public function getSourceLineAndByteOffset(int $i) : array;
+    public function getSourceLineAndOffset(int $i) : array;
 
     /**
      * Given a character offset $i in the preprocessed string, returns its

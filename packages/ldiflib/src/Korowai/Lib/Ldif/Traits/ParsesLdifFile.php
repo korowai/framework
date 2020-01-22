@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldif\Traits;
 
-use Korowai\Lib\Ldif\CoupledCursorInterface;
+use Korowai\Lib\Ldif\CursorInterface;
 use Korowai\Lib\Ldif\ParserStateInterface;
 use Korowai\Lib\Ldif\ParserError;
 
@@ -22,7 +22,7 @@ use Korowai\Lib\Ldif\ParserError;
  */
 trait ParsesLdifFile
 {
-    abstract public function skipWs(CoupledCursorInterface $cursor) : array;
+    abstract public function skipWs(CursorInterface $cursor) : array;
 
     /**
      * @todo Write documentation.
@@ -34,10 +34,10 @@ trait ParsesLdifFile
         $this->skipWs($cursor);
 
         try {
-            $begin = $cursor->getByteOffset();
+            $begin = $cursor->getOffset();
             $versionSpec = $this->parseVersionSpec($cursor);
         } catch (ParseError $err) {
-            if ($cursor->getByteOffset() != $begin) {
+            if ($cursor->getOffset() != $begin) {
                 throw $err;
             }
             $versionSpec = null; // version-spec is optional

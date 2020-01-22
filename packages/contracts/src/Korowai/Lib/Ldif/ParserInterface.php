@@ -21,7 +21,7 @@ interface ParserInterface
     /**
      * Parses preprocessed LDIF text.
      *
-     * @param CoupledInputInterface $input
+     * @param InputInterface $input
      *
      * @return ParserStateInterface
      */

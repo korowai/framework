@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Korowai\Lib\Ldif\Records;
 
 use Korowai\Lib\Ldif\RecordInterface;
-use Korowai\Lib\Ldif\CoupledRangeInterface;
-use Korowai\Lib\Ldif\Traits\DecoratesCoupledRangeInterface;
+use Korowai\Lib\Ldif\RangeInterface;
+use Korowai\Lib\Ldif\Traits\DecoratesRangeInterface;
 
 /**
  * An abstract base class for parsed LDIF records.
@@ -24,14 +24,14 @@ use Korowai\Lib\Ldif\Traits\DecoratesCoupledRangeInterface;
  */
 abstract class AbstractRecord
 {
-    use DecoratesCoupledRangeInterface;
+    use DecoratesRangeInterface;
 
     /**
      * Initializes the object.
      *
      * @return object $this
      */
-    public function initAbstractRecord(CoupledRangeInterface $range)
+    public function initAbstractRecord(RangeInterface $range)
     {
         $this->setRange($range);
         return $this;

@@ -16,7 +16,7 @@ namespace Korowai\Lib\Ldif\Tests;
 use Korowai\Lib\Ldif\ParserState;
 use Korowai\Lib\Ldif\ParserStateInterface;
 use Korowai\Lib\Ldif\RecordInterface;
-use Korowai\Lib\Ldif\CoupledCursorInterface;
+use Korowai\Lib\Ldif\CursorInterface;
 use Korowai\Lib\Ldif\ParserError;
 
 use PHPUnit\Framework\TestCase;
@@ -35,7 +35,7 @@ class ParserStateTest extends TestCase
 
     public function constructCases()
     {
-        $cursor = $this->getMockBuilder(CoupledCursorInterface::class)->getMockForAbstractClass();
+        $cursor = $this->getMockBuilder(CursorInterface::class)->getMockForAbstractClass();
         return [
             [$cursor],
             [$cursor, []],
@@ -73,14 +73,14 @@ class ParserStateTest extends TestCase
 
     protected function createParserState(...$args)
     {
-        $cursor = $args[0] ?? $this->getMockBuilder(CoupledCursorInterface::class)->getMockForAbstractClass();
+        $cursor = $args[0] ?? $this->getMockBuilder(CursorInterface::class)->getMockForAbstractClass();
         return new ParserState($cursor, array_slice($args, 1));
     }
 
     public function test__cursor()
     {
         $state = $this->createParserState();
-        $cursor = $this->getMockBuilder(CoupledCursorInterface::class)->getMockForAbstractClass();
+        $cursor = $this->getMockBuilder(CursorInterface::class)->getMockForAbstractClass();
 
         $this->assertSame($state, $state->setCursor($cursor));
         $this->assertSame($cursor, $state->getCursor());

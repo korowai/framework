@@ -1,6 +1,6 @@
 <?php
 /**
- * @file Tests/Traits/ExposesCoupledRangeInterfaceTest.php
+ * @file Tests/Traits/ExposesRangeInterfaceTest.php
  *
  * This file is part of the Korowai package
  *
@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldif\Traits\Tests;
 
-use Korowai\Lib\Ldif\Traits\ExposesCoupledRangeInterface;
-use Korowai\Lib\Ldif\Traits\ExposesCoupledLocationInterface;
-use Korowai\Lib\Ldif\CoupledRangeInterface;
+use Korowai\Lib\Ldif\Traits\ExposesRangeInterface;
+use Korowai\Lib\Ldif\Traits\ExposesLocationInterface;
+use Korowai\Lib\Ldif\RangeInterface;
 
 use PHPUnit\Framework\TestCase;
 
@@ -23,82 +23,82 @@ use PHPUnit\Framework\TestCase;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class ExposesCoupledRangeInterfaceTest extends TestCase
+class ExposesRangeInterfaceTest extends TestCase
 {
-    public function getTestObject(CoupledRangeInterface $range = null)
+    public function getTestObject(RangeInterface $range = null)
     {
-        $obj = new class ($range) implements CoupledRangeInterface {
-            use ExposesCoupledRangeInterface;
-            public function __construct(?CoupledRangeInterface $range) { $this->range = $range; }
-            public function getRange() : ?CoupledRangeInterface { return $this->range; }
+        $obj = new class ($range) implements RangeInterface {
+            use ExposesRangeInterface;
+            public function __construct(?RangeInterface $range) { $this->range = $range; }
+            public function getRange() : ?RangeInterface { return $this->range; }
         };
         return $obj;
     }
 
-    public function test__uses__ExposesCoupledLocationInterface()
+    public function test__uses__ExposesLocationInterface()
     {
-        $uses = class_uses(ExposesCoupledRangeInterface::class);
-        $this->assertContains(ExposesCoupledLocationInterface::class, $uses);
+        $uses = class_uses(ExposesRangeInterface::class);
+        $this->assertContains(ExposesLocationInterface::class, $uses);
     }
 
     public function test__getLocation()
     {
-        $range = $this->getMockBuilder(CoupledRangeInterface::class)
+        $range = $this->getMockBuilder(RangeInterface::class)
                       ->getMockForAbstractClass();
         $obj = $this->getTestObject($range);
         $this->assertSame($range, $obj->getLocation());
     }
 
-    public function test__getByteLength()
+    public function test__getLength()
     {
-        $range = $this->getMockBuilder(CoupledRangeInterface::class)
+        $range = $this->getMockBuilder(RangeInterface::class)
                       ->getMockForAbstractClass();
         $range->expects($this->once())
-              ->method('getByteLength')
+              ->method('getLength')
               ->with()
               ->willReturn(17);
         $obj = $this->getTestObject($range);
 
-        $this->assertSame(17, $obj->getByteLength());
+        $this->assertSame(17, $obj->getLength());
     }
 
-    public function test__getByteEndOffset()
+    public function test__getEndOffset()
     {
-        $range = $this->getMockBuilder(CoupledRangeInterface::class)
+        $range = $this->getMockBuilder(RangeInterface::class)
                       ->getMockForAbstractClass();
         $range->expects($this->once())
-              ->method('getByteEndOffset')
+              ->method('getEndOffset')
               ->with()
               ->willReturn(17);
         $obj = $this->getTestObject($range);
 
-        $this->assertSame(17, $obj->getByteEndOffset());
+        $this->assertSame(17, $obj->getEndOffset());
     }
 
-    public function test__getSourceByteLength()
+    public function test__getSourceLength()
     {
-        $range = $this->getMockBuilder(CoupledRangeInterface::class)
+        $range = $this->getMockBuilder(RangeInterface::class)
                       ->getMockForAbstractClass();
         $range->expects($this->once())
-              ->method('getSourceByteLength')
+              ->method('getSourceLength')
               ->with()
               ->willReturn(17);
         $obj = $this->getTestObject($range);
 
-        $this->assertSame(17, $obj->getSourceByteLength());
+        $this->assertSame(17, $obj->getSourceLength());
     }
 
-    public function test__getSourceByteEndOffset()
+    public function test__getSourceEndOffset()
     {
-        $range = $this->getMockBuilder(CoupledRangeInterface::class)
+        $range = $this->getMockBuilder(RangeInterface::class)
                       ->getMockForAbstractClass();
         $range->expects($this->once())
-              ->method('getSourceByteEndOffset')
+              ->method('getSourceEndOffset')
               ->with()
               ->willReturn(17);
         $obj = $this->getTestObject($range);
 
-        $this->assertSame(17, $obj->getSourceByteEndOffset());
+        $this->assertSame(17, $obj->getSourceEndOffset());
     }
 
     public function encodingCases()
@@ -108,7 +108,7 @@ class ExposesCoupledRangeInterfaceTest extends TestCase
 
     public function test__getSourceCharLength(...$enc)
     {
-        $range = $this->getMockBuilder(CoupledRangeInterface::class)
+        $range = $this->getMockBuilder(RangeInterface::class)
                       ->getMockForAbstractClass();
         $range->expects($this->once())
               ->method('getSourceCharLength')
@@ -121,7 +121,7 @@ class ExposesCoupledRangeInterfaceTest extends TestCase
 
     public function test__getSourceCharEndOffset(...$enc)
     {
-        $range = $this->getMockBuilder(CoupledRangeInterface::class)
+        $range = $this->getMockBuilder(RangeInterface::class)
                       ->getMockForAbstractClass();
         $range->expects($this->once())
               ->method('getSourceCharEndOffset')

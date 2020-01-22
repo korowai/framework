@@ -21,7 +21,7 @@ namespace Korowai\Lib\Ldif;
 class ParserState implements ParserStateInterface
 {
     /**
-     * @var CoupledCursorInterface
+     * @var CursorInterface
      */
     protected $cursor;
 
@@ -38,11 +38,11 @@ class ParserState implements ParserStateInterface
     /**
      * Initializes the ParserState object.
      *
-     * @param  CoupledCursorInterface $cursor
+     * @param  CursorInterface $cursor
      * @param  array|null $errors
      * @param  array|null $records
      */
-    public function __construct(CoupledCursorInterface $cursor, array $errors = null, array $records = null)
+    public function __construct(CursorInterface $cursor, array $errors = null, array $records = null)
     {
         $this->initParserState($cursor, $errors, $records);
     }
@@ -50,7 +50,7 @@ class ParserState implements ParserStateInterface
     /**
      * {@inheritdocs}
      */
-    public function getCursor() : CoupledCursorInterface
+    public function getCursor() : CursorInterface
     {
         return $this->cursor;
     }
@@ -80,12 +80,12 @@ class ParserState implements ParserStateInterface
     }
 
     /**
-     * Sets the instance of CoupledCursorInterface to this object.
+     * Sets the instance of CursorInterface to this object.
      *
-     * @param  CoupledCursorInterface $cursor
+     * @param  CursorInterface $cursor
      * @return object $this
      */
-    public function setCursor(CoupledCursorInterface $cursor)
+    public function setCursor(CursorInterface $cursor)
     {
         $this->cursor = $cursor;
         return $this;
@@ -136,11 +136,11 @@ class ParserState implements ParserStateInterface
     /**
      * Initializes the ParserState object
      *
-     * @param  CoupledCursorInterface $cursor
+     * @param  CursorInterface $cursor
      * @param  array|null $errors
      * @param  array|null $records
      */
-    protected function initParserState(CoupledCursorInterface $cursor, array $errors = null, array $records = null)
+    protected function initParserState(CursorInterface $cursor, array $errors = null, array $records = null)
     {
         $this->setCursor($cursor);
         $this->setErrors($errors ?? []);

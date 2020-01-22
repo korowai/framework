@@ -15,8 +15,8 @@ namespace Korowai\Lib\Ldif\Traits\Tests;
 
 use Korowai\Lib\Ldif\Traits\SkipsWhitespaces;
 use Korowai\Lib\Ldif\Traits\MatchesPatterns;
-use Korowai\Lib\Ldif\CoupledCursorInterface;
-//use Korowai\Lib\Ldif\CoupledLocationInterface;
+use Korowai\Lib\Ldif\CursorInterface;
+//use Korowai\Lib\Ldif\LocationInterface;
 //use Korowai\Lib\Ldif\ParserError;
 
 use PHPUnit\Framework\TestCase;
@@ -36,19 +36,19 @@ class SkipsWhitespacesTest extends TestCase
         return $obj;
     }
 
-    protected function configureLocationMock(CoupledLocationInterface $location, array $case)
+    protected function configureLocationMock(LocationInterface $location, array $case)
     {
         $location->expects($this->once())
                  ->method('getString')
                  ->with()
                  ->willReturn($case[1]);
         $location->expects($this->once())
-                 ->method('getByteOffset')
+                 ->method('getOffset')
                  ->with()
                  ->willReturn($case[3] ?? 0);
     }
 
-    protected function configureCursorMock(CoupledCursorInterface $cursor, array $case, ?int $expMoveTo)
+    protected function configureCursorMock(CursorInterface $cursor, array $case, ?int $expMoveTo)
     {
         $this->configureLocationMock($cursor, $case);
 
@@ -64,7 +64,7 @@ class SkipsWhitespacesTest extends TestCase
 
     protected function createLocationMock(array $case)
     {
-        $location = $this->getMockBuilder(CoupledLocationInterface::class)
+        $location = $this->getMockBuilder(LocationInterface::class)
                          ->getMockForAbstractClass();
         $this->configureLocationMock($location, $case);
         return $location;
@@ -72,7 +72,7 @@ class SkipsWhitespacesTest extends TestCase
 
     protected function createCursorMock(array $case, ?int $expMoveTo)
     {
-        $cursor = $this->getMockBuilder(CoupledCursorInterface::class)
+        $cursor = $this->getMockBuilder(CursorInterface::class)
                          ->getMockForAbstractClass();
         $this->configureCursorMock($cursor, $case, $expMoveTo);
         return $cursor;

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldif\Traits;
 
-use Korowai\Lib\Ldif\CoupledCursorInterface;
+use Korowai\Lib\Ldif\CursorInterface;
 use Korowai\Lib\Ldif\ParserStateInterface;
 use Korowai\Lib\Ldif\ParserError;
 
@@ -22,7 +22,7 @@ use Korowai\Lib\Ldif\ParserError;
  */
 trait ParsesDnSpec
 {
-    abstract public function skipWs(CoupledCursorInterface $cursor) : array;
+    abstract public function skipWs(CursorInterface $cursor) : array;
 
     /**
      * @todo Write documentation.
@@ -48,7 +48,7 @@ trait ParsesDnSpec
             $dn = $this->parseBase64UtfString($cursor);
         }
 
-        $strlen = $cursor->getByteOffset() - $begin->getByteOffset();
+        $strlen = $cursor->getOffset() - $begin->getOffset();
 
         return true;
         //return new Cst\DnSpec($begin, $strlen, $dn);

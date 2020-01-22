@@ -60,17 +60,17 @@ class ExposesSourceLocationInterfaceTest extends TestCase
         $this->assertSame('A', $obj->getSourceString());
     }
 
-    public function test__getSourceByteOffset()
+    public function test__getSourceOffset()
     {
         $location = $this->getMockBuilder(SourceLocationInterface::class)
                          ->getMockForAbstractClass();
         $location->expects($this->once())
-                 ->method('getSourceByteOffset')
+                 ->method('getSourceOffset')
                  ->with()
                  ->willReturn(123);
         $obj = $this->getTestObject($location);
 
-        $this->assertSame(123, $obj->getSourceByteOffset());
+        $this->assertSame(123, $obj->getSourceOffset());
     }
 
     public function test__getSourceCharOffset()
@@ -113,17 +113,17 @@ class ExposesSourceLocationInterfaceTest extends TestCase
         $this->assertSame('A', $obj->getSourceLine());
     }
 
-    public function test__getSourceLineAndByteOffset()
+    public function test__getSourceLineAndOffset()
     {
         $location = $this->getMockBuilder(SourceLocationInterface::class)
                          ->getMockForAbstractClass();
         $location->expects($this->once())
-                 ->method('getSourceLineAndByteOffset')
+                 ->method('getSourceLineAndOffset')
                  ->with()
                  ->willReturn([1,2]);
         $obj = $this->getTestObject($location);
 
-        $this->assertSame([1,2], $obj->getSourceLineAndByteOffset());
+        $this->assertSame([1,2], $obj->getSourceLineAndOffset());
     }
 
     public function test__getSourceLineAndCharOffset()

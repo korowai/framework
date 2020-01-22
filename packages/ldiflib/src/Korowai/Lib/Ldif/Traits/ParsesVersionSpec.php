@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldif\Traits;
 
-use Korowai\Lib\Ldif\CoupledCursorInterface;
-use Korowai\Lib\Ldif\CoupledLocationInterface;
+use Korowai\Lib\Ldif\CursorInterface;
+use Korowai\Lib\Ldif\LocationInterface;
 use Korowai\Lib\Ldif\ParserStateInterface;
-use Korowai\Lib\Ldif\CoupledRange;
+use Korowai\Lib\Ldif\Range;
 use Korowai\Lib\Ldif\ParserError;
 use Korowai\Lib\Ldif\ParserErrorInterface;
 use Korowai\Lib\Ldif\Records\VersionSpec;
@@ -26,16 +26,16 @@ use Korowai\Lib\Ldif\Records\VersionSpec;
  */
 trait ParsesVersionSpec
 {
-    abstract public function skipFill(CoupledCursorInterface $cursor) : array;
+    abstract public function skipFill(CursorInterface $cursor) : array;
     abstract public function matchAheadOrThrow(
         string $pattern,
-        CoupledCursorInterface $cursor,
+        CursorInterface $cursor,
         string $msg,
         int $flags = 0
     ) : array;
     abstract public function matchAtOrThrow(
         string $pattern,
-        CoupledLocationInterface $location,
+        LocationInterface $location,
         string $msg,
         int $flags = 0
     ) : array;
@@ -68,8 +68,8 @@ trait ParsesVersionSpec
             return false;
         }
 
-        $length = $cursor->getByteOffset() - $begin->getByteOffset();
-        $record = new VersionSpec(new CoupledRange($begin, $length), $version);
+        $length = $cursor->getOffset() - $begin->getOffset();
+        $record = new VersionSpec(new Range($begin, $length), $version);
         $state->appendRecord($record);
 
         return true;

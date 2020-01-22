@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Lib/Ldif/CoupledLocationInterface.php
+ * @file src/Korowai/Lib/Ldif/LocationInterface.php
  *
  * This file is part of the Korowai package
  *
@@ -16,7 +16,7 @@ namespace Korowai\Lib\Ldif;
 /**
  * Interface for cursor objects.
  */
-interface CoupledLocationInterface extends SourceLocationInterface
+interface LocationInterface extends SourceLocationInterface
 {
     /**
      * Returns the whole input string.
@@ -30,7 +30,7 @@ interface CoupledLocationInterface extends SourceLocationInterface
      *
      * @return int
      */
-    public function getByteOffset() : int;
+    public function getOffset() : int;
 
     /**
      * Returns zero-based (multibyte) character offset in the input string of the location.
@@ -40,11 +40,11 @@ interface CoupledLocationInterface extends SourceLocationInterface
     public function getCharOffset(string $encoding = null) : int;
 
     /**
-     * Returns the CoupledInputInterface containing the character at location.
+     * Returns the InputInterface containing the character at location.
      *
-     * @return CoupledInputInterface|null
+     * @return InputInterface|null
      */
-    public function getInput() : CoupledInputInterface;
+    public function getInput() : InputInterface;
 }
 
 // vim: syntax=php sw=4 ts=4 et:

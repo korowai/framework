@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Lib/Ldif/CoupledRange.php
+ * @file src/Korowai/Lib/Ldif/Range.php
  *
  * This file is part of the Korowai package
  *
@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldif;
 
-use Korowai\Lib\Ldif\Traits\DecoratesCoupledLocationInterface;
+use Korowai\Lib\Ldif\Traits\DecoratesLocationInterface;
 
 /**
  * @todo Write documentation.
  */
-class CoupledRange implements CoupledRangeInterface
+class Range implements RangeInterface
 {
-    use DecoratesCoupledLocationInterface;
+    use DecoratesLocationInterface;
 
     /**
      * @var int
@@ -30,10 +30,10 @@ class CoupledRange implements CoupledRangeInterface
     /**
      * Initializes the object.
      *
-     * @param  CoupledLocationInterface $location
+     * @param  LocationInterface $location
      * @param  int $length
      */
-    public function __construct(CoupledLocationInterface $location, int $length)
+    public function __construct(LocationInterface $location, int $length)
     {
         $this->init($location, $length);
     }
@@ -41,15 +41,15 @@ class CoupledRange implements CoupledRangeInterface
     /**
      * Initializes the object.
      *
-     * @param  CoupledLocationInterface $location
+     * @param  LocationInterface $location
      * @param  int $length
      *
-     * @return CoupledRange $this
+     * @return Range $this
      */
-    public function init(CoupledLocationInterface $location, int $length)
+    public function init(LocationInterface $location, int $length)
     {
         $this->setLocation($location);
-        $this->setByteLength($length);
+        $this->setLength($length);
         return $this;
     }
 
@@ -57,9 +57,9 @@ class CoupledRange implements CoupledRangeInterface
      * Sets the length of span.
      *
      * @param  int $length
-     * @return CoupledRange $this
+     * @return Range $this
      */
-    public function setByteLength(int $length)
+    public function setLength(int $length)
     {
         $this->length = $length;
         return $this;
@@ -68,7 +68,7 @@ class CoupledRange implements CoupledRangeInterface
     /**
      * {@inheritdoc}
      */
-    public function getByteLength() : int
+    public function getLength() : int
     {
         return $this->length;
     }
@@ -76,25 +76,25 @@ class CoupledRange implements CoupledRangeInterface
     /**
      * {@inheritdoc}
      */
-    public function getByteEndOffset() : int
+    public function getEndOffset() : int
     {
-        return $this->getByteOffset() + $this->getByteLength();
+        return $this->getOffset() + $this->getLength();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getSourceByteLength() : int
+    public function getSourceLength() : int
     {
-        return $this->getSourceByteEndOffset() - $this->getSourceByteOffset();
+        return $this->getSourceEndOffset() - $this->getSourceOffset();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getSourceByteEndOffset() : int
+    public function getSourceEndOffset() : int
     {
-        return $this->getInput()->getSourceByteOffset($this->getByteEndOffset());
+        return $this->getInput()->getSourceOffset($this->getEndOffset());
     }
 
     /**
@@ -112,7 +112,7 @@ class CoupledRange implements CoupledRangeInterface
     public function getSourceCharEndOffset(string $encoding = null) : int
     {
         $args = func_get_args();
-        return $this->getInput()->getSourceCharOffset($this->getByteEndOffset(), ...$args);
+        return $this->getInput()->getSourceCharOffset($this->getEndOffset(), ...$args);
     }
 }
 

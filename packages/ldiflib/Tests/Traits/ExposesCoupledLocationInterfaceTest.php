@@ -1,6 +1,6 @@
 <?php
 /**
- * @file Tests/Traits/ExposesCoupledLocationInterfaceTest.php
+ * @file Tests/Traits/ExposesLocationInterfaceTest.php
  *
  * This file is part of the Korowai package
  *
@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldif\Traits\Tests;
 
-use Korowai\Lib\Ldif\Traits\ExposesCoupledLocationInterface;
+use Korowai\Lib\Ldif\Traits\ExposesLocationInterface;
 use Korowai\Lib\Ldif\Traits\ExposesSourceLocationInterface;
-use Korowai\Lib\Ldif\CoupledLocationInterface;
-use Korowai\Lib\Ldif\CoupledInputInterface;
+use Korowai\Lib\Ldif\LocationInterface;
+use Korowai\Lib\Ldif\InputInterface;
 
 use PHPUnit\Framework\TestCase;
 
@@ -24,27 +24,27 @@ use PHPUnit\Framework\TestCase;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class ExposesCoupledLocationInterfaceTest extends TestCase
+class ExposesLocationInterfaceTest extends TestCase
 {
-    public function getTestObject(CoupledLocationInterface $location = null)
+    public function getTestObject(LocationInterface $location = null)
     {
-        $obj = new class ($location) implements CoupledLocationInterface {
-            use ExposesCoupledLocationInterface;
-            public function __construct(?CoupledLocationInterface $location) { $this->location = $location; }
-            public function getLocation() : ?CoupledLocationInterface { return $this->location; }
+        $obj = new class ($location) implements LocationInterface {
+            use ExposesLocationInterface;
+            public function __construct(?LocationInterface $location) { $this->location = $location; }
+            public function getLocation() : ?LocationInterface { return $this->location; }
         };
         return $obj;
     }
 
     public function test__uses__ExposesSourceLocationInterface()
     {
-        $uses = class_uses(ExposesCoupledLocationInterface::class);
+        $uses = class_uses(ExposesLocationInterface::class);
         $this->assertContains(ExposesSourceLocationInterface::class, $uses);
     }
 
     public function test__getSourceLocation()
     {
-        $location = $this->getMockBuilder(CoupledLocationInterface::class)
+        $location = $this->getMockBuilder(LocationInterface::class)
                          ->getMockForAbstractClass();
         $obj = $this->getTestObject($location);
         $this->assertSame($location, $obj->getSourceLocation());
@@ -52,7 +52,7 @@ class ExposesCoupledLocationInterfaceTest extends TestCase
 
     public function test__getString()
     {
-        $location = $this->getMockBuilder(CoupledLocationInterface::class)
+        $location = $this->getMockBuilder(LocationInterface::class)
                          ->getMockForAbstractClass();
         $location->expects($this->once())
                  ->method('getString')
@@ -63,22 +63,22 @@ class ExposesCoupledLocationInterfaceTest extends TestCase
         $this->assertSame('A', $obj->getString());
     }
 
-    public function test__getByteOffset()
+    public function test__getOffset()
     {
-        $location = $this->getMockBuilder(CoupledLocationInterface::class)
+        $location = $this->getMockBuilder(LocationInterface::class)
                          ->getMockForAbstractClass();
         $location->expects($this->once())
-                 ->method('getByteOffset')
+                 ->method('getOffset')
                  ->with()
                  ->willReturn(123);
         $obj = $this->getTestObject($location);
 
-        $this->assertSame(123, $obj->getByteOffset());
+        $this->assertSame(123, $obj->getOffset());
     }
 
     public function test__getCharOffset()
     {
-        $location = $this->getMockBuilder(CoupledLocationInterface::class)
+        $location = $this->getMockBuilder(LocationInterface::class)
                          ->getMockForAbstractClass();
         $location->expects($this->exactly(2))
                  ->method('getCharOffset')
@@ -92,9 +92,9 @@ class ExposesCoupledLocationInterfaceTest extends TestCase
 
     public function test__getInput()
     {
-        $input = $this->getMockBuilder(CoupledInputInterface::class)
+        $input = $this->getMockBuilder(InputInterface::class)
                       ->getMockForAbstractClass();
-        $location = $this->getMockBuilder(CoupledLocationInterface::class)
+        $location = $this->getMockBuilder(LocationInterface::class)
                          ->getMockForAbstractClass();
         $location->expects($this->once())
                  ->method('getInput')

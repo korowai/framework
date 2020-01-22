@@ -17,7 +17,7 @@ namespace Korowai\Lib\Ldif;
  * @todo Write documentation
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-interface RecordInterface extends CoupledRangeInterface
+interface RecordInterface extends RangeInterface
 {
     /**
      * Accept record visitor.

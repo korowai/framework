@@ -84,11 +84,11 @@ class Preprocessor implements PreprocessorInterface
     /**
      * {@inheritdoc}
      */
-    public function preprocess(string $source, string $filename = null) : CoupledInputInterface
+    public function preprocess(string $source, string $filename = null) : InputInterface
     {
         $string = static::rmLnCont($source, ($im = new IndexMap([])));
         $string = static::rmComments($string, $im);
-        return new CoupledInput($source, $string, $im, $filename);
+        return new Input($source, $string, $im, $filename);
     }
 }
 

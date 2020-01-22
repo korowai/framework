@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Lib/Ldif/Traits/DecoratesCoupledRangeInterface.php
+ * @file src/Korowai/Lib/Ldif/Traits/DecoratesRangeInterface.php
  *
  * This file is part of the Korowai package
  *
@@ -13,37 +13,37 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldif\Traits;
 
-use Korowai\Lib\Ldif\CoupledRangeInterface;
+use Korowai\Lib\Ldif\RangeInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-trait DecoratesCoupledRangeInterface
+trait DecoratesRangeInterface
 {
-    use ExposesCoupledRangeInterface;
+    use ExposesRangeInterface;
 
     /**
-     * @var CoupledRangeInterface
+     * @var RangeInterface
      */
     protected $range;
 
     /**
-     * Sets instance of CoupledRangeInterface to this wrapper.
+     * Sets instance of RangeInterface to this wrapper.
      *
      * @return $this
      */
-    public function setRange(CoupledRangeInterface $range)
+    public function setRange(RangeInterface $range)
     {
         $this->range = $range;
         return $this;
     }
 
     /**
-     * Returns the encapsulated instance of CoupledRangeInterface.
+     * Returns the encapsulated instance of RangeInterface.
      *
-     * @return CoupledRangeInterface|null
+     * @return RangeInterface|null
      */
-    public function getRange() : ?CoupledRangeInterface
+    public function getRange() : ?RangeInterface
     {
         return $this->range;
     }

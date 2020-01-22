@@ -42,9 +42,9 @@ trait ExposesSourceLocationInterface
     /**
      * {@inheritdoc}
      */
-    public function getSourceByteOffset() : int
+    public function getSourceOffset() : int
     {
-        return $this->getSourceLocation()->getSourceByteOffset();
+        return $this->getSourceLocation()->getSourceOffset();
     }
 
     /**
@@ -74,9 +74,9 @@ trait ExposesSourceLocationInterface
     /**
      * {@inheritdoc}
      */
-    public function getSourceLineAndByteOffset() : array
+    public function getSourceLineAndOffset() : array
     {
-        return $this->getSourceLocation()->getSourceLineAndByteOffset();
+        return $this->getSourceLocation()->getSourceLineAndOffset();
     }
 
     /**

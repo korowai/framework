@@ -17,7 +17,7 @@ use Korowai\Lib\Ldif\Traits\ParsesVersionSpec;
 use Korowai\Lib\Ldif\Traits\SkipsWhitespaces;
 use Korowai\Lib\Ldif\Traits\MatchesPatterns;
 use Korowai\Lib\Ldif\Preprocessor;
-use Korowai\Lib\Ldif\CoupledCursor;
+use Korowai\Lib\Ldif\Cursor;
 
 use PHPUnit\Framework\TestCase;
 
@@ -37,7 +37,7 @@ class ParsesVersionSpecTest extends TestCase
         return $obj;
     }
 
-//    protected function createInput(string $source, string $filename = null) : CoupledInputInterface
+//    protected function createInput(string $source, string $filename = null) : InputInterface
 //    {
 //        return (new Preprocessor)->preprocess(...(func_get_args()));
 //    }
@@ -45,7 +45,7 @@ class ParsesVersionSpecTest extends TestCase
 //    protected function createCursor(string $source, int $position = 0, string $filename = null)
 //    {
 //        $input = $this->createInput($source, $filename);
-//        return new CoupledCursor($input, $position);
+//        return new Cursor($input, $position);
 //    }
 //
 //    protected function createParserState(string $source, int $position = 0, string $filename = null)
@@ -76,7 +76,7 @@ class ParsesVersionSpecTest extends TestCase
 //            $this->assertTrue($result);
 //        } else {
 //            $this->assertFalse($result);
-//            $this->assertSame($begin, $state->getCursor()->getByteOffset());
+//            $this->assertSame($begin, $state->getCursor()->getOffset());
 //            $this->
 //        }
 //    }

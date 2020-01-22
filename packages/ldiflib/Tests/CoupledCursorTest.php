@@ -1,6 +1,6 @@
 <?php
 /**
- * @file Tests/CoupledCursorTest.php
+ * @file Tests/CursorTest.php
  *
  * This file is part of the Korowai package
  *
@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldif\Tests;
 
-use Korowai\Lib\Ldif\CoupledCursor;
-use Korowai\Lib\Ldif\CoupledCursorInterface;
-use Korowai\Lib\Ldif\CoupledLocation;
-use Korowai\Lib\Ldif\CoupledInput;
+use Korowai\Lib\Ldif\Cursor;
+use Korowai\Lib\Ldif\CursorInterface;
+use Korowai\Lib\Ldif\Location;
+use Korowai\Lib\Ldif\Input;
 
 use PHPUnit\Framework\TestCase;
 
@@ -24,49 +24,49 @@ use PHPUnit\Framework\TestCase;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class CoupledCursorTest extends TestCase
+class CursorTest extends TestCase
 {
-    public function test__implements__CoupledCursorInterface()
+    public function test__implements__CursorInterface()
     {
-        $interfaces = class_implements(CoupledCursor::class);
-        $this->assertContains(CoupledCursorInterface::class, $interfaces);
+        $interfaces = class_implements(Cursor::class);
+        $this->assertContains(CursorInterface::class, $interfaces);
     }
 
-    public function test__extends__CoupledLocation()
+    public function test__extends__Location()
     {
-        $parents = class_parents(CoupledCursor::class);
-        $this->assertContains(CoupledLocation::class, $parents);
+        $parents = class_parents(Cursor::class);
+        $this->assertContains(Location::class, $parents);
     }
 
     public function test__moveBy()
     {
-        $input = $this->createMock(CoupledInput::class);
-        $cursor = new CoupledCursor($input, 0);
+        $input = $this->createMock(Input::class);
+        $cursor = new Cursor($input, 0);
 
-        $this->assertSame(0, $cursor->getByteOffset());
+        $this->assertSame(0, $cursor->getOffset());
 
         $this->assertSame($cursor, $cursor->moveBy(2));
-        $this->assertSame(2, $cursor->getByteOffset());
+        $this->assertSame(2, $cursor->getOffset());
 
         $this->assertSame($cursor, $cursor->moveBy(3));
-        $this->assertSame(5, $cursor->getByteOffset());
+        $this->assertSame(5, $cursor->getOffset());
 
         $this->assertSame($cursor, $cursor->moveBy(-2));
-        $this->assertSame(3, $cursor->getByteOffset());
+        $this->assertSame(3, $cursor->getOffset());
     }
 
     public function test__moveTo()
     {
-        $input = $this->createMock(CoupledInput::class);
-        $cursor = new CoupledCursor($input, 0);
+        $input = $this->createMock(Input::class);
+        $cursor = new Cursor($input, 0);
 
-        $this->assertSame(0, $cursor->getByteOffset());
+        $this->assertSame(0, $cursor->getOffset());
 
         $this->assertSame($cursor, $cursor->moveTo(2));
-        $this->assertSame(2, $cursor->getByteOffset());
+        $this->assertSame(2, $cursor->getOffset());
 
         $this->assertSame($cursor, $cursor->moveTo(3));
-        $this->assertSame(3, $cursor->getByteOffset());
+        $this->assertSame(3, $cursor->getOffset());
     }
 }
 

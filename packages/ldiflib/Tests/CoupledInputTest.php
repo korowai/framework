@@ -1,6 +1,6 @@
 <?php
 /**
- * @file Tests/CoupledInputTest.php
+ * @file Tests/InputTest.php
  *
  * This file is part of the Korowai package
  *
@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldif\Tests;
 
-use Korowai\Lib\Ldif\CoupledInput;
-use Korowai\Lib\Ldif\CoupledInputInterface;
+use Korowai\Lib\Ldif\Input;
+use Korowai\Lib\Ldif\InputInterface;
 use Korowai\Lib\Ldif\Util\IndexMap;
 
 use PHPUnit\Framework\TestCase;
@@ -23,18 +23,18 @@ use PHPUnit\Framework\TestCase;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class CoupledInputTest extends TestCase
+class InputTest extends TestCase
 {
-    public function test__implements__CoupledInputInterface()
+    public function test__implements__InputInterface()
     {
-        $interfaces = class_implements(CoupledInput::class);
-        $this->assertContains(CoupledInputInterface::class, $interfaces);
+        $interfaces = class_implements(Input::class);
+        $this->assertContains(InputInterface::class, $interfaces);
     }
 
     public function test__construct()
     {
         $im = $this->createMock(IndexMap::class);
-        $input = new CoupledInput("source string", "the string", $im);
+        $input = new Input("source string", "the string", $im);
 
         $this->assertSame("source string", $input->getSourceString());
         $this->assertSame("the string", $input->getString());
@@ -45,7 +45,7 @@ class CoupledInputTest extends TestCase
     public function test__construct__withSourceFileName()
     {
         $im = $this->createMock(IndexMap::class);
-        $input = new CoupledInput("source string", "the string", $im, 'foo.ldif');
+        $input = new Input("source string", "the string", $im, 'foo.ldif');
 
         $this->assertSame("source string", $input->getSourceString());
         $this->assertSame("the string", $input->getString());
@@ -56,7 +56,7 @@ class CoupledInputTest extends TestCase
     public function test__init()
     {
         $im1 = $this->createMock(IndexMap::class);
-        $input = new CoupledInput("", "", $im1);
+        $input = new Input("", "", $im1);
 
         $im2 = $this->createMock(IndexMap::class);
         $input->init("source string", "the string", $im2, 'foo.ldif');
@@ -70,12 +70,12 @@ class CoupledInputTest extends TestCase
     public function test__toString()
     {
         $im = $this->createMock(IndexMap::class);
-        $input = new CoupledInput("source string", "the string", $im, 'foo.ldif');
+        $input = new Input("source string", "the string", $im, 'foo.ldif');
 
         $this->assertSame("the string", (string)$input);
     }
 
-    public function test__getSourceByteOffset()
+    public function test__getSourceOffset()
     {
         $im = $this->createMock(IndexMap::class);
         $im->expects($this->once())
@@ -83,8 +83,8 @@ class CoupledInputTest extends TestCase
            ->with(12)
            ->willReturn(21);
 
-        $input = new CoupledInput("", "", $im);
-        $this->assertSame(21, $input->getSourceByteOffset(12));
+        $input = new Input("", "", $im);
+        $this->assertSame(21, $input->getSourceOffset(12));
     }
 
     public function sourceCharOffsetCases()
@@ -92,7 +92,7 @@ class CoupledInputTest extends TestCase
         return [
             [
                 //                01234 56789    0123
-                new CoupledInput("# com\nline", "line", new IndexMap([[0,6]])),
+                new Input("# com\nline", "line", new IndexMap([[0,6]])),
                 [
                 //  l         i         n         e
                     [[0], 6], [[1], 7], [[2], 8], [[3], 9]
@@ -100,7 +100,7 @@ class CoupledInputTest extends TestCase
             ],
 
             [
-                new CoupledInput("# com\nwóz", "wóz", new IndexMap([[0,6]])),
+                new Input("# com\nwóz", "wóz", new IndexMap([[0,6]])),
                 [
                 //  w         ó         z
                     [[0], 6], [[1], 7], [[3], 8]
@@ -108,7 +108,7 @@ class CoupledInputTest extends TestCase
             ],
 
             [
-                new CoupledInput("zważy\n#com\ndrób", "zważy\ndrób", new IndexMap([[0,0], [7, 12]])),
+                new Input("zważy\n#com\ndrób", "zważy\ndrób", new IndexMap([[0,0], [7, 12]])),
                 [
                 //  z        w        a        ż        y        \n       d         r         ó         b
                     [[0],0], [[1],1], [[2],2], [[3],3], [[5],4], [[6],5], [[7],11], [[8],12], [[9],13], [[11],14]
@@ -116,7 +116,7 @@ class CoupledInputTest extends TestCase
             ],
 
             [
-                new CoupledInput("zważy\n#tło\ndrób", "zważy\ndrób", new IndexMap([[0,0], [7, 13]])),
+                new Input("zważy\n#tło\ndrób", "zważy\ndrób", new IndexMap([[0,0], [7, 13]])),
                 [
                 //  z        w        a        ż        y        \n       d         r         ó         b
                     [[0],0], [[1],1], [[2],2], [[3],3], [[5],4], [[6],5], [[7],11], [[8],12], [[9],13], [[11],14]
@@ -128,7 +128,7 @@ class CoupledInputTest extends TestCase
     /**
      * @dataProvider sourceCharOffsetCases
      */
-    public function test__getSourceCharOffset(CoupledInput $input, array $cases)
+    public function test__getSourceCharOffset(Input $input, array $cases)
     {
         foreach ($cases as $case) {
             [$args, $expect] = $case;
@@ -140,13 +140,13 @@ class CoupledInputTest extends TestCase
     {
         return [
             [
-                new CoupledInput("", "", new IndexMap([])),
+                new Input("", "", new IndexMap([])),
                 [""],
                 [[-PHP_INT_MAX,-1], [0,0]]
             ],
 
             [
-                new CoupledInput("line 1", "line 1", new IndexMap([])),
+                new Input("line 1", "line 1", new IndexMap([])),
                 ["line 1"],
                 [[-PHP_INT_MAX,-1], [0,0]]
             ],
@@ -154,7 +154,7 @@ class CoupledInputTest extends TestCase
             [
                 //                000000 00001 1111111    000000 0001111
                 //                012345 67890 1234567    123456 7890123
-                new CoupledInput("line 1\n#com\nline 2", "line 1\nline 2", new IndexMap([[8,12]])),
+                new Input("line 1\n#com\nline 2", "line 1\nline 2", new IndexMap([[8,12]])),
                 ["line 1", "#com", "line 2"],
                 [[-PHP_INT_MAX,-1], [0,0], [7,1], [12,2]]
             ],
@@ -162,7 +162,7 @@ class CoupledInputTest extends TestCase
             [
                 //                000 0000 0 0011
                 //                012 3456 7 8901
-                new CoupledInput("l 1\nl 2\r\nl 3", "l 1\nl 2\r\nl 3", new IndexMap([])),
+                new Input("l 1\nl 2\r\nl 3", "l 1\nl 2\r\nl 3", new IndexMap([])),
                 ["l 1", "l 2", "l 3"],
                 [[-PHP_INT_MAX,-1], [0,0], [4,1], [9,2]]
             ],
@@ -172,7 +172,7 @@ class CoupledInputTest extends TestCase
     /**
      * @dataProvider sourceLinesCases
      */
-    public function test__sourceLines(CoupledInput $input, array $expLines, array $expLinesMap)
+    public function test__sourceLines(Input $input, array $expLines, array $expLinesMap)
     {
         $this->assertSame($expLines, $input->getSourceLines());
         $this->assertSame(count($expLines), $input->getSourceLinesCount());
@@ -184,24 +184,24 @@ class CoupledInputTest extends TestCase
     {
         return [
             [
-                new CoupledInput("", "", new IndexMap([])),
+                new Input("", "", new IndexMap([])),
                 [0 => ""]
             ],
 
             [
-                new CoupledInput("l 1", " l 1", new IndexMap([])),
+                new Input("l 1", " l 1", new IndexMap([])),
                 [0 => "l 1"]
             ],
 
             [
-                new CoupledInput("l 1\nl 2\r\nl 3", " l 1\nl 2\r\nl 3", new IndexMap([])),
+                new Input("l 1\nl 2\r\nl 3", " l 1\nl 2\r\nl 3", new IndexMap([])),
                 [0 => "l 1", 1 => "l 2", 2 => "l 3"]
             ],
 
             [
                 //                000 00000 0 0111    000 000
                 //                012 34567 8 9012    012 3456
-                new CoupledInput("l 1\n#l 2\r\nl 3", "l 1\nl 3", new IndexMap([[4,10]])),
+                new Input("l 1\n#l 2\r\nl 3", "l 1\nl 3", new IndexMap([[4,10]])),
                 [0 => "l 1", 1 => "#l 2", 2 => "l 3"]
             ],
         ];
@@ -210,7 +210,7 @@ class CoupledInputTest extends TestCase
     /**
      * @dataProvider sourceLineCases
      */
-    public function test__getSourceLine(CoupledInput $input, array $cases)
+    public function test__getSourceLine(Input $input, array $cases)
     {
         foreach ($cases as $i => $expect) {
             $this->assertSame($expect, $input->getSourceLine($i));
@@ -221,20 +221,20 @@ class CoupledInputTest extends TestCase
     {
         return [
             [
-                new CoupledInput("", "", new IndexMap([])),
+                new Input("", "", new IndexMap([])),
                 [0 => 0, 1 => 0]
             ],
 
             [
                 //                012 3    012 3
-                new CoupledInput("l 1\n", "l 1\n", new IndexMap([])),
+                new Input("l 1\n", "l 1\n", new IndexMap([])),
                 [0 => 0, 1 => 0, 2 => 0, 3 => 0, 4 => 1, 5 => 1]
             ],
 
             [
                 //                000 00000 0 0111 1    000 0000 00
                 //                012 34567 8 9012 3    012 3456 78
-                new CoupledInput("l 1\n#l 2\r\nl 3\n", "l 1\nl 3\n", new IndexMap([[0,0], [4,10]])),
+                new Input("l 1\n#l 2\r\nl 3\n", "l 1\nl 3\n", new IndexMap([[0,0], [4,10]])),
                 [0 => 0, 1 => 0, 2 => 0, 3 => 0, 4 => 2, 5 => 2, 6 => 2, 7 => 2, 8 => 3, 9 => 3]
             ],
         ];
@@ -243,24 +243,24 @@ class CoupledInputTest extends TestCase
     /**
      * @dataProvider sourceLineIndexCases
      */
-    public function test__getSourceLineIndex(CoupledInput $input, array $cases)
+    public function test__getSourceLineIndex(Input $input, array $cases)
     {
         foreach ($cases as $i => $j) {
             $this->assertSame($j, $input->getSourceLineIndex($i));
         }
     }
 
-    public function sourceLineAndByteOffsetCases()
+    public function sourceLineAndOffsetCases()
     {
         return [
             [
-                new CoupledInput("", "", new IndexMap([])),
+                new Input("", "", new IndexMap([])),
                 [0 => [0,0], 1 => [0,1]],
             ],
 
             [
                 //                012 3    012 3
-                new CoupledInput("l 1\n", "l 1\n", new IndexMap([])),
+                new Input("l 1\n", "l 1\n", new IndexMap([])),
                 //    l           _           1           \n
                 [0 => [0,0], 1 => [0,1], 2 => [0,2], 3 => [0,3], 4 => [1,0], 5 => [1,1]],
             ],
@@ -268,7 +268,7 @@ class CoupledInputTest extends TestCase
             [
                 //                000 00000 0 0111 1    000 0000 00
                 //                012 34567 8 9012 3    012 3456 78
-                new CoupledInput("l 1\n#l 2\r\nl 3\n", "l 1\nl 3\n", new IndexMap([[0,0], [4,10]])),
+                new Input("l 1\n#l 2\r\nl 3\n", "l 1\nl 3\n", new IndexMap([[0,0], [4,10]])),
                 [
                     0 => [0,0], // l
                     1 => [0,1], // <space>
@@ -286,7 +286,7 @@ class CoupledInputTest extends TestCase
             [
                 //                000 00000 1 1111 1    000 0000 01
                 //                013 45689 0 1234 6    013 4567 90
-                new CoupledInput("lód\n#łan\r\nryż\n", "lód\nryż\n", new IndexMap([[0,0], [5,12]])),
+                new Input("lód\n#łan\r\nryż\n", "lód\nryż\n", new IndexMap([[0,0], [5,12]])),
                 [
                     0 => [0,0], // l
                     1 => [0,1], // ó
@@ -305,43 +305,43 @@ class CoupledInputTest extends TestCase
     }
 
     /**
-     * @dataProvider sourceLineAndByteOffsetCases
+     * @dataProvider sourceLineAndOffsetCases
      */
-    public function test__getSourceLineAndByteOffset(CoupledInput $input, array $cases)
+    public function test__getSourceLineAndOffset(Input $input, array $cases)
     {
         foreach ($cases as $i => $expect) {
             [$expLine, $expOffset] = $expect;
-            [$line, $offset] = $input->getSourceLineAndByteOffset($i);
+            [$line, $offset] = $input->getSourceLineAndOffset($i);
             $this->assertSame($expLine, $line);
             $this->assertSame($expOffset, $offset);
         }
     }
 
-    public function test__getSourceLineAndByteOffset__withEmptyMap()
+    public function test__getSourceLineAndOffset__withEmptyMap()
     {
-        $input = new class ("", "", new IndexMap([])) extends CoupledInput {
+        $input = new class ("", "", new IndexMap([])) extends Input {
             public function getSourceLinesMap() : IndexMap
             {
                 return new IndexMap([], 0);
             }
         };
 
-        $this->assertSame([-1,0], $input->getSourceLineAndByteOffset(-1));
-        $this->assertSame([ 0,0], $input->getSourceLineAndByteOffset( 0));
-        $this->assertSame([ 1,0], $input->getSourceLineAndByteOffset( 1));
+        $this->assertSame([-1,0], $input->getSourceLineAndOffset(-1));
+        $this->assertSame([ 0,0], $input->getSourceLineAndOffset( 0));
+        $this->assertSame([ 1,0], $input->getSourceLineAndOffset( 1));
     }
 
     public function sourceLineAndCharOffsetCases()
     {
         return [
             [
-                new CoupledInput("", "", new IndexMap([])),
+                new Input("", "", new IndexMap([])),
                 [0 => [0,0], 1 => [0,0]],
             ],
 
             [
                 //                012 3    012 3
-                new CoupledInput("l 1\n", "l 1\n", new IndexMap([])),
+                new Input("l 1\n", "l 1\n", new IndexMap([])),
                 //    l           _           1           \n
                 [0 => [0,0], 1 => [0,1], 2 => [0,2], 3 => [0,3], 4 => [1,0], 5 => [1,0]],
             ],
@@ -349,7 +349,7 @@ class CoupledInputTest extends TestCase
             [
                 //                000 00000 0 0111 1    000 0000 00
                 //                012 34567 8 9012 3    012 3456 78
-                new CoupledInput("l 1\n#l 2\r\nl 3\n", "l 1\nl 3\n", new IndexMap([[0,0], [4,10]])),
+                new Input("l 1\n#l 2\r\nl 3\n", "l 1\nl 3\n", new IndexMap([[0,0], [4,10]])),
                 [
                     0 => [0,0], // l
                     1 => [0,1], // <space>
@@ -367,7 +367,7 @@ class CoupledInputTest extends TestCase
             [
                 //                000 00000 1 1111 1    000 0000 01
                 //                013 45689 0 1234 6    013 4567 90
-                new CoupledInput("lód\n#łan\r\nryż\n", "lód\nryż\n", new IndexMap([[0,0], [5,12]])),
+                new Input("lód\n#łan\r\nryż\n", "lód\nryż\n", new IndexMap([[0,0], [5,12]])),
                 [
                     0 => [0,0], // l
                     1 => [0,1], // ó
@@ -388,7 +388,7 @@ class CoupledInputTest extends TestCase
     /**
      * @dataProvider sourceLineAndCharOffsetCases
      */
-    public function test__getSourceLineAndCharOffset(CoupledInput $input, array $cases)
+    public function test__getSourceLineAndCharOffset(Input $input, array $cases)
     {
         foreach ($cases as $i => $expect) {
             [$expLine, $expOffset] = $expect;
@@ -401,10 +401,10 @@ class CoupledInputTest extends TestCase
     public function test__sourceFileName()
     {
         $im = new IndexMap([]);
-        $input = new CoupledInput('', '', $im);
+        $input = new Input('', '', $im);
         $this->assertSame('-', $input->getSourceFileName());
 
-        $input = new CoupledInput('', '', $im, 'foo.ldif');
+        $input = new Input('', '', $im, 'foo.ldif');
         $this->assertSame('foo.ldif', $input->getSourceFileName());
         $input->setSourceFileName('bar.ldif');
         $this->assertSame('bar.ldif', $input->getSourceFileName());

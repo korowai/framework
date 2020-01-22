@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Lib/Ldif/CoupledCursorInterface.php
+ * @file src/Korowai/Lib/Ldif/CursorInterface.php
  *
  * This file is part of the Korowai package
  *
@@ -16,25 +16,25 @@ namespace Korowai\Lib\Ldif;
 /**
  * Interface for cursor objects.
  */
-interface CoupledCursorInterface extends CoupledLocationInterface
+interface CursorInterface extends LocationInterface
 {
     /**
      * Change the cursor position by $offset.
      *
      * @param int $offset
      *
-     * @return CoupledCursorInterface
+     * @return CursorInterface
      */
-    public function moveBy(int $offset) : CoupledCursorInterface;
+    public function moveBy(int $offset) : CursorInterface;
 
     /**
      * Move the cursor to a given $position.
      *
      * @param int $position
      *
-     * @return CoupledCursorInterface
+     * @return CursorInterface
      */
-    public function moveTo(int $position) : CoupledCursorInterface;
+    public function moveTo(int $position) : CursorInterface;
 }
 
 // vim: syntax=php sw=4 ts=4 et:

@@ -17,7 +17,7 @@ use Korowai\Lib\Ldif\Records\VersionSpec;
 use Korowai\Lib\Ldif\Records\AbstractRecord;
 use Korowai\Lib\Ldif\Records\VersionSpecInterface;
 use Korowai\Lib\Ldif\RecordVisitorInterface;
-use Korowai\Lib\Ldif\CoupledRangeInterface;
+use Korowai\Lib\Ldif\RangeInterface;
 
 use PHPUnit\Framework\TestCase;
 
@@ -41,13 +41,13 @@ class VersionSpecTest extends TestCase
 
     protected function getRange()
     {
-        return $this->getMockBuilder(CoupledRangeInterface::class)
+        return $this->getMockBuilder(RangeInterface::class)
                     ->getMockForAbstractClass();
     }
 
     public function test__construct()
     {
-        $range = $this->getMockBuilder(CoupledRangeInterface::class)
+        $range = $this->getMockBuilder(RangeInterface::class)
                       ->getMockForAbstractClass();
         $record = new VersionSpec($range, 12);
 
@@ -57,7 +57,7 @@ class VersionSpecTest extends TestCase
 
     public function test__acceptRecordVisitor()
     {
-        $range = $this->getMockBuilder(CoupledRangeInterface::class)
+        $range = $this->getMockBuilder(RangeInterface::class)
                       ->getMockForAbstractClass();
         $record = new VersionSpec($range, 12);
 

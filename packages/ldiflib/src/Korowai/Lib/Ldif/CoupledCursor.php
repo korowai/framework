@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Lib/Ldif/CoupledCursor.php
+ * @file src/Korowai/Lib/Ldif/Cursor.php
  *
  * This file is part of the Korowai package
  *
@@ -14,14 +14,14 @@ declare(strict_types=1);
 namespace Korowai\Lib\Ldif;
 
 /**
- * Similar to CoupledLocation, but cursor can be moved.
+ * Similar to Location, but cursor can be moved.
  */
-class CoupledCursor extends CoupledLocation implements CoupledCursorInterface
+class Cursor extends Location implements CursorInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function moveBy(int $offset) : CoupledCursorInterface
+    public function moveBy(int $offset) : CursorInterface
     {
         $this->position += $offset;
         return $this;
@@ -30,7 +30,7 @@ class CoupledCursor extends CoupledLocation implements CoupledCursorInterface
     /**
      * {@inheritdoc}
      */
-    public function moveTo(int $position) : CoupledCursorInterface
+    public function moveTo(int $position) : CursorInterface
     {
         $this->position = $position;
         return $this;

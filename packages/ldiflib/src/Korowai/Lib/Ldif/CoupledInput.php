@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Lib/Ldif/CoupledInput.php
+ * @file src/Korowai/Lib/Ldif/Input.php
  *
  * This file is part of the Korowai package
  *
@@ -26,7 +26,7 @@ use function Korowai\Lib\Compat\preg_split;
  * preprocessed string onto their corresponding line numbers in the source
  * string.
  */
-class CoupledInput implements CoupledInputInterface
+class Input implements InputInterface
 {
     /**
      * @var string
@@ -143,7 +143,7 @@ class CoupledInput implements CoupledInputInterface
     /**
      * {@inheritdoc}
      */
-    public function getSourceByteOffset(int $i) : int
+    public function getSourceOffset(int $i) : int
     {
         return ($this->getIndexMap())($i);
     }
@@ -153,7 +153,7 @@ class CoupledInput implements CoupledInputInterface
      */
     public function getSourceCharOffset(int $i, string $encoding = null) : int
     {
-        $offset = $this->getSourceByteOffset($i);
+        $offset = $this->getSourceOffset($i);
         $substr = substr($this->getSourceString(), 0, $offset);
         return mb_strlen($substr, ...(array_slice(func_get_args(), 1)));
     }
@@ -190,16 +190,16 @@ class CoupledInput implements CoupledInputInterface
      */
     public function getSourceLineIndex(int $i) : int
     {
-        $j = $this->getSourceByteOffset($i);
+        $j = $this->getSourceOffset($i);
         return ($this->getSourceLinesMap())($j);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getSourceLineAndByteOffset(int $i) : array
+    public function getSourceLineAndOffset(int $i) : array
     {
-        $j = $this->getSourceByteOffset($i);
+        $j = $this->getSourceOffset($i);
         $map = $this->getSourceLinesMap();
         $line = $map($j, $index);
         if (isset($index)) {
@@ -215,7 +215,7 @@ class CoupledInput implements CoupledInputInterface
      */
     public function getSourceLineAndCharOffset(int $i, string $encoding = null) : array
     {
-        [$line, $byte] = $this->getSourceLineAndByteOffset($i);
+        [$line, $byte] = $this->getSourceLineAndOffset($i);
         $lineStr = $this->getSourceLine($line);
         $args = array_slice(func_get_args(), 1);
         $char = mb_strlen(substr($lineStr, 0, $byte), ...$args);
@@ -244,9 +244,9 @@ class CoupledInput implements CoupledInputInterface
      *
      * @param string $sourceFileName
      *
-     * @return CoupledInput
+     * @return Input
      */
-    public function setSourceFileName(string $sourceFileName) : CoupledInput
+    public function setSourceFileName(string $sourceFileName) : Input
     {
         $this->sourceFileName = $sourceFileName;
         return $this;

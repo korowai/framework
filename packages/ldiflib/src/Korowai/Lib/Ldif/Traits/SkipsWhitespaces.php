@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldif\Traits;
 
-use Korowai\Lib\Ldif\CoupledCursorInterface;
+use Korowai\Lib\Ldif\CursorInterface;
 use Korowai\Lib\Compat\Exception\PregException;
 
 /**
@@ -22,17 +22,17 @@ use Korowai\Lib\Compat\Exception\PregException;
 trait SkipsWhitespaces
 {
     // The method is implemented in MatchesPatterns trait.
-    abstract public function matchAhead(string $pattern, CoupledCursorInterface $cursor, int $flags = 0) : array;
+    abstract public function matchAhead(string $pattern, CursorInterface $cursor, int $flags = 0) : array;
 
     /**
      * Skip white spaces (including tabs and new-line characters).
      *
-     * @param CoupledCursorInterface $cursor
+     * @param CursorInterface $cursor
      *
      * @return array
      * @throws PregException When an error occurs in ``preg_match()``.
      */
-    public function skipWs(CoupledCursorInterface $cursor) : array
+    public function skipWs(CursorInterface $cursor) : array
     {
         return $this->matchAhead('/\G\s+/', $cursor);
     }
@@ -40,12 +40,12 @@ trait SkipsWhitespaces
     /**
      * Skip zero or more whitespaces (FILL in RFC2849).
      *
-     * @param CoupledCursorInterface $cursor
+     * @param CursorInterface $cursor
      *
      * @return array
      * @throws PregException When an error occurs in ``preg_match()``.
      */
-    public function skipFill(CoupledCursorInterface $cursor) : array
+    public function skipFill(CursorInterface $cursor) : array
     {
         return $this->matchAhead('/\G */', $cursor);
     }

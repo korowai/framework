@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Lib/Ldif/CoupledLocation.php
+ * @file src/Korowai/Lib/Ldif/Location.php
  *
  * This file is part of the Korowai package
  *
@@ -16,10 +16,10 @@ namespace Korowai\Lib\Ldif;
 /**
  * Points at a character of preprocessed input.
  */
-class CoupledLocation implements CoupledLocationInterface
+class Location implements LocationInterface
 {
     /**
-     * @var CoupledInput
+     * @var Input
      */
     protected $input;
 
@@ -32,10 +32,10 @@ class CoupledLocation implements CoupledLocationInterface
     /**
      * Initializes the error object.
      *
-     * @param CoupledInputInterface $input Preprocessed source code.
+     * @param InputInterface $input Preprocessed source code.
      * @param int $position Character offset (in bytes) the $input,
      */
-    public function __construct(CoupledInputInterface $input, int $position = 0)
+    public function __construct(InputInterface $input, int $position = 0)
     {
         $this->init($input, $position);
     }
@@ -43,10 +43,10 @@ class CoupledLocation implements CoupledLocationInterface
     /**
      * Initializes the error object.
      *
-     * @param CoupledInputInterface $input Preprocessed source code.
+     * @param InputInterface $input Preprocessed source code.
      * @param int $position Character offset (in bytes) the $input,
      */
-    public function init(CoupledInputInterface $input, int $position)
+    public function init(InputInterface $input, int $position)
     {
         $this->input = $input;
         $this->position = $position;
@@ -55,9 +55,9 @@ class CoupledLocation implements CoupledLocationInterface
     /**
      * Returns the Preprocessed input provided to the constructor as $input
      *
-     * @return CoupledInputInterface
+     * @return InputInterface
      */
-    public function getInput() : CoupledInputInterface
+    public function getInput() : InputInterface
     {
         return $this->input;
     }
@@ -73,7 +73,7 @@ class CoupledLocation implements CoupledLocationInterface
     /**
      * {@inheritdoc}
      */
-    public function getByteOffset() : int
+    public function getOffset() : int
     {
         return $this->position;
     }
@@ -83,7 +83,7 @@ class CoupledLocation implements CoupledLocationInterface
      */
     public function getCharOffset(string $encoding = null) : int
     {
-        $substring = substr($this->getString(), 0, $this->getByteOffset());
+        $substring = substr($this->getString(), 0, $this->getOffset());
         return mb_strlen($substring, ...(func_get_args()));
     }
 
@@ -96,7 +96,7 @@ class CoupledLocation implements CoupledLocationInterface
 //     */
 //    public function getRightSubstr(int $len = null) : string
 //    {
-//        return substr($this->getString(), $this->getByteOffset(), ...(func_get_args()));
+//        return substr($this->getString(), $this->getOffset(), ...(func_get_args()));
 //    }
 //
 //    /**
@@ -108,7 +108,7 @@ class CoupledLocation implements CoupledLocationInterface
 //     */
 //    public function getLeftSubstr(int $len = null) : string
 //    {
-//        $pos = $this->getByteOffset();
+//        $pos = $this->getOffset();
 //        if(isset($len)) {
 //            $beg = max($pos - $len, 0);
 //        } else {
@@ -137,9 +137,9 @@ class CoupledLocation implements CoupledLocationInterface
     /**
      * {@inheritdoc}
      */
-    public function getSourceByteOffset() : int
+    public function getSourceOffset() : int
     {
-        return $this->getInput()->getSourceByteOffset($this->getByteOffset());
+        return $this->getInput()->getSourceOffset($this->getOffset());
     }
 
     /**
@@ -147,7 +147,7 @@ class CoupledLocation implements CoupledLocationInterface
      */
     public function getSourceCharOffset(string $encoding = null) : int
     {
-        return $this->getInput()->getSourceCharOffset($this->getByteOffset(), ...(func_get_args()));
+        return $this->getInput()->getSourceCharOffset($this->getOffset(), ...(func_get_args()));
     }
 
     /**
@@ -155,7 +155,7 @@ class CoupledLocation implements CoupledLocationInterface
      */
     public function getSourceLineIndex() : int
     {
-        return $this->getInput()->getSourceLineIndex($this->getByteOffset());
+        return $this->getInput()->getSourceLineIndex($this->getOffset());
     }
 
     /**
@@ -169,9 +169,9 @@ class CoupledLocation implements CoupledLocationInterface
     /**
      * {@inheritdoc}
      */
-    public function getSourceLineAndByteOffset() : array
+    public function getSourceLineAndOffset() : array
     {
-        return $this->getInput()->getSourceLineAndByteOffset($this->getByteOffset());
+        return $this->getInput()->getSourceLineAndOffset($this->getOffset());
     }
 
     /**
@@ -179,7 +179,7 @@ class CoupledLocation implements CoupledLocationInterface
      */
     public function getSourceLineAndCharOffset(string $encoding = null) : array
     {
-        return $this->getInput()->getSourceLineAndCharOffset($this->getByteOffset(), ...(func_get_args()));
+        return $this->getInput()->getSourceLineAndCharOffset($this->getOffset(), ...(func_get_args()));
     }
 }
 

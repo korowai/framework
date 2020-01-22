@@ -15,8 +15,8 @@ namespace Korowai\Lib\Ldif\Records\Tests;
 
 use Korowai\Lib\Ldif\Records\AbstractRecord;
 use Korowai\Lib\Ldif\RecordInterface;
-use Korowai\Lib\Ldif\CoupledRangeInterface;
-use Korowai\Lib\Ldif\Traits\DecoratesCoupledRangeInterface;
+use Korowai\Lib\Ldif\RangeInterface;
+use Korowai\Lib\Ldif\Traits\DecoratesRangeInterface;
 
 use PHPUnit\Framework\TestCase;
 
@@ -26,15 +26,15 @@ use PHPUnit\Framework\TestCase;
  */
 class AbstractRecordTest extends TestCase
 {
-    public function test__uses__DecoratesCoupledRangeInterface()
+    public function test__uses__DecoratesRangeInterface()
     {
         $uses = class_uses(AbstractRecord::class);
-        $this->assertContains(DecoratesCoupledRangeInterface::class, $uses);
+        $this->assertContains(DecoratesRangeInterface::class, $uses);
     }
 
     public function test__initAbstractRecord()
     {
-        $range = $this->getMockBuilder(CoupledRangeInterface::class)
+        $range = $this->getMockBuilder(RangeInterface::class)
                       ->getMockForAbstractClass();
         $record = $this->getMockBuilder(AbstractRecord::class)
                        ->getMockForAbstractClass();

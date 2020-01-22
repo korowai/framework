@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Lib/Ldif/Traits/ExposesCoupledLocationInterface.php
+ * @file src/Korowai/Lib/Ldif/Traits/ExposesLocationInterface.php
  *
  * This file is part of the Korowai package
  *
@@ -13,18 +13,18 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldif\Traits;
 
-use Korowai\Lib\Ldif\CoupledLocationInterface;
+use Korowai\Lib\Ldif\LocationInterface;
 use Korowai\Lib\Ldif\SourceLocationInterface;
-use Korowai\Lib\Ldif\CoupledInputInterface;
+use Korowai\Lib\Ldif\InputInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-trait ExposesCoupledLocationInterface
+trait ExposesLocationInterface
 {
     use ExposesSourceLocationInterface;
 
-    abstract public function getLocation() : ?CoupledLocationInterface;
+    abstract public function getLocation() : ?LocationInterface;
 
     /**
      * Returns the encapsulated instance of SourceLocationInterface.
@@ -47,9 +47,9 @@ trait ExposesCoupledLocationInterface
     /**
      * {@inheritdoc}
      */
-    public function getByteOffset() : int
+    public function getOffset() : int
     {
-        return $this->getLocation()->getByteOffset();
+        return $this->getLocation()->getOffset();
     }
 
     /**
@@ -63,7 +63,7 @@ trait ExposesCoupledLocationInterface
     /**
      * {@inheritdoc}
      */
-    public function getInput() : CoupledInputInterface
+    public function getInput() : InputInterface
     {
         return $this->getLocation()->getInput();
     }

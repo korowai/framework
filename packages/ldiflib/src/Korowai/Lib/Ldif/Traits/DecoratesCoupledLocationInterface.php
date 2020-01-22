@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Lib/Ldif/Traits/DecoratesCoupledLocationInterface.php
+ * @file src/Korowai/Lib/Ldif/Traits/DecoratesLocationInterface.php
  *
  * This file is part of the Korowai package
  *
@@ -13,37 +13,37 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldif\Traits;
 
-use Korowai\Lib\Ldif\CoupledLocationInterface;
+use Korowai\Lib\Ldif\LocationInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-trait DecoratesCoupledLocationInterface
+trait DecoratesLocationInterface
 {
-    use ExposesCoupledLocationInterface;
+    use ExposesLocationInterface;
 
     /**
-     * @var CoupledLocationInterface
+     * @var LocationInterface
      */
     protected $location;
 
     /**
-     * Sets instance of CoupledLocationInterface to this wrapper.
+     * Sets instance of LocationInterface to this wrapper.
      *
      * @return $this
      */
-    public function setLocation(CoupledLocationInterface $location)
+    public function setLocation(LocationInterface $location)
     {
         $this->location = $location;
         return $this;
     }
 
     /**
-     * Returns the encapsulated instance of CoupledLocationInterface.
+     * Returns the encapsulated instance of LocationInterface.
      *
-     * @return CoupledLocationInterface|null
+     * @return LocationInterface|null
      */
-    public function getLocation() : ?CoupledLocationInterface
+    public function getLocation() : ?LocationInterface
     {
         return $this->location;
     }

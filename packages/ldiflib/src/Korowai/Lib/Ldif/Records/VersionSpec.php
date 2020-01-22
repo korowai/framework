@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldif\Records;
 
-use Korowai\Lib\Ldif\CoupledRangeInterface;
+use Korowai\Lib\Ldif\RangeInterface;
 use Korowai\Lib\Ldif\RecordVisitorInterface;
 
 /**
@@ -32,10 +32,10 @@ class VersionSpec extends AbstractRecord implements VersionSpecInterface
     /**
      * Initializes the object.
      *
-     * @param  CoupledRangeInterface $range
+     * @param  RangeInterface $range
      * @param  int $version
      */
-    public function __construct(CoupledRangeInterface $range, int $version)
+    public function __construct(RangeInterface $range, int $version)
     {
         $this->initAbstractRecord($range);
         $this->setVersion($version);

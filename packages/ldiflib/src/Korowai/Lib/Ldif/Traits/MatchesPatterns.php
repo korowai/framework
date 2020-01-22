@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldif\Traits;
 
-use Korowai\Lib\Ldif\CoupledLocationInterface;
-use Korowai\Lib\Ldif\CoupledCursorInterface;
+use Korowai\Lib\Ldif\LocationInterface;
+use Korowai\Lib\Ldif\CursorInterface;
 use Korowai\Lib\Ldif\ParserError;
 use Korowai\Lib\Compat\Exception\PregException;
 
@@ -29,16 +29,16 @@ trait MatchesPatterns
      * Matches the string (starting at $location's position) against $pattern.
      *
      * @param  string $pattern
-     * @param  CoupledLocationInterface $location
+     * @param  LocationInterface $location
      * @param  int $flags Flags passed to ``preg_match()``.
      *
      * @return array Array of matches as returned by ``preg_match()``
      * @throws PregException When error occurs in ``preg_match()``
      */
-    public function matchAt(string $pattern, CoupledLocationInterface $location, int $flags = 0) : array
+    public function matchAt(string $pattern, LocationInterface $location, int $flags = 0) : array
     {
         $subject = $location->getString();
-        $offset = $location->getByteOffset();
+        $offset = $location->getOffset();
         return $this->matchString($pattern, $subject, $flags, $offset);
     }
 
@@ -48,13 +48,13 @@ trait MatchesPatterns
      * string).
      *
      * @param  string $pattern
-     * @param  CoupledCursorInterface $cursor
+     * @param  CursorInterface $cursor
      * @param  int $flags Passed to ``preg_match()`` (note: ``PREG_OFFSET_CAPTURE`` is added unconditionally).
      *
      * @return array Array of matches as returned by ``preg_match()``
      * @throws PregException When error occurs in ``preg_match()``
      */
-    public function matchAhead(string $pattern, CoupledCursorInterface $cursor, int $flags = 0) : array
+    public function matchAhead(string $pattern, CursorInterface $cursor, int $flags = 0) : array
     {
         $matches = $this->matchAt($pattern, $cursor, PREG_OFFSET_CAPTURE | $flags);
         if (count($matches) > 0) {
@@ -68,7 +68,7 @@ trait MatchesPatterns
      * in ``matchAt()`` but throws ParserError if the string does not mach.
      *
      * @param  string $pattern
-     * @param  CoupledLocationInterface $location
+     * @param  LocationInterface $location
      * @param  string $msg Error message for the exception
      * @param  int $flags Passed to ``preg_match()``.
      *
@@ -77,7 +77,7 @@ trait MatchesPatterns
      */
     public function matchAtOrThrow(
         string $pattern,
-        CoupledLocationInterface $location,
+        LocationInterface $location,
         string $msg,
         int $flags = 0
     ) : array {
@@ -93,7 +93,7 @@ trait MatchesPatterns
      * in ``matchAhead()`` but throws ParserError if the string does not mach.
      *
      * @param  string $pattern
-     * @param  CoupledCursorInterface $cursor
+     * @param  CursorInterface $cursor
      * @param  string $msg Error message for the exception
      * @param  int $flags Passed to ``preg_match()`` (note: ``PREG_OFFSET_CAPTURE`` is added unconditionally).
      *
@@ -103,7 +103,7 @@ trait MatchesPatterns
      */
     public function matchAheadOrThrow(
         string $pattern,
-        CoupledCursorInterface $cursor,
+        CursorInterface $cursor,
         string $msg,
         int $flags = 0
     ) : array {

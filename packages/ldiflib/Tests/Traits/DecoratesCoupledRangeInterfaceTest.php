@@ -1,6 +1,6 @@
 <?php
 /**
- * @file Tests/Traits/DecoratesCoupledRangeInterfaceTest.php
+ * @file Tests/Traits/DecoratesRangeInterfaceTest.php
  *
  * This file is part of the Korowai package
  *
@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldif\Traits\Tests;
 
-use Korowai\Lib\Ldif\Traits\DecoratesCoupledRangeInterface;
-use Korowai\Lib\Ldif\Traits\ExposesCoupledRangeInterface;
-use Korowai\Lib\Ldif\CoupledRangeInterface;
+use Korowai\Lib\Ldif\Traits\DecoratesRangeInterface;
+use Korowai\Lib\Ldif\Traits\ExposesRangeInterface;
+use Korowai\Lib\Ldif\RangeInterface;
 
 use PHPUnit\Framework\TestCase;
 
@@ -23,22 +23,22 @@ use PHPUnit\Framework\TestCase;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class DecoratesCoupledRangeInterfaceTest extends TestCase
+class DecoratesRangeInterfaceTest extends TestCase
 {
     public function getTestObject()
     {
-        return new class { use DecoratesCoupledRangeInterface; };
+        return new class { use DecoratesRangeInterface; };
     }
 
-    public function test__uses__ExposesCoupledRangeInterface()
+    public function test__uses__ExposesRangeInterface()
     {
-        $uses = class_uses(DecoratesCoupledRangeInterface::class);
-        $this->assertContains(ExposesCoupledRangeInterface::class, $uses);
+        $uses = class_uses(DecoratesRangeInterface::class);
+        $this->assertContains(ExposesRangeInterface::class, $uses);
     }
 
     public function test__coupledRange()
     {
-        $location = $this->getMockBuilder(CoupledRangeInterface::class)
+        $location = $this->getMockBuilder(RangeInterface::class)
                          ->getMockForAbstractClass();
 
         $obj = $this->getTestObject();

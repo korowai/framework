@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Lib/Ldif/Traits/ExposesCoupledRangeInterface.php
+ * @file src/Korowai/Lib/Ldif/Traits/ExposesRangeInterface.php
  *
  * This file is part of the Korowai package
  *
@@ -13,24 +13,24 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldif\Traits;
 
-use Korowai\Lib\Ldif\CoupledRangeInterface;
-use Korowai\Lib\Ldif\CoupledLocationInterface;
+use Korowai\Lib\Ldif\RangeInterface;
+use Korowai\Lib\Ldif\LocationInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-trait ExposesCoupledRangeInterface
+trait ExposesRangeInterface
 {
-    use ExposesCoupledLocationInterface;
+    use ExposesLocationInterface;
 
-    abstract public function getRange() : ?CoupledRangeInterface;
+    abstract public function getRange() : ?RangeInterface;
 
     /**
-     * Returns the CouledLocationInterface instance as required by ExposesCoupledLocationInterface.
+     * Returns the CouledLocationInterface instance as required by ExposesLocationInterface.
      *
      * @return CouledLocationInterface|null
      */
-    public function getLocation() : ?CoupledLocationInterface
+    public function getLocation() : ?LocationInterface
     {
         return $this->getRange();
     }
@@ -38,33 +38,33 @@ trait ExposesCoupledRangeInterface
     /**
      * {@inheritdoc}
      */
-    public function getByteLength() : int
+    public function getLength() : int
     {
-        return $this->getRange()->getByteLength();
+        return $this->getRange()->getLength();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getByteEndOffset() : int
+    public function getEndOffset() : int
     {
-        return $this->getRange()->getByteEndOffset();
+        return $this->getRange()->getEndOffset();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getSourceByteLength() : int
+    public function getSourceLength() : int
     {
-        return $this->getRange()->getSourceByteLength();
+        return $this->getRange()->getSourceLength();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getSourceByteEndOffset() : int
+    public function getSourceEndOffset() : int
     {
-        return $this->getRange()->getSourceByteEndOffset();
+        return $this->getRange()->getSourceEndOffset();
     }
 
     /**

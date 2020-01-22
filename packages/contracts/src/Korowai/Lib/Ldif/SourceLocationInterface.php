@@ -37,7 +37,7 @@ interface SourceLocationInterface
      *
      * @return int
      */
-    public function getSourceByteOffset() : int;
+    public function getSourceOffset() : int;
 
     /**
      * Returns zero-based (multibyte) character offset of the source character
@@ -70,13 +70,13 @@ interface SourceLocationInterface
      * line) for the location.
      *
      * ```php
-     *  [$line, $byte] = $obj->getSourceLineAndByteOffset();
+     *  [$line, $byte] = $obj->getSourceLineAndOffset();
      * ```
      *
      * @return array Two-element array with line number stored at position 0
      *               and byte offset at position 1.
      */
-    public function getSourceLineAndByteOffset() : array;
+    public function getSourceLineAndOffset() : array;
 
     /**
      * Returns the line index and (multibyte) character offset (relative to the

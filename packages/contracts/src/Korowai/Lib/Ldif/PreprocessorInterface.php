@@ -24,9 +24,9 @@ interface PreprocessorInterface
      * @param string $source
      * @param string $filename
      *
-     * @return CoupledInputInterface
+     * @return InputInterface
      */
-    public function preprocess(string $source, string $filename = null) : CoupledInputInterface;
+    public function preprocess(string $source, string $filename = null) : InputInterface;
 }
 
 // vim: syntax=php sw=4 ts=4 et:

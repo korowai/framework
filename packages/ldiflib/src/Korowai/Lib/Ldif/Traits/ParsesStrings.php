@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldif\Traits;
 
-use Korowai\Lib\Ldif\CoupledCursorInterface;
-use Korowai\Lib\Ldif\CoupledLocationInterface;
+use Korowai\Lib\Ldif\CursorInterface;
+use Korowai\Lib\Ldif\LocationInterface;
 use Korowai\Lib\Ldif\ParserError;
 
 /**
@@ -29,14 +29,14 @@ trait ParsesStrings
 
     abstract public function matchAtOrThrow(
         string $pattern,
-        CoupledLocationInterface $location,
+        LocationInterface $location,
         string $msg,
         int $flags = 0
     ) : array;
 
     abstract public function matchAheadOrThrow(
         string $pattern,
-        CoupledCursorInterface $cursor,
+        CursorInterface $cursor,
         string $msg,
         int $flags = 0
     ) : array;
@@ -44,11 +44,11 @@ trait ParsesStrings
     /**
      * @todo Write documentation
      *
-     * @param  CoupledCursorInterface $cursor
+     * @param  CursorInterface $cursor
      *
      * @throws ParserError
      */
-    public function parseSafeString(CoupledCursorInterface $cursor) : string
+    public function parseSafeString(CursorInterface $cursor) : string
     {
         $re = '/\G'.self::$re_safe_init_char.self::$re_safe_char.'*/';
         $matches = $this->matchAheadOrThrow($re, $cursor, "syntax error: unexpected token (expected SAFE-STRING)");
@@ -58,11 +58,11 @@ trait ParsesStrings
     /**
      * @todo Write documentation
      *
-     * @param  CoupledCursorInterface $cursor
+     * @param  CursorInterface $cursor
      *
      * @throws ParserError
      */
-    public function parseBase64String(CoupledCursorInterface $cursor, callable $validate = null) : string
+    public function parseBase64String(CursorInterface $cursor, callable $validate = null) : string
     {
         $re = '/\G'.self::$re_base64_char.'+/';
         $matches = $this->matchAtOrThrow($re, $cursor, "syntax error: unexpected token (expected BASE64-STRING)");
@@ -81,11 +81,11 @@ trait ParsesStrings
     /**
      * @todo Write documentation
      *
-     * @param  CoupledCursorInterface $cursor
+     * @param  CursorInterface $cursor
      *
      * @throws ParserError
      */
-    public function parseBase64UtfString(CoupledCursorInterface $cursor) : string
+    public function parseBase64UtfString(CursorInterface $cursor) : string
     {
         return $this->parseBase64String($cursor, function ($string) {
             if (mb_check_encoding($string, 'utf-8') === false) {

@@ -15,7 +15,7 @@ namespace Korowai\Lib\Ldif\Tests;
 
 use Korowai\Lib\Ldif\Parser;
 use Korowai\Lib\Ldif\ParserInterface;
-use Korowai\Lib\Ldif\CoupledInput;
+use Korowai\Lib\Ldif\Input;
 use Korowai\Lib\Ldif\Util\IndexMap;
 
 use PHPUnit\Framework\TestCase;

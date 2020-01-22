@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Lib/Ldif/CoupledRangeInterface.php
+ * @file src/Korowai/Lib/Ldif/RangeInterface.php
  *
  * This file is part of the Korowai package
  *
@@ -14,37 +14,37 @@ declare(strict_types=1);
 namespace Korowai\Lib\Ldif;
 
 /**
- * CoupledLocationInterface plus length.
+ * LocationInterface plus length.
  */
-interface CoupledRangeInterface extends CoupledLocationInterface
+interface RangeInterface extends LocationInterface
 {
     /**
      * Returns the span length in bytes.
      *
      * @return int
      */
-    public function getByteLength() : int;
+    public function getLength() : int;
 
     /**
      * Returns the end offset of the span in bytes.
      *
      * @return int
      */
-    public function getByteEndOffset() : int;
+    public function getEndOffset() : int;
 
     /**
      * Returns the length in bytes of the span mapped to source string.
      *
      * @return int
      */
-    public function getSourceByteLength() : int;
+    public function getSourceLength() : int;
 
     /**
      * Returns the end offset in bytes of the span mapped to source string.
      *
      * @return int
      */
-    public function getSourceByteEndOffset() : int;
+    public function getSourceEndOffset() : int;
 
     /**
      * Returns the length in characters of the span mapped to source string.

@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Lib/Ldif/Traits/ExposesRangeInterface.php
+ * @file src/Korowai/Lib/Ldif/Traits/ExposesSnippetInterface.php
  *
  * This file is part of the Korowai package
  *
@@ -13,17 +13,17 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldif\Traits;
 
-use Korowai\Lib\Ldif\RangeInterface;
+use Korowai\Lib\Ldif\SnippetInterface;
 use Korowai\Lib\Ldif\LocationInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-trait ExposesRangeInterface
+trait ExposesSnippetInterface
 {
     use ExposesLocationInterface;
 
-    abstract public function getRange() : ?RangeInterface;
+    abstract public function getSnippet() : ?SnippetInterface;
 
     /**
      * Returns the CouledLocationInterface instance as required by ExposesLocationInterface.
@@ -32,7 +32,7 @@ trait ExposesRangeInterface
      */
     public function getLocation() : ?LocationInterface
     {
-        return $this->getRange();
+        return $this->getSnippet();
     }
 
     /**
@@ -40,7 +40,7 @@ trait ExposesRangeInterface
      */
     public function getLength() : int
     {
-        return $this->getRange()->getLength();
+        return $this->getSnippet()->getLength();
     }
 
     /**
@@ -48,7 +48,7 @@ trait ExposesRangeInterface
      */
     public function getEndOffset() : int
     {
-        return $this->getRange()->getEndOffset();
+        return $this->getSnippet()->getEndOffset();
     }
 
     /**
@@ -56,7 +56,7 @@ trait ExposesRangeInterface
      */
     public function getSourceLength() : int
     {
-        return $this->getRange()->getSourceLength();
+        return $this->getSnippet()->getSourceLength();
     }
 
     /**
@@ -64,7 +64,7 @@ trait ExposesRangeInterface
      */
     public function getSourceEndOffset() : int
     {
-        return $this->getRange()->getSourceEndOffset();
+        return $this->getSnippet()->getSourceEndOffset();
     }
 
     /**
@@ -72,7 +72,7 @@ trait ExposesRangeInterface
      */
     public function getSourceCharLength(string $encoding = null) : int
     {
-        return $this->getRange()->getSourceCharLength(...(func_get_args()));
+        return $this->getSnippet()->getSourceCharLength(...(func_get_args()));
     }
 
     /**
@@ -80,7 +80,7 @@ trait ExposesRangeInterface
      */
     public function getSourceCharEndOffset(string $encoding = null) : int
     {
-        return $this->getRange()->getSourceCharEndOffset(...(func_get_args()));
+        return $this->getSnippet()->getSourceCharEndOffset(...(func_get_args()));
     }
 }
 

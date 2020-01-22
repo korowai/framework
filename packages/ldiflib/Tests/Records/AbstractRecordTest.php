@@ -15,8 +15,8 @@ namespace Korowai\Lib\Ldif\Records\Tests;
 
 use Korowai\Lib\Ldif\Records\AbstractRecord;
 use Korowai\Lib\Ldif\RecordInterface;
-use Korowai\Lib\Ldif\RangeInterface;
-use Korowai\Lib\Ldif\Traits\DecoratesRangeInterface;
+use Korowai\Lib\Ldif\SnippetInterface;
+use Korowai\Lib\Ldif\Traits\DecoratesSnippetInterface;
 
 use PHPUnit\Framework\TestCase;
 
@@ -26,21 +26,21 @@ use PHPUnit\Framework\TestCase;
  */
 class AbstractRecordTest extends TestCase
 {
-    public function test__uses__DecoratesRangeInterface()
+    public function test__uses__DecoratesSnippetInterface()
     {
         $uses = class_uses(AbstractRecord::class);
-        $this->assertContains(DecoratesRangeInterface::class, $uses);
+        $this->assertContains(DecoratesSnippetInterface::class, $uses);
     }
 
     public function test__initAbstractRecord()
     {
-        $range = $this->getMockBuilder(RangeInterface::class)
+        $snippet = $this->getMockBuilder(SnippetInterface::class)
                       ->getMockForAbstractClass();
         $record = $this->getMockBuilder(AbstractRecord::class)
                        ->getMockForAbstractClass();
 
-        $this->assertSame($record, $record->initAbstractRecord($range));
-        $this->assertSame($range, $record->getRange());
+        $this->assertSame($record, $record->initAbstractRecord($snippet));
+        $this->assertSame($snippet, $record->getSnippet());
     }
 }
 

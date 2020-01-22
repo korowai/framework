@@ -1,6 +1,6 @@
 <?php
 /**
- * @file Tests/Traits/ExposesRangeInterfaceTest.php
+ * @file Tests/Traits/ExposesSnippetInterfaceTest.php
  *
  * This file is part of the Korowai package
  *
@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldif\Traits\Tests;
 
-use Korowai\Lib\Ldif\Traits\ExposesRangeInterface;
+use Korowai\Lib\Ldif\Traits\ExposesSnippetInterface;
 use Korowai\Lib\Ldif\Traits\ExposesLocationInterface;
-use Korowai\Lib\Ldif\RangeInterface;
+use Korowai\Lib\Ldif\SnippetInterface;
 
 use PHPUnit\Framework\TestCase;
 
@@ -23,80 +23,80 @@ use PHPUnit\Framework\TestCase;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class ExposesRangeInterfaceTest extends TestCase
+class ExposesSnippetInterfaceTest extends TestCase
 {
-    public function getTestObject(RangeInterface $range = null)
+    public function getTestObject(SnippetInterface $snippet = null)
     {
-        $obj = new class ($range) implements RangeInterface {
-            use ExposesRangeInterface;
-            public function __construct(?RangeInterface $range) { $this->range = $range; }
-            public function getRange() : ?RangeInterface { return $this->range; }
+        $obj = new class ($snippet) implements SnippetInterface {
+            use ExposesSnippetInterface;
+            public function __construct(?SnippetInterface $snippet) { $this->snippet = $snippet; }
+            public function getSnippet() : ?SnippetInterface { return $this->snippet; }
         };
         return $obj;
     }
 
     public function test__uses__ExposesLocationInterface()
     {
-        $uses = class_uses(ExposesRangeInterface::class);
+        $uses = class_uses(ExposesSnippetInterface::class);
         $this->assertContains(ExposesLocationInterface::class, $uses);
     }
 
     public function test__getLocation()
     {
-        $range = $this->getMockBuilder(RangeInterface::class)
+        $snippet = $this->getMockBuilder(SnippetInterface::class)
                       ->getMockForAbstractClass();
-        $obj = $this->getTestObject($range);
-        $this->assertSame($range, $obj->getLocation());
+        $obj = $this->getTestObject($snippet);
+        $this->assertSame($snippet, $obj->getLocation());
     }
 
     public function test__getLength()
     {
-        $range = $this->getMockBuilder(RangeInterface::class)
+        $snippet = $this->getMockBuilder(SnippetInterface::class)
                       ->getMockForAbstractClass();
-        $range->expects($this->once())
+        $snippet->expects($this->once())
               ->method('getLength')
               ->with()
               ->willReturn(17);
-        $obj = $this->getTestObject($range);
+        $obj = $this->getTestObject($snippet);
 
         $this->assertSame(17, $obj->getLength());
     }
 
     public function test__getEndOffset()
     {
-        $range = $this->getMockBuilder(RangeInterface::class)
+        $snippet = $this->getMockBuilder(SnippetInterface::class)
                       ->getMockForAbstractClass();
-        $range->expects($this->once())
+        $snippet->expects($this->once())
               ->method('getEndOffset')
               ->with()
               ->willReturn(17);
-        $obj = $this->getTestObject($range);
+        $obj = $this->getTestObject($snippet);
 
         $this->assertSame(17, $obj->getEndOffset());
     }
 
     public function test__getSourceLength()
     {
-        $range = $this->getMockBuilder(RangeInterface::class)
+        $snippet = $this->getMockBuilder(SnippetInterface::class)
                       ->getMockForAbstractClass();
-        $range->expects($this->once())
+        $snippet->expects($this->once())
               ->method('getSourceLength')
               ->with()
               ->willReturn(17);
-        $obj = $this->getTestObject($range);
+        $obj = $this->getTestObject($snippet);
 
         $this->assertSame(17, $obj->getSourceLength());
     }
 
     public function test__getSourceEndOffset()
     {
-        $range = $this->getMockBuilder(RangeInterface::class)
+        $snippet = $this->getMockBuilder(SnippetInterface::class)
                       ->getMockForAbstractClass();
-        $range->expects($this->once())
+        $snippet->expects($this->once())
               ->method('getSourceEndOffset')
               ->with()
               ->willReturn(17);
-        $obj = $this->getTestObject($range);
+        $obj = $this->getTestObject($snippet);
 
         $this->assertSame(17, $obj->getSourceEndOffset());
     }
@@ -108,26 +108,26 @@ class ExposesRangeInterfaceTest extends TestCase
 
     public function test__getSourceCharLength(...$enc)
     {
-        $range = $this->getMockBuilder(RangeInterface::class)
+        $snippet = $this->getMockBuilder(SnippetInterface::class)
                       ->getMockForAbstractClass();
-        $range->expects($this->once())
+        $snippet->expects($this->once())
               ->method('getSourceCharLength')
               ->with(...$enc)
               ->willReturn(17);
-        $obj = $this->getTestObject($range);
+        $obj = $this->getTestObject($snippet);
 
         $this->assertSame(17, $obj->getSourceCharLength(...$enc));
     }
 
     public function test__getSourceCharEndOffset(...$enc)
     {
-        $range = $this->getMockBuilder(RangeInterface::class)
+        $snippet = $this->getMockBuilder(SnippetInterface::class)
                       ->getMockForAbstractClass();
-        $range->expects($this->once())
+        $snippet->expects($this->once())
               ->method('getSourceCharEndOffset')
               ->with(...$enc)
               ->willReturn(17);
-        $obj = $this->getTestObject($range);
+        $obj = $this->getTestObject($snippet);
 
         $this->assertSame(17, $obj->getSourceCharEndOffset(...$enc));
     }

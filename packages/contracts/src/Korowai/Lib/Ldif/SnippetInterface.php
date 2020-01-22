@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Lib/Ldif/RangeInterface.php
+ * @file src/Korowai/Lib/Ldif/SnippetInterface.php
  *
  * This file is part of the Korowai package
  *
@@ -16,7 +16,7 @@ namespace Korowai\Lib\Ldif;
 /**
  * LocationInterface plus length.
  */
-interface RangeInterface extends LocationInterface
+interface SnippetInterface extends LocationInterface
 {
     /**
      * Returns the span length in bytes.

@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Lib/Ldif/Range.php
+ * @file src/Korowai/Lib/Ldif/Snippet.php
  *
  * This file is part of the Korowai package
  *
@@ -18,7 +18,7 @@ use Korowai\Lib\Ldif\Traits\DecoratesLocationInterface;
 /**
  * @todo Write documentation.
  */
-class Range implements RangeInterface
+class Snippet implements SnippetInterface
 {
     use DecoratesLocationInterface;
 
@@ -44,7 +44,7 @@ class Range implements RangeInterface
      * @param  LocationInterface $location
      * @param  int $length
      *
-     * @return Range $this
+     * @return Snippet $this
      */
     public function init(LocationInterface $location, int $length)
     {
@@ -57,7 +57,7 @@ class Range implements RangeInterface
      * Sets the length of span.
      *
      * @param  int $length
-     * @return Range $this
+     * @return Snippet $this
      */
     public function setLength(int $length)
     {

@@ -16,7 +16,7 @@ namespace Korowai\Lib\Ldif\Traits;
 use Korowai\Lib\Ldif\CursorInterface;
 use Korowai\Lib\Ldif\LocationInterface;
 use Korowai\Lib\Ldif\ParserStateInterface;
-use Korowai\Lib\Ldif\Range;
+use Korowai\Lib\Ldif\Snippet;
 use Korowai\Lib\Ldif\ParserError;
 use Korowai\Lib\Ldif\ParserErrorInterface;
 use Korowai\Lib\Ldif\Records\VersionSpec;
@@ -69,7 +69,7 @@ trait ParsesVersionSpec
         }
 
         $length = $cursor->getOffset() - $begin->getOffset();
-        $record = new VersionSpec(new Range($begin, $length), $version);
+        $record = new VersionSpec(new Snippet($begin, $length), $version);
         $state->appendRecord($record);
 
         return true;

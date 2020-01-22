@@ -17,7 +17,7 @@ use Korowai\Lib\Ldif\Records\VersionSpec;
 use Korowai\Lib\Ldif\Records\AbstractRecord;
 use Korowai\Lib\Ldif\Records\VersionSpecInterface;
 use Korowai\Lib\Ldif\RecordVisitorInterface;
-use Korowai\Lib\Ldif\RangeInterface;
+use Korowai\Lib\Ldif\SnippetInterface;
 
 use PHPUnit\Framework\TestCase;
 
@@ -39,27 +39,27 @@ class VersionSpecTest extends TestCase
         $this->assertContains(AbstractRecord::class, $parents);
     }
 
-    protected function getRange()
+    protected function getSnippet()
     {
-        return $this->getMockBuilder(RangeInterface::class)
+        return $this->getMockBuilder(SnippetInterface::class)
                     ->getMockForAbstractClass();
     }
 
     public function test__construct()
     {
-        $range = $this->getMockBuilder(RangeInterface::class)
+        $snippet = $this->getMockBuilder(SnippetInterface::class)
                       ->getMockForAbstractClass();
-        $record = new VersionSpec($range, 12);
+        $record = new VersionSpec($snippet, 12);
 
-        $this->assertSame($range, $record->getRange());
+        $this->assertSame($snippet, $record->getSnippet());
         $this->assertSame(12, $record->getVersion());
     }
 
     public function test__acceptRecordVisitor()
     {
-        $range = $this->getMockBuilder(RangeInterface::class)
+        $snippet = $this->getMockBuilder(SnippetInterface::class)
                       ->getMockForAbstractClass();
-        $record = new VersionSpec($range, 12);
+        $record = new VersionSpec($snippet, 12);
 
         $visitor = $this->getMockBuilder(RecordVisitorInterface::class)
                         ->getMockForAbstractClass();

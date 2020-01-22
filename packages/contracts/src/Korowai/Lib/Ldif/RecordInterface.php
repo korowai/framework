@@ -17,7 +17,7 @@ namespace Korowai\Lib\Ldif;
  * @todo Write documentation
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-interface RecordInterface extends RangeInterface
+interface RecordInterface extends SnippetInterface
 {
     /**
      * Accept record visitor.

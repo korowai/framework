@@ -1,6 +1,6 @@
 <?php
 /**
- * @file Tests/RangeTest.php
+ * @file Tests/SnippetTest.php
  *
  * This file is part of the Korowai package
  *
@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldif\Tests;
 
-use Korowai\Lib\Ldif\Range;
-use Korowai\Lib\Ldif\RangeInterface;
+use Korowai\Lib\Ldif\Snippet;
+use Korowai\Lib\Ldif\SnippetInterface;
 use Korowai\Lib\Ldif\LocationInterface;
 use Korowai\Lib\Ldif\InputInterface;
 use Korowai\Lib\Ldif\Traits\DecoratesLocationInterface;
@@ -25,17 +25,17 @@ use PHPUnit\Framework\TestCase;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class RangeTest extends TestCase
+class SnippetTest extends TestCase
 {
-    public function test__implements__RangeInterface()
+    public function test__implements__SnippetInterface()
     {
-        $interfaces = class_implements(Range::class);
-        $this->assertContains(RangeInterface::class, $interfaces);
+        $interfaces = class_implements(Snippet::class);
+        $this->assertContains(SnippetInterface::class, $interfaces);
     }
 
     public function test__uses__DecoratesLocationInterface()
     {
-        $uses = class_uses(Range::class);
+        $uses = class_uses(Snippet::class);
         $this->assertContains(DecoratesLocationInterface::class, $uses);
     }
 
@@ -43,10 +43,10 @@ class RangeTest extends TestCase
     {
         $location = $this->getMockBuilder(LocationInterface::class)
                          ->getMockForAbstractClass();
-        $range = new Range($location, 12);
+        $snippet = new Snippet($location, 12);
 
-        $this->assertSame($location, $range->getLocation());
-        $this->assertSame(12, $range->getLength());
+        $this->assertSame($location, $snippet->getLocation());
+        $this->assertSame(12, $snippet->getLength());
     }
 
     public function test__init()
@@ -56,38 +56,38 @@ class RangeTest extends TestCase
         $location2 = $this->getMockBuilder(LocationInterface::class)
                           ->getMockForAbstractClass();
 
-        $range = new Range($location1, 12);
+        $snippet = new Snippet($location1, 12);
 
-        $this->assertSame($range, $range->init($location2, 24));
+        $this->assertSame($snippet, $snippet->init($location2, 24));
 
-        $this->assertSame($location2, $range->getLocation());
-        $this->assertSame(24, $range->getLength());
+        $this->assertSame($location2, $snippet->getLocation());
+        $this->assertSame(24, $snippet->getLength());
     }
 
     public function test__setLength()
     {
         $location = $this->getMockBuilder(LocationInterface::class)
                          ->getMockForAbstractClass();
-        $range = new Range($location, 12);
+        $snippet = new Snippet($location, 12);
 
-        $this->assertSame($range, $range->setLength(24));
+        $this->assertSame($snippet, $snippet->setLength(24));
 
-        $this->assertSame($location, $range->getLocation());
-        $this->assertSame(24, $range->getLength());
+        $this->assertSame($location, $snippet->getLocation());
+        $this->assertSame(24, $snippet->getLength());
     }
 
     public function test__getEndOffset()
     {
         $location = $this->getMockBuilder(LocationInterface::class)
                          ->getMockForAbstractClass();
-        $range = new Range($location, 12);
+        $snippet = new Snippet($location, 12);
 
         $location->expects($this->once())
                  ->method('getOffset')
                  ->with()
                  ->willReturn(7);
 
-        $this->assertSame(12 + 7, $range->getEndOffset());
+        $this->assertSame(12 + 7, $snippet->getEndOffset());
     }
 
     public function test__getSourceLength()
@@ -118,9 +118,9 @@ class RangeTest extends TestCase
               ->with(4 + 6)
               ->willReturn(7);
 
-        $range = new Range($location, 6);
+        $snippet = new Snippet($location, 6);
 
-        $this->assertSame(7 - 2, $range->getSourceLength());
+        $this->assertSame(7 - 2, $snippet->getSourceLength());
     }
 
     public function test__getSourceEndOffset()
@@ -146,9 +146,9 @@ class RangeTest extends TestCase
               ->with(4 + 6)
               ->willReturn(7);
 
-        $range = new Range($location, 6);
+        $snippet = new Snippet($location, 6);
 
-        $this->assertSame(7, $range->getSourceEndOffset());
+        $this->assertSame(7, $snippet->getSourceEndOffset());
     }
 
     public function encodingCases()
@@ -186,9 +186,9 @@ class RangeTest extends TestCase
               ->with(4 + 6, ...$enc)
               ->willReturn(8);
 
-        $range = new Range($location, 6);
+        $snippet = new Snippet($location, 6);
 
-        $this->assertSame(8 - 3, $range->getSourceCharLength(...$enc));
+        $this->assertSame(8 - 3, $snippet->getSourceCharLength(...$enc));
     }
 
     /**
@@ -217,9 +217,9 @@ class RangeTest extends TestCase
               ->with(4 + 6, ...$enc)
               ->willReturn(9);
 
-        $range = new Range($location, 6);
+        $snippet = new Snippet($location, 6);
 
-        $this->assertSame(9, $range->getSourceCharEndOffset(...$enc));
+        $this->assertSame(9, $snippet->getSourceCharEndOffset(...$enc));
     }
 }
 

@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Lib\Ldap\Tests;
+namespace Korowai\Tests\Lib\Ldap;
 
 use PHPUnit\Framework\TestCase;
 use Korowai\Lib\Ldap\Ldap;
@@ -121,7 +121,7 @@ class LdapTest extends TestCase
     public function test__createWithConfig__NotAFactoryClass()
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Invalid argument 2 to Korowai\Lib\Ldap\Ldap::createWithConfig: Korowai\Lib\Ldap\Tests\SomeClass is not an implementation of Korowai\Lib\Ldap\Adapter\AdapterFactoryInterface');
+        $this->expectExceptionMessage('Invalid argument 2 to Korowai\Lib\Ldap\Ldap::createWithConfig: Korowai\Tests\Lib\Ldap\SomeClass is not an implementation of Korowai\Lib\Ldap\Adapter\AdapterFactoryInterface');
 
         $ldap = Ldap::createWithConfig(array(), SomeClass::class);
     }

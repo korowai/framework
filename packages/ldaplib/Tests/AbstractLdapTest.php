@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Lib\Ldap\Tests;
+namespace Korowai\Tests\Lib\Ldap;
 
 use PHPUnit\Framework\TestCase;
 use Korowai\Lib\Ldap\AbstractLdap;

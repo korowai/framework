@@ -33,7 +33,7 @@
     },
     "autoload-dev": {
       "psr-4" : {
-        "Korowai\\Lib\\Context\\Tests\\" : "Tests/"
+        "Korowai\\Tests\\Lib\\Context\\" : "Tests/"
       }
     }
 }

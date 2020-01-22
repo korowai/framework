@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Lib\Ldif\Tests;
+namespace Korowai\Tests\Lib\Ldif;
 
 use Korowai\Lib\Ldif\Parser;
 use Korowai\Lib\Ldif\ParserInterface;

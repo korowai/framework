@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Lib\Context\Tests;
+namespace Korowai\Tests\Lib\Context;
 
 use PHPUnit\Framework\TestCase;
 
@@ -27,7 +27,7 @@ use Korowai\Lib\Context\TrivialValueWrapper;
 class DefaultContextFactoryTest extends TestCase
 {
     use \phpmock\phpunit\PHPMock;
-    use \Korowai\Lib\Basic\Tests\SingletonTestMethods;
+    use \Korowai\Tests\Lib\Basic\SingletonTestMethods;
 
     protected function getClassUnderTest()
     {

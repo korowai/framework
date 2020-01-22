@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Lib\Compat\Tests;
+namespace Korowai\Tests\Lib\Compat;
 
 use PHPUnit\Framework\TestCase;
 

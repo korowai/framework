@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Lib\Ldap\Tests\Adapter;
+namespace Korowai\Tests\Lib\Ldap\Adapter;
 
 use PHPUnit\Framework\TestCase;
 use Korowai\Lib\Ldap\Adapter\AbstractSearchQuery;

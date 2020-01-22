@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Lib\Ldif\Traits\Tests;
+namespace Korowai\Tests\Lib\Ldif\Traits;
 
 use Korowai\Lib\Ldif\Traits\DecoratesLocationInterface;
 use Korowai\Lib\Ldif\Traits\ExposesLocationInterface;

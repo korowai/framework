@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Lib\Ldap\Tests\Adapter\ExtLdap;
+namespace Korowai\Tests\Lib\Ldap\Adapter\ExtLdap;
 
 use PHPUnit\Framework\TestCase;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\EntryManager;

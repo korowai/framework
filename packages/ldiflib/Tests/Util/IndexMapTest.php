@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Lib\Ldif\Tests;
+namespace Korowai\Tests\Lib\Ldif;
 
 use PHPUnit\Framework\TestCase;
 use Korowai\Lib\Ldif\Util\IndexMap;

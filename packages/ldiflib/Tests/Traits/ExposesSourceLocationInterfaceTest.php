@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Lib\Ldif\Traits\Tests;
+namespace Korowai\Tests\Lib\Ldif\Traits;
 
 use Korowai\Lib\Ldif\Traits\ExposesSourceLocationInterface;
 use Korowai\Lib\Ldif\SourceLocationInterface;

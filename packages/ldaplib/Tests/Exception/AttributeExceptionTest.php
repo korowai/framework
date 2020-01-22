@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Lib\Ldap\Tests\Exception;
+namespace Korowai\Tests\Lib\Ldap\Exception;
 
 use PHPUnit\Framework\TestCase;
 use Korowai\Lib\Ldap\Exception\AttributeException;

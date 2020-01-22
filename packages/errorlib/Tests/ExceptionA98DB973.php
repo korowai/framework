@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Lib\Error\Tests;
+namespace Korowai\Tests\Lib\Error;
 
 /**
  * Dummy exception for testing purposes (classes from /Tests/* aren not

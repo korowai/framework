@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Lib\Basic\Tests;
+namespace Korowai\Tests\Lib\Basic;
 
 use Korowai\Lib\Basic\Singleton;
 

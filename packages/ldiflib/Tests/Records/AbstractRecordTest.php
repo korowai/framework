@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Lib\Ldif\Records\Tests;
+namespace Korowai\Tests\Lib\Ldif\Records;
 
 use Korowai\Lib\Ldif\Records\AbstractRecord;
 use Korowai\Lib\Ldif\RecordInterface;

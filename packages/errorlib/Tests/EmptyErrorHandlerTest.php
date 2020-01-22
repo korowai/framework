@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Lib\Error\Tests;
+namespace Korowai\Tests\Lib\Error;
 
 use PHPUnit\Framework\TestCase;
 
@@ -24,7 +24,7 @@ use Korowai\Lib\Context\ContextManagerInterface;
  */
 class EmptyErrorHandlerTest extends TestCase
 {
-    use \Korowai\Lib\Basic\Tests\SingletonTestMethods;
+    use \Korowai\Tests\Lib\Basic\SingletonTestMethods;
 
     protected function getClassUnderTest()
     {

@@ -34,7 +34,7 @@
     },
     "autoload-dev": {
       "psr-4" : {
-        "Korowai\\Lib\\Compat\\Tests\\" : "Tests/"
+        "Korowai\\Tests\\Lib\\Compat\\" : "Tests/"
       }
     }
 }

@@ -38,7 +38,7 @@
     },
     "autoload-dev": {
       "psr-4" : {
-        "Korowai\\Lib\\Ldap\\Tests\\" : "Tests/",
+        "Korowai\\Tests\\Lib\\Ldap\\" : "Tests/",
         "Korowai\\Lib\\Ldap\\Behat\\" : "Behat/"
       }
     }

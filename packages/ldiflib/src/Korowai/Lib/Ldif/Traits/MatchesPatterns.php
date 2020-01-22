@@ -75,12 +75,8 @@ trait MatchesPatterns
      * @throws ParserError When pattern does not match
      * @throws PregException When error occurs in ``preg_match()``
      */
-    public function matchAtOrThrow(
-        string $pattern,
-        LocationInterface $location,
-        string $msg,
-        int $flags = 0
-    ) : array {
+    public function matchAtOrThrow(string $pattern, LocationInterface $location, string $msg, int $flags = 0) : array
+    {
         $matches = $this->matchAt($pattern, $location, $flags);
         if (count($matches) === 0) {
             throw new ParserError(clone $location, $msg);
@@ -101,12 +97,8 @@ trait MatchesPatterns
      * @throws ParserError When pattern does not match
      * @throws PregException When error occurs in ``preg_match()``
      */
-    public function matchAheadOrThrow(
-        string $pattern,
-        CursorInterface $cursor,
-        string $msg,
-        int $flags = 0
-    ) : array {
+    public function matchAheadOrThrow(string $pattern, CursorInterface $cursor, string $msg, int $flags = 0) : array
+    {
         $matches = $this->matchAhead($pattern, $cursor, $flags);
         if (count($matches) === 0) {
             throw new ParserError(clone $cursor, $msg);

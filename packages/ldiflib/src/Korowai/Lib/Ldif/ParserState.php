@@ -14,21 +14,21 @@ declare(strict_types=1);
 namespace Korowai\Lib\Ldif;
 
 /**
- * State object returned by LDIF Parser.
+ * State object for Parser.
+ *
+ * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
 class ParserState implements ParserStateInterface
 {
     /**
-     * @var Preprocessed
+     * @var CoupledCursorInterface
      */
     protected $cursor;
 
     /**
-     * Concrete Syntax Tree - the main result of parsing.
-     *
-     * @var Cst
+     * @var array
      */
-    protected $cst;
+    protected $records;
 
     /**
      * @var array
@@ -36,17 +36,19 @@ class ParserState implements ParserStateInterface
     protected $errors;
 
     /**
-     * Initializes the parser object
+     * Initializes the ParserState object.
+     *
+     * @param  CoupledCursorInterface $cursor
+     * @param  array|null $errors
+     * @param  array|null $records
      */
-    public function __construct(CoupledCursorInterface $cursor, array $errors = null)
+    public function __construct(CoupledCursorInterface $cursor, array $errors = null, array $records = null)
     {
-        $this->init($cursor, $errors);
+        $this->initParserState($cursor, $errors, $records);
     }
 
     /**
-     * Returns the preprocessed input provided to the constructor as $cursor.
-     *
-     * @return Preprocessed
+     * {@inheritdocs}
      */
     public function getCursor() : CoupledCursorInterface
     {
@@ -54,9 +56,7 @@ class ParserState implements ParserStateInterface
     }
 
     /**
-     * Returns the parsing errors.
-     *
-     * @return array
+     * {@inheritdocs}
      */
     public function getErrors() : array
     {
@@ -64,20 +64,87 @@ class ParserState implements ParserStateInterface
     }
 
     /**
-     * Returns true if there are no errors.
-     *
-     * @return bool
+     * {@inheritdocs}
+     */
+    public function getRecords() : array
+    {
+        return $this->records;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function isOk() : bool
     {
         return count($this->errors) === 0;
     }
 
-
-    protected function init(CoupledCursorInterface $cursor, array $errors = null)
+    /**
+     * Sets the instance of CoupledCursorInterface to this object.
+     *
+     * @param  CoupledCursorInterface $cursor
+     * @return object $this
+     */
+    public function setCursor(CoupledCursorInterface $cursor)
     {
         $this->cursor = $cursor;
-        $this->errors = $errors ?? [];
+        return $this;
+    }
+
+    /**
+     * Replaces the errors array with new one.
+     *
+     * @param  array $errors
+     * @return object $this
+     */
+    public function setErrors(array $errors)
+    {
+        $this->errors = $errors;
+        return $this;
+    }
+
+    /**
+     * Replaces the records array with new one.
+     *
+     * @param  array $records
+     * @return object $this
+     */
+    public function setRecords(array $records)
+    {
+        $this->records = $records;
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function appendError(ParserErrorInterface $error)
+    {
+        $this->errors[] = $error;
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function appendRecord(RecordInterface $record)
+    {
+        $this->records[] = $record;
+        return $this;
+    }
+
+    /**
+     * Initializes the ParserState object
+     *
+     * @param  CoupledCursorInterface $cursor
+     * @param  array|null $errors
+     * @param  array|null $records
+     */
+    protected function initParserState(CoupledCursorInterface $cursor, array $errors = null, array $records = null)
+    {
+        $this->setCursor($cursor);
+        $this->setErrors($errors ?? []);
+        $this->setRecords($records ?? []);
     }
 }
 

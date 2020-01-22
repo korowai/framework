@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Lib/Ldif/Record.php
+ * @file src/Korowai/Lib/Ldif/Records/AbstractRecord.php
  *
  * This file is part of the Korowai package
  *
@@ -22,7 +22,7 @@ use Korowai\Lib\Ldif\Traits\DecoratesCoupledRangeInterface;
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-abstract class AbstractRecord implements RecordInterface
+abstract class AbstractRecord
 {
     use DecoratesCoupledRangeInterface;
 

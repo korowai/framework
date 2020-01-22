@@ -15,7 +15,9 @@ namespace Korowai\Lib\Ldif\Tests;
 
 use Korowai\Lib\Ldif\ParserState;
 use Korowai\Lib\Ldif\ParserStateInterface;
+use Korowai\Lib\Ldif\RecordInterface;
 use Korowai\Lib\Ldif\CoupledCursorInterface;
+use Korowai\Lib\Ldif\ParserError;
 
 use PHPUnit\Framework\TestCase;
 
@@ -31,28 +33,101 @@ class ParserStateTest extends TestCase
         $this->assertContains(ParserStateInterface::class, $interfaces);
     }
 
-    public function test__construct()
+    public function constructCases()
     {
-        $cursor = $this->getMockBuilder(CoupledCursorInterface::class)
-                       ->getMockForAbstractClass();
-
-        $state = new ParserState($cursor);
-
-        $this->assertSame($cursor, $state->getCursor());
-        $this->assertSame([], $state->getErrors());
-        $this->assertTrue($state->isOk());
+        $cursor = $this->getMockBuilder(CoupledCursorInterface::class)->getMockForAbstractClass();
+        return [
+            [$cursor],
+            [$cursor, []],
+            [$cursor, null],
+            [$cursor, ['E']],
+            [$cursor, ['E'], []],
+            [$cursor, ['E'], null],
+            [$cursor, ['E'], ['R']],
+        ];
     }
 
-    public function test__construct__withErrors()
+    /**
+     * @dataProvider constructCases
+     */
+    public function test__construct(...$args)
     {
-        $cursor = $this->getMockBuilder(CoupledCursorInterface::class)
-                       ->getMockForAbstractClass();
+        $state = new ParserState(...$args);
 
-        $state = new ParserState($cursor, ['A']);
+        $this->assertSame($args[0], $state->getCursor());
 
+        if (count($args[1] ?? []) === 0) {
+            $this->assertSame([], $state->getErrors());
+            $this->assertTrue($state->isOk());
+        } else {
+            $this->assertSame($args[1], $state->getErrors());
+            $this->assertFalse($state->isOk());
+        }
+
+        if (count($args[2] ?? []) === 0) {
+            $this->assertSame([], $state->getRecords());
+        } else {
+            $this->assertSame($args[2], $state->getRecords());
+        }
+    }
+
+    protected function createParserState(...$args)
+    {
+        $cursor = $args[0] ?? $this->getMockBuilder(CoupledCursorInterface::class)->getMockForAbstractClass();
+        return new ParserState($cursor, array_slice($args, 1));
+    }
+
+    public function test__cursor()
+    {
+        $state = $this->createParserState();
+        $cursor = $this->getMockBuilder(CoupledCursorInterface::class)->getMockForAbstractClass();
+
+        $this->assertSame($state, $state->setCursor($cursor));
         $this->assertSame($cursor, $state->getCursor());
-        $this->assertSame(['A'], $state->getErrors());
+    }
+
+    public function test__errors()
+    {
+        $state = $this->createParserState();
+
+        $this->assertSame([], $state->getErrors());
+        $this->assertTrue($state->isOk());
+
+        $this->assertSame($state, $state->setErrors(['E']));
+        $this->assertSame(['E'], $state->getErrors());
         $this->assertFalse($state->isOk());
+    }
+
+    public function test__records()
+    {
+        $state = $this->createParserState();
+
+        $this->assertSame([], $state->getRecords());
+
+        $this->assertSame($state, $state->setRecords(['R']));
+        $this->assertSame(['R'], $state->getRecords());
+    }
+
+    public function test__appendError()
+    {
+        $state = $this->createParserState();
+        // Due to a bug in phpunit we can't mock interfaces that extend \Throwable.
+        $error = $this->createMock(ParserError::class);
+
+        $this->assertSame([], $state->getErrors());
+        $this->assertSame($state, $state->appendError($error));
+        $this->assertSame([$error], $state->getErrors());
+    }
+
+    public function test__appendRecord()
+    {
+        $state = $this->createParserState();
+        // Due to a bug in phpunit we can't mock interfaces that extend \Throwable.
+        $record = $this->getMockBuilder(RecordInterface::class)->getMockForAbstractClass();
+
+        $this->assertSame([], $state->getRecords());
+        $this->assertSame($state, $state->appendRecord($record));
+        $this->assertSame([$record], $state->getRecords());
     }
 }
 

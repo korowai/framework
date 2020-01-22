@@ -27,11 +27,18 @@ interface ParserStateInterface
     public function getCursor() : CoupledCursorInterface;
 
     /**
-     * Returns the errors detected by parser so far.
+     * Returns errors detected by parser so far.
      *
-     * @return array an array of error objects, each one implementing ParseErrorInterface
+     * @return array an array of ParserErrorInterface instances.
      */
     public function getErrors() : array;
+
+    /**
+     * Returns records extracted from LDIF source so far.
+     *
+     * @return array an array of RecordInterface instances.
+     */
+    public function getRecords() : array;
 
     /**
      * Returns true if there are no errors.
@@ -39,6 +46,24 @@ interface ParserStateInterface
      * @return bool
      */
     public function isOk() : bool;
+
+    /**
+     * Append new error.
+     *
+     * @param  ParserErrorInterface $error
+     *
+     * @return object $this
+     */
+    public function appendError(ParserErrorInterface $error);
+
+    /**
+     * Append new record.
+     *
+     * @param  RecordInterface $record
+     *
+     * @return object $this
+     */
+    public function appendRecord(RecordInterface $record);
 }
 
 // vim: syntax=php sw=4 ts=4 et:

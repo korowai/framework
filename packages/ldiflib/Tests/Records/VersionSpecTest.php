@@ -1,6 +1,6 @@
 <?php
 /**
- * @file Tests/VersionSpecTest.php
+ * @file Tests/Records/VersionSpecTest.php
  *
  * This file is part of the Korowai package
  *
@@ -15,7 +15,7 @@ namespace Korowai\Lib\Ldif\Records\Tests;
 
 use Korowai\Lib\Ldif\Records\VersionSpec;
 use Korowai\Lib\Ldif\Records\AbstractRecord;
-use Korowai\Lib\Ldif\RecordInterface;
+use Korowai\Lib\Ldif\Records\VersionSpecInterface;
 use Korowai\Lib\Ldif\RecordVisitorInterface;
 use Korowai\Lib\Ldif\CoupledRangeInterface;
 
@@ -27,10 +27,10 @@ use PHPUnit\Framework\TestCase;
  */
 class VersionSpecTest extends TestCase
 {
-    public function test__implements__RecordInterface()
+    public function test__implements__VersionSpecInterface()
     {
         $interfaces = class_implements(VersionSpec::class);
-        $this->assertContains(RecordInterface::class, $interfaces);
+        $this->assertContains(VersionSpecInterface::class, $interfaces);
     }
 
     public function test__extends__AbstractRecord()

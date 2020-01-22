@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Lib/Ldif/Record.php
+ * @file src/Korowai/Lib/Ldif/Records/VersionSpec.php
  *
  * This file is part of the Korowai package
  *
@@ -22,7 +22,7 @@ use Korowai\Lib\Ldif\RecordVisitorInterface;
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class VersionSpec extends AbstractRecord
+class VersionSpec extends AbstractRecord implements VersionSpecInterface
 {
     /**
      * @var int
@@ -53,9 +53,7 @@ class VersionSpec extends AbstractRecord
     }
 
     /**
-     * Returns the version number stored as semantic value.
-     *
-     * @return int
+     * {@inheritdoc}
      */
     public function getVersion() : int
     {

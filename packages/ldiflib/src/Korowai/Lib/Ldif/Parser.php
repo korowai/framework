@@ -26,9 +26,9 @@ use Korowai\Lib\Ldif\Traits\SkipsWhitespaces;
 class Parser implements ParserInterface
 {
     use MatchesPatterns;
-    use ParsesDnSpec;
-    use ParsesLdifFile;
-    use ParsesStrings;
+//    use ParsesDnSpec;
+//    use ParsesLdifFile;
+//    use ParsesStrings;
     use ParsesVersionSpec;
     use SkipsWhitespaces;
 

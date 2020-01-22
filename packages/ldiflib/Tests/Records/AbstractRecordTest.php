@@ -1,6 +1,6 @@
 <?php
 /**
- * @file Tests/AbstractRecordTest.php
+ * @file Tests/Records/AbstractRecordTest.php
  *
  * This file is part of the Korowai package
  *
@@ -26,12 +26,6 @@ use PHPUnit\Framework\TestCase;
  */
 class AbstractRecordTest extends TestCase
 {
-    public function test__implements__RecordInterface()
-    {
-        $interfaces = class_implements(AbstractRecord::class);
-        $this->assertContains(RecordInterface::class, $interfaces);
-    }
-
     public function test__uses__DecoratesCoupledRangeInterface()
     {
         $uses = class_uses(AbstractRecord::class);

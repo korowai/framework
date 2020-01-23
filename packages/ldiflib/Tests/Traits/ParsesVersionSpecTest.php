@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldif\Traits;
 
+use Korowai\Tests\Lib\Ldif\Testing\ParserTestHelpers;
+use Korowai\Testing\Assertions\ObjectPropertiesAssertions;
+
 use Korowai\Lib\Ldif\Traits\ParsesVersionSpec;
 use Korowai\Lib\Ldif\Traits\SkipsWhitespaces;
 use Korowai\Lib\Ldif\Traits\MatchesPatterns;
@@ -28,21 +31,16 @@ use PHPUnit\Framework\TestCase;
  */
 class ParsesVersionSpecTest extends TestCase
 {
-    public function getTestObject()
+    use ParserTestHelpers;
+    use ObjectPropertiesAssertions;
+
+    protected function getTestObject()
     {
-        $obj = new class {
+        return new class {
             use ParsesVersionSpec;
             use SkipsWhitespaces;
             use MatchesPatterns;
         };
-        return $obj;
-    }
-
-    protected function createParserState(string $source, int $position = 0)
-    {
-        $input = (new Preprocessor)->preprocess($source);
-        $cursor = new Cursor($input, $position);
-        return new ParserState($cursor);
     }
 
     public function versionNumberCases()
@@ -125,52 +123,21 @@ class ParsesVersionSpecTest extends TestCase
         ];
     }
 
-    protected function checkParserState(ParserState $state, array $checks)
-    {
-        $expState = $checks['state'] ?? [];
-
-        // Checking $stte->isOk()
-        $expIsOk = $expState['isOk'] ?? ($checks['result'] ?? true);
-        $this->assertSame($expIsOk, $state->isOk());
-
-        // Checking current position.
-        $cursor = $state->getCursor();
-        if (($expOffset = $expState['offset'] ?? null) !== null) {
-            $this->assertSame($expOffset, $cursor->getOffset());
-        }
-        if (($expSourceOffset = $expState['sourceOffset'] ?? null) !== null) {
-            $this->assertSame($expSourceOffset, $cursor->getSourceOffset());
-        }
-        if (($expSourceCharOffset = $expState['sourceCharOffset'] ?? null) !== null) {
-            $this->assertSame($expSourceCharOffset, $cursor->getSourceCharOffset());
-        }
-
-        // Checking errors.
-        $errors = $state->getErrors();
-        if (($expError = $checks['error'] ?? null) === null) {
-            $this->assertEmpty($errors);
-        } else {
-            $this->assertCount(1, $errors);
-            $error = $errors[count($errors)-1];
-            $this->assertSame($expError['message'], $error->getMessage());
-            $this->assertSame($expError['sourceOffset'], $error->getSourceCharOffset());
-        }
-    }
-
     /**
      * @dataProvider versionNumberCases
      */
-    public function test__parseVersionNumber(array $stateArgs, array $checks)
+    public function test__parseVersionNumber(array $args, array $checks)
     {
+        $state = $this->getParserStateFromSource(...$args);
         $parser = $this->getTestObject();
-        $state = $this->createParserState(...$stateArgs);
-
-        $begin = $stateArgs[1] ?? 0;
 
         $result = $parser->parseVersionNumber($state, $version);
         $this->assertSame($checks['result'] ?? true, $result);
 
-        $this->checkParserState($state, $checks);
+        //$this->checkParserState($state, $checks);
+        // FIXME: use this:
+        // $this->assertHasPropertiesSameAs(...)
+
 
         //Checking the semantic value.
         $expVersion = $checks['version'] ?? null;

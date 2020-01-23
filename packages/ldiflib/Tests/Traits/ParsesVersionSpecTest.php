@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldif\Traits;
 
-use Korowai\Tests\Lib\Ldif\Testing\ParserTestHelpers;
+use Korowai\Testing\Lib\Ldif\ParserTestHelpers;
 use Korowai\Testing\Assertions\ObjectPropertiesAssertions;
 
 use Korowai\Lib\Ldif\Traits\ParsesVersionSpec;
@@ -23,7 +23,7 @@ use Korowai\Lib\Ldif\ParserState;
 use Korowai\Lib\Ldif\Preprocessor;
 use Korowai\Lib\Ldif\Cursor;
 
-use Korowai\Tests\Lib\Ldif\Testing\TestCase;
+use Korowai\Testing\Lib\Ldif\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

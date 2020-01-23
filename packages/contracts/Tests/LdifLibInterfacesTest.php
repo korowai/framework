@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Korowai\Tests\Contracts;
 
 use PHPUnit\Framework\TestCase;
-use Korowai\Tests\Contracts\Testing\LdifLibInterfaceProperties;
+use Korowai\Testing\Contracts\LdifLibInterfaceProperties;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Tests\Lib\Ldif;
+namespace Korowai\Testing\Lib\Ldif;
 
 //use Korowai\Lib\Ldif\ParserState;
 //use Korowai\Lib\Ldif\Preprocessor;

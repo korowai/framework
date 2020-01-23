@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Tests\Lib\Ldif\Testing;
+namespace Korowai\Testing\Lib\Ldif;
 
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 use Korowai\Testing\Assertions\ObjectPropertiesAssertions;

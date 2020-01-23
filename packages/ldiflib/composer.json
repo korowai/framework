@@ -27,12 +27,14 @@
       "files" : [
       ],
       "exclude-from-classmap": [
-        "/Tests/"
+        "/Tests/",
+        "/Testing/"
       ]
     },
     "autoload-dev": {
       "psr-4" : {
-        "Korowai\\Tests\\Lib\\Ldif\\" : "Tests/"
+        "Korowai\\Tests\\Lib\\Ldif\\" : "Tests/",
+        "Korowai\\Testing\\Lib\\Ldif\\" : "Testing/"
       }
     }
 }

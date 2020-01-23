@@ -23,8 +23,7 @@ use Korowai\Lib\Ldif\ParserState;
 use Korowai\Lib\Ldif\Preprocessor;
 use Korowai\Lib\Ldif\Cursor;
 
-use PHPUnit\Framework\TestCase;
-
+use Korowai\Tests\Lib\Ldif\Testing\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -123,30 +122,30 @@ class ParsesVersionSpecTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider versionNumberCases
-     */
-    public function test__parseVersionNumber(array $args, array $checks)
-    {
-        $state = $this->getParserStateFromSource(...$args);
-        $parser = $this->getTestObject();
-
-        $result = $parser->parseVersionNumber($state, $version);
-        $this->assertSame($checks['result'] ?? true, $result);
-
-        //$this->checkParserState($state, $checks);
-        // FIXME: use this:
-        // $this->assertHasPropertiesSameAs(...)
-
-
-        //Checking the semantic value.
-        $expVersion = $checks['version'] ?? null;
-        if ($expVersion != null) {
-            $this->assertSame($expVersion, $version);
-        } else {
-            $this->assertNull($version);
-        }
-    }
+//    /**
+//     * @dataProvider versionNumberCases
+//     */
+//    public function test__parseVersionNumber(array $args, array $checks)
+//    {
+//        $state = $this->getParserStateFromSource(...$args);
+//        $parser = $this->getTestObject();
+//
+//        $result = $parser->parseVersionNumber($state, $version);
+//        $this->assertSame($checks['result'] ?? true, $result);
+//
+//        //$this->checkParserState($state, $checks);
+//        // FIXME: use this:
+//        // $this->assertHasPropertiesSameAs(...)
+//
+//
+//        //Checking the semantic value.
+//        $expVersion = $checks['version'] ?? null;
+//        if ($expVersion != null) {
+//            $this->assertSame($expVersion, $version);
+//        } else {
+//            $this->assertNull($version);
+//        }
+//    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

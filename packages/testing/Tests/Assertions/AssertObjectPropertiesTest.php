@@ -39,9 +39,9 @@ class ObjectPropertiesAssertionsTest extends TestCase
     public function test__staticMethodExists(string $name)
     {
         $classAndMethod = [self::class, $name];
-        $this->assertTrue(method_exists(...$classAndMethod));
+        self::assertTrue(method_exists(...$classAndMethod));
         $method = new \ReflectionMethod(...$classAndMethod);
-        $this->assertTrue($method->isStatic());
+        self::assertTrue($method->isStatic());
     }
 
     public function propertiesSameAs()
@@ -88,7 +88,7 @@ class ObjectPropertiesAssertionsTest extends TestCase
         object $object,
         array $options = []
     ) {
-        $this->assertTrue($this->hasPropertiesIdenticalTo($expected, $options)->matches($object));
+        self::assertTrue(self::hasPropertiesIdenticalTo($expected, $options)->matches($object));
     }
 
     /**
@@ -99,22 +99,22 @@ class ObjectPropertiesAssertionsTest extends TestCase
         object $object,
         array $options = []
     ) {
-        $this->assertFalse($this->hasPropertiesIdenticalTo($expected, $options)->matches($object));
+        self::assertFalse(self::hasPropertiesIdenticalTo($expected, $options)->matches($object));
     }
 
     public function test__hasPropertiesIdenticalTo__withNonObject()
     {
-        $matcher = $this->hasPropertiesIdenticalTo(['a' => 'A']);
-        $this->assertFalse($matcher->matches(123));
-        $this->assertSame('foo', $matcher->failureDescription(123));
+        $matcher = self::hasPropertiesIdenticalTo(['a' => 'A']);
+        self::assertFalse($matcher->matches(123));
+        self::assertRegexp('/^123 has properties identical to /', $matcher->failureDescription(123));
     }
 
     public function test__hasPropertiesIdenticalTo__withInvalidArray()
     {
-        $this->expectException(\PHPUnit\Framework\Exception::class);
-        $this->expectExceptionMessage('The array of expected properties contains 3 invalid key(s)');
+        self::expectException(\PHPUnit\Framework\Exception::class);
+        self::expectExceptionMessage('The array of expected properties contains 3 invalid key(s)');
 
-        $this->hasPropertiesIdenticalTo(['a' => 'A', 0 => 'B', 2 => 'C', 7 => 'D', 'e' => 'E']);
+        self::hasPropertiesIdenticalTo(['a' => 'A', 0 => 'B', 2 => 'C', 7 => 'D', 'e' => 'E']);
     }
 
     /**
@@ -125,7 +125,7 @@ class ObjectPropertiesAssertionsTest extends TestCase
         object $object,
         array $options = null
     ) {
-        $this->assertHasPropertiesSameAs(...func_get_args());
+        self::assertHasPropertiesSameAs(...func_get_args());
     }
 
     /**
@@ -136,11 +136,11 @@ class ObjectPropertiesAssertionsTest extends TestCase
         object $object,
         array $options = null
     ) {
-        $regexp = '/^Failed asserting that object with properties [\S\s\n]+has properties identical to/';
-        $this->expectException(ExpectationFailedException::class);
-        $this->expectExceptionMessageRegexp($regexp);
+        $regexp = '/^Failed asserting that object class\@.+ with properties [\S\s\n]+has properties identical to/';
+        self::expectException(ExpectationFailedException::class);
+        self::expectExceptionMessageRegexp($regexp);
 
-        $this->assertHasPropertiesSameAs(...func_get_args());
+        self::assertHasPropertiesSameAs(...func_get_args());
     }
 
     /**
@@ -151,7 +151,7 @@ class ObjectPropertiesAssertionsTest extends TestCase
         object $object,
         array $options = null
     ) {
-        $this->assertHasPropertiesNotSameAs(...func_get_args());
+        self::assertHasPropertiesNotSameAs(...func_get_args());
     }
 
     /**
@@ -162,11 +162,11 @@ class ObjectPropertiesAssertionsTest extends TestCase
         object $object,
         array $options = null
     ) {
-        $regexp = '/^Failed asserting that object with properties [\S\s\n]+does not have properties identical to/';
-        $this->expectException(ExpectationFailedException::class);
-        $this->expectExceptionMessageRegexp($regexp);
+        $regexp = '/^Failed asserting that object class@.+ with properties [\S\s\n]+does not have properties identical to/';
+        self::expectException(ExpectationFailedException::class);
+        self::expectExceptionMessageRegexp($regexp);
 
-        $this->assertHasPropertiesNotSameAs(...func_get_args());
+        self::assertHasPropertiesNotSameAs(...func_get_args());
     }
 }
 

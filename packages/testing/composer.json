@@ -20,17 +20,18 @@
     },
     "autoload": {
       "psr-4" : {
-        "Korowai\\Testing\\" : "src/Korowai/Testing/"
       },
       "files" : [
       ],
       "exclude-from-classmap": [
-        "/Tests/"
+        "/Tests/",
+        "/Testing/"
       ]
     },
     "autoload-dev": {
       "psr-4" : {
-        "Korowai\\Tests\\Testing\\" : "Tests/"
+        "Korowai\\Tests\\Testing\\" : "Tests/",
+        "Korowai\\Testing\\" : "/Testing/"
       }
     }
 }

@@ -29,12 +29,14 @@
         "src/Korowai/Lib/Compat/functions/preg.php"
       ],
       "exclude-from-classmap": [
-        "/Tests/"
+        "/Tests/",
+        "/Testing/"
       ]
     },
     "autoload-dev": {
       "psr-4" : {
-        "Korowai\\Tests\\Lib\\Compat\\" : "Tests/"
+        "Korowai\\Tests\\Lib\\Compat\\" : "Tests/",
+        "Korowai\\Testing\\Lib\\Compat\\" : "Testing/"
       }
     }
 }

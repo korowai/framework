@@ -19,6 +19,27 @@ use PHPUnit\Framework\ExpectationFailedException;
 /**
  * Constraint that accepts object having prescribed properties.
  *
+ * Compares only properties present in the array of expectations. Additional
+ * options may be used to adjust matcher's behavior. Supported options are:
+ *
+ * - ``getters``
+ *
+ *    A key-value array of method names that shall be used to access particular
+ *    attributes of the objects being examined. For example
+ *
+ *    ```
+ *      class Person {
+ *          private $name;
+ *          public $age;
+ *          public function getName() { return $this->name; }
+ *      }
+ *      // ...
+ *      $matcher = new HasPropertiesIdenticalTo(
+ *          ['name' => 'John', 'age' => 21],
+ *          ['getters' => ['name' => 'getName']]
+ *      );
+ *    ```
+ *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
 final class HasPropertiesIdenticalTo extends Constraint
@@ -34,6 +55,8 @@ final class HasPropertiesIdenticalTo extends Constraint
     private $options;
 
     /**
+     * Initializes the constraint.
+     *
      * @param  array $expected An array of expected values.
      * @param  array $options Additional modifiers.
      *
@@ -91,7 +114,7 @@ final class HasPropertiesIdenticalTo extends Constraint
     {
         if (is_object($other)) {
             $actual = $this->getPropertiesForComparison($other);
-            $what = 'object with properties '.($this->exporter()->export($actual));
+            $what = 'object '.get_class($other).' with properties '.($this->exporter()->export($actual));
         } else {
             $what = $this->exporter()->export($other);
         }
@@ -116,8 +139,6 @@ final class HasPropertiesIdenticalTo extends Constraint
                 $actual[$key] = call_user_func([$object, $getter]);
             } elseif (property_exists($object, $key)) {
                 $actual[$key] = $object->{$key};
-            } else {
-                static::fail('Unsupported attribute '.$key);
             }
         }
         return $actual;

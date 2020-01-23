@@ -21,11 +21,16 @@
     "autoload": {
       "psr-4" : {
         "Korowai\\" : "src/Korowai/"
-      }
+      },
+      "exclude-from-classmap": [
+        "/Tests/",
+        "/Testing/"
+      ]
     },
     "autoload-dev": {
       "psr-4" : {
-        "Korowai\\Contracts\\Tests\\" : "Tests/"
+        "Korowai\\Tests\\" : "Tests/",
+        "Korowai\\Testing\\": "Testing/"
       }
     }
 }

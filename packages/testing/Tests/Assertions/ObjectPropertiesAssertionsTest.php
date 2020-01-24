@@ -117,6 +117,16 @@ class ObjectPropertiesAssertionsTest extends TestCase
         self::hasPropertiesIdenticalTo(['a' => 'A', 0 => 'B', 2 => 'C', 7 => 'D', 'e' => 'E']);
     }
 
+    public function test__hasPropertiesIdenticalTo__withInvalidGetter()
+    {
+        $object = new class { protected $a; };
+
+        self::expectException(\PHPUnit\Framework\Exception::class);
+        self::expectExceptionMessage('$object->xxx() is not callable');
+
+        self::hasPropertiesIdenticalTo(['a' => 'A'], ['getters' => ['a' => 'xxx']])->matches($object);
+    }
+
     /**
      * @dataProvider propertiesSameAs
      */

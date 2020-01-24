@@ -1,6 +1,6 @@
 <?php
 /**
- * @file Tests/Testing/LdifLibInterfaceProperties.php
+ * @file Testing/Contracts/LdifLibInterfaceProperties.php
  *
  * This file is part of the Korowai package
  *
@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Testing\Contratcs;
+namespace Korowai\Testing\Contracts;
 
 use Korowai\Lib\Ldif\CursorInterface;
 use Korowai\Lib\Ldif\InputInterface;

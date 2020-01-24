@@ -132,16 +132,21 @@ final class HasPropertiesIdenticalTo extends Constraint
         $actual = []; // actual properties
         $getters = $this->options['getters'] ?? [];
         foreach (array_keys($this->expected) as $key) {
-            if (($getter = $getters[$key] ?? null) !== null) {
-                if (!is_callable([$object, $getter])) {
-                    static::fail('$object->'.$getter.'() is not callable');
-                }
-                $actual[$key] = call_user_func([$object, $getter]);
-            } elseif (property_exists($object, $key)) {
-                $actual[$key] = $object->{$key};
-            }
+            $this->updateActual($actual, $object, $key, $getters);
         }
         return $actual;
+    }
+
+    protected function updateActual(array &$actual, object $object, string $key, array $getters) : void
+    {
+        if (($getter = $getters[$key] ?? null) !== null) {
+            if (!is_callable([$object, $getter])) {
+                throw new \PHPUnit\Framework\Exception('$object->'.$getter.'() is not callable');
+            }
+            $actual[$key] = call_user_func([$object, $getter]);
+        } elseif (property_exists($object, $key)) {
+            $actual[$key] = $object->{$key};
+        }
     }
 }
 

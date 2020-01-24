@@ -5,16 +5,16 @@
     "license": "MIT",
     "minimum-stability": "dev",
     "prefer-stable": true,
-    "suport": {
-      "issues": "https://github.com/korowai/framework/issues",
-      "source": "https://github.com/korowai/framework"
-    },
     "authors": [
         {
             "name": "Paweł Tomulik",
             "email": "ptomulik@meil.pw.edu.pl"
         }
     ],
+    "suport": {
+      "issues": "https://github.com/korowai/framework/issues",
+      "source": "https://github.com/korowai/framework"
+    },
     "require": {
         "php": ">=7.1.3",
         "korowai/contracts": "*",

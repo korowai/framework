@@ -42,6 +42,17 @@ final class ExtendsClass extends InheritanceConstraint
     {
         return class_parents($class);
     }
+
+    /**
+     * Checks if *$string* may be used as an argument to ``getInheritedClassesFor()``
+     *
+     * @param  string $strint
+     * @return bool
+     */
+    public function checkMatchedString(string $string) : bool
+    {
+        return class_exists($string);
+    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

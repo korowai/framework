@@ -42,6 +42,17 @@ final class ImplementsInterface extends InheritanceConstraint
     {
         return class_implements($class);
     }
+
+    /**
+     * Checks if *$string* may be used as an argument to ``getInheritedClassesFor()``
+     *
+     * @param  string $strint
+     * @return bool
+     */
+    public function checkMatchedString(string $string) : bool
+    {
+        return class_exists($string) || interface_exists($string);
+    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

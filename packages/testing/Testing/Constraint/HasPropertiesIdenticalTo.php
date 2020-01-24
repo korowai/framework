@@ -82,16 +82,10 @@ final class HasPropertiesIdenticalTo extends Constraint
     }
 
     /**
-     * Evaluates the constraint for parameter $other.
+     * Evaluates the constraint for parameter $other. Returns true if the
+     * constraint is met, false otherwise.
      *
-     * If $returnResult is set to false (the default), an exception is thrown
-     * in case of a failure. null is returned otherwise.
-     *
-     * If $returnResult is true, the result of the evaluation is returned as a
-     * boolean value instead: true in case of success, false in case of a
-     * failure.
-     *
-     * @throws ExpectationFailedException
+     * @param mixed $other value or object to evaluate
      */
     public function matches($other) : bool
     {

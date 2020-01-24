@@ -61,7 +61,7 @@ abstract class InheritanceConstraint extends Constraint
      * @param  string $strint
      * @return bool
      */
-    abstract public function checkMatchedString(string $string) : bool;
+    abstract public function supportsClass(string $string) : bool;
 
     /**
      * Returns a string representation of the constraint.
@@ -82,7 +82,7 @@ abstract class InheritanceConstraint extends Constraint
         if (is_object($other)) {
             $other = get_class($other);
         }
-        if (!is_string($other) || !$this->checkMatchedString($other)) {
+        if (!is_string($other) || !$this->supportsClass($other)) {
             return false;
         }
         return in_array($this->className, $this->getInheritedClassesFor($other), true);
@@ -100,7 +100,7 @@ abstract class InheritanceConstraint extends Constraint
     {
         if (is_object($other)) {
             $other = get_class($other).' object';
-        } elseif (!is_string($other) || !class_exists($other)) {
+        } elseif (!is_string($other) || !$this->supportsClass($other)) {
             $other = $this->exporter()->export($other);
         }
         return $other.' '.$this->toString();

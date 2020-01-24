@@ -44,14 +44,14 @@ final class UsesTrait extends InheritanceConstraint
     }
 
     /**
-     * Checks if *$string* may be used as an argument to ``getInheritedClassesFor()``
+     * Checks if *$class* may be used as an argument to ``getInheritedClassesFor()``
      *
-     * @param  string $strint
+     * @param  string $class
      * @return bool
      */
-    public function checkMatchedString(string $string) : bool
+    public function supportsClass(string $class) : bool
     {
-        return class_exists($string);
+        return class_exists($class);
     }
 }
 

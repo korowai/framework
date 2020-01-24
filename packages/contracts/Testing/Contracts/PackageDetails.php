@@ -67,6 +67,7 @@ use Korowai\Lib\Ldif\Records\VersionSpecInterface;
 // No interfaces so far.
 
 use Korowai\Testing\PackageDetailsInterface;
+use Korowai\Testing\Traits\PackageDetailsFromStaticArrays;
 
 /**
  * Describes expected details or the korowai\contracts package.
@@ -75,193 +76,221 @@ use Korowai\Testing\PackageDetailsInterface;
  */
 class PackageDetails implements PackageDetailsInterface
 {
-    protected static $objectProperties = [
+    use PackageDetailsFromStaticArrays;
+
+    protected static $classesDetails = [
         // Korowai\Lib\Context
-        ContextFactoryInterface::class  => [
+        ContextFactoryInterface::class      => [
+            'interfaces'                    => [],
+            'properties'                    => [],
         ],
         ContextFactoryStackInterface::class => [
-            'size'                      => 'size',
-            'top'                       => 'top',
+            'interfaces'                    => [],
+            'properties'                    => [
+                'size'                      => 'size',
+                'top'                       => 'top',
+            ],
         ],
-        ContextManagerInterface::class  => [
+        ContextManagerInterface::class      => [
+            'interfaces'                    => [],
+            'properties'                    => [],
         ],
-        ExecutorInterface::class        => [
+        ExecutorInterface::class            => [
+            'interfaces'                    => [],
+            'properties'                    => [],
         ],
 
         // Korowai\Lib\Error
-        ErrorHandlerInterface::class    => [
-            'errorTypes'                => 'getErrorTypes'
+        ErrorHandlerInterface::class        => [
+            'interfaces'                    => [],
+            'properties'                    => [
+                'errorTypes'                => 'getErrorTypes'
+            ],
         ],
 
         // Korowai\Lib\Ldap
-        EntryInterface::class           => [
-            'dn'                        => 'getDn',
-            'attributes'                => 'getAttributes',
+        EntryInterface::class               => [
+            'interfaces'                    => [],
+            'properties'                    => [
+                'dn'                        => 'getDn',
+                'attributes'                => 'getAttributes',
+            ],
         ],
-        LdapInterface::class            => [
-            'adapter'                   => 'getAdapter',
+        LdapInterface::class                => [
+            'interfaces'                    => [
+                BindingInterface::class,
+                EntryManagerInterface::class,
+                AdapterInterface::class,
+            ],
+            'properties'                    => [
+                'adapter'                   => 'getAdapter',
+            ],
         ],
-        AdapterFactoryInterface::class  => [
+        AdapterFactoryInterface::class      => [
+            'interfaces'                    => [],
+            'properties'                    => [],
         ],
-        AdapterInterface::class         => [
-            'binding'                   => 'getBinding',
-            'entryManager'              => 'getEntryManager',
+        AdapterInterface::class             => [
+            'interfaces'                    => [],
+            'properties'                    => [
+                'binding'                   => 'getBinding',
+                'entryManager'              => 'getEntryManager',
+            ],
         ],
-        BindingInterface::class         => [
-            'isBound'                   => 'isBound',
+        BindingInterface::class             => [
+            'interfaces'                    => [],
+            'properties'                    => [
+                'isBound'                   => 'isBound',
+            ],
         ],
-        CompareQueryInterface::class    => [
-            'result'                    => 'getResult',
+        CompareQueryInterface::class        => [
+            'interfaces'                    => [],
+            'properties'                    => [
+                'result'                    => 'getResult',
+            ],
         ],
-        EntryManagerInterface::class    => [
+        EntryManagerInterface::class        => [
+            'interfaces'                    => [],
+            'properties'                    => [],
         ],
         ResultAttributeIteratorInterface::class => [
+            'interfaces'                    => [\Iterator::class],
+            'properties'                    => [],
         ],
-        ResultEntryInterface::class     => [
-            'attributes'                => 'getAttributes',
-            'entry'                     => 'toEntry',
-            'attributeIterator'         => 'getAttributeIterator',
+        ResultEntryInterface::class         => [
+            'interfaces'                    => [ResultRecordInterface::class],
+            'properties'                    => [
+                'attributes'                => 'getAttributes',
+                'entry'                     => 'toEntry',
+                'attributeIterator'         => 'getAttributeIterator',
+            ],
         ],
         ResultEntryIteratorInterface::class => [
+            'interfaces'                    => [\Iterator::class],
+            'properties'                    => [],
         ],
-        ResultInterface::class          => [
-            'resultEntryIterator'       => 'getResultEntryIterator',
-            'resultReferenceIterator'   => 'getResultReferenceIterator',
-            'resultEntries'             => 'getResultEntries',
-            'resultReferences'          => 'getResultReferences',
-            'entries'                   => 'getEntries',
+        ResultInterface::class              => [
+            'interfaces'                    => [\IteratorAggregate::class],
+            'properties'                    => [
+                'resultEntryIterator'       => 'getResultEntryIterator',
+                'resultReferenceIterator'   => 'getResultReferenceIterator',
+                'resultEntries'             => 'getResultEntries',
+                'resultReferences'          => 'getResultReferences',
+                'entries'                   => 'getEntries',
+            ],
         ],
-        ResultRecordInterface::class    => [
-            'dn'                        => 'getDn',
+        ResultRecordInterface::class        => [
+            'interfaces'                    => [],
+            'properties'                    => [
+                'dn'                        => 'getDn',
+            ],
         ],
-        ResultReferenceInterface::class => [
-            'referrals'                 => 'getReferrals',
+        ResultReferenceInterface::class     => [
+            'interfaces'                    => [ResultRecordInterface::class],
+            'properties'                    => [
+                'referrals'                 => 'getReferrals',
+            ],
         ],
         ResultReferenceIteratorInterface::class => [
+            'interfaces'                    => [\Iterator::class],
+            'properties'                    => [],
         ],
         ResultReferralIteratorInterface::class => [
+            'interfaces'                    => [\Iterator::class],
+            'properties'                    => [],
         ],
-        SearchQueryInterface::class     => [
-            'result'                    => 'getResult'
+        SearchQueryInterface::class         => [
+            'interfaces'                    => [],
+            'properties'                    => [
+                'result'                    => 'getResult'
+            ],
         ],
 
         // Korowai\Lib\Ldif
-        CursorInterface::class => [
+        CursorInterface::class              => [
+            'interfaces'                    => [LocationInterface::class],
+            'properties'                    => [],
         ],
-        InputInterface::class           => [
-            'sourceFileName'            => 'getSourceFileName',
-            'sourceString'              => 'getSourceString',
-            'string'                    => 'getString',
-            'sourceLines'               => 'getSourceLines',
-            'sourceLinesCount'          => 'getSourceLinesCount',
+        InputInterface::class               => [
+            'interfaces'                    => [],
+            'properties'                    => [
+                'sourceFileName'            => 'getSourceFileName',
+                'sourceString'              => 'getSourceString',
+                'string'                    => 'getString',
+                'sourceLines'               => 'getSourceLines',
+                'sourceLinesCount'          => 'getSourceLinesCount',
+            ],
         ],
-        LocationInterface::class        => [
-            'string'                    => 'getString',
-            'offset'                    => 'getOffset',
-            'charOffset'                => 'getCharOffset',
+        LocationInterface::class            => [
+            'interfaces'                    => [SourceLocationInterface::class],
+            'properties'                    => [
+                'string'                    => 'getString',
+                'offset'                    => 'getOffset',
+                'charOffset'                => 'getCharOffset',
+            ],
         ],
-        ParserErrorInterface::class     => [
-            'multilineMessage'          => 'getMultilineMessage'
+        ParserErrorInterface::class         => [
+            'interfaces'                    => [SourceLocationInterface::class, \Throwable::class],
+            'properties'                    => [
+                'multilineMessage'          => 'getMultilineMessage'
+            ],
         ],
-        ParserInterface::class          => [
+        ParserInterface::class              => [
+            'interfaces'                    => [],
+            'properties'                    => [],
         ],
-        ParserStateInterface::class     => [
-            'cursor'                    => 'getCursor',
-            'errors'                    => 'getErrors',
-            'records'                   => 'getRecords',
-            'isOk'                      => 'isOk'
+        ParserStateInterface::class         => [
+            'interfaces'                    => [],
+            'properties'                    => [
+                'cursor'                    => 'getCursor',
+                'errors'                    => 'getErrors',
+                'records'                   => 'getRecords',
+                'isOk'                      => 'isOk'
+            ],
         ],
-        PreprocessorInterface::class    => [
+        PreprocessorInterface::class        => [
+            'interfaces'                    => [],
+            'properties'                    => [],
         ],
-        RecordInterface::class          => [
+        RecordInterface::class              => [
+            'interfaces'                    => [SnippetInterface::class],
+            'properties'                    => [],
         ],
-        RecordVisitorInterface::class   => [
+        RecordVisitorInterface::class       => [
+            'interfaces'                    => [],
+            'properties'                    => [],
         ],
-        SnippetInterface::class         => [
-            'length'                    => 'getLength',
-            'endOffset'                 => 'getEndOffset',
-            'sourceLength'              => 'getSourceLength',
-            'sourceEndOffset'           => 'getSourceEndOffset',
-            'sourceCharLength'          => 'getSourceCharLength',
-            'sourceCharEndOffset'       => 'getSourceCharEndOffset',
+        SnippetInterface::class             => [
+            'interfaces'                    => [LocationInterface::class],
+            'properties'                    => [
+                'length'                    => 'getLength',
+                'endOffset'                 => 'getEndOffset',
+                'sourceLength'              => 'getSourceLength',
+                'sourceEndOffset'           => 'getSourceEndOffset',
+                'sourceCharLength'          => 'getSourceCharLength',
+                'sourceCharEndOffset'       => 'getSourceCharEndOffset',
+            ],
         ],
-        SourceLocationInterface::class  => [
-            'sourceFileName'            => 'getSourceFileName',
-            'sourceString'              => 'getSourceString',
-            'sourceOffset'              => 'getSourceOffset',
-            'sourceCharOffset'          => 'getSourceCharOffset',
-            'sourceLineIndex'           => 'getSourceLineIndex',
-            'sourceLineIndex'           => 'getSourceLine',
-            'sourceLineAndOffset'       => 'getSourceLineAndOffset',
-            'sourceLineAndCharOffset'   => 'getSourceLineAndCharOffset',
+        SourceLocationInterface::class      => [
+            'interfaces'                    => [],
+            'properties'                    => [
+                'sourceFileName'            => 'getSourceFileName',
+                'sourceString'              => 'getSourceString',
+                'sourceOffset'              => 'getSourceOffset',
+                'sourceCharOffset'          => 'getSourceCharOffset',
+                'sourceLineIndex'           => 'getSourceLineIndex',
+                'sourceLineIndex'           => 'getSourceLine',
+                'sourceLineAndOffset'       => 'getSourceLineAndOffset',
+                'sourceLineAndCharOffset'   => 'getSourceLineAndCharOffset',
+            ]
         ],
-        VersionSpecInterface::class     => [
-            'version'                   => 'getVersion'
+        VersionSpecInterface::class         => [
+            'interfaces'                    => [RecordInterface::class],
+            'properties'                    => [
+                'version'                   => 'getVersion',
+            ]
         ],
     ];
-
-    protected static $interfaceInheritance = [
-        // Korowai\Lib\Context
-        ContextFactoryInterface::class  => [],
-        ContextFactoryStackInterface::class => [],
-        ContextManagerInterface::class  => [],
-        ExecutorInterface::class        => [],
-
-        // Korowai\Lib\Error
-        ErrorHandlerInterface::class    => [],
-
-        // Korowai\Lib\Ldap
-        EntryInterface::class           => [],
-        LdapInterface::class            => [
-            BindingInterface::class,
-            EntryManagerInterface::class,
-            AdapterInterface::class,
-        ],
-        AdapterFactoryInterface::class  => [],
-        AdapterInterface::class         => [],
-        BindingInterface::class         => [],
-        CompareQueryInterface::class    => [],
-        EntryManagerInterface::class    => [],
-        ResultAttributeIteratorInterface::class => [\Iterator::class],
-        ResultEntryInterface::class     => [ResultRecordInterface::class],
-        ResultEntryIteratorInterface::class => [\Iterator::class],
-        ResultInterface::class          => [\IteratorAggregate::class],
-        ResultRecordInterface::class    => [],
-        ResultReferenceInterface::class => [ResultRecordInterface::class],
-        ResultReferenceIteratorInterface::class => [\Iterator::class],
-        ResultReferralIteratorInterface::class => [\Iterator::class],
-        SearchQueryInterface::class     => [],
-
-        // Korowai\Lib\Ldif
-        CursorInterface::class          => [LocationInterface::class],
-        InputInterface::class           => [],
-        LocationInterface::class        => [SourceLocationInterface::class],
-        ParserErrorInterface::class     => [SourceLocationInterface::class, \Throwable::class],
-        ParserInterface::class          => [],
-        ParserStateInterface::class     => [],
-        PreprocessorInterface::class    => [],
-        RecordInterface::class          => [SnippetInterface::class],
-        RecordVisitorInterface::class   => [],
-        SnippetInterface::class         => [LocationInterface::class],
-        SourceLocationInterface::class  => [],
-        VersionSpecInterface::class     => [RecordInterface::class],
-    ];
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function objectProperties() : array
-    {
-        return static::$objectProperties;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function interfaceInheritance() : array
-    {
-        return static::$interfaceInheritance;
-    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

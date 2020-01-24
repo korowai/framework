@@ -27,12 +27,13 @@ interface PackageDetailsInterface
      * getter method. For each class, the array of properties is an array
      * mapping property names onto their getter method names. The method
      * returns only the properties that are defined directly in the subject
-     * class. Inherited properties should not be listed for the given class (or
-     * interface).
+     * class. Inherited properties must not be included in the returned array.
      *
      * **Example**:
      *
      * ```
+     * namespace Korowai\Lib\Ldif;
+     *
      * interface ParserErrorInterface extends SourceLocationInterface, \Throwable {
      *      public function getMultilineMessage() : string;
      * }
@@ -42,7 +43,7 @@ interface PackageDetailsInterface
      * return [
      *      // ...
      *      Korowai\Lib\Ldif\ParserErrorInterface::class => [
-     *          'multilineMessage' => 'getMultilineMessage'
+     *          'multilineMessage' => 'getMultilineMessage',
      *      ],
      *      // ...
      * ];
@@ -54,12 +55,41 @@ interface PackageDetailsInterface
 
     /**
      * Returns a key ``=>`` value array mapping class (or interface) names onto
+     * their parent class names.
+     *
+     * **Example**:
+     *
+     * ```
+     * namespace Korowai\Lib\Ldap;
+     *
+     * class Ldap extends AbstractLdap {
+     *   // ...
+     * }
+     *
+     * // ...
+     *
+     * return [
+     *      // ...
+     *      Korowai\Lib\Ldap\Ldap::class => Korowai\Lib\Ldap\AbstractLdap::class,
+     *      // ...
+     * ];
+     * ```
+     *
+     * @return array
+     */
+    public static function classInheritance() : array;
+
+    /**
+     * Returns a key ``=>`` value array mapping class (or interface) names onto
      * arrays of interface names that the given class implements. The nested
-     * array of implemented interfaces contain only interfaces that are
+     * array of implemented interfaces contains only interfaces that are
      * inherited directly by the given class (or interface).
      *
      * **Example**:
+     *
      * ```
+     * namespace Korowai\Lib\Ldif;
+     *
      * interface ParserErrorInterface extends SourceLocationInterface, \Throwable {
      *   // ...
      * }
@@ -68,7 +98,10 @@ interface PackageDetailsInterface
      *
      * return [
      *      // ...
-     *      Korowai\Lib\Ldif\ParserErrorInterface::class => [SourceLocationInterface::class, \Throwable::class],
+     *      Korowai\Lib\Ldif\ParserErrorInterface::class => [
+     *          SourceLocationInterface::class,
+     *          \Throwable::class
+     *      ],
      *      // ...
      * ];
      * ```
@@ -76,6 +109,41 @@ interface PackageDetailsInterface
      * @return array
      */
     public static function interfaceInheritance() : array;
+
+    /**
+     * Returns a key ``=>`` value array mapping class names onto arrays of
+     * trait names that the given class uses. The nested array of traits
+     * contains only traits that are included directly by the given class.
+     * Traits inherited from parent classes must not be included in the
+     * returned array.
+     *
+     * **Example**:
+     *
+     * ```
+     * namespace Korowai\Lib\Ldif;
+     *
+     * class Parser implements ParserInterface {
+     *      use MatchesPatterns;
+     *      use SkipsWhitespaces;
+     *      use ParsesVersionSpec;
+     * }
+     *
+     * // ...
+     *
+     * return [
+     *      // ...
+     *      Korowai\Lib\Ldif\Parser::class => [
+     *          Korowai\Lib\Ldif\MatchesPatterns::class,
+     *          Korowai\Lib\Ldif\SkipsWhitespaces::class,
+     *          Korowai\Lib\Ldif\ParsesVersionSpec::class,
+     *      ]
+     *      // ...
+     * ];
+     * ```
+     *
+     * @return array
+     */
+    public static function traitInheritance() : array;
 }
 
 // vim: syntax=php sw=4 ts=4 et:

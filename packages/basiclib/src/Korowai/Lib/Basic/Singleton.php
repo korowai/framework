@@ -62,7 +62,7 @@ trait Singleton
     /**
      * Fetch an instance of the class.
      */
-    public static function getInstance() : self
+    public static function getInstance()
     {
         if (!isset(self::$instance)) {
             self::$instance = new self();

@@ -27,6 +27,7 @@ class PackageDetailsTest extends TestCase
     protected static $unmockable = [
         \Korowai\Lib\Ldif\ParserErrorInterface::class => true,
     ];
+
     public static function excludeUnmockable(array $interfaces)
     {
         return array_filter($interfaces, function ($value, $class) {
@@ -34,10 +35,16 @@ class PackageDetailsTest extends TestCase
         }, ARRAY_FILTER_USE_BOTH);
     }
 
+    public function test__classesDetails()
+    {
+        $this->markTestIncomplete('This test has not been implemented yet');
+    }
+
     public function test__objectProperties()
     {
-        $objectProperties = self::excludeUnmockable(PackageDetails::objectProperties());
-        foreach ($objectProperties as $class => $properties) {
+        $packageDetails = PackageDetails::getInstance();
+        $objectPropertiesMap = self::excludeUnmockable($packageDetails->objectPropertiesMap());
+        foreach ($objectPropertiesMap as $class => $properties) {
             $mock = $this->getMockBuilder($class)
                          ->getMockForAbstractClass();
             foreach ($properties as $property => $getter) {
@@ -47,14 +54,30 @@ class PackageDetailsTest extends TestCase
         }
     }
 
-    public function test__interfaceInheritance()
+    public function test__interfaceInheritanceMap()
     {
-        $interfaceInheritance = PackageDetails::interfaceInheritance();
-        foreach ($interfaceInheritance as $class => $expectedInterfaces) {
+        $packageDetails = PackageDetails::getInstance();
+        $interfaceInheritanceMap = $packageDetails->interfaceInheritanceMap();
+        foreach ($interfaceInheritanceMap as $class => $expectedInterfaces) {
             foreach ($expectedInterfaces as $expectedInterface) {
                 $this->assertImplementsInterface($expectedInterface, $class);
             }
         }
+    }
+
+    public function test__classInheritanceMap()
+    {
+        $this->markTestIncomplete('This test has not been implemented yet');
+    }
+
+    public function test__traitInheritanceMap()
+    {
+        $this->markTestIncomplete('This test has not been implemented yet');
+    }
+
+    public function test__getParentClasses()
+    {
+        $this->markTestIncomplete('This test has not been implemented yet');
     }
 }
 

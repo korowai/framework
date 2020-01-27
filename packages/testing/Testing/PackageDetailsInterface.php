@@ -13,12 +13,14 @@ declare(strict_types=1);
 
 namespace Korowai\Testing;
 
+use Korowai\Lib\Basic\SingletonInterface;
+
 /**
  * Describes expected details of a package.
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-interface PackageDetailsInterface
+interface PackageDetailsInterface extends SingletonInterface
 {
     /**
      * Returns a key ``=>`` value array mapping class (or interface) names onto
@@ -51,7 +53,7 @@ interface PackageDetailsInterface
      *
      * @return array
      */
-    public static function objectProperties() : array;
+    public function objectPropertiesMap() : array;
 
     /**
      * Returns a key ``=>`` value array mapping class (or interface) names onto
@@ -77,7 +79,7 @@ interface PackageDetailsInterface
      *
      * @return array
      */
-    public static function classInheritance() : array;
+    public function classInheritanceMap() : array;
 
     /**
      * Returns a key ``=>`` value array mapping class (or interface) names onto
@@ -108,7 +110,7 @@ interface PackageDetailsInterface
      *
      * @return array
      */
-    public static function interfaceInheritance() : array;
+    public function interfaceInheritanceMap() : array;
 
     /**
      * Returns a key ``=>`` value array mapping class names onto arrays of
@@ -143,7 +145,7 @@ interface PackageDetailsInterface
      *
      * @return array
      */
-    public static function traitInheritance() : array;
+    public function traitInheritanceMap() : array;
 }
 
 // vim: syntax=php sw=4 ts=4 et:

@@ -19,7 +19,7 @@ use Korowai\Lib\Ldap\LdapInterface;
 use Korowai\Lib\Ldap\Adapter\AdapterInterface;
 
 use Korowai\Testing\PackageDetailsInterface;
-use Korowai\Testing\Traits\PackageDetailsFromStaticArrays;
+use Korowai\Testing\Traits\PackageDetailsMemberArrays;
 
 /**
  * Describes expected details or the korowai\ldaplib package.
@@ -28,9 +28,9 @@ use Korowai\Testing\Traits\PackageDetailsFromStaticArrays;
  */
 class PackageDetails implements PackageDetailsInterface
 {
-    use PackageDetailsFromStaticArrays;
+    use PackageDetailsMemberArrays;
 
-    protected static $classesDetails = [
+    protected $classesDetails = [
         Ldap::class      => [
             'parent'                        => AbstractLdap::class,
             //'interfaces'                    => [],
@@ -41,6 +41,14 @@ class PackageDetails implements PackageDetailsInterface
             //'properties'                    => [],
         ],
     ];
+
+    /**
+     * {@inheritdoc}
+     */
+    public function classesDetails() : array
+    {
+        return $this->classesDetails;
+    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

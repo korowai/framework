@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace Korowai\Testing\Contracts;
 
 // Korowai\Lib\Basic
+use Korowai\Lib\Basic\Singleton;
+
 //
 // No interfaces so far.
 
@@ -67,7 +69,7 @@ use Korowai\Lib\Ldif\Records\VersionSpecInterface;
 // No interfaces so far.
 
 use Korowai\Testing\PackageDetailsInterface;
-use Korowai\Testing\Traits\PackageDetailsFromStaticArrays;
+use Korowai\Testing\Traits\PackageDetailsMemberArrays;
 
 /**
  * Describes expected details or the korowai\contracts package.
@@ -76,9 +78,10 @@ use Korowai\Testing\Traits\PackageDetailsFromStaticArrays;
  */
 class PackageDetails implements PackageDetailsInterface
 {
-    use PackageDetailsFromStaticArrays;
+    use PackageDetailsMemberArrays;
+    use Singleton;
 
-    protected static $classesDetails = [
+    protected $classesDetails = [
         // Korowai\Lib\Context
         ContextFactoryInterface::class      => [
             'interfaces'                    => [],
@@ -291,6 +294,14 @@ class PackageDetails implements PackageDetailsInterface
             ]
         ],
     ];
+
+    /**
+     * {@inheritdoc}
+     */
+    public function classesDetails() : array
+    {
+        return $this->classesDetails;
+    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

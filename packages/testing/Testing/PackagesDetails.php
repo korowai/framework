@@ -13,81 +13,61 @@ declare(strict_types=1);
 
 namespace Korowai\Testing;
 
+use Korowai\Testing\Traits\PackageDetailsMemberArrays;
+use Korowai\Lib\Basic\Singleton;
+
 /**
  * Describes expected details of all Korowai packages altogether.
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-final class PackagesDetails implements PackageDetailsInterface
+class PackagesDetails implements PackageDetailsInterface
 {
-    protected static $packageDetailsClasses = [
+    use Singleton;
+    use PackageDetailsMemberArrays;
+
+    protected $packageDetailsClasses = [
         Contracts\PackageDetails::class,
         Lib\Ldap\PackageDetails::class,
     ];
 
-    protected static function merge(string $detail, array $classes)
-    {
-        $arrays = array_map(function ($class) use ($detail) {
-            return call_user_func([$class, $detail]);
-        }, $classes);
-        return array_merge(...$arrays);
-    }
+    protected $classesDetails = null;
 
     /**
      * {@inheritdoc}
      */
-    public static function objectProperties() : array
+    public function classesDetails() : array
     {
-        return self::merge('objectProperties', self::$packageDetailsClasses);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function classInheritance() : array
-    {
-        return self::merge('classInheritance', self::$packageDetailsClasses);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function interfaceInheritance() : array
-    {
-        return self::merge('interfaceInheritance', self::$packageDetailsClasses);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function traitInheritance() : array
-    {
-        return self::merge('traitInheritance', self::$packageDetailsClasses);
-    }
-
-    /**
-     * Returns an array of all interfaces implemented by the given class. The
-     * result includes interfaces listed directly by the given class as well as
-     * inherited from parent classes.
-     */
-    public static function getInterfacesFor(string $class) : array
-    {
-        // FIXME: implement this properly
-        $interfaceInheritance = static::interfaceInheritance();
-        $classInheritance = static::classInheritance();
-
-
-        $interfaces = [];
-        if (($parent = $classInheritance[$class] ?? null) !== null) {
-            $interfaces = array_merge(static::getInterfacesFor($parent), $interfaces);
+        if ($this->classesDetails === null) {
+            $arrays = array_map(function (string  $packageDetailClass) {
+                return (new $packageDetailClass)->classesDetails();
+            }, $this->packageDetailsClasses);
+            $this->classesDetails = array_merge(...$arrays);
         }
+        return $this->classesDetails;
+    }
 
-        $interfaces = array_merge($interfaceInheritance[$class] ?? [], $interfaces);
-        foreach ($interfaces as $interface) {
-            $interfaces = array_merge(static::getInterfacesFor($interface), $interfaces);
+    /**
+     * Returns an array of parent classes for *$class* extacted from packages' details.
+     *
+     * @param  string $class
+     * @return array
+     */
+    public function getParentClasses(string $class) : array
+    {
+        return $this->getParentClassesRecursion($class);
+    }
+
+    protected function getParentClassesRecursion(string $class, array &$visited = null) : array
+    {
+        $classInheritanceMap = $this->classInheritanceMap();
+        if (($parent = $classInheritanceMap[$class] ?? null) !== null && !($visited[$class] ?? false)) {
+            $visited[$class] = true;
+            return array_merge([$parent => $parent], $this->getParentClassesRecursion($parent, $visited));
+        } else {
+            return [];
         }
-
-        return $interfaces;
+        return $parents;
     }
 }
 

@@ -122,11 +122,13 @@ class ParsesVersionSpecTest extends TestCase
         ];
     }
 
-//    /**
-//     * @dataProvider versionNumberCases
-//     */
-//    public function test__parseVersionNumber(array $args, array $checks)
-//    {
+    /**
+     * @dataProvider versionNumberCases
+     */
+    public function test__parseVersionNumber(array $args, array $checks)
+    {
+
+        $this->markTestIncomplete('This test is not implemented yet');
 //        $state = $this->getParserStateFromSource(...$args);
 //        $parser = $this->getTestObject();
 //
@@ -145,7 +147,7 @@ class ParsesVersionSpecTest extends TestCase
 //        } else {
 //            $this->assertNull($version);
 //        }
-//    }
+    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

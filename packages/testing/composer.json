@@ -16,7 +16,8 @@
         }
     ],
     "require": {
-        "php": ">=7.1.3"
+        "php": ">=7.1.3",
+        "korowai/basiclib": "*"
     },
     "autoload": {
       "psr-4" : {

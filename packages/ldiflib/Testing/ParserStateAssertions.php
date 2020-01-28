@@ -20,7 +20,6 @@ namespace Korowai\Testing\Lib\Ldif;
 
 use PHPUnit\Framework\Constraint;
 
-
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */

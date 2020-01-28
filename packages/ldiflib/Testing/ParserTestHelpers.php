@@ -20,7 +20,6 @@ use Korowai\Lib\Ldif\Input;
 
 use PHPUnit\Framework\TestCase;
 
-
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */

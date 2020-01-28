@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Korowai\Testing\Traits;
 
+use Korowai\Testing\StringGraph;
+
 /**
  * Implements extraction of particular characteristics of classes described by
  * an instance of [PackageDetailsInterface](\.\./PackageDetailsInterface.html).
@@ -22,9 +24,9 @@ namespace Korowai\Testing\Traits;
 trait PackageClassesDetails
 {
     abstract public function objectPropertiesMap() : array;
-    abstract public function classInheritanceGraph() : array;
-    abstract public function interfaceInheritanceGraph() : array;
-    abstract public function traitInheritanceGraph() : array;
+    abstract public function classInheritanceGraph() : StringGraph;
+    abstract public function interfaceInheritanceGraph() : StringGraph;
+    abstract public function traitInheritanceGraph() : StringGraph;
 
     /**
      * Returns an array of parent classes for *$class*, as extacted from
@@ -37,7 +39,8 @@ trait PackageClassesDetails
     public function getClassParents(string $class) : array
     {
         $graph = $this->classInheritanceGraph();
-        return $this->followNode($graph, $class);
+        $parents = array_slice($graph->dfsPath($class), 1);
+        return array_combine($parents, $parents);
     }
 
     /**
@@ -51,9 +54,7 @@ trait PackageClassesDetails
      */
     public function getClassInterfaces(string $class) : array
     {
-        $graph = $this->interfaceInheritanceGraph();
-        $parents = $this->getClassParents($class);
-        return $this->followNodes($graph, array_merge($parents, [$class => $class]));
+        throw \BadMethodCallException("Not implemented yet!");
     }
 
     /**
@@ -67,65 +68,7 @@ trait PackageClassesDetails
      */
     public function getClassTraits(string $class) : array
     {
-        $graph = $this->traitInheritanceGraph();
-        $parents = $this->getClassParents($class);
-        return $this->followNodes($graph, array_merge($parents, [$class => $class]));
-    }
-
-    /**
-     * Traverses *$graph* starting from *$nodes* and returns an array of nodes traversed.
-     *
-     * @param  array $graph
-     * @param  array $nodes
-     * @param  array $visited
-     *
-     * @return array
-     */
-    public static function followNodes(array $graph, array $nodes, array &$visited = null) : array
-    {
-        $next = [];
-        foreach ($nodes as $node) {
-            $next = array_merge($next, static::followNode($graph, $node, $visited));
-        }
-        return $next;
-    }
-
-    /**
-     * @todo Write documentation.
-     *
-     * @param  array $graph
-     * @param  string $node
-     * @param  array $visited
-     *
-     * @return array
-     */
-    public static function followNode(array $graph, string $node, array &$visited = null) : array
-    {
-        if (($next = $graph[$node] ?? null) !== null && !($visited[$node] ?? false)) {
-            $visited[$node] = true; // break cycle in graph
-            return self::followNodeRecursion($graph, $next, $visited);
-        } else {
-            return [];
-        }
-    }
-
-    /**
-     * @todo Write documentation.
-     */
-    public static function followNodeRecursion(array $graph, $nodes, array &$visited)
-    {
-        if (is_array($nodes)) {
-            $next = static::followNodes($graph, $nodes, $visited);
-            $nodes = array_combine($nodes, $nodes);
-        } elseif (is_string($nodes)) {
-            $next = static::followNode($graph, $nodes, $visited);
-            $nodes = [$nodes => $nodes];
-        } else {
-            $msg = "Argument 2 passed to ".__class__."/followNodeRecursion() must be ".
-                   "an array or a string, ". gettype($nodes)." given";
-            throw new \InvalidArgumentException($msg);
-        }
-        return array_merge($next, $nodes);
+        throw \BadMethodCallException("Not implemented yet!");
     }
 }
 

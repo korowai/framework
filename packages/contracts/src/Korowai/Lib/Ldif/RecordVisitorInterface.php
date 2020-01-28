@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Korowai\Lib\Ldif;
 
 use Korowai\Lib\Ldif\Records\VersionSpecInterface;
+
 //use Korowai\Lib\Ldif\Records\AddEntryInterface;
 //use Korowai\Lib\Ldif\Records\DeleteEntryInterface;
 //use Korowai\Lib\Ldif\Records\ModDnInterface;

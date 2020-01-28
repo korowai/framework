@@ -16,7 +16,7 @@ namespace Korowai\Testing;
 use Korowai\Lib\Basic\SingletonInterface;
 
 /**
- * Describes expected details of a package.
+ * Describes expected contents of a package.
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */

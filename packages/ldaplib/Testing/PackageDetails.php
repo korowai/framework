@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Korowai\Testing\Lib\Ldap;
 
+use Korowai\Lib\Basic\Singleton;
+
 use Korowai\Lib\Ldap\AbstractLdap;
 use Korowai\Lib\Ldap\Ldap;
 use Korowai\Lib\Ldap\LdapInterface;
@@ -28,6 +30,7 @@ use Korowai\Testing\Traits\PackageDetailsMemberArrays;
  */
 class PackageDetails implements PackageDetailsInterface
 {
+    use Singleton;
     use PackageDetailsMemberArrays;
 
     protected $classesDetails = [

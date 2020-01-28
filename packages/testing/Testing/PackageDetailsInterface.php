@@ -57,7 +57,8 @@ interface PackageDetailsInterface extends SingletonInterface
 
     /**
      * Returns a key ``=>`` value array mapping class (or interface) names onto
-     * their parent class names.
+     * their parent class names. Used to represent the class inheritance graph
+     * (adjacency list).
      *
      * **Example**:
      *
@@ -79,13 +80,14 @@ interface PackageDetailsInterface extends SingletonInterface
      *
      * @return array
      */
-    public function classInheritanceMap() : array;
+    public function classInheritanceGraph() : array;
 
     /**
      * Returns a key ``=>`` value array mapping class (or interface) names onto
      * arrays of interface names that the given class implements. The nested
      * array of implemented interfaces contains only interfaces that are
-     * inherited directly by the given class (or interface).
+     * inherited directly by the given class (or interface). Used to represent
+     * interface inheritance graph (adjacency list).
      *
      * **Example**:
      *
@@ -110,14 +112,15 @@ interface PackageDetailsInterface extends SingletonInterface
      *
      * @return array
      */
-    public function interfaceInheritanceMap() : array;
+    public function interfaceInheritanceGraph() : array;
 
     /**
      * Returns a key ``=>`` value array mapping class names onto arrays of
      * trait names that the given class uses. The nested array of traits
      * contains only traits that are included directly by the given class.
      * Traits inherited from parent classes must not be included in the
-     * returned array.
+     * returned array. Used to represent trait inheritance graph (adjacency
+     * list).
      *
      * **Example**:
      *
@@ -145,7 +148,7 @@ interface PackageDetailsInterface extends SingletonInterface
      *
      * @return array
      */
-    public function traitInheritanceMap() : array;
+    public function traitInheritanceGraph() : array;
 }
 
 // vim: syntax=php sw=4 ts=4 et:

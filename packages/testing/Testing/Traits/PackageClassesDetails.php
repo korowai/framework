@@ -22,36 +22,36 @@ namespace Korowai\Testing\Traits;
 trait PackageClassesDetails
 {
     abstract public function objectPropertiesMap() : array;
-    abstract public function classInheritanceMap() : array;
-    abstract public function interfaceInheritanceMap() : array;
-    abstract public function traitInheritanceMap() : array;
+    abstract public function classInheritanceGraph() : array;
+    abstract public function interfaceInheritanceGraph() : array;
+    abstract public function traitInheritanceGraph() : array;
 
     /**
      * Returns an array of parent classes for *$class*, as extacted from
      * packages' details. Walks recursively thought consecutive entries in the
-     * [classInheritanceMap()](#method_classInheritanceMap).
+     * [classInheritanceGraph()](#method_classInheritanceGraph).
      *
      * @param  string $class FQDN name of the child class being investigated.
      * @return array
      */
     public function getClassParents(string $class) : array
     {
-        $graph = $this->classInheritanceMap();
+        $graph = $this->classInheritanceGraph();
         return $this->followNode($graph, $class);
     }
 
     /**
      * Returns an array of all inherited interfaces for *$class*, extacted from
      * packages' details. Walks recursively thought consecutive entries in the
-     * [interfaceInheritanceMap()](#method_interfaceInheritanceMap) and
-     * [classInheritanceMap()](#method_classInheritanceMap).
+     * [interfaceInheritanceGraph()](#method_interfaceInheritanceGraph) and
+     * [classInheritanceGraph()](#method_classInheritanceGraph).
      *
      * @param  string $class FQDN name of the child class being investigated.
      * @return array
      */
     public function getClassInterfaces(string $class) : array
     {
-        $graph = $this->interfaceInheritanceMap();
+        $graph = $this->interfaceInheritanceGraph();
         $parents = $this->getClassParents($class);
         return $this->followNodes($graph, array_merge($parents, [$class => $class]));
     }
@@ -59,15 +59,15 @@ trait PackageClassesDetails
     /**
      * Returns an array of all inherited interfaces for *$class*, extacted from
      * packages' details. Walks recursively thought consecutive entries in the
-     * [interfaceInheritanceMap()](#method_interfaceInheritanceMap) and
-     * [classInheritanceMap()](#method_classInheritanceMap).
+     * [interfaceInheritanceGraph()](#method_interfaceInheritanceGraph) and
+     * [classInheritanceGraph()](#method_classInheritanceGraph).
      *
      * @param  string $class FQDN name of the child class being investigated.
      * @return array
      */
     public function getClassTraits(string $class) : array
     {
-        $graph = $this->traitInheritanceMap();
+        $graph = $this->traitInheritanceGraph();
         $parents = $this->getClassParents($class);
         return $this->followNodes($graph, array_merge($parents, [$class => $class]));
     }

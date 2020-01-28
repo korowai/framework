@@ -47,17 +47,17 @@ trait PackageDetailsMemberArrays
     /**
      * @var array
      */
-    protected $interfaceInheritanceMap = null;
+    protected $interfaceInheritanceGraph = null;
 
     /**
      * @var array
      */
-    protected $traitInheritanceMap = null;
+    protected $traitInheritanceGraph = null;
 
     /**
      * @var array
      */
-    protected $classInheritanceMap = null;
+    protected $classInheritanceGraph = null;
 
     /**
      * @todo Write documentation.
@@ -127,12 +127,12 @@ trait PackageDetailsMemberArrays
      *
      * @return array
      */
-    public function interfaceInheritanceMap() : array
+    public function interfaceInheritanceGraph() : array
     {
-        if (!isset($this->interfaceInheritanceMap)) {
-            $this->interfaceInheritanceMap = $this->extractClassesDetail('interfaces', []);
+        if (!isset($this->interfaceInheritanceGraph)) {
+            $this->interfaceInheritanceGraph = $this->extractClassesDetail('interfaces', []);
         }
-        return $this->interfaceInheritanceMap;
+        return $this->interfaceInheritanceGraph;
     }
 
     /**
@@ -164,12 +164,12 @@ trait PackageDetailsMemberArrays
      *
      * @return array
      */
-    public function classInheritanceMap() : array
+    public function classInheritanceGraph() : array
     {
-        if (!isset($this->classInheritanceMap)) {
-            $this->classInheritanceMap = $this->extractClassesDetail('parent', null);
+        if (!isset($this->classInheritanceGraph)) {
+            $this->classInheritanceGraph = $this->extractClassesDetail('parent', null);
         }
-        return $this->classInheritanceMap;
+        return $this->classInheritanceGraph;
     }
 
     /**
@@ -205,12 +205,12 @@ trait PackageDetailsMemberArrays
      *
      * @return array
      */
-    public function traitInheritanceMap() : array
+    public function traitInheritanceGraph() : array
     {
-        if (!isset($this->traitInheritanceMap)) {
-            $this->traitInheritanceMap = $this->extractClassesDetail('traits', []);
+        if (!isset($this->traitInheritanceGraph)) {
+            $this->traitInheritanceGraph = $this->extractClassesDetail('traits', []);
         }
-        return $this->traitInheritanceMap;
+        return $this->traitInheritanceGraph;
     }
 
     /**

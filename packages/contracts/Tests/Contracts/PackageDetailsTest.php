@@ -54,23 +54,23 @@ class PackageDetailsTest extends TestCase
         }
     }
 
-    public function test__interfaceInheritanceMap()
+    public function test__interfaceInheritanceGraph()
     {
         $packageDetails = PackageDetails::getInstance();
-        $interfaceInheritanceMap = $packageDetails->interfaceInheritanceMap();
-        foreach ($interfaceInheritanceMap as $class => $expectedInterfaces) {
+        $interfaceInheritanceGraph = $packageDetails->interfaceInheritanceGraph();
+        foreach ($interfaceInheritanceGraph as $class => $expectedInterfaces) {
             foreach ($expectedInterfaces as $expectedInterface) {
                 $this->assertImplementsInterface($expectedInterface, $class);
             }
         }
     }
 
-    public function test__classInheritanceMap()
+    public function test__classInheritanceGraph()
     {
         $this->markTestIncomplete('This test has not been implemented yet');
     }
 
-    public function test__traitInheritanceMap()
+    public function test__traitInheritanceGraph()
     {
         $this->markTestIncomplete('This test has not been implemented yet');
     }

@@ -149,7 +149,7 @@ trait PackageDetailsMemberArrays
     protected function getClassesGraph(string $attrname, string $detail) : Graph
     {
         if (!isset($this->{$attrname})) {
-            $adjacency = $this->extractClassesDetail($detail, $default, []);
+            $adjacency = $this->extractClassesDetail($detail, []);
             $this->{$attrname} = Graph::createWithAdjacency($adjacency);
         }
         return $this->{$attrname};

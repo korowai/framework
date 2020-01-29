@@ -99,10 +99,7 @@ trait PackageDetailsMemberArrays
      */
     public function objectPropertiesMap() : array
     {
-        if (!isset($this->objectPropertiesMap)) {
-            $this->objectPropertiesMap = $this->extractClassesDetail('properties', []);
-        }
-        return $this->objectPropertiesMap;
+        return $this->getClassesDetail('objectPropertiesMap', 'properties', []);
     }
 
     /**
@@ -112,11 +109,7 @@ trait PackageDetailsMemberArrays
      */
     public function interfaceInheritanceGraph() : Graph
     {
-        if (!isset($this->interfaceInheritanceGraph)) {
-            $adjacency = $this->extractClassesDetail('interfaces', []);
-            $this->interfaceInheritanceGraph = new Graph($adjacency);
-        }
-        return $this->interfaceInheritanceGraph;
+        return $this->getClassesGraph('interfaceInheritanceGraph', 'interfaces');
     }
 
     /**
@@ -126,11 +119,7 @@ trait PackageDetailsMemberArrays
      */
     public function classInheritanceGraph() : Graph
     {
-        if (!isset($this->classInheritanceGraph)) {
-            $adjacency = $this->extractClassesDetail('parent', null);
-            $this->classInheritanceGraph = new Graph($adjacency);
-        }
-        return $this->classInheritanceGraph;
+        return $this->getClassesGraph('classInheritanceGraph', 'parent');
     }
 
     /**
@@ -140,15 +129,34 @@ trait PackageDetailsMemberArrays
      */
     public function traitInheritanceGraph() : Graph
     {
-        if (!isset($this->traitInheritanceGraph)) {
-            $adjacency = $this->extractClassesDetail('traits', []);
-            $this->traitInheritanceGraph = new Graph($adjacency);
-        }
-        return $this->traitInheritanceGraph;
+        return $this->getClassesGraph('traitInheritanceGraph', 'traits');
     }
 
     /**
-     * Initializes given array from ``$this->classesDetails()``.
+     * @todo Write documentation.
+     */
+    protected function getClassesDetail(string $attrname, string $detail, $default)
+    {
+        if (!isset($this->{$attrname})) {
+            $this->{$attrname} = $this->extractClassesDetail($detail, $default);
+        }
+        return $this->{$attrname};
+    }
+
+    /**
+     * @todo Write documentation.
+     */
+    protected function getClassesGraph(string $attrname, string $detail) : Graph
+    {
+        if (!isset($this->{$attrname})) {
+            $adjacency = $this->extractClassesDetail($detail, $default, []);
+            $this->{$attrname} = Graph::createWithAdjacency($adjacency);
+        }
+        return $this->{$attrname};
+    }
+
+    /**
+     * @todo Write documentation.
      */
     protected function extractClassesDetail(string $detail, $default) : array
     {

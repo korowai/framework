@@ -39,7 +39,7 @@ trait PackageClassesDetails
     public function getClassParents(string $class) : array
     {
         $graph = $this->classInheritanceGraph();
-        $parents = array_slice($graph->dfsPath($class), 1);
+        $parents = array_slice($graph->dfs($class), 1);
         return array_combine($parents, $parents);
     }
 

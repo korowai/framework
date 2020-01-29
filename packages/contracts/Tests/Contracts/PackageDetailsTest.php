@@ -37,7 +37,8 @@ class PackageDetailsTest extends TestCase
 
     public function test__classesDetails()
     {
-        $this->markTestIncomplete('This test has not been implemented yet');
+        $packageDetails = PackageDetails::getInstance();
+        $this->assertIsArray($packageDetails->classesDetails());
     }
 
     public function test__objectProperties()
@@ -57,12 +58,13 @@ class PackageDetailsTest extends TestCase
     public function test__interfaceInheritanceGraph()
     {
         $packageDetails = PackageDetails::getInstance();
-        $interfaceInheritanceGraph = $packageDetails->interfaceInheritanceGraph();
-        foreach ($interfaceInheritanceGraph as $class => $expectedInterfaces) {
+        $adjacency = $packageDetails->interfaceInheritanceGraph()->adjacency();
+        foreach ($adjacency as $class => $expectedInterfaces) {
             foreach ($expectedInterfaces as $expectedInterface) {
                 $this->assertImplementsInterface($expectedInterface, $class);
             }
         }
+        $this->markTestIncomplete('This test needs to be redesigned');
     }
 
     public function test__classInheritanceGraph()

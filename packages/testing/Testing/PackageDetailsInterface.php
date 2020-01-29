@@ -69,7 +69,7 @@ interface PackageDetailsInterface extends SingletonInterface
      *
      * // ...
      *
-     * return StringGraph([
+     * return Graph([
      *      // ...
      *      Korowai\Lib\Ldap\Ldap::class => Korowai\Lib\Ldap\AbstractLdap::class,
      *      // ...
@@ -78,7 +78,7 @@ interface PackageDetailsInterface extends SingletonInterface
      *
      * @return array
      */
-    public function classInheritanceGraph() : StringGraph;
+    public function classInheritanceGraph() : Graph;
 
     /**
      * Returns a graph representing interface inheritance.
@@ -94,7 +94,7 @@ interface PackageDetailsInterface extends SingletonInterface
      *
      * // ...
      *
-     * return new StringGraph([
+     * return new Graph([
      *      // ...
      *      Korowai\Lib\Ldif\ParserErrorInterface::class => [
      *          SourceLocationInterface::class,
@@ -106,7 +106,7 @@ interface PackageDetailsInterface extends SingletonInterface
      *
      * @return array
      */
-    public function interfaceInheritanceGraph() : StringGraph;
+    public function interfaceInheritanceGraph() : Graph;
 
     /**
      * Returns a graph representing inheritance of traits by classes.
@@ -124,7 +124,7 @@ interface PackageDetailsInterface extends SingletonInterface
      *
      * // ...
      *
-     * return new StringGraph([
+     * return new Graph([
      *      // ...
      *      Korowai\Lib\Ldif\Parser::class => [
      *          Korowai\Lib\Ldif\MatchesPatterns::class,
@@ -135,9 +135,9 @@ interface PackageDetailsInterface extends SingletonInterface
      * ]);
      * ```
      *
-     * @return StringGraph
+     * @return Graph
      */
-    public function traitInheritanceGraph() : StringGraph;
+    public function traitInheritanceGraph() : Graph;
 }
 
 // vim: syntax=php sw=4 ts=4 et:

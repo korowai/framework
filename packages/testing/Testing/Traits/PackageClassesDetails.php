@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Korowai\Testing\Traits;
 
-use Korowai\Testing\StringGraph;
+use Korowai\Testing\Graph;
 
 /**
  * Implements extraction of particular characteristics of classes described by
@@ -24,9 +24,9 @@ use Korowai\Testing\StringGraph;
 trait PackageClassesDetails
 {
     abstract public function objectPropertiesMap() : array;
-    abstract public function classInheritanceGraph() : StringGraph;
-    abstract public function interfaceInheritanceGraph() : StringGraph;
-    abstract public function traitInheritanceGraph() : StringGraph;
+    abstract public function classInheritanceGraph() : Graph;
+    abstract public function interfaceInheritanceGraph() : Graph;
+    abstract public function traitInheritanceGraph() : Graph;
 
     /**
      * Returns an array of parent classes for *$class*, as extacted from

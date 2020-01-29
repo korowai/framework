@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Korowai\Testing\Traits;
 
-use Korowai\Testing\StringGraph;
+use Korowai\Testing\Graph;
 
 /**
  * Facilitates implementation of
@@ -47,17 +47,17 @@ trait PackageDetailsMemberArrays
     protected $objectPropertiesMap = null;
 
     /**
-     * @var StringGraph
+     * @var Graph
      */
     protected $interfaceInheritanceGraph = null;
 
     /**
-     * @var StringGraph
+     * @var Graph
      */
     protected $traitInheritanceGraph = null;
 
     /**
-     * @var StringGraph
+     * @var Graph
      */
     protected $classInheritanceGraph = null;
 
@@ -108,13 +108,13 @@ trait PackageDetailsMemberArrays
     /**
      * Returns a graph representing interface inheritance.
      *
-     * @return StringGraph
+     * @return Graph
      */
-    public function interfaceInheritanceGraph() : StringGraph
+    public function interfaceInheritanceGraph() : Graph
     {
         if (!isset($this->interfaceInheritanceGraph)) {
             $adjacency = $this->extractClassesDetail('interfaces', []);
-            $this->interfaceInheritanceGraph = new StringGraph($adjacency);
+            $this->interfaceInheritanceGraph = new Graph($adjacency);
         }
         return $this->interfaceInheritanceGraph;
     }
@@ -122,13 +122,13 @@ trait PackageDetailsMemberArrays
     /**
      * Returns a graph representing class inheritance.
      *
-     * @return StringGraph
+     * @return Graph
      */
-    public function classInheritanceGraph() : StringGraph
+    public function classInheritanceGraph() : Graph
     {
         if (!isset($this->classInheritanceGraph)) {
             $adjacency = $this->extractClassesDetail('parent', null);
-            $this->classInheritanceGraph = new StringGraph($adjacency);
+            $this->classInheritanceGraph = new Graph($adjacency);
         }
         return $this->classInheritanceGraph;
     }
@@ -136,13 +136,13 @@ trait PackageDetailsMemberArrays
     /**
      * Returns a graph representing trait inheritance by classes.
      *
-     * @return StringGraph
+     * @return Graph
      */
-    public function traitInheritanceGraph() : StringGraph
+    public function traitInheritanceGraph() : Graph
     {
         if (!isset($this->traitInheritanceGraph)) {
             $adjacency = $this->extractClassesDetail('traits', []);
-            $this->traitInheritanceGraph = new StringGraph($adjacency);
+            $this->traitInheritanceGraph = new Graph($adjacency);
         }
         return $this->traitInheritanceGraph;
     }

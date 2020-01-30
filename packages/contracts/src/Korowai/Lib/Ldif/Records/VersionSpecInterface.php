@@ -16,7 +16,7 @@ namespace Korowai\Lib\Ldif\Records;
 use Korowai\Lib\Ldif\RecordInterface;
 
 /**
- * @todo Write documentation
+ * Interface for the VersionSpec record.
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
 interface VersionSpecInterface extends RecordInterface

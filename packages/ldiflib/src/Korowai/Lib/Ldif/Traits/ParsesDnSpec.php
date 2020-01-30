@@ -51,7 +51,6 @@ trait ParsesDnSpec
         $strlen = $cursor->getOffset() - $begin->getOffset();
 
         return true;
-        //return new Cst\DnSpec($begin, $strlen, $dn);
     }
 }
 

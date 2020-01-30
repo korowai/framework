@@ -19,7 +19,7 @@ use Korowai\Lib\Ldif\CursorInterface;
 //use Korowai\Lib\Ldif\LocationInterface;
 //use Korowai\Lib\Ldif\ParserError;
 
-use PHPUnit\Framework\TestCase;
+use Korowai\Testing\Lib\Ldif\TestCase;
 
 
 /**
@@ -36,145 +36,91 @@ class SkipsWhitespacesTest extends TestCase
         return $obj;
     }
 
-    protected function configureLocationMock(LocationInterface $location, array $case)
+    public function skipWsCases()
     {
-        $location->expects($this->once())
-                 ->method('getString')
-                 ->with()
-                 ->willReturn($case[1]);
-        $location->expects($this->once())
-                 ->method('getOffset')
-                 ->with()
-                 ->willReturn($case[3] ?? 0);
+        return [
+            [
+                [''],
+                [
+                    'result' => [],
+                    'cursor' => [
+                        'offset'        => 0,
+                        'sourceOffset'  => 0,
+                    ]
+                ]
+            ],
+
+            [
+            //    000000000 111111 1 111
+            //    012356789 012345 6 789
+                ["# tłuszcz\nasdf \t\nz", 4],
+            //               01234 5 678
+                [
+                    'result' => [[" \t\n", 4]],
+                    'cursor' => [
+                        'offset'        => 7,
+                        'sourceOffset'  => 18,
+                        'sourceCharOffset' => 17,
+                    ]
+                ]
+            ],
+        ];
     }
 
-    protected function configureCursorMock(CursorInterface $cursor, array $case, ?int $expMoveTo)
+    /**
+     * @dataProvider skipWsCases
+     */
+    public function test__skipWs(array $source, array $expected)
     {
-        $this->configureLocationMock($cursor, $case);
-
-        if ($expMoveTo !== null) {
-            $cursor->expects($this->once())
-                   ->method('moveTo')
-                   ->with($expMoveTo);
-        } else {
-            $cursor->expects($this->never())
-                   ->method('moveTo');
-        }
+        $cursor = $this->getCursorFromSource(...$source);
+        $parser = $this->getTestObject();
+        $result = $parser->skipWs($cursor);
+        $this->assertSame($expected['result'], $result);
+        $this->assertCursorHas($expected['cursor'], $cursor);
     }
 
-    protected function createLocationMock(array $case)
+    public function skipFillCases()
     {
-        $location = $this->getMockBuilder(LocationInterface::class)
-                         ->getMockForAbstractClass();
-        $this->configureLocationMock($location, $case);
-        return $location;
+        return [
+            [
+                [''],
+                [
+                    'result' => [['', 0]],
+                    'cursor' => [
+                        'offset'        => 0,
+                        'sourceOffset'  => 0,
+                    ]
+                ]
+            ],
+
+            [
+            //    000000000 111111 1 111
+            //    012356789 012345 6 789
+                ["# tłuszcz\nasdf \t\nz", 4],
+            //               01234 5 678
+                [
+                    'result' => [[" ", 4]],
+                    'cursor' => [
+                        'offset'        => 5,
+                        'sourceOffset'  => 16,
+                        'sourceCharOffset' => 15,
+                    ]
+                ]
+            ],
+        ];
     }
 
-    protected function createCursorMock(array $case, ?int $expMoveTo)
+    /**
+     * @dataProvider skipFillCases
+     */
+    public function test__skipFill(array $source, array $expected)
     {
-        $cursor = $this->getMockBuilder(CursorInterface::class)
-                         ->getMockForAbstractClass();
-        $this->configureCursorMock($cursor, $case, $expMoveTo);
-        return $cursor;
+        $cursor = $this->getCursorFromSource(...$source);
+        $parser = $this->getTestObject();
+        $result = $parser->skipFill($cursor);
+        $this->assertSame($expected['result'], $result);
+        $this->assertCursorHas($expected['cursor'], $cursor);
     }
-
-//    public function matchAtCases()
-//    {
-//        return [
-//            [['//', ''], ['']],
-//            [['/foo/', 'asdf asdf'], []],
-//            [['/(\w+)bar/', 'foo rabarbar geez'], ['rabarbar', 'rabar']],
-//            [['/(\w+)bar/', 'foo rabarbar geez', PREG_OFFSET_CAPTURE], [['rabarbar', 4], ['rabar', 4]]],
-//            [['/(\w+)bar/', 'foo rabarbar geez', 0, 6], ['barbar', 'bar']],
-//        ];
-//    }
-//
-//    /**
-//     * @dataProvider matchAtCases
-//     */
-//    public function test__matchAt(array $case, array $expected)
-//    {
-//        $location = $this->createLocationMock($case);
-//        $this->configureLocationMock($location, $case);
-//
-//        $obj = $this->getTestObject();
-//
-//        $args = array_merge([$case[0], $location], count($case) > 2 ? [$case[2]] : []);
-//        $this->assertSame($expected, $obj->matchAt(...$args));
-//    }
-//
-//    /**
-//     * @dataProvider matchAtCases
-//     */
-//    public function test__matchAtOrThrow(array $case, array $expected)
-//    {
-//        $location = $this->createLocationMock($case);
-//
-//        $obj = $this->getTestObject();
-//
-//        $args = array_merge([$case[0], $location, "error error"], count($case) > 2 ? [$case[2]] : []);
-//
-//        if ($expected === []) {
-//            $this->expectException(ParserError::class);
-//            $this->expectExceptionMessage("error error");
-//            $obj->matchAtOrThrow(...$args);
-//        } else {
-//            $this->assertSame($expected, $obj->matchAtOrThrow(...$args));
-//        }
-//    }
-//
-//    public function matchAheadCases()
-//    {
-//        return [
-//            [['//', ''], [['', 0]], 0],
-//            [['/foo/', 'asdf asdf'], []],
-//            [['/(\w+)bar/', 'foo rabarbar geez'], [['rabarbar', 4], ['rabar', 4]], 12],
-//            [['/(\w+)bar/', 'foo rabarbar geez', PREG_OFFSET_CAPTURE], [['rabarbar', 4], ['rabar', 4]], 12],
-//            [['/(\w+)bar/', 'foo rabarbar geez', 0, 6], [['barbar', 6], ['bar', 6]], 12],
-//        ];
-//    }
-//
-//    /**
-//     * @dataProvider matchAheadCases
-//     */
-//    public function test__matchAhead(array $case, array $expected, int $expMoveTo = null)
-//    {
-//        $cursor = $this->createCursorMock($case, $expMoveTo);
-//
-//        $obj = $this->getTestObject();
-//
-//        $args = array_merge([$case[0], $cursor], count($case) > 2 ? [$case[2]] : []);
-//        $this->assertSame($expected, $obj->matchAhead(...$args));
-//    }
-//
-//    /**
-//     * @dataProvider matchAheadCases
-//     */
-//    public function test__matchAheadOrThrow(array $case, array $expected, int $expMoveTo = null)
-//    {
-//        $cursor = $this->createCursorMock($case, $expMoveTo);
-//
-//        $obj = $this->getTestObject();
-//
-//        $args = array_merge([$case[0], $cursor, "error error"], count($case) > 2 ? [$case[2]] : []);
-//
-//        if ($expected === []) {
-//            $this->expectException(ParserError::class);
-//            $this->expectExceptionMessage("error error");
-//            $obj->matchAheadOrThrow(...$args);
-//        } else {
-//            $this->assertSame($expected, $obj->matchAheadOrThrow(...$args));
-//        }
-//    }
-//
-//    /**
-//     * @dataProvider matchAtCases
-//     */
-//    public function test__matchString(array $case, array $expected)
-//    {
-//        $obj = $this->getTestObject();
-//        $this->assertSame($expected, $obj->matchString(...$case));
-//    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

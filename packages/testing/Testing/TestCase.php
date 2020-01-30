@@ -11,16 +11,17 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Testing\Lib\Ldif;
+namespace Korowai\Testing;
 
-use Korowai\Testing\Lib\Ldif\Assertions\ObjectPropertiesAssertions;
+use Korowai\Testing\Assertions\ClassAssertions;
+use Korowai\Testing\Assertions\ObjectPropertiesAssertions;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-abstract class TestCase extends \Korowai\Testing\TestCase
+abstract class TestCase extends \PHPUnit\Framework\TestCase
 {
-    use ParserTestHelpers;
+    use ClassAssertions;
     use ObjectPropertiesAssertions;
 }
 

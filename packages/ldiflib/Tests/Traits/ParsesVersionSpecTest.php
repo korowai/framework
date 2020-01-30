@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Ldif\Traits;
 
 use Korowai\Testing\Lib\Ldif\ParserTestHelpers;
-use Korowai\Testing\Assertions\ObjectPropertiesAssertions;
 
 use Korowai\Lib\Ldif\Traits\ParsesVersionSpec;
 use Korowai\Lib\Ldif\Traits\SkipsWhitespaces;
@@ -30,9 +29,6 @@ use Korowai\Testing\Lib\Ldif\TestCase;
  */
 class ParsesVersionSpecTest extends TestCase
 {
-    use ParserTestHelpers;
-    use ObjectPropertiesAssertions;
-
     protected function getTestObject()
     {
         return new class {
@@ -51,9 +47,13 @@ class ParsesVersionSpecTest extends TestCase
                     'result' => true,
                     'version' => 1,
                     'state' => [
-                        'offset' => 1,
-                        'sourceOffset' => 1,
-                        'sourceCharOffset' => 1
+                        'cursor' => [
+                            'offset' => 1,
+                            'sourceOffset' => 1,
+                            'sourceCharOffset' => 1
+                        ],
+                        'records' => [],
+                        'errors' => []
                     ]
                 ]
             ],
@@ -64,9 +64,13 @@ class ParsesVersionSpecTest extends TestCase
                     'result' => true,
                     'version' => 1,
                     'state' => [
-                        'offset' => 10,
-                        'sourceOffset' => 10,
-                        'sourceCharOffset' => 10
+                        'cursor' => [
+                            'offset' => 10,
+                            'sourceOffset' => 10,
+                            'sourceCharOffset' => 10
+                        ],
+                        'records' => [],
+                        'errors' => []
                     ]
                 ]
             ],
@@ -81,9 +85,13 @@ class ParsesVersionSpecTest extends TestCase
                     'result' => true,
                     'version' => 1,
                     'state' => [
-                        'offset' => 10,
-                        'sourceOffset' => 21,
-                        'sourceCharOffset' => 20
+                        'cursor' => [
+                            'offset' => 10,
+                            'sourceOffset' => 21,
+                            'sourceCharOffset' => 20
+                        ],
+                        'records' => [],
+                        'errors' => [],
                     ]
                 ]
             ],
@@ -92,14 +100,19 @@ class ParsesVersionSpecTest extends TestCase
                 ['   A', 3],
                 [
                     'result' => false,
-                    'error' => [
-                        'message' => "syntax error: unexpected token (expected number)",
-                        'sourceOffset' => 3
-                    ],
                     'state' => [
-                        'offset' => 3,
-                        'sourceOffset' => 3,
-                        'sourceCharOffset' => 3
+                        'cursor' => [
+                            'offset' => 3,
+                            'sourceOffset' => 3,
+                            'sourceCharOffset' => 3
+                        ],
+                        'records' => [],
+                        'errors' => [
+                            [
+                                'message' => "syntax error: unexpected token (expected number)",
+                                'sourceOffset' => 3
+                            ],
+                        ],
                     ],
                 ]
             ],
@@ -108,14 +121,19 @@ class ParsesVersionSpecTest extends TestCase
                 ['version: 23', 9],
                 [
                     'result' => false,
-                    'error' => [
-                        'message' => "syntax error: unsupported version number: 23",
-                        'sourceOffset' => 9,
-                    ],
                     'state' => [
-                        'offset' => 9,
-                        'sourceOffset' => 9,
-                        'sourceCharOffset' => 9
+                        'cursor' => [
+                            'offset' => 9,
+                            'sourceOffset' => 9,
+                            'sourceCharOffset' => 9
+                        ],
+                        'records' => [],
+                        'errors' => [
+                            [
+                                'message' => "syntax error: unsupported version number: 23",
+                                'sourceOffset' => 9,
+                            ]
+                        ],
                     ]
                 ]
             ],
@@ -125,28 +143,175 @@ class ParsesVersionSpecTest extends TestCase
     /**
      * @dataProvider versionNumberCases
      */
-    public function test__parseVersionNumber(array $args, array $checks)
+    public function test__parseVersionNumber(array $args, array $expectations)
     {
+        $state = $this->getParserStateFromSource(...$args);
+        $parser = $this->getTestObject();
 
-        $this->markTestIncomplete('This test is not implemented yet');
-//        $state = $this->getParserStateFromSource(...$args);
-//        $parser = $this->getTestObject();
-//
-//        $result = $parser->parseVersionNumber($state, $version);
-//        $this->assertSame($checks['result'] ?? true, $result);
-//
-//        //$this->checkParserState($state, $checks);
-//        // FIXME: use this:
-//        // $this->assertHasPropertiesSameAs(...)
-//
-//
-//        //Checking the semantic value.
-//        $expVersion = $checks['version'] ?? null;
-//        if ($expVersion != null) {
-//            $this->assertSame($expVersion, $version);
-//        } else {
-//            $this->assertNull($version);
-//        }
+        $result = $parser->parseVersionNumber($state, $version);
+        $this->assertSame($expectations['result'] ?? true, $result);
+        $this->assertSame($expectations['version'] ?? null, $version);
+        $this->assertParserStateHas($expectations['state'], $state);
+    }
+
+    public function versionSpecCases()
+    {
+        return [
+            [
+                ['1'],
+                [],
+                [
+                    'result' => false,
+                    'state' => [
+                        'cursor' => [
+                            'offset' => 0,
+                            'sourceOffset' => 0,
+                            'sourceCharOffset' => 0
+                        ],
+                        'records' => [],
+                        'errors' => [
+                            [
+                                'message' => 'syntax error: unexpected token (expected \'version:\')',
+                                'sourceOffset' => 0,
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+
+            [
+                ['1'],
+                [true],
+                [
+                    'result' => false,
+                    'state' => [
+                        'cursor' => [
+                            'offset' => 0,
+                            'sourceOffset' => 0,
+                            'sourceCharOffset' => 0
+                        ],
+                        'records' => [],
+                        'errors' => []
+                    ]
+                ]
+            ],
+
+            [
+                ['version: 1'],
+                [],
+                [
+                    'result' => true,
+                    'state' => [
+                        'cursor' => [
+                            'offset' => 10,
+                            'sourceOffset' => 10,
+                            'sourceCharOffset' => 10
+                        ],
+                        'records' => [
+                            [
+                                'offset' => 0,
+                                'sourceOffset' => 0,
+                                'sourceCharOffset' => 0,
+                                'length' => 10,
+                                'endOffset' => 10,
+                                // semantic value
+                                'version' => 1,
+                            ]
+                        ],
+                        'errors' => []
+                    ]
+                ]
+            ],
+
+            [
+            //    000000000 111111111122
+            //    012356789 012345678901 - source (bytes)
+                ["# tłuszcz\nversion: 1"],
+            //               00000000001 - preprocessed (bytes)
+            //               01234567890 - preprocessed (bytes)
+                [],
+                [
+                    'result' => true,
+                    'state' => [
+                        'cursor' => [
+                            'offset' => 10,
+                            'sourceOffset' => 21,
+                            'sourceCharOffset' => 20
+                        ],
+                        'records' => [
+                            [
+                                'offset' => 0,
+                                'sourceOffset' => 11,
+                                'sourceCharOffset' => 10,
+                                'length' => 10,
+                                'sourceLength' => 10,
+                                'sourceCharLength' => 10,
+                                // semantic value:
+                                'version' => 1
+                            ]
+                        ],
+                        'errors' => [],
+                    ]
+                ]
+            ],
+
+            [
+                ['   version: A', 3],
+                [true],
+                [
+                    'result' => false,
+                    'state' => [
+                        'cursor' => [
+                            'offset' => 12,
+                            'sourceOffset' => 12,
+                            'sourceCharOffset' => 12
+                        ],
+                        'records' => [],
+                        'errors' => [
+                            [
+                                'message' => "syntax error: unexpected token (expected number)",
+                                'sourceOffset' => 12
+                            ],
+                        ],
+                    ],
+                ]
+            ],
+
+            [
+                ['version: 23'],
+                [true],
+                [
+                    'result' => false,
+                    'state' => [
+                        'cursor' => [
+                            'offset' => 9,
+                            'sourceOffset' => 9,
+                            'sourceCharOffset' => 9
+                        ],
+                        'records' => [],
+                        'errors' => [
+                            [
+                                'message' => "syntax error: unsupported version number: 23",
+                                'sourceOffset' => 9,
+                            ]
+                        ],
+                    ]
+                ]
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider versionSpecCases
+     */
+    public function test__parseVersionSpec(array $source, array $tail, array $expectations)
+    {
+        $state = $this->getParserStateFromSource(...$source);
+        $parser = $this->getTestObject();
+
+        $result = $parser->parseVersionSpec($state, ...$tail);
+        $this->assertSame($expectations['result'] ?? true, $result);
+        $this->assertParserStateHas($expectations['state'], $state);
     }
 }
 

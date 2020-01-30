@@ -17,7 +17,7 @@ use Korowai\Lib\Ldif\Traits\DecoratesSnippetInterface;
 use Korowai\Lib\Ldif\Traits\ExposesSnippetInterface;
 use Korowai\Lib\Ldif\SnippetInterface;
 
-use PHPUnit\Framework\TestCase;
+use Korowai\Testing\TestCase;
 
 
 /**
@@ -32,8 +32,7 @@ class DecoratesSnippetInterfaceTest extends TestCase
 
     public function test__uses__ExposesSnippetInterface()
     {
-        $uses = class_uses(DecoratesSnippetInterface::class);
-        $this->assertContains(ExposesSnippetInterface::class, $uses);
+        $this->assertUsesTrait(ExposesSnippetInterface::class, DecoratesSnippetInterface::class);
     }
 
     public function test__coupledSnippet()

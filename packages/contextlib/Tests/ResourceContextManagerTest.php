@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Context;
 
-use PHPUnit\Framework\TestCase;
+use Korowai\Testing\TestCase;
 
 use Korowai\Lib\Context\ResourceContextManager;
 use Korowai\Lib\Context\ContextManagerInterface;
@@ -39,8 +39,7 @@ class ResourceContextManagerTest extends TestCase
 
     public function test__implements__ContextManagerInterface()
     {
-        $interfaces = class_implements(ResourceContextManager::class);
-        $this->assertContains(ContextManagerInterface::class, $interfaces);
+        $this->assertImplementsInterface(ContextManagerInterface::class, ResourceContextManager::class);
     }
 
     public function test__construct()

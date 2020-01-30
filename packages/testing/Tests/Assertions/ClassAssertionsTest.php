@@ -18,6 +18,7 @@ use PHPUnit\Framework\ExpectationFailedException;
 use Korowai\Testing\Assertions\ClassAssertions;
 
 use Korowai\Testing\Traits\ExampleTrait;
+use Korowai\Testing\Traits\ExampleTraitUsingTrait;
 use Korowai\Testing\Classes\ExampleClassUsingTrait;
 use Korowai\Testing\Classes\ExampleClassNotUsingTrait;
 
@@ -203,6 +204,7 @@ class ClassAssertionsTest extends TestCase
     {
         self::assertUsesTrait(ExampleTrait::class, ExampleClassUsingTrait::class);
         self::assertUsesTrait(ExampleTrait::class, new ExampleClassUsingTrait());
+        self::assertUsesTrait(ExampleTrait::class, ExampleTraitUsingTrait::class);
     }
 
     public function test__assertUsesTrait__failureWithClass()

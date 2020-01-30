@@ -17,7 +17,7 @@ use Korowai\Lib\Ldif\Input;
 use Korowai\Lib\Ldif\InputInterface;
 use Korowai\Lib\Ldif\Util\IndexMap;
 
-use PHPUnit\Framework\TestCase;
+use Korowai\Testing\TestCase;
 
 
 /**
@@ -27,8 +27,7 @@ class InputTest extends TestCase
 {
     public function test__implements__InputInterface()
     {
-        $interfaces = class_implements(Input::class);
-        $this->assertContains(InputInterface::class, $interfaces);
+        $this->assertImplementsInterface(InputInterface::class, Input::class);
     }
 
     public function test__construct()

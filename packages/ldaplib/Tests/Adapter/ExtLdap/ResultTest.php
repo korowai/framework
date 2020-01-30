@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldap\Adapter\ExtLdap;
 
-use PHPUnit\Framework\TestCase;
+use Korowai\Testing\TestCase;
 use \Phake;
 
 use Korowai\Lib\Ldap\Adapter\ExtLdap\Result;
@@ -38,8 +38,7 @@ class ResultTest extends TestCase
 
     public function test__implements__ResultInterface()
     {
-        $interfaces = class_implements(Result::class);
-        $this->assertContains(ResultInterface::class, $interfaces);
+        $this->assertImplementsInterface(ResultInterface::class, Result::class);
     }
 
     public function test__getResource()

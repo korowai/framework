@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldap\Adapter\ExtLdap;
 
-use PHPUnit\Framework\TestCase;
+use Korowai\Testing\TestCase;
 
 use Korowai\Lib\Ldap\Adapter\ExtLdap\ResultEntryIterator;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\ResultEntry;
@@ -28,8 +28,7 @@ class ResultEntryIteratorTest extends TestCase
 {
     public function test__implements__ResultEntryIteratorInterface()
     {
-        $interfaces = class_implements(ResultEntryIterator::class);
-        $this->assertContains(ResultEntryIteratorInterface::class, $interfaces);
+        $this->assertImplementsInterface(ResultEntryIteratorInterface::class, ResultEntryIterator::class);
     }
 
     public function test__getResult()

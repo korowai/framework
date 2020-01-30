@@ -51,7 +51,7 @@ final class UsesTrait extends InheritanceConstraint
      */
     public function supportsClass(string $class) : bool
     {
-        return class_exists($class);
+        return class_exists($class) || trait_exists($class);
     }
 }
 

@@ -17,7 +17,7 @@ use Korowai\Lib\Ldif\Traits\ExposesSnippetInterface;
 use Korowai\Lib\Ldif\Traits\ExposesLocationInterface;
 use Korowai\Lib\Ldif\SnippetInterface;
 
-use PHPUnit\Framework\TestCase;
+use Korowai\Testing\TestCase;
 
 
 /**
@@ -37,8 +37,7 @@ class ExposesSnippetInterfaceTest extends TestCase
 
     public function test__uses__ExposesLocationInterface()
     {
-        $uses = class_uses(ExposesSnippetInterface::class);
-        $this->assertContains(ExposesLocationInterface::class, $uses);
+        $this->assertUsesTrait(ExposesLocationInterface::class, ExposesSnippetInterface::class);
     }
 
     public function test__getLocation()

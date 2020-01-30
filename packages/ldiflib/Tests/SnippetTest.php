@@ -19,7 +19,7 @@ use Korowai\Lib\Ldif\LocationInterface;
 use Korowai\Lib\Ldif\InputInterface;
 use Korowai\Lib\Ldif\Traits\DecoratesLocationInterface;
 
-use PHPUnit\Framework\TestCase;
+use Korowai\Testing\TestCase;
 
 
 /**
@@ -29,14 +29,12 @@ class SnippetTest extends TestCase
 {
     public function test__implements__SnippetInterface()
     {
-        $interfaces = class_implements(Snippet::class);
-        $this->assertContains(SnippetInterface::class, $interfaces);
+        $this->assertImplementsInterface(SnippetInterface::class, Snippet::class);
     }
 
     public function test__uses__DecoratesLocationInterface()
     {
-        $uses = class_uses(Snippet::class);
-        $this->assertContains(DecoratesLocationInterface::class, $uses);
+        $this->assertUsesTrait(DecoratesLocationInterface::class, Snippet::class);
     }
 
     public function test__construct()

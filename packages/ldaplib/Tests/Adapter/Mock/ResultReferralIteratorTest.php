@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldap\Adapter\Mock;
 
-use PHPUnit\Framework\TestCase;
+use Korowai\Testing\TestCase;
 
 use Korowai\Lib\Ldap\Adapter\Mock\ResultReferralIterator;
 use Korowai\Lib\Ldap\Adapter\Mock\ResultReference;
@@ -28,14 +28,12 @@ class ResultReferralIteratorTest extends TestCase
 {
     public function test__implements__ResultReferralIteratorInterface()
     {
-        $interfaces = class_implements(ResultReferralIterator::class);
-        $this->assertContains(ResultReferralIteratorInterface::class, $interfaces);
+        $this->assertImplementsInterface(ResultReferralIteratorInterface::class, ResultReferralIterator::class);
     }
 
     public function test__extends__BaseIterator()
     {
-        $parents = class_parents(ResultReferralIterator::class);
-        $this->assertContains(BaseIterator::class, $parents);
+        $this->assertExtendsClass(BaseIterator::class, ResultReferralIterator::class);
     }
 
     public function test__construct()

@@ -18,7 +18,7 @@ use Korowai\Lib\Ldif\ParserErrorInterface;
 use Korowai\Lib\Ldif\Traits\DecoratesSourceLocationInterface;
 use Korowai\Lib\Ldif\SourceLocationInterface;
 
-use PHPUnit\Framework\TestCase;
+use Korowai\Testing\TestCase;
 
 
 /**
@@ -28,26 +28,22 @@ class ParserErrorTest extends TestCase
 {
     public function test__implements__ParserErrorInterface()
     {
-        $interfaces = class_implements(ParserError::class);
-        $this->assertContains(ParserErrorInterface::class, $interfaces);
+        $this->assertImplementsInterface(ParserErrorInterface::class, ParserError::class);
     }
 
     public function test__implements__Throwable()
     {
-        $interfaces = class_implements(ParserError::class);
-        $this->assertContains(\Throwable::class, $interfaces);
+        $this->assertImplementsInterface(\Throwable::class, ParserError::class);
     }
 
     public function test__extends__Exception()
     {
-        $parents = class_parents(ParserError::class);
-        $this->assertContains(\Exception::class, $parents);
+        $this->assertExtendsClass(\Exception::class, ParserError::class);
     }
 
     public function test__uses__DecoratesSourceLocationInterface()
     {
-        $traits = class_uses(ParserError::class);
-        $this->assertContains(DecoratesSourceLocationInterface::class, $traits);
+        $this->assertUsesTrait(DecoratesSourceLocationInterface::class, ParserError::class);
     }
 
     public function test__construct()

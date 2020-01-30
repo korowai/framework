@@ -19,7 +19,7 @@ use Korowai\Lib\Ldif\RecordInterface;
 use Korowai\Lib\Ldif\CursorInterface;
 use Korowai\Lib\Ldif\ParserError;
 
-use PHPUnit\Framework\TestCase;
+use Korowai\Testing\TestCase;
 
 
 /**
@@ -29,8 +29,7 @@ class ParserStateTest extends TestCase
 {
     public function test__implements__ParserStateInterface()
     {
-        $interfaces = class_implements(ParserState::class);
-        $this->assertContains(ParserStateInterface::class, $interfaces);
+        $this->assertImplementsInterface(ParserStateInterface::class, ParserState::class);
     }
 
     public function constructCases()

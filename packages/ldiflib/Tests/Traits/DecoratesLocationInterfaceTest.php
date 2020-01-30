@@ -17,7 +17,7 @@ use Korowai\Lib\Ldif\Traits\DecoratesLocationInterface;
 use Korowai\Lib\Ldif\Traits\ExposesLocationInterface;
 use Korowai\Lib\Ldif\LocationInterface;
 
-use PHPUnit\Framework\TestCase;
+use Korowai\Testing\TestCase;
 
 
 /**
@@ -32,8 +32,7 @@ class DecoratesLocationInterfaceTest extends TestCase
 
     public function test__uses__ExposesLocationInterface()
     {
-        $uses = class_uses(DecoratesLocationInterface::class);
-        $this->assertContains(ExposesLocationInterface::class, $uses);
+        $this->assertUsesTrait(ExposesLocationInterface::class, DecoratesLocationInterface::class);
     }
 
     public function test__coupledLocation()

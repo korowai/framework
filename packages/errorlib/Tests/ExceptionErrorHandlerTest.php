@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Error;
 
-use PHPUnit\Framework\TestCase;
+use Korowai\Testing\TestCase;
 
 use Korowai\Lib\Error\ExceptionErrorHandler;
 use Korowai\Lib\Error\AbstractManagedErrorHandler;
@@ -36,8 +36,7 @@ class ExceptionErrorHandlerTest extends TestCase
 
     public function test__extends__AbstractManagedErrorHandler()
     {
-        $parents = class_parents(ExceptionErrorHandler::class);
-        $this->assertContains(AbstractManagedErrorHandler::class, $parents);
+        $this->assertExtendsClass(AbstractManagedErrorHandler::class, ExceptionErrorHandler::class);
     }
 
     public function test__makeExceptionGenerator__withCallable()

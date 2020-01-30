@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Context;
 
-use PHPUnit\Framework\TestCase;
+use Korowai\Testing\TestCase;
 
 use Korowai\Lib\Context\TrivialValueWrapper;
 use Korowai\Lib\Context\ContextManagerInterface;
@@ -25,8 +25,7 @@ class TrivialValueWrapperTest extends TestCase
 {
     public function test__implements__ContextManagerInterface()
     {
-        $interfaces = class_implements(TrivialValueWrapper::class);
-        $this->assertContains(ContextManagerInterface::class, $interfaces);
+        $this->assertImplementsInterface(ContextManagerInterface::class, TrivialValueWrapper::class);
     }
 
     public function test__construct()

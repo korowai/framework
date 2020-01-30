@@ -18,7 +18,7 @@ use Korowai\Lib\Ldif\PreprocessorInterface;
 use Korowai\Lib\Ldif\Input;
 use Korowai\Lib\Ldif\Util\IndexMap;
 
-use PHPUnit\Framework\TestCase;
+use Korowai\Testing\TestCase;
 
 
 /**
@@ -28,8 +28,7 @@ class PreprocessorTest extends TestCase
 {
     public function test__implements__PreprocessorInterface()
     {
-        $interfaces = class_implements(Preprocessor::class);
-        $this->assertContains(PreprocessorInterface::class, $interfaces);
+        $this->assertImplementsInterface(PreprocessorInterface::class, Preprocessor::class);
     }
 
     public function rmReCases()

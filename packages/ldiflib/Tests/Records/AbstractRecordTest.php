@@ -18,7 +18,7 @@ use Korowai\Lib\Ldif\RecordInterface;
 use Korowai\Lib\Ldif\SnippetInterface;
 use Korowai\Lib\Ldif\Traits\DecoratesSnippetInterface;
 
-use PHPUnit\Framework\TestCase;
+use Korowai\Testing\TestCase;
 
 
 /**
@@ -28,8 +28,7 @@ class AbstractRecordTest extends TestCase
 {
     public function test__uses__DecoratesSnippetInterface()
     {
-        $uses = class_uses(AbstractRecord::class);
-        $this->assertContains(DecoratesSnippetInterface::class, $uses);
+        $this->assertUsesTrait(DecoratesSnippetInterface::class, AbstractRecord::class);
     }
 
     public function test__initAbstractRecord()

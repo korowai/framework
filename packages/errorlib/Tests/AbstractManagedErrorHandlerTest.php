@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Error;
 
-use PHPUnit\Framework\TestCase;
+use Korowai\Testing\TestCase;
 
 use Korowai\Lib\Error\AbstractManagedErrorHandler;
 use Korowai\Lib\Error\ErrorHandlerInterface;
@@ -28,14 +28,12 @@ class AbstractManagedErrorHandlerTest extends TestCase
 
     public function test__implements__ErrorHandlerInterface()
     {
-        $interfaces = class_implements(AbstractManagedErrorHandler::class);
-        $this->assertContains(ErrorHandlerInterface::class, $interfaces);
+        $this->assertImplementsInterface(ErrorHandlerInterface::class, AbstractManagedErrorHandler::class);
     }
 
     public function test__implements__ContextManagerInterface()
     {
-        $interfaces = class_implements(AbstractManagedErrorHandler::class);
-        $this->assertContains(ContextManagerInterface::class, $interfaces);
+        $this->assertImplementsInterface(ContextManagerInterface::class, AbstractManagedErrorHandler::class);
     }
 
     public function test__construct__withoutArguments()

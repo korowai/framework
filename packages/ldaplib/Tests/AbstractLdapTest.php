@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldap;
 
-use PHPUnit\Framework\TestCase;
+use Korowai\Testing\TestCase;
 use Korowai\Lib\Ldap\AbstractLdap;
 use Korowai\Lib\Ldap\LdapInterface;
 use Korowai\Lib\Ldap\Adapter\SearchQueryInterface;
@@ -27,8 +27,7 @@ class AbstractLdapTest extends TestCase
 {
     public function test__implements__LdapInterface()
     {
-        $interfaces = class_implements(AbstractLdap::class);
-        $this->assertContains(LdapInterface::class, $interfaces);
+        $this->assertImplementsInterface(LdapInterface::class, AbstractLdap::class);
     }
 
     public function test__search()

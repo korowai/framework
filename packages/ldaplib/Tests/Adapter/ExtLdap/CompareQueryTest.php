@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldap\Adapter\ExtLdap;
 
-use PHPUnit\Framework\TestCase;
+use Korowai\Testing\TestCase;
 use Korowai\Lib\Ldap\Adapter\AbstractCompareQuery;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\CompareQuery;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLink;
@@ -44,8 +44,7 @@ class CompareQueryTest extends TestCase
 
     public function test__extends__AbstractCompareQuery()
     {
-        $parents = class_parents(CompareQuery::class);
-        $this->assertContains(AbstractCompareQuery::class, $parents);
+        $this->assertExtendsClass(AbstractCompareQuery::class, CompareQuery::class);
     }
 
     public function test__construct()

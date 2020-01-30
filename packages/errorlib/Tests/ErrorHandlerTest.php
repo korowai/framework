@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Error;
 
-use PHPUnit\Framework\TestCase;
+use Korowai\Testing\TestCase;
 
 use Korowai\Lib\Error\ErrorHandler;
 use Korowai\Lib\Error\AbstractManagedErrorHandler;
@@ -25,8 +25,7 @@ class ErrorHandlerTest extends TestCase
 {
     public function test__extends__AbstractManagedErrorHandler()
     {
-        $parents = class_parents(ErrorHandler::class);
-        $this->assertContains(AbstractManagedErrorHandler::class, $parents);
+        $this->assertExtendsClass(AbstractManagedErrorHandler::class, ErrorHandler::class);
     }
 
     public function test__construct__withoutErrorTypes()

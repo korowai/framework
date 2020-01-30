@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Compat;
 
-use PHPUnit\Framework\TestCase;
+use Korowai\Testing\TestCase;
 
 use Korowai\Lib\Compat\Exception\PregException;
 
@@ -24,8 +24,7 @@ class PregExceptionTest extends TestCase
 {
     public function test__extends__ErrorException()
     {
-        $parents = class_parents(PregException::class);
-        $this->assertContains(\ErrorException::class, $parents);
+        $this->assertExtendsClass(\ErrorException::class, PregException::class);
     }
 }
 

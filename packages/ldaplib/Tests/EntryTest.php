@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldap;
 
-use PHPUnit\Framework\TestCase;
+use Korowai\Testing\TestCase;
 use Korowai\Lib\Ldap\Entry;
 use Korowai\Lib\Ldap\EntryInterface;
 use Korowai\Lib\Ldap\Exception\AttributeException;
@@ -25,8 +25,7 @@ class EntryTest extends TestCase
 {
     public function test__implements__EntryInterface()
     {
-        $interfaces = class_implements(Entry::class);
-        $this->assertContains(EntryInterface::class, $interfaces);
+        $this->assertImplementsInterface(EntryInterface::class, Entry::class);
     }
 
     public function test__construct__NoDn()

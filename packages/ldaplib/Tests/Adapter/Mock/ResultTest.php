@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldap\Adapter\Mock;
 
-use PHPUnit\Framework\TestCase;
+use Korowai\Testing\TestCase;
 
 use Korowai\Lib\Ldap\Adapter\Mock\Result;
 use Korowai\Lib\Ldap\Adapter\ResultInterface;
@@ -30,8 +30,7 @@ class ResultTest extends TestCase
 {
     public function test__implements__ResultInterface()
     {
-        $interfaces = class_implements(Result::class);
-        $this->assertContains(ResultInterface::class, $interfaces);
+        $this->assertImplementsInterface(ResultInterface::class, Result::class);
     }
 
     public function test__entries__iteration()

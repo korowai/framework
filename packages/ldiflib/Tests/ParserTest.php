@@ -18,7 +18,7 @@ use Korowai\Lib\Ldif\ParserInterface;
 use Korowai\Lib\Ldif\Input;
 use Korowai\Lib\Ldif\Util\IndexMap;
 
-use PHPUnit\Framework\TestCase;
+use Korowai\Testing\TestCase;
 
 
 /**
@@ -28,8 +28,7 @@ class ParserTest extends TestCase
 {
     public function test__implements__ParserInterface()
     {
-        $interfaces = class_implements(Parser::class);
-        $this->assertContains(ParserInterface::class, $interfaces);
+        $this->assertImplementsInterface(ParserInterface::class, Parser::class);
     }
 }
 

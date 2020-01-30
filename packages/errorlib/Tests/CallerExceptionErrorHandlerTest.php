@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Error;
 
-use PHPUnit\Framework\TestCase;
+use Korowai\Testing\TestCase;
 
 use Korowai\Lib\Error\CallerExceptionErrorHandler;
 use Korowai\Lib\Error\ExceptionErrorHandler;
@@ -60,8 +60,7 @@ class CallerExceptionErrorHandlerTest extends TestCase
 
     public function test__extends__ExceptionErrorHandler()
     {
-        $parents = class_parents(CallerExceptionErrorHandler::class);
-        $this->assertContains(ExceptionErrorHandler::class, $parents);
+        $this->assertExtendsClass(ExceptionErrorHandler::class, CallerExceptionErrorHandler::class);
     }
 
     public function test__construct__withoutDistance()

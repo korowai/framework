@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldap;
 
-use PHPUnit\Framework\TestCase;
+use Korowai\Testing\TestCase;
 use Korowai\Lib\Ldap\Ldap;
 use Korowai\Lib\Ldap\AbstractLdap;
 use Korowai\Lib\Ldap\Adapter\AdapterInterface;
@@ -77,8 +77,7 @@ class LdapTest extends TestCase
 
     public function test__extends__AbstactLdap()
     {
-        $parents = class_parents(Ldap::class);
-        $this->assertContains(AbstractLdap::class, $parents);
+        $this->assertExtendsClass(AbstractLdap::class, Ldap::class);
     }
 
     public function test__createWithAdapterFactory()

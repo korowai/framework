@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldap\Adapter\ExtLdap;
 
-use PHPUnit\Framework\TestCase;
+use Korowai\Testing\TestCase;
 use Korowai\Lib\Ldap\Adapter\AbstractSearchQuery;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\SearchQuery;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLink;
@@ -34,8 +34,7 @@ class SearchQueryTest extends TestCase
 
     public function test__extends__AbstractSearchQuery()
     {
-        $parents = class_parents(SearchQuery::class);
-        $this->assertContains(AbstractSearchQuery::class, $parents);
+        $this->assertExtendsClass(AbstractSearchQuery::class, SearchQuery::class);
     }
 
     public function createLdapLinkMock($valid, $unbind = true)

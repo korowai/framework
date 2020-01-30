@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Context;
 
-use PHPUnit\Framework\TestCase;
+use Korowai\Testing\TestCase;
 
 use Korowai\Lib\Context\DefaultContextFactory;
 use Korowai\Lib\Context\ContextManagerInterface;
@@ -36,8 +36,7 @@ class DefaultContextFactoryTest extends TestCase
 
     public function test__implements__ContextFactoryInterface()
     {
-        $interfaces = class_implements(DefaultContextFactory::class);
-        $this->assertContains(ContextFactoryInterface::class, $interfaces);
+        $this->assertImplementsInterface(ContextFactoryInterface::class, DefaultContextFactory::class);
     }
 
     /**

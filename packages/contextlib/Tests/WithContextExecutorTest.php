@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Context;
 
-use PHPUnit\Framework\TestCase;
+use Korowai\Testing\TestCase;
 
 use Korowai\Lib\Context\WithContextExecutor;
 use Korowai\Lib\Context\ExecutorInterface;
@@ -30,8 +30,7 @@ class WithContextExecutorTest extends TestCase
 {
     public function test__implements__ExecutorInterface()
     {
-        $interfaces = class_implements(WithContextExecutor::class);
-        $this->assertContains(ExecutorInterface::class, $interfaces);
+        $this->assertImplementsInterface(ExecutorInterface::class, WithContextExecutor::class);
     }
 
     public function test__construct()

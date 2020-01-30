@@ -17,7 +17,7 @@ use Korowai\Lib\Ldif\Location;
 use Korowai\Lib\Ldif\LocationInterface;
 use Korowai\Lib\Ldif\InputInterface;
 
-use PHPUnit\Framework\TestCase;
+use Korowai\Testing\TestCase;
 
 
 /**
@@ -27,8 +27,7 @@ class LocationTest extends TestCase
 {
     public function test__implements__LocationInterface()
     {
-        $interfaces = class_implements(Location::class);
-        $this->assertContains(LocationInterface::class, $interfaces);
+        $this->assertImplementsInterface(LocationInterface::class, Location::class);
     }
 
     public function test__construct()

@@ -19,7 +19,7 @@ use Korowai\Lib\Ldif\Records\VersionSpecInterface;
 use Korowai\Lib\Ldif\RecordVisitorInterface;
 use Korowai\Lib\Ldif\SnippetInterface;
 
-use PHPUnit\Framework\TestCase;
+use Korowai\Testing\TestCase;
 
 
 /**
@@ -29,14 +29,12 @@ class VersionSpecTest extends TestCase
 {
     public function test__implements__VersionSpecInterface()
     {
-        $interfaces = class_implements(VersionSpec::class);
-        $this->assertContains(VersionSpecInterface::class, $interfaces);
+        $this->assertImplementsInterface(VersionSpecInterface::class, VersionSpec::class);
     }
 
     public function test__extends__AbstractRecord()
     {
-        $parents = class_parents(VersionSpec::class);
-        $this->assertContains(AbstractRecord::class, $parents);
+        $this->assertExtendsClass(AbstractRecord::class, VersionSpec::class);
     }
 
     protected function getSnippet()

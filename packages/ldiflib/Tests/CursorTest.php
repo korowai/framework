@@ -18,7 +18,7 @@ use Korowai\Lib\Ldif\CursorInterface;
 use Korowai\Lib\Ldif\Location;
 use Korowai\Lib\Ldif\Input;
 
-use PHPUnit\Framework\TestCase;
+use Korowai\Testing\TestCase;
 
 
 /**
@@ -28,14 +28,12 @@ class CursorTest extends TestCase
 {
     public function test__implements__CursorInterface()
     {
-        $interfaces = class_implements(Cursor::class);
-        $this->assertContains(CursorInterface::class, $interfaces);
+        $this->assertImplementsInterface(CursorInterface::class, Cursor::class);
     }
 
     public function test__extends__Location()
     {
-        $parents = class_parents(Cursor::class);
-        $this->assertContains(Location::class, $parents);
+        $this->assertExtendsClass(Location::class, Cursor::class);
     }
 
     public function test__moveBy()

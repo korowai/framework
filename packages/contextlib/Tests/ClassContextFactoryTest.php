@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Context;
 
-use PHPUnit\Framework\TestCase;
+use Korowai\Testing\TestCase;
 
 use Korowai\Lib\Context\ClassContextFactory;
 use Korowai\Lib\Context\AbstractManagedContextFactory;
@@ -40,8 +40,7 @@ class ClassContextFactoryTest extends TestCase
 {
     public function test__extends__AbstractManagedContextFactory()
     {
-        $parents = class_parents(ClassContextFactory::class);
-        $this->assertContains(AbstractManagedContextFactory::class, $parents);
+        $this->assertExtendsClass(AbstractManagedContextFactory::class, ClassContextFactory::class);
     }
 
     public function test__construct__withoutArgs()

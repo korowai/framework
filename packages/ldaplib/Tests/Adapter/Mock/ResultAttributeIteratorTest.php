@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldap\Adapter\Mock;
 
-use PHPUnit\Framework\TestCase;
+use Korowai\Testing\TestCase;
 
 use Korowai\Lib\Ldap\Adapter\Mock\ResultAttributeIterator;
 use Korowai\Lib\Ldap\Adapter\Mock\ResultEntry;
@@ -26,8 +26,7 @@ class ResultAttributeIteratorTest extends TestCase
 {
     public function test__implements__Iterator()
     {
-        $interfaces = class_implements(ResultAttributeIterator::class);
-        $this->assertContains(\Iterator::class, $interfaces);
+        $this->assertImplementsInterface(\Iterator::class, ResultAttributeIterator::class);
     }
 
     public function test__getEntry()

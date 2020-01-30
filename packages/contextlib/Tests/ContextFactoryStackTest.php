@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Context;
 
-use PHPUnit\Framework\TestCase;
+use Korowai\Testing\TestCase;
 
 use Korowai\Lib\Context\ContextFactoryInterface;
 use Korowai\Lib\Context\ContextFactoryStack;
@@ -59,14 +59,12 @@ class ContextFactoryStackTest extends TestCase
 
     public function test__implements__ContextFactoryStackInterface()
     {
-        $interfaces = class_implements(ContextFactoryStack::class);
-        $this->assertContains(ContextFactoryStackInterface::class, $interfaces);
+        $this->assertImplementsInterface(ContextFactoryStackInterface::class, ContextFactoryStack::class);
     }
 
     public function test__implements__ContextFactoryInterface()
     {
-        $interfaces = class_implements(ContextFactoryStack::class);
-        $this->assertContains(ContextFactoryInterface::class, $interfaces);
+        $this->assertImplementsInterface(ContextFactoryInterface::class, ContextFactoryStack::class);
     }
 
     public function test__basicStackMethods()

@@ -26,17 +26,15 @@ trait ParsesStrings
     protected static $re_safe_init_char = '[\x01-\x09\x0B-\x0C\x0E-\x1F\x21-\x39\x3B\x3D-\x7F]';
     protected static $re_safe_char = '[\x01-\x09\x0B-\x0C\x0E-\x7F]';
 
-
-    abstract public function matchAtOrThrow(
-        string $pattern,
-        LocationInterface $location,
-        string $msg,
-        int $flags = 0
-    ) : array;
-
     abstract public function matchAheadOrThrow(
         string $pattern,
         CursorInterface $cursor,
+        string $msg,
+        int $flags = 0
+    ) : array;
+    abstract public function matchAtOrThrow(
+        string $pattern,
+        LocationInterface $location,
         string $msg,
         int $flags = 0
     ) : array;

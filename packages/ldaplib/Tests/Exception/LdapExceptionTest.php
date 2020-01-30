@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldap\Exception;
 
-use PHPUnit\Framework\TestCase;
+use Korowai\Testing\TestCase;
 use Korowai\Lib\Ldap\Exception\LdapException;
 
 /**

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldap\Adapter\ExtLdap;
 
-use PHPUnit\Framework\TestCase;
+use Korowai\Testing\TestCase;
 use Korowai\Lib\Ldap\AbstractAdapter;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\Adapter;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\Binding;

@@ -18,7 +18,7 @@ use Korowai\Lib\Ldif\Preprocessor;
 use Korowai\Lib\Ldif\Cursor;
 use Korowai\Lib\Ldif\Input;
 
-use PHPUnit\Framework\TestCase;
+use Korowai\Testing\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

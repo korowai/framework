@@ -16,7 +16,7 @@ namespace Korowai\Tests\Lib\Ldif\Traits;
 use Korowai\Lib\Ldif\Traits\ExposesSourceLocationInterface;
 use Korowai\Lib\Ldif\SourceLocationInterface;
 
-use PHPUnit\Framework\TestCase;
+use Korowai\Testing\TestCase;
 
 
 /**

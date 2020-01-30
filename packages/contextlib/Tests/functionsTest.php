@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Context;
 
-use PHPUnit\Framework\TestCase;
+use Korowai\Testing\TestCase;
 
 use function Korowai\Lib\Context\with;
 use Korowai\Lib\Context\WithContextExecutor;

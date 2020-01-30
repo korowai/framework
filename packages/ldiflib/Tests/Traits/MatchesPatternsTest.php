@@ -18,7 +18,7 @@ use Korowai\Lib\Ldif\CursorInterface;
 use Korowai\Lib\Ldif\LocationInterface;
 use Korowai\Lib\Ldif\ParserError;
 
-use PHPUnit\Framework\TestCase;
+use Korowai\Testing\TestCase;
 
 
 /**

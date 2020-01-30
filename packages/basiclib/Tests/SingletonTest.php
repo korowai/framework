@@ -15,7 +15,7 @@ namespace Korowai\Tests\Lib\Basic;
 
 use Korowai\Lib\Basic\Singleton;
 
-use PHPUnit\Framework\TestCase;
+use Korowai\Testing\TestCase;
 
 class SingletonC91F82BJ
 {

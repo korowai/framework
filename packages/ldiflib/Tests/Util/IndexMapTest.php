@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldif;
 
-use PHPUnit\Framework\TestCase;
+use Korowai\Testing\TestCase;
 use Korowai\Lib\Ldif\Util\IndexMap;
 use Korowai\Lib\Ldif\Util\IndexMapArrayCombineAlgorithm;
 

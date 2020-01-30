@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Testing/Constraint/UsesTrait.php
+ * @file Testing/Constraint/UsesTrait.php
  *
  * This file is part of the Korowai package
  *

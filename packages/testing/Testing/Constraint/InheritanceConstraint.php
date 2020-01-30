@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Testing/Constraint/InheritanceConstraint.php
+ * @file Testing/Constraint/InheritanceConstraint.php
  *
  * This file is part of the Korowai package
  *

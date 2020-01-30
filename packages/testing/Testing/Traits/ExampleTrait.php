@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Testing/Traits/ExampleTrait.php
+ * @file Testing/Traits/ExampleTrait.php
  *
  * This file is part of the Korowai package
  *

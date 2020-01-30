@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Testing/Constraint/ExtendsClass.php
+ * @file Testing/Constraint/ExtendsClass.php
  *
  * This file is part of the Korowai package
  *

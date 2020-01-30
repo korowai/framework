@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Testing/Constraint/ImplementsInterface.php
+ * @file Testing/Constraint/ImplementsInterface.php
  *
  * This file is part of the Korowai package
  *

@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Testing/Assertions/ClassAssertions.php
+ * @file Testing/Assertions/ClassAssertions.php
  *
  * This file is part of the Korowai package
  *

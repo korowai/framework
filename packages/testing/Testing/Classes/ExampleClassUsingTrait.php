@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Testing/Classes/ExampleClassUsingTrait.php
+ * @file Testing/Classes/ExampleClassUsingTrait.php
  *
  * This file is part of the Korowai package
  *

@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Testing/Constraint/HasPropertiesIdenticalTo.php
+ * @file Testing/Constraint/HasPropertiesIdenticalTo.php
  *
  * This file is part of the Korowai package
  *

@@ -1,6 +1,6 @@
 <?php
 /**
- * @file Tests/SourceLocationAssertions.php
+ * @file Testing/TestCase.php
  *
  * This file is part of the Korowai package
  *

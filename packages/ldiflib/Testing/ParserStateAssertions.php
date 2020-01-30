@@ -1,6 +1,6 @@
 <?php
 /**
- * @file Tests/ParserStateAssertions.php
+ * @file Testing/ParserStateAssertions.php
  *
  * This file is part of the Korowai package
  *

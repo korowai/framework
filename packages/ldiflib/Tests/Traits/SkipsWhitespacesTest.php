@@ -15,9 +15,6 @@ namespace Korowai\Tests\Lib\Ldif\Traits;
 
 use Korowai\Lib\Ldif\Traits\SkipsWhitespaces;
 use Korowai\Lib\Ldif\Traits\MatchesPatterns;
-use Korowai\Lib\Ldif\CursorInterface;
-//use Korowai\Lib\Ldif\LocationInterface;
-//use Korowai\Lib\Ldif\ParserError;
 
 use Korowai\Testing\Lib\Ldif\TestCase;
 

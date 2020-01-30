@@ -19,7 +19,7 @@ use Korowai\Lib\Ldif\RecordInterface;
 use Korowai\Lib\Ldif\CursorInterface;
 use Korowai\Lib\Ldif\ParserError;
 
-use Korowai\Testing\TestCase;
+use Korowai\Testing\Lib\Ldif\TestCase;
 
 
 /**

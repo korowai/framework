@@ -18,7 +18,7 @@ use Korowai\Lib\Ldif\PreprocessorInterface;
 use Korowai\Lib\Ldif\Input;
 use Korowai\Lib\Ldif\Util\IndexMap;
 
-use Korowai\Testing\TestCase;
+use Korowai\Testing\Lib\Ldif\TestCase;
 
 
 /**

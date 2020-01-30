@@ -19,7 +19,7 @@ use Korowai\Lib\Ldif\LocationInterface;
 use Korowai\Lib\Ldif\InputInterface;
 use Korowai\Lib\Ldif\Traits\DecoratesLocationInterface;
 
-use Korowai\Testing\TestCase;
+use Korowai\Testing\Lib\Ldif\TestCase;
 
 
 /**

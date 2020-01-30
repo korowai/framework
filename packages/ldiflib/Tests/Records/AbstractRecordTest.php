@@ -18,7 +18,7 @@ use Korowai\Lib\Ldif\RecordInterface;
 use Korowai\Lib\Ldif\SnippetInterface;
 use Korowai\Lib\Ldif\Traits\DecoratesSnippetInterface;
 
-use Korowai\Testing\TestCase;
+use Korowai\Testing\Lib\Ldif\TestCase;
 
 
 /**

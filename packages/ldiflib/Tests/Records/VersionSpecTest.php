@@ -19,7 +19,7 @@ use Korowai\Lib\Ldif\Records\VersionSpecInterface;
 use Korowai\Lib\Ldif\RecordVisitorInterface;
 use Korowai\Lib\Ldif\SnippetInterface;
 
-use Korowai\Testing\TestCase;
+use Korowai\Testing\Lib\Ldif\TestCase;
 
 
 /**

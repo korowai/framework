@@ -15,9 +15,6 @@ namespace Korowai\Tests\Lib\Ldif\Traits;
 
 use Korowai\Lib\Ldif\Traits\ParsesStrings;
 use Korowai\Lib\Ldif\Traits\MatchesPatterns;
-use Korowai\Lib\Ldif\ParserState;
-use Korowai\Lib\Ldif\Preprocessor;
-use Korowai\Lib\Ldif\Cursor;
 
 use Korowai\Testing\Lib\Ldif\TestCase;
 

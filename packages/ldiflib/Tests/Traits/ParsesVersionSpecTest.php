@@ -16,9 +16,6 @@ namespace Korowai\Tests\Lib\Ldif\Traits;
 use Korowai\Lib\Ldif\Traits\ParsesVersionSpec;
 use Korowai\Lib\Ldif\Traits\SkipsWhitespaces;
 use Korowai\Lib\Ldif\Traits\MatchesPatterns;
-use Korowai\Lib\Ldif\ParserState;
-use Korowai\Lib\Ldif\Preprocessor;
-use Korowai\Lib\Ldif\Cursor;
 use Korowai\Lib\Ldif\Records\VersionSpec;
 
 use Korowai\Testing\Lib\Ldif\TestCase;

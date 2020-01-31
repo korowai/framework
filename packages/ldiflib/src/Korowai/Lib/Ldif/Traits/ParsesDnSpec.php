@@ -14,8 +14,11 @@ declare(strict_types=1);
 namespace Korowai\Lib\Ldif\Traits;
 
 use Korowai\Lib\Ldif\CursorInterface;
+use Korowai\Lib\Ldif\LocationInterface;
 use Korowai\Lib\Ldif\ParserStateInterface;
 use Korowai\Lib\Ldif\ParserError;
+
+use function Korowai\Lib\Compat\preg_match;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -55,34 +58,100 @@ trait ParsesDnSpec
      * @throws PregException When error occurs in ``preg_match()``
      */
     abstract public function matchAhead(string $pattern, CursorInterface $cursor, int $flags = 0) : array;
+    /**
+     * Parses SAFE-STRING as defined in [RFC 2849](https://tools.ietf.org/html/rfc2849).
+     *
+     * @param  ParserStateInterface $state
+     * @param  string $string
+     *
+     * @return bool true on success, false on parser error.
+     */
+    abstract public function parseSafeString(ParserStateInterface $state, string &$string = null) : bool;
+    /**
+     * Parses BASE64-UTF8-STRING as defined in [RFC 2849](https://tools.ietf.org/html/rfc2849).
+     *
+     * @param  ParserStateInterface $state
+     * @param  string $string The parsed and decoded string returned by the function.
+     *
+     * @return bool true on success, false on parser error.
+     */
+    abstract public function parseBase64Utf8String(ParserStateInterface $state, string &$string = null) : bool;
 
     /**
-     * @todo Write documentation.
-     * @param ParserStateInterface $state
+     * Parses dn-spec as defined in [RFC 2849](https://tools.ietf.org/html/rfc2849).
+     *
+     * @param  ParserStateInterface $state
+     * @param  string $dn The DN string returned by the function.
+     *
+     * @return bool true on success, false on parser error.
      */
-    public function parseDnSpec(ParserStateInterface $state) : bool
+    public function parseDnSpec(ParserStateInterface $state, string &$dn = null) : bool
     {
         $cursor = $state->getCursor();
 
-        $begin = clone $cursor;
-
-        $this->matchAheadOrThrow('/\Gdn:/', $cursor, "syntax error: unexpected token (expected 'dn:')");
+        $matches = $this->matchAhead('/\Gdn:/', $cursor);
+        if (count($matches) === 0) {
+            $error = new ParserError(clone $cursor, 'syntax error: unexpected token (expected \'dn:\')');
+            $state->appendError($error);
+            return false;
+        }
 
         $matches = $this->matchAhead('/\G:/', $cursor);
 
         $this->skipFill($cursor);
 
+        $begin = clone $cursor;
         if (count($matches) === 0) {
             // SAFE-STRING
-            $dn = $this->parseSafeString($cursor);
+            $result = $this->parseSafeString($state, $dn);
         } else {
             // BASE64-UTF8-STRING
-            $dn = $this->parseBase64UtfString($cursor);
+            $result = $this->parseBase64Utf8String($state, $dn);
         }
 
-        $strlen = $cursor->getOffset() - $begin->getOffset();
+        if ($result && !$this->matchDnString($dn)) {
+            $error = new ParserError($begin, 'syntax error: invalid DN syntax: \''.$dn.'\'');
+            $state->appendError($error);
+            $cursor->moveTo($begin->getOffset());
+            return false;
+        }
 
-        return true;
+        return $result;
+    }
+
+    /**
+     * Checks if the provided *$dn* string matches [RFC
+     * 2253](https://tools.ietf.org/html/rfc2253#section-3).
+     *
+     * @param  string $dn
+     *
+     * @return bool
+     */
+    public function matchDnString(string $dn) : bool
+    {
+        $hexchar = '[0-9a-fA-F]';
+        $hexpair = '(?:'.$hexchar.$hexchar.')';
+        $hexstring = '(?:'.$hexpair.'+)';
+        $specialchars = ',=+<>#;';
+        $pair = '(?:\\\\(?:['.$specialchars.'\\\\"]|'.$hexpair.'))';
+        $stringchar = '[^'.$specialchars.'\\\\"]';
+        $quotechar = '[^\\\\"]';
+        $string =
+        '(?:'.
+            '(?:'.$stringchar.'|'.$pair.')*'.
+            '|'.
+            '(?:#'.$hexstring.')'.
+            '|'.
+            '(?:"(?:'.$quotechar.'|'.$pair.')*")'.
+        ')';
+        $attributeValue = $string;
+        $attributeType = '(?:(?:[a-zA-Z][a-zA-Z\d-]*)|(?:\d+(?:\.\d+)*))'; // RFC2253 seems to have bug here.
+        $attributeTypeAndValue = '(?:'.$attributeType.'='.$attributeValue.')';
+        $nameComponent = '(?:'.$attributeTypeAndValue . '(?:\+'.$attributeTypeAndValue.')*)';
+        $name = '(?:'.$nameComponent . '(?:,'.$nameComponent.')*)';
+        $dnPattern = '/\G'.$name.'?$/';
+
+        return (0 !== preg_match($dnPattern, $dn));
     }
 }
 

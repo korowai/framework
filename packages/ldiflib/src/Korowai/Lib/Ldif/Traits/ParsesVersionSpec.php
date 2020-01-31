@@ -26,19 +26,39 @@ use Korowai\Lib\Ldif\Records\VersionSpec;
  */
 trait ParsesVersionSpec
 {
+    /**
+     * Skip zero or more whitespaces (FILL in RFC2849).
+     *
+     * @param CursorInterface $cursor
+     *
+     * @return array
+     * @throws PregException When an error occurs in ``preg_match()``.
+     */
     abstract public function skipFill(CursorInterface $cursor) : array;
-    abstract public function matchAheadOrThrow(
-        string $pattern,
-        CursorInterface $cursor,
-        string $msg,
-        int $flags = 0
-    ) : array;
-    abstract public function matchAtOrThrow(
-        string $pattern,
-        LocationInterface $location,
-        string $msg,
-        int $flags = 0
-    ) : array;
+    /**
+     * Matches the string (starting at $location's position) against $pattern.
+     *
+     * @param  string $pattern
+     * @param  LocationInterface $location
+     * @param  int $flags Flags passed to ``preg_match()``.
+     *
+     * @return array Array of matches as returned by ``preg_match()``
+     * @throws PregException When error occurs in ``preg_match()``
+     */
+    abstract public function matchAt(string $pattern, LocationInterface $location, int $flags = 0) : array;
+    /**
+     * Matches the string starting at $cursor's position against $pattern and
+     * skips the whole match (moves the cursor after the matched part of
+     * string).
+     *
+     * @param  string $pattern
+     * @param  CursorInterface $cursor
+     * @param  int $flags Passed to ``preg_match()`` (note: ``PREG_OFFSET_CAPTURE`` is added unconditionally).
+     *
+     * @return array Array of matches as returned by ``preg_match()``
+     * @throws PregException When error occurs in ``preg_match()``
+     */
+    abstract public function matchAhead(string $pattern, CursorInterface $cursor, int $flags = 0) : array;
 
     /**
      * Parses version-spec as defined in [RFC 2849](https://tools.ietf.org/html/rfc2849).
@@ -53,10 +73,9 @@ trait ParsesVersionSpec
 
         $begin = clone $cursor; // store beginning
 
-        try {
-            $this->matchAheadOrThrow('/\Gversion:/', $cursor, "syntax error: unexpected token (expected 'version:')");
-        } catch (ParserErrorInterface $error) {
+        if (count($matches = $this->matchAhead('/\Gversion:/', $cursor)) === 0) {
             if (!$tryOnly) {
+                $error = new ParserError(clone $cursor, "syntax error: unexpected token (expected 'version:')");
                 $state->appendError($error);
             }
             return false;
@@ -86,9 +105,8 @@ trait ParsesVersionSpec
     public function parseVersionNumber(ParserStateInterface $state, int &$version = null) : bool
     {
         $cursor = $state->getCursor();
-        try {
-            $matches = $this->matchAtOrThrow('/\G\d+/', $cursor, "syntax error: unexpected token (expected number)");
-        } catch (ParserErrorInterface $error) {
+        if (count($matches = $this->matchAt('/\G\d+/', $cursor)) === 0) {
+            $error = new ParserError(clone $cursor, "syntax error: unexpected token (expected number)");
             $state->appendError($error);
             return false;
         }

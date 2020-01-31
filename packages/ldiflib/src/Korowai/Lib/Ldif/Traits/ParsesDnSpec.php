@@ -22,7 +22,39 @@ use Korowai\Lib\Ldif\ParserError;
  */
 trait ParsesDnSpec
 {
-    abstract public function skipWs(CursorInterface $cursor) : array;
+    /**
+     * Skip zero or more whitespaces (FILL in RFC2849).
+     *
+     * @param CursorInterface $cursor
+     *
+     * @return array
+     * @throws PregException When an error occurs in ``preg_match()``.
+     */
+    abstract public function skipFill(CursorInterface $cursor) : array;
+    /**
+     * Matches the string (starting at $location's position) against $pattern.
+     *
+     * @param  string $pattern
+     * @param  LocationInterface $location
+     * @param  int $flags Flags passed to ``preg_match()``.
+     *
+     * @return array Array of matches as returned by ``preg_match()``
+     * @throws PregException When error occurs in ``preg_match()``
+     */
+    abstract public function matchAt(string $pattern, LocationInterface $location, int $flags = 0) : array;
+    /**
+     * Matches the string starting at $cursor's position against $pattern and
+     * skips the whole match (moves the cursor after the matched part of
+     * string).
+     *
+     * @param  string $pattern
+     * @param  CursorInterface $cursor
+     * @param  int $flags Passed to ``preg_match()`` (note: ``PREG_OFFSET_CAPTURE`` is added unconditionally).
+     *
+     * @return array Array of matches as returned by ``preg_match()``
+     * @throws PregException When error occurs in ``preg_match()``
+     */
+    abstract public function matchAhead(string $pattern, CursorInterface $cursor, int $flags = 0) : array;
 
     /**
      * @todo Write documentation.

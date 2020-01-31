@@ -13,14 +13,13 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldif\Traits;
 
-use Korowai\Testing\Lib\Ldif\ParserTestHelpers;
-
 use Korowai\Lib\Ldif\Traits\ParsesVersionSpec;
 use Korowai\Lib\Ldif\Traits\SkipsWhitespaces;
 use Korowai\Lib\Ldif\Traits\MatchesPatterns;
 use Korowai\Lib\Ldif\ParserState;
 use Korowai\Lib\Ldif\Preprocessor;
 use Korowai\Lib\Ldif\Cursor;
+use Korowai\Lib\Ldif\Records\VersionSpec;
 
 use Korowai\Testing\Lib\Ldif\TestCase;
 
@@ -209,6 +208,8 @@ class ParsesVersionSpecTest extends TestCase
                         ],
                         'records' => [
                             [
+                                'class' => VersionSpec::class,
+                                // properties
                                 'offset' => 0,
                                 'sourceOffset' => 0,
                                 'sourceCharOffset' => 0,
@@ -240,6 +241,8 @@ class ParsesVersionSpecTest extends TestCase
                         ],
                         'records' => [
                             [
+                                'class' => VersionSpec::class,
+                                // properties
                                 'offset' => 0,
                                 'sourceOffset' => 11,
                                 'sourceCharOffset' => 10,

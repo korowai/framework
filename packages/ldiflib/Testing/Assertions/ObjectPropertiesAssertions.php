@@ -20,6 +20,9 @@ use Korowai\Lib\Ldif\ParserStateInterface;
 use Korowai\Lib\Ldif\RecordInterface;
 use Korowai\Lib\Ldif\SnippetInterface;
 use Korowai\Lib\Ldif\SourceLocationInterface;
+
+// Specific records
+use Korowai\Lib\Ldif\Records\AbstractRecord;
 use Korowai\Lib\Ldif\Records\VersionSpec;
 
 /**
@@ -155,7 +158,7 @@ trait ObjectPropertiesAssertions
      *
      * @return array
      */
-    public static function getRecordPropertyGetters() : array
+    public static function getAbstractRecordPropertyGetters() : array
     {
         return array_merge(static::getSnippetPropertyGetters(), [
         ]);
@@ -168,7 +171,7 @@ trait ObjectPropertiesAssertions
      */
     public static function getVersionSpecPropertyGetters() : array
     {
-        return array_merge(static::getRecordPropertyGetters(), [
+        return array_merge(static::getAbstractRecordPropertyGetters(), [
             'version'                   => 'getVersion'
         ]);
     }
@@ -265,14 +268,21 @@ trait ObjectPropertiesAssertions
         RecordInterface $object,
         string $message = ''
     ) : void {
-        static $map = [
+        static $getGettersMap = [
+            AbstractRecord::class   => 'getAbstractRecordPropertyGetters',
             VersionSpec::class      => 'getVersionSpecPropertyGetters',
         ];
         $class = get_class($object);
-        $method = $map[$class] ?? 'getRecordPropertyGetters';
-        $getters = call_user_func([static::class, $method]);
+        if (($expectedClass = $expected['class'] ?? null) !== null) {
+            static::assertSame($expectedClass, $class);
+        }
+        $expectedProperties = array_filter($expected, function ($key) {
+            return !in_array($key, ['class']);
+        }, ARRAY_FILTER_USE_KEY);
+        $getGetters = $getGettersMap[$class] ?? $getGettersMap[AbstractRecord::class];
+        $getters = call_user_func([static::class, $getGetters]);
         $options = ['getters' => $getters, 'message' => $message];
-        static::assertHasPropertiesSameAs($expected, $object, $options);
+        static::assertHasPropertiesSameAs($expectedProperties, $object, $options);
     }
 
     /**
@@ -295,11 +305,7 @@ trait ObjectPropertiesAssertions
         static::assertHasPropertiesSameAs($expectedValues, $object, $options);
 
         if (($expectedCursorProperties = $expected['cursor'] ?? null) !== null) {
-            static::assertCursorHas(
-                $expectedCursorProperties,
-                $object->getCursor(),
-                $message
-            );
+            static::assertCursorHas($expectedCursorProperties, $object->getCursor(), $message);
         }
 
         if (($expectedErrors = $expected['errors'] ?? null) !== null) {

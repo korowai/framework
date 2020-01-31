@@ -17,6 +17,7 @@ use Korowai\Lib\Ldif\CursorInterface;
 use Korowai\Lib\Ldif\LocationInterface;
 use Korowai\Lib\Ldif\ParserStateInterface;
 use Korowai\Lib\Ldif\ParserError;
+use Korowai\Lib\Ldif\RFC2253;
 
 use function Korowai\Lib\Compat\preg_match;
 
@@ -120,8 +121,8 @@ trait ParsesDnSpec
     }
 
     /**
-     * Checks if the provided *$dn* string matches [RFC
-     * 2253](https://tools.ietf.org/html/rfc2253#section-3).
+     * Checks if the provided *$dn* string matches
+     * [RFC 2253](https://tools.ietf.org/html/rfc2253#section-3).
      *
      * @param  string $dn
      *
@@ -129,29 +130,7 @@ trait ParsesDnSpec
      */
     public function matchDnString(string $dn) : bool
     {
-        $hexchar = '[0-9a-fA-F]';
-        $hexpair = '(?:'.$hexchar.$hexchar.')';
-        $hexstring = '(?:'.$hexpair.'+)';
-        $specialchars = ',=+<>#;';
-        $pair = '(?:\\\\(?:['.$specialchars.'\\\\"]|'.$hexpair.'))';
-        $stringchar = '[^'.$specialchars.'\\\\"]';
-        $quotechar = '[^\\\\"]';
-        $string =
-        '(?:'.
-            '(?:'.$stringchar.'|'.$pair.')*'.
-            '|'.
-            '(?:#'.$hexstring.')'.
-            '|'.
-            '(?:"(?:'.$quotechar.'|'.$pair.')*")'.
-        ')';
-        $attributeValue = $string;
-        $attributeType = '(?:(?:[a-zA-Z][a-zA-Z\d-]*)|(?:\d+(?:\.\d+)*))'; // RFC2253 seems to have bug here.
-        $attributeTypeAndValue = '(?:'.$attributeType.'='.$attributeValue.')';
-        $nameComponent = '(?:'.$attributeTypeAndValue . '(?:\+'.$attributeTypeAndValue.')*)';
-        $name = '(?:'.$nameComponent . '(?:,'.$nameComponent.')*)';
-        $dnPattern = '/\G'.$name.'?$/';
-
-        return (0 !== preg_match($dnPattern, $dn));
+        return (0 !== preg_match(RFC2253::DISTINGUISHEDNAME, $dn));
     }
 }
 

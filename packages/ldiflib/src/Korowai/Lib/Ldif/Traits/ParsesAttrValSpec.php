@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Lib/Ldif/Traits/ParsesDnSpec.php
+ * @file src/Korowai/Lib/Ldif/Traits/ParsesAttrValSpec.php
  *
  * This file is part of the Korowai package
  *
@@ -17,14 +17,14 @@ use Korowai\Lib\Ldif\CursorInterface;
 use Korowai\Lib\Ldif\LocationInterface;
 use Korowai\Lib\Ldif\ParserStateInterface;
 use Korowai\Lib\Ldif\ParserError;
-use Korowai\Lib\Ldif\RFC2253;
+use Korowai\Lib\Ldif\RFC2849;
 
-use function Korowai\Lib\Compat\preg_match;
+//use function Korowai\Lib\Compat\preg_match;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-trait ParsesDnSpec
+trait ParsesAttrValSpec
 {
     /**
      * Skip zero or more whitespaces (FILL in RFC2849).
@@ -82,56 +82,90 @@ trait ParsesDnSpec
      * Parses dn-spec as defined in [RFC 2849](https://tools.ietf.org/html/rfc2849).
      *
      * @param  ParserStateInterface $state
-     * @param  string $dn The DN string returned by the function.
+     * @param  array $attrValSpec An array with attribute description at offset 0 and value specification at offset 1.
      *
      * @return bool true on success, false on parser error.
      */
-    public function parseDnSpec(ParserStateInterface $state, string &$dn = null) : bool
+    public function parseAttrValSpec(ParserStateInterface $state, array &$attrValSpec = null) : bool
     {
-        $cursor = $state->getCursor();
-
-        $matches = $this->matchAhead('/\Gdn:/', $cursor);
-        if (count($matches) === 0) {
-            $error = new ParserError(clone $cursor, 'syntax error: unexpected token (expected \'dn:\')');
-            $state->appendError($error);
+        if (!$this->parseAttributeDescription($state, $attributeDescription)) {
             return false;
         }
 
-        $matches = $this->matchAhead('/\G:/', $cursor);
+        $attrValSpec[] = $attributeDescription;
 
-        $this->skipFill($cursor);
-
-        $begin = clone $cursor;
-        if (count($matches) === 0) {
-            // SAFE-STRING
-            $result = $this->parseSafeString($state, $dn);
-        } else {
-            // BASE64-UTF8-STRING
-            $result = $this->parseBase64Utf8String($state, $dn);
-        }
-
-        if ($result && !$this->matchDnString($dn)) {
-            $error = new ParserError($begin, 'syntax error: invalid DN syntax: \''.$dn.'\'');
-            $state->appendError($error);
-            $cursor->moveTo($begin->getOffset());
+        if (!$this->parseValueSpec($state, $value)) {
             return false;
         }
 
-        return $result;
+        $attrValSpec[] = $value;
+
+        if (!$this->matchAhead('/\G'.RFC2849::SEP.'/')) {
+            $error = new ParseError(clone $cursor, "syntax error: unexpected token (expected line separator)");
+            $state->appendError($error);
+            return false;
+        }
+        return true;
     }
 
     /**
-     * Checks if the provided *$dn* string matches
-     * [RFC 2253](https://tools.ietf.org/html/rfc2253#section-3)
-     * requirements.
+     * Parses AttributeDescription as defined in [RFC 2849](https://tools.ietf.org/html/rfc2849).
      *
-     * @param  string $dn
+     * @param  ParserStateInterface $state
+     * @param  string $attributeDescription The attribute description string to be returned.
      *
-     * @return bool
+     * @return bool true on success, false on parser error.
      */
-    public function matchDnString(string $dn) : bool
+    public function parseAttributeDescription(ParserStateInterface $state, string &$attributeDescription)
     {
-        return (0 !== preg_match('/\G'.RFC2253::DISTINGUISHED_NAME.'$/', $dn));
+        $cursor = $state->getCursor();
+
+        $matches = $this->matchAhead('/\G'.RFC2849::ATTRIBUTE_DESCRIPTION.'/', $cursor);
+        if (count($matches) === 0) {
+            $error = new ParserError(clone $cursor, 'syntax error: unexpected token (expected attribute description)');
+            $state->appendError($error);
+            return false;
+        }
+        $attributeDescription = $matches[0];
+        return true;
+    }
+
+    /**
+     * Parses value-spec as defined in [RFC 2849](https://tools.ietf.org/html/rfc2849).
+     *
+     * @param  ParserStateInterface $state
+     * @param  string $value The value to be returned.
+     *
+     * @return bool true on success, false on parser error.
+     */
+    public function parseValueSpec(ParserStateInterface $state, string &$value)
+    {
+        $cursor = $state->getCursor();
+
+        $matches = $this->matchAhead('/\G:/', $cursor);
+        if (count($matches) === 0) {
+            $error = new ParserError(clone $cursor, 'syntax error: unexpected token (expected \':\')');
+            $state->appendError($error);
+            return false;
+        }
+
+        $matches = $this->matchAhead('/\G[:<]?/', $cursor);
+
+        $this->skipFill($cursor);
+
+        $delimiter = $matches[0] ?? null;
+        if ($delimiter === ':') {
+            // BASE64-STRING (should be BASE64-UTF8-STRING in RFC2849 I guess?)
+            $result = $this->parseBase64Utf8String($state, $value);
+        } elseif ($delimiter === '<') {
+            // FIXME: implement parseUrl
+            $result = $this->parseUrl($state, $url);
+        } else {
+            // SAFE-STRING
+            $result = $this->parseSafeString($state, $value);
+        }
+
+        return $result;
     }
 }
 

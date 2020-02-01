@@ -17,16 +17,13 @@ use Korowai\Lib\Ldif\LocationInterface;
 use Korowai\Lib\Ldif\CursorInterface;
 use Korowai\Lib\Ldif\ParserStateInterface;
 use Korowai\Lib\Ldif\ParserError;
+use Korowai\Lib\Ldif\RFC2849;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
 trait ParsesStrings
 {
-    protected static $re_base64_char = '[\+\/0-9=A-Za-z]';
-    protected static $re_safe_init_char = '[\x01-\x09\x0B-\x0C\x0E-\x1F\x21-\x39\x3B\x3D-\x7F]';
-    protected static $re_safe_char = '[\x01-\x09\x0B-\x0C\x0E-\x7F]';
-
     /**
      * Matches the string (starting at $location's position) against $pattern.
      *
@@ -62,7 +59,7 @@ trait ParsesStrings
      */
     public function parseSafeString(ParserStateInterface $state, string &$string = null) : bool
     {
-        $re = '/\G(?:'.self::$re_safe_init_char.self::$re_safe_char.'*)?/';
+        $re = '/\G'.RFC2849::SAFE_STRING.'?/';
         $cursor = $state->getCursor();
         $matches = $this->matchAhead($re, $cursor);
         // @codeCoverageIgnoreStart
@@ -90,7 +87,7 @@ trait ParsesStrings
      */
     public function parseBase64String(ParserStateInterface $state, string &$string = null) : bool
     {
-        $re = '/\G'.self::$re_base64_char.'*/';
+        $re = '/\G'.RFC2849::BASE64_STRING.'/';
         $cursor = $state->getCursor();
         $matches = $this->matchAt($re, $cursor);
         // @codeCoverageIgnoreStart

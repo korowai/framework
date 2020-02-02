@@ -17,7 +17,8 @@ use Korowai\Lib\Ldif\CursorInterface;
 use Korowai\Lib\Ldif\LocationInterface;
 use Korowai\Lib\Ldif\ParserStateInterface;
 use Korowai\Lib\Ldif\ParserError;
-use Korowai\Lib\Ldif\RFC2849;
+use Korowai\Lib\Ldif\RFC\RFC2849;
+use Korowai\Lib\Ldif\RFC\RFC3986;
 
 //use function Korowai\Lib\Compat\preg_match;
 
@@ -60,7 +61,7 @@ trait ParsesAttrValSpec
      */
     abstract public function matchAhead(string $pattern, CursorInterface $cursor, int $flags = 0) : array;
     /**
-     * Parses SAFE-STRING as defined in [RFC 2849](https://tools.ietf.org/html/rfc2849).
+     * Parses SAFE-STRING as defined in [RFC2849](https://tools.ietf.org/html/rfc2849).
      *
      * @param  ParserStateInterface $state
      * @param  string $string
@@ -69,7 +70,7 @@ trait ParsesAttrValSpec
      */
     abstract public function parseSafeString(ParserStateInterface $state, string &$string = null) : bool;
     /**
-     * Parses BASE64-UTF8-STRING as defined in [RFC 2849](https://tools.ietf.org/html/rfc2849).
+     * Parses BASE64-UTF8-STRING as defined in [RFC2849](https://tools.ietf.org/html/rfc2849).
      *
      * @param  ParserStateInterface $state
      * @param  string $string The parsed and decoded string returned by the function.
@@ -79,7 +80,7 @@ trait ParsesAttrValSpec
     abstract public function parseBase64Utf8String(ParserStateInterface $state, string &$string = null) : bool;
 
     /**
-     * Parses dn-spec as defined in [RFC 2849](https://tools.ietf.org/html/rfc2849).
+     * Parses dn-spec as defined in [RFC2849](https://tools.ietf.org/html/rfc2849).
      *
      * @param  ParserStateInterface $state
      * @param  array $attrValSpec An array with attribute description at offset 0 and value specification at offset 1.
@@ -109,7 +110,7 @@ trait ParsesAttrValSpec
     }
 
     /**
-     * Parses AttributeDescription as defined in [RFC 2849](https://tools.ietf.org/html/rfc2849).
+     * Parses AttributeDescription as defined in [RFC2849](https://tools.ietf.org/html/rfc2849).
      *
      * @param  ParserStateInterface $state
      * @param  string $attributeDescription The attribute description string to be returned.
@@ -131,14 +132,14 @@ trait ParsesAttrValSpec
     }
 
     /**
-     * Parses value-spec as defined in [RFC 2849](https://tools.ietf.org/html/rfc2849).
+     * Parses value-spec as defined in [RFC2849](https://tools.ietf.org/html/rfc2849).
      *
      * @param  ParserStateInterface $state
-     * @param  string $value The value to be returned.
+     * @param  mixed $value The value to be returned.
      *
      * @return bool true on success, false on parser error.
      */
-    public function parseValueSpec(ParserStateInterface $state, string &$value)
+    public function parseValueSpec(ParserStateInterface $state, &$value)
     {
         $cursor = $state->getCursor();
 
@@ -158,8 +159,8 @@ trait ParsesAttrValSpec
             // BASE64-STRING (should be BASE64-UTF8-STRING in RFC2849 I guess?)
             $result = $this->parseBase64Utf8String($state, $value);
         } elseif ($delimiter === '<') {
-            // FIXME: implement parseUrl
-            $result = $this->parseUrl($state, $url);
+            // URL
+            $result = $this->parseURL($state, $value);
         } else {
             // SAFE-STRING
             $result = $this->parseSafeString($state, $value);

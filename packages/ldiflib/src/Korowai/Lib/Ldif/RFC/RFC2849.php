@@ -11,10 +11,11 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Lib\Ldif;
+namespace Korowai\Lib\Ldif\RFC;
 
 /**
- * Data related to [RFC 2849](https://tools.ietf.org/html/rfc2849).
+ * PCRE expressions used when parsing LDIF file as defined in
+ * [RFC2849](https://tools.ietf.org/html/rfc2849).
  */
 class RFC2849
 {
@@ -27,8 +28,8 @@ class RFC2849
     public const SAFE_STRING = '(?:'.self::SAFE_INIT_CHAR.self::SAFE_CHAR.'*)';
 
     public const LDAP_OID = '(?:\d+(?:\.\d+)*)'; // +errata
-    public const ALPHA = '[a-zA-Z]';
-    public const ATTR_TYPE_CHARS = '[a-zA-Z\d-]';
+    public const ALPHA = RFC2234::ALPHA;
+    public const ATTR_TYPE_CHARS = '['.RFC2234::ALPHACHARS.RFC2234::DIGITCHARS.'-]';
     public const OPT_CHAR = self::ATTR_TYPE_CHARS;
     public const OPTION = '(?:'.self::OPT_CHAR.'+)';
     public const OPTIONS = '(?:'.self::OPTION.'(?:;'.self::OPTION.')*)';

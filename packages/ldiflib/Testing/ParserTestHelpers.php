@@ -34,7 +34,7 @@ trait ParserTestHelpers
      *
      * @return Input
      */
-    protected function getInputFromSource(string $source, array $options = []) : Input
+    public function getInputFromSource(string $source, array $options = []) : Input
     {
         $pp = new Preprocessor;
 
@@ -51,7 +51,7 @@ trait ParserTestHelpers
      *
      * @return Input
      */
-    protected function getCursorFromSource(string $source, int $position = 0, array $options = []) : Cursor
+    public function getCursorFromSource(string $source, int $position = 0, array $options = []) : Cursor
     {
         $input = $this->getInputFromSource($source, $options);
         return new Cursor($input, $position);
@@ -64,7 +64,7 @@ trait ParserTestHelpers
      * @param  int $posigion
      * @param  array $options
      */
-    protected function getParserStateFromSource(string $source, int $position = 0, array $options = []) : ParserState
+    public function getParserStateFromSource(string $source, int $position = 0, array $options = []) : ParserState
     {
         $cursor = $this->getCursorFromSource($source, $position, $options);
 

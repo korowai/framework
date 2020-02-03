@@ -7,7 +7,6 @@
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @package korowai\ldaplib
  * @license Distributed under MIT license.
- * @package korowai\ldaplib
  */
 
 declare(strict_types=1);

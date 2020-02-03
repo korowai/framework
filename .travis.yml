@@ -4,10 +4,19 @@ php:
   - '7.3'
 env:
   - KOROWAI_HEAVY_TESTING=on
+    KOROWAI_TEST_RFC=true
+    KOROWAI_CODECOV=false
+  - KOROWAI_HEAVY_TESTING=on
+    KOROWAI_TEST_RFC=false
+    KOROWAI_CODECOV=true
 install:
   - travis_retry composer install --no-interaction
 script:
   - mkdir -p build/logs
-  - php vendor/bin/phpunit --coverage-clover build/logs/clover.xml -c phpunit.xml.dist;
+  - if $KOROWAI_TEST_RFC; then
+      php vendor/bin/phpunit --group RFC -c phpunit.xml.dist;
+    else
+      php vendor/bin/phpunit --exclude-group RFC --coverage-clover build/logs/clover.xml -c phpunit.xml.dist;
+    fi
 after_success:
-  - curl -s https://codecov.io/bash | bash
+  - if $KOROWAI_CODECOV; then curl -s https://codecov.io/bash | bash; fi

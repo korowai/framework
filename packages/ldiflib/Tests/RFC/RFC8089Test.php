@@ -20,6 +20,7 @@ use Korowai\Lib\Ldif\RFC\RFC3986;
 use Korowai\Testing\Lib\Ldif\RFC\TestCase;
 
 /**
+ * @group RFC
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
 class RFC8089Test extends TestCase

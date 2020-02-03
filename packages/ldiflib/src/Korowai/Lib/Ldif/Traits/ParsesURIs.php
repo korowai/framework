@@ -87,14 +87,14 @@ trait ParsesURIs
     public function parseURIReference(ParserStateInterface $state, array &$matches = null) : bool
     {
         $cursor = $state->getCursor();
-        $matches = $this->matchAhead('/\G'.RFC3986::URI_REFERENCE.'/', $cursor, PREG_UNMATCHED_AS_NULL);
+        $matches = $this->matchAhead('/\G'.Rfc3986::URI_REFERENCE.'/', $cursor, PREG_UNMATCHED_AS_NULL);
         if (count($matches) === 0) {
             $error = new ParserError(clone $cursor, 'syntax error: unexpected token (expected URI-reference)');
             $state->appendError($error);
             return false;
         }
         $thePath = array_filter(
-            array_intersect_key($matches, RFC3986::PATH_KEYS),
+            array_intersect_key($matches, Rfc3986::PATH_KEYS),
             function ($path) {
                 return (($path[0] ?? null) !== null);
             }

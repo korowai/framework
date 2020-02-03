@@ -21,40 +21,45 @@ use Korowai\Testing\Lib\Rfc\TestCase;
  */
 class Rfc5234Test extends TestCase
 {
+    public static function getRfcClass() : string
+    {
+        return Rfc5234::class;
+    }
+
     public function test__constValues()
     {
         // character lists for character classes
-        $this->assertSame('A-Za-z',         RFC5234::ALPHACHARS);
-        $this->assertSame('01',             RFC5234::BITCHARS);
-        $this->assertSame('\x01-\x7F',      RFC5234::CHARCHARS);
-        $this->assertSame('\r',             RFC5234::CRCHARS);
-        $this->assertSame('\x00-\x1F\x7F',  RFC5234::CTLCHARS);
-        $this->assertSame('\d',             RFC5234::DIGITCHARS);
-        $this->assertSame('\dA-F',          RFC5234::HEXDIGCHARS);
-        $this->assertSame('\t',             RFC5234::HTABCHARS);
-        $this->assertSame('\n',             RFC5234::LFCHARS);
-        $this->assertSame('\x00-\xFF',      RFC5234::OCTETCHARS);
-        $this->assertSame(' ',              RFC5234::SPCHARS);
-        $this->assertSame('\x21-\x7E',      RFC5234::VCHARCHARS);
-        $this->assertSame(' \t',            RFC5234::WSPCHARS);
+        $this->assertSame('A-Za-z',         Rfc5234::ALPHACHARS);
+        $this->assertSame('01',             Rfc5234::BITCHARS);
+        $this->assertSame('\x01-\x7F',      Rfc5234::CHARCHARS);
+        $this->assertSame('\r',             Rfc5234::CRCHARS);
+        $this->assertSame('\x00-\x1F\x7F',  Rfc5234::CTLCHARS);
+        $this->assertSame('\d',             Rfc5234::DIGITCHARS);
+        $this->assertSame('\dA-F',          Rfc5234::HEXDIGCHARS);
+        $this->assertSame('\t',             Rfc5234::HTABCHARS);
+        $this->assertSame('\n',             Rfc5234::LFCHARS);
+        $this->assertSame('\x00-\xFF',      Rfc5234::OCTETCHARS);
+        $this->assertSame(' ',              Rfc5234::SPCHARS);
+        $this->assertSame('\x21-\x7E',      Rfc5234::VCHARCHARS);
+        $this->assertSame(' \t',            Rfc5234::WSPCHARS);
 
         // Core rules
-        $this->assertSame('[A-Za-z]',       RFC5234::ALPHA);
-        $this->assertSame('[01]',           RFC5234::BIT);
-        $this->assertSame('[\x01-\x7F]',    RFC5234::CHAR);
-        $this->assertSame('\r',             RFC5234::CR);
-        $this->assertSame('(?:\r\n)',       RFC5234::CRLF);
-        $this->assertSame('[\x00-\x1F\x7F]',RFC5234::CTL);
-        $this->assertSame('\d',             RFC5234::DIGIT);
-        $this->assertSame('"',              RFC5234::DQUOTE);
-        $this->assertSame('[\dA-F]',        RFC5234::HEXDIG);
-        $this->assertSame('\t',             RFC5234::HTAB);
-        $this->assertSame('\n',             RFC5234::LF);
-        $this->assertSame('(?:(?:[ \t]|(?:\r\n)[ \t])*)', RFC5234::LWSP);
-        $this->assertSame('[\x00-\xFF]',    RFC5234::OCTET);
-        $this->assertSame(' ',              RFC5234::SP);
-        $this->assertSame('[\x21-\x7E]',    RFC5234::VCHAR);
-        $this->assertSame('[ \t]',          RFC5234::WSP);
+        $this->assertSame('[A-Za-z]',       Rfc5234::ALPHA);
+        $this->assertSame('[01]',           Rfc5234::BIT);
+        $this->assertSame('[\x01-\x7F]',    Rfc5234::CHAR);
+        $this->assertSame('\r',             Rfc5234::CR);
+        $this->assertSame('(?:\r\n)',       Rfc5234::CRLF);
+        $this->assertSame('[\x00-\x1F\x7F]',Rfc5234::CTL);
+        $this->assertSame('\d',             Rfc5234::DIGIT);
+        $this->assertSame('"',              Rfc5234::DQUOTE);
+        $this->assertSame('[\dA-F]',        Rfc5234::HEXDIG);
+        $this->assertSame('\t',             Rfc5234::HTAB);
+        $this->assertSame('\n',             Rfc5234::LF);
+        $this->assertSame('(?:(?:[ \t]|(?:\r\n)[ \t])*)', Rfc5234::LWSP);
+        $this->assertSame('[\x00-\xFF]',    Rfc5234::OCTET);
+        $this->assertSame(' ',              Rfc5234::SP);
+        $this->assertSame('[\x21-\x7E]',    Rfc5234::VCHAR);
+        $this->assertSame('[ \t]',          Rfc5234::WSP);
     }
 }
 

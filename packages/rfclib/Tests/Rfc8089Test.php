@@ -22,14 +22,14 @@ use Korowai\Testing\Lib\Rfc\TestCase;
  */
 class Rfc8089Test extends TestCase
 {
-    public static function getRFCclass() : string
+    public static function getRfcClass() : string
     {
-        return RFC8089::class;
+        return Rfc8089::class;
     }
 
     public function test__extends__RFC3986()
     {
-        $this->assertExtendsClass(RFC3986::class, RFC8089::class);
+        $this->assertExtendsClass(Rfc3986::class, Rfc8089::class);
     }
 
 //    //
@@ -53,7 +53,7 @@ class Rfc8089Test extends TestCase
 //     */
 //    public function test__PATH_EMPTY__matches(string $string)
 //    {
-//        $this->assertRFCMatches($string, 'PATH_EMPTY', ['path_empty' => $string]);
+//        $this->assertRfcMatches($string, 'PATH_EMPTY', ['path_empty' => $string]);
 //    }
 //
 //    /**
@@ -61,7 +61,7 @@ class Rfc8089Test extends TestCase
 //     */
 //    public function test__PATH_EMPTY__doesNotMatch(string $string)
 //    {
-//        $this->assertRFCDoesNotMatch($string, 'PATH_EMPTY');
+//        $this->assertRfcNotMatches($string, 'PATH_EMPTY');
 //    }
 //
 //    //
@@ -90,7 +90,7 @@ class Rfc8089Test extends TestCase
 //     */
 //    public function test__PATH_NOSCHEME__matches(string $string)
 //    {
-//        $this->assertRFCMatches($string, 'PATH_NOSCHEME', ['path_noscheme' => $string]);
+//        $this->assertRfcMatches($string, 'PATH_NOSCHEME', ['path_noscheme' => $string]);
 //    }
 //
 //    /**
@@ -98,7 +98,7 @@ class Rfc8089Test extends TestCase
 //     */
 //    public function test__PATH_NOSCHEME__doesNotMatch(string $string)
 //    {
-//        $this->assertRFCDoesNotMatch($string, 'PATH_NOSCHEME');
+//        $this->assertRfcNotMatches($string, 'PATH_NOSCHEME');
 //    }
 //
 //    //
@@ -128,7 +128,7 @@ class Rfc8089Test extends TestCase
 //     */
 //    public function test__PATH_ROOTLESS__matches(string $string)
 //    {
-//        $this->assertRFCMatches($string, 'PATH_ROOTLESS', ['path_rootless' => $string]);
+//        $this->assertRfcMatches($string, 'PATH_ROOTLESS', ['path_rootless' => $string]);
 //    }
 //
 //    /**
@@ -136,7 +136,7 @@ class Rfc8089Test extends TestCase
 //     */
 //    public function test__PATH_ROOTLESS__doesNotMatch(string $string)
 //    {
-//        $this->assertRFCDoesNotMatch($string, 'PATH_ROOTLESS');
+//        $this->assertRfcNotMatches($string, 'PATH_ROOTLESS');
 //    }
 //
 //    //
@@ -161,7 +161,7 @@ class Rfc8089Test extends TestCase
 //     */
 //    public function test__PATH_ABSOLUTE__matches(string $string)
 //    {
-//        $this->assertRFCMatches($string, 'PATH_ABSOLUTE', ['path_absolute' => $string]);
+//        $this->assertRfcMatches($string, 'PATH_ABSOLUTE', ['path_absolute' => $string]);
 //    }
 //
 //    /**
@@ -169,7 +169,7 @@ class Rfc8089Test extends TestCase
 //     */
 //    public function test__PATH_ABSOLUTE__doesNotMatch(string $string)
 //    {
-//        $this->assertRFCDoesNotMatch($string, 'PATH_ABSOLUTE');
+//        $this->assertRfcNotMatches($string, 'PATH_ABSOLUTE');
 //    }
 //
 //    //
@@ -192,7 +192,7 @@ class Rfc8089Test extends TestCase
 //     */
 //    public function test__PATH_ABEMPTY__matches(string $string)
 //    {
-//        $this->assertRFCMatches($string, 'PATH_ABEMPTY', ['path_abempty' => $string]);
+//        $this->assertRfcMatches($string, 'PATH_ABEMPTY', ['path_abempty' => $string]);
 //    }
 //
 //    /**
@@ -200,7 +200,7 @@ class Rfc8089Test extends TestCase
 //     */
 //    public function test__PATH_ABEMPTY__doesNotMatch(string $string)
 //    {
-//        $this->assertRFCDoesNotMatch($string, 'PATH_ABEMPTY');
+//        $this->assertRfcNotMatches($string, 'PATH_ABEMPTY');
 //    }
 //
 //    //
@@ -231,7 +231,7 @@ class Rfc8089Test extends TestCase
 //     */
 //    public function test__PATH__matches(string $string)
 //    {
-//        $this->assertRFCMatches($string, 'PATH', ['path' => $string]);
+//        $this->assertRfcMatches($string, 'PATH', ['path' => $string]);
 //    }
 //
 //    /**
@@ -239,7 +239,7 @@ class Rfc8089Test extends TestCase
 //     */
 //    public function test__PATH__doesNotMatch(string $string)
 //    {
-//        $this->assertRFCDoesNotMatch($string, 'PATH');
+//        $this->assertRfcNotMatches($string, 'PATH');
 //    }
 //
 //    //
@@ -263,7 +263,7 @@ class Rfc8089Test extends TestCase
 //     */
 //    public function test__REG_NAME__matches(string $string)
 //    {
-//        $this->assertRFCMatches($string, 'REG_NAME', ['reg_name' => $string]);
+//        $this->assertRfcMatches($string, 'REG_NAME', ['reg_name' => $string]);
 //    }
 //
 //    /**
@@ -271,7 +271,7 @@ class Rfc8089Test extends TestCase
 //     */
 //    public function test__REG_NAME__doesNotMatch(string $string)
 //    {
-//        $this->assertRFCDoesNotMatch($string, 'REG_NAME');
+//        $this->assertRfcNotMatches($string, 'REG_NAME');
 //    }
 //
 //    //
@@ -296,7 +296,7 @@ class Rfc8089Test extends TestCase
 //     */
 //    public function test__DEC_OCTET__matches(string $string)
 //    {
-//        $this->assertRFCMatches($string, 'DEC_OCTET');
+//        $this->assertRfcMatches($string, 'DEC_OCTET');
 //    }
 //
 //    /**
@@ -304,7 +304,7 @@ class Rfc8089Test extends TestCase
 //     */
 //    public function test__DEC_OCTET__doesNotMatch(string $string)
 //    {
-//        $this->assertRFCDoesNotMatch($string, 'DEC_OCTET');
+//        $this->assertRfcNotMatches($string, 'DEC_OCTET');
 //    }
 //
 //    //
@@ -339,7 +339,7 @@ class Rfc8089Test extends TestCase
 //     */
 //    public function test__IPV4ADDRESS__matches(string $string)
 //    {
-//        $this->assertRFCMatches($string, 'IPV4ADDRESS', ['ipv4address' => $string]);
+//        $this->assertRfcMatches($string, 'IPV4ADDRESS', ['ipv4address' => $string]);
 //    }
 //
 //    /**
@@ -347,7 +347,7 @@ class Rfc8089Test extends TestCase
 //     */
 //    public function test__IPV4ADDRESS__doesNotMatch(string $string)
 //    {
-//        $this->assertRFCDoesNotMatch($string, 'IPV4ADDRESS');
+//        $this->assertRfcNotMatches($string, 'IPV4ADDRESS');
 //    }
 //
 //    //
@@ -379,7 +379,7 @@ class Rfc8089Test extends TestCase
 //     */
 //    public function test__H16__matches(string $string)
 //    {
-//        $this->assertRFCMatches($string, 'H16');
+//        $this->assertRfcMatches($string, 'H16');
 //    }
 //
 //    /**
@@ -387,7 +387,7 @@ class Rfc8089Test extends TestCase
 //     */
 //    public function test__H16__doesNotMatch(string $string)
 //    {
-//        $this->assertRFCDoesNotMatch($string, 'H16');
+//        $this->assertRfcNotMatches($string, 'H16');
 //    }
 //
 //    //
@@ -414,7 +414,7 @@ class Rfc8089Test extends TestCase
 //     */
 //    public function test__LS32__matches(string $string)
 //    {
-//        $this->assertRFCMatches($string, 'LS32');
+//        $this->assertRfcMatches($string, 'LS32');
 //    }
 //
 //    /**
@@ -422,7 +422,7 @@ class Rfc8089Test extends TestCase
 //     */
 //    public function test__LS32__doesNotMatch(string $string)
 //    {
-//        $this->assertRFCDoesNotMatch($string, 'LS32');
+//        $this->assertRfcNotMatches($string, 'LS32');
 //    }
 //
 //    //
@@ -458,7 +458,7 @@ class Rfc8089Test extends TestCase
 //     */
 //    public function test__IPV6ADDRESS__matches(string $string)
 //    {
-//        $this->assertRFCMatches($string, 'IPV6ADDRESS', ['ipv6address' => $string]);
+//        $this->assertRfcMatches($string, 'IPV6ADDRESS', ['ipv6address' => $string]);
 //    }
 //
 //    /**
@@ -466,7 +466,7 @@ class Rfc8089Test extends TestCase
 //     */
 //    public function test__IPV6ADDRESS__doesNotMatch(string $string)
 //    {
-//        $this->assertRFCDoesNotMatch($string, 'IPV6ADDRESS');
+//        $this->assertRfcNotMatches($string, 'IPV6ADDRESS');
 //    }
 //
 //    //
@@ -496,7 +496,7 @@ class Rfc8089Test extends TestCase
 //     */
 //    public function test__IPVFUTURE__matches(string $string)
 //    {
-//        $this->assertRFCMatches($string, 'IPVFUTURE', ['ipvfuture' => $string]);
+//        $this->assertRfcMatches($string, 'IPVFUTURE', ['ipvfuture' => $string]);
 //    }
 //
 //    /**
@@ -504,7 +504,7 @@ class Rfc8089Test extends TestCase
 //     */
 //    public function test__IPVFUTURE__doesNotMatch(string $string)
 //    {
-//        $this->assertRFCDoesNotMatch($string, 'IPVFUTURE');
+//        $this->assertRfcNotMatches($string, 'IPVFUTURE');
 //    }
 //
 //    //
@@ -554,7 +554,7 @@ class Rfc8089Test extends TestCase
 //     */
 //    public function test__IP_LITERAL__matches(string $string)
 //    {
-//        $this->assertRFCMatches($string, 'IP_LITERAL', ['ip_literal' => $string]);
+//        $this->assertRfcMatches($string, 'IP_LITERAL', ['ip_literal' => $string]);
 //    }
 //
 //    /**
@@ -562,7 +562,7 @@ class Rfc8089Test extends TestCase
 //     */
 //    public function test__IP_LITERAL__doesNotMatch(string $string)
 //    {
-//        $this->assertRFCDoesNotMatch($string, 'IP_LITERAL');
+//        $this->assertRfcNotMatches($string, 'IP_LITERAL');
 //    }
 //
 //    //
@@ -586,7 +586,7 @@ class Rfc8089Test extends TestCase
 //     */
 //    public function test__PORT__matches(string $string)
 //    {
-//        $this->assertRFCMatches($string, 'PORT', ['port' => $string]);
+//        $this->assertRfcMatches($string, 'PORT', ['port' => $string]);
 //    }
 //
 //    /**
@@ -594,7 +594,7 @@ class Rfc8089Test extends TestCase
 //     */
 //    public function test__PORT__doesNotMatch(string $string)
 //    {
-//        $this->assertRFCDoesNotMatch($string, 'PORT');
+//        $this->assertRfcNotMatches($string, 'PORT');
 //    }
 
     //
@@ -644,7 +644,7 @@ class Rfc8089Test extends TestCase
     public function test__FILE_AUTH__matches(string $string, array $pieces)
     {
         $expMatches = array_merge(['host' => $string], $pieces);
-        $this->assertRFCMatches($string, 'FILE_AUTH', $expMatches);
+        $this->assertRfcMatches($string, 'FILE_AUTH', $expMatches);
     }
 
     /**
@@ -652,7 +652,7 @@ class Rfc8089Test extends TestCase
      */
     public function test__FILE_AUTH__doesNotMatch(string $string)
     {
-        $this->assertRFCDoesNotMatch($string, 'FILE_AUTH');
+        $this->assertRfcNotMatches($string, 'FILE_AUTH');
     }
 
 //    //
@@ -679,7 +679,7 @@ class Rfc8089Test extends TestCase
 //     */
 //    public function test__USERINFO__matches(string $string)
 //    {
-//        $this->assertRFCMatches($string, 'USERINFO', ['userinfo' => $string]);
+//        $this->assertRfcMatches($string, 'USERINFO', ['userinfo' => $string]);
 //    }
 //
 //    /**
@@ -687,7 +687,7 @@ class Rfc8089Test extends TestCase
 //     */
 //    public function test__USERINFO__doesNotMatch(string $string)
 //    {
-//        $this->assertRFCDoesNotMatch($string, 'USERINFO');
+//        $this->assertRfcNotMatches($string, 'USERINFO');
 //    }
 //
 //    //
@@ -767,7 +767,7 @@ class Rfc8089Test extends TestCase
 //     */
 //    public function test__AUTHORITY__matches(string $string)
 //    {
-//        $this->assertRFCMatches($string, 'AUTHORITY', ['authority' => $string]);
+//        $this->assertRfcMatches($string, 'AUTHORITY', ['authority' => $string]);
 //    }
 //
 //    /**
@@ -775,7 +775,7 @@ class Rfc8089Test extends TestCase
 //     */
 //    public function test__AUTHORITY__doesNotMatch(string $string)
 //    {
-//        $this->assertRFCDoesNotMatch($string, 'AUTHORITY');
+//        $this->assertRfcNotMatches($string, 'AUTHORITY');
 //    }
 //
 //    //
@@ -799,7 +799,7 @@ class Rfc8089Test extends TestCase
 //     */
 //    public function test__SCHEME__matches(string $string)
 //    {
-//        $this->assertRFCMatches($string, 'SCHEME', ['scheme' => $string]);
+//        $this->assertRfcMatches($string, 'SCHEME', ['scheme' => $string]);
 //    }
 //
 //    /**
@@ -807,7 +807,7 @@ class Rfc8089Test extends TestCase
 //     */
 //    public function test__SCHEME__doesNotMatch(string $string)
 //    {
-//        $this->assertRFCDoesNotMatch($string, 'SCHEME');
+//        $this->assertRfcNotMatches($string, 'SCHEME');
 //    }
 //
 //    //
@@ -843,7 +843,7 @@ class Rfc8089Test extends TestCase
 //     */
 //    public function test__RELATIVE_PART__matches(string $string)
 //    {
-//        $this->assertRFCMatches($string, 'RELATIVE_PART', ['relative_part' => $string]);
+//        $this->assertRfcMatches($string, 'RELATIVE_PART', ['relative_part' => $string]);
 //    }
 //
 //    /**
@@ -851,7 +851,7 @@ class Rfc8089Test extends TestCase
 //     */
 //    public function test__RELATIVE_PART__doesNotMatch(string $string)
 //    {
-//        $this->assertRFCDoesNotMatch($string, 'RELATIVE_PART');
+//        $this->assertRfcNotMatches($string, 'RELATIVE_PART');
 //    }
 //
 //    //
@@ -888,7 +888,7 @@ class Rfc8089Test extends TestCase
 //     */
 //    public function test__HIER_PART__matches(string $string)
 //    {
-//        $this->assertRFCMatches($string, 'HIER_PART', ['hier_part' => $string]);
+//        $this->assertRfcMatches($string, 'HIER_PART', ['hier_part' => $string]);
 //    }
 //
 //    /**
@@ -896,7 +896,7 @@ class Rfc8089Test extends TestCase
 //     */
 //    public function test__HIER_PART__doesNotMatch(string $string)
 //    {
-//        $this->assertRFCDoesNotMatch($string, 'HIER_PART');
+//        $this->assertRfcNotMatches($string, 'HIER_PART');
 //    }
 //
 //    //
@@ -923,7 +923,7 @@ class Rfc8089Test extends TestCase
 //     */
 //    public function test__FRAGMENT__matches(string $string)
 //    {
-//        $this->assertRFCMatches($string, 'FRAGMENT', ['fragment' => $string]);
+//        $this->assertRfcMatches($string, 'FRAGMENT', ['fragment' => $string]);
 //    }
 //
 //    /**
@@ -931,7 +931,7 @@ class Rfc8089Test extends TestCase
 //     */
 //    public function test__FRAGMENT__doesNotMatch(string $string)
 //    {
-//        $this->assertRFCDoesNotMatch($string, 'FRAGMENT');
+//        $this->assertRfcNotMatches($string, 'FRAGMENT');
 //    }
 //
 //    //
@@ -958,7 +958,7 @@ class Rfc8089Test extends TestCase
 //     */
 //    public function test__QUERY__matches(string $string)
 //    {
-//        $this->assertRFCMatches($string, 'QUERY', ['query' => $string]);
+//        $this->assertRfcMatches($string, 'QUERY', ['query' => $string]);
 //    }
 //
 //    /**
@@ -966,7 +966,7 @@ class Rfc8089Test extends TestCase
 //     */
 //    public function test__QUERY__doesNotMatch(string $string)
 //    {
-//        $this->assertRFCDoesNotMatch($string, 'QUERY');
+//        $this->assertRfcNotMatches($string, 'QUERY');
 //    }
 //
 //    //
@@ -1250,7 +1250,7 @@ class Rfc8089Test extends TestCase
 //    public function test__RELATIVE_REF__matches(string $string, array $parts)
 //    {
 //        $expMatches = array_merge(['relative_ref' => $string], $parts);
-//        $this->assertRFCMatches($string, 'RELATIVE_REF', $expMatches);
+//        $this->assertRfcMatches($string, 'RELATIVE_REF', $expMatches);
 //    }
 //
 //    /**
@@ -1258,7 +1258,7 @@ class Rfc8089Test extends TestCase
 //     */
 //    public function test__RELATIVE_REF__doesNotMatch(string $string)
 //    {
-//        $this->assertRFCDoesNotMatch($string, 'RELATIVE_REF');
+//        $this->assertRfcNotMatches($string, 'RELATIVE_REF');
 //    }
 //
 //    //
@@ -1638,7 +1638,7 @@ class Rfc8089Test extends TestCase
 //    public function test__ABSOLUTE_URI__matches(string $string, array $pieces)
 //    {
 //        $expMatches = array_merge(['absolute_uri' => $string], $pieces);
-//        $this->assertRFCMatches($string, 'ABSOLUTE_URI', $expMatches);
+//        $this->assertRfcMatches($string, 'ABSOLUTE_URI', $expMatches);
 //    }
 //
 //    /**
@@ -1646,7 +1646,7 @@ class Rfc8089Test extends TestCase
 //     */
 //    public function test__ABSOLUTE_URI__doesNotMatch(string $string)
 //    {
-//        $this->assertRFCDoesNotMatch($string, 'ABSOLUTE_URI');
+//        $this->assertRfcNotMatches($string, 'ABSOLUTE_URI');
 //    }
 //
 //    //
@@ -1696,7 +1696,7 @@ class Rfc8089Test extends TestCase
 //    public function test__URI__matches(string $string, array $pieces)
 //    {
 //        $expMatches = array_merge(['uri' => $string], $pieces);
-//        $this->assertRFCMatches($string, 'URI', $expMatches);
+//        $this->assertRfcMatches($string, 'URI', $expMatches);
 //    }
 //
 //    /**
@@ -1704,7 +1704,7 @@ class Rfc8089Test extends TestCase
 //     */
 //    public function test__URI__doesNotMatch(string $string)
 //    {
-//        $this->assertRFCDoesNotMatch($string, 'URI');
+//        $this->assertRfcNotMatches($string, 'URI');
 //    }
 //
 //    //
@@ -1741,7 +1741,7 @@ class Rfc8089Test extends TestCase
 //    public function test__URI_REFERENCE__matches(string $string, array $pieces)
 //    {
 //        $expMatches = array_merge(['uri_reference' => $string], $pieces);
-//        $this->assertRFCMatches($string, 'URI_REFERENCE', $expMatches);
+//        $this->assertRfcMatches($string, 'URI_REFERENCE', $expMatches);
 //    }
 //
 //    /**
@@ -1749,7 +1749,7 @@ class Rfc8089Test extends TestCase
 //     */
 //    public function test__URI_REFERENCE__doesNotMatch(string $string)
 //    {
-//        $this->assertRFCDoesNotMatch($string, 'URI_REFERENCE');
+//        $this->assertRfcNotMatches($string, 'URI_REFERENCE');
 //    }
 }
 

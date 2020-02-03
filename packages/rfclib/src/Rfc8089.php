@@ -21,7 +21,7 @@ namespace Korowai\Lib\Rfc;
  * **Example**:
  *
  * ```
- * $result = preg_match('/^'.RFC8089::FILE_URI.'$/', $subject, $matches, PREG_UNMATCHED_AS_NULL)
+ * $result = preg_match('/^'.Rfc8089::FILE_URI.'$/', $subject, $matches, PREG_UNMATCHED_AS_NULL)
  * ```
  */
 class Rfc8089 extends Rfc3986

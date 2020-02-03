@@ -59,7 +59,7 @@ trait ParsesStrings
      */
     public function parseSafeString(ParserStateInterface $state, string &$string = null) : bool
     {
-        $re = '/\G'.RFC2849::SAFE_STRING.'?/';
+        $re = '/\G'.Rfc2849::SAFE_STRING.'?/';
         $cursor = $state->getCursor();
         $matches = $this->matchAhead($re, $cursor);
         // @codeCoverageIgnoreStart
@@ -87,7 +87,7 @@ trait ParsesStrings
      */
     public function parseBase64String(ParserStateInterface $state, string &$string = null) : bool
     {
-        $re = '/\G'.RFC2849::BASE64_STRING.'/';
+        $re = '/\G'.Rfc2849::BASE64_STRING.'/';
         $cursor = $state->getCursor();
         $matches = $this->matchAt($re, $cursor);
         // @codeCoverageIgnoreStart

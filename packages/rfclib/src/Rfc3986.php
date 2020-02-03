@@ -21,15 +21,15 @@ namespace Korowai\Lib\Rfc;
  * **Example**:
  *
  * ```
- * $result = preg_match('/^'.RFC3986::URI_REFERENCE.'$/', $subject, $matches, PREG_UNMATCHED_AS_NULL)
+ * $result = preg_match('/^'.Rfc3986::URI_REFERENCE.'$/', $subject, $matches, PREG_UNMATCHED_AS_NULL)
  * ```
  */
 class Rfc3986
 {
     // character lists for character classes
-    public const ALPHACHARS = RFC5234::ALPHACHARS;
-    public const DIGITCHARS = RFC5234::DIGITCHARS;
-    public const HEXDIGCHARS = RFC5234::HEXDIGCHARS.'a-f';
+    public const ALPHACHARS = Rfc5234::ALPHACHARS;
+    public const DIGITCHARS = Rfc5234::DIGITCHARS;
+    public const HEXDIGCHARS = Rfc5234::HEXDIGCHARS.'a-f';
     public const GEN_DELIM_CHARS = ':\/\?#\[\]@';
     public const SUB_DELIM_CHARS = '!\$&\'\(\)\*\+,;=';
     public const RESERVEDCHARS = self::GEN_DELIM_CHARS.self::SUB_DELIM_CHARS;
@@ -37,8 +37,8 @@ class Rfc3986
     public const PCHARCHARS = ':@'.self::SUB_DELIM_CHARS.self::UNRESERVEDCHARS;
 
     // character classes
-    public const ALPHA = RFC5234::ALPHA;
-    public const DIGIT = RFC5234::DIGIT;
+    public const ALPHA = Rfc5234::ALPHA;
+    public const DIGIT = Rfc5234::DIGIT;
     public const HEXDIG = '['.self::HEXDIGCHARS.']';
     public const SUB_DELIMS = '['.self::SUB_DELIM_CHARS.']';
     public const GEN_DELIMS = '['.self::GEN_DELIM_CHARS.']';

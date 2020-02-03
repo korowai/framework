@@ -28,8 +28,8 @@ class Rfc2849
     public const SAFE_STRING = '(?:'.self::SAFE_INIT_CHAR.self::SAFE_CHAR.'*)';
 
     public const LDAP_OID = '(?:\d+(?:\.\d+)*)'; // +errata
-    public const ALPHA = RFC5234::ALPHA;
-    public const ATTR_TYPE_CHARS = '['.RFC5234::ALPHACHARS.RFC5234::DIGITCHARS.'-]';
+    public const ALPHA = Rfc5234::ALPHA;
+    public const ATTR_TYPE_CHARS = '['.Rfc5234::ALPHACHARS.Rfc5234::DIGITCHARS.'-]';
     public const OPT_CHAR = self::ATTR_TYPE_CHARS;
     public const OPTION = '(?:'.self::OPT_CHAR.'+)';
     public const OPTIONS = '(?:'.self::OPTION.'(?:;'.self::OPTION.')*)';

@@ -21,7 +21,7 @@ namespace Korowai\Lib\Rfc;
  * **Example**:
  *
  * ```
- * $result = preg_match('/^'.RFC2253::DISTINGUISHED_NAME.'$/', $subject, $matches, PREG_UNMATCHED_AS_NULL)
+ * $result = preg_match('/^'.Rfc2253::DISTINGUISHED_NAME.'$/', $subject, $matches, PREG_UNMATCHED_AS_NULL)
  * ```
  */
 class Rfc2253

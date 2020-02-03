@@ -131,7 +131,7 @@ trait ParsesDnSpec
      */
     public function matchDnString(string $dn) : bool
     {
-        return (0 !== preg_match('/\G'.RFC2253::DISTINGUISHED_NAME.'$/', $dn));
+        return (0 !== preg_match('/\G'.Rfc2253::DISTINGUISHED_NAME.'$/', $dn));
     }
 }
 

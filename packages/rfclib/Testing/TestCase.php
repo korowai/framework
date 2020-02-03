@@ -23,16 +23,16 @@ abstract class TestCase extends \Korowai\Testing\TestCase
      *
      * @return string
      */
-    abstract public static function getRFCclass() : string;
+    abstract public static function getRfcClass() : string;
 
     /**
      * Returns the fully qualifiad name of RFC constant being tested.
      *
      * @return string
      */
-    public static function getRFCFQDNConstName(string $constname) : string
+    public static function getRfcFqdnConstName(string $constname) : string
     {
-        return (static::getRFCclass()).'::'.$constname;
+        return (static::getRfcClass()).'::'.$constname;
     }
 
     /**
@@ -42,7 +42,7 @@ abstract class TestCase extends \Korowai\Testing\TestCase
      *
      * @return string
      */
-    public static function getRFCRegexp(string $fqdnConstName)
+    public static function getRfcRegexp(string $fqdnConstName)
     {
         return '/^'.constant($fqdnConstName).'$/';
     }
@@ -69,14 +69,14 @@ abstract class TestCase extends \Korowai\Testing\TestCase
      * @param  string $constname
      * @param  array $expMatches
      */
-    public static function assertRFCMatches(
+    public static function assertRfcMatches(
         string $subject,
         string $constname,
         array $expMatches = []
     ) : void
     {
-        $fqdnConstName = static::getRFCFQDNConstName($constname);
-        $re = static::getRFCRegexp($fqdnConstName);
+        $fqdnConstName = static::getRfcFqdnConstName($constname);
+        $re = static::getRfcRegexp($fqdnConstName);
         $result = preg_match($re, $subject, $matches, PREG_UNMATCHED_AS_NULL);
         static::assertSame(1, $result, 'Failed asserting that '.$fqdnConstName.' matches \''.$subject.'\'');
         static::assertSame($subject, $matches[0]);
@@ -100,10 +100,10 @@ abstract class TestCase extends \Korowai\Testing\TestCase
      * @param  string $subject
      * @param  string $constname
      */
-    public static function assertRFCDoesNotMatch(string $subject, string $constname) : void
+    public static function assertRfcNotMatches(string $subject, string $constname) : void
     {
-        $fqdnConstName = static::getRFCFQDNConstName($constname);
-        $re = static::getRFCRegexp($fqdnConstName);
+        $fqdnConstName = static::getRfcFqdnConstName($constname);
+        $re = static::getRfcRegexp($fqdnConstName);
         $result = preg_match($re, $subject, $matches, PREG_UNMATCHED_AS_NULL);
         static::assertSame(0, $result,  'Failed asserting that '.$fqdnConstName.' does not match \''.$subject.'\'');
         static::assertNull($matches[0] ?? null);

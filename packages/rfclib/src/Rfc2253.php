@@ -26,10 +26,23 @@ namespace Korowai\Lib\Rfc;
  */
 class Rfc2253
 {
-    public const HEXCHAR = '[0-9a-fA-F]';
+    // character lists for character classes
+    public const ALPHACHARS = 'A-Za-z';
+    public const DIGITCHARS = '0-9';
+    public const HEXDIGCHARS = '0-9A-Fa-f';
+    public const SPECIALCHARS = ',=+<>#;';
+    public const KEYCHARCHARS = self::DIGITCHARS.self::ALPHACHARS.'-';
+
+    // character classes
+    public const ALPHA = '['.self::ALPHACHARS.']';
+    public const DIGIT = '['.self::DIGITCHARS.']';
+    public const HEXCHAR = '['.self::HEXDIGCHARS.']';
+    public const SPECIAL = '['.self::SPECIALCHARS.']';
+    public const KEYCHAR = '['.self::KEYCHARCHARS.']';
+
+    // other productions
     public const HEXPAIR = '(?:'.self::HEXCHAR.self::HEXCHAR.')';
     public const HEXSTRING = '(?:'.self::HEXPAIR.'+)';
-    public const SPECIALCHARS = ',=+<>#;';
     public const PAIR = '(?:\\\\(?:['.self::SPECIALCHARS.'\\\\"]|'.self::HEXPAIR.'))';
     public const STRINGCHAR = '[^'.self::SPECIALCHARS.'\\\\"]';
     public const QUOTECHAR = '[^\\\\"]';
@@ -40,6 +53,7 @@ class Rfc2253
                                 '|'.
                                 '(?:"(?:'.self::QUOTECHAR.'|'.self::PAIR.')*")'.
                           ')';
+    public const OID = '(?:'.self::DIGIT.'+(?:\.'.self::DIGIT.'+)*)';
 
     /**
      * Matches attributeValue in the "attributeType=attributeValue" component.
@@ -49,7 +63,12 @@ class Rfc2253
     /**
      * Matches attributeType, like "ou" or "foo-bar", in the "attributeType=attributeValue".
      */
-    public const ATTRIBUTE_TYPE = '(?:(?:[a-zA-Z][a-zA-Z0-9-]*)|(?:0-9+(?:\.0-9+)*))'; // RFC2253 has bug here.
+    public const ATTRIBUTE_TYPE =
+        '(?:'.
+            // RFC2253 has bug here (1* instead of just *), so strict RFC2253
+            // does not allow one-letter attribute types such as 'O'
+            '(?:'.self::ALPHA.self::KEYCHAR.'*)|'.self::OID.
+        ')';
 
     /**
      * Matches single "attributeType=attributeValue" part of the NAME_COMPONENT.

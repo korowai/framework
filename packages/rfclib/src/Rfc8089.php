@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Lib\Ldif\RFC;
+namespace Korowai\Lib\Rfc;
 
 /**
  * PCRE expressions used to parse file-URIs as defined in
@@ -24,7 +24,7 @@ namespace Korowai\Lib\Ldif\RFC;
  * $result = preg_match('/^'.RFC8089::FILE_URI.'$/', $subject, $matches, PREG_UNMATCHED_AS_NULL)
  * ```
  */
-class RFC8089 extends RFC3986
+class Rfc8089 extends Rfc3986
 {
     /**
      * Matches the [auth-path](https://tools.ietf.org/html/rfc8089#section-2) component of file-hier-part.

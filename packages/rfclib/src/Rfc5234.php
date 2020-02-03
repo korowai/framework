@@ -11,13 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Lib\Ldif\RFC;
+namespace Korowai\Lib\Rfc;
 
 /**
  * Resulable PCRE expressions for core rules defined in
  * [RFC5234](https://tools.ietf.org/html/rfc5234#appendix-B.1).
  */
-class RFC5234
+class Rfc5234
 {
     // character lists for character classes
     public const ALPHACHARS = 'A-Za-z';

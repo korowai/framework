@@ -11,13 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Lib\Ldif\RFC;
+namespace Korowai\Lib\Rfc;
 
 /**
  * PCRE expressions used when parsing LDIF file as defined in
  * [RFC2849](https://tools.ietf.org/html/rfc2849).
  */
-class RFC2849
+class Rfc2849
 {
     public const SEP = '(?:\n\|\r\n)';
     public const BASE64_CHAR = '[\+\/0-9=A-Za-z]';

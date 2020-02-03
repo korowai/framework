@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Lib\Ldif\RFC;
+namespace Korowai\Lib\Rfc;
 
 /**
  * PCRE expressions used to parse URIs as defined in
@@ -24,7 +24,7 @@ namespace Korowai\Lib\Ldif\RFC;
  * $result = preg_match('/^'.RFC3986::URI_REFERENCE.'$/', $subject, $matches, PREG_UNMATCHED_AS_NULL)
  * ```
  */
-class RFC3986
+class Rfc3986
 {
     // character lists for character classes
     public const ALPHACHARS = RFC5234::ALPHACHARS;

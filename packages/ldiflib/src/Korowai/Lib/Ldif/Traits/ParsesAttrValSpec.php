@@ -17,8 +17,8 @@ use Korowai\Lib\Ldif\CursorInterface;
 use Korowai\Lib\Ldif\LocationInterface;
 use Korowai\Lib\Ldif\ParserStateInterface;
 use Korowai\Lib\Ldif\ParserError;
-use Korowai\Lib\Ldif\RFC\RFC2849;
-use Korowai\Lib\Ldif\RFC\RFC3986;
+use Korowai\Lib\Rfc\Rfc2849;
+use Korowai\Lib\Rfc\Rfc3986;
 
 //use function Korowai\Lib\Compat\preg_match;
 

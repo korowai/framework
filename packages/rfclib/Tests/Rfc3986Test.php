@@ -1,6 +1,6 @@
 <?php
 /**
- * @file Tests/RFC3986Test.php
+ * @file Tests/Rfc3986Test.php
  *
  * This file is part of the Korowai package
  *
@@ -11,23 +11,22 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Tests\Lib\Ldif\RFC;
+namespace Korowai\Tests\Lib\Rfc;
 
-use Korowai\Lib\Ldif\RFC\RFC3986;
-use Korowai\Lib\Ldif\RFC\RFC5234;
+use Korowai\Lib\Rfc\Rfc3986;
+use Korowai\Lib\Rfc\Rfc5234;
 
-use Korowai\Testing\Lib\Ldif\RFC\TestCase;
+use Korowai\Testing\Lib\Rfc\TestCase;
 
 
 /**
- * @group RFC
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class RFC3986Test extends TestCase
+class Rfc3986Test extends TestCase
 {
     public static function getRFCclass() : string
     {
-        return RFC3986::class;
+        return Rfc3986::class;
     }
 
     //

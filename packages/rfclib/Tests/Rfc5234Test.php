@@ -1,6 +1,6 @@
 <?php
 /**
- * @file Tests/RFC5234Test.php
+ * @file Tests/Rfc5234Test.php
  *
  * This file is part of the Korowai package
  *
@@ -11,19 +11,15 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Tests\Lib\Ldif\RFC;
+namespace Korowai\Tests\Lib\Rfc;
 
-use Korowai\Lib\Ldif\RFC\RFC5234;
-use function Korowai\Lib\Compat\preg_match;
-
-use Korowai\Testing\Lib\Ldif\TestCase;
-
+use Korowai\Lib\Rfc\Rfc5234;
+use Korowai\Testing\Lib\Rfc\TestCase;
 
 /**
- * @group RFC
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class RFC5234Test extends TestCase
+class Rfc5234Test extends TestCase
 {
     public function test__constValues()
     {

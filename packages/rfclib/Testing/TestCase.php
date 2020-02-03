@@ -1,6 +1,6 @@
 <?php
 /**
- * @file Testing/RFC/TestCase.php
+ * @file Testing/TestCase.php
  *
  * This file is part of the Korowai package
  *
@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Testing\Lib\Ldif\RFC;
+namespace Korowai\Testing\Lib\Rfc;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

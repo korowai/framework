@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Lib\Ldif\RFC;
+namespace Korowai\Lib\Rfc;
 
 /**
  * PCRE expressions used to parse LDIF distinguished names (DNs) as defined in
@@ -24,7 +24,7 @@ namespace Korowai\Lib\Ldif\RFC;
  * $result = preg_match('/^'.RFC2253::DISTINGUISHED_NAME.'$/', $subject, $matches, PREG_UNMATCHED_AS_NULL)
  * ```
  */
-class RFC2253
+class Rfc2253
 {
     public const HEXCHAR = '[0-9a-fA-F]';
     public const HEXPAIR = '(?:'.self::HEXCHAR.self::HEXCHAR.')';

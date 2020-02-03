@@ -19,17 +19,18 @@ namespace Korowai\Lib\Rfc;
  */
 class Rfc2849
 {
-    public const SEP = '(?:\n\|\r\n)';
+    // character classes
+    public const ALPHA = Rfc5234::ALPHA;
+    public const ATTR_TYPE_CHARS = '['.Rfc5234::DIGITCHARS.Rfc5234::ALPHACHARS.'-]';
     public const BASE64_CHAR = '[\+\/0-9=A-Za-z]';
-    public const SAFE_INIT_CHAR = '[\x01-\x09\x0B-\x0C\x0E-\x1F\x21-\x39\x3B\x3D-\x7F]';
     public const SAFE_CHAR = '[\x01-\x09\x0B-\x0C\x0E-\x7F]';
+    public const SAFE_INIT_CHAR = '[\x01-\x09\x0B-\x0C\x0E-\x1F\x21-\x39\x3B\x3D-\x7F]';
+    public const SEP = '(?:\n|\r\n)';
+
     public const BASE64_STRING = '(?:'.self::BASE64_CHAR.'*)';
     public const BASE64_UTF8_STRING = self::BASE64_STRING;
     public const SAFE_STRING = '(?:'.self::SAFE_INIT_CHAR.self::SAFE_CHAR.'*)';
-
-    public const LDAP_OID = '(?:\d+(?:\.\d+)*)'; // +errata
-    public const ALPHA = Rfc5234::ALPHA;
-    public const ATTR_TYPE_CHARS = '['.Rfc5234::ALPHACHARS.Rfc5234::DIGITCHARS.'-]';
+    public const LDAP_OID = Rfc2253::OID;
     public const OPT_CHAR = self::ATTR_TYPE_CHARS;
     public const OPTION = '(?:'.self::OPT_CHAR.'+)';
     public const OPTIONS = '(?:'.self::OPTION.'(?:;'.self::OPTION.')*)';

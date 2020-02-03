@@ -25,6 +25,10 @@ use Korowai\Testing\Lib\Ldif\TestCase;
  */
 class ParsesAttrValSpecTest extends TestCase
 {
+    public function test__dummy()
+    {
+        $this->assertTrue(true);
+    }
 //    protected function getTestObject()
 //    {
 //        return new class {

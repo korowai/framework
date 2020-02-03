@@ -15,7 +15,7 @@ namespace Korowai\Lib\Ldif\RFC;
 
 /**
  * Resulable PCRE expressions for core rules defined in
- * [RFC5234](https://tools.ietf.org/html/rfc5234#section-6).
+ * [RFC5234](https://tools.ietf.org/html/rfc5234#appendix-B.1).
  */
 class RFC5234
 {

@@ -23,10 +23,10 @@
     },
     "autoload": {
       "psr-4" : {
-        "Korowai\\Lib\\Compat\\" : "src/Korowai/Lib/Compat/"
+        "Korowai\\Lib\\Compat\\" : "src//"
       },
       "files" : [
-        "src/Korowai/Lib/Compat/functions/preg.php"
+        "src//functions/preg.php"
       ],
       "exclude-from-classmap": [
         "/Tests/",

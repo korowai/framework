@@ -28,7 +28,7 @@
     },
     "autoload": {
       "psr-4" : {
-        "Korowai\\Lib\\Ldap\\" : "src/Korowai/Lib/Ldap"
+        "Korowai\\Lib\\Ldap\\" : "src/"
       },
       "exclude-from-classmap": [
         "/Behat/",

@@ -20,7 +20,7 @@
     },
     "autoload": {
       "psr-4" : {
-        "Korowai\\Lib\\Basic\\" : "src/Korowai/Lib/Basic/"
+        "Korowai\\Lib\\Basic\\" : "src//"
       },
       "exclude-from-classmap": [
         "/Tests/",

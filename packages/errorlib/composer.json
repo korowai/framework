@@ -22,10 +22,10 @@
     },
     "autoload": {
       "psr-4" : {
-        "Korowai\\Lib\\Error\\" : "src/Korowai/Lib/Error/"
+        "Korowai\\Lib\\Error\\" : "src//"
       },
       "files" : [
-        "src/Korowai/Lib/Error/functions.php"
+        "src//functions.php"
       ],
       "exclude-from-classmap": [
         "/Tests/",

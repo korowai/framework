@@ -23,7 +23,7 @@
     },
     "autoload": {
       "psr-4" : {
-        "Korowai\\Lib\\Ldif\\" : "src/Korowai/Lib/Ldif/"
+        "Korowai\\Lib\\Ldif\\" : "src//"
       },
       "files" : [
       ],

@@ -78,7 +78,7 @@ class Rfc8089Test extends TestCase
     /**
      * @dataProvider non__FILE_AUTH__strings
      */
-    public function test__FILE_AUTH__doesNotMatch(string $string)
+    public function test__FILE_AUTH__notMatches(string $string)
     {
         $this->assertRfcNotMatches($string, 'FILE_AUTH');
     }
@@ -121,7 +121,7 @@ class Rfc8089Test extends TestCase
     /**
      * @dataProvider non__LOCAL_PATH__strings
      */
-    public function test__LOCAL_PATH__doesNotMatch(string $string)
+    public function test__LOCAL_PATH__notMatches(string $string)
     {
         $this->assertRfcNotMatches($string, 'LOCAL_PATH');
     }
@@ -170,7 +170,7 @@ class Rfc8089Test extends TestCase
     /**
      * @dataProvider non__AUTH_PATH__strings
      */
-    public function test__AUTH_PATH__doesNotMatch(string $string)
+    public function test__AUTH_PATH__notMatches(string $string)
     {
         $this->assertRfcNotMatches($string, 'AUTH_PATH');
     }
@@ -219,7 +219,7 @@ class Rfc8089Test extends TestCase
     /**
      * @dataProvider non__FILE_HIER_PART__strings
      */
-    public function test__FILE_HIER_PART__doesNotMatch(string $string)
+    public function test__FILE_HIER_PART__notMatches(string $string)
     {
         $this->assertRfcNotMatches($string, 'FILE_HIER_PART');
     }
@@ -290,7 +290,7 @@ class Rfc8089Test extends TestCase
     /**
      * @dataProvider non__FILE_URI__strings
      */
-    public function test__FILE_URI__doesNotMatch(string $string)
+    public function test__FILE_URI__notMatches(string $string)
     {
         $this->assertRfcNotMatches($string, 'FILE_URI');
     }

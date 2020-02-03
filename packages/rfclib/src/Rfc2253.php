@@ -39,21 +39,35 @@ class Rfc2253
     public const HEXCHAR = '['.self::HEXDIGCHARS.']';
     public const SPECIAL = '['.self::SPECIALCHARS.']';
     public const KEYCHAR = '['.self::KEYCHARCHARS.']';
+    public const STRINGCHAR = '[^'.self::SPECIALCHARS.'\\\\"]';
+    public const QUOTECHAR = '[^\\\\"]';
 
     // other productions
     public const HEXPAIR = '(?:'.self::HEXCHAR.self::HEXCHAR.')';
     public const HEXSTRING = '(?:'.self::HEXPAIR.'+)';
     public const PAIR = '(?:\\\\(?:['.self::SPECIALCHARS.'\\\\"]|'.self::HEXPAIR.'))';
-    public const STRINGCHAR = '[^'.self::SPECIALCHARS.'\\\\"]';
-    public const QUOTECHAR = '[^\\\\"]';
-    public const STRING = '(?:'.
-                                '(?:'.self::STRINGCHAR.'|'.self::PAIR.')*'.
-                                '|'.
-                                '(?:#'.self::HEXSTRING.')'.
-                                '|'.
-                                '(?:"(?:'.self::QUOTECHAR.'|'.self::PAIR.')*")'.
-                          ')';
     public const OID = '(?:'.self::DIGIT.'+(?:\.'.self::DIGIT.'+)*)';
+
+    public const STRING =
+        '(?:'.
+            '(?:'.self::STRINGCHAR.'|'.self::PAIR.')*'.
+            '|'.
+            '(?:#'.self::HEXSTRING.')'.
+            '|'.
+            '(?:"(?:'.self::QUOTECHAR.'|'.self::PAIR.')*")'.
+        ')';
+
+    /**
+     * Same as STRING but with named capture groups.
+     */
+    public const STRING_CAPTURE =
+        '(?<string>'.
+            '(?<regstring>(?:'.self::STRINGCHAR.'|'.self::PAIR.')*)'.
+            '|'.
+            '(?:#(?<hexstring>'.self::HEXSTRING.'))'.
+            '|'.
+            '(?:"(?<dqstring>(?:'.self::QUOTECHAR.'|'.self::PAIR.')*)")'.
+        ')';
 
     /**
      * Matches attributeValue in the "attributeType=attributeValue" component.
@@ -82,18 +96,14 @@ class Rfc2253
     public const NAME_COMPONENT = '(?:'.self::ATTRIBUTE_TYPE_AND_VALUE.'(?:\+'.self::ATTRIBUTE_TYPE_AND_VALUE.')*)';
 
     /**
-     * Matches non-empty [distinguished names](https://tools.ietf.org/html/rfc2253#section-3).
+     * Matches [name](https://tools.ietf.org/html/rfc2253#section-3) (a non-empty DN).
      */
-    public const NAME =
-        '(?:'.
-            '(?P<first_component>'.self::NAME_COMPONENT.')'.
-            '(?P<remaining_components>(?:,'.self::NAME_COMPONENT.')*)'.
-        ')';
+    public const NAME = '(?:'.self::NAME_COMPONENT.'(?:,'.self::NAME_COMPONENT.')*)';
 
     /**
-     * Matches (possibly empty) [distinguished names](https://tools.ietf.org/html/rfc2253#section-3).
+     * Matches [distinguishedName](https://tools.ietf.org/html/rfc2253#section-3) (possibly empty).
      */
-    public const DISTINGUISHED_NAME = '(?P<dn>'.self::NAME.'?)';
+    public const DISTINGUISHED_NAME = '(?<dn>'.self::NAME.'?)';
 }
 
 // vim: syntax=php sw=4 ts=4 et:

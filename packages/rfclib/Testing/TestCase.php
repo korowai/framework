@@ -110,12 +110,13 @@ abstract class TestCase extends \Korowai\Testing\TestCase
      */
     public static function assertRfcCaptureGroupValue($expected, array $matches, $key) : void
     {
+        $keyx = var_export($key, true);
         if ($expected === false) {
-            static::assertNull($matches[$key] ?? null);
+            static::assertNull($matches[$key] ?? null, 'Failed asserting that $matches['.$keyx.'] is not set');
         } else {
             static::assertArrayHasKey($key, $matches);
             if ($expected !== true) {
-                $msg = 'Failed asserting that $matches['.var_export($key, true).'] is '.var_export($expected, true);
+                $msg = 'Failed asserting that $matches['.$keyx.'] is '.var_export($expected, true);
                 static::assertSame($expected, $matches[$key], $msg);
             }
         }

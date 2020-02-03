@@ -142,7 +142,7 @@ class Rfc3986Test extends TestCase
     /**
      * @dataProvider non__SEGMENT_NZ_NC__strings
      */
-    public function test__SEGMENT_NZ_NC__doesNotMatch(string $string)
+    public function test__SEGMENT_NZ_NC__notMatches(string $string)
     {
         $this->assertRfcNotMatches($string, 'SEGMENT_NZ_NC');
     }
@@ -177,7 +177,7 @@ class Rfc3986Test extends TestCase
     /**
      * @dataProvider non__SEGMENT_NZ__strings
      */
-    public function test__SEGMENT_NZ__doesNotMatch(string $string)
+    public function test__SEGMENT_NZ__notMatches(string $string)
     {
         $this->assertRfcNotMatches($string, 'SEGMENT_NZ');
     }
@@ -213,7 +213,7 @@ class Rfc3986Test extends TestCase
     /**
      * @dataProvider non__SEGMENT__strings
      */
-    public function test__SEGMENT__doesNotMatch(string $string)
+    public function test__SEGMENT__notMatches(string $string)
     {
         $this->assertRfcNotMatches($string, 'SEGMENT');
     }
@@ -245,7 +245,7 @@ class Rfc3986Test extends TestCase
     /**
      * @dataProvider non__PATH_EMPTY__strings
      */
-    public function test__PATH_EMPTY__doesNotMatch(string $string)
+    public function test__PATH_EMPTY__notMatches(string $string)
     {
         $this->assertRfcNotMatches($string, 'PATH_EMPTY');
     }
@@ -281,7 +281,7 @@ class Rfc3986Test extends TestCase
     /**
      * @dataProvider non__PATH_NOSCHEME__strings
      */
-    public function test__PATH_NOSCHEME__doesNotMatch(string $string)
+    public function test__PATH_NOSCHEME__notMatches(string $string)
     {
         $this->assertRfcNotMatches($string, 'PATH_NOSCHEME');
     }
@@ -317,7 +317,7 @@ class Rfc3986Test extends TestCase
     /**
      * @dataProvider non__PATH_ROOTLESS__strings
      */
-    public function test__PATH_ROOTLESS__doesNotMatch(string $string)
+    public function test__PATH_ROOTLESS__notMatches(string $string)
     {
         $this->assertRfcNotMatches($string, 'PATH_ROOTLESS');
     }
@@ -350,7 +350,7 @@ class Rfc3986Test extends TestCase
     /**
      * @dataProvider non__PATH_ABSOLUTE__strings
      */
-    public function test__PATH_ABSOLUTE__doesNotMatch(string $string)
+    public function test__PATH_ABSOLUTE__notMatches(string $string)
     {
         $this->assertRfcNotMatches($string, 'PATH_ABSOLUTE');
     }
@@ -381,7 +381,7 @@ class Rfc3986Test extends TestCase
     /**
      * @dataProvider non__PATH_ABEMPTY__strings
      */
-    public function test__PATH_ABEMPTY__doesNotMatch(string $string)
+    public function test__PATH_ABEMPTY__notMatches(string $string)
     {
         $this->assertRfcNotMatches($string, 'PATH_ABEMPTY');
     }
@@ -420,7 +420,7 @@ class Rfc3986Test extends TestCase
     /**
      * @dataProvider non__PATH__strings
      */
-    public function test__PATH__doesNotMatch(string $string)
+    public function test__PATH__notMatches(string $string)
     {
         $this->assertRfcNotMatches($string, 'PATH');
     }
@@ -468,7 +468,7 @@ class Rfc3986Test extends TestCase
     /**
      * @dataProvider non__REG_NAME__strings
      */
-    public function test__REG_NAME__doesNotMatch(string $string)
+    public function test__REG_NAME__notMatches(string $string)
     {
         $this->assertRfcNotMatches($string, 'REG_NAME');
     }
@@ -501,7 +501,7 @@ class Rfc3986Test extends TestCase
     /**
      * @dataProvider non__DEC_OCTET__strings
      */
-    public function test__DEC_OCTET__doesNotMatch(string $string)
+    public function test__DEC_OCTET__notMatches(string $string)
     {
         $this->assertRfcNotMatches($string, 'DEC_OCTET');
     }
@@ -564,7 +564,7 @@ class Rfc3986Test extends TestCase
     /**
      * @dataProvider non__IPV4ADDRESS__strings
      */
-    public function test__IPV4ADDRESS__doesNotMatch(string $string)
+    public function test__IPV4ADDRESS__notMatches(string $string)
     {
         $this->assertRfcNotMatches($string, 'IPV4ADDRESS');
     }
@@ -604,7 +604,7 @@ class Rfc3986Test extends TestCase
     /**
      * @dataProvider non__H16_strings
      */
-    public function test__H16__doesNotMatch(string $string)
+    public function test__H16__notMatches(string $string)
     {
         $this->assertRfcNotMatches($string, 'H16');
     }
@@ -639,7 +639,7 @@ class Rfc3986Test extends TestCase
     /**
      * @dataProvider non__LS32_strings
      */
-    public function test__LS32__doesNotMatch(string $string)
+    public function test__LS32__notMatches(string $string)
     {
         $this->assertRfcNotMatches($string, 'LS32');
     }
@@ -1158,7 +1158,7 @@ class Rfc3986Test extends TestCase
     /**
      * @dataProvider non__IPV6ADDRESS__strings
      */
-    public function test__IPV6ADDRESS__doesNotMatch(string $string)
+    public function test__IPV6ADDRESS__notMatches(string $string)
     {
         $this->assertRfcNotMatches($string, 'IPV6ADDRESS');
     }
@@ -1198,7 +1198,7 @@ class Rfc3986Test extends TestCase
     /**
      * @dataProvider non__IPVFUTURE__strings
      */
-    public function test__IPVFUTURE__doesNotMatch(string $string)
+    public function test__IPVFUTURE__notMatches(string $string)
     {
         $this->assertRfcNotMatches($string, 'IPVFUTURE');
     }
@@ -1268,7 +1268,7 @@ class Rfc3986Test extends TestCase
     /**
      * @dataProvider non__IP_LITERAL__strings
      */
-    public function test__IP_LITERAL__doesNotMatch(string $string)
+    public function test__IP_LITERAL__notMatches(string $string)
     {
         $this->assertRfcNotMatches($string, 'IP_LITERAL');
     }
@@ -1300,7 +1300,7 @@ class Rfc3986Test extends TestCase
     /**
      * @dataProvider non__PORT__strings
      */
-    public function test__PORT__doesNotMatch(string $string)
+    public function test__PORT__notMatches(string $string)
     {
         $this->assertRfcNotMatches($string, 'PORT');
     }
@@ -1377,7 +1377,7 @@ class Rfc3986Test extends TestCase
     /**
      * @dataProvider non__HOST__strings
      */
-    public function test__HOST__doesNotMatch(string $string)
+    public function test__HOST__notMatches(string $string)
     {
         $this->assertRfcNotMatches($string, 'HOST');
     }
@@ -1412,7 +1412,7 @@ class Rfc3986Test extends TestCase
     /**
      * @dataProvider non__USERINFO__strings
      */
-    public function test__USERINFO__doesNotMatch(string $string)
+    public function test__USERINFO__notMatches(string $string)
     {
         $this->assertRfcNotMatches($string, 'USERINFO');
     }
@@ -1500,7 +1500,7 @@ class Rfc3986Test extends TestCase
     /**
      * @dataProvider non__AUTHORITY__strings
      */
-    public function test__AUTHORITY__doesNotMatch(string $string)
+    public function test__AUTHORITY__notMatches(string $string)
     {
         $this->assertRfcNotMatches($string, 'AUTHORITY');
     }
@@ -1532,7 +1532,7 @@ class Rfc3986Test extends TestCase
     /**
      * @dataProvider non__SCHEME__strings
      */
-    public function test__SCHEME__doesNotMatch(string $string)
+    public function test__SCHEME__notMatches(string $string)
     {
         $this->assertRfcNotMatches($string, 'SCHEME');
     }
@@ -1588,7 +1588,7 @@ class Rfc3986Test extends TestCase
     /**
      * @dataProvider non__RELATIVE_PART__strings
      */
-    public function test__RELATIVE_PART__doesNotMatch(string $string)
+    public function test__RELATIVE_PART__notMatches(string $string)
     {
         $this->assertRfcNotMatches($string, 'RELATIVE_PART');
     }
@@ -1644,7 +1644,7 @@ class Rfc3986Test extends TestCase
     /**
      * @dataProvider non__HIER_PART__strings
      */
-    public function test__HIER_PART__doesNotMatch(string $string)
+    public function test__HIER_PART__notMatches(string $string)
     {
         $this->assertRfcNotMatches($string, 'HIER_PART');
     }
@@ -1678,7 +1678,7 @@ class Rfc3986Test extends TestCase
     /**
      * @dataProvider non__FRAGMENT__strings
      */
-    public function test__FRAGMENT__doesNotMatch(string $string)
+    public function test__FRAGMENT__notMatches(string $string)
     {
         $this->assertRfcNotMatches($string, 'FRAGMENT');
     }
@@ -1712,7 +1712,7 @@ class Rfc3986Test extends TestCase
     /**
      * @dataProvider non__QUERY__strings
      */
-    public function test__QUERY__doesNotMatch(string $string)
+    public function test__QUERY__notMatches(string $string)
     {
         $this->assertRfcNotMatches($string, 'QUERY');
     }
@@ -1823,7 +1823,7 @@ class Rfc3986Test extends TestCase
     /**
      * @dataProvider non__RELATIVE_REF__strings
      */
-    public function test__RELATIVE_REF__doesNotMatch(string $string)
+    public function test__RELATIVE_REF__notMatches(string $string)
     {
         $this->assertRfcNotMatches($string, 'RELATIVE_REF');
     }
@@ -1906,7 +1906,7 @@ class Rfc3986Test extends TestCase
     /**
      * @dataProvider non__ABSOLUTE_URI__strings
      */
-    public function test__ABSOLUTE_URI__doesNotMatch(string $string)
+    public function test__ABSOLUTE_URI__notMatches(string $string)
     {
         $this->assertRfcNotMatches($string, 'ABSOLUTE_URI');
     }
@@ -1955,7 +1955,7 @@ class Rfc3986Test extends TestCase
     /**
      * @dataProvider non__URI__strings
      */
-    public function test__URI__doesNotMatch(string $string)
+    public function test__URI__notMatches(string $string)
     {
         $this->assertRfcNotMatches($string, 'URI');
     }
@@ -2000,7 +2000,7 @@ class Rfc3986Test extends TestCase
     /**
      * @dataProvider non__URI_REFERENCE__strings
      */
-    public function test__URI_REFERENCE__doesNotMatch(string $string)
+    public function test__URI_REFERENCE__notMatches(string $string)
     {
         $this->assertRfcNotMatches($string, 'URI_REFERENCE');
     }

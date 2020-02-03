@@ -16,7 +16,7 @@ namespace Korowai\Testing\Lib\Ldif\RFC;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-abstract class TestCase extends \Korowai\Testing\Lib\Ldif\TestCase
+abstract class TestCase extends \Korowai\Testing\TestCase
 {
     /**
      * Returns the name of RFC class being tested.

@@ -1,6 +1,6 @@
 {
-    "name": "korowai/ldiflib",
-    "description": "A library for handling LDIF text",
+    "name": "korowai/rfclib",
+    "description": "Support for several RFCs",
     "type": "library",
     "license": "MIT",
     "minimum-stability": "dev",
@@ -18,12 +18,11 @@
     "require": {
         "php": ">=7.2",
         "korowai/contracts": "*",
-        "korowai/compatlib": "*",
-        "korowai/rfclib": "*"
+        "korowai/compatlib": "*"
     },
     "autoload": {
       "psr-4" : {
-        "Korowai\\Lib\\Ldif\\" : "src/Korowai/Lib/Ldif/"
+        "Korowai\\Lib\\Rfc\\" : "src/"
       },
       "files" : [
       ],
@@ -34,8 +33,8 @@
     },
     "autoload-dev": {
       "psr-4" : {
-        "Korowai\\Tests\\Lib\\Ldif\\" : "Tests/",
-        "Korowai\\Testing\\Lib\\Ldif\\" : "Testing/"
+        "Korowai\\Tests\\Lib\\Rfc\\" : "Tests/",
+        "Korowai\\Testing\\Lib\\Rfc\\" : "Testing/"
       }
     }
 }

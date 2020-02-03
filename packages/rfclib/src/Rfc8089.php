@@ -30,20 +30,20 @@ class Rfc8089 extends Rfc3986
      * Matches the [auth-path](https://tools.ietf.org/html/rfc8089#section-2) component of file-hier-part.
      */
     public const FILE_AUTH =
-        '(?P<file_auth>'.
+        '(?<file_auth>'.
             '(?:(?:localhost)|'.self::HOST.')'.
         ')';
 
     /**
      * Matches the [local-path](https://tools.ietf.org/html/rfc8089#section-2) component of file-hier-part.
      */
-    public const LOCAL_PATH = self::PATH_ABSOLUTE;
+    public const LOCAL_PATH = '(?<local_path>'.self::PATH_ABSOLUTE.')';
 
     /**
      * Matches the [auth-path](https://tools.ietf.org/html/rfc8089#section-2) component of file-hier-part.
      */
     public const AUTH_PATH =
-        '(?P<auth_path>'.
+        '(?<auth_path>'.
             self::FILE_AUTH.'?'.self::PATH_ABSOLUTE.
         ')';
 
@@ -51,20 +51,20 @@ class Rfc8089 extends Rfc3986
      * Matches the [file-hier-part](https://tools.ietf.org/html/rfc8089#section-2) component of file-URI.
      */
     public const FILE_HIER_PART =
-        '(?P<file_hier_part>'.
+        '(?J)(?<file_hier_part>'.
             '(?:(?:\/\/'.self::AUTH_PATH.')|'.self::LOCAL_PATH.')'.
         ')';
 
     /**
      * Matches the [file-scheme](https://tools.ietf.org/html/rfc8089#section-2) component of file-URI.
      */
-    public const FILE_SCHEME = '(?P<file_scheme>file)';
+    public const FILE_SCHEME = '(?<file_scheme>file)';
 
     /**
      * Matches the [file-URI](https://tools.ietf.org/html/rfc8089#section-2).
      */
     public const FILE_URI =
-        '(?P<file_uri>'.
+        '(?<file_uri>'.
             self::FILE_SCHEME.':'.self::FILE_HIER_PART.
         ')';
 }

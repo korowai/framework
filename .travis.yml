@@ -3,11 +3,9 @@ php:
   - '7.2'
   - '7.3'
 env:
-  - KOROWAI_HEAVY_TESTING=on
-    KOROWAI_TEST_RFC=true
+  - KOROWAI_TEST_RFC=true
     KOROWAI_CODECOV=false
-  - KOROWAI_HEAVY_TESTING=on
-    KOROWAI_TEST_RFC=false
+  - KOROWAI_TEST_RFC=false
     KOROWAI_CODECOV=true
 install:
   - travis_retry composer install --no-interaction

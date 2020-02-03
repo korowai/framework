@@ -21,6 +21,7 @@ use Korowai\Testing\Lib\Rfc\TestCase;
 class TestCaseTest extends TestCase
 {
     public const FOO = '(?<foo>foo)';
+    public const BAR = '(?<bar>bar)';
 
     public static function getRfcClass() : string
     {
@@ -30,11 +31,13 @@ class TestCaseTest extends TestCase
     public function test__getRfcFqdnConstName()
     {
         $this->assertSame(self::class.'::FOO', static::getRfcFqdnConstName('FOO'));
+        $this->assertSame(self::class.'::BAR', static::getRfcFqdnConstName('BAR'));
     }
 
     public function test__getRfcRegexp()
     {
         $this->assertSame('/^(?<foo>foo)$/', static::getRfcRegexp(self::class.'::FOO'));
+        $this->assertSame('/^(?<bar>bar)$/', static::getRfcRegexp(self::class.'::BAR'));
     }
 
     public function test__arraizeStrings()
@@ -45,11 +48,13 @@ class TestCaseTest extends TestCase
     public function test__assertRfcMatches()
     {
         $this->assertRfcMatches('foo', 'FOO', ['foo' => 'foo', 'bar' => false]);
+        $this->assertRfcMatches('bar', 'BAR', ['foo' => false, 'bar' => 'bar']);
     }
 
     public function test__assertRfcNotMatches()
     {
         $this->assertRfcNotMatches('bar', 'FOO');
+        $this->assertRfcNotMatches('foo', 'BAR');
     }
 }
 

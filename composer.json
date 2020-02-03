@@ -27,6 +27,7 @@
         "korowai/errorlib" : "self.version",
         "korowai/ldaplib": "self.version",
         "korowai/ldiflib": "self.version",
+        "korowai/rfclib": "self.version",
         "korowai/testing": "self.version"
     },
     "require-dev": {

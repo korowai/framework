@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Lib/Ldif/Location.php
+ * @file src/Location.php
  *
  * This file is part of the Korowai package
  *

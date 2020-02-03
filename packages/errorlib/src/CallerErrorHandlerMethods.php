@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Lib/Error/CallerErrorHandlerMethods.php
+ * @file src/CallerErrorHandlerMethods.php
  *
  * This file is part of the Korowai package
  *

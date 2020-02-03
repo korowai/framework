@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Lib/Ldif/RFC8089.php
+ * @file src/Rfc8089.php
  *
  * This file is part of the Korowai package
  *

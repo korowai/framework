@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Lib/Ldif/Traits/ParsesLdifFile.php
+ * @file src/Traits/ParsesLdifFile.php
  *
  * This file is part of the Korowai package
  *

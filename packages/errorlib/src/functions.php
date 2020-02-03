@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Lib/Error/functions.php
+ * @file src/functions.php
  *
  * This file is part of the Korowai package
  *

@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Lib/Ldif/Traits/ExposesSourceLocationInterface.php
+ * @file src/Traits/ExposesSourceLocationInterface.php
  *
  * This file is part of the Korowai package
  *

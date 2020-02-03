@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Lib/Ldif/Util/IndexMapArrayCombineAlgorithm.php
+ * @file src/Util/IndexMapArrayCombineAlgorithm.php
  *
  * This file is part of the Korowai package
  *

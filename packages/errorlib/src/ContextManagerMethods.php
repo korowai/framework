@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Lib/Error/ContextManagerMethods.php
+ * @file src/ContextManagerMethods.php
  *
  * This file is part of the Korowai package
  *

@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Lib/Compat/Exception/PregException.php
+ * @file src/Exception/PregException.php
  *
  * This file is part of the Korowai package
  *

@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Lib/Ldif/Cursor.php
+ * @file src/Cursor.php
  *
  * This file is part of the Korowai package
  *

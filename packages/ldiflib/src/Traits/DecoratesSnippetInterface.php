@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Lib/Ldif/Traits/DecoratesSnippetInterface.php
+ * @file src/Traits/DecoratesSnippetInterface.php
  *
  * This file is part of the Korowai package
  *

@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Lib/Ldif/Records/VersionSpec.php
+ * @file src/Records/VersionSpec.php
  *
  * This file is part of the Korowai package
  *

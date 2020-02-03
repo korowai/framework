@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Lib/Basic/Singleton.php
+ * @file src/Singleton.php
  *
  * This file is part of the Korowai package
  *

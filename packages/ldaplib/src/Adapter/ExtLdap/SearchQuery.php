@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Lib/Ldap/Adapter/ExtLdap/SearchQuery.php
+ * @file src/Adapter/ExtLdap/SearchQuery.php
  *
  * This file is part of the Korowai package
  *

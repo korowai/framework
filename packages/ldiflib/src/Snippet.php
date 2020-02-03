@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Lib/Ldif/Snippet.php
+ * @file src/Snippet.php
  *
  * This file is part of the Korowai package
  *

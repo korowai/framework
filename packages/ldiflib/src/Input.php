@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Lib/Ldif/Input.php
+ * @file src/Input.php
  *
  * This file is part of the Korowai package
  *

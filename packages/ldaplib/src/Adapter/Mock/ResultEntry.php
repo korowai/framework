@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Lib/Ldap/Adapter/Mock/ResultEntry.php
+ * @file src/Adapter/Mock/ResultEntry.php
  *
  * This file is part of the Korowai package
  *

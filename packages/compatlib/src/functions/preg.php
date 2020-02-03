@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Lib/Compat/functions/preg.php
+ * @file src/functions/preg.php
  *
  * This file is part of the Korowai package
  *

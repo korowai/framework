@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Lib/Ldif/Traits/DecoratesSourceLocationInterface.php
+ * @file src/Traits/DecoratesSourceLocationInterface.php
  *
  * This file is part of the Korowai package
  *

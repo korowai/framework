@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Lib/Context/ResourceContextManager.php
+ * @file src/ResourceContextManager.php
  *
  * This file is part of the Korowai package
  *

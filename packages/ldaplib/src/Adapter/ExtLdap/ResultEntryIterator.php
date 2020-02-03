@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Lib/Ldap/Adapter/ExtLdap/ResultEntryIterator.php
+ * @file src/Adapter/ExtLdap/ResultEntryIterator.php
  *
  * This file is part of the Korowai package
  *

@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Lib/Ldif/Parser.php
+ * @file src/Parser.php
  *
  * This file is part of the Korowai package
  *

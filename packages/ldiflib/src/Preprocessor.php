@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Lib/Ldif/Preprocessor.php
+ * @file src/Preprocessor.php
  *
  * This file is part of the Korowai package
  *

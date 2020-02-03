@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Lib/Error/ErrorHandler.php
+ * @file src/ErrorHandler.php
  *
  * This file is part of the Korowai package
  *

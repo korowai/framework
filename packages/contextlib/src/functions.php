@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Lib/Context/functions.php
+ * @file src/functions.php
  *
  * This file is part of the Korowai package
  *

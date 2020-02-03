@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Lib/Ldif/Util/IndexMap.php
+ * @file src/Util/IndexMap.php
  *
  * This file is part of the Korowai package
  *

@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Lib/Ldif/Traits/ParsesAttrValSpec.php
+ * @file src/Traits/ParsesAttrValSpec.php
  *
  * This file is part of the Korowai package
  *

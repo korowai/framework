@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Lib/Context/DefaultContextFactory.php
+ * @file src/DefaultContextFactory.php
  *
  * This file is part of the Korowai package
  *

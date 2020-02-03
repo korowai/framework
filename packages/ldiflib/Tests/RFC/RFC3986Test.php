@@ -1340,7 +1340,7 @@ class RFC3986Test extends TestCase
             }, static::IPV4ADDRESS__cases()),
             array_map(function(array $case) {
                 return [$case[0], array_merge($case[1], ['reg_name' => $case[0]])];
-            }, static::REG_NAME__cases()),
+            }, static::REG_NAME__cases())
         );
     }
 
@@ -1475,7 +1475,7 @@ class RFC3986Test extends TestCase
             }, static::HOST__cases()),
             $userinfoHostCases,
             $hostPortCases,
-            $userinfoHostPortCases,
+            $userinfoHostPortCases
         );
     }
 
@@ -1801,7 +1801,7 @@ class RFC3986Test extends TestCase
             $relpartCases,
             $relpartQueryCases,
             $relpartFragmentCases,
-            $relpartQueryFragmentCases,
+            $relpartQueryFragmentCases
         );
     }
 

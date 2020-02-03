@@ -5,7 +5,7 @@
  * This file is part of the Korowai package
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @package korowai\ldiflib
+ * @package korowai/rfclib
  * @license Distributed under MIT license.
  */
 

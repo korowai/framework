@@ -5,7 +5,7 @@
  * This file is part of the Korowai package
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @package Korowai\Ldif
+ * @package korowai/ldiflib
  * @license Distributed under MIT license.
  */
 

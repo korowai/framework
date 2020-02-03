@@ -25,7 +25,7 @@ class Rfc5234
     public const CHARCHARS = '\x01-\x7F';
     public const CRCHARS = '\r';
     public const CTLCHARS = '\x00-\x1F\x7F';
-    public const DIGITCHARS = '\d';
+    public const DIGITCHARS = '0-9';
     public const HEXDIGCHARS = self::DIGITCHARS.'A-F';
     public const HTABCHARS = '\t';
     public const LFCHARS = '\n';
@@ -41,7 +41,7 @@ class Rfc5234
     public const CR = '\r';
     public const CRLF = '(?:\r\n)';
     public const CTL = '['.self::CTLCHARS.']';
-    public const DIGIT = '\d';
+    public const DIGIT = '['.self::DIGITCHARS.']';
     public const DQUOTE = '"';
     public const HEXDIG = '['.self::HEXDIGCHARS.']';
     public const HTAB = '\t';

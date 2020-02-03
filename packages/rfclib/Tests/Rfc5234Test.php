@@ -34,8 +34,8 @@ class Rfc5234Test extends TestCase
         $this->assertSame('\x01-\x7F',      Rfc5234::CHARCHARS);
         $this->assertSame('\r',             Rfc5234::CRCHARS);
         $this->assertSame('\x00-\x1F\x7F',  Rfc5234::CTLCHARS);
-        $this->assertSame('\d',             Rfc5234::DIGITCHARS);
-        $this->assertSame('\dA-F',          Rfc5234::HEXDIGCHARS);
+        $this->assertSame('0-9',            Rfc5234::DIGITCHARS);
+        $this->assertSame('0-9A-F',         Rfc5234::HEXDIGCHARS);
         $this->assertSame('\t',             Rfc5234::HTABCHARS);
         $this->assertSame('\n',             Rfc5234::LFCHARS);
         $this->assertSame('\x00-\xFF',      Rfc5234::OCTETCHARS);
@@ -50,9 +50,9 @@ class Rfc5234Test extends TestCase
         $this->assertSame('\r',             Rfc5234::CR);
         $this->assertSame('(?:\r\n)',       Rfc5234::CRLF);
         $this->assertSame('[\x00-\x1F\x7F]',Rfc5234::CTL);
-        $this->assertSame('\d',             Rfc5234::DIGIT);
+        $this->assertSame('[0-9]',          Rfc5234::DIGIT);
         $this->assertSame('"',              Rfc5234::DQUOTE);
-        $this->assertSame('[\dA-F]',        Rfc5234::HEXDIG);
+        $this->assertSame('[0-9A-F]',       Rfc5234::HEXDIG);
         $this->assertSame('\t',             Rfc5234::HTAB);
         $this->assertSame('\n',             Rfc5234::LF);
         $this->assertSame('(?:(?:[ \t]|(?:\r\n)[ \t])*)', Rfc5234::LWSP);

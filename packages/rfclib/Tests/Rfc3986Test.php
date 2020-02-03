@@ -53,8 +53,8 @@ class Rfc3986Test extends TestCase
     //
     public function test__HEXDIG()
     {
-        $this->assertSame('\dA-Fa-f',   Rfc3986::HEXDIGCHARS);
-        $this->assertSame('[\dA-Fa-f]', Rfc3986::HEXDIG);
+        $this->assertSame('0-9A-Fa-f',   Rfc3986::HEXDIGCHARS);
+        $this->assertSame('[0-9A-Fa-f]', Rfc3986::HEXDIG);
     }
 
 
@@ -92,8 +92,8 @@ class Rfc3986Test extends TestCase
     //
     public function test__UNRESERVED()
     {
-        $this->assertSame( 'A-Za-z\d\._~-',     Rfc3986::UNRESERVEDCHARS);
-        $this->assertSame('[A-Za-z\d\._~-]',    Rfc3986::UNRESERVED);
+        $this->assertSame( 'A-Za-z0-9\._~-',    Rfc3986::UNRESERVEDCHARS);
+        $this->assertSame('[A-Za-z0-9\._~-]',   Rfc3986::UNRESERVED);
     }
 
     //
@@ -101,7 +101,7 @@ class Rfc3986Test extends TestCase
     //
     public function test__PCT_ENCODED()
     {
-        $this->assertSame('(?:%[\dA-Fa-f][\dA-Fa-f])', Rfc3986::PCT_ENCODED);
+        $this->assertSame('(?:%[0-9A-Fa-f][0-9A-Fa-f])', Rfc3986::PCT_ENCODED);
     }
 
     //
@@ -109,8 +109,8 @@ class Rfc3986Test extends TestCase
     //
     public function test__PCHAR()
     {
-        $this->assertSame(    ':@!\$&\'\(\)\*\+,;=A-Za-z\d\._~-',                             Rfc3986::PCHARCHARS);
-        $this->assertSame('(?:[:@!\$&\'\(\)\*\+,;=A-Za-z\d\._~-]|(?:%[\dA-Fa-f][\dA-Fa-f]))', Rfc3986::PCHAR);
+        $this->assertSame(    ':@!\$&\'\(\)\*\+,;=A-Za-z0-9\._~-',                             Rfc3986::PCHARCHARS);
+        $this->assertSame('(?:[:@!\$&\'\(\)\*\+,;=A-Za-z0-9\._~-]|(?:%[0-9A-Fa-f][0-9A-Fa-f]))', Rfc3986::PCHAR);
     }
 
     //

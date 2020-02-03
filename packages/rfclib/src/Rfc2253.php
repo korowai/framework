@@ -49,7 +49,7 @@ class Rfc2253
     /**
      * Matches attributeType, like "ou" or "foo-bar", in the "attributeType=attributeValue".
      */
-    public const ATTRIBUTE_TYPE = '(?:(?:[a-zA-Z][a-zA-Z\d-]*)|(?:\d+(?:\.\d+)*))'; // RFC2253 seems to have bug here.
+    public const ATTRIBUTE_TYPE = '(?:(?:[a-zA-Z][a-zA-Z0-9-]*)|(?:0-9+(?:\.0-9+)*))'; // RFC2253 has bug here.
 
     /**
      * Matches single "attributeType=attributeValue" part of the NAME_COMPONENT.

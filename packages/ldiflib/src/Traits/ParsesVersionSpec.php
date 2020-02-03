@@ -75,7 +75,7 @@ trait ParsesVersionSpec
 
         if (count($matches = $this->matchAhead('/\Gversion:/', $cursor)) === 0) {
             if (!$tryOnly) {
-                $error = new ParserError(clone $cursor, "syntax error: unexpected token (expected 'version:')");
+                $error = new ParserError(clone $cursor, 'syntax error: expected "version:"');
                 $state->appendError($error);
             }
             return false;
@@ -106,7 +106,7 @@ trait ParsesVersionSpec
     {
         $cursor = $state->getCursor();
         if (count($matches = $this->matchAt('/\G\d+/', $cursor)) === 0) {
-            $error = new ParserError(clone $cursor, "syntax error: unexpected token (expected number)");
+            $error = new ParserError(clone $cursor, 'syntax error: expected number');
             $state->appendError($error);
             return false;
         }

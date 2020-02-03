@@ -15,6 +15,8 @@
     <testsuites>
         <testsuite name="Korowai Packages Test Suite">
             <directory suffix="Test.php">./packages/*/Tests/</directory>
+            <exclude>packages/rfclib/Tests/Rfc2253Test.php</exclude>
+            <exclude>packages/rfclib/Tests/Rfc2849Test.php</exclude>
             <exclude>packages/rfclib/Tests/Rfc3986Test.php</exclude>
             <exclude>packages/rfclib/Tests/Rfc5234Test.php</exclude>
             <exclude>packages/rfclib/Tests/Rfc8089Test.php</exclude>

@@ -105,7 +105,7 @@ class ParsesVersionSpecTest extends TestCase
                         'records' => [],
                         'errors' => [
                             [
-                                'message' => "syntax error: unexpected token (expected number)",
+                                'message' => "syntax error: expected number",
                                 'sourceOffset' => 3
                             ],
                         ],
@@ -167,7 +167,7 @@ class ParsesVersionSpecTest extends TestCase
                         'records' => [],
                         'errors' => [
                             [
-                                'message' => 'syntax error: unexpected token (expected \'version:\')',
+                                'message' => 'syntax error: expected "version:"',
                                 'sourceOffset' => 0,
                             ]
                         ]
@@ -269,7 +269,7 @@ class ParsesVersionSpecTest extends TestCase
                         'records' => [],
                         'errors' => [
                             [
-                                'message' => "syntax error: unexpected token (expected number)",
+                                'message' => 'syntax error: expected number',
                                 'sourceOffset' => 12
                             ],
                         ],

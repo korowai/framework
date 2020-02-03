@@ -68,7 +68,7 @@ trait ParsesStrings
             //          executed, except we screwed up something with the
             //          implementation (e.g. regular expression), or we decide
             //          to forbid empty strings one day.
-            $error = new ParserError(clone $cursor, 'syntax error: unexpected token (expected SAFE-STRING)');
+            $error = new ParserError(clone $cursor, 'syntax error: expected SAFE-STRING (RFC2849)');
             $state->appendError($error);
             return false;
         }
@@ -96,7 +96,7 @@ trait ParsesStrings
             //          executed, except we screwed up something with the
             //          implementation (e.g. regular expression), or we decide
             //          to forbid empty strings one day.
-            $error = new ParserError(clone $cursor, 'syntax error: unexpected token (expected BASE64-STRING)');
+            $error = new ParserError(clone $cursor, 'syntax error: expected BASE64-STRING (RFC2849)');
             $state->appendError($error);
             return false;
         }

@@ -92,7 +92,7 @@ trait ParsesDnSpec
 
         $matches = $this->matchAhead('/\Gdn:/', $cursor);
         if (count($matches) === 0) {
-            $error = new ParserError(clone $cursor, 'syntax error: unexpected token (expected \'dn:\')');
+            $error = new ParserError(clone $cursor, 'syntax error: expected "dn:"');
             $state->appendError($error);
             return false;
         }

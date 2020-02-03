@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Traits/ParsesURIs.php
+ * @file src/Traits/ParsesUris.php
  *
  * This file is part of the Korowai package
  *
@@ -22,7 +22,7 @@ use Korowai\Lib\Rfc\Rfc3986;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-trait ParsesURIs
+trait ParsesUris
 {
 //    /**
 //     * Skip zero or more whitespaces (FILL in RFC2849).
@@ -84,12 +84,12 @@ trait ParsesURIs
      *
      * @return bool true on success, false on parser error.
      */
-    public function parseURIReference(ParserStateInterface $state, array &$matches = null) : bool
+    public function parseUriReference(ParserStateInterface $state, array &$matches = null) : bool
     {
         $cursor = $state->getCursor();
         $matches = $this->matchAhead('/\G'.Rfc3986::URI_REFERENCE.'/', $cursor, PREG_UNMATCHED_AS_NULL);
         if (count($matches) === 0) {
-            $error = new ParserError(clone $cursor, 'syntax error: unexpected token (expected URI-reference)');
+            $error = new ParserError(clone $cursor, 'syntax error: expected URI-reference');
             $state->appendError($error);
             return false;
         }

@@ -90,7 +90,7 @@ class ParsesDnSpecTest extends TestCase
                     [
                         'sourceOffset' => 3,
                         'sourceCharOffset' => 2,
-                        'message' => 'syntax error: unexpected token (expected \'dn:\')',
+                        'message' => 'syntax error: expected "dn:"',
                     ]
                 ],
                 'records' => [],

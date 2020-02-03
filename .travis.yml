@@ -2,10 +2,19 @@ language: php
 php:
   - '7.2'
   - '7.3'
+env:
+  - KOROWAI_RUN_RFC_TESTS=true
+    KOROWAI_HEAVY_TESTING=on
+  - KOROWAI_RUN_RFC_TESTS=false
+    KOROWAI_HEAVY_TESTING=on
 install:
   - travis_retry composer install --no-interaction
 script:
   - mkdir -p build/logs
-  - php vendor/bin/phpunit --coverage-clover build/logs/clover.xml -c phpunit.xml.dist
+  - if $KOROWAI_RUN_RFC_TESTS; then
+      php vendor/bin/phpunit -c phpunit.xml.dist packages/ldiflib/Tests/RFC/*;
+    else
+      php vendor/bin/phpunit --coverage-clover build/logs/clover.xml -c phpunit.xml.dist;
+    fi;
 after_success:
   - curl -s https://codecov.io/bash | bash

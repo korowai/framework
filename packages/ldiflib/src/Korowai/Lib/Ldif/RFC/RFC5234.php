@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Lib/Ldif/RFC2234.php
+ * @file src/Korowai/Lib/Ldif/RFC5234.php
  *
  * This file is part of the Korowai package
  *
@@ -15,9 +15,9 @@ namespace Korowai\Lib\Ldif\RFC;
 
 /**
  * Resulable PCRE expressions for core rules defined in
- * [RFC2234](https://tools.ietf.org/html/rfc2234#section6).
+ * [RFC5234](https://tools.ietf.org/html/rfc5234#section6).
  */
-class RFC2234
+class RFC5234
 {
     // character lists for character classes
     public const ALPHACHARS = 'A-Za-z';
@@ -34,7 +34,7 @@ class RFC2234
     public const VCHARCHARS = '\x21-\x7E';
     public const WSPCHARS = ' \t';
 
-    // [core rules](https://tools.ietf.org/html/rfc2234#section-6)
+    // [core rules](https://tools.ietf.org/html/rfc5234#appendix-B.1)
     public const ALPHA = '['.self::ALPHACHARS.']';
     public const BIT = '['.self::BITCHARS.']';
     public const CHAR = '['.self::CHARCHARS.']';

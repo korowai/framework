@@ -31,7 +31,7 @@ class RFC8089 extends RFC3986
      */
     public const FILE_AUTH =
         '(?P<file_auth>'.
-            '(?:(?:localhost)|'.self::HOST.')'
+            '(?:(?:localhost)|'.self::HOST.')'.
         ')';
 
     /**
@@ -45,7 +45,7 @@ class RFC8089 extends RFC3986
     public const AUTH_PATH =
         '(?P<auth_path>'.
             self::FILE_AUTH.'?'.self::PATH_ABSOLUTE.
-        .')';
+        ')';
 
     /**
      * Matches the [file-hier-part](https://tools.ietf.org/html/rfc8089#section-2) component of file-URI.
@@ -53,7 +53,7 @@ class RFC8089 extends RFC3986
     public const FILE_HIER_PART =
         '(?P<file_hier_part>'.
             '(?:(?:\/\/'.self::AUTH_PATH.')|'.self::LOCAL_PATH.')'.
-        .')';
+        ')';
 
     /**
      * Matches the [file-scheme](https://tools.ietf.org/html/rfc8089#section-2) component of file-URI.

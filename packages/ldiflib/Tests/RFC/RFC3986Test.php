@@ -14,10 +14,9 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Ldif\RFC;
 
 use Korowai\Lib\Ldif\RFC\RFC3986;
-use Korowai\Lib\Ldif\RFC\RFC2234;
-use function Korowai\Lib\Compat\preg_match;
+use Korowai\Lib\Ldif\RFC\RFC5234;
 
-use Korowai\Testing\Lib\Ldif\TestCase;
+use Korowai\Testing\Lib\Ldif\RFC\TestCase;
 
 
 /**
@@ -25,39 +24,9 @@ use Korowai\Testing\Lib\Ldif\TestCase;
  */
 class RFC3986Test extends TestCase
 {
-    protected static function getRFC3986Regexp(string $constname)
+    public static function getRFCclass() : string
     {
-        return '/^'.constant(RFC3986::class.'::'.$constname).'$/';
-    }
-
-    protected static function arraizeStrings(array $items)
-    {
-        return array_map(function (string $item) {
-            return [$item];
-        }, $items);
-    }
-
-    public static function assertRFC3986Matches(string $subject, string $constname, array $expMatches = null)
-    {
-        $re = static::getRFC3986Regexp($constname);
-        $result = preg_match($re, $subject, $matches, PREG_UNMATCHED_AS_NULL);
-        static::assertSame(1, $result, 'Failed asserting that RFC3986::'.$constname.' matches \''.$subject.'\'');
-        static::assertSame($subject, $matches[0]);
-        if (is_array($expMatches)) {
-            foreach ($expMatches as $key => $expected) {
-                static::assertArrayHasKey($key, $matches);
-                $msg = 'Failed asserting that $matches['.var_export($key, true).'] is '.var_export($expected, true);
-                static::assertSame($expected, $matches[$key], $msg);
-            }
-        }
-    }
-
-    public static function assertRFC3986DoesNotMatch(string $subject, string $constname)
-    {
-        $re = static::getRFC3986Regexp($constname);
-        $result = preg_match($re, $subject, $matches, PREG_UNMATCHED_AS_NULL);
-        static::assertSame(0, $result,  'Failed asserting that RFC3986::'.$constname.' does not match \''.$subject.'\'');
-        static::assertNull($matches[0] ?? null);
+        return RFC3986::class;
     }
 
     //
@@ -65,8 +34,8 @@ class RFC3986Test extends TestCase
     //
     public function test__ALPHA()
     {
-        $this->assertSame(RFC2234::ALPHACHARS, RFC3986::ALPHACHARS);
-        $this->assertSame(RFC2234::ALPHA, RFC3986::ALPHA);
+        $this->assertSame(RFC5234::ALPHACHARS, RFC3986::ALPHACHARS);
+        $this->assertSame(RFC5234::ALPHA, RFC3986::ALPHA);
     }
 
     //
@@ -74,8 +43,8 @@ class RFC3986Test extends TestCase
     //
     public function test__DIGIT()
     {
-        $this->assertSame(RFC2234::DIGITCHARS, RFC3986::DIGITCHARS);
-        $this->assertSame(RFC2234::DIGIT, RFC3986::DIGIT);
+        $this->assertSame(RFC5234::DIGITCHARS, RFC3986::DIGITCHARS);
+        $this->assertSame(RFC5234::DIGIT, RFC3986::DIGIT);
     }
 
 
@@ -148,7 +117,7 @@ class RFC3986Test extends TestCase
     // SEGMENT_NZ_NC
     //
 
-    public function SEGMENT_NZ_NC__strings()
+    public static function SEGMENT_NZ_NC__strings()
     {
         $strings = [
             "!$&'()*+,;=-._~Ab1%1fx",
@@ -156,7 +125,7 @@ class RFC3986Test extends TestCase
         return static::arraizeStrings($strings);
     }
 
-    public function non__SEGMENT_NZ_NC__strings()
+    public static function non__SEGMENT_NZ_NC__strings()
     {
         $strings = ["", ":", "%", "%1", "%G", "%1G", "%G2", "#", "ł", "/", "?", "a/b", "a?"];
         return static::arraizeStrings($strings);
@@ -167,7 +136,7 @@ class RFC3986Test extends TestCase
      */
     public function test__SEGMENT_NZ_NC__matches(string $string)
     {
-        $this->assertRFC3986Matches($string, 'SEGMENT_NZ_NC');
+        $this->assertRFCMatches($string, 'SEGMENT_NZ_NC');
     }
 
     /**
@@ -175,14 +144,14 @@ class RFC3986Test extends TestCase
      */
     public function test__SEGMENT_NZ_NC__doesNotMatch(string $string)
     {
-        $this->assertRFC3986DoesNotMatch($string, 'SEGMENT_NZ_NC');
+        $this->assertRFCDoesNotMatch($string, 'SEGMENT_NZ_NC');
     }
 
     //
     // SEGMENT_NZ
     //
 
-    public function SEGMENT_NZ__strings()
+    public static function SEGMENT_NZ__strings()
     {
         $strings = [
             ":",
@@ -191,7 +160,7 @@ class RFC3986Test extends TestCase
         return static::arraizeStrings($strings);
     }
 
-    public function non__SEGMENT_NZ__strings()
+    public static function non__SEGMENT_NZ__strings()
     {
         $strings = ["", "%", "%1", "%G", "%1G", "%G2", "#", "ł", "/", "?", "a/b", "a?"];
         return static::arraizeStrings($strings);
@@ -202,7 +171,7 @@ class RFC3986Test extends TestCase
      */
     public function test__SEGMENT_NZ__matches(string $string)
     {
-        $this->assertRFC3986Matches($string, 'SEGMENT_NZ');
+        $this->assertRFCMatches($string, 'SEGMENT_NZ');
     }
 
     /**
@@ -210,14 +179,14 @@ class RFC3986Test extends TestCase
      */
     public function test__SEGMENT_NZ__doesNotMatch(string $string)
     {
-        $this->assertRFC3986DoesNotMatch($string, 'SEGMENT_NZ');
+        $this->assertRFCDoesNotMatch($string, 'SEGMENT_NZ');
     }
 
     //
     // SEGMENT
     //
 
-    public function SEGMENT__strings()
+    public static function SEGMENT__strings()
     {
         $strings = [
             "",
@@ -227,7 +196,7 @@ class RFC3986Test extends TestCase
         return static::arraizeStrings($strings);
     }
 
-    public function non__SEGMENT__strings()
+    public static function non__SEGMENT__strings()
     {
         $strings = ["%", "%1", "%G", "%1G", "%G2", "#", "ł", "/", "?", "a/b", "a?"];
         return static::arraizeStrings($strings);
@@ -238,7 +207,7 @@ class RFC3986Test extends TestCase
      */
     public function test__SEGMENT__matches(string $string)
     {
-        $this->assertRFC3986Matches($string, 'SEGMENT');
+        $this->assertRFCMatches($string, 'SEGMENT');
     }
 
     /**
@@ -246,20 +215,20 @@ class RFC3986Test extends TestCase
      */
     public function test__SEGMENT__doesNotMatch(string $string)
     {
-        $this->assertRFC3986DoesNotMatch($string, 'SEGMENT');
+        $this->assertRFCDoesNotMatch($string, 'SEGMENT');
     }
 
     //
     // PATH_EMPTY
     //
 
-    public function PATH_EMPTY__strings()
+    public static function PATH_EMPTY__strings()
     {
         $strings = [""];
         return static::arraizeStrings($strings);
     }
 
-    public function non__PATH_EMPTY__strings()
+    public static function non__PATH_EMPTY__strings()
     {
         $strings = [ "a", "A", "1", "." ];
         return static::arraizeStrings($strings);
@@ -270,7 +239,7 @@ class RFC3986Test extends TestCase
      */
     public function test__PATH_EMPTY__matches(string $string)
     {
-        $this->assertRFC3986Matches($string, 'PATH_EMPTY', ['path_empty' => $string]);
+        $this->assertRFCMatches($string, 'PATH_EMPTY', ['path_empty' => $string]);
     }
 
     /**
@@ -278,28 +247,27 @@ class RFC3986Test extends TestCase
      */
     public function test__PATH_EMPTY__doesNotMatch(string $string)
     {
-        $this->assertRFC3986DoesNotMatch($string, 'PATH_EMPTY');
+        $this->assertRFCDoesNotMatch($string, 'PATH_EMPTY');
     }
 
     //
     // PATH_NOSCHEME
     //
 
-    public function PATH_NOSCHEME__strings()
+    public static function PATH_NOSCHEME__strings()
     {
         $strings = [
             "!$&'()*+,;=-._~Ab1%1fx",
             "!$&'()*+,;=-._~Ab1%1fx/",
             "!$&'()*+,;=-._~Ab1%1fx/:!$&'()*+,;=-._~Ab1%1fx",
-            "!$&'()*+,;=-._~Ab1%1fx/:!$&'()*+,;=-._~Ab1%1fx/:!$&'()*+,;=-._~Ab1%1fx",
         ];
         return static::arraizeStrings($strings);
     }
 
-    public function non__PATH_NOSCHEME__strings()
+    public static function non__PATH_NOSCHEME__strings()
     {
         $strings = [":", ":/"];
-        return array_merge(static::arraizeStrings($strings), $this->non__PATH_ROOTLESS__strings());
+        return array_merge(static::arraizeStrings($strings), static::non__PATH_ROOTLESS__strings());
     }
 
     /**
@@ -307,7 +275,7 @@ class RFC3986Test extends TestCase
      */
     public function test__PATH_NOSCHEME__matches(string $string)
     {
-        $this->assertRFC3986Matches($string, 'PATH_NOSCHEME', ['path_noscheme' => $string]);
+        $this->assertRFCMatches($string, 'PATH_NOSCHEME', ['path_noscheme' => $string]);
     }
 
     /**
@@ -315,26 +283,24 @@ class RFC3986Test extends TestCase
      */
     public function test__PATH_NOSCHEME__doesNotMatch(string $string)
     {
-        $this->assertRFC3986DoesNotMatch($string, 'PATH_NOSCHEME');
+        $this->assertRFCDoesNotMatch($string, 'PATH_NOSCHEME');
     }
 
     //
     // PATH_ROOTLESS
     //
 
-    public function PATH_ROOTLESS__strings()
+    public static function PATH_ROOTLESS__strings()
     {
         $strings = [
-            ":",
             ":!$&'()*+,;=-._~Ab1%1fx",
             ":!$&'()*+,;=-._~Ab1%1fx/",
             ":!$&'()*+,;=-._~Ab1%1fx/:!$&'()*+,;=-._~Ab1%1fx",
-            ":!$&'()*+,;=-._~Ab1%1fx/:!$&'()*+,;=-._~Ab1%1fx/:!$&'()*+,;=-._~Ab1%1fx",
         ];
-        return array_merge(static::arraizeStrings($strings), $this->PATH_NOSCHEME__strings());
+        return array_merge(static::arraizeStrings($strings), static::PATH_NOSCHEME__strings());
     }
 
-    public function non__PATH_ROOTLESS__strings()
+    public static function non__PATH_ROOTLESS__strings()
     {
         $strings = ["", "%", "%1", "%G", "%1G", "%G2", "#", "ł", "/", "?", "/a"];
         return static::arraizeStrings($strings);
@@ -345,7 +311,7 @@ class RFC3986Test extends TestCase
      */
     public function test__PATH_ROOTLESS__matches(string $string)
     {
-        $this->assertRFC3986Matches($string, 'PATH_ROOTLESS', ['path_rootless' => $string]);
+        $this->assertRFCMatches($string, 'PATH_ROOTLESS', ['path_rootless' => $string]);
     }
 
     /**
@@ -353,21 +319,21 @@ class RFC3986Test extends TestCase
      */
     public function test__PATH_ROOTLESS__doesNotMatch(string $string)
     {
-        $this->assertRFC3986DoesNotMatch($string, 'PATH_ROOTLESS');
+        $this->assertRFCDoesNotMatch($string, 'PATH_ROOTLESS');
     }
 
     //
     // PATH_ABSOLUTE
     //
 
-    public function PATH_ABSOLUTE__strings()
+    public static function PATH_ABSOLUTE__strings()
     {
         return array_map(function (array $args) {
             return ['/'.$args[0]];
-        }, $this->PATH_ROOTLESS__strings());
+        }, static::PATH_ROOTLESS__strings());
     }
 
-    public function non__PATH_ABSOLUTE__strings()
+    public static function non__PATH_ABSOLUTE__strings()
     {
         $strings = ["", "a", ":", "%", "%1", "%G", "%1G", "%G2", "#", "ł", "?", "a/b"];
         return static::arraizeStrings($strings);
@@ -378,7 +344,7 @@ class RFC3986Test extends TestCase
      */
     public function test__PATH_ABSOLUTE__matches(string $string)
     {
-        $this->assertRFC3986Matches($string, 'PATH_ABSOLUTE', ['path_absolute' => $string]);
+        $this->assertRFCMatches($string, 'PATH_ABSOLUTE', ['path_absolute' => $string]);
     }
 
     /**
@@ -386,19 +352,19 @@ class RFC3986Test extends TestCase
      */
     public function test__PATH_ABSOLUTE__doesNotMatch(string $string)
     {
-        $this->assertRFC3986DoesNotMatch($string, 'PATH_ABSOLUTE');
+        $this->assertRFCDoesNotMatch($string, 'PATH_ABSOLUTE');
     }
 
     //
     // PATH_ABEMPTY
     //
 
-    public function PATH_ABEMPTY__strings()
+    public static function PATH_ABEMPTY__strings()
     {
-        return array_merge([[""]], $this->PATH_ABSOLUTE__strings());
+        return array_merge([[""]], static::PATH_ABSOLUTE__strings());
     }
 
-    public function non__PATH_ABEMPTY__strings()
+    public static function non__PATH_ABEMPTY__strings()
     {
         $strings = ["a", ":", "%", "%1", "%G", "%1G", "%G2", "#", "ł", "?"];
         return static::arraizeStrings($strings);
@@ -409,7 +375,7 @@ class RFC3986Test extends TestCase
      */
     public function test__PATH_ABEMPTY__matches(string $string)
     {
-        $this->assertRFC3986Matches($string, 'PATH_ABEMPTY', ['path_abempty' => $string]);
+        $this->assertRFCMatches($string, 'PATH_ABEMPTY', ['path_abempty' => $string]);
     }
 
     /**
@@ -417,25 +383,25 @@ class RFC3986Test extends TestCase
      */
     public function test__PATH_ABEMPTY__doesNotMatch(string $string)
     {
-        $this->assertRFC3986DoesNotMatch($string, 'PATH_ABEMPTY');
+        $this->assertRFCDoesNotMatch($string, 'PATH_ABEMPTY');
     }
 
     //
     // PATH
     //
 
-    public function PATH__strings()
+    public static function PATH__strings()
     {
         return array_merge(
-            $this->PATH_ABEMPTY__strings(),
-            $this->PATH_ABSOLUTE__strings(),
-            $this->PATH_NOSCHEME__strings(),
-            $this->PATH_ROOTLESS__strings(),
-            $this->PATH_EMPTY__strings()
+            static::PATH_ABEMPTY__strings(),
+            static::PATH_ABSOLUTE__strings(),
+            static::PATH_NOSCHEME__strings(),
+            static::PATH_ROOTLESS__strings(),
+            static::PATH_EMPTY__strings()
         );
     }
 
-    public function non__PATH__strings()
+    public static function non__PATH__strings()
     {
         $strings = [
             "%", "%1", "%G", "%1G", "%G2", "#", "ł", "?",
@@ -448,7 +414,7 @@ class RFC3986Test extends TestCase
      */
     public function test__PATH__matches(string $string)
     {
-        $this->assertRFC3986Matches($string, 'PATH', ['path' => $string]);
+        $this->assertRFCMatches($string, 'PATH', ['path' => $string]);
     }
 
     /**
@@ -456,31 +422,47 @@ class RFC3986Test extends TestCase
      */
     public function test__PATH__doesNotMatch(string $string)
     {
-        $this->assertRFC3986DoesNotMatch($string, 'PATH');
+        $this->assertRFCDoesNotMatch($string, 'PATH');
     }
 
     //
     // REG_NAME
     //
 
-    public function REG_NAME__strings()
+    public static function REG_NAME__cases()
     {
-        $strings = ["", "!$&'()*+,;=aA2%1fx-._~"];
-        return static::arraizeStrings($strings);
+        return [
+            [
+                "",
+                [
+                ]
+            ],
+            [
+                "example.org",
+                [
+                ]
+            ],
+            [
+                "!$&'()*+,;=aA2%1fx-._~",
+                [
+                ]
+            ],
+        ];
     }
 
-    public function non__REG_NAME__strings()
+    public static function non__REG_NAME__strings()
     {
         $strings = [" ", "#", "%", "%1", "%1G", "%G", "%G2", "/", ":", "?", "@", "[", "]", "ł"];
         return static::arraizeStrings($strings);
     }
 
     /**
-     * @dataProvider REG_NAME__strings
+     * @dataProvider REG_NAME__cases
      */
-    public function test__REG_NAME__matches(string $string)
+    public function test__REG_NAME__matches(string $string, array $pieces)
     {
-        $this->assertRFC3986Matches($string, 'REG_NAME', ['reg_name' => $string]);
+        $expMatches = array_merge(['reg_name' => $string], $pieces);
+        $this->assertRFCMatches($string, 'REG_NAME', $expMatches);
     }
 
     /**
@@ -488,20 +470,20 @@ class RFC3986Test extends TestCase
      */
     public function test__REG_NAME__doesNotMatch(string $string)
     {
-        $this->assertRFC3986DoesNotMatch($string, 'REG_NAME');
+        $this->assertRFCDoesNotMatch($string, 'REG_NAME');
     }
 
     //
     // DEC_OCTET
     //
 
-    public function DEC_OCTET__strings()
+    public static function DEC_OCTET__strings()
     {
         $strings = ["0", "7", "10", "45", "99", "100", "123", "199", "200", "234", "249", "250", "252", "255" ];
         return static::arraizeStrings($strings);
     }
 
-    public function non__DEC_OCTET__strings()
+    public static function non__DEC_OCTET__strings()
     {
         $strings = ["", " ", "#", "%", "%1", "%1G", "%G", "%G2", "/", ":", "?", "@", "[", "]", "ł",
                     "00", "05", "000", "010", "256",];
@@ -513,7 +495,7 @@ class RFC3986Test extends TestCase
      */
     public function test__DEC_OCTET__matches(string $string)
     {
-        $this->assertRFC3986Matches($string, 'DEC_OCTET');
+        $this->assertRFCMatches($string, 'DEC_OCTET');
     }
 
     /**
@@ -521,26 +503,45 @@ class RFC3986Test extends TestCase
      */
     public function test__DEC_OCTET__doesNotMatch(string $string)
     {
-        $this->assertRFC3986DoesNotMatch($string, 'DEC_OCTET');
+        $this->assertRFCDoesNotMatch($string, 'DEC_OCTET');
     }
 
     //
     // IPV4ADDRESS
     //
 
-    public function IPV4ADDRESS__strings()
+    public static function IPV4ADDRESS__cases()
     {
-        $strings = [
-            "0.0.0.0",
-            "255.255.255.255",
-            "1.2.3.4",
-            "11.22.33.44",
-            "1.2.3.255",
+        return [
+            [
+                "0.0.0.0",
+                [
+                ]
+            ],
+            [
+                "255.255.255.255",
+                [
+                ]
+            ],
+            [
+                "1.2.3.4",
+                [
+                ]
+            ],
+            [
+                "11.22.33.44",
+                [
+                ]
+            ],
+            [
+                "1.2.3.255",
+                [
+                ]
+            ],
         ];
-        return static::arraizeStrings($strings);
     }
 
-    public function non__IPV4ADDRESS__strings()
+    public static function non__IPV4ADDRESS__strings()
     {
         $strings = [
             "", " ", "#",
@@ -552,11 +553,12 @@ class RFC3986Test extends TestCase
     }
 
     /**
-     * @dataProvider IPV4ADDRESS__strings
+     * @dataProvider IPV4ADDRESS__cases
      */
-    public function test__IPV4ADDRESS__matches(string $string)
+    public function test__IPV4ADDRESS__matches(string $string, array $pieces)
     {
-        $this->assertRFC3986Matches($string, 'IPV4ADDRESS', ['ipv4address' => $string]);
+        $expMatches = array_merge(['ipv4address' => $string], $pieces);
+        $this->assertRFCMatches($string, 'IPV4ADDRESS', $expMatches);
     }
 
     /**
@@ -564,7 +566,7 @@ class RFC3986Test extends TestCase
      */
     public function test__IPV4ADDRESS__doesNotMatch(string $string)
     {
-        $this->assertRFC3986DoesNotMatch($string, 'IPV4ADDRESS');
+        $this->assertRFCDoesNotMatch($string, 'IPV4ADDRESS');
     }
 
     //
@@ -596,7 +598,7 @@ class RFC3986Test extends TestCase
      */
     public function test__H16__matches(string $string)
     {
-        $this->assertRFC3986Matches($string, 'H16');
+        $this->assertRFCMatches($string, 'H16');
     }
 
     /**
@@ -604,7 +606,7 @@ class RFC3986Test extends TestCase
      */
     public function test__H16__doesNotMatch(string $string)
     {
-        $this->assertRFC3986DoesNotMatch($string, 'H16');
+        $this->assertRFCDoesNotMatch($string, 'H16');
     }
 
     //
@@ -631,7 +633,7 @@ class RFC3986Test extends TestCase
      */
     public function test__LS32__matches(string $string)
     {
-        $this->assertRFC3986Matches($string, 'LS32');
+        $this->assertRFCMatches($string, 'LS32');
     }
 
     /**
@@ -639,29 +641,503 @@ class RFC3986Test extends TestCase
      */
     public function test__LS32__doesNotMatch(string $string)
     {
-        $this->assertRFC3986DoesNotMatch($string, 'LS32');
+        $this->assertRFCDoesNotMatch($string, 'LS32');
     }
 
     //
     // IPV6ADDRESS
     //
 
-    public function IPV6ADDRESS__strings()
+    public static function IPV6ADDRESS__cases()
     {
-        $strings = [
-            "::",                           // any address compression
-            "::1",                          // localhost IPv6 address
-            "1::",                          // trailing compression
-            "::ffff:192.168.173.22",        // IPv4 space
-            "2605:2700:0:3::4713:93e3",
-            "2a02:a311:161:9d80::1",
-            "fe80::ce71:d980:66d:c516",
-            "2a02:a311:161:9d80:7aed:ddca:5162:f673",
+        $basicCases = [
+            [
+                "::",                           // any address compression
+                [
+                    'ls32'          => false,
+                    'ipv6v4address' => false,
+                ]
+            ],
+            [
+                "::1",                          // localhost IPv6 address
+                [
+                    'ls32'          => false,
+                    'ipv6v4address' => false,
+                ]
+            ],
+            [
+                "1::",                          // trailing compression
+                [
+                    'ls32'          => false,
+                    'ipv6v4address' => false,
+                ]
+            ],
+            [
+                "::ffff:192.168.173.22",        // IPv4 space
+                [
+                    'ls32'          => '192.168.173.22',
+                    'ipv6v4address' => '192.168.173.22',
+                ]
+            ],
+            // some real-life examples
+            [
+                "2605:2700:0:3::4713:93e3",
+                [
+                    'ls32'          => '4713:93e3',
+                    'ipv6v4address' => false,
+                ]
+            ],
+            [
+                "2a02:a311:161:9d80::1",
+                [
+                    'ls32'          => false,
+                    'ipv6v4address' => false,
+                ]
+            ],
         ];
-        return static::arraizeStrings($strings);
+
+        $systematicCases = [
+            // 1'st row in rule
+            [
+                "99:aa:bbb:cccc:dddd:eeee:ff:32",
+                [
+                    'ls32'          => 'ff:32',
+                    'ipv6v4address' => false,
+                ]
+            ],
+            [
+                "99:aa:bbb:cccc:dddd:eeee:192.168.173.22",
+                [
+                    'ls32'          => '192.168.173.22',
+                    'ipv6v4address' => '192.168.173.22',
+                ]
+            ],
+
+            // 2'nd row in rule
+            [
+                "::aa:bbb:cccc:dddd:eeee:ff:32",
+                [
+                    'ls32'          => 'ff:32',
+                    'ipv6v4address' => false,
+                ]
+            ],
+            [
+                "::aa:bbb:cccc:dddd:eeee:192.168.173.22",
+                [
+                    'ls32'          => '192.168.173.22',
+                    'ipv6v4address' => '192.168.173.22',
+                ]
+            ],
+
+            // 3'rd row in rule
+            [
+                "::bbb:cccc:dddd:eeee:ff:32",
+                [
+                    'ls32'          => 'ff:32',
+                    'ipv6v4address' => false,
+                ]
+            ],
+            [
+                "::bbb:cccc:dddd:eeee:192.168.173.22",
+                [
+                    'ls32'          => '192.168.173.22',
+                    'ipv6v4address' => '192.168.173.22',
+                ]
+            ],
+            [
+                "11::bbb:cccc:dddd:eeee:ff:32",
+                [
+                    'ls32'          => 'ff:32',
+                    'ipv6v4address' => false,
+                ]
+            ],
+            [
+                "11::bbb:cccc:dddd:eeee:192.168.173.22",
+                [
+                    'ls32'          => '192.168.173.22',
+                    'ipv6v4address' => '192.168.173.22',
+                ]
+            ],
+
+            // 4'th row in rule
+            [
+                "::cccc:dddd:eeee:ff:32",
+                [
+                    'ls32'          => 'ff:32',
+                    'ipv6v4address' => false,
+                ]
+            ],
+            [
+                "::cccc:dddd:eeee:192.168.173.22",
+                [
+                    'ls32'          => '192.168.173.22',
+                    'ipv6v4address' => '192.168.173.22',
+                ]
+            ],
+            [
+                "11::cccc:dddd:eeee:ff:32",
+                [
+                    'ls32'          => 'ff:32',
+                    'ipv6v4address' => false,
+                ]
+            ],
+            [
+                "11::cccc:dddd:eeee:192.168.173.22",
+                [
+                    'ls32'          => '192.168.173.22',
+                    'ipv6v4address' => '192.168.173.22',
+                ]
+            ],
+            [
+                "11:22::cccc:dddd:eeee:ff:32",
+                [
+                    'ls32'          => 'ff:32',
+                    'ipv6v4address' => false,
+                ]
+            ],
+            [
+                "11:22::cccc:dddd:eeee:192.168.173.22",
+                [
+                    'ls32'          => '192.168.173.22',
+                    'ipv6v4address' => '192.168.173.22',
+                ]
+            ],
+
+            // 5'th row in rule
+            [
+                "::dddd:eeee:ff:32",
+                [
+                    'ls32'          => 'ff:32',
+                    'ipv6v4address' => false,
+                ]
+            ],
+            [
+                "::dddd:eeee:192.168.173.22",
+                [
+                    'ls32'          => '192.168.173.22',
+                    'ipv6v4address' => '192.168.173.22',
+                ]
+            ],
+            [
+                "11::dddd:eeee:ff:32",
+                [
+                    'ls32'          => 'ff:32',
+                    'ipv6v4address' => false,
+                ]
+            ],
+            [
+                "11::dddd:eeee:192.168.173.22",
+                [
+                    'ls32'          => '192.168.173.22',
+                    'ipv6v4address' => '192.168.173.22',
+                ]
+            ],
+            [
+                "11:22::dddd:eeee:ff:32",
+                [
+                    'ls32'          => 'ff:32',
+                    'ipv6v4address' => false,
+                ]
+            ],
+            [
+                "11:22::dddd:eeee:192.168.173.22",
+                [
+                    'ls32'          => '192.168.173.22',
+                    'ipv6v4address' => '192.168.173.22',
+                ]
+            ],
+            [
+                "11:22:33::dddd:eeee:ff:32",
+                [
+                    'ls32'          => 'ff:32',
+                    'ipv6v4address' => false,
+                ]
+            ],
+            [
+                "11:22:33::dddd:eeee:192.168.173.22",
+                [
+                    'ls32'          => '192.168.173.22',
+                    'ipv6v4address' => '192.168.173.22',
+                ]
+            ],
+
+            // 6'th row in rule
+            [
+                "::eeee:ff:32",
+                [
+                    'ls32'          => 'ff:32',
+                    'ipv6v4address' => false,
+                ]
+            ],
+            [
+                "::eeee:192.168.173.22",
+                [
+                    'ls32'          => '192.168.173.22',
+                    'ipv6v4address' => '192.168.173.22',
+                ]
+            ],
+            [
+                "11::eeee:ff:32",
+                [
+                    'ls32'          => 'ff:32',
+                    'ipv6v4address' => false,
+                ]
+            ],
+            [
+                "11::eeee:192.168.173.22",
+                [
+                    'ls32'          => '192.168.173.22',
+                    'ipv6v4address' => '192.168.173.22',
+                ]
+            ],
+            [
+                "11:22::eeee:ff:32",
+                [
+                    'ls32'          => 'ff:32',
+                    'ipv6v4address' => false,
+                ]
+            ],
+            [
+                "11:22::eeee:192.168.173.22",
+                [
+                    'ls32'          => '192.168.173.22',
+                    'ipv6v4address' => '192.168.173.22',
+                ]
+            ],
+            [
+                "11:22:33::eeee:ff:32",
+                [
+                    'ls32'          => 'ff:32',
+                    'ipv6v4address' => false,
+                ]
+            ],
+            [
+                "11:22:33::eeee:192.168.173.22",
+                [
+                    'ls32'          => '192.168.173.22',
+                    'ipv6v4address' => '192.168.173.22',
+                ]
+            ],
+            [
+                "11:22:33:44::eeee:ff:32",
+                [
+                    'ls32'          => 'ff:32',
+                    'ipv6v4address' => false,
+                ]
+            ],
+            [
+                "11:22:33:44::eeee:192.168.173.22",
+                [
+                    'ls32'          => '192.168.173.22',
+                    'ipv6v4address' => '192.168.173.22',
+                ]
+            ],
+
+            // 7'th row in rule
+            [
+                "::ff:32",
+                [
+                    'ls32'          => 'ff:32',
+                    'ipv6v4address' => false,
+                ]
+            ],
+            [
+                "::192.168.173.22",
+                [
+                    'ls32'          => '192.168.173.22',
+                    'ipv6v4address' => '192.168.173.22',
+                ]
+            ],
+            [
+                "11::ff:32",
+                [
+                    'ls32'          => 'ff:32',
+                    'ipv6v4address' => false,
+                ]
+            ],
+            [
+                "11::192.168.173.22",
+                [
+                    'ls32'          => '192.168.173.22',
+                    'ipv6v4address' => '192.168.173.22',
+                ]
+            ],
+            [
+                "11:22::ff:32",
+                [
+                    'ls32'          => 'ff:32',
+                    'ipv6v4address' => false,
+                ]
+            ],
+            [
+                "11:22::192.168.173.22",
+                [
+                    'ls32'          => '192.168.173.22',
+                    'ipv6v4address' => '192.168.173.22',
+                ]
+            ],
+            [
+                "11:22:33::ff:32",
+                [
+                    'ls32'          => 'ff:32',
+                    'ipv6v4address' => false,
+                ]
+            ],
+            [
+                "11:22:33::192.168.173.22",
+                [
+                    'ls32'          => '192.168.173.22',
+                    'ipv6v4address' => '192.168.173.22',
+                ]
+            ],
+            [
+                "11:22:33:44::ff:32",
+                [
+                    'ls32'          => 'ff:32',
+                    'ipv6v4address' => false,
+                ]
+            ],
+            [
+                "11:22:33:44::192.168.173.22",
+                [
+                    'ls32'          => '192.168.173.22',
+                    'ipv6v4address' => '192.168.173.22',
+                ]
+            ],
+            [
+                "11:22:33:44:55::ff:32",
+                [
+                    'ls32'          => 'ff:32',
+                    'ipv6v4address' => false,
+                ]
+            ],
+            [
+                "11:22:33:44:55::192.168.173.22",
+                [
+                    'ls32'          => '192.168.173.22',
+                    'ipv6v4address' => '192.168.173.22',
+                ]
+            ],
+
+            // 8'th row in rule
+            [
+                "::ff",
+                [
+                    'ls32'          => false,
+                    'ipv6v4address' => false,
+                ]
+            ],
+            [
+                "11::ff",
+                [
+                    'ls32'          => false,
+                    'ipv6v4address' => false,
+                ]
+            ],
+            [
+                "11:22::ff",
+                [
+                    'ls32'          => false,
+                    'ipv6v4address' => false,
+                ]
+            ],
+            [
+                "11:22:33::ff",
+                [
+                    'ls32'          => false,
+                    'ipv6v4address' => false,
+                ]
+            ],
+            [
+                "11:22:33:44::ff",
+                [
+                    'ls32'          => false,
+                    'ipv6v4address' => false,
+                ]
+            ],
+            [
+                "11:22:33:44:55::ff",
+                [
+                    'ls32'          => false,
+                    'ipv6v4address' => false,
+                ]
+            ],
+            [
+                "11:22:33:44:55:66::ff",
+                [
+                    'ls32'          => false,
+                    'ipv6v4address' => false,
+                ]
+            ],
+
+            // 9'th row in rule
+            [
+                "::",
+                [
+                    'ls32'          => false,
+                    'ipv6v4address' => false,
+                ]
+            ],
+            [
+                "11::",
+                [
+                    'ls32'          => false,
+                    'ipv6v4address' => false,
+                ]
+            ],
+            [
+                "11:22::",
+                [
+                    'ls32'          => false,
+                    'ipv6v4address' => false,
+                ]
+            ],
+            [
+                "11:22:33::",
+                [
+                    'ls32'          => false,
+                    'ipv6v4address' => false,
+                ]
+            ],
+            [
+                "11:22:33:44::",
+                [
+                    'ls32'          => false,
+                    'ipv6v4address' => false,
+                ]
+            ],
+            [
+                "11:22:33:44:55::",
+                [
+                    'ls32'          => false,
+                    'ipv6v4address' => false,
+                ]
+            ],
+            [
+                "11:22:33:44:55:66::",
+                [
+                    'ls32'          => false,
+                    'ipv6v4address' => false,
+                ]
+            ],
+            [
+                "11:22:33:44:55:66:77::",
+                [
+                    'ls32'          => false,
+                    'ipv6v4address' => false,
+                ]
+            ],
+        ];
+
+        if (static::isHeavyTesting()) {
+            $cases = array_merge($basicCases, $systematicCases);
+        } else {
+            $cases = $basicCases;
+        }
+        return $cases;
     }
 
-    public function non__IPV6ADDRESS__strings()
+    public static function non__IPV6ADDRESS__strings()
     {
         $strings = [
             "", " ", "g", "G", "123", "12345:123", "abcde:dff",
@@ -671,11 +1147,12 @@ class RFC3986Test extends TestCase
     }
 
     /**
-     * @dataProvider IPV6ADDRESS__strings
+     * @dataProvider IPV6ADDRESS__cases
      */
-    public function test__IPV6ADDRESS__matches(string $string)
+    public function test__IPV6ADDRESS__matches(string $string, array $pieces)
     {
-        $this->assertRFC3986Matches($string, 'IPV6ADDRESS', ['ipv6address' => $string]);
+        $expMatches = array_merge(['ipv6address' => $string], $pieces);
+        $this->assertRFCMatches($string, 'IPV6ADDRESS', $expMatches);
     }
 
     /**
@@ -683,24 +1160,25 @@ class RFC3986Test extends TestCase
      */
     public function test__IPV6ADDRESS__doesNotMatch(string $string)
     {
-        $this->assertRFC3986DoesNotMatch($string, 'IPV6ADDRESS');
+        $this->assertRFCDoesNotMatch($string, 'IPV6ADDRESS');
     }
 
     //
     // IPVFUTURE
     //
 
-    public function IPVFUTURE__strings()
+    public static function IPVFUTURE__cases()
     {
-        $strings = [
-            "v1.:",
-            "v2f.:",
-            "v12ea.:!$&'()*+,;=-._~aB32",
+        return [
+            [
+                "v12ea.:!$&'()*+,;=-._~aB32",
+                [
+                ]
+            ],
         ];
-        return static::arraizeStrings($strings);
     }
 
-    public function non__IPVFUTURE__strings()
+    public static function non__IPVFUTURE__strings()
     {
         $strings = [
             "", " ", "a", "B", "1", "vGEE.aa", "v.sdf", "#", "%", "/", ":", "?", "@", "[", "]", "ł",
@@ -709,11 +1187,12 @@ class RFC3986Test extends TestCase
     }
 
     /**
-     * @dataProvider IPVFUTURE__strings
+     * @dataProvider IPVFUTURE__cases
      */
-    public function test__IPVFUTURE__matches(string $string)
+    public function test__IPVFUTURE__matches(string $string, array $pieces)
     {
-        $this->assertRFC3986Matches($string, 'IPVFUTURE', ['ipvfuture' => $string]);
+        $expMatches = array_merge(['ipvfuture' => $string], $pieces);
+        $this->assertRFCMatches($string, 'IPVFUTURE', $expMatches);
     }
 
     /**
@@ -721,32 +1200,43 @@ class RFC3986Test extends TestCase
      */
     public function test__IPVFUTURE__doesNotMatch(string $string)
     {
-        $this->assertRFC3986DoesNotMatch($string, 'IPVFUTURE');
+        $this->assertRFCDoesNotMatch($string, 'IPVFUTURE');
     }
 
     //
     // IP_LITERAL
     //
 
-    public function IP_LITERAL__strings()
+    public static function IP_LITERAL__cases()
     {
-        $strings = [
-            "[::]",                           // any address compression
-            "[::1]",                          // localhost IPv6 address
-            "[1::]",                          // trailing compression
-            "[::ffff:192.168.173.22]",        // IPv4 space
-            "[2605:2700:0:3::4713:93e3]",
-            "[2a02:a311:161:9d80::1]",
-            "[fe80::ce71:d980:66d:c516]",
-            "[2a02:a311:161:9d80:7aed:ddca:5162:f673]",
-            "[v1.:]",
-            "[v2f.:]",
-            "[v12ea.:!$&'()*+,;=-._~aB32]",
+        $cases = [
         ];
-        return static::arraizeStrings($strings);
+        return array_merge(
+            $cases,
+            array_map(function (array $case) {
+                return [
+                    '['.$case[0].']',
+                    array_merge($case[1], [
+                        'ipv6address' => $case[0],
+                        'ipvfuture' => false,
+                    ])
+                ];
+            }, static::IPV6ADDRESS__cases()),
+            array_map(function (array $case) {
+                return [
+                    '['.$case[0].']',
+                    array_merge($case[1], [
+                        'ipv6address' => null,
+                        'ls32' => null,
+                        'ipv6v4address' => null,
+                        'ipvfuture' => $case[0]
+                    ])
+                ];
+            }, static::IPVFUTURE__cases())
+        );
     }
 
-    public function non__IP_LITERAL__strings()
+    public static function non__IP_LITERAL__strings()
     {
         $strings = [
             "", " ", "g", "G", "123", "12345:123", "abcde:dff",
@@ -767,11 +1257,12 @@ class RFC3986Test extends TestCase
     }
 
     /**
-     * @dataProvider IP_LITERAL__strings
+     * @dataProvider IP_LITERAL__cases
      */
-    public function test__IP_LITERAL__matches(string $string)
+    public function test__IP_LITERAL__matches(string $string, array $pieces)
     {
-        $this->assertRFC3986Matches($string, 'IP_LITERAL', ['ip_literal' => $string]);
+        $expMatches = array_merge(['ip_literal' => $string], $pieces);
+        $this->assertRFCMatches($string, 'IP_LITERAL', $expMatches);
     }
 
     /**
@@ -779,20 +1270,20 @@ class RFC3986Test extends TestCase
      */
     public function test__IP_LITERAL__doesNotMatch(string $string)
     {
-        $this->assertRFC3986DoesNotMatch($string, 'IP_LITERAL');
+        $this->assertRFCDoesNotMatch($string, 'IP_LITERAL');
     }
 
     //
     // PORT
     //
 
-    public function PORT__strings()
+    public static function PORT__strings()
     {
-        $strings = ["", "0", "1", "123456790"];
+        $strings = ["", "123"];
         return static::arraizeStrings($strings);
     }
 
-    public function non__PORT__strings()
+    public static function non__PORT__strings()
     {
         $strings = ["a", "A", "@"];
         return static::arraizeStrings($strings);
@@ -803,7 +1294,7 @@ class RFC3986Test extends TestCase
      */
     public function test__PORT__matches(string $string)
     {
-        $this->assertRFC3986Matches($string, 'PORT', ['port' => $string]);
+        $this->assertRFCMatches($string, 'PORT', ['port' => $string]);
     }
 
     /**
@@ -811,40 +1302,49 @@ class RFC3986Test extends TestCase
      */
     public function test__PORT__doesNotMatch(string $string)
     {
-        $this->assertRFC3986DoesNotMatch($string, 'PORT');
+        $this->assertRFCDoesNotMatch($string, 'PORT');
     }
 
     //
     // HOST
     //
 
-    public function HOST__strings()
+    public static function HOST__cases()
     {
-        $strings = [
-            "[::]",                           // any address compression
-            "[::1]",                          // localhost IPv6 address
-            "[1::]",                          // trailing compression
-            "[::ffff:192.168.173.22]",        // IPv4 space
-            "[2605:2700:0:3::4713:93e3]",
-            "[2a02:a311:161:9d80::1]",
-            "[fe80::ce71:d980:66d:c516]",
-            "[2a02:a311:161:9d80:7aed:ddca:5162:f673]",
-            "[v1.:]",
-            "[v2f.:]",
-            "[v12ea.:!$&'()*+,;=-._~aB32]",
-            "0.0.0.0",
-            "255.255.255.255",
-            "1.2.3.4",
-            "11.22.33.44",
-            "1.2.3.255",
-            "example.org",
-            "",
-            "!$&'()*+,;=aA2%1fx-._~"
+        $cases = [
         ];
-        return static::arraizeStrings($strings);
+        return array_merge(
+            $cases,
+            array_map(function(array $case) {
+                return [
+                    $case[0],
+                    array_merge($case[1], [
+                        'ip_literal' => $case[0],
+                        'ipv4address' => false,
+                        'reg_name' => false
+                    ])
+                ];
+            }, static::IP_LITERAL__cases()),
+            array_map(function(array $case) {
+                return [
+                    $case[0],
+                    array_merge($case[1], [
+                        'ip_literal' => null,
+                        'ipv6address' => null,
+                        'ls32' => null,
+                        'ipv6v4address' => null,
+                        'ipvfuture' => null,
+                        'ipv4address' => $case[0]
+                    ])
+                ];
+            }, static::IPV4ADDRESS__cases()),
+            array_map(function(array $case) {
+                return [$case[0], array_merge($case[1], ['reg_name' => $case[0]])];
+            }, static::REG_NAME__cases()),
+        );
     }
 
-    public function non__HOST__strings()
+    public static function non__HOST__strings()
     {
         $strings = [
             " ", "12345:123", "abcde:dff",
@@ -866,11 +1366,12 @@ class RFC3986Test extends TestCase
     }
 
     /**
-     * @dataProvider HOST__strings
+     * @dataProvider HOST__cases
      */
-    public function test__HOST__matches(string $string)
+    public function test__HOST__matches(string $string, array $pieces)
     {
-        $this->assertRFC3986Matches($string, 'HOST', ['host' => $string]);
+        $expMatches = array_merge(['host' => $string], $pieces);
+        $this->assertRFCMatches($string, 'HOST', $expMatches);
     }
 
     /**
@@ -878,20 +1379,20 @@ class RFC3986Test extends TestCase
      */
     public function test__HOST__doesNotMatch(string $string)
     {
-        $this->assertRFC3986DoesNotMatch($string, 'HOST');
+        $this->assertRFCDoesNotMatch($string, 'HOST');
     }
 
     //
     // USERINFO
     //
 
-    public function USERINFO__strings()
+    public static function USERINFO__strings()
     {
-        $strings = ["", ":", "!$&'()*+,;=-._~Ab1%1fx:"];
+        $strings = ["", "!$&'()*+,;=-._~Ab1%1fx:"];
         return static::arraizeStrings($strings);
     }
 
-    public function non__USERINFO__strings()
+    public static function non__USERINFO__strings()
     {
         $strings = [
             "%", "%1", "%G", "%1G", "%G2", "#", "ł",
@@ -905,7 +1406,7 @@ class RFC3986Test extends TestCase
      */
     public function test__USERINFO__matches(string $string)
     {
-        $this->assertRFC3986Matches($string, 'USERINFO', ['userinfo' => $string]);
+        $this->assertRFCMatches($string, 'USERINFO', ['userinfo' => $string]);
     }
 
     /**
@@ -913,73 +1414,72 @@ class RFC3986Test extends TestCase
      */
     public function test__USERINFO__doesNotMatch(string $string)
     {
-        $this->assertRFC3986DoesNotMatch($string, 'USERINFO');
+        $this->assertRFCDoesNotMatch($string, 'USERINFO');
     }
 
     //
     // AUTHORITY
     //
 
-    public function AUTHORITY__strings()
+    public static function AUTHORITY__cases()
     {
-        $strings = [
-            "",
-            "[::]",
-            "[::]:123",
-            "!$&'()*+,;=-._~Ab1%1fx:@[::]",
-            "!$&'()*+,;=-._~Ab1%1fx:@[::]:123",
-            "[::1]",
-            "[::1]:123",
-            "!$&'()*+,;=-._~Ab1%1fx:@[::1]",
-            "!$&'()*+,;=-._~Ab1%1fx:@[::1]:123",
-            "[1::]",
-            "[1::]:123",
-            "!$&'()*+,;=-._~Ab1%1fx:@[1::]",
-            "!$&'()*+,;=-._~Ab1%1fx:@[1::]:123",
-            "[::ffff:192.168.173.22]",
-            "[::ffff:192.168.173.22]:123",
-            "!$&'()*+,;=-._~Ab1%1fx:@[::ffff:192.168.173.22]",
-            "!$&'()*+,;=-._~Ab1%1fx:@[::ffff:192.168.173.22]:123",
-            "[2605:2700:0:3::4713:93e3]",
-            "[2605:2700:0:3::4713:93e3]:123",
-            "!$&'()*+,;=-._~Ab1%1fx:@[2605:2700:0:3::4713:93e3]",
-            "!$&'()*+,;=-._~Ab1%1fx:@[2605:2700:0:3::4713:93e3]:123",
-            "[2a02:a311:161:9d80:7aed:ddca:5162:f673]",
-            "[2a02:a311:161:9d80:7aed:ddca:5162:f673]:123",
-            "!$&'()*+,;=-._~Ab1%1fx:@[2a02:a311:161:9d80:7aed:ddca:5162:f673]",
-            "!$&'()*+,;=-._~Ab1%1fx:@[2a02:a311:161:9d80:7aed:ddca:5162:f673]:123",
-            "[v1.:]",
-            "[v1.:]:123",
-            "!$&'()*+,;=-._~Ab1%1fx:@[v1.:]",
-            "!$&'()*+,;=-._~Ab1%1fx:@[v1.:]:123",
-            "[v2f.:]",
-            "[v2f.:]:123",
-            "!$&'()*+,;=-._~Ab1%1fx:@[v2f.:]",
-            "!$&'()*+,;=-._~Ab1%1fx:@[v2f.:]:123",
-            "[v12ea.:!$&'()*+,;=-._~aB32]",
-            "[v12ea.:!$&'()*+,;=-._~aB32]:123",
-            "!$&'()*+,;=-._~Ab1%1fx:@[v12ea.:!$&'()*+,;=-._~aB32]",
-            "!$&'()*+,;=-._~Ab1%1fx:@[v12ea.:!$&'()*+,;=-._~aB32]:123",
-            "1.2.3.4",
-            "1.2.3.4:123",
-            "@1.2.3.4",
-            "!$&'()*+,;=-._~Ab1%1fx:@1.2.3.4",
-            "!$&'()*+,;=-._~Ab1%1fx:@1.2.3.4:123",
-            "example.org",
-            "example.org:123",
-            "!$&'()*+,;=-._~Ab1%1fx:@example.org",
-            "!$&'()*+,;=-._~Ab1%1fx:@example.org:123",
-            ":123",
-            "!$&'()*+,;=-._~Ab1%1fx:@:123",
-            "!$&'()*+,;=aA2%1fx-._~",
-            "!$&'()*+,;=aA2%1fx-._~:123",
-            "!$&'()*+,;=-._~Ab1%1fx:@!$&'()*+,;=aA2%1fx-._~",
-            "!$&'()*+,;=-._~Ab1%1fx:@!$&'()*+,;=aA2%1fx-._~:123",
+        $cases = [
         ];
-        return static::arraizeStrings($strings);
+
+        $userinfoHostCases = [];
+        foreach (static::USERINFO__strings() as $userinfo) {
+            foreach (static::HOST__cases() as $host) {
+                $case = [
+                    $userinfo[0]."@".$host[0],
+                    array_merge(['userinfo' => $userinfo[0]], $host[1], ['port' => false])
+                ];
+                $userinfoHostCases[] = $case;
+            }
+        }
+
+        $hostPortCases = [];
+        foreach (static::PORT__strings() as $port) {
+            foreach (static::HOST__cases() as $host) {
+                $case = [
+                    $host[0].":".$port[0],
+                    array_merge(['userinfo' => null], $host[1], ['port' => $port[0]])
+                ];
+                $hostPortCases[] = $case;
+            }
+        }
+
+        $userinfoHostPortCases = [];
+        foreach (static::USERINFO__strings() as $userinfo) {
+            foreach (static::PORT__strings() as $port) {
+                foreach (static::HOST__cases() as $host) {
+                    $case = [
+                        $userinfo[0]."@".$host[0].":".$port[0],
+                        array_merge(['userinfo' => $userinfo[0]], $host[1], ['port' => $port[0]])
+                    ];
+                    $userinfoHostPortCases[] = $case;
+                }
+            }
+        }
+
+        return array_merge(
+            $cases,
+            array_map(function (array $case) {
+                return [
+                    $case[0],
+                    array_merge($case[1], [
+                        'userinfo' => null,
+                        'host' => $case[0],
+                        'port' => false
+                    ])
+                ];
+            }, static::HOST__cases()),
+            $userinfoHostCases,
+            $hostPortCases,
+            $userinfoHostPortCases,
+        );
     }
 
-    public function non__AUTHORITY__strings()
+    public static function non__AUTHORITY__strings()
     {
         $strings = [
             "%", "%1", "%G", "%1G", "%G2", "#", "ł",
@@ -989,11 +1489,12 @@ class RFC3986Test extends TestCase
     }
 
     /**
-     * @dataProvider AUTHORITY__strings
+     * @dataProvider AUTHORITY__cases
      */
-    public function test__AUTHORITY__matches(string $string)
+    public function test__AUTHORITY__matches(string $string, array $pieces)
     {
-        $this->assertRFC3986Matches($string, 'AUTHORITY', ['authority' => $string]);
+        $expMatches = array_merge(['authority' => $string], $pieces);
+        $this->assertRFCMatches($string, 'AUTHORITY', $expMatches);
     }
 
     /**
@@ -1001,20 +1502,20 @@ class RFC3986Test extends TestCase
      */
     public function test__AUTHORITY__doesNotMatch(string $string)
     {
-        $this->assertRFC3986DoesNotMatch($string, 'AUTHORITY');
+        $this->assertRFCDoesNotMatch($string, 'AUTHORITY');
     }
 
     //
     // SCHEME
     //
 
-    public function SCHEME__strings()
+    public static function SCHEME__strings()
     {
-        $strings = ["a", "z", "az33", "a.23+x-x"];
+        $strings = ["a.23+x-x"];
         return static::arraizeStrings($strings);
     }
 
-    public function non__SCHEME__strings()
+    public static function non__SCHEME__strings()
     {
         $strings = ["", "1s", "@", "a~"];
         return static::arraizeStrings($strings);
@@ -1025,7 +1526,7 @@ class RFC3986Test extends TestCase
      */
     public function test__SCHEME__matches(string $string)
     {
-        $this->assertRFC3986Matches($string, 'SCHEME', ['scheme' => $string]);
+        $this->assertRFCMatches($string, 'SCHEME', ['scheme' => $string]);
     }
 
     /**
@@ -1033,43 +1534,55 @@ class RFC3986Test extends TestCase
      */
     public function test__SCHEME__doesNotMatch(string $string)
     {
-        $this->assertRFC3986DoesNotMatch($string, 'SCHEME');
+        $this->assertRFCDoesNotMatch($string, 'SCHEME');
     }
 
     //
     // RELATIVE_PART
     //
 
-    public function RELATIVE_PART__strings()
+    public static function RELATIVE_PART__cases()
     {
-        $strings = [
-            "//",
-            "//example.com",
-            "//example.com/",
-            "//jsmith:j\$m!th@example.com:123",
-            "//jsmith:j\$m!th@example.com:123/",
-            "//jsmith:j\$m!th@example.com:123/asdf/bb",
+        $cases = [
         ];
+        $authorityPathAbemptyCases = [];
+        foreach (static::AUTHORITY__cases() as $authority) {
+            foreach (static::PATH_ABEMPTY__strings() as $path) {
+                $case = [
+                    '//'.$authority[0].$path[0],
+                    array_merge($authority[1], ['path_abempty' => $path[0]])
+                ];
+                $authorityPathAbemptyCases[] = $case;
+            }
+        }
         return array_merge(
-            static::arraizeStrings($strings),
-            $this->PATH_ABSOLUTE__strings(),
-            $this->PATH_NOSCHEME__strings(),
-            $this->PATH_EMPTY__strings()
+            $cases,
+            $authorityPathAbemptyCases,
+            array_map(function (array $arg) {
+                return [$arg[0], ['path_absolute' => $arg[0]]];
+            }, static::PATH_ABSOLUTE__strings()),
+            array_map(function (array $arg) {
+                return [$arg[0], ['path_noscheme' => $arg[0]]];
+            }, static::PATH_NOSCHEME__strings()),
+            array_map(function (array $arg) {
+                return [$arg[0], ['path_empty' => $arg[0]]];
+            }, static::PATH_EMPTY__strings())
         );
     }
 
-    public function non__RELATIVE_PART__strings()
+    public static function non__RELATIVE_PART__strings()
     {
         $strings = ["#", "%", "%1", "%1G", "%G", "%G2", ":", ":/", "?", "ł"];
         return static::arraizeStrings($strings);
     }
 
     /**
-     * @dataProvider RELATIVE_PART__strings
+     * @dataProvider RELATIVE_PART__cases
      */
-    public function test__RELATIVE_PART__matches(string $string)
+    public function test__RELATIVE_PART__matches(string $string, array $pieces)
     {
-        $this->assertRFC3986Matches($string, 'RELATIVE_PART', ['relative_part' => $string]);
+        $expMatches = array_merge(['relative_part' => $string], $pieces);
+        $this->assertRFCMatches($string, 'RELATIVE_PART', $expMatches);
     }
 
     /**
@@ -1077,44 +1590,55 @@ class RFC3986Test extends TestCase
      */
     public function test__RELATIVE_PART__doesNotMatch(string $string)
     {
-        $this->assertRFC3986DoesNotMatch($string, 'RELATIVE_PART');
+        $this->assertRFCDoesNotMatch($string, 'RELATIVE_PART');
     }
 
     //
     // HIER_PART
     //
 
-    public function HIER_PART__strings()
+    public static function HIER_PART__cases()
     {
-        $strings = [
-            "//",
-            "//:",
-            "//example.com",
-            "//example.com/",
-            "//jsmith:j\$m!th@example.com:123",
-            "//jsmith:j\$m!th@example.com:123/:",
-            "//jsmith:j\$m!th@example.com:123/as:df/bb",
+        $cases = [
         ];
+        $authorityPathAbemptyCases = [];
+        foreach (static::AUTHORITY__cases() as $authority) {
+            foreach (static::PATH_ABEMPTY__strings() as $path) {
+                $case = [
+                    '//'.$authority[0].$path[0],
+                    array_merge($authority[1], ['path_abempty' => $path[0]])
+                ];
+                $authorityPathAbemptyCases[] = $case;
+            }
+        }
         return array_merge(
-            static::arraizeStrings($strings),
-            $this->PATH_ABSOLUTE__strings(),
-            $this->PATH_ROOTLESS__strings(),
-            $this->PATH_EMPTY__strings()
+            $cases,
+            $authorityPathAbemptyCases,
+            array_map(function (array $arg) {
+                return [$arg[0], ['path_absolute' => $arg[0]]];
+            }, static::PATH_ABSOLUTE__strings()),
+            array_map(function (array $arg) {
+                return [$arg[0], ['path_rootless' => $arg[0]]];
+            }, static::PATH_ROOTLESS__strings()),
+            array_map(function (array $arg) {
+                return [$arg[0], ['path_empty' => $arg[0]]];
+            }, static::PATH_EMPTY__strings())
         );
     }
 
-    public function non__HIER_PART__strings()
+    public static function non__HIER_PART__strings()
     {
         $strings = ["#", "%", "%1", "%1G", "%G", "%G2", "?", "ł"];
         return static::arraizeStrings($strings);
     }
 
     /**
-     * @dataProvider HIER_PART__strings
+     * @dataProvider HIER_PART__cases
      */
-    public function test__HIER_PART__matches(string $string)
+    public function test__HIER_PART__matches(string $string, array $pieces)
     {
-        $this->assertRFC3986Matches($string, 'HIER_PART', ['hier_part' => $string]);
+        $expMatches = array_merge(['hier_part' => $string], $pieces);
+        $this->assertRFCMatches($string, 'HIER_PART', $expMatches);
     }
 
     /**
@@ -1122,23 +1646,22 @@ class RFC3986Test extends TestCase
      */
     public function test__HIER_PART__doesNotMatch(string $string)
     {
-        $this->assertRFC3986DoesNotMatch($string, 'HIER_PART');
+        $this->assertRFCDoesNotMatch($string, 'HIER_PART');
     }
 
     //
     // FRAGMENT
     //
 
-    public function FRAGMENT__strings()
+    public static function FRAGMENT__strings()
     {
         $strings = [
-            "", "/", "?", "//", "?/", "/?", "foo/b%61r/",
-            "/foo/../BaR?aa=12&bb=4a:df,hi/dood"
+            "", 'aZ2-._~!$&\'()*+,;=/?:@%20'
         ];
         return static::arraizeStrings($strings);
     }
 
-    public function non__FRAGMENT__strings()
+    public static function non__FRAGMENT__strings()
     {
         $strings = ["%", "%1", "%G", "%1G", "%G2", "#", "ł"];
         return static::arraizeStrings($strings);
@@ -1149,7 +1672,7 @@ class RFC3986Test extends TestCase
      */
     public function test__FRAGMENT__matches(string $string)
     {
-        $this->assertRFC3986Matches($string, 'FRAGMENT', ['fragment' => $string]);
+        $this->assertRFCMatches($string, 'FRAGMENT', ['fragment' => $string]);
     }
 
     /**
@@ -1157,23 +1680,22 @@ class RFC3986Test extends TestCase
      */
     public function test__FRAGMENT__doesNotMatch(string $string)
     {
-        $this->assertRFC3986DoesNotMatch($string, 'FRAGMENT');
+        $this->assertRFCDoesNotMatch($string, 'FRAGMENT');
     }
 
     //
     // QUERY
     //
 
-    public function QUERY__strings()
+    public static function QUERY__strings()
     {
         $strings = [
-            "", "/", "?", "//", "?/", "/?", "foo/b%61r/",
-            "/foo/../BaR?aa=12&bb=4a:df,hi/dood"
+            "", 'aZ2-._~!$&\'()*+,;=/?:@%20'
         ];
         return static::arraizeStrings($strings);
     }
 
-    public function non__QUERY__strings()
+    public static function non__QUERY__strings()
     {
         $strings = ["%", "%1", "%G", "%1G", "%G2", "#", "ł"];
         return static::arraizeStrings($strings);
@@ -1184,7 +1706,7 @@ class RFC3986Test extends TestCase
      */
     public function test__QUERY__matches(string $string)
     {
-        $this->assertRFC3986Matches($string, 'QUERY', ['query' => $string]);
+        $this->assertRFCMatches($string, 'QUERY', ['query' => $string]);
     }
 
     /**
@@ -1192,279 +1714,98 @@ class RFC3986Test extends TestCase
      */
     public function test__QUERY__doesNotMatch(string $string)
     {
-        $this->assertRFC3986DoesNotMatch($string, 'QUERY');
+        $this->assertRFCDoesNotMatch($string, 'QUERY');
     }
 
     //
     // RELATIVE_REF
     //
 
-    public function RELATIVE_REF__cases()
+    public static function RELATIVE_REF__cases()
     {
-        $cases = [
-            [
-                '//',
-                [
-                    'relative_part' => '//',
-                    'authority'     => '',
-                    'userinfo'      => null,
-                    'host'          => '',
-                    'ipv4address'   => null,
-                    'ipv6address'   => null,
-                    'ipvfuture'     => null,
-                    'ip_literal'    => null,
-                    'reg_name'      => '',
-                    'port'          => null,
-                    'path_abempty'  => '',
-                ]
-            ],
-            [
-                '?',
-                [
-                    'relative_part' => '',
-                    'authority'     => null,
-                    'userinfo'      => null,
-                    'host'          => null,
-                    'ipv4address'   => null,
-                    'ipv6address'   => null,
-                    'ipvfuture'     => null,
-                    'ip_literal'    => null,
-                    'reg_name'      => null,
-                    'port'          => null,
-                    'path_abempty'  => null,
-                    'path_absolute' => null,
-                    'path_noscheme' => null,
-                    'path_empty'    => '',
-                    'query'         => '',
-                    //'fragment'    => 'XXX',
-                ]
-            ],
-            [
-                '#',
-                [
-                    'relative_part' => '',
-                    'authority'     => null,
-                    'userinfo'      => null,
-                    'host'          => null,
-                    'ipv4address'   => null,
-                    'ipv6address'   => null,
-                    'ipvfuture'     => null,
-                    'ip_literal'    => null,
-                    'reg_name'      => null,
-                    'port'          => null,
-                    'path_abempty'  => null,
-                    'path_absolute' => null,
-                    'path_noscheme' => null,
-                    'path_empty'    => '',
-                    'query'         => null,
-                    'fragment'      => '',
-                ]
-            ],
-            [
-                '//example.com',
-                [
-                    'relative_part' => '//example.com',
-                    'authority'     => 'example.com',
-                    'userinfo'      => null,
-                    'host'          => 'example.com',
-                    'ipv4address'   => null,
-                    'ipv6address'   => null,
-                    'ipvfuture'     => null,
-                    'ip_literal'    => null,
-                    'reg_name'      => 'example.com',
-                    'port'          => null,
-                    'path_abempty'  => '',
-                ]
-            ],
-            [
-                '//example.com?arg1=val1&arg2=val2',
-                [
-                    'relative_part' => '//example.com',
-                    'authority'     => 'example.com',
-                    'userinfo'      => null,
-                    'host'          => 'example.com',
-                    'ipv4address'   => null,
-                    'ipv6address'   => null,
-                    'ipvfuture'     => null,
-                    'ip_literal'    => null,
-                    'reg_name'      => 'example.com',
-                    'port'          => null,
-                    'path_abempty'  => '',
-                    'query'         => 'arg1=val1&arg2=val2',
-                ]
-            ],
-            [
-                '//example.com?arg1=val1&arg2=val2#/foo/bar',
-                [
-                    'relative_part' => '//example.com',
-                    'authority'     => 'example.com',
-                    'userinfo'      => null,
-                    'host'          => 'example.com',
-                    'ipv4address'   => null,
-                    'ipv6address'   => null,
-                    'ipvfuture'     => null,
-                    'ip_literal'    => null,
-                    'reg_name'      => 'example.com',
-                    'port'          => null,
-                    'path_abempty'  => '',
-                    'query'         => 'arg1=val1&arg2=val2',
-                    'fragment'      => '/foo/bar',
-                ]
-            ],
-            [
-                '//example.com/',
-                [
-                    'relative_part' => '//example.com/',
-                    'authority'     => 'example.com',
-                    'userinfo'      => null,
-                    'host'          => 'example.com',
-                    'ipv4address'   => null,
-                    'ipv6address'   => null,
-                    'ipvfuture'     => null,
-                    'ip_literal'    => null,
-                    'reg_name'      => 'example.com',
-                    'port'          => null,
-                    'path_abempty'  => '/',
-                ]
-            ],
-            [
-                '//example.com/?arg1=val1&arg2=val2',
-                [
-                    'relative_part' => '//example.com/',
-                    'authority'     => 'example.com',
-                    'userinfo'      => null,
-                    'host'          => 'example.com',
-                    'ipv4address'   => null,
-                    'ipv6address'   => null,
-                    'ipvfuture'     => null,
-                    'ip_literal'    => null,
-                    'reg_name'      => 'example.com',
-                    'port'          => null,
-                    'path_abempty'  => '/',
-                    'query'         => 'arg1=val1&arg2=val2',
-                ]
-            ],
-            [
-                '//example.com/?arg1=val1&arg2=val2#/foo/bar',
-                [
-                    'relative_part' => '//example.com/',
-                    'authority'     => 'example.com',
-                    'userinfo'      => null,
-                    'host'          => 'example.com',
-                    'ipv4address'   => null,
-                    'ipv6address'   => null,
-                    'ipvfuture'     => null,
-                    'ip_literal'    => null,
-                    'reg_name'      => 'example.com',
-                    'port'          => null,
-                    'path_abempty'  => '/',
-                    'query'         => 'arg1=val1&arg2=val2',
-                    'fragment'      => '/foo/bar',
-                ]
-            ],
-            [
-                '//jsmith:j$m!th@example.com:123?arg1=val1&arg2=val2',
-                [
-                    'relative_part' => '//jsmith:j$m!th@example.com:123',
-                    'authority'     => 'jsmith:j$m!th@example.com:123',
-                    'userinfo'      => 'jsmith:j$m!th',
-                    'host'          => 'example.com',
-                    'ipv4address'   => null,
-                    'ipv6address'   => null,
-                    'ipvfuture'     => null,
-                    'ip_literal'    => null,
-                    'reg_name'      => 'example.com',
-                    'port'          => '123',
-                    'path_abempty'  => '',
-                    'query'         => 'arg1=val1&arg2=val2',
-                ]
-            ],
-            [
-                '//jsmith:j$m!th@example.com:123?arg1=val1&arg2=val2#/foo/bar',
-                [
-                    'relative_part' => '//jsmith:j$m!th@example.com:123',
-                    'authority'     => 'jsmith:j$m!th@example.com:123',
-                    'userinfo'      => 'jsmith:j$m!th',
-                    'host'          => 'example.com',
-                    'ipv4address'   => null,
-                    'ipv6address'   => null,
-                    'ipvfuture'     => null,
-                    'ip_literal'    => null,
-                    'reg_name'      => 'example.com',
-                    'port'          => '123',
-                    'path_abempty'  => '',
-                    'query'         => 'arg1=val1&arg2=val2',
-                    'fragment'      => '/foo/bar',
-                ]
-            ],
-            [
-                '//jsmith:j$m!th@example.com:123/',
-                [
-                    'relative_part' => '//jsmith:j$m!th@example.com:123/',
-                    'authority'     => 'jsmith:j$m!th@example.com:123',
-                    'userinfo'      => 'jsmith:j$m!th',
-                    'host'          => 'example.com',
-                    'ipv4address'   => null,
-                    'ipv6address'   => null,
-                    'ipvfuture'     => null,
-                    'ip_literal'    => null,
-                    'reg_name'      => 'example.com',
-                    'port'          => '123',
-                    'path_abempty'  => '/',
-                ]
-            ],
-            [
-                '//jsmith:j$m!th@example.com:123/asdf/bb?arg1=v1&arg2=v2#/',
-                [
-                    'relative_part' => '//jsmith:j$m!th@example.com:123/asdf/bb',
-                    'authority'     => 'jsmith:j$m!th@example.com:123',
-                    'userinfo'      => 'jsmith:j$m!th',
-                    'host'          => 'example.com',
-                    'ipv4address'   => null,
-                    'ipv6address'   => null,
-                    'ipvfuture'     => null,
-                    'ip_literal'    => null,
-                    'reg_name'      => 'example.com',
-                    'port'          => '123',
-                    'path_abempty'  => '/asdf/bb',
-                    'query'         => 'arg1=v1&arg2=v2',
-                    'fragment'      => '/',
-                ]
-            ],
+        $basicCases = [
         ];
+
+        $relpartCases = array_map(function (array $case) {
+            return [
+                $case[0],
+                array_merge(
+                    ['relative_part' => $case[0]],
+                    $case[1],
+                    [
+                        'query' => false,
+                        'fragment' => false
+                    ]
+                )
+            ];
+        }, static::RELATIVE_PART__cases());
+
+        $relpartQueryCases = [];
+        foreach (static::RELATIVE_PART__cases() as $relpart) {
+            foreach (static::QUERY__strings() as $query) {
+                $case = [
+                    $relpart[0]."?".$query[0],
+                    array_merge(
+                        ['relative_part' => $relpart[0]],
+                        $relpart[1],
+                        [
+                            'query' => $query[0],
+                            'fragment' => false,
+                        ]
+                    )
+                ];
+                $relpartQueryCases[] = $case;
+            }
+        }
+
+        $relpartFragmentCases = [];
+        foreach (static::RELATIVE_PART__cases() as $relpart) {
+            foreach (static::FRAGMENT__strings() as $fragment) {
+                $case = [
+                    $relpart[0]."#".$fragment[0],
+                    array_merge(
+                        ['relative_part' => $relpart[0]],
+                        $relpart[1],
+                        [
+                            'query' => false,
+                            'fragment' => $fragment[0],
+                        ]
+                    )
+                ];
+                $relpartFragmentCases[] = $case;
+            }
+        }
+
+        $relpartQueryFragmentCases = [];
+        foreach (static::RELATIVE_PART__cases() as $relpart) {
+            foreach (static::QUERY__strings() as $query) {
+                foreach (static::FRAGMENT__strings() as $fragment) {
+                    $case = [
+                        $relpart[0]."?".$query[0]."#".$fragment[0],
+                        array_merge(
+                            ['relative_part' => $relpart[0]],
+                            $relpart[1],
+                            [
+                                'query' => $query[0],
+                                'fragment' => $fragment[0],
+                            ]
+                        )
+                    ];
+                    $relpartQueryFragmentCases[] = $case;
+                }
+            }
+        }
+
         return array_merge(
-            $cases,
-            array_map(function (array $arg) {
-                return [$arg[0], [
-                    'relative_part' => $arg[0],
-                    'authority'     => null,
-                    'path_abempty'  => null,
-                    'path_absolute' => $arg[0],
-                ]];
-            }, $this->PATH_ABSOLUTE__strings()),
-            array_map(function (array $arg) {
-                return [$arg[0], [
-                    'relative_part' => $arg[0],
-                    'authority'     => null,
-                    'path_abempty'  => null,
-                    'path_absolute' => null,
-                    'path_noscheme' => $arg[0],
-                ]];
-            }, $this->PATH_NOSCHEME__strings()),
-            array_map(function (array $arg) {
-                return [$arg[0], [
-                    'relative_part' => $arg[0],
-                    'authority'     => null,
-                    'path_abempty'  => null,
-                    'path_absolute' => null,
-                    'path_noscheme' => null,
-                    'path_empty'    => $arg[0],
-                ]];
-            }, $this->PATH_EMPTY__strings())
+            $basicCases,
+            $relpartCases,
+            $relpartQueryCases,
+            $relpartFragmentCases,
+            $relpartQueryFragmentCases,
         );
     }
 
-    public function non__RELATIVE_REF__strings()
+    public static function non__RELATIVE_REF__strings()
     {
         $strings = ["%", "%1", "%1G", "%G", "%G2", ":", ":/", "ł"];
         return static::arraizeStrings($strings);
@@ -1476,7 +1817,7 @@ class RFC3986Test extends TestCase
     public function test__RELATIVE_REF__matches(string $string, array $parts)
     {
         $expMatches = array_merge(['relative_ref' => $string], $parts);
-        $this->assertRFC3986Matches($string, 'RELATIVE_REF', $expMatches);
+        $this->assertRFCMatches($string, 'RELATIVE_REF', $expMatches);
     }
 
     /**
@@ -1484,369 +1825,64 @@ class RFC3986Test extends TestCase
      */
     public function test__RELATIVE_REF__doesNotMatch(string $string)
     {
-        $this->assertRFC3986DoesNotMatch($string, 'RELATIVE_REF');
+        $this->assertRFCDoesNotMatch($string, 'RELATIVE_REF');
     }
 
     //
     // ABSOLUTE_URI
     //
 
-    public function ABSOLUTE_URI__cases()
+    public static function ABSOLUTE_URI__cases()
     {
-        return [
-            [
-                'a-b.c+3d:',
-                [
-                    'scheme'        => 'a-b.c+3d',
-                    'hier_part'     => '',
-                    'path_empty'    => ''
-                ]
-            ],
-            [
-                'a-b.c+3d:?a1=v1&a2=v2',
-                [
-                    'scheme'        => 'a-b.c+3d',
-                    'hier_part'     => '',
-                    'path_empty'    => '',
-                    'query'         => 'a1=v1&a2=v2'
-                ]
-            ],
-            [
-                'a-b.c+3d:efgh',
-                [
-                    'scheme'        => 'a-b.c+3d',
-                    'hier_part'     => 'efgh',
-                    'path_rootless' => 'efgh'
-                ]
-            ],
-            [
-                'a-b.c+3d:/efgh',
-                [
-                    'scheme'        => 'a-b.c+3d',
-                    'hier_part'     => '/efgh',
-                    'path_absolute' => '/efgh'
-                ]
-            ],
-            [
-                'a-b.c+3d://',
-                [
-                    'scheme'        => 'a-b.c+3d',
-                    'hier_part'     => '//',
-                    'authority'     => '',
-                    'path_abempty'  => ''
-                ]
-            ],
-            [
-                'a-b.c+3d:///',
-                [
-                    'scheme'        => 'a-b.c+3d',
-                    'hier_part'     => '///',
-                    'authority'     => '',
-                    'path_abempty'  => '/'
-                ]
-            ],
-            [
-                'a-b.c+3d://an-example.com/',
-                [
-                    'scheme'        => 'a-b.c+3d',
-                    'hier_part'     => '//an-example.com/',
-                    'authority'     => 'an-example.com',
-                    'userinfo'      => null,
-                    'host'          => 'an-example.com',
-                    'ipv4address'   => null,
-                    'ipv6address'   => null,
-                    'ipvfuture'     => null,
-                    'ip_literal'    => null,
-                    'reg_name'      => 'an-example.com',
-                    'port'          => null,
-                    'path_abempty'  => '/'
-                ]
-            ],
-            [
-                'a-b.c+3d://127.0.0.1/',
-                [
-                    'scheme'        => 'a-b.c+3d',
-                    'hier_part'     => '//127.0.0.1/',
-                    'authority'     => '127.0.0.1',
-                    'userinfo'      => null,
-                    'host'          => '127.0.0.1',
-                    'ipv4address'   => '127.0.0.1',
-                    'ipv6address'   => null,
-                    'ipvfuture'     => null,
-                    'ip_literal'    => null,
-                    'reg_name'      => null,
-                    'port'          => null,
-                    'path_abempty'  => '/'
-                ]
-            ],
-            [
-                'a-b.c+3d://[::1]/',
-                [
-                    'scheme'        => 'a-b.c+3d',
-                    'hier_part'     => '//[::1]/',
-                    'authority'     => '[::1]',
-                    'userinfo'      => null,
-                    'host'          => '[::1]',
-                    'ipv4address'   => null,
-                    'ipv6address'   => '::1',
-                    'ipvfuture'     => null,
-                    'ip_literal'    => '[::1]',
-                    'reg_name'      => null,
-                    'port'          => null,
-                    'path_abempty'  => '/'
-                ]
-            ],
-            [
-                'a-b.c+3d://[v1F.1A:2B$3c]/',
-                [
-                    'scheme'        => 'a-b.c+3d',
-                    'hier_part'     => '//[v1F.1A:2B$3c]/',
-                    'authority'     => '[v1F.1A:2B$3c]',
-                    'userinfo'      => null,
-                    'host'          => '[v1F.1A:2B$3c]',
-                    'ipv4address'   => null,
-                    'ipv6address'   => null,
-                    'ipvfuture'     => 'v1F.1A:2B$3c',
-                    'ip_literal'    => '[v1F.1A:2B$3c]',
-                    'reg_name'      => null,
-                    'port'          => null,
-                    'path_abempty'  => '/'
-                ]
-            ],
-            [
-                'a-b.c+3d://jsmith@an-example.com/',
-                [
-                    'scheme'        => 'a-b.c+3d',
-                    'hier_part'     => '//jsmith@an-example.com/',
-                    'authority'     => 'jsmith@an-example.com',
-                    'userinfo'      => 'jsmith',
-                    'host'          => 'an-example.com',
-                    'ipv4address'   => null,
-                    'ipv6address'   => null,
-                    'ipvfuture'     => null,
-                    'ip_literal'    => null,
-                    'reg_name'      => 'an-example.com',
-                    'port'          => null,
-                    'path_abempty'  => '/'
-                ]
-            ],
-            [
-                'a-b.c+3d://jsmith:j$m!th@an-example.com:123/',
-                [
-                    'scheme'        => 'a-b.c+3d',
-                    'hier_part'     => '//jsmith:j$m!th@an-example.com:123/',
-                    'authority'     => 'jsmith:j$m!th@an-example.com:123',
-                    'userinfo'      => 'jsmith:j$m!th',
-                    'host'          => 'an-example.com',
-                    'ipv4address'   => null,
-                    'ipv6address'   => null,
-                    'ipvfuture'     => null,
-                    'ip_literal'    => null,
-                    'reg_name'      => 'an-example.com',
-                    'port'          => '123',
-                    'path_abempty'  => '/'
-                ]
-            ],
-            [
-                'a-b.c+3d://jsmith:j$m!th@an-example.com:123?arg1=v1&arg2=v2',
-                [
-                    'scheme'        => 'a-b.c+3d',
-                    'hier_part'     => '//jsmith:j$m!th@an-example.com:123',
-                    'authority'     => 'jsmith:j$m!th@an-example.com:123',
-                    'userinfo'      => 'jsmith:j$m!th',
-                    'host'          => 'an-example.com',
-                    'ipv4address'   => null,
-                    'ipv6address'   => null,
-                    'ipvfuture'     => null,
-                    'ip_literal'    => null,
-                    'reg_name'      => 'an-example.com',
-                    'port'          => '123',
-                    'path_abempty'  => '',
-                    'query'         => 'arg1=v1&arg2=v2',
-                ]
-            ],
-            [
-                'a-b.c+3d://jsmith:j$m!th@an-example.com:123/?arg1=v1&arg2=v2',
-                [
-                    'scheme'        => 'a-b.c+3d',
-                    'hier_part'     => '//jsmith:j$m!th@an-example.com:123/',
-                    'authority'     => 'jsmith:j$m!th@an-example.com:123',
-                    'userinfo'      => 'jsmith:j$m!th',
-                    'host'          => 'an-example.com',
-                    'ipv4address'   => null,
-                    'ipv6address'   => null,
-                    'ipvfuture'     => null,
-                    'ip_literal'    => null,
-                    'reg_name'      => 'an-example.com',
-                    'port'          => '123',
-                    'path_abempty'  => '/',
-                    'query'         => 'arg1=v1&arg2=v2',
-                ]
-            ],
-            [
-                'a-b.c+3d://jsmith:j$m!th@an-example.com:123/p1/p2?arg1=v1&arg2=v2',
-                [
-                    'scheme'        => 'a-b.c+3d',
-                    'hier_part'     => '//jsmith:j$m!th@an-example.com:123/p1/p2',
-                    'authority'     => 'jsmith:j$m!th@an-example.com:123',
-                    'userinfo'      => 'jsmith:j$m!th',
-                    'host'          => 'an-example.com',
-                    'ipv4address'   => null,
-                    'ipv6address'   => null,
-                    'ipvfuture'     => null,
-                    'ip_literal'    => null,
-                    'reg_name'      => 'an-example.com',
-                    'port'          => '123',
-                    'path_abempty'  => '/p1/p2',
-                    'query'         => 'arg1=v1&arg2=v2',
-                ]
-            ],
-            [
-                'a-b.c+3d://jsmith:j$m!th@an-example.com:123/p1/p2/?arg1=v1&arg2=v2',
-                [
-                    'scheme'        => 'a-b.c+3d',
-                    'hier_part'     => '//jsmith:j$m!th@an-example.com:123/p1/p2/',
-                    'authority'     => 'jsmith:j$m!th@an-example.com:123',
-                    'userinfo'      => 'jsmith:j$m!th',
-                    'host'          => 'an-example.com',
-                    'ipv4address'   => null,
-                    'ipv6address'   => null,
-                    'ipvfuture'     => null,
-                    'ip_literal'    => null,
-                    'reg_name'      => 'an-example.com',
-                    'port'          => '123',
-                    'path_abempty'  => '/p1/p2/',
-                    'query'         => 'arg1=v1&arg2=v2',
-                ]
-            ],
-            [
-                'a-b.c+3d:///p1/p2/?arg1=v1&arg2=v2',
-                [
-                    'scheme'        => 'a-b.c+3d',
-                    'hier_part'     => '///p1/p2/',
-                    'authority'     => '',
-                    'userinfo'      => null,
-                    'host'          => '',
-                    'ipv4address'   => null,
-                    'ipv6address'   => null,
-                    'ipvfuture'     => null,
-                    'ip_literal'    => null,
-                    'ipv4address'   => null,
-                    'reg_name'      => '',
-                    'port'          => null,
-                    'path_abempty'  => '/p1/p2/',
-                    'query'         => 'arg1=v1&arg2=v2',
-                ]
-            ],
-            [
-                'ftp://ftp.is.co.za/rfc/rfc1808.txt',
-                [
-                    'scheme'        => 'ftp',
-                    'hier_part'     => '//ftp.is.co.za/rfc/rfc1808.txt',
-                    'authority'     => 'ftp.is.co.za',
-                    'userinfo'      => null,
-                    'host'          => 'ftp.is.co.za',
-                    'ipv4address'   => null,
-                    'ipv6address'   => null,
-                    'ipvfuture'     => null,
-                    'ip_literal'    => null,
-                    'reg_name'      => 'ftp.is.co.za',
-                    'port'          => null,
-                    'path_abempty'  => '/rfc/rfc1808.txt'
-                ]
-            ],
-            [
-
-                'http://www.ietf.org/rfc/rfc2396.txt',
-                [
-                    'scheme'        => 'http',
-                    'hier_part'     => '//www.ietf.org/rfc/rfc2396.txt',
-                    'authority'     => 'www.ietf.org',
-                    'userinfo'      => null,
-                    'host'          => 'www.ietf.org',
-                    'ipv4address'   => null,
-                    'ipv6address'   => null,
-                    'ipvfuture'     => null,
-                    'ip_literal'    => null,
-                    'reg_name'      => 'www.ietf.org',
-                    'port'          => null,
-                    'path_abempty'  => '/rfc/rfc2396.txt'
-                ]
-            ],
-            [
-
-                'ldap://[2001:db8::7]/c=GB?objectClass?one',
-                [
-                    'scheme'        => 'ldap',
-                    'hier_part'     => '//[2001:db8::7]/c=GB',
-                    'authority'     => '[2001:db8::7]',
-                    'userinfo'      => null,
-                    'host'          => '[2001:db8::7]',
-                    'ipv4address'   => null,
-                    'ipv6address'   => '2001:db8::7',
-                    'ipvfuture'     => null,
-                    'ip_literal'    => '[2001:db8::7]',
-                    'reg_name'      => null,
-                    'port'          => null,
-                    'path_abempty'  => '/c=GB',
-                    'query'         => 'objectClass?one',
-                ]
-            ],
-            [
-
-                'mailto:John.Doe@example.com',
-                [
-                    'scheme'        => 'mailto',
-                    'hier_part'     => 'John.Doe@example.com',
-                    'path_rootless' => 'John.Doe@example.com',
-                ]
-            ],
-            [
-
-                'news:comp.infosystems.www.servers.unix',
-                [
-                    'scheme'        => 'news',
-                    'hier_part'     => 'comp.infosystems.www.servers.unix',
-                    'path_rootless' => 'comp.infosystems.www.servers.unix',
-                ]
-            ],
-            [
-                'tel:+1-816-555-1212',
-                [
-                    'scheme'        => 'tel',
-                    'hier_part'     => '+1-816-555-1212',
-                    'path_rootless' => '+1-816-555-1212'
-                ]
-            ],
-            [
-                'telnet://192.0.2.16:80/',
-                [
-                    'scheme'        => 'telnet',
-                    'hier_part'     => '//192.0.2.16:80/',
-                    'authority'     => '192.0.2.16:80',
-                    'userinfo'      => null,
-                    'host'          => '192.0.2.16',
-                    'ipv4address'   => '192.0.2.16',
-                    'ipv6address'   => null,
-                    'ipvfuture'     => null,
-                    'ip_literal'    => null,
-                    'reg_name'      => null,
-                    'port'          => '80',
-                    'path_abempty'  => '/',
-                ]
-            ],
-            [
-                'urn:oasis:names:specification:docbook:dtd:xml:4.1.2',
-                [
-                    'scheme'        => 'urn',
-                    'hier_part'     => 'oasis:names:specification:docbook:dtd:xml:4.1.2',
-                    'path_rootless' => 'oasis:names:specification:docbook:dtd:xml:4.1.2',
-                ]
-            ],
+        $basicCases = [
         ];
+
+        $schemeHierpartCases = [];
+        foreach (static::SCHEME__strings() as $scheme) {
+            foreach (static::HIER_PART__cases() as $hierpart) {
+                $case = [
+                    $scheme[0].':'.$hierpart[0],
+                    array_merge(
+                        [
+                            'scheme' => $scheme[0],
+                            'hier_part' => $hierpart[0],
+                        ],
+                        $hierpart[1],
+                        ['query' => false]
+                    )
+                ];
+                $schemeHierpartCases[] = $case;
+            }
+        }
+
+        $schemeHierpartQueryCases = [];
+        foreach (static::SCHEME__strings() as $scheme) {
+            foreach (static::HIER_PART__cases() as $hierpart) {
+                foreach (static::QUERY__strings() as $query) {
+                    $case = [
+                        $scheme[0].':'.$hierpart[0].'?'.$query[0],
+                        array_merge(
+                            [
+                                'scheme' => $scheme[0],
+                                'hier_part' => $hierpart[0],
+                            ],
+                            $hierpart[1],
+                            ['query' => $query[0]]
+                        )
+                    ];
+                    $schemeHierpartQueryCases[] = $case;
+                }
+            }
+        }
+
+        return array_merge(
+            $basicCases,
+            $schemeHierpartCases,
+            $schemeHierpartQueryCases
+        );
     }
 
-    public function non__ABSOLUTE_URI__strings()
+    public static function non__ABSOLUTE_URI__strings()
     {
         $strings = [
             "",
@@ -1864,7 +1900,7 @@ class RFC3986Test extends TestCase
     public function test__ABSOLUTE_URI__matches(string $string, array $pieces)
     {
         $expMatches = array_merge(['absolute_uri' => $string], $pieces);
-        $this->assertRFC3986Matches($string, 'ABSOLUTE_URI', $expMatches);
+        $this->assertRFCMatches($string, 'ABSOLUTE_URI', $expMatches);
     }
 
     /**
@@ -1872,40 +1908,31 @@ class RFC3986Test extends TestCase
      */
     public function test__ABSOLUTE_URI__doesNotMatch(string $string)
     {
-        $this->assertRFC3986DoesNotMatch($string, 'ABSOLUTE_URI');
+        $this->assertRFCDoesNotMatch($string, 'ABSOLUTE_URI');
     }
 
     //
     // URI
     //
 
-    public function URI__cases()
+    public static function URI__cases()
     {
-        $cases = [
-            [
-                "http://example.com/foo#arg1=v1&arg2=v2",
-                [
-                    'scheme'            => 'http',
-                    'hier_part'         => '//example.com/foo',
-                    'authority'         => 'example.com',
-                    'userinfo'          => null,
-                    'host'              => 'example.com',
-                    'ipv4address'       => null,
-                    'ipv6address'       => null,
-                    'ipvfuture'         => null,
-                    'ip_literal'        => null,
-                    'reg_name'          => 'example.com',
-                    'port'              => null,
-                    'path_abempty'      => '/foo',
-                    'query'             => null,
-                    'fragment'          => 'arg1=v1&arg2=v2'
-                ]
-            ],
+        $basicCases = [
         ];
-        return array_merge($cases, $this->ABSOLUTE_URI__cases());
+        $absUriFragmentCases = [];
+        foreach (static::ABSOLUTE_URI__cases() as $uri) {
+            foreach (static::FRAGMENT__strings() as $fragment) {
+                $case = [
+                    $uri[0].'#'.$fragment[0],
+                    array_merge($uri[1], ['fragment' => $fragment[0]])
+                ];
+                $absUriFragmentCases[] = $case;
+            }
+        }
+        return array_merge($basicCases, $absUriFragmentCases, static::ABSOLUTE_URI__cases());
     }
 
-    public function non__URI__strings()
+    public static function non__URI__strings()
     {
         $strings = [
             "",
@@ -1922,7 +1949,7 @@ class RFC3986Test extends TestCase
     public function test__URI__matches(string $string, array $pieces)
     {
         $expMatches = array_merge(['uri' => $string], $pieces);
-        $this->assertRFC3986Matches($string, 'URI', $expMatches);
+        $this->assertRFCMatches($string, 'URI', $expMatches);
     }
 
     /**
@@ -1930,29 +1957,29 @@ class RFC3986Test extends TestCase
      */
     public function test__URI__doesNotMatch(string $string)
     {
-        $this->assertRFC3986DoesNotMatch($string, 'URI');
+        $this->assertRFCDoesNotMatch($string, 'URI');
     }
 
     //
     // URI_REFERENCE
     //
 
-    public function URI_REFERENCE__cases()
+    public static function URI_REFERENCE__cases()
     {
         $cases = [
         ];
         return array_merge(
             $cases,
             array_map(function (array $case) {
-                return [$case[0], array_merge($case[1], ['uri' => $case[0]])];
-            }, $this->URI__cases()),
+                return [$case[0], array_merge($case[1], ['uri' => $case[0], 'relative_ref' => false])];
+            }, static::URI__cases()),
             array_map(function (array $case) {
                 return [$case[0], array_merge($case[1], ['uri' => null, 'relative_ref' => $case[0]])];
-            }, $this->RELATIVE_REF__cases())
+            }, static::RELATIVE_REF__cases())
         );
     }
 
-    public function non__URI_REFERENCE__strings()
+    public static function non__URI_REFERENCE__strings()
     {
         $strings = [
             ':',
@@ -1967,7 +1994,7 @@ class RFC3986Test extends TestCase
     public function test__URI_REFERENCE__matches(string $string, array $pieces)
     {
         $expMatches = array_merge(['uri_reference' => $string], $pieces);
-        $this->assertRFC3986Matches($string, 'URI_REFERENCE', $expMatches);
+        $this->assertRFCMatches($string, 'URI_REFERENCE', $expMatches);
     }
 
     /**
@@ -1975,7 +2002,7 @@ class RFC3986Test extends TestCase
      */
     public function test__URI_REFERENCE__doesNotMatch(string $string)
     {
-        $this->assertRFC3986DoesNotMatch($string, 'URI_REFERENCE');
+        $this->assertRFCDoesNotMatch($string, 'URI_REFERENCE');
     }
 }
 

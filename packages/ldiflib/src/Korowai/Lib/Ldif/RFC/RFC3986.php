@@ -27,9 +27,9 @@ namespace Korowai\Lib\Ldif\RFC;
 class RFC3986
 {
     // character lists for character classes
-    public const ALPHACHARS = RFC2234::ALPHACHARS;
-    public const DIGITCHARS = RFC2234::DIGITCHARS;
-    public const HEXDIGCHARS = RFC2234::HEXDIGCHARS.'a-f';
+    public const ALPHACHARS = RFC5234::ALPHACHARS;
+    public const DIGITCHARS = RFC5234::DIGITCHARS;
+    public const HEXDIGCHARS = RFC5234::HEXDIGCHARS.'a-f';
     public const GEN_DELIM_CHARS = ':\/\?#\[\]@';
     public const SUB_DELIM_CHARS = '!\$&\'\(\)\*\+,;=';
     public const RESERVEDCHARS = self::GEN_DELIM_CHARS.self::SUB_DELIM_CHARS;
@@ -37,8 +37,8 @@ class RFC3986
     public const PCHARCHARS = ':@'.self::SUB_DELIM_CHARS.self::UNRESERVEDCHARS;
 
     // character classes
-    public const ALPHA = RFC2234::ALPHA;
-    public const DIGIT = RFC2234::DIGIT;
+    public const ALPHA = RFC5234::ALPHA;
+    public const DIGIT = RFC5234::DIGIT;
     public const HEXDIG = '['.self::HEXDIGCHARS.']';
     public const SUB_DELIMS = '['.self::SUB_DELIM_CHARS.']';
     public const GEN_DELIMS = '['.self::GEN_DELIM_CHARS.']';
@@ -51,13 +51,13 @@ class RFC3986
     public const SEGMENT_NZ_NC = '(?:(?:[@'.self::SUB_DELIM_CHARS.self::UNRESERVEDCHARS.']|'.self::PCT_ENCODED.')+)';
     public const SEGMENT_NZ = '(?:'.self::PCHAR.'+)';
     public const SEGMENT = '(?:'.self::PCHAR.'*)';
-    public const PATH_EMPTY = '(?P<path_empty>)';
-    public const PATH_NOSCHEME = '(?P<path_noscheme>'.self::SEGMENT_NZ_NC.'(?:\/'.self::SEGMENT.')*)';
-    public const PATH_ROOTLESS = '(?P<path_rootless>'.self::SEGMENT_NZ.'(?:\/'.self::SEGMENT.')*)';
-    public const PATH_ABSOLUTE = '(?P<path_absolute>\/(?:'.self::SEGMENT_NZ.'(?:\/'.self::SEGMENT.')*)?)';
-    public const PATH_ABEMPTY = '(?P<path_abempty>(?:\/'.self::SEGMENT.')*)';
+    public const PATH_EMPTY = '(?<path_empty>)';
+    public const PATH_NOSCHEME = '(?<path_noscheme>'.self::SEGMENT_NZ_NC.'(?:\/'.self::SEGMENT.')*)';
+    public const PATH_ROOTLESS = '(?<path_rootless>'.self::SEGMENT_NZ.'(?:\/'.self::SEGMENT.')*)';
+    public const PATH_ABSOLUTE = '(?<path_absolute>\/(?:'.self::SEGMENT_NZ.'(?:\/'.self::SEGMENT.')*)?)';
+    public const PATH_ABEMPTY = '(?<path_abempty>(?:\/'.self::SEGMENT.')*)';
     public const PATH =
-        '(?P<path>'.
+        '(?<path>'.
             self::PATH_ABEMPTY.
             '|'.
             self::PATH_ABSOLUTE.
@@ -69,7 +69,7 @@ class RFC3986
             self::PATH_EMPTY.
         ')';
     public const REG_NAME =
-        '(?P<reg_name>'.
+        '(?<reg_name>'.
             '(?:['.self::SUB_DELIM_CHARS.self::UNRESERVEDCHARS.']|'.self::PCT_ENCODED.')*'.
         ')';
     public const DEC_OCTET =
@@ -84,35 +84,36 @@ class RFC3986
             '|'.
             '25[0-5]'.                      // 250-255
         ')';
-    public const IPV4ADDRESS =
-        '(?J)(?P<ipv4address>'.
+    public const DEC4OCTETS =
+        '(?:'.
                  self::DEC_OCTET.
             '\.'.self::DEC_OCTET.
             '\.'.self::DEC_OCTET.
             '\.'.self::DEC_OCTET.
-         ')';
-    //public const IPV4ADDRESS = '(?P<ipv4address>'.self::IPV4ADDRESS.')';
+        ')';
+    public const IPV4ADDRESS = '(?<ipv4address>'.self::DEC4OCTETS.')';
+    public const IPV6V4ADDRESS = '(?<ipv6v4address>'.self::DEC4OCTETS.')';
     public const H16 = '(?:'.self::HEXDIG.'{1,4})';
-    public const LS32 = '(?:(?:'.self::H16.':'.self::H16.')|'.self::IPV4ADDRESS.')';
+    public const LS32 = '(?<ls32>(?:'.self::H16.':'.self::H16.')|'.self::IPV6V4ADDRESS.')';
     public const IPV6ADDRESS =
-        '(?P<ipv6address>'.
-             '(?:'.                                                    '(?:'.self::H16.':){6}'.self::LS32.')'.
-            '|(?:'.                                                  '::(?:'.self::H16.':){5}'.self::LS32.')'.
-            '|(?:'.                          '(?:'.self::H16.')?'.   '::(?:'.self::H16.':){4}'.self::LS32.')'.
-            '|(?:'.    '(?:(?:'.self::H16.':){0,1}'.self::H16.')?'.  '::(?:'.self::H16.':){3}'.self::LS32.')'.
-            '|(?:'.    '(?:(?:'.self::H16.':){0,2}'.self::H16.')?'.  '::(?:'.self::H16.':){2}'.self::LS32.')'.
-            '|(?:'.    '(?:(?:'.self::H16.':){0,3}'.self::H16.')?'.  '::(?:'.self::H16.':){1}'.self::LS32.')'.
+        '(?<ipv6address>(?|'.
+             '(?:'.                                                    '(?:'.self::H16.':){6,6}'.self::LS32.')'.
+            '|(?:'.                                                  '::(?:'.self::H16.':){5,5}'.self::LS32.')'.
+            '|(?:'.                           '(?:'.self::H16.')?'.  '::(?:'.self::H16.':){4,4}'.self::LS32.')'.
+            '|(?:'.    '(?:(?:'.self::H16.':){0,1}'.self::H16.')?'.  '::(?:'.self::H16.':){3,3}'.self::LS32.')'.
+            '|(?:'.    '(?:(?:'.self::H16.':){0,2}'.self::H16.')?'.  '::(?:'.self::H16.':){2,2}'.self::LS32.')'.
+            '|(?:'.    '(?:(?:'.self::H16.':){0,3}'.self::H16.')?'.  '::(?:'.self::H16.':){1,1}'.self::LS32.')'.
             '|(?:'.    '(?:(?:'.self::H16.':){0,4}'.self::H16.')?'.  '::'.self::LS32.')'.
             '|(?:'.    '(?:(?:'.self::H16.':){0,5}'.self::H16.')?'.  '::'.self::H16.')'.
             '|(?:'.    '(?:(?:'.self::H16.':){0,6}'.self::H16.')?'.  '::)'.
-        ')';
+        '))';
     public const IPVFUTURE =
-        '(?P<ipvfuture>'.
+        '(?<ipvfuture>'.
             'v'.self::HEXDIG.'+'.
             '\.[:'.self::SUB_DELIM_CHARS.self::UNRESERVEDCHARS.']+'.
         ')';
     public const IP_LITERAL =
-        '(?P<ip_literal>'.
+        '(?<ip_literal>'.
             '\['.self::IPV6ADDRESS.'\]'.
             '|'.
             '\['.self::IPVFUTURE.'\]'.
@@ -122,7 +123,7 @@ class RFC3986
      * Matches the [port](https://tools.ietf.org/html/rfc3986#section-3.2.3) component of authority.
      */
     public const PORT =
-        '(?P<port>'.
+        '(?<port>'.
             self::DIGIT.'*'.
         ')';
 
@@ -130,7 +131,7 @@ class RFC3986
      * Matches the [host](https://tools.ietf.org/html/rfc3986#section-3.2.2) component of authority.
      */
     public const HOST =
-        '(?P<host>'.
+        '(?<host>'.
             self::IP_LITERAL.
             '|'.
             self::IPV4ADDRESS.
@@ -142,7 +143,7 @@ class RFC3986
      * Matches the [user information](https://tools.ietf.org/html/rfc3986#section-3.2.1) component of authority.
      */
     public const USERINFO =
-        '(?P<userinfo>'.
+        '(?<userinfo>'.
             '(?:[:'.self::SUB_DELIM_CHARS.self::UNRESERVEDCHARS.']|'.self::PCT_ENCODED.')*'.
         ')';
 
@@ -150,7 +151,7 @@ class RFC3986
      * Matches the [authority](https://tools.ietf.org/html/rfc3986#section-3.2) component of URI.
      */
     public const AUTHORITY =
-        '(?P<authority>'.
+        '(?<authority>'.
             '(?:'.self::USERINFO.'@)?'.
             self::HOST.
             '(?::'.self::PORT.')?'.
@@ -160,7 +161,7 @@ class RFC3986
      * Matches the [scheme](https://tools.ietf.org/html/rfc3986#section-3.1) component of URI.
      */
     public const SCHEME =
-        '(?P<scheme>'.
+        '(?<scheme>'.
             self::ALPHA.'['.self::ALPHACHARS.self::DIGITCHARS.'\+\.-]*'.
         ')';
 
@@ -168,7 +169,7 @@ class RFC3986
      * Matches the [relative-part](https://tools.ietf.org/html/rfc3986#section-4.2) component of relative-ref.
      */
     public const RELATIVE_PART =
-        '(?P<relative_part>'.
+        '(?<relative_part>'.
             '(?:\/\/'.self::AUTHORITY.self::PATH_ABEMPTY.')'.
             '|'.
             self::PATH_ABSOLUTE.
@@ -184,7 +185,7 @@ class RFC3986
      * Matches the [hier-part](https://tools.ietf.org/html/rfc3986#section-3) component of URI.
      */
     public const HIER_PART =
-        '(?P<hier_part>'.
+        '(?<hier_part>'.
             '(?:\/\/'.self::AUTHORITY.self::PATH_ABEMPTY.')'.
             '|'.
             self::PATH_ABSOLUTE.
@@ -197,18 +198,18 @@ class RFC3986
     /**
      * Matches the [fragment](https://tools.ietf.org/html/rfc3986#section-3.5) component of URI.
      */
-    public const FRAGMENT = '(?P<fragment>(?:'.self::PCHAR.'|\/|\?)*)';
+    public const FRAGMENT = '(?<fragment>(?:'.self::PCHAR.'|\/|\?)*)';
 
     /**
      * Matches the [query](https://tools.ietf.org/html/rfc3986#section-3.4) component of URI.
      */
-    public const QUERY = '(?P<query>(?:'.self::PCHAR.'|\/|\?)*)';
+    public const QUERY = '(?<query>(?:'.self::PCHAR.'|\/|\?)*)';
 
     /**
      * Matches [relative-ref](https://tools.ietf.org/html/rfc3986#section-4.2).
      */
     public const RELATIVE_REF =
-        '(?P<relative_ref>'.
+        '(?<relative_ref>'.
             self::RELATIVE_PART.
             '(?:\?'.self::QUERY.')?'.
             '(?:#'.self::FRAGMENT.')?'.
@@ -218,7 +219,7 @@ class RFC3986
      * Matches [absolute-URI](https://tools.ietf.org/html/rfc3986#section-4.3).
      */
     public const ABSOLUTE_URI =
-        '(?P<absolute_uri>'.
+        '(?<absolute_uri>'.
             self::SCHEME.
             ':'.
             self::HIER_PART.
@@ -229,7 +230,7 @@ class RFC3986
      * Matches [URI](https://tools.ietf.org/html/rfc3986#section-3).
      */
     public const URI =
-        '(?P<uri>'.
+        '(?<uri>'.
             self::SCHEME.
             ':'.
             self::HIER_PART.
@@ -241,7 +242,7 @@ class RFC3986
      * Matches [URI-reference](https://tools.ietf.org/html/rfc3986#section-4.1).
      */
     public const URI_REFERENCE =
-        '(?P<uri_reference>(?J)'.
+        '(?J)(?<uri_reference>'.
             self::URI.
             '|'.
             self::RELATIVE_REF.

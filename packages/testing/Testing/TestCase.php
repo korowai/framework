@@ -23,6 +23,12 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
 {
     use ClassAssertions;
     use ObjectPropertiesAssertions;
+
+    public static function isHeavyTesting() : bool
+    {
+        $env = strtolower((string)getenv('KOROWAI_HEAVY_TESTING', true));
+        return in_array($env, ['y', 'true', 'on']) || ((int)$env > 0);
+    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

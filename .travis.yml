@@ -5,8 +5,10 @@ php:
 env:
   - KOROWAI_TEST_RFC=true
     KOROWAI_CODECOV=false
+    KOROWAI_HEAVY_TESTING=true
   - KOROWAI_TEST_RFC=false
     KOROWAI_CODECOV=true
+    KOROWAI_HEAVY_TESTING=true
 install:
   - travis_retry composer install --no-interaction
 script:

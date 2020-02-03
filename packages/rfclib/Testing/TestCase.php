@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace Korowai\Testing\Lib\Rfc;
 
 /**
+ * Abstract base class for korowai/rfclib unit tests.
+ *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
 abstract class TestCase extends \Korowai\Testing\TestCase
@@ -62,33 +64,59 @@ abstract class TestCase extends \Korowai\Testing\TestCase
 
     /**
      * Asserts that an expression stored in an RFC constant (*$constname*)
-     * matches the *$subject*. *$expMatches* may be provided to perform
+     * matches the *$subject*. *$expMatchess* may be provided to perform
      * additional checks on *$matches* returned by ``preg_match()``.
      *
      * @param  string $subject
      * @param  string $constname
-     * @param  array $expMatches
+     * @param  array $expMatchess
      */
-    public static function assertRfcMatches(
-        string $subject,
-        string $constname,
-        array $expMatches = []
-    ) : void
+    public static function assertRfcMatches(string $subject, string $constname, array $expMatchess = []) : void
     {
         $fqdnConstName = static::getRfcFqdnConstName($constname);
         $re = static::getRfcRegexp($fqdnConstName);
         $result = preg_match($re, $subject, $matches, PREG_UNMATCHED_AS_NULL);
         static::assertSame(1, $result, 'Failed asserting that '.$fqdnConstName.' matches \''.$subject.'\'');
         static::assertSame($subject, $matches[0]);
+        static::assertRfcCaptureGroups($expMatchess, $matches);
+    }
+
+    /**
+     * Asserts that *$matches* returned by ``preg_match()`` satisfy constraints
+     * provided by *$expMatches*. If *$expMatches['foo']* is false, then
+     * *$matches['foo']* must not be set. If *$expMatches['foo']* is true, then
+     * *$matches['foo']* must exist (may be null). Othervise *$matches['foo']*
+     * must exist and must be identical to *$expMatches['foo']*.
+     *
+     * @param  array $expMatches
+     * @param  array $matches
+     */
+    public static function assertRfcCaptureGroups(array $expMatches, array $matches) : void
+    {
         foreach ($expMatches as $key => $expected) {
-            if ($expected === false) {
-                static::assertNull($matches[$key] ?? null);
-            } else {
-                static::assertArrayHasKey($key, $matches);
-                if ($expected !== true) {
-                    $msg = 'Failed asserting that $matches['.var_export($key, true).'] is '.var_export($expected, true);
-                    static::assertSame($expected, $matches[$key], $msg);
-                }
+            static::assertRfcCaptureGroupValue($expected, $matches, $key);
+        }
+    }
+
+    /**
+     * Assert that *$matches[$key]* has *$expected* value. If *$expected* is
+     * false, then *$matches[$key]* must not be set (undefined or null). If
+     * *$expected* is true, then *$key* must exist in *$matches*. Otherwise,
+     * *$matches[$key]* must be identical to *$expected*.
+     *
+     * @param  mixed $expected
+     * @param  array $matches
+     * @param  mixed $key
+     */
+    public static function assertRfcCaptureGroupValue($expected, array $matches, $key) : void
+    {
+        if ($expected === false) {
+            static::assertNull($matches[$key] ?? null);
+        } else {
+            static::assertArrayHasKey($key, $matches);
+            if ($expected !== true) {
+                $msg = 'Failed asserting that $matches['.var_export($key, true).'] is '.var_export($expected, true);
+                static::assertSame($expected, $matches[$key], $msg);
             }
         }
     }
@@ -105,7 +133,7 @@ abstract class TestCase extends \Korowai\Testing\TestCase
         $fqdnConstName = static::getRfcFqdnConstName($constname);
         $re = static::getRfcRegexp($fqdnConstName);
         $result = preg_match($re, $subject, $matches, PREG_UNMATCHED_AS_NULL);
-        static::assertSame(0, $result,  'Failed asserting that '.$fqdnConstName.' does not match \''.$subject.'\'');
+        static::assertSame(0, $result, 'Failed asserting that '.$fqdnConstName.' does not match \''.$subject.'\'');
         static::assertNull($matches[0] ?? null);
     }
 }

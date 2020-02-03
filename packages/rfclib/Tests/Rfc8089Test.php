@@ -27,7 +27,7 @@ class Rfc8089Test extends TestCase
         return Rfc8089::class;
     }
 
-    public function test__extends__RFC3986()
+    public function test__extends__Rfc3986()
     {
         $this->assertExtendsClass(Rfc3986::class, Rfc8089::class);
     }
@@ -613,7 +613,7 @@ class Rfc8089Test extends TestCase
         ];
         return array_merge(
             $cases,
-            RFC3986Test::HOST__cases()
+            Rfc3986Test::HOST__cases()
         );
     }
 

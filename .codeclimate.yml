@@ -13,8 +13,8 @@ exclude_patterns:
   - "**/Behat/"
   - "**/Resources/"
   - "**/vendor/"
-  - "packages/ldaplib/src/Korowai/Lib/Ldap/Adapter/ExtLdap/LdapLink.php"
-  - "packages/compatlib/src/Korowai/Lib/Compat/functions/preg.php"
+  - "packages/ldaplib/src/Adapter/ExtLdap/LdapLink.php"
+  - "packages/compatlib/src/functions/preg.php"
 plugins:
   phpcodesniffer:
     enabled: true

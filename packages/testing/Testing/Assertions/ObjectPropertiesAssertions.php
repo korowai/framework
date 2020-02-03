@@ -23,6 +23,12 @@ use PHPUnit\Framework\ExpectationFailedException;
  */
 trait ObjectPropertiesAssertions
 {
+    /**
+     * Evaluates a \PHPUnit\Framework\Constraint matcher object.
+     *
+     * @throws ExpectationFailedException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     */
     abstract public static function assertThat($value, Constraint $constraint, string $message = '') : void;
 
     /**

@@ -16,6 +16,8 @@ namespace Korowai\Testing\Lib\Ldif;
 use Korowai\Testing\Lib\Ldif\Assertions\ObjectPropertiesAssertions;
 
 /**
+ * Abstract base class for korowai/ldiflib unit tests.
+ *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
 abstract class TestCase extends \Korowai\Testing\TestCase

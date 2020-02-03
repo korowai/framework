@@ -12,7 +12,7 @@ install:
 script:
   - mkdir -p build/logs
   - if $KOROWAI_TEST_RFC; then
-      php vendor/bin/phpunit -c phpunit.xml.dist packages/rfclib/Tests/RFC*Test.php;
+      php vendor/bin/phpunit -c phpunit.xml.dist packages/rfclib/Tests/Rfc*Test.php;
     else
       php vendor/bin/phpunit --coverage-clover build/logs/clover.xml -c phpunit.xml.dist;
     fi

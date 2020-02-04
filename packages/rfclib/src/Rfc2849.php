@@ -187,6 +187,21 @@ class Rfc2849
 
     /**
      * [RFC2849](https://tools.ietf.org/html/rfc2849):
+     * ``rdn = SAFE-STRING``;
+     * a relative distinguished name defined as name-component in
+     * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3)
+     */
+    public const RDN = self::SAFE_STRING;
+
+    /**
+     * [RFC2849](https://tools.ietf.org/html/rfc2849):
+     * ``base64-rdn = BASE64-UTF8-STRING``;
+     * an rdn which has been base64 encoded
+     */
+    public const BASE64_RDN = self::BASE64_UTF8_STRING;
+
+    /**
+     * [RFC2849](https://tools.ietf.org/html/rfc2849):
      * ``dn-spec = "dn:" (FILL distinguishedName / ":" FILL base64-distinguishedName)``
      */
     public const DN_SPEC =
@@ -219,6 +234,18 @@ class Rfc2849
                 '|'.
                 '(?:<'.self::FILL.self::URL.')'.
             ')'.
+        ')';
+
+    /**
+     * [RFC2849](https://tools.ietf.org/html/rfc2849):
+     * ``control = "control:" FILL ldap-oid 0*1(1*SPACE ("true" / "false")) 0*1(value-spec) SEP``
+     */
+    public const CONTROL =
+        '(?:'.
+            'control:'.self::FILL.self::LDAP_OID.
+            '(?:'.self::SPACE.'+(?:true|false))?'.
+            self::VALUE_SPEC.'?'.
+            self::SEP.
         ')';
 
     /**

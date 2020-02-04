@@ -89,7 +89,7 @@ class Rfc2849Test extends TestCase
     /**
      * @dataProvider VERSION_NUMBER__cases
      */
-    public function test__VERSION_NUMBER__matches(string $string)
+    public function test__VERSION_NUMBER__matches(string $string, array $pieces = [])
     {
         $this->assertRfcMatches($string, 'VERSION_NUMBER');
     }
@@ -121,7 +121,7 @@ class Rfc2849Test extends TestCase
     /**
      * @dataProvider VERSION_SPEC__cases
      */
-    public function test__VERSION_SPEC__matches(string $string)
+    public function test__VERSION_SPEC__matches(string $string, array $pieces = [])
     {
         $this->assertRfcMatches($string, 'VERSION_SPEC');
     }
@@ -153,7 +153,7 @@ class Rfc2849Test extends TestCase
     /**
      * @dataProvider BASE64_STRING__cases
      */
-    public function test__BASE64_STRING__matches(string $string)
+    public function test__BASE64_STRING__matches(string $string, array $pieces = [])
     {
         $this->assertRfcMatches($string, 'BASE64_STRING');
     }
@@ -185,7 +185,7 @@ class Rfc2849Test extends TestCase
     /**
      * @dataProvider SAFE_STRING__cases
      */
-    public function test__SAFE_STRING__matches(string $string)
+    public function test__SAFE_STRING__matches(string $string, array $pieces = [])
     {
         $this->assertRfcMatches($string, 'SAFE_STRING');
     }
@@ -215,7 +215,7 @@ class Rfc2849Test extends TestCase
     /**
      * @dataProvider LDAP_OID__cases
      */
-    public function test__LDAP_OID__matches(string $string)
+    public function test__LDAP_OID__matches(string $string, array $pieces = [])
     {
         $this->assertRfcMatches($string, 'LDAP_OID');
     }
@@ -247,7 +247,7 @@ class Rfc2849Test extends TestCase
     /**
      * @dataProvider OPTION__cases
      */
-    public function test__OPTION__matches(string $string)
+    public function test__OPTION__matches(string $string, array $pieces = [])
     {
         $this->assertRfcMatches($string, 'OPTION');
     }
@@ -279,7 +279,7 @@ class Rfc2849Test extends TestCase
     /**
      * @dataProvider OPTIONS__cases
      */
-    public function test__OPTIONS__matches(string $string)
+    public function test__OPTIONS__matches(string $string, array $pieces = [])
     {
         $this->assertRfcMatches($string, 'OPTIONS');
     }
@@ -314,7 +314,7 @@ class Rfc2849Test extends TestCase
     /**
      * @dataProvider ATTRIBUTE_TYPE__cases
      */
-    public function test__ATTRIBUTE_TYPE__matches(string $string)
+    public function test__ATTRIBUTE_TYPE__matches(string $string, array $pieces = [])
     {
         $this->assertRfcMatches($string, 'ATTRIBUTE_TYPE');
     }
@@ -353,7 +353,7 @@ class Rfc2849Test extends TestCase
     /**
      * @dataProvider ATTRIBUTE_DESCRIPTION__cases
      */
-    public function test__ATTRIBUTE_DESCRIPTION__matches(string $string)
+    public function test__ATTRIBUTE_DESCRIPTION__matches(string $string, array $pieces = [])
     {
         $this->assertRfcMatches($string, 'ATTRIBUTE_DESCRIPTION');
     }
@@ -391,7 +391,7 @@ class Rfc2849Test extends TestCase
     /**
      * @dataProvider DISTINGUISHED_NAME__cases
      */
-    public function test__DISTINGUISHED_NAME__matches(string $string)
+    public function test__DISTINGUISHED_NAME__matches(string $string, array $pieces = [])
     {
         $this->assertRfcMatches($string, 'DISTINGUISHED_NAME');
     }
@@ -429,7 +429,7 @@ class Rfc2849Test extends TestCase
     /**
      * @dataProvider BASE64_DISTINGUISHED_NAME__cases
      */
-    public function test__BASE64_DISTINGUISHED_NAME__matches(string $string)
+    public function test__BASE64_DISTINGUISHED_NAME__matches(string $string, array $pieces = [])
     {
         $this->assertRfcMatches($string, 'BASE64_DISTINGUISHED_NAME');
     }
@@ -479,7 +479,7 @@ class Rfc2849Test extends TestCase
     /**
      * @dataProvider DN_SPEC__cases
      */
-    public function test__DN_SPEC__matches(string $string)
+    public function test__DN_SPEC__matches(string $string, array $pieces = [])
     {
         $this->assertRfcMatches($string, 'DN_SPEC');
     }

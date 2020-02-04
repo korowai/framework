@@ -134,7 +134,7 @@ class Rfc3986Test extends TestCase
     /**
      * @dataProvider SEGMENT_NZ_NC__cases
      */
-    public function test__SEGMENT_NZ_NC__matches(string $string)
+    public function test__SEGMENT_NZ_NC__matches(string $string, array $pieces = [])
     {
         $this->assertRfcMatches($string, 'SEGMENT_NZ_NC');
     }
@@ -169,7 +169,7 @@ class Rfc3986Test extends TestCase
     /**
      * @dataProvider SEGMENT_NZ__cases
      */
-    public function test__SEGMENT_NZ__matches(string $string)
+    public function test__SEGMENT_NZ__matches(string $string, array $pieces = [])
     {
         $this->assertRfcMatches($string, 'SEGMENT_NZ');
     }
@@ -205,7 +205,7 @@ class Rfc3986Test extends TestCase
     /**
      * @dataProvider SEGMENT__cases
      */
-    public function test__SEGMENT__matches(string $string)
+    public function test__SEGMENT__matches(string $string, array $pieces = [])
     {
         $this->assertRfcMatches($string, 'SEGMENT');
     }
@@ -237,7 +237,7 @@ class Rfc3986Test extends TestCase
     /**
      * @dataProvider PATH_EMPTY__cases
      */
-    public function test__PATH_EMPTY__matches(string $string)
+    public function test__PATH_EMPTY__matches(string $string, array $pieces = [])
     {
         $this->assertRfcMatches($string, 'PATH_EMPTY', ['path_empty' => $string]);
     }
@@ -273,7 +273,7 @@ class Rfc3986Test extends TestCase
     /**
      * @dataProvider PATH_NOSCHEME__cases
      */
-    public function test__PATH_NOSCHEME__matches(string $string)
+    public function test__PATH_NOSCHEME__matches(string $string, array $pieces = [])
     {
         $this->assertRfcMatches($string, 'PATH_NOSCHEME', ['path_noscheme' => $string]);
     }
@@ -309,7 +309,7 @@ class Rfc3986Test extends TestCase
     /**
      * @dataProvider PATH_ROOTLESS__cases
      */
-    public function test__PATH_ROOTLESS__matches(string $string)
+    public function test__PATH_ROOTLESS__matches(string $string, array $pieces = [])
     {
         $this->assertRfcMatches($string, 'PATH_ROOTLESS', ['path_rootless' => $string]);
     }
@@ -342,7 +342,7 @@ class Rfc3986Test extends TestCase
     /**
      * @dataProvider PATH_ABSOLUTE__cases
      */
-    public function test__PATH_ABSOLUTE__matches(string $string)
+    public function test__PATH_ABSOLUTE__matches(string $string, array $pieces = [])
     {
         $this->assertRfcMatches($string, 'PATH_ABSOLUTE', ['path_absolute' => $string]);
     }
@@ -373,7 +373,7 @@ class Rfc3986Test extends TestCase
     /**
      * @dataProvider PATH_ABEMPTY__cases
      */
-    public function test__PATH_ABEMPTY__matches(string $string)
+    public function test__PATH_ABEMPTY__matches(string $string, array $pieces = [])
     {
         $this->assertRfcMatches($string, 'PATH_ABEMPTY', ['path_abempty' => $string]);
     }
@@ -412,7 +412,7 @@ class Rfc3986Test extends TestCase
     /**
      * @dataProvider PATH__cases
      */
-    public function test__PATH__matches(string $string)
+    public function test__PATH__matches(string $string, array $pieces = [])
     {
         $this->assertRfcMatches($string, 'PATH', ['path' => $string]);
     }
@@ -493,7 +493,7 @@ class Rfc3986Test extends TestCase
     /**
      * @dataProvider DEC_OCTET__cases
      */
-    public function test__DEC_OCTET__matches(string $string)
+    public function test__DEC_OCTET__matches(string $string, array $pieces = [])
     {
         $this->assertRfcMatches($string, 'DEC_OCTET');
     }
@@ -596,7 +596,7 @@ class Rfc3986Test extends TestCase
     /**
      * @dataProvider H16__cases
      */
-    public function test__H16__matches(string $string)
+    public function test__H16__matches(string $string, array $pieces = [])
     {
         $this->assertRfcMatches($string, 'H16');
     }
@@ -631,7 +631,7 @@ class Rfc3986Test extends TestCase
     /**
      * @dataProvider LS32__cases
      */
-    public function test__LS32__matches(string $string)
+    public function test__LS32__matches(string $string, array $pieces = [])
     {
         $this->assertRfcMatches($string, 'LS32');
     }
@@ -1292,7 +1292,7 @@ class Rfc3986Test extends TestCase
     /**
      * @dataProvider PORT__cases
      */
-    public function test__PORT__matches(string $string)
+    public function test__PORT__matches(string $string, array $pieces = [])
     {
         $this->assertRfcMatches($string, 'PORT', ['port' => $string]);
     }
@@ -1404,7 +1404,7 @@ class Rfc3986Test extends TestCase
     /**
      * @dataProvider USERINFO__cases
      */
-    public function test__USERINFO__matches(string $string)
+    public function test__USERINFO__matches(string $string, array $pieces = [])
     {
         $this->assertRfcMatches($string, 'USERINFO', ['userinfo' => $string]);
     }
@@ -1524,7 +1524,7 @@ class Rfc3986Test extends TestCase
     /**
      * @dataProvider SCHEME__cases
      */
-    public function test__SCHEME__matches(string $string)
+    public function test__SCHEME__matches(string $string, array $pieces = [])
     {
         $this->assertRfcMatches($string, 'SCHEME', ['scheme' => $string]);
     }
@@ -1670,7 +1670,7 @@ class Rfc3986Test extends TestCase
     /**
      * @dataProvider FRAGMENT__cases
      */
-    public function test__FRAGMENT__matches(string $string)
+    public function test__FRAGMENT__matches(string $string, array $pieces = [])
     {
         $this->assertRfcMatches($string, 'FRAGMENT', ['fragment' => $string]);
     }
@@ -1704,7 +1704,7 @@ class Rfc3986Test extends TestCase
     /**
      * @dataProvider QUERY__cases
      */
-    public function test__QUERY__matches(string $string)
+    public function test__QUERY__matches(string $string, array $pieces = [])
     {
         $this->assertRfcMatches($string, 'QUERY', ['query' => $string]);
     }

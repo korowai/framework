@@ -73,7 +73,7 @@ class Rfc2253Test extends TestCase
     /**
      * @dataProvider OID__cases
      */
-    public function test__OID__matches(string $string)
+    public function test__OID__matches(string $string, array $pieces = [])
     {
         $this->assertRfcMatches($string, 'OID');
     }

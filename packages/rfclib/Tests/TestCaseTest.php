@@ -36,8 +36,8 @@ class TestCaseTest extends TestCase
 
     public function test__getRfcRegexp()
     {
-        $this->assertSame('/^(?<foo>foo)$/', static::getRfcRegexp(self::class.'::FOO'));
-        $this->assertSame('/^(?<bar>bar)$/', static::getRfcRegexp(self::class.'::BAR'));
+        $this->assertSame('/^(?<foo>foo)$/D', static::getRfcRegexp(self::class.'::FOO'));
+        $this->assertSame('/^(?<bar>bar)$/D', static::getRfcRegexp(self::class.'::BAR'));
     }
 
     public function test__arraizeStrings()

@@ -76,7 +76,8 @@ abstract class TestCase extends \Korowai\Testing\TestCase
         $fqdnConstName = static::getRfcFqdnConstName($constname);
         $re = static::getRfcRegexp($fqdnConstName);
         $result = preg_match($re, $subject, $matches, PREG_UNMATCHED_AS_NULL);
-        static::assertSame(1, $result, 'Failed asserting that '.$fqdnConstName.' matches \''.$subject.'\'');
+        $msg = 'Failed asserting that '.$fqdnConstName.' matches '.var_export($subject, true);
+        static::assertSame(1, $result, $msg);
         static::assertSame($subject, $matches[0]);
         static::assertRfcCaptureGroups($expMatchess, $matches);
     }
@@ -134,7 +135,8 @@ abstract class TestCase extends \Korowai\Testing\TestCase
         $fqdnConstName = static::getRfcFqdnConstName($constname);
         $re = static::getRfcRegexp($fqdnConstName);
         $result = preg_match($re, $subject, $matches, PREG_UNMATCHED_AS_NULL);
-        static::assertSame(0, $result, 'Failed asserting that '.$fqdnConstName.' does not match \''.$subject.'\'');
+        $msg = 'Failed asserting that '.$fqdnConstName.' does not match '.var_export($subject, true);
+        static::assertSame(0, $result, $msg);
         static::assertNull($matches[0] ?? null);
     }
 }

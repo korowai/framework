@@ -15,6 +15,7 @@ namespace Korowai\Lib\Ldif\Traits;
 
 use Korowai\Lib\Ldif\CursorInterface;
 use Korowai\Lib\Compat\Exception\PregException;
+use Korowai\Lib\Rfc\Rfc2849;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -47,7 +48,7 @@ trait SkipsWhitespaces
      */
     public function skipFill(CursorInterface $cursor) : array
     {
-        return $this->matchAhead('/\G */', $cursor);
+        return $this->matchAhead('/\G'.Rfc2849::FILL.'/', $cursor);
     }
 }
 

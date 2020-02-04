@@ -59,7 +59,7 @@ trait ParsesStrings
      */
     public function parseSafeString(ParserStateInterface $state, string &$string = null) : bool
     {
-        $re = '/\G'.Rfc2849::SAFE_STRING.'?/';
+        $re = '/\G'.Rfc2849::SAFE_STRING.'/';
         $cursor = $state->getCursor();
         $matches = $this->matchAhead($re, $cursor);
         // @codeCoverageIgnoreStart

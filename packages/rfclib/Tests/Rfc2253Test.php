@@ -55,6 +55,38 @@ class Rfc2253Test extends TestCase
     }
 
     //
+    // OID
+    //
+
+    public static function OID__strings()
+    {
+        $strings = ['1', '1.23', '1.23.456'];
+        return self::arraizeStrings($strings);
+    }
+
+    public static function non__OID__strings()
+    {
+        $strings = ['', '~', 'O', '1.', '.1', '1.23.', 'a', 'ab', 'ab.cd'];
+        return self::arraizeStrings($strings);
+    }
+
+    /**
+     * @dataProvider OID__strings
+     */
+    public function test__OID__matches(string $string)
+    {
+        $this->assertRfcMatches($string, 'OID');
+    }
+
+    /**
+     * @dataProvider non__OID__strings
+     */
+    public function test__OID__notMatches(string $string)
+    {
+        $this->assertRfcNotMatches($string, 'OID');
+    }
+
+    //
     // STRING
     //
 

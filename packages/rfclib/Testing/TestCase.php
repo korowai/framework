@@ -46,7 +46,7 @@ abstract class TestCase extends \Korowai\Testing\TestCase
      */
     public static function getRfcRegexp(string $fqdnConstName)
     {
-        return '/^'.constant($fqdnConstName).'$/';
+        return '/^'.constant($fqdnConstName).'$/D';
     }
 
     /**

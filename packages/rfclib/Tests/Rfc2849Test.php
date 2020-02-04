@@ -60,9 +60,9 @@ class Rfc2849Test extends TestCase
         $this->assertSame('(?:'.Rfc2849::OPT_CHAR.'+)',                                 Rfc2849::OPTION);
         $this->assertSame('(?:'.Rfc2849::OPTION.'(?:;'.Rfc2849::OPTION.')*)',           Rfc2849::OPTIONS);
         $this->assertSame('(?:'.Rfc2849::LDAP_OID.'|(?:'.Rfc2849::ALPHA.Rfc2849::ATTR_TYPE_CHARS.'*))', Rfc2849::ATTRIBUTE_TYPE);
-        $this->assertSame('(?:'.Rfc2849::ATTRIBUTE_TYPE.'(?:;'.Rfc2849::OPTIONS.')?)',  Rfc2849::ATTRIBUTE_DESCRIPTION);
-        $this->assertSame(Rfc2849::SAFE_STRING,                                         Rfc2849::DISTINGUISHED_NAME);
-        $this->assertSame(Rfc2849::BASE64_UTF8_STRING,                                  Rfc2849::BASE64_DISTINGUISHED_NAME);
+        $this->assertSame('(?<attr_desc>'.Rfc2849::ATTRIBUTE_TYPE.'(?:;'.Rfc2849::OPTIONS.')?)',  Rfc2849::ATTRIBUTE_DESCRIPTION);
+        $this->assertSame('(?<dn>'.Rfc2849::SAFE_STRING.')',                            Rfc2849::DISTINGUISHED_NAME);
+        $this->assertSame('(?<b64_dn>'.Rfc2849::BASE64_UTF8_STRING.')',                 Rfc2849::BASE64_DISTINGUISHED_NAME);
         $this->assertSame(Rfc2849::SAFE_STRING,                                         Rfc2849::RDN);
         $this->assertSame(Rfc2849::BASE64_UTF8_STRING,                                  Rfc2849::BASE64_RDN);
         $this->assertSame(Rfc3986::URI_REFERENCE,                                       Rfc2849::URL);
@@ -336,9 +336,16 @@ class Rfc2849Test extends TestCase
         $strings = [];
         $inheritedCases = [];
         foreach (static::ATTRIBUTE_TYPE__cases() as $attrType) {
-            $inheritedCases[] = $attrType;
+            $inheritedCases[] = [
+                $attrType[0],
+                array_merge(($attrType[1] ?? []), ['attr_desc' => $attrType[0]])
+            ];
             foreach (static::OPTIONS__cases() as $options) {
-                $inheritedCases[] = [$attrType[0].';'.$options[0]];
+                $attrDesc = $attrType[0].';'.$options[0];
+                $inheritedCases[] = [
+                    $attrDesc,
+                    array_merge(($attrType[1] ?? []), ($options[1] ?? []), ['attr_desc' => $attrDesc])
+                ];
             }
         }
         return array_merge($inheritedCases, static::arraizeStrings($strings));
@@ -373,10 +380,14 @@ class Rfc2849Test extends TestCase
     public static function DISTINGUISHED_NAME__cases()
     {
         $strings = [];
-        return array_merge(
-            static::SAFE_STRING__cases(),
-            static::arraizeStrings($strings)
-        );
+        $inheritedCases = [];
+        foreach (static::SAFE_STRING__cases() as $string) {
+            $inheritedCases[] = [
+                $string[0],
+                array_merge(($string[1] ?? []), ['dn' => $string[0]])
+            ];
+        }
+        return array_merge($inheritedCases, static::arraizeStrings($strings));
     }
 
     public static function non__DISTINGUISHED_NAME__cases()
@@ -411,10 +422,14 @@ class Rfc2849Test extends TestCase
     public static function BASE64_DISTINGUISHED_NAME__cases()
     {
         $strings = [];
-        return array_merge(
-            static::BASE64_STRING__cases(),
-            static::arraizeStrings($strings)
-        );
+        $inheritedCases = [];
+        foreach (static::BASE64_STRING__cases() as $b64Str) {
+            $inheritedCases[] = [
+                $b64Str[0],
+                array_merge(($b64Str[1] ?? []), ['b64_dn' => $b64Str[0]])
+            ];
+        }
+        return array_merge($inheritedCases, static::arraizeStrings($strings));
     }
 
     public static function non__BASE64_DISTINGUISHED_NAME__cases()
@@ -451,10 +466,10 @@ class Rfc2849Test extends TestCase
         $strings = [];
         $inheritedCases = [];
         foreach (static::DISTINGUISHED_NAME__cases() as $dn) {
-            $inheritedCases[] = ['dn: '.$dn[0]];
+            $inheritedCases[] = ['dn: '.$dn[0], ($dn[1] ?? [])];
         }
         foreach (static::BASE64_DISTINGUISHED_NAME__cases() as $b64Dn) {
-            $inheritedCases[] = ['dn:: '.$b64Dn[0]];
+            $inheritedCases[] = ['dn:: '.$b64Dn[0], ($b64Dn[1] ?? [])];
         }
         return array_merge($inheritedCases, static::arraizeStrings($strings));
     }
@@ -651,13 +666,43 @@ class Rfc2849Test extends TestCase
         ];
         $inheritedCases = [];
         foreach (static::SAFE_STRING__cases() as $str) {
-            $inheritedCases[] = [':'.$str[0], []];
+            $inheritedCases[] = [
+                ':'.$str[0],
+                array_merge(
+                    ($str[1] ?? []),
+                    [
+                        'value_safe' => $str[0],
+                        'value_b64' => false,
+                        'value_url' => false,
+                    ]
+                )
+            ];
         }
         foreach (static::BASE64_STRING__cases() as $b64Str) {
-            $inheritedCases[] = [':: '.$b64Str[0], []];
+            $inheritedCases[] = [
+                ':: '.$b64Str[0],
+                array_merge(
+                    ($b64Str[1] ?? []),
+                    [
+                        'value_safe' => false,
+                        'value_b64' => $b64Str[0],
+                        'value_url' => false,
+                    ]
+                )
+            ];
         }
         foreach (static::URL__cases() as $url) {
-            $inheritedCases[] = [':< '.$url[0], $url[1]];
+            $inheritedCases[] = [
+                ':< '.$url[0],
+                array_merge(
+                    ($url[1] ?? []),
+                    [
+                        'value_safe' => false,
+                        'value_b64' => false,
+                        'value_url' => $url[0],
+                    ]
+                )
+            ];
         }
         return array_merge($inheritedCases, static::arraizeStrings($strings));
     }
@@ -711,15 +756,36 @@ class Rfc2849Test extends TestCase
         foreach (static::VALUE_SPEC__cases() as $valueSpec) {
             $inheritedCases[] = [
                 'control: 1.23'.$valueSpec[0]."\n",
-                $valueSpec[1]
+                array_merge(
+                    ($valueSpec[1] ?? []),
+                    [
+                        'ctl_type'  => '1.23',
+                        'ctl_crit'  => false,
+                        'ctl_value_spec' => $valueSpec[0],
+                    ]
+                )
             ];
             $inheritedCases[] = [
                 'control: 1.23 true'.$valueSpec[0]."\n",
-                $valueSpec[1]
+                array_merge(
+                    ($valueSpec[1] ?? []),
+                    [
+                        'ctl_type'  => '1.23',
+                        'ctl_crit'  => 'true',
+                        'ctl_value_spec' => $valueSpec[0],
+                    ]
+                )
             ];
             $inheritedCases[] = [
                 'control: 1.23 false'.$valueSpec[0]."\n",
-                $valueSpec[1]
+                array_merge(
+                    ($valueSpec[1] ?? []),
+                    [
+                        'ctl_type'  => '1.23',
+                        'ctl_crit'  => 'false',
+                        'ctl_value_spec' => $valueSpec[0],
+                    ]
+                )
             ];
         }
         return array_merge($inheritedCases, static::arraizeStrings($strings));
@@ -778,7 +844,10 @@ class Rfc2849Test extends TestCase
         $inheritedCases = [];
         foreach (static::ATTRIBUTE_DESCRIPTION__cases() as $attr) {
             foreach (static::VALUE_SPEC__cases() as $value) {
-                $inheritedCases[] = [$attr[0].$value[0]."\n", $value[1]];
+                $inheritedCases[] = [
+                    $attr[0].$value[0]."\n",
+                    array_merge(($attr[1] ?? []), ($value[1] ?? []))
+                ];
             }
         }
         return array_merge($inheritedCases, static::arraizeStrings($strings));

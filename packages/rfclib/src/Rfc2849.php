@@ -171,19 +171,19 @@ class Rfc2849
      * [RFC2849](https://tools.ietf.org/html/rfc2849):
      * ``AttributeDescription = AttributeType [";" options]``
      */
-    public const ATTRIBUTE_DESCRIPTION = '(?:'.self::ATTRIBUTE_TYPE.'(?:;'.self::OPTIONS.')?)';
+    public const ATTRIBUTE_DESCRIPTION = '(?<attr_desc>'.self::ATTRIBUTE_TYPE.'(?:;'.self::OPTIONS.')?)';
 
     /**
      * [RFC2849](https://tools.ietf.org/html/rfc2849):
      * ``distinguishedName = SAFE-STRING``
      */
-    public const DISTINGUISHED_NAME = self::SAFE_STRING;
+    public const DISTINGUISHED_NAME = '(?<dn>'.self::SAFE_STRING.')';
 
     /**
      * [RFC2849](https://tools.ietf.org/html/rfc2849):
      * ``base64-distinguishedName = SAFE-STRING``
      */
-    public const BASE64_DISTINGUISHED_NAME = self::BASE64_UTF8_STRING;
+    public const BASE64_DISTINGUISHED_NAME = '(?<b64_dn>'.self::BASE64_UTF8_STRING.')';
 
     /**
      * [RFC2849](https://tools.ietf.org/html/rfc2849):
@@ -228,11 +228,11 @@ class Rfc2849
         '(?:'.
             ':'.
             '(?:'.
-                '(?:'. self::FILL.self::SAFE_STRING.'?)'.
+                '(?:'. self::FILL.'(?<value_safe>'.self::SAFE_STRING.')?)'.
                 '|'.
-                '(?::'.self::FILL.self::BASE64_STRING.')'.
+                '(?::'.self::FILL.'(?<value_b64>'.self::BASE64_STRING.'))'.
                 '|'.
-                '(?:<'.self::FILL.self::URL.')'.
+                '(?:<'.self::FILL.'(?<value_url>'.self::URL.'))'.
             ')'.
         ')';
 
@@ -242,9 +242,9 @@ class Rfc2849
      */
     public const CONTROL =
         '(?:'.
-            'control:'.self::FILL.self::LDAP_OID.
-            '(?:'.self::SPACE.'+(?:true|false))?'.
-            self::VALUE_SPEC.'?'.
+            'control:'.self::FILL.'(?<ctl_type>'.self::LDAP_OID.')'.
+            '(?:'.self::SPACE.'+(?<ctl_crit>true|false))?'.
+            '(?<ctl_value_spec>'.self::VALUE_SPEC.')?'.
             self::SEP.
         ')';
 

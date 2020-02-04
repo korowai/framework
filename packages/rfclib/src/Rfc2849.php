@@ -170,20 +170,32 @@ class Rfc2849
     /**
      * [RFC2849](https://tools.ietf.org/html/rfc2849):
      * ``AttributeDescription = AttributeType [";" options]``
+     *
+     * Capture groups:
+     *
+     *  - *attr_desc*: always set, contains the whole matched string.
      */
     public const ATTRIBUTE_DESCRIPTION = '(?<attr_desc>'.self::ATTRIBUTE_TYPE.'(?:;'.self::OPTIONS.')?)';
 
     /**
      * [RFC2849](https://tools.ietf.org/html/rfc2849):
      * ``distinguishedName = SAFE-STRING``
+     *
+     * Capture groups:
+     *
+     *  - *dn_safe*: always set, contains the whole matched string.
      */
-    public const DISTINGUISHED_NAME = '(?<dn>'.self::SAFE_STRING.')';
+    public const DISTINGUISHED_NAME = '(?<dn_safe>'.self::SAFE_STRING.')';
 
     /**
      * [RFC2849](https://tools.ietf.org/html/rfc2849):
      * ``base64-distinguishedName = SAFE-STRING``
+     *
+     * Capture groups:
+     *
+     *  - *dn_b64*: always set, contains the whole matched string.
      */
-    public const BASE64_DISTINGUISHED_NAME = '(?<b64_dn>'.self::BASE64_UTF8_STRING.')';
+    public const BASE64_DISTINGUISHED_NAME = '(?<dn_b64>'.self::BASE64_UTF8_STRING.')';
 
     /**
      * [RFC2849](https://tools.ietf.org/html/rfc2849):
@@ -203,13 +215,18 @@ class Rfc2849
     /**
      * [RFC2849](https://tools.ietf.org/html/rfc2849):
      * ``dn-spec = "dn:" (FILL distinguishedName / ":" FILL base64-distinguishedName)``
+     *
+     * Capture groups:
+     *
+     *  - *dn_safe*: only set if distinguished name is specified as SAFE-STRING using single colon ``":"`` notation,
+     *  - *dn_b64*: only set if distinguished name is specified as BASE64-STRING using double colon ``"::"`` notation.
      */
     public const DN_SPEC =
         '(?:'.
             'dn:(?:'.
-                self::FILL.self::DISTINGUISHED_NAME.
+                self::FILL.'(?:'.self::DISTINGUISHED_NAME.')'.
                 '|'.
-                ':'.self::FILL.self::BASE64_DISTINGUISHED_NAME.
+                ':'.self::FILL.'(?:'.self::BASE64_DISTINGUISHED_NAME.')'.
             ')'.
         ')';
 
@@ -223,6 +240,16 @@ class Rfc2849
     /**
      * [RFC2849](https://tools.ietf.org/html/rfc2849):
      * ``value-spec = ":" (FILL 0*1(SAFE-STRING) / ":" FILL (BASE64-STRING) / "<" FILL url)``
+     *
+     * Capture groups:
+     *
+     *  - *value_safe*: only set if the value-spec specifies SAFE-STRING using single colon ``":"`` notation,
+     *  - *value_b64*: only set if the value-space specifies BASE64-STRING using double colon ``"::"`` notation,
+     *  - *value_url*: only set if the value-spec specifies URL using colon-less-than ``":<"`` notation.
+     *
+     *
+     * If *value_url* is present, then the capture groups of
+     * [Rfc3986::URI_REFERENCE](Rfc3986.html) pattern are also present.
      */
     public const VALUE_SPEC =
         '(?:'.
@@ -239,6 +266,16 @@ class Rfc2849
     /**
      * [RFC2849](https://tools.ietf.org/html/rfc2849):
      * ``control = "control:" FILL ldap-oid 0*1(1*SPACE ("true" / "false")) 0*1(value-spec) SEP``
+     *
+     * Capture groups:
+     *
+     *  - *ctl_type*: always set, contains OID of the control,
+     *  - *ctl_crit*: only set if the matched string defines criticality as ``true`` or ``false``,
+     *  - *ctl_value_spec*: only set if the value-spec part is present in the matched string.
+     *
+     *
+     * If *ctl_value_spec* is present, then also the capture groups of
+     * ``VALUE_SPEC`` pattern are present.
      */
     public const CONTROL =
         '(?:'.

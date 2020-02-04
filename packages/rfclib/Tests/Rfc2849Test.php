@@ -61,8 +61,8 @@ class Rfc2849Test extends TestCase
         $this->assertSame('(?:'.Rfc2849::OPTION.'(?:;'.Rfc2849::OPTION.')*)',           Rfc2849::OPTIONS);
         $this->assertSame('(?:'.Rfc2849::LDAP_OID.'|(?:'.Rfc2849::ALPHA.Rfc2849::ATTR_TYPE_CHARS.'*))', Rfc2849::ATTRIBUTE_TYPE);
         $this->assertSame('(?<attr_desc>'.Rfc2849::ATTRIBUTE_TYPE.'(?:;'.Rfc2849::OPTIONS.')?)',  Rfc2849::ATTRIBUTE_DESCRIPTION);
-        $this->assertSame('(?<dn>'.Rfc2849::SAFE_STRING.')',                            Rfc2849::DISTINGUISHED_NAME);
-        $this->assertSame('(?<b64_dn>'.Rfc2849::BASE64_UTF8_STRING.')',                 Rfc2849::BASE64_DISTINGUISHED_NAME);
+        $this->assertSame('(?<dn_safe>'.Rfc2849::SAFE_STRING.')',                       Rfc2849::DISTINGUISHED_NAME);
+        $this->assertSame('(?<dn_b64>'.Rfc2849::BASE64_UTF8_STRING.')',                 Rfc2849::BASE64_DISTINGUISHED_NAME);
         $this->assertSame(Rfc2849::SAFE_STRING,                                         Rfc2849::RDN);
         $this->assertSame(Rfc2849::BASE64_UTF8_STRING,                                  Rfc2849::BASE64_RDN);
         $this->assertSame(Rfc3986::URI_REFERENCE,                                       Rfc2849::URL);
@@ -384,7 +384,7 @@ class Rfc2849Test extends TestCase
         foreach (static::SAFE_STRING__cases() as $string) {
             $inheritedCases[] = [
                 $string[0],
-                array_merge(($string[1] ?? []), ['dn' => $string[0]])
+                array_merge(($string[1] ?? []), ['dn_safe' => $string[0]])
             ];
         }
         return array_merge($inheritedCases, static::arraizeStrings($strings));
@@ -426,7 +426,7 @@ class Rfc2849Test extends TestCase
         foreach (static::BASE64_STRING__cases() as $b64Str) {
             $inheritedCases[] = [
                 $b64Str[0],
-                array_merge(($b64Str[1] ?? []), ['b64_dn' => $b64Str[0]])
+                array_merge(($b64Str[1] ?? []), ['dn_b64' => $b64Str[0]])
             ];
         }
         return array_merge($inheritedCases, static::arraizeStrings($strings));

@@ -91,7 +91,7 @@ class Rfc2849Test extends TestCase
      */
     public function test__VERSION_NUMBER__matches(string $string, array $pieces = [])
     {
-        $this->assertRfcMatches($string, 'VERSION_NUMBER');
+        $this->assertRfcMatches($string, 'VERSION_NUMBER', $pieces);
     }
 
     /**
@@ -123,7 +123,7 @@ class Rfc2849Test extends TestCase
      */
     public function test__VERSION_SPEC__matches(string $string, array $pieces = [])
     {
-        $this->assertRfcMatches($string, 'VERSION_SPEC');
+        $this->assertRfcMatches($string, 'VERSION_SPEC', $pieces);
     }
 
     /**
@@ -155,7 +155,7 @@ class Rfc2849Test extends TestCase
      */
     public function test__BASE64_STRING__matches(string $string, array $pieces = [])
     {
-        $this->assertRfcMatches($string, 'BASE64_STRING');
+        $this->assertRfcMatches($string, 'BASE64_STRING', $pieces);
     }
 
     /**
@@ -187,7 +187,7 @@ class Rfc2849Test extends TestCase
      */
     public function test__SAFE_STRING__matches(string $string, array $pieces = [])
     {
-        $this->assertRfcMatches($string, 'SAFE_STRING');
+        $this->assertRfcMatches($string, 'SAFE_STRING', $pieces);
     }
 
     /**
@@ -217,7 +217,7 @@ class Rfc2849Test extends TestCase
      */
     public function test__LDAP_OID__matches(string $string, array $pieces = [])
     {
-        $this->assertRfcMatches($string, 'LDAP_OID');
+        $this->assertRfcMatches($string, 'LDAP_OID', $pieces);
     }
 
     /**
@@ -249,7 +249,7 @@ class Rfc2849Test extends TestCase
      */
     public function test__OPTION__matches(string $string, array $pieces = [])
     {
-        $this->assertRfcMatches($string, 'OPTION');
+        $this->assertRfcMatches($string, 'OPTION', $pieces);
     }
 
     /**
@@ -281,7 +281,7 @@ class Rfc2849Test extends TestCase
      */
     public function test__OPTIONS__matches(string $string, array $pieces = [])
     {
-        $this->assertRfcMatches($string, 'OPTIONS');
+        $this->assertRfcMatches($string, 'OPTIONS', $pieces);
     }
 
     /**
@@ -316,7 +316,7 @@ class Rfc2849Test extends TestCase
      */
     public function test__ATTRIBUTE_TYPE__matches(string $string, array $pieces = [])
     {
-        $this->assertRfcMatches($string, 'ATTRIBUTE_TYPE');
+        $this->assertRfcMatches($string, 'ATTRIBUTE_TYPE', $pieces);
     }
 
     /**
@@ -355,7 +355,7 @@ class Rfc2849Test extends TestCase
      */
     public function test__ATTRIBUTE_DESCRIPTION__matches(string $string, array $pieces = [])
     {
-        $this->assertRfcMatches($string, 'ATTRIBUTE_DESCRIPTION');
+        $this->assertRfcMatches($string, 'ATTRIBUTE_DESCRIPTION', $pieces);
     }
 
     /**
@@ -393,7 +393,7 @@ class Rfc2849Test extends TestCase
      */
     public function test__DISTINGUISHED_NAME__matches(string $string, array $pieces = [])
     {
-        $this->assertRfcMatches($string, 'DISTINGUISHED_NAME');
+        $this->assertRfcMatches($string, 'DISTINGUISHED_NAME', $pieces);
     }
 
     /**
@@ -431,7 +431,7 @@ class Rfc2849Test extends TestCase
      */
     public function test__BASE64_DISTINGUISHED_NAME__matches(string $string, array $pieces = [])
     {
-        $this->assertRfcMatches($string, 'BASE64_DISTINGUISHED_NAME');
+        $this->assertRfcMatches($string, 'BASE64_DISTINGUISHED_NAME', $pieces);
     }
 
     /**
@@ -481,7 +481,7 @@ class Rfc2849Test extends TestCase
      */
     public function test__DN_SPEC__matches(string $string, array $pieces = [])
     {
-        $this->assertRfcMatches($string, 'DN_SPEC');
+        $this->assertRfcMatches($string, 'DN_SPEC', $pieces);
     }
 
     /**

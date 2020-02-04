@@ -75,7 +75,7 @@ class Rfc2253Test extends TestCase
      */
     public function test__OID__matches(string $string, array $pieces = [])
     {
-        $this->assertRfcMatches($string, 'OID');
+        $this->assertRfcMatches($string, 'OID', $pieces);
     }
 
     /**

@@ -58,20 +58,20 @@ class Rfc2253Test extends TestCase
     // OID
     //
 
-    public static function OID__strings()
+    public static function OID__cases()
     {
         $strings = ['1', '1.23', '1.23.456'];
         return self::arraizeStrings($strings);
     }
 
-    public static function non__OID__strings()
+    public static function non__OID__cases()
     {
         $strings = ['', '~', 'O', '1.', '.1', '1.23.', 'a', 'ab', 'ab.cd'];
         return self::arraizeStrings($strings);
     }
 
     /**
-     * @dataProvider OID__strings
+     * @dataProvider OID__cases
      */
     public function test__OID__matches(string $string)
     {
@@ -79,7 +79,7 @@ class Rfc2253Test extends TestCase
     }
 
     /**
-     * @dataProvider non__OID__strings
+     * @dataProvider non__OID__cases
      */
     public function test__OID__notMatches(string $string)
     {
@@ -151,7 +151,7 @@ class Rfc2253Test extends TestCase
         return $cases;
     }
 
-    public static function non__STRING__strings()
+    public static function non__STRING__cases()
     {
         $strings = [
             '\\',       // incomplete pair
@@ -171,7 +171,7 @@ class Rfc2253Test extends TestCase
     }
 
     /**
-     * @dataProvider non__STRING__strings
+     * @dataProvider non__STRING__cases
      */
     public function test__STRING__notMatches(string $string)
     {
@@ -237,7 +237,7 @@ class Rfc2253Test extends TestCase
         return $cases;
     }
 
-    public static function non__STRING_CAPTURE__strings()
+    public static function non__STRING_CAPTURE__cases()
     {
         $strings = [
             '\\',       // incomplete pair
@@ -258,7 +258,7 @@ class Rfc2253Test extends TestCase
     }
 
     /**
-     * @dataProvider non__STRING_CAPTURE__strings
+     * @dataProvider non__STRING_CAPTURE__cases
      */
     public function test__STRING_CAPTURE__notMatches(string $string)
     {
@@ -310,7 +310,7 @@ class Rfc2253Test extends TestCase
         return $cases;
     }
 
-    public static function non__ATTRIBUTE_TYPE__strings()
+    public static function non__ATTRIBUTE_TYPE__cases()
     {
         $strings = [
             '',
@@ -331,7 +331,7 @@ class Rfc2253Test extends TestCase
     }
 
     /**
-     * @dataProvider non__ATTRIBUTE_TYPE__strings
+     * @dataProvider non__ATTRIBUTE_TYPE__cases
      */
     public function test__ATTRIBUTE_TYPE__notMatches(string $string)
     {
@@ -359,7 +359,7 @@ class Rfc2253Test extends TestCase
         return array_merge($inheritedCases, $cases);
     }
 
-    public static function non__ATTRIBUTE_TYPE_AND_VALUE__strings()
+    public static function non__ATTRIBUTE_TYPE_AND_VALUE__cases()
     {
         $strings = [
             '',
@@ -383,7 +383,7 @@ class Rfc2253Test extends TestCase
     }
 
     /**
-     * @dataProvider non__ATTRIBUTE_TYPE_AND_VALUE__strings
+     * @dataProvider non__ATTRIBUTE_TYPE_AND_VALUE__cases
      */
     public function test__ATTRIBUTE_TYPE_AND_VALUE__notMatches(string $string)
     {
@@ -412,7 +412,7 @@ class Rfc2253Test extends TestCase
         return array_merge($inheritedCases, $cases);
     }
 
-    public static function non__NAME_COMPONENT__strings()
+    public static function non__NAME_COMPONENT__cases()
     {
         $strings = [
             '',
@@ -438,7 +438,7 @@ class Rfc2253Test extends TestCase
     }
 
     /**
-     * @dataProvider non__NAME_COMPONENT__strings
+     * @dataProvider non__NAME_COMPONENT__cases
      */
     public function test__NAME_COMPONENT__notMatches(string $string)
     {
@@ -473,7 +473,7 @@ class Rfc2253Test extends TestCase
         return array_merge($inheritedCases, $cases);
     }
 
-    public static function non__NAME__strings()
+    public static function non__NAME__cases()
     {
         $strings = [
             '',
@@ -501,7 +501,7 @@ class Rfc2253Test extends TestCase
     }
 
     /**
-     * @dataProvider non__NAME__strings
+     * @dataProvider non__NAME__cases
      */
     public function test__NAME__notMatches(string $string)
     {

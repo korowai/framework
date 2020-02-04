@@ -56,13 +56,13 @@ class Rfc8089Test extends TestCase
         );
     }
 
-    public function non__FILE_AUTH__strings()
+    public function non__FILE_AUTH__cases()
     {
         $strings = [
         ];
         return array_merge(
             static::arraizeStrings($strings),
-            Rfc3986Test::non__HOST__strings()
+            Rfc3986Test::non__HOST__cases()
         );
     }
 
@@ -76,7 +76,7 @@ class Rfc8089Test extends TestCase
     }
 
     /**
-     * @dataProvider non__FILE_AUTH__strings
+     * @dataProvider non__FILE_AUTH__cases
      */
     public function test__FILE_AUTH__notMatches(string $string)
     {
@@ -95,17 +95,17 @@ class Rfc8089Test extends TestCase
             $cases,
             array_map(function (array $arg) {
                 return [$arg[0], ['path_absolute' => $arg[0]]];
-            }, Rfc3986Test::PATH_ABSOLUTE__strings())
+            }, Rfc3986Test::PATH_ABSOLUTE__cases())
         );
     }
 
-    public function non__LOCAL_PATH__strings()
+    public function non__LOCAL_PATH__cases()
     {
         $strings = [
         ];
         return array_merge(
             static::arraizeStrings($strings),
-            Rfc3986Test::non__PATH_ABSOLUTE__strings()
+            Rfc3986Test::non__PATH_ABSOLUTE__cases()
         );
     }
 
@@ -119,7 +119,7 @@ class Rfc8089Test extends TestCase
     }
 
     /**
-     * @dataProvider non__LOCAL_PATH__strings
+     * @dataProvider non__LOCAL_PATH__cases
      */
     public function test__LOCAL_PATH__notMatches(string $string)
     {
@@ -135,7 +135,7 @@ class Rfc8089Test extends TestCase
         $cases = [
         ];
         $inheritedCases = [];
-        foreach(Rfc3986Test::PATH_ABSOLUTE__strings() as $path) {
+        foreach(Rfc3986Test::PATH_ABSOLUTE__cases() as $path) {
             $case = [
                 $path[0],
                 ['file_auth' => '', 'path_absolute' => $path[0]]
@@ -152,7 +152,7 @@ class Rfc8089Test extends TestCase
         return array_merge($cases, $inheritedCases);
     }
 
-    public function non__AUTH_PATH__strings()
+    public function non__AUTH_PATH__cases()
     {
         $strings = ["", "a", ":", "%", "%1", "%G", "%1G", "%G2", "#", "ł", "?", "1.2.3.4"];
         return static::arraizeStrings($strings);
@@ -168,7 +168,7 @@ class Rfc8089Test extends TestCase
     }
 
     /**
-     * @dataProvider non__AUTH_PATH__strings
+     * @dataProvider non__AUTH_PATH__cases
      */
     public function test__AUTH_PATH__notMatches(string $string)
     {
@@ -201,7 +201,7 @@ class Rfc8089Test extends TestCase
         return array_merge($cases, $inheritedCases);
     }
 
-    public function non__FILE_HIER_PART__strings()
+    public function non__FILE_HIER_PART__cases()
     {
         $strings = ["", "a", ":", "%", "%1", "%G", "%1G", "%G2", "#", "ł", "?", "1.2.3.4"];
         return static::arraizeStrings($strings);
@@ -217,7 +217,7 @@ class Rfc8089Test extends TestCase
     }
 
     /**
-     * @dataProvider non__FILE_HIER_PART__strings
+     * @dataProvider non__FILE_HIER_PART__cases
      */
     public function test__FILE_HIER_PART__notMatches(string $string)
     {
@@ -272,7 +272,7 @@ class Rfc8089Test extends TestCase
         return array_merge($cases, $inheritedCases);
     }
 
-    public function non__FILE_URI__strings()
+    public function non__FILE_URI__cases()
     {
         $strings = ["", "a", ":", "%", "%1", "%G", "%1G", "%G2", "#", "ł", "?", "1.2.3.4", "file:"];
         return static::arraizeStrings($strings);
@@ -288,7 +288,7 @@ class Rfc8089Test extends TestCase
     }
 
     /**
-     * @dataProvider non__FILE_URI__strings
+     * @dataProvider non__FILE_URI__cases
      */
     public function test__FILE_URI__notMatches(string $string)
     {

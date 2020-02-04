@@ -117,7 +117,7 @@ class Rfc3986Test extends TestCase
     // SEGMENT_NZ_NC
     //
 
-    public static function SEGMENT_NZ_NC__strings()
+    public static function SEGMENT_NZ_NC__cases()
     {
         $strings = [
             "!$&'()*+,;=-._~Ab1%1fx",
@@ -125,14 +125,14 @@ class Rfc3986Test extends TestCase
         return static::arraizeStrings($strings);
     }
 
-    public static function non__SEGMENT_NZ_NC__strings()
+    public static function non__SEGMENT_NZ_NC__cases()
     {
         $strings = ["", ":", "%", "%1", "%G", "%1G", "%G2", "#", "ł", "/", "?", "a/b", "a?"];
         return static::arraizeStrings($strings);
     }
 
     /**
-     * @dataProvider SEGMENT_NZ_NC__strings
+     * @dataProvider SEGMENT_NZ_NC__cases
      */
     public function test__SEGMENT_NZ_NC__matches(string $string)
     {
@@ -140,7 +140,7 @@ class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider non__SEGMENT_NZ_NC__strings
+     * @dataProvider non__SEGMENT_NZ_NC__cases
      */
     public function test__SEGMENT_NZ_NC__notMatches(string $string)
     {
@@ -151,7 +151,7 @@ class Rfc3986Test extends TestCase
     // SEGMENT_NZ
     //
 
-    public static function SEGMENT_NZ__strings()
+    public static function SEGMENT_NZ__cases()
     {
         $strings = [
             ":",
@@ -160,14 +160,14 @@ class Rfc3986Test extends TestCase
         return static::arraizeStrings($strings);
     }
 
-    public static function non__SEGMENT_NZ__strings()
+    public static function non__SEGMENT_NZ__cases()
     {
         $strings = ["", "%", "%1", "%G", "%1G", "%G2", "#", "ł", "/", "?", "a/b", "a?"];
         return static::arraizeStrings($strings);
     }
 
     /**
-     * @dataProvider SEGMENT_NZ__strings
+     * @dataProvider SEGMENT_NZ__cases
      */
     public function test__SEGMENT_NZ__matches(string $string)
     {
@@ -175,7 +175,7 @@ class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider non__SEGMENT_NZ__strings
+     * @dataProvider non__SEGMENT_NZ__cases
      */
     public function test__SEGMENT_NZ__notMatches(string $string)
     {
@@ -186,7 +186,7 @@ class Rfc3986Test extends TestCase
     // SEGMENT
     //
 
-    public static function SEGMENT__strings()
+    public static function SEGMENT__cases()
     {
         $strings = [
             "",
@@ -196,14 +196,14 @@ class Rfc3986Test extends TestCase
         return static::arraizeStrings($strings);
     }
 
-    public static function non__SEGMENT__strings()
+    public static function non__SEGMENT__cases()
     {
         $strings = ["%", "%1", "%G", "%1G", "%G2", "#", "ł", "/", "?", "a/b", "a?"];
         return static::arraizeStrings($strings);
     }
 
     /**
-     * @dataProvider SEGMENT__strings
+     * @dataProvider SEGMENT__cases
      */
     public function test__SEGMENT__matches(string $string)
     {
@@ -211,7 +211,7 @@ class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider non__SEGMENT__strings
+     * @dataProvider non__SEGMENT__cases
      */
     public function test__SEGMENT__notMatches(string $string)
     {
@@ -222,20 +222,20 @@ class Rfc3986Test extends TestCase
     // PATH_EMPTY
     //
 
-    public static function PATH_EMPTY__strings()
+    public static function PATH_EMPTY__cases()
     {
         $strings = [""];
         return static::arraizeStrings($strings);
     }
 
-    public static function non__PATH_EMPTY__strings()
+    public static function non__PATH_EMPTY__cases()
     {
         $strings = [ "a", "A", "1", "." ];
         return static::arraizeStrings($strings);
     }
 
     /**
-     * @dataProvider PATH_EMPTY__strings
+     * @dataProvider PATH_EMPTY__cases
      */
     public function test__PATH_EMPTY__matches(string $string)
     {
@@ -243,7 +243,7 @@ class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider non__PATH_EMPTY__strings
+     * @dataProvider non__PATH_EMPTY__cases
      */
     public function test__PATH_EMPTY__notMatches(string $string)
     {
@@ -254,7 +254,7 @@ class Rfc3986Test extends TestCase
     // PATH_NOSCHEME
     //
 
-    public static function PATH_NOSCHEME__strings()
+    public static function PATH_NOSCHEME__cases()
     {
         $strings = [
             "!$&'()*+,;=-._~Ab1%1fx",
@@ -264,14 +264,14 @@ class Rfc3986Test extends TestCase
         return static::arraizeStrings($strings);
     }
 
-    public static function non__PATH_NOSCHEME__strings()
+    public static function non__PATH_NOSCHEME__cases()
     {
         $strings = [":", ":/"];
-        return array_merge(static::arraizeStrings($strings), static::non__PATH_ROOTLESS__strings());
+        return array_merge(static::arraizeStrings($strings), static::non__PATH_ROOTLESS__cases());
     }
 
     /**
-     * @dataProvider PATH_NOSCHEME__strings
+     * @dataProvider PATH_NOSCHEME__cases
      */
     public function test__PATH_NOSCHEME__matches(string $string)
     {
@@ -279,7 +279,7 @@ class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider non__PATH_NOSCHEME__strings
+     * @dataProvider non__PATH_NOSCHEME__cases
      */
     public function test__PATH_NOSCHEME__notMatches(string $string)
     {
@@ -290,24 +290,24 @@ class Rfc3986Test extends TestCase
     // PATH_ROOTLESS
     //
 
-    public static function PATH_ROOTLESS__strings()
+    public static function PATH_ROOTLESS__cases()
     {
         $strings = [
             ":!$&'()*+,;=-._~Ab1%1fx",
             ":!$&'()*+,;=-._~Ab1%1fx/",
             ":!$&'()*+,;=-._~Ab1%1fx/:!$&'()*+,;=-._~Ab1%1fx",
         ];
-        return array_merge(static::arraizeStrings($strings), static::PATH_NOSCHEME__strings());
+        return array_merge(static::arraizeStrings($strings), static::PATH_NOSCHEME__cases());
     }
 
-    public static function non__PATH_ROOTLESS__strings()
+    public static function non__PATH_ROOTLESS__cases()
     {
         $strings = ["", "%", "%1", "%G", "%1G", "%G2", "#", "ł", "/", "?", "/a"];
         return static::arraizeStrings($strings);
     }
 
     /**
-     * @dataProvider PATH_ROOTLESS__strings
+     * @dataProvider PATH_ROOTLESS__cases
      */
     public function test__PATH_ROOTLESS__matches(string $string)
     {
@@ -315,7 +315,7 @@ class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider non__PATH_ROOTLESS__strings
+     * @dataProvider non__PATH_ROOTLESS__cases
      */
     public function test__PATH_ROOTLESS__notMatches(string $string)
     {
@@ -326,21 +326,21 @@ class Rfc3986Test extends TestCase
     // PATH_ABSOLUTE
     //
 
-    public static function PATH_ABSOLUTE__strings()
+    public static function PATH_ABSOLUTE__cases()
     {
         return array_map(function (array $args) {
             return ['/'.$args[0]];
-        }, static::PATH_ROOTLESS__strings());
+        }, static::PATH_ROOTLESS__cases());
     }
 
-    public static function non__PATH_ABSOLUTE__strings()
+    public static function non__PATH_ABSOLUTE__cases()
     {
         $strings = ["", "a", ":", "%", "%1", "%G", "%1G", "%G2", "#", "ł", "?", "a/b"];
         return static::arraizeStrings($strings);
     }
 
     /**
-     * @dataProvider PATH_ABSOLUTE__strings
+     * @dataProvider PATH_ABSOLUTE__cases
      */
     public function test__PATH_ABSOLUTE__matches(string $string)
     {
@@ -348,7 +348,7 @@ class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider non__PATH_ABSOLUTE__strings
+     * @dataProvider non__PATH_ABSOLUTE__cases
      */
     public function test__PATH_ABSOLUTE__notMatches(string $string)
     {
@@ -359,19 +359,19 @@ class Rfc3986Test extends TestCase
     // PATH_ABEMPTY
     //
 
-    public static function PATH_ABEMPTY__strings()
+    public static function PATH_ABEMPTY__cases()
     {
-        return array_merge([[""]], static::PATH_ABSOLUTE__strings());
+        return array_merge([[""]], static::PATH_ABSOLUTE__cases());
     }
 
-    public static function non__PATH_ABEMPTY__strings()
+    public static function non__PATH_ABEMPTY__cases()
     {
         $strings = ["a", ":", "%", "%1", "%G", "%1G", "%G2", "#", "ł", "?"];
         return static::arraizeStrings($strings);
     }
 
     /**
-     * @dataProvider PATH_ABEMPTY__strings
+     * @dataProvider PATH_ABEMPTY__cases
      */
     public function test__PATH_ABEMPTY__matches(string $string)
     {
@@ -379,7 +379,7 @@ class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider non__PATH_ABEMPTY__strings
+     * @dataProvider non__PATH_ABEMPTY__cases
      */
     public function test__PATH_ABEMPTY__notMatches(string $string)
     {
@@ -390,18 +390,18 @@ class Rfc3986Test extends TestCase
     // PATH
     //
 
-    public static function PATH__strings()
+    public static function PATH__cases()
     {
         return array_merge(
-            static::PATH_ABEMPTY__strings(),
-            static::PATH_ABSOLUTE__strings(),
-            static::PATH_NOSCHEME__strings(),
-            static::PATH_ROOTLESS__strings(),
-            static::PATH_EMPTY__strings()
+            static::PATH_ABEMPTY__cases(),
+            static::PATH_ABSOLUTE__cases(),
+            static::PATH_NOSCHEME__cases(),
+            static::PATH_ROOTLESS__cases(),
+            static::PATH_EMPTY__cases()
         );
     }
 
-    public static function non__PATH__strings()
+    public static function non__PATH__cases()
     {
         $strings = [
             "%", "%1", "%G", "%1G", "%G2", "#", "ł", "?",
@@ -410,7 +410,7 @@ class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider PATH__strings
+     * @dataProvider PATH__cases
      */
     public function test__PATH__matches(string $string)
     {
@@ -418,7 +418,7 @@ class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider non__PATH__strings
+     * @dataProvider non__PATH__cases
      */
     public function test__PATH__notMatches(string $string)
     {
@@ -450,7 +450,7 @@ class Rfc3986Test extends TestCase
         ];
     }
 
-    public static function non__REG_NAME__strings()
+    public static function non__REG_NAME__cases()
     {
         $strings = [" ", "#", "%", "%1", "%1G", "%G", "%G2", "/", ":", "?", "@", "[", "]", "ł"];
         return static::arraizeStrings($strings);
@@ -466,7 +466,7 @@ class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider non__REG_NAME__strings
+     * @dataProvider non__REG_NAME__cases
      */
     public function test__REG_NAME__notMatches(string $string)
     {
@@ -477,13 +477,13 @@ class Rfc3986Test extends TestCase
     // DEC_OCTET
     //
 
-    public static function DEC_OCTET__strings()
+    public static function DEC_OCTET__cases()
     {
         $strings = ["0", "7", "10", "45", "99", "100", "123", "199", "200", "234", "249", "250", "252", "255" ];
         return static::arraizeStrings($strings);
     }
 
-    public static function non__DEC_OCTET__strings()
+    public static function non__DEC_OCTET__cases()
     {
         $strings = ["", " ", "#", "%", "%1", "%1G", "%G", "%G2", "/", ":", "?", "@", "[", "]", "ł",
                     "00", "05", "000", "010", "256",];
@@ -491,7 +491,7 @@ class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider DEC_OCTET__strings
+     * @dataProvider DEC_OCTET__cases
      */
     public function test__DEC_OCTET__matches(string $string)
     {
@@ -499,7 +499,7 @@ class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider non__DEC_OCTET__strings
+     * @dataProvider non__DEC_OCTET__cases
      */
     public function test__DEC_OCTET__notMatches(string $string)
     {
@@ -541,7 +541,7 @@ class Rfc3986Test extends TestCase
         ];
     }
 
-    public static function non__IPV4ADDRESS__strings()
+    public static function non__IPV4ADDRESS__cases()
     {
         $strings = [
             "", " ", "#",
@@ -562,7 +562,7 @@ class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider non__IPV4ADDRESS__strings
+     * @dataProvider non__IPV4ADDRESS__cases
      */
     public function test__IPV4ADDRESS__notMatches(string $string)
     {
@@ -573,7 +573,7 @@ class Rfc3986Test extends TestCase
     // H16
     //
 
-    public function H16_strings()
+    public function H16__cases()
     {
         $strings = [
             "1", "9", "A", "F", "a", "f",
@@ -585,7 +585,7 @@ class Rfc3986Test extends TestCase
         return static::arraizeStrings($strings);
     }
 
-    public function non__H16_strings()
+    public function non__H16__cases()
     {
         $strings = [
             "", " ", "g", "G", "12345", "abcde", "#", "%", "/", ":", "?", "@", "[", "]", "ł",
@@ -594,7 +594,7 @@ class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider H16_strings
+     * @dataProvider H16__cases
      */
     public function test__H16__matches(string $string)
     {
@@ -602,7 +602,7 @@ class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider non__H16_strings
+     * @dataProvider non__H16__cases
      */
     public function test__H16__notMatches(string $string)
     {
@@ -613,13 +613,13 @@ class Rfc3986Test extends TestCase
     // LS32
     //
 
-    public function LS32_strings()
+    public function LS32__cases()
     {
         $strings = ["1:2", "12:34", "12a:2", "3:af23", "fed2:123a", "1.23.245.212"];
         return static::arraizeStrings($strings);
     }
 
-    public function non__LS32_strings()
+    public function non__LS32__cases()
     {
         $strings = [
             "", " ", "g", "G", "123", "12345:123", "abcde:dff",
@@ -629,7 +629,7 @@ class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider LS32_strings
+     * @dataProvider LS32__cases
      */
     public function test__LS32__matches(string $string)
     {
@@ -637,7 +637,7 @@ class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider non__LS32_strings
+     * @dataProvider non__LS32__cases
      */
     public function test__LS32__notMatches(string $string)
     {
@@ -1137,7 +1137,7 @@ class Rfc3986Test extends TestCase
         return $cases;
     }
 
-    public static function non__IPV6ADDRESS__strings()
+    public static function non__IPV6ADDRESS__cases()
     {
         $strings = [
             "", " ", "g", "G", "123", "12345:123", "abcde:dff",
@@ -1156,7 +1156,7 @@ class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider non__IPV6ADDRESS__strings
+     * @dataProvider non__IPV6ADDRESS__cases
      */
     public function test__IPV6ADDRESS__notMatches(string $string)
     {
@@ -1178,7 +1178,7 @@ class Rfc3986Test extends TestCase
         ];
     }
 
-    public static function non__IPVFUTURE__strings()
+    public static function non__IPVFUTURE__cases()
     {
         $strings = [
             "", " ", "a", "B", "1", "vGEE.aa", "v.sdf", "#", "%", "/", ":", "?", "@", "[", "]", "ł",
@@ -1196,7 +1196,7 @@ class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider non__IPVFUTURE__strings
+     * @dataProvider non__IPVFUTURE__cases
      */
     public function test__IPVFUTURE__notMatches(string $string)
     {
@@ -1236,7 +1236,7 @@ class Rfc3986Test extends TestCase
         );
     }
 
-    public static function non__IP_LITERAL__strings()
+    public static function non__IP_LITERAL__cases()
     {
         $strings = [
             "", " ", "g", "G", "123", "12345:123", "abcde:dff",
@@ -1266,7 +1266,7 @@ class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider non__IP_LITERAL__strings
+     * @dataProvider non__IP_LITERAL__cases
      */
     public function test__IP_LITERAL__notMatches(string $string)
     {
@@ -1277,20 +1277,20 @@ class Rfc3986Test extends TestCase
     // PORT
     //
 
-    public static function PORT__strings()
+    public static function PORT__cases()
     {
         $strings = ["", "123"];
         return static::arraizeStrings($strings);
     }
 
-    public static function non__PORT__strings()
+    public static function non__PORT__cases()
     {
         $strings = ["a", "A", "@"];
         return static::arraizeStrings($strings);
     }
 
     /**
-     * @dataProvider PORT__strings
+     * @dataProvider PORT__cases
      */
     public function test__PORT__matches(string $string)
     {
@@ -1298,7 +1298,7 @@ class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider non__PORT__strings
+     * @dataProvider non__PORT__cases
      */
     public function test__PORT__notMatches(string $string)
     {
@@ -1344,7 +1344,7 @@ class Rfc3986Test extends TestCase
         );
     }
 
-    public static function non__HOST__strings()
+    public static function non__HOST__cases()
     {
         $strings = [
             " ", "12345:123", "abcde:dff",
@@ -1375,7 +1375,7 @@ class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider non__HOST__strings
+     * @dataProvider non__HOST__cases
      */
     public function test__HOST__notMatches(string $string)
     {
@@ -1386,13 +1386,13 @@ class Rfc3986Test extends TestCase
     // USERINFO
     //
 
-    public static function USERINFO__strings()
+    public static function USERINFO__cases()
     {
         $strings = ["", "!$&'()*+,;=-._~Ab1%1fx:"];
         return static::arraizeStrings($strings);
     }
 
-    public static function non__USERINFO__strings()
+    public static function non__USERINFO__cases()
     {
         $strings = [
             "%", "%1", "%G", "%1G", "%G2", "#", "ł",
@@ -1402,7 +1402,7 @@ class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider USERINFO__strings
+     * @dataProvider USERINFO__cases
      */
     public function test__USERINFO__matches(string $string)
     {
@@ -1410,7 +1410,7 @@ class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider non__USERINFO__strings
+     * @dataProvider non__USERINFO__cases
      */
     public function test__USERINFO__notMatches(string $string)
     {
@@ -1427,7 +1427,7 @@ class Rfc3986Test extends TestCase
         ];
 
         $userinfoHostCases = [];
-        foreach (static::USERINFO__strings() as $userinfo) {
+        foreach (static::USERINFO__cases() as $userinfo) {
             foreach (static::HOST__cases() as $host) {
                 $case = [
                     $userinfo[0]."@".$host[0],
@@ -1438,7 +1438,7 @@ class Rfc3986Test extends TestCase
         }
 
         $hostPortCases = [];
-        foreach (static::PORT__strings() as $port) {
+        foreach (static::PORT__cases() as $port) {
             foreach (static::HOST__cases() as $host) {
                 $case = [
                     $host[0].":".$port[0],
@@ -1449,8 +1449,8 @@ class Rfc3986Test extends TestCase
         }
 
         $userinfoHostPortCases = [];
-        foreach (static::USERINFO__strings() as $userinfo) {
-            foreach (static::PORT__strings() as $port) {
+        foreach (static::USERINFO__cases() as $userinfo) {
+            foreach (static::PORT__cases() as $port) {
                 foreach (static::HOST__cases() as $host) {
                     $case = [
                         $userinfo[0]."@".$host[0].":".$port[0],
@@ -1479,7 +1479,7 @@ class Rfc3986Test extends TestCase
         );
     }
 
-    public static function non__AUTHORITY__strings()
+    public static function non__AUTHORITY__cases()
     {
         $strings = [
             "%", "%1", "%G", "%1G", "%G2", "#", "ł",
@@ -1498,7 +1498,7 @@ class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider non__AUTHORITY__strings
+     * @dataProvider non__AUTHORITY__cases
      */
     public function test__AUTHORITY__notMatches(string $string)
     {
@@ -1509,20 +1509,20 @@ class Rfc3986Test extends TestCase
     // SCHEME
     //
 
-    public static function SCHEME__strings()
+    public static function SCHEME__cases()
     {
         $strings = ["a.23+x-x"];
         return static::arraizeStrings($strings);
     }
 
-    public static function non__SCHEME__strings()
+    public static function non__SCHEME__cases()
     {
         $strings = ["", "1s", "@", "a~"];
         return static::arraizeStrings($strings);
     }
 
     /**
-     * @dataProvider SCHEME__strings
+     * @dataProvider SCHEME__cases
      */
     public function test__SCHEME__matches(string $string)
     {
@@ -1530,7 +1530,7 @@ class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider non__SCHEME__strings
+     * @dataProvider non__SCHEME__cases
      */
     public function test__SCHEME__notMatches(string $string)
     {
@@ -1547,7 +1547,7 @@ class Rfc3986Test extends TestCase
         ];
         $authorityPathAbemptyCases = [];
         foreach (static::AUTHORITY__cases() as $authority) {
-            foreach (static::PATH_ABEMPTY__strings() as $path) {
+            foreach (static::PATH_ABEMPTY__cases() as $path) {
                 $case = [
                     '//'.$authority[0].$path[0],
                     array_merge($authority[1], ['path_abempty' => $path[0]])
@@ -1560,17 +1560,17 @@ class Rfc3986Test extends TestCase
             $authorityPathAbemptyCases,
             array_map(function (array $arg) {
                 return [$arg[0], ['path_absolute' => $arg[0]]];
-            }, static::PATH_ABSOLUTE__strings()),
+            }, static::PATH_ABSOLUTE__cases()),
             array_map(function (array $arg) {
                 return [$arg[0], ['path_noscheme' => $arg[0]]];
-            }, static::PATH_NOSCHEME__strings()),
+            }, static::PATH_NOSCHEME__cases()),
             array_map(function (array $arg) {
                 return [$arg[0], ['path_empty' => $arg[0]]];
-            }, static::PATH_EMPTY__strings())
+            }, static::PATH_EMPTY__cases())
         );
     }
 
-    public static function non__RELATIVE_PART__strings()
+    public static function non__RELATIVE_PART__cases()
     {
         $strings = ["#", "%", "%1", "%1G", "%G", "%G2", ":", ":/", "?", "ł"];
         return static::arraizeStrings($strings);
@@ -1586,7 +1586,7 @@ class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider non__RELATIVE_PART__strings
+     * @dataProvider non__RELATIVE_PART__cases
      */
     public function test__RELATIVE_PART__notMatches(string $string)
     {
@@ -1603,7 +1603,7 @@ class Rfc3986Test extends TestCase
         ];
         $authorityPathAbemptyCases = [];
         foreach (static::AUTHORITY__cases() as $authority) {
-            foreach (static::PATH_ABEMPTY__strings() as $path) {
+            foreach (static::PATH_ABEMPTY__cases() as $path) {
                 $case = [
                     '//'.$authority[0].$path[0],
                     array_merge($authority[1], ['path_abempty' => $path[0]])
@@ -1616,17 +1616,17 @@ class Rfc3986Test extends TestCase
             $authorityPathAbemptyCases,
             array_map(function (array $arg) {
                 return [$arg[0], ['path_absolute' => $arg[0]]];
-            }, static::PATH_ABSOLUTE__strings()),
+            }, static::PATH_ABSOLUTE__cases()),
             array_map(function (array $arg) {
                 return [$arg[0], ['path_rootless' => $arg[0]]];
-            }, static::PATH_ROOTLESS__strings()),
+            }, static::PATH_ROOTLESS__cases()),
             array_map(function (array $arg) {
                 return [$arg[0], ['path_empty' => $arg[0]]];
-            }, static::PATH_EMPTY__strings())
+            }, static::PATH_EMPTY__cases())
         );
     }
 
-    public static function non__HIER_PART__strings()
+    public static function non__HIER_PART__cases()
     {
         $strings = ["#", "%", "%1", "%1G", "%G", "%G2", "?", "ł"];
         return static::arraizeStrings($strings);
@@ -1642,7 +1642,7 @@ class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider non__HIER_PART__strings
+     * @dataProvider non__HIER_PART__cases
      */
     public function test__HIER_PART__notMatches(string $string)
     {
@@ -1653,7 +1653,7 @@ class Rfc3986Test extends TestCase
     // FRAGMENT
     //
 
-    public static function FRAGMENT__strings()
+    public static function FRAGMENT__cases()
     {
         $strings = [
             "", 'aZ2-._~!$&\'()*+,;=/?:@%20'
@@ -1661,14 +1661,14 @@ class Rfc3986Test extends TestCase
         return static::arraizeStrings($strings);
     }
 
-    public static function non__FRAGMENT__strings()
+    public static function non__FRAGMENT__cases()
     {
         $strings = ["%", "%1", "%G", "%1G", "%G2", "#", "ł"];
         return static::arraizeStrings($strings);
     }
 
     /**
-     * @dataProvider FRAGMENT__strings
+     * @dataProvider FRAGMENT__cases
      */
     public function test__FRAGMENT__matches(string $string)
     {
@@ -1676,7 +1676,7 @@ class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider non__FRAGMENT__strings
+     * @dataProvider non__FRAGMENT__cases
      */
     public function test__FRAGMENT__notMatches(string $string)
     {
@@ -1687,7 +1687,7 @@ class Rfc3986Test extends TestCase
     // QUERY
     //
 
-    public static function QUERY__strings()
+    public static function QUERY__cases()
     {
         $strings = [
             "", 'aZ2-._~!$&\'()*+,;=/?:@%20'
@@ -1695,14 +1695,14 @@ class Rfc3986Test extends TestCase
         return static::arraizeStrings($strings);
     }
 
-    public static function non__QUERY__strings()
+    public static function non__QUERY__cases()
     {
         $strings = ["%", "%1", "%G", "%1G", "%G2", "#", "ł"];
         return static::arraizeStrings($strings);
     }
 
     /**
-     * @dataProvider QUERY__strings
+     * @dataProvider QUERY__cases
      */
     public function test__QUERY__matches(string $string)
     {
@@ -1710,7 +1710,7 @@ class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider non__QUERY__strings
+     * @dataProvider non__QUERY__cases
      */
     public function test__QUERY__notMatches(string $string)
     {
@@ -1742,7 +1742,7 @@ class Rfc3986Test extends TestCase
 
         $relpartQueryCases = [];
         foreach (static::RELATIVE_PART__cases() as $relpart) {
-            foreach (static::QUERY__strings() as $query) {
+            foreach (static::QUERY__cases() as $query) {
                 $case = [
                     $relpart[0]."?".$query[0],
                     array_merge(
@@ -1760,7 +1760,7 @@ class Rfc3986Test extends TestCase
 
         $relpartFragmentCases = [];
         foreach (static::RELATIVE_PART__cases() as $relpart) {
-            foreach (static::FRAGMENT__strings() as $fragment) {
+            foreach (static::FRAGMENT__cases() as $fragment) {
                 $case = [
                     $relpart[0]."#".$fragment[0],
                     array_merge(
@@ -1778,8 +1778,8 @@ class Rfc3986Test extends TestCase
 
         $relpartQueryFragmentCases = [];
         foreach (static::RELATIVE_PART__cases() as $relpart) {
-            foreach (static::QUERY__strings() as $query) {
-                foreach (static::FRAGMENT__strings() as $fragment) {
+            foreach (static::QUERY__cases() as $query) {
+                foreach (static::FRAGMENT__cases() as $fragment) {
                     $case = [
                         $relpart[0]."?".$query[0]."#".$fragment[0],
                         array_merge(
@@ -1805,7 +1805,7 @@ class Rfc3986Test extends TestCase
         );
     }
 
-    public static function non__RELATIVE_REF__strings()
+    public static function non__RELATIVE_REF__cases()
     {
         $strings = ["%", "%1", "%1G", "%G", "%G2", ":", ":/", "ł"];
         return static::arraizeStrings($strings);
@@ -1821,7 +1821,7 @@ class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider non__RELATIVE_REF__strings
+     * @dataProvider non__RELATIVE_REF__cases
      */
     public function test__RELATIVE_REF__notMatches(string $string)
     {
@@ -1838,7 +1838,7 @@ class Rfc3986Test extends TestCase
         ];
 
         $schemeHierpartCases = [];
-        foreach (static::SCHEME__strings() as $scheme) {
+        foreach (static::SCHEME__cases() as $scheme) {
             foreach (static::HIER_PART__cases() as $hierpart) {
                 $case = [
                     $scheme[0].':'.$hierpart[0],
@@ -1856,9 +1856,9 @@ class Rfc3986Test extends TestCase
         }
 
         $schemeHierpartQueryCases = [];
-        foreach (static::SCHEME__strings() as $scheme) {
+        foreach (static::SCHEME__cases() as $scheme) {
             foreach (static::HIER_PART__cases() as $hierpart) {
-                foreach (static::QUERY__strings() as $query) {
+                foreach (static::QUERY__cases() as $query) {
                     $case = [
                         $scheme[0].':'.$hierpart[0].'?'.$query[0],
                         array_merge(
@@ -1882,7 +1882,7 @@ class Rfc3986Test extends TestCase
         );
     }
 
-    public static function non__ABSOLUTE_URI__strings()
+    public static function non__ABSOLUTE_URI__cases()
     {
         $strings = [
             "",
@@ -1904,7 +1904,7 @@ class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider non__ABSOLUTE_URI__strings
+     * @dataProvider non__ABSOLUTE_URI__cases
      */
     public function test__ABSOLUTE_URI__notMatches(string $string)
     {
@@ -1921,7 +1921,7 @@ class Rfc3986Test extends TestCase
         ];
         $absUriFragmentCases = [];
         foreach (static::ABSOLUTE_URI__cases() as $uri) {
-            foreach (static::FRAGMENT__strings() as $fragment) {
+            foreach (static::FRAGMENT__cases() as $fragment) {
                 $case = [
                     $uri[0].'#'.$fragment[0],
                     array_merge($uri[1], ['fragment' => $fragment[0]])
@@ -1932,7 +1932,7 @@ class Rfc3986Test extends TestCase
         return array_merge($basicCases, $absUriFragmentCases, static::ABSOLUTE_URI__cases());
     }
 
-    public static function non__URI__strings()
+    public static function non__URI__cases()
     {
         $strings = [
             "",
@@ -1953,7 +1953,7 @@ class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider non__URI__strings
+     * @dataProvider non__URI__cases
      */
     public function test__URI__notMatches(string $string)
     {
@@ -1979,7 +1979,7 @@ class Rfc3986Test extends TestCase
         );
     }
 
-    public static function non__URI_REFERENCE__strings()
+    public static function non__URI_REFERENCE__cases()
     {
         $strings = [
             ':',
@@ -1998,7 +1998,7 @@ class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider non__URI_REFERENCE__strings
+     * @dataProvider non__URI_REFERENCE__cases
      */
     public function test__URI_REFERENCE__notMatches(string $string)
     {

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Korowai\Lib\Ldif\Traits;
 
 use Korowai\Lib\Ldif\CursorInterface;
-use Korowai\Lib\Ldif\ParserStateInterface;
+use Korowai\Lib\Ldif\ParserStateInterface as State;
 use Korowai\Lib\Ldif\Snippet;
 use Korowai\Lib\Ldif\Records\VersionSpec;
 use Korowai\Lib\Rfc\Rfc2849x;
@@ -39,41 +39,20 @@ trait ParsesVersionSpec
     abstract public function matchAhead(string $pattern, CursorInterface $cursor, int $flags = 0) : array;
 
     /**
-     * Moves *$state*'s cursor to *$offset* position and appends new error to
-     * *$state*. The appended error points at the same input character as the
-     * updated cursor does. If *$offset* is null (or absent), the cursor remains
-     * unchanged.
-     *
-     * @param  ParserStateInterface $state State to be updated.
-     * @param  string $message Error message
-     * @param  int|null $offset Target offset
-     */
-    abstract public function errorAtOffset(ParserStateInterface $state, string $message, ?int $offset = null) : void;
-
-    /**
-     * Appends new error to *$state*. The appended error points at the same
-     * character as *$state*'s cursor.
-     *
-     * @param  ParserStateInterface $state State to be updated.
-     * @param  string $message Error message
-     */
-    abstract public function errorHere(ParserStateInterface $state, string $message) : void;
-
-    /**
      * Parses version-spec as defined in [RFC 2849](https://tools.ietf.org/html/rfc2849).
      *
-     * @param  ParserStateInterface $state
+     * @param  State $state
      * @param  bool $tryOnly
      * @return bool
      */
-    public function parseVersionSpec(ParserStateInterface $state, bool $tryOnly = false) : bool
+    public function parseVersionSpec(State $state, bool $tryOnly = false) : bool
     {
         $cursor = $state->getCursor();
 
         $matches = $this->matchAhead('/\G'.Rfc2849x::VERSION_SPEC_X.'/', $cursor, PREG_UNMATCHED_AS_NULL);
         if (count($matches) === 0) {
             if (!$tryOnly) {
-                $this->errorHere($state, 'syntax error: expected "version:"');
+                $state->errorHere('syntax error: expected "version:"');
             }
             return false;
         }
@@ -92,19 +71,19 @@ trait ParsesVersionSpec
     }
 
     /**
-     * Called when the version-spec is matched and its components are captured
-     * by ``parseVersionSpec()``. Returns the captured version number on
-     * success or null on parse error.
+     * Completes version-spec parsing assuming that the input matched
+     * successfully the version-spec regular expression. Returns the captured
+     * version number on success or null on parse error.
      *
-     * @param  ParserStateInterface $state
+     * @param  State $state
      * @param  array $matches
      * @return int|null
      */
-    protected function parseMatchedVersionSpec(ParserStateInterface $state, array $matches) : ?int
+    protected function parseMatchedVersionSpec(State $state, array $matches) : ?int
     {
         $cursor = $state->getCursor();
         if (($offset = $matches['version_error'][1] ?? -1) >= 0) {
-            $this->errorAtOffset($state, 'syntax error: expected number', $offset);
+            $state->errorAt('syntax error: expected number', $offset);
             return null;
         }
         return $this->parseMatchedVersionNumber($state, $matches);
@@ -114,18 +93,18 @@ trait ParsesVersionSpec
      * Called when the version-number is matched and its components are captured
      * by ``parseVersionSpec()``.
      *
-     * @param  ParserStateInterface $state
+     * @param  State $state
      * @param  array $matches
      * @return int|null
      */
-    protected function parseMatchedVersionNumber(ParserStateInterface $state, array $matches) : ?int
+    protected function parseMatchedVersionNumber(State $state, array $matches) : ?int
     {
         $cursor = $state->getCursor();
 
         $version = intval($matches['version_number'][0]);
         if ($version != 1) {
             $offset = $matches['version_number'][1];
-            $this->errorAtOffset($state, "syntax error: unsupported version number: $version", $offset);
+            $state->errorAt("syntax error: unsupported version number: $version", $offset);
             return null;
         }
         return $version;

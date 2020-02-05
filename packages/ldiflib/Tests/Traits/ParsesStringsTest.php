@@ -15,7 +15,6 @@ namespace Korowai\Tests\Lib\Ldif\Traits;
 
 use Korowai\Lib\Ldif\Traits\ParsesStrings;
 use Korowai\Lib\Ldif\Traits\MatchesPatterns;
-use Korowai\Lib\Ldif\Traits\MaintainsParserState;
 
 use Korowai\Testing\Lib\Ldif\TestCase;
 
@@ -29,7 +28,6 @@ class ParsesStringsTest extends TestCase
         return new class {
             use ParsesStrings;
             use MatchesPatterns;
-            use MaintainsParserState;
         };
     }
 

@@ -17,6 +17,7 @@ use Korowai\Lib\Ldif\ParserState;
 use Korowai\Lib\Ldif\ParserStateInterface;
 use Korowai\Lib\Ldif\RecordInterface;
 use Korowai\Lib\Ldif\CursorInterface;
+use Korowai\Lib\Ldif\LocationInterface;
 use Korowai\Lib\Ldif\ParserError;
 
 use Korowai\Testing\Lib\Ldif\TestCase;
@@ -116,6 +117,104 @@ class ParserStateTest extends TestCase
         $this->assertSame([], $state->getErrors());
         $this->assertSame($state, $state->appendError($error));
         $this->assertSame([$error], $state->getErrors());
+    }
+
+    public static function errorHere__cases()
+    {
+        return [
+            ['error message'],
+            ['error message', []],
+            ['error message', [2]],
+            ['error message', [2, new \Exception('previous exception')]]
+        ];
+    }
+
+    /**
+     * @dataProvider errorHere__cases
+     */
+    public function test__errorHere(string $message, ...$tail)
+    {
+        $state = $this->createParserState();
+
+        $location = $this->getMockBuilder(LocationInterface::class)->getMockForAbstractClass();
+
+        $cursor = $state->getCursor();
+        $cursor->expects($this->once())
+               ->method('getClonedLocation')
+               ->with()
+               ->willReturn($location);
+        $cursor->expects($this->never())
+               ->method('moveTo');
+        $cursor->expects($this->never())
+               ->method('moveBy');
+
+        $this->assertSame([], $state->getErrors());
+        $this->assertSame($state, $state->errorHere($message, ...$tail));
+
+        $errors = $state->getErrors();
+        $this->assertCount(1, $errors);
+
+        $error = $errors[0];
+        $this->assertInstanceOf(ParserError::class, $error);
+        $this->assertSame($message, $error->getMessage());
+        $this->assertSame($location, $error->getSourceLocation());
+
+        if (($code = $tail[0][0] ?? null) !== null) {
+            $this->assertSame($code, $error->getCode());
+        }
+        if (($previous = $tail[0][1] ?? null) !== null) {
+            $this->assertSame($previous, $error->getPrevious());
+        }
+    }
+
+    public static function errorAt__cases(string $message, ...$tail)
+    {
+        return [
+            ['error message', 123],
+            ['error message', 123, []],
+            ['error message', 123, [2]],
+            ['error message', 123, [2, new \Exception('previous exception')]]
+        ];
+    }
+
+    /**
+     * @dataProvider errorAt__cases
+     */
+    public function test__errorAt(string $message, int $offset, ...$tail)
+    {
+        $state = $this->createParserState();
+
+        $location = $this->getMockBuilder(LocationInterface::class)->getMockForAbstractClass();
+
+        $cursor = $state->getCursor();
+        $cursor->expects($this->once())
+               ->method('getClonedLocation')
+               ->with()
+               ->willReturn($location);
+        $cursor->expects($this->once())
+               ->method('moveTo')
+               ->with($offset)
+               ->willReturn($cursor);
+        $cursor->expects($this->never())
+               ->method('moveBy');
+
+        $this->assertSame([], $state->getErrors());
+        $this->assertSame($state, $state->errorAt($message, $offset, ...$tail));
+
+        $errors = $state->getErrors();
+        $this->assertCount(1, $errors);
+
+        $error = $errors[0];
+        $this->assertInstanceOf(ParserError::class, $error);
+        $this->assertSame($message, $error->getMessage());
+        $this->assertSame($location, $error->getSourceLocation());
+
+        if (($code = $tail[0][0] ?? null) !== null) {
+            $this->assertSame($code, $error->getCode());
+        }
+        if (($previous = $tail[0][1] ?? null) !== null) {
+            $this->assertSame($previous, $error->getPrevious());
+        }
     }
 
     public function test__appendRecord()

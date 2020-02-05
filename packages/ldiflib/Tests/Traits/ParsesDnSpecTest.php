@@ -17,7 +17,6 @@ use Korowai\Lib\Ldif\Traits\ParsesDnSpec;
 use Korowai\Lib\Ldif\Traits\MatchesPatterns;
 use Korowai\Lib\Ldif\Traits\SkipsWhitespaces;
 use Korowai\Lib\Ldif\Traits\ParsesStrings;
-use Korowai\Lib\Ldif\Traits\MaintainsParserState;
 
 use Korowai\Testing\Lib\Ldif\TestCase;
 
@@ -33,7 +32,6 @@ class ParsesDnSpecTest extends TestCase
             use MatchesPatterns;
             use SkipsWhitespaces;
             use ParsesStrings;
-            use MaintainsParserState;
         };
     }
 
@@ -58,15 +56,6 @@ class ParsesDnSpecTest extends TestCase
             ['1.3.6.1.4.1.1466.0=#04024869,O=Test,C=GB', true],
             ['SN=Lu\C4\8Di\C4\87', true],
         ];
-    }
-
-    /**
-     * @dataProvider matchDnStringCases
-     */
-    public function test__matchDnString(string $string, bool $result)
-    {
-        $parser = $this->getTestObject();
-        $this->assertSame($result, $parser->matchDnString($string));
     }
 
     public function parseDnSpecCases()

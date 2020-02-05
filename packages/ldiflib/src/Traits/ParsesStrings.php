@@ -24,27 +24,6 @@ use Korowai\Lib\Rfc\Rfc2849;
 trait ParsesStrings
 {
     /**
-     * Moves *$state*'s cursor to *$offset* position and appends new error to
-     * *$state*. The appended error points at the same input character as the
-     * updated cursor does. If *$offset* is null (or absent), the cursor remains
-     * unchanged.
-     *
-     * @param  ParserStateInterface $state State to be updated.
-     * @param  string $message Error message
-     * @param  int|null $offset Target offset
-     */
-    abstract public function errorAtOffset(ParserStateInterface $state, string $message, ?int $offset = null) : void;
-
-    /**
-     * Appends new error to *$state*. The appended error points at the same
-     * character as *$state*'s cursor.
-     *
-     * @param  ParserStateInterface $state State to be updated.
-     * @param  string $message Error message
-     */
-    abstract public function errorHere(ParserStateInterface $state, string $message) : void;
-
-    /**
      * Matches the string starting at $cursor's position against $pattern and
      * skips the whole match (moves the cursor after the matched part of
      * string).
@@ -76,7 +55,7 @@ trait ParsesStrings
             //          executed, except we screwed up something with the
             //          implementation (e.g. regular expression), or we decide
             //          to forbid empty strings one day.
-            $this->errorHere($state, 'syntax error: expected SAFE-STRING (RFC2849)');
+            $state->errorHere('syntax error: expected SAFE-STRING (RFC2849)');
             return false;
         }
         // @codeCoverageIgnoreEnd
@@ -102,7 +81,7 @@ trait ParsesStrings
             //          executed, except we screwed up something with the
             //          implementation (e.g. regular expression), or we decide
             //          to forbid empty strings one day.
-            $this->errorHere($state, 'syntax error: expected BASE64-STRING (RFC2849)');
+            $state->errorHere('syntax error: expected BASE64-STRING (RFC2849)');
             return false;
         }
         // @codeCoverageIgnoreEnd
@@ -139,7 +118,7 @@ trait ParsesStrings
     {
         $decoded = base64_decode($string, true);
         if ($decoded === false) {
-            $this->errorAtOffset($state, 'syntax error: invalid BASE64 string', $offset);
+            $state->errorAt('syntax error: invalid BASE64 string', $offset);
             return null;
         }
         return $decoded;
@@ -157,7 +136,7 @@ trait ParsesStrings
     public function parseUtf8Check(ParserStateInterface $state, string $string, ?int $offset = null) : bool
     {
         if (mb_check_encoding($string, 'utf-8') === false) {
-            $this->errorAtOffset($state, 'syntax error: the string is not a valid UTF8', $offset);
+            $state->errorAt('syntax error: the string is not a valid UTF8', $offset);
             return false;
         }
         return true;

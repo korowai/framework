@@ -57,6 +57,30 @@ interface ParserStateInterface
     public function appendError(ParserErrorInterface $error);
 
     /**
+     * Appends new error created with *$message* and using *$this* object's
+     * cursor as error's location.
+     *
+     * @param  string $message
+     * @param  array $arguments Optional arguments passed to error's constructor.
+     *
+     * @return object $this
+     */
+    public function errorHere(string $message, array $arguments = []);
+
+    /**
+     * Moves the cursor to the position indicated by *$offset* and appends new
+     * error created with *$message* and using the updated cursor as error's
+     * location.
+     *
+     * @param  string $message
+     * @param  int $offset
+     * @param  array $arguments Optional arguments passed to error's constructor.
+     *
+     * @return object $this
+     */
+    public function errorAt(string $message, int $offset, array $arguments = []);
+
+    /**
      * Append new record.
      *
      * @param  RecordInterface $record

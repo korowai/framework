@@ -46,11 +46,26 @@ class LocationTest extends TestCase
                       ->getMockForAbstractClass();
 
         $location = new Location($input, 123);
-        $cloned = $location->getClonedLocation();
-        $this->assertInstanceOf(Location::class, $cloned);
-        $this->assertNotSame($location, $cloned);
-        $this->assertSame($input, $cloned->getInput());
-        $this->assertSame(123, $cloned->getOffset());
+
+        $clone1 = $location->getClonedLocation();
+        $this->assertInstanceOf(Location::class, $clone1);
+        $this->assertNotSame($location, $clone1);
+        $this->assertSame($input, $clone1->getInput());
+        $this->assertSame(123, $clone1->getOffset());
+
+        $clone2 = $location->getClonedLocation(null);
+        $this->assertInstanceOf(Location::class, $clone2);
+        $this->assertNotSame($location, $clone2);
+        $this->assertSame($input, $clone2->getInput());
+        $this->assertSame(123, $clone2->getOffset());
+
+        $this->assertNotSame($clone1, $clone2);
+
+        $clone3 = $location->getClonedLocation(321);
+        $this->assertInstanceOf(Location::class, $clone3);
+        $this->assertNotSame($location, $clone3);
+        $this->assertSame($input, $clone3->getInput());
+        $this->assertSame(321, $clone3->getOffset());
     }
 
     public function test__getString()

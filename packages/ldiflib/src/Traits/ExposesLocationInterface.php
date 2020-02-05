@@ -83,13 +83,16 @@ trait ExposesLocationInterface
 
     /**
      * Returns new LocationInterface instance made out of this one. The
-     * returned object points to the same location of the same input.
+     * returned object points to the same input at *$offset*. If *$offset* is
+     * null or not given, then it's taken from this location.
+     *
+     * @param  int|null $offset
      *
      * @return LocationInterface
      */
-    public function getClonedLocation() : LocationInterface
+    public function getClonedLocation(?int $offset = null) : LocationInterface
     {
-        return $this->getLocation()->getClonedLocation();
+        return $this->getLocation()->getClonedLocation($offset);
     }
 }
 

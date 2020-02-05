@@ -16,6 +16,7 @@ namespace Korowai\Tests\Lib\Ldif\Traits;
 use Korowai\Lib\Ldif\Traits\ParsesVersionSpec;
 use Korowai\Lib\Ldif\Traits\SkipsWhitespaces;
 use Korowai\Lib\Ldif\Traits\MatchesPatterns;
+use Korowai\Lib\Ldif\Traits\MaintainsParserState;
 use Korowai\Lib\Ldif\Records\VersionSpec;
 
 use Korowai\Testing\Lib\Ldif\TestCase;
@@ -30,6 +31,7 @@ class ParsesVersionSpecTest extends TestCase
         return new class {
             use ParsesVersionSpec;
             use MatchesPatterns;
+            use MaintainsParserState;
         };
     }
 
@@ -107,7 +109,7 @@ class ParsesVersionSpecTest extends TestCase
             [
             //    000000000 111111111122
             //    012356789 012345678901 - source (bytes)
-                ["# tłuszcz\nversion: 1"],
+                ["# tłuszcz\nversion: 1\n"],
             //               00000000001 - preprocessed (bytes)
             //               01234567890 - preprocessed (bytes)
                 [],
@@ -154,6 +156,28 @@ class ParsesVersionSpecTest extends TestCase
                             [
                                 'message' => 'syntax error: expected number',
                                 'sourceOffset' => 12
+                            ],
+                        ],
+                    ],
+                ]
+            ],
+
+            [
+                ['   version: 123A', 3],
+                [true],
+                [
+                    'result' => false,
+                    'state' => [
+                        'cursor' => [
+                            'offset' => 15,
+                            'sourceOffset' => 15,
+                            'sourceCharOffset' => 15
+                        ],
+                        'records' => [],
+                        'errors' => [
+                            [
+                                'message' => 'syntax error: expected number',
+                                'sourceOffset' => 15
                             ],
                         ],
                     ],

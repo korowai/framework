@@ -38,8 +38,18 @@ namespace Korowai\Lib\Rfc;
  */
 class Rfc2849
 {
+    //
     // character sequences for character classes
+    //
+
+    /**
+     * Same as [Rfc5234::ALPHACHARS](Rfc5234.html).
+     */
     public const ALPHACHARS = Rfc5234::ALPHACHARS;
+
+    /**
+     * Same as [Rfc5234::DIGITCHARS](Rfc5234.html).
+     */
     public const DIGITCHARS = Rfc5234::DIGITCHARS;
 
     //

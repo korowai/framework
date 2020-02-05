@@ -64,22 +64,24 @@ abstract class TestCase extends \Korowai\Testing\TestCase
 
     /**
      * Asserts that an expression stored in an RFC constant (*$constname*)
-     * matches the *$subject*. *$expMatchess* may be provided to perform
+     * matches the *$subject*. *$expMatches* may be provided to perform
      * additional checks on *$matches* returned by ``preg_match()``.
      *
      * @param  string $subject
      * @param  string $constname
-     * @param  array $expMatchess
+     * @param  array $expMatches
      */
-    public static function assertRfcMatches(string $subject, string $constname, array $expMatchess = []) : void
+    public static function assertRfcMatches(string $subject, string $constname, array $expMatches = []) : void
     {
         $fqdnConstName = static::getRfcFqdnConstName($constname);
         $re = static::getRfcRegexp($fqdnConstName);
-        $result = preg_match($re, $subject, $matches, PREG_UNMATCHED_AS_NULL);
+        $result = preg_match($re, $subject, $matches, PREG_UNMATCHED_AS_NULL|PREG_OFFSET_CAPTURE);
         $msg = 'Failed asserting that '.$fqdnConstName.' matches '.var_export($subject, true);
         static::assertSame(1, $result, $msg);
-        static::assertSame($subject, $matches[0]);
-        static::assertRfcCaptureGroups($expMatchess, $matches);
+        if (($expMatches[0] ?? null) === null) {
+            static::assertSame($subject, $matches[0][0]);
+        }
+        static::assertRfcCaptureGroups($expMatches, $matches);
     }
 
     /**
@@ -113,12 +115,14 @@ abstract class TestCase extends \Korowai\Testing\TestCase
     {
         $keyx = var_export($key, true);
         if ($expected === false) {
-            static::assertNull($matches[$key] ?? null, 'Failed asserting that $matches['.$keyx.'] is not set');
+            $actual = ($matches[$key] ?? [null, -1])[0];
+            static::assertNull($actual, 'Failed asserting that $matches['.$keyx.'] is not set');
         } else {
             static::assertArrayHasKey($key, $matches);
             if ($expected !== true) {
+                $actual = is_array($expected) ? $matches[$key] : $matches[$key][0];
                 $msg = 'Failed asserting that $matches['.$keyx.'] is '.var_export($expected, true);
-                static::assertSame($expected, $matches[$key], $msg);
+                static::assertSame($expected, $actual, $msg);
             }
         }
     }
@@ -134,10 +138,9 @@ abstract class TestCase extends \Korowai\Testing\TestCase
     {
         $fqdnConstName = static::getRfcFqdnConstName($constname);
         $re = static::getRfcRegexp($fqdnConstName);
-        $result = preg_match($re, $subject, $matches, PREG_UNMATCHED_AS_NULL);
+        $result = preg_match($re, $subject);
         $msg = 'Failed asserting that '.$fqdnConstName.' does not match '.var_export($subject, true);
         static::assertSame(0, $result, $msg);
-        static::assertNull($matches[0] ?? null);
     }
 }
 

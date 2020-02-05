@@ -19,6 +19,7 @@ use Korowai\Lib\Ldif\Traits\ParsesLdifFile;
 use Korowai\Lib\Ldif\Traits\ParsesStrings;
 use Korowai\Lib\Ldif\Traits\ParsesVersionSpec;
 use Korowai\Lib\Ldif\Traits\SkipsWhitespaces;
+use Korowai\Lib\Ldif\Traits\MaintainsParserState;
 
 /**
  * LDIF parser.
@@ -31,6 +32,7 @@ class Parser implements ParserInterface
 //    use ParsesStrings;
     use ParsesVersionSpec;
     use SkipsWhitespaces;
+    use MaintainsParserState;
 
     /**
      * {@inheritdoc}

@@ -14,12 +14,10 @@ declare(strict_types=1);
 namespace Korowai\Lib\Ldif\Traits;
 
 use Korowai\Lib\Ldif\CursorInterface;
-use Korowai\Lib\Ldif\LocationInterface;
 use Korowai\Lib\Ldif\ParserStateInterface;
 use Korowai\Lib\Ldif\Snippet;
-use Korowai\Lib\Ldif\ParserError;
 use Korowai\Lib\Ldif\Records\VersionSpec;
-use Korowai\Lib\Rfc\Rfc2849;
+use Korowai\Lib\Rfc\Rfc2849x;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -41,6 +39,27 @@ trait ParsesVersionSpec
     abstract public function matchAhead(string $pattern, CursorInterface $cursor, int $flags = 0) : array;
 
     /**
+     * Moves *$state*'s cursor to *$offset* position and appends new error to
+     * *$state*. The appended error points at the same input character as the
+     * updated cursor does. If *$offset* is null (or absent), the cursor remains
+     * unchanged.
+     *
+     * @param  ParserStateInterface $state State to be updated.
+     * @param  string $message Error message
+     * @param  int|null $offset Target offset
+     */
+    abstract public function errorAtOffset(ParserStateInterface $state, string $message, ?int $offset = null) : void;
+
+    /**
+     * Appends new error to *$state*. The appended error points at the same
+     * character as *$state*'s cursor.
+     *
+     * @param  ParserStateInterface $state State to be updated.
+     * @param  string $message Error message
+     */
+    abstract public function errorHere(ParserStateInterface $state, string $message) : void;
+
+    /**
      * Parses version-spec as defined in [RFC 2849](https://tools.ietf.org/html/rfc2849).
      *
      * @param  ParserStateInterface $state
@@ -51,13 +70,10 @@ trait ParsesVersionSpec
     {
         $cursor = $state->getCursor();
 
-        $begin = clone $cursor;
-
-        $matches = $this->matchAhead('/\G'.Rfc2849::VERSION_SPEC_X.'/', $cursor, PREG_UNMATCHED_AS_NULL);
+        $matches = $this->matchAhead('/\G'.Rfc2849x::VERSION_SPEC_X.'/', $cursor, PREG_UNMATCHED_AS_NULL);
         if (count($matches) === 0) {
             if (!$tryOnly) {
-                $error = new ParserError(clone $cursor, 'syntax error: expected "version:"');
-                $state->appendError($error);
+                $this->errorHere($state, 'syntax error: expected "version:"');
             }
             return false;
         }
@@ -66,7 +82,9 @@ trait ParsesVersionSpec
             return false;
         }
 
-        $length = $cursor->getOffset() - $begin->getOffset();
+        $beginOffset = $matches[0][1];
+        $begin = $cursor->getClonedLocation($beginOffset);
+        $length = $cursor->getOffset() - $beginOffset;
         $record = new VersionSpec(new Snippet($begin, $length), $version);
         $state->appendRecord($record);
 
@@ -84,12 +102,11 @@ trait ParsesVersionSpec
      */
     protected function parseMatchedVersionSpec(ParserStateInterface $state, array $matches) : ?int
     {
-        if (!array_key_exists('version_number', $matches)) {
-            $error = new ParserError(clone ($state->getCursor()), 'syntax error: expected number');
-            $state->appendError($error);
+        $cursor = $state->getCursor();
+        if (($offset = $matches['version_error'][1] ?? -1) >= 0) {
+            $this->errorAtOffset($state, 'syntax error: expected number', $offset);
             return null;
         }
-
         return $this->parseMatchedVersionNumber($state, $matches);
     }
 
@@ -107,9 +124,8 @@ trait ParsesVersionSpec
 
         $version = intval($matches['version_number'][0]);
         if ($version != 1) {
-            $cursor->moveTo($matches['version_number'][1]);
-            $error = new ParserError(clone $cursor, "syntax error: unsupported version number: $version");
-            $state->appendError($error);
+            $offset = $matches['version_number'][1];
+            $this->errorAtOffset($state, "syntax error: unsupported version number: $version", $offset);
             return null;
         }
         return $version;

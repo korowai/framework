@@ -41,11 +41,24 @@ class CursorTest extends TestCase
         $input = $this->createMock(Input::class);
 
         $cursor = new Cursor($input, 123);
-        $cloned = $cursor->getClonedLocation();
-        $this->assertInstanceOf(Location::class, $cloned);
-        $this->assertNotInstanceOf(Cursor::class, $cloned);
-        $this->assertSame($input, $cloned->getInput());
-        $this->assertSame(123, $cloned->getOffset());
+
+        $clone1 = $cursor->getClonedLocation();
+        $this->assertInstanceOf(Location::class, $clone1);
+        $this->assertNotInstanceOf(Cursor::class, $clone1);
+        $this->assertSame($input, $clone1->getInput());
+        $this->assertSame(123, $clone1->getOffset());
+
+        $clone2 = $cursor->getClonedLocation(null);
+        $this->assertInstanceOf(Location::class, $clone2);
+        $this->assertNotInstanceOf(Cursor::class, $clone2);
+        $this->assertSame($input, $clone2->getInput());
+        $this->assertSame(123, $clone2->getOffset());
+
+        $clone3 = $cursor->getClonedLocation(321);
+        $this->assertInstanceOf(Location::class, $clone3);
+        $this->assertNotInstanceOf(Cursor::class, $clone3);
+        $this->assertSame($input, $clone3->getInput());
+        $this->assertSame(321, $clone3->getOffset());
     }
 
     public function test__moveBy()

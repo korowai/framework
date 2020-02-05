@@ -14,9 +14,8 @@ declare(strict_types=1);
 namespace Korowai\Lib\Ldif\Traits;
 
 use Korowai\Lib\Ldif\CursorInterface;
-use Korowai\Lib\Ldif\LocationInterface;
 use Korowai\Lib\Ldif\ParserStateInterface;
-use Korowai\Lib\Ldif\ParserError;
+use Korowai\Lib\Rfc\Rfc2849x;
 use Korowai\Lib\Rfc\Rfc2253;
 
 use function Korowai\Lib\Compat\preg_match;
@@ -26,26 +25,6 @@ use function Korowai\Lib\Compat\preg_match;
  */
 trait ParsesDnSpec
 {
-    /**
-     * Skip zero or more whitespaces (FILL in RFC2849).
-     *
-     * @param CursorInterface $cursor
-     *
-     * @return array
-     * @throws PregException When an error occurs in ``preg_match()``.
-     */
-    abstract public function skipFill(CursorInterface $cursor) : array;
-    /**
-     * Matches the string (starting at $location's position) against $pattern.
-     *
-     * @param  string $pattern
-     * @param  LocationInterface $location
-     * @param  int $flags Flags passed to ``preg_match()``.
-     *
-     * @return array Array of matches as returned by ``preg_match()``
-     * @throws PregException When error occurs in ``preg_match()``
-     */
-    abstract public function matchAt(string $pattern, LocationInterface $location, int $flags = 0) : array;
     /**
      * Matches the string starting at $cursor's position against $pattern and
      * skips the whole match (moves the cursor after the matched part of
@@ -59,24 +38,53 @@ trait ParsesDnSpec
      * @throws PregException When error occurs in ``preg_match()``
      */
     abstract public function matchAhead(string $pattern, CursorInterface $cursor, int $flags = 0) : array;
+
     /**
-     * Parses SAFE-STRING as defined in [RFC 2849](https://tools.ietf.org/html/rfc2849).
+     * Decodes base64-encoded string.
      *
      * @param  ParserStateInterface $state
-     * @param  string $string
+     * @param  string $string The string to be decoded.
+     * @param  int|null $offset An offset in the input where the *$string* begins.
      *
-     * @return bool true on success, false on parser error.
+     * @return string|null Returns the decoded data or null on error.
      */
-    abstract public function parseSafeString(ParserStateInterface $state, string &$string = null) : bool;
+    abstract public function parseBase64Decode(
+        ParserStateInterface $state,
+        string $string,
+        ?int $offset = null
+    ) : ?string;
+
     /**
-     * Parses BASE64-UTF8-STRING as defined in [RFC 2849](https://tools.ietf.org/html/rfc2849).
+     * Validates string against UTF-8 encoding.
      *
      * @param  ParserStateInterface $state
-     * @param  string $string The parsed and decoded string returned by the function.
+     * @param  string $string The string to be validated.
+     * @param  int|null $offset An offset in the input where the *$string* begins.
      *
-     * @return bool true on success, false on parser error.
+     * @return string|null Returns the decoded data or null on error.
      */
-    abstract public function parseBase64Utf8String(ParserStateInterface $state, string &$string = null) : bool;
+    abstract public function parseUtf8Check(ParserStateInterface $state, string $string, ?int $offset = null) : bool;
+
+    /**
+     * Moves *$state*'s cursor to *$offset* position and appends new error to
+     * *$state*. The appended error points at the same input character as the
+     * updated cursor does. If *$offset* is null (or absent), the cursor remains
+     * unchanged.
+     *
+     * @param  ParserStateInterface $state State to be updated.
+     * @param  string $message Error message
+     * @param  int|null $offset Target offset
+     */
+    abstract public function errorAtOffset(ParserStateInterface $state, string $message, ?int $offset = null) : void;
+
+    /**
+     * Appends new error to *$state*. The appended error points at the same
+     * character as *$state*'s cursor.
+     *
+     * @param  ParserStateInterface $state State to be updated.
+     * @param  string $message Error message
+     */
+    abstract public function errorHere(ParserStateInterface $state, string $message) : void;
 
     /**
      * Parses dn-spec as defined in [RFC 2849](https://tools.ietf.org/html/rfc2849).
@@ -90,35 +98,58 @@ trait ParsesDnSpec
     {
         $cursor = $state->getCursor();
 
-        $matches = $this->matchAhead('/\Gdn:/', $cursor);
+        $matches = $this->matchAhead('/\G'.Rfc2849x::DN_SPEC_X.'/', $cursor, PREG_UNMATCHED_AS_NULL);
         if (count($matches) === 0) {
-            $error = new ParserError(clone $cursor, 'syntax error: expected "dn:"');
-            $state->appendError($error);
+            $this->errorHere($state, 'syntax error: expected "dn:"');
             return false;
         }
-
-        $matches = $this->matchAhead('/\G:/', $cursor);
-
-        $this->skipFill($cursor);
-
-        $begin = clone $cursor;
-        if (count($matches) === 0) {
-            // SAFE-STRING
-            $result = $this->parseSafeString($state, $dn);
-        } else {
-            // BASE64-UTF8-STRING
-            $result = $this->parseBase64Utf8String($state, $dn);
-        }
-
-        if ($result && !$this->matchDnString($dn)) {
-            $error = new ParserError($begin, 'syntax error: invalid DN syntax: \''.$dn.'\'');
-            $state->appendError($error);
-            $cursor->moveTo($begin->getOffset());
-            return false;
-        }
-
-        return $result;
+        return $this->parseMatchedDnSpec($state, $matches, $dn);
     }
+
+    /**
+     * @todo Write documentation.
+     */
+    protected function parseMatchedDnSpec(ParserStateInterface $state, array $matches, string &$dn = null)
+    {
+
+        foreach (['dn_safe_error' => 'SAFE', 'dn_b64_error' => 'BASE64'] as $key => $type) {
+            if (($offset = $matches[$key][1] ?? -1) >= 0) {
+                $this->errorAtOffset($state, 'syntax error: invalid '.$type.' string', $offset);
+                return false;
+            }
+        }
+        return $this->parseMatchedDn($state, $matches, $dn);
+    }
+
+    /**
+     * @todo Write documentation.
+     */
+    public function parseMatchedDn(ParserStateInterface $state, array $matches, string &$dn = null)
+    {
+        if (($dnOffset = $matches['dn_b64'][1] ?? -1) >= 0) {
+            $b64 = $matches['dn_b64'][0];
+            $dn = $this->parseBase64Decode($state, $b64, $dnOffset);
+            if ($dn === null || !$this->parseUtf8Check($state, $dn, $dnOffset)) {
+                return false;
+            }
+        } elseif (($dnOffset = $matches['dn_safe'][1] ?? -1) >= 0) {
+            $dn = $matches['dn_safe'][0];
+        } else {
+            // @codeCoverageIgnoreStart
+            $this->errorHere($state, 'internal error: neither dn_safe nor dn_b64 group found');
+            return false;
+            // @codeCoverageIgnoreEnd
+        }
+
+        if (!$this->matchDnString($dn)) {
+            $this->errorAtOffset($state, 'syntax error: invalid DN syntax: \''.$dn.'\'', $dnOffset);
+            return false;
+        }
+
+        return true;
+    }
+
+
 
     /**
      * Checks if the provided *$dn* string matches
@@ -131,7 +162,7 @@ trait ParsesDnSpec
      */
     public function matchDnString(string $dn) : bool
     {
-        return (0 !== preg_match('/\G'.Rfc2253::DISTINGUISHED_NAME.'$/', $dn));
+        return (0 !== preg_match('/\G'.Rfc2253::DISTINGUISHED_NAME.'$/D', $dn));
     }
 }
 

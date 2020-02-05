@@ -15,6 +15,7 @@ namespace Korowai\Tests\Lib\Ldif\Traits;
 
 use Korowai\Lib\Ldif\Traits\ParsesStrings;
 use Korowai\Lib\Ldif\Traits\MatchesPatterns;
+use Korowai\Lib\Ldif\Traits\MaintainsParserState;
 
 use Korowai\Testing\Lib\Ldif\TestCase;
 
@@ -28,10 +29,11 @@ class ParsesStringsTest extends TestCase
         return new class {
             use ParsesStrings;
             use MatchesPatterns;
+            use MaintainsParserState;
         };
     }
 
-    public function safeStringCases()
+    public function safeString__cases()
     {
         $miscCases = [
             [
@@ -132,7 +134,7 @@ class ParsesStringsTest extends TestCase
     }
 
     /**
-     * @dataProvider safeStringCases
+     * @dataProvider safeString__cases
      */
     public function test__parseSafeString(array $source, array $expectations)
     {
@@ -145,7 +147,7 @@ class ParsesStringsTest extends TestCase
         $this->assertParserStateHas($expectations['state'], $state);
     }
 
-    public function base64StringCases()
+    public function base64String__cases()
     {
         $miscCases = [
             [
@@ -316,7 +318,7 @@ class ParsesStringsTest extends TestCase
     }
 
     /**
-     * @dataProvider base64StringCases
+     * @dataProvider base64String__cases
      */
     public function test__parseBase64String(array $source, array $expectations)
     {
@@ -329,7 +331,7 @@ class ParsesStringsTest extends TestCase
         $this->assertParserStateHas($expectations['state'], $state);
     }
 
-    public function base64Utf8StringCases()
+    public function base64Utf8String__cases()
     {
         $miscCases = [
             [
@@ -405,7 +407,7 @@ class ParsesStringsTest extends TestCase
                             [
                                 'sourceOffset' => 3,
                                 'sourceCharOffset' => 2,
-                                'message' => 'syntax error: the encoded string is not a valid UTF8'
+                                'message' => 'syntax error: the string is not a valid UTF8'
                             ]
                         ]
                     ]
@@ -506,7 +508,7 @@ class ParsesStringsTest extends TestCase
     }
 
     /**
-     * @dataProvider base64Utf8StringCases
+     * @dataProvider base64Utf8String__cases
      */
     public function test__parseBase64Utf8String(array $source, array $expectations)
     {
@@ -516,6 +518,188 @@ class ParsesStringsTest extends TestCase
         $result = $parser->parseBase64Utf8String($state, $string);
         $this->assertSame($expectations['result'] ?? true, $result);
         $this->assertSame($expectations['string'] ?? null, $string);
+        $this->assertParserStateHas($expectations['state'], $state);
+    }
+
+    public function base64Decode__cases()
+    {
+        $miscCases = [
+            [
+                // Empty string
+                [''],
+                [
+                    'result' => '',
+                    'string' => '',
+                    'state' => [
+                        'cursor' => [
+                            'offset' => 0,
+                        ],
+                        'records' => [],
+                        'errors' => []
+                    ]
+                ],
+                ''
+            ],
+
+            [
+            //    0000000001111111111222222222233333333334444444 4
+            //    0234567890123456789012345678901234567890123456 7
+                ["ł Y249Sm9obiBTbWl0aCxkYz1leGFtcGxlLGRjPW9yZw==\n", 47],
+                [
+                    'result' => 'cn=John Smith,dc=example,dc=org',
+                    'state' => [
+                        'cursor' => [
+                            'offset' => 47,
+                        ],
+                        'records' => [],
+                        'errors' => []
+                    ]
+                ],
+                'Y249Sm9obiBTbWl0aCxkYz1leGFtcGxlLGRjPW9yZw==', 3
+            ],
+
+            [
+            //    00000000011111 11
+            //    02345678901234 56
+                ["ł dMWCdXN6Y3o=\n", 15],
+                [
+                    'result' => 'tłuszcz',
+                    'state' => [
+                        'cursor' => [
+                            'offset' => 15,
+                        ],
+                        'records' => [],
+                        'errors' => []
+                    ]
+                ],
+                'dMWCdXN6Y3o=', 3
+            ],
+            [
+            //    0000000001 11
+            //    0234567890 12
+                ["ł Zm9vgA==\n", 11],
+                [
+                    'result' => "foo\x80",
+                    'state' => [
+                        'cursor' => [
+                            'offset' => 11,
+                        ],
+                        'records' => [],
+                        'errors' => []
+                    ]
+                ],
+                'Zm9vgA==', 3
+            ],
+            [
+            //    000000000 11
+            //    023456789 01
+                ["ł Zm9vgA=\n", 10],
+                [
+                    'result' => null,
+                    'state' => [
+                        'cursor' => [
+                            'offset' => 3,
+                        ],
+                        'records' => [],
+                        'errors' => [
+                            [
+                                'sourceOffset' => 3,
+                                'message' => 'syntax error: invalid BASE64 string',
+                            ],
+                        ]
+                    ]
+                ],
+                'Zm9vgA=', 3
+            ],
+        ];
+        return $miscCases;
+    }
+
+    /**
+     * @dataProvider base64Decode__cases
+     */
+    public function test__parseBase64Decode(array $source, array $expectations, string $string, ...$tail)
+    {
+        $state = $this->getParserStateFromSource(...$source);
+        $parser = $this->getTestObject();
+
+        $result = $parser->parseBase64Decode($state, $string, ...$tail);
+        $this->assertSame($expectations['result'], $result);
+        $this->assertParserStateHas($expectations['state'], $state);
+    }
+
+    public function parseUtf8Check__cases()
+    {
+        $miscCases = [
+            [
+                // Empty string
+                [''],
+                [
+                    'result' => true,
+                    'state' => [
+                        'cursor' => [
+                            'offset' => 0,
+                        ],
+                        'records' => [],
+                        'errors' => []
+                    ]
+                ],
+                ''
+            ],
+
+            [
+            //    0000000001111
+            //    0234567890123
+                ["ł zażółć\ntę", 13],
+                [
+                    'result' => true,
+                    'string' => 'cn=John Smith,dc=example,dc=org',
+                    'state' => [
+                        'cursor' => [
+                            'offset' => 13,
+                        ],
+                        'records' => [],
+                        'errors' => []
+                    ]
+                ],
+                "zażółć\ntę", 3
+            ],
+
+            [
+            //    000   0   0000011111 11
+            //    023   4   5678901234 56
+                ["ł t\xC5\x82uszcz", 6],
+                [
+                    'result' => false,
+                    'state' => [
+                        'cursor' => [
+                            'offset' => 3,
+                        ],
+                        'records' => [],
+                        'errors' => [
+                            [
+                                'message' => 'syntax error: the string is not a valid UTF8',
+                                'sourceOffset' => 3,
+                            ]
+                        ]
+                    ]
+                ],
+                "sd\xC5", 3
+            ],
+        ];
+        return $miscCases;
+    }
+
+    /**
+     * @dataProvider parseUtf8Check__cases
+     */
+    public function test__parseUtf8Check(array $source, array $expectations, string $string, ...$tail)
+    {
+        $state = $this->getParserStateFromSource(...$source);
+        $parser = $this->getTestObject();
+
+        $result = $parser->parseUtf8Check($state, $string, ...$tail);
+        $this->assertSame($expectations['result'], $result);
         $this->assertParserStateHas($expectations['state'], $state);
     }
 }

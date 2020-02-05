@@ -108,15 +108,19 @@ class ExposesLocationInterfaceTest extends TestCase
     {
         $location = $this->getMockBuilder(LocationInterface::class)
                          ->getMockForAbstractClass();
+        $defaultClone = $this->getMockBuilder(LocationInterface::class)
+                      ->getMockForAbstractClass();
         $clone = $this->getMockBuilder(LocationInterface::class)
                       ->getMockForAbstractClass();
-        $location->expects($this->once())
+        $location->expects($this->exactly(3))
                  ->method('getClonedLocation')
-                 ->with()
-                 ->willReturn($clone);
+                 ->withConsecutive([],[null], [321])
+                 ->will($this->onConsecutiveCalls($defaultClone, $defaultClone, $clone));
         $obj = $this->getTestObject($location);
 
-        $this->assertSame($clone, $obj->getClonedLocation());
+        $this->assertSame($defaultClone, $obj->getClonedLocation());
+        $this->assertSame($defaultClone, $obj->getClonedLocation(null));
+        $this->assertSame($clone, $obj->getClonedLocation(321));
     }
 }
 

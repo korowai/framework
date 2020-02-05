@@ -29,7 +29,6 @@ class ParsesVersionSpecTest extends TestCase
     {
         return new class {
             use ParsesVersionSpec;
-            use SkipsWhitespaces;
             use MatchesPatterns;
         };
     }

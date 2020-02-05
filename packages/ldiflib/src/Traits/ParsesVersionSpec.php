@@ -27,26 +27,6 @@ use Korowai\Lib\Rfc\Rfc2849;
 trait ParsesVersionSpec
 {
     /**
-     * Skip zero or more whitespaces (FILL in RFC2849).
-     *
-     * @param CursorInterface $cursor
-     *
-     * @return array
-     * @throws PregException When an error occurs in ``preg_match()``.
-     */
-    abstract public function skipFill(CursorInterface $cursor) : array;
-    /**
-     * Matches the string (starting at $location's position) against $pattern.
-     *
-     * @param  string $pattern
-     * @param  LocationInterface $location
-     * @param  int $flags Flags passed to ``preg_match()``.
-     *
-     * @return array Array of matches as returned by ``preg_match()``
-     * @throws PregException When error occurs in ``preg_match()``
-     */
-    abstract public function matchAt(string $pattern, LocationInterface $location, int $flags = 0) : array;
-    /**
      * Matches the string starting at $cursor's position against $pattern and
      * skips the whole match (moves the cursor after the matched part of
      * string).

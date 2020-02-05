@@ -18,7 +18,6 @@ use Korowai\Lib\Ldif\LocationInterface;
 use Korowai\Lib\Ldif\ParserStateInterface;
 use Korowai\Lib\Ldif\Snippet;
 use Korowai\Lib\Ldif\ParserError;
-use Korowai\Lib\Ldif\ParserErrorInterface;
 use Korowai\Lib\Ldif\Records\VersionSpec;
 use Korowai\Lib\Rfc\Rfc2849;
 

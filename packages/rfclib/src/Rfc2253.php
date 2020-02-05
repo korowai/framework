@@ -15,8 +15,7 @@ namespace Korowai\Lib\Rfc;
 
 /**
  * PCRE expressions used to parse LDIF distinguished names (DNs) as defined in
- * [RFC2253](https://tools.ietf.org/html/rfc2253). The user has to add the
- * enclosing delimiters ("/").
+ * [RFC2253](https://tools.ietf.org/html/rfc2253).
  *
  * **Example**:
  *

@@ -16,6 +16,25 @@ namespace Korowai\Lib\Rfc;
 /**
  * PCRE expressions used when parsing LDIF file as defined in
  * [RFC2849](https://tools.ietf.org/html/rfc2849).
+ *
+ * **Example**:
+ *
+ * ```
+ * $result = preg_match('/\G'.Rfc2253::ATTRVAL_SPEC.'/', $subject, $matches, PREG_UNMATCHED_AS_NULL)
+ * if ($result !== 0) {
+ *      $attribute = $matches['attr_desc']; // attribute type with options
+ *
+ *      if (($url = $matches['value_url'] ?? null) !== null) {
+ *          // $value = ... read from $url
+ *      } elseif (($value = $matches['value_b64'] ?? null) !== null) {
+ *          $value = base64_decode($value);
+ *      } else {
+ *          $value = $matches['value_safe'];
+ *      }
+ *
+ *      // ...
+ * }
+ * ```
  */
 class Rfc2849
 {

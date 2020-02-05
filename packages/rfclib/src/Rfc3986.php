@@ -15,8 +15,7 @@ namespace Korowai\Lib\Rfc;
 
 /**
  * PCRE expressions used to parse URIs as defined in
- * [RFC3986](https://tools.ietf.org/html/rfc3986). The user has to add the
- * enclosing delimiters ("/").
+ * [RFC3986](https://tools.ietf.org/html/rfc3986).
  *
  * **Example**:
  *

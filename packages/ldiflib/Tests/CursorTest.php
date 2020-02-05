@@ -36,6 +36,18 @@ class CursorTest extends TestCase
         $this->assertExtendsClass(Location::class, Cursor::class);
     }
 
+    public function test__getClonedLocation()
+    {
+        $input = $this->createMock(Input::class);
+
+        $cursor = new Cursor($input, 123);
+        $cloned = $cursor->getClonedLocation();
+        $this->assertInstanceOf(Location::class, $cloned);
+        $this->assertNotInstanceOf(Cursor::class, $cloned);
+        $this->assertSame($input, $cloned->getInput());
+        $this->assertSame(123, $cloned->getOffset());
+    }
+
     public function test__moveBy()
     {
         $input = $this->createMock(Input::class);

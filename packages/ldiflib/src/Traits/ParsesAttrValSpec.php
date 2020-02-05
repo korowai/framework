@@ -102,7 +102,8 @@ trait ParsesAttrValSpec
         $attrValSpec[] = $value;
 
         if (!$this->matchAhead('/\G'.Rfc2849::SEP.'/')) {
-            $error = new ParseError(clone $cursor, "syntax error: expected line separator LF or CRLF");
+            $errpos = $cursor->getClonedLocation();
+            $error = new ParseError($errpos, "syntax error: expected line separator LF or CRLF");
             $state->appendError($error);
             return false;
         }
@@ -123,7 +124,8 @@ trait ParsesAttrValSpec
 
         $matches = $this->matchAhead('/\G'.Rfc2849::ATTRIBUTE_DESCRIPTION.'/', $cursor);
         if (count($matches) === 0) {
-            $error = new ParserError(clone $cursor, 'syntax error: expected AttributeDescription (RFC2849)');
+            $errpos = $cursor->getClonedLocation();
+            $error = new ParserError($errpos, 'syntax error: expected AttributeDescription (RFC2849)');
             $state->appendError($error);
             return false;
         }
@@ -145,7 +147,7 @@ trait ParsesAttrValSpec
 
         $matches = $this->matchAhead('/\G:/', $cursor);
         if (count($matches) === 0) {
-            $error = new ParserError(clone $cursor, 'syntax error: expected ":"');
+            $error = new ParserError($cursor->getClonedLocation(), 'syntax error: expected ":"');
             $state->appendError($error);
             return false;
         }

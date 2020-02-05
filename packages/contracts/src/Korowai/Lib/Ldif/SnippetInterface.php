@@ -19,42 +19,42 @@ namespace Korowai\Lib\Ldif;
 interface SnippetInterface extends LocationInterface
 {
     /**
-     * Returns the span length in bytes.
+     * Returns the snippet length in bytes.
      *
      * @return int
      */
     public function getLength() : int;
 
     /**
-     * Returns the end offset of the span in bytes.
+     * Returns the end offset of the snippet in bytes.
      *
      * @return int
      */
     public function getEndOffset() : int;
 
     /**
-     * Returns the length in bytes of the span mapped to source string.
+     * Returns the length in bytes of the snippet mapped to source string.
      *
      * @return int
      */
     public function getSourceLength() : int;
 
     /**
-     * Returns the end offset in bytes of the span mapped to source string.
+     * Returns the end offset in bytes of the snippet mapped to source string.
      *
      * @return int
      */
     public function getSourceEndOffset() : int;
 
     /**
-     * Returns the length in characters of the span mapped to source string.
+     * Returns the length in characters of the snippet mapped to source string.
      *
      * @return int
      */
     public function getSourceCharLength(string $encoding = null) : int;
 
     /**
-     * Returns the end offset in characters of the span mapped to source string.
+     * Returns the end offset in characters of the snippet mapped to source string.
      *
      * @return int
      */

@@ -45,6 +45,14 @@ interface LocationInterface extends SourceLocationInterface
      * @return InputInterface|null
      */
     public function getInput() : InputInterface;
+
+    /**
+     * Returns new LocationInterface instance made out of this one. The
+     * returned object points to the same location of the same input.
+     *
+     * @return LocationInterface
+     */
+    public function getClonedLocation() : LocationInterface;
 }
 
 // vim: syntax=php sw=4 ts=4 et:

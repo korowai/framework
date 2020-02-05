@@ -20,6 +20,7 @@ use Korowai\Lib\Ldif\Snippet;
 use Korowai\Lib\Ldif\ParserError;
 use Korowai\Lib\Ldif\ParserErrorInterface;
 use Korowai\Lib\Ldif\Records\VersionSpec;
+use Korowai\Lib\Rfc\Rfc2849;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -71,9 +72,10 @@ trait ParsesVersionSpec
     {
         $cursor = $state->getCursor();
 
-        $begin = clone $cursor; // store beginning
+        $begin = clone $cursor;
 
-        if (count($matches = $this->matchAhead('/\Gversion:/', $cursor)) === 0) {
+        $matches = $this->matchAhead('/\G'.Rfc2849::VERSION_SPEC_X.'/', $cursor, PREG_UNMATCHED_AS_NULL);
+        if (count($matches) === 0) {
             if (!$tryOnly) {
                 $error = new ParserError(clone $cursor, 'syntax error: expected "version:"');
                 $state->appendError($error);
@@ -81,9 +83,7 @@ trait ParsesVersionSpec
             return false;
         }
 
-        $this->skipFill($cursor);  // FILL
-
-        if (!$this->parseVersionNumber($state, $version)) {
+        if (($version = $this->parseMatchedVersionSpec($state, $matches)) === null) {
             return false;
         }
 
@@ -95,32 +95,45 @@ trait ParsesVersionSpec
     }
 
     /**
-     * Parses version number of the version-spec.
+     * Called when the version-spec is matched and its components are captured
+     * by ``parseVersionSpec()``. Returns the captured version number on
+     * success or null on parse error.
      *
      * @param  ParserStateInterface $state
-     * @param  VersionSpec $record
-     *
-     * @return bool
+     * @param  array $matches
+     * @return int|null
      */
-    public function parseVersionNumber(ParserStateInterface $state, int &$version = null) : bool
+    protected function parseMatchedVersionSpec(ParserStateInterface $state, array $matches) : ?int
+    {
+        if (!array_key_exists('version_number', $matches)) {
+            $error = new ParserError(clone ($state->getCursor()), 'syntax error: expected number');
+            $state->appendError($error);
+            return null;
+        }
+
+        return $this->parseMatchedVersionNumber($state, $matches);
+    }
+
+    /**
+     * Called when the version-number is matched and its components are captured
+     * by ``parseVersionSpec()``.
+     *
+     * @param  ParserStateInterface $state
+     * @param  array $matches
+     * @return int|null
+     */
+    protected function parseMatchedVersionNumber(ParserStateInterface $state, array $matches) : ?int
     {
         $cursor = $state->getCursor();
-        if (count($matches = $this->matchAt('/\G\d+/', $cursor)) === 0) {
-            $error = new ParserError(clone $cursor, 'syntax error: expected number');
-            $state->appendError($error);
-            return false;
-        }
 
-        $val = intval($matches[0]);
-        if ($val != 1) {
-            $error = new ParserError(clone $cursor, "syntax error: unsupported version number: $val");
+        $version = intval($matches['version_number'][0]);
+        if ($version != 1) {
+            $cursor->moveTo($matches['version_number'][1]);
+            $error = new ParserError(clone $cursor, "syntax error: unsupported version number: $version");
             $state->appendError($error);
-            return false;
+            return null;
         }
-        $version = $val;
-
-        $cursor->moveBy(strlen($matches[0][0]));
-        return true;
+        return $version;
     }
 }
 

@@ -103,6 +103,21 @@ class ExposesLocationInterfaceTest extends TestCase
 
         $this->assertSame($input, $obj->getInput());
     }
+
+    public function test__getClonedLocation()
+    {
+        $location = $this->getMockBuilder(LocationInterface::class)
+                         ->getMockForAbstractClass();
+        $clone = $this->getMockBuilder(LocationInterface::class)
+                      ->getMockForAbstractClass();
+        $location->expects($this->once())
+                 ->method('getClonedLocation')
+                 ->with()
+                 ->willReturn($clone);
+        $obj = $this->getTestObject($location);
+
+        $this->assertSame($clone, $obj->getClonedLocation());
+    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

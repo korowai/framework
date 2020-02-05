@@ -101,7 +101,7 @@ trait MatchesPatterns
     {
         $matches = $this->matchAhead($pattern, $cursor, $flags);
         if (count($matches) === 0) {
-            throw new ParserError(clone $cursor, $msg);
+            throw new ParserError($cursor->getClonedLocation(), $msg);
         }
         return $matches;
     }

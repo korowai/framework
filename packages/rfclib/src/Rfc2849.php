@@ -115,14 +115,25 @@ class Rfc2849
     /**
      * [RFC2849](https://tools.ietf.org/html/rfc2849):
      * ``version-number = 1*DIGIT``
+     *
+     * Capture groups:
+     *
+     *  - *version_number*: always set.
      */
-    public const VERSION_NUMBER = '(?:'.self::DIGIT.'+)';
+    public const VERSION_NUMBER = '(?<version_number>'.self::DIGIT.'+)';
 
     /**
      * [RFC2849](https://tools.ietf.org/html/rfc2849):
      * ``version-spec = "version:" FILL version-number``
      */
     public const VERSION_SPEC = '(?:version:'.self::FILL.self::VERSION_NUMBER.')';
+
+    /**
+     * Like the VERSION_SPEC, but accepts missing version number.
+     *
+     * ``version-spec-x = "version:" FILL 0*1(version-number)``
+     */
+    public const VERSION_SPEC_X = '(?:version:'.self::FILL.self::VERSION_NUMBER.'?)';
 
     /**
      * [RFC2849](https://tools.ietf.org/html/rfc2849):

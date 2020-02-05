@@ -24,6 +24,11 @@ trait ExposesLocationInterface
 {
     use ExposesSourceLocationInterface;
 
+    /**
+     * Returns the encapsulated instance of LocationInterface.
+     *
+     * @return LocationInterface|null
+     */
     abstract public function getLocation() : ?LocationInterface;
 
     /**
@@ -37,7 +42,9 @@ trait ExposesLocationInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Returns the whole input string.
+     *
+     * @return string
      */
     public function getString() : string
     {
@@ -45,7 +52,9 @@ trait ExposesLocationInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Returns zero-based byte offset in the input string of the location.
+     *
+     * @return int
      */
     public function getOffset() : int
     {
@@ -53,7 +62,9 @@ trait ExposesLocationInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Returns zero-based (multibyte) character offset in the input string of the location.
+     *
+     * @return int
      */
     public function getCharOffset(string $encoding = null) : int
     {
@@ -61,11 +72,24 @@ trait ExposesLocationInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Returns the InputInterface containing the character at location.
+     *
+     * @return InputInterface|null
      */
     public function getInput() : InputInterface
     {
         return $this->getLocation()->getInput();
+    }
+
+    /**
+     * Returns new LocationInterface instance made out of this one. The
+     * returned object points to the same location of the same input.
+     *
+     * @return LocationInterface
+     */
+    public function getClonedLocation() : LocationInterface
+    {
+        return $this->getLocation()->getClonedLocation();
     }
 }
 

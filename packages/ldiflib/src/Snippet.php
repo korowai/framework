@@ -54,7 +54,7 @@ class Snippet implements SnippetInterface
     }
 
     /**
-     * Sets the length of span.
+     * Sets the length of snippet.
      *
      * @param  int $length
      * @return Snippet $this

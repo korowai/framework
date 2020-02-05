@@ -51,8 +51,9 @@ class Rfc2849Test extends TestCase
     public function test__simpleProductions()
     {
         $this->assertSame('(?:'.Rfc2849::SPACE.'*)',                                    Rfc2849::FILL);
-        $this->assertSame('(?:'.Rfc2849::DIGIT.'+)',                                    Rfc2849::VERSION_NUMBER);
+        $this->assertSame('(?<version_number>'.Rfc2849::DIGIT.'+)',                     Rfc2849::VERSION_NUMBER);
         $this->assertSame('(?:version:'.Rfc2849::FILL.Rfc2849::VERSION_NUMBER.')',      Rfc2849::VERSION_SPEC);
+        $this->assertSame('(?:version:'.Rfc2849::FILL.Rfc2849::VERSION_NUMBER.'?)',     Rfc2849::VERSION_SPEC_X);
         $this->assertSame('(?:'.Rfc2849::BASE64_CHAR.'*)',                              Rfc2849::BASE64_STRING);
         $this->assertSame(Rfc2849::BASE64_STRING,                                       Rfc2849::BASE64_UTF8_STRING);
         $this->assertSame('(?:(?:'.Rfc2849::SAFE_INIT_CHAR.Rfc2849::SAFE_CHAR.'*)?)',   Rfc2849::SAFE_STRING);
@@ -76,8 +77,10 @@ class Rfc2849Test extends TestCase
 
     public static function VERSION_NUMBER__cases()
     {
-        $strings = ['1', '0123'];
-        return static::arraizeStrings($strings);
+        return [
+            ['1',       ['version_number' => '1']],
+            ['0123',    ['version_number' => '0123']]
+        ];
     }
 
     public static function non__VERSION_NUMBER__cases()
@@ -108,8 +111,17 @@ class Rfc2849Test extends TestCase
 
     public static function VERSION_SPEC__cases()
     {
-        $strings = ['version:1', 'version: 2', 'version:   0123'];
-        return static::arraizeStrings($strings);
+        $cases = [
+            ['version:   0123', ['version_number' => '0123']],
+        ];
+        $inheritedCases = [];
+        foreach (static::VERSION_NUMBER__cases() as $version) {
+            $inheritedCases[] = [
+                'version: '.$version[0],
+                ($version[1] ?? [])
+            ];
+        }
+        return array_merge($inheritedCases, $cases);
     }
 
     public static function non__VERSION_SPEC__cases()
@@ -132,6 +144,44 @@ class Rfc2849Test extends TestCase
     public function test__VERSION_SPEC__notMatches(string $string)
     {
         $this->assertRfcNotMatches($string, 'VERSION_SPEC');
+    }
+
+    //
+    // VERSION_SPEC_X
+    //
+
+    public static function VERSION_SPEC_X__cases()
+    {
+        $cases = [
+            [ 'version:  ', [ 'version_number' => false ] ],
+        ];
+        $inheritedCases = [];
+        foreach (static::VERSION_SPEC__cases() as $case) {
+            $inheritedCases[] = $case;
+        }
+        return array_merge($inheritedCases, $cases);
+    }
+
+    public static function non__VERSION_SPEC_X__cases()
+    {
+        $strings = ['', 'a', 'dn:123', 'a', '1F'];
+        return static::arraizeStrings($strings);
+    }
+
+    /**
+     * @dataProvider VERSION_SPEC_X__cases
+     */
+    public function test__VERSION_SPEC_X__matches(string $string, array $pieces = [])
+    {
+        $this->assertRfcMatches($string, 'VERSION_SPEC_X', $pieces);
+    }
+
+    /**
+     * @dataProvider non__VERSION_SPEC_X__cases
+     */
+    public function test__VERSION_SPEC_X__notMatches(string $string)
+    {
+        $this->assertRfcNotMatches($string, 'VERSION_SPEC_X');
     }
 
     //

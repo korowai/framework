@@ -33,21 +33,86 @@ class Rfc2253
     public const SPECIALCHARS = ',=+<>#;';
     public const KEYCHARCHARS = self::DIGITCHARS.self::ALPHACHARS.'-';
 
+    //
     // character classes
+    //
+
+    /**
+     * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):
+     * ``ALPHA =  <any ASCII alphabetic character>``;
+     * (decimal 65-90 and 97-122)
+     */
     public const ALPHA = '['.self::ALPHACHARS.']';
+
+    /**
+     * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):
+     * ``digit = <any ASCII decimal digit>``;
+     * (decimal 48-57)
+     */
     public const DIGIT = '['.self::DIGITCHARS.']';
+
+    /**
+     * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):
+     * ``hexchar = DIGIT / "A" / "B" / "C" / "D" / "E" / "F" / "a" / "b" / "c" / "d" / "e" / "f"``
+     */
     public const HEXCHAR = '['.self::HEXDIGCHARS.']';
+
+    /**
+     * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):
+     * ``special = "," / "=" / "+" / "<" /  ">" / "#" / ";"``
+     */
     public const SPECIAL = '['.self::SPECIALCHARS.']';
+
+    /**
+     * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):
+     * ``keychar = ALPHA / DIGIT / "-"``
+     */
     public const KEYCHAR = '['.self::KEYCHARCHARS.']';
+
+    /**
+     * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):
+     * ``stringchar = <any character except one of special, "\" or QUOTATION >``
+     */
     public const STRINGCHAR = '[^'.self::SPECIALCHARS.'\\\\"]';
+
+    /**
+     * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):
+     * ``quotechar = <any character except "\" or QUOTATION >``
+     */
     public const QUOTECHAR = '[^\\\\"]';
 
-    // other productions
+    //
+    // productions
+    //
+
+    /**
+     * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):
+     * ``hexpair = hexchar hexchar``
+     */
     public const HEXPAIR = '(?:'.self::HEXCHAR.self::HEXCHAR.')';
+
+    /**
+     * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):
+     * ``hexstring  = 1*hexpair``
+     */
     public const HEXSTRING = '(?:'.self::HEXPAIR.'+)';
+
+    /**
+     * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):
+     * ``pair = "\" ( special / "\" / QUOTATION / hexpair )``
+     */
     public const PAIR = '(?:\\\\(?:['.self::SPECIALCHARS.'\\\\"]|'.self::HEXPAIR.'))';
+
+    /**
+     * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):
+     * ``oid = 1*DIGIT *("." 1*DIGIT)``
+     */
     public const OID = '(?:'.self::DIGIT.'+(?:\.'.self::DIGIT.'+)*)';
 
+    /**
+     * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):
+     * ``string = *( stringchar / pair ) / "#" hexstring / QUOTATION *( quotechar / pair ) QUOTATION``
+     */
     public const STRING =
         '(?:'.
             '(?:'.self::STRINGCHAR.'|'.self::PAIR.')*'.
@@ -58,7 +123,8 @@ class Rfc2253
         ')';
 
     /**
-     * Same as STRING but with named capture groups.
+     * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):
+     * ``string = *( stringchar / pair ) / "#" hexstring / QUOTATION *( quotechar / pair ) QUOTATION``
      */
     public const STRING_CAPTURE =
         '(?<string>'.
@@ -70,12 +136,14 @@ class Rfc2253
         ')';
 
     /**
-     * Matches attributeValue in the "attributeType=attributeValue" component.
+     * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):
+     * ``attributeValue = string``
      */
     public const ATTRIBUTE_VALUE = self::STRING;
 
     /**
-     * Matches attributeType, like "ou" or "foo-bar", in the "attributeType=attributeValue".
+     * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):
+     * ``attributeType = (ALPHA 1*keychar) / oid``
      */
     public const ATTRIBUTE_TYPE =
         '(?:'.
@@ -85,23 +153,31 @@ class Rfc2253
         ')';
 
     /**
-     * Matches single "attributeType=attributeValue" part of the NAME_COMPONENT.
+     * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):
+     * ``attributeTypeAndValue = attributeType "=" attributeValue``
      */
     public const ATTRIBUTE_TYPE_AND_VALUE = '(?:'.self::ATTRIBUTE_TYPE.'='.self::ATTRIBUTE_VALUE.')';
 
     /**
-     * Matches single component of a [distinguished name](https://tools.ietf.org/html/rfc2253#section-3)
-     * such as "dc=foo" or "cn=John Smith+ou=foo".
+     * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):
+     * ``name-component = attributeTypeAndValue *("+" attributeTypeAndValue)``
      */
     public const NAME_COMPONENT = '(?:'.self::ATTRIBUTE_TYPE_AND_VALUE.'(?:\+'.self::ATTRIBUTE_TYPE_AND_VALUE.')*)';
 
     /**
-     * Matches [name](https://tools.ietf.org/html/rfc2253#section-3) (a non-empty DN).
+     * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):
+     * ``name               = name-component *("," name-component)``
      */
     public const NAME = '(?:'.self::NAME_COMPONENT.'(?:,'.self::NAME_COMPONENT.')*)';
 
     /**
-     * Matches [distinguishedName](https://tools.ietf.org/html/rfc2253#section-3) (possibly empty).
+     * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):
+     * ``distinguishedName = [name]``;
+     * may be empty string
+     *
+     * Capture groups:
+     *
+     *  - *dn*: always set, contains the whole matched string (possibly empty).
      */
     public const DISTINGUISHED_NAME = '(?<dn>'.self::NAME.'?)';
 }

@@ -16,6 +16,10 @@ namespace Korowai\Lib\Ldif\Traits;
 use Korowai\Lib\Ldif\SourceLocationInterface;
 
 /**
+ * Decorator design pattern with
+ * [SourceLocationInterface](\.\./SourceLocationInterface.html)
+ * as a decorated (wrapped) type.
+ *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
 trait DecoratesSourceLocationInterface
@@ -41,7 +45,7 @@ trait DecoratesSourceLocationInterface
     }
 
     /**
-     * Returns the cursor pointing at error location.
+     * Returns the SourceLocationInterface instance wrapped by this object.
      *
      * @return SourceLocationInterface|null
      */

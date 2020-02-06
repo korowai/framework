@@ -1,6 +1,6 @@
 <?php
 /**
- * @file Tests/Traits/ParsesDnSpecTest.php
+ * @file tests/Traits/ParsesDnSpecTest.php
  *
  * This file is part of the Korowai package
  *

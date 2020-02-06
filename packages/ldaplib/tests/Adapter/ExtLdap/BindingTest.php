@@ -1,6 +1,6 @@
 <?php
 /**
- * @file Tests/Adapter/ExtLdap/BindingTest.php
+ * @file tests/Adapter/ExtLdap/BindingTest.php
  *
  * This file is part of the Korowai package
  *

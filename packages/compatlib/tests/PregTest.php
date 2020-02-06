@@ -1,6 +1,6 @@
 <?php
 /**
- * @file Tests/PregTest.php
+ * @file tests/PregTest.php
  *
  * This file is part of the Korowai package
  *

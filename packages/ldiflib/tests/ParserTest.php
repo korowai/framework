@@ -1,6 +1,6 @@
 <?php
 /**
- * @file Tests/ParserTest.php
+ * @file tests/ParserTest.php
  *
  * This file is part of the Korowai package
  *

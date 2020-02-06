@@ -1,6 +1,6 @@
 <?php
 /**
- * @file Tests/Exception/LdapExceptionTest.php
+ * @file tests/Exception/LdapExceptionTest.php
  *
  * This file is part of the Korowai package
  *

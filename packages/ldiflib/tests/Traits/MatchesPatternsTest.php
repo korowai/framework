@@ -1,6 +1,6 @@
 <?php
 /**
- * @file Tests/Traits/MatchesPatternsTest.php
+ * @file tests/Traits/MatchesPatternsTest.php
  *
  * This file is part of the Korowai package
  *

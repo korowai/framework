@@ -1,6 +1,6 @@
 <?php
 /**
- * @file Tests/Traits/ParsesVersionSpecTest.php
+ * @file tests/Traits/ParsesVersionSpecTest.php
  *
  * This file is part of the Korowai package
  *

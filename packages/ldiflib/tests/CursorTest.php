@@ -1,6 +1,6 @@
 <?php
 /**
- * @file Tests/CursorTest.php
+ * @file tests/CursorTest.php
  *
  * This file is part of the Korowai package
  *

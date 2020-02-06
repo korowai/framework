@@ -1,6 +1,6 @@
 <?php
 /**
- * @file Tests/Adapter/ExtLdap/CompareQueryTest.php
+ * @file tests/Adapter/ExtLdap/CompareQueryTest.php
  *
  * This file is part of the Korowai package
  *

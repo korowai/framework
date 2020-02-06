@@ -1,6 +1,6 @@
 <?php
 /**
- * @file Tests/Traits/DecoratesSourceLocationInterfaceTest.php
+ * @file tests/Traits/DecoratesSourceLocationInterfaceTest.php
  *
  * This file is part of the Korowai package
  *

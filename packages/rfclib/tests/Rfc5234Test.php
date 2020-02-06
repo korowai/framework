@@ -1,6 +1,6 @@
 <?php
 /**
- * @file Tests/Rfc5234Test.php
+ * @file tests/Rfc5234Test.php
  *
  * This file is part of the Korowai package
  *

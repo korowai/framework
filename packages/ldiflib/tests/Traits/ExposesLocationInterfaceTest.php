@@ -1,6 +1,6 @@
 <?php
 /**
- * @file Tests/Traits/ExposesLocationInterfaceTest.php
+ * @file tests/Traits/ExposesLocationInterfaceTest.php
  *
  * This file is part of the Korowai package
  *

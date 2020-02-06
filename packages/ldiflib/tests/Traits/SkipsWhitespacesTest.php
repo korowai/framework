@@ -1,6 +1,6 @@
 <?php
 /**
- * @file Tests/Traits/SkipsWhitespacesTest.php
+ * @file tests/Traits/SkipsWhitespacesTest.php
  *
  * This file is part of the Korowai package
  *

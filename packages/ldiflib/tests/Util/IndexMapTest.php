@@ -1,6 +1,6 @@
 <?php
 /**
- * @file Tests/Util/IndexMapTest.php
+ * @file tests/Util/IndexMapTest.php
  *
  * This file is part of the Korowai package
  *

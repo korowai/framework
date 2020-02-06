@@ -1,6 +1,6 @@
 <?php
 /**
- * @file Tests/Adapter/Mock/ResultAttributeIteratorTest.php
+ * @file tests/Adapter/Mock/ResultAttributeIteratorTest.php
  *
  * This file is part of the Korowai package
  *

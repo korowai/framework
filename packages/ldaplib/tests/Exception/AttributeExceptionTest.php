@@ -1,6 +1,6 @@
 <?php
 /**
- * @file Tests/Exception/AttributeExceptionTest.php
+ * @file tests/Exception/AttributeExceptionTest.php
  *
  * This file is part of the Korowai package
  *

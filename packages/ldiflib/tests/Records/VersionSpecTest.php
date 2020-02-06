@@ -1,6 +1,6 @@
 <?php
 /**
- * @file Tests/Records/VersionSpecTest.php
+ * @file tests/Records/VersionSpecTest.php
  *
  * This file is part of the Korowai package
  *

@@ -1,6 +1,6 @@
 <?php
 /**
- * @file Tests/Traits/DecoratesSnippetInterfaceTest.php
+ * @file tests/Traits/DecoratesSnippetInterfaceTest.php
  *
  * This file is part of the Korowai package
  *

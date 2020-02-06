@@ -1,6 +1,6 @@
 <?php
 /**
- * @file Tests/Adapter/AbstractCompareQueryTest.php
+ * @file tests/Adapter/AbstractCompareQueryTest.php
  *
  * This file is part of the Korowai package
  *

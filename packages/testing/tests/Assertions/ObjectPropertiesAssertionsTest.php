@@ -1,6 +1,6 @@
 <?php
 /**
- * @file Tests/Assertions/ObjectPropertiesAssertionsTest.php
+ * @file tests/Assertions/ObjectPropertiesAssertionsTest.php
  *
  * This file is part of the Korowai package
  *

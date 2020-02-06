@@ -1,6 +1,6 @@
 <?php
 /**
- * @file Tests/PreprocessorTest.php
+ * @file tests/PreprocessorTest.php
  *
  * This file is part of the Korowai package
  *

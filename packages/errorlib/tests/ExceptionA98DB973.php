@@ -1,6 +1,6 @@
 <?php
 /**
- * @file Tests/ExceptionA98DB973.php
+ * @file tests/ExceptionA98DB973.php
  *
  * This file is part of the Korowai package
  *

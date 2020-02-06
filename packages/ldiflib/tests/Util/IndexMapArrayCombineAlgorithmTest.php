@@ -1,6 +1,6 @@
 <?php
 /**
- * @file Tests/Util/IndexMapArrayCombineAlgorithmTest.php
+ * @file tests/Util/IndexMapArrayCombineAlgorithmTest.php
  *
  * This file is part of the Korowai package
  *

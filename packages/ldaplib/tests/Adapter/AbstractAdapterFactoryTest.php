@@ -1,6 +1,6 @@
 <?php
 /**
- * @file Tests/Adapter/AbstractAdapterFactoryTest.php
+ * @file tests/Adapter/AbstractAdapterFactoryTest.php
  *
  * This file is part of the Korowai package
  *

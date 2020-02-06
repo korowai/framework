@@ -1,6 +1,6 @@
 <?php
 /**
- * @file Tests/ResourceContextManagerTest.php
+ * @file tests/ResourceContextManagerTest.php
  *
  * This file is part of the Korowai package
  *

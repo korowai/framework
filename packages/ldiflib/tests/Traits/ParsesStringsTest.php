@@ -1,6 +1,6 @@
 <?php
 /**
- * @file Tests/Traits/ParsesStringsTest.php
+ * @file tests/Traits/ParsesStringsTest.php
  *
  * This file is part of the Korowai package
  *

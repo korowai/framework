@@ -1,6 +1,6 @@
 <?php
 /**
- * @file Tests/ContextFactoryStackTest.php
+ * @file tests/ContextFactoryStackTest.php
  *
  * This file is part of the Korowai package
  *

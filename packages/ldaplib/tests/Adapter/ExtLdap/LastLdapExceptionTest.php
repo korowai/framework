@@ -1,6 +1,6 @@
 <?php
 /**
- * @file Tests/Adapter/ExtLdap/LastLdapExceptionTest.php
+ * @file tests/Adapter/ExtLdap/LastLdapExceptionTest.php
  *
  * This file is part of the Korowai package
  *

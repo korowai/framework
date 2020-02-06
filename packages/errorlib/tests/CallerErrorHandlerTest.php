@@ -1,6 +1,6 @@
 <?php
 /**
- * @file Tests/CallerErrorHandlerTest.php
+ * @file tests/CallerErrorHandlerTest.php
  *
  * This file is part of the Korowai package
  *

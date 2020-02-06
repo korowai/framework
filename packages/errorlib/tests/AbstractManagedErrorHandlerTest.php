@@ -1,6 +1,6 @@
 <?php
 /**
- * @file Tests/AbstractManagedErrorHandlerTest.php
+ * @file tests/AbstractManagedErrorHandlerTest.php
  *
  * This file is part of the Korowai package
  *

@@ -1,6 +1,6 @@
 <?php
 /**
- * @file Tests/EntryTest.php
+ * @file tests/EntryTest.php
  *
  * This file is part of the Korowai package
  *

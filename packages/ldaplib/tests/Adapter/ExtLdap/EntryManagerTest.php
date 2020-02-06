@@ -1,6 +1,6 @@
 <?php
 /**
- * @file Tests/Adapter/ExtLdap/EntryManagerTest.php
+ * @file tests/Adapter/ExtLdap/EntryManagerTest.php
  *
  * This file is part of the Korowai package
  *

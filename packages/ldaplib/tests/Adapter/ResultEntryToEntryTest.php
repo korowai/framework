@@ -1,6 +1,6 @@
 <?php
 /**
- * @file Tests/Adapter/ResultEntryToEntryTest.php
+ * @file tests/Adapter/ResultEntryToEntryTest.php
  *
  * This file is part of the Korowai package
  *

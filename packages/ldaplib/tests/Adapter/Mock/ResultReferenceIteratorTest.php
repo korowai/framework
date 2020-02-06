@@ -1,6 +1,6 @@
 <?php
 /**
- * @file Tests/Adapter/Mock/ResultReferenceIteratorTest.php
+ * @file tests/Adapter/Mock/ResultReferenceIteratorTest.php
  *
  * This file is part of the Korowai package
  *

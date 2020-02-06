@@ -1,6 +1,6 @@
 <?php
 /**
- * @file Tests/TestCaseTest.php
+ * @file tests/TestCaseTest.php
  *
  * This file is part of the Korowai package
  *

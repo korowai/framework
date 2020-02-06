@@ -1,6 +1,6 @@
 <?php
 /**
- * @file Tests/LocationTest.php
+ * @file tests/LocationTest.php
  *
  * This file is part of the Korowai package
  *

@@ -896,6 +896,36 @@ class Rfc2849xTest extends TestCase
     {
         $this->assertRfcNotMatches($string, 'ATTRVAL_SPEC_X');
     }
+
+
+    //
+    // Static methods
+    //
+
+    public function test__definedErrorCaptures()
+    {
+        $this->markTestIncomplete('The test has not been implemented yet!');
+    }
+
+    public function test__getNonNullMatches()
+    {
+        $this->markTestIncomplete('The test has not been implemented yet!');
+    }
+
+    public function test__getCapturedErrors()
+    {
+        $this->markTestIncomplete('The test has not been implemented yet!');
+    }
+
+    public function test__getCapturedErrorsDefinitions()
+    {
+        $this->markTestIncomplete('The test has not been implemented yet!');
+    }
+
+    public function test__getCapturedErrorsMessages()
+    {
+        $this->markTestIncomplete('The test has not been implemented yet!');
+    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

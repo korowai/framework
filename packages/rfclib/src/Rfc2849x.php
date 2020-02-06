@@ -32,15 +32,16 @@ class Rfc2849x extends Rfc2849
     public const SEP_X = '(?:'. self::SEP.'|$)';
 
     /**
-     * Negated [Rfc2849x::SEP_X](Rfc2849x.html).
+     * Matches any character except [Rfc2849x::SEP_X](Rfc2849x.html).
      */
     public const NOT_SEP_X = '(?:[^'.self::CR.self::LF.'$]|'.self::CR.'(?!'.self::LF.'))';
 
     /**
-     * VERSION_SPEC with enhanced error detection. The pattern matches any
-     * string starting with ``"version:"`` tag until (but excluding) next
-     * [Rfc::2849x::SEP_X](Rfc2849x.html). The pattern sets ``"version_error"``
-     * named capture group if there is an error after the ``"version:"`` tag.
+     * [Rfc2849::VERSION_SPEC](Rfc2849.html) with enhanced error detection. The
+     * pattern matches any string starting with ``"version:"`` tag until (but
+     * excluding) next [Rfc::2849x::SEP_X](Rfc2849x.html). The pattern sets
+     * ``"version_error"`` named capture group if there is an error after the
+     * ``"version:"`` tag.
      *
      * Capture groups:
      *

@@ -158,13 +158,6 @@ class Rfc2849
     public const VERSION_SPEC = '(?:version:'.self::FILL.self::VERSION_NUMBER.')';
 
     /**
-     * Like the VERSION_SPEC, but accepts missing version number.
-     *
-     * ``version-spec-x = "version:" FILL 0*1(version-number)``
-     */
-    public const VERSION_SPEC_X = '(?:version:'.self::FILL.self::VERSION_NUMBER.'?)';
-
-    /**
      * [RFC2849](https://tools.ietf.org/html/rfc2849):
      * ``BASE64-STRING = [*(BASE64-CHAR)]``
      */

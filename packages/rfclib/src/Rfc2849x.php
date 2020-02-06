@@ -21,7 +21,7 @@ namespace Korowai\Lib\Rfc;
  * **Example**:
  *
  * ```
- * $result = preg_match('/\G'.Rfc2253::ATTRVAL_SPEC.'/', $subject, $matches, PREG_UNMATCHED_AS_NULL)
+ * $result = preg_match('/\G'.Rfc2253::ATTRVAL_SPEC.'/D', $subject, $matches, PREG_UNMATCHED_AS_NULL)
  * ```
  */
 class Rfc2849x extends Rfc2849
@@ -75,7 +75,7 @@ class Rfc2849x extends Rfc2849
                     '(?:'.
                         '(?:'.self::DISTINGUISHED_NAME.'(?='.self::SEP_X.'))'.
                         '|'.
-                        '(?:'.self::SAFE_STRING.'(?<dn_safe_error>(?:)))'.
+                        '(?:'.self::SAFE_STRING.'(?<dn_safe_error>))'.
                     ')'.
                 ')'.
                 '|'.
@@ -84,11 +84,52 @@ class Rfc2849x extends Rfc2849
                     '(?:'.
                         '(?:'.self::BASE64_DISTINGUISHED_NAME.'(?='.self::SEP_X.'))'.
                         '|'.
-                        '(?:'.self::BASE64_UTF8_STRING.'(?<dn_b64_error>(?=)))'.
+                        '(?:'.self::BASE64_UTF8_STRING.'(?<dn_b64_error>))'.
                     ')'.
                 ')'.
             ')'.
         ')';
+
+    /**
+     * VALUE_SPEC with enhanced error detection. TODO:
+     */
+    public const VALUE_SPEC_X =
+        '(?:'.
+            ':'.
+            '(?:'.
+                '(?:(?![:<])'.
+                    self::FILL.
+                    '(?:'.
+                        '(?:(?<value_safe>'.self::SAFE_STRING.')(?='.self::SEP_X.'))'.
+                        '|'.
+                        '(?:'.self::SAFE_STRING.'(?<value_safe_error>))'.
+                    ')'.
+                ')'.
+                '|'.
+                '(?::'.
+                    self::FILL.
+                    '(?:'.
+                        '(?<value_b64>'.self::BASE64_STRING.'(?='.self::SEP_X.'))'.
+                        '|'.
+                        '(?:'.self::BASE64_STRING.'(?<value_b64_error>))'.
+                    ')'.
+                ')'.
+                '|'.
+                '(?:<'.
+                    self::FILL.
+                    '(?:'.
+                        '(?<value_url>'.self::URL.'(?='.self::SEP_X.'))'.
+                        '|'.
+                        '(?:(?:'.self::URL.')?(?<value_url_error>))'.
+                    ')'.
+                ')'.
+            ')'.
+        ')';
+
+    /**
+     * ATTRVAL_SPEC with enhanced error detection. TODO:
+     */
+    public const ATTRVAL_SPEC_X = '(?:'.self::ATTRIBUTE_DESCRIPTION.self::VALUE_SPEC_X.self::SEP_X.'?)';
 }
 
 // vim: syntax=php sw=4 ts=4 et:

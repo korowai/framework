@@ -295,7 +295,7 @@ class Rfc2849
         '(?:'.
             ':'.
             '(?:'.
-                '(?:'. self::FILL.'(?<value_safe>'.self::SAFE_STRING.')?)'.
+                '(?:'. self::FILL.'(?<value_safe>'.self::SAFE_STRING.'))'.
                 '|'.
                 '(?::'.self::FILL.'(?<value_b64>'.self::BASE64_STRING.'))'.
                 '|'.

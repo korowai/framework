@@ -15,7 +15,7 @@ namespace Korowai\Lib\Ldif\Traits;
 
 use Korowai\Lib\Ldif\CursorInterface;
 use Korowai\Lib\Ldif\LocationInterface;
-use Korowai\Lib\Ldif\ParserStateInterface;
+use Korowai\Lib\Ldif\ParserStateInterface as State;
 use Korowai\Lib\Ldif\ParserError;
 use Korowai\Lib\Rfc\Rfc2849;
 use Korowai\Lib\Rfc\Rfc3986;
@@ -63,31 +63,31 @@ trait ParsesAttrValSpec
     /**
      * Parses SAFE-STRING as defined in [RFC2849](https://tools.ietf.org/html/rfc2849).
      *
-     * @param  ParserStateInterface $state
+     * @param  State $state
      * @param  string $string
      *
      * @return bool true on success, false on parser error.
      */
-    abstract public function parseSafeString(ParserStateInterface $state, string &$string = null) : bool;
+    abstract public function parseSafeString(State $state, string &$string = null) : bool;
     /**
      * Parses BASE64-UTF8-STRING as defined in [RFC2849](https://tools.ietf.org/html/rfc2849).
      *
-     * @param  ParserStateInterface $state
+     * @param  State $state
      * @param  string $string The parsed and decoded string returned by the function.
      *
      * @return bool true on success, false on parser error.
      */
-    abstract public function parseBase64Utf8String(ParserStateInterface $state, string &$string = null) : bool;
+    abstract public function parseBase64Utf8String(State $state, string &$string = null) : bool;
 
     /**
      * Parses dn-spec as defined in [RFC2849](https://tools.ietf.org/html/rfc2849).
      *
-     * @param  ParserStateInterface $state
+     * @param  State $state
      * @param  array $attrValSpec An array with attribute description at offset 0 and value specification at offset 1.
      *
      * @return bool true on success, false on parser error.
      */
-    public function parseAttrValSpec(ParserStateInterface $state, array &$attrValSpec = null) : bool
+    public function parseAttrValSpec(State $state, array &$attrValSpec = null) : bool
     {
         if (!$this->parseAttributeDescription($state, $attributeDescription)) {
             return false;
@@ -113,12 +113,12 @@ trait ParsesAttrValSpec
     /**
      * Parses AttributeDescription as defined in [RFC2849](https://tools.ietf.org/html/rfc2849).
      *
-     * @param  ParserStateInterface $state
+     * @param  State $state
      * @param  string $attributeDescription The attribute description string to be returned.
      *
      * @return bool true on success, false on parser error.
      */
-    public function parseAttributeDescription(ParserStateInterface $state, string &$attributeDescription)
+    public function parseAttributeDescription(State $state, string &$attributeDescription)
     {
         $cursor = $state->getCursor();
 
@@ -136,12 +136,12 @@ trait ParsesAttrValSpec
     /**
      * Parses value-spec as defined in [RFC2849](https://tools.ietf.org/html/rfc2849).
      *
-     * @param  ParserStateInterface $state
+     * @param  State $state
      * @param  mixed $value The value to be returned.
      *
      * @return bool true on success, false on parser error.
      */
-    public function parseValueSpec(ParserStateInterface $state, &$value)
+    public function parseValueSpec(State $state, &$value)
     {
         $cursor = $state->getCursor();
 

@@ -43,7 +43,7 @@
       "files" : [
       ],
       "exclude-from-classmap": [
-        "src/**/Tests/",
+        "src/**/tests/",
         "src/**/Testing/",
         "src/**/Behat/"
       ]

@@ -14,13 +14,13 @@
 
     <testsuites>
         <testsuite name="Korowai Packages Test Suite">
-            <directory suffix="Test.php">./packages/*/Tests/</directory>
-            <exclude>packages/rfclib/Tests/Rfc2253Test.php</exclude>
-            <exclude>packages/rfclib/Tests/Rfc2849Test.php</exclude>
-            <exclude>packages/rfclib/Tests/Rfc2849xTest.php</exclude>
-            <exclude>packages/rfclib/Tests/Rfc3986Test.php</exclude>
-            <exclude>packages/rfclib/Tests/Rfc5234Test.php</exclude>
-            <exclude>packages/rfclib/Tests/Rfc8089Test.php</exclude>
+            <directory suffix="Test.php">./packages/*/tests/</directory>
+            <exclude>packages/rfclib/tests/Rfc2253Test.php</exclude>
+            <exclude>packages/rfclib/tests/Rfc2849Test.php</exclude>
+            <exclude>packages/rfclib/tests/Rfc2849xTest.php</exclude>
+            <exclude>packages/rfclib/tests/Rfc3986Test.php</exclude>
+            <exclude>packages/rfclib/tests/Rfc5234Test.php</exclude>
+            <exclude>packages/rfclib/tests/Rfc8089Test.php</exclude>
         </testsuite>
     </testsuites>
 
@@ -28,7 +28,7 @@
         <whitelist>
             <directory>./packages/</directory>
             <exclude>
-                <directory>./packages/*/Tests</directory>
+                <directory>./packages/*/tests</directory>
                 <directory>./packages/*/Behat</directory>
                 <directory>./packages/*/Resources</directory>
                 <directory>./packages/*/vendor</directory>

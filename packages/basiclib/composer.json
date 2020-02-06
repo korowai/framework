@@ -29,7 +29,7 @@
     },
     "autoload-dev": {
       "psr-4" : {
-        "Korowai\\Tests\\Lib\\Basic\\" : "Tests/",
+        "Korowai\\Tests\\Lib\\Basic\\" : "tests/",
         "Korowai\\Testing\\Lib\\Basic\\" : "Testing/"
       }
     }

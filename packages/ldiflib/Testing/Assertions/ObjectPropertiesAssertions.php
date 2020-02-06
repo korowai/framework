@@ -54,7 +54,7 @@ trait ObjectPropertiesAssertions
     public static function getSourceLocationPropertyGetters() : array
     {
         return [
-            'fileName'                  => 'getFileName',
+            'fileName'                  => 'getSourceFileName',
             'sourceString'              => 'getSourceString',
             'sourceOffset'              => 'getSourceOffset',
             'sourceCharOffset'          => 'getSourceCharOffset',

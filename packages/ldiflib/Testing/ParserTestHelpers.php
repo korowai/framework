@@ -75,7 +75,7 @@ trait ParserTestHelpers
         if (($records = $options['records'] ?? null) !== null) {
             $args[] = $records;
         }
-        return new ParserState($cursor);
+        return new ParserState($cursor, ...$args);
     }
 }
 

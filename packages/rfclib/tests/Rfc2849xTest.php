@@ -48,6 +48,7 @@ class Rfc2849xTest extends TestCase
     public function test__simpleProductions()
     {
         $this->assertSame('(?:'.Rfc2849::SEP.'|$)',                                     Rfc2849x::SEP_X);
+        $this->assertSame('(?:[^'.Rfc2849::CR.Rfc2849::LF.'$]|'.Rfc2849::CR.'(?!'.Rfc2849::LF.'))', Rfc2849x::NOT_SEP_X);
     }
 
     //
@@ -150,7 +151,7 @@ class Rfc2849xTest extends TestCase
         ];
         $inheritedCases = [];
         foreach (Rfc2849Test::VERSION_SPEC__cases() as $case) {
-            $inheritedCases[] = [$case[0], array_merge($case[1], ['version_error' => false])];
+            $inheritedCases[] = [$case[0], array_merge($case[1] ?? [], ['version_error' => false])];
         }
         return array_merge($inheritedCases, $cases);
     }
@@ -176,6 +177,10 @@ class Rfc2849xTest extends TestCase
     {
         $this->assertRfcNotMatches($string, 'VERSION_SPEC_X');
     }
+
+    //
+    // DN_SPEC_X
+    //
 
     public static function DN_SPEC_X__cases()
     {
@@ -281,7 +286,7 @@ class Rfc2849xTest extends TestCase
         foreach (Rfc2849Test::DN_SPEC__cases() as $case) {
             $inheritedCases[] = [
                 $case[0],
-                array_merge($case[1], ['dn_safe_error' => false, 'dn_b64_error' => false])
+                array_merge($case[1] ?? [], ['dn_safe_error' => false, 'dn_b64_error' => false])
             ];
         }
         return array_merge($inheritedCases, $cases);
@@ -307,6 +312,589 @@ class Rfc2849xTest extends TestCase
     public function test__DN_SPEC_X__notMatches(string $string)
     {
         $this->assertRfcNotMatches($string, 'DN_SPEC_X');
+    }
+
+    //
+    // VALUE_SPEC_X
+    //
+
+    public static function VALUE_SPEC_X__cases()
+    {
+        $cases = [
+            [
+            //   0000000000111
+            //   0123456789012
+                ":\n",
+                [
+                    0 => ":",
+                    'value_safe' => ['', 1],
+                    'value_b64' => false,
+                    'value_url' => false,
+                    'value_safe_error' => false,
+                    'value_b64_error' => false,
+                    'value_url_error' => false,
+                ]
+            ],
+            [
+            //   0000000000111
+            //   0123456789012
+                "::\n",
+                [
+                    0 => "::",
+                    'value_safe' => false,
+                    'value_b64' => ['', 2],
+                    'value_url' => false,
+                    'value_safe_error' => false,
+                    'value_b64_error' => false,
+                    'value_url_error' => false,
+                ]
+            ],
+            [
+            //   0000000000111
+            //   0123456789012
+                ":<\n",
+                [
+                    0 => ":<",
+                    'value_safe' => false,
+                    'value_b64' => false,
+                    'value_url' => ['', 2],
+                    'value_safe_error' => false,
+                    'value_b64_error' => false,
+                    'value_url_error' => false,
+                ]
+            ],
+            [
+            //   0000000000111
+            //   0123456789012
+                ":</\n",
+                [
+                    0 => ":</",
+                    'value_safe' => false,
+                    'value_b64' => false,
+                    'value_url' => ['/', 2],
+                    'value_safe_error' => false,
+                    'value_b64_error' => false,
+                    'value_url_error' => false,
+                ]
+            ],
+            [
+            //   0000000000111
+            //   0123456789012
+                ":<file:/\n",
+                [
+                    0 => ":<file:/",
+                    'value_safe' => false,
+                    'value_b64' => false,
+                    'value_url' => ['file:/', 2],
+                    'value_safe_error' => false,
+                    'value_b64_error' => false,
+                    'value_url_error' => false,
+                ]
+            ],
+            [
+            //   0000000000111
+            //   0123456789012
+                ":<#\n",
+                [
+                    0 => ":<#",
+                    'value_safe' => false,
+                    'value_b64' => false,
+                    'value_url' => ['#', 2],
+                    'value_safe_error' => false,
+                    'value_b64_error' => false,
+                    'value_url_error' => false,
+                ]
+            ],
+            [
+            //   0000000000111
+            //   0123456789012
+                ": :foo",
+                [
+                    0 => ": :foo",
+                    'value_safe' => false,
+                    'value_b64' => false,
+                    'value_url' => false,
+                    'value_safe_error' => [':foo', 2],
+                    'value_b64_error' => false,
+                    'value_url_error' => false,
+                ]
+            ],
+            [
+            //   0000000000111
+            //   0123456789012
+                ": łuszcz\n",
+                [
+                    0 => ": łuszcz",
+                    'value_safe' => false,
+                    'value_b64' => false,
+                    'value_url' => false,
+                    'value_safe_error' => ['łuszcz', 2],
+                    'value_b64_error' => false,
+                    'value_url_error' => false,
+                ]
+            ],
+            [
+            //   0000000000111
+            //   0123456789012
+                ": tłuszcz\n",
+                [
+                    0 => ": tłuszcz",
+                    'value_safe' => false,
+                    'value_b64' => false,
+                    'value_url' => false,
+                    'value_safe_error' => ['łuszcz', 3],
+                    'value_b64_error' => false,
+                    'value_url_error' => false,
+                ]
+            ],
+            [
+            //   0000000000111
+            //   0123456789012
+                ":::foo",
+                [
+                    0 => ":::foo",
+                    'value_safe' => false,
+                    'value_b64' => false,
+                    'value_url' => false,
+                    'value_safe_error' => false,
+                    'value_b64_error' => [':foo', 2],
+                    'value_url_error' => false,
+                ]
+            ],
+            [
+            //   0000000000111
+            //   0123456789012
+                ":: :foo",
+                [
+                    0 => ":: :foo",
+                    'value_safe' => false,
+                    'value_b64' => false,
+                    'value_url' => false,
+                    'value_safe_error' => false,
+                    'value_b64_error' => [':foo', 3],
+                    'value_url_error' => false,
+                ]
+            ],
+            [
+            //   0000000000111
+            //   0123456789012
+                ":: A1@x=+\n",
+                [
+                    0 => ":: A1@x=+",
+                    'value_safe' => false,
+                    'value_b64' => false,
+                    'value_url' => false,
+                    'value_safe_error' => false,
+                    'value_b64_error' => ['@x=+', 5],
+                    'value_url_error' => false,
+                ]
+            ],
+            [
+            //   0000000000111
+            //   0123456789012
+                ":<# \n",
+                [
+                    0 => ":<# ",
+                    'value_safe' => false,
+                    'value_b64' => false,
+                    'value_url' => false,
+                    'value_safe_error' => false,
+                    'value_b64_error' => false,
+                    'value_url_error' => [' ', 3],
+                ]
+            ],
+            [
+            //   0000000000111
+            //   0123456789012
+                ":<##  xx\n",
+                [
+                    0 => ":<##  xx",
+                    'value_safe' => false,
+                    'value_b64' => false,
+                    'value_url' => false,
+                    'value_safe_error' => false,
+                    'value_b64_error' => false,
+                    'value_url_error' => ['#  xx', 3],
+                ]
+            ],
+            [
+            //   000000000011111111122 2
+            //   012345678901234567890 1
+                ":<http://with spaces/\n",
+                [
+                    0 => ":<http://with spaces/",
+                    'value_safe' => false,
+                    'value_b64' => false,
+                    'value_url' => false,
+                    'value_safe_error' => false,
+                    'value_b64_error' => false,
+                    'value_url_error' => [' spaces/', 13],
+                ]
+            ],
+        ];
+        $inheritedCases = [];
+        foreach (Rfc2849Test::VALUE_SPEC__cases() as $case) {
+            $inheritedCases[] = [
+                $case[0],
+                array_merge($case[1] ?? [], [
+                    'value_safe_error' => false,
+                    'value_b64_error' => false,
+                    'value_url_error' => false
+                ])
+            ];
+        }
+        return array_merge($inheritedCases, $cases);
+    }
+
+    public static function non__VALUE_SPEC_X__cases()
+    {
+        $strings = ['', 'a', 'xyz:123', 'a', '1F'];
+        return static::arraizeStrings($strings);
+    }
+
+    /**
+     * @dataProvider VALUE_SPEC_X__cases
+     */
+    public function test__VALUE_SPEC_X__matches(string $string, array $pieces = [])
+    {
+        $this->assertRfcMatches($string, 'VALUE_SPEC_X', $pieces);
+    }
+
+    /**
+     * @dataProvider non__VALUE_SPEC_X__cases
+     */
+    public function test__VALUE_SPEC_X__notMatches(string $string)
+    {
+        $this->assertRfcNotMatches($string, 'VALUE_SPEC_X');
+    }
+
+    //
+    // ATTRVAL_SPEC_X
+    //
+
+    public static function ATTRVAL_SPEC_X__cases()
+    {
+        $cases = [
+            [
+            //   00000000001 111
+            //   01234567890 123
+                "ou;lang-pl:\nnext",
+                [
+                    0 => "ou;lang-pl:\n",
+                    'attr_desc' => 'ou;lang-pl',
+                    'value_safe' => ['', 11],
+                    'value_b64' => false,
+                    'value_url' => false,
+                    'value_safe_error' => false,
+                    'value_b64_error' => false,
+                    'value_url_error' => false,
+                ]
+            ],
+            [
+            //   00000000001 1 11
+            //   01234567890 1 23
+                "ou;lang-pl:\r\nnext",
+                [
+                    0 => "ou;lang-pl:\r\n",
+                    'attr_desc' => 'ou;lang-pl',
+                    'value_safe' => ['', 11],
+                    'value_b64' => false,
+                    'value_url' => false,
+                    'value_safe_error' => false,
+                    'value_b64_error' => false,
+                    'value_url_error' => false,
+                ]
+            ],
+            [
+            //   000000000011 11
+            //   012345678901 23
+                "ou;lang-pl::\nnext",
+                [
+                    0 => "ou;lang-pl::\n",
+                    'attr_desc' => 'ou;lang-pl',
+                    'value_safe' => false,
+                    'value_b64' => ['', 12],
+                    'value_url' => false,
+                    'value_safe_error' => false,
+                    'value_b64_error' => false,
+                    'value_url_error' => false,
+                ]
+            ],
+            [
+            //   000000000011 11
+            //   012345678901 23
+                "ou;lang-pl::\r\nnext",
+                [
+                    0 => "ou;lang-pl::\r\n",
+                    'attr_desc' => 'ou;lang-pl',
+                    'value_safe' => false,
+                    'value_b64' => ['', 12],
+                    'value_url' => false,
+                    'value_safe_error' => false,
+                    'value_b64_error' => false,
+                    'value_url_error' => false,
+                ]
+            ],
+            [
+            //   000000000011 11
+            //   012345678901 23
+                "ou;lang-pl:<\nnext",
+                [
+                    0 => "ou;lang-pl:<\n",
+                    'value_safe' => false,
+                    'attr_desc' => 'ou;lang-pl',
+                    'value_b64' => false,
+                    'value_url' => ['', 12],
+                    'value_safe_error' => false,
+                    'value_b64_error' => false,
+                    'value_url_error' => false,
+                ]
+            ],
+            [
+            //   000000000011 11
+            //   012345678901 23
+                "ou;lang-pl:<\r\nnext",
+                [
+                    0 => "ou;lang-pl:<\r\n",
+                    'value_safe' => false,
+                    'attr_desc' => 'ou;lang-pl',
+                    'value_b64' => false,
+                    'value_url' => ['', 12],
+                    'value_safe_error' => false,
+                    'value_b64_error' => false,
+                    'value_url_error' => false,
+                ]
+            ],
+            [
+            //   0000000000111 11
+            //   0123456789012 34
+                "ou;lang-pl:</\nnext",
+                [
+                    0 => "ou;lang-pl:</\n",
+                    'value_safe' => false,
+                    'attr_desc' => 'ou;lang-pl',
+                    'value_b64' => false,
+                    'value_url' => ['/', 12],
+                    'value_safe_error' => false,
+                    'value_b64_error' => false,
+                    'value_url_error' => false,
+                ]
+            ],
+            [
+            //   0000000000111 11
+            //   0123456789012 34
+                "ou;lang-pl:</\r\nnext",
+                [
+                    0 => "ou;lang-pl:</\r\n",
+                    'value_safe' => false,
+                    'attr_desc' => 'ou;lang-pl',
+                    'value_b64' => false,
+                    'value_url' => ['/', 12],
+                    'value_safe_error' => false,
+                    'value_b64_error' => false,
+                    'value_url_error' => false,
+                ]
+            ],
+            [
+            //   000000000011111111 1
+            //   012345678901234567 8
+                "ou;lang-pl:<file:/\nnext",
+                [
+                    0 => "ou;lang-pl:<file:/\n",
+                    'value_safe' => false,
+                    'attr_desc' => 'ou;lang-pl',
+                    'value_b64' => false,
+                    'value_url' => ['file:/', 12],
+                    'value_safe_error' => false,
+                    'value_b64_error' => false,
+                    'value_url_error' => false,
+                ]
+            ],
+            [
+            //   0000000000111 1
+            //   0123456789012 3
+                "ou;lang-pl:<#\n",
+                [
+                    0 => "ou;lang-pl:<#\n",
+                    'value_safe' => false,
+                    'attr_desc' => 'ou;lang-pl',
+                    'value_b64' => false,
+                    'value_url' => ['#', 12],
+                    'value_safe_error' => false,
+                    'value_b64_error' => false,
+                    'value_url_error' => false,
+                ]
+            ],
+            [
+            //   00000000001111111
+            //   01234567890123456
+                "ou;lang-pl: :foo",
+                [
+                    0 => "ou;lang-pl: :foo",
+                    'value_safe' => false,
+                    'attr_desc' => 'ou;lang-pl',
+                    'value_b64' => false,
+                    'value_url' => false,
+                    'value_safe_error' => [':foo', 12],
+                    'value_b64_error' => false,
+                    'value_url_error' => false,
+                ]
+            ],
+            [
+            //   000000000011111111 1
+            //   012345678901245678 9
+                "ou;lang-pl: łuszcz\nnext",
+                [
+                    0 => "ou;lang-pl: łuszcz\n",
+                    'value_safe' => false,
+                    'attr_desc' => 'ou;lang-pl',
+                    'value_b64' => false,
+                    'value_url' => false,
+                    'value_safe_error' => ['łuszcz', 12],
+                    'value_b64_error' => false,
+                    'value_url_error' => false,
+                ]
+            ],
+            [
+            //   0000000000111111111 1
+            //   0123456789012345678 9
+                "ou;lang-pl: tłuszcz\nnext",
+                [
+                    0 => "ou;lang-pl: tłuszcz\n",
+                    'value_safe' => false,
+                    'attr_desc' => 'ou;lang-pl',
+                    'value_b64' => false,
+                    'value_url' => false,
+                    'value_safe_error' => ['łuszcz', 13],
+                    'value_b64_error' => false,
+                    'value_url_error' => false,
+                ]
+            ],
+            [
+            //   00000000001111111
+            //   01234567890123456
+                "ou;lang-pl:::foo",
+                [
+                    0 => "ou;lang-pl:::foo",
+                    'value_safe' => false,
+                    'attr_desc' => 'ou;lang-pl',
+                    'value_b64' => false,
+                    'value_url' => false,
+                    'value_safe_error' => false,
+                    'value_b64_error' => [':foo', 12],
+                    'value_url_error' => false,
+                ]
+            ],
+            [
+            //   000000000011111111
+            //   012345678901234567
+                "ou;lang-pl:: :foo",
+                [
+                    0 => "ou;lang-pl:: :foo",
+                    'value_safe' => false,
+                    'attr_desc' => 'ou;lang-pl',
+                    'value_b64' => false,
+                    'value_url' => false,
+                    'value_safe_error' => false,
+                    'value_b64_error' => [':foo', 13],
+                    'value_url_error' => false,
+                ]
+            ],
+            [
+            //   0000000000111111111 1
+            //   0123456789012345678 9
+                "ou;lang-pl:: A1@x=+\n",
+                [
+                    0 => "ou;lang-pl:: A1@x=+\n",
+                    'value_safe' => false,
+                    'attr_desc' => 'ou;lang-pl',
+                    'value_b64' => false,
+                    'value_url' => false,
+                    'value_safe_error' => false,
+                    'value_b64_error' => ['@x=+', 15],
+                    'value_url_error' => false,
+                ]
+            ],
+            [
+            //   00000000001111 1
+            //   01234567890123 4
+                "ou;lang-pl:<# \n",
+                [
+                    0 => "ou;lang-pl:<# \n",
+                    'value_safe' => false,
+                    'attr_desc' => 'ou;lang-pl',
+                    'value_b64' => false,
+                    'value_url' => false,
+                    'value_safe_error' => false,
+                    'value_b64_error' => false,
+                    'value_url_error' => [' ', 13],
+                ]
+            ],
+            [
+            //   000000000011111111 1
+            //   012345678901234567 8
+                "ou;lang-pl:<##  xx\n",
+                [
+                    0 => "ou;lang-pl:<##  xx\n",
+                    'value_safe' => false,
+                    'attr_desc' => 'ou;lang-pl',
+                    'value_b64' => false,
+                    'value_url' => false,
+                    'value_safe_error' => false,
+                    'value_b64_error' => false,
+                    'value_url_error' => ['#  xx', 13],
+                ]
+            ],
+            [
+            //   0000000000111111111122222222223 3
+            //   0123456789012345678901234567890 1
+                "ou;lang-pl:<http://with spaces/\n",
+                [
+                    0 => "ou;lang-pl:<http://with spaces/\n",
+                    'value_safe' => false,
+                    'attr_desc' => 'ou;lang-pl',
+                    'value_b64' => false,
+                    'value_url' => false,
+                    'value_safe_error' => false,
+                    'value_b64_error' => false,
+                    'value_url_error' => [' spaces/', 23],
+                ]
+            ],
+        ];
+        $inheritedCases = [];
+        foreach (Rfc2849Test::ATTRVAL_SPEC__cases() as $case) {
+            $inheritedCases[] = [
+                $case[0],
+                array_merge($case[1] ?? [], [
+                    'value_safe_error' => false,
+                    'value_b64_error' => false,
+                    'value_url_error' => false
+                ])
+            ];
+        }
+        return array_merge($inheritedCases, $cases);
+    }
+
+    public static function non__ATTRVAL_SPEC_X__cases()
+    {
+        $strings = ['', 'a', ':123', 'a', '1F'];
+        return static::arraizeStrings($strings);
+    }
+
+    /**
+     * @dataProvider ATTRVAL_SPEC_X__cases
+     */
+    public function test__ATTRVAL_SPEC_X__matches(string $string, array $pieces = [])
+    {
+        $this->assertRfcMatches($string, 'ATTRVAL_SPEC_X', $pieces);
+    }
+
+    /**
+     * @dataProvider non__ATTRVAL_SPEC_X__cases
+     */
+    public function test__ATTRVAL_SPEC_X__notMatches(string $string)
+    {
+        $this->assertRfcNotMatches($string, 'ATTRVAL_SPEC_X');
     }
 }
 

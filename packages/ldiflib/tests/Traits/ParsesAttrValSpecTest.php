@@ -15,10 +15,7 @@ namespace Korowai\Tests\Lib\Ldif\Traits;
 
 use Korowai\Lib\Ldif\Traits\ParsesAttrValSpec;
 use Korowai\Lib\Ldif\Traits\MatchesPatterns;
-use Korowai\Lib\Ldif\Traits\SkipsWhitespaces;
 use Korowai\Lib\Ldif\Traits\ParsesStrings;
-use Korowai\Lib\Ldif\Traits\MaintainsParserState;
-
 use Korowai\Testing\Lib\Ldif\TestCase;
 
 /**
@@ -30,17 +27,16 @@ class ParsesAttrValSpecTest extends TestCase
     {
         $this->assertTrue(true);
     }
-//    protected function getTestObject()
-//    {
-//        return new class {
-//            use ParsesAttrValSpec;
-//            use MatchesPatterns;
-//            use SkipsWhitespaces;
-//            use ParsesStrings;
-//            use MaintainsParserState;
-//        };
-//    }
-//
+
+    public function getTestObject()
+    {
+        return new class {
+            use ParsesAttrValSpec;
+            use MatchesPatterns;
+            use ParsesStrings;
+        };
+    }
+
 //    public function matchDnStringCases()
 //    {
 //        return [

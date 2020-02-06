@@ -131,7 +131,7 @@ class Rfc2849x extends Rfc2849
                     '(?:'.
                         '(?<value_url>'.self::URL.'(?='.self::SEP_X.'))'.
                         '|'.
-                        '(?:(?:'.self::URL.')?(?<value_url_error>'.self::NOT_SEP_X.'))'.
+                        '(?:(?:'.self::URL.')?(?<value_url_error>'.self::NOT_SEP_X.'*))'.
                     ')'.
                 ')'.
             ')'.

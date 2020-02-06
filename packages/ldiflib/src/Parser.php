@@ -13,12 +13,11 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldif;
 
+use Korowai\Lib\Ldif\Traits\ParsesAttrValSpec;
 use Korowai\Lib\Ldif\Traits\MatchesPatterns;
 use Korowai\Lib\Ldif\Traits\ParsesDnSpec;
-use Korowai\Lib\Ldif\Traits\ParsesLdifFile;
 use Korowai\Lib\Ldif\Traits\ParsesStrings;
 use Korowai\Lib\Ldif\Traits\ParsesVersionSpec;
-use Korowai\Lib\Ldif\Traits\SkipsWhitespaces;
 
 /**
  * LDIF parser.
@@ -26,11 +25,10 @@ use Korowai\Lib\Ldif\Traits\SkipsWhitespaces;
 class Parser implements ParserInterface
 {
     use MatchesPatterns;
-//    use ParsesDnSpec;
-//    use ParsesLdifFile;
-//    use ParsesStrings;
+    use ParsesAttrValSpec;
+    use ParsesDnSpec;
+    use ParsesStrings;
     use ParsesVersionSpec;
-    use SkipsWhitespaces;
 
     /**
      * {@inheritdoc}

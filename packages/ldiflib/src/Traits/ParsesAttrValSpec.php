@@ -14,13 +14,8 @@ declare(strict_types=1);
 namespace Korowai\Lib\Ldif\Traits;
 
 use Korowai\Lib\Ldif\CursorInterface;
-use Korowai\Lib\Ldif\LocationInterface;
 use Korowai\Lib\Ldif\ParserStateInterface as State;
-use Korowai\Lib\Ldif\ParserError;
-use Korowai\Lib\Rfc\Rfc2849;
-use Korowai\Lib\Rfc\Rfc3986;
-
-//use function Korowai\Lib\Compat\preg_match;
+use Korowai\Lib\Rfc\Rfc2849x;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -28,134 +23,151 @@ use Korowai\Lib\Rfc\Rfc3986;
 trait ParsesAttrValSpec
 {
     /**
-     * Skip zero or more whitespaces (FILL in RFC2849).
-     *
-     * @param CursorInterface $cursor
-     *
-     * @return array
-     * @throws PregException When an error occurs in ``preg_match()``.
-     */
-    abstract public function skipFill(CursorInterface $cursor) : array;
-    /**
-     * Matches the string (starting at $location's position) against $pattern.
+     * Matches the string starting at $cursor's position against $pattern and
+     * skips the whole match (moves the cursor after the matched part of
+     * string).
      *
      * @param  string $pattern
-     * @param  LocationInterface $location
-     * @param  int $flags Flags passed to ``preg_match()``.
+     * @param  CursorInterface $cursor
+     * @param  int $flags Passed to ``preg_match()`` (note: ``PREG_OFFSET_CAPTURE`` is added unconditionally).
      *
      * @return array Array of matches as returned by ``preg_match()``
      * @throws PregException When error occurs in ``preg_match()``
      */
     abstract public function matchAhead(string $pattern, CursorInterface $cursor, int $flags = 0) : array;
-    /**
-     * Parses SAFE-STRING as defined in [RFC2849](https://tools.ietf.org/html/rfc2849).
-     *
-     * @param  State $state
-     * @param  string $string
-     *
-     * @return bool true on success, false on parser error.
-     */
-    abstract public function parseSafeString(State $state, string &$string = null) : bool;
-    /**
-     * Parses BASE64-UTF8-STRING as defined in [RFC2849](https://tools.ietf.org/html/rfc2849).
-     *
-     * @param  State $state
-     * @param  string $string The parsed and decoded string returned by the function.
-     *
-     * @return bool true on success, false on parser error.
-     */
-    abstract public function parseBase64Utf8String(State $state, string &$string = null) : bool;
 
     /**
-     * Parses dn-spec as defined in [RFC2849](https://tools.ietf.org/html/rfc2849).
+     * Decodes base64-encoded string.
      *
      * @param  State $state
-     * @param  array $attrValSpec An array with attribute description at offset 0 and value specification at offset 1.
+     * @param  string $string The string to be decoded.
+     * @param  int|null $offset An offset in the input where the *$string* begins.
+     *
+     * @return string|null Returns the decoded data or null on error.
+     */
+    abstract public function parseBase64Decode(State $state, string $string, ?int $offset = null) : ?string;
+
+    /**
+     * Parses attrval-spec as defined in [RFC2849](https://tools.ietf.org/html/rfc2849).
+     *
+     * @param  State $state
+     * @param  array $attrValSpec
+     *      On success returns the array with keys ``attr_desc``, ``value`` or ``value_url``,
+     *      and (if ``value`` is present) one of ``value_safe`` or ``value_b64``.
+     * @param  bool $tryOnly
+     *      If false (default), then parser error is appended to *$state* when
+     *      the string at current location does not match the
+     *      Rfc2849x::ATTRVAL_SPEC_X pattern (i.e. there is no initial
+     *      ``<attributeDescrition>:`` substring at position). If true, the error is not
+     *      appended. Despite of the *$tryOnly* value, the function will always
+     *      return false in, if there is no match.
      *
      * @return bool true on success, false on parser error.
      */
-    public function parseAttrValSpec(State $state, array &$attrValSpec = null) : bool
+    public function parseAttrValSpec(State $state, array &$attrValSpec = null, bool $tryOnly = false) : bool
     {
-        if (!$this->parseAttributeDescription($state, $attributeDescription)) {
+        $cursor = $state->getCursor();
+        $matches = $this->matchAhead('/\G'.Rfc2849x::ATTRVAL_SPEC_X.'/D', $cursor, PREG_UNMATCHED_AS_NULL);
+        if (count($matches) === 0) {
+            if (!$tryOnly) {
+                $state->errorHere('syntax error: expected attribute description (RFC2849)');
+            }
             return false;
         }
 
-        $attrValSpec[] = $attributeDescription;
+        return $this->parseMatchedAttrValSpec($state, $matches, $attrValSpec);
+    }
 
-        if (!$this->parseValueSpec($state, $value)) {
+    /**
+     * @todo Write documentation
+     */
+    protected function parseMatchedAttrValSpec(State $state, array $matches, array &$attrValSpec = null) : bool
+    {
+        if (($attrDesc = $matches['attr_desc'][0] ?? null) === null) {
+            $message = 'internal error: capture group attr_desc not set';
+            if (($offset = $matches[0][1]) === null) {
+                $state->errorHere($message);
+            } else {
+                $state->errorAt($offset, $message);
+            }
             return false;
         }
+        $attrValSpec = ['attr_desc' => $attrDesc];
 
-        $attrValSpec[] = $value;
+        return $this->parseMatchedValue($state, $matches, $attrValSpec);
+    }
 
-        if (!$this->matchAhead('/\G'.Rfc2849::SEP.'/')) {
-            $errpos = $cursor->getClonedLocation();
-            $error = new ParseError($errpos, "syntax error: expected line separator LF or CRLF");
-            $state->appendError($error);
+    /**
+     * @todo Write documentation.
+     */
+    protected function parseMatchedValue(State $state, array $matches, array &$valSpec = null) : bool
+    {
+        if (($offset = $matches['value_b64'][1] ?? -1) >= 0) {
+            $valSpec['value_b64'] = $matches['value_b64'][0];
+            return $this->parseMatchedValueB64($state, $valSpec['value_b64'], $offset, $valSpec);
+        } elseif (($offset = $matches['value_safe'][1] ?? -1) >= 0) {
+            $valSpec['value_safe'] = $matches['value_safe'][0];
+            return $this->parseMatchedValueSafe($state, $valSpec['value_safe'], $offset, $valSpec);
+        } elseif (($offset = $matches['value_url'][1] ?? -1) >= 0) {
+            $valSpec['value_url'] = $matches['value_url'][0];
+            return $this->parseMatchedValueUrl($state, $valSpec['value_url'], $offset, $valSpec);
+        }
+        $state->errorHere('internal error: neither value_safe, value_b64 nor value_url group found');
+        return false;
+    }
+
+    /**
+     * Completes value-spec parsing assuming that the caller already discovered
+     * that the value-spec contains base64-encoded value.
+     *
+     * @param  State $state
+     * @param  string $string Base64-encoded string containing the value.
+     * @param  int $offset Offset of the beginning of *$string* in the input.
+     * @param  array $valSpec Returns the resultant value specification.
+     *
+     * @return bool
+     */
+    protected function parseMatchedValueB64(State $state, string $string, int $offset, array &$valSpec = null) : bool
+    {
+        if (($decoded = $this->parseBase64Decode($state, $string, $offset)) === null) {
             return false;
         }
+        $valSpec['value'] = $decoded;
         return true;
     }
 
     /**
-     * Parses AttributeDescription as defined in [RFC2849](https://tools.ietf.org/html/rfc2849).
+     * Completes value-spec parsing assuming that the caller already discovered
+     * that the value-spec contains plain (unencoded) value.
      *
      * @param  State $state
-     * @param  string $attributeDescription The attribute description string to be returned.
+     * @param  string $string String containing the value.
+     * @param  int $offset Offset of the beginning of *$string* in the input.
+     * @param  array $valSpec Returns the resultant value specification.
      *
-     * @return bool true on success, false on parser error.
+     * @return bool
      */
-    public function parseAttributeDescription(State $state, string &$attributeDescription)
+    protected function parseMatchedValueSafe(State $state, string $string, int $offset, array &$valSpec = null) : bool
     {
-        $cursor = $state->getCursor();
-
-        $matches = $this->matchAhead('/\G'.Rfc2849::ATTRIBUTE_DESCRIPTION.'/', $cursor);
-        if (count($matches) === 0) {
-            $errpos = $cursor->getClonedLocation();
-            $error = new ParserError($errpos, 'syntax error: expected AttributeDescription (RFC2849)');
-            $state->appendError($error);
-            return false;
-        }
-        $attributeDescription = $matches[0];
+        $valSpec['value'] = $string;
         return true;
     }
 
     /**
-     * Parses value-spec as defined in [RFC2849](https://tools.ietf.org/html/rfc2849).
+     * Completes value-spec parsing assuming that the caller already discovered
+     * that the value-spec contains plain (unencoded) value.
      *
      * @param  State $state
-     * @param  mixed $value The value to be returned.
+     * @param  string $string String containing the value.
+     * @param  int $offset Offset of the beginning of *$string* in the input.
+     * @param  array $valSpec Returns the resultant value specification.
      *
-     * @return bool true on success, false on parser error.
+     * @return bool
      */
-    public function parseValueSpec(State $state, &$value)
+    protected function parseMatchedValueUrl(State $state, string $string, int $offset, array &$valSpec = null) : bool
     {
-        $cursor = $state->getCursor();
-
-        $matches = $this->matchAhead('/\G:/', $cursor);
-        if (count($matches) === 0) {
-            $error = new ParserError($cursor->getClonedLocation(), 'syntax error: expected ":"');
-            $state->appendError($error);
-            return false;
-        }
-
-        $matches = $this->matchAhead('/\G[:<]?/', $cursor);
-
-        $this->skipFill($cursor);
-
-        $delimiter = $matches[0] ?? null;
-        if ($delimiter === ':') {
-            // BASE64-STRING (should be BASE64-UTF8-STRING in RFC2849 I guess?)
-            $result = $this->parseBase64Utf8String($state, $value);
-        } elseif ($delimiter === '<') {
-            // URL
-            $result = $this->parseURL($state, $value);
-        } else {
-            // SAFE-STRING
-            $result = $this->parseSafeString($state, $value);
-        }
-
-        return $result;
+        // TODO: implement file: scheme support (validation).
+        return true;
     }
 }
 

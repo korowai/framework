@@ -33,7 +33,7 @@ class ParsesVersionSpecTest extends TestCase
         };
     }
 
-    public function versionSpecCases()
+    public function parseVersionSpec__cases()
     {
         return [
             [
@@ -139,15 +139,17 @@ class ParsesVersionSpecTest extends TestCase
             ],
 
             [
+            //    00000000001111
+            //    01234567890123
                 ['   version: A', 3],
                 [true],
                 [
                     'result' => false,
                     'state' => [
                         'cursor' => [
-                            'offset' => 12,
-                            'sourceOffset' => 12,
-                            'sourceCharOffset' => 12
+                            'offset' => 13,
+                            'sourceOffset' => 13,
+                            'sourceCharOffset' => 13
                         ],
                         'records' => [],
                         'errors' => [
@@ -161,15 +163,17 @@ class ParsesVersionSpecTest extends TestCase
             ],
 
             [
+            //    00000000001111111
+            //    01234567890123456
                 ['   version: 123A', 3],
                 [true],
                 [
                     'result' => false,
                     'state' => [
                         'cursor' => [
-                            'offset' => 15,
-                            'sourceOffset' => 15,
-                            'sourceCharOffset' => 15
+                            'offset' => 16,
+                            'sourceOffset' => 16,
+                            'sourceCharOffset' => 16
                         ],
                         'records' => [],
                         'errors' => [
@@ -183,15 +187,17 @@ class ParsesVersionSpecTest extends TestCase
             ],
 
             [
+            //    000000000011
+            //    012345678901
                 ['version: 23'],
                 [true],
                 [
                     'result' => false,
                     'state' => [
                         'cursor' => [
-                            'offset' => 9,
-                            'sourceOffset' => 9,
-                            'sourceCharOffset' => 9
+                            'offset' => 11,
+                            'sourceOffset' => 11,
+                            'sourceCharOffset' => 11
                         ],
                         'records' => [],
                         'errors' => [
@@ -207,7 +213,7 @@ class ParsesVersionSpecTest extends TestCase
     }
 
     /**
-     * @dataProvider versionSpecCases
+     * @dataProvider parseVersionSpec__cases
      */
     public function test__parseVersionSpec(array $source, array $tail, array $expectations)
     {

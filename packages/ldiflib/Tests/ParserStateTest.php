@@ -170,17 +170,17 @@ class ParserStateTest extends TestCase
     public static function errorAt__cases(string $message, ...$tail)
     {
         return [
-            ['error message', 123],
-            ['error message', 123, []],
-            ['error message', 123, [2]],
-            ['error message', 123, [2, new \Exception('previous exception')]]
+            [123, 'error message'],
+            [123, 'error message', []],
+            [123, 'error message', [2]],
+            [123, 'error message', [2, new \Exception('previous exception')]]
         ];
     }
 
     /**
      * @dataProvider errorAt__cases
      */
-    public function test__errorAt(string $message, int $offset, ...$tail)
+    public function test__errorAt(int $offset, string $message, ...$tail)
     {
         $state = $this->createParserState();
 
@@ -191,15 +191,13 @@ class ParserStateTest extends TestCase
                ->method('getClonedLocation')
                ->with()
                ->willReturn($location);
-        $cursor->expects($this->once())
-               ->method('moveTo')
-               ->with($offset)
-               ->willReturn($cursor);
+        $cursor->expects($this->never())
+               ->method('moveTo');
         $cursor->expects($this->never())
                ->method('moveBy');
 
         $this->assertSame([], $state->getErrors());
-        $this->assertSame($state, $state->errorAt($message, $offset, ...$tail));
+        $this->assertSame($state, $state->errorAt($offset, $message, ...$tail));
 
         $errors = $state->getErrors();
         $this->assertCount(1, $errors);

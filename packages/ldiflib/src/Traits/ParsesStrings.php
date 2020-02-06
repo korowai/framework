@@ -118,7 +118,7 @@ trait ParsesStrings
     {
         $decoded = base64_decode($string, true);
         if ($decoded === false) {
-            $state->errorAt('syntax error: invalid BASE64 string', $offset);
+            $state->errorAt($offset, 'syntax error: invalid BASE64 string');
             return null;
         }
         return $decoded;
@@ -136,7 +136,7 @@ trait ParsesStrings
     public function parseUtf8Check(ParserStateInterface $state, string $string, ?int $offset = null) : bool
     {
         if (mb_check_encoding($string, 'utf-8') === false) {
-            $state->errorAt('syntax error: the string is not a valid UTF8', $offset);
+            $state->errorAt($offset, 'syntax error: the string is not a valid UTF8');
             return false;
         }
         return true;

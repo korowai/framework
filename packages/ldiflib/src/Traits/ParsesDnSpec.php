@@ -102,7 +102,7 @@ trait ParsesDnSpec
     {
         foreach (['dn_safe_error' => 'SAFE', 'dn_b64_error' => 'BASE64'] as $key => $type) {
             if (($offset = $matches[$key][1] ?? -1) >= 0) {
-                $state->errorAt('syntax error: invalid '.$type.' string', $offset);
+                $state->errorAt($offset, 'syntax error: invalid '.$type.' string');
                 return false;
             }
         }
@@ -181,7 +181,7 @@ trait ParsesDnSpec
     protected function parseMatchedDnCheck(State $state, string $string, int $offset) : bool
     {
         if (preg_match('/\G'.Rfc2253::DISTINGUISHED_NAME.'$/D', $string) === 0) {
-            $state->errorAt('syntax error: invalid DN syntax: \''.$string.'\'', $offset);
+            $state->errorAt($offset, 'syntax error: invalid DN syntax: \''.$string.'\'');
             return false;
         }
 

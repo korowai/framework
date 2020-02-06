@@ -30,12 +30,11 @@ class ParsesDnSpecTest extends TestCase
         return new class {
             use ParsesDnSpec;
             use MatchesPatterns;
-            use SkipsWhitespaces;
             use ParsesStrings;
         };
     }
 
-    public function matchDnStringCases()
+    public static function dnMatch__cases()
     {
         return [
             ['', true],
@@ -58,41 +57,41 @@ class ParsesDnSpecTest extends TestCase
         ];
     }
 
-    public function parseDnSpecCases()
+    public static function parseDnSpec__cases()
     {
-        $wrongTokenSources32 = [
-        //    023
-            ["ł ", 3],
-            ["ł x", 3],
-            ["ł dns:", 3],
-            ["ł dn :", 3],
-            ["ł dn\n:", 3],
-        ];
-        $wrongTokenExpectation32 = [
-            'result' => false,
-            'dn' => null,
-            'state' => [
-                'cursor' => [
-                    'offset' => 3,
-                    'sourceOffset' => 3,
-                    'sourceCharOffset' => 2
-                ],
-                'errors' => [
-                    [
-                        'sourceOffset' => 3,
-                        'sourceCharOffset' => 2,
-                        'message' => 'syntax error: expected "dn:"',
-                    ]
-                ],
-                'records' => [],
-            ],
-        ];
+        $missingTagCases = array_map(function (array $case) {
+            return [
+                $case[0],
+                [
+                    'result' => false,
+                    'dn' => null,
+                    'state' => [
+                        'cursor' => [
+                            'offset' => $case['offset'],
+                            'sourceOffset' => $case['offset'],
+                            'sourceCharOffset' => $case['charOffset']
+                        ],
+                        'errors' => [
+                            [
+                                'sourceOffset' => $case['offset'],
+                                'sourceCharOffset' => $case['charOffset'],
+                                'message' => 'syntax error: expected "dn:"',
+                            ]
+                        ],
+                        'records' => [],
+                    ],
+                ]
+            ];
+        }, [
+            [["ł ", 3],         'offset' => 3, 'charOffset' => 2],
+            [["ł x", 3],        'offset' => 3, 'charOffset' => 2],
+            [["ł dns:", 3],     'offset' => 3, 'charOffset' => 2],
+            [["ł dn :", 3],     'offset' => 3, 'charOffset' => 2],
+            [["ł dn\n:", 3],    'offset' => 3, 'charOffset' => 2],
+        ]);
 
-        $wrongTokenCases32 = array_map(function ($source) use ($wrongTokenExpectation32){
-            return [$source, $wrongTokenExpectation32];
-        }, $wrongTokenSources32);
 
-        $matchDnStringCases = array_map(function ($case) {
+        $safeStringDnCases = array_map(function ($case) {
 
             $dn = $case[0];
             $result = $case[1];
@@ -106,14 +105,10 @@ class ParsesDnSpecTest extends TestCase
                     'message' => 'syntax error: invalid DN syntax: \''.$dn.'\'',
                 ]
             ];
-            $cursor = $result ? [
+            $cursor = [
                 'offset' => 3 + 4 + strlen($dn),
                 'sourceOffset' => 3 + 4 + strlen($dn),
                 'sourceCharOffset' => 2 + 4 + mb_strlen($dn),
-            ] : [
-                'offset' => 3 + 4,
-                'sourceOffset' => 3 + 4,
-                'sourceCharOffset' => 2 + 4,
             ];
             $expectations = [
                 'result' => $result,
@@ -126,9 +121,9 @@ class ParsesDnSpecTest extends TestCase
             ];
 
             return [$source, $expectations];
-        }, $this->matchDnStringCases());
+        }, static::dnMatch__cases());
 
-        $matchBase64DnStringCases = array_map(function ($case) {
+        $base64StringDnCases = array_map(function ($case) {
 
             $dn = $case[0];
             $dnBase64 = base64_encode($dn);
@@ -143,14 +138,10 @@ class ParsesDnSpecTest extends TestCase
                     'message' => 'syntax error: invalid DN syntax: \''.$dn.'\'',
                 ]
             ];
-            $cursor = $result ? [
+            $cursor = [
                 'offset' => 3 + 5 + strlen($dnBase64),
                 'sourceOffset' => 3 + 5 + strlen($dnBase64),
                 'sourceCharOffset' => 2 + 5 + mb_strlen($dnBase64),
-            ] : [
-                'offset' => 3 + 5,
-                'sourceOffset' => 3 + 5,
-                'sourceCharOffset' => 2 + 5,
             ];
             $expectations = [
                 'result' => $result,
@@ -163,13 +154,13 @@ class ParsesDnSpecTest extends TestCase
             ];
 
             return [$source, $expectations];
-        }, $this->matchDnStringCases());
+        }, static::dnMatch__cases());
 
-        return array_merge($wrongTokenCases32, $matchDnStringCases, $matchBase64DnStringCases);
+        return array_merge($missingTagCases, $safeStringDnCases, $base64StringDnCases);
     }
 
     /**
-     * @dataProvider parseDnSpecCases
+     * @dataProvider parseDnSpec__cases
      */
     public function test__parseDnSpec(array $source, array $expectations)
     {

@@ -83,7 +83,7 @@ trait ParsesVersionSpec
     {
         $cursor = $state->getCursor();
         if (($offset = $matches['version_error'][1] ?? -1) >= 0) {
-            $state->errorAt('syntax error: expected number', $offset);
+            $state->errorAt($offset, 'syntax error: expected number');
             return null;
         }
         return $this->parseMatchedVersionNumber($state, $matches);
@@ -104,7 +104,7 @@ trait ParsesVersionSpec
         $version = intval($matches['version_number'][0]);
         if ($version != 1) {
             $offset = $matches['version_number'][1];
-            $state->errorAt("syntax error: unsupported version number: $version", $offset);
+            $state->errorAt($offset, "syntax error: unsupported version number: $version");
             return null;
         }
         return $version;

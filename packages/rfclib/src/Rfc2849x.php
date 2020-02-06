@@ -32,16 +32,21 @@ class Rfc2849x extends Rfc2849
     public const SEP_X = '(?:'. self::SEP.'|$)';
 
     /**
+     * Negated [Rfc2849x::SEP_X](Rfc2849x.html).
+     */
+    public const NOT_SEP_X = '(?:[^'.self::CR.self::LF.'$]|'.self::CR.'(?!'.self::LF.'))';
+
+    /**
      * VERSION_SPEC with enhanced error detection. The pattern matches any
-     * string starting with ``"version:"`` tag, but it sets ``"error"`` named
-     * capture group if there is an error after the ``"version:"`` tag.
+     * string starting with ``"version:"`` tag until (but excluding) next
+     * [Rfc::2849x::SEP_X](Rfc2849x.html). The pattern sets ``"version_error"``
+     * named capture group if there is an error after the ``"version:"`` tag.
      *
      * Capture groups:
      *
      *  - *version_number*: only set if the subject contains no syntax errors,
-     *  - *version_error*: only set if there is an error after the ``"version:"`` tag,
-     *    contains empty string and it's offset points to the location in subject
-     *    string where the error begins.
+     *  - *version_error*: only set if there is an error after the
+     *    ``"version:"`` tag. The captured group contains the failed substring.
      */
     public const VERSION_SPEC_X =
         '(?:version:'.
@@ -50,7 +55,8 @@ class Rfc2849x extends Rfc2849
                 '(?:'.
                     '(?:'.self::VERSION_NUMBER.'(?='.self::SEP_X.'))'.
                     '|'.
-                    '(?:'.self::DIGIT.'*(?<version_error>(?=[^'.self::DIGITCHARS.']*)))'.
+                    /*'(?:'.self::DIGIT.'*(?<version_error>(?=[^'.self::DIGITCHARS.']*)))'.*/
+                    '(?:'.self::DIGIT.'*(?<version_error>'.self::NOT_SEP_X.'*)(?='.self::SEP_X.'))'.
                 ')'.
             ')'.
         '?)';
@@ -75,7 +81,7 @@ class Rfc2849x extends Rfc2849
                     '(?:'.
                         '(?:'.self::DISTINGUISHED_NAME.'(?='.self::SEP_X.'))'.
                         '|'.
-                        '(?:'.self::SAFE_STRING.'(?<dn_safe_error>))'.
+                        '(?:'.self::SAFE_STRING.'(?<dn_safe_error>'.self::NOT_SEP_X.'*))'.
                     ')'.
                 ')'.
                 '|'.
@@ -84,7 +90,7 @@ class Rfc2849x extends Rfc2849
                     '(?:'.
                         '(?:'.self::BASE64_DISTINGUISHED_NAME.'(?='.self::SEP_X.'))'.
                         '|'.
-                        '(?:'.self::BASE64_UTF8_STRING.'(?<dn_b64_error>))'.
+                        '(?:'.self::BASE64_UTF8_STRING.'(?<dn_b64_error>'.self::NOT_SEP_X.'*))'.
                     ')'.
                 ')'.
             ')'.
@@ -102,7 +108,7 @@ class Rfc2849x extends Rfc2849
                     '(?:'.
                         '(?:(?<value_safe>'.self::SAFE_STRING.')(?='.self::SEP_X.'))'.
                         '|'.
-                        '(?:'.self::SAFE_STRING.'(?<value_safe_error>))'.
+                        '(?:'.self::SAFE_STRING.'(?<value_safe_error>'.self::NOT_SEP_X.'*))'.
                     ')'.
                 ')'.
                 '|'.
@@ -111,7 +117,7 @@ class Rfc2849x extends Rfc2849
                     '(?:'.
                         '(?<value_b64>'.self::BASE64_STRING.'(?='.self::SEP_X.'))'.
                         '|'.
-                        '(?:'.self::BASE64_STRING.'(?<value_b64_error>))'.
+                        '(?:'.self::BASE64_STRING.'(?<value_b64_error>'.self::NOT_SEP_X.'*))'.
                     ')'.
                 ')'.
                 '|'.
@@ -120,7 +126,7 @@ class Rfc2849x extends Rfc2849
                     '(?:'.
                         '(?<value_url>'.self::URL.'(?='.self::SEP_X.'))'.
                         '|'.
-                        '(?:(?:'.self::URL.')?(?<value_url_error>))'.
+                        '(?:(?:'.self::URL.')?(?<value_url_error>'.self::NOT_SEP_X.'))'.
                     ')'.
                 ')'.
             ')'.
@@ -129,7 +135,7 @@ class Rfc2849x extends Rfc2849
     /**
      * ATTRVAL_SPEC with enhanced error detection. TODO:
      */
-    public const ATTRVAL_SPEC_X = '(?:'.self::ATTRIBUTE_DESCRIPTION.self::VALUE_SPEC_X.self::SEP_X.'?)';
+    public const ATTRVAL_SPEC_X = '(?:'.self::ATTRIBUTE_DESCRIPTION.self::VALUE_SPEC_X.self::SEP_X.')';
 }
 
 // vim: syntax=php sw=4 ts=4 et:

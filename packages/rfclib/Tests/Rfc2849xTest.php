@@ -100,6 +100,16 @@ class Rfc2849xTest extends TestCase
             [
             //   00000000001
             //   01234567890
+                "version:\r \nasd",
+                [
+                    0 => "version:\r ",
+                    'version_number' => false,
+                    'version_error' => ["\r ", 8],
+                ]
+            ],
+            [
+            //   00000000001
+            //   01234567890
                 "version:\n",
                 [
                     0 => 'version:',
@@ -132,9 +142,9 @@ class Rfc2849xTest extends TestCase
             //   012345678901234
                 'version:  91asd',
                 [
-                    0 => 'version:  91',
+                    0 => 'version:  91asd',
                     'version_number' => false,
-                    'version_error' => ['', 12],
+                    'version_error' => ['asd', 12],
                 ]
             ],
         ];
@@ -199,10 +209,10 @@ class Rfc2849xTest extends TestCase
             //   0123456789012
                 "dn: :foo",
                 [
-                    0 => "dn: ",
+                    0 => "dn: :foo",
                     'dn_safe' => false,
                     'dn_b64' => false,
-                    'dn_safe_error' => ['', 4],
+                    'dn_safe_error' => [':foo', 4],
                     'dn_b64_error' => false,
                 ]
             ],
@@ -211,10 +221,10 @@ class Rfc2849xTest extends TestCase
             //   0123456789012
                 "dn: łuszcz\n",
                 [
-                    0 => "dn: ",
+                    0 => "dn: łuszcz",
                     'dn_safe' => false,
                     'dn_b64' => false,
-                    'dn_safe_error' => ['', 4],
+                    'dn_safe_error' => ['łuszcz', 4],
                     'dn_b64_error' => false,
                 ]
             ],
@@ -223,10 +233,10 @@ class Rfc2849xTest extends TestCase
             //   0123456789012
                 "dn: tłuszcz\n",
                 [
-                    0 => "dn: t",
+                    0 => "dn: tłuszcz",
                     'dn_safe' => false,
                     'dn_b64' => false,
-                    'dn_safe_error' => ['', 5],
+                    'dn_safe_error' => ['łuszcz', 5],
                     'dn_b64_error' => false,
                 ]
             ],
@@ -235,11 +245,11 @@ class Rfc2849xTest extends TestCase
             //   0123456789012
                 "dn:::foo",
                 [
-                    0 => "dn::",
+                    0 => "dn:::foo",
                     'dn_safe' => false,
                     'dn_b64' => false,
                     'dn_safe_error' => false,
-                    'dn_b64_error' => ['', 4],
+                    'dn_b64_error' => [':foo', 4],
                 ]
             ],
             [
@@ -247,11 +257,11 @@ class Rfc2849xTest extends TestCase
             //   0123456789012
                 "dn:: :foo",
                 [
-                    0 => "dn:: ",
+                    0 => "dn:: :foo",
                     'dn_safe' => false,
                     'dn_b64' => false,
                     'dn_safe_error' => false,
-                    'dn_b64_error' => ['', 5],
+                    'dn_b64_error' => [':foo', 5],
                 ]
             ],
             [
@@ -259,11 +269,11 @@ class Rfc2849xTest extends TestCase
             //   0123456789012
                 "dn:: A1@x=+\n",
                 [
-                    0 => "dn:: A1",
+                    0 => "dn:: A1@x=+",
                     'dn_safe' => false,
                     'dn_b64' => false,
                     'dn_safe_error' => false,
-                    'dn_b64_error' => ['', 7],
+                    'dn_b64_error' => ['@x=+', 7],
                 ]
             ],
         ];

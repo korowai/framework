@@ -136,11 +136,10 @@ class ParserState implements ParserStateInterface
     /**
      * {@inheritdoc}
      */
-    public function errorAt(string $message, ?int $offset = null, array $arguments = [])
+    public function errorAt(int $offset, string $message, array $arguments = [])
     {
-        $this->getCursor()->moveTo($offset);
-        $this->errorHere($message, $arguments);
-        return $this;
+        $error = new ParserError($this->getCursor()->getClonedLocation($offset), $message, ...$arguments);
+        return $this->appendError($error);
     }
 
     /**

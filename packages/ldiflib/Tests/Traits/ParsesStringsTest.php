@@ -31,7 +31,7 @@ class ParsesStringsTest extends TestCase
         };
     }
 
-    public function safeString__cases()
+    public function parseSafeString__cases()
     {
         $miscCases = [
             [
@@ -72,67 +72,44 @@ class ParsesStringsTest extends TestCase
             ],
         ];
 
-        $sourcesWithUnsafeInitChar32 = [
-        //    023
-            ["ł ", 3],      // end of string
-            ["ł ł", 3],     // > 0x7f
-            ["ł \0", 3],    // NUL
-            ["ł \n", 3],    // LF
-            ["ł \r", 3],    // CR
-            ["ł  ", 3],     // SPACE
-            ["ł :", 3],     // colon
-            ["ł <", 3],     // less-than
-        ];
-
-        $expectWithUnsafeInitChar32 = [
-            'result' => true,
-            'string' => '',
-            'state' => [
-                'cursor' => [
-                    'offset' => 3,
-                    'sourceOffset' => 3,
-                    'sourceCharOffset' => 2
-                ],
-                'records' => [],
-                'errors' => []
-            ]
-        ];
-
-        $sourcesWithUnsafeSecondChar32 = [
+        $unsafeInitCharCases = array_map(function (array $case) {
+            return [
+                $case[0],
+                [
+                    'result' => true,
+                    'string' => $case['string'],
+                    'state' => [
+                        'cursor' => [
+                            'offset' => $case['offset'],
+                            'sourceOffset' => $case['offset'],
+                            'sourceCharOffset' => $case['charOffset'],
+                        ],
+                        'records' => [],
+                        'errors' => []
+                    ]
+                ]
+            ];
+        }, [
+            [["ł ", 3],     'string' => '',  'offset' => 3, 'charOffset' => 2],  // end of string
+            [["ł ł", 3],    'string' => '',  'offset' => 3, 'charOffset' => 2],  // > 0x7f
+            [["ł \0", 3],   'string' => '',  'offset' => 3, 'charOffset' => 2],  // NUL
+            [["ł \n", 3],   'string' => '',  'offset' => 3, 'charOffset' => 2],  // LF
+            [["ł \r", 3],   'string' => '',  'offset' => 3, 'charOffset' => 2],  // CR
+            [["ł  ", 3],    'string' => '',  'offset' => 3, 'charOffset' => 2],  // SPACE
+            [["ł :", 3],    'string' => '',  'offset' => 3, 'charOffset' => 2],  // colon
+            [["ł <", 3],    'string' => '',  'offset' => 3, 'charOffset' => 2],  // less-than
         //    0234
-            ["łał", 2],     // > 0x7F
-            ["ła\0", 2],    // NUL
-            ["ła\n", 2],    // LF
-            ["ła\r", 2],    // CR
-        ];
+            [["łał", 2],    'string' => 'a', 'offset' => 3, 'charOffset' => 2],  // > 0x7F
+            [["ła\0", 2],   'string' => 'a', 'offset' => 3, 'charOffset' => 2],  // NUL
+            [["ła\n", 2],   'string' => 'a', 'offset' => 3, 'charOffset' => 2],  // LF
+            [["ła\r", 2],   'string' => 'a', 'offset' => 3, 'charOffset' => 2],  // CR
+        ]);
 
-        $expectWithUnsafeSecondChar32 = [
-            'result' => true,
-            'string' => 'a',
-            'state' => [
-                'cursor' => [
-                    'offset' => 3,
-                    'sourceOffset' => 3,
-                    'sourceCharOffset' => 2
-                ],
-                'records' => [],
-                'errors' => []
-            ]
-        ];
-
-        $casesWithUnsafeInitChar32 = array_map(function (array $source) use ($expectWithUnsafeInitChar32) {
-            return [$source, $expectWithUnsafeInitChar32];
-        }, $sourcesWithUnsafeInitChar32);
-
-        $casesWithUnsafeSecondChar32 = array_map(function (array $source) use ($expectWithUnsafeSecondChar32) {
-            return [$source, $expectWithUnsafeSecondChar32];
-        }, $sourcesWithUnsafeSecondChar32);
-
-        return array_merge($miscCases, $casesWithUnsafeInitChar32, $casesWithUnsafeSecondChar32);
+        return array_merge($miscCases, $unsafeInitCharCases/*, $casesWithUnsafeInitChar32, $casesWithUnsafeSecondChar32*/);
     }
 
     /**
-     * @dataProvider safeString__cases
+     * @dataProvider parseSafeString__cases
      */
     public function test__parseSafeString(array $source, array $expectations)
     {
@@ -145,8 +122,10 @@ class ParsesStringsTest extends TestCase
         $this->assertParserStateHas($expectations['state'], $state);
     }
 
-    public function base64String__cases()
+    public static function base64Utf8Compliant__cases()
     {
+        // these string can have BASE64 errors, but if a string is
+        // correctly BASE64-encoded then it is also UTF-8 complant
         $miscCases = [
             [
                 // Empty string
@@ -203,6 +182,78 @@ class ParsesStringsTest extends TestCase
                     ]
                 ]
             ],
+            [
+            //    000000000 11
+            //    023456789 01
+                ["ł Zm9vgA=\n", 3],
+                [
+                    'result' => false,
+                    'string' => null,
+                    'state' => [
+                        'cursor' => [
+                            'offset' => 10,
+                            'sourceOffset' => 10,
+                            'sourceCharOffset' => 9
+                        ],
+                        'records' => [],
+                        'errors' => [
+                            [
+                                'sourceOffset' => 3,
+                                'sourceCharOffset' => 2,
+                                'message' => 'syntax error: invalid BASE64 string',
+                            ],
+                        ]
+                    ]
+                ]
+            ],
+        ];
+
+        $unsafeInitCharCases = array_map (function (array $case) {
+            return [
+                $case[0],
+                [
+                    'result' => true,
+                    'string' => $case['string'],
+                    'state' => [
+                        'cursor' => [
+                            'offset' => $case['offset'],
+                            'sourceOffset' => $case['offset'],
+                            'sourceCharOffset' => $case['charOffset'],
+                        ],
+                        'records' => [],
+                        'errors' => [],
+                    ]
+                ]
+            ];
+        }, [
+            [["ł ", 3],          'string' => '',  'offset' => 3, 'charOffset' => 2],  // end of string
+            [["ł \x2A", 3],      'string' => '',  'offset' => 3, 'charOffset' => 2],  //
+            [["ł \x2C", 3],      'string' => '',  'offset' => 3, 'charOffset' => 2],  //
+            [["ł \x2D", 3],      'string' => '',  'offset' => 3, 'charOffset' => 2],  //
+            [["ł \x2E", 3],      'string' => '',  'offset' => 3, 'charOffset' => 2],  //
+            [["ł \x3A", 3],      'string' => '',  'offset' => 3, 'charOffset' => 2],  //
+            [["ł \x3B", 3],      'string' => '',  'offset' => 3, 'charOffset' => 2],  //
+            [["ł \x3C", 3],      'string' => '',  'offset' => 3, 'charOffset' => 2],  //
+            [["ł \x3E", 3],      'string' => '',  'offset' => 3, 'charOffset' => 2],  //
+            [["ł \x3F", 3],      'string' => '',  'offset' => 3, 'charOffset' => 2],  //
+            [["ł \x40", 3],      'string' => '',  'offset' => 3, 'charOffset' => 2],  //
+            [["ł \x5B", 3],      'string' => '',  'offset' => 3, 'charOffset' => 2],  //
+            [["ł \x5C", 3],      'string' => '',  'offset' => 3, 'charOffset' => 2],  //
+            [["ł \x5D", 3],      'string' => '',  'offset' => 3, 'charOffset' => 2],  //
+            [["ł \x5E", 3],      'string' => '',  'offset' => 3, 'charOffset' => 2],  //
+            [["ł \x5F", 3],      'string' => '',  'offset' => 3, 'charOffset' => 2],  //
+            [["ł \x60", 3],      'string' => '',  'offset' => 3, 'charOffset' => 2],  //
+            [["ł \x7B", 3],      'string' => '',  'offset' => 3, 'charOffset' => 2],  //
+            [["łYQ==", 2],       'string' => 'a', 'offset' => 6, 'charOffset' => 5],  // EOF
+            [["łYQ==\x7B", 2],   'string' => 'a', 'offset' => 6, 'charOffset' => 5],  //
+            [["ł  YQ\x7BYQ", 4], 'string' => 'a', 'offset' => 6, 'charOffset' => 5],  //
+        ]);
+        return array_merge($miscCases, $unsafeInitCharCases);
+    }
+
+    public static function parseBase64String__cases()
+    {
+        $cases = [
             [
             //    0000000001 11
             //    0234567890 12
@@ -221,102 +272,13 @@ class ParsesStringsTest extends TestCase
                     ]
                 ]
             ],
-            [
-            //    000000000 11
-            //    023456789 01
-                ["ł Zm9vgA=\n", 3],
-                [
-                    'result' => false,
-                    'string' => null,
-                    'state' => [
-                        'cursor' => [
-                            'offset' => 3,
-                            'sourceOffset' => 3,
-                            'sourceCharOffset' => 2
-                        ],
-                        'records' => [],
-                        'errors' => [
-                            [
-                                'sourceOffset' => 3,
-                                'sourceCharOffset' => 2,
-                                'message' => 'syntax error: invalid BASE64 string',
-                            ],
-                        ]
-                    ]
-                ]
-            ],
         ];
 
-        $sourcesWithUnsafeInitChar32 = [
-//        //    023
-            ["ł ", 3],      // end of string
-            ["ł \x2A", 3],  //
-            ["ł \x2C", 3],  //
-            ["ł \x2D", 3],  //
-            ["ł \x2E", 3],  //
-            ["ł \x3A", 3],  //
-            ["ł \x3B", 3],  //
-            ["ł \x3C", 3],  //
-            ["ł \x3E", 3],  //
-            ["ł \x3F", 3],  //
-            ["ł \x40", 3],  //
-            ["ł \x5B", 3],  //
-            ["ł \x5C", 3],  //
-            ["ł \x5D", 3],  //
-            ["ł \x5E", 3],  //
-            ["ł \x5F", 3],  //
-            ["ł \x60", 3],  //
-            ["ł \x7B", 3],  //
-        ];
-
-        $expectWithUnsafeInitChar32 = [
-            'result' => true,
-            'string' => '',
-            'state' => [
-                'cursor' => [
-                    'offset' => 3,
-                    'sourceOffset' => 3,
-                    'sourceCharOffset' => 2
-                ],
-                'records' => [],
-                'errors' => [],
-            ]
-        ];
-
-        $sourcesWithUnsafeSixthChar65 = [
-        //    023456
-            ["łYQ==", 2],       // EOF
-            ["łYQ==\x7B", 2],   //
-            ["ł  YQ\x7BYQ", 4],   //
-        ];
-
-        $expectWithUnsafeSixthChar65 = [
-            'result' => true,
-            'string' => 'a',
-            'state' => [
-                'cursor' => [
-                    'offset' => 6,
-                    'sourceOffset' => 6,
-                    'sourceCharOffset' => 5
-                ],
-                'records' => [],
-                'errors' => []
-            ]
-        ];
-
-        $casesWithUnsafeInitChar32 = array_map(function (array $source) use ($expectWithUnsafeInitChar32) {
-            return [$source, $expectWithUnsafeInitChar32];
-        }, $sourcesWithUnsafeInitChar32);
-
-        $casesWithUnsafeSixthChar65 = array_map(function (array $source) use ($expectWithUnsafeSixthChar65) {
-            return [$source, $expectWithUnsafeSixthChar65];
-        }, $sourcesWithUnsafeSixthChar65);
-
-        return array_merge($miscCases, $casesWithUnsafeInitChar32, $casesWithUnsafeSixthChar65);
+        return array_merge(static::base64Utf8Compliant__cases(), $cases);
     }
 
     /**
-     * @dataProvider base64String__cases
+     * @dataProvider parseBase64String__cases
      */
     public function test__parseBase64String(array $source, array $expectations)
     {
@@ -329,64 +291,9 @@ class ParsesStringsTest extends TestCase
         $this->assertParserStateHas($expectations['state'], $state);
     }
 
-    public function base64Utf8String__cases()
+    public static function parseBase64Utf8String__cases()
     {
-        $miscCases = [
-            [
-                // Empty string
-                [''],
-                [
-                    'result' => true,
-                    'string' => '',
-                    'state' => [
-                        'cursor' => [
-                            'offset' => 0,
-                            'sourceOffset' => 0,
-                            'sourceCharOffset' => 0
-                        ],
-                        'records' => [],
-                        'errors' => []
-                    ]
-                ]
-            ],
-
-            [
-            //    0000000001111111111222222222233333333334444444 4
-            //    0234567890123456789012345678901234567890123456 7
-                ["ł Y249Sm9obiBTbWl0aCxkYz1leGFtcGxlLGRjPW9yZw==\n", 3],
-                [
-                    'result' => true,
-                    'string' => 'cn=John Smith,dc=example,dc=org',
-                    'state' => [
-                        'cursor' => [
-                            'offset' => 47,
-                            'sourceOffset' => 47,
-                            'sourceCharOffset' => 46
-                        ],
-                        'records' => [],
-                        'errors' => []
-                    ]
-                ]
-            ],
-
-            [
-            //    00000000011111 11
-            //    02345678901234 56
-                ["ł dMWCdXN6Y3o=\n", 3],
-                [
-                    'result' => true,
-                    'string' => 'tłuszcz',
-                    'state' => [
-                        'cursor' => [
-                            'offset' => 15,
-                            'sourceOffset' => 15,
-                            'sourceCharOffset' => 14
-                        ],
-                        'records' => [],
-                        'errors' => []
-                    ]
-                ]
-            ],
+        $cases = [
             [
             //    0000000001 11
             //    0234567890 12
@@ -396,9 +303,9 @@ class ParsesStringsTest extends TestCase
                     'string' => "foo\x80",
                     'state' => [
                         'cursor' => [
-                            'offset' => 3,
-                            'sourceOffset' => 3,
-                            'sourceCharOffset' => 2
+                            'offset' => 11,
+                            'sourceOffset' => 11,
+                            'sourceCharOffset' => 10
                         ],
                         'records' => [],
                         'errors' => [
@@ -411,102 +318,13 @@ class ParsesStringsTest extends TestCase
                     ]
                 ]
             ],
-            [
-            //    000000000 11
-            //    023456789 01
-                ["ł Zm9vgA=\n", 3],
-                [
-                    'result' => false,
-                    'string' => null,
-                    'state' => [
-                        'cursor' => [
-                            'offset' => 3,
-                            'sourceOffset' => 3,
-                            'sourceCharOffset' => 2
-                        ],
-                        'records' => [],
-                        'errors' => [
-                            [
-                                'sourceOffset' => 3,
-                                'sourceCharOffset' => 2,
-                                'message' => 'syntax error: invalid BASE64 string',
-                            ],
-                        ]
-                    ]
-                ]
-            ],
         ];
 
-        $sourcesWithUnsafeInitChar32 = [
-//        //    023
-            ["ł ", 3],      // end of string
-            ["ł \x2A", 3],  //
-            ["ł \x2C", 3],  //
-            ["ł \x2D", 3],  //
-            ["ł \x2E", 3],  //
-            ["ł \x3A", 3],  //
-            ["ł \x3B", 3],  //
-            ["ł \x3C", 3],  //
-            ["ł \x3E", 3],  //
-            ["ł \x3F", 3],  //
-            ["ł \x40", 3],  //
-            ["ł \x5B", 3],  //
-            ["ł \x5C", 3],  //
-            ["ł \x5D", 3],  //
-            ["ł \x5E", 3],  //
-            ["ł \x5F", 3],  //
-            ["ł \x60", 3],  //
-            ["ł \x7B", 3],  //
-        ];
-
-        $expectWithUnsafeInitChar32 = [
-            'result' => true,
-            'string' => '',
-            'state' => [
-                'cursor' => [
-                    'offset' => 3,
-                    'sourceOffset' => 3,
-                    'sourceCharOffset' => 2
-                ],
-                'records' => [],
-                'errors' => [],
-            ]
-        ];
-
-        $sourcesWithUnsafeSixthChar65 = [
-        //    023456
-            ["łYQ==", 2],       // EOF
-            ["łYQ==\x7B", 2],   //
-            ["ł  YQ\x7BYQ", 4],   //
-        ];
-
-        $expectWithUnsafeSixthChar65 = [
-            'result' => true,
-            'string' => 'a',
-            'state' => [
-                'cursor' => [
-                    'offset' => 6,
-                    'sourceOffset' => 6,
-                    'sourceCharOffset' => 5
-                ],
-                'records' => [],
-                'errors' => []
-            ]
-        ];
-
-        $casesWithUnsafeInitChar32 = array_map(function (array $source) use ($expectWithUnsafeInitChar32) {
-            return [$source, $expectWithUnsafeInitChar32];
-        }, $sourcesWithUnsafeInitChar32);
-
-        $casesWithUnsafeSixthChar65 = array_map(function (array $source) use ($expectWithUnsafeSixthChar65) {
-            return [$source, $expectWithUnsafeSixthChar65];
-        }, $sourcesWithUnsafeSixthChar65);
-
-        return array_merge($miscCases, $casesWithUnsafeInitChar32, $casesWithUnsafeSixthChar65);
+        return array_merge(static::base64Utf8Compliant__cases(), $cases);
     }
 
     /**
-     * @dataProvider base64Utf8String__cases
+     * @dataProvider parseBase64Utf8String__cases
      */
     public function test__parseBase64Utf8String(array $source, array $expectations)
     {
@@ -521,7 +339,7 @@ class ParsesStringsTest extends TestCase
 
     public function base64Decode__cases()
     {
-        $miscCases = [
+        return [
             [
                 // Empty string
                 [''],
@@ -596,7 +414,7 @@ class ParsesStringsTest extends TestCase
                     'result' => null,
                     'state' => [
                         'cursor' => [
-                            'offset' => 3,
+                            'offset' => 10,
                         ],
                         'records' => [],
                         'errors' => [
@@ -610,7 +428,6 @@ class ParsesStringsTest extends TestCase
                 'Zm9vgA=', 3
             ],
         ];
-        return $miscCases;
     }
 
     /**
@@ -628,7 +445,7 @@ class ParsesStringsTest extends TestCase
 
     public function parseUtf8Check__cases()
     {
-        $miscCases = [
+        return [
             [
                 // Empty string
                 [''],
@@ -671,7 +488,7 @@ class ParsesStringsTest extends TestCase
                     'result' => false,
                     'state' => [
                         'cursor' => [
-                            'offset' => 3,
+                            'offset' => 6,
                         ],
                         'records' => [],
                         'errors' => [
@@ -685,7 +502,6 @@ class ParsesStringsTest extends TestCase
                 "sd\xC5", 3
             ],
         ];
-        return $miscCases;
     }
 
     /**

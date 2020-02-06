@@ -28,7 +28,7 @@ class ParsesDnSpecTest extends TestCase
     protected function getTestObject()
     {
         return new class {
-            use ParsesDnSpec;
+            use ParsesDnSpec { parseMatchedDn as public; }
             use MatchesPatterns;
             use ParsesStrings;
         };
@@ -91,7 +91,7 @@ class ParsesDnSpecTest extends TestCase
         ]);
 
 
-        $safeStringDnCases = array_map(function ($case) {
+        $safeStringCases = array_map(function ($case) {
 
             $dn = $case[0];
             $result = $case[1];
@@ -123,7 +123,7 @@ class ParsesDnSpecTest extends TestCase
             return [$source, $expectations];
         }, static::dnMatch__cases());
 
-        $base64StringDnCases = array_map(function ($case) {
+        $base64StringCases = array_map(function ($case) {
 
             $dn = $case[0];
             $dnBase64 = base64_encode($dn);
@@ -156,7 +156,125 @@ class ParsesDnSpecTest extends TestCase
             return [$source, $expectations];
         }, static::dnMatch__cases());
 
-        return array_merge($missingTagCases, $safeStringDnCases, $base64StringDnCases);
+        $invalidBase64StringCases = array_map(function ($case) {
+
+            $dnBase64 = $case[0];
+            $result = false;
+            //          02345678
+            $source = ['ł dn:: '.$dnBase64, 3];
+            // the 5 below is from strlen('dn:: ')
+            $errors = $result ? [] : [
+                [
+                    'sourceOffset' => 3 + 5,
+                    'sourceCharOffset' => 2 + 5,
+                    'message' => 'syntax error: invalid BASE64 string',
+                ]
+            ];
+            $cursor = [
+                'offset' => 3 + 5 + $case['offset'],
+                'sourceOffset' => 3 + 5 + $case['offset'],
+                'sourceCharOffset' => 2 + 5 + $case['offset'],
+            ];
+            $expectations = [
+                'result' => $result,
+                'dn' => null,
+                'state' => [
+                    'cursor' => $cursor,
+                    'errors' => $errors,
+                    'records' => [],
+                ],
+            ];
+
+            return [$source, $expectations];
+        }, [
+        //    0000000 00
+        //    0123456 78
+            ["Zm9vgA=\n", 'offset' => 7, 'charOffset' => 7],
+        ]);
+
+        $base64InvalidUtf8StringCases = array_map(function ($case) {
+
+            $dnBase64 = $case[0];
+            $result = false;
+            //          02345678
+            $source = ['ł dn:: '.$dnBase64, 3];
+            // the 5 below is from strlen('dn:: ')
+            $errors = $result ? [] : [
+                [
+                    'sourceOffset' => 3 + 5,
+                    'sourceCharOffset' => 2 + 5,
+                    'message' => 'syntax error: the string is not a valid UTF8',
+                ]
+            ];
+            $cursor = [
+                'offset' => 3 + 5 + $case['offset'],
+                'sourceOffset' => 3 + 5 + $case['offset'],
+                'sourceCharOffset' => 2 + 5 + $case['charOffset'],
+            ];
+            $expectations = [
+                'result' => $result,
+                'dn' => $case['dn'],
+                'state' => [
+                    'cursor' => $cursor,
+                    'errors' => $errors,
+                    'records' => [],
+                ],
+            ];
+
+            return [$source, $expectations];
+        }, [
+        //    00000000 0
+        //    01234567 8
+            ["YXNkgGZm\n", 'offset' => 8, 'charOffset' => 8, 'dn' => "asd\x80ff"],
+        ]);
+
+        $malformedStringCases = array_map(function ($case) {
+
+            $sep = $case[0];
+            $dn = $case[1];
+            $result = false;
+            //          0123456
+            $source = ['dn:'.$sep.$dn, 0];
+            $type = substr($sep, 0, 1) === ':' ? 'BASE64': 'SAFE';
+            $message = 'malformed '.$type.'-STRING (RFC2849)';
+            $errors = $result ? [] : [
+                [
+                    'sourceOffset' => strlen('dn:'.$sep) + $case[2],
+                    'sourceCharOffset' => strlen('dn:'.$sep) + $case[2],
+                    'message' => 'syntax error: '.$message,
+                ]
+            ];
+            $cursor = [
+                'offset' => strlen($source[0]),
+                'sourceOffset' => strlen($source[0]),
+                'sourceCharOffset' => mb_strlen($source[0]),
+            ];
+            $expectations = [
+                'result' => $result,
+                'dn' => null,
+                'state' => [
+                    'cursor' => $cursor,
+                    'errors' => $errors,
+                    'records' => [],
+                ],
+            ];
+
+            return [$source, $expectations];
+        }, [
+            [' ',  ':sdf',     0],  // 1'st is not SAFE-INIT-CHAR (colon)
+            [' ',  'tłuszcz',  1],  // 2'nd is not SAFE-CHAR (>0x7F)
+            [':',  'tłuszcz',  1],  // 2'nd is not BASE64-CHAR
+            [': ', 'Az@123=',  2],  // 3'rd is not BASE64-CHAR
+        ]);
+
+        return array_merge(
+            $missingTagCases,
+            $safeStringCases,
+            $base64StringCases,
+            $invalidBase64StringCases,
+            $base64InvalidUtf8StringCases,
+            $malformedStringCases
+        );
     }
 
     /**
@@ -171,6 +289,19 @@ class ParsesDnSpecTest extends TestCase
         $this->assertSame($expectations['result'] ?? true, $result);
         $this->assertSame($expectations['dn'] ?? null, $dn);
         $this->assertParserStateHas($expectations['state'], $state);
+    }
+
+    public function test__parseMatchedDn__internalError()
+    {
+        $state = $this->getParserStateFromSource('dn:', 3);
+        $parser = $this->getTestObject();
+
+        $this->assertFalse($parser->parseMatchedDn($state, [], $string));
+        $errors = $state->getErrors();
+        $this->assertCount(1, $errors);
+        $error = $errors[0];
+        $this->assertSame('internal error: neither dn_safe nor dn_b64 group found', $error->getMessage());
+        $this->assertSame(3, $error->getSourceLocation()->getOffset());
     }
 }
 

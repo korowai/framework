@@ -100,11 +100,11 @@ trait ParsesDnSpec
      */
     protected function parseMatchedDnSpec(State $state, array $matches, string &$dn = null) : bool
     {
-        foreach (['dn_safe_error' => 'SAFE', 'dn_b64_error' => 'BASE64'] as $key => $type) {
-            if (($offset = $matches[$key][1] ?? -1) >= 0) {
-                $state->errorAt($offset, 'syntax error: invalid '.$type.' string');
-                return false;
+        if (count($errors = Rfc2849x::getCapturedErrorsMessages($matches)) > 0) {
+            foreach ($errors as $key => $message) {
+                $state->errorAt($matches[$key][1], 'syntax error: '.$message);
             }
+            return false;
         }
         return $this->parseMatchedDn($state, $matches, $dn);
     }

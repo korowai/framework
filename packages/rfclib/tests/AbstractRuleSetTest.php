@@ -248,14 +248,20 @@ class AbstractRuleSetTest extends TestCase
             [
                 RuleSet1::class,
                 [
-                    'value_int_error' => 'malformed integer value'
+                    'value_int_error' => 'malformed integer value',
                 ]
             ],
             [
                 RuleSet2::class,
                 [
-                    'value_int_error' => 'malformed integer value',
-                    'value_string_error' => 'malformed string'
+                    'value_int_error' => [
+                        0 => 'malformed integer value',
+                        'ASSIGNMENT_INT' => 'malformed integer in assignment',
+                    ],
+                    'value_string_error' => [
+                        0 => 'malformed string',
+                        'ASSIGNMENT_STRING' => 'malformed string in assignment',
+                    ]
                 ]
             ]
         ];
@@ -270,20 +276,40 @@ class AbstractRuleSetTest extends TestCase
         $this->assertSame($expected, $class::getDefinedErrors(), $message);
     }
 
-    /**
-     * @dataProvider filterErrorsCaptured__cases
-     */
-    public function test__getCapturedErrors(string $class, string $ruleName, array $matches)
+    public function getErrorMessage__cases()
     {
-        $definedErrors = $class::getDefinedErrors();
-        $errorsCaptured = $class::filterErrorsCaptured($ruleName, $matches);
-        $expected = array_intersect_key($definedErrors, $errorsCaptured);
-        $actual = $class::getCapturedErrors($ruleName, $matches);
+        foreach (static::classDefinedErrors__cases() as $case) {
+            $class = $case[0];
+            foreach ($case[1] as $errorKey => $error) {
+                if (is_array($error)) {
+                    foreach ($error as $ruleKey => $message) {
+                        if ($ruleKey === 0) {
+                            yield [$class, [$errorKey], $message];
+                            yield [$class, [$errorKey, 'SHALL_BE_IGNORED'], $message];
+                        } else {
+                            yield [$class, [$errorKey, $ruleKey], $message];
+                        }
+                    }
+                } else {
+                    yield [$class, [$errorKey], $error];
+                    yield [$class, [$errorKey, 'SHALL_BE_IGNORED'], $error];
+                }
+            }
+        }
+    }
+
+    /**
+     * @dataProvider getErrorMessage__cases
+     */
+    public function test__getErrorMessage(string $class, array $args, string $expected)
+    {
+        $actual = $class::getErrorMessage(...$args);
 
         $message = 'Failed asserting that '.
-            $class.'::getCapturedErrors('.
-                "'".$ruleName."', ".
-                var_export($matches, true).
+            $class.'::getErrorMessage('.
+                implode(', ', array_map(function (string $str) {
+                    return var_export($str, true);
+                }, $args)).
             ') is correct';
         $this->assertSame($expected, $actual, $message);
     }

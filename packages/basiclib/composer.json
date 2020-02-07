@@ -23,7 +23,7 @@
         "Korowai\\Lib\\Basic\\" : "src//"
       },
       "exclude-from-classmap": [
-        "/Tests/",
+        "/tests/",
         "/Testing/"
       ]
     },

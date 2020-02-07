@@ -15,7 +15,6 @@
     <testsuites>
         <testsuite name="Korowai Packages Test Suite">
             <directory suffix="Test.php">./packages/*/tests/</directory>
-            <exclude>packages/rfclib/tests/Rules</exclude>
         </testsuite>
     </testsuites>
 
@@ -24,6 +23,7 @@
             <directory>./packages/</directory>
             <exclude>
                 <directory>./packages/*/tests</directory>
+                <directory>./packages/*/tests-nocov</directory>
                 <directory>./packages/*/Behat</directory>
                 <directory>./packages/*/Resources</directory>
                 <directory>./packages/*/vendor</directory>

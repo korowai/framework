@@ -28,7 +28,7 @@
       "files" : [
       ],
       "exclude-from-classmap": [
-        "/Tests/",
+        "/tests/",
         "/Testing/"
       ]
     },

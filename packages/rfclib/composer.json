@@ -27,13 +27,15 @@
       "files" : [
       ],
       "exclude-from-classmap": [
-        "/Tests/",
+        "/tests/",
+        "/tests-nocov/",
         "/Testing/"
       ]
     },
     "autoload-dev": {
       "psr-4" : {
         "Korowai\\Tests\\Lib\\Rfc\\" : "tests/",
+        "Korowai\\TestsNocov\\Lib\\Rfc\\" : "tests-nocov/",
         "Korowai\\Testing\\Lib\\Rfc\\" : "Testing/"
       }
     }

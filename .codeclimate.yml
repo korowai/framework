@@ -10,11 +10,13 @@ exclude_patterns:
   - "bin/"
   - "vendor/"
   - "**/tests/"
+  - "**/tests-nocov/"
   - "**/Tests/"
   - "**/Behat/"
   - "**/Resources/"
   - "**/vendor/"
   - "packages/ldaplib/src/Adapter/ExtLdap/LdapLink.php"
+  - "packages/rfclib/Testing/RuleSet*.php"
   - "packages/compatlib/src/functions/preg.php"
 plugins:
   phpcodesniffer:

@@ -51,7 +51,9 @@ class RuleSet1 extends RuleSet0
      */
     public static function getDefinedErrors() : array
     {
-        $errors = ['value_int_error' => 'malformed integer value'];
+        $errors = [
+            'value_int_error' => 'malformed integer value',
+        ];
         return array_merge(parent::getDefinedErrors(), $errors);
     }
 

@@ -53,8 +53,16 @@ class RuleSet2 extends RuleSet1
      */
     public static function getDefinedErrors() : array
     {
-        $errors = ['value_string_error' => 'malformed string'];
-        return array_merge(parent::getDefinedErrors(), $errors);
+        $errors = [
+            'value_int_error' => [
+                'ASSIGNMENT_INT' => 'malformed integer in assignment',
+            ],
+            'value_string_error' => [
+                'malformed string',
+                'ASSIGNMENT_STRING' => 'malformed string in assignment'
+            ],
+        ];
+        return array_merge_recursive(parent::getDefinedErrors(), $errors);
     }
 
     /**

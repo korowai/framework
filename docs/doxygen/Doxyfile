@@ -891,6 +891,7 @@ EXCLUDE_SYMLINKS       = NO
 
 EXCLUDE_PATTERNS       = */Tests/* \
                          */tests/* \
+                         */tests-nocov/* \
                          */Resources/* \
                          */Behat/* \
                          */vendor/*

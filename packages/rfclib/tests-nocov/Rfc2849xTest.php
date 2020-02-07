@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Tests\Lib\Rfc\Rules;
+namespace Korowai\TestsNocov\Lib\Rfc;
 
 use Korowai\Lib\Rfc\Rfc2849x;
 use Korowai\Lib\Rfc\Rfc2849;

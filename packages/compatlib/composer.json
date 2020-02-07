@@ -29,7 +29,7 @@
         "src//functions/preg.php"
       ],
       "exclude-from-classmap": [
-        "/Tests/",
+        "/tests/",
         "/Testing/"
       ]
     },

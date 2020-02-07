@@ -100,9 +100,10 @@ trait ParsesDnSpec
      */
     protected function parseMatchedDnSpec(State $state, array $matches, string &$dn = null) : bool
     {
-        if (count($errors = Rfc2849x::getCapturedErrors('DN_SPEC_X', $matches)) > 0) {
-            foreach ($errors as $key => $message) {
-                $state->errorAt($matches[$key][1], 'syntax error: '.$message);
+        if (count($errors = Rfc2849x::filterErrorsCaptured('DN_SPEC_X', $matches)) > 0) {
+            foreach ($errors as $errorKey => $errorMatch) {
+                $message = Rfc2849x::getErrorMessage($errorKey, 'DN_SPEC_X');
+                $state->errorAt($errorMatch[1], 'syntax error: '.$message);
             }
             return false;
         }

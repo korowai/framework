@@ -12,6 +12,7 @@
       </source>
       <ignore>
         <path>*/tests/*</path>
+        <path>*/tests-nocov/*</path>
         <path>*/Behat/*</path>
       </ignore>
       <visibility>public</visibility>

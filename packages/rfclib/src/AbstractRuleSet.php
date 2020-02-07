@@ -105,8 +105,11 @@ abstract class AbstractRuleSet implements StaticRuleSetInterface
     }
 
     /**
-     * Returns an array with capture group names as keys and error messages as
-     * values for all class-defined error capture groups.
+     * Returns an array with capture group names as keys (error keys) and error
+     * definitions as values. An error definition may be either an error
+     * message (string) or an array of error messages per rule (rule names as
+     * keys and corresponding messages as values). The element at index 0 is
+     * used as default message for given error key.
      *
      * @return array
      */
@@ -116,18 +119,25 @@ abstract class AbstractRuleSet implements StaticRuleSetInterface
     }
 
     /**
-     * Returns an array with captured error names as keys and messages as
-     * values for given rule.
+     * Returns error message for given error. The *$errorKey* is the name of
+     * error-catching capture group.
      *
+     * @param  string $errorKey
      * @param  string $ruleName
-     * @param  array $matches
      * @return array
      */
-    public static function getCapturedErrors(string $ruleName, array $matches) : array
+    public static function getErrorMessage(string $errorKey, string $ruleName = null) : string
     {
         $definedErrors = static::getDefinedErrors();
-        $capturedErrors = static::filterErrorsCaptured($ruleName, $matches);
-        return array_intersect_key($definedErrors, $capturedErrors);
+        $error = $definedErrors[$errorKey];
+
+        if (is_array($error)) {
+            $message = $error[$ruleName] ?? ($error[0] ?? array_values($error)[0]);
+        } else {
+            $message = $error;
+        }
+
+        return $message;
     }
 }
 

@@ -34,7 +34,7 @@
         "/Behat/",
         "/Resources/",
         "/Testing/",
-        "/Tests/"
+        "/tests/"
       ]
     },
     "autoload-dev": {

@@ -3,20 +3,18 @@ php:
   - '7.2'
   - '7.3'
 env:
-  - KOROWAI_TEST_RFC=true
-    KOROWAI_CODECOV=false
+  - KOROWAI_NOCOV=false
     KOROWAI_HEAVY_TESTING=true
-  - KOROWAI_TEST_RFC=false
-    KOROWAI_CODECOV=true
+  - KOROWAI_NOCOV=true
     KOROWAI_HEAVY_TESTING=true
 install:
   - travis_retry composer install --no-interaction
 script:
   - mkdir -p build/logs
-  - if $KOROWAI_TEST_RFC; then
-      php vendor/bin/phpunit -c phpunit-rfc.xml.dist;
+  - if $KOROWAI_NOCOV; then
+      php vendor/bin/phpunit -c phpunit-nocov.xml.dist;
     else
       php vendor/bin/phpunit -c phpunit.xml.dist;
     fi
 after_success:
-  - if $KOROWAI_CODECOV; then curl -s https://codecov.io/bash | bash; fi
+  - if ! $KOROWAI_NOCOV; then curl -s https://codecov.io/bash | bash; fi

@@ -59,7 +59,8 @@ interface StaticRuleSetInterface
     public static function valueCaptures(string $ruleName) : array;
 
     /**
-     * Returns sub-array of *$matches* containing only captured errors.
+     * Returns an array containing all entries of *$matches* which have keys
+     * that are present in *errorCaptures($ruleName)*.
      *
      * @param  string $ruleName
      * @param  array $matches
@@ -68,8 +69,8 @@ interface StaticRuleSetInterface
     public static function filterErrorsCaptured(string $ruleName, array $matches) : array;
 
     /**
-     * Returns sub-array of *$matches* containing only captured non-error
-     * values.
+     * Returns an array containing all entries of *$matches* which have keys
+     * that are present in *valueCaptures($ruleName)*.
      *
      * @param  string $ruleName
      * @param  array $matches

@@ -82,7 +82,7 @@ trait ParsesDnSpec
     }
 
     /**
-     * Completes dn-spec parsing asssuming that dn-spec regular expression
+     * Completes dn-spec parsing assuming that dn-spec regular expression
      * matched successfully.
      *
      * *$matches* provide capture groups obtained from successful matching

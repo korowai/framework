@@ -17,7 +17,7 @@ namespace Korowai\Lib\Rfc;
  * Resulable PCRE expressions for core rules defined in
  * [RFC5234](https://tools.ietf.org/html/rfc5234#appendix-B.1).
  */
-class Rfc5234
+class Rfc5234 extends AbstractRuleSet
 {
     // character lists for character classes
     public const ALPHACHARS = 'A-Za-z';
@@ -51,6 +51,46 @@ class Rfc5234
     public const SP = ' ';
     public const VCHAR = '['.self::VCHARCHARS.']';
     public const WSP = '['.self::WSPCHARS.']';
+
+    protected static $rfc5234Rules = [
+        'ALPHACHARS',
+        'BITCHARS',
+        'CHARCHARS',
+        'CRCHARS',
+        'CTLCHARS',
+        'DIGITCHARS',
+        'HEXDIGCHARS',
+        'HTABCHARS',
+        'LFCHARS',
+        'OCTETCHARS',
+        'SPCHARS',
+        'VCHARCHARS',
+        'WSPCHARS',
+        'ALPHA',
+        'BIT',
+        'CHAR',
+        'CR',
+        'CRLF',
+        'CTL',
+        'DIGIT',
+        'DQUOTE',
+        'HEXDIG',
+        'HTAB',
+        'LF',
+        'LWSP',
+        'OCTET',
+        'SP',
+        'VCHAR',
+        'WSP',
+    ];
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getClassRuleNames() : array
+    {
+        return self::$rfc5234Rules;
+    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

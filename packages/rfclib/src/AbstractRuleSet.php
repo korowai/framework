@@ -74,19 +74,60 @@ abstract class AbstractRuleSet implements RuleSetInterface
     }
 
     /**
+     * Returns non null *$matches*.
+     *
+     * @param  array $matches
+     * @return array
+     */
+    public static function filterMatches(array $matches) : array
+    {
+        return array_filter($matches, function ($item) {
+            return is_array($item) ? $item[0] !== null : $item !== null;
+        });
+    }
+
+    /**
      * {@inheritdoc}
      */
-    public static function filterErrors(string $ruleName, array $matches) : array
+    public static function filterErrorsCaptured(string $ruleName, array $matches) : array
     {
+        $matches = static::filterMatches($matches);
         return array_intersect_key($matches, static::errorCaptures($ruleName));
     }
 
     /**
      * {@inheritdoc}
      */
-    public static function filterValues(string $ruleName, array $matches) : array
+    public static function filterValuesCaptured(string $ruleName, array $matches) : array
     {
+        $matches = static::filterMatches($matches);
         return array_intersect_key($matches, static::valueCaptures($ruleName));
+    }
+
+    /**
+     * Returns an array with capture group names as keys and error messages as
+     * values for all class-defined error capture groups.
+     *
+     * @return array
+     */
+    public static function getDefinedErrors() : array
+    {
+        return [];
+    }
+
+    /**
+     * Returns an array with captured error names as keys and messages as
+     * values for given rule.
+     *
+     * @param  string $ruleName
+     * @param  array $matches
+     * @return array
+     */
+    public static function getCapturedErrors(string $ruleName, array $matches) : array
+    {
+        $definedErrors = static::getDefinedErrors();
+        $capturedErrors = static::filterErrorsCaptured($ruleName, $matches);
+        return array_intersect_key($definedErrors, $capturedErrors);
     }
 }
 

@@ -23,7 +23,7 @@ namespace Korowai\Lib\Rfc;
  * $result = preg_match('/^'.Rfc3986::URI_REFERENCE.'$/', $subject, $matches, PREG_UNMATCHED_AS_NULL)
  * ```
  */
-class Rfc3986
+class Rfc3986 extends AbstractRuleSet
 {
     // character lists for character classes
     public const ALPHACHARS = Rfc5234::ALPHACHARS;
@@ -247,18 +247,65 @@ class Rfc3986
             self::RELATIVE_REF.
         ')';
 
-    /**
-     * Array of names of PCRE named groups that, possibly, contain the
-     * [path](https://tools.ietf.org/html/rfc3986#section-3.3) component of the
-     * URI.
-     */
-    public const PATH_KEYS = [
-        'path_abempty'  => true,
-        'path_absolute' => true,
-        'path_noscheme' => true,
-        'path_rootless' => true,
-        'path_empty'    => true,
+    protected static $rfc3986Rules = [
+        'ALPHACHARS',
+        'DIGITCHARS',
+        'HEXDIGCHARS',
+        'GEN_DELIM_CHARS',
+        'SUB_DELIM_CHARS',
+        'RESERVEDCHARS',
+        'UNRESERVEDCHARS',
+        'PCHARCHARS',
+        'ALPHA',
+        'DIGIT',
+        'HEXDIG',
+        'SUB_DELIMS',
+        'GEN_DELIMS',
+        'RESERVED',
+        'UNRESERVED',
+        'PCT_ENCODED',
+        'PCHAR',
+        'SEGMENT_NZ_NC',
+        'SEGMENT_NZ',
+        'SEGMENT',
+        'PATH_EMPTY',
+        'PATH_NOSCHEME',
+        'PATH_ROOTLESS',
+        'PATH_ABSOLUTE',
+        'PATH_ABEMPTY',
+        'PATH',
+        'REG_NAME',
+        'DEC_OCTET',
+        'DEC4OCTETS',
+        'IPV4ADDRESS',
+        'IPV6V4ADDRESS',
+        'H16',
+        'LS32',
+        'IPV6ADDRESS',
+        'IPVFUTURE',
+        'IP_LITERAL',
+        'PORT',
+        'HOST',
+        'USERINFO',
+        'AUTHORITY',
+        'SCHEME',
+        'RELATIVE_PART',
+        'HIER_PART',
+        'FRAGMENT',
+        'QUERY',
+        'RELATIVE_REF',
+        'ABSOLUTE_URI',
+        'URI',
+        'URI_REFERENCE',
     ];
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getClassRuleNames() : array
+    {
+        return self::$rfc3986Rules;
+    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

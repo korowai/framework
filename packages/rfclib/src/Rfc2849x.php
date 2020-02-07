@@ -155,98 +155,32 @@ class Rfc2849x extends Rfc2849
     ];
 
     /**
-     * Returns an array of names of rules provided by this class.
-     *
-     * @return array
-     */
-    protected static function getRuleNames() : array
-    {
-        return array_merge(self::$rfc2849xRules, parent::getRuleNames());
-    }
-
-    /**
      * Defined named capture groups that appear in patterns of the Rfc2849x
      * class.
      */
-    protected static $rfc2849xErrorCaptures = [
-        'dn_b64_error'      => [
-            'message'       => 'malformed BASE64-STRING (RFC2849)',
-        ],
-        'dn_safe_error'     => [
-            'message'       => 'malformed SAFE-STRING (RFC2849)',
-        ],
-        'value_b64_error'   => [
-            'message'       => 'malformed BASE64-STRING (RFC2849)',
-        ],
-        'value_safe_error'  => [
-            'message'       => 'malformed SAFE-STRING (RFC2849)',
-        ],
-        'value_url_error'   => [
-            'message'       => 'malformed URL (RFC2849/RFC3986)',
-        ],
-        'version_error'     => [
-            'message'       => 'expected valid version number (RFC2849)'
-        ]
+    protected static $rfc2849xErrors = [
+        'dn_b64_error'      => 'malformed BASE64-STRING (RFC2849)',
+        'dn_safe_error'     => 'malformed SAFE-STRING (RFC2849)',
+        'value_b64_error'   => 'malformed BASE64-STRING (RFC2849)',
+        'value_safe_error'  => 'malformed SAFE-STRING (RFC2849)',
+        'value_url_error'   => 'malformed URL (RFC2849/RFC3986)',
+        'version_error'     => 'expected valid version number (RFC2849)',
     ];
 
     /**
-     * Returns defined named capture groups that appear in patterns of the
-     * Rfc2849x class.
-     *
-     * @return array
+     * {@inheritdoc}
      */
-    public static function definedErrorCaptures() : array
+    public static function getClassRuleNames() : array
     {
-        return self::$rfc2849xErrorCaptures;
+        return array_merge(self::$rfc2849xRules, parent::getClassRuleNames());
     }
 
     /**
-     * Returns non null *$matches*.
-     *
-     * @param  array $matches
-     * @return array
+     * {@inheritdoc}
      */
-    public static function getNonNullMatches(array $matches) : array
+    public static function getDefinedErrors() : array
     {
-        return array_filter($matches, function ($item) {
-            return is_array($item) ? $item[0] != null : $item != null;
-        });
-    }
-
-    /**
-     * Returns entries of *$matches* whose keys appear in
-     * *definedErrorCaptures()*.
-     *
-     * @return array
-     */
-    public static function getCapturedErrors(array $matches) : array
-    {
-        $matches = static::getNonNullMatches($matches);
-        return array_intersect_key($matches, static::definedErrorCaptures());
-    }
-
-    /**
-     * Returns the entries from *definedErrorCaptures()* whose keys appear in
-     * *$matches*.
-     *
-     * @return array
-     */
-    public static function getCapturedErrorsDefinitions(array $matches) : array
-    {
-        $matches = static::getNonNullMatches($matches);
-        return array_intersect_key(static::definedErrorCaptures(), $matches);
-    }
-
-    /**
-     * Returns the messages for error capture groups appearing in *$matches*.
-     *
-     * @return array
-     */
-    public static function getCapturedErrorsMessages(array $matches) : array
-    {
-        return array_map(function (array $def) {
-            return $def['message'];
-        }, static::getCapturedErrorsDefinitions($matches));
+        return array_merge(self::$rfc2849xErrors, parent::getDefinedErrors());
     }
 }
 

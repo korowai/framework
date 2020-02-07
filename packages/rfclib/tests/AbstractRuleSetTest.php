@@ -127,7 +127,33 @@ class AbstractRuleSetTest extends TestCase
         $this->assertSame($expected, $actual, $message);
     }
 
-    public static function filterErrors__cases()
+    public static function filterMatches__cases()
+    {
+        return [
+            [
+                [],
+                []
+            ],
+            [
+                ['foo' => 'FOO', 'bar' => null, 'geez' => [null, -1], 'emptys' => '', 'emptya' => ['', 0]],
+                ['foo' => 'FOO', 'emptys' => '', 'emptya' => ['', 0]]
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider filterMatches__cases
+     */
+    public function test__filterMatches($matches, $expected)
+    {
+        $message = 'Failed asserting that '.
+            AbstractRuleSet::class.'::filterMatches('.
+                var_export($matches, true).
+            ') is correct';
+        $this->assertSame($expected, AbstractRuleSet::filterMatches($matches));
+    }
+
+    public static function filterErrorsCaptured__cases()
     {
         return [
             [ RuleSet0::class, 'VAR_NAME', ['inexistent' => '']],
@@ -144,16 +170,23 @@ class AbstractRuleSetTest extends TestCase
             [ RuleSet2::class, 'STRING', ['value_string_error' => ';']],
             [ RuleSet2::class, 'ASSIGNMENT_STRING', ['var_name' => 'v1', 'value_string' => '"xy"']],
             [ RuleSet2::class, 'ASSIGNMENT_STRING', ['var_name' => 'v1', 'value_string_error' => ';']],
+
+            // cases with null matches.
+            [ RuleSet2::class, 'ASSIGNMENT_INT', ['var_name' => 'v1', 'value_int_error' => null]],
+            [ RuleSet2::class, 'ASSIGNMENT_INT', ['var_name' => 'v1', 'value_int_error' => [null, -1]]],
+            [ RuleSet2::class, 'ASSIGNMENT_STRING', ['var_name' => 'v1', 'value_string_error' => null]],
+            [ RuleSet2::class, 'ASSIGNMENT_STRING', ['var_name' => 'v1', 'value_string_error' => [null, -1]]],
         ];
     }
 
     /**
-     * @dataProvider filterErrors__cases
+     * @dataProvider filterErrorsCaptured__cases
      */
-    public function test__filterErrors($class, $ruleName, $matches)
+    public function test__filterErrorsCaptured($class, $ruleName, $matches)
     {
+        $matches = $class::filterMatches($matches);
         $expected = array_intersect_key($matches, $class::errorCaptures($ruleName));
-        $actual = $class::filterErrors($ruleName, $matches);
+        $actual = $class::filterErrorsCaptured($ruleName, $matches);
         $message = 'Failed asserting that '.
             $class.'::errorCaptures('.
                 "'".$ruleName."', ".
@@ -162,23 +195,93 @@ class AbstractRuleSetTest extends TestCase
         $this->assertSame($expected, $actual, $message);
     }
 
-    public static function filterValues__cases()
+    public static function filterValuesCaptured__cases()
     {
         return [
             [ RuleSet0::class, 'VAR_NAME', ['inexistent' => '']],
             [ RuleSet0::class, 'VAR_NAME', [0 => 'v1 = 123;', 'var_name' => 'v1']],
+            [ RuleSet1::class, 'INT', ['value_int' => '-12']],
+            [ RuleSet1::class, 'INT', ['value_int_error' => 'v1']],
+            [ RuleSet1::class, 'ASSIGNMENT_INT', ['var_name' => 'v1', 'value_int' => '-12']],
+            [ RuleSet1::class, 'ASSIGNMENT_INT', ['var_name' => 'v1', 'value_int_error' => 'v1']],
+            [ RuleSet2::class, 'INT', ['value_int' => '-12']],
+            [ RuleSet2::class, 'INT', ['value_int_error' => 'v1']],
+            [ RuleSet2::class, 'ASSIGNMENT_INT', ['var_name' => 'v1', 'value_int' => '-12']],
+            [ RuleSet2::class, 'ASSIGNMENT_INT', ['var_name' => 'v1', 'value_int_error' => '$#']],
+            [ RuleSet2::class, 'STRING', ['value_string' => '"xy"']],
+            [ RuleSet2::class, 'STRING', ['value_string_error' => ';']],
+            [ RuleSet2::class, 'ASSIGNMENT_STRING', ['var_name' => 'v1', 'value_string' => '"xy"']],
+            [ RuleSet2::class, 'ASSIGNMENT_STRING', ['var_name' => 'v1', 'value_string_error' => ';']],
+
+            // cases with null matches.
+            [ RuleSet2::class, 'ASSIGNMENT_INT', ['var_name' => 'v1', 'value_int' => null]],
+            [ RuleSet2::class, 'ASSIGNMENT_INT', ['var_name' => 'v1', 'value_int' => [null, -1]]],
+            [ RuleSet2::class, 'ASSIGNMENT_STRING', ['var_name' => 'v1', 'value_string' => null]],
+            [ RuleSet2::class, 'ASSIGNMENT_STRING', ['var_name' => 'v1', 'value_string' => [null, -1]]],
         ];
     }
 
     /**
-     * @dataProvider filterValues__cases
+     * @dataProvider filterValuesCaptured__cases
      */
-    public function test__filterValues($class, $ruleName, $matches)
+    public function test__filterValuesCaptured($class, $ruleName, $matches)
     {
+        $matches = $class::filterMatches($matches);
         $expected = array_intersect_key($matches, $class::valueCaptures($ruleName));
-        $actual = $class::filterValues($ruleName, $matches);
+        $actual = $class::filterValuesCaptured($ruleName, $matches);
         $message = 'Failed asserting that '.
             $class.'::errorCaptures('.
+                "'".$ruleName."', ".
+                var_export($matches, true).
+            ') is correct';
+        $this->assertSame($expected, $actual, $message);
+    }
+
+
+    public function classDefinedErrors__cases()
+    {
+        return [
+            [
+                RuleSet0::class,
+                []
+            ],
+            [
+                RuleSet1::class,
+                [
+                    'value_int_error' => 'malformed integer value'
+                ]
+            ],
+            [
+                RuleSet2::class,
+                [
+                    'value_int_error' => 'malformed integer value',
+                    'value_string_error' => 'malformed string'
+                ]
+            ]
+        ];
+    }
+
+    /**
+     * @dataProvider classDefinedErrors__cases
+     */
+    public function test__getDefinedErrors(string $class, array $expected)
+    {
+        $message = 'Failed asserting that '.$class.'::getDefinedErrors() is correct';
+        $this->assertSame($expected, $class::getDefinedErrors(), $message);
+    }
+
+    /**
+     * @dataProvider filterErrorsCaptured__cases
+     */
+    public function test__getCapturedErrors(string $class, string $ruleName, array $matches)
+    {
+        $definedErrors = $class::getDefinedErrors();
+        $errorsCaptured = $class::filterErrorsCaptured($ruleName, $matches);
+        $expected = array_intersect_key($definedErrors, $errorsCaptured);
+        $actual = $class::getCapturedErrors($ruleName, $matches);
+
+        $message = 'Failed asserting that '.
+            $class.'::getCapturedErrors('.
                 "'".$ruleName."', ".
                 var_export($matches, true).
             ') is correct';

@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Rfc;
 
-use Korowai\Lib\Rfc\AbstractRuleSet;
-
 /**
  * PCRE expressions used to parse LDIF distinguished names (DNs) as defined in
  * [RFC2253](https://tools.ietf.org/html/rfc2253).
@@ -196,9 +194,7 @@ class Rfc2253 extends AbstractRuleSet
     ];
 
     /**
-     * Returns an array of names of rules provided by this class.
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public static function getClassRuleNames() : array
     {

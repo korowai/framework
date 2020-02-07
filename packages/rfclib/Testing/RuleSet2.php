@@ -49,6 +49,15 @@ class RuleSet2 extends RuleSet1
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public static function getDefinedErrors() : array
+    {
+        $errors = ['value_string_error' => 'malformed string'];
+        return array_merge(parent::getDefinedErrors(), $errors);
+    }
+
+    /**
      * Returns what we expected the *getClassCaptures()* to return.
      *
      * @return array

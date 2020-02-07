@@ -15,12 +15,7 @@
     <testsuites>
         <testsuite name="Korowai Packages Test Suite">
             <directory suffix="Test.php">./packages/*/tests/</directory>
-            <exclude>packages/rfclib/tests/Rfc2253Test.php</exclude>
-            <exclude>packages/rfclib/tests/Rfc2849Test.php</exclude>
-            <exclude>packages/rfclib/tests/Rfc2849xTest.php</exclude>
-            <exclude>packages/rfclib/tests/Rfc3986Test.php</exclude>
-            <exclude>packages/rfclib/tests/Rfc5234Test.php</exclude>
-            <exclude>packages/rfclib/tests/Rfc8089Test.php</exclude>
+            <exclude>packages/rfclib/tests/Rules</exclude>
         </testsuite>
     </testsuites>
 

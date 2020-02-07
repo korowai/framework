@@ -65,7 +65,7 @@ interface RuleSetInterface
      * @param  array $matches
      * @return array
      */
-    public static function filterErrors(string $ruleName, array $matches) : array;
+    public static function filterErrorsCaptured(string $ruleName, array $matches) : array;
 
     /**
      * Returns sub-array of *$matches* containing only captured non-error
@@ -75,7 +75,7 @@ interface RuleSetInterface
      * @param  array $matches
      * @return array
      */
-    public static function filterValues(string $ruleName, array $matches) : array;
+    public static function filterValuesCaptured(string $ruleName, array $matches) : array;
 }
 
 // vim: syntax=php sw=4 ts=4 et:

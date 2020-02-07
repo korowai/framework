@@ -66,6 +66,23 @@ class Rfc8089 extends Rfc3986
         '(?<file_uri>'.
             self::FILE_SCHEME.':'.self::FILE_HIER_PART.
         ')';
+
+    protected static $rfc8089Rules = [
+        'FILE_AUTH',
+        'LOCAL_PATH',
+        'AUTH_PATH',
+        'FILE_HIER_PART',
+        'FILE_SCHEME',
+        'FILE_URI',
+    ];
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getClassRuleNames() : array
+    {
+        return array_merge(self::$rfc8089Rules, parent::getClassRuleNames());
+    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

@@ -47,6 +47,15 @@ class RuleSet1 extends RuleSet0
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public static function getDefinedErrors() : array
+    {
+        $errors = ['value_int_error' => 'malformed integer value'];
+        return array_merge(parent::getDefinedErrors(), $errors);
+    }
+
+    /**
      * Returns what we expected the *getClassCaptures()* to return.
      *
      * @return array

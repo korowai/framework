@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Rfc;
 
-use Korowai\Lib\Rfc\AbstractRuleSet;
-
 /**
  * PCRE expressions used when parsing LDIF file as defined in
  * [RFC2849](https://tools.ietf.org/html/rfc2849).
@@ -373,9 +371,7 @@ class Rfc2849 extends AbstractRuleSet
     ];
 
     /**
-     * Returns an array of names of rules provided by this class.
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public static function getClassRuleNames() : array
     {

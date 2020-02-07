@@ -200,7 +200,7 @@ class Rfc2253 extends AbstractRuleSet
      *
      * @return array
      */
-    protected static function getRuleNames() : array
+    public static function getClassRuleNames() : array
     {
         return self::$rfc2253Rules;
     }

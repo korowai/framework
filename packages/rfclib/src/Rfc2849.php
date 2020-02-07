@@ -377,7 +377,7 @@ class Rfc2849 extends AbstractRuleSet
      *
      * @return array
      */
-    protected static function getRuleNames() : array
+    public static function getClassRuleNames() : array
     {
         return self::$rfc2849Rules;
     }

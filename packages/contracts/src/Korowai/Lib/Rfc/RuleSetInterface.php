@@ -35,14 +35,47 @@ interface RuleSetInterface
     public static function rule(string $ruleName) : string;
 
     /**
-     * Returns an array of capture group names for given *$ruleName*.
-     * If *$ruleName* is missing, returns an array of captures for all rules,
-     * with rule names as keys and arrays of capture names as values.
+     * Returns an array of capture group names for given rule.
      *
      * @param  string $ruleName Name of the rule.
      * @return array Array of captures.
      */
-    public static function captures(string $ruleName = null) : array;
+    public static function captures(string $ruleName) : array;
+
+    /**
+     * Returns an array of error-catching capture group names for given rule.
+     *
+     * @param  string $ruleName Name of the rule.
+     * @return array Array of error-catching captures.
+     */
+    public static function errorCaptures(string $ruleName) : array;
+
+    /**
+     * Returns an array of non-error capture group names for given rule.
+     *
+     * @param  string $ruleName Name of the rule.
+     * @return array Array of non-error captures.
+     */
+    public static function valueCaptures(string $ruleName) : array;
+
+    /**
+     * Returns sub-array of *$matches* containing only captured errors.
+     *
+     * @param  string $ruleName
+     * @param  array $matches
+     * @return array
+     */
+    public static function filterErrors(string $ruleName, array $matches) : array;
+
+    /**
+     * Returns sub-array of *$matches* containing only captured non-error
+     * values.
+     *
+     * @param  string $ruleName
+     * @param  array $matches
+     * @return array
+     */
+    public static function filterValues(string $ruleName, array $matches) : array;
 }
 
 // vim: syntax=php sw=4 ts=4 et:

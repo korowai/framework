@@ -479,12 +479,6 @@ class Rfc2253Test extends TestCase
         $message = 'Failed asserting that Rfc2253::captures(\''.$rule.'\') are correct';
         $this->assertSame($captures, Rfc2253::captures($rule), $message);
     }
-
-    public function test__captures__atOnce()
-    {
-        $message = 'Failed asserting that Rfc2253::captures() are correct';
-        $this->assertSame(static::findRfcCaptures(), Rfc2253::captures(), $message);
-    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

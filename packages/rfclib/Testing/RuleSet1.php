@@ -1,0 +1,69 @@
+<?php
+/**
+ * @file Testing/RuleSet1.php
+ *
+ * This file is part of the Korowai package
+ *
+ * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @package korowai/rfclib
+ * @license Distributed under MIT license.
+ */
+
+declare(strict_types=1);
+
+namespace Korowai\Testing\Lib\Rfc;
+
+/**
+ * Sample class that extends AbstractRuleSet. Allows testing static methods of
+ * the AbstractRuleSet.
+ *
+ * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ */
+class RuleSet1 extends RuleSet0
+{
+    public const INT = '(?:(?:[+-]\s*)?[0-9]+)';
+    public const PARTIAL_INT = '(?:(?:[+-]\s*)?[0-9]*)';
+    public const ASSIGNMENT_INT =
+        '(?:'.
+            self::VAR_NAME.'\s*=\s*'.
+            '(?:'.
+                '(?:(?<value_int>'.self::INT.');)'.
+                '|'.
+                '(?:'.self::PARTIAL_INT.'(?<value_int_error>[^;]*))'.
+            ')'.
+        ')';
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getClassRuleNames() : array
+    {
+        $rules = [
+            'INT',
+            'PARTIAL_INT',
+            'ASSIGNMENT_INT',
+        ];
+        return array_merge($rules, parent::getClassRuleNames());
+    }
+
+    /**
+     * Returns what we expected the *getClassCaptures()* to return.
+     *
+     * @return array
+     */
+    public static function expectedClassCaptures() : array
+    {
+        $captures = [
+            'INT' => [],
+            'PARTIAL_INT' => [],
+            'ASSIGNMENT_INT' => [
+                'var_name' => 'var_name',
+                'value_int' => 'value_int',
+                'value_int_error' => 'value_int_error'
+            ],
+        ];
+        return array_merge(parent::expectedClassCaptures(), $captures);
+    }
+}
+
+// vim: syntax=php sw=4 ts=4 et:

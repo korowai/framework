@@ -969,12 +969,6 @@ class Rfc2849Test extends TestCase
         $message = 'Failed asserting that Rfc2849::captures(\''.$rule.'\') are correct';
         $this->assertSame($captures, Rfc2849::captures($rule), $message);
     }
-
-    public function test__captures__atOnce()
-    {
-        $message = 'Failed asserting that Rfc2849::captures() are correct';
-        $this->assertSame(static::findRfcCaptures(), Rfc2849::captures(), $message);
-    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

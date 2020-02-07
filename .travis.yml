@@ -16,7 +16,7 @@ script:
   - if $KOROWAI_TEST_RFC; then
       php vendor/bin/phpunit -c phpunit-rfc.xml.dist;
     else
-      php vendor/bin/phpunit --coverage-clover build/logs/clover.xml -c phpunit.xml.dist;
+      php vendor/bin/phpunit -c phpunit.xml.dist;
     fi
 after_success:
   - if $KOROWAI_CODECOV; then curl -s https://codecov.io/bash | bash; fi

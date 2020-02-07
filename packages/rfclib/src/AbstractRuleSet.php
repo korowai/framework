@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Rfc;
 
-use Korowai\Lib\Rfc\RuleSetInterface;
+use Korowai\Lib\Rfc\StaticRuleSetInterface;
 use Korowai\Lib\Rfc\Traits\RulesFromConstants;
 
 /**
- * Base class for Rfc classes that want to implement RuleSetInterface.
+ * Base class for Rfc classes that want to implement StaticRuleSetInterface.
  */
-abstract class AbstractRuleSet implements RuleSetInterface
+abstract class AbstractRuleSet implements StaticRuleSetInterface
 {
     use RulesFromConstants;
 

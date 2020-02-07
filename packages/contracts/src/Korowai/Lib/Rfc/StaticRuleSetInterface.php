@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Lib/Rfc/RuleSetInterface.php
+ * @file src/Korowai/Lib/Rfc/StaticRuleSetInterface.php
  *
  * This file is part of the Korowai package
  *
@@ -16,7 +16,7 @@ namespace Korowai\Lib\Rfc;
 /**
  * Access to set of parsing rules.
  */
-interface RuleSetInterface
+interface StaticRuleSetInterface
 {
     /**
      * Returns an array where keys are rule names and values are regular

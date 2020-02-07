@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Korowai\Lib\Rfc\Traits;
 
 /**
- * Implements RuleSetInterface assuming that rules are provided as class
+ * Implements StaticRuleSetInterface assuming that rules are provided as class
  * constants. The receiving class shall implement four methods:
  *
  * - *getClassRuleNames()*,

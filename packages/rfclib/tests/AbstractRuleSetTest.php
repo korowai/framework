@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Rfc;
 
-use Korowai\Lib\Rfc\RuleSetInterface;
+use Korowai\Lib\Rfc\StaticRuleSetInterface;
 use Korowai\Lib\Rfc\AbstractRuleSet;
 use Korowai\Lib\Rfc\Traits\RulesFromConstants;
 use Korowai\Testing\Lib\Rfc\RuleSet0;
@@ -26,9 +26,9 @@ use Korowai\Testing\TestCase;
  */
 class AbstractRuleSetTest extends TestCase
 {
-    public function test__implements__RuleSetInterface()
+    public function test__implements__StaticRuleSetInterface()
     {
-        $this->assertImplementsInterface(RuleSetInterface::class, AbstractRuleSet::class);
+        $this->assertImplementsInterface(StaticRuleSetInterface::class, AbstractRuleSet::class);
     }
 
     public function test__uses__RulesFromConstants()

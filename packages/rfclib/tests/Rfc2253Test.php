@@ -92,63 +92,15 @@ class Rfc2253Test extends TestCase
 
     public static function STRING__cases()
     {
-        $cases = [
-            [
-                '',
-                [
-                    'string'    => false,
-                    'regstring' => false,
-                    'hexstring' => false,
-                    'dqstring'  => false,
-                ]
-            ],
-            [
-                '\\20',
-                [
-                    'string'    => false,
-                    'regstring' => false,
-                    'hexstring' => false,
-                    'dqstring'  => false,
-                ]
-            ],
-            [
-                "aAłL123!@$%^&*()~- \t",            // stringchars
-                [
-                    'string'    => false,
-                    'regstring' => false,
-                    'hexstring' => false,
-                    'dqstring'  => false,
-                ]
-            ],
-            [
-                "#203039",                          // hexstring
-                [
-                    'string'    => false,
-                    'regstring' => false,
-                    'hexstring' => false,
-                    'dqstring'  => false,
-                ]
-            ],
-            [
-                '""',                               // empty quoted string
-                [
-                    'string'    => false,
-                    'regstring' => false,
-                    'hexstring' => false,
-                    'dqstring'  => false,
-                ]
-            ],
-            [
-                '"aA\\"\\\\\\20lŁ21!@#$%^&*()"',    // quoted string
-                [
-                    'string'    => false,
-                    'regstring' => false,
-                    'hexstring' => false,
-                    'dqstring'  => false,
-                ],
-            ]
+        $strings = [
+            '',
+            '\\20',
+            "aAłL123!@$%^&*()~- \t",            // stringchars
+            "#203039",                          // HEXSTRING
+            '""',                               // empty quoted string
+            '"aA\\"\\\\\\20lŁ21!@#$%^&*()"',    // non-empty quoted string
         ];
-        return $cases;
+        return static::arraizeStrings($strings);
     }
 
     public static function non__STRING__cases()
@@ -156,8 +108,10 @@ class Rfc2253Test extends TestCase
         $strings = [
             '\\',       // incomplete pair
             '\x',       // incomplete pair
-            '#x',       // incomplete hexstring
-            '#299',     // incomplete hexstring
+            '#x',       // incomplete HEXSTRING
+            '#299',     // incomplete string_hex
+            '"foo',     // unterminated quoted string
+            '"',        // unterminated quoted string
         ];
         return self::arraizeStrings($strings);
     }
@@ -165,7 +119,7 @@ class Rfc2253Test extends TestCase
     /**
      * @dataProvider STRING__cases
      */
-    public function test__STRING__matches(string $string, array $pieces)
+    public function test__STRING__matches(string $string, array $pieces = [])
     {
         $this->assertRfcMatches($string, 'STRING', $pieces);
     }
@@ -178,93 +132,93 @@ class Rfc2253Test extends TestCase
         $this->assertRfcNotMatches($string, 'STRING');
     }
 
-    //
-    // STRING_CAPTURE
-    //
-
-    public static function STRING_CAPTURE__cases()
-    {
-        $cases = [
-            [
-                '',
-                [
-                    'regstring' => '',
-                    'hexstring' => false,
-                    'dqstring'  => false,
-                ]
-            ],
-            [
-                '\\20',
-                [
-                    'regstring' => '\\20',
-                    'hexstring' => false,
-                    'dqstring'  => false,
-                ]
-            ],
-            [
-                "aAłL123!@$%^&*()~- \t",            // stringchars
-                [
-                    'regstring' => "aAłL123!@$%^&*()~- \t",
-                    'hexstring' => false,
-                    'dqstring'  => false,
-                ]
-            ],
-            [
-                "#203039",                          // hexstring
-                [
-                    'regstring' => false,
-                    'hexstring' => '203039',
-                    'dqstring'  => false,
-                ]
-            ],
-            [
-                '""',                               // empty quoted string
-                [
-                    'regstring' => false,
-                    'hexstring' => false,
-                    'dqstring'  => '',
-                ]
-            ],
-            [
-                '"aA\\"\\\\\\20lŁ21!@#$%^&*()"',    // quoted string
-                [
-                    'regstring' => false,
-                    'hexstring' => false,
-                    'dqstring'  => 'aA\\"\\\\\\20lŁ21!@#$%^&*()',
-                ],
-            ]
-        ];
-        return $cases;
-    }
-
-    public static function non__STRING_CAPTURE__cases()
-    {
-        $strings = [
-            '\\',       // incomplete pair
-            '\x',       // incomplete pair
-            '#x',       // incomplete hexstring
-            '#299',     // incomplete hexstring
-        ];
-        return self::arraizeStrings($strings);
-    }
-
-    /**
-     * @dataProvider STRING_CAPTURE__cases
-     */
-    public function test__STRING_CAPTURE__matches(string $string, array $pieces)
-    {
-        $expMatches = array_merge(['string' => $string], $pieces);
-        $this->assertRfcMatches($string, 'STRING_CAPTURE', $expMatches);
-    }
-
-    /**
-     * @dataProvider non__STRING_CAPTURE__cases
-     */
-    public function test__STRING_CAPTURE__notMatches(string $string)
-    {
-        $this->assertRfcNotMatches($string, 'STRING_CAPTURE');
-    }
-
+//    //
+//    // STRING_CAPTURE
+//    //
+//
+//    public static function STRING_CAPTURE__cases()
+//    {
+//        $cases = [
+//            [
+//                '',
+//                [
+//                    'string_reg' => '',
+//                    'string_hex' => false,
+//                    'string_quot'  => false,
+//                ]
+//            ],
+//            [
+//                '\\20',
+//                [
+//                    'string_reg' => '\\20',
+//                    'string_hex' => false,
+//                    'string_quot'  => false,
+//                ]
+//            ],
+//            [
+//                "aAłL123!@$%^&*()~- \t",            // stringchars
+//                [
+//                    'string_reg' => "aAłL123!@$%^&*()~- \t",
+//                    'string_hex' => false,
+//                    'string_quot'  => false,
+//                ]
+//            ],
+//            [
+//                "#203039",                          // string_hex
+//                [
+//                    'string_reg' => false,
+//                    'string_hex' => '203039',
+//                    'string_quot'  => false,
+//                ]
+//            ],
+//            [
+//                '""',                               // empty quoted string
+//                [
+//                    'string_reg' => false,
+//                    'string_hex' => false,
+//                    'string_quot'  => '',
+//                ]
+//            ],
+//            [
+//                '"aA\\"\\\\\\20lŁ21!@#$%^&*()"',    // quoted string
+//                [
+//                    'string_reg' => false,
+//                    'string_hex' => false,
+//                    'string_quot'  => 'aA\\"\\\\\\20lŁ21!@#$%^&*()',
+//                ],
+//            ]
+//        ];
+//        return $cases;
+//    }
+//
+//    public static function non__STRING_CAPTURE__cases()
+//    {
+//        $strings = [
+//            '\\',       // incomplete pair
+//            '\x',       // incomplete pair
+//            '#x',       // incomplete string_hex
+//            '#299',     // incomplete string_hex
+//        ];
+//        return self::arraizeStrings($strings);
+//    }
+//
+//    /**
+//     * @dataProvider STRING_CAPTURE__cases
+//     */
+//    public function test__STRING_CAPTURE__matches(string $string, array $pieces =[])
+//    {
+//        $expMatches = array_merge(['string' => $string], $pieces);
+//        $this->assertRfcMatches($string, 'STRING_CAPTURE', $expMatches);
+//    }
+//
+//    /**
+//     * @dataProvider non__STRING_CAPTURE__cases
+//     */
+//    public function test__STRING_CAPTURE__notMatches(string $string)
+//    {
+//        $this->assertRfcNotMatches($string, 'STRING_CAPTURE');
+//    }
+//
     //
     // ATTRIBUTE_VALUE
     //
@@ -285,29 +239,13 @@ class Rfc2253Test extends TestCase
 
     public static function ATTRIBUTE_TYPE__cases()
     {
-        $cases = [
-            [
-                'O',
-                [
-                ]
-            ],
-            [
-                'OU-12-',
-                [
-                ]
-            ],
-            [
-                '1',
-                [
-                ]
-            ],
-            [
-                '1.2.3',
-                [
-                ]
-            ],
+        $strings = [
+            'O',
+            'OU-12-',
+            '1',
+            '1.2.3',
         ];
-        return $cases;
+        return self::arraizeStrings($strings);
     }
 
     public static function non__ATTRIBUTE_TYPE__cases()
@@ -325,7 +263,7 @@ class Rfc2253Test extends TestCase
     /**
      * @dataProvider ATTRIBUTE_TYPE__cases
      */
-    public function test__ATTRIBUTE_TYPE__matches(string $string, array $pieces)
+    public function test__ATTRIBUTE_TYPE__matches(string $string, array $pieces =[])
     {
         $this->assertRfcMatches($string, 'ATTRIBUTE_TYPE', $pieces);
     }
@@ -351,7 +289,7 @@ class Rfc2253Test extends TestCase
             foreach (self::ATTRIBUTE_VALUE__cases() as $value) {
                 $case = [
                     $type[0].'='.$value[0],
-                    array_merge($type[1], $value[1])
+                    array_merge($type[1] ?? [], $value[1] ?? [])
                 ];
                 $inheritedCases[] = $case;
             }
@@ -377,7 +315,7 @@ class Rfc2253Test extends TestCase
     /**
      * @dataProvider ATTRIBUTE_TYPE_AND_VALUE__cases
      */
-    public function test__ATTRIBUTE_TYPE_AND_VALUE__matches(string $string, array $pieces)
+    public function test__ATTRIBUTE_TYPE_AND_VALUE__matches(string $string, array $pieces =[])
     {
         $this->assertRfcMatches($string, 'ATTRIBUTE_TYPE_AND_VALUE', $pieces);
     }
@@ -404,7 +342,6 @@ class Rfc2253Test extends TestCase
             foreach (self::ATTRIBUTE_TYPE_AND_VALUE__cases() as $second) {
                 $case = [
                     $first[0].'+'.$second[0],
-                    [ ]
                 ];
                 $inheritedCases[] = $case;
             }
@@ -432,7 +369,7 @@ class Rfc2253Test extends TestCase
     /**
      * @dataProvider NAME_COMPONENT__cases
      */
-    public function test__NAME_COMPONENT__matches(string $string, array $pieces)
+    public function test__NAME_COMPONENT__matches(string $string, array $pieces =[])
     {
         $this->assertRfcMatches($string, 'NAME_COMPONENT', $pieces);
     }
@@ -464,8 +401,7 @@ class Rfc2253Test extends TestCase
             $inheritedCases[] = $first;
             foreach ($secondLevelComponents as $second) {
                 $case = [
-                    $first[0].','.$second,
-                    [ ]
+                    $first[0].','.$second
                 ];
                 $inheritedCases[] = $case;
             }
@@ -495,7 +431,7 @@ class Rfc2253Test extends TestCase
     /**
      * @dataProvider NAME__cases
      */
-    public function test__NAME__matches(string $string, array $pieces)
+    public function test__NAME__matches(string $string, array $pieces =[])
     {
         $this->assertRfcMatches($string, 'NAME', $pieces);
     }
@@ -516,6 +452,38 @@ class Rfc2253Test extends TestCase
     public function test__DISTINGUISHED_NAME()
     {
         $this->assertSame('(?<dn>'.Rfc2253::NAME.'?)', Rfc2253::DISTINGUISHED_NAME);
+    }
+
+    //
+    // Methods
+    //
+
+    public function test__rules()
+    {
+        $message = 'Failed asserting that Rfc2253::rules() are correct';
+        $this->assertSame(static::findRfcConstants(), Rfc2253::rules(), $message);
+    }
+
+    public static function captures__cases()
+    {
+        foreach (static::findRfcCaptures() as $rule => $captures) {
+            yield [$rule, $captures];
+        }
+    }
+
+    /**
+     * @dataProvider captures__cases
+     */
+    public function test__captures__perRule(string $rule, array $captures)
+    {
+        $message = 'Failed asserting that Rfc2253::captures(\''.$rule.'\') are correct';
+        $this->assertSame($captures, Rfc2253::captures($rule), $message);
+    }
+
+    public function test__captures__atOnce()
+    {
+        $message = 'Failed asserting that Rfc2253::captures() are correct';
+        $this->assertSame(static::findRfcCaptures(), Rfc2253::captures(), $message);
     }
 }
 

@@ -56,6 +56,26 @@ class TestCaseTest extends TestCase
         $this->assertRfcNotMatches('bar', 'FOO');
         $this->assertRfcNotMatches('foo', 'BAR');
     }
+
+    public function test__findRfcConstants()
+    {
+        $constants = self::findRfcConstants();
+        $this->assertArrayHasKey('FOO', $constants);
+        $this->assertArrayHasKey('BAR', $constants);
+        $this->assertSame($constants['FOO'], self::FOO);
+        $this->assertSame($constants['BAR'], self::BAR);
+    }
+
+    public function test__findRfcCaptures()
+    {
+        $this->assertSame(['FOO' => ['foo' => 'foo']], static::findRfcCaptures(['FOO']));
+        $this->assertSame(['BAR' => ['bar' => 'bar']], static::findRfcCaptures(['BAR']));
+        $this->assertSame(['FOO' => ['foo' => 'foo'], 'BAR' => ['bar' => 'bar']], static::findRfcCaptures(['FOO', 'BAR']));
+        $this->assertSame(['BAR' => ['bar' => 'bar'], 'FOO' => ['foo' => 'foo']], static::findRfcCaptures(['BAR', 'FOO']));
+        $this->assertSame(['FOO' => ['foo' => 'foo'], 'BAR' => ['bar' => 'bar']], static::findRfcCaptures());
+        $this->assertSame(['FOO' => ['foo' => 'foo'], 'BAR' => ['bar' => 'bar']], static::findRfcCaptures(null));
+        $this->assertSame(['FOO' => [], 'BAR' => ['bar' => 'bar']], static::findRfcCaptures(null, '\w+ar'));
+    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

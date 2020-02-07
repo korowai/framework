@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Rfc;
 
+use Korowai\Lib\Rfc\AbstractRuleSet;
+
 /**
  * PCRE expressions used when parsing LDIF file as defined in
  * [RFC2849](https://tools.ietf.org/html/rfc2849).
@@ -36,7 +38,7 @@ namespace Korowai\Lib\Rfc;
  * }
  * ```
  */
-class Rfc2849
+class Rfc2849 extends AbstractRuleSet
 {
     //
     // character sequences for character classes
@@ -329,6 +331,56 @@ class Rfc2849
      * ``ldif-attrval-record = dn-spec SEP 1*attrval-spec``
      */
     public const LDIF_ATTRVAL_RECORD = '(?:'.self::DN_SPEC.self::SEP.self::ATTRVAL_SPEC.'+)';
+
+    /**
+     * Rules provided by this class.
+     */
+    protected static $rfc2849Rules = [
+        'ALPHACHARS',
+        'DIGITCHARS',
+        'ALPHA',
+        'DIGIT',
+        'CR',
+        'LF',
+        'SPACE',
+        'ATTR_TYPE_CHARS',
+        'BASE64_CHAR',
+        'OPT_CHAR',
+        'SAFE_CHAR',
+        'SAFE_INIT_CHAR',
+        'SEP',
+        'FILL',
+        'VERSION_NUMBER',
+        'VERSION_SPEC',
+        'BASE64_STRING',
+        'BASE64_UTF8_STRING',
+        'SAFE_STRING',
+        'LDAP_OID',
+        'OPTION',
+        'OPTIONS',
+        'ATTRIBUTE_TYPE',
+        'ATTRIBUTE_DESCRIPTION',
+        'DISTINGUISHED_NAME',
+        'BASE64_DISTINGUISHED_NAME',
+        'RDN',
+        'BASE64_RDN',
+        'DN_SPEC',
+        'URL',
+        'VALUE_SPEC',
+        'CONTROL',
+        'ATTRVAL_SPEC',
+        'LDIF_ATTRVAL_RECORD',
+    ];
+
+    /**
+     * Returns an array of names of rules provided by this class.
+     *
+     * @return array
+     */
+    protected static function getRuleNames() : array
+    {
+        return self::$rfc2849Rules;
+    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

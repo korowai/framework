@@ -142,6 +142,27 @@ class Rfc2849x extends Rfc2849
      */
     public const ATTRVAL_SPEC_X = '(?:'.self::ATTRIBUTE_DESCRIPTION.self::VALUE_SPEC_X.self::SEP_X.')';
 
+    /**
+     * @todo Write documentation.
+     */
+    protected static $rfc2849xRules = [
+        'SEP_X',
+        'NOT_SEP_X',
+        'VERSION_SPEC_X',
+        'DN_SPEC_X',
+        'VALUE_SPEC_X',
+        'ATTRVAL_SPEC_X',
+    ];
+
+    /**
+     * Returns an array of names of rules provided by this class.
+     *
+     * @return array
+     */
+    protected static function getRuleNames() : array
+    {
+        return array_merge(self::$rfc2849xRules, parent::getRuleNames());
+    }
 
     /**
      * Defined named capture groups that appear in patterns of the Rfc2849x

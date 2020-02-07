@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Rfc;
 
+use Korowai\Lib\Rfc\AbstractRuleSet;
+
 /**
  * PCRE expressions used to parse LDIF distinguished names (DNs) as defined in
  * [RFC2253](https://tools.ietf.org/html/rfc2253).
@@ -23,7 +25,7 @@ namespace Korowai\Lib\Rfc;
  * $result = preg_match('/^'.Rfc2253::DISTINGUISHED_NAME.'$/', $subject, $matches, PREG_UNMATCHED_AS_NULL)
  * ```
  */
-class Rfc2253
+class Rfc2253 extends AbstractRuleSet
 {
     // character lists for character classes
     public const ALPHACHARS = 'A-Za-z';
@@ -92,7 +94,7 @@ class Rfc2253
 
     /**
      * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):
-     * ``hexstring  = 1*hexpair``
+     * ``string_hex  = 1*hexpair``
      */
     public const HEXSTRING = '(?:'.self::HEXPAIR.'+)';
 
@@ -110,7 +112,7 @@ class Rfc2253
 
     /**
      * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):
-     * ``string = *( stringchar / pair ) / "#" hexstring / QUOTATION *( quotechar / pair ) QUOTATION``
+     * ``string = *( stringchar / pair ) / "#" string_hex / QUOTATION *( quotechar / pair ) QUOTATION``
      */
     public const STRING =
         '(?:'.
@@ -119,19 +121,6 @@ class Rfc2253
             '(?:#'.self::HEXSTRING.')'.
             '|'.
             '(?:"(?:'.self::QUOTECHAR.'|'.self::PAIR.')*")'.
-        ')';
-
-    /**
-     * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):
-     * ``string = *( stringchar / pair ) / "#" hexstring / QUOTATION *( quotechar / pair ) QUOTATION``
-     */
-    public const STRING_CAPTURE =
-        '(?<string>'.
-            '(?<regstring>(?:'.self::STRINGCHAR.'|'.self::PAIR.')*)'.
-            '|'.
-            '(?:#(?<hexstring>'.self::HEXSTRING.'))'.
-            '|'.
-            '(?:"(?<dqstring>(?:'.self::QUOTECHAR.'|'.self::PAIR.')*)")'.
         ')';
 
     /**
@@ -179,6 +168,42 @@ class Rfc2253
      *  - *dn*: always set, contains the whole matched string (possibly empty).
      */
     public const DISTINGUISHED_NAME = '(?<dn>'.self::NAME.'?)';
+
+    protected static $rfc2253Rules = [
+        'ALPHACHARS',
+        'DIGITCHARS',
+        'HEXDIGCHARS',
+        'SPECIALCHARS',
+        'KEYCHARCHARS',
+        'ALPHA',
+        'DIGIT',
+        'HEXCHAR',
+        'SPECIAL',
+        'KEYCHAR',
+        'STRINGCHAR',
+        'QUOTECHAR',
+        'HEXPAIR',
+        'HEXSTRING',
+        'PAIR',
+        'OID',
+        'STRING',
+        'ATTRIBUTE_VALUE',
+        'ATTRIBUTE_TYPE',
+        'ATTRIBUTE_TYPE_AND_VALUE',
+        'NAME_COMPONENT',
+        'NAME',
+        'DISTINGUISHED_NAME',
+    ];
+
+    /**
+     * Returns an array of names of rules provided by this class.
+     *
+     * @return array
+     */
+    protected static function getRuleNames() : array
+    {
+        return self::$rfc2253Rules;
+    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

@@ -142,6 +142,40 @@ abstract class TestCase extends \Korowai\Testing\TestCase
         $msg = 'Failed asserting that '.$fqdnConstName.' does not match '.var_export($subject, true);
         static::assertSame(0, $result, $msg);
     }
+
+    /**
+     * Gets all defined constants from the tested Rfc class.
+     *
+     * @return An array of constants of the tested Rfc class, where the keys
+     *         hold the name and the values the value of the constants.
+     */
+    public static function findRfcConstants() : array
+    {
+        $class = new \ReflectionClass(static::getRfcClass());
+        return $class->getConstants();
+    }
+
+    /**
+     * @todo Write documentation.
+     *
+     * @param  array $constants An array with names of Rfc constants.
+     * @param  string $nameRe Regular expression used to match names of the capture groups.
+     * @return array
+     */
+    public static function findRfcCaptures(array $constants = null, string $nameRe = '\w+') : array
+    {
+        $constantValues = static::findRfcConstants();
+        if ($constants === null) {
+            $constants = array_keys($constantValues);
+        }
+
+        $re = '/\(\?P?<(?<list>'.$nameRe.')>/';
+        return array_map(function (string $key) use ($constantValues, $re) {
+            $value = $constantValues[$key];
+            preg_match_all($re, $value, $matches);
+            return array_combine($matches['list'], $matches['list']);
+        }, array_combine($constants, $constants));
+    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

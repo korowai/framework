@@ -88,7 +88,7 @@ trait ParsesUris
     {
         $cursor = $state->getCursor();
         $matches = $this->matchAhead('/\G'.Rfc3986::URI_REFERENCE.'/', $cursor, PREG_UNMATCHED_AS_NULL);
-        if (count($matches) === 0) {
+        if (empty($matches)) {
             $error = new ParserError(clone $cursor, 'syntax error: expected URI-reference');
             $state->appendError($error);
             return false;

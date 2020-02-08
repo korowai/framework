@@ -50,7 +50,7 @@ trait ParsesStrings
         $re = '/\G'.Rfc2849::SAFE_STRING.'/D';
         $matches = $this->matchAhead($re, $state->getCursor());
         // @codeCoverageIgnoreStart
-        if (count($matches) === 0) {
+        if (empty($matches)) {
             // RFC 2849 allows empty strings, so this code shall never be
             //          executed, except we screwed up something with the
             //          implementation (e.g. regular expression), or we decide
@@ -76,7 +76,7 @@ trait ParsesStrings
         $re = '/\G'.Rfc2849::BASE64_STRING.'/D';
         $matches = $this->matchAhead($re, $state->getCursor(), PREG_UNMATCHED_AS_NULL);
         // @codeCoverageIgnoreStart
-        if (count($matches) === 0) {
+        if (empty($matches)) {
             // RFC 2849 allows empty strings, so this code shall never be
             //          executed, except we screwed up something with the
             //          implementation (e.g. regular expression), or we decide

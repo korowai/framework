@@ -50,7 +50,7 @@ trait ParsesVersionSpec
         $cursor = $state->getCursor();
 
         $matches = $this->matchAhead('/\G'.Rfc2849x::VERSION_SPEC_X.'/', $cursor, PREG_UNMATCHED_AS_NULL);
-        if (count($matches) === 0) {
+        if (empty($matches)) {
             if (!$tryOnly) {
                 $state->errorHere('syntax error: expected "version:"');
             }

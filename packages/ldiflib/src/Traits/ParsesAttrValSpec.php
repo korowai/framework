@@ -68,7 +68,7 @@ trait ParsesAttrValSpec
     {
         $cursor = $state->getCursor();
         $matches = $this->matchAhead('/\G'.Rfc2849x::ATTRVAL_SPEC_X.'/D', $cursor, PREG_UNMATCHED_AS_NULL);
-        if (count($matches) === 0) {
+        if (empty($matches)) {
             if (!$tryOnly) {
                 $state->errorHere('syntax error: expected attribute description (RFC2849)');
             }

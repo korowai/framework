@@ -59,7 +59,7 @@ trait MatchesPatterns
     public function matchAhead(string $pattern, CursorInterface $cursor, int $flags = 0) : array
     {
         $matches = $this->matchAt($pattern, $cursor, PREG_OFFSET_CAPTURE | $flags);
-        if (count($matches) > 0) {
+        if (!empty($matches)) {
             $cursor->moveTo($matches[0][1] + strlen($matches[0][0]));
         }
         return $matches;
@@ -80,7 +80,7 @@ trait MatchesPatterns
     public function matchAtOrThrow(string $pattern, LocationInterface $location, string $msg, int $flags = 0) : array
     {
         $matches = $this->matchAt($pattern, $location, $flags);
-        if (count($matches) === 0) {
+        if (empty($matches)) {
             throw new ParserError(clone $location, $msg);
         }
         return $matches;
@@ -102,7 +102,7 @@ trait MatchesPatterns
     public function matchAheadOrThrow(string $pattern, CursorInterface $cursor, string $msg, int $flags = 0) : array
     {
         $matches = $this->matchAhead($pattern, $cursor, $flags);
-        if (count($matches) === 0) {
+        if (empty($matches)) {
             throw new ParserError($cursor->getClonedLocation(), $msg);
         }
         return $matches;
@@ -152,7 +152,7 @@ trait MatchesPatterns
         $cursor = $state->getCursor();
 
         $matches = $this->matchAhead('/\G'.$rule.'/D', $cursor, PREG_UNMATCHED_AS_NULL);
-        if (count($matches) === 0) {
+        if (empty($matches)) {
             return false;
         }
 

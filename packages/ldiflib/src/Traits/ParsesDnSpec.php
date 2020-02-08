@@ -18,6 +18,7 @@ use Korowai\Lib\Ldif\ParserStateInterface as State;
 use Korowai\Lib\Rfc\Rfc2849x;
 use Korowai\Lib\Rfc\Rfc2253;
 use Korowai\Lib\Rfc\Rule;
+use Korowai\Lib\Rfc\RuleInterface;
 
 use function Korowai\Lib\Compat\preg_match;
 
@@ -27,18 +28,26 @@ use function Korowai\Lib\Compat\preg_match;
 trait ParsesDnSpec
 {
     /**
-     * Matches the string starting at $cursor's position against $pattern and
-     * skips the whole match (moves the cursor after the matched part of
-     * string).
+     * Matches the input substring starting at *$state*'s cursor against
+     * regular expression provided by *$rule* and moves the cursor after
+     * the end of the matched substring.
      *
-     * @param  string $pattern
-     * @param  CursorInterface $cursor
-     * @param  int $flags Passed to ``preg_match()`` (note: ``PREG_OFFSET_CAPTURE`` is added unconditionally).
+     * @param  State $state
+     *      The state provides cursor pointing to the offset of the beginning
+     *      of the match. If the *$rule* matches anything, the *$state*'s
+     *      cursor gets moved to the next character after the matched string.
+     * @param  RuleInterface $rule
+     *      The rule to be used for matching.
+     * @param  array $matches
+     *      If the rule doesn't match, the function returns empty *$matches*.
+     *      Otherwise, *$matches* shall contain captured groups including
+     *      captured syntax errors.
      *
-     * @return array Array of matches as returned by ``preg_match()``
-     * @throws PregException When error occurs in ``preg_match()``
+     * @return bool
+     *      Returns false if *$rule* doesn't match, or if the returned
+     *      *$matches* include errors.
      */
-    abstract public function matchAhead(string $pattern, CursorInterface $cursor, int $flags = 0) : array;
+    abstract public function parseMatchRfcRule(State $state, RuleInterface $rule, array &$matches = null) : bool;
 
     /**
      * Decodes base64-encoded string.
@@ -74,7 +83,7 @@ trait ParsesDnSpec
     {
         $rule = new Rule(Rfc2849x::class, 'DN_SPEC_X');
         if (!$this->parseMatchRfcRule($state, $rule, $matches)) {
-            if (count($matches) === 0) {
+            if (empty($matches)) {
                 $state->errorHere('syntax error: expected "dn:"');
             }
             return false;

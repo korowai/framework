@@ -47,8 +47,8 @@ class TestCaseTest extends TestCase
 
     public function test__assertRfcMatches()
     {
-        $this->assertRfcMatches('foo', 'FOO', ['foo' => 'foo', 'bar' => false]);
-        $this->assertRfcMatches('bar', 'BAR', ['foo' => false, 'bar' => 'bar']);
+        $this->assertRfcMatches('foo', 'FOO', ['foo' => ['foo',0], 'bar' => false]);
+        $this->assertRfcMatches('bar', 'BAR', ['foo' => false, 'bar' => ['bar', 0]]);
     }
 
     public function test__assertRfcNotMatches()

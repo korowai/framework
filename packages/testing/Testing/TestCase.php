@@ -16,6 +16,7 @@ namespace Korowai\Testing;
 use Korowai\Testing\Assertions\ClassAssertions;
 use Korowai\Testing\Assertions\ObjectPropertiesAssertions;
 use Korowai\Testing\Assertions\PregAssertions;
+use Korowai\Testing\Traits\PregUtils;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -25,6 +26,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
     use ClassAssertions;
     use ObjectPropertiesAssertions;
     use PregAssertions;
+    use PregUtils;
 
     /**
      * Checks the *$KOROWAI_HEAVY_TESTING* OS environment variable and returns

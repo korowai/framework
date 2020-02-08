@@ -77,8 +77,8 @@ class Rfc2849Test extends TestCase
     public static function VERSION_NUMBER__cases()
     {
         return [
-            ['1',       ['version_number' => '1']],
-            ['0123',    ['version_number' => '0123']]
+            ['1',       ['version_number' => ['1', 0]]],
+            ['0123',    ['version_number' => ['0123', 0]]]
         ];
     }
 
@@ -111,15 +111,15 @@ class Rfc2849Test extends TestCase
     public static function VERSION_SPEC__cases()
     {
         $cases = [
-            ['version:   0123', ['version_number' => '0123']],
+        //    0000000000111111
+        //    0123456789012345
+            ['version:   0123', ['version_number' => ['0123', 11]]],
         ];
-        $inheritedCases = [];
-        foreach (static::VERSION_NUMBER__cases() as $version) {
-            $inheritedCases[] = [
-                'version: '.$version[0],
-                ($version[1] ?? [])
-            ];
-        }
+
+        $inheritedCases = array_map(function (array $version) {
+            return static::prefixPregArguments($version, 'version: ');
+        }, static::VERSION_NUMBER__cases());
+
         return array_merge($inheritedCases, $cases);
     }
 
@@ -349,13 +349,13 @@ class Rfc2849Test extends TestCase
         foreach (static::ATTRIBUTE_TYPE__cases() as $attrType) {
             $inheritedCases[] = [
                 $attrType[0],
-                array_merge(($attrType[1] ?? []), ['attr_desc' => $attrType[0]])
+                array_merge(($attrType[1] ?? []), ['attr_desc' => [$attrType[0], 0]])
             ];
             foreach (static::OPTIONS__cases() as $options) {
                 $attrDesc = $attrType[0].';'.$options[0];
                 $inheritedCases[] = [
                     $attrDesc,
-                    array_merge(($attrType[1] ?? []), ($options[1] ?? []), ['attr_desc' => $attrDesc])
+                    array_merge(($attrType[1] ?? []), ($options[1] ?? []), ['attr_desc' => [$attrDesc, 0]])
                 ];
             }
         }
@@ -395,7 +395,7 @@ class Rfc2849Test extends TestCase
         foreach (static::SAFE_STRING__cases() as $string) {
             $inheritedCases[] = [
                 $string[0],
-                array_merge(($string[1] ?? []), ['dn_safe' => $string[0]])
+                array_merge(($string[1] ?? []), ['dn_safe' => [$string[0], 0]])
             ];
         }
         return array_merge($inheritedCases, static::arraizeStrings($strings));
@@ -437,7 +437,7 @@ class Rfc2849Test extends TestCase
         foreach (static::BASE64_STRING__cases() as $b64Str) {
             $inheritedCases[] = [
                 $b64Str[0],
-                array_merge(($b64Str[1] ?? []), ['dn_b64' => $b64Str[0]])
+                array_merge(($b64Str[1] ?? []), ['dn_b64' => [$b64Str[0], 0]])
             ];
         }
         return array_merge($inheritedCases, static::arraizeStrings($strings));
@@ -474,15 +474,15 @@ class Rfc2849Test extends TestCase
 
     public static function DN_SPEC__cases()
     {
-        $strings = [];
+        $cases = [];
         $inheritedCases = [];
         foreach (static::DISTINGUISHED_NAME__cases() as $dn) {
-            $inheritedCases[] = ['dn: '.$dn[0], ($dn[1] ?? [])];
+            $inheritedCases[] = static::prefixPregArguments($dn, 'dn: ');
         }
         foreach (static::BASE64_DISTINGUISHED_NAME__cases() as $b64Dn) {
-            $inheritedCases[] = ['dn:: '.$b64Dn[0], ($b64Dn[1] ?? [])];
+            $inheritedCases[] = static::prefixPregArguments($b64Dn, 'dn:: ');
         }
-        return array_merge($inheritedCases, static::arraizeStrings($strings));
+        return array_merge($inheritedCases, $cases);
     }
 
     public static function non__DN_SPEC__cases()
@@ -528,70 +528,75 @@ class Rfc2849Test extends TestCase
             [
                 '',
                 [
-                    'uri_reference'     => '',
+                    'uri_reference'     => ['', 0],
                     'uri'               => false,
                     'scheme'            => false,
-                    'relative_ref'      => ''
+                    'relative_ref'      => ['', 0],
                 ],
             ],
             [
                 '',
                 [
-                    'uri_reference'     => '',
+                    'uri_reference'     => ['', 0],
                     'uri'               => false,
                     'scheme'            => false,
-                    'relative_ref'      => ''
+                    'relative_ref'      => ['', 0]
                 ],
             ],
             [
                 '/',
                 [
-                    'uri_reference'     => '/',
+                    'uri_reference'     => ['/', 0],
                     'uri'               => false,
                     'scheme'            => false,
-                    'relative_ref'      => '/'
+                    'relative_ref'      => ['/', 0]
                 ],
             ],
             [
+            //   012345678
                 'a.b-c+d:',
                 [
-                    'uri_reference'     => 'a.b-c+d:',
-                    'uri'               => 'a.b-c+d:',
-                    'scheme'            => 'a.b-c+d',
+                    'uri_reference'     => ['a.b-c+d:', 0],
+                    'uri'               => ['a.b-c+d:', 0],
+                    'scheme'            => ['a.b-c+d', 0],
                     'authority'         => false,
                     'host'              => false,
                     'path_abempty'      => false,
                     'path_absolute'     => false,
                     'path_noscheme'     => false,
                     'path_rootless'     => false,
-                    'path_empty'        => '',
+                    'path_empty'        => ['', 8],
                     'relative_ref'      => false
                 ],
             ],
             [
+            //   00000000001
+            //   01234567890
                 'a.b-c+d:xxx',
                 [
-                    'uri_reference'     => 'a.b-c+d:xxx',
-                    'uri'               => 'a.b-c+d:xxx',
+                    'uri_reference'     => ['a.b-c+d:xxx', 0],
+                    'uri'               => ['a.b-c+d:xxx', 0],
                     'authority'         => false,
                     'host'              => false,
                     'path_abempty'      => false,
                     'path_absolute'     => false,
                     'path_noscheme'     => false,
-                    'path_rootless'     => 'xxx',
+                    'path_rootless'     => ['xxx', 8],
                     'path_empty'        => false,
                     'relative_ref'      => false
                 ],
             ],
             [
+            //   0000000000111
+            //   0123456789012
                 'a.b-c+d:/xxx',
                 [
-                    'uri_reference'     => 'a.b-c+d:/xxx',
-                    'uri'               => 'a.b-c+d:/xxx',
+                    'uri_reference'     => ['a.b-c+d:/xxx', 0],
+                    'uri'               => ['a.b-c+d:/xxx', 0],
                     'authority'         => false,
                     'host'              => false,
                     'path_abempty'      => false,
-                    'path_absolute'     => '/xxx',
+                    'path_absolute'     => ['/xxx', 8],
                     'path_noscheme'     => false,
                     'path_rootless'     => false,
                     'path_empty'        => false,
@@ -599,13 +604,15 @@ class Rfc2849Test extends TestCase
                 ],
             ],
             [
+            //   0000000000111111111122
+            //   0123456789012345678901
                 'a.b-c+d://example.com',
                 [
-                    'uri_reference'     => 'a.b-c+d://example.com',
-                    'uri'               => 'a.b-c+d://example.com',
-                    'authority'         => 'example.com',
-                    'host'              => 'example.com',
-                    'path_abempty'      => '',
+                    'uri_reference'     => ['a.b-c+d://example.com', 0],
+                    'uri'               => ['a.b-c+d://example.com', 0],
+                    'authority'         => ['example.com', 10],
+                    'host'              => ['example.com', 10],
+                    'path_abempty'      => ['', 21],
                     'path_absolute'     => false,
                     'path_noscheme'     => false,
                     'path_rootless'     => false,
@@ -614,20 +621,22 @@ class Rfc2849Test extends TestCase
                 ],
             ],
             [
+            //   00000000001111111111222222222233333333334444
+            //   01234567890123456789012345678901234567890123
                 'a.b-c+d://jsmith@example.com/foo?a=v#fr?b=w',
                 [
-                    'uri_reference'     => 'a.b-c+d://jsmith@example.com/foo?a=v#fr?b=w',
-                    'uri'               => 'a.b-c+d://jsmith@example.com/foo?a=v#fr?b=w',
-                    'authority'         => 'jsmith@example.com',
-                    'userinfo'          => 'jsmith',
-                    'host'              => 'example.com',
-                    'path_abempty'      => '/foo',
+                    'uri_reference'     => ['a.b-c+d://jsmith@example.com/foo?a=v#fr?b=w', 0],
+                    'uri'               => ['a.b-c+d://jsmith@example.com/foo?a=v#fr?b=w', 0],
+                    'authority'         => ['jsmith@example.com', 10],
+                    'userinfo'          => ['jsmith', 10],
+                    'host'              => ['example.com', 17],
+                    'path_abempty'      => ['/foo', 28],
                     'path_absolute'     => false,
                     'path_noscheme'     => false,
                     'path_rootless'     => false,
                     'path_empty'        => false,
-                    'query'             => 'a=v',
-                    'fragment'          => 'fr?b=w',
+                    'query'             => ['a=v', 33],
+                    'fragment'          => ['fr?b=w', 37],
                     'relative_ref'      => false
                 ],
             ],
@@ -677,44 +686,38 @@ class Rfc2849Test extends TestCase
         ];
         $inheritedCases = [];
         foreach (static::SAFE_STRING__cases() as $str) {
-            $inheritedCases[] = [
-                ':'.$str[0],
-                array_merge(
-                    ($str[1] ?? []),
-                    [
-                        'value_safe' => $str[0],
+            $case = [$str[0], array_merge($str[1] ?? [], [
+                        'value_safe' => [$str[0], 0],
                         'value_b64' => false,
                         'value_url' => false,
-                    ]
-                )
-            ];
+            ])];
         }
-        foreach (static::BASE64_STRING__cases() as $b64Str) {
-            $inheritedCases[] = [
-                ':: '.$b64Str[0],
-                array_merge(
-                    ($b64Str[1] ?? []),
-                    [
-                        'value_safe' => false,
-                        'value_b64' => $b64Str[0],
-                        'value_url' => false,
-                    ]
-                )
-            ];
-        }
-        foreach (static::URL__cases() as $url) {
-            $inheritedCases[] = [
-                ':< '.$url[0],
-                array_merge(
-                    ($url[1] ?? []),
-                    [
-                        'value_safe' => false,
-                        'value_b64' => false,
-                        'value_url' => $url[0],
-                    ]
-                )
-            ];
-        }
+//        foreach (static::BASE64_STRING__cases() as $b64Str) {
+//            $inheritedCases[] = [
+//                ':: '.$b64Str[0],
+//                array_merge(
+//                    ($b64Str[1] ?? []),
+//                    [
+//                        'value_safe' => false,
+//                        'value_b64' => $b64Str[0],
+//                        'value_url' => false,
+//                    ]
+//                )
+//            ];
+//        }
+//        foreach (static::URL__cases() as $url) {
+//            $inheritedCases[] = [
+//                ':< '.$url[0],
+//                array_merge(
+//                    ($url[1] ?? []),
+//                    [
+//                        'value_safe' => false,
+//                        'value_b64' => false,
+//                        'value_url' => $url[0],
+//                    ]
+//                )
+//            ];
+//        }
         return array_merge($inheritedCases, static::arraizeStrings($strings));
     }
 
@@ -751,198 +754,198 @@ class Rfc2849Test extends TestCase
         $this->assertRfcNotMatches($string, 'VALUE_SPEC');
     }
 
-    //
-    // CONTROL
-    //
-
-    public static function CONTROL__cases()
-    {
-        $strings = [
-            "control: 1.23\n",
-            "control: 1.23 true\n",
-            "control: 1.23 false\n",
-            "control: 1.23    true\n",
-        ];
-        $inheritedCases = [];
-        foreach (static::VALUE_SPEC__cases() as $valueSpec) {
-            $inheritedCases[] = [
-                'control: 1.23'.$valueSpec[0]."\n",
-                array_merge(
-                    ($valueSpec[1] ?? []),
-                    [
-                        'ctl_type'  => '1.23',
-                        'ctl_crit'  => false,
-                        'ctl_value_spec' => $valueSpec[0],
-                    ]
-                )
-            ];
-            $inheritedCases[] = [
-                'control: 1.23 true'.$valueSpec[0]."\n",
-                array_merge(
-                    ($valueSpec[1] ?? []),
-                    [
-                        'ctl_type'  => '1.23',
-                        'ctl_crit'  => 'true',
-                        'ctl_value_spec' => $valueSpec[0],
-                    ]
-                )
-            ];
-            $inheritedCases[] = [
-                'control: 1.23 false'.$valueSpec[0]."\n",
-                array_merge(
-                    ($valueSpec[1] ?? []),
-                    [
-                        'ctl_type'  => '1.23',
-                        'ctl_crit'  => 'false',
-                        'ctl_value_spec' => $valueSpec[0],
-                    ]
-                )
-            ];
-        }
-        return array_merge($inheritedCases, static::arraizeStrings($strings));
-    }
-
-    public static function non__CONTROL__cases()
-    {
-        $strings = [
-            '<:', '< %', '< %1', ':: %$', ': ł',
-            "control: \n",          // missing OID
-            "control: 1.23",        // missing \n
-            "control: 1.23true\n",  // no space between 1.23 and true
-            "control: 1.23 on\n",   // unsupported criticality
-            "control: 1.23 :foo\n", // space before value-spec
-        ];
-        $inheritedCases = [];
-        foreach (static::non__VALUE_SPEC__cases() as $nonValueSpec) {
-            if (!preg_match('/^:[:<]? /', $nonValueSpec[0])) {
-                $inheritedCases[] = [
-                    'control: 1.23'.$nonValueSpec[0]."\n"
-                ];
-                $inheritedCases[] = [
-                    'control: 1.23 true'.$nonValueSpec[0]."\n"
-                ];
-                $inheritedCases[] = [
-                    'control: 1.23 false'.$nonValueSpec[0]."\n"
-                ];
-            }
-        }
-        return array_merge($inheritedCases, static::arraizeStrings($strings));
-    }
-
-    /**
-     * @dataProvider CONTROL__cases
-     */
-    public function test__CONTROL__matches(string $string, array $pieces = [])
-    {
-        $this->assertRfcMatches($string, 'CONTROL', $pieces);
-    }
-
-    /**
-     * @dataProvider non__CONTROL__cases
-     */
-    public function test__CONTROL__notMatches(string $string)
-    {
-        $this->assertRfcNotMatches($string, 'CONTROL');
-    }
-
-    //
-    // ATTRVAL_SPEC
-    //
-
-    public static function ATTRVAL_SPEC__cases()
-    {
-        $strings = [ "foo:\n", "foo: \n"];
-        $inheritedCases = [];
-        foreach (static::ATTRIBUTE_DESCRIPTION__cases() as $attr) {
-            foreach (static::VALUE_SPEC__cases() as $value) {
-                $inheritedCases[] = [
-                    $attr[0].$value[0]."\n",
-                    array_merge(($attr[1] ?? []), ($value[1] ?? []))
-                ];
-            }
-        }
-        return array_merge($inheritedCases, static::arraizeStrings($strings));
-    }
-
-    public static function non__ATTRVAL_SPEC__cases()
-    {
-        $strings = [':', 'foo:', 'foo: '];
-        $inheritedCases = [];
-        foreach (static::non__ATTRIBUTE_DESCRIPTION__cases() as $nonAttr) {
-            if (!preg_match('/:/', $nonAttr[0])) {
-                $inheritedCases[] = [$nonAttr[0].":a\n"];
-            }
-        }
-        foreach (static::non__VALUE_SPEC__cases() as $nonVal) {
-            if (!preg_match('/:/', $nonVal[0])) {
-                $inheritedCases[] = ['a'.$nonVal[0]."\n"];
-            }
-        }
-        return array_merge($inheritedCases, static::arraizeStrings($strings));
-    }
-
-    /**
-     * @dataProvider ATTRVAL_SPEC__cases
-     */
-    public function test__ATTRVAL_SPEC__matches(string $string, array $pieces = [])
-    {
-        $this->assertRfcMatches($string, 'ATTRVAL_SPEC', $pieces);
-    }
-
-    /**
-     * @dataProvider non__ATTRVAL_SPEC__cases
-     */
-    public function test__ATTRVAL_SPEC__notMatches(string $string)
-    {
-        $this->assertRfcNotMatches($string, 'ATTRVAL_SPEC');
-    }
-
-    //
-    // LDIF_ATTRVAL_RECORD
-    //
-
-    public static function LDIF_ATTRVAL_RECORD__cases()
-    {
-        $strings = [
-                "dn: \n".
-                "attr: \n",
-
-                "dn:: AAAFGFF==\n".
-                "attr-1: value1 - ?\n".
-                "attr-2:: SDAFDS/==\n".
-                "attr-:< file://\n",
-        ];
-        return static::arraizeStrings($strings);
-    }
-
-    public static function non__LDIF_ATTRVAL_RECORD__cases()
-    {
-        $strings = [
-            '',
-
-            "dn: \n",
-
-            "dn: \n".
-            "attr: ", // missing trailing \n
-        ];
-        return static::arraizeStrings($strings);
-    }
-
-    /**
-     * @dataProvider LDIF_ATTRVAL_RECORD__cases
-     */
-    public function test__LDIF_ATTRVAL_RECORD__matches(string $string, array $pieces = [])
-    {
-        $this->assertRfcMatches($string, 'LDIF_ATTRVAL_RECORD', $pieces);
-    }
-
-    /**
-     * @dataProvider non__LDIF_ATTRVAL_RECORD__cases
-     */
-    public function test__LDIF_ATTRVAL_RECORD__notMatches(string $string)
-    {
-        $this->assertRfcNotMatches($string, 'LDIF_ATTRVAL_RECORD');
-    }
+//    //
+//    // CONTROL
+//    //
+//
+//    public static function CONTROL__cases()
+//    {
+//        $strings = [
+//            "control: 1.23\n",
+//            "control: 1.23 true\n",
+//            "control: 1.23 false\n",
+//            "control: 1.23    true\n",
+//        ];
+//        $inheritedCases = [];
+//        foreach (static::VALUE_SPEC__cases() as $valueSpec) {
+//            $inheritedCases[] = [
+//                'control: 1.23'.$valueSpec[0]."\n",
+//                array_merge(
+//                    ($valueSpec[1] ?? []),
+//                    [
+//                        'ctl_type'  => '1.23',
+//                        'ctl_crit'  => false,
+//                        'ctl_value_spec' => $valueSpec[0],
+//                    ]
+//                )
+//            ];
+//            $inheritedCases[] = [
+//                'control: 1.23 true'.$valueSpec[0]."\n",
+//                array_merge(
+//                    ($valueSpec[1] ?? []),
+//                    [
+//                        'ctl_type'  => '1.23',
+//                        'ctl_crit'  => 'true',
+//                        'ctl_value_spec' => $valueSpec[0],
+//                    ]
+//                )
+//            ];
+//            $inheritedCases[] = [
+//                'control: 1.23 false'.$valueSpec[0]."\n",
+//                array_merge(
+//                    ($valueSpec[1] ?? []),
+//                    [
+//                        'ctl_type'  => '1.23',
+//                        'ctl_crit'  => 'false',
+//                        'ctl_value_spec' => $valueSpec[0],
+//                    ]
+//                )
+//            ];
+//        }
+//        return array_merge($inheritedCases, static::arraizeStrings($strings));
+//    }
+//
+//    public static function non__CONTROL__cases()
+//    {
+//        $strings = [
+//            '<:', '< %', '< %1', ':: %$', ': ł',
+//            "control: \n",          // missing OID
+//            "control: 1.23",        // missing \n
+//            "control: 1.23true\n",  // no space between 1.23 and true
+//            "control: 1.23 on\n",   // unsupported criticality
+//            "control: 1.23 :foo\n", // space before value-spec
+//        ];
+//        $inheritedCases = [];
+//        foreach (static::non__VALUE_SPEC__cases() as $nonValueSpec) {
+//            if (!preg_match('/^:[:<]? /', $nonValueSpec[0])) {
+//                $inheritedCases[] = [
+//                    'control: 1.23'.$nonValueSpec[0]."\n"
+//                ];
+//                $inheritedCases[] = [
+//                    'control: 1.23 true'.$nonValueSpec[0]."\n"
+//                ];
+//                $inheritedCases[] = [
+//                    'control: 1.23 false'.$nonValueSpec[0]."\n"
+//                ];
+//            }
+//        }
+//        return array_merge($inheritedCases, static::arraizeStrings($strings));
+//    }
+//
+//    /**
+//     * @dataProvider CONTROL__cases
+//     */
+//    public function test__CONTROL__matches(string $string, array $pieces = [])
+//    {
+//        $this->assertRfcMatches($string, 'CONTROL', $pieces);
+//    }
+//
+//    /**
+//     * @dataProvider non__CONTROL__cases
+//     */
+//    public function test__CONTROL__notMatches(string $string)
+//    {
+//        $this->assertRfcNotMatches($string, 'CONTROL');
+//    }
+//
+//    //
+//    // ATTRVAL_SPEC
+//    //
+//
+//    public static function ATTRVAL_SPEC__cases()
+//    {
+//        $strings = [ "foo:\n", "foo: \n"];
+//        $inheritedCases = [];
+//        foreach (static::ATTRIBUTE_DESCRIPTION__cases() as $attr) {
+//            foreach (static::VALUE_SPEC__cases() as $value) {
+//                $inheritedCases[] = [
+//                    $attr[0].$value[0]."\n",
+//                    array_merge(($attr[1] ?? []), ($value[1] ?? []))
+//                ];
+//            }
+//        }
+//        return array_merge($inheritedCases, static::arraizeStrings($strings));
+//    }
+//
+//    public static function non__ATTRVAL_SPEC__cases()
+//    {
+//        $strings = [':', 'foo:', 'foo: '];
+//        $inheritedCases = [];
+//        foreach (static::non__ATTRIBUTE_DESCRIPTION__cases() as $nonAttr) {
+//            if (!preg_match('/:/', $nonAttr[0])) {
+//                $inheritedCases[] = [$nonAttr[0].":a\n"];
+//            }
+//        }
+//        foreach (static::non__VALUE_SPEC__cases() as $nonVal) {
+//            if (!preg_match('/:/', $nonVal[0])) {
+//                $inheritedCases[] = ['a'.$nonVal[0]."\n"];
+//            }
+//        }
+//        return array_merge($inheritedCases, static::arraizeStrings($strings));
+//    }
+//
+//    /**
+//     * @dataProvider ATTRVAL_SPEC__cases
+//     */
+//    public function test__ATTRVAL_SPEC__matches(string $string, array $pieces = [])
+//    {
+//        $this->assertRfcMatches($string, 'ATTRVAL_SPEC', $pieces);
+//    }
+//
+//    /**
+//     * @dataProvider non__ATTRVAL_SPEC__cases
+//     */
+//    public function test__ATTRVAL_SPEC__notMatches(string $string)
+//    {
+//        $this->assertRfcNotMatches($string, 'ATTRVAL_SPEC');
+//    }
+//
+//    //
+//    // LDIF_ATTRVAL_RECORD
+//    //
+//
+//    public static function LDIF_ATTRVAL_RECORD__cases()
+//    {
+//        $strings = [
+//                "dn: \n".
+//                "attr: \n",
+//
+//                "dn:: AAAFGFF==\n".
+//                "attr-1: value1 - ?\n".
+//                "attr-2:: SDAFDS/==\n".
+//                "attr-:< file://\n",
+//        ];
+//        return static::arraizeStrings($strings);
+//    }
+//
+//    public static function non__LDIF_ATTRVAL_RECORD__cases()
+//    {
+//        $strings = [
+//            '',
+//
+//            "dn: \n",
+//
+//            "dn: \n".
+//            "attr: ", // missing trailing \n
+//        ];
+//        return static::arraizeStrings($strings);
+//    }
+//
+//    /**
+//     * @dataProvider LDIF_ATTRVAL_RECORD__cases
+//     */
+//    public function test__LDIF_ATTRVAL_RECORD__matches(string $string, array $pieces = [])
+//    {
+//        $this->assertRfcMatches($string, 'LDIF_ATTRVAL_RECORD', $pieces);
+//    }
+//
+//    /**
+//     * @dataProvider non__LDIF_ATTRVAL_RECORD__cases
+//     */
+//    public function test__LDIF_ATTRVAL_RECORD__notMatches(string $string)
+//    {
+//        $this->assertRfcNotMatches($string, 'LDIF_ATTRVAL_RECORD');
+//    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

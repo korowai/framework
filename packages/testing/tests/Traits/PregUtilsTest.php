@@ -171,6 +171,60 @@ class ClassTraitsTest extends TestCase
     {
         $this->assertSame($expected, self::prefixPregArguments(...$args));
     }
+
+    public function extendPregArguments__cases()
+    {
+        return [
+            [
+                [[''], ['prefix' => 'prefix ']],
+                 ['prefix ']
+            ],
+            [
+                [['', []], ['prefix' => 'prefix ']],
+                 ['prefix ', []]
+            ],
+
+            [
+                [      ['whole string', [      'whole string']], ['prefix' => 'prefix ']],
+                ['prefix whole string', ['prefix whole string']]
+            ],
+// TODO: continue test cases.
+//
+//            [
+//                [['whole string', [       'whole string', 'second' => 'string']], 'prefix '],
+//                [ 'prefix whole string', ['prefix whole string', 'second' => 'string']]
+//            ],
+//
+//            [
+//                [       ['whole string', [       'whole string', 'second' => ['string',  6]]], 'prefix '],
+//                [ 'prefix whole string', ['prefix whole string', 'second' => ['string', 13]]]
+//            ],
+//
+//            [
+//                [      ['whole string', [[       'whole string', 2], 'second' => ['string',  8]]], 'prefix '],
+//                ['prefix whole string', [['prefix whole string', 2], 'second' => ['string', 15]]]
+//            ],
+//
+//            [
+//                [      ['whole string', [[       'whole string', 2], 'second' => ['string',  8]]], 'prefix ', []],
+//                ['prefix whole string', [['prefix whole string', 9], 'second' => ['string', 15]]]
+//            ],
+//
+//            [
+//                [      ['whole string', [[       'whole string', 2], 'second' => ['string',  8]]], 'prefix ', [0, 'second']],
+//                ['prefix whole string', [['prefix whole string', 2], 'second' => ['string',  8]]]
+//            ],
+        ];
+    }
+
+    /**
+     * @dataProvider extendPregArguments__cases
+     */
+    public function test__extendPregArguments(array $args, array $expected)
+    {
+        //$this->markTestIncomplete('The test has not been implemented yet');
+        $this->assertSame($expected, self::extendPregArguments(...$args));
+    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

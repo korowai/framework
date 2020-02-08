@@ -84,6 +84,23 @@ trait PregUtils
             return [$subject];
         }
     }
+
+    /**
+     * @todo Write documentation
+     */
+    public static function extendPregArguments(array $arguments, array $options = []) : array
+    {
+        if (($merge= $options['merge'] ?? null) !== null) {
+            $arguments[1] = array_merge($arguments[1] ?? [], $merge);
+        }
+        if (($offset = $options['shift'] ?? null) !== null && is_array($arguments[1])) {
+            $arguments[1] = static::shiftPregCaptures($arguments[1], $offset, $options['except'] ?? []);
+        }
+        if (($prefix = $options['prefix'] ?? null) !== null) {
+            $arguments = static::prefixPregArguments($arguments, $prefix, $options['except'] ?? null);
+        }
+        return $arguments;
+    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

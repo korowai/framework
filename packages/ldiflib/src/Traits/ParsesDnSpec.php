@@ -36,12 +36,12 @@ trait ParsesDnSpec
      *      The state provides cursor pointing to the offset of the beginning
      *      of the match. If the *$rule* matches anything, the *$state*'s
      *      cursor gets moved to the next character after the matched string.
+     *      If *$rule* matches any errors, they will be appended to *$state*.
      * @param  RuleInterface $rule
      *      The rule to be used for matching.
      * @param  array $matches
-     *      If the rule doesn't match, the function returns empty *$matches*.
-     *      Otherwise, *$matches* shall contain captured groups including
-     *      captured syntax errors.
+     *      Returns matched captured groups including matched errors. If the
+     *      rule doesn't match at all, the function returns empty *$matches*.
      *
      * @return bool
      *      Returns false if *$rule* doesn't match, or if the returned

@@ -15,8 +15,10 @@ namespace Korowai\Tests\Lib\Ldif\Traits;
 
 use Korowai\Lib\Ldif\Traits\MatchesPatterns;
 use Korowai\Lib\Ldif\CursorInterface;
+use Korowai\Lib\Ldif\StateInterface;
 use Korowai\Lib\Ldif\LocationInterface;
 use Korowai\Lib\Ldif\ParserError;
+use Korowai\Lib\Rfc\RuleInterface;
 
 use Korowai\Testing\Lib\Ldif\TestCase;
 
@@ -28,10 +30,10 @@ class MatchesPatternsTest extends TestCase
 {
     public function getTestObject()
     {
-        $obj = new class {
+        $parser = new class {
             use MatchesPatterns { matchString as public; }
         };
-        return $obj;
+        return $parser;
     }
 
     protected function configureLocationMock(LocationInterface $location, array $case)
@@ -76,7 +78,7 @@ class MatchesPatternsTest extends TestCase
         return $cursor;
     }
 
-    public function matchAtCases()
+    public function matchAt__cases()
     {
         return [
             [['//', ''], ['']],
@@ -88,40 +90,40 @@ class MatchesPatternsTest extends TestCase
     }
 
     /**
-     * @dataProvider matchAtCases
+     * @dataProvider matchAt__cases
      */
     public function test__matchAt(array $case, array $expected)
     {
         $location = $this->createLocationMock($case);
         $this->configureLocationMock($location, $case);
 
-        $obj = $this->getTestObject();
+        $parser = $this->getTestObject();
 
         $args = array_merge([$case[0], $location], count($case) > 2 ? [$case[2]] : []);
-        $this->assertSame($expected, $obj->matchAt(...$args));
+        $this->assertSame($expected, $parser->matchAt(...$args));
     }
 
     /**
-     * @dataProvider matchAtCases
+     * @dataProvider matchAt__cases
      */
     public function test__matchAtOrThrow(array $case, array $expected)
     {
         $location = $this->createLocationMock($case);
 
-        $obj = $this->getTestObject();
+        $parser = $this->getTestObject();
 
         $args = array_merge([$case[0], $location, "error error"], count($case) > 2 ? [$case[2]] : []);
 
         if ($expected === []) {
             $this->expectException(ParserError::class);
             $this->expectExceptionMessage("error error");
-            $obj->matchAtOrThrow(...$args);
+            $parser->matchAtOrThrow(...$args);
         } else {
-            $this->assertSame($expected, $obj->matchAtOrThrow(...$args));
+            $this->assertSame($expected, $parser->matchAtOrThrow(...$args));
         }
     }
 
-    public function matchAheadCases()
+    public function matchAhead__cases()
     {
         return [
             [['//', ''], [['', 0]], 0],
@@ -133,45 +135,60 @@ class MatchesPatternsTest extends TestCase
     }
 
     /**
-     * @dataProvider matchAheadCases
+     * @dataProvider matchAhead__cases
      */
     public function test__matchAhead(array $case, array $expected, int $expMoveTo = null)
     {
         $cursor = $this->createCursorMock($case, $expMoveTo);
 
-        $obj = $this->getTestObject();
+        $parser = $this->getTestObject();
 
         $args = array_merge([$case[0], $cursor], count($case) > 2 ? [$case[2]] : []);
-        $this->assertSame($expected, $obj->matchAhead(...$args));
+        $this->assertSame($expected, $parser->matchAhead(...$args));
     }
 
     /**
-     * @dataProvider matchAheadCases
+     * @dataProvider matchAhead__cases
      */
     public function test__matchAheadOrThrow(array $case, array $expected, int $expMoveTo = null)
     {
         $cursor = $this->createCursorMock($case, $expMoveTo);
 
-        $obj = $this->getTestObject();
+        $parser = $this->getTestObject();
 
         $args = array_merge([$case[0], $cursor, "error error"], count($case) > 2 ? [$case[2]] : []);
 
         if ($expected === []) {
             $this->expectException(ParserError::class);
             $this->expectExceptionMessage("error error");
-            $obj->matchAheadOrThrow(...$args);
+            $parser->matchAheadOrThrow(...$args);
         } else {
-            $this->assertSame($expected, $obj->matchAheadOrThrow(...$args));
+            $this->assertSame($expected, $parser->matchAheadOrThrow(...$args));
         }
     }
 
     /**
-     * @dataProvider matchAtCases
+     * @dataProvider matchAt__cases
      */
     public function test__matchString(array $case, array $expected)
     {
-        $obj = $this->getTestObject();
-        $this->assertSame($expected, $obj->matchString(...$case));
+        $parser = $this->getTestObject();
+        $this->assertSame($expected, $parser->matchString(...$case));
+    }
+
+    public function parseMatchRfcRule__cases()
+    {
+        return [
+        ];
+    }
+
+    /**
+     * @dataProvider parseMatchRfcRule__cases
+     */
+    public function test__parseMatchRfcRule(array $case)
+    {
+        $parser = $this->getTestObject();
+        $this->markTestIncomplete('The test has not been implemented yet.');
     }
 }
 

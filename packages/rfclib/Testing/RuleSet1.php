@@ -27,7 +27,7 @@ class RuleSet1 extends RuleSet0
         '(?:'.
             self::VAR_NAME.'\s*=\s*'.
             '(?:'.
-                '(?:(?<value_int>'.self::INT.');)'.
+                '(?:(?<value_int>'.self::INT.')\s*;)'.
                 '|'.
                 '(?:'.self::PARTIAL_INT.'(?<value_int_error>[^;]*))'.
             ')'.

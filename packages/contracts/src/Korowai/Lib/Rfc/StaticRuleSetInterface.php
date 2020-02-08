@@ -66,7 +66,7 @@ interface StaticRuleSetInterface
      * @param  array $matches
      * @return array
      */
-    public static function filterErrorsCaptured(string $ruleName, array $matches) : array;
+    public static function findCapturedErrors(string $ruleName, array $matches) : array;
 
     /**
      * Returns an array containing all entries of *$matches* which have keys
@@ -76,7 +76,18 @@ interface StaticRuleSetInterface
      * @param  array $matches
      * @return array
      */
-    public static function filterValuesCaptured(string $ruleName, array $matches) : array;
+    public static function findCapturedValues(string $ruleName, array $matches) : array;
+
+    /**
+     * Returns error message for given error. The *$errorKey* is the name of
+     * an error-catching capture group (one of the keys returned by
+     * *errroCaptures()*).
+     *
+     * @param  string $errorKey
+     * @param  string $ruleName
+     * @return array
+     */
+    public static function getErrorMessage(string $errorKey, string $ruleName = null) : string;
 }
 
 // vim: syntax=php sw=4 ts=4 et:

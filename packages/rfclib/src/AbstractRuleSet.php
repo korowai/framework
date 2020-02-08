@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Rfc;
 
-use Korowai\Lib\Rfc\StaticRuleSetInterface;
 use Korowai\Lib\Rfc\Traits\RulesFromConstants;
 
 /**
@@ -89,7 +88,7 @@ abstract class AbstractRuleSet implements StaticRuleSetInterface
     /**
      * {@inheritdoc}
      */
-    public static function filterErrorsCaptured(string $ruleName, array $matches) : array
+    public static function findCapturedErrors(string $ruleName, array $matches) : array
     {
         $matches = static::filterMatches($matches);
         return array_intersect_key($matches, static::errorCaptures($ruleName));
@@ -98,10 +97,27 @@ abstract class AbstractRuleSet implements StaticRuleSetInterface
     /**
      * {@inheritdoc}
      */
-    public static function filterValuesCaptured(string $ruleName, array $matches) : array
+    public static function findCapturedValues(string $ruleName, array $matches) : array
     {
         $matches = static::filterMatches($matches);
         return array_intersect_key($matches, static::valueCaptures($ruleName));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getErrorMessage(string $errorKey, string $ruleName = null) : string
+    {
+        $definedErrors = static::getDefinedErrors();
+        $error = $definedErrors[$errorKey];
+
+        if (is_array($error)) {
+            $message = $error[$ruleName] ?? ($error[0] ?? array_values($error)[0]);
+        } else {
+            $message = $error;
+        }
+
+        return $message;
     }
 
     /**
@@ -116,28 +132,6 @@ abstract class AbstractRuleSet implements StaticRuleSetInterface
     public static function getDefinedErrors() : array
     {
         return [];
-    }
-
-    /**
-     * Returns error message for given error. The *$errorKey* is the name of
-     * error-catching capture group.
-     *
-     * @param  string $errorKey
-     * @param  string $ruleName
-     * @return array
-     */
-    public static function getErrorMessage(string $errorKey, string $ruleName = null) : string
-    {
-        $definedErrors = static::getDefinedErrors();
-        $error = $definedErrors[$errorKey];
-
-        if (is_array($error)) {
-            $message = $error[$ruleName] ?? ($error[0] ?? array_values($error)[0]);
-        } else {
-            $message = $error;
-        }
-
-        return $message;
     }
 }
 

@@ -17,6 +17,7 @@ use Korowai\Lib\Ldif\CursorInterface;
 use Korowai\Lib\Ldif\ParserStateInterface as State;
 use Korowai\Lib\Rfc\Rfc2849x;
 use Korowai\Lib\Rfc\Rfc2253;
+use Korowai\Lib\Rfc\Rule;
 
 use function Korowai\Lib\Compat\preg_match;
 
@@ -71,14 +72,15 @@ trait ParsesDnSpec
      */
     public function parseDnSpec(State $state, string &$dn = null) : bool
     {
-        $cursor = $state->getCursor();
-
-        $matches = $this->matchAhead('/\G'.Rfc2849x::DN_SPEC_X.'/', $cursor, PREG_UNMATCHED_AS_NULL);
-        if (count($matches) === 0) {
-            $state->errorHere('syntax error: expected "dn:"');
+        $rule = new Rule(Rfc2849x::class, 'DN_SPEC_X');
+        if (!$this->parseMatchRfcRule($state, $rule, $matches)) {
+            if (count($matches) === 0) {
+                $state->errorHere('syntax error: expected "dn:"');
+            }
             return false;
         }
-        return $this->parseMatchedDnSpec($state, $matches, $dn);
+
+        return $this->parseMatchedDn($state, $matches, $dn);
     }
 
     /**
@@ -100,7 +102,7 @@ trait ParsesDnSpec
      */
     protected function parseMatchedDnSpec(State $state, array $matches, string &$dn = null) : bool
     {
-        if (count($errors = Rfc2849x::filterErrorsCaptured('DN_SPEC_X', $matches)) > 0) {
+        if (count($errors = Rfc2849x::findCapturedErrors('DN_SPEC_X', $matches)) > 0) {
             foreach ($errors as $errorKey => $errorMatch) {
                 $message = Rfc2849x::getErrorMessage($errorKey, 'DN_SPEC_X');
                 $state->errorAt($errorMatch[1], 'syntax error: '.$message);

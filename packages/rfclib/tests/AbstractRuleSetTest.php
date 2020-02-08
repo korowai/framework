@@ -153,7 +153,7 @@ class AbstractRuleSetTest extends TestCase
         $this->assertSame($expected, AbstractRuleSet::filterMatches($matches));
     }
 
-    public static function filterErrorsCaptured__cases()
+    public static function findCapturedErrors__cases()
     {
         return [
             [ RuleSet0::class, 'VAR_NAME', ['inexistent' => '']],
@@ -180,13 +180,13 @@ class AbstractRuleSetTest extends TestCase
     }
 
     /**
-     * @dataProvider filterErrorsCaptured__cases
+     * @dataProvider findCapturedErrors__cases
      */
-    public function test__filterErrorsCaptured($class, $ruleName, $matches)
+    public function test__findCapturedErrors($class, $ruleName, $matches)
     {
         $matches = $class::filterMatches($matches);
         $expected = array_intersect_key($matches, $class::errorCaptures($ruleName));
-        $actual = $class::filterErrorsCaptured($ruleName, $matches);
+        $actual = $class::findCapturedErrors($ruleName, $matches);
         $message = 'Failed asserting that '.
             $class.'::errorCaptures('.
                 "'".$ruleName."', ".
@@ -195,7 +195,7 @@ class AbstractRuleSetTest extends TestCase
         $this->assertSame($expected, $actual, $message);
     }
 
-    public static function filterValuesCaptured__cases()
+    public static function findCapturedValues__cases()
     {
         return [
             [ RuleSet0::class, 'VAR_NAME', ['inexistent' => '']],
@@ -222,13 +222,13 @@ class AbstractRuleSetTest extends TestCase
     }
 
     /**
-     * @dataProvider filterValuesCaptured__cases
+     * @dataProvider findCapturedValues__cases
      */
-    public function test__filterValuesCaptured($class, $ruleName, $matches)
+    public function test__findCapturedValues($class, $ruleName, $matches)
     {
         $matches = $class::filterMatches($matches);
         $expected = array_intersect_key($matches, $class::valueCaptures($ruleName));
-        $actual = $class::filterValuesCaptured($ruleName, $matches);
+        $actual = $class::findCapturedValues($ruleName, $matches);
         $message = 'Failed asserting that '.
             $class.'::errorCaptures('.
                 "'".$ruleName."', ".

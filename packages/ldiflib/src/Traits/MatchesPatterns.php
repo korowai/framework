@@ -15,8 +15,10 @@ namespace Korowai\Lib\Ldif\Traits;
 
 use Korowai\Lib\Ldif\LocationInterface;
 use Korowai\Lib\Ldif\CursorInterface;
+use Korowai\Lib\Ldif\ParserStateInterface;
 use Korowai\Lib\Ldif\ParserError;
 use Korowai\Lib\Compat\Exception\PregException;
+use Korowai\Lib\Rfc\RuleInterface;
 
 use function Korowai\Lib\Compat\preg_match;
 
@@ -123,6 +125,46 @@ trait MatchesPatterns
         $tail = array_slice(func_get_args(), 2);
         preg_match($pattern, $subject, $matches, ...$tail);
         return $matches;
+    }
+
+    /**
+     * Matches the input substring starting at *$state*'s cursor against
+     * regular expression provided by *$rule* and moves the cursor after
+     * the end of the matched substring.
+     *
+     * @param  State $state
+     *      The state provides cursor pointing to the offset of the beginning
+     *      of the match. If the *$rule* matches anything, the *$state*'s
+     *      cursor gets moved to the next character after the matched string.
+     * @param  RuleInterface $rule
+     *      The rule to be used for matching.
+     * @param  array $matches
+     *      If the rule doesn't match, the function returns empty *$matches*.
+     *      Otherwise, *$matches* shall contain captured groups including
+     *      captured syntax errors.
+     *
+     * @return bool
+     *      Returns false if *$rule* doesn't match, or if the returned
+     *      *$matches* include errors.
+     */
+    public function parseMatchRfcRule(ParserStateInterface $state, RuleInterface $rule, array &$matches = null) : bool
+    {
+        $cursor = $state->getCursor();
+
+        $matches = $this->matchAhead('/\G'.$rule.'/D', $cursor, PREG_UNMATCHED_AS_NULL);
+        if (count($matches) === 0) {
+            return false;
+        }
+
+        if (count($errors = $rule->findCapturedErrors($matches)) > 0) {
+            foreach ($errors as $errorKey => $errorMatch) {
+                $message = $rule->getErrorMessage($errorKey);
+                $state->errorAt($errorMatch[1], 'syntax error: '.$message);
+            }
+            return false;
+        }
+
+        return true;
     }
 }
 

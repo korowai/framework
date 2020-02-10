@@ -35,9 +35,14 @@ class Rule implements RuleInterface
     /**
      * Initializes the rule.
      *
-     * @param  string $ruleSetClass Must be a fully qualified name of a class implementing StaticRuleInterface.
-     * @param  string $name Name of the rule in the $ruleSetClass.
-     * @throws InvalidRuleSetNameException When invalid *$ruleSetClass* is passed to the constructor.
+     * @param  string $ruleSetClass
+     *      Must be a fully qualified name of a class implementing
+     *      [StaticRuleSetInterface](StaticRuleSetInterface.html).
+     * @param  string $name
+     *      Name of the rule in the $ruleSetClass (i.e.
+     *      ``$ruleSetClass::rule($name)`` must be available).
+     * @throws InvalidRuleSetNameException
+     *      When invalid *$ruleSetClass* is passed to the constructor.
      */
     public function __construct(string $ruleSetClass, string $name)
     {

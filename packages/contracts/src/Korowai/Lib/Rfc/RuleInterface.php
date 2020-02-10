@@ -27,7 +27,7 @@ interface RuleInterface
 
     /**
      * Returns the regular expression that implements the rule. Same as
-     * *rule()*.
+     * *$this->rule()*.
      *
      * @return string
      */

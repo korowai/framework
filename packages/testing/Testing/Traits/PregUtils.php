@@ -90,14 +90,14 @@ trait PregUtils
      */
     public static function extendPregArguments(array $arguments, array $options = []) : array
     {
-        if (($merge= $options['merge'] ?? null) !== null) {
-            $arguments[1] = array_merge($arguments[1] ?? [], $merge);
-        }
-        if (($offset = $options['shift'] ?? null) !== null && is_array($arguments[1])) {
-            $arguments[1] = static::shiftPregCaptures($arguments[1], $offset, $options['except'] ?? []);
-        }
         if (($prefix = $options['prefix'] ?? null) !== null) {
             $arguments = static::prefixPregArguments($arguments, $prefix, $options['except'] ?? null);
+        }
+        if (($merge = $options['merge'] ?? null) !== null) {
+            $arguments[1] = array_merge($arguments[1] ?? [], $merge);
+        }
+        if (($suffix = $options['suffix'] ?? null) !== null) {
+            $arguments[0] = $arguments[0].$suffix;
         }
         return $arguments;
     }

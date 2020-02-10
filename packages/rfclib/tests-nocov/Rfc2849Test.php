@@ -689,7 +689,7 @@ class Rfc2849Test extends TestCase
             $inheritedCases[] = static::extendPregArguments($str, [
                 'prefix' => ': ',
                 'merge' => [
-                    'value_safe' => [$str[0], 0],
+                    'value_safe' => [$str[0], 2],
                     'value_b64' => false,
                     'value_url' => false,
                 ]
@@ -700,7 +700,7 @@ class Rfc2849Test extends TestCase
                 'prefix' => ':: ',
                 'merge' => [
                     'value_safe' => false,
-                    'value_b64' => [$b64Str[0], 0],
+                    'value_b64' => [$b64Str[0], 3],
                     'value_url' => false,
                 ]
             ]);
@@ -711,7 +711,7 @@ class Rfc2849Test extends TestCase
                 'merge' => [
                     'value_safe' => false,
                     'value_b64' => false,
-                    'value_url' => [$url[0], 0],
+                    'value_url' => [$url[0], 3],
                 ]
             ]);
         }
@@ -750,199 +750,188 @@ class Rfc2849Test extends TestCase
     {
         $this->assertRfcNotMatches($string, 'VALUE_SPEC');
     }
-// TODO: uncomment an fix the test cases
-//    //
-//    // CONTROL
-//    //
-//
-//    public static function CONTROL__cases()
-//    {
-//        $strings = [
-//            "control: 1.23\n",
-//            "control: 1.23 true\n",
-//            "control: 1.23 false\n",
-//            "control: 1.23    true\n",
-//        ];
-//        $inheritedCases = [];
-//        foreach (static::VALUE_SPEC__cases() as $valueSpec) {
-//            $inheritedCases[] = [
-//                'control: 1.23'.$valueSpec[0]."\n",
-//                array_merge(
-//                    ($valueSpec[1] ?? []),
-//                    [
-//                        'ctl_type'  => '1.23',
-//                        'ctl_crit'  => false,
-//                        'ctl_value_spec' => $valueSpec[0],
-//                    ]
-//                )
-//            ];
-//            $inheritedCases[] = [
-//                'control: 1.23 true'.$valueSpec[0]."\n",
-//                array_merge(
-//                    ($valueSpec[1] ?? []),
-//                    [
-//                        'ctl_type'  => '1.23',
-//                        'ctl_crit'  => 'true',
-//                        'ctl_value_spec' => $valueSpec[0],
-//                    ]
-//                )
-//            ];
-//            $inheritedCases[] = [
-//                'control: 1.23 false'.$valueSpec[0]."\n",
-//                array_merge(
-//                    ($valueSpec[1] ?? []),
-//                    [
-//                        'ctl_type'  => '1.23',
-//                        'ctl_crit'  => 'false',
-//                        'ctl_value_spec' => $valueSpec[0],
-//                    ]
-//                )
-//            ];
-//        }
-//        return array_merge($inheritedCases, static::arraizeStrings($strings));
-//    }
-//
-//    public static function non__CONTROL__cases()
-//    {
-//        $strings = [
-//            '<:', '< %', '< %1', ':: %$', ': ł',
-//            "control: \n",          // missing OID
-//            "control: 1.23",        // missing \n
-//            "control: 1.23true\n",  // no space between 1.23 and true
-//            "control: 1.23 on\n",   // unsupported criticality
-//            "control: 1.23 :foo\n", // space before value-spec
-//        ];
-//        $inheritedCases = [];
-//        foreach (static::non__VALUE_SPEC__cases() as $nonValueSpec) {
-//            if (!preg_match('/^:[:<]? /', $nonValueSpec[0])) {
-//                $inheritedCases[] = [
-//                    'control: 1.23'.$nonValueSpec[0]."\n"
-//                ];
-//                $inheritedCases[] = [
-//                    'control: 1.23 true'.$nonValueSpec[0]."\n"
-//                ];
-//                $inheritedCases[] = [
-//                    'control: 1.23 false'.$nonValueSpec[0]."\n"
-//                ];
-//            }
-//        }
-//        return array_merge($inheritedCases, static::arraizeStrings($strings));
-//    }
-//
-//    /**
-//     * @dataProvider CONTROL__cases
-//     */
-//    public function test__CONTROL__matches(string $string, array $pieces = [])
-//    {
-//        $this->assertRfcMatches($string, 'CONTROL', $pieces);
-//    }
-//
-//    /**
-//     * @dataProvider non__CONTROL__cases
-//     */
-//    public function test__CONTROL__notMatches(string $string)
-//    {
-//        $this->assertRfcNotMatches($string, 'CONTROL');
-//    }
-//
-//    //
-//    // ATTRVAL_SPEC
-//    //
-//
-//    public static function ATTRVAL_SPEC__cases()
-//    {
-//        $strings = [ "foo:\n", "foo: \n"];
-//        $inheritedCases = [];
-//        foreach (static::ATTRIBUTE_DESCRIPTION__cases() as $attr) {
-//            foreach (static::VALUE_SPEC__cases() as $value) {
-//                $inheritedCases[] = [
-//                    $attr[0].$value[0]."\n",
-//                    array_merge(($attr[1] ?? []), ($value[1] ?? []))
-//                ];
-//            }
-//        }
-//        return array_merge($inheritedCases, static::arraizeStrings($strings));
-//    }
-//
-//    public static function non__ATTRVAL_SPEC__cases()
-//    {
-//        $strings = [':', 'foo:', 'foo: '];
-//        $inheritedCases = [];
-//        foreach (static::non__ATTRIBUTE_DESCRIPTION__cases() as $nonAttr) {
-//            if (!preg_match('/:/', $nonAttr[0])) {
-//                $inheritedCases[] = [$nonAttr[0].":a\n"];
-//            }
-//        }
-//        foreach (static::non__VALUE_SPEC__cases() as $nonVal) {
-//            if (!preg_match('/:/', $nonVal[0])) {
-//                $inheritedCases[] = ['a'.$nonVal[0]."\n"];
-//            }
-//        }
-//        return array_merge($inheritedCases, static::arraizeStrings($strings));
-//    }
-//
-//    /**
-//     * @dataProvider ATTRVAL_SPEC__cases
-//     */
-//    public function test__ATTRVAL_SPEC__matches(string $string, array $pieces = [])
-//    {
-//        $this->assertRfcMatches($string, 'ATTRVAL_SPEC', $pieces);
-//    }
-//
-//    /**
-//     * @dataProvider non__ATTRVAL_SPEC__cases
-//     */
-//    public function test__ATTRVAL_SPEC__notMatches(string $string)
-//    {
-//        $this->assertRfcNotMatches($string, 'ATTRVAL_SPEC');
-//    }
-//
-//    //
-//    // LDIF_ATTRVAL_RECORD
-//    //
-//
-//    public static function LDIF_ATTRVAL_RECORD__cases()
-//    {
-//        $strings = [
-//                "dn: \n".
-//                "attr: \n",
-//
-//                "dn:: AAAFGFF==\n".
-//                "attr-1: value1 - ?\n".
-//                "attr-2:: SDAFDS/==\n".
-//                "attr-:< file://\n",
-//        ];
-//        return static::arraizeStrings($strings);
-//    }
-//
-//    public static function non__LDIF_ATTRVAL_RECORD__cases()
-//    {
-//        $strings = [
-//            '',
-//
-//            "dn: \n",
-//
-//            "dn: \n".
-//            "attr: ", // missing trailing \n
-//        ];
-//        return static::arraizeStrings($strings);
-//    }
-//
-//    /**
-//     * @dataProvider LDIF_ATTRVAL_RECORD__cases
-//     */
-//    public function test__LDIF_ATTRVAL_RECORD__matches(string $string, array $pieces = [])
-//    {
-//        $this->assertRfcMatches($string, 'LDIF_ATTRVAL_RECORD', $pieces);
-//    }
-//
-//    /**
-//     * @dataProvider non__LDIF_ATTRVAL_RECORD__cases
-//     */
-//    public function test__LDIF_ATTRVAL_RECORD__notMatches(string $string)
-//    {
-//        $this->assertRfcNotMatches($string, 'LDIF_ATTRVAL_RECORD');
-//    }
+
+    //
+    // CONTROL
+    //
+
+    public static function CONTROL__cases()
+    {
+        $strings = [
+            "control: 1.23\n",
+            "control: 1.23 true\n",
+            "control: 1.23 false\n",
+            "control: 1.23    true\n",
+        ];
+        $inheritedCases = [];
+        foreach (static::VALUE_SPEC__cases() as $valueSpec) {
+            $inheritedCases[] = static::extendPregArguments($valueSpec, [
+                'prefix' => 'control: 1.23',
+                'suffix' => "\n",
+                'merge' => [
+                    'ctl_type'  => ['1.23', 9],
+                    'ctl_crit'  => false,
+                    'ctl_value_spec' => [$valueSpec[0], 13],
+                ]
+            ]);
+            $inheritedCases[] = static::extendPregArguments($valueSpec, [
+                'prefix' => 'control: 1.23 true',
+                'suffix' => "\n",
+                'merge' => [
+                    'ctl_type'  => ['1.23', 9],
+                    'ctl_crit'  => ['true', 14],
+                    'ctl_value_spec' => [$valueSpec[0], 18],
+                ]
+            ]);
+            $inheritedCases[] = static::extendPregArguments($valueSpec, [
+                'prefix' => 'control: 1.23 false',
+                'suffix' => "\n",
+                'merge' => [
+                    'ctl_type'  => ['1.23', 9],
+                    'ctl_crit'  => ['false', 14],
+                    'ctl_value_spec' => [$valueSpec[0], 19],
+                ]
+            ]);
+        }
+        return array_merge($inheritedCases, static::arraizeStrings($strings));
+    }
+
+    public static function non__CONTROL__cases()
+    {
+        $strings = [
+            '<:', '< %', '< %1', ':: %$', ': ł',
+            "control: \n",          // missing OID
+            "control: 1.23",        // missing \n
+            "control: 1.23true\n",  // no space between 1.23 and true
+            "control: 1.23 on\n",   // unsupported criticality
+            "control: 1.23 :foo\n", // space before value-spec
+        ];
+        $inheritedCases = [];
+        foreach (static::non__VALUE_SPEC__cases() as $nonValueSpec) {
+            if (!preg_match('/^:[:<]? /', $nonValueSpec[0])) {
+                $inheritedCases[] = ['control: 1.23'.$nonValueSpec[0]."\n"];
+                $inheritedCases[] = ['control: 1.23 true'.$nonValueSpec[0]."\n"];
+                $inheritedCases[] = ['control: 1.23 false'.$nonValueSpec[0]."\n"];
+            }
+        }
+        return array_merge($inheritedCases, static::arraizeStrings($strings));
+    }
+
+    /**
+     * @dataProvider CONTROL__cases
+     */
+    public function test__CONTROL__matches(string $string, array $pieces = [])
+    {
+        $this->assertRfcMatches($string, 'CONTROL', $pieces);
+    }
+
+    /**
+     * @dataProvider non__CONTROL__cases
+     */
+    public function test__CONTROL__notMatches(string $string)
+    {
+        $this->assertRfcNotMatches($string, 'CONTROL');
+    }
+
+    //
+    // ATTRVAL_SPEC
+    //
+
+    public static function ATTRVAL_SPEC__cases()
+    {
+        $strings = [ "foo:\n", "foo: \n"];
+        $inheritedCases = [];
+        foreach (static::ATTRIBUTE_DESCRIPTION__cases() as $attr) {
+            foreach (static::VALUE_SPEC__cases() as $value) {
+                $inheritedCases[] = static::extendPregArguments($value, [
+                    'prefix' => $attr[0],
+                    'suffix' => "\n",
+                    'merge' => ($attr[1] ?? [])
+                ]);
+            }
+        }
+        return array_merge($inheritedCases, static::arraizeStrings($strings));
+    }
+
+    public static function non__ATTRVAL_SPEC__cases()
+    {
+        $strings = [':', 'foo:', 'foo: '];
+        $inheritedCases = [];
+        foreach (static::non__ATTRIBUTE_DESCRIPTION__cases() as $nonAttr) {
+            if (!preg_match('/:/', $nonAttr[0])) {
+                $inheritedCases[] = [$nonAttr[0].":a\n"];
+            }
+        }
+        foreach (static::non__VALUE_SPEC__cases() as $nonVal) {
+            if (!preg_match('/:/', $nonVal[0])) {
+                $inheritedCases[] = ['a'.$nonVal[0]."\n"];
+            }
+        }
+        return array_merge($inheritedCases, static::arraizeStrings($strings));
+    }
+
+    /**
+     * @dataProvider ATTRVAL_SPEC__cases
+     */
+    public function test__ATTRVAL_SPEC__matches(string $string, array $pieces = [])
+    {
+        $this->assertRfcMatches($string, 'ATTRVAL_SPEC', $pieces);
+    }
+
+    /**
+     * @dataProvider non__ATTRVAL_SPEC__cases
+     */
+    public function test__ATTRVAL_SPEC__notMatches(string $string)
+    {
+        $this->assertRfcNotMatches($string, 'ATTRVAL_SPEC');
+    }
+
+    //
+    // LDIF_ATTRVAL_RECORD
+    //
+
+    public static function LDIF_ATTRVAL_RECORD__cases()
+    {
+        $strings = [
+                "dn: \n".
+                "attr: \n",
+
+                "dn:: AAAFGFF==\n".
+                "attr-1: value1 - ?\n".
+                "attr-2:: SDAFDS/==\n".
+                "attr-:< file://\n",
+        ];
+        return static::arraizeStrings($strings);
+    }
+
+    public static function non__LDIF_ATTRVAL_RECORD__cases()
+    {
+        $strings = [
+            '',
+
+            "dn: \n",
+
+            "dn: \n".
+            "attr: ", // missing trailing \n
+        ];
+        return static::arraizeStrings($strings);
+    }
+
+    /**
+     * @dataProvider LDIF_ATTRVAL_RECORD__cases
+     */
+    public function test__LDIF_ATTRVAL_RECORD__matches(string $string, array $pieces = [])
+    {
+        $this->assertRfcMatches($string, 'LDIF_ATTRVAL_RECORD', $pieces);
+    }
+
+    /**
+     * @dataProvider non__LDIF_ATTRVAL_RECORD__cases
+     */
+    public function test__LDIF_ATTRVAL_RECORD__notMatches(string $string)
+    {
+        $this->assertRfcNotMatches($string, 'LDIF_ATTRVAL_RECORD');
+    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

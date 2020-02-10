@@ -58,8 +58,8 @@ class Rfc2849xTest extends TestCase
             //   0123456789012
                 'version:  12',
                 [
-                    0 => 'version:  12',
-                    'version_number' => '12',
+                    0 => ['version:  12', 0],
+                    'version_number' => ['12', 10],
                     'version_error' => false,
                 ]
             ],
@@ -68,7 +68,7 @@ class Rfc2849xTest extends TestCase
             //   012345678901234
                 "version:  91\n",
                 [
-                    0 => 'version:  91',
+                    0 => ['version:  91', 0],
                     'version_number' => ['91', 10],
                     'version_error' => false,
                 ]
@@ -78,37 +78,37 @@ class Rfc2849xTest extends TestCase
             //   01234567890
                 'version:',
                 [
-                    0 => 'version:',
+                    0 => ['version:', 0],
                     'version_number' => false,
                     'version_error' => ['', 8],
                 ]
             ],
             [
-            //   00000000001
-            //   01234567890
+            //   00000000 0 01
+            //   01234567 8 90
                 "version:\r\n",
                 [
-                    0 => 'version:',
+                    0 => ['version:', 0],
                     'version_number' => false,
                     'version_error' => ['', 8],
                 ]
             ],
             [
-            //   00000000001
-            //   01234567890
+            //   00000000 00 11111
+            //   01234567 89 01234
                 "version:\r \nasd",
                 [
-                    0 => "version:\r ",
+                    0 => ["version:\r ", 0],
                     'version_number' => false,
                     'version_error' => ["\r ", 8],
                 ]
             ],
             [
-            //   00000000001
-            //   01234567890
+            //   00000000 00
+            //   01234567 89
                 "version:\n",
                 [
-                    0 => 'version:',
+                    0 => ['version:', 0],
                     'version_number' => false,
                     'version_error' => ['', 8],
                 ]
@@ -118,17 +118,17 @@ class Rfc2849xTest extends TestCase
             //   01234567890
                 'version:  ',
                 [
-                    0 => 'version:  ',
+                    0 => ['version:  ', 0],
                     'version_number' => false,
                     'version_error' => ['', 10],
                 ]
             ],
             [
-            //   00000000001
-            //   01234567890
+            //   0000000000 11
+            //   0123456789 01
                 "version:  \n",
                 [
-                    0 => 'version:  ',
+                    0 => ['version:  ', 0],
                     'version_number' => false,
                     'version_error' => ['', 10],
                 ]
@@ -138,7 +138,7 @@ class Rfc2849xTest extends TestCase
             //   012345678901234
                 'version:  91asd',
                 [
-                    0 => 'version:  91asd',
+                    0 => ['version:  91asd', 0],
                     'version_number' => false,
                     'version_error' => ['asd', 12],
                 ]
@@ -146,7 +146,7 @@ class Rfc2849xTest extends TestCase
         ];
         $inheritedCases = [];
         foreach (Rfc2849Test::VERSION_SPEC__cases() as $case) {
-            $inheritedCases[] = [$case[0], array_merge($case[1] ?? [], ['version_error' => false])];
+            $inheritedCases[] = static::extendPregArguments($case, ['merge' => ['version_error' => false]]);
         }
         return array_merge($inheritedCases, $cases);
     }
@@ -181,11 +181,11 @@ class Rfc2849xTest extends TestCase
     {
         $cases = [
             [
-            //   0000000000111
-            //   0123456789012
+            //   000 00
+            //   012 34
                 "dn:\n",
                 [
-                    0 => "dn:",
+                    0 => ["dn:", 0],
                     'dn_safe' => ['', 3],
                     'dn_b64' => false,
                     'dn_safe_error' => false,
@@ -193,11 +193,11 @@ class Rfc2849xTest extends TestCase
                 ]
             ],
             [
-            //   0000000000111
-            //   0123456789012
+            //   0000 00
+            //   0123 45
                 "dn::\n",
                 [
-                    0 => "dn::",
+                    0 => ["dn::", 0],
                     'dn_safe' => false,
                     'dn_b64' => ['', 4],
                     'dn_safe_error' => false,
@@ -205,11 +205,11 @@ class Rfc2849xTest extends TestCase
                 ]
             ],
             [
-            //   0000000000111
-            //   0123456789012
+            //   000000000
+            //   012345678
                 "dn: :foo",
                 [
-                    0 => "dn: :foo",
+                    0 => ["dn: :foo", 0],
                     'dn_safe' => false,
                     'dn_b64' => false,
                     'dn_safe_error' => [':foo', 4],
@@ -217,11 +217,11 @@ class Rfc2849xTest extends TestCase
                 ]
             ],
             [
-            //   0000000000111
-            //   0123456789012
+            //   0000000000 11
+            //   0123456789 01
                 "dn: łuszcz\n",
                 [
-                    0 => "dn: łuszcz",
+                    0 => ["dn: łuszcz", 0],
                     'dn_safe' => false,
                     'dn_b64' => false,
                     'dn_safe_error' => ['łuszcz', 4],
@@ -229,11 +229,11 @@ class Rfc2849xTest extends TestCase
                 ]
             ],
             [
-            //   0000000000111
-            //   0123456789012
+            //   00000000001 11
+            //   01234567890 12
                 "dn: tłuszcz\n",
                 [
-                    0 => "dn: tłuszcz",
+                    0 => ["dn: tłuszcz", 0],
                     'dn_safe' => false,
                     'dn_b64' => false,
                     'dn_safe_error' => ['łuszcz', 5],
@@ -241,11 +241,11 @@ class Rfc2849xTest extends TestCase
                 ]
             ],
             [
-            //   0000000000111
-            //   0123456789012
+            //   000000000
+            //   012345678
                 "dn:::foo",
                 [
-                    0 => "dn:::foo",
+                    0 => ["dn:::foo", 0],
                     'dn_safe' => false,
                     'dn_b64' => false,
                     'dn_safe_error' => false,
@@ -253,11 +253,11 @@ class Rfc2849xTest extends TestCase
                 ]
             ],
             [
-            //   0000000000111
-            //   0123456789012
+            //   0000000000
+            //   0123456789
                 "dn:: :foo",
                 [
-                    0 => "dn:: :foo",
+                    0 => ["dn:: :foo", 0],
                     'dn_safe' => false,
                     'dn_b64' => false,
                     'dn_safe_error' => false,
@@ -265,11 +265,11 @@ class Rfc2849xTest extends TestCase
                 ]
             ],
             [
-            //   0000000000111
-            //   0123456789012
+            //   00000000001 11
+            //   01234567890 12
                 "dn:: A1@x=+\n",
                 [
-                    0 => "dn:: A1@x=+",
+                    0 => ["dn:: A1@x=+", 0],
                     'dn_safe' => false,
                     'dn_b64' => false,
                     'dn_safe_error' => false,
@@ -279,10 +279,12 @@ class Rfc2849xTest extends TestCase
         ];
         $inheritedCases = [];
         foreach (Rfc2849Test::DN_SPEC__cases() as $case) {
-            $inheritedCases[] = [
-                $case[0],
-                array_merge($case[1] ?? [], ['dn_safe_error' => false, 'dn_b64_error' => false])
-            ];
+            $inheritedCases[] = static::extendPregArguments($case, [
+                'merge' => [
+                    'dn_safe_error' => false,
+                    'dn_b64_error' => false
+                ]
+            ]);
         }
         return array_merge($inheritedCases, $cases);
     }
@@ -317,11 +319,11 @@ class Rfc2849xTest extends TestCase
     {
         $cases = [
             [
-            //   0000000000111
-            //   0123456789012
+            //   0000
+            //   0123
                 ":\n",
                 [
-                    0 => ":",
+                    0 => [":", 0],
                     'value_safe' => ['', 1],
                     'value_b64' => false,
                     'value_url' => false,
@@ -331,11 +333,11 @@ class Rfc2849xTest extends TestCase
                 ]
             ],
             [
-            //   0000000000111
-            //   0123456789012
+            //   00000
+            //   01234
                 "::\n",
                 [
-                    0 => "::",
+                    0 => ["::", 0],
                     'value_safe' => false,
                     'value_b64' => ['', 2],
                     'value_url' => false,
@@ -345,11 +347,11 @@ class Rfc2849xTest extends TestCase
                 ]
             ],
             [
-            //   0000000000111
-            //   0123456789012
+            //   00 00
+            //   01 23
                 ":<\n",
                 [
-                    0 => ":<",
+                    0 => [":<", 0],
                     'value_safe' => false,
                     'value_b64' => false,
                     'value_url' => ['', 2],
@@ -359,11 +361,11 @@ class Rfc2849xTest extends TestCase
                 ]
             ],
             [
-            //   0000000000111
-            //   0123456789012
+            //   000 00
+            //   012 34
                 ":</\n",
                 [
-                    0 => ":</",
+                    0 => [":</", 0],
                     'value_safe' => false,
                     'value_b64' => false,
                     'value_url' => ['/', 2],
@@ -373,11 +375,11 @@ class Rfc2849xTest extends TestCase
                 ]
             ],
             [
-            //   0000000000111
-            //   0123456789012
+            //   00000000 00
+            //   01234567 89
                 ":<file:/\n",
                 [
-                    0 => ":<file:/",
+                    0 => [":<file:/", 0],
                     'value_safe' => false,
                     'value_b64' => false,
                     'value_url' => ['file:/', 2],
@@ -387,11 +389,11 @@ class Rfc2849xTest extends TestCase
                 ]
             ],
             [
-            //   0000000000111
-            //   0123456789012
+            //   000 00
+            //   012 34
                 ":<#\n",
                 [
-                    0 => ":<#",
+                    0 => [":<#", 0],
                     'value_safe' => false,
                     'value_b64' => false,
                     'value_url' => ['#', 2],
@@ -401,11 +403,11 @@ class Rfc2849xTest extends TestCase
                 ]
             ],
             [
-            //   0000000000111
-            //   0123456789012
+            //   0000000
+            //   0123456
                 ": :foo",
                 [
-                    0 => ": :foo",
+                    0 => [": :foo", 0],
                     'value_safe' => false,
                     'value_b64' => false,
                     'value_url' => false,
@@ -415,11 +417,11 @@ class Rfc2849xTest extends TestCase
                 ]
             ],
             [
-            //   0000000000111
-            //   0123456789012
+            //   00000000 00
+            //   01234567 89
                 ": łuszcz\n",
                 [
-                    0 => ": łuszcz",
+                    0 => [": łuszcz", 0],
                     'value_safe' => false,
                     'value_b64' => false,
                     'value_url' => false,
@@ -429,11 +431,11 @@ class Rfc2849xTest extends TestCase
                 ]
             ],
             [
-            //   0000000000111
-            //   0123456789012
+            //   000000000 01
+            //   012345678 90
                 ": tłuszcz\n",
                 [
-                    0 => ": tłuszcz",
+                    0 => [": tłuszcz", 0],
                     'value_safe' => false,
                     'value_b64' => false,
                     'value_url' => false,
@@ -443,11 +445,11 @@ class Rfc2849xTest extends TestCase
                 ]
             ],
             [
-            //   0000000000111
-            //   0123456789012
+            //   0000000
+            //   0123456
                 ":::foo",
                 [
-                    0 => ":::foo",
+                    0 => [":::foo", 0],
                     'value_safe' => false,
                     'value_b64' => false,
                     'value_url' => false,
@@ -457,11 +459,11 @@ class Rfc2849xTest extends TestCase
                 ]
             ],
             [
-            //   0000000000111
-            //   0123456789012
+            //   00000000
+            //   01234567
                 ":: :foo",
                 [
-                    0 => ":: :foo",
+                    0 => [":: :foo", 0],
                     'value_safe' => false,
                     'value_b64' => false,
                     'value_url' => false,
@@ -471,11 +473,11 @@ class Rfc2849xTest extends TestCase
                 ]
             ],
             [
-            //   0000000000111
-            //   0123456789012
+            //   000000000 01
+            //   012345678 90
                 ":: A1@x=+\n",
                 [
-                    0 => ":: A1@x=+",
+                    0 => [":: A1@x=+", 0],
                     'value_safe' => false,
                     'value_b64' => false,
                     'value_url' => false,
@@ -485,11 +487,11 @@ class Rfc2849xTest extends TestCase
                 ]
             ],
             [
-            //   0000000000111
-            //   0123456789012
+            //   0000 00
+            //   0123 45
                 ":<# \n",
                 [
-                    0 => ":<# ",
+                    0 => [":<# ", 0],
                     'value_safe' => false,
                     'value_b64' => false,
                     'value_url' => false,
@@ -499,11 +501,11 @@ class Rfc2849xTest extends TestCase
                 ]
             ],
             [
-            //   0000000000111
-            //   0123456789012
+            //   00000000 00
+            //   01234567 89
                 ":<##  xx\n",
                 [
-                    0 => ":<##  xx",
+                    0 => [":<##  xx", 0],
                     'value_safe' => false,
                     'value_b64' => false,
                     'value_url' => false,
@@ -517,7 +519,7 @@ class Rfc2849xTest extends TestCase
             //   012345678901234567890 1
                 ":<http://with spaces/\n",
                 [
-                    0 => ":<http://with spaces/",
+                    0 => [":<http://with spaces/", 0],
                     'value_safe' => false,
                     'value_b64' => false,
                     'value_url' => false,
@@ -529,14 +531,13 @@ class Rfc2849xTest extends TestCase
         ];
         $inheritedCases = [];
         foreach (Rfc2849Test::VALUE_SPEC__cases() as $case) {
-            $inheritedCases[] = [
-                $case[0],
-                array_merge($case[1] ?? [], [
+            $inheritedCases[] = static::extendPregArguments($case, [
+                'merge' => [
                     'value_safe_error' => false,
                     'value_b64_error' => false,
                     'value_url_error' => false
-                ])
-            ];
+                ]
+            ]);
         }
         return array_merge($inheritedCases, $cases);
     }
@@ -575,8 +576,8 @@ class Rfc2849xTest extends TestCase
             //   01234567890 123
                 "ou;lang-pl:\nnext",
                 [
-                    0 => "ou;lang-pl:\n",
-                    'attr_desc' => 'ou;lang-pl',
+                    0 => ["ou;lang-pl:\n", 0],
+                    'attr_desc' => ['ou;lang-pl', 0],
                     'value_safe' => ['', 11],
                     'value_b64' => false,
                     'value_url' => false,
@@ -590,8 +591,8 @@ class Rfc2849xTest extends TestCase
             //   01234567890 1 23
                 "ou;lang-pl:\r\nnext",
                 [
-                    0 => "ou;lang-pl:\r\n",
-                    'attr_desc' => 'ou;lang-pl',
+                    0 => ["ou;lang-pl:\r\n", 0],
+                    'attr_desc' => ['ou;lang-pl', 0],
                     'value_safe' => ['', 11],
                     'value_b64' => false,
                     'value_url' => false,
@@ -605,8 +606,8 @@ class Rfc2849xTest extends TestCase
             //   012345678901 23
                 "ou;lang-pl::\nnext",
                 [
-                    0 => "ou;lang-pl::\n",
-                    'attr_desc' => 'ou;lang-pl',
+                    0 => ["ou;lang-pl::\n", 0],
+                    'attr_desc' => ['ou;lang-pl', 0],
                     'value_safe' => false,
                     'value_b64' => ['', 12],
                     'value_url' => false,
@@ -620,8 +621,8 @@ class Rfc2849xTest extends TestCase
             //   012345678901 23
                 "ou;lang-pl::\r\nnext",
                 [
-                    0 => "ou;lang-pl::\r\n",
-                    'attr_desc' => 'ou;lang-pl',
+                    0 => ["ou;lang-pl::\r\n", 0],
+                    'attr_desc' => ['ou;lang-pl', 0],
                     'value_safe' => false,
                     'value_b64' => ['', 12],
                     'value_url' => false,
@@ -635,9 +636,9 @@ class Rfc2849xTest extends TestCase
             //   012345678901 23
                 "ou;lang-pl:<\nnext",
                 [
-                    0 => "ou;lang-pl:<\n",
+                    0 => ["ou;lang-pl:<\n", 0],
                     'value_safe' => false,
-                    'attr_desc' => 'ou;lang-pl',
+                    'attr_desc' => ['ou;lang-pl', 0],
                     'value_b64' => false,
                     'value_url' => ['', 12],
                     'value_safe_error' => false,
@@ -650,9 +651,9 @@ class Rfc2849xTest extends TestCase
             //   012345678901 23
                 "ou;lang-pl:<\r\nnext",
                 [
-                    0 => "ou;lang-pl:<\r\n",
+                    0 => ["ou;lang-pl:<\r\n", 0],
                     'value_safe' => false,
-                    'attr_desc' => 'ou;lang-pl',
+                    'attr_desc' => ['ou;lang-pl', 0],
                     'value_b64' => false,
                     'value_url' => ['', 12],
                     'value_safe_error' => false,
@@ -665,9 +666,9 @@ class Rfc2849xTest extends TestCase
             //   0123456789012 34
                 "ou;lang-pl:</\nnext",
                 [
-                    0 => "ou;lang-pl:</\n",
+                    0 => ["ou;lang-pl:</\n", 0],
                     'value_safe' => false,
-                    'attr_desc' => 'ou;lang-pl',
+                    'attr_desc' => ['ou;lang-pl', 0],
                     'value_b64' => false,
                     'value_url' => ['/', 12],
                     'value_safe_error' => false,
@@ -680,9 +681,9 @@ class Rfc2849xTest extends TestCase
             //   0123456789012 34
                 "ou;lang-pl:</\r\nnext",
                 [
-                    0 => "ou;lang-pl:</\r\n",
+                    0 => ["ou;lang-pl:</\r\n", 0],
                     'value_safe' => false,
-                    'attr_desc' => 'ou;lang-pl',
+                    'attr_desc' => ['ou;lang-pl', 0],
                     'value_b64' => false,
                     'value_url' => ['/', 12],
                     'value_safe_error' => false,
@@ -695,9 +696,9 @@ class Rfc2849xTest extends TestCase
             //   012345678901234567 8
                 "ou;lang-pl:<file:/\nnext",
                 [
-                    0 => "ou;lang-pl:<file:/\n",
+                    0 => ["ou;lang-pl:<file:/\n", 0],
                     'value_safe' => false,
-                    'attr_desc' => 'ou;lang-pl',
+                    'attr_desc' => ['ou;lang-pl', 0],
                     'value_b64' => false,
                     'value_url' => ['file:/', 12],
                     'value_safe_error' => false,
@@ -710,9 +711,9 @@ class Rfc2849xTest extends TestCase
             //   0123456789012 3
                 "ou;lang-pl:<#\n",
                 [
-                    0 => "ou;lang-pl:<#\n",
+                    0 => ["ou;lang-pl:<#\n", 0],
                     'value_safe' => false,
-                    'attr_desc' => 'ou;lang-pl',
+                    'attr_desc' => ['ou;lang-pl', 0],
                     'value_b64' => false,
                     'value_url' => ['#', 12],
                     'value_safe_error' => false,
@@ -725,9 +726,9 @@ class Rfc2849xTest extends TestCase
             //   01234567890123456
                 "ou;lang-pl: :foo",
                 [
-                    0 => "ou;lang-pl: :foo",
+                    0 => ["ou;lang-pl: :foo", 0],
                     'value_safe' => false,
-                    'attr_desc' => 'ou;lang-pl',
+                    'attr_desc' => ['ou;lang-pl', 0],
                     'value_b64' => false,
                     'value_url' => false,
                     'value_safe_error' => [':foo', 12],
@@ -740,9 +741,9 @@ class Rfc2849xTest extends TestCase
             //   012345678901245678 9
                 "ou;lang-pl: łuszcz\nnext",
                 [
-                    0 => "ou;lang-pl: łuszcz\n",
+                    0 => ["ou;lang-pl: łuszcz\n", 0],
                     'value_safe' => false,
-                    'attr_desc' => 'ou;lang-pl',
+                    'attr_desc' => ['ou;lang-pl', 0],
                     'value_b64' => false,
                     'value_url' => false,
                     'value_safe_error' => ['łuszcz', 12],
@@ -755,9 +756,9 @@ class Rfc2849xTest extends TestCase
             //   0123456789012345678 9
                 "ou;lang-pl: tłuszcz\nnext",
                 [
-                    0 => "ou;lang-pl: tłuszcz\n",
+                    0 => ["ou;lang-pl: tłuszcz\n", 0],
                     'value_safe' => false,
-                    'attr_desc' => 'ou;lang-pl',
+                    'attr_desc' => ['ou;lang-pl', 0],
                     'value_b64' => false,
                     'value_url' => false,
                     'value_safe_error' => ['łuszcz', 13],
@@ -770,9 +771,9 @@ class Rfc2849xTest extends TestCase
             //   01234567890123456
                 "ou;lang-pl:::foo",
                 [
-                    0 => "ou;lang-pl:::foo",
+                    0 => ["ou;lang-pl:::foo", 0],
                     'value_safe' => false,
-                    'attr_desc' => 'ou;lang-pl',
+                    'attr_desc' => ['ou;lang-pl', 0],
                     'value_b64' => false,
                     'value_url' => false,
                     'value_safe_error' => false,
@@ -785,9 +786,9 @@ class Rfc2849xTest extends TestCase
             //   012345678901234567
                 "ou;lang-pl:: :foo",
                 [
-                    0 => "ou;lang-pl:: :foo",
+                    0 => ["ou;lang-pl:: :foo", 0],
                     'value_safe' => false,
-                    'attr_desc' => 'ou;lang-pl',
+                    'attr_desc' => ['ou;lang-pl', 0],
                     'value_b64' => false,
                     'value_url' => false,
                     'value_safe_error' => false,
@@ -800,9 +801,9 @@ class Rfc2849xTest extends TestCase
             //   0123456789012345678 9
                 "ou;lang-pl:: A1@x=+\n",
                 [
-                    0 => "ou;lang-pl:: A1@x=+\n",
+                    0 => ["ou;lang-pl:: A1@x=+\n", 0],
                     'value_safe' => false,
-                    'attr_desc' => 'ou;lang-pl',
+                    'attr_desc' => ['ou;lang-pl', 0],
                     'value_b64' => false,
                     'value_url' => false,
                     'value_safe_error' => false,
@@ -815,9 +816,9 @@ class Rfc2849xTest extends TestCase
             //   01234567890123 4
                 "ou;lang-pl:<# \n",
                 [
-                    0 => "ou;lang-pl:<# \n",
+                    0 => ["ou;lang-pl:<# \n", 0],
                     'value_safe' => false,
-                    'attr_desc' => 'ou;lang-pl',
+                    'attr_desc' => ['ou;lang-pl', 0],
                     'value_b64' => false,
                     'value_url' => false,
                     'value_safe_error' => false,
@@ -830,9 +831,9 @@ class Rfc2849xTest extends TestCase
             //   012345678901234567 8
                 "ou;lang-pl:<##  xx\n",
                 [
-                    0 => "ou;lang-pl:<##  xx\n",
+                    0 => ["ou;lang-pl:<##  xx\n", 0],
                     'value_safe' => false,
-                    'attr_desc' => 'ou;lang-pl',
+                    'attr_desc' => ['ou;lang-pl', 0],
                     'value_b64' => false,
                     'value_url' => false,
                     'value_safe_error' => false,
@@ -845,9 +846,9 @@ class Rfc2849xTest extends TestCase
             //   0123456789012345678901234567890 1
                 "ou;lang-pl:<http://with spaces/\n",
                 [
-                    0 => "ou;lang-pl:<http://with spaces/\n",
+                    0 => ["ou;lang-pl:<http://with spaces/\n", 0],
                     'value_safe' => false,
-                    'attr_desc' => 'ou;lang-pl',
+                    'attr_desc' => ['ou;lang-pl', 0],
                     'value_b64' => false,
                     'value_url' => false,
                     'value_safe_error' => false,
@@ -858,14 +859,13 @@ class Rfc2849xTest extends TestCase
         ];
         $inheritedCases = [];
         foreach (Rfc2849Test::ATTRVAL_SPEC__cases() as $case) {
-            $inheritedCases[] = [
-                $case[0],
-                array_merge($case[1] ?? [], [
+            $inheritedCases[] = static::extendPregArguments($case, [
+                'merge' => [
                     'value_safe_error' => false,
                     'value_b64_error' => false,
                     'value_url_error' => false
-                ])
-            ];
+                ]
+            ]);
         }
         return array_merge($inheritedCases, $cases);
     }

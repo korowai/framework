@@ -17,7 +17,7 @@ use PHPUnit\Framework\Constraint\Constraint;
 
 /**
  * Constraint that accepts arrays of matches returned from ``preg_match()``
- * that has capture groups described in the array of expectations.
+ * having capture groups as specified in the array of expectations.
  *
  * Checks only entries present in the array of expectations. Special values may
  * be used in the expectations:

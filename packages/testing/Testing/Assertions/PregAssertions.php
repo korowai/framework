@@ -61,11 +61,17 @@ trait PregAssertions
     }
 
     /**
-     * Compares selected properties of *$object* with *$expected* ones.
+     * Accepts arrays of matches returned from ``preg_match()`` having capture
+     * groups as specified in *$excpected*.
      *
-     * @param  array $expected An array of key-value pairs with expected values of attributes.
-     * @param  object $object An object to be examined.
-     * @param  array $options An array of getters for the attributes being examined.
+     * Checks only entries present in *$expected*, so *$expected = []* accepts
+     * any array. Special values may be used in the expectations:
+     *
+     * - ``['foo' => false]`` asserts that group ``'foo'`` was not captured,
+     * - ``['foo' => true]`` asserts that group ``'foo'`` was captured,
+     * - ``['foo' => 'FOO']`` asserts that group ``'foo'`` was captured and it's value equals ``'FOO'``.
+     *
+     * @param  array $expected
      *
      * @return HasPregCaptures
      */

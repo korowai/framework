@@ -117,7 +117,7 @@ class Rfc2849Test extends TestCase
         ];
 
         $inheritedCases = array_map(function (array $version) {
-            return static::prefixPregArguments($version, 'version: ');
+            return static::prefixPregTuple($version, 'version: ');
         }, static::VERSION_NUMBER__cases());
 
         return array_merge($inheritedCases, $cases);
@@ -347,16 +347,14 @@ class Rfc2849Test extends TestCase
         $strings = [];
         $inheritedCases = [];
         foreach (static::ATTRIBUTE_TYPE__cases() as $attrType) {
-            $inheritedCases[] = [
-                $attrType[0],
-                array_merge(($attrType[1] ?? []), ['attr_desc' => [$attrType[0], 0]])
-            ];
+            $inheritedCases[] = static::transformPregTuple($attrType, [
+                'merge' => ['attr_desc' => [$attrType[0], 0]]
+            ]);
             foreach (static::OPTIONS__cases() as $options) {
-                $attrDesc = $attrType[0].';'.$options[0];
-                $inheritedCases[] = [
-                    $attrDesc,
-                    array_merge(($attrType[1] ?? []), ($options[1] ?? []), ['attr_desc' => [$attrDesc, 0]])
-                ];
+                $inheritedCases[] = static::joinPregTuples([$attrType, $options], [
+                    'glue' => ';',
+                    'merge' => ['attr_desc' => [$attrType[0].';'.$options[0], 0]]
+                ]);
             }
         }
         return array_merge($inheritedCases, static::arraizeStrings($strings));
@@ -393,10 +391,9 @@ class Rfc2849Test extends TestCase
         $strings = [];
         $inheritedCases = [];
         foreach (static::SAFE_STRING__cases() as $string) {
-            $inheritedCases[] = [
-                $string[0],
-                array_merge(($string[1] ?? []), ['dn_safe' => [$string[0], 0]])
-            ];
+            $inheritedCases[] = static::transformPregTuple($string, [
+                'merge' =>  ['dn_safe' => [$string[0], 0]]
+            ]);
         }
         return array_merge($inheritedCases, static::arraizeStrings($strings));
     }
@@ -404,10 +401,8 @@ class Rfc2849Test extends TestCase
     public static function non__DISTINGUISHED_NAME__cases()
     {
         $strings = [];
-        return array_merge(
-            static::non__SAFE_STRING__cases(),
-            static::arraizeStrings($strings)
-        );
+        $inheritedCases = static::non__SAFE_STRING__cases();
+        return array_merge($inheritedCases, static::arraizeStrings($strings));
     }
 
     /**
@@ -435,10 +430,9 @@ class Rfc2849Test extends TestCase
         $strings = [];
         $inheritedCases = [];
         foreach (static::BASE64_STRING__cases() as $b64Str) {
-            $inheritedCases[] = [
-                $b64Str[0],
-                array_merge(($b64Str[1] ?? []), ['dn_b64' => [$b64Str[0], 0]])
-            ];
+            $inheritedCases[] = static::transformPregTuple($b64Str, [
+                'merge' => ['dn_b64' => [$b64Str[0], 0]]
+            ]);
         }
         return array_merge($inheritedCases, static::arraizeStrings($strings));
     }
@@ -446,10 +440,8 @@ class Rfc2849Test extends TestCase
     public static function non__BASE64_DISTINGUISHED_NAME__cases()
     {
         $strings = [];
-        return array_merge(
-            static::non__BASE64_STRING__cases(),
-            static::arraizeStrings($strings)
-        );
+        $inheritedCases = static::non__BASE64_STRING__cases();
+        return array_merge($inheritedCases, static::arraizeStrings($strings));
     }
 
     /**
@@ -477,10 +469,10 @@ class Rfc2849Test extends TestCase
         $cases = [];
         $inheritedCases = [];
         foreach (static::DISTINGUISHED_NAME__cases() as $dn) {
-            $inheritedCases[] = static::prefixPregArguments($dn, 'dn: ');
+            $inheritedCases[] = static::prefixPregTuple($dn, 'dn: ');
         }
         foreach (static::BASE64_DISTINGUISHED_NAME__cases() as $b64Dn) {
-            $inheritedCases[] = static::prefixPregArguments($b64Dn, 'dn:: ');
+            $inheritedCases[] = static::prefixPregTuple($b64Dn, 'dn:: ');
         }
         return array_merge($inheritedCases, $cases);
     }
@@ -531,16 +523,14 @@ class Rfc2849Test extends TestCase
                     'uri_reference'     => ['', 0],
                     'uri'               => false,
                     'scheme'            => false,
+                    'authority'         => false,
+                    'host'              => false,
+                    'path_abempty'      => false,
+                    'path_absolute'     => false,
+                    'path_noscheme'     => false,
+                    'path_rootless'     => false,
+                    'path_empty'        => ['', 0],
                     'relative_ref'      => ['', 0],
-                ],
-            ],
-            [
-                '',
-                [
-                    'uri_reference'     => ['', 0],
-                    'uri'               => false,
-                    'scheme'            => false,
-                    'relative_ref'      => ['', 0]
                 ],
             ],
             [
@@ -549,6 +539,13 @@ class Rfc2849Test extends TestCase
                     'uri_reference'     => ['/', 0],
                     'uri'               => false,
                     'scheme'            => false,
+                    'authority'         => false,
+                    'host'              => false,
+                    'path_abempty'      => false,
+                    'path_absolute'     => ['/', 0],
+                    'path_noscheme'     => false,
+                    'path_rootless'     => false,
+                    'path_empty'        => false,
                     'relative_ref'      => ['/', 0]
                 ],
             ],
@@ -686,7 +683,7 @@ class Rfc2849Test extends TestCase
         ];
         $inheritedCases = [];
         foreach (static::SAFE_STRING__cases() as $str) {
-            $inheritedCases[] = static::extendPregArguments($str, [
+            $inheritedCases[] = static::transformPregTuple($str, [
                 'prefix' => ': ',
                 'merge' => [
                     'value_safe' => [$str[0], 2],
@@ -696,7 +693,7 @@ class Rfc2849Test extends TestCase
             ]);
         }
         foreach (static::BASE64_STRING__cases() as $b64Str) {
-            $inheritedCases[] = static::extendPregArguments($b64Str, [
+            $inheritedCases[] = static::transformPregTuple($b64Str, [
                 'prefix' => ':: ',
                 'merge' => [
                     'value_safe' => false,
@@ -706,7 +703,7 @@ class Rfc2849Test extends TestCase
             ]);
         }
         foreach (static::URL__cases() as $url) {
-            $inheritedCases[] = static::extendPregArguments($url, [
+            $inheritedCases[] = static::transformPregTuple($url, [
                 'prefix' => ':< ',
                 'merge' => [
                     'value_safe' => false,
@@ -765,7 +762,7 @@ class Rfc2849Test extends TestCase
         ];
         $inheritedCases = [];
         foreach (static::VALUE_SPEC__cases() as $valueSpec) {
-            $inheritedCases[] = static::extendPregArguments($valueSpec, [
+            $inheritedCases[] = static::transformPregTuple($valueSpec, [
                 'prefix' => 'control: 1.23',
                 'suffix' => "\n",
                 'merge' => [
@@ -774,7 +771,7 @@ class Rfc2849Test extends TestCase
                     'ctl_value_spec' => [$valueSpec[0], 13],
                 ]
             ]);
-            $inheritedCases[] = static::extendPregArguments($valueSpec, [
+            $inheritedCases[] = static::transformPregTuple($valueSpec, [
                 'prefix' => 'control: 1.23 true',
                 'suffix' => "\n",
                 'merge' => [
@@ -783,7 +780,7 @@ class Rfc2849Test extends TestCase
                     'ctl_value_spec' => [$valueSpec[0], 18],
                 ]
             ]);
-            $inheritedCases[] = static::extendPregArguments($valueSpec, [
+            $inheritedCases[] = static::transformPregTuple($valueSpec, [
                 'prefix' => 'control: 1.23 false',
                 'suffix' => "\n",
                 'merge' => [
@@ -843,11 +840,8 @@ class Rfc2849Test extends TestCase
         $inheritedCases = [];
         foreach (static::ATTRIBUTE_DESCRIPTION__cases() as $attr) {
             foreach (static::VALUE_SPEC__cases() as $value) {
-                $inheritedCases[] = static::extendPregArguments($value, [
-                    'prefix' => $attr[0],
-                    'suffix' => "\n",
-                    'merge' => ($attr[1] ?? [])
-                ]);
+                $joint = static::joinPregTuples([$attr, $value]);
+                $inheritedCases[] = static::suffixPregTuple($joint, "\n");
             }
         }
         return array_merge($inheritedCases, static::arraizeStrings($strings));

@@ -55,11 +55,17 @@ abstract class TestCase extends \Korowai\Testing\TestCase
      * @param  array $items
      * @return array
      */
-    public static function arraizeStrings(array $items)
+    public static function arraizeStrings(array $items, string $key = null, int $offset = 0)
     {
-        return array_map(function (string $item) {
-            return [$item];
-        }, $items);
+        if ($key === null) {
+            return array_map(function (string $item) {
+                return [$item];
+            }, $items);
+        } else {
+            return array_map(function (string $item) use ($key, $offset) {
+                return [$item, [$key => [$item, $offset]]];
+            }, $items);
+        }
     }
 
     /**

@@ -55,18 +55,6 @@ class Rfc3986 extends AbstractRuleSet
     public const PATH_ROOTLESS = '(?<path_rootless>'.self::SEGMENT_NZ.'(?:\/'.self::SEGMENT.')*)';
     public const PATH_ABSOLUTE = '(?<path_absolute>\/(?:'.self::SEGMENT_NZ.'(?:\/'.self::SEGMENT.')*)?)';
     public const PATH_ABEMPTY = '(?<path_abempty>(?:\/'.self::SEGMENT.')*)';
-    public const PATH =
-        '(?<path>'.
-            self::PATH_ABEMPTY.
-            '|'.
-            self::PATH_ABSOLUTE.
-            '|'.
-            self::PATH_NOSCHEME.
-            '|'.
-            self::PATH_ROOTLESS.
-            '|'.
-            self::PATH_EMPTY.
-        ')';
     public const REG_NAME =
         '(?<reg_name>'.
             '(?:['.self::SUB_DELIM_CHARS.self::UNRESERVEDCHARS.']|'.self::PCT_ENCODED.')*'.
@@ -273,7 +261,6 @@ class Rfc3986 extends AbstractRuleSet
         'PATH_ROOTLESS',
         'PATH_ABSOLUTE',
         'PATH_ABEMPTY',
-        'PATH',
         'REG_NAME',
         'DEC_OCTET',
         'DEC4OCTETS',

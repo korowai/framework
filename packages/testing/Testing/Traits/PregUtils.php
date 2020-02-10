@@ -42,7 +42,7 @@ trait PregUtils
 
     /**
      * Takes an array of capture groups, as returned by ``preg_match()``,
-     * prefixes ``$captures[0]`` (or ``$captures[0][0]``) with *$prefix* and
+     * prepends *$prefix* to ``$captures[0]`` (or ``$captures[0][0]``) and
      * transforms all captures with ``shiftPregCaptures($captures, strlen($prefix))``.
      *
      * @param  array $captures
@@ -63,22 +63,41 @@ trait PregUtils
     }
 
     /**
-     * Takes a two-element array *$arguments* with *$subject* string at offset
-     * 0 and array of *$matches*, as returned by ``preg_match()``, at offset 1,
-     * prefixes *$arguments[0]* with *$prefix* and transforms *$arguments[1]*
-     * with ``prefixPregCapures($arguments[1], $prefix, ...)``;
+     * Takes an array of capture groups, as returned by ``preg_match()``, and
+     * appends *$suffix* to ``$captures[0]`` (or ``$captures[0][0]``).
      *
-     * @param  array $arguments
+     * @param  array $captures
+     * @param  string $suffix
+     *
+     * @return array Returns the transformed captures.
+     */
+    public static function suffixPregCaptures(array $captures, string $suffix) : array
+    {
+        $cap0 = $captures[0] ?? null;
+        if (is_array($cap0)) {
+            $captures[0][0] = $captures[0][0].$suffix;
+        } elseif (is_string($cap0)) {
+            $captures[0] = $cap0.$suffix;
+        }
+        return $captures;
+    }
+
+    /**
+     * Takes a two-element array *$tuple*, prepends *$prefix* to *$tuple[0]*
+     * and, if *$tuple[1]* is present, transforms *$tuple[1]* with
+     * ``prefixPregCaptures($tuple[1], $prefix, $except);``.
+     *
+     * @param  array $tuple
      * @param  string $prefix
      * @param  array $except Capture groups to be excluded from shifting.
      *
-     * @return array Returns two-element array with prefixed *$arguments[0]* at
+     * @return array Returns two-element array with prefixed *$tuple[0]* at
      *         offset 0 and transformed *arguments[1]* at offset 1.
      */
-    public static function prefixPregArguments(array $arguments, string $prefix, array $except = null) : array
+    public static function prefixPregTuple(array $tuple, string $prefix, array $except = null) : array
     {
-        $subject = $prefix.$arguments[0];
-        if (($captures = $arguments[1] ?? null) !== null) {
+        $subject = $prefix.$tuple[0];
+        if (($captures = $tuple[1] ?? null) !== null) {
             return [$subject, static::prefixPregCaptures($captures, $prefix, $except)];
         } else {
             return [$subject];
@@ -86,20 +105,106 @@ trait PregUtils
     }
 
     /**
-     * @todo Write documentation
+     * Takes a two-element array *$tuple*, appends *$suffix* to *$tuple[0]*
+     * and, if *$tuple[1]* is present, transforms *$tuple[1]* with
+     * ``suffixPregCaptures($tuple[1], $suffix);``.
+     *
+     * @param  array $tuple
+     * @param  string $suffix
+     *
+     * @return array Returns two-element array with suffixed *$tuple[0]* at
+     *         offset 0 and transformed *arguments[1]* at offset 1.
      */
-    public static function extendPregArguments(array $arguments, array $options = []) : array
+    public static function suffixPregTuple(array $tuple, string $suffix) : array
+    {
+        $subject = $tuple[0].$suffix;
+        if (($captures = $tuple[1] ?? null) !== null) {
+            return [$subject, static::suffixPregCaptures($captures, $suffix)];
+        } else {
+            return [$subject];
+        }
+    }
+
+    /**
+     * Applies multiple transformations to *$tuple*, as specified by *$options*.
+     *
+     * The function applies following transformations, in order:
+     *
+     * - if *$options['prefix']* (string) is present and is not null, then:
+     *
+     *   ```
+     *   $tuple = static::prefixPregTuple($tuple, $options['prefix'], $options['except] ?? null);
+     *   ```
+     *
+     * - if *$options['mergeLeft']* (array) is present and is not null, then:
+     *
+     *   ```
+     *   $tuple[1] = array_merge($options['mergeLeft'], $tuple[1] ?? []);
+     *   ```
+     *
+     * - if *$options['merge']* (array) is present and is not null, then:
+     *
+     *   ```
+     *   $tuple[1] = array_merge($tuple[1] ?? [], $options['merge']);
+     *   ```
+     *
+     * - if *$options['suffix']* (string) is present and is not null, then:
+     *
+     *   ```
+     *   $tuple = static::suffixPregTuple($tuple, $options['suffix']);
+     *   ```
+     *
+     * @param  array $tuple
+     * @param  array $options
+     * @return array Returns transformed *$tuple*.
+     */
+    public static function transformPregTuple(array $tuple, array $options = []) : array
     {
         if (($prefix = $options['prefix'] ?? null) !== null) {
-            $arguments = static::prefixPregArguments($arguments, $prefix, $options['except'] ?? null);
+            $tuple = static::prefixPregTuple($tuple, $prefix, $options['except'] ?? null);
+        }
+        if (($merge = $options['mergeLeft'] ?? null) !== null) {
+            $tuple[1] = array_merge($merge, $tuple[1] ?? []);
         }
         if (($merge = $options['merge'] ?? null) !== null) {
-            $arguments[1] = array_merge($arguments[1] ?? [], $merge);
+            $tuple[1] = array_merge($tuple[1] ?? [], $merge);
         }
         if (($suffix = $options['suffix'] ?? null) !== null) {
-            $arguments[0] = $arguments[0].$suffix;
+            $tuple = static::suffixPregTuple($tuple, $suffix);
         }
-        return $arguments;
+        return $tuple;
+    }
+
+    /**
+     * Joins multiple preg *$tuples* with a glue.
+     *
+     * @param  array $tuples
+     * @param  array $options Supported options are *mergeLeft*, *merge*, *prefix*, and *suffix*.
+     * @return array
+     */
+    public static function joinPregTuples(array $tuples, array $options = [])
+    {
+        if (empty($tuples)) {
+            $message = '$tuples array passed to '.__class__.'::'.__function__.'() can not be empty';
+            throw new \InvalidArgumentException($message);
+        }
+
+        $right = array_pop($tuples);
+        while (!empty($tuples)) {
+            $left = array_pop($tuples);
+            $transform = [
+                'prefix' => $left[0].($options['glue'] ?? ''),
+                'mergeLeft' => ($left[1] ?? null)
+            ];
+            $right = static::transformPregTuple($right, $transform);
+        }
+        $transform = array_filter($options, function ($val, $key) {
+            return in_array($key, ['merge', 'mergeLeft', 'prefix', 'suffix'], true) && !empty($val);
+        }, ARRAY_FILTER_USE_BOTH);
+        if (!empty($transform)) {
+            $right = static::transformPregTuple($right, $transform);
+        }
+        return $right;
     }
 }
 

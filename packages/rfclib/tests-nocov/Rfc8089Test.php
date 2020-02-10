@@ -38,27 +38,27 @@ class Rfc8089Test extends TestCase
                 'localhost',
                 [
                     'host' => false,
+                    'file_auth' => ['localhost', 0],
                 ]
             ]
         ];
-        return array_merge(
-            $cases,
-            array_map(function (array $case) {
-                return [$case[0], array_merge($case[1], [
-                    'host' => $case[0]
-                ])];
-            }, Rfc3986Test::HOST__cases())
-        );
+        $inheritedCases = [];
+        foreach (Rfc3986Test::HOST__cases() as $case) {
+            $inheritedCases[] = static::transformPregTuple($case, [
+                'merge' => [
+                    'file_auth' => [$case[0], 0]
+                ]
+            ]);
+        }
+
+        return array_merge($inheritedCases, $cases);
     }
 
     public function non__FILE_AUTH__cases()
     {
-        $strings = [
-        ];
-        return array_merge(
-            static::arraizeStrings($strings),
-            Rfc3986Test::non__HOST__cases()
-        );
+        $strings = [];
+        $inheritedCases = Rfc3986Test::non__HOST__cases();
+        return array_merge($inheritedCases, static::arraizeStrings($strings));
     }
 
     /**
@@ -66,8 +66,9 @@ class Rfc8089Test extends TestCase
      */
     public function test__FILE_AUTH__matches(string $string, array $pieces)
     {
-        $expMatches = array_merge(['file_auth' => $string], $pieces);
-        $this->assertRfcMatches($string, 'FILE_AUTH', $expMatches);
+        $this->assertArrayHasKey('file_auth', $pieces);
+        $this->assertArrayHasKey('host', $pieces);
+        $this->assertRfcMatches($string, 'FILE_AUTH', $pieces);
     }
 
     /**
@@ -84,14 +85,16 @@ class Rfc8089Test extends TestCase
 
     public function LOCAL_PATH__cases()
     {
-        $cases = [
-        ];
-        return array_merge(
-            $cases,
-            array_map(function (array $arg) {
-                return [$arg[0], ['path_absolute' => $arg[0]]];
-            }, Rfc3986Test::PATH_ABSOLUTE__cases())
-        );
+        $cases = [];
+        $inheritedCases = [];
+        foreach (Rfc3986Test::PATH_ABSOLUTE__cases() as $case) {
+            $inheritedCases[] = static::transformPregTuple($case, [
+                'merge' => [
+                    'local_path' => [$case[0], 0],
+                ],
+            ]);
+        }
+        return array_merge($inheritedCases, $cases);
     }
 
     public function non__LOCAL_PATH__cases()
@@ -109,8 +112,9 @@ class Rfc8089Test extends TestCase
      */
     public function test__LOCAL_PATH__matches(string $string, array $pieces)
     {
-        $expMatches = array_merge(['local_path' => $string], $pieces);
-        $this->assertRfcMatches($string, 'LOCAL_PATH', $expMatches);
+        $this->assertArrayHasKey('local_path', $pieces);
+        $this->assertArrayHasKey('path_absolute', $pieces);
+        $this->assertRfcMatches($string, 'LOCAL_PATH', $pieces);
     }
 
     /**
@@ -127,21 +131,22 @@ class Rfc8089Test extends TestCase
 
     public function AUTH_PATH__cases()
     {
-        $cases = [
-        ];
+        $cases = [];
         $inheritedCases = [];
         foreach(Rfc3986Test::PATH_ABSOLUTE__cases() as $path) {
-            $case = [
-                $path[0],
-                ['file_auth' => '', 'path_absolute' => $path[0]]
-            ];
-            $inheritedCases[] = $case;
+            $inheritedCases[] = static::transformPregTuple($path, [
+                'merge' => [
+                    'auth_path' => [$path[0], 0],
+                    'file_auth' => ['', 0],
+                    'path_absolute' => [$path[0], 0],
+                ]
+            ]);
             foreach (static::FILE_AUTH__cases() as $fileAuth) {
-                $case = [
-                    $fileAuth[0].$path[0],
-                    array_merge(['file_auth' => $fileAuth[0]], $fileAuth[1], ['path_absolute' => $path[0]])
-                ];
-                $inheritedCases[] = $case;
+                $inheritedCases[] = static::joinPregTuples([$fileAuth, $path], [
+                    'merge' => [
+                        'auth_path' => [$fileAuth[0].$path[0], 0],
+                    ]
+                ]);
             }
         }
         return array_merge($cases, $inheritedCases);
@@ -158,8 +163,10 @@ class Rfc8089Test extends TestCase
      */
     public function test__AUTH_PATH__matches(string $string, array $pieces)
     {
-        $expMatches = array_merge(['auth_path' => $string], $pieces);
-        $this->assertRfcMatches($string, 'AUTH_PATH', $expMatches);
+        $this->assertArrayHasKey('auth_path', $pieces);
+        $this->assertArrayHasKey('file_auth', $pieces);
+        $this->assertArrayHasKey('path_absolute', $pieces);
+        $this->assertRfcMatches($string, 'AUTH_PATH', $pieces);
     }
 
     /**
@@ -176,24 +183,26 @@ class Rfc8089Test extends TestCase
 
     public function FILE_HIER_PART__cases()
     {
-        $cases = [
-        ];
+        $cases = [];
         $inheritedCases = [];
         foreach(self::AUTH_PATH__cases() as $authPath) {
-            $case = [
-                '//'.$authPath[0],
-                array_merge($authPath[1], ['auth_path' => $authPath[0]])
-            ];
-            $inheritedCases[] = $case;
+            $inheritedCases[] = static::transformPregTuple($authPath, [
+                'prefix' => '//',
+                'merge' => [
+                    'file_hier_part' => ['//'.$authPath[0], 0],
+                    'local_path' => false,
+                ]
+            ]);
         }
         foreach(self::LOCAL_PATH__cases() as $localPath) {
-            $case = [
-                $localPath[0],
-                array_merge($localPath[1], ['local_path' => $localPath[0]])
-            ];
-            $inheritedCases[] = $case;
+            $inheritedCases[] = static::transformPregTuple($localPath, [
+                'merge' => [
+                    'file_hier_part' => [$localPath[0], 0],
+                    'auth_path' => false
+                ],
+            ]);
         }
-        return array_merge($cases, $inheritedCases);
+        return array_merge($inheritedCases, $cases);
     }
 
     public function non__FILE_HIER_PART__cases()
@@ -207,8 +216,10 @@ class Rfc8089Test extends TestCase
      */
     public function test__FILE_HIER_PART__matches(string $string, array $pieces)
     {
-        $expMatches = array_merge(['file_hier_part' => $string], $pieces);
-        $this->assertRfcMatches($string, 'FILE_HIER_PART', $expMatches);
+        $this->assertArrayHasKey('file_hier_part', $pieces);
+        $this->assertArrayHasKey('auth_path', $pieces);
+        $this->assertArrayHasKey('local_path', $pieces);
+        $this->assertRfcMatches($string, 'FILE_HIER_PART', $pieces);
     }
 
     /**
@@ -236,33 +247,45 @@ class Rfc8089Test extends TestCase
     {
         $cases = [
             [
+            //   00000000001111
+            //   01234567890123
                 'file:/',
                 [
-                    'file_hier_part'    => '/',
-                    'file_auth'         => null,
-                    'host'              => null,
-                    'local_path'        => '/',
-                    'path_absolute'     => '/',
+                    'file_uri'          => ['file:/', 0],
+                    'file_scheme'       => ['file', 0],
+                    'file_hier_part'    => ['/', 5],
+                    'file_auth'         => false,
+                    'host'              => false,
+                    'local_path'        => ['/', 5],
+                    'path_absolute'     => ['/', 5],
                 ]
             ],
             [
+            //   00000000001111
+            //   01234567890123
                 'file:/foo/bar',
                 [
-                    'file_hier_part'    => '/foo/bar',
-                    'file_auth'         => null,
-                    'host'              => null,
-                    'local_path'        => '/foo/bar',
-                    'path_absolute'     => '/foo/bar',
+                    'file_uri'          => ['file:/foo/bar', 0],
+                    'file_scheme'       => ['file', 0],
+                    'file_hier_part'    => ['/foo/bar', 5],
+                    'file_auth'         => false,
+                    'host'              => false,
+                    'local_path'        => ['/foo/bar', 5],
+                    'path_absolute'     => ['/foo/bar', 5],
                 ]
             ],
         ];
+
+        $fileScheme = ['file', ['file_scheme' => ['file', 0]]];
+
         $inheritedCases = [];
         foreach(self::FILE_HIER_PART__cases() as $hierPart) {
-            $case = [
-                'file:'.$hierPart[0],
-                array_merge($hierPart[1], ['file_hier_part' => $hierPart[0]])
-            ];
-            $inheritedCases[] = $case;
+            $inheritedCases[] = static::joinPregTuples([$fileScheme, $hierPart], [
+                'glue' => ':',
+                'merge' => [
+                    'file_uri' => [$fileScheme[0].':'.$hierPart[0], 0],
+                ],
+            ]);
         }
         return array_merge($cases, $inheritedCases);
     }
@@ -278,8 +301,10 @@ class Rfc8089Test extends TestCase
      */
     public function test__FILE_URI__matches(string $string, array $pieces)
     {
-        $expMatches = array_merge(['file_uri' => $string], $pieces);
-        $this->assertRfcMatches($string, 'FILE_URI', $expMatches);
+        $this->assertArrayHasKey('file_uri', $pieces);
+        $this->assertArrayHasKey('file_scheme', $pieces);
+        $this->assertArrayHasKey('file_hier_part', $pieces);
+        $this->assertRfcMatches($string, 'FILE_URI', $pieces);
     }
 
     /**

@@ -146,7 +146,9 @@ class Rfc2849xTest extends TestCase
         ];
         $inheritedCases = [];
         foreach (Rfc2849Test::VERSION_SPEC__cases() as $case) {
-            $inheritedCases[] = static::extendPregArguments($case, ['merge' => ['version_error' => false]]);
+            $inheritedCases[] = static::transformPregTuple($case, [
+                'merge' => ['version_error' => false]
+            ]);
         }
         return array_merge($inheritedCases, $cases);
     }
@@ -279,7 +281,7 @@ class Rfc2849xTest extends TestCase
         ];
         $inheritedCases = [];
         foreach (Rfc2849Test::DN_SPEC__cases() as $case) {
-            $inheritedCases[] = static::extendPregArguments($case, [
+            $inheritedCases[] = static::transformPregTuple($case, [
                 'merge' => [
                     'dn_safe_error' => false,
                     'dn_b64_error' => false
@@ -531,7 +533,7 @@ class Rfc2849xTest extends TestCase
         ];
         $inheritedCases = [];
         foreach (Rfc2849Test::VALUE_SPEC__cases() as $case) {
-            $inheritedCases[] = static::extendPregArguments($case, [
+            $inheritedCases[] = static::transformPregTuple($case, [
                 'merge' => [
                     'value_safe_error' => false,
                     'value_b64_error' => false,
@@ -859,7 +861,7 @@ class Rfc2849xTest extends TestCase
         ];
         $inheritedCases = [];
         foreach (Rfc2849Test::ATTRVAL_SPEC__cases() as $case) {
-            $inheritedCases[] = static::extendPregArguments($case, [
+            $inheritedCases[] = static::transformPregTuple($case, [
                 'merge' => [
                     'value_safe_error' => false,
                     'value_b64_error' => false,

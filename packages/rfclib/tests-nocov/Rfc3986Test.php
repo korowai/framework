@@ -219,10 +219,15 @@ class Rfc3986Test extends TestCase
     //
     // PATH_EMPTY
     //
+    public static function PATH_EMPTY__strings()
+    {
+        return [''];
+    }
 
     public static function PATH_EMPTY__cases()
     {
-        return [['']];
+        $strings = static::PATH_EMPTY__strings();
+        return static::arraizeStrings($strings, 'path_empty');
     }
 
     public static function non__PATH_EMPTY__cases()
@@ -236,7 +241,8 @@ class Rfc3986Test extends TestCase
      */
     public function test__PATH_EMPTY__matches(string $string, array $pieces = [])
     {
-        $this->assertRfcMatches($string, 'PATH_EMPTY', ['path_empty' => [$string, 0]]);
+        $this->assertArrayHasKey('path_empty', $pieces);
+        $this->assertRfcMatches($string, 'PATH_EMPTY', $pieces);
     }
 
     /**
@@ -250,15 +256,19 @@ class Rfc3986Test extends TestCase
     //
     // PATH_NOSCHEME
     //
-
-    public static function PATH_NOSCHEME__cases()
+    public static function PATH_NOSCHEME__strings()
     {
-        $strings = [
+        return [
             "!$&'()*+,;=-._~Ab1%1fx",
             "!$&'()*+,;=-._~Ab1%1fx/",
             "!$&'()*+,;=-._~Ab1%1fx/:!$&'()*+,;=-._~Ab1%1fx",
         ];
-        return static::arraizeStrings($strings);
+    }
+
+    public static function PATH_NOSCHEME__cases()
+    {
+        $strings = static::PATH_NOSCHEME__strings();
+        return static::arraizeStrings($strings, 'path_noscheme');
     }
 
     public static function non__PATH_NOSCHEME__cases()
@@ -272,7 +282,8 @@ class Rfc3986Test extends TestCase
      */
     public function test__PATH_NOSCHEME__matches(string $string, array $pieces = [])
     {
-        $this->assertRfcMatches($string, 'PATH_NOSCHEME', ['path_noscheme' => [$string, 0]]);
+        $this->assertArrayHasKey('path_noscheme', $pieces);
+        $this->assertRfcMatches($string, 'PATH_NOSCHEME', $pieces);
     }
 
     /**
@@ -286,15 +297,21 @@ class Rfc3986Test extends TestCase
     //
     // PATH_ROOTLESS
     //
-
-    public static function PATH_ROOTLESS__cases()
+    public static function PATH_ROOTLESS__strings()
     {
         $strings = [
             ":!$&'()*+,;=-._~Ab1%1fx",
             ":!$&'()*+,;=-._~Ab1%1fx/",
             ":!$&'()*+,;=-._~Ab1%1fx/:!$&'()*+,;=-._~Ab1%1fx",
         ];
-        return array_merge(static::arraizeStrings($strings), static::PATH_NOSCHEME__cases());
+        $inheritedStrings = static::PATH_NOSCHEME__strings();
+        return array_merge($inheritedStrings, $strings);
+    }
+
+    public static function PATH_ROOTLESS__cases()
+    {
+        $strings = static::PATH_ROOTLESS__strings();
+        return static::arraizeStrings($strings, 'path_rootless');
     }
 
     public static function non__PATH_ROOTLESS__cases()
@@ -308,7 +325,8 @@ class Rfc3986Test extends TestCase
      */
     public function test__PATH_ROOTLESS__matches(string $string, array $pieces = [])
     {
-        $this->assertRfcMatches($string, 'PATH_ROOTLESS', ['path_rootless' => [$string, 0]]);
+        $this->assertArrayHasKey('path_rootless', $pieces);
+        $this->assertRfcMatches($string, 'PATH_ROOTLESS', $pieces);
     }
 
     /**
@@ -322,12 +340,19 @@ class Rfc3986Test extends TestCase
     //
     // PATH_ABSOLUTE
     //
+    public static function PATH_ABSOLUTE__strings()
+    {
+        $strings = [];
+        $inheritedStrings = array_map(function (string $string) {
+            return '/'.$string;
+        }, static::PATH_ROOTLESS__strings());
+        return array_merge($inheritedStrings, $strings);
+    }
 
     public static function PATH_ABSOLUTE__cases()
     {
-        return array_map(function (array $args) {
-            return ['/'.$args[0]];
-        }, static::PATH_ROOTLESS__cases());
+        $strings = static::PATH_ABSOLUTE__strings();
+        return static::arraizeStrings($strings, 'path_absolute');
     }
 
     public static function non__PATH_ABSOLUTE__cases()
@@ -341,7 +366,8 @@ class Rfc3986Test extends TestCase
      */
     public function test__PATH_ABSOLUTE__matches(string $string, array $pieces = [])
     {
-        $this->assertRfcMatches($string, 'PATH_ABSOLUTE', ['path_absolute' => [$string, 0]]);
+        $this->assertArrayHasKey('path_absolute', $pieces);
+        $this->assertRfcMatches($string, 'PATH_ABSOLUTE', $pieces);
     }
 
     /**
@@ -355,10 +381,20 @@ class Rfc3986Test extends TestCase
     //
     // PATH_ABEMPTY
     //
+    public static function PATH_ABEMPTY__strings()
+    {
+        $strings = [];
+        $inheritedStrings = array_merge(
+            static::PATH_EMPTY__strings(),
+            static::PATH_ABSOLUTE__strings()
+        );
+        return array_merge($inheritedStrings, $strings);
+    }
 
     public static function PATH_ABEMPTY__cases()
     {
-        return array_merge([[""]], static::PATH_ABSOLUTE__cases());
+        $strings = static::PATH_ABEMPTY__strings();
+        return static::arraizeStrings($strings, 'path_abempty');
     }
 
     public static function non__PATH_ABEMPTY__cases()
@@ -372,7 +408,8 @@ class Rfc3986Test extends TestCase
      */
     public function test__PATH_ABEMPTY__matches(string $string, array $pieces = [])
     {
-        $this->assertRfcMatches($string, 'PATH_ABEMPTY', ['path_abempty' => [$string, 0]]);
+        $this->assertArrayHasKey('path_abempty', $pieces);
+        $this->assertRfcMatches($string, 'PATH_ABEMPTY', $pieces);
     }
 
     /**
@@ -383,57 +420,23 @@ class Rfc3986Test extends TestCase
         $this->assertRfcNotMatches($string, 'PATH_ABEMPTY');
     }
 
-    //
-    // PATH
-    //
-
-    public static function PATH__cases()
-    {
-        return array_merge(
-            static::PATH_ABEMPTY__cases(),
-            static::PATH_ABSOLUTE__cases(),
-            static::PATH_NOSCHEME__cases(),
-            static::PATH_ROOTLESS__cases(),
-            static::PATH_EMPTY__cases()
-        );
-    }
-
-    public static function non__PATH__cases()
-    {
-        $strings = [
-            "%", "%1", "%G", "%1G", "%G2", "#", "ł", "?",
-        ];
-        return static::arraizeStrings($strings);
-    }
-
-    /**
-     * @dataProvider PATH__cases
-     */
-    public function test__PATH__matches(string $string, array $pieces = [])
-    {
-        $this->assertRfcMatches($string, 'PATH', ['path' => [$string, 0]]);
-    }
-
-    /**
-     * @dataProvider non__PATH__cases
-     */
-    public function test__PATH__notMatches(string $string)
-    {
-        $this->assertRfcNotMatches($string, 'PATH');
-    }
 
     //
     // REG_NAME
     //
-
-    public static function REG_NAME__cases()
+    public static function REG_NAME__strings()
     {
-        $strings = [
+        return [
             "",
             "example.org",
             "!$&'()*+,;=aA2%1fx-._~",
         ];
-        return static::arraizeStrings($strings);
+    }
+
+    public static function REG_NAME__cases()
+    {
+        $strings = static::REG_NAME__strings();
+        return static::arraizeStrings($strings, 'reg_name');
     }
 
     public static function non__REG_NAME__cases()
@@ -447,8 +450,7 @@ class Rfc3986Test extends TestCase
      */
     public function test__REG_NAME__matches(string $string, array $pieces = [])
     {
-        $expMatches = array_merge(['reg_name' => [$string, 0]], $pieces);
-        $this->assertRfcMatches($string, 'REG_NAME', $expMatches);
+        $this->assertRfcMatches($string, 'REG_NAME', $pieces);
     }
 
     /**
@@ -495,17 +497,21 @@ class Rfc3986Test extends TestCase
     //
     // IPV4ADDRESS
     //
-
-    public static function IPV4ADDRESS__cases()
+    public static function IPV4ADDRESS__strings()
     {
-        $strings = [
+        return [
             "0.0.0.0",
             "255.255.255.255",
             "1.2.3.4",
             "11.22.33.44",
             "1.2.3.255",
         ];
-        return static::arraizeStrings($strings);
+    }
+
+    public static function IPV4ADDRESS__cases()
+    {
+        $strings = static::IPV4ADDRESS__strings();
+        return static::arraizeStrings($strings, 'ipv4address');
     }
 
     public static function non__IPV4ADDRESS__cases()
@@ -524,8 +530,8 @@ class Rfc3986Test extends TestCase
      */
     public function test__IPV4ADDRESS__matches(string $string, array $pieces = [])
     {
-        $expMatches = array_merge(['ipv4address' => [$string, 0]], $pieces);
-        $this->assertRfcMatches($string, 'IPV4ADDRESS', $expMatches);
+        $this->assertArrayHasKey('ipv4address', $pieces);
+        $this->assertRfcMatches($string, 'IPV4ADDRESS', $pieces);
     }
 
     /**
@@ -540,16 +546,20 @@ class Rfc3986Test extends TestCase
     // H16
     //
 
-    public function H16__cases()
+    public function H16__strings()
     {
-        $strings = [
+        return [
             "1", "9", "A", "F", "a", "f",
             "1a", "9d",
             "1ab", "93d",
             "1abc", "93df",
             "0000",
         ];
-        return static::arraizeStrings($strings);
+    }
+
+    public function H16__cases()
+    {
+        return static::arraizeStrings(static::H16__strings());
     }
 
     public function non__H16__cases()
@@ -579,11 +589,15 @@ class Rfc3986Test extends TestCase
     //
     // LS32
     //
+    public function LS32__strings()
+    {
+        return ["1:2", "12:34", "12a:2", "3:af23", "fed2:123a", "1.23.245.212"];
+    }
 
     public function LS32__cases()
     {
-        $strings = ["1:2", "12:34", "12a:2", "3:af23", "fed2:123a", "1.23.245.212"];
-        return static::arraizeStrings($strings);
+        $strings = static::LS32__strings();
+        return static::arraizeStrings($strings, 'ls32');
     }
 
     public function non__LS32__cases()
@@ -600,7 +614,7 @@ class Rfc3986Test extends TestCase
      */
     public function test__LS32__matches(string $string, array $pieces = [])
     {
-        $expMatches = array_merge(['ls32' => [$string, 0]], $pieces);
+        $this->assertArrayHasKey('ls32', $pieces);
         $this->assertRfcMatches($string, 'LS32', $pieces);
     }
 
@@ -1196,6 +1210,11 @@ class Rfc3986Test extends TestCase
         } else {
             $cases = $basicCases;
         }
+        for ($i = 0; $i < count($cases); $i++) {
+            $cases[$i] = static::transformPregTuple($cases[$i], [
+                'merge' => ['ipv6address' => [$cases[$i][0], 0]]
+            ]);
+        }
         return $cases;
     }
 
@@ -1213,8 +1232,8 @@ class Rfc3986Test extends TestCase
      */
     public function test__IPV6ADDRESS__matches(string $string, array $pieces = [])
     {
-        $expMatches = array_merge(['ipv6address' => [$string, 0]], $pieces);
-        $this->assertRfcMatches($string, 'IPV6ADDRESS', $expMatches);
+        $this->assertArrayHasKey('ipv6address', $pieces);
+        $this->assertRfcMatches($string, 'IPV6ADDRESS', $pieces);
     }
 
     /**
@@ -1228,13 +1247,17 @@ class Rfc3986Test extends TestCase
     //
     // IPVFUTURE
     //
+    public static function IPVFUTURE__strings()
+    {
+        return [
+            "v12ea.:!$&'()*+,;=-._~aB32",
+        ];
+    }
 
     public static function IPVFUTURE__cases()
     {
-        $strings = [
-            "v12ea.:!$&'()*+,;=-._~aB32",
-        ];
-        return static::arraizeStrings($strings);
+        $strings = static::IPVFUTURE__strings();
+        return static::arraizeStrings($strings, 'ipvfuture');
     }
 
     public static function non__IPVFUTURE__cases()
@@ -1250,8 +1273,8 @@ class Rfc3986Test extends TestCase
      */
     public function test__IPVFUTURE__matches(string $string, array $pieces = [])
     {
-        $expMatches = array_merge(['ipvfuture' => [$string, 0]], $pieces);
-        $this->assertRfcMatches($string, 'IPVFUTURE', $expMatches);
+        $this->assertArrayHasKey('ipvfuture', $pieces);
+        $this->assertRfcMatches($string, 'IPVFUTURE', $pieces);
     }
 
     /**
@@ -1268,20 +1291,24 @@ class Rfc3986Test extends TestCase
 
     public static function IP_LITERAL__cases()
     {
-        $cases = [
-        ];
+        $cases = [];
         $inheritedCases = [];
         foreach (static::IPV6ADDRESS__cases() as $case) {
-            $inheritedCases[] = static::extendPregArguments($case, [
-                'prefix' => '[', 'suffix' => ']', 'merge' => [
-                    'ipv6address' => [$case[0], 1],
+            $inheritedCases[] = static::transformPregTuple($case, [
+                'prefix' => '[',
+                'suffix' => ']',
+                'merge' => [
+                    'ip_literal' => ['['.$case[0].']', 0],
                     'ipvfuture' => false,
                 ]
             ]);
         }
         foreach (static::IPVFUTURE__cases() as $case) {
-            $inheritedCases[] = static::extendPregArguments($case, [
-                'prefix' => '[', 'suffix' => ']', 'merge' => [
+            $inheritedCases[] = static::transformPregTuple($case, [
+                'prefix' => '[',
+                'suffix' => ']',
+                'merge' => [
+                    'ip_literal' => ['['.$case[0].']', 0],
                     'ipv6address' => false,
                     'ls32' => false,
                     'ipv6v4address' => false,
@@ -1317,8 +1344,8 @@ class Rfc3986Test extends TestCase
      */
     public function test__IP_LITERAL__matches(string $string, array $pieces = [])
     {
-        $expMatches = array_merge(['ip_literal' => [$string, 0]], $pieces);
-        $this->assertRfcMatches($string, 'IP_LITERAL', $expMatches);
+        $this->assertArrayHasKey('ip_literal', $pieces);
+        $this->assertRfcMatches($string, 'IP_LITERAL', $pieces);
     }
 
     /**
@@ -1336,7 +1363,7 @@ class Rfc3986Test extends TestCase
     public static function PORT__cases()
     {
         $strings = ["", "123"];
-        return static::arraizeStrings($strings);
+        return static::arraizeStrings($strings, 'port');
     }
 
     public static function non__PORT__cases()
@@ -1350,8 +1377,8 @@ class Rfc3986Test extends TestCase
      */
     public function test__PORT__matches(string $string, array $pieces = [])
     {
-        $expMatches = array_merge(['port' => [$string, 0]], $pieces);
-        $this->assertRfcMatches($string, 'PORT', $expMatches);
+        $this->assertArrayHasKey('port', $pieces);
+        $this->assertRfcMatches($string, 'PORT', $pieces);
     }
 
     /**
@@ -1368,21 +1395,21 @@ class Rfc3986Test extends TestCase
 
     public static function HOST__cases()
     {
-        $cases = [
-        ];
+        $cases = [];
         $inheritedCases = [];
         foreach (static::IP_LITERAL__cases() as $case) {
-            $inheritedCases[] = static::extendPregArguments($case, [
+            $inheritedCases[] = static::transformPregTuple($case, [
                 'merge' => [
-                    'ip_literal' => [$case[0], 0],
+                    'host' => [$case[0], 0],
                     'ipv4address' => false,
                     'reg_name' => false
                 ]
             ]);
         }
         foreach (static::IPV4ADDRESS__cases() as $case) {
-            $inheritedCases[] = static::extendPregArguments($case, [
+            $inheritedCases[] = static::transformPregTuple($case, [
                 'merge' => [
+                    'host' => [$case[0], 0],
                     'ip_literal' => false,
                     'ipv6address' => false,
                     'ls32' => false,
@@ -1394,8 +1421,9 @@ class Rfc3986Test extends TestCase
             ]);
         }
         foreach (static::REG_NAME__cases() as $case) {
-            $inheritedCases[] = static::extendPregArguments($case, [
+            $inheritedCases[] = static::transformPregTuple($case, [
                 'merge' => [
+                    'host' => [$case[0], 0],
                     'ip_literal' => false,
                     'ipv6address' => false,
                     'ls32' => false,
@@ -1435,8 +1463,8 @@ class Rfc3986Test extends TestCase
      */
     public function test__HOST__matches(string $string, array $pieces = [])
     {
-        $expMatches = array_merge(['host' => [$string, 0]], $pieces);
-        $this->assertRfcMatches($string, 'HOST', $expMatches);
+        $this->assertArrayHasKey('host', $pieces);
+        $this->assertRfcMatches($string, 'HOST', $pieces);
     }
 
     /**
@@ -1454,7 +1482,7 @@ class Rfc3986Test extends TestCase
     public static function USERINFO__cases()
     {
         $strings = ["", "!$&'()*+,;=-._~Ab1%1fx:"];
-        return static::arraizeStrings($strings);
+        return static::arraizeStrings($strings, 'userinfo');
     }
 
     public static function non__USERINFO__cases()
@@ -1471,8 +1499,8 @@ class Rfc3986Test extends TestCase
      */
     public function test__USERINFO__matches(string $string, array $pieces = [])
     {
-        $expMatches = array_merge(['userinfo' => [$string, 0]], $pieces);
-        $this->assertRfcMatches($string, 'USERINFO', $expMatches);
+        $this->assertArrayHasKey('userinfo', $pieces);
+        $this->assertRfcMatches($string, 'USERINFO', $pieces);
     }
 
     /**
@@ -1489,26 +1517,24 @@ class Rfc3986Test extends TestCase
 
     public static function AUTHORITY__cases()
     {
-        $cases = [
-        ];
+        $cases = [];
 
         $inheritedCases = [];
         foreach (static::USERINFO__cases() as $user) {
             foreach (static::HOST__cases() as $host) {
-                $userHost = static::extendPregArguments($host, [
-                    'prefix' => $user[0]."@",
-                    'merge' => array_merge($user[1] ?? [], [
-                        'userinfo' => [$user[0], 0],
-                        'host' => [$host[0], strlen($user[0]) + 1],
+                $userHost = static::joinPregTuples([$user, $host], [
+                    'glue' => '@',
+                    'merge' => [
+                        'authority' => [$user[0].'@'.$host[0], 0],
                         'port' => false
-                    ])
+                    ]
                 ]);
                 $inheritedCases[] = $userHost;
                 foreach (static::PORT__cases() as $port) {
-                    $inheritedCases[] = static::extendPregArguments($userHost, [
-                        'suffix' => ':'.$port[0],
+                    $inheritedCases[] = static::joinPregTuples([$userHost, $port], [
+                        'glue' => ':',
                         'merge' => [
-                            'port' => [$port[0], strlen($userHost[0]) + 1]
+                            'authority' => [$userHost[0].':'.$port[0], 0],
                         ]
                     ]);
                 }
@@ -1516,21 +1542,20 @@ class Rfc3986Test extends TestCase
         }
 
         foreach (static::HOST__cases() as $host) {
-            $inheritedCases[] = static::extendPregArguments($host, [
+            $inheritedCases[] = static::transformPregTuple($host, [
                 'merge' => [
+                    'authority' => [$host[0], 0],
                     'userinfo' => false,
-                    'host' => [$host[0], 0],
                     'port' => false
                 ]
             ]);
             foreach (static::PORT__cases() as $port) {
-                $inheritedCases[] = static::extendPregArguments($host, [
-                    'suffix' => ':'.$port[0],
-                    'merge' => array_merge([
+                $inheritedCases[] = static::joinPregTuples([$host, $port], [
+                    'glue' => ':',
+                    'merge' => [
+                        'authority' => [$host[0].':'.$port[0], 0],
                         'userinfo' => false,
-                        'host' => [$host[0], 0],
-                        'port' => [$port[0], strlen($host[0]) + 1]
-                    ], $port[1] ?? [])
+                    ],
                 ]);
             }
         }
@@ -1551,8 +1576,11 @@ class Rfc3986Test extends TestCase
      */
     public function test__AUTHORITY__matches(string $string, array $pieces = [])
     {
-        $expMatches = array_merge(['authority' => [$string, 0]], $pieces);
-        $this->assertRfcMatches($string, 'AUTHORITY', $expMatches);
+        $this->assertArrayHasKey('authority', $pieces);
+        $this->assertArrayHasKey('userinfo', $pieces);
+        $this->assertArrayHasKey('host', $pieces);
+        $this->assertArrayHasKey('port', $pieces);
+        $this->assertRfcMatches($string, 'AUTHORITY', $pieces);
     }
 
     /**
@@ -1570,7 +1598,7 @@ class Rfc3986Test extends TestCase
     public static function SCHEME__cases()
     {
         $strings = ["a.23+x-x"];
-        return static::arraizeStrings($strings);
+        return static::arraizeStrings($strings, 'scheme');
     }
 
     public static function non__SCHEME__cases()
@@ -1584,8 +1612,8 @@ class Rfc3986Test extends TestCase
      */
     public function test__SCHEME__matches(string $string, array $pieces = [])
     {
-        $expMatches = array_merge(['scheme' => [$string, 0]], $pieces);
-        $this->assertRfcMatches($string, 'SCHEME', $expMatches);
+        $this->assertArrayHasKey('scheme', $pieces);
+        $this->assertRfcMatches($string, 'SCHEME', $pieces);
     }
 
     /**
@@ -1602,33 +1630,31 @@ class Rfc3986Test extends TestCase
 
     public static function RELATIVE_PART__cases()
     {
-        $cases = [
-        ];
+        $cases = [];
         $inheritedCases = [];
         foreach (static::AUTHORITY__cases() as $authority) {
             foreach (static::PATH_ABEMPTY__cases() as $path) {
-                $inheritedCases[] = static::extendPregArguments($authority, [
+                $inheritedCases[] = static::joinPregTuples([$authority, $path], [
                     'prefix' => '//',
-                    'suffix' => $path[0],
-                    'merge' => array_merge([
-                        'path_abempty' => [$path[0], 2 + strlen($authority[0])]
-                    ], $path[1] ?? [])
+                    'merge' => [
+                        'relative_part' => ['//'.$authority[0].$path[0], 0]
+                    ],
                 ]);
             }
         }
         foreach (static::PATH_ABSOLUTE__cases() as $path) {
-            $inheritedCases[] = static::extendPregArguments($path, [
-                'path_absolute' => [$path[0], 0]
+            $inheritedCases[] = static::transformPregTuple($path, [
+                'merge' => ['relative_part' => [$path[0], 0]]
             ]);
         }
         foreach (static::PATH_NOSCHEME__cases() as $path) {
-            $inheritedCases[] = static::extendPregArguments($path, [
-                'path_noscheme' => [$path[0], 0]
+            $inheritedCases[] = static::transformPregTuple($path, [
+                'merge' => ['relative_part' => [$path[0], 0]]
             ]);
         }
         foreach (static::PATH_EMPTY__cases() as $path) {
-            $inheritedCases[] = static::extendPregArguments($path, [
-                'path_empty' => [$path[0], 0]
+            $inheritedCases[] = static::transformPregTuple($path, [
+                'merge' => ['relative_part' => [$path[0], 0]]
             ]);
         }
 
@@ -1646,8 +1672,8 @@ class Rfc3986Test extends TestCase
      */
     public function test__RELATIVE_PART__matches(string $string, array $pieces = [])
     {
-        $expMatches = array_merge(['relative_part' => [$string, 0]], $pieces);
-        $this->assertRfcMatches($string, 'RELATIVE_PART', $expMatches);
+        $this->assertArrayHasKey('relative_part', $pieces);
+        $this->assertRfcMatches($string, 'RELATIVE_PART', $pieces);
     }
 
     /**
@@ -1664,60 +1690,55 @@ class Rfc3986Test extends TestCase
 
     public static function HIER_PART__cases()
     {
-        $cases = [
-        ];
+        $cases = [];
         $inheritedCases = [];
         foreach (static::AUTHORITY__cases() as $authority) {
             foreach (static::PATH_ABEMPTY__cases() as $path) {
-                $inheritedCases[] = static::extendPregArguments($authority, [
+                $inheritedCases[] = static::joinPregTuples([$authority, $path], [
                     'prefix' => '//',
-                    'suffix' => $path[0],
-                    'merge' => array_merge([
-                        'path_abempty' => [$path[0], 2 + strlen($authority[0])]
-                    ], $path[1] ?? [])
+                    'merge' => [
+                        'hier_part' => ['//'.$authority[0].$path[0], 0],
+                        'path_absolute' => false,
+                        'path_rootless' => false,
+                        'path_empty' => false,
+                    ],
                 ]);
             }
         }
         foreach (static::PATH_ABSOLUTE__cases() as $path) {
-            $inheritedCases[] = static::extendPregArguments($path, [
-                'path_absolute' => [$path[0], 0]
+            $inheritedCases[] = static::transformPregTuple($path, [
+                'merge' => [
+                    'hier_part' => [$path[0], 0],
+                    'authority' => false,
+                    'path_abempty' => false,
+                    'path_rootless' => false,
+                    'path_empty' => false,
+                ],
             ]);
         }
         foreach (static::PATH_ROOTLESS__cases() as $path) {
-            $inheritedCases[] = static::extendPregArguments($path, [
-                'path_rootless' => [$path[0], 0]
+            $inheritedCases[] = static::transformPregTuple($path, [
+                'merge' => [
+                    'hier_part' => [$path[0], 0],
+                    'authority' => false,
+                    'path_abempty' => false,
+                    'path_absolute' => false,
+                    'path_empty' => false,
+                ],
             ]);
         }
         foreach (static::PATH_EMPTY__cases() as $path) {
-            $inheritedCases[] = static::extendPregArguments($path, [
-                'path_empty' => [$path[0], 0]
+            $inheritedCases[] = static::transformPregTuple($path, [
+                'merge' => [
+                    'hier_part' => [$path[0], 0],
+                    'authority' => false,
+                    'path_abempty' => false,
+                    'path_absolute' => false,
+                    'path_rootless' => false,
+                ],
             ]);
         }
         return array_merge($inheritedCases, $cases);
-
-//        $authorityPathAbemptyCases = [];
-//        foreach (static::AUTHORITY__cases() as $authority) {
-//            foreach (static::PATH_ABEMPTY__cases() as $path) {
-//                $case = [
-//                    '//'.$authority[0].$path[0],
-//                    array_merge($authority[1], ['path_abempty' => $path[0]])
-//                ];
-//                $authorityPathAbemptyCases[] = $case;
-//            }
-//        }
-//        return array_merge(
-//            $cases,
-//            $authorityPathAbemptyCases,
-//            array_map(function (array $arg) {
-//                return [$arg[0], ['path_absolute' => $arg[0]]];
-//            }, static::PATH_ABSOLUTE__cases()),
-//            array_map(function (array $arg) {
-//                return [$arg[0], ['path_rootless' => $arg[0]]];
-//            }, static::PATH_ROOTLESS__cases()),
-//            array_map(function (array $arg) {
-//                return [$arg[0], ['path_empty' => $arg[0]]];
-//            }, static::PATH_EMPTY__cases())
-//        );
     }
 
     public static function non__HIER_PART__cases()
@@ -1731,8 +1752,13 @@ class Rfc3986Test extends TestCase
      */
     public function test__HIER_PART__matches(string $string, array $pieces = [])
     {
-        $expMatches = array_merge(['hier_part' => [$string, 0]], $pieces);
-        $this->assertRfcMatches($string, 'HIER_PART', $expMatches);
+        $this->assertArrayHasKey('hier_part', $pieces);
+        $this->assertArrayHasKey('authority', $pieces);
+        $this->assertArrayHasKey('path_abempty', $pieces);
+        $this->assertArrayHasKey('path_absolute', $pieces);
+        $this->assertArrayHasKey('path_rootless', $pieces);
+        $this->assertArrayHasKey('path_empty', $pieces);
+        $this->assertRfcMatches($string, 'HIER_PART', $pieces);
     }
 
     /**
@@ -1752,7 +1778,7 @@ class Rfc3986Test extends TestCase
         $strings = [
             "", 'aZ2-._~!$&\'()*+,;=/?:@%20'
         ];
-        return static::arraizeStrings($strings);
+        return static::arraizeStrings($strings, 'fragment');
     }
 
     public static function non__FRAGMENT__cases()
@@ -1766,8 +1792,8 @@ class Rfc3986Test extends TestCase
      */
     public function test__FRAGMENT__matches(string $string, array $pieces = [])
     {
-        $expMatches = array_merge(['fragment' => [$string, 0]], $pieces);
-        $this->assertRfcMatches($string, 'FRAGMENT', $expMatches);
+        $this->assertArrayHasKey('fragment', $pieces);
+        $this->assertRfcMatches($string, 'FRAGMENT', $pieces);
     }
 
     /**
@@ -1787,7 +1813,7 @@ class Rfc3986Test extends TestCase
         $strings = [
             "", 'aZ2-._~!$&\'()*+,;=/?:@%20'
         ];
-        return static::arraizeStrings($strings);
+        return static::arraizeStrings($strings, 'query');
     }
 
     public static function non__QUERY__cases()
@@ -1801,8 +1827,8 @@ class Rfc3986Test extends TestCase
      */
     public function test__QUERY__matches(string $string, array $pieces = [])
     {
-        $expMatches = array_merge(['query' => [$string, 0]], $pieces);
-        $this->assertRfcMatches($string, 'QUERY', $expMatches);
+        $this->assertArrayHasKey('query', $pieces);
+        $this->assertRfcMatches($string, 'QUERY', $pieces);
     }
 
     /**
@@ -1822,36 +1848,39 @@ class Rfc3986Test extends TestCase
         $cases = [];
         $inheritedCases = [];
         foreach (static::RELATIVE_PART__cases() as $relPart) {
-            $relPartRef = static::extendPregArguments($relPart, [
+            $relPartRef = static::transformPregTuple($relPart, [
                 'merge' => [
-                    'relative_part' => [$relPart[0], 0],
+                    'relative_ref' => [$relPart[0], 0],
                     'query' => false,
                     'fragment' => false,
                 ]
             ]);
             $inheritedCases[] = $relPartRef;
             foreach (static::QUERY__cases() as $query) {
-                $relPartQuery = static::extendPregArguments($relPartRef, [
-                    'suffix' => '?'.$query[0],
+                $relPartQuery = static::joinPregTuples([$relPartRef, $query], [
+                    'glue' => '?',
                     'merge' => [
-                        'query' => [$query[0], strlen($relPartRef[0]) + 1]
+                        'relative_ref' => [$relPartRef[0].'?'.$query[0], 0],
+                        'fragment' => false,
                     ]
                 ]);
                 $inheritedCases[] = $relPartQuery;
                 foreach (static::FRAGMENT__cases() as $fragment) {
-                    $relPartQueryFrag = static::extendPregArguments($relPartQuery, [
-                        'suffix' => '#'.$fragment[0],
+                    $relPartQueryFrag = static::joinPregTuples([$relPartQuery, $fragment], [
+                        'glue' => '#',
                         'merge' => [
-                            'fragment' => [$fragment[0], strlen($relPartQuery[0]) + 1]
+                            'relative_ref' => [$relPartQuery[0].'#'.$fragment[0], 0]
                         ]
                     ]);
+                    $inheritedCases[] = $relPartQueryFrag;
                 }
             }
             foreach (static::FRAGMENT__cases() as $fragment) {
-                $relPartFrag = static::extendPregArguments($relPartRef, [
-                    'suffix' => '#'.$fragment[0],
+                $relPartFrag = static::joinPregTuples([$relPartRef, $fragment], [
+                    'glue' => '#',
                     'merge' => [
-                        'fragment' => [$fragment[0], strlen($relPartRef[0]) + 1]
+                        'relative_ref' => [$relPartRef[0].'#'.$fragment[0], 0],
+                        'query' => false,
                     ]
                 ]);
                 $inheritedCases[] = $relPartFrag;
@@ -1869,10 +1898,13 @@ class Rfc3986Test extends TestCase
     /**
      * @dataProvider RELATIVE_REF__cases
      */
-    public function test__RELATIVE_REF__matches(string $string, array $parts)
+    public function test__RELATIVE_REF__matches(string $string, array $pieces = [])
     {
-        $expMatches = array_merge(['relative_ref' => [$string, 0]], $parts);
-        $this->assertRfcMatches($string, 'RELATIVE_REF', $expMatches);
+        $this->assertArrayHasKey('relative_ref', $pieces);
+        $this->assertArrayHasKey('relative_part', $pieces);
+        $this->assertArrayHasKey('query', $pieces);
+        $this->assertArrayHasKey('fragment', $pieces);
+        $this->assertRfcMatches($string, 'RELATIVE_REF', $pieces);
     }
 
     /**
@@ -1893,21 +1925,20 @@ class Rfc3986Test extends TestCase
         $inheritedCases = [];
         foreach (static::SCHEME__cases() as $scheme) {
             foreach (static::HIER_PART__cases() as $hierpart) {
-                $schemeHierpart = static::extendPregArguments($hierpart, [
-                    'prefix' => $scheme[0].':',
+                $schemeHierpart = static::joinPregTuples([$scheme, $hierpart], [
+                    'glue' => ':',
                     'merge' => array_merge($scheme[1] ?? [], [
-                        'scheme' => [$scheme[0], 0],
-                        'hier_part' => [$hierpart[0], strlen($scheme[0]) + 1],
-                        'query' => false,
+                        'absolute_uri' => [$scheme[0].':'.$hierpart[0], 0],
+                        'query' => false
                     ])
                 ]);
                 $inheritedCases[] = $schemeHierpart;
                 foreach (static::QUERY__cases() as $query) {
-                    $inheritedCases[] = static::extendPregArguments($schemeHierpart, [
-                        'suffix' => '?'.$query[0],
-                        'merge' => array_merge($query[1] ?? [], [
-                            'query' => [$query[0],  strlen($schemeHierpart[0]) + 1]
-                        ])
+                    $inheritedCases[] = static::joinPregTuples([$schemeHierpart, $query], [
+                        'glue' => '?',
+                        'merge' => [
+                            'absolute_uri' => [$schemeHierpart[0].'?'.$query[0], 0],
+                        ]
                     ]);
                 }
             }
@@ -1932,8 +1963,11 @@ class Rfc3986Test extends TestCase
      */
     public function test__ABSOLUTE_URI__matches(string $string, array $pieces = [])
     {
-        $expMatches = array_merge(['absolute_uri' => [$string, 0]], $pieces);
-        $this->assertRfcMatches($string, 'ABSOLUTE_URI', $expMatches);
+        $this->assertArrayHasKey('absolute_uri', $pieces);
+        $this->assertArrayHasKey('scheme', $pieces);
+        $this->assertArrayHasKey('hier_part', $pieces);
+        $this->assertArrayHasKey('query', $pieces);
+        $this->assertRfcMatches($string, 'ABSOLUTE_URI', $pieces);
     }
 
     /**
@@ -1953,13 +1987,20 @@ class Rfc3986Test extends TestCase
         $cases = [];
         $inheritedCases = [];
         foreach (static::ABSOLUTE_URI__cases() as $absUri) {
-            $inheritedCases[] = $absUri;
+            $inheritedCases[] = static::transformPregTuple($absUri, [
+                'merge' => [
+                    'uri' => [$absUri[0], 0],
+                    'absolute_uri' => false,
+                    'fragment'=> false,
+                ],
+            ]);
             foreach (static::FRAGMENT__cases() as $fragment) {
-                $inheritedCases[] = static::extendPregArguments($absUri, [
-                    'suffix' => '#'.$fragment[0],
-                    'merge' => array_merge($fragment[1] ?? [], [
-                        'fragment' => [$fragment[0], strlen($absUri[0]) + 1]
-                    ])
+                $inheritedCases[] = static::joinPregTuples([$absUri, $fragment], [
+                    'glue' => '#',
+                    'merge' => [
+                        'uri' => [$absUri[0].'#'.$fragment[0], 0],
+                        'absolute_uri' => false,
+                    ],
                 ]);
             }
         }
@@ -1982,8 +2023,12 @@ class Rfc3986Test extends TestCase
      */
     public function test__URI__matches(string $string, array $pieces = [])
     {
-        $expMatches = array_merge(['uri' => [$string, 0]], $pieces);
-        $this->assertRfcMatches($string, 'URI', $expMatches);
+        $this->assertArrayHasKey('uri', $pieces);
+        $this->assertArrayHasKey('scheme', $pieces);
+        $this->assertArrayHasKey('hier_part', $pieces);
+        $this->assertArrayHasKey('query', $pieces);
+        $this->assertArrayHasKey('fragment', $pieces);
+        $this->assertRfcMatches($string, 'URI', $pieces);
     }
 
     /**
@@ -2003,16 +2048,18 @@ class Rfc3986Test extends TestCase
         $cases = [];
         $inheritedCases = [];
         foreach (static::URI__cases() as $case) {
-            $inheritedCases[] = static::extendPregArguments($case, [
+            $inheritedCases[] = static::transformPregTuple($case, [
                 'merge' => [
+                    'uri_reference' => [$case[0], 0],
                     'uri' => [$case[0], 0],
                     'relative_ref' => false,
                 ]
             ]);
         }
         foreach (static::RELATIVE_REF__cases() as $case) {
-            $inheritedCases[] = static::extendPregArguments($case, [
+            $inheritedCases[] = static::transformPregTuple($case, [
                 'merge' => [
+                    'uri_reference' => [$case[0], 0],
                     'uri' => false,
                     'relative_ref' => [$case[0], 0],
                 ]
@@ -2035,8 +2082,10 @@ class Rfc3986Test extends TestCase
      */
     public function test__URI_REFERENCE__matches(string $string, array $pieces = [])
     {
-        $expMatches = array_merge(['uri_reference' => [$string, 0]], $pieces);
-        $this->assertRfcMatches($string, 'URI_REFERENCE', $expMatches);
+        $this->assertArrayHasKey('uri_reference', $pieces);
+        $this->assertArrayHasKey('uri', $pieces);
+        $this->assertArrayHasKey('relative_ref', $pieces);
+        $this->assertRfcMatches($string, 'URI_REFERENCE', $pieces);
     }
 
     /**

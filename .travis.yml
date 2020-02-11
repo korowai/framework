@@ -3,9 +3,17 @@ php:
   - '7.2'
   - '7.3'
   - '7.4'
+  - 'nightly'
 env:
   - KOROWAI_NOCOV=false
   - KOROWAI_NOCOV=true
+allow_failures:
+  - php: '7.4'
+    env: KOROWAI_NOCOV=true
+  - php: 'nightly'
+    env: KOROWAI_NOCOV=true
+  - php: 'nightly'
+    env: KOROWAI_NOCOV=false
 install:
   - php -i
   - travis_retry composer install --no-interaction

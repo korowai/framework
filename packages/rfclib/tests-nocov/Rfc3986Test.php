@@ -502,9 +502,7 @@ class Rfc3986Test extends TestCase
         return [
             "0.0.0.0",
             "255.255.255.255",
-            "1.2.3.4",
-            "11.22.33.44",
-            "1.2.3.255",
+            "192.168.0.2",
         ];
     }
 
@@ -630,9 +628,9 @@ class Rfc3986Test extends TestCase
     // IPV6ADDRESS
     //
 
-    public static function IPV6ADDRESS__cases(bool $all = true)
+    public static function IPV6ADDRESS__cases()
     {
-        $basicCases = [
+        $cases = [
             [
                 "::",                           // any address compression
                 [
@@ -684,7 +682,18 @@ class Rfc3986Test extends TestCase
             ],
         ];
 
-        $systematicCases = [
+        for ($i = 0; $i < count($cases); $i++) {
+            $cases[$i] = static::transformPregTuple($cases[$i], [
+                'merge' => ['ipv6address' => [$cases[$i][0], 0]]
+            ]);
+        }
+
+        return $cases;
+    }
+
+    public static function extra__IPV6ADDRESS__cases()
+    {
+        $cases = [
             // 1'st row in rule
             [
             //   0000000000111111111122222222223
@@ -1205,12 +1214,6 @@ class Rfc3986Test extends TestCase
             ],
         ];
 
-        if ($all) {
-            $cases = array_merge($basicCases, $systematicCases);
-        } else {
-            $cases = $basicCases;
-        }
-
         for ($i = 0; $i < count($cases); $i++) {
             $cases[$i] = static::transformPregTuple($cases[$i], [
                 'merge' => ['ipv6address' => [$cases[$i][0], 0]]
@@ -1231,6 +1234,7 @@ class Rfc3986Test extends TestCase
 
     /**
      * @dataProvider IPV6ADDRESS__cases
+     * @dataProvider extra__IPV6ADDRESS__cases
      */
     public function test__IPV6ADDRESS__matches(string $string, array $pieces = [])
     {
@@ -1291,11 +1295,11 @@ class Rfc3986Test extends TestCase
     // IP_LITERAL
     //
 
-    public static function IP_LITERAL__cases(bool $all = true)
+    public static function IP_LITERAL__cases()
     {
         $cases = [];
         $inheritedCases = [];
-        foreach (static::IPV6ADDRESS__cases($all) as $case) {
+        foreach (static::IPV6ADDRESS__cases() as $case) {
             $inheritedCases[] = static::transformPregTuple($case, [
                 'prefix' => '[',
                 'suffix' => ']',
@@ -1395,11 +1399,11 @@ class Rfc3986Test extends TestCase
     // HOST
     //
 
-    public static function HOST__cases(bool $all = true)
+    public static function HOST__cases()
     {
         $cases = [];
         $inheritedCases = [];
-        foreach (static::IP_LITERAL__cases($all) as $case) {
+        foreach (static::IP_LITERAL__cases() as $case) {
             $inheritedCases[] = static::transformPregTuple($case, [
                 'merge' => [
                     'host' => [$case[0], 0],
@@ -1517,13 +1521,13 @@ class Rfc3986Test extends TestCase
     // AUTHORITY
     //
 
-    public static function AUTHORITY__cases(bool $all = true)
+    public static function AUTHORITY__cases()
     {
         $cases = [];
 
         $inheritedCases = [];
         foreach (static::USERINFO__cases() as $user) {
-            foreach (static::HOST__cases($all) as $host) {
+            foreach (static::HOST__cases() as $host) {
                 $userHost = static::joinPregTuples([$user, $host], [
                     'glue' => '@',
                     'merge' => [
@@ -1543,7 +1547,7 @@ class Rfc3986Test extends TestCase
             }
         }
 
-        foreach (static::HOST__cases($all) as $host) {
+        foreach (static::HOST__cases() as $host) {
             $inheritedCases[] = static::transformPregTuple($host, [
                 'merge' => [
                     'authority' => [$host[0], 0],
@@ -1630,11 +1634,11 @@ class Rfc3986Test extends TestCase
     // RELATIVE_PART
     //
 
-    public static function RELATIVE_PART__cases(bool $all = true)
+    public static function RELATIVE_PART__cases()
     {
         $cases = [];
         $inheritedCases = [];
-        foreach (static::AUTHORITY__cases($all) as $authority) {
+        foreach (static::AUTHORITY__cases() as $authority) {
             foreach (static::PATH_ABEMPTY__cases() as $path) {
                 $inheritedCases[] = static::joinPregTuples([$authority, $path], [
                     'prefix' => '//',
@@ -1690,11 +1694,11 @@ class Rfc3986Test extends TestCase
     // HIER_PART
     //
 
-    public static function HIER_PART__cases(bool $all = true)
+    public static function HIER_PART__cases()
     {
         $cases = [];
         $inheritedCases = [];
-        foreach (static::AUTHORITY__cases($all) as $authority) {
+        foreach (static::AUTHORITY__cases() as $authority) {
             foreach (static::PATH_ABEMPTY__cases() as $path) {
                 $inheritedCases[] = static::joinPregTuples([$authority, $path], [
                     'prefix' => '//',

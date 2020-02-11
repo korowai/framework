@@ -4,9 +4,7 @@ php:
   - '7.3'
 env:
   - KOROWAI_NOCOV=false
-    KOROWAI_HEAVY_TESTING=true
   - KOROWAI_NOCOV=true
-    KOROWAI_HEAVY_TESTING=true
 install:
   - travis_retry composer install --no-interaction
 script:

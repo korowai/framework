@@ -27,19 +27,6 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
     use ObjectPropertiesAssertions;
     use PregAssertions;
     use PregUtils;
-
-    /**
-     * Checks the *$KOROWAI_HEAVY_TESTING* OS environment variable and returns
-     * true if the variable exists and is one of "y", "yes", "on", "true" or is
-     * a non-zero integer. This is used to enable additional test cases.
-     *
-     * @return bool
-     */
-    public static function isHeavyTesting() : bool
-    {
-        $env = strtolower((string)getenv('KOROWAI_HEAVY_TESTING', true));
-        return in_array($env, ['y', 'yes', 'true', 'on']) || ((int)$env > 0);
-    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

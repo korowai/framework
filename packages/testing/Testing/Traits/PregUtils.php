@@ -26,14 +26,13 @@ trait PregUtils
      *
      * @param  array $captures
      * @param  int $offset
-     * @param  array $except Capture groups to be excluded from shifting.
      *
      * @return array Returns the transformed captures.
      */
-    public static function shiftPregCaptures(array $captures, int $offset, array $except = []) : array
+    public static function shiftPregCaptures(array $captures, int $offset) : array
     {
         foreach ($captures as $key => $capture) {
-            if (!in_array($key, $except, true) && is_array($capture)) {
+            if (is_array($capture)) {
                 $captures[$key][1] += $offset;
             }
         }
@@ -42,72 +41,41 @@ trait PregUtils
 
     /**
      * Takes an array of capture groups, as returned by ``preg_match()``,
-     * prepends *$prefix* to ``$captures[0]`` (or ``$captures[0][0]``) and
-     * transforms all captures with ``shiftPregCaptures($captures, strlen($prefix))``.
+     * and transforms all captures with ``shiftPregCaptures($captures, strlen($prefix))``.
      *
      * @param  array $captures
      * @param  string $prefix
-     * @param  array $except Capture groups to be excluded from shifting.
      *
      * @return array Returns the transformed captures.
      */
-    public static function prefixPregCaptures(array $captures, string $prefix, array $except = null) : array
+    public static function prefixPregCaptures(array $captures, string $prefix) : array
     {
-        $cap0 = $captures[0] ?? null;
-        if (is_array($cap0)) {
-            $captures[0][0] = $prefix.$captures[0][0];
-        } elseif (is_string($cap0)) {
-            $captures[0] = $prefix.$cap0;
-        }
-        return static::shiftPregCaptures($captures, strlen($prefix), $except ?? [0]);
-    }
-
-    /**
-     * Takes an array of capture groups, as returned by ``preg_match()``, and
-     * appends *$suffix* to ``$captures[0]`` (or ``$captures[0][0]``).
-     *
-     * @param  array $captures
-     * @param  string $suffix
-     *
-     * @return array Returns the transformed captures.
-     */
-    public static function suffixPregCaptures(array $captures, string $suffix) : array
-    {
-        $cap0 = $captures[0] ?? null;
-        if (is_array($cap0)) {
-            $captures[0][0] = $captures[0][0].$suffix;
-        } elseif (is_string($cap0)) {
-            $captures[0] = $cap0.$suffix;
-        }
-        return $captures;
+        return static::shiftPregCaptures($captures, strlen($prefix));
     }
 
     /**
      * Takes a two-element array *$tuple*, prepends *$prefix* to *$tuple[0]*
      * and, if *$tuple[1]* is present, transforms *$tuple[1]* with
-     * ``prefixPregCaptures($tuple[1], $prefix, $except);``.
+     * ``prefixPregCaptures($tuple[1], $prefix);``.
      *
      * @param  array $tuple
      * @param  string $prefix
-     * @param  array $except Capture groups to be excluded from shifting.
      *
      * @return array Returns two-element array with prefixed *$tuple[0]* at
-     *         offset 0 and transformed *arguments[1]* at offset 1.
+     *         offset 0 and transformed *tuple[1]* at offset 1.
      */
-    public static function prefixPregTuple(array $tuple, string $prefix, array $except = null) : array
+    public static function prefixPregTuple(array $tuple, string $prefix) : array
     {
         $subject = $prefix.$tuple[0];
         if (($captures = $tuple[1] ?? null) !== null) {
-            return [$subject, static::prefixPregCaptures($captures, $prefix, $except)];
+            return [$subject, static::prefixPregCaptures($captures, $prefix)];
         } else {
             return [$subject];
         }
     }
 
     /**
-     * Takes a two-element array *$tuple*, appends *$suffix* to *$tuple[0]*
-     * and, if *$tuple[1]* is present, transforms *$tuple[1]* with
-     * ``suffixPregCaptures($tuple[1], $suffix);``.
+     * Takes a two-element array *$tuple*, appends *$suffix* to *$tuple[0]*.
      *
      * @param  array $tuple
      * @param  string $suffix
@@ -119,7 +87,7 @@ trait PregUtils
     {
         $subject = $tuple[0].$suffix;
         if (($captures = $tuple[1] ?? null) !== null) {
-            return [$subject, static::suffixPregCaptures($captures, $suffix)];
+            return [$subject, $captures];
         } else {
             return [$subject];
         }
@@ -133,7 +101,7 @@ trait PregUtils
      * - if *$options['prefix']* (string) is present and is not null, then:
      *
      *   ```
-     *   $tuple = static::prefixPregTuple($tuple, $options['prefix'], $options['except] ?? null);
+     *   $tuple = static::prefixPregTuple($tuple, $options['prefix']);
      *   ```
      *
      * - if *$options['mergeLeft']* (array) is present and is not null, then:
@@ -161,7 +129,7 @@ trait PregUtils
     public static function transformPregTuple(array $tuple, array $options = []) : array
     {
         if (($prefix = $options['prefix'] ?? null) !== null) {
-            $tuple = static::prefixPregTuple($tuple, $prefix, $options['except'] ?? null);
+            $tuple = static::prefixPregTuple($tuple, $prefix);
         }
         if (($merge = $options['mergeLeft'] ?? null) !== null) {
             $tuple[1] = array_merge($merge, $tuple[1] ?? []);
@@ -189,22 +157,22 @@ trait PregUtils
             throw new \InvalidArgumentException($message);
         }
 
-        $right = array_pop($tuples);
-        while (!empty($tuples)) {
-            $left = array_pop($tuples);
-            $transform = [
-                'prefix' => $left[0].($options['glue'] ?? ''),
-                'mergeLeft' => ($left[1] ?? null)
-            ];
-            $right = static::transformPregTuple($right, $transform);
+        $joint = array_shift($tuples);
+        $glue = ($options['glue'] ?? '');
+        foreach ($tuples as $tuple) {
+            $suffix = $glue.$tuple[0];
+            if (($captures = $tuple[1] ?? null) !== null) {
+                $captures = static::shiftPregCaptures($captures, strlen($joint[0].$glue));
+            }
+            $joint = static::transformPregTuple($joint, ['suffix' => $suffix, 'merge' => $captures]);
         }
         $transform = array_filter($options, function ($val, $key) {
             return in_array($key, ['merge', 'mergeLeft', 'prefix', 'suffix'], true) && !empty($val);
         }, ARRAY_FILTER_USE_BOTH);
         if (!empty($transform)) {
-            $right = static::transformPregTuple($right, $transform);
+            $joint = static::transformPregTuple($joint, $transform);
         }
-        return $right;
+        return $joint;
     }
 }
 

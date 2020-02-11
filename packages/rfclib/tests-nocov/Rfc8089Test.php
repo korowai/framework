@@ -31,7 +31,7 @@ class Rfc8089Test extends TestCase
     // FILE_AUTH
     //
 
-    public function FILE_AUTH__cases()
+    public function FILE_AUTH__cases(bool $all = true)
     {
         $cases = [
             [
@@ -43,7 +43,7 @@ class Rfc8089Test extends TestCase
             ]
         ];
         $inheritedCases = [];
-        foreach (Rfc3986Test::HOST__cases() as $case) {
+        foreach (Rfc3986Test::HOST__cases($all) as $case) {
             $inheritedCases[] = static::transformPregTuple($case, [
                 'merge' => [
                     'file_auth' => [$case[0], 0]
@@ -129,7 +129,7 @@ class Rfc8089Test extends TestCase
     // AUTH_PATH
     //
 
-    public function AUTH_PATH__cases()
+    public function AUTH_PATH__cases(bool $all = true)
     {
         $cases = [];
         $inheritedCases = [];
@@ -141,7 +141,7 @@ class Rfc8089Test extends TestCase
                     'path_absolute' => [$path[0], 0],
                 ]
             ]);
-            foreach (static::FILE_AUTH__cases() as $fileAuth) {
+            foreach (static::FILE_AUTH__cases($all) as $fileAuth) {
                 $inheritedCases[] = static::joinPregTuples([$fileAuth, $path], [
                     'merge' => [
                         'auth_path' => [$fileAuth[0].$path[0], 0],
@@ -181,11 +181,11 @@ class Rfc8089Test extends TestCase
     // FILE_HIER_PART
     //
 
-    public function FILE_HIER_PART__cases()
+    public function FILE_HIER_PART__cases(bool $all = true)
     {
         $cases = [];
         $inheritedCases = [];
-        foreach(self::AUTH_PATH__cases() as $authPath) {
+        foreach(self::AUTH_PATH__cases($all) as $authPath) {
             $inheritedCases[] = static::transformPregTuple($authPath, [
                 'prefix' => '//',
                 'merge' => [
@@ -243,7 +243,7 @@ class Rfc8089Test extends TestCase
     // FILE_URI
     //
 
-    public function FILE_URI__cases()
+    public function FILE_URI__cases(bool $all = true)
     {
         $cases = [
             [
@@ -279,7 +279,7 @@ class Rfc8089Test extends TestCase
         $fileScheme = ['file', ['file_scheme' => ['file', 0]]];
 
         $inheritedCases = [];
-        foreach(self::FILE_HIER_PART__cases() as $hierPart) {
+        foreach(self::FILE_HIER_PART__cases($all) as $hierPart) {
             $inheritedCases[] = static::joinPregTuples([$fileScheme, $hierPart], [
                 'glue' => ':',
                 'merge' => [

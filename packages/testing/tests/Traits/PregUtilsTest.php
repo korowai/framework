@@ -51,16 +51,6 @@ class PregUtilsTest extends TestCase
                 [[['whole string', 2], 'second' => ['string',  8]], 5],
                 [ ['whole string', 7], 'second' => ['string', 13]]
             ],
-
-            [
-                [[['whole string', 2], 'second' => ['string',  8]], 5, [0]],
-                [ ['whole string', 2], 'second' => ['string', 13]]
-            ],
-
-            [
-                [[['whole string', 2], 'second' => ['string',  8]], 5, ['second']],
-                [ ['whole string', 7], 'second' => ['string',  8]]
-            ],
         ];
     }
 
@@ -81,33 +71,33 @@ class PregUtilsTest extends TestCase
             ],
 
             [
-                [[      'whole string'], 'prefix '],
-                ['prefix whole string']
+                [['whole string'], 'prefix '],
+                [ 'whole string']
             ],
 
             [
-                [[       'whole string', 'second' => 'string'], 'prefix '],
-                [ 'prefix whole string', 'second' => 'string']
+                [['whole string', 'second' => 'string'], 'prefix '],
+                [ 'whole string', 'second' => 'string']
             ],
 
             [
-                [[       'whole string', 'second' => ['string',  6]], 'prefix '],
-                [ 'prefix whole string', 'second' => ['string', 13]]
+                [['whole string', 'second' => ['string',  6]], 'prefix '],
+                [ 'whole string', 'second' => ['string', 13]]
             ],
 
             [
-                [[[       'whole string', 2], 'second' => ['string',  8]], 'prefix '],
-                [ ['prefix whole string', 2], 'second' => ['string', 15]]
+                [['whole string', 'second' => ['string',  6], ['string',  6]], 'prefix '],
+                [ 'whole string', 'second' => ['string', 13], ['string', 13]]
             ],
 
             [
-                [[[       'whole string', 2], 'second' => ['string',  8]], 'prefix ', []],
-                [ ['prefix whole string', 9], 'second' => ['string', 15]]
+                [[['whole string', 2], 'second' => ['string',  8]], 'prefix '],
+                [ ['whole string', 9], 'second' => ['string', 15]]
             ],
 
             [
-                [[[       'whole string', 2], 'second' => ['string',  8]], 'prefix ', [0, 'second']],
-                [ ['prefix whole string', 2], 'second' => ['string',  8]]
+                [[['whole string', 2], 'second' => ['string',  8]], 'prefix ', []],
+                [ ['whole string', 9], 'second' => ['string', 15]]
             ],
         ];
     }
@@ -123,43 +113,44 @@ class PregUtilsTest extends TestCase
     public function prefixPregTuple__cases()
     {
         return [
-            [
+            [ // #0
                 [[''], 'prefix '],
                  ['prefix ']
             ],
-            [
+
+            [ // #1
                 [['', []], 'prefix '],
                  ['prefix ', []]
             ],
 
-            [
-                [      ['whole string', [      'whole string']], 'prefix '],
-                ['prefix whole string', ['prefix whole string']]
+            [ // #2
+                [      ['whole string', ['whole string']], 'prefix '],
+                ['prefix whole string', ['whole string']]
             ],
 
-            [
-                [['whole string',        [       'whole string', 'second' => 'string']], 'prefix '],
-                [ 'prefix whole string', ['prefix whole string', 'second' => 'string']]
+            [ // #3
+                [       ['whole string', ['whole string', 'second' => 'string']], 'prefix '],
+                [ 'prefix whole string', ['whole string', 'second' => 'string']]
             ],
 
-            [
-                [       ['whole string', [       'whole string', 'second' => ['string',  6]]], 'prefix '],
-                [ 'prefix whole string', ['prefix whole string', 'second' => ['string', 13]]]
+            [ // #4
+                [       ['whole string', ['whole string', 'second' => ['string',  6]]], 'prefix '],
+                [ 'prefix whole string', ['whole string', 'second' => ['string', 13]]]
             ],
 
-            [
-                [      ['whole string', [[       'whole string', 2], 'second' => ['string',  8]]], 'prefix '],
-                ['prefix whole string', [['prefix whole string', 2], 'second' => ['string', 15]]]
+            [ // #5
+                [      ['whole string', [['whole string', 2], 'second' => ['string',  8]]], 'prefix '],
+                ['prefix whole string', [['whole string', 9], 'second' => ['string', 15]]]
             ],
 
-            [
-                [      ['whole string', [[       'whole string', 2], 'second' => ['string',  8]]], 'prefix ', []],
-                ['prefix whole string', [['prefix whole string', 9], 'second' => ['string', 15]]]
+            [ // #6
+                [      ['whole string', [['whole string', 2], 'second' => ['string',  8], ['string',  8]]], 'prefix '],
+                ['prefix whole string', [['whole string', 9], 'second' => ['string', 15], ['string', 15]]]
             ],
 
-            [
-                [      ['whole string', [[       'whole string', 2], 'second' => ['string',  8]]], 'prefix ', [0, 'second']],
-                ['prefix whole string', [['prefix whole string', 2], 'second' => ['string',  8]]]
+            [ // #7
+                [      ['whole string', [['whole string', 2], 'second' => ['string',  8]]], 'prefix ', []],
+                ['prefix whole string', [['whole string', 9], 'second' => ['string', 15]]]
             ],
         ];
     }
@@ -187,22 +178,22 @@ class PregUtilsTest extends TestCase
 
             [
                 [['whole string',        ['whole string']       ], ' suffix'],
-                [ 'whole string suffix', ['whole string suffix']]
+                [ 'whole string suffix', ['whole string']]
             ],
 
             [
-                [['whole string',        ['whole string',        'second' => 'string']], ' suffix'],
-                [ 'whole string suffix', ['whole string suffix', 'second' => 'string']]
+                [['whole string',        ['whole string', 'second' => 'string']], ' suffix'],
+                [ 'whole string suffix', ['whole string', 'second' => 'string']]
             ],
 
             [
-                [['whole string',        ['whole string',        'second' => ['string',  6]]], ' suffix'],
-                [ 'whole string suffix', ['whole string suffix', 'second' => ['string',  6]]]
+                [['whole string',        ['whole string', 'second' => ['string',  6]]], ' suffix'],
+                [ 'whole string suffix', ['whole string', 'second' => ['string',  6]]]
             ],
 
             [
-                [['whole string',        [['whole string',        2], 'second' => ['string',  8]]], ' suffix'],
-                [ 'whole string suffix', [['whole string suffix', 2], 'second' => ['string',  8]]]
+                [['whole string',        [['whole string', 2], 'second' => ['string',  8]]], ' suffix'],
+                [ 'whole string suffix', [['whole string', 2], 'second' => ['string',  8]]]
             ],
         ];
     }
@@ -218,52 +209,44 @@ class PregUtilsTest extends TestCase
     public function transformPregTuple__cases()
     {
         return [
-            [
+            [ // #0
                 [[''], ['prefix' => 'prefix ']],
                  ['prefix ']
             ],
-            [
+
+            [ // #1
                 [['', []], ['prefix' => 'prefix ']],
                  ['prefix ', []]
             ],
 
-            [
-                [      ['whole string', [      'whole string']], ['prefix' => 'prefix ']],
-                ['prefix whole string', ['prefix whole string']]
+            [ // #2
+                [      ['whole string', ['whole string']], ['prefix' => 'prefix ']],
+                ['prefix whole string', ['whole string']]
             ],
 
-            [
-                [       ['whole string', [       'whole string', 'second' => 'string']], ['prefix' => 'prefix ']],
-                [ 'prefix whole string', ['prefix whole string', 'second' => 'string']]
+            [ // #3
+                [       ['whole string', ['whole string', 'second' => 'string']], ['prefix' => 'prefix ']],
+                [ 'prefix whole string', ['whole string', 'second' => 'string']]
             ],
 
-            [
-                [       ['whole string', [       'whole string', 'second' => ['string',  6]]], ['prefix' => 'prefix ']],
-                [ 'prefix whole string', ['prefix whole string', 'second' => ['string', 13]]]
+            [ // #4
+                [       ['whole string', ['whole string', 'second' => ['string',  6]]], ['prefix' => 'prefix ']],
+                [ 'prefix whole string', ['whole string', 'second' => ['string', 13]]]
             ],
 
-            [
-                [      ['whole string', [[       'whole string', 2], 'second' => ['string',  8]]], ['prefix' => 'prefix ']],
-                ['prefix whole string', [['prefix whole string', 2], 'second' => ['string', 15]]]
+            [ // #5
+                [      ['whole string', [['whole string', 2], 'second' => ['string',  8]]], ['prefix' => 'prefix ']],
+                ['prefix whole string', [['whole string', 9], 'second' => ['string', 15]]]
             ],
 
-            [
-                [      ['whole string', [[       'whole string', 2], 'second' => ['string',  8]]], ['prefix' => 'prefix ', 'except' => []]],
-                ['prefix whole string', [['prefix whole string', 9], 'second' => ['string', 15]]]
+            [ // #6
+                [      ['whole string',        [['whole string', 2], 'second' => ['string',  8]]], ['prefix' => 'prefix ', 'suffix' => ' suffix']],
+                ['prefix whole string suffix', [['whole string', 9], 'second' => ['string', 15]]]
             ],
 
-            [
-                [      ['whole string', [[       'whole string', 2], 'second' => ['string',  8]]], ['prefix' => 'prefix ', 'except' => [0, 'second']]],
-                ['prefix whole string', [['prefix whole string', 2], 'second' => ['string',  8]]]
-            ],
-            [
-                [      ['whole string', [[              'whole string',        2], 'second' => ['string',  8]]], ['prefix' => 'prefix ', 'suffix' => ' suffix']],
-                ['prefix whole string suffix', [['prefix whole string suffix', 2], 'second' => ['string', 15]]]
-            ],
-
-            [
-                [       ['whole string', [       'whole string', 'second' => ['string',  6]]], ['prefix' => 'prefix ', 'merge' => ['first' => ['whole', 7]]]],
-                [ 'prefix whole string', ['prefix whole string', 'second' => ['string', 13], 'first' => ['whole', 7]]]
+            [ // #7
+                [       ['whole string', ['whole string', 'second' => ['string',  6]]], ['prefix' => 'prefix ', 'merge' => ['first' => ['whole', 7]], 'mergeLeft' => ['left' => ['string', 13]]]],
+                [ 'prefix whole string', ['left' => ['string', 13], 'whole string', 'second' => ['string', 13], 'first' => ['whole', 7]]]
             ],
         ];
     }
@@ -279,32 +262,32 @@ class PregUtilsTest extends TestCase
     public function joinPregTuples__cases()
     {
         return [
-            [
+            [ // #0
                 [
                     [['first']],
                 ],
                 ['first']
             ],
-            [
+            [ // #1
                 [
                     [['first'], ['second']],
                     ['glue' => ' ']
                 ],
                 ['first second']
             ],
-            [
+            [ // #2
                 [
                     [['first'], ['second'], ['third']],
                     ['glue' => ' ']
                 ],
                 ['first second third']
             ],
-            [
+            [ // #3
                 [
                     [
-                        ['first',   ['f' => ['first', 0]]],
+                        ['first',   ['f' => ['first',  0]]],
                         ['second',  ['s' => ['second', 0]]],
-                        ['third',   ['t' => ['third', 0]]]
+                        ['third',   ['t' => ['third',  0]]]
                     ],
                     ['glue' => ' ']
                 ],
@@ -319,49 +302,50 @@ class PregUtilsTest extends TestCase
                     ]
                 ]
             ],
-//  The method doesn't work with int indexed groups...
-//            [
-//                [
-//                    [
-//                        ['first',   [['first',  0], 'f' => ['first',  0], ['first',  0]]],
-//                        ['second',  [['second', 0], 's' => ['second', 0], ['second', 0]]],
-//                        ['third',   [['third',  0], 't' => ['third',  0], ['third',  0]]]
-//                    ],
-//                    ['glue' => ' ']
-//                ],
-//                [
-//                //   0000000000111111111
-//                //   0123456789012345678
-//                    'first second third',
-//                    [
-//                        ['first second third', 0],
-//                        'f' => ['first',   0],
-//                        ['first', 0],
-//                        's' => ['second',  6],
-//                        ['second', 6],
-//                        't' => ['third',  13],
-//                        ['third', 13],
-//                    ]
-//                ]
-//            ],
-            [
+            [ // #4
                 [
                     [
-                        ['first',   ['f' => ['first', 0]]],
-                        ['second',  ['s' => ['second', 0]]],
-                        ['third',   ['t' => ['third', 0]]]
+                        ['first',   [['first',  0], 'f' => ['first',  0], ['first',  0]]],
+                        ['second',  [['second', 0], 's' => ['second', 0], ['second', 0]]],
+                        ['third',   [['third',  0], 't' => ['third',  0], ['third',  0]]]
                     ],
-                    ['glue' => ' ', 'merge' => ['x' => ['st', 3]]]
+                    ['glue' => ' ']
                 ],
                 [
                 //   0000000000111111111
                 //   0123456789012345678
                     'first second third',
                     [
+                        ['first', 0],
                         'f' => ['first',   0],
+                        ['first', 0],
+                        ['second', 6],
                         's' => ['second',  6],
+                        ['second', 6],
+                        ['third', 13],
                         't' => ['third',  13],
-                        'x' => ['st',      3],
+                        ['third', 13],
+                    ]
+                ]
+            ],
+            [ // #5
+                [
+                    [
+                        ['first',   ['f' => ['first',  0], ['first',  0]]],
+                        ['second',  ['s' => ['second', 0], ['second', 0]]],
+                        ['third',   ['t' => ['third',  0], ['third',  0]]]
+                    ],
+                    ['glue' => ' ', 'merge' => ['x' => ['st', 3], ['st', 3]]]
+                ],
+                [
+                //   0000000000111111111
+                //   0123456789012345678
+                    'first second third',
+                    [
+                        'f' => ['first',   0], ['first',   0],
+                        's' => ['second',  6], ['second',  6],
+                        't' => ['third',  13], ['third',  13],
+                        'x' => ['st',      3], ['st',      3]
                     ]
                 ]
             ],

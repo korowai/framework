@@ -97,6 +97,7 @@ final class HasPregCaptures extends Constraint
      */
     public function failureDescription($other) : string
     {
+        $other = array_intersect_key($other, $this->expected);
         return $this->exporter()->export($other).' '.$this->toString();
     }
 }

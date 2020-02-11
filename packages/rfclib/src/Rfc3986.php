@@ -229,7 +229,7 @@ class Rfc3986 extends AbstractRuleSet
      * Matches [URI-reference](https://tools.ietf.org/html/rfc3986#section-4.1).
      */
     public const URI_REFERENCE =
-        '(?J)(?<uri_reference>(?:'.
+        '(?:(?J)(?<uri_reference>'.
             self::URI.
             '|'.
             self::RELATIVE_REF.

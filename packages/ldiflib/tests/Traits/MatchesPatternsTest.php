@@ -208,7 +208,12 @@ class MatchesPatternsTest extends TestCase
                         'records' => [],
                         'errors'  => [],
                     ],
-                    'matches' => [],
+                    'matches' => [
+                        false,
+                        'var_name'        => false,
+                        'value_int'       => false,
+                        'value_int_error' => false,
+                    ],
                 ]
             ],
             [
@@ -231,7 +236,7 @@ class MatchesPatternsTest extends TestCase
                     'matches' => [
                         ['var = ', 0],
                         'var_name'        => ['var', 0],
-                        'value_int'       => [null, -1],
+                        'value_int'       => false,
                         'value_int_error' => ['', 6],
                     ],
                 ]
@@ -256,7 +261,7 @@ class MatchesPatternsTest extends TestCase
                     'matches' => [
                         ['var = asd', 0],
                         'var_name'        => ['var', 0],
-                        'value_int'       => [null, -1],
+                        'value_int'       => false,
                         'value_int_error' => ['asd', 6],
                     ],
                 ]
@@ -281,7 +286,7 @@ class MatchesPatternsTest extends TestCase
                     'matches' => [
                         ['var = 123', 0],
                         'var_name'        => ['var', 0],
-                        'value_int'       => [null, -1],
+                        'value_int'       => false,
                         'value_int_error' => ['', 9],
                     ],
                 ]
@@ -302,6 +307,7 @@ class MatchesPatternsTest extends TestCase
                         ['var = 123;', 0],
                         'var_name'        => ['var', 0],
                         'value_int'       => ['123', 6],
+                        'value_int_error' => false,
                     ],
                 ]
             ],
@@ -320,11 +326,7 @@ class MatchesPatternsTest extends TestCase
         $result = $parser->parseMatchRfcRule($state, $rule, $matches);
         $this->assertSame($expectations['result'] ?? true, $result);
         $this->assertParserStateHas($expectations['state'], $state);
-
-        $matches = array_filter($matches, function ($key) {
-            return ($key === 0) || is_string($key);
-        }, ARRAY_FILTER_USE_KEY);
-        $this->assertSame($expectations['matches'], $matches);
+        $this->assertHasPregCaptures($expectations['matches'], $matches);
     }
 }
 

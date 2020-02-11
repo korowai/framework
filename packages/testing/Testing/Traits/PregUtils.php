@@ -21,8 +21,8 @@ namespace Korowai\Testing\Traits;
 trait PregUtils
 {
     /**
-     * Takes an array of capture groups, as returned by ``preg_match()`` and
-     * transforms them by adding *$offset* to all ``$captures[*][1]``.
+     * Takes an array of capture groups, as returned by ``preg_match()``, and
+     * transforms them by adding *$offset* to all *$captures[\*][1]*.
      *
      * @param  array $captures
      * @param  int $offset
@@ -55,7 +55,7 @@ trait PregUtils
 
     /**
      * Takes a two-element array *$tuple*, prepends *$prefix* to *$tuple[0]*
-     * and, if *$tuple[1]* is present, transforms *$tuple[1]* with
+     * and, if *$tuple[1]* is present, transforms it with
      * ``prefixPregCaptures($tuple[1], $prefix);``.
      *
      * @param  array $tuple
@@ -166,12 +166,15 @@ trait PregUtils
             }
             $joint = static::transformPregTuple($joint, ['suffix' => $suffix, 'merge' => $captures]);
         }
-        $transform = array_filter($options, function ($val, $key) {
-            return in_array($key, ['merge', 'mergeLeft', 'prefix', 'suffix'], true) && !empty($val);
-        }, ARRAY_FILTER_USE_BOTH);
+
+        $supported = array_fill_keys(['merge', 'mergeLeft', 'prefix', 'suffix'], true);
+        $transform = array_filter(array_intersect_key($options, $supported), function ($val) {
+            return !empty($val);
+        });
         if (!empty($transform)) {
             $joint = static::transformPregTuple($joint, $transform);
         }
+
         return $joint;
     }
 }

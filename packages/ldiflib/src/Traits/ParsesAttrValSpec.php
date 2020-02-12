@@ -74,7 +74,7 @@ trait ParsesAttrValSpec
      *      appended. Despite of the *$tryOnly* value, the function will always
      *      return false in, if there is no match.
      *
-     * @return bool true on success, false on parser error.
+     * @return bool Returns true on success or false on parser error.
      */
     public function parseAttrValSpec(State $state, array &$attrValSpec = null, bool $tryOnly = false) : bool
     {

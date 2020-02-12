@@ -105,7 +105,7 @@ class PregAssertionsTest extends TestCase
     public function test__assertNotHasPregCapture__failing(array $expected, $other)
     {
         $this->expectException(ExpectationFailedException::class);
-        $this->expectExceptionMessageRegexp('/Failed asserting that .* does not have capture groups satisfying /sD');
+        $this->expectExceptionMessageMatches('/Failed asserting that .* does not have capture groups satisfying /sD');
         $this->assertNotHasPregCaptures($expected, $other);
     }
 
@@ -157,7 +157,7 @@ class PregAssertionsTest extends TestCase
     public function test__assertHasPregCaptures__failing(array $expected, $other, string $regexp)
     {
         $this->expectException(ExpectationFailedException::class);
-        $this->expectExceptionMessageRegexp($regexp);
+        $this->expectExceptionMessageMatches($regexp);
         $this->assertHasPregCaptures($expected, $other);
     }
 

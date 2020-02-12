@@ -34,7 +34,7 @@ trait SingletonTestHelpers
     {
         $regex = self::getPrivateErrorRegExp($class . '::__construct()');
         $this->expectException(\Error::class);
-        $this->expectExceptionMessageRegExp($regex);
+        $this->expectExceptionMessageMatches($regex);
 
         new $class();
     }
@@ -46,7 +46,7 @@ trait SingletonTestHelpers
         $regex = self::getPrivateErrorRegExp(get_class($obj) . '::__clone()');
 
         $this->expectException(\Error::class);
-        $this->expectExceptionMessageRegExp($regex);
+        $this->expectExceptionMessageMatches($regex);
 
         $obj->__clone();
     }
@@ -58,7 +58,7 @@ trait SingletonTestHelpers
         $regex = self::getPrivateErrorRegExp(get_class($obj) . '::__wakeup()');
 
         $this->expectException(\Error::class);
-        $this->expectExceptionMessageRegExp($regex);
+        $this->expectExceptionMessageMatches($regex);
 
         $obj->__wakeup();
     }

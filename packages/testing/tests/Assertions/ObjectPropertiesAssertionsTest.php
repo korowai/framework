@@ -148,7 +148,7 @@ class ObjectPropertiesAssertionsTest extends TestCase
     ) {
         $regexp = '/^Failed asserting that object class\@.+ with properties [\S\s\n]+has properties identical to/';
         self::expectException(ExpectationFailedException::class);
-        self::expectExceptionMessageRegexp($regexp);
+        self::expectExceptionMessageMatches($regexp);
 
         self::assertHasPropertiesSameAs(...func_get_args());
     }
@@ -174,7 +174,7 @@ class ObjectPropertiesAssertionsTest extends TestCase
     ) {
         $regexp = '/^Failed asserting that object class@.+ with properties [\S\s\n]+does not have properties identical to/';
         self::expectException(ExpectationFailedException::class);
-        self::expectExceptionMessageRegexp($regexp);
+        self::expectExceptionMessageMatches($regexp);
 
         self::assertHasPropertiesNotSameAs(...func_get_args());
     }

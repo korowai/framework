@@ -76,7 +76,7 @@ class ExceptionErrorHandlerTest extends TestCase
     public function test__makeExceptionGenerator__withWrongArgType()
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessageRegExp(
+        $this->expectExceptionMessageMatches(
             '/argument 1 to ' . preg_quote(ExceptionErrorHandler::class) .
             '::makeExceptionGenerator\\(\\) must be a callable, a class name' .
             ' or null, int(eger)? given/'
@@ -88,7 +88,7 @@ class ExceptionErrorHandlerTest extends TestCase
     public function test__makeExceptionGenerator__withNonClassString()
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessageRegExp(
+        $this->expectExceptionMessageMatches(
             '/argument 1 to ' . preg_quote(ExceptionErrorHandler::class) .
             '::makeExceptionGenerator\\(\\) must be a callable, a class name' .
             ' or null, string given/'

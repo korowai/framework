@@ -62,7 +62,7 @@ class SearchQueryTest extends TestCase
         $result = $this->createMock(ResultInterface::class);
 
         $this->expectException(InvalidOptionsException::class);
-        $this->expectExceptionMessageRegExp('/option "scope" with value "foo"/');
+        $this->expectExceptionMessageMatches('/option "scope" with value "foo"/');
 
         new SearchQuery($link, "dc=korowai,dc=org", "objectClass=*", ['scope' => 'foo']);
     }

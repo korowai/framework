@@ -37,7 +37,7 @@ class EntryTest extends TestCase
     public function test__construct__InvalidDn()
     {
         $this->expectException(\TypeError::class);
-        $this->expectExceptionMessageRegExp('/Argument 1 .+::__construct\(\) .+ int(eger)? given/');
+        $this->expectExceptionMessageMatches('/Argument 1 .+::__construct\(\) .+ int(eger)? given/');
 
         new Entry(123);
     }
@@ -66,7 +66,7 @@ class EntryTest extends TestCase
     public function test__construct__InvalidAttributes_1()
     {
         $this->expectException(\TypeError::class);
-        $this->expectExceptionMessageRegExp('/Argument 2 .+::__construct\(\) .+ string given/');
+        $this->expectExceptionMessageMatches('/Argument 2 .+::__construct\(\) .+ string given/');
 
         new Entry('dc=example,dc=com', 'foo');
     }
@@ -74,7 +74,7 @@ class EntryTest extends TestCase
     public function test__construct__InvalidAttributes_2()
     {
         $this->expectException(\TypeError::class);
-        $this->expectExceptionMessageRegExp('/Argument 1 .+::validateAttribute\(\) .+ int(eger)? given/');
+        $this->expectExceptionMessageMatches('/Argument 1 .+::validateAttribute\(\) .+ int(eger)? given/');
 
         new Entry('dc=example,dc=com', ['foo']);
     }
@@ -82,7 +82,7 @@ class EntryTest extends TestCase
     public function test__construct__InvalidAttributes_3()
     {
         $this->expectException(\TypeError::class);
-        $this->expectExceptionMessageRegExp('/Argument 2 .+::validateAttribute\(\) .+ string given/');
+        $this->expectExceptionMessageMatches('/Argument 2 .+::validateAttribute\(\) .+ string given/');
 
         new Entry('dc=example,dc=com', ['foo' => 'bar']);
     }
@@ -100,7 +100,7 @@ class EntryTest extends TestCase
         $entry = new Entry('dc=example,dc=com');
 
         $this->expectException(\TypeError::class);
-        $this->expectExceptionMessageRegExp('/Argument 1 .+::setDn\(\) .+ int(eger)? given/');
+        $this->expectExceptionMessageMatches('/Argument 1 .+::setDn\(\) .+ int(eger)? given/');
 
         $entry->setDn(123);
     }
@@ -117,7 +117,7 @@ class EntryTest extends TestCase
         $entry = new Entry('dc=example,dc=com');
 
         $this->expectException(\TypeError::class);
-        $this->expectExceptionMessageRegExp('/Argument 1 .+::validateDn\(\) .+ int(eger)? given/');
+        $this->expectExceptionMessageMatches('/Argument 1 .+::validateDn\(\) .+ int(eger)? given/');
 
         $entry->validateDn(123);
     }
@@ -173,7 +173,7 @@ class EntryTest extends TestCase
         $entry = new Entry('dc=example,dc=com');
 
         $this->expectException(\TypeError::class);
-        $this->expectExceptionMessageRegExp('/Argument 1 .+::setAttributes\(\) .+ string given/');
+        $this->expectExceptionMessageMatches('/Argument 1 .+::setAttributes\(\) .+ string given/');
 
         $entry->setAttributes('userid');
     }
@@ -183,7 +183,7 @@ class EntryTest extends TestCase
         $entry = new Entry('dc=example,dc=com');
 
         $this->expectException(\TypeError::class);
-        $this->expectExceptionMessageRegExp('/Argument 1 .+::validateAttribute\(\) .+ int(eger)? given/');
+        $this->expectExceptionMessageMatches('/Argument 1 .+::validateAttribute\(\) .+ int(eger)? given/');
 
         $entry->setAttributes(array('userid'));
     }
@@ -193,7 +193,7 @@ class EntryTest extends TestCase
         $entry = new Entry('dc=example,dc=com');
 
         $this->expectException(\TypeError::class);
-        $this->expectExceptionMessageRegExp('/Argument 2 .+::validateAttribute\(\) .+ string given/');
+        $this->expectExceptionMessageMatches('/Argument 2 .+::validateAttribute\(\) .+ string given/');
 
         $entry->setAttributes(array('userid' => 'ptomulik'));
     }
@@ -210,7 +210,7 @@ class EntryTest extends TestCase
         $entry = new Entry('dc=example,dc=com');
 
         $this->expectException(\TypeError::class);
-        $this->expectExceptionMessageRegExp('/Argument 1 .+::setAttribute\(\) .+ int(eger)? given/');
+        $this->expectExceptionMessageMatches('/Argument 1 .+::setAttribute\(\) .+ int(eger)? given/');
 
         $entry->setAttribute(123, array('ptomulik'));
     }
@@ -220,7 +220,7 @@ class EntryTest extends TestCase
         $entry = new Entry('dc=example,dc=com');
 
         $this->expectException(\TypeError::class);
-        $this->expectExceptionMessageRegExp('/Argument 2 .+::setAttribute\(\) .+ int(eger)? given/');
+        $this->expectExceptionMessageMatches('/Argument 2 .+::setAttribute\(\) .+ int(eger)? given/');
 
         $entry->setAttribute('userid', 123);
     }
@@ -232,7 +232,7 @@ class EntryTest extends TestCase
         $entry = new Entry('dc=example,dc=com');
 
         $this->expectException(\TypeError::class);
-        $this->expectExceptionMessageRegExp('/Argument 2 .+::setAttribute\(\) .+ string given/');
+        $this->expectExceptionMessageMatches('/Argument 2 .+::setAttribute\(\) .+ string given/');
 
         $entry->setAttribute('userid', 'ptomulik');
     }

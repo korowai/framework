@@ -114,7 +114,7 @@ class ClassContextFactoryTest extends TestCase
         $factory = new ClassContextFactory();
 
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessageRegExp(
+        $this->expectExceptionMessageMatches(
             '/argument 2 to ' . preg_quote(ClassContextFactory::class) .
             '::register\\(\\)' .
             ' must be a callable or a class name, int(?:eger)? given/'

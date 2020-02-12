@@ -60,11 +60,8 @@ trait ParsesVersionSpec
      */
     public function parseVersionSpec(State $state, int &$version = null, bool $tryOnly = false) : bool
     {
-        $rule = new Rule(Rfc2849x::class, 'VERSION_SPEC_X');
+        $rule = new Rule(Rfc2849x::class, 'VERSION_SPEC_X', $tryOnly);
         if (!$this->parseMatchRfcRule($state, $rule, $matches)) {
-            if (empty($matches) && !$tryOnly) {
-                $state->errorHere('syntax error: expected "version:"');
-            }
             $version = null;
             return false;
         }
@@ -74,7 +71,7 @@ trait ParsesVersionSpec
 
     /**
      * Completes version-spec parsing assuming that the caller already matched
-     * the VERSION_SPEC_X rule with parseMatchRfcRule().
+     * the Rfc2849x::VERSION_SPEC_X rule with parseMatchRfcRule().
      *
      * @param  State $state
      * @param  array $matches

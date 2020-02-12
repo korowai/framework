@@ -51,7 +51,7 @@ class ParsesVersionSpecTest extends TestCase
                         'records' => [],
                         'errors' => [
                             [
-                                'message' => 'syntax error: expected "version:"',
+                                'message' => 'syntax error: expected "version:" (RFC2849)',
                                 'sourceOffset' => 0,
                             ]
                         ]

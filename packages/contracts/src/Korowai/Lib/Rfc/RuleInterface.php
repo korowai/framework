@@ -81,12 +81,21 @@ interface RuleInterface
     public function findCapturedValues(array $matches) : array;
 
     /**
-     * Returns error message for given *$errorKey*.
+     * Returns error message for given *$errorKey* (or for the whole unmatched
+     * rule, without *$errorKey*).
      *
      * @param  string $errorKey
      * @return array
      */
-    public function getErrorMessage(string $errorKey) : string;
+    public function getErrorMessage(string $errorKey = '') : string;
+
+    /**
+     * Returns true if the rule is optional (e.g. it's an alternative in
+     * higher-level syntactic rule).
+     *
+     * @return bool
+     */
+    public function isOptional() : bool;
 }
 
 // vim: syntax=php sw=4 ts=4 et:

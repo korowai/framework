@@ -159,6 +159,12 @@ class Rfc2849x extends Rfc2849
      * class.
      */
     protected static $rfc2849xErrors = [
+        ''                  => [
+            'VERSION_SPEC_X'    => 'expected "version:" (RFC2849)',
+            'DN_SPEC_X'         => 'expected "dn:" (RFC2849)',
+            'VALUE_SPEC_X'      => 'expected ":" (RFC2849)',
+            'ATTRVAL_SPEC_X'    => 'expected <AttributeDescription>":" (RFC2849)',
+        ],
         'dn_b64_error'      => 'malformed BASE64-STRING (RFC2849)',
         'dn_safe_error'     => 'malformed SAFE-STRING (RFC2849)',
         'value_b64_error'   => 'malformed BASE64-STRING (RFC2849)',

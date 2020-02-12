@@ -76,15 +76,12 @@ trait ParsesDnSpec
      * @param  State $state
      * @param  string $dn The DN string returned by the function.
      *
-     * @return bool true on success, false on parser error.
+     * @return bool Returns true on success, false on parser error.
      */
     public function parseDnSpec(State $state, string &$dn = null) : bool
     {
         $rule = new Rule(Rfc2849x::class, 'DN_SPEC_X');
         if (!$this->parseMatchRfcRule($state, $rule, $matches)) {
-            if (empty($matches)) {
-                $state->errorHere('syntax error: expected "dn:"');
-            }
             $dn = null;
             return false;
         }

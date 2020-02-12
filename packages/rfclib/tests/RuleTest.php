@@ -93,6 +93,16 @@ class RuleTest extends TestCase
         $rule = new Rule($ruleSetClass, $ruleName);
         $this->assertSame($ruleSetClass, $rule->ruleSetClass());
         $this->assertSame($ruleName, $rule->name());
+        $this->assertFalse($rule->isOptional());
+    }
+
+    public function test__construct__optional()
+    {
+        $rule = new Rule(RuleSet0::class, 'FOO', false);
+        $this->assertFalse($rule->isOptional());
+
+        $rule = new Rule(RuleSet0::class, 'FOO', true);
+        $this->assertTrue($rule->isOptional());
     }
 
     public function test__construct__exception()
@@ -173,9 +183,15 @@ class RuleTest extends TestCase
     {
         $rule = new Rule(RuleSet1::class, 'ASSIGNMENT_INT');
         $this->assertSame('malformed integer value', $rule->getErrorMessage('value_int_error'));
+        $this->assertSame('missing "var_name =" in integer assignment', $rule->getErrorMessage());
 
         $rule = new Rule(RuleSet2::class, 'ASSIGNMENT_INT');
         $this->assertSame('malformed integer in assignment', $rule->getErrorMessage('value_int_error'));
+        $this->assertSame('missing "var_name =" in integer assignment', $rule->getErrorMessage());
+
+        $rule = new Rule(RuleSet2::class, 'ASSIGNMENT_STRING');
+        $this->assertSame('malformed string in assignment', $rule->getErrorMessage('value_string_error'));
+        $this->assertSame('missing "var_name =" in string assignment', $rule->getErrorMessage());
 
         $rule = new Rule(RuleSet2::class, 'FOO');
         $this->assertSame('malformed integer value', $rule->getErrorMessage('value_int_error'));

@@ -153,18 +153,20 @@ trait MatchesPatterns
 
         $matches = $this->matchAhead('/\G'.$rule.'/D', $cursor, PREG_UNMATCHED_AS_NULL);
         if (empty($matches)) {
-            return false;
-        }
-
-        if (count($errors = $rule->findCapturedErrors($matches)) > 0) {
-            foreach ($errors as $errorKey => $errorMatch) {
-                $message = $rule->getErrorMessage($errorKey);
-                $state->errorAt($errorMatch[1], 'syntax error: '.$message);
+            if (!$rule->isOptional()) {
+                $message = $rule->getErrorMessage();
+                $state->errorHere('syntax error: '.$message);
             }
             return false;
         }
 
-        return true;
+        $errors = $rule->findCapturedErrors($matches);
+        foreach ($errors as $errorKey => $errorMatch) {
+            $message = $rule->getErrorMessage($errorKey);
+            $state->errorAt($errorMatch[1], 'syntax error: '.$message);
+        }
+
+        return empty($errors);
     }
 }
 

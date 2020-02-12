@@ -33,6 +33,11 @@ class Rule implements RuleInterface
     protected $name = '';
 
     /**
+     * @var bool
+     */
+    protected $optional = false;
+
+    /**
      * Initializes the rule.
      *
      * @param  string $ruleSetClass
@@ -41,10 +46,13 @@ class Rule implements RuleInterface
      * @param  string $name
      *      Name of the rule in the $ruleSetClass (i.e.
      *      ``$ruleSetClass::rule($name)`` must be available).
+     * @param  bool $optional
+     *      Set to true if the rule matching is optional (i.e. it's an
+     *      alternative in a higher-level syntactic rule).
      * @throws InvalidRuleSetNameException
      *      When invalid *$ruleSetClass* is passed to the constructor.
      */
-    public function __construct(string $ruleSetClass, string $name)
+    public function __construct(string $ruleSetClass, string $name, bool $optional = false)
     {
         if (!is_subclass_of($ruleSetClass, StaticRuleSetInterface::class)) {
             $message = 'Argument 1 passed to '.__class__.'::__construct() must be '.
@@ -54,6 +62,7 @@ class Rule implements RuleInterface
         }
         $this->ruleSetClass = $ruleSetClass;
         $this->name = $name;
+        $this->optional = $optional;
     }
 
     /**
@@ -133,9 +142,17 @@ class Rule implements RuleInterface
     /**
      * {@inheritdoc}
      */
-    public function getErrorMessage(string $errorKey) : string
+    public function getErrorMessage(string $errorKey = '') : string
     {
         return $this->delegate('getErrorMessage', [$errorKey, $this->name()]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isOptional() : bool
+    {
+        return $this->optional;
     }
 
     /**

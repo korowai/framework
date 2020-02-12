@@ -13,9 +13,10 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldif\Traits;
 
-use Korowai\Lib\Ldif\CursorInterface;
 use Korowai\Lib\Ldif\ParserStateInterface as State;
 use Korowai\Lib\Rfc\Rfc2849x;
+use Korowai\Lib\Rfc\Rule;
+use Korowai\Lib\Rfc\RuleInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -23,18 +24,26 @@ use Korowai\Lib\Rfc\Rfc2849x;
 trait ParsesAttrValSpec
 {
     /**
-     * Matches the string starting at $cursor's position against $pattern and
-     * skips the whole match (moves the cursor after the matched part of
-     * string).
+     * Matches the input substring starting at *$state*'s cursor against
+     * regular expression provided by *$rule* and moves the cursor after
+     * the end of the matched substring.
      *
-     * @param  string $pattern
-     * @param  CursorInterface $cursor
-     * @param  int $flags Passed to ``preg_match()`` (note: ``PREG_OFFSET_CAPTURE`` is added unconditionally).
+     * @param  State $state
+     *      The state provides cursor pointing to the offset of the beginning
+     *      of the match. If the *$rule* matches anything, the *$state*'s
+     *      cursor gets moved to the next character after the matched string.
+     *      If *$rule* matches any errors, they will be appended to *$state*.
+     * @param  RuleInterface $rule
+     *      The rule to be used for matching.
+     * @param  array $matches
+     *      Returns matched captured groups including matched errors. If the
+     *      rule doesn't match at all, the function returns empty *$matches*.
      *
-     * @return array Array of matches as returned by ``preg_match()``
-     * @throws PregException When error occurs in ``preg_match()``
+     * @return bool
+     *      Returns false if *$rule* doesn't match, or if the returned
+     *      *$matches* include errors.
      */
-    abstract public function matchAhead(string $pattern, CursorInterface $cursor, int $flags = 0) : array;
+    abstract public function parseMatchRfcRule(State $state, RuleInterface $rule, array &$matches = null) : bool;
 
     /**
      * Decodes base64-encoded string.
@@ -53,7 +62,8 @@ trait ParsesAttrValSpec
      * @param  State $state
      * @param  array $attrValSpec
      *      On success returns the array with keys ``attr_desc``, ``value`` or ``value_url``,
-     *      and (if ``value`` is present) one of ``value_safe`` or ``value_b64``.
+     *      and (if ``value`` is present) one of ``value_safe`` or
+     *      ``value_b64``. On parse error returns null.
      * @param  bool $tryOnly
      *      If false (default), then parser error is appended to *$state* when
      *      the string at current location does not match the
@@ -66,53 +76,64 @@ trait ParsesAttrValSpec
      */
     public function parseAttrValSpec(State $state, array &$attrValSpec = null, bool $tryOnly = false) : bool
     {
-        $cursor = $state->getCursor();
-        $matches = $this->matchAhead('/\G'.Rfc2849x::ATTRVAL_SPEC_X.'/D', $cursor, PREG_UNMATCHED_AS_NULL);
-        if (empty($matches)) {
-            if (!$tryOnly) {
+        $rule = new Rule(Rfc2849x::class, 'ATTRVAL_SPEC_X');
+        if (!$this->parseMatchRfcRule($state, $rule, $matches)) {
+            if (empty($matches) && !$tryOnly) {
                 $state->errorHere('syntax error: expected attribute description (RFC2849)');
             }
+            $attrValSpec = null;
             return false;
         }
-
         return $this->parseMatchedAttrValSpec($state, $matches, $attrValSpec);
     }
 
     /**
-     * @todo Write documentation
+     * Completes attrval-spec parsing assuming that the caller already matched
+     * the Rfc2849x::ATTRVAL_SPEC_X rule with parseMatchRfcRule().
+     *
+     * @param  State $state
+     * @param  array $matches
+     * @param  array $attrValSpec
+     *
+     * @return bool
      */
     protected function parseMatchedAttrValSpec(State $state, array $matches, array &$attrValSpec = null) : bool
     {
-        if (($attrDesc = $matches['attr_desc'][0] ?? null) === null) {
-            $message = 'internal error: capture group attr_desc not set';
-            if (($offset = $matches[0][1]) === null) {
-                $state->errorHere($message);
-            } else {
-                $state->errorAt($offset, $message);
-            }
-            return false;
+        if (($offset = $matches['attr_desc'][1] ?? -1) >= 0 &&
+            ($string = $matches['attr_desc'][0] ?? null) !== null) {
+            $attrValSpec = ['attr_desc' => $string];
+            return $this->parseMatchedValueSpec($state, $matches, $attrValSpec);
         }
-        $attrValSpec = ['attr_desc' => $attrDesc];
 
-        return $this->parseMatchedValue($state, $matches, $attrValSpec);
+        // This may happen with broken Rfc2849x::ATTRVAL_SPEC_X rule.
+        $state->errorHere('internal error: missing or invalid capture group "attr_desc"');
+        $attrValSpec = null;
+        return false;
     }
 
     /**
      * @todo Write documentation.
      */
-    protected function parseMatchedValue(State $state, array $matches, array &$valSpec = null) : bool
+    protected function parseMatchedValueSpec(State $state, array $matches, array &$valSpec = null) : bool
     {
-        if (($offset = $matches['value_b64'][1] ?? -1) >= 0) {
-            $valSpec['value_b64'] = $matches['value_b64'][0];
-            return $this->parseMatchedValueB64($state, $valSpec['value_b64'], $offset, $valSpec);
-        } elseif (($offset = $matches['value_safe'][1] ?? -1) >= 0) {
-            $valSpec['value_safe'] = $matches['value_safe'][0];
-            return $this->parseMatchedValueSafe($state, $valSpec['value_safe'], $offset, $valSpec);
-        } elseif (($offset = $matches['value_url'][1] ?? -1) >= 0) {
-            $valSpec['value_url'] = $matches['value_url'][0];
-            return $this->parseMatchedValueUrl($state, $valSpec['value_url'], $offset, $valSpec);
+        if (($offset = $matches['value_b64'][1] ?? -1) >= 0 &&
+            ($string = $matches['value_b64'][0] ?? null) !== null) {
+            $valSpec['value_b64'] = $string;
+            return $this->parseMatchedValueB64($state, $string, $offset, $valSpec);
+        } elseif (($offset = $matches['value_safe'][1] ?? -1) >= 0 &&
+                  ($string = $matches['value_safe'][0] ?? null) !== null) {
+            $valSpec['value_safe'] = $string;
+            $valSpec['value'] = $string;
+            return true;
+        } elseif (($offset = $matches['value_url'][1] ?? -1) >= 0 &&
+                  ($string = $matches['value_url'][0] ?? null) !== null) {
+            $valSpec['value_url'] = $string;
+            return $this->parseMatchedValueUrl($state, $string, $offset, $valSpec);
         }
-        $state->errorHere('internal error: neither value_safe, value_b64 nor value_url group found');
+
+        $message = 'internal error: missing or invalid capture groups "value_safe", "value_b64" and "value_url"';
+        $state->errorHere($message);
+        $valSpec = null;
         return false;
     }
 
@@ -133,23 +154,6 @@ trait ParsesAttrValSpec
             return false;
         }
         $valSpec['value'] = $decoded;
-        return true;
-    }
-
-    /**
-     * Completes value-spec parsing assuming that the caller already discovered
-     * that the value-spec contains plain (unencoded) value.
-     *
-     * @param  State $state
-     * @param  string $string String containing the value.
-     * @param  int $offset Offset of the beginning of *$string* in the input.
-     * @param  array $valSpec Returns the resultant value specification.
-     *
-     * @return bool
-     */
-    protected function parseMatchedValueSafe(State $state, string $string, int $offset, array &$valSpec = null) : bool
-    {
-        $valSpec['value'] = $string;
         return true;
     }
 

@@ -54,6 +54,9 @@ class RuleSet2 extends RuleSet1
     public static function getDefinedErrors() : array
     {
         $errors = [
+            '' => [
+                'ASSIGNMENT_STRING' => 'missing "var_name =" in string assignment'
+            ],
             'value_int_error' => [
                 'ASSIGNMENT_INT' => 'malformed integer in assignment',
             ],

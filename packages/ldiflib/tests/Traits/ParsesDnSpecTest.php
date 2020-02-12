@@ -76,7 +76,7 @@ class ParsesDnSpecTest extends TestCase
                             [
                                 'sourceOffset' => $case['offset'],
                                 'sourceCharOffset' => $case['charOffset'],
-                                'message' => 'syntax error: expected "dn:"',
+                                'message' => 'syntax error: expected "dn:" (RFC2849)',
                             ]
                         ],
                         'records' => [],

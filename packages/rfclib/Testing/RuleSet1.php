@@ -52,6 +52,9 @@ class RuleSet1 extends RuleSet0
     public static function getDefinedErrors() : array
     {
         $errors = [
+            '' => [
+                'ASSIGNMENT_INT' => 'missing "var_name =" in integer assignment',
+            ],
             'value_int_error' => 'malformed integer value',
         ];
         return array_merge(parent::getDefinedErrors(), $errors);

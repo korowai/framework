@@ -248,12 +248,19 @@ class AbstractRuleSetTest extends TestCase
             [
                 RuleSet1::class,
                 [
+                    '' => [
+                        'ASSIGNMENT_INT' => 'missing "var_name =" in integer assignment',
+                    ],
                     'value_int_error' => 'malformed integer value',
                 ]
             ],
             [
                 RuleSet2::class,
                 [
+                    '' => [
+                        'ASSIGNMENT_INT' => 'missing "var_name =" in integer assignment',
+                        'ASSIGNMENT_STRING' => 'missing "var_name =" in string assignment',
+                    ],
                     'value_int_error' => [
                         0 => 'malformed integer value',
                         'ASSIGNMENT_INT' => 'malformed integer in assignment',

@@ -191,7 +191,12 @@ class MatchesPatternsTest extends TestCase
                             'offset' => 0,
                         ],
                         'records' => [],
-                        'errors'  => [],
+                        'errors'  => [
+                            [
+                                'message' => 'syntax error: missing "var_name =" in integer assignment',
+                                'sourceOffset' => 0
+                            ]
+                        ],
                     ],
                     'matches' => [],
                 ]
@@ -199,6 +204,31 @@ class MatchesPatternsTest extends TestCase
             [
                 ['var '],
                 [RuleSet1::class, 'ASSIGNMENT_INT'],
+                [
+                    'result' => false,
+                    'state' => [
+                        'cursor' => [
+                            'offset' => 0,
+                        ],
+                        'records' => [],
+                        'errors'  => [
+                            [
+                                'message' => 'syntax error: missing "var_name =" in integer assignment',
+                                'sourceOffset' => 0
+                            ]
+                        ],
+                    ],
+                    'matches' => [
+                        false,
+                        'var_name'        => false,
+                        'value_int'       => false,
+                        'value_int_error' => false,
+                    ],
+                ]
+            ],
+            [
+                ['var '],
+                [RuleSet1::class, 'ASSIGNMENT_INT', true],
                 [
                     'result' => false,
                     'state' => [

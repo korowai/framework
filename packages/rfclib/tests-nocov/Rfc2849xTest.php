@@ -156,7 +156,7 @@ class Rfc2849xTest extends TestCase
     public static function non__VERSION_SPEC_X__cases()
     {
         $strings = ['', 'a', 'dn:123', 'a', '1F'];
-        return static::arraizeStrings($strings);
+        return static::stringsToPregTuples($strings);
     }
 
     /**
@@ -294,7 +294,7 @@ class Rfc2849xTest extends TestCase
     public static function non__DN_SPEC_X__cases()
     {
         $strings = ['', 'a', 'xyz:123', 'a', '1F'];
-        return static::arraizeStrings($strings);
+        return static::stringsToPregTuples($strings);
     }
 
     /**
@@ -547,7 +547,7 @@ class Rfc2849xTest extends TestCase
     public static function non__VALUE_SPEC_X__cases()
     {
         $strings = ['', 'a', 'xyz:123', 'a', '1F'];
-        return static::arraizeStrings($strings);
+        return static::stringsToPregTuples($strings);
     }
 
     /**
@@ -875,7 +875,7 @@ class Rfc2849xTest extends TestCase
     public static function non__ATTRVAL_SPEC_X__cases()
     {
         $strings = ['', 'a', ':123', 'a', '1F'];
-        return static::arraizeStrings($strings);
+        return static::stringsToPregTuples($strings);
     }
 
     /**

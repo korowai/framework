@@ -21,6 +21,29 @@ namespace Korowai\Testing\Traits;
 trait PregUtils
 {
     /**
+     * Transforms array of *$strings* into array *$tuples*, where
+     * ``$tuple[$i][0] = $strings[$i]``. If *$key* is given and is not null,
+     * then ``$tuple[$i][1] = [$key => [$strings[$i], $offset]]``.
+     *
+     * @param  array $strings
+     * @param  string|null $key
+     * @param  int $offset
+     * @return array
+     */
+    public static function stringsToPregTuples(array $strings, string $key = null, int $offset = 0)
+    {
+        if ($key === null) {
+            return array_map(function (string $item) {
+                return [$item];
+            }, $strings);
+        } else {
+            return array_map(function (string $item) use ($key, $offset) {
+                return [$item, [$key => [$item, $offset]]];
+            }, $strings);
+        }
+    }
+
+    /**
      * Takes an array of capture groups, as returned by ``preg_match()``, and
      * transforms them by adding *$offset* to all *$captures[\*][1]*.
      *

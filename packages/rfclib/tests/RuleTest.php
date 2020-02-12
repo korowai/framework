@@ -168,6 +168,18 @@ class RuleTest extends TestCase
         $rule = new Rule($ruleSetClass, $ruleName);
         $this->assertSame($ruleSetClass::findCapturedValues($ruleName, $matches), $rule->findCapturedValues($matches));
     }
+
+    public function test__getErrorMessage()
+    {
+        $rule = new Rule(RuleSet1::class, 'ASSIGNMENT_INT');
+        $this->assertSame('malformed integer value', $rule->getErrorMessage('value_int_error'));
+
+        $rule = new Rule(RuleSet2::class, 'ASSIGNMENT_INT');
+        $this->assertSame('malformed integer in assignment', $rule->getErrorMessage('value_int_error'));
+
+        $rule = new Rule(RuleSet2::class, 'FOO');
+        $this->assertSame('malformed integer value', $rule->getErrorMessage('value_int_error'));
+    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

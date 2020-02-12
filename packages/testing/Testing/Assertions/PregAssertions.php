@@ -57,7 +57,7 @@ trait PregAssertions
      */
     public static function assertNotHasPregCaptures(array $expected, array $matches, string $message = '') : void
     {
-        static::assertThat($matches, new LogicalNot(static::hasPregCaptures($expected, $options)), $message);
+        static::assertThat($matches, new LogicalNot(static::hasPregCaptures($expected)), $message);
     }
 
     /**

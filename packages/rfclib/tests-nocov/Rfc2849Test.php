@@ -85,7 +85,7 @@ class Rfc2849Test extends TestCase
     public static function non__VERSION_NUMBER__cases()
     {
         $strings = ['', 'a', '1F'];
-        return static::arraizeStrings($strings);
+        return static::stringsToPregTuples($strings);
     }
 
     /**
@@ -126,7 +126,7 @@ class Rfc2849Test extends TestCase
     public static function non__VERSION_SPEC__cases()
     {
         $strings = ['', 'a', 'dn:123', 'version:', 'a', '1F'];
-        return static::arraizeStrings($strings);
+        return static::stringsToPregTuples($strings);
     }
 
     /**
@@ -152,13 +152,13 @@ class Rfc2849Test extends TestCase
     public static function BASE64_STRING__cases()
     {
         $strings = ['', 'azAZ09+/=='];
-        return static::arraizeStrings($strings);
+        return static::stringsToPregTuples($strings);
     }
 
     public static function non__BASE64_STRING__cases()
     {
         $strings = ['?', '-', ' ', 'azAZ09+/==?'];
-        return static::arraizeStrings($strings);
+        return static::stringsToPregTuples($strings);
     }
 
     /**
@@ -184,13 +184,13 @@ class Rfc2849Test extends TestCase
     public static function SAFE_STRING__cases()
     {
         $strings = ['', "\x01", "\x7F", 'a', "a ", "a:", "a<"];
-        return static::arraizeStrings($strings);
+        return static::stringsToPregTuples($strings);
     }
 
     public static function non__SAFE_STRING__cases()
     {
         $strings = ["\0", "\n", "\r", "\x80", "\xAA", " ", ":", "<", 'ł', 'tył', "a\0", "a\n", "a\r", "a\x80"];
-        return static::arraizeStrings($strings);
+        return static::stringsToPregTuples($strings);
     }
 
     /**
@@ -246,13 +246,13 @@ class Rfc2849Test extends TestCase
     public static function OPTION__cases()
     {
         $strings = ['a', '-', 'ab1-', '--'];
-        return static::arraizeStrings($strings);
+        return static::stringsToPregTuples($strings);
     }
 
     public static function non__OPTION__cases()
     {
         $strings = ['', '?', 'ab1-?'];
-        return static::arraizeStrings($strings);
+        return static::stringsToPregTuples($strings);
     }
 
     /**
@@ -278,13 +278,13 @@ class Rfc2849Test extends TestCase
     public static function OPTIONS__cases()
     {
         $strings = ['a', '-', 'ab1-', '--', 'ab1-;cd2-4'];
-        return static::arraizeStrings($strings);
+        return static::stringsToPregTuples($strings);
     }
 
     public static function non__OPTIONS__cases()
     {
         $strings = ['', '?', 'ab1-?', 'ab1-;cd2-?'];
-        return static::arraizeStrings($strings);
+        return static::stringsToPregTuples($strings);
     }
 
     /**
@@ -312,14 +312,14 @@ class Rfc2849Test extends TestCase
         $strings = ['a', 'a-'];
         return array_merge(
             static::LDAP_OID__cases(),
-            static::arraizeStrings($strings)
+            static::stringsToPregTuples($strings)
         );
     }
 
     public static function non__ATTRIBUTE_TYPE__cases()
     {
         $strings = ['', '?', '-', '-a', 'ab1-?', '1.', '.1', 'a.b'];
-        return static::arraizeStrings($strings);
+        return static::stringsToPregTuples($strings);
     }
 
     /**
@@ -357,13 +357,13 @@ class Rfc2849Test extends TestCase
                 ]);
             }
         }
-        return array_merge($inheritedCases, static::arraizeStrings($strings));
+        return array_merge($inheritedCases, static::stringsToPregTuples($strings));
     }
 
     public static function non__ATTRIBUTE_DESCRIPTION__cases()
     {
         $strings = ['', '?', '-', '-a', 'ab1-?', '1.', '.1', 'a.b'];
-        return static::arraizeStrings($strings);
+        return static::stringsToPregTuples($strings);
     }
 
     /**
@@ -395,14 +395,14 @@ class Rfc2849Test extends TestCase
                 'merge' =>  ['dn_safe' => [$string[0], 0]]
             ]);
         }
-        return array_merge($inheritedCases, static::arraizeStrings($strings));
+        return array_merge($inheritedCases, static::stringsToPregTuples($strings));
     }
 
     public static function non__DISTINGUISHED_NAME__cases()
     {
         $strings = [];
         $inheritedCases = static::non__SAFE_STRING__cases();
-        return array_merge($inheritedCases, static::arraizeStrings($strings));
+        return array_merge($inheritedCases, static::stringsToPregTuples($strings));
     }
 
     /**
@@ -434,14 +434,14 @@ class Rfc2849Test extends TestCase
                 'merge' => ['dn_b64' => [$b64Str[0], 0]]
             ]);
         }
-        return array_merge($inheritedCases, static::arraizeStrings($strings));
+        return array_merge($inheritedCases, static::stringsToPregTuples($strings));
     }
 
     public static function non__BASE64_DISTINGUISHED_NAME__cases()
     {
         $strings = [];
         $inheritedCases = static::non__BASE64_STRING__cases();
-        return array_merge($inheritedCases, static::arraizeStrings($strings));
+        return array_merge($inheritedCases, static::stringsToPregTuples($strings));
     }
 
     /**
@@ -491,7 +491,7 @@ class Rfc2849Test extends TestCase
                 $inheritedCases[] = ['dn:: '.$nonB64Dn[0]];
             }
         }
-        return array_merge($inheritedCases, static::arraizeStrings($strings));
+        return array_merge($inheritedCases, static::stringsToPregTuples($strings));
     }
 
     /**
@@ -661,7 +661,7 @@ class Rfc2849Test extends TestCase
                 $inheritedCases[] = [':: '.$nonB64Str[0]];
             }
         }
-        return array_merge($inheritedCases, static::arraizeStrings($strings));
+        return array_merge($inheritedCases, static::stringsToPregTuples($strings));
     }
 
     /**
@@ -719,7 +719,7 @@ class Rfc2849Test extends TestCase
                 ]
             ]);
         }
-        return array_merge($inheritedCases, static::arraizeStrings($strings));
+        return array_merge($inheritedCases, static::stringsToPregTuples($strings));
     }
 
     public static function non__VALUE_SPEC__cases()
@@ -736,7 +736,7 @@ class Rfc2849Test extends TestCase
                 $inheritedCases[] = [':: '.$nonB64Str[0]];
             }
         }
-        return array_merge($inheritedCases, static::arraizeStrings($strings));
+        return array_merge($inheritedCases, static::stringsToPregTuples($strings));
     }
 
     /**
@@ -797,7 +797,7 @@ class Rfc2849Test extends TestCase
                 ]
             ]);
         }
-        return array_merge($inheritedCases, static::arraizeStrings($strings));
+        return array_merge($inheritedCases, static::stringsToPregTuples($strings));
     }
 
     public static function non__CONTROL__cases()
@@ -818,7 +818,7 @@ class Rfc2849Test extends TestCase
                 $inheritedCases[] = ['control: 1.23 false'.$nonValueSpec[0]."\n"];
             }
         }
-        return array_merge($inheritedCases, static::arraizeStrings($strings));
+        return array_merge($inheritedCases, static::stringsToPregTuples($strings));
     }
 
     /**
@@ -851,7 +851,7 @@ class Rfc2849Test extends TestCase
                 $inheritedCases[] = static::suffixPregTuple($joint, "\n");
             }
         }
-        return array_merge($inheritedCases, static::arraizeStrings($strings));
+        return array_merge($inheritedCases, static::stringsToPregTuples($strings));
     }
 
     public static function non__ATTRVAL_SPEC__cases()
@@ -868,7 +868,7 @@ class Rfc2849Test extends TestCase
                 $inheritedCases[] = ['a'.$nonVal[0]."\n"];
             }
         }
-        return array_merge($inheritedCases, static::arraizeStrings($strings));
+        return array_merge($inheritedCases, static::stringsToPregTuples($strings));
     }
 
     /**
@@ -902,7 +902,7 @@ class Rfc2849Test extends TestCase
                 "attr-2:: SDAFDS/==\n".
                 "attr-:< file://\n",
         ];
-        return static::arraizeStrings($strings);
+        return static::stringsToPregTuples($strings);
     }
 
     public static function non__LDIF_ATTRVAL_RECORD__cases()
@@ -915,7 +915,7 @@ class Rfc2849Test extends TestCase
             "dn: \n".
             "attr: ", // missing trailing \n
         ];
-        return static::arraizeStrings($strings);
+        return static::stringsToPregTuples($strings);
     }
 
     /**

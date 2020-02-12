@@ -120,13 +120,13 @@ class Rfc3986Test extends TestCase
         $strings = [
             "!$&'()*+,;=-._~Ab1%1fx",
         ];
-        return static::arraizeStrings($strings);
+        return static::stringsToPregTuples($strings);
     }
 
     public static function non__SEGMENT_NZ_NC__cases()
     {
         $strings = ["", ":", "%", "%1", "%G", "%1G", "%G2", "#", "ł", "/", "?", "a/b", "a?"];
-        return static::arraizeStrings($strings);
+        return static::stringsToPregTuples($strings);
     }
 
     /**
@@ -155,13 +155,13 @@ class Rfc3986Test extends TestCase
             ":",
             ":!$&'()*+,;=-._~Ab1%1fx",
         ];
-        return static::arraizeStrings($strings);
+        return static::stringsToPregTuples($strings);
     }
 
     public static function non__SEGMENT_NZ__cases()
     {
         $strings = ["", "%", "%1", "%G", "%1G", "%G2", "#", "ł", "/", "?", "a/b", "a?"];
-        return static::arraizeStrings($strings);
+        return static::stringsToPregTuples($strings);
     }
 
     /**
@@ -191,13 +191,13 @@ class Rfc3986Test extends TestCase
             ":",
             ":!$&'()*+,;=-._~Ab1%1fx",
         ];
-        return static::arraizeStrings($strings);
+        return static::stringsToPregTuples($strings);
     }
 
     public static function non__SEGMENT__cases()
     {
         $strings = ["%", "%1", "%G", "%1G", "%G2", "#", "ł", "/", "?", "a/b", "a?"];
-        return static::arraizeStrings($strings);
+        return static::stringsToPregTuples($strings);
     }
 
     /**
@@ -227,13 +227,13 @@ class Rfc3986Test extends TestCase
     public static function PATH_EMPTY__cases()
     {
         $strings = static::PATH_EMPTY__strings();
-        return static::arraizeStrings($strings, 'path_empty');
+        return static::stringsToPregTuples($strings, 'path_empty');
     }
 
     public static function non__PATH_EMPTY__cases()
     {
         $strings = [ "a", "A", "1", "." ];
-        return static::arraizeStrings($strings);
+        return static::stringsToPregTuples($strings);
     }
 
     /**
@@ -268,13 +268,13 @@ class Rfc3986Test extends TestCase
     public static function PATH_NOSCHEME__cases()
     {
         $strings = static::PATH_NOSCHEME__strings();
-        return static::arraizeStrings($strings, 'path_noscheme');
+        return static::stringsToPregTuples($strings, 'path_noscheme');
     }
 
     public static function non__PATH_NOSCHEME__cases()
     {
         $strings = [":", ":/"];
-        return array_merge(static::arraizeStrings($strings), static::non__PATH_ROOTLESS__cases());
+        return array_merge(static::stringsToPregTuples($strings), static::non__PATH_ROOTLESS__cases());
     }
 
     /**
@@ -311,13 +311,13 @@ class Rfc3986Test extends TestCase
     public static function PATH_ROOTLESS__cases()
     {
         $strings = static::PATH_ROOTLESS__strings();
-        return static::arraizeStrings($strings, 'path_rootless');
+        return static::stringsToPregTuples($strings, 'path_rootless');
     }
 
     public static function non__PATH_ROOTLESS__cases()
     {
         $strings = ["", "%", "%1", "%G", "%1G", "%G2", "#", "ł", "/", "?", "/a"];
-        return static::arraizeStrings($strings);
+        return static::stringsToPregTuples($strings);
     }
 
     /**
@@ -352,13 +352,13 @@ class Rfc3986Test extends TestCase
     public static function PATH_ABSOLUTE__cases()
     {
         $strings = static::PATH_ABSOLUTE__strings();
-        return static::arraizeStrings($strings, 'path_absolute');
+        return static::stringsToPregTuples($strings, 'path_absolute');
     }
 
     public static function non__PATH_ABSOLUTE__cases()
     {
         $strings = ["", "a", ":", "%", "%1", "%G", "%1G", "%G2", "#", "ł", "?", "a/b"];
-        return static::arraizeStrings($strings);
+        return static::stringsToPregTuples($strings);
     }
 
     /**
@@ -394,13 +394,13 @@ class Rfc3986Test extends TestCase
     public static function PATH_ABEMPTY__cases()
     {
         $strings = static::PATH_ABEMPTY__strings();
-        return static::arraizeStrings($strings, 'path_abempty');
+        return static::stringsToPregTuples($strings, 'path_abempty');
     }
 
     public static function non__PATH_ABEMPTY__cases()
     {
         $strings = ["a", ":", "%", "%1", "%G", "%1G", "%G2", "#", "ł", "?"];
-        return static::arraizeStrings($strings);
+        return static::stringsToPregTuples($strings);
     }
 
     /**
@@ -436,13 +436,13 @@ class Rfc3986Test extends TestCase
     public static function REG_NAME__cases()
     {
         $strings = static::REG_NAME__strings();
-        return static::arraizeStrings($strings, 'reg_name');
+        return static::stringsToPregTuples($strings, 'reg_name');
     }
 
     public static function non__REG_NAME__cases()
     {
         $strings = [" ", "#", "%", "%1", "%1G", "%G", "%G2", "/", ":", "?", "@", "[", "]", "ł"];
-        return static::arraizeStrings($strings);
+        return static::stringsToPregTuples($strings);
     }
 
     /**
@@ -468,14 +468,14 @@ class Rfc3986Test extends TestCase
     public static function DEC_OCTET__cases()
     {
         $strings = ["0", "7", "10", "45", "99", "100", "123", "199", "200", "234", "249", "250", "252", "255" ];
-        return static::arraizeStrings($strings);
+        return static::stringsToPregTuples($strings);
     }
 
     public static function non__DEC_OCTET__cases()
     {
         $strings = ["", " ", "#", "%", "%1", "%1G", "%G", "%G2", "/", ":", "?", "@", "[", "]", "ł",
                     "00", "05", "000", "010", "256",];
-        return static::arraizeStrings($strings);
+        return static::stringsToPregTuples($strings);
     }
 
     /**
@@ -509,7 +509,7 @@ class Rfc3986Test extends TestCase
     public static function IPV4ADDRESS__cases()
     {
         $strings = static::IPV4ADDRESS__strings();
-        return static::arraizeStrings($strings, 'ipv4address');
+        return static::stringsToPregTuples($strings, 'ipv4address');
     }
 
     public static function non__IPV4ADDRESS__cases()
@@ -520,7 +520,7 @@ class Rfc3986Test extends TestCase
             "01.2.3.4", "1.02.3.4", "1.2.03.4", "1.2.3.04",
             "256.2.3.", "1.256.3.4", "1.2.256.4", "1.2.3.256",
         ];
-        return static::arraizeStrings($strings);
+        return static::stringsToPregTuples($strings);
     }
 
     /**
@@ -557,7 +557,7 @@ class Rfc3986Test extends TestCase
 
     public function H16__cases()
     {
-        return static::arraizeStrings(static::H16__strings());
+        return static::stringsToPregTuples(static::H16__strings());
     }
 
     public function non__H16__cases()
@@ -565,7 +565,7 @@ class Rfc3986Test extends TestCase
         $strings = [
             "", " ", "g", "G", "12345", "abcde", "#", "%", "/", ":", "?", "@", "[", "]", "ł",
         ];
-        return static::arraizeStrings($strings);
+        return static::stringsToPregTuples($strings);
     }
 
     /**
@@ -595,7 +595,7 @@ class Rfc3986Test extends TestCase
     public function LS32__cases()
     {
         $strings = static::LS32__strings();
-        return static::arraizeStrings($strings, 'ls32');
+        return static::stringsToPregTuples($strings, 'ls32');
     }
 
     public function non__LS32__cases()
@@ -604,7 +604,7 @@ class Rfc3986Test extends TestCase
             "", " ", "g", "G", "123", "12345:123", "abcde:dff",
             "#", "%", "/", ":", "?", "@", "[", "]", "ł",
         ];
-        return static::arraizeStrings($strings);
+        return static::stringsToPregTuples($strings);
     }
 
     /**
@@ -1229,7 +1229,7 @@ class Rfc3986Test extends TestCase
             "", " ", "g", "G", "123", "12345:123", "abcde:dff",
             "#", "%", "/", ":", "?", "@", "[", "]", "ł",
         ];
-        return static::arraizeStrings($strings);
+        return static::stringsToPregTuples($strings);
     }
 
     /**
@@ -1263,7 +1263,7 @@ class Rfc3986Test extends TestCase
     public static function IPVFUTURE__cases()
     {
         $strings = static::IPVFUTURE__strings();
-        return static::arraizeStrings($strings, 'ipvfuture');
+        return static::stringsToPregTuples($strings, 'ipvfuture');
     }
 
     public static function non__IPVFUTURE__cases()
@@ -1271,7 +1271,7 @@ class Rfc3986Test extends TestCase
         $strings = [
             "", " ", "a", "B", "1", "vGEE.aa", "v.sdf", "#", "%", "/", ":", "?", "@", "[", "]", "ł",
         ];
-        return static::arraizeStrings($strings);
+        return static::stringsToPregTuples($strings);
     }
 
     /**
@@ -1342,7 +1342,7 @@ class Rfc3986Test extends TestCase
             "v2f.:",
             "v12ea.:!$&'()*+,;=-._~aB32",
         ];
-        return static::arraizeStrings($strings);
+        return static::stringsToPregTuples($strings);
     }
 
     /**
@@ -1369,13 +1369,13 @@ class Rfc3986Test extends TestCase
     public static function PORT__cases()
     {
         $strings = ["", "123"];
-        return static::arraizeStrings($strings, 'port');
+        return static::stringsToPregTuples($strings, 'port');
     }
 
     public static function non__PORT__cases()
     {
         $strings = ["a", "A", "@"];
-        return static::arraizeStrings($strings);
+        return static::stringsToPregTuples($strings);
     }
 
     /**
@@ -1461,7 +1461,7 @@ class Rfc3986Test extends TestCase
             "v12ea.:!$&'()*+,;=-._~aB32",
             "[asdfgh%]",
         ];
-        return static::arraizeStrings($strings);
+        return static::stringsToPregTuples($strings);
     }
 
     /**
@@ -1488,7 +1488,7 @@ class Rfc3986Test extends TestCase
     public static function USERINFO__cases()
     {
         $strings = ["", "!$&'()*+,;=-._~Ab1%1fx:"];
-        return static::arraizeStrings($strings, 'userinfo');
+        return static::stringsToPregTuples($strings, 'userinfo');
     }
 
     public static function non__USERINFO__cases()
@@ -1497,7 +1497,7 @@ class Rfc3986Test extends TestCase
             "%", "%1", "%G", "%1G", "%G2", "#", "ł",
             "/", "?", "/foo/../BaR?aa=12&bb=4adf,hi/dood",
         ];
-        return static::arraizeStrings($strings);
+        return static::stringsToPregTuples($strings);
     }
 
     /**
@@ -1574,7 +1574,7 @@ class Rfc3986Test extends TestCase
             "%", "%1", "%G", "%1G", "%G2", "#", "ł",
             "/", "?", "/foo/../BaR?aa=12&bb=4adf,hi/dood",
         ];
-        return static::arraizeStrings($strings);
+        return static::stringsToPregTuples($strings);
     }
 
     /**
@@ -1604,13 +1604,13 @@ class Rfc3986Test extends TestCase
     public static function SCHEME__cases()
     {
         $strings = ["a.23+x-x"];
-        return static::arraizeStrings($strings, 'scheme');
+        return static::stringsToPregTuples($strings, 'scheme');
     }
 
     public static function non__SCHEME__cases()
     {
         $strings = ["", "1s", "@", "a~"];
-        return static::arraizeStrings($strings);
+        return static::stringsToPregTuples($strings);
     }
 
     /**
@@ -1670,7 +1670,7 @@ class Rfc3986Test extends TestCase
     public static function non__RELATIVE_PART__cases()
     {
         $strings = ["#", "%", "%1", "%1G", "%G", "%G2", ":", ":/", "?", "ł"];
-        return static::arraizeStrings($strings);
+        return static::stringsToPregTuples($strings);
     }
 
     /**
@@ -1750,7 +1750,7 @@ class Rfc3986Test extends TestCase
     public static function non__HIER_PART__cases()
     {
         $strings = ["#", "%", "%1", "%1G", "%G", "%G2", "?", "ł"];
-        return static::arraizeStrings($strings);
+        return static::stringsToPregTuples($strings);
     }
 
     /**
@@ -1784,13 +1784,13 @@ class Rfc3986Test extends TestCase
         $strings = [
             "", 'aZ2-._~!$&\'()*+,;=/?:@%20'
         ];
-        return static::arraizeStrings($strings, 'fragment');
+        return static::stringsToPregTuples($strings, 'fragment');
     }
 
     public static function non__FRAGMENT__cases()
     {
         $strings = ["%", "%1", "%G", "%1G", "%G2", "#", "ł"];
-        return static::arraizeStrings($strings);
+        return static::stringsToPregTuples($strings);
     }
 
     /**
@@ -1819,13 +1819,13 @@ class Rfc3986Test extends TestCase
         $strings = [
             "", 'aZ2-._~!$&\'()*+,;=/?:@%20'
         ];
-        return static::arraizeStrings($strings, 'query');
+        return static::stringsToPregTuples($strings, 'query');
     }
 
     public static function non__QUERY__cases()
     {
         $strings = ["%", "%1", "%G", "%1G", "%G2", "#", "ł"];
-        return static::arraizeStrings($strings);
+        return static::stringsToPregTuples($strings);
     }
 
     /**
@@ -1898,7 +1898,7 @@ class Rfc3986Test extends TestCase
     public static function non__RELATIVE_REF__cases()
     {
         $strings = ["%", "%1", "%1G", "%G", "%G2", ":", ":/", "ł"];
-        return static::arraizeStrings($strings);
+        return static::stringsToPregTuples($strings);
     }
 
     /**
@@ -1961,7 +1961,7 @@ class Rfc3986Test extends TestCase
             "scheme",
             "http://example.com/foo#arg1=v1&arg2=v2"
         ];
-        return static::arraizeStrings($strings);
+        return static::stringsToPregTuples($strings);
     }
 
     /**
@@ -2021,7 +2021,7 @@ class Rfc3986Test extends TestCase
             ":foo",
             "scheme",
         ];
-        return static::arraizeStrings($strings);
+        return static::stringsToPregTuples($strings);
     }
 
     /**
@@ -2080,7 +2080,7 @@ class Rfc3986Test extends TestCase
             ':',
             ':foo',
         ];
-        return static::arraizeStrings($strings);
+        return static::stringsToPregTuples($strings);
     }
 
     /**

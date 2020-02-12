@@ -38,6 +38,26 @@ class Rfc2849xTest extends TestCase
     {
         $this->assertExtendsClass(Rfc2849::class, $this->getRfcClass());
     }
+
+    public function test__getClassRuleNames()
+    {
+        $class = self::getRfcClass();
+        $this->assertSame(array_keys(self::findRfcConstants()), $class::getClassRuleNames());
+    }
+
+    public function test__getDefinedErrors()
+    {
+        $class = self::getRfcClass();
+        $expected = [
+            'dn_b64_error'      => 'malformed BASE64-STRING (RFC2849)',
+            'dn_safe_error'     => 'malformed SAFE-STRING (RFC2849)',
+            'value_b64_error'   => 'malformed BASE64-STRING (RFC2849)',
+            'value_safe_error'  => 'malformed SAFE-STRING (RFC2849)',
+            'value_url_error'   => 'malformed URL (RFC2849/RFC3986)',
+            'version_error'     => 'expected valid version number (RFC2849)',
+        ];
+        $this->assertSame($expected, $class::getDefinedErrors());
+    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

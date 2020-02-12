@@ -32,26 +32,10 @@ class Rfc2849Test extends TestCase
         $this->assertExtendsClass(AbstractRuleSet::class, $this->getRfcClass());
     }
 
-    public function test__rules()
+    public function test__getClassRuleNames()
     {
-        $message = 'Failed asserting that Rfc2849::rules() are correct';
-        $this->assertSame(static::findRfcConstants(), Rfc2849::rules(), $message);
-    }
-
-    public static function captures__cases()
-    {
-        foreach (static::findRfcCaptures() as $rule => $captures) {
-            yield [$rule, $captures];
-        }
-    }
-
-    /**
-     * @dataProvider captures__cases
-     */
-    public function test__captures__perRule(string $rule, array $captures)
-    {
-        $message = 'Failed asserting that Rfc2849::captures(\''.$rule.'\') are correct';
-        $this->assertSame($captures, Rfc2849::captures($rule), $message);
+        $class = self::getRfcClass();
+        $this->assertSame(array_keys(self::findRfcConstants()), $class::getClassRuleNames());
     }
 }
 

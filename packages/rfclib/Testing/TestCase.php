@@ -28,7 +28,7 @@ abstract class TestCase extends \Korowai\Testing\TestCase
     abstract public static function getRfcClass() : string;
 
     /**
-     * Returns the fully qualifiad name of RFC constant being tested.
+     * Returns the fully qualified name of RFC constant being tested.
      *
      * @return string
      */
@@ -50,25 +50,6 @@ abstract class TestCase extends \Korowai\Testing\TestCase
     }
 
     /**
-     * Wraps string items of *$items* array with arrays.
-     *
-     * @param  array $items
-     * @return array
-     */
-    public static function arraizeStrings(array $items, string $key = null, int $offset = 0)
-    {
-        if ($key === null) {
-            return array_map(function (string $item) {
-                return [$item];
-            }, $items);
-        } else {
-            return array_map(function (string $item) use ($key, $offset) {
-                return [$item, [$key => [$item, $offset]]];
-            }, $items);
-        }
-    }
-
-    /**
      * Asserts that an expression stored in an RFC constant (*$constname*)
      * matches the *$subject*. *$expMatches* may be provided to perform
      * additional checks on *$matches* returned by ``preg_match()``.
@@ -84,54 +65,8 @@ abstract class TestCase extends \Korowai\Testing\TestCase
         $result = preg_match($re, $subject, $matches, PREG_UNMATCHED_AS_NULL|PREG_OFFSET_CAPTURE);
         $msg = 'Failed asserting that '.$fqdnConstName.' matches '.var_export($subject, true);
         static::assertSame(1, $result, $msg);
-        if (($expMatches[0] ?? null) === null) {
-            static::assertSame($subject, $matches[0][0]);
-        }
         static::assertHasPregCaptures($expMatches, $matches);
     }
-
-//    /**
-//     * Asserts that *$matches* returned by ``preg_match()`` satisfy constraints
-//     * provided by *$expMatches*. If *$expMatches['foo']* is false, then
-//     * *$matches['foo']* must not be set. If *$expMatches['foo']* is true, then
-//     * *$matches['foo']* must exist (may be null). Othervise *$matches['foo']*
-//     * must exist and must be identical to *$expMatches['foo']*.
-//     *
-//     * @param  array $expMatches
-//     * @param  array $matches
-//     */
-//    public static function assertRfcCaptureGroups(array $expMatches, array $matches) : void
-//    {
-//        foreach ($expMatches as $key => $expected) {
-//            static::assertRfcCaptureGroupValue($expected, $matches, $key);
-//        }
-//    }
-//
-//    /**
-//     * Assert that *$matches[$key]* has *$expected* value. If *$expected* is
-//     * false, then *$matches[$key]* must not be set (undefined or null). If
-//     * *$expected* is true, then *$key* must exist in *$matches*. Otherwise,
-//     * *$matches[$key]* must be identical to *$expected*.
-//     *
-//     * @param  mixed $expected
-//     * @param  array $matches
-//     * @param  mixed $key
-//     */
-//    public static function assertRfcCaptureGroupValue($expected, array $matches, $key) : void
-//    {
-//        $keyx = var_export($key, true);
-//        if ($expected === false) {
-//            $actual = ($matches[$key] ?? [null, -1])[0];
-//            static::assertNull($actual, 'Failed asserting that $matches['.$keyx.'] is not set');
-//        } else {
-//            static::assertArrayHasKey($key, $matches);
-//            if ($expected !== true) {
-//                $actual = is_array($expected) ? $matches[$key] : $matches[$key][0];
-//                $msg = 'Failed asserting that $matches['.$keyx.'] is '.var_export($expected, true);
-//                static::assertSame($expected, $actual, $msg);
-//            }
-//        }
-//    }
 
     /**
      * Asserts that an expression stored in an RFC constant (*$constname*)

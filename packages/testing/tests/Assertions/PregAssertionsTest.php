@@ -99,6 +99,16 @@ class PregAssertionsTest extends TestCase
         $this->assertHasPregCaptures($expected, $other);
     }
 
+    /**
+     * @dataProvider hasPregCaptures__success__cases
+     */
+    public function test__assertNotHasPregCapture__failing(array $expected, $other)
+    {
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessageRegexp('/Failed asserting that .* does not have capture groups satisfying /sD');
+        $this->assertNotHasPregCaptures($expected, $other);
+    }
+
     public function hasPregCaptures__failing__cases()
     {
         $re = function ($part) { return '/.* has capture groups satisfying '.$part.'/sD'; };
@@ -122,8 +132,17 @@ class PregAssertionsTest extends TestCase
         ];
     }
 
+    public function hasPregCaptures__nonArray__cases()
+    {
+        $re = function ($part) { return '/.* has capture groups satisfying '.$part.'/sD'; };
+        return [
+            [['foo' => false],  'stuff', $re('.* \'foo\' => \'<must not exist>\'')],
+        ];
+    }
+
     /**
      * @dataProvider hasPregCaptures__failing__cases
+     * @dataProvider hasPregCaptures__nonArray__cases
      */
     public function test__hasPregCaptures__failing(array $expected, $other, string $regexp)
     {
@@ -140,6 +159,14 @@ class PregAssertionsTest extends TestCase
         $this->expectException(ExpectationFailedException::class);
         $this->expectExceptionMessageRegexp($regexp);
         $this->assertHasPregCaptures($expected, $other);
+    }
+
+    /**
+     * @dataProvider hasPregCaptures__failing__cases
+     */
+    public function test__assertNotHasPregCapture__success(array $expected, $other, string $regexp)
+    {
+        $this->assertNotHasPregCaptures($expected, $other);
     }
 }
 

@@ -58,7 +58,7 @@ class Rfc8089Test extends TestCase
     {
         $strings = [];
         $inheritedCases = Rfc3986Test::non__HOST__cases();
-        return array_merge($inheritedCases, static::arraizeStrings($strings));
+        return array_merge($inheritedCases, static::stringsToPregTuples($strings));
     }
 
     /**
@@ -102,7 +102,7 @@ class Rfc8089Test extends TestCase
         $strings = [
         ];
         return array_merge(
-            static::arraizeStrings($strings),
+            static::stringsToPregTuples($strings),
             Rfc3986Test::non__PATH_ABSOLUTE__cases()
         );
     }
@@ -155,7 +155,7 @@ class Rfc8089Test extends TestCase
     public function non__AUTH_PATH__cases()
     {
         $strings = ["", "a", ":", "%", "%1", "%G", "%1G", "%G2", "#", "ł", "?", "1.2.3.4"];
-        return static::arraizeStrings($strings);
+        return static::stringsToPregTuples($strings);
     }
 
     /**
@@ -208,7 +208,7 @@ class Rfc8089Test extends TestCase
     public function non__FILE_HIER_PART__cases()
     {
         $strings = ["", "a", ":", "%", "%1", "%G", "%1G", "%G2", "#", "ł", "?", "1.2.3.4"];
-        return static::arraizeStrings($strings);
+        return static::stringsToPregTuples($strings);
     }
 
     /**
@@ -293,7 +293,7 @@ class Rfc8089Test extends TestCase
     public function non__FILE_URI__cases()
     {
         $strings = ["", "a", ":", "%", "%1", "%G", "%1G", "%G2", "#", "ł", "?", "1.2.3.4", "file:"];
-        return static::arraizeStrings($strings);
+        return static::stringsToPregTuples($strings);
     }
 
     /**

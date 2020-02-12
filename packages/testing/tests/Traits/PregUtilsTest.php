@@ -24,6 +24,17 @@ class PregUtilsTest extends TestCase
 {
     use PregUtils;
 
+    public function test__stringsToPregTuples()
+    {
+        $this->assertSame([['a'], ['b']], static::stringsToPregTuples(['a', 'b']));
+
+        $expected = [['a', ['key' => ['a', 0]]], ['b', ['key' => ['b', 0]]]];
+        $this->assertSame($expected, static::stringsToPregTuples(['a', 'b'], 'key'));
+
+        $expected = [['a', ['key' => ['a', 3]]], ['b', ['key' => ['b', 3]]]];
+        $this->assertSame($expected, static::stringsToPregTuples(['a', 'b'], 'key', 3));
+    }
+
     public function shiftPregCaptures__cases()
     {
         return [

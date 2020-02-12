@@ -61,13 +61,13 @@ class Rfc2253Test extends TestCase
     public static function OID__cases()
     {
         $strings = ['1', '1.23', '1.23.456'];
-        return self::arraizeStrings($strings);
+        return self::stringsToPregTuples($strings);
     }
 
     public static function non__OID__cases()
     {
         $strings = ['', '~', 'O', '1.', '.1', '1.23.', 'a', 'ab', 'ab.cd'];
-        return self::arraizeStrings($strings);
+        return self::stringsToPregTuples($strings);
     }
 
     /**
@@ -100,7 +100,7 @@ class Rfc2253Test extends TestCase
             '""',                               // empty quoted string
             '"aA\\"\\\\\\20lŁ21!@#$%^&*()"',    // non-empty quoted string
         ];
-        return static::arraizeStrings($strings);
+        return static::stringsToPregTuples($strings);
     }
 
     public static function non__STRING__cases()
@@ -113,7 +113,7 @@ class Rfc2253Test extends TestCase
             '"foo',     // unterminated quoted string
             '"',        // unterminated quoted string
         ];
-        return self::arraizeStrings($strings);
+        return self::stringsToPregTuples($strings);
     }
 
     /**
@@ -199,7 +199,7 @@ class Rfc2253Test extends TestCase
 //            '#x',       // incomplete string_hex
 //            '#299',     // incomplete string_hex
 //        ];
-//        return self::arraizeStrings($strings);
+//        return self::stringsToPregTuples($strings);
 //    }
 //
 //    /**
@@ -245,7 +245,7 @@ class Rfc2253Test extends TestCase
             '1',
             '1.2.3',
         ];
-        return self::arraizeStrings($strings);
+        return self::stringsToPregTuples($strings);
     }
 
     public static function non__ATTRIBUTE_TYPE__cases()
@@ -257,7 +257,7 @@ class Rfc2253Test extends TestCase
             'O~',
             '1.',
         ];
-        return self::arraizeStrings($strings);
+        return self::stringsToPregTuples($strings);
     }
 
     /**
@@ -309,7 +309,7 @@ class Rfc2253Test extends TestCase
             '=asdf',
             'O = 1',
         ];
-        return self::arraizeStrings($strings);
+        return self::stringsToPregTuples($strings);
     }
 
     /**
@@ -363,7 +363,7 @@ class Rfc2253Test extends TestCase
             'O=123+',
             'O=123+OU',
         ];
-        return self::arraizeStrings($strings);
+        return self::stringsToPregTuples($strings);
     }
 
     /**
@@ -425,7 +425,7 @@ class Rfc2253Test extends TestCase
             'O=123,',
             ',O=123',
         ];
-        return self::arraizeStrings($strings);
+        return self::stringsToPregTuples($strings);
     }
 
     /**

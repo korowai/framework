@@ -31,6 +31,12 @@ class Rfc3986Test extends TestCase
     {
         $this->assertExtendsClass(AbstractRuleSet::class, $this->getRfcClass());
     }
+
+    public function test__getClassRuleNames()
+    {
+        $class = self::getRfcClass();
+        $this->assertSame(array_keys(self::findRfcConstants()), $class::getClassRuleNames());
+    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

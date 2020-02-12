@@ -13,11 +13,13 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldif;
 
-use Korowai\Lib\Ldif\Traits\ParsesAttrValSpec;
 use Korowai\Lib\Ldif\Traits\MatchesPatterns;
+use Korowai\Lib\Ldif\Traits\ParsesAttrValSpec;
 use Korowai\Lib\Ldif\Traits\ParsesDnSpec;
 use Korowai\Lib\Ldif\Traits\ParsesStrings;
+use Korowai\Lib\Ldif\Traits\ParsesValueSpec;
 use Korowai\Lib\Ldif\Traits\ParsesVersionSpec;
+use Korowai\Lib\Ldif\Traits\ParsesWithRfcRule;
 
 /**
  * LDIF parser.
@@ -28,7 +30,9 @@ class Parser implements ParserInterface
     use ParsesAttrValSpec;
     use ParsesDnSpec;
     use ParsesStrings;
+    use ParsesValueSpec;
     use ParsesVersionSpec;
+    use ParsesWithRfcRule;
 
     /**
      * {@inheritdoc}

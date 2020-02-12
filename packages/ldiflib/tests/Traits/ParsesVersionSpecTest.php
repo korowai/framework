@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Ldif\Traits;
 
 use Korowai\Lib\Ldif\Traits\ParsesVersionSpec;
-use Korowai\Lib\Ldif\Traits\SkipsWhitespaces;
+use Korowai\Lib\Ldif\Traits\ParsesWithRfcRule;
 use Korowai\Lib\Ldif\Traits\MatchesPatterns;
 use Korowai\Lib\Ldif\Records\VersionSpec;
 
@@ -29,6 +29,7 @@ class ParsesVersionSpecTest extends TestCase
     {
         return new class {
             use ParsesVersionSpec { parseMatchedVersionNumber as public; }
+            use ParsesWithRfcRule;
             use MatchesPatterns;
         };
     }

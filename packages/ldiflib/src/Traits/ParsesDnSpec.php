@@ -26,27 +26,30 @@ use function Korowai\Lib\Compat\preg_match;
  */
 trait ParsesDnSpec
 {
-    /**
-     * Matches the input substring starting at *$state*'s cursor against
-     * regular expression provided by *$rule* and moves the cursor after
-     * the end of the matched substring.
+    /*
+     * Parse using RFC rule and callback.
      *
      * @param  State $state
-     *      The state provides cursor pointing to the offset of the beginning
-     *      of the match. If the *$rule* matches anything, the *$state*'s
-     *      cursor gets moved to the next character after the matched string.
-     *      If *$rule* matches any errors, they will be appended to *$state*.
      * @param  RuleInterface $rule
-     *      The rule to be used for matching.
-     * @param  array $matches
-     *      Returns matched captured groups including matched errors. If the
-     *      rule doesn't match at all, the function returns empty *$matches*.
+     *      The RFC rule.
+     * @param  callable $completion
+     *      A callback function to be invoked when the rule matches. The
+     *      prototype of the callback is
+     *
+     *      ```
+     *      bool completion(ParserStateInterface $state, array $matches, &$value = null);
+     *      ```
+     *
+     *      The purpose of the completion function is to validate the captured
+     *      values (passed in via *$matches*) and optionally produce and return
+     *      to the caller any semantic value. The function shall return true on
+     *      success or false on failure.
+     * @param  mixed $value
+     *      Semantic value to be returned to caller.
      *
      * @return bool
-     *      Returns false if *$rule* doesn't match, or if the returned
-     *      *$matches* include errors.
      */
-    abstract public function parseMatchRfcRule(State $state, RuleInterface $rule, array &$matches = null) : bool;
+    abstract public function parseWithRfcRule(State $state, RuleInterface $rule, callable $completion, &$value = null);
 
     /**
      * Decodes base64-encoded string.
@@ -81,12 +84,7 @@ trait ParsesDnSpec
     public function parseDnSpec(State $state, string &$dn = null) : bool
     {
         $rule = new Rule(Rfc2849x::class, 'DN_SPEC_X');
-        if (!$this->parseMatchRfcRule($state, $rule, $matches)) {
-            $dn = null;
-            return false;
-        }
-
-        return $this->parseMatchedDn($state, $matches, $dn);
+        return $this->parseWithRfcRule($state, $rule, [$this, 'parseMatchedDn'], $dn);
     }
 
     /**

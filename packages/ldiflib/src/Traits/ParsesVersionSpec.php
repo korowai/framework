@@ -23,27 +23,30 @@ use Korowai\Lib\Rfc\RuleInterface;
  */
 trait ParsesVersionSpec
 {
-    /**
-     * Matches the input substring starting at *$state*'s cursor against
-     * regular expression provided by *$rule* and moves the cursor after
-     * the end of the matched substring.
+    /*
+     * Parse using RFC rule and callback.
      *
      * @param  State $state
-     *      The state provides cursor pointing to the offset of the beginning
-     *      of the match. If the *$rule* matches anything, the *$state*'s
-     *      cursor gets moved to the next character after the matched string.
-     *      If *$rule* matches any errors, they will be appended to *$state*.
      * @param  RuleInterface $rule
-     *      The rule to be used for matching.
-     * @param  array $matches
-     *      Returns matched captured groups including matched errors. If the
-     *      rule doesn't match at all, the function returns empty *$matches*.
+     *      The RFC rule.
+     * @param  callable $completion
+     *      A callback function to be invoked when the rule matches. The
+     *      prototype of the callback is
+     *
+     *      ```
+     *      bool completion(ParserStateInterface $state, array $matches, &$value = null);
+     *      ```
+     *
+     *      The purpose of the completion function is to validate the captured
+     *      values (passed in via *$matches*) and optionally produce and return
+     *      to the caller any semantic value. The function shall return true on
+     *      success or false on failure.
+     * @param  mixed $value
+     *      Semantic value to be returned to caller.
      *
      * @return bool
-     *      Returns false if *$rule* doesn't match, or if the returned
-     *      *$matches* include errors.
      */
-    abstract public function parseMatchRfcRule(State $state, RuleInterface $rule, array &$matches = null) : bool;
+    abstract public function parseWithRfcRule(State $state, RuleInterface $rule, callable $completion, &$value = null);
 
     /**
      * Parses version-spec as defined in [RFC 2849](https://tools.ietf.org/html/rfc2849).
@@ -61,12 +64,7 @@ trait ParsesVersionSpec
     public function parseVersionSpec(State $state, int &$version = null, bool $tryOnly = false) : bool
     {
         $rule = new Rule(Rfc2849x::class, 'VERSION_SPEC_X', $tryOnly);
-        if (!$this->parseMatchRfcRule($state, $rule, $matches)) {
-            $version = null;
-            return false;
-        }
-
-        return $this->parseMatchedVersionNumber($state, $matches, $version);
+        return $this->parseWithRfcRule($state, $rule, [$this, 'parseMatchedVersionNumber'], $version);
     }
 
     /**

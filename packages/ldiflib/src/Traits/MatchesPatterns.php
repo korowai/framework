@@ -126,48 +126,6 @@ trait MatchesPatterns
         preg_match($pattern, $subject, $matches, ...$tail);
         return $matches;
     }
-
-    /**
-     * Matches the input substring starting at *$state*'s cursor against
-     * regular expression provided by *$rule* and moves the cursor after
-     * the end of the matched substring.
-     *
-     * @param  State $state
-     *      The state provides cursor pointing to the offset of the beginning
-     *      of the match. If the *$rule* matches anything, the *$state*'s
-     *      cursor gets moved to the character next after the matched string.
-     *      If *$rule* matches any errors, they will be appended to *$state*.
-     * @param  RuleInterface $rule
-     *      The rule to be used for matching.
-     * @param  array $matches
-     *      Returns matched captured groups including matched errors. If the
-     *      rule doesn't match at all, the function returns empty *$matches*.
-     *
-     * @return bool
-     *      Returns false if *$rule* doesn't match, or if the returned
-     *      *$matches* include errors.
-     */
-    public function parseMatchRfcRule(ParserStateInterface $state, RuleInterface $rule, array &$matches = null) : bool
-    {
-        $cursor = $state->getCursor();
-
-        $matches = $this->matchAhead('/\G'.$rule.'/D', $cursor, PREG_UNMATCHED_AS_NULL);
-        if (empty($matches)) {
-            if (!$rule->isOptional()) {
-                $message = $rule->getErrorMessage();
-                $state->errorHere('syntax error: '.$message);
-            }
-            return false;
-        }
-
-        $errors = $rule->findCapturedErrors($matches);
-        foreach ($errors as $errorKey => $errorMatch) {
-            $message = $rule->getErrorMessage($errorKey);
-            $state->errorAt($errorMatch[1], 'syntax error: '.$message);
-        }
-
-        return empty($errors);
-    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

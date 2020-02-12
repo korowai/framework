@@ -13,9 +13,11 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldif\Traits;
 
-use Korowai\Lib\Ldif\Traits\ParsesAttrValSpec;
 use Korowai\Lib\Ldif\Traits\MatchesPatterns;
+use Korowai\Lib\Ldif\Traits\ParsesAttrValSpec;
 use Korowai\Lib\Ldif\Traits\ParsesStrings;
+use Korowai\Lib\Ldif\Traits\ParsesValueSpec;
+use Korowai\Lib\Ldif\Traits\ParsesWithRfcRule;
 use Korowai\Testing\Lib\Ldif\TestCase;
 
 /**
@@ -31,9 +33,11 @@ class ParsesAttrValSpecTest extends TestCase
     public function getTestObject()
     {
         return new class {
-            use ParsesAttrValSpec;
             use MatchesPatterns;
-//            use ParsesStrings;
+            use ParsesAttrValSpec;
+            use ParsesStrings;
+            use ParsesValueSpec;
+            use ParsesWithRfcRule;
         };
     }
 }

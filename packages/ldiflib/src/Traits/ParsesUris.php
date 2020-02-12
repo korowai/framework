@@ -80,7 +80,7 @@ trait ParsesUris
      * Parses URI-reference as defined in [RFC3986](https://tools.ietf.org/html/rfc3986).
      *
      * @param  ParserStateInterface $state
-     * @param  array $uri Array of matches from the ``preg_match()``.
+     * @param  array $matches Array of matches from the ``preg_match()``.
      *
      * @return bool true on success, false on parser error.
      */

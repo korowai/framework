@@ -75,8 +75,7 @@ trait ObjectPropertiesAssertions
      * Compares selected properties of *$object* with *$expected* ones.
      *
      * @param  array $expected An array of key-value pairs with expected values of attributes.
-     * @param  object $object An object to be examined.
-     * @param  array $options An array of getters for the attributes being examined.
+     * @param  array $options An array of options.
      *
      * @return HasPropertiesIdenticalTo
      * @throws \PHPUnit\Framework\Exception when non-string keys are found in *$expected*

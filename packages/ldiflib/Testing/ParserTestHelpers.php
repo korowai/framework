@@ -29,7 +29,6 @@ trait ParserTestHelpers
      * Creates Input instance (a preprocessed source code) from a source string.
      *
      * @param  string $source
-     * @param  int $posigion
      * @param  array $options
      *
      * @return Input
@@ -46,7 +45,7 @@ trait ParserTestHelpers
      * Creates Input instance (a preprocessed source code) from a source string.
      *
      * @param  string $source
-     * @param  int $posigion
+     * @param  int $position
      * @param  array $options
      *
      * @return Input
@@ -61,7 +60,7 @@ trait ParserTestHelpers
      * Creates instance of ParserState from a source string.
      *
      * @param  string $source
-     * @param  int $posigion
+     * @param  int $position
      * @param  array $options
      */
     public function getParserStateFromSource(string $source, int $position = 0, array $options = []) : ParserState

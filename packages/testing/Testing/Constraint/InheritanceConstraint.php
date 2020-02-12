@@ -58,7 +58,7 @@ abstract class InheritanceConstraint extends Constraint
     /**
      * Checks if *$string* may be used as an argument to ``getInheritedClassesFor()``
      *
-     * @param  string $strint
+     * @param  string $string
      * @return bool
      */
     abstract public function supportsClass(string $string) : bool;

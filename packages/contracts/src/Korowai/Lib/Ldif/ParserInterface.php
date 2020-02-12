@@ -21,9 +21,9 @@ interface ParserInterface
     /**
      * Parses preprocessed LDIF text.
      *
-     * @param InputInterface $input
+     * @param ParserStateInterface $state
      *
-     * @return ParserStateInterface
+     * @return bool
      */
     public function parse(ParserStateInterface $state) : bool;
 }

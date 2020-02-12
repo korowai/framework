@@ -64,6 +64,7 @@ class ParsesDnSpecTest extends TestCase
                 $case[0],
                 [
                     'result' => false,
+                    'initial' => 'preset string',
                     'dn' => null,
                     'state' => [
                         'cursor' => [
@@ -177,6 +178,7 @@ class ParsesDnSpecTest extends TestCase
             ];
             $expectations = [
                 'result' => $result,
+                'initial' => 'preset string',
                 'dn' => null,
                 'state' => [
                     'cursor' => $cursor,
@@ -213,6 +215,7 @@ class ParsesDnSpecTest extends TestCase
             ];
             $expectations = [
                 'result' => $result,
+                'initial' => 'preset string',
                 'dn' => $case['dn'],
                 'state' => [
                     'cursor' => $cursor,
@@ -251,6 +254,7 @@ class ParsesDnSpecTest extends TestCase
             ];
             $expectations = [
                 'result' => $result,
+                'initial' => 'preset string',
                 'dn' => null,
                 'state' => [
                     'cursor' => $cursor,
@@ -285,9 +289,12 @@ class ParsesDnSpecTest extends TestCase
         $state = $this->getParserStateFromSource(...$source);
         $parser = $this->getTestObject();
 
+        if (array_key_exists('initial', $expectations)) {
+            $dn = $expectations['initial'];
+        }
         $result = $parser->parseDnSpec($state, $dn);
-        $this->assertSame($expectations['result'] ?? true, $result);
-        $this->assertSame($expectations['dn'] ?? null, $dn);
+        $this->assertSame($expectations['result'], $result);
+        $this->assertSame($expectations['dn'], $dn);
         $this->assertParserStateHas($expectations['state'], $state);
     }
 
@@ -296,11 +303,14 @@ class ParsesDnSpecTest extends TestCase
         $state = $this->getParserStateFromSource('dn:', 3);
         $parser = $this->getTestObject();
 
+        $string = "preset string";
         $this->assertFalse($parser->parseMatchedDn($state, [], $string));
+        $this->assertNull($string);
+
         $errors = $state->getErrors();
         $this->assertCount(1, $errors);
         $error = $errors[0];
-        $this->assertSame('internal error: neither dn_safe nor dn_b64 group found', $error->getMessage());
+        $this->assertSame('internal error: missing or invalid capture groups "dn_safe" and "dn_b64"', $error->getMessage());
         $this->assertSame(3, $error->getSourceLocation()->getOffset());
     }
 }

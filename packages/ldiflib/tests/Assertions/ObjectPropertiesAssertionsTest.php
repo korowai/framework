@@ -237,7 +237,7 @@ class ObjectPropertiesAssertionsTest extends TestCase
         ], $error);
     }
 
-    public function test__assertRecordHase()
+    public function test__assertRecordHas()
     {
         $this->markTestIncomplete('The test has not been implemented yet.');
     }

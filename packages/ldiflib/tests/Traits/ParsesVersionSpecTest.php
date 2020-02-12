@@ -28,7 +28,7 @@ class ParsesVersionSpecTest extends TestCase
     protected function getTestObject()
     {
         return new class {
-            use ParsesVersionSpec;
+            use ParsesVersionSpec { parseMatchedVersionNumber as public; }
             use MatchesPatterns;
         };
     }
@@ -36,16 +36,17 @@ class ParsesVersionSpecTest extends TestCase
     public function parseVersionSpec__cases()
     {
         return [
+            // #0
             [
-                ['1'],
-                [],
-                [
+                'source' => ['1'],
+                'tail' => [],
+                'expectations' => [
                     'result' => false,
+                    'initial' => 123456,
+                    'version' => null,
                     'state' => [
                         'cursor' => [
                             'offset' => 0,
-                            'sourceOffset' => 0,
-                            'sourceCharOffset' => 0
                         ],
                         'records' => [],
                         'errors' => [
@@ -57,147 +58,122 @@ class ParsesVersionSpecTest extends TestCase
                     ]
                 ]
             ],
-
+            // #2
             [
-                ['1'],
-                [true],
-                [
+                'source' => ['1'],
+                'tail' => [true],
+                'expectations' => [
                     'result' => false,
+                    'initial' => 123456,
+                    'version' => null,
                     'state' => [
                         'cursor' => [
                             'offset' => 0,
-                            'sourceOffset' => 0,
-                            'sourceCharOffset' => 0
                         ],
                         'records' => [],
                         'errors' => []
                     ]
                 ]
             ],
-
+            // #3
             [
-                ['version: 1'],
-                [],
-                [
+                'source' => ['version: 1'],
+                'tail' => [],
+                'expectations' => [
                     'result' => true,
+                    'version' => 1,
                     'state' => [
                         'cursor' => [
                             'offset' => 10,
-                            'sourceOffset' => 10,
-                            'sourceCharOffset' => 10
                         ],
-                        'records' => [
-                            [
-                                'class' => VersionSpec::class,
-                                // properties
-                                'offset' => 0,
-                                'sourceOffset' => 0,
-                                'sourceCharOffset' => 0,
-                                'length' => 10,
-                                'endOffset' => 10,
-                                // semantic value
-                                'version' => 1,
-                            ]
-                        ],
+                        'records' => [],
                         'errors' => []
                     ]
                 ]
             ],
-
+            // #4
             [
-            //    000000000 111111111122
-            //    012356789 012345678901 - source (bytes)
-                ["# tłuszcz\nversion: 1\n"],
-            //               00000000001 - preprocessed (bytes)
-            //               01234567890 - preprocessed (bytes)
-                [],
-                [
+                //            000000000 11111111112 2
+                //            012356789 01234567890 1 - source (bytes)
+                'source' => ["# tłuszcz\nversion: 1\n"],
+                //                       0000000000 1 - preprocessed (bytes)
+                //                       0123456789 0 - preprocessed (bytes)
+                'tail' => [],
+                'expectations' => [
                     'result' => true,
+                    'version' => 1,
                     'state' => [
                         'cursor' => [
                             'offset' => 10,
                             'sourceOffset' => 21,
                             'sourceCharOffset' => 20
                         ],
-                        'records' => [
-                            [
-                                'class' => VersionSpec::class,
-                                // properties
-                                'offset' => 0,
-                                'sourceOffset' => 11,
-                                'sourceCharOffset' => 10,
-                                'length' => 10,
-                                'sourceLength' => 10,
-                                'sourceCharLength' => 10,
-                                // semantic value:
-                                'version' => 1
-                            ]
-                        ],
+                        'records' => [],
                         'errors' => [],
                     ]
                 ]
             ],
-
+            // #5
             [
-            //    00000000001111
-            //    01234567890123
-                ['   version: A', 3],
-                [true],
-                [
+                //            00000000001111
+                //            01234567890123
+                'source' => ['   version: A', 3],
+                'tail' => [true],
+                'expectations' => [
                     'result' => false,
+                    'initial' => 123456,
+                    'version' => null,
                     'state' => [
                         'cursor' => [
                             'offset' => 13,
-                            'sourceOffset' => 13,
-                            'sourceCharOffset' => 13
                         ],
                         'records' => [],
                         'errors' => [
                             [
-                                'message' => 'syntax error: expected number',
+                                'message' => 'syntax error: expected valid version number (RFC2849)',
                                 'sourceOffset' => 12
                             ],
                         ],
                     ],
                 ]
             ],
-
+            // #6
             [
-            //    00000000001111111
-            //    01234567890123456
-                ['   version: 123A', 3],
-                [true],
-                [
+                //            00000000001111111
+                //            01234567890123456
+                'source' => ['   version: 123A', 3],
+                'tail' => [true],
+                'expectations' => [
                     'result' => false,
+                    'initial' => 123456,
+                    'version' => null,
                     'state' => [
                         'cursor' => [
                             'offset' => 16,
-                            'sourceOffset' => 16,
-                            'sourceCharOffset' => 16
                         ],
                         'records' => [],
                         'errors' => [
                             [
-                                'message' => 'syntax error: expected number',
+                                'message' => 'syntax error: expected valid version number (RFC2849)',
                                 'sourceOffset' => 15
                             ],
                         ],
                     ],
                 ]
             ],
-
+            // #7
             [
-            //    000000000011
-            //    012345678901
-                ['version: 23'],
-                [true],
-                [
+                //            000000000011
+                //            012345678901
+                'source' => ['version: 23'],
+                'tail' => [true],
+                'expectations' => [
                     'result' => false,
+                    'initial' => 123456,
+                    'version' => null,
                     'state' => [
                         'cursor' => [
                             'offset' => 11,
-                            'sourceOffset' => 11,
-                            'sourceCharOffset' => 11
                         ],
                         'records' => [],
                         'errors' => [
@@ -220,9 +196,31 @@ class ParsesVersionSpecTest extends TestCase
         $state = $this->getParserStateFromSource(...$source);
         $parser = $this->getTestObject();
 
-        $result = $parser->parseVersionSpec($state, ...$tail);
-        $this->assertSame($expectations['result'] ?? true, $result);
+        if (array_key_exists('initial', $expectations)) {
+            $version = $expectations['initial'];
+        }
+
+        $result = $parser->parseVersionSpec($state, $version, ...$tail);
+
+        $this->assertSame($expectations['result'], $result);
+        $this->assertSame($expectations['version'], $version);
         $this->assertParserStateHas($expectations['state'], $state);
+    }
+
+    public function test__parseMatchedVersionNumber__internalError()
+    {
+        $state = $this->getParserStateFromSource('version:', 3);
+        $parser = $this->getTestObject();
+
+        $version = 123456;
+        $this->assertFalse($parser->parseMatchedVersionNumber($state, [], $version));
+        $this->assertNull($version);
+
+        $errors = $state->getErrors();
+        $this->assertCount(1, $errors);
+        $error = $errors[0];
+        $this->assertSame('internal error: missing or invalid capture group "version_number"', $error->getMessage());
+        $this->assertSame(3, $error->getSourceLocation()->getOffset());
     }
 }
 

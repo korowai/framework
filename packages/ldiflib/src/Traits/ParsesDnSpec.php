@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldif\Traits;
 
-use Korowai\Lib\Ldif\CursorInterface;
 use Korowai\Lib\Ldif\ParserStateInterface as State;
 use Korowai\Lib\Rfc\Rfc2849x;
 use Korowai\Lib\Rfc\Rfc2253;
@@ -86,38 +85,10 @@ trait ParsesDnSpec
             if (empty($matches)) {
                 $state->errorHere('syntax error: expected "dn:"');
             }
+            $dn = null;
             return false;
         }
 
-        return $this->parseMatchedDn($state, $matches, $dn);
-    }
-
-    /**
-     * Completes dn-spec parsing assuming that dn-spec regular expression
-     * matched successfully.
-     *
-     * *$matches* provide capture groups obtained from successful matching
-     * against DN_SPEC_X pattern with:
-     *
-     * ```
-     *  preg_match('/\G'.Rfc2849x::DN_SPEC_X.'/', $string, $matches, PREG_OFFSET_CAPTURE|PREG_UNMATCHED_AS_NULL);
-     * ```
-     *
-     * @param  State $state
-     * @param  array $matches
-     * @param  string $dn
-     *
-     * @return bool
-     */
-    protected function parseMatchedDnSpec(State $state, array $matches, string &$dn = null) : bool
-    {
-        if (count($errors = Rfc2849x::findCapturedErrors('DN_SPEC_X', $matches)) > 0) {
-            foreach ($errors as $errorKey => $errorMatch) {
-                $message = Rfc2849x::getErrorMessage($errorKey, 'DN_SPEC_X');
-                $state->errorAt($errorMatch[1], 'syntax error: '.$message);
-            }
-            return false;
-        }
         return $this->parseMatchedDn($state, $matches, $dn);
     }
 
@@ -134,12 +105,17 @@ trait ParsesDnSpec
      */
     protected function parseMatchedDn(State $state, array $matches, string &$dn = null) : bool
     {
-        if (($offset = $matches['dn_b64'][1] ?? -1) >= 0) {
-            return $this->parseMatchedDnB64($state, $matches['dn_b64'][0], $offset, $dn);
-        } elseif (($offset = $matches['dn_safe'][1] ?? -1) >= 0) {
-            return $this->parseMatchedDnSafe($state, $matches['dn_safe'][0], $offset, $dn);
+        if (($offset = $matches['dn_b64'][1] ?? -1) >= 0 &&
+            ($string = $matches['dn_b64'][0] ?? null) !== null) {
+            return $this->parseMatchedDnB64($state, $string, $offset, $dn);
+        } elseif (($offset = $matches['dn_safe'][1] ?? -1) >= 0 &&
+                  ($string = $matches['dn_safe'][0] ?? null) !== null) {
+            return $this->parseMatchedDnSafe($state, $string, $offset, $dn);
         }
-        $state->errorHere('internal error: neither dn_safe nor dn_b64 group found');
+
+        // This may happen with broken Rfc2849x::DN_SPEC_X rule.
+        $dn = null;
+        $state->errorHere('internal error: missing or invalid capture groups "dn_safe" and "dn_b64"');
         return false;
     }
 

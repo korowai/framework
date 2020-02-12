@@ -23,24 +23,22 @@ use Korowai\Lib\Rfc\RuleInterface;
  */
 trait ParsesVersionSpec
 {
-    /*
+    /**
      * Parse using RFC rule and callback.
      *
      * @param  State $state
      * @param  RuleInterface $rule
      *      The RFC rule.
      * @param  callable $completion
-     *      A callback function to be invoked when the rule matches. The
-     *      prototype of the callback is
+     * A callback function to be invoked when the rule matches. The
+     * prototype of the callback is
      *
-     *      ```
      *      bool completion(ParserStateInterface $state, array $matches, &$value = null);
-     *      ```
      *
-     *      The purpose of the completion function is to validate the captured
-     *      values (passed in via *$matches*) and optionally produce and return
-     *      to the caller any semantic value. The function shall return true on
-     *      success or false on failure.
+     * The purpose of the completion function is to validate the captured
+     * values (passed in via *$matches*) and optionally produce and return
+     * to the caller any semantic value. The function shall return true on
+     * success or false on failure.
      * @param  mixed $value
      *      Semantic value to be returned to caller.
      *

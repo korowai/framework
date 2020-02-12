@@ -1,6 +1,6 @@
 <?php
 /**
- * @file tests/Rfc2849Test.php
+ * @file tests-nocov/Rfc2849Test.php
  *
  * This file is part of the Korowai package
  *

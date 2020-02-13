@@ -15,7 +15,6 @@ namespace Korowai\Lib\Ldif\Traits;
 
 use Korowai\Lib\Ldif\CursorInterface;
 use Korowai\Lib\Ldif\ParserStateInterface;
-use Korowai\Lib\Ldif\ParserError;
 use Korowai\Lib\Rfc\Rfc2849;
 
 /**

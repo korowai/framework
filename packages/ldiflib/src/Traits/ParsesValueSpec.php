@@ -20,15 +20,6 @@ use Korowai\Lib\Ldif\ParserStateInterface as State;
  */
 trait ParsesValueSpec
 {
-    /**
-     * Decodes base64-encoded string.
-     *
-     * @param  State $state
-     * @param  string $string The string to be decoded.
-     * @param  int|null $offset An offset in the input where the *$string* begins.
-     *
-     * @return string|null Returns the decoded data or null on error.
-     */
     abstract public function parseBase64Decode(State $state, string $string, ?int $offset = null) : ?string;
 
     /**

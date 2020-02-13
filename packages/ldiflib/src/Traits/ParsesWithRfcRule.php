@@ -23,18 +23,6 @@ use Korowai\Lib\Rfc\RuleInterface;
  */
 trait ParsesWithRfcRule
 {
-    /**
-     * Matches the string starting at $cursor's position against $pattern and
-     * skips the whole match (moves the cursor after the matched part of
-     * string).
-     *
-     * @param  string $pattern
-     * @param  CursorInterface $cursor
-     * @param  int $flags Passed to ``preg_match()`` (note: ``PREG_OFFSET_CAPTURE`` is added unconditionally).
-     *
-     * @return array Array of matches as returned by ``preg_match()``
-     * @throws PregException When error occurs in ``preg_match()``
-     */
     abstract public function matchAhead(string $pattern, CursorInterface $cursor, int $flags = 0) : array;
 
     /**
@@ -80,25 +68,38 @@ trait ParsesWithRfcRule
     }
 
     /**
-     * Parse using RFC rule and callback.
+     * Parse string using RFC rule and callback.
      *
-     * @param  State $state
-     * @param  RuleInterface $rule
-     *      The RFC rule.
-     * @param  callable $completion
-     * A callback function to be invoked when the rule matches. The
-     * prototype of the callback is
+     * There are three scenarios. The *$rule* can either:
+     *
+     * - fail to match (the string does not match the rule at all),
+     * - match with errors (string matched but error substrings were captured),
+     * - match successfully.
+     *
+     * In the first two cases, the method will append errors to *$state*, set
+     * *$value* to null and return false. The completion callback is not
+     * invoked. In the third case, the *$completion* callback is invoked and
+     * it's return value is returned to caller.
+     *
+     * The prototype of *$completion* function is
      *
      *      bool completion(ParserStateInterface $state, array $matches, &$value = null);
      *
      * The purpose of the completion function is to validate the captured
      * values (passed in via *$matches*) and optionally produce and return
-     * to the caller any semantic value. The function shall return true on
+     * to the caller any semantic *$value*. The function shall return true on
      * success or false on failure.
+     *
+     * @param  State $state
+     *      Provides the input string, cursor, containers for errors, etc..
+     * @param  RuleInterface $rule
+     *      The RFC rule.
+     * @param  callable $completion
+     *      A callback function to be invoked when the rule matches.
      * @param  mixed $value
      *      Semantic value to be returned to caller.
      *
-     * @return bool
+     * @return bool Returns true on success or false on error.
      */
     public function parseWithRfcRule(State $state, RuleInterface $rule, callable $completion, &$value = null) : bool
     {

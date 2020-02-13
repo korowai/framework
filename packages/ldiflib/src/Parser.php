@@ -13,26 +13,29 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldif;
 
-use Korowai\Lib\Ldif\Traits\MatchesPatterns;
 use Korowai\Lib\Ldif\Traits\ParsesAttrValSpec;
 use Korowai\Lib\Ldif\Traits\ParsesDnSpec;
-use Korowai\Lib\Ldif\Traits\ParsesStrings;
-use Korowai\Lib\Ldif\Traits\ParsesValueSpec;
 use Korowai\Lib\Ldif\Traits\ParsesVersionSpec;
+use Korowai\Lib\Ldif\Traits\ParsesValueSpec;
 use Korowai\Lib\Ldif\Traits\ParsesWithRfcRule;
+use Korowai\Lib\Ldif\Traits\ParsesStrings;
+use Korowai\Lib\Ldif\Traits\MatchesPatterns;
 
 /**
  * LDIF parser.
  */
 class Parser implements ParserInterface
 {
-    use MatchesPatterns;
+    // Include traits in appropriate order. If trait A declares an abstract
+    // method which is documented in B, then A should go first, and B later.
+    // This shall help sami with generating documentation correctly.
     use ParsesAttrValSpec;
     use ParsesDnSpec;
-    use ParsesStrings;
-    use ParsesValueSpec;
     use ParsesVersionSpec;
+    use ParsesValueSpec;
     use ParsesWithRfcRule;
+    use ParsesStrings;
+    use MatchesPatterns;
 
     /**
      * {@inheritdoc}

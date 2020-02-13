@@ -23,18 +23,6 @@ use Korowai\Lib\Rfc\Rfc2849;
  */
 trait ParsesStrings
 {
-    /**
-     * Matches the string starting at $cursor's position against $pattern and
-     * skips the whole match (moves the cursor after the matched part of
-     * string).
-     *
-     * @param  string $pattern
-     * @param  CursorInterface $cursor
-     * @param  int $flags Passed to ``preg_match()`` (note: ``PREG_OFFSET_CAPTURE`` is added unconditionally).
-     *
-     * @return array Array of matches as returned by ``preg_match()``
-     * @throws PregException When error occurs in ``preg_match()``
-     */
     abstract public function matchAhead(string $pattern, CursorInterface $cursor, int $flags = 0) : array;
 
     /**

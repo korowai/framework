@@ -22,7 +22,6 @@ use Korowai\Lib\Rfc\Rfc2849;
  */
 trait SkipsWhitespaces
 {
-    // The method is implemented in MatchesPatterns trait.
     abstract public function matchAhead(string $pattern, CursorInterface $cursor, int $flags = 0) : array;
 
     /**

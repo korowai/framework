@@ -26,50 +26,8 @@ use function Korowai\Lib\Compat\preg_match;
  */
 trait ParsesDnSpec
 {
-    /**
-     * Parse using RFC rule and callback.
-     *
-     * @param  State $state
-     * @param  RuleInterface $rule
-     *      The RFC rule.
-     * @param  callable $completion
-     * A callback function to be invoked when the rule matches. The
-     * prototype of the callback is
-     *
-     *      bool completion(ParserStateInterface $state, array $matches, &$value = null);
-     *
-     *
-     * The purpose of the completion function is to validate the captured
-     * values (passed in via *$matches*) and optionally produce and return
-     * to the caller any semantic value. The function shall return true on
-     * success or false on failure.
-     * @param  mixed $value
-     *      Semantic value to be returned to caller.
-     *
-     * @return bool
-     */
     abstract public function parseWithRfcRule(State $state, RuleInterface $rule, callable $completion, &$value = null);
-
-    /**
-     * Decodes base64-encoded string.
-     *
-     * @param  State $state
-     * @param  string $string The string to be decoded.
-     * @param  int|null $offset An offset in the input where the *$string* begins.
-     *
-     * @return string|null Returns the decoded data or null on error.
-     */
     abstract public function parseBase64Decode(State $state, string $string, ?int $offset = null) : ?string;
-
-    /**
-     * Validates string against UTF-8 encoding.
-     *
-     * @param  State $state
-     * @param  string $string The string to be validated.
-     * @param  int|null $offset An offset in the input where the *$string* begins.
-     *
-     * @return string|null Returns the decoded data or null on error.
-     */
     abstract public function parseUtf8Check(State $state, string $string, ?int $offset = null) : bool;
 
     /**

@@ -78,4 +78,24 @@ function matchString(string $pattern, string $subject, int $flags = 0, int $offs
     return $matches;
 }
 
+/**
+ * Returns true if *$matches[$key]* exists and is a two-element array containig
+ * string at offset 0 and non-negative integer at offset 1. THis corresponds to
+ * a PCRE capture group *$key* being matched with the flags PREG_OFFSET_CAPTURE
+ * and stored in *$matches*.
+ *
+ * @param  mixed $key Key identifying the capture group.
+ * @param  array $matches The array of matches as returned by ``preg_match()``.
+ * @param  string $string Returns the captured string  (or null).
+ * @param  int $offset Returns the capture offset (or -1).
+ *
+ * @return bool Returns true if there is non-null capture group under *$key*.
+ */
+function matched($key, array $matches, string &$string = null, int &$offset = null) : bool
+{
+    $string = $matches[$key][0] ?? null;
+    $offset = $matches[$key][1] ?? -1;
+    return ($offset >= 0 && $string !== null);
+}
+
 // vim: syntax=php sw=4 ts=4 et:

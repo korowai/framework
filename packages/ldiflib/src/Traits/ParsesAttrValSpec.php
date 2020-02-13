@@ -16,14 +16,13 @@ namespace Korowai\Lib\Ldif\Traits;
 use Korowai\Lib\Ldif\ParserStateInterface as State;
 use Korowai\Lib\Rfc\Rfc2849x;
 use Korowai\Lib\Rfc\Rule;
-use Korowai\Lib\Rfc\RuleInterface;
+use function Korowai\Lib\Ldif\parseWithRfcRule;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
 trait ParsesAttrValSpec
 {
-    abstract public function parseWithRfcRule(State $state, RuleInterface $rule, callable $completion, &$value = null);
     abstract protected function parseMatchedValueSpec(State $state, array $matches, array &$valueSpec = null) : bool;
 
     /**
@@ -47,7 +46,7 @@ trait ParsesAttrValSpec
     public function parseAttrValSpec(State $state, array &$attrValSpec = null, bool $tryOnly = false) : bool
     {
         $rule = new Rule(Rfc2849x::class, 'ATTRVAL_SPEC_X', $tryOnly);
-        return $this->parseWithRfcRule($state, $rule, [$this, 'parseMatchedAttrValSpec'], $attrValSpec);
+        return parseWithRfcRule($state, $rule, [$this, 'parseMatchedAttrValSpec'], $attrValSpec);
     }
 
     /**

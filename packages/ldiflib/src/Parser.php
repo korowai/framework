@@ -17,9 +17,6 @@ use Korowai\Lib\Ldif\Traits\ParsesAttrValSpec;
 use Korowai\Lib\Ldif\Traits\ParsesDnSpec;
 use Korowai\Lib\Ldif\Traits\ParsesVersionSpec;
 use Korowai\Lib\Ldif\Traits\ParsesValueSpec;
-use Korowai\Lib\Ldif\Traits\ParsesWithRfcRule;
-use Korowai\Lib\Ldif\Traits\ParsesStrings;
-use Korowai\Lib\Ldif\Traits\MatchesPatterns;
 
 /**
  * LDIF parser.
@@ -33,9 +30,6 @@ class Parser implements ParserInterface
     use ParsesDnSpec;
     use ParsesVersionSpec;
     use ParsesValueSpec;
-    use ParsesWithRfcRule;
-    use ParsesStrings;
-    use MatchesPatterns;
 
     /**
      * {@inheritdoc}

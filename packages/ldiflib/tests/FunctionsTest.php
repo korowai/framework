@@ -29,6 +29,7 @@ use function Korowai\Lib\Ldif\parseBase64Decode;
 use function Korowai\Lib\Ldif\parseUtf8Check;
 use function Korowai\Lib\Ldif\parseMatchRfcRule;
 use function Korowai\Lib\Ldif\parseWithRfcRule;
+use function Korowai\Lib\Ldif\matched;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -77,7 +78,7 @@ class FunctionsTest extends TestCase
         return $cursor;
     }
 
-    public function matchAt__cases()
+    public static function matchAt__cases()
     {
         return [
             [['//', ''], ['']],
@@ -100,7 +101,7 @@ class FunctionsTest extends TestCase
         $this->assertSame($expected, matchAt(...$args));
     }
 
-    public function matchAhead__cases()
+    public static function matchAhead__cases()
     {
         return [
             [['//', ''], [['', 0]], 0],
@@ -129,7 +130,7 @@ class FunctionsTest extends TestCase
         $this->assertSame($expected, matchString(...$case));
     }
 
-    public function base64Decode__cases()
+    public static function base64Decode__cases()
     {
         return [
             [
@@ -233,7 +234,7 @@ class FunctionsTest extends TestCase
         $this->assertParserStateHas($expect['state'], $state);
     }
 
-    public function parseUtf8Check__cases()
+    public static function parseUtf8Check__cases()
     {
         return [
             [
@@ -305,7 +306,7 @@ class FunctionsTest extends TestCase
         $this->assertParserStateHas($expect['state'], $state);
     }
 
-    public function parseMatchRfcRule__cases()
+    public static function parseMatchRfcRule__cases()
     {
         return [
             [
@@ -513,6 +514,82 @@ class FunctionsTest extends TestCase
 
         $this->assertSame($expect['result'] ?? true, $result);
         $this->assertParserStateHas($expect['state'], $state);
+    }
+
+    public static function matched__cases()
+    {
+        return [
+            // #0
+            [
+                'key'       => 0,
+                'matches'   => [],
+                'expect'    => [
+                    'result' => false,
+                    'string' => null,
+                    'offset' => -1,
+                ]
+            ],
+            // #1
+            [
+                'key'       => 'foo',
+                'matches'   => ['bar' => ['BAR', 4]],
+                'expect'    => [
+                    'result' => false,
+                    'string' => null,
+                    'offset' => -1,
+                ]
+            ],
+            // #2
+            [
+                'key'       => 'foo',
+                'matches'   => ['foo' => null],
+                'expect'    => [
+                    'result' => false,
+                    'string' => null,
+                    'offset' => -1,
+                ]
+            ],
+            // #3
+            [
+                'key'       => 'foo',
+                'matches'   => ['foo' => [null, 4]],
+                'expect'    => [
+                    'result' => false,
+                    'string' => null,
+                    'offset' => 4,
+                ]
+            ],
+            // #4
+            [
+                'key'       => 'foo',
+                'matches'   => ['foo' => ['FOO', -2]],
+                'expect'    => [
+                    'result' => false,
+                    'string' => 'FOO',
+                    'offset' => -2,
+                ]
+            ],
+            // #5
+            [
+                'key'       => 'foo',
+                'matches'   => ['foo' => ['FOO', 3]],
+                'expect'    => [
+                    'result' => true,
+                    'string' => 'FOO',
+                    'offset' => 3,
+                ]
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider matched__cases
+     */
+    public function test__matched($key, array $matches, array $expect)
+    {
+        $this->assertSame($expect['result'], matched($key, $matches, $string, $offset));
+        $this->assertSame($expect['string'], $string);
+        $this->assertSame($expect['offset'], $offset);
     }
 }
 

@@ -14,10 +14,6 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Ldif\Traits;
 
 use Korowai\Lib\Ldif\Traits\ParsesDnSpec;
-use Korowai\Lib\Ldif\Traits\ParsesWithRfcRule;
-use Korowai\Lib\Ldif\Traits\MatchesPatterns;
-use Korowai\Lib\Ldif\Traits\SkipsWhitespaces;
-use Korowai\Lib\Ldif\Traits\ParsesStrings;
 use Korowai\Testing\Lib\Ldif\TestCase;
 
 /**
@@ -29,9 +25,6 @@ class ParsesDnSpecTest extends TestCase
     {
         return new class {
             use ParsesDnSpec { parseMatchedDn as public; }
-            use ParsesWithRfcRule;
-            use MatchesPatterns;
-            use ParsesStrings;
         };
     }
 

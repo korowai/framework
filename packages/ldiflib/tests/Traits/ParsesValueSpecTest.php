@@ -13,9 +13,7 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldif\Traits;
 
-use Korowai\Lib\Ldif\Traits\MatchesPatterns;
 use Korowai\Lib\Ldif\Traits\ParsesValueSpec;
-use Korowai\Lib\Ldif\Traits\ParsesStrings;
 use Korowai\Testing\Lib\Ldif\TestCase;
 
 /**
@@ -23,16 +21,9 @@ use Korowai\Testing\Lib\Ldif\TestCase;
  */
 class ParsesValueSpecTest extends TestCase
 {
-    public function test__dummy()
-    {
-        $this->assertTrue(true);
-    }
-
     public function getTestObject()
     {
         return new class {
-            use MatchesPatterns;
-            use ParsesStrings;
             use ParsesValueSpec { parseMatchedValueSpec as public; }
         };
     }

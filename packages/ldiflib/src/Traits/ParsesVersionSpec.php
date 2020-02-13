@@ -16,15 +16,13 @@ namespace Korowai\Lib\Ldif\Traits;
 use Korowai\Lib\Ldif\ParserStateInterface as State;
 use Korowai\Lib\Rfc\Rfc2849x;
 use Korowai\Lib\Rfc\Rule;
-use Korowai\Lib\Rfc\RuleInterface;
+use function Korowai\Lib\Ldif\parseWithRfcRule;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
 trait ParsesVersionSpec
 {
-    abstract public function parseWithRfcRule(State $state, RuleInterface $rule, callable $completion, &$value = null);
-
     /**
      * Parses version-spec as defined in [RFC 2849](https://tools.ietf.org/html/rfc2849).
      *
@@ -41,7 +39,7 @@ trait ParsesVersionSpec
     public function parseVersionSpec(State $state, int &$version = null, bool $tryOnly = false) : bool
     {
         $rule = new Rule(Rfc2849x::class, 'VERSION_SPEC_X', $tryOnly);
-        return $this->parseWithRfcRule($state, $rule, [$this, 'parseMatchedVersionNumber'], $version);
+        return parseWithRfcRule($state, $rule, [$this, 'parseMatchedVersionNumber'], $version);
     }
 
     /**

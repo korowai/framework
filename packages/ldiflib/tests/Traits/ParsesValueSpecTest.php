@@ -102,7 +102,8 @@ class ParsesValueSpecTest extends TestCase
             'value_url' => [
                 'source' => ['file:///home/jsmith/foo.txt', 121],
                 'matches' => [
-                    'value_url' => ['file:///home/jsmith/foo.txt', 123]
+                    'value_url' => ['file:///home/jsmith/foo.txt', 123],
+                    'uri' => ['file:///home/jsmith/foo.txt', 123],
                 ],
                 'expect' => [
                     'result' => true,
@@ -116,7 +117,7 @@ class ParsesValueSpecTest extends TestCase
                     ]
                 ]
             ],
-            'internal_error' => [
+            'value_internal_error' => [
                 'source' => ['file:///home/jsmith/foo.txt', 121],
                 'matches' => [
                     'value_b64' => ['xyz', -1],

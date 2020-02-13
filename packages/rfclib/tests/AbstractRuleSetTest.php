@@ -135,7 +135,7 @@ class AbstractRuleSetTest extends TestCase
                 []
             ],
             [
-                ['foo' => 'FOO', 'bar' => null, 'geez' => [null, -1], 'emptys' => '', 'emptya' => ['', 0]],
+                ['foo' => 'FOO', 'bar' => null, 'baz' => [null, -1], 'emptys' => '', 'emptya' => ['', 0]],
                 ['foo' => 'FOO', 'emptys' => '', 'emptya' => ['', 0]]
             ],
         ];

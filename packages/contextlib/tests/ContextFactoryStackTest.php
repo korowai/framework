@@ -115,7 +115,7 @@ class ContextFactoryStackTest extends TestCase
 
         $f0->expects($this->exactly(3))
            ->method('getContextManager')
-           ->withConsecutive(['foo'], ['foo'], ['geez'])
+           ->withConsecutive(['foo'], ['foo'], ['baz'])
            ->willReturn($cm0);
         $f1->expects($this->once())
            ->method('getContextManager')
@@ -123,7 +123,7 @@ class ContextFactoryStackTest extends TestCase
            ->willReturn($cm1);
         $f2->expects($this->once())
            ->method('getContextManager')
-           ->with('geez')
+           ->with('baz')
            ->willReturn(null);
 
         $stack = ContextFactoryStack::getInstance();
@@ -139,7 +139,7 @@ class ContextFactoryStackTest extends TestCase
         $this->assertSame($cm0, $stack->getContextManager('foo'));
 
         $stack->push($f2);
-        $this->assertSame($cm0, $stack->getContextManager('geez'));
+        $this->assertSame($cm0, $stack->getContextManager('baz'));
     }
 }
 

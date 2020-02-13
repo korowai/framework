@@ -48,8 +48,8 @@ class PregTest extends TestCase
 
     public function test__callPregFunc()
     {
-        $this->assertSame(1, Preg::callPregFunc('\preg_match', ['/bar/', 'foo bar geez']));
-        $this->assertSame(0, Preg::callPregFunc('\preg_match', ['/bob/', 'foo bar geez']));
+        $this->assertSame(1, Preg::callPregFunc('\preg_match', ['/bar/', 'foo bar baz']));
+        $this->assertSame(0, Preg::callPregFunc('\preg_match', ['/bob/', 'foo bar baz']));
     }
 
     public function test__callPregFunc__triggeredError()

@@ -33,11 +33,11 @@ class FunctionsTest extends TestCase
 {
     public function test__preg_filter()
     {
-        $this->assertSame('foo bar', preg_filter('/geez/', 'bar', 'foo geez'));
-        $this->assertNull(preg_filter('/asdf/', 'bar', 'foo geez'));
-        $this->assertSame(['foo bar'], preg_filter(['/geez/'], ['bar'], ['foo geez']));
-        $this->assertSame('foo bar geez', preg_filter('/geez/', 'bar', 'foo geez geez', 1));
-        $this->assertSame('foo bar geez', preg_filter('/geez/', 'bar', 'foo geez geez', 1, $count));
+        $this->assertSame('foo bar', preg_filter('/baz/', 'bar', 'foo baz'));
+        $this->assertNull(preg_filter('/asdf/', 'bar', 'foo baz'));
+        $this->assertSame(['foo bar'], preg_filter(['/baz/'], ['bar'], ['foo baz']));
+        $this->assertSame('foo bar baz', preg_filter('/baz/', 'bar', 'foo baz baz', 1));
+        $this->assertSame('foo bar baz', preg_filter('/baz/', 'bar', 'foo baz baz', 1, $count));
         $this->assertSame(1, $count);
     }
 
@@ -73,8 +73,8 @@ class FunctionsTest extends TestCase
 
     public function test__preg_grep()
     {
-        $this->assertSame([1 => 'foo geez'], preg_grep('/geez/', ['bar', 'foo geez']));
-        $this->assertSame([0 => 'bar'], preg_grep('/geez/', ['bar', 'foo geez'], PREG_GREP_INVERT));
+        $this->assertSame([1 => 'foo baz'], preg_grep('/baz/', ['bar', 'foo baz']));
+        $this->assertSame([0 => 'bar'], preg_grep('/baz/', ['bar', 'foo baz'], PREG_GREP_INVERT));
     }
 
     public function test__preg_grep__triggeredError()
@@ -109,19 +109,19 @@ class FunctionsTest extends TestCase
 
     public function test__preg_match()
     {
-        $this->assertSame(1, preg_match('/bar/', 'foo bar geez bar'));
-        $this->assertSame(0, preg_match('/bob/', 'foo bar geez bar'));
+        $this->assertSame(1, preg_match('/bar/', 'foo bar baz bar'));
+        $this->assertSame(0, preg_match('/bob/', 'foo bar baz bar'));
 
-        $this->assertSame(1, preg_match('/b(a)r/', 'foo bar geez bar', $matches));
+        $this->assertSame(1, preg_match('/b(a)r/', 'foo bar baz bar', $matches));
         $this->assertSame(['bar', 'a'], $matches);
 
-        $this->assertSame(1, preg_match('/b(a)r/', 'foo bar geez bar', $matches, PREG_OFFSET_CAPTURE));
+        $this->assertSame(1, preg_match('/b(a)r/', 'foo bar baz bar', $matches, PREG_OFFSET_CAPTURE));
         $this->assertSame([['bar', 4], ['a', 5]], $matches);
 
-        $this->assertSame(1, preg_match('/b(a)r/', 'foo bar geez bar', $matches, PREG_OFFSET_CAPTURE, 2));
+        $this->assertSame(1, preg_match('/b(a)r/', 'foo bar baz bar', $matches, PREG_OFFSET_CAPTURE, 2));
         $this->assertSame([['bar', 4], ['a', 5]], $matches);
 
-        $this->assertSame(0, preg_match('/b(a)r/', 'foo bar geez', $matches, PREG_OFFSET_CAPTURE, 5));
+        $this->assertSame(0, preg_match('/b(a)r/', 'foo bar baz', $matches, PREG_OFFSET_CAPTURE, 5));
     }
 
     public function test__preg_match__triggeredError()
@@ -156,21 +156,21 @@ class FunctionsTest extends TestCase
 
     public function test__preg_match_all()
     {
-        $this->assertSame(2, preg_match_all('/bar/', 'foo bar geez bar'));
-        $this->assertSame(0, preg_match_all('/bob/', 'foo bar geez bar'));
+        $this->assertSame(2, preg_match_all('/bar/', 'foo bar baz bar'));
+        $this->assertSame(0, preg_match_all('/bob/', 'foo bar baz bar'));
 
-        $this->assertSame(2, preg_match_all('/b(a)r/', 'foo bar geez bar', $matches));
+        $this->assertSame(2, preg_match_all('/b(a)r/', 'foo bar baz bar', $matches));
         $this->assertSame([['bar', 'bar'], ['a', 'a']], $matches);
 
         $flags = PREG_OFFSET_CAPTURE|PREG_PATTERN_ORDER;
-        $this->assertSame(2, preg_match_all('/b(a)r/', 'foo bar geez bar', $matches, $flags));
-        $this->assertSame([[['bar', 4], ['bar', 13]], [['a', 5],['a',14]]], $matches);
+        $this->assertSame(2, preg_match_all('/b(a)r/', 'foo bar baz bar', $matches, $flags));
+        $this->assertSame([[['bar', 4], ['bar', 12]], [['a', 5],['a',13]]], $matches);
 
-        $this->assertSame(2, preg_match_all('/b(a)r/', 'foo bar geez bar', $matches, $flags, 2));
-        $this->assertSame([[['bar', 4], ['bar', 13]], [['a', 5],['a',14]]], $matches);
+        $this->assertSame(2, preg_match_all('/b(a)r/', 'foo bar baz bar', $matches, $flags, 2));
+        $this->assertSame([[['bar', 4], ['bar', 12]], [['a', 5],['a',13]]], $matches);
 
-        $this->assertSame(1, preg_match_all('/b(a)r/', 'foo bar geez bar', $matches, $flags, 5));
-        $this->assertSame([[['bar', 13]], [['a',14]]], $matches);
+        $this->assertSame(1, preg_match_all('/b(a)r/', 'foo bar baz bar', $matches, $flags, 5));
+        $this->assertSame([[['bar', 12]], [['a',13]]], $matches);
     }
 
     public function test__preg_match_all__triggeredError()
@@ -205,10 +205,10 @@ class FunctionsTest extends TestCase
 
     public function test__preg_replace()
     {
-        $this->assertSame('foo bar', preg_replace('/geez/', 'bar', 'foo geez'));
-        $this->assertSame(['foo bar'], preg_replace(['/geez/'], ['bar'], ['foo geez']));
-        $this->assertSame('foo bar geez', preg_replace('/geez/', 'bar', 'foo geez geez', 1));
-        $this->assertSame('foo bar geez', preg_replace('/geez/', 'bar', 'foo geez geez', 1, $count));
+        $this->assertSame('foo bar', preg_replace('/baz/', 'bar', 'foo baz'));
+        $this->assertSame(['foo bar'], preg_replace(['/baz/'], ['bar'], ['foo baz']));
+        $this->assertSame('foo bar baz', preg_replace('/baz/', 'bar', 'foo baz baz', 1));
+        $this->assertSame('foo bar baz', preg_replace('/baz/', 'bar', 'foo baz baz', 1, $count));
         $this->assertSame(1, $count);
     }
 
@@ -246,9 +246,9 @@ class FunctionsTest extends TestCase
     {
         $cb = function (array $matches) : string { return 'bar'; };
 
-        $this->assertSame('foo bar', preg_replace_callback('/geez/', $cb, 'foo geez'));
-        $this->assertSame('foo bar geez', preg_replace_callback('/geez/', $cb, 'foo geez geez', 1));
-        $this->assertSame('foo bar geez', preg_replace_callback('/geez/', $cb, 'foo geez geez', 1, $count));
+        $this->assertSame('foo bar', preg_replace_callback('/baz/', $cb, 'foo baz'));
+        $this->assertSame('foo bar baz', preg_replace_callback('/baz/', $cb, 'foo baz baz', 1));
+        $this->assertSame('foo bar baz', preg_replace_callback('/baz/', $cb, 'foo baz baz', 1, $count));
         $this->assertSame(1, $count);
     }
 
@@ -286,11 +286,11 @@ class FunctionsTest extends TestCase
 
     public function test__preg_replace_callback_array()
     {
-        $pac = ['/geez/' => function (array $matches) : string { return 'bar'; }];
+        $pac = ['/baz/' => function (array $matches) : string { return 'bar'; }];
 
-        $this->assertSame('foo bar', preg_replace_callback_array($pac, 'foo geez'));
-        $this->assertSame('foo bar geez', preg_replace_callback_array($pac, 'foo geez geez', 1));
-        $this->assertSame('foo bar geez', preg_replace_callback_array($pac, 'foo geez geez', 1, $count));
+        $this->assertSame('foo bar', preg_replace_callback_array($pac, 'foo baz'));
+        $this->assertSame('foo bar baz', preg_replace_callback_array($pac, 'foo baz baz', 1));
+        $this->assertSame('foo bar baz', preg_replace_callback_array($pac, 'foo baz baz', 1, $count));
         $this->assertSame(1, $count);
     }
 
@@ -328,10 +328,10 @@ class FunctionsTest extends TestCase
 
     public function test__preg_split()
     {
-        $this->assertSame(['foo', 'bar', '', 'geez'], preg_split('/ /', 'foo bar  geez'));
-        $this->assertSame(['foo', 'bar', '', 'geez'], preg_split('/ /', 'foo bar  geez', -1));
-        $this->assertSame(['foo', 'bar  geez'], preg_split('/ /', 'foo bar  geez', 2));
-        $this->assertSame(['foo', 'bar', 'geez'], preg_split('/ /', 'foo bar  geez', -1, PREG_SPLIT_NO_EMPTY));
+        $this->assertSame(['foo', 'bar', '', 'baz'], preg_split('/ /', 'foo bar  baz'));
+        $this->assertSame(['foo', 'bar', '', 'baz'], preg_split('/ /', 'foo bar  baz', -1));
+        $this->assertSame(['foo', 'bar  baz'], preg_split('/ /', 'foo bar  baz', 2));
+        $this->assertSame(['foo', 'bar', 'baz'], preg_split('/ /', 'foo bar  baz', -1, PREG_SPLIT_NO_EMPTY));
     }
 
     public function test__preg_split__triggeredError()

@@ -235,7 +235,7 @@ class ResultTest extends TestCase
             new ResultEntry('dc=b', ['bar' => 'BAR-b'])
         ];
         $references = [
-            new ResultReference('dc=c', ['geez'])
+            new ResultReference('dc=c', ['baz'])
         ];
 
         $config = ['entries' => $entries, 'references' => $references];
@@ -253,7 +253,7 @@ class ResultTest extends TestCase
             new ResultEntry('dc=b', ['bar' => 'BAR-b'])
         ];
         $references = [
-            new ResultReference('dc=c', ['geez'])
+            new ResultReference('dc=c', ['baz'])
         ];
 
         $config = array_merge($entries, ['references' => $references]);
@@ -315,7 +315,7 @@ class ResultTest extends TestCase
             new ResultEntry('dc=b', ['bar' => 'BAR-b'])
         ];
         $references = [
-            new ResultReference('dc=c', ['geez'])
+            new ResultReference('dc=c', ['baz'])
         ];
 
         $config = array_merge($entries, ['references' => $references]);

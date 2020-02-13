@@ -85,9 +85,9 @@ class MatchesPatternsTest extends TestCase
         return [
             [['//', ''], ['']],
             [['/foo/', 'asdf asdf'], []],
-            [['/(\w+)bar/', 'foo rabarbar geez'], ['rabarbar', 'rabar']],
-            [['/(\w+)bar/', 'foo rabarbar geez', PREG_OFFSET_CAPTURE], [['rabarbar', 4], ['rabar', 4]]],
-            [['/(\w+)bar/', 'foo rabarbar geez', 0, 6], ['barbar', 'bar']],
+            [['/(\w+)bar/', 'foo rabarbar baz'], ['rabarbar', 'rabar']],
+            [['/(\w+)bar/', 'foo rabarbar baz', PREG_OFFSET_CAPTURE], [['rabarbar', 4], ['rabar', 4]]],
+            [['/(\w+)bar/', 'foo rabarbar baz', 0, 6], ['barbar', 'bar']],
         ];
     }
 
@@ -130,9 +130,9 @@ class MatchesPatternsTest extends TestCase
         return [
             [['//', ''], [['', 0]], 0],
             [['/foo/', 'asdf asdf'], []],
-            [['/(\w+)bar/', 'foo rabarbar geez'], [['rabarbar', 4], ['rabar', 4]], 12],
-            [['/(\w+)bar/', 'foo rabarbar geez', PREG_OFFSET_CAPTURE], [['rabarbar', 4], ['rabar', 4]], 12],
-            [['/(\w+)bar/', 'foo rabarbar geez', 0, 6], [['barbar', 6], ['bar', 6]], 12],
+            [['/(\w+)bar/', 'foo rabarbar baz'], [['rabarbar', 4], ['rabar', 4]], 12],
+            [['/(\w+)bar/', 'foo rabarbar baz', PREG_OFFSET_CAPTURE], [['rabarbar', 4], ['rabar', 4]], 12],
+            [['/(\w+)bar/', 'foo rabarbar baz', 0, 6], [['barbar', 6], ['bar', 6]], 12],
         ];
     }
 

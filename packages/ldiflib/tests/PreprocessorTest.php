@@ -43,8 +43,8 @@ class PreprocessorTest extends TestCase
 
             [
                 '/foo/',
-                'bar geez',
-                'bar geez',
+                'bar baz',
+                'bar baz',
                 new IndexMap([[0,0]])
             ],
 

@@ -99,11 +99,11 @@ class WithContextExecutorTest extends TestCase
             function (array $arg1, array $arg2) use (&$out1, &$out2) {
                 $out1 = $arg1;
                 $out2 = $arg2;
-                return 'geez';
+                return 'baz';
             }
         );
 
-        $this->assertEquals('geez', $retval);
+        $this->assertEquals('baz', $retval);
 
         $this->assertSame($in1, $out1);
         $this->assertSame($in2, $out2);

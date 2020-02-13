@@ -747,7 +747,7 @@ class ResourceContextManagerTest extends TestCase
         $this->getFunctionMock('Korowai\\Lib\\Context', 'stream_get_meta_data')
              ->expects($this->once())
              ->with('foo')
-             ->willReturn(['stream_type' => 'geez']);
+             ->willReturn(['stream_type' => 'baz']);
         $this->assertEquals('\\fclose', $cm->getResourceDestructor('foo'));
     }
 

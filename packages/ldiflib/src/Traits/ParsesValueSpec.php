@@ -16,9 +16,8 @@ namespace Korowai\Lib\Ldif\Traits;
 use Korowai\Lib\Ldif\ParserStateInterface as State;
 use Korowai\Lib\Rfc\Rfc3986;
 use Korowai\Lib\Rfc\Rfc8089;
-use function Korowai\Lib\Ldif\parseBase64Decode;
-use function Korowai\Lib\Ldif\matched;
-use function Korowai\Lib\Ldif\matchString;
+use Korowai\Lib\Ldif\Parse;
+use Korowai\Lib\Ldif\Scan;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -36,16 +35,16 @@ trait ParsesValueSpec
      */
     protected function parseMatchedValueSpec(State $state, array $matches, array &$valueSpec = null) : bool
     {
-        if (matched('value_b64', $matches, $string, $offset)) {
+        if (Scan::matched('value_b64', $matches, $string, $offset)) {
             $valueSpec['value_b64'] = $string;
-            $decoded = parseBase64Decode($state, $string, $offset);
+            $decoded = Parse::base64Decode($state, $string, $offset);
             $valueSpec['value'] = $decoded;
             return ($decoded !== null);
-        } elseif (matched('value_safe', $matches, $string, $offset)) {
+        } elseif (Scan::matched('value_safe', $matches, $string, $offset)) {
             $valueSpec['value_safe'] = $string;
             $valueSpec['value'] = $string;
             return true;
-        } elseif (matched('value_url', $matches, $string, $offset)) {
+        } elseif (Scan::matched('value_url', $matches, $string, $offset)) {
             $valueSpec['value_url'] = $string;
             return $this->parseMatchedUriReference($state, $matches, $valueSpec);
         }
@@ -67,9 +66,9 @@ trait ParsesValueSpec
      */
     protected function parseMatchedUriReference(State $state, array $matches, array &$valueSpec = null) : bool
     {
-        if (matched('uri', $matches)) {
+        if (Scan::matched('uri', $matches)) {
             return $this->parseMatchedUri($state, $matches, $valueSpec);
-        } elseif (matched('relative_ref', $matches)) {
+        } elseif (Scan::matched('relative_ref', $matches)) {
             return $this->parseMatchedRelativeRef($state, $matches, $valueSpec);
         }
 
@@ -89,13 +88,13 @@ trait ParsesValueSpec
      */
     protected function parseMatchedUri(State $state, array $matches, array &$valueSpec = null) : bool
     {
-        if (!matched('uri', $matches, $uri, $offset)) {
+        if (!Scan::matched('uri', $matches, $uri, $offset)) {
             $state->errorHere('internal error: missing or invalid capture group "uri"');
             $valueSpec = null;
             return false;
         }
 
-        if (!matched('scheme', $matches, $schemeString, $schemeOffset)) {
+        if (!Scan::matched('scheme', $matches, $schemeString, $schemeOffset)) {
             $state->errorHere('internal error: missing or invalid capture group "scheme"');
             $valueSpec = null;
             return false;
@@ -134,7 +133,7 @@ trait ParsesValueSpec
     protected function parseHandleFileUri(State $state, string $uri, int $offset, array &$valueSpec = null) : bool
     {
         $regexp = '/\G'.Rfc8089::FILE_URI.'$/';
-        if (empty($matches = matchString($regexp, $uri, PREG_OFFSET_CAPTURE|PREG_UNMATCHED_AS_NULL))) {
+        if (empty($matches = Scan::matchString($regexp, $uri, PREG_OFFSET_CAPTURE|PREG_UNMATCHED_AS_NULL))) {
             $state->errorAt($offset, 'syntax error: invalid syntax for file URI');
             return false;
         }

@@ -17,9 +17,7 @@ use Korowai\Lib\Ldif\ParserStateInterface as State;
 use Korowai\Lib\Rfc\Rfc2849x;
 use Korowai\Lib\Rfc\Rfc2253;
 use Korowai\Lib\Rfc\Rule;
-use function Korowai\Lib\Ldif\parseWithRfcRule;
-use function Korowai\Lib\Ldif\parseBase64Decode;
-use function Korowai\Lib\Ldif\parseUtf8Check;
+use Korowai\Lib\Ldif\Parse;
 use function Korowai\Lib\Compat\preg_match;
 
 /**
@@ -38,7 +36,7 @@ trait ParsesDnSpec
     public function parseDnSpec(State $state, string &$dn = null) : bool
     {
         $rule = new Rule(Rfc2849x::class, 'DN_SPEC_X');
-        return parseWithRfcRule($state, $rule, [$this, 'parseMatchedDn'], $dn);
+        return Parse::withRfcRule($state, $rule, [$this, 'parseMatchedDn'], $dn);
     }
 
     /**
@@ -81,10 +79,10 @@ trait ParsesDnSpec
      */
     protected function parseMatchedDnB64(State $state, string $string, int $offset, string &$dn = null) : bool
     {
-        if (($dn = parseBase64Decode($state, $string, $offset)) === null) {
+        if (($dn = Parse::base64Decode($state, $string, $offset)) === null) {
             return false;
         }
-        if (!parseUtf8Check($state, $dn, $offset)) {
+        if (!Parse::utf8Check($state, $dn, $offset)) {
             return false;
         }
         return $this->parseMatchedDnCheck($state, $dn, $offset);

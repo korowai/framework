@@ -48,7 +48,7 @@ class ParserState implements ParserStateInterface
     }
 
     /**
-     * {@inheritdocs}
+     * {@inheritdoc}
      */
     public function getCursor() : CursorInterface
     {
@@ -56,7 +56,7 @@ class ParserState implements ParserStateInterface
     }
 
     /**
-     * {@inheritdocs}
+     * {@inheritdoc}
      */
     public function getErrors() : array
     {
@@ -64,7 +64,7 @@ class ParserState implements ParserStateInterface
     }
 
     /**
-     * {@inheritdocs}
+     * {@inheritdoc}
      */
     public function getRecords() : array
     {

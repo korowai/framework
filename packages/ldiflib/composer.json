@@ -26,8 +26,6 @@
         "Korowai\\Lib\\Ldif\\" : "src//"
       },
       "files" : [
-        "src/functions/scanning.php",
-        "src/functions/parsing.php"
       ],
       "exclude-from-classmap": [
         "/tests/",

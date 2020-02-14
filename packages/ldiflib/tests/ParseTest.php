@@ -1,6 +1,6 @@
 <?php
 /**
- * @file tests/FunctionsTest.php
+ * @file tests/ParseTest.php
  *
  * This file is part of the Korowai package
  *
@@ -13,123 +13,16 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldif;
 
-use Korowai\Lib\Ldif\CursorInterface;
-use Korowai\Lib\Ldif\LocationInterface;
-use Korowai\Lib\Ldif\ParserStateInterface;
+use Korowai\Lib\Ldif\Parse;
 use Korowai\Lib\Rfc\Rule;
-use Korowai\Lib\Rfc\RuleInterface;
 use Korowai\Testing\Lib\Rfc\RuleSet1;
 use Korowai\Testing\Lib\Ldif\TestCase;
-
-// functions, we test here.
-use function Korowai\Lib\Ldif\matchAt;
-use function Korowai\Lib\Ldif\matchAhead;
-use function Korowai\Lib\Ldif\matchString;
-use function Korowai\Lib\Ldif\parseBase64Decode;
-use function Korowai\Lib\Ldif\parseUtf8Check;
-use function Korowai\Lib\Ldif\parseMatchRfcRule;
-use function Korowai\Lib\Ldif\parseWithRfcRule;
-use function Korowai\Lib\Ldif\matched;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class FunctionsTest extends TestCase
+class ParseTest extends TestCase
 {
-    protected function configureLocationMock(LocationInterface $location, array $case)
-    {
-        $location->expects($this->once())
-                 ->method('getString')
-                 ->with()
-                 ->willReturn($case[1]);
-        $location->expects($this->once())
-                 ->method('getOffset')
-                 ->with()
-                 ->willReturn($case[3] ?? 0);
-    }
-
-    protected function configureCursorMock(CursorInterface $cursor, array $case, ?int $expMoveTo)
-    {
-        $this->configureLocationMock($cursor, $case);
-
-        if ($expMoveTo !== null) {
-            $cursor->expects($this->once())
-                   ->method('moveTo')
-                   ->with($expMoveTo);
-        } else {
-            $cursor->expects($this->never())
-                   ->method('moveTo');
-        }
-    }
-
-    protected function createLocationMock(array $case)
-    {
-        $location = $this->getMockBuilder(LocationInterface::class)
-                         ->getMockForAbstractClass();
-        $this->configureLocationMock($location, $case);
-        return $location;
-    }
-
-    protected function createCursorMock(array $case, ?int $expMoveTo)
-    {
-        $cursor = $this->getMockBuilder(CursorInterface::class)
-                       ->getMockForAbstractClass();
-        $this->configureCursorMock($cursor, $case, $expMoveTo);
-        return $cursor;
-    }
-
-    public static function matchAt__cases()
-    {
-        return [
-            [['//', ''], ['']],
-            [['/foo/', 'asdf asdf'], []],
-            [['/(\w+)bar/', 'foo rabarbar baz'], ['rabarbar', 'rabar']],
-            [['/(\w+)bar/', 'foo rabarbar baz', PREG_OFFSET_CAPTURE], [['rabarbar', 4], ['rabar', 4]]],
-            [['/(\w+)bar/', 'foo rabarbar baz', 0, 6], ['barbar', 'bar']],
-        ];
-    }
-
-    /**
-     * @dataProvider matchAt__cases
-     */
-    public function test__matchAt(array $case, array $expected)
-    {
-        $location = $this->createLocationMock($case);
-        $this->configureLocationMock($location, $case);
-
-        $args = array_merge([$case[0], $location], count($case) > 2 ? [$case[2]] : []);
-        $this->assertSame($expected, matchAt(...$args));
-    }
-
-    public static function matchAhead__cases()
-    {
-        return [
-            [['//', ''], [['', 0]], 0],
-            [['/foo/', 'asdf asdf'], []],
-            [['/(\w+)bar/', 'foo rabarbar baz'], [['rabarbar', 4], ['rabar', 4]], 12],
-            [['/(\w+)bar/', 'foo rabarbar baz', PREG_OFFSET_CAPTURE], [['rabarbar', 4], ['rabar', 4]], 12],
-            [['/(\w+)bar/', 'foo rabarbar baz', 0, 6], [['barbar', 6], ['bar', 6]], 12],
-        ];
-    }
-
-    /**
-     * @dataProvider matchAhead__cases
-     */
-    public function test__matchAhead(array $case, array $expected, int $expMoveTo = null)
-    {
-        $cursor = $this->createCursorMock($case, $expMoveTo);
-        $args = array_merge([$case[0], $cursor], count($case) > 2 ? [$case[2]] : []);
-        $this->assertSame($expected, matchAhead(...$args));
-    }
-
-    /**
-     * @dataProvider matchAt__cases
-     */
-    public function test__matchString(array $case, array $expected)
-    {
-        $this->assertSame($expected, matchString(...$case));
-    }
-
     public static function base64Decode__cases()
     {
         return [
@@ -226,15 +119,15 @@ class FunctionsTest extends TestCase
     /**
      * @dataProvider base64Decode__cases
      */
-    public function test__parseBase64Decode(array $source, array $expect, string $string, ...$tail)
+    public function test__base64Decode(array $source, array $expect, string $string, ...$tail)
     {
         $state = $this->getParserStateFromSource(...$source);
-        $result = parseBase64Decode($state, $string, ...$tail);
+        $result = Parse::base64Decode($state, $string, ...$tail);
         $this->assertSame($expect['result'], $result);
         $this->assertParserStateHas($expect['state'], $state);
     }
 
-    public static function parseUtf8Check__cases()
+    public static function utf8Check__cases()
     {
         return [
             [
@@ -296,17 +189,17 @@ class FunctionsTest extends TestCase
     }
 
     /**
-     * @dataProvider parseUtf8Check__cases
+     * @dataProvider utf8Check__cases
      */
-    public function test__parseUtf8Check(array $source, array $expect, string $string, ...$tail)
+    public function test__utf8Check(array $source, array $expect, string $string, ...$tail)
     {
         $state = $this->getParserStateFromSource(...$source);
-        $result = parseUtf8Check($state, $string, ...$tail);
+        $result = Parse::utf8Check($state, $string, ...$tail);
         $this->assertSame($expect['result'], $result);
         $this->assertParserStateHas($expect['state'], $state);
     }
 
-    public static function parseMatchRfcRule__cases()
+    public static function matchRfcRule__cases()
     {
         return [
             [
@@ -473,22 +366,22 @@ class FunctionsTest extends TestCase
     }
 
     /**
-     * @dataProvider parseMatchRfcRule__cases
+     * @dataProvider matchRfcRule__cases
      */
     public function test__parseMatchRfcRule(array $source, array $ruleArgs, array $expect)
     {
         $state = $this->getParserStateFromSource(...$source);
         $rule = new Rule(...$ruleArgs);
-        $result = parseMatchRfcRule($state, $rule, $matches);
+        $result = Parse::matchRfcRule($state, $rule, $matches);
         $this->assertSame($expect['result'] ?? true, $result);
         $this->assertParserStateHas($expect['state'], $state);
         $this->assertHasPregCaptures($expect['matches'], $matches);
     }
 
     /**
-     * @dataProvider parseMatchRfcRule__cases
+     * @dataProvider matchRfcRule__cases
      */
-    public function test__parseWithRfcRule(array $source, array $ruleArgs, array $expect)
+    public function test__withRfcRule(array $source, array $ruleArgs, array $expect)
     {
         $state = $this->getParserStateFromSource(...$source);
         $rule = new Rule(...$ruleArgs);
@@ -510,86 +403,10 @@ class FunctionsTest extends TestCase
                  ->method('completion');
         }
 
-        $result = parseWithRfcRule($state, $rule, [$mock, 'completion'], $value);
+        $result = Parse::withRfcRule($state, $rule, [$mock, 'completion'], $value);
 
         $this->assertSame($expect['result'] ?? true, $result);
         $this->assertParserStateHas($expect['state'], $state);
-    }
-
-    public static function matched__cases()
-    {
-        return [
-            // #0
-            [
-                'key'       => 0,
-                'matches'   => [],
-                'expect'    => [
-                    'result' => false,
-                    'string' => null,
-                    'offset' => -1,
-                ]
-            ],
-            // #1
-            [
-                'key'       => 'foo',
-                'matches'   => ['bar' => ['BAR', 4]],
-                'expect'    => [
-                    'result' => false,
-                    'string' => null,
-                    'offset' => -1,
-                ]
-            ],
-            // #2
-            [
-                'key'       => 'foo',
-                'matches'   => ['foo' => null],
-                'expect'    => [
-                    'result' => false,
-                    'string' => null,
-                    'offset' => -1,
-                ]
-            ],
-            // #3
-            [
-                'key'       => 'foo',
-                'matches'   => ['foo' => [null, 4]],
-                'expect'    => [
-                    'result' => false,
-                    'string' => null,
-                    'offset' => 4,
-                ]
-            ],
-            // #4
-            [
-                'key'       => 'foo',
-                'matches'   => ['foo' => ['FOO', -2]],
-                'expect'    => [
-                    'result' => false,
-                    'string' => 'FOO',
-                    'offset' => -2,
-                ]
-            ],
-            // #5
-            [
-                'key'       => 'foo',
-                'matches'   => ['foo' => ['FOO', 3]],
-                'expect'    => [
-                    'result' => true,
-                    'string' => 'FOO',
-                    'offset' => 3,
-                ]
-            ],
-        ];
-    }
-
-    /**
-     * @dataProvider matched__cases
-     */
-    public function test__matched($key, array $matches, array $expect)
-    {
-        $this->assertSame($expect['result'], matched($key, $matches, $string, $offset));
-        $this->assertSame($expect['string'], $string);
-        $this->assertSame($expect['offset'], $offset);
     }
 }
 

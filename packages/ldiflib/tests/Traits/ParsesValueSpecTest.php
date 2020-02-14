@@ -49,7 +49,7 @@ class ParsesValueSpecTest extends TestCase
                     ]
                 ]
             ],
-            'value_b64_invalid' => [
+            'invalid value_b64' => [
                 'source' => ['::xbvDs8WCdGEgxYJ5xbxrYQ==', 121],
                 'matches' => [
                     'value_b64' => ['xbvDs8WCdGEgxYJ5xbxrYQ=', 123]
@@ -90,25 +90,40 @@ class ParsesValueSpecTest extends TestCase
                     ]
                 ]
             ],
-//            'value_url' => [
-//                'source' => ['file:///home/jsmith/foo.txt', 121],
-//                'matches' => [
-//                    'value_url' => ['file:///home/jsmith/foo.txt', 123],
-//                    'uri' => ['file:///home/jsmith/foo.txt', 123],
-//                ],
-//                'expect' => [
-//                    'result' => true,
-//                    'value' => [
-//                        'value_url' => 'file:///home/jsmith/foo.txt',
-//                    ],
-//                    'state' => [
-//                        'cursor' => ['offset' => 121],
-//                        'errors' => [],
-//                        'records' => [],
-//                    ]
-//                ]
-//            ],
-            'value_internal_error' => [
+            'value_url (file_uri)' => [
+                'source' => ['file:///home/jsmith/foo.txt', 121],
+                'matches' => [
+                    'value_url' => ['file:///home/jsmith/foo.txt', 123],
+                    'uri' => ['file:///home/jsmith/foo.txt', 123],
+                    'scheme' => ['file', 123],
+                ],
+                'expect' => [
+                    'result' => true,
+                    'value' => [
+                        'value_url' => 'file:///home/jsmith/foo.txt',
+                        'uri' => [
+                            'uri' => 'file:///home/jsmith/foo.txt',
+                            'scheme' => 'file',
+                        ],
+                        'file_uri' => [
+                            'file_uri' => 'file:///home/jsmith/foo.txt',
+                            'file_scheme' => 'file',
+                            'file_hier_part' => '///home/jsmith/foo.txt',
+                            'auth_path' => '/home/jsmith/foo.txt',
+                            'file_auth' => '',
+                            'host' => '',
+                            'reg_name' => '',
+                            'path_absolute' => '/home/jsmith/foo.txt'
+                        ],
+                    ],
+                    'state' => [
+                        'cursor' => ['offset' => 121],
+                        'errors' => [],
+                        'records' => [],
+                    ]
+                ]
+            ],
+            'missing value' => [
                 'source' => ['file:///home/jsmith/foo.txt', 121],
                 'matches' => [
                     'value_b64' => ['xyz', -1],
@@ -150,8 +165,6 @@ class ParsesValueSpecTest extends TestCase
         $this->assertSame($expect['result'], $result);
         $this->assertSame($expect['value'], $value);
         $this->assertParserStateHas($expect['state'], $state);
-
-        $this->markTestIncomplete('URLs are broken');
     }
 }
 

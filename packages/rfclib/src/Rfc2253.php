@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Korowai\Lib\Rfc;
 
 /**
- * PCRE expressions used to parse LDIF distinguished names (DNs) as defined in
- * [RFC2253](https://tools.ietf.org/html/rfc2253).
+ * Syntax rules from [RFC2253](https://tools.ietf.org/html/rfc2253)
+ * as PCRE regular expressions.
  *
  * **Example**:
  *
@@ -38,45 +38,64 @@ class Rfc2253 extends AbstractRuleSet
 
     /**
      * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):
-     * ``ALPHA =  <any ASCII alphabetic character>``;
-     * (decimal 65-90 and 97-122)
+     *
+     * ```
+     * ALPHA =  <any ASCII alphabetic character> ; (decimal 65-90 and 97-122)
+     * ```
      */
     public const ALPHA = '['.self::ALPHACHARS.']';
 
     /**
      * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):
-     * ``digit = <any ASCII decimal digit>``;
-     * (decimal 48-57)
+     *
+     * ```
+     * DIGIT = <any ASCII decimal digit> ; (decimal 48-57)
+     * ```
      */
     public const DIGIT = '['.self::DIGITCHARS.']';
 
     /**
      * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):
-     * ``hexchar = DIGIT / "A" / "B" / "C" / "D" / "E" / "F" / "a" / "b" / "c" / "d" / "e" / "f"``
+     *
+     * ```
+     * hexchar = DIGIT / "A" / "B" / "C" / "D" / "E" / "F" / "a" / "b" / "c" / "d" / "e" / "f"
+     * ```
      */
     public const HEXCHAR = '['.self::HEXDIGCHARS.']';
 
     /**
      * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):
-     * ``special = "," / "=" / "+" / "<" /  ">" / "#" / ";"``
+     *
+     * ```
+     * special = "," / "=" / "+" / "<" /  ">" / "#" / ";"
+     * ```
      */
     public const SPECIAL = '['.self::SPECIALCHARS.']';
 
     /**
      * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):
-     * ``keychar = ALPHA / DIGIT / "-"``
+     *
+     * ```
+     * keychar = ALPHA / DIGIT / "-"
+     * ```
      */
     public const KEYCHAR = '['.self::KEYCHARCHARS.']';
 
     /**
      * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):
-     * ``stringchar = <any character except one of special, "\" or QUOTATION >``
+     *
+     * ```
+     * stringchar = <any character except one of special, "\" or QUOTATION >
+     * ```
      */
     public const STRINGCHAR = '[^'.self::SPECIALCHARS.'\\\\"]';
 
     /**
      * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):
-     * ``quotechar = <any character except "\" or QUOTATION >``
+     *
+     * ```
+     * quotechar = <any character except "\" or QUOTATION >
+     * ```
      */
     public const QUOTECHAR = '[^\\\\"]';
 
@@ -86,31 +105,46 @@ class Rfc2253 extends AbstractRuleSet
 
     /**
      * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):
-     * ``hexpair = hexchar hexchar``
+     *
+     * ```
+     * hexpair = hexchar hexchar
+     * ```
      */
     public const HEXPAIR = '(?:'.self::HEXCHAR.self::HEXCHAR.')';
 
     /**
      * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):
-     * ``string_hex  = 1*hexpair``
+     *
+     * ```
+     * string_hex  = 1*hexpair
+     * ```
      */
     public const HEXSTRING = '(?:'.self::HEXPAIR.'+)';
 
     /**
      * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):
-     * ``pair = "\" ( special / "\" / QUOTATION / hexpair )``
+     *
+     * ```
+     * pair = "\" ( special / "\" / QUOTATION / hexpair )
+     * ```
      */
     public const PAIR = '(?:\\\\(?:['.self::SPECIALCHARS.'\\\\"]|'.self::HEXPAIR.'))';
 
     /**
      * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):
-     * ``oid = 1*DIGIT *("." 1*DIGIT)``
+     *
+     * ```
+     * oid = 1*DIGIT *("." 1*DIGIT)
+     * ```
      */
     public const OID = '(?:'.self::DIGIT.'+(?:\.'.self::DIGIT.'+)*)';
 
     /**
      * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):
-     * ``string = *( stringchar / pair ) / "#" string_hex / QUOTATION *( quotechar / pair ) QUOTATION``
+     *
+     * ```
+     * string = *( stringchar / pair ) / "#" string_hex / QUOTATION *( quotechar / pair ) QUOTATION
+     * ```
      */
     public const STRING =
         '(?:'.
@@ -123,13 +157,19 @@ class Rfc2253 extends AbstractRuleSet
 
     /**
      * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):
-     * ``attributeValue = string``
+     *
+     * ```
+     * attributeValue = string
+     * ```
      */
     public const ATTRIBUTE_VALUE = self::STRING;
 
     /**
      * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):
-     * ``attributeType = (ALPHA 1*keychar) / oid``
+     *
+     * ```
+     * attributeType = (ALPHA 1*keychar) / oid
+     * ```
      */
     public const ATTRIBUTE_TYPE =
         '(?:'.
@@ -140,33 +180,47 @@ class Rfc2253 extends AbstractRuleSet
 
     /**
      * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):
-     * ``attributeTypeAndValue = attributeType "=" attributeValue``
+     *
+     * ```
+     * attributeTypeAndValue = attributeType "=" attributeValue
+     * ```
      */
     public const ATTRIBUTE_TYPE_AND_VALUE = '(?:'.self::ATTRIBUTE_TYPE.'='.self::ATTRIBUTE_VALUE.')';
 
     /**
      * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):
-     * ``name-component = attributeTypeAndValue *("+" attributeTypeAndValue)``
+     *
+     * ```
+     * name-component = attributeTypeAndValue *("+" attributeTypeAndValue)
+     * ```
      */
     public const NAME_COMPONENT = '(?:'.self::ATTRIBUTE_TYPE_AND_VALUE.'(?:\+'.self::ATTRIBUTE_TYPE_AND_VALUE.')*)';
 
     /**
      * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):
-     * ``name               = name-component *("," name-component)``
+     *
+     * ```
+     * name = name-component *("," name-component)
+     * ```
      */
     public const NAME = '(?:'.self::NAME_COMPONENT.'(?:,'.self::NAME_COMPONENT.')*)';
 
     /**
      * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):
-     * ``distinguishedName = [name]``;
-     * may be empty string
+     *
+     * ```
+     * distinguishedName = [name] ; may be empty string
+     * ```
      *
      * Capture groups:
      *
-     *  - *dn*: always set, contains the whole matched string (possibly empty).
+     *  - ``dn``.
      */
     public const DISTINGUISHED_NAME = '(?<dn>'.self::NAME.'?)';
 
+    /**
+     * Names of RFC2253 rules.
+     */
     protected static $rfc2253Rules = [
         'ALPHACHARS',
         'DIGITCHARS',

@@ -26,7 +26,7 @@ use function Korowai\Lib\Ldif\matchString;
 trait ParsesValueSpec
 {
     /**
-     * Completes value-spec parsing (the Rfc2849x::VALUE_SPEC_X rule).
+     * Completion callback for the Rfc2849x::VALUE_SPEC_X rule.
      *
      * @param  State $state
      * @param  array $matches
@@ -57,8 +57,7 @@ trait ParsesValueSpec
     }
 
     /**
-     * Completes value-spec parsing (the Rfc2849x::VALUE_SPEC_X rule) when
-     * matched Rfc3986::URI_REFERENCE type.
+     * Completion callback for the Rfc3986::URI_REFERENCE rule.
      *
      * @param  State $state
      * @param  array $matches
@@ -68,9 +67,9 @@ trait ParsesValueSpec
      */
     protected function parseMatchedUriReference(State $state, array $matches, array &$valueSpec = null) : bool
     {
-        if (matched('uri', $matches, $string, $offset)) {
+        if (matched('uri', $matches)) {
             return $this->parseMatchedUri($state, $matches, $valueSpec);
-        } elseif (matched('relative_ref', $matches, $string, $offset)) {
+        } elseif (matched('relative_ref', $matches)) {
             return $this->parseMatchedRelativeRef($state, $matches, $valueSpec);
         }
 
@@ -80,31 +79,48 @@ trait ParsesValueSpec
     }
 
     /**
-     * @todo Write documentation.
+     * Completion callback for the Rfc3986::URI rule.
+     *
+     * @param  State $state
+     * @param  array $matches
+     * @param  array $valueSpec
+     *
+     * @return bool
      */
     protected function parseMatchedUri(State $state, array $matches, array &$valueSpec = null) : bool
     {
-        $valueSpec['uri'] = array_map('reset', Rfc3986::findCapturedValues('URI', $matches));
-
-        if (matched('scheme', $matches, $schemeString, $schemeOffset)) {
-            matched('uri', $matches, $uri, $offset);
-            switch ($schemeString) {
-                case 'file':
-                    return $this->parseMatchedFileUri($state, $uri, $offset, $valueSpec);
-                default:
-                    $state->errorAt($schemeOffset, 'syntax error: unsupported URI scheme "'.$schemeString.'"');
-                    //$valueSpec = null;
-                    return false;
-            }
+        if (!matched('uri', $matches, $uri, $offset)) {
+            $state->errorHere('internal error: missing or invalid capture group "uri"');
+            $valueSpec = null;
+            return false;
         }
 
-        $state->errorHere('internal error: missing or invalid capture group "scheme"');
-        $valueSpec = null;
-        return false;
+        if (!matched('scheme', $matches, $schemeString, $schemeOffset)) {
+            $state->errorHere('internal error: missing or invalid capture group "scheme"');
+            $valueSpec = null;
+            return false;
+        }
+
+        $valueSpec['uri'] = array_map('reset', Rfc3986::findCapturedValues('URI', $matches));
+
+        switch ($schemeString) {
+            case 'file':
+                return $this->parseHandleFileUri($state, $uri, $offset, $valueSpec);
+            default:
+                $state->errorAt($schemeOffset, 'syntax error: unsupported URI scheme "'.$schemeString.'"');
+                //$valueSpec = null;
+                return false;
+        }
     }
 
     /**
-     * @todo Write documentation.
+     * Completion callback for the Rfc3986::RELATIVE_REF rule.
+     *
+     * @param  State $state
+     * @param  array $matches
+     * @param  array $valueSpec
+     *
+     * @return bool
      */
     protected function parseMatchedRelativeRef(State $state, array $matches, array &$valueSpec = null) : bool
     {
@@ -113,12 +129,12 @@ trait ParsesValueSpec
     }
 
     /**
-     * @todo Write documentation.
+     * Completion callback for the Rfc8089::FILE_URI
      */
-    protected function parseMatchedFileUri(State $state, string $uri, int $offset, array &$valueSpec = null) : bool
+    protected function parseHandleFileUri(State $state, string $uri, int $offset, array &$valueSpec = null) : bool
     {
-        $matches = matchString('/\G'.Rfc8089::FILE_URI.'$/', $uri, PREG_OFFSET_CAPTURE|PREG_UNMATCHED_AS_NULL);
-        if (empty($matches)) {
+        $regexp = '/\G'.Rfc8089::FILE_URI.'$/';
+        if (empty($matches = matchString($regexp, $uri, PREG_OFFSET_CAPTURE|PREG_UNMATCHED_AS_NULL))) {
             $state->errorAt($offset, 'syntax error: invalid syntax for file URI');
             return false;
         }

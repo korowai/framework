@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Korowai\Lib\Rfc;
 
 /**
- * PCRE expressions used to parse file-URIs as defined in
- * [RFC8089](https://tools.ietf.org/html/rfc8089).
+ * Syntax rules from [RFC8089](https://tools.ietf.org/html/rfc8089)
+ * as PCRE regular expressions.
  *
  * **Example**:
  *
@@ -26,7 +26,24 @@ namespace Korowai\Lib\Rfc;
 class Rfc8089 extends Rfc3986
 {
     /**
-     * Matches the [auth-path](https://tools.ietf.org/html/rfc8089#section-2) component of file-hier-part.
+     * [RFC8089](https://tools.ietf.org/html/rfc8089#section-2):
+     *
+     * ```
+     * file-auth = "localhost"
+     *           / host
+     * ```
+     *
+     * Captures:
+     *
+     * - ``file_auth``,
+     *      - ``host``.
+     *        - ``ip_literal``,
+     *          - ``ipv6address``,
+     *          - ``ls32``,
+     *            - ``ipv6v4address``,
+     *          - ``ipvfuture``,
+     *        - ``ipv4address``,
+     *        - ``reg_name``.
      */
     public const FILE_AUTH =
         '(?<file_auth>'.
@@ -34,12 +51,39 @@ class Rfc8089 extends Rfc3986
         ')';
 
     /**
-     * Matches the [local-path](https://tools.ietf.org/html/rfc8089#section-2) component of file-hier-part.
+     * [RFC8089](https://tools.ietf.org/html/rfc8089#section-2):
+     *
+     * ```
+     * local-path = path-absolute
+     * ```
+     *
+     * Captures:
+     *
+     * - ``local_path``,
+     *      - ``path_absolute``.
      */
     public const LOCAL_PATH = '(?<local_path>'.self::PATH_ABSOLUTE.')';
 
     /**
-     * Matches the [auth-path](https://tools.ietf.org/html/rfc8089#section-2) component of file-hier-part.
+     * [RFC8089](https://tools.ietf.org/html/rfc8089#section-2):
+     *
+     * ```
+     * auth-path = [ file-auth ] path-absolute
+     * ```
+     *
+     * Captures:
+     *
+     * - ``auth_path``,
+     *      - ``file_auth``,
+     *           - ``host``,
+     *             - ``ip_literal``,
+     *               - ``ipv6address``,
+     *               - ``ls32``,
+     *                 - ``ipv6v4address``,
+     *               - ``ipvfuture``,
+     *             - ``ipv4address``,
+     *             - ``reg_name``,
+     *      - ``path_absolute``.
      */
     public const AUTH_PATH =
         '(?<auth_path>'.
@@ -47,7 +91,29 @@ class Rfc8089 extends Rfc3986
         ')';
 
     /**
-     * Matches the [file-hier-part](https://tools.ietf.org/html/rfc8089#section-2) component of file-URI.
+     * [RFC8089](https://tools.ietf.org/html/rfc8089#section-2):
+     *
+     * ```
+     * file-hier-part = ( "//" auth-path )
+     *                / local-path
+     * ```
+     *
+     * Captures:
+     *
+     * - ``file_hier_part``,
+     *      - ``auth_path``,
+     *          - ``file_auth``,
+     *              - ``host``,
+     *                  - ``ip_literal``,
+     *                      - ``ipv6address``,
+     *                      - ``ls32``,
+     *                          - ``ipv6v4address``,
+     *                      - ``ipvfuture``,
+     *                  - ``ipv4address``,
+     *                  - ``reg_name``,
+     *          - ``path_absolute``,
+     *      - ``local_path``,
+     *          - ``path_absolute``.
      */
     public const FILE_HIER_PART =
         '(?J)(?<file_hier_part>'.
@@ -55,12 +121,43 @@ class Rfc8089 extends Rfc3986
         ')';
 
     /**
-     * Matches the [file-scheme](https://tools.ietf.org/html/rfc8089#section-2) component of file-URI.
+     * [RFC8089](https://tools.ietf.org/html/rfc8089#section-2):
+     *
+     * ```
+     * file-scheme = "file"
+     * ```
+     *
+     * Captures:
+     *
+     * - ``file_scheme``.
      */
     public const FILE_SCHEME = '(?<file_scheme>file)';
 
     /**
-     * Matches the [file-URI](https://tools.ietf.org/html/rfc8089#section-2).
+     * [RFC8089](https://tools.ietf.org/html/rfc8089#section-2):
+     *
+     * ```
+     * file-URI = file-scheme ":" file-hier-part
+     * ```
+     *
+     * Captures:
+     *
+     * - ``file_uri``,
+     *      - ``file_scheme``,
+     *      - ``file_hier_part``,
+     *          - ``auth_path``,
+     *              - ``file_auth``,
+     *                  - ``host``,
+     *                      - ``ip_literal``,
+     *                          - ``ipv6address``,
+     *                              - ``ls32``,
+     *                                  - ``ipv6v4address``,
+     *                              - ``ipvfuture``,
+     *                          - ``ipv4address``,
+     *                          - ``reg_name``,
+     *              - ``path_absolute``,
+     *           - ``local_path``,
+     *              - ``path_absolute``.
      */
     public const FILE_URI =
         '(?<file_uri>'.

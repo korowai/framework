@@ -14,9 +14,7 @@ declare(strict_types=1);
 namespace Korowai\Lib\Rfc;
 
 /**
- * Extensions to
- * [RFC2849](https://tools.ietf.org/html/rfc2849)
- * regular expressions.
+ * Extensions to [RFC2849](https://tools.ietf.org/html/rfc2849).
  *
  * **Example**:
  *

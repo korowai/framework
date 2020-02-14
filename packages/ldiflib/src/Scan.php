@@ -24,14 +24,15 @@ class Scan {
      *
      * @param  string $pattern The pattern to search for, as a string.
      * @param  LocationInterface $location Provides the subject string and offset.
-     * @param  int $flags Flags passed to preg_match().
+     * @param  int $flags Flags passed to [preg_match()](https://www.php.net/manual/en/function.preg-match.php).
      *
      * @return array
      *      Returns an array of matches as returned by
      *      [preg_match()](https://www.php.net/manual/en/function.preg-match.php)
      *      via its argument named *$matches*.
      * @throws PregException
-     *      When preg_match() triggers an error or returns false.
+     *      When [preg_match()](https://www.php.net/manual/en/function.preg-match.php)
+     *      triggers an error or returns false.
      */
     public static function matchAt(string $pattern, LocationInterface $location, int $flags = 0) : array
     {
@@ -46,10 +47,16 @@ class Scan {
      *
      * @param  string $pattern
      * @param  CursorInterface $cursor
-     * @param  int $flags Passed to ``preg_match()`` (note: ``PREG_OFFSET_CAPTURE`` is added unconditionally).
+     * @param  int $flags
+     *      Passed to [preg_match()](https://www.php.net/manual/en/function.preg-match.php)
+     *      (note: ``PREG_OFFSET_CAPTURE`` is added unconditionally).
      *
-     * @return array Array of matches as returned by ``preg_match()``
-     * @throws PregException When error occurs in ``preg_match()``
+     * @return array
+     *      Array of matches as returned by
+     *      [preg_match()](https://www.php.net/manual/en/function.preg-match.php).
+     * @throws PregException
+     *      When [preg_match()](https://www.php.net/manual/en/function.preg-match.php)
+     *      triggers an error or returns false.
      */
     public static function matchAhead(string $pattern, CursorInterface $cursor, int $flags = 0) : array
     {
@@ -61,8 +68,9 @@ class Scan {
     }
 
     /**
-     * Matches $subject against $pattern with preg_match() and returns an array
-     * of matches (including capture groups).
+     * Matches *$subject* against *$pattern* with
+     * [preg_match()](https://www.php.net/manual/en/function.preg-match.php)
+     * and returns an array of matches (including capture groups).
      *
      * @param  string $pattern Regular expression passed to preg_match()
      * @param  string $subject Subject string passed to preg_match()
@@ -70,7 +78,12 @@ class Scan {
      * @param  int $offset Offset passed to preg_match()
      *
      * @return array
-     * @throws PregException When error occurs in ``preg_match()``
+     *      Returns an array of matches as returned by
+     *      [preg_match()](https://www.php.net/manual/en/function.preg-match.php)
+     *      via its argument named *$matches*.
+     * @throws PregException
+     *      When [preg_match()](https://www.php.net/manual/en/function.preg-match.php)
+     *      triggers an error or returns false.
      */
     public static function matchString(string $pattern, string $subject, int $flags = 0, int $offset = 0) : array
     {
@@ -80,8 +93,8 @@ class Scan {
     }
 
     /**
-     * Returns true if *$matches[$key]* exists and is a two-element array containig
-     * string at offset 0 and non-negative integer at offset 1. THis corresponds to
+     * Returns true if *$matches[$key]* exists and is a two-element array containing
+     * string at offset 0 and non-negative integer at offset 1. This corresponds to
      * a PCRE capture group *$key* being matched with the flags PREG_OFFSET_CAPTURE
      * and stored in *$matches*.
      *

@@ -18,6 +18,7 @@ use Korowai\Lib\Rfc\Rfc3986;
 use Korowai\Lib\Rfc\Rfc8089;
 use Korowai\Lib\Ldif\Parse;
 use Korowai\Lib\Ldif\Scan;
+use League\Uri\Uri;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -66,80 +67,89 @@ trait ParsesValueSpec
      */
     protected function parseMatchedUriReference(State $state, array $matches, array &$valueSpec = null) : bool
     {
-        if (Scan::matched('uri', $matches)) {
-            return $this->parseMatchedUri($state, $matches, $valueSpec);
-        } elseif (Scan::matched('relative_ref', $matches)) {
-            return $this->parseMatchedRelativeRef($state, $matches, $valueSpec);
+        $matches = Rfc3986::findCapturedValues('URI_REFERENCE', $matches);
+
+        $components = array_combine(array_keys($matches), array_column($matches, 0));
+
+        if (null !== ($components['userinfo'] ?? null)) {
+            [$user, $pass] = explode(':', $components['userinfo'], 2) + [1 => null];
+            $components['user'] = $user;
+            $components['pass'] = $pass;
         }
+        $components['path'] =
+            $components['path_abempty'] ??
+            $components['path_absolute'] ??
+            $components['path_rootless'] ??
+            $components['path_noscheme'] ??
+            $components['path_empty'];
 
-        $state->errorHere('internal error: missing or invalid capture groups "uri" and "relative_ref"');
-        $valueSpec = null;
-        return false;
-    }
-
-    /**
-     * Completion callback for the Rfc3986::URI rule.
-     *
-     * @param  State $state
-     * @param  array $matches
-     * @param  array $valueSpec
-     *
-     * @return bool
-     */
-    protected function parseMatchedUri(State $state, array $matches, array &$valueSpec = null) : bool
-    {
-        if (!Scan::matched('uri', $matches, $uri, $offset)) {
-            $state->errorHere('internal error: missing or invalid capture group "uri"');
-            $valueSpec = null;
-            return false;
-        }
-
-        if (!Scan::matched('scheme', $matches, $schemeString, $schemeOffset)) {
-            $state->errorHere('internal error: missing or invalid capture group "scheme"');
-            $valueSpec = null;
-            return false;
-        }
-
-        $valueSpec['uri'] = array_map('reset', Rfc3986::findCapturedValues('URI', $matches));
-
-        switch ($schemeString) {
-            case 'file':
-                return $this->parseHandleFileUri($state, $uri, $offset, $valueSpec);
-            default:
-                $state->errorAt($schemeOffset, 'syntax error: unsupported URI scheme "'.$schemeString.'"');
-                //$valueSpec = null;
-                return false;
-        }
-    }
-
-    /**
-     * Completion callback for the Rfc3986::RELATIVE_REF rule.
-     *
-     * @param  State $state
-     * @param  array $matches
-     * @param  array $valueSpec
-     *
-     * @return bool
-     */
-    protected function parseMatchedRelativeRef(State $state, array $matches, array &$valueSpec = null) : bool
-    {
-        $valueSpec['relative_ref'] = array_map('reset', Rfc3986::findCapturedValues('RELATIVE_REF', $matches));
+        $valueSpec['uri'] = Uri::createFromComponents($components);
         return true;
     }
-
-    /**
-     * Completion callback for the Rfc8089::FILE_URI
-     */
-    protected function parseHandleFileUri(State $state, string $uri, int $offset, array &$valueSpec = null) : bool
-    {
-        $regexp = '/\G'.Rfc8089::FILE_URI.'$/';
-        if (empty($matches = Scan::matchString($regexp, $uri, PREG_OFFSET_CAPTURE|PREG_UNMATCHED_AS_NULL))) {
-            $state->errorAt($offset, 'syntax error: invalid syntax for file URI');
-            return false;
-        }
-        $valueSpec['file_uri'] = array_map('reset', Rfc8089::findCapturedValues('FILE_URI', $matches));
-        return true;
-    }
+//
+//    /**
+//     * Completion callback for the Rfc3986::URI rule.
+//     *
+//     * @param  State $state
+//     * @param  array $matches
+//     * @param  array $valueSpec
+//     *
+//     * @return bool
+//     */
+//    protected function parseMatchedUri(State $state, array $matches, array &$valueSpec = null) : bool
+//    {
+//        if (!Scan::matched('uri', $matches, $uri, $offset)) {
+//            $state->errorHere('internal error: missing or invalid capture group "uri"');
+//            $valueSpec = null;
+//            return false;
+//        }
+//
+//        if (!Scan::matched('scheme', $matches, $schemeString, $schemeOffset)) {
+//            $state->errorHere('internal error: missing or invalid capture group "scheme"');
+//            $valueSpec = null;
+//            return false;
+//        }
+//
+//        $valueSpec['uri'] = array_map('reset', Rfc3986::findCapturedValues('URI', $matches));
+//
+//        switch ($schemeString) {
+//            case 'file':
+//                return $this->parseHandleFileUri($state, $uri, $offset, $valueSpec);
+//            default:
+//                $state->errorAt($schemeOffset, 'syntax error: unsupported URI scheme "'.$schemeString.'"');
+//                //$valueSpec = null;
+//                return false;
+//        }
+//    }
+//
+//    /**
+//     * Completion callback for the Rfc3986::RELATIVE_REF rule.
+//     *
+//     * @param  State $state
+//     * @param  array $matches
+//     * @param  array $valueSpec
+//     *
+//     * @return bool
+//     */
+//    protected function parseMatchedRelativeRef(State $state, array $matches, array &$valueSpec = null) : bool
+//    {
+//        $valueSpec['relative_ref'] = array_map('reset', Rfc3986::findCapturedValues('RELATIVE_REF', $matches));
+//        return true;
+//    }
+//
+//    /**
+//     * Completion callback for the Rfc8089::FILE_URI
+//     */
+//    protected function parseHandleFileUri(State $state, string $uri, int $offset, array &$valueSpec = null) : bool
+//    {
+//        $regexp = '/\G'.Rfc8089::FILE_URI.'$/';
+//        if (empty($matches = Scan::matchString($regexp, $uri, PREG_OFFSET_CAPTURE|PREG_UNMATCHED_AS_NULL))) {
+//            $state->errorAt($offset, 'syntax error: invalid syntax for file URI');
+//            return false;
+//        }
+//        $valueSpec['file_uri'] = array_map('reset', Rfc8089::findCapturedValues('FILE_URI', $matches));
+//        return true;
+//    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

@@ -16,7 +16,8 @@ namespace Korowai\Lib\Ldif;
 use Korowai\Lib\Compat\Exception\PregException;
 use function Korowai\Lib\Compat\preg_match;
 
-class Scan {
+class Scan
+{
     /**
      * Matches the string starting at *$location* against *$pattern*. This is just
      * a wrapper around

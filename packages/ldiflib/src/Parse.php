@@ -19,7 +19,8 @@ use Korowai\Lib\Rfc\RuleInterface;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class Parse {
+class Parse
+{
     /**
      * Decodes base64-encoded string.
      *

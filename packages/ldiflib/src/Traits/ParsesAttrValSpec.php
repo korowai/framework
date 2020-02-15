@@ -61,7 +61,7 @@ trait ParsesAttrValSpec
      *
      * @return bool
      */
-    protected function parseMatchedAttrValSpec(State $state, array $matches, array &$attrValSpec = null) : bool
+    public function parseMatchedAttrValSpec(State $state, array $matches, array &$attrValSpec = null) : bool
     {
         if (($offset = $matches['attr_desc'][1] ?? -1) >= 0 &&
             ($string = $matches['attr_desc'][0] ?? null) !== null) {

@@ -18,7 +18,7 @@ use Korowai\Lib\Rfc\Rfc2849x;
 use Korowai\Lib\Rfc\Rfc2253;
 use Korowai\Lib\Rfc\Rule;
 use Korowai\Lib\Ldif\Parse;
-use function Korowai\Lib\Compat\preg_match;
+use Korowai\Lib\Ldif\Scan;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -115,7 +115,7 @@ trait ParsesDnSpec
      */
     protected function parseMatchedDnCheck(State $state, string $string, int $offset) : bool
     {
-        if (preg_match('/\G'.Rfc2253::DISTINGUISHED_NAME.'$/D', $string) === 0) {
+        if (!Scan::matchString('/\G'.Rfc2253::DISTINGUISHED_NAME.'$/D', $string)) {
             $state->errorAt($offset, 'syntax error: invalid DN syntax: \''.$string.'\'');
             return false;
         }

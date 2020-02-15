@@ -19,7 +19,8 @@
         "php": ">=7.2",
         "korowai/contracts": "*",
         "korowai/compatlib": "*",
-        "korowai/rfclib": "*"
+        "korowai/rfclib": "*",
+        "league/uri-interfaces": "^2.1"
     },
     "autoload": {
       "psr-4" : {

@@ -376,8 +376,8 @@ class Rfc3986 extends AbstractRuleSet
      *
      * - ``ip_literal``,
      *      - ``ipv6address``,
-     *      - ``ls32``,
-     *          - ``ipv6v4address``,
+     *          - ``ls32``,
+     *              - ``ipv6v4address``,
      *      - ``ipvfuture``.
      */
     public const IP_LITERAL =
@@ -413,13 +413,13 @@ class Rfc3986 extends AbstractRuleSet
      * Captures:
      *
      * - ``host``.
-     *   - ``ip_literal``,
-     *     - ``ipv6address``,
-     *     - ``ls32``,
-     *       - ``ipv6v4address``,
-     *     - ``ipvfuture``,
-     *   - ``ipv4address``,
-     *   - ``reg_name``.
+     *      - ``ip_literal``,
+     *          - ``ipv6address``,
+     *              - ``ls32``,
+     *                  - ``ipv6v4address``,
+     *          - ``ipvfuture``,
+     *      - ``ipv4address``,
+     *      - ``reg_name``.
      */
     public const HOST =
         '(?<host>'.

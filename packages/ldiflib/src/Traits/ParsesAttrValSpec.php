@@ -17,6 +17,7 @@ use Korowai\Lib\Ldif\ParserStateInterface as State;
 use Korowai\Lib\Rfc\Rfc2849x;
 use Korowai\Lib\Rfc\Rule;
 use Korowai\Lib\Ldif\Parse;
+use Korowai\Lib\Ldif\ValueInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -26,7 +27,11 @@ trait ParsesAttrValSpec
     /**
      * Implemented in [ParsesValueSpec](ParsesValueSpec.html) trait.
      */
-    abstract protected function parseMatchedValueSpec(State $state, array $matches, array &$valueSpec = null) : bool;
+    abstract protected function parseMatchedValueSpec(
+        State $state,
+        array $matches,
+        ValueInterface &$value = null
+    ) : bool;
 
     /**
      * Parses attrval-spec as defined in [RFC2849](https://tools.ietf.org/html/rfc2849).
@@ -66,6 +71,7 @@ trait ParsesAttrValSpec
         if (($offset = $matches['attr_desc'][1] ?? -1) >= 0 &&
             ($string = $matches['attr_desc'][0] ?? null) !== null) {
             $attrValSpec = ['attr_desc' => $string];
+            // FIXME: bug here (see the prototype of parseMatchedValueSpec).
             return $this->parseMatchedValueSpec($state, $matches, $attrValSpec);
         }
 

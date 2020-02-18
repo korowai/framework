@@ -95,37 +95,6 @@ class Location implements LocationInterface
         return mb_strlen($substring, ...(func_get_args()));
     }
 
-//    /**
-//     * Returns the substring on the right side of cursor.
-//     *
-//     * @param int $len substring length.
-//     *
-//     * @return string
-//     */
-//    public function getRightSubstr(int $len = null) : string
-//    {
-//        return substr($this->getString(), $this->getOffset(), ...(func_get_args()));
-//    }
-//
-//    /**
-//     * Returns the substring on the left side of cursor.
-//     *
-//     * @param int $len substring length.
-//     *
-//     * @return string
-//     */
-//    public function getLeftSubstr(int $len = null) : string
-//    {
-//        $pos = $this->getOffset();
-//        if(isset($len)) {
-//            $beg = max($pos - $len, 0);
-//        } else {
-//            $beg = 0;
-//        }
-//        $len = $pos - $beg;
-//        return substr($this->getString(), $beg, $len);
-//    }
-
     /**
      * {@inheritdoc}
      */

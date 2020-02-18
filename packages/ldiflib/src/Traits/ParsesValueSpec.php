@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Korowai\Lib\Ldif\Traits;
 
 use Korowai\Lib\Ldif\ParserStateInterface as State;
-use Korowai\Lib\Rfc\Rfc3986;
-use Korowai\Lib\Rfc\Rfc8089;
+use Korowai\Lib\Ldif\ValueInterface;
+use Korowai\Lib\Ldif\Value;
 use Korowai\Lib\Ldif\Parse;
 use Korowai\Lib\Ldif\Scan;
-use League\Uri\Uri;
+use League\Uri\Exceptions\SyntaxError as UriSyntaxError;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -30,29 +30,26 @@ trait ParsesValueSpec
      *
      * @param  State $state
      * @param  array $matches
-     * @param  array $valueSpec
+     * @param  array $value
      *
      * @return bool
      */
-    protected function parseMatchedValueSpec(State $state, array $matches, array &$valueSpec = null) : bool
+    protected function parseMatchedValueSpec(State $state, array $matches, ValueInterface &$value = null) : bool
     {
-        if (Scan::matched('value_b64', $matches, $string, $offset)) {
-            $valueSpec['value_b64'] = $string;
-            $decoded = Parse::base64Decode($state, $string, $offset);
-            $valueSpec['value'] = $decoded;
-            return ($decoded !== null);
-        } elseif (Scan::matched('value_safe', $matches, $string, $offset)) {
-            $valueSpec['value_safe'] = $string;
-            $valueSpec['value'] = $string;
+        if (Scan::matched('value_safe', $matches, $string, $offset)) {
+            $value = Value::createSafeString($string);
             return true;
+        } elseif (Scan::matched('value_b64', $matches, $string, $offset)) {
+            $decoded = Parse::base64Decode($state, $string, $offset);
+            $value = Value::createBase64String($string, $decoded);
+            return ($decoded !== null);
         } elseif (Scan::matched('value_url', $matches, $string, $offset)) {
-            $valueSpec['value_url'] = $string;
-            return $this->parseMatchedUriReference($state, $matches, $valueSpec);
+            return $this->parseMatchedUriReference($state, $matches, $value);
         }
 
         $message = 'internal error: missing or invalid capture groups "value_safe", "value_b64" and "value_url"';
         $state->errorHere($message);
-        $valueSpec = null;
+        $value = null;
         return false;
     }
 
@@ -61,95 +58,21 @@ trait ParsesValueSpec
      *
      * @param  State $state
      * @param  array $matches
-     * @param  array $valueSpec
+     * @param  array $value
      *
      * @return bool
      */
-    protected function parseMatchedUriReference(State $state, array $matches, array &$valueSpec = null) : bool
+    protected function parseMatchedUriReference(State $state, array $matches, ValueInterface &$value = null) : bool
     {
-        $matches = Rfc3986::findCapturedValues('URI_REFERENCE', $matches);
-
-        $components = array_combine(array_keys($matches), array_column($matches, 0));
-
-        if (null !== ($components['userinfo'] ?? null)) {
-            [$user, $pass] = explode(':', $components['userinfo'], 2) + [1 => null];
-            $components['user'] = $user;
-            $components['pass'] = $pass;
+        try {
+            $value = Value::createUriFromRfc3986Matches($matches);
+        } catch (UriSyntaxError $e) {
+            $state->errorAt($offset, 'syntax error: in URL: '.$e->getMessage());
+            $value = null;
+            return false;
         }
-        $components['path'] =
-            $components['path_abempty'] ??
-            $components['path_absolute'] ??
-            $components['path_rootless'] ??
-            $components['path_noscheme'] ??
-            $components['path_empty'];
-
-        $valueSpec['uri'] = Uri::createFromComponents($components);
         return true;
     }
-//
-//    /**
-//     * Completion callback for the Rfc3986::URI rule.
-//     *
-//     * @param  State $state
-//     * @param  array $matches
-//     * @param  array $valueSpec
-//     *
-//     * @return bool
-//     */
-//    protected function parseMatchedUri(State $state, array $matches, array &$valueSpec = null) : bool
-//    {
-//        if (!Scan::matched('uri', $matches, $uri, $offset)) {
-//            $state->errorHere('internal error: missing or invalid capture group "uri"');
-//            $valueSpec = null;
-//            return false;
-//        }
-//
-//        if (!Scan::matched('scheme', $matches, $schemeString, $schemeOffset)) {
-//            $state->errorHere('internal error: missing or invalid capture group "scheme"');
-//            $valueSpec = null;
-//            return false;
-//        }
-//
-//        $valueSpec['uri'] = array_map('reset', Rfc3986::findCapturedValues('URI', $matches));
-//
-//        switch ($schemeString) {
-//            case 'file':
-//                return $this->parseHandleFileUri($state, $uri, $offset, $valueSpec);
-//            default:
-//                $state->errorAt($schemeOffset, 'syntax error: unsupported URI scheme "'.$schemeString.'"');
-//                //$valueSpec = null;
-//                return false;
-//        }
-//    }
-//
-//    /**
-//     * Completion callback for the Rfc3986::RELATIVE_REF rule.
-//     *
-//     * @param  State $state
-//     * @param  array $matches
-//     * @param  array $valueSpec
-//     *
-//     * @return bool
-//     */
-//    protected function parseMatchedRelativeRef(State $state, array $matches, array &$valueSpec = null) : bool
-//    {
-//        $valueSpec['relative_ref'] = array_map('reset', Rfc3986::findCapturedValues('RELATIVE_REF', $matches));
-//        return true;
-//    }
-//
-//    /**
-//     * Completion callback for the Rfc8089::FILE_URI
-//     */
-//    protected function parseHandleFileUri(State $state, string $uri, int $offset, array &$valueSpec = null) : bool
-//    {
-//        $regexp = '/\G'.Rfc8089::FILE_URI.'$/';
-//        if (empty($matches = Scan::matchString($regexp, $uri, PREG_OFFSET_CAPTURE|PREG_UNMATCHED_AS_NULL))) {
-//            $state->errorAt($offset, 'syntax error: invalid syntax for file URI');
-//            return false;
-//        }
-//        $valueSpec['file_uri'] = array_map('reset', Rfc8089::findCapturedValues('FILE_URI', $matches));
-//        return true;
-//    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

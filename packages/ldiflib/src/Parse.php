@@ -127,20 +127,20 @@ class Parse
      *      Provides the input string, cursor, containers for errors, etc..
      * @param  RuleInterface $rule
      *      The RFC rule.
-     * @param  callable $completion
+     * @param  \Closure $completion
      *      A callback function to be invoked when the rule matches.
      * @param  mixed $value
      *      Semantic value to be returned to caller.
      *
      * @return bool Returns true on success or false on error.
      */
-    public static function withRfcRule(State $state, RuleInterface $rule, callable $completion, &$value = null) : bool
+    public static function withRfcRule(State $state, RuleInterface $rule, \Closure $completion, &$value = null) : bool
     {
         if (!static::matchRfcRule($state, $rule, $matches)) {
             $value = null;
             return false;
         }
-        return call_user_func_array($completion, [$state, $matches, &$value]);
+        return $completion($state, $matches, $value);
     }
 }
 // vim: syntax=php sw=4 ts=4 et:

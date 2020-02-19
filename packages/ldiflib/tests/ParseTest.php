@@ -403,7 +403,8 @@ class ParseTest extends TestCase
                  ->method('completion');
         }
 
-        $result = Parse::withRfcRule($state, $rule, [$mock, 'completion'], $value);
+        $completion = \Closure::fromCallable([$mock, 'completion']);
+        $result = Parse::withRfcRule($state, $rule, $completion, $value);
 
         $this->assertSame($expect['result'] ?? true, $result);
         $this->assertParserStateHas($expect['state'], $state);

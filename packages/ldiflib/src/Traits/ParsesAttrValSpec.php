@@ -19,6 +19,7 @@ use Korowai\Lib\Rfc\Rule;
 use Korowai\Lib\Ldif\Parse;
 use Korowai\Lib\Ldif\Scan;
 use Korowai\Lib\Ldif\ValueInterface;
+use Korowai\Lib\Ldif\AttrValInterface;
 use Korowai\Lib\Ldif\AttrVal;
 
 /**
@@ -54,7 +55,8 @@ trait ParsesAttrValSpec
     public function parseAttrValSpec(State $state, AttrValInterface &$attrVal = null, bool $tryOnly = false) : bool
     {
         $rule = new Rule(Rfc2849x::class, 'ATTRVAL_SPEC_X', $tryOnly);
-        return Parse::withRfcRule($state, $rule, [$this, 'parseMatchedAttrValSpec'], $attrVal);
+        $completion = \Closure::fromCallable([$this, 'parseMatchedAttrValSpec']);
+        return Parse::withRfcRule($state, $rule, $completion, $attrVal);
     }
 
     /**
@@ -66,7 +68,7 @@ trait ParsesAttrValSpec
      *
      * @return bool
      */
-    public function parseMatchedAttrValSpec(State $state, array $matches, AttrValInterface &$attrVal = null) : bool
+    protected function parseMatchedAttrValSpec(State $state, array $matches, AttrValInterface &$attrVal = null) : bool
     {
         if (Scan::matched('attr_desc', $matches, $string, $offset)) {
             if (!$this->parseMatchedValueSpec($state, $matches, $value)) {

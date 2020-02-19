@@ -15,6 +15,9 @@ namespace Korowai\Tests\Lib\Ldif\Traits;
 
 use Korowai\Lib\Ldif\Traits\ParsesAttrValSpec;
 use Korowai\Lib\Ldif\Traits\ParsesValueSpec;
+use Korowai\Lib\Ldif\AttrValInterface;
+use Korowai\Lib\Ldif\AttrVal;
+use Korowai\Lib\Ldif\Value;
 use Korowai\Testing\Lib\Ldif\TestCase;
 
 /**
@@ -30,7 +33,7 @@ class ParsesAttrValSpecTest extends TestCase
     public function getTestObject()
     {
         return new class {
-            use ParsesAttrValSpec { parseMatchedAttrValSpec as public; }
+            use ParsesAttrValSpec;// { parseMatchedAttrValSpec as public; }
             use ParsesValueSpec;
         };
     }
@@ -44,7 +47,7 @@ class ParsesAttrValSpecTest extends TestCase
                 'source' => ['', 0],
                 'tail' => [],
                 'expect' => [
-                    'initial' => ['I'],
+                    'init' => true,
                     'result' => false,
                     'value' => null,
                     'state' => [
@@ -65,7 +68,7 @@ class ParsesAttrValSpecTest extends TestCase
                 'source' => ['', 0],
                 'tail' => [true],
                 'expect' => [
-                    'initial' => ['I'],
+                    'init' => true,
                     'result' => false,
                     'value' => null,
                     'state' => [
@@ -81,7 +84,7 @@ class ParsesAttrValSpecTest extends TestCase
                 'source' => ['attrType;: FOO', 0],
                 'tail' => [true],
                 'expect' => [
-                    'initial' => ['I'],
+                    'init' => true,
                     'result' => false,
                     'value' => null,
                     'state' => [
@@ -97,7 +100,7 @@ class ParsesAttrValSpecTest extends TestCase
                 'source' => ['attrType', 0],
                 'tail' => [],
                 'expect' => [
-                    'initial' => ['I'],
+                    'init' => true,
                     'result' => false,
                     'value' => null,
                     'state' => [
@@ -118,7 +121,7 @@ class ParsesAttrValSpecTest extends TestCase
                 'source' => ['attrType', 0],
                 'tail' => [true],
                 'expect' => [
-                    'initial' => ['I'],
+                    'init' => true,
                     'result' => false,
                     'value' => null,
                     'state' => [
@@ -172,7 +175,7 @@ class ParsesAttrValSpecTest extends TestCase
                 'source' => ['attrType: FOOŁXXX', 0],
                 'tail' => [],
                 'expect' => [
-                    'initial' => ['I'],
+                    'init' => true,
                     'result' => false,
                     'value' => null,
                     'state' => [
@@ -212,7 +215,7 @@ class ParsesAttrValSpecTest extends TestCase
                 'source' => ['attrType:: xbvDł8W', 0],
                 'tail' => [],
                 'expect' => [
-                    'initial' => ['I'],
+                    'init' => true,
                     'result' => false,
                     'value' => null,
                     'state' => [
@@ -251,7 +254,7 @@ class ParsesAttrValSpecTest extends TestCase
                 'source' => ['attrType:< ##', 0],
                 'tail' => [],
                 'expect' => [
-                    'initial' => ['I'],
+                    'init' => true,
                     'result' => false,
                     'value' => null,
                     'state' => [
@@ -274,15 +277,15 @@ class ParsesAttrValSpecTest extends TestCase
      */
     public function test__parseAttrValSpec(array $source, array $tail, array $expect)
     {
-//        $parser = $this->getTestObject();
-//        $state = $this->getParserStateFromSource(...$source);
-//
-//        if (array_key_exists('initial', $expect)) {
-//            $value = $expect['initial'];
-//        }
-//
-//        $result = $parser->parseAttrValSpec($state, $value, ...$tail);
-//        $this->assertSame($expect['result'], $result);
+        $parser = $this->getTestObject();
+        $state = $this->getParserStateFromSource(...$source);
+
+        if ($expect['init'] ?? null) {
+            $value = $this->getMockBuilder(AttrValInterface::class)->getMockForAbstractClass();
+        }
+
+        $result = $parser->parseAttrValSpec($state, $value, ...$tail);
+        $this->assertSame($expect['result'], $result);
 //        $this->assertSame($expect['value'], $value);
 //        $this->assertParserStateHas($expect['state'], $state);
 //

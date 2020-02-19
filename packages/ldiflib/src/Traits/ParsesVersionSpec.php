@@ -17,6 +17,7 @@ use Korowai\Lib\Ldif\ParserStateInterface as State;
 use Korowai\Lib\Rfc\Rfc2849x;
 use Korowai\Lib\Rfc\Rule;
 use Korowai\Lib\Ldif\Parse;
+use Korowai\Lib\Ldif\Scan;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -54,9 +55,8 @@ trait ParsesVersionSpec
      */
     protected function parseMatchedVersionNumber(State $state, array $matches, int &$version = null) : bool
     {
-        if (($offset = $matches['version_number'][1] ?? -1) >= 0 &&
-            ($string = $matches['version_number'][0] ?? null) !== null) {
-            if (($number = intval($string)) === 1) {
+        if (Scan::matched('version_number', $matches, $string, $offset)) {
+            if (($number = (int)$string) === 1) {
                 $version = $number;
                 return true;
             }

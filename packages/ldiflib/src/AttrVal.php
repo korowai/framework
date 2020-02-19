@@ -14,48 +14,51 @@ declare(strict_types=1);
 namespace Korowai\Lib\Ldif;
 
 /**
- * Semantic value of RFC2849 ``attrval-spec`` rule.
+ * Semantic value of the
+ * [RFC2849](https://tools.ietf.org/html/rfc2849)
+ * attrval-spec rule.
  */
-class AttrVal implements AttrValInterface
+final class AttrVal implements AttrValInterface
 {
     /**
      * @var string
      */
-    private $attributeDescription;
+    private $attribute;
 
     /**
      * @var ValueInterface
      */
-    private $value;
+    private $valueObject;
 
     /**
      * Initializes the object.
+     *
+     * @param  string $attribute
+     *      Attribute description string consisting of attribute type and
+     *      options.
+     * @param  ValueInterface
+     *      An object encapsulating the value of the attribute.
      */
-    public function __construct(string $attributeDescription, ValueInterface $value)
+    public function __construct(string $attribute, ValueInterface $valueObject)
     {
-        $this->attributeDescription = $attributeDescription;
-        $this->value = $value;
+        $this->attribute = $attribute;
+        $this->valueObject = $valueObject;
     }
 
     /**
-     * Returns attribute-description string consisting of attribute type and
-     * options.
-     *
-     * @return string
+     * {@inheritdoc}
      */
-    public function getAttributeDescription() : string
+    public function getAttribute() : string
     {
-        return $this->attributeDescription;
+        return $this->attribute;
     }
 
     /**
-     * Returns the object representing attribute value.
-     *
-     * @return ValueInterface
+     * {@inheritdoc}
      */
-    public function getValue() : ValueInterface
+    public function getValueObject() : ValueInterface
     {
-        return $this->value;
+        return $this->valueObject;
     }
 }
 

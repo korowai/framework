@@ -17,7 +17,9 @@ use Korowai\Lib\Ldif\ParserStateInterface as State;
 use Korowai\Lib\Rfc\Rfc2849x;
 use Korowai\Lib\Rfc\Rule;
 use Korowai\Lib\Ldif\Parse;
+use Korowai\Lib\Ldif\Scan;
 use Korowai\Lib\Ldif\ValueInterface;
+use Korowai\Lib\Ldif\AttrVal;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -37,24 +39,22 @@ trait ParsesAttrValSpec
      * Parses attrval-spec as defined in [RFC2849](https://tools.ietf.org/html/rfc2849).
      *
      * @param  State $state
-     * @param  array $attrValSpec
-     *      On success returns the array with keys ``attr_desc``, ``value`` or ``value_url``,
-     *      and (if ``value`` is present) one of ``value_safe`` or
-     *      ``value_b64``. On parse error returns null.
+     * @param  AttrValInterface $attrVal
+     *      On success returns the instance of AttrValInterface.
      * @param  bool $tryOnly
      *      If false (default), then parser error is appended to *$state* when
      *      the string at current location does not match the
      *      Rfc2849x::ATTRVAL_SPEC_X pattern (i.e. there is no initial
-     *      ``<attributeDescrition>:`` substring at position). If true, the error is not
-     *      appended. Despite of the *$tryOnly* value, the function will always
-     *      return false in, if there is no match.
+     *      ``AttributeDescrition:`` substring at position). If true, the error
+     *      is not appended. Despite of the *$tryOnly* value, the function will
+     *      always return false in, if there is no match.
      *
      * @return bool Returns true on success or false on parser error.
      */
-    public function parseAttrValSpec(State $state, array &$attrValSpec = null, bool $tryOnly = false) : bool
+    public function parseAttrValSpec(State $state, AttrValInterface &$attrVal = null, bool $tryOnly = false) : bool
     {
         $rule = new Rule(Rfc2849x::class, 'ATTRVAL_SPEC_X', $tryOnly);
-        return Parse::withRfcRule($state, $rule, [$this, 'parseMatchedAttrValSpec'], $attrValSpec);
+        return Parse::withRfcRule($state, $rule, [$this, 'parseMatchedAttrValSpec'], $attrVal);
     }
 
     /**
@@ -62,22 +62,23 @@ trait ParsesAttrValSpec
      *
      * @param  State $state
      * @param  array $matches
-     * @param  array $attrValSpec
+     * @param  array $attrVal
      *
      * @return bool
      */
-    public function parseMatchedAttrValSpec(State $state, array $matches, array &$attrValSpec = null) : bool
+    public function parseMatchedAttrValSpec(State $state, array $matches, AttrValInterface &$attrVal = null) : bool
     {
-        if (($offset = $matches['attr_desc'][1] ?? -1) >= 0 &&
-            ($string = $matches['attr_desc'][0] ?? null) !== null) {
-            $attrValSpec = ['attr_desc' => $string];
-            // FIXME: bug here (see the prototype of parseMatchedValueSpec).
-            return $this->parseMatchedValueSpec($state, $matches, $attrValSpec);
+        if (Scan::matched('attr_desc', $matches, $string, $offset)) {
+            if (!$this->parseMatchedValueSpec($state, $matches, $value)) {
+                return false;
+            }
+            $attrVal = new AttrVal($string, $value);
+            return true;
         }
 
         // This may happen with broken Rfc2849x::ATTRVAL_SPEC_X rule.
         $state->errorHere('internal error: missing or invalid capture group "attr_desc"');
-        $attrValSpec = null;
+        $attrVal = null;
         return false;
     }
 }

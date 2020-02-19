@@ -19,6 +19,8 @@ use Korowai\Lib\Ldif\ParserErrorInterface;
 use Korowai\Lib\Ldif\ParserStateInterface;
 use Korowai\Lib\Ldif\RecordInterface;
 use Korowai\Lib\Ldif\SnippetInterface;
+use Korowai\Lib\Ldif\ValueInterface;
+use Korowai\Lib\Ldif\AttrValInterface;
 use Korowai\Lib\Ldif\SourceLocationInterface;
 
 // Specific records
@@ -177,6 +179,32 @@ trait ObjectPropertiesAssertions
     }
 
     /**
+     * Returns getters for Value object's properties.
+     *
+     * @return array
+     */
+    public static function getValuePropertyGetters() : array
+    {
+        return array_merge(static::getAbstractRecordPropertyGetters(), [
+            'type'                      => 'getType',
+            'value'                     => 'getValue',
+            'content'                   => 'getContent'
+        ]);
+    }
+
+    /**
+     * Returns getters for AttrVal object's properties.
+     *
+     * @return array
+     */
+    public static function getAttrValPropertyGetters() : array
+    {
+        return array_merge(static::getAbstractRecordPropertyGetters(), [
+            'attribute'                 => 'getAttribute',
+        ]);
+    }
+
+    /**
      * Assert that SourceLocationInterface *$object* has *$expected* properties.
      *
      * @param  array $expected A array of key-value pairs with expected values of attributes.
@@ -326,6 +354,46 @@ trait ObjectPropertiesAssertions
             );
         }
     }
+
+    /**
+     * Assert that ValueInterface *$object* has *$expected* properties.
+     *
+     * @param  array $expected A array of key-value pairs with expected values of attributes.
+     * @param  ValueInterface $object An object to be examined.
+     * @param  string|null $message Optional message.
+     */
+    public static function assertValueHas(
+        array $expected,
+        ValueInterface $object,
+        string $message = ''
+    ) : void {
+        $options = ['getters' => static::getValuePropertyGetters(), 'message' => $message];
+        static::assertHasPropertiesSameAs($expected, $object, $options);
+    }
+
+    /**
+     * Assert that AttrValInterface *$object* has *$expected* properties.
+     *
+     * @param  array $expected A array of key-value pairs with expected values of attributes.
+     * @param  AttrValInterface $object An object to be examined.
+     * @param  string|null $message Optional message.
+     */
+    public static function assertAttrValHas(
+        array $expected,
+        AttrValInterface $object,
+        string $message = ''
+    ) : void {
+        $expectedValues = array_filter($expected, function ($key) {
+            return $key !== 'valueObject';
+        }, ARRAY_FILTER_USE_KEY);
+        $options = ['getters' => static::getAttrValPropertyGetters(), 'message' => $message];
+        static::assertHasPropertiesSameAs($expectedValues, $object, $options);
+
+        if (array_key_exists('valueObject', $expected)) {
+            static::assertValueHas($expected['valueObject'], $object->getValueObject(), $message);
+        }
+    }
+
 
     /**
      * Asserts that all *$items* pass assertion provided as *$callback*.

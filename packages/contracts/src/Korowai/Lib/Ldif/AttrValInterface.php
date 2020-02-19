@@ -14,24 +14,27 @@ declare(strict_types=1);
 namespace Korowai\Lib\Ldif;
 
 /**
- * Interface for semantic value of RFC2849 attrval-spec rule.
+ * Interface for semantic value of the
+ * [RFC2849](https://tools.ietf.org/html/rfc2849)
+ * attrval-spec rule.
  */
 interface AttrValInterface
 {
     /**
-     * Returns attribute-description string consisting of attribute type and
+     * Returns [RFC2849](https://tools.ietf.org/html/rfc2849#page-3)
+     * AttributeDescription string consisting of attribute type and
      * options.
      *
      * @return string
      */
-    public function getAttributeDescription() : string;
+    public function getAttribute() : string;
 
     /**
      * Returns the object representing attribute value.
      *
      * @return ValueInterface
      */
-    public function getValue() : ValueInterface;
+    public function getValueObject() : ValueInterface;
 }
 
 // vim: syntax=php sw=4 ts=4 et:

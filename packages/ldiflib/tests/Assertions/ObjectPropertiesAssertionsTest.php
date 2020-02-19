@@ -19,6 +19,8 @@ use Korowai\Lib\Ldif\SourceLocationInterface;
 use Korowai\Lib\Ldif\LocationInterface;
 use Korowai\Lib\Ldif\CursorInterface;
 use Korowai\Lib\Ldif\SnippetInterface;
+use Korowai\Lib\Ldif\ValueInterface;
+use Korowai\Lib\Ldif\AttrValInterface;
 use Korowai\Lib\Ldif\ParserErrorInterface;
 use Korowai\Lib\Ldif\ParserError;
 
@@ -250,6 +252,68 @@ class ObjectPropertiesAssertionsTest extends TestCase
     public function test__assertArrayItemsUsingCallback()
     {
         $this->markTestIncomplete('The test has not been implemented yet.');
+    }
+
+    public function test__assertValueHas()
+    {
+        $getters = [
+//            'getType'                   => 1,
+//            'getValue'                  => 'Zm9v',
+	        'getContent'                => 'foo',
+        ];
+
+        $valueObject = $this->getMockBuilder(ValueInterface::class)->getMockForAbstractClass();
+        foreach ($getters as $method => $value) {
+            $valueObject->expects($this->atLeastOnce())
+                        ->method($method)
+                        ->with()
+                        ->willReturn($value);
+        }
+
+        $this->assertValueHas([
+//            'type'                   => 1,
+//            'value'                  => 'Zm9v',
+            'content'                => 'foo',
+        ], $valueObject);
+    }
+
+    public function test__assertAttrValHas()
+    {
+        $valueGetters = [
+//            'getType'                   => 1,
+//            'getValue'                  => 'Zm9v',
+	        'getContent'                => 'foo',
+        ];
+
+        $valueObject = $this->getMockBuilder(ValueInterface::class)->getMockForAbstractClass();
+        foreach ($valueGetters as $method => $value) {
+            $valueObject->expects($this->atLeastOnce())
+                        ->method($method)
+                        ->with()
+                        ->willReturn($value);
+        }
+
+        $attrValGetters = [
+            'getAttribute'              => 'bar',
+            'getValueObject'            => $valueObject
+        ];
+        $attrVal = $this->getMockBuilder(AttrValInterface::class)->getMockForAbstractClass();
+        foreach ($attrValGetters as $method => $value) {
+            $attrVal->expects($this->atLeastOnce())
+                    ->method($method)
+                    ->with()
+                    ->willReturn($value);
+        }
+
+
+        $this->assertAttrValHas([
+            'attribute'                 => 'bar',
+            'valueObject'               => [
+//                'type'                  => 1,
+//                'value'                 => 'Zm9v',
+                'content'               => 'foo',
+            ]
+        ], $attrVal);
     }
 }
 

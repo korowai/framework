@@ -103,17 +103,21 @@ final class Value implements ValueInterface
     {
         $matches = Rfc3986::findCapturedValues('URI_REFERENCE', $matches);
 
+        // Most of the $matches map one-to-one into $components...
         $components = array_combine(array_keys($matches), array_column($matches, 0));
 
+        // ... but some of them need a little bit of tweaking
         if (null !== ($components['userinfo'] ?? null)) {
             [$user, $pass] = explode(':', $components['userinfo'], 2) + [1 => null];
             $components['user'] = $user;
             $components['pass'] = $pass;
         }
 
-        if (null !== ($components['port'] ?? null)) {
-            // FIXME: check whether it's an integer?
-            $components['port'] = intval($components['port']);
+        if (null !== ($port = $components['port'] ?? null)) {
+            if ((string)(int)$port !== (string)$port) {
+                throw new SyntaxError(sprintf('The port `%s` is invalid (not an integer)', $port));
+            }
+            $components['port'] = (int)$port;
         }
 
         $components['path'] =

@@ -199,10 +199,18 @@ class ValueTest extends TestCase
         }
     }
 
-    public function test__uri__withSyntaxError()
+    public function test__uri__withSyntaxErrorInScheme()
     {
         $this->expectException(SyntaxError::class);
+        $this->expectExceptionMessage('The scheme `##` is invalid');
         Value::createUriFromComponents(['scheme' => '##']);
+    }
+
+    public function test__uri__withNonIntPortNumber()
+    {
+        $this->expectException(SyntaxError::class);
+        $this->expectExceptionMessage('The port `asdf` is invalid (not an integer)');
+        Value::createUriFromRfc3986Matches(['port' => ['asdf', 0]]);
     }
 
     public function test__uri__Unavailable()

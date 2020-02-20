@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Ldif;
 
 use Korowai\Lib\Ldif\Parse;
+use Korowai\Lib\Ldif\AttrValInterface;
 use Korowai\Lib\Rfc\Rule;
 use Korowai\Testing\Lib\Rfc\RuleSet1;
 use Korowai\Testing\Lib\Ldif\TestCase;
@@ -23,6 +24,10 @@ use Korowai\Testing\Lib\Ldif\TestCase;
  */
 class ParseTest extends TestCase
 {
+    //
+    // base64Decode()
+    //
+
     public static function base64Decode__cases()
     {
         return [
@@ -40,7 +45,7 @@ class ParseTest extends TestCase
                         'errors' => []
                     ]
                 ],
-                ''
+                '', 0
             ],
 
             [
@@ -119,13 +124,17 @@ class ParseTest extends TestCase
     /**
      * @dataProvider base64Decode__cases
      */
-    public function test__base64Decode(array $source, array $expect, string $string, ...$tail)
+    public function test__base64Decode(array $source, array $expect, string $string, int $offset)
     {
         $state = $this->getParserStateFromSource(...$source);
-        $result = Parse::base64Decode($state, $string, ...$tail);
+        $result = Parse::base64Decode($state, $string, $offset);
         $this->assertSame($expect['result'], $result);
         $this->assertParserStateHas($expect['state'], $state);
     }
+
+    //
+    // utf8Check()
+    //
 
     public static function utf8Check__cases()
     {
@@ -143,7 +152,7 @@ class ParseTest extends TestCase
                         'errors' => []
                     ]
                 ],
-                ''
+                '', 0
             ],
 
             [
@@ -191,13 +200,89 @@ class ParseTest extends TestCase
     /**
      * @dataProvider utf8Check__cases
      */
-    public function test__utf8Check(array $source, array $expect, string $string, ...$tail)
+    public function test__utf8Check(array $source, array $expect, string $string, int $offset)
     {
         $state = $this->getParserStateFromSource(...$source);
-        $result = Parse::utf8Check($state, $string, ...$tail);
+        $result = Parse::utf8Check($state, $string, $offset);
         $this->assertSame($expect['result'], $result);
         $this->assertParserStateHas($expect['state'], $state);
     }
+
+    //
+    // dnCheck()
+    //
+
+    public static function dnMatch__cases()
+    {
+        return [
+            ['', true],
+            ['ASDF', false],
+            ['O=1', true],
+            ['O=1,', false],
+            ['O=1,OU', false],
+            ['O=1,OU=', true],
+            ['O=1,OU=,', false],
+            ['OU=1', true],
+            ['OU=1', true],
+            ['O---=1', true],
+            ['attr-Type=XYZ', true],
+            ['CN=Steve Kille,O=Isode Limited,C=GB', true],
+            ['OU=Sales+CN=J. Smith,O=Widget Inc.,C=US', true],
+            ['CN=L. Eagle,O=Sue\, Grabbit and Runn,C=GB', true],
+            ['CN=Before\0DAfter,O=Test,C=GB', true],
+            ['1.3.6.1.4.1.1466.0=#04024869,O=Test,C=GB', true],
+            ['SN=Lu\C4\8Di\C4\87', true],
+        ];
+    }
+
+    public static function dnCheck__cases()
+    {
+        $cases = [];
+
+        $inheritedCases = [];
+        foreach (static::dnMatch__cases() as $case) {
+            $string = $case[0];
+            $result = $case[1];
+            $offset = 5;
+            $end = $offset + strlen($string);
+            $errors = $result ? []: [
+                [
+                    'sourceOffset' => $offset,
+                    'message' => "syntax error: invalid DN syntax: '".$string."'"
+                ]
+            ];
+            $inheritedCases[] = [
+                'source' => [$string, $end],
+                'string' => $string,
+                'offset' => $offset,
+                'expect' => [
+                    'result' => $result,
+                    'state' => [
+                        'cursor' => [
+                            'offset' => $end,
+                        ],
+                        'errors' => $errors,
+                    ]
+                ]
+            ];
+        }
+        return array_merge($inheritedCases, $cases);
+    }
+
+    /**
+     * @dataProvider dnCheck__cases
+     */
+    public function test__dnCheck(array $source, string $string, int $offset, array $expect)
+    {
+        $state = $this->getParserStateFromSource(...$source);
+        $result = Parse::dnCheck($state, $string, $offset);
+        $this->assertSame($expect['result'], $result);
+        $this->assertParserStateHas($expect['state'], $state);
+    }
+
+    //
+    // matchRfcRule()
+    //
 
     public static function matchRfcRule__cases()
     {
@@ -407,6 +492,924 @@ class ParseTest extends TestCase
         $result = Parse::withRfcRule($state, $rule, $completion, $value);
 
         $this->assertSame($expect['result'] ?? true, $result);
+        $this->assertParserStateHas($expect['state'], $state);
+    }
+
+    //
+    // versionSpec
+    //
+
+    public static function versionSpec__cases()
+    {
+        return [
+            // #0
+            [
+                'source' => ['1'],
+                'tail' => [],
+                'expectations' => [
+                    'result' => false,
+                    'initial' => 123456,
+                    'version' => null,
+                    'state' => [
+                        'cursor' => [
+                            'offset' => 0,
+                        ],
+                        'records' => [],
+                        'errors' => [
+                            [
+                                'message' => 'syntax error: expected "version:" (RFC2849)',
+                                'sourceOffset' => 0,
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            // #2
+            [
+                'source' => ['1'],
+                'tail' => [true],
+                'expectations' => [
+                    'result' => false,
+                    'initial' => 123456,
+                    'version' => null,
+                    'state' => [
+                        'cursor' => [
+                            'offset' => 0,
+                        ],
+                        'records' => [],
+                        'errors' => []
+                    ]
+                ]
+            ],
+            // #3
+            [
+                'source' => ['version: 1'],
+                'tail' => [],
+                'expectations' => [
+                    'result' => true,
+                    'version' => 1,
+                    'state' => [
+                        'cursor' => [
+                            'offset' => 10,
+                        ],
+                        'records' => [],
+                        'errors' => []
+                    ]
+                ]
+            ],
+            // #4
+            [
+                //            000000000 11111111112 2
+                //            012356789 01234567890 1 - source (bytes)
+                'source' => ["# tłuszcz\nversion: 1\n"],
+                //                       0000000000 1 - preprocessed (bytes)
+                //                       0123456789 0 - preprocessed (bytes)
+                'tail' => [],
+                'expectations' => [
+                    'result' => true,
+                    'version' => 1,
+                    'state' => [
+                        'cursor' => [
+                            'offset' => 10,
+                            'sourceOffset' => 21,
+                            'sourceCharOffset' => 20
+                        ],
+                        'records' => [],
+                        'errors' => [],
+                    ]
+                ]
+            ],
+            // #5
+            [
+                //            00000000001111
+                //            01234567890123
+                'source' => ['   version: A', 3],
+                'tail' => [true],
+                'expectations' => [
+                    'result' => false,
+                    'initial' => 123456,
+                    'version' => null,
+                    'state' => [
+                        'cursor' => [
+                            'offset' => 13,
+                        ],
+                        'records' => [],
+                        'errors' => [
+                            [
+                                'message' => 'syntax error: expected valid version number (RFC2849)',
+                                'sourceOffset' => 12
+                            ],
+                        ],
+                    ],
+                ]
+            ],
+            // #6
+            [
+                //            00000000001111111
+                //            01234567890123456
+                'source' => ['   version: 123A', 3],
+                'tail' => [true],
+                'expectations' => [
+                    'result' => false,
+                    'initial' => 123456,
+                    'version' => null,
+                    'state' => [
+                        'cursor' => [
+                            'offset' => 16,
+                        ],
+                        'records' => [],
+                        'errors' => [
+                            [
+                                'message' => 'syntax error: expected valid version number (RFC2849)',
+                                'sourceOffset' => 15
+                            ],
+                        ],
+                    ],
+                ]
+            ],
+            // #7
+            [
+                //            000000000011
+                //            012345678901
+                'source' => ['version: 23'],
+                'tail' => [true],
+                'expectations' => [
+                    'result' => false,
+                    'initial' => 123456,
+                    'version' => null,
+                    'state' => [
+                        'cursor' => [
+                            'offset' => 11,
+                        ],
+                        'records' => [],
+                        'errors' => [
+                            [
+                                'message' => "syntax error: unsupported version number: 23",
+                                'sourceOffset' => 9,
+                            ]
+                        ],
+                    ]
+                ]
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider versionSpec__cases
+     */
+    public function test__versionSpec(array $source, array $tail, array $expect)
+    {
+        $state = $this->getParserStateFromSource(...$source);
+
+        if (array_key_exists('initial', $expect)) {
+            $version = $expect['initial'];
+        }
+
+        $result = Parse::versionSpec($state, $version, ...$tail);
+
+        $this->assertSame($expect['result'], $result);
+        $this->assertSame($expect['version'], $version);
+        $this->assertParserStateHas($expect['state'], $state);
+    }
+
+    public function test__versionSpec2__internalError()
+    {
+        $state = $this->getParserStateFromSource('version:', 3);
+
+        $version = 123456;
+        $this->assertFalse(Parse::versionSpec2($state, [], $version));
+        $this->assertNull($version);
+
+        $this->assertParserStateHas([
+            'cursor' => ['offset' => 3],
+            'errors' => [
+                [
+                    'sourceOffset' => 3,
+                    'message' => 'internal error: missing or invalid capture group "version_number"'
+                ]
+            ]
+        ], $state);
+    }
+
+    //
+    // dnSpec()
+    //
+
+    public static function dnSpec__cases()
+    {
+        $missingTagCases = array_map(function (array $case) {
+            return [
+                $case[0],
+                [
+                    'result' => false,
+                    'initial' => 'preset string',
+                    'dn' => null,
+                    'state' => [
+                        'cursor' => [
+                            'offset' => $case['offset'],
+                            'sourceOffset' => $case['offset'],
+                            'sourceCharOffset' => $case['charOffset']
+                        ],
+                        'errors' => [
+                            [
+                                'sourceOffset' => $case['offset'],
+                                'sourceCharOffset' => $case['charOffset'],
+                                'message' => 'syntax error: expected "dn:" (RFC2849)',
+                            ]
+                        ],
+                        'records' => [],
+                    ],
+                ]
+            ];
+        }, [
+            [["ł ", 3],         'offset' => 3, 'charOffset' => 2],
+            [["ł x", 3],        'offset' => 3, 'charOffset' => 2],
+            [["ł dns:", 3],     'offset' => 3, 'charOffset' => 2],
+            [["ł dn :", 3],     'offset' => 3, 'charOffset' => 2],
+            [["ł dn\n:", 3],    'offset' => 3, 'charOffset' => 2],
+        ]);
+
+
+        $safeStringCases = array_map(function ($case) {
+
+            $dn = $case[0];
+            $result = $case[1];
+            //          0234567
+            $source = ['ł dn: '.$dn, 3];
+            // the 4 below is from strlen('dn: ')
+            $errors = $result ? [] : [
+                [
+                    'sourceOffset' => 3 + 4,
+                    'sourceCharOffset' => 2 + 4,
+                    'message' => 'syntax error: invalid DN syntax: \''.$dn.'\'',
+                ]
+            ];
+            $cursor = [
+                'offset' => 3 + 4 + strlen($dn),
+                'sourceOffset' => 3 + 4 + strlen($dn),
+                'sourceCharOffset' => 2 + 4 + mb_strlen($dn),
+            ];
+            $expectations = [
+                'result' => $result,
+                'dn' => $dn,
+                'state' => [
+                    'cursor' => $cursor,
+                    'errors' => $errors,
+                    'records' => [],
+                ],
+            ];
+
+            return [$source, $expectations];
+        }, static::dnMatch__cases());
+
+        $base64StringCases = array_map(function ($case) {
+
+            $dn = $case[0];
+            $dnBase64 = base64_encode($dn);
+            $result = $case[1];
+            //          0234567
+            $source = ['ł dn:: '.$dnBase64, 3];
+            // the 5 below is from strlen('dn:: ')
+            $errors = $result ? [] : [
+                [
+                    'sourceOffset' => 3 + 5,
+                    'sourceCharOffset' => 2 + 5,
+                    'message' => 'syntax error: invalid DN syntax: \''.$dn.'\'',
+                ]
+            ];
+            $cursor = [
+                'offset' => 3 + 5 + strlen($dnBase64),
+                'sourceOffset' => 3 + 5 + strlen($dnBase64),
+                'sourceCharOffset' => 2 + 5 + mb_strlen($dnBase64),
+            ];
+            $expectations = [
+                'result' => $result,
+                'dn' => $dn,
+                'state' => [
+                    'cursor' => $cursor,
+                    'errors' => $errors,
+                    'records' => [],
+                ],
+            ];
+
+            return [$source, $expectations];
+        }, static::dnMatch__cases());
+
+        $invalidBase64StringCases = array_map(function ($case) {
+
+            $dnBase64 = $case[0];
+            $result = false;
+            //          02345678
+            $source = ['ł dn:: '.$dnBase64, 3];
+            // the 5 below is from strlen('dn:: ')
+            $errors = $result ? [] : [
+                [
+                    'sourceOffset' => 3 + 5,
+                    'sourceCharOffset' => 2 + 5,
+                    'message' => 'syntax error: invalid BASE64 string',
+                ]
+            ];
+            $cursor = [
+                'offset' => 3 + 5 + $case['offset'],
+                'sourceOffset' => 3 + 5 + $case['offset'],
+                'sourceCharOffset' => 2 + 5 + $case['offset'],
+            ];
+            $expectations = [
+                'result' => $result,
+                'initial' => 'preset string',
+                'dn' => null,
+                'state' => [
+                    'cursor' => $cursor,
+                    'errors' => $errors,
+                    'records' => [],
+                ],
+            ];
+
+            return [$source, $expectations];
+        }, [
+        //    0000000 00
+        //    0123456 78
+            ["Zm9vgA=\n", 'offset' => 7, 'charOffset' => 7],
+        ]);
+
+        $base64InvalidUtf8StringCases = array_map(function ($case) {
+
+            $dnBase64 = $case[0];
+            $result = false;
+            //          02345678
+            $source = ['ł dn:: '.$dnBase64, 3];
+            // the 5 below is from strlen('dn:: ')
+            $errors = $result ? [] : [
+                [
+                    'sourceOffset' => 3 + 5,
+                    'sourceCharOffset' => 2 + 5,
+                    'message' => 'syntax error: the string is not a valid UTF8',
+                ]
+            ];
+            $cursor = [
+                'offset' => 3 + 5 + $case['offset'],
+                'sourceOffset' => 3 + 5 + $case['offset'],
+                'sourceCharOffset' => 2 + 5 + $case['charOffset'],
+            ];
+            $expectations = [
+                'result' => $result,
+                'initial' => 'preset string',
+                'dn' => $case['dn'],
+                'state' => [
+                    'cursor' => $cursor,
+                    'errors' => $errors,
+                    'records' => [],
+                ],
+            ];
+
+            return [$source, $expectations];
+        }, [
+        //    00000000 0
+        //    01234567 8
+            ["YXNkgGZm\n", 'offset' => 8, 'charOffset' => 8, 'dn' => "asd\x80ff"],
+        ]);
+
+        $malformedStringCases = array_map(function ($case) {
+
+            $sep = $case[0];
+            $dn = $case[1];
+            $result = false;
+            //          0123456
+            $source = ['dn:'.$sep.$dn, 0];
+            $type = substr($sep, 0, 1) === ':' ? 'BASE64': 'SAFE';
+            $message = 'malformed '.$type.'-STRING (RFC2849)';
+            $errors = $result ? [] : [
+                [
+                    'sourceOffset' => strlen('dn:'.$sep) + $case[2],
+                    'sourceCharOffset' => strlen('dn:'.$sep) + $case[2],
+                    'message' => 'syntax error: '.$message,
+                ]
+            ];
+            $cursor = [
+                'offset' => strlen($source[0]),
+                'sourceOffset' => strlen($source[0]),
+                'sourceCharOffset' => mb_strlen($source[0]),
+            ];
+            $expectations = [
+                'result' => $result,
+                'initial' => 'preset string',
+                'dn' => null,
+                'state' => [
+                    'cursor' => $cursor,
+                    'errors' => $errors,
+                    'records' => [],
+                ],
+            ];
+
+            return [$source, $expectations];
+        }, [
+            [' ',  ':sdf',     0],  // 1'st is not SAFE-INIT-CHAR (colon)
+            [' ',  'tłuszcz',  1],  // 2'nd is not SAFE-CHAR (>0x7F)
+            [':',  'tłuszcz',  1],  // 2'nd is not BASE64-CHAR
+            [': ', 'Az@123=',  2],  // 3'rd is not BASE64-CHAR
+        ]);
+
+        return array_merge(
+            $missingTagCases,
+            $safeStringCases,
+            $base64StringCases,
+            $invalidBase64StringCases,
+            $base64InvalidUtf8StringCases,
+            $malformedStringCases
+        );
+    }
+
+    /**
+     * @dataProvider dnSpec__cases
+     */
+    public function test__dnSpec(array $source, array $expectations)
+    {
+        $state = $this->getParserStateFromSource(...$source);
+
+        if (array_key_exists('initial', $expectations)) {
+            $dn = $expectations['initial'];
+        }
+        $result = Parse::dnSpec($state, $dn);
+        $this->assertSame($expectations['result'], $result);
+        $this->assertSame($expectations['dn'], $dn);
+        $this->assertParserStateHas($expectations['state'], $state);
+    }
+
+    public function test__dnSpec2__internalError()
+    {
+        $state = $this->getParserStateFromSource('dn:', 3);
+
+        $string = "preset string";
+        $this->assertFalse(Parse::dnSpec2($state, [], $string));
+        $this->assertNull($string);
+
+        $errors = $state->getErrors();
+        $this->assertCount(1, $errors);
+        $error = $errors[0];
+        $this->assertSame('internal error: missing or invalid capture groups "dn_safe" and "dn_b64"', $error->getMessage());
+        $this->assertSame(3, $error->getSourceLocation()->getOffset());
+    }
+
+    //
+    // attrValSpec()
+    //
+    public static function attrValSpec__cases()
+    {
+        return [
+            'empty string' => [
+                //            00000000001111111111222222222233333
+                //            01234567890123456789012345678901234
+                'source' => ['', 0],
+                'tail' => [],
+                'expect' => [
+                    'init' => true,
+                    'result' => false,
+                    'value' => null,
+                    'state' => [
+                        'cursor' => ['offset' => 0],
+                        'errors' => [
+                            [
+                                'sourceOffset' => 0,
+                                'message' => 'syntax error: expected <AttributeDescription>":" (RFC2849)',
+                            ]
+                        ],
+                        'records' => []
+                    ],
+                ]
+            ],
+            'empty string (tryOnly)' => [
+                //            00000000001111111111222222222233333
+                //            01234567890123456789012345678901234
+                'source' => ['', 0],
+                'tail' => [true],
+                'expect' => [
+                    'init' => true,
+                    'result' => false,
+                    'value' => null,
+                    'state' => [
+                        'cursor' => ['offset' => 0],
+                        'errors' => [],
+                        'records' => []
+                    ],
+                ]
+            ],
+            'broken AttributeDescription (tryOnly)' => [
+                //            00000000001111111111222222222233333
+                //            01234567890123456789012345678901234
+                'source' => ['attrType;: FOO', 0],
+                'tail' => [true],
+                'expect' => [
+                    'init' => true,
+                    'result' => false,
+                    'value' => null,
+                    'state' => [
+                        'cursor' => ['offset' => 0],
+                        'errors' => [],
+                        'records' => []
+                    ],
+                ]
+            ],
+            'missing value-spec' => [
+                //            00000000001111111111222222222233333
+                //            01234567890123456789012345678901234
+                'source' => ['attrType', 0],
+                'tail' => [],
+                'expect' => [
+                    'init' => true,
+                    'result' => false,
+                    'value' => null,
+                    'state' => [
+                        'cursor' => ['offset' => 0],
+                        'errors' => [
+                            [
+                                'sourceOffset' => 0,
+                                'message' => 'syntax error: expected <AttributeDescription>":" (RFC2849)',
+                            ]
+                        ],
+                        'records' => []
+                    ],
+                ]
+            ],
+            'missing value-spec (tryOnly)' => [
+                //            00000000001111111111222222222233333
+                //            01234567890123456789012345678901234
+                'source' => ['attrType', 0],
+                'tail' => [true],
+                'expect' => [
+                    'init' => true,
+                    'result' => false,
+                    'value' => null,
+                    'state' => [
+                        'cursor' => ['offset' => 0],
+                        'errors' => [],
+                        'records' => []
+                    ],
+                ]
+            ],
+            'attrType: <value_safe>' => [
+                //            00000000001111111111222222222233333
+                //            01234567890123456789012345678901234
+                'source' => ['attrType: FOO', 0],
+                'tail' => [],
+                'expect' => [
+                    'result' => true,
+                    'value' => [
+                        'attr_desc' => 'attrType',
+                        'value_safe' => 'FOO',
+                        'value' => 'FOO',
+                    ],
+                    'state' => [
+                        'cursor' => ['offset' => 13],
+                        'errors' => [],
+                        'records' => []
+                    ],
+                ]
+            ],
+            'attrType;option-1: <value_safe>' => [
+                //            00000000001111111111222222222233333
+                //            01234567890123456789012345678901234
+                'source' => ['attrType;option-1: FOO', 0],
+                'tail' => [],
+                'expect' => [
+                    'result' => true,
+                    'value' => [
+                        'attr_desc' => 'attrType;option-1',
+                        'value_safe' => 'FOO',
+                        'value' => 'FOO',
+                    ],
+                    'state' => [
+                        'cursor' => ['offset' => 22],
+                        'errors' => [],
+                        'records' => []
+                    ],
+                ]
+            ],
+            'attrType: <value_safe_error>' => [
+                //            0000000000111111111222222222233333
+                //            0123456789012356789012345678901234
+                'source' => ['attrType: FOOŁXXX', 0],
+                'tail' => [],
+                'expect' => [
+                    'init' => true,
+                    'result' => false,
+                    'value' => null,
+                    'state' => [
+                        'cursor' => ['offset' => 18],
+                        'errors' => [
+                            [
+                                'sourceOffset' => 13,
+                                'message' => 'syntax error: malformed SAFE-STRING (RFC2849)',
+                            ]
+                        ],
+                        'records' => []
+                    ],
+                ]
+            ],
+            'attrType:: <value_b64>' => [
+                //            000000000011111111112222222222333333
+                //            012345678901234567890123456789012345
+                'source' => ['attrType:: xbvDs8WCdGEgxYHDs2TFug==', 0],
+                'tail' => [],
+                'expect' => [
+                    'result' => true,
+                    'value' => [
+                        'attr_desc' => 'attrType',
+                        'value_b64' => 'xbvDs8WCdGEgxYHDs2TFug==',
+                        'value' => 'Żółta Łódź',
+                    ],
+                    'state' => [
+                        'cursor' => ['offset' => 35],
+                        'errors' => [],
+                        'records' => []
+                    ],
+                ]
+            ],
+            'attrType:: <value_b64_error>' => [
+                //            00000000001111111112222222222333333
+                //            01234567890123457890123456789012345
+                'source' => ['attrType:: xbvDł8W', 0],
+                'tail' => [],
+                'expect' => [
+                    'init' => true,
+                    'result' => false,
+                    'value' => null,
+                    'state' => [
+                        'cursor' => ['offset' => 19],
+                        'errors' => [
+                            [
+                                'sourceOffset' => 15,
+                                'message' => 'syntax error: malformed BASE64-STRING (RFC2849)'
+                            ],
+                        ],
+                        'records' => []
+                    ],
+                ]
+            ],
+//            'attrType:< <value_url>' => [
+//                //            000000000011111111112222222222333333333
+//                //            012345678901234567890123456789012345678
+//                'source' => ['attrType:< file:///home/jsmith/foo.txt', 0],
+//                'tail' => [],
+//                'expect' => [
+//                    'result' => true,
+//                    'value' => [
+//                        'attr_desc' => 'attrType',
+//                        'value_url' => 'file:///home/jsmith/foo.txt',
+//                    ],
+//                    'state' => [
+//                        'cursor' => ['offset' => 38],
+//                        'errors' => [],
+//                        'records' => []
+//                    ],
+//                ]
+//            ],
+            'attrType:< <value_url_error>' => [
+                //            000000000011111111112222222222333333333
+                //            012345678901234567890123456789012345678
+                'source' => ['attrType:< ##', 0],
+                'tail' => [],
+                'expect' => [
+                    'init' => true,
+                    'result' => false,
+                    'value' => null,
+                    'state' => [
+                        'cursor' => ['offset' => 13],
+                        'errors' => [
+                            [
+                                'sourceOffset' => 12,
+                                'message' => 'syntax error: malformed URL (RFC2849/RFC3986)',
+                            ]
+                        ],
+                        'records' => []
+                    ],
+                ]
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider attrValSpec__cases
+     */
+    public function test__attrValSpec(array $source, array $tail, array $expect)
+    {
+        $state = $this->getParserStateFromSource(...$source);
+
+        if ($expect['init'] ?? null) {
+            $value = $this->getMockBuilder(AttrValInterface::class)->getMockForAbstractClass();
+        }
+
+        $result = Parse::attrValSpec($state, $value, ...$tail);
+        $this->assertSame($expect['result'], $result);
+//        $this->assertSame($expect['value'], $value);
+//        $this->assertParserStateHas($expect['state'], $state);
+//
+        $this->markTestIncomplete('The test needs to be reimplemented');
+    }
+
+    public static function attrValSpec2__cases()
+    {
+        return [
+            'valid' => [
+                'source' => ['attrType;lang-pl: AAA', 21],
+                'matches' => [
+                    'attr_desc' => ['attrType;lang-pl', 0],
+                    'value_safe' => ['AAA', 18]
+                ],
+                'expect' => [
+                    'result' => true,
+                    'value' => [
+                        'attr_desc' => 'attrType;lang-pl',
+                        'value_safe' => 'AAA',
+                        'value' => 'AAA'
+                    ],
+                    'state' => [
+                        'cursor' => ['offset' => 21],
+                        'errors' => [],
+                        'records' => [],
+                    ]
+                ]
+            ],
+            'missing attr_desc' => [
+                'source' => ['AAA', 21],
+                'matches' => [
+                    'value_safe' => ['AAA', 18],
+                ],
+                'expect' => [
+                    'initial' => ['I'],
+                    'result' => false,
+                    'value' => null,
+                    'state' => [
+                        'cursor' => ['offset' => 21],
+                        'errors' => [
+                            [
+                                'sourceOffset' => 21,
+                                'message' => 'internal error: missing or invalid capture group "attr_desc"'
+                            ],
+                        ],
+                        'records' => [],
+                    ]
+                ]
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider attrValSpec2__cases
+     */
+    public function test__attrValSpec2(array $source, array $matches, array $expect)
+    {
+//        $state = $this->getParserStateFromSource(...$source);
+//
+//        if (array_key_exists('initial', $expect)) {
+//            $value = $expect['initial'];
+//        }
+//
+//        $result = Parse::attrValSpec2($state, $matches, $value);
+//        $this->assertSame($expect['result'], $result);
+//        $this->assertSame($expect['value'], $value);
+//        $this->assertParserStateHas($expect['state'], $state);
+        $this->markTestIncomplete('The test needs to be reimplemented');
+    }
+
+    //
+    // valueSpec()
+    //
+
+    public static function valueSpec2__cases()
+    {
+        return [
+            'value_b64' => [
+                'source' => ['::xbvDs8WCdGEgxYJ5xbxrYQ==', 121],
+                'matches' => [
+                    'value_b64' => ['xbvDs8WCdGEgxYJ5xbxrYQ==', 123]
+                ],
+                'expect' => [
+                    'result' => true,
+                    'value' => [
+                        //'value' => 'xbvDs8WCdGEgxYJ5xbxrYQ==',
+                        'content' => 'Żółta łyżka',
+                    ],
+                    'state' => [
+                        'cursor' => ['offset' => 121],
+                        'errors' => [],
+                        'records' => [],
+                    ]
+                ]
+            ],
+//            'invalid value_b64' => [
+//                'source' => ['::xbvDs8WCdGEgxYJ5xbxrYQ==', 121],
+//                'matches' => [
+//                    'value_b64' => ['xbvDs8WCdGEgxYJ5xbxrYQ=', 123]
+//                ],
+//                'expect' => [
+//                    'result' => false,
+//                    'value' => [
+//                        'value_b64' => 'xbvDs8WCdGEgxYJ5xbxrYQ=',
+//                        'value' => null,
+//                    ],
+//                    'state' => [
+//                        'cursor' => ['offset' => 121],
+//                        'errors' => [
+//                            [
+//                                'sourceOffset' => 123,
+//                                'message' => 'syntax error: invalid BASE64 string'
+//                            ]
+//                        ],
+//                        'records' => [],
+//                    ]
+//                ]
+//            ],
+//            'value_safe' => [
+//                'source' => ['John Smith', 121],
+//                'matches' => [
+//                    'value_safe' => ['John Smith', 123]
+//                ],
+//                'expect' => [
+//                    'result' => true,
+//                    'value' => [
+//                        'value_safe' => 'John Smith',
+//                        'value' => 'John Smith',
+//                    ],
+//                    'state' => [
+//                        'cursor' => ['offset' => 121],
+//                        'errors' => [],
+//                        'records' => [],
+//                    ]
+//                ]
+//            ],
+//            'value_url (file_uri)' => [
+//                'source' => ['file:///home/jsmith/foo.txt', 121],
+//                'matches' => [
+//                    'value_url' => ['file:///home/jsmith/foo.txt', 123],
+//                    'uri' => ['file:///home/jsmith/foo.txt', 123],
+//                    'scheme' => ['file', 123],
+//                ],
+//                'expect' => [
+//                    'result' => true,
+//                    'value' => [
+//                        'value_url' => 'file:///home/jsmith/foo.txt',
+//                        'uri' => [
+//                            'uri' => 'file:///home/jsmith/foo.txt',
+//                            'scheme' => 'file',
+//                        ],
+//                        'file_uri' => [
+//                            'file_uri' => 'file:///home/jsmith/foo.txt',
+//                            'file_scheme' => 'file',
+//                            'file_hier_part' => '///home/jsmith/foo.txt',
+//                            'auth_path' => '/home/jsmith/foo.txt',
+//                            'file_auth' => '',
+//                            'host' => '',
+//                            'reg_name' => '',
+//                            'path_absolute' => '/home/jsmith/foo.txt'
+//                        ],
+//                    ],
+//                    'state' => [
+//                        'cursor' => ['offset' => 121],
+//                        'errors' => [],
+//                        'records' => [],
+//                    ]
+//                ]
+//            ],
+//            'missing value' => [
+//                'source' => ['file:///home/jsmith/foo.txt', 121],
+//                'matches' => [
+//                    'value_b64' => ['xyz', -1],
+//                    'value_url' => [null, 123],
+//                ],
+//                'expect' => [
+//                    'initial' => ['I'],
+//                    'result' => false,
+//                    'value' => null,
+//                    'state' => [
+//                        'cursor' => ['offset' => 121],
+//                        'errors' => [
+//                            [
+//                                'sourceOffset' => 121,
+//                                'message' => 'internal error: missing or invalid capture groups '.
+//                                             '"value_safe", "value_b64" and "value_url"'
+//                            ]
+//                        ],
+//                        'records' => [],
+//                    ]
+//                ]
+//            ],
+        ];
+    }
+
+    /**
+     * @dataProvider valueSpec2__cases
+     */
+    public function test__valueSpec2(array $source, array $matches, array $expect)
+    {
+        $state = $this->getParserStateFromSource(...$source);
+
+        if (array_key_exists('initial', $expect)) {
+            $value = $expect['initial'];
+        }
+
+        $result = Parse::valueSpec2($state, $matches, $value);
+        $this->assertSame($expect['result'], $result);
+        $this->assertValueHas($expect['value'], $value);
         $this->assertParserStateHas($expect['state'], $state);
     }
 }

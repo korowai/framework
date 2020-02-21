@@ -15,17 +15,15 @@ namespace Korowai\Testing\Constraint;
 
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\ExpectationFailedException;
+use SebastianBergmann\Comparator\ComparisonFailure;
 
 /**
  * Constraint that accepts object having prescribed properties.
  *
  * Compares only properties present in the array of expectations. Additional
- * options may be used to adjust matcher's behavior. Supported options are:
- *
- * - ``getters``
- *
- *    A key-value array of method names that shall be used to access particular
- *    attributes of the objects being examined. For example
+ * parameter named *$getters* is a key-value array of method names that shall
+ * be used to access particular attributes of the objects being examined. For
+ * example
  *
  *    ```
  *      class Person {
@@ -36,7 +34,7 @@ use PHPUnit\Framework\ExpectationFailedException;
  *      // ...
  *      $matcher = new HasPropertiesIdenticalTo(
  *          ['name' => 'John', 'age' => 21],
- *          ['getters' => ['name' => 'getName']]
+ *          ['name' => 'getName']
  *      );
  *    ```
  *
@@ -52,17 +50,17 @@ final class HasPropertiesIdenticalTo extends Constraint
     /**
      * @var array
      */
-    private $options;
+    private $getters;
 
     /**
      * Initializes the constraint.
      *
      * @param  array $expected An array of expected values.
-     * @param  array $options Additional modifiers.
+     * @param  array $getters Maps property names into their getter method names.
      *
      * @throws \PHPUnit\Framework\Exception when non-string keys are found in *$expected*.
      */
-    public function __construct(array $expected, array $options = [])
+    public function __construct(array $expected, array $getters = [])
     {
         $valid = array_filter($expected, \is_string::class, ARRAY_FILTER_USE_KEY);
         if (($count = count($expected) - count($valid)) > 0) {
@@ -70,7 +68,7 @@ final class HasPropertiesIdenticalTo extends Constraint
             throw new \PHPUnit\Framework\Exception($message);
         }
         $this->expected = $expected;
-        $this->options = $options;
+        $this->getters = $getters;
     }
 
     /**
@@ -78,7 +76,47 @@ final class HasPropertiesIdenticalTo extends Constraint
      */
     public function toString() : string
     {
-        return sprintf('has properties identical to %s', $this->exporter()->export($this->expected));
+        return 'has required properties with prescribed values';
+    }
+
+    /**
+     * Evaluates the constraint for parameter $other
+     *
+     * If $returnResult is set to false (the default), an exception is thrown
+     * in case of a failure. null is returned otherwise.
+     *
+     * If $returnResult is true, the result of the evaluation is returned as
+     * a boolean value instead: true in case of success, false in case of a
+     * failure.
+     *
+     * @throws ExpectationFailedException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     */
+    public function evaluate($other, string $description = '', bool $returnResult = false): ?bool
+    {
+        $success = $this->matches($other);
+
+        if ($returnResult) {
+            return $success;
+        }
+
+        if (!$success) {
+            $f = null;
+
+            if (is_object($other)) {
+                $actual = $this->getPropertiesForComparison($other);
+                $f = new ComparisonFailure(
+                    $this->expected,
+                    $other,
+                    $this->exporter()->export($this->expected),
+                    $this->exporter()->export($actual)
+                );
+            }
+
+            $this->fail($other, $description, $f);
+        }
+
+        return null;
     }
 
     /**
@@ -107,8 +145,7 @@ final class HasPropertiesIdenticalTo extends Constraint
     public function failureDescription($other) : string
     {
         if (is_object($other)) {
-            $actual = $this->getPropertiesForComparison($other);
-            $what = 'object '.get_class($other).' with properties '.($this->exporter()->export($actual));
+            $what = 'object '.get_class($other);
         } else {
             $what = $this->exporter()->export($other);
         }
@@ -123,8 +160,8 @@ final class HasPropertiesIdenticalTo extends Constraint
      */
     protected function getPropertiesForComparison(object $object) : array
     {
-        $actual = []; // actual properties
-        $getters = $this->options['getters'] ?? [];
+        $actual = [];
+        $getters = $this->getters;
         foreach (array_keys($this->expected) as $key) {
             $this->updateActual($actual, $object, $key, $getters);
         }

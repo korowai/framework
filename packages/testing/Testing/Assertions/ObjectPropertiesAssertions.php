@@ -44,9 +44,10 @@ trait ObjectPropertiesAssertions
     public static function assertHasPropertiesSameAs(array $expected, object $object, array $options = []) : void
     {
         $message = $options['message'] ?? '';
+        $getters = $options['getters'] ?? [];
         static::assertThat(
             $object,
-            static::hasPropertiesIdenticalTo($expected, $options),
+            static::hasPropertiesIdenticalTo($expected, $getters),
             $message
         );
     }
@@ -64,9 +65,10 @@ trait ObjectPropertiesAssertions
     public static function assertHasPropertiesNotSameAs(array $expected, object $object, array $options = []) : void
     {
         $message = $options['message'] ?? '';
+        $getters = $options['getters'] ?? [];
         static::assertThat(
             $object,
-            new LogicalNot(static::hasPropertiesIdenticalTo($expected, $options)),
+            new LogicalNot(static::hasPropertiesIdenticalTo($expected, $getters)),
             $message
         );
     }
@@ -75,14 +77,14 @@ trait ObjectPropertiesAssertions
      * Compares selected properties of *$object* with *$expected* ones.
      *
      * @param  array $expected An array of key-value pairs with expected values of attributes.
-     * @param  array $options An array of options.
+     * @param  array $getters An array of key-value pairs mapping property names onto their getter method names.
      *
      * @return HasPropertiesIdenticalTo
      * @throws \PHPUnit\Framework\Exception when non-string keys are found in *$expected*
      */
-    public static function hasPropertiesIdenticalTo(array $expected, array $options = []) : HasPropertiesIdenticalTo
+    public static function hasPropertiesIdenticalTo(array $expected, array $getters = []) : HasPropertiesIdenticalTo
     {
-        return new HasPropertiesIdenticalTo($expected, $options);
+        return new HasPropertiesIdenticalTo($expected, $getters);
     }
 }
 

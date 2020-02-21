@@ -44,7 +44,7 @@ class ObjectPropertiesAssertionsTest extends TestCase
         self::assertTrue($method->isStatic());
     }
 
-    public function propertiesSameAs()
+    public static function propertiesSameAs__cases()
     {
         $jsmith = new class {
             public $name = 'John';
@@ -58,11 +58,11 @@ class ObjectPropertiesAssertionsTest extends TestCase
             [['name' => 'John', 'last' => 'Smith', 'age' => 21], $jsmith],
             [['name' => 'John', 'last' => 'Smith'],              $jsmith],
             [['age' => 21],                                      $jsmith],
-            [['age' => 21, 'salary' => 123],                     $jsmith, ['getters' => ['salary' => 'getSalary']] ],
+            [['age' => 21, 'salary' => 123],                     $jsmith, ['salary' => 'getSalary']],
         ];
     }
 
-    public function propertiesNotSameAs()
+    public static function propertiesNotSameAs__cases()
     {
         $jsmith = new class {
             public $name = 'John';
@@ -76,37 +76,37 @@ class ObjectPropertiesAssertionsTest extends TestCase
             [['name' => 'John', 'last' => 'Brown', 'age' => 21], $jsmith],
             [['name' => 'John', 'last' => 'Brown'],              $jsmith],
             [['age' => 19],                                      $jsmith],
-            [['age' => 21, 'salary' => 1230],                    $jsmith, ['getters' => ['salary' => 'getSalary']] ],
+            [['age' => 21, 'salary' => 1230],                    $jsmith, ['salary' => 'getSalary'] ],
         ];
     }
 
     /**
-     * @dataProvider propertiesSameAs
+     * @dataProvider propertiesSameAs__cases
      */
     public function test__hasPropertiesIdenticalTo__withMatchingProperties(
         array $expected,
         object $object,
-        array $options = []
+        array $getters = []
     ) {
-        self::assertTrue(self::hasPropertiesIdenticalTo($expected, $options)->matches($object));
+        self::assertTrue(self::hasPropertiesIdenticalTo($expected, $getters)->matches($object));
     }
 
     /**
-     * @dataProvider propertiesNotSameAs
+     * @dataProvider propertiesNotSameAs__cases
      */
     public function test__hasPropertiesIdenticalTo__withNonMatchingProperties(
         array $expected,
         object $object,
-        array $options = []
+        array $getters = []
     ) {
-        self::assertFalse(self::hasPropertiesIdenticalTo($expected, $options)->matches($object));
+        self::assertFalse(self::hasPropertiesIdenticalTo($expected, $getters)->matches($object));
     }
 
     public function test__hasPropertiesIdenticalTo__withNonObject()
     {
         $matcher = self::hasPropertiesIdenticalTo(['a' => 'A']);
         self::assertFalse($matcher->matches(123));
-        self::assertRegexp('/^123 has properties identical to /', $matcher->failureDescription(123));
+        self::assertRegexp('/^123 has required properties with prescribed values$/', $matcher->failureDescription(123));
     }
 
     public function test__hasPropertiesIdenticalTo__withInvalidArray()
@@ -124,59 +124,67 @@ class ObjectPropertiesAssertionsTest extends TestCase
         self::expectException(\PHPUnit\Framework\Exception::class);
         self::expectExceptionMessage('$object->xxx() is not callable');
 
-        self::hasPropertiesIdenticalTo(['a' => 'A'], ['getters' => ['a' => 'xxx']])->matches($object);
+        self::hasPropertiesIdenticalTo(['a' => 'A'], ['a' => 'xxx'])->matches($object);
+    }
+
+    protected static function adjustCaseForAssert(array $case)
+    {
+        if (is_array($case[2] ?? null)) {
+            $case[2] = ['getters' => $case[2]];
+        }
+        return $case;
     }
 
     /**
-     * @dataProvider propertiesSameAs
+     * @dataProvider propertiesSameAs__cases
      */
     public function test__assertHasPropertiesSameAs__withMatchingProperties(
         array $expected,
         object $object,
-        array $options = null
+        array $getters = null
     ) {
-        self::assertHasPropertiesSameAs(...func_get_args());
+        self::assertHasPropertiesSameAs(...(self::adjustCaseForAssert(func_get_args())));
     }
 
     /**
-     * @dataProvider propertiesNotSameAs
+     * @dataProvider propertiesNotSameAs__cases
      */
     public function test__assertHasPropertiesSameAs__withNonMatchingProperties(
         array $expected,
         object $object,
         array $options = null
     ) {
-        $regexp = '/^Failed asserting that object class\@.+ with properties [\S\s\n]+has properties identical to/';
+        $regexp = '/^Failed asserting that object class\@.+ has required properties with prescribed values/';
         self::expectException(ExpectationFailedException::class);
         self::expectExceptionMessageMatches($regexp);
 
-        self::assertHasPropertiesSameAs(...func_get_args());
+        self::assertHasPropertiesSameAs(...(self::adjustCaseForAssert(func_get_args())));
     }
 
     /**
-     * @dataProvider propertiesNotSameAs
+     * @dataProvider propertiesNotSameAs__cases
      */
     public function test__assertHasPropertiesNotSameAs__withNonMatchingProperties(
         array $expected,
         object $object,
         array $options = null
     ) {
-        self::assertHasPropertiesNotSameAs(...func_get_args());
+        self::assertHasPropertiesNotSameAs(...(self::adjustCaseForAssert(func_get_args())));
     }
 
     /**
-     * @dataProvider propertiesSameAs
+     * @dataProvider propertiesSameAs__cases
      */
     public function test__assertHasPropertiesNotSameAs__whithMatchingProperties(
         array $expected,
         object $object,
         array $options = null
     ) {
-        $regexp = '/^Failed asserting that object class@.+ with properties [\S\s\n]+does not have properties identical to/';
+        $regexp = '/^Failed asserting that object class@.+ does not have required properties with prescribed values/';
         self::expectException(ExpectationFailedException::class);
         self::expectExceptionMessageMatches($regexp);
 
-        self::assertHasPropertiesNotSameAs(...func_get_args());
+        self::assertHasPropertiesNotSameAs(...(self::adjustCaseForAssert(func_get_args())));
     }
 }
 

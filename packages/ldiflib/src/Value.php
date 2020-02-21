@@ -27,30 +27,6 @@ use function Korowai\Lib\Error\exceptionErrorHandler;
 final class Value implements ValueInterface
 {
     /**
-     * Type enum for the RFC2849 SAFE-STRING value.
-     */
-    public const TYPE_SAFE = 0;
-
-    /**
-     * Type enum for the RFC2849 BASE64-STRING value.
-     */
-    public const TYPE_BASE64 = 1;
-
-    /**
-     * Type enum for the RFC2849 URL value.
-     */
-    public const TYPE_URL = 2;
-
-    /**
-     * Maps ``TYPE_*`` integers to their names.
-     */
-    private const TYPE_NAMES = [
-        self::TYPE_SAFE     => 'SAFE-STRING',
-        self::TYPE_BASE64   => 'BASE64-STRING',
-        self::TYPE_URL      => 'URL',
-    ];
-
-    /**
      * @var int
      */
     private $type;
@@ -58,7 +34,7 @@ final class Value implements ValueInterface
     /**
      * @var string|UriInterface
      */
-    private $value;
+    private $spec;
 
     /**
      * @var string
@@ -79,13 +55,13 @@ final class Value implements ValueInterface
     /**
      * Creates Value from BASE64-STRING.
      *
-     * @param  string $base64string
+     * @param  string $b64string
      * @param  string $decoded
      * @return ValueInterface
      */
-    public static function createBase64String(string $base64string, string $decoded = null) : ValueInterface
+    public static function createBase64String(string $b64string, string $decoded = null) : ValueInterface
     {
-        return new self(self::TYPE_BASE64, $base64string, $decoded);
+        return new self(self::TYPE_BASE64, $b64string, $decoded);
     }
 
     /**
@@ -157,29 +133,40 @@ final class Value implements ValueInterface
      * Initializes the Value object.
      *
      * @param  int $type
-     *      Must be one of ``Value::TYPE_SAFE``, ``Value::TYPE_BASE64`` or ``Value::TYPE_URL``.
-     * @param  mixed $value
-     *      The value to be encapsulated. Must be a string when *$type* is
-     *      ``Value::TYPE_SAFE`` or ``Value::TYPE_BASE64``, or /League\Uri\Uri
-     *      when *$type* is ``Value::URL``.
+     * Must be one of
+     *
+     * - ``ValueInterface::TYPE_SAFE``,
+     * - ``ValueInterface::TYPE_BASE64``, or
+     * - ``ValueInterface::TYPE_URL``.
+     *
+     * @param  mixed $spec
+     * Specifies the value to be encapsulated. Must be consistent with *$type*,
+     * as follows:
+     *
+     * - must be a string when *$type* is ``ValueInterface::TYPE_SAFE``,
+     * - must be a string when *$type* is ``ValueInterface::TYPE_BASE64``,
+     *   contains the base64-encoded content string,
+     * - must be an instance of ``\League\Uri\UriInterface`` when *$type* is
+     *   ``ValueInterface::TYPE_URL``.
+     *
      * @param  string $content
-     *      Actual content. When *$type* is ``Value::TYPE_BASE64`` the
-     *      *$content* should contain decoded string. When *$type* is
-     *      ``Value::TYPE_URL``, then *$content* should contain the contents of
-     *      the file pointed to by the *$value* URI.
+     *      The value to be returned by getContent(). If set, the following
+     *      conventions apply:
+     *
+     * - when *$type* is ``ValueInterface::TYPE_SAFE``, it shall be same as *$spec*,
+     * - when *$type* is ``ValueInterface::TYPE_BASE64``, it shall be the decoded *$spec*,
+     * - when *$type* is ``ValueInterface::TYPE_URL``, it shall be the contents
+     *   of the file pointed to by the *$spec* URI.
      */
-    private function __construct(int $type, $value, string $content = null)
+    private function __construct(int $type, $spec, string $content = null)
     {
         $this->type = $type;
-        $this->value = $value;
+        $this->spec = $spec;
         $this->content = $content;
     }
 
     /**
-     * Returns the type of this Value.
-     *
-     * @return int
-     *      Returns one of ``TYPE_SAFE``, ``TYPE_BASE64`` or ``TYPE_URL``.
+     * {@inheritdoc}
      */
     public function getType() : int
     {
@@ -187,15 +174,11 @@ final class Value implements ValueInterface
     }
 
     /**
-     * Return the original value as provided to constructor. The returned value
-     * may be either safe string, base64-encoded string or an object
-     * that encapsulates an URI.
-     *
-     * @return mixed
+     * {@inheritdoc}
      */
-    public function getValue()
+    public function getSpec()
     {
-        return $this->value;
+        return $this->spec;
     }
 
     /**
@@ -204,48 +187,53 @@ final class Value implements ValueInterface
     public function getContent() : string
     {
         if (!isset($this->content)) {
-            $this->content = static::fetchContent($this->getType(), $this->getValue());
+            $this->content = static::fetchContent($this->getType(), $this->getSpec());
         }
         return $this->content;
     }
 
     /**
-     * Returns the content for *$value* of given *$type*.
+     * Returns the content *$value* of given *$type*.
      *
      * @param  int $type
-     * @param  mixed $value
+     * @param  mixed $spec
      * @return string
      */
-    private static function fetchContent(int $type, $value) : string
+    private static function fetchContent(int $type, $spec) : string
     {
-        switch ($type) {
-            case static::TYPE_SAFE:
-                $content = $value;
-                break;
-            case static::TYPE_BASE64:
-                $content = static::fetchBase64Content($value);
-                break;
-            case static::TYPE_URL:
-                $content = static::fetchUriContent($value);
-                break;
-            default:
-                // @codeCoverageIgnoreStart
-                // FIXME: dedicated exception.
-                throw new \RuntimeException('internal error: invalid type set to Value obejct');
-                // @codeCoverageIgnoreEnd
-        }
-        return $content;
+        static $fetchMethods = [
+            self::TYPE_SAFE   => 'fetchSafeContent',
+            self::TYPE_BASE64 => 'fetchBase64Content',
+            self::TYPE_URL    => 'fetchUriContent',
+        ];
+
+        $method = [static::class, ($fetchMethods[$type] ?? 'throwInvalidTypeException')];
+
+        return call_user_func($method, $type, $spec);
     }
 
     /**
-     * Decodes base64-encoded *$value*.
+     * Returns the *$string* as is.
      *
-     * @param  string $value
+     * @param  int $type
+     * @param  string $string
      * @return string
      */
-    private static function fetchBase64Content(string $value) : string
+    private static function fetchSafeContent(int $type, string $string) : string
     {
-        $content = base64_decode($value, true);
+        return $string;
+    }
+
+    /**
+     * Decodes base64-encoded string.
+     *
+     * @param  int $type
+     * @param  string $b64string
+     * @return string
+     */
+    private static function fetchBase64Content(int $type, string $b64string) : string
+    {
+        $content = base64_decode($b64string, true);
         if ($content === false) {
             // FIXME: dedicated exception.
             throw new \RuntimeException('failed to decode base64 string');
@@ -256,15 +244,28 @@ final class Value implements ValueInterface
     /**
      * Retrieves content referenced by *$uri*.
      *
+     * @param  int $type
      * @param  UriInterface $uri
      * @return string
      */
-    private static function fetchUriContent(UriInterface $uri) : string
+    private static function fetchUriContent(int $type, UriInterface $uri) : string
     {
         // FIXME: dedicated exception?
         return with(exceptionErrorHandler(\ErrorException::class), $uri)(function ($eh, $uri) {
             return file_get_contents((string)$uri);
         });
+    }
+
+    /**
+     * Unconditionaly throws an exception.
+     *
+     * @param  int $type
+     * @throws \RuntimeException
+     */
+    public static function throwInvalidTypeException(int $type)
+    {
+        // FIXME: dedicated exception.
+        throw new \RuntimeException('internal error: invalid type ('.$type.') set to '.self::class.' object');
     }
 }
 

@@ -15,6 +15,7 @@ namespace Korowai\Tests\Lib\Ldif;
 
 use Korowai\Lib\Ldif\Parse;
 use Korowai\Lib\Ldif\AttrValInterface;
+use Korowai\Lib\Ldif\ValueInterface;
 use Korowai\Lib\Rfc\Rule;
 use Korowai\Testing\Lib\Rfc\RuleSet1;
 use Korowai\Testing\Lib\Ldif\TestCase;
@@ -287,6 +288,7 @@ class ParseTest extends TestCase
     public static function matchRfcRule__cases()
     {
         return [
+            // #0
             [
                 'source'    => [''],
                 'ruleArgs'  => [RuleSet1::class, 'ASSIGNMENT_INT'],
@@ -307,6 +309,23 @@ class ParseTest extends TestCase
                     'matches' => [],
                 ]
             ],
+            // #1
+            [
+                'source'    => [''],
+                'ruleArgs'  => [RuleSet1::class, 'ASSIGNMENT_INT', true],
+                'expect'    => [
+                    'result' => false,
+                    'state' => [
+                        'cursor' => [
+                            'offset' => 0,
+                        ],
+                        'records' => [],
+                        'errors'  => [],
+                    ],
+                    'matches' => [],
+                ]
+            ],
+            // #2
             [
                 'source'    => ['var '],
                 'ruleArgs'  => [RuleSet1::class, 'ASSIGNMENT_INT'],
@@ -332,6 +351,7 @@ class ParseTest extends TestCase
                     ],
                 ]
             ],
+            // #3
             [
                 'source'    => ['var '],
                 'ruleArgs'  => [RuleSet1::class, 'ASSIGNMENT_INT', true],
@@ -352,6 +372,7 @@ class ParseTest extends TestCase
                     ],
                 ]
             ],
+            // #4
             [
                 'source'    => ['var = '],
                 'ruleArgs'  => [RuleSet1::class, 'ASSIGNMENT_INT'],
@@ -377,6 +398,7 @@ class ParseTest extends TestCase
                     ],
                 ]
             ],
+            // #5
             [
                 'source'    => ['var = asd'],
                 'ruleArgs'  => [RuleSet1::class, 'ASSIGNMENT_INT'],
@@ -402,6 +424,7 @@ class ParseTest extends TestCase
                     ],
                 ]
             ],
+            // #6
             [
                 'source'    => ['var = 123'],
                 'ruleArgs'  => [RuleSet1::class, 'ASSIGNMENT_INT'],
@@ -427,6 +450,7 @@ class ParseTest extends TestCase
                     ],
                 ]
             ],
+            // #7
             [
                 'source'    => ['var = 123;'],
                 'ruleArgs'  => [RuleSet1::class, 'ASSIGNMENT_INT'],
@@ -453,7 +477,7 @@ class ParseTest extends TestCase
     /**
      * @dataProvider matchRfcRule__cases
      */
-    public function test__parseMatchRfcRule(array $source, array $ruleArgs, array $expect)
+    public function test__matchRfcRule(array $source, array $ruleArgs, array $expect)
     {
         $state = $this->getParserStateFromSource(...$source);
         $rule = new Rule(...$ruleArgs);
@@ -1054,9 +1078,12 @@ class ParseTest extends TestCase
                 'expect' => [
                     'result' => true,
                     'value' => [
-                        'attr_desc' => 'attrType',
-                        'value_safe' => 'FOO',
-                        'value' => 'FOO',
+                        'attribute' => 'attrType',
+                        'valueObject' => [
+                            'type' => ValueInterface::TYPE_SAFE,
+                            'spec' => 'FOO',
+                            'content' => 'FOO',
+                        ]
                     ],
                     'state' => [
                         'cursor' => ['offset' => 13],
@@ -1073,9 +1100,12 @@ class ParseTest extends TestCase
                 'expect' => [
                     'result' => true,
                     'value' => [
-                        'attr_desc' => 'attrType;option-1',
-                        'value_safe' => 'FOO',
-                        'value' => 'FOO',
+                        'attribute' => 'attrType;option-1',
+                        'valueObject' => [
+                            'type' => ValueInterface::TYPE_SAFE,
+                            'spec' => 'FOO',
+                            'content' => 'FOO',
+                        ]
                     ],
                     'state' => [
                         'cursor' => ['offset' => 22],
@@ -1113,9 +1143,12 @@ class ParseTest extends TestCase
                 'expect' => [
                     'result' => true,
                     'value' => [
-                        'attr_desc' => 'attrType',
-                        'value_b64' => 'xbvDs8WCdGEgxYHDs2TFug==',
-                        'value' => 'Żółta Łódź',
+                        'attribute' => 'attrType',
+                        'valueObject' => [
+                            'type' => ValueInterface::TYPE_BASE64,
+                            'spec' => 'xbvDs8WCdGEgxYHDs2TFug==',
+                            'content' => 'Żółta Łódź',
+                        ]
                     ],
                     'state' => [
                         'cursor' => ['offset' => 35],
@@ -1145,24 +1178,59 @@ class ParseTest extends TestCase
                     ],
                 ]
             ],
-//            'attrType:< <value_url>' => [
-//                //            000000000011111111112222222222333333333
-//                //            012345678901234567890123456789012345678
-//                'source' => ['attrType:< file:///home/jsmith/foo.txt', 0],
-//                'tail' => [],
-//                'expect' => [
-//                    'result' => true,
-//                    'value' => [
-//                        'attr_desc' => 'attrType',
-//                        'value_url' => 'file:///home/jsmith/foo.txt',
-//                    ],
-//                    'state' => [
-//                        'cursor' => ['offset' => 38],
-//                        'errors' => [],
-//                        'records' => []
-//                    ],
-//                ]
-//            ],
+            'attrType:: <value_b64_invalid>' => [
+                //            00000000001111111112222222222333333
+                //            01234567890123457890123456789012345
+                'source' => ['attrType:: R', 0],
+                'tail' => [],
+                'expect' => [
+                    'init' => true,
+                    'result' => false,
+                    'value' => null,
+                    'state' => [
+                        'cursor' => ['offset' => 12],
+                        'errors' => [
+                            [
+                                'sourceOffset' => 11,
+                                'message' => 'syntax error: invalid BASE64 string'
+                            ],
+                        ],
+                        'records' => []
+                    ],
+                ]
+            ],
+            'attrType:< <value_url>' => [
+                //            000000000011111111112222222222333333333
+                //            012345678901234567890123456789012345678
+                'source' => ['attrType:< file:///home/jsmith/foo.txt', 0],
+                'tail' => [],
+                'expect' => [
+                    'result' => true,
+                    'value' => [
+                        'attribute' => 'attrType',
+                        'valueObject' => [
+                            'type' => ValueInterface::TYPE_URL,
+                            'spec' => [
+                                'string' => 'file:///home/jsmith/foo.txt',
+                                'scheme' => 'file',
+                                'authority' => '',
+                                'userinfo' => null,
+                                'host' => '',
+                                'port' => null,
+                                'path' => '/home/jsmith/foo.txt',
+                                'query' => null,
+                                'fragment' => null,
+                            ]
+                            //'value_url' => 'file:///home/jsmith/foo.txt',
+                        ],
+                    ],
+                    'state' => [
+                        'cursor' => ['offset' => 38],
+                        'errors' => [],
+                        'records' => []
+                    ],
+                ]
+            ],
             'attrType:< <value_url_error>' => [
                 //            000000000011111111112222222222333333333
                 //            012345678901234567890123456789012345678
@@ -1200,10 +1268,13 @@ class ParseTest extends TestCase
 
         $result = Parse::attrValSpec($state, $value, ...$tail);
         $this->assertSame($expect['result'], $result);
-//        $this->assertSame($expect['value'], $value);
-//        $this->assertParserStateHas($expect['state'], $state);
-//
-        $this->markTestIncomplete('The test needs to be reimplemented');
+
+        if (is_array($expect['value'])) {
+            $this->assertAttrValHas($expect['value'], $value);
+        } else {
+            $this->assertSame($expect['value'], $value);
+        }
+        $this->assertParserStateHas($expect['state'], $state);
     }
 
     public static function attrValSpec2__cases()
@@ -1218,13 +1289,38 @@ class ParseTest extends TestCase
                 'expect' => [
                     'result' => true,
                     'value' => [
-                        'attr_desc' => 'attrType;lang-pl',
-                        'value_safe' => 'AAA',
-                        'value' => 'AAA'
+                        'attribute' => 'attrType;lang-pl',
+                        'valueObject' => [
+                            'type' => ValueInterface::TYPE_SAFE,
+                            'spec' => 'AAA',
+                            'content' => 'AAA'
+                        ],
                     ],
                     'state' => [
                         'cursor' => ['offset' => 21],
                         'errors' => [],
+                        'records' => [],
+                    ]
+                ]
+            ],
+            'invalid_base64' => [
+                'source' => ['attrType:: R', 12],
+                'matches' => [
+                    'attr_desc' => ['attrType', 0],
+                    'value_b64' => ['R', 11]
+                ],
+                'expect' => [
+                    'init' => true,
+                    'result' => false,
+                    'value' => null,
+                    'state' => [
+                        'cursor' => ['offset' => 12],
+                        'errors' => [
+                            [
+                                'sourceOffset' => 11,
+                                'message' => 'syntax error: invalid BASE64 string',
+                            ],
+                        ],
                         'records' => [],
                     ]
                 ]
@@ -1235,7 +1331,7 @@ class ParseTest extends TestCase
                     'value_safe' => ['AAA', 18],
                 ],
                 'expect' => [
-                    'initial' => ['I'],
+                    'init' => true,
                     'result' => false,
                     'value' => null,
                     'state' => [
@@ -1258,17 +1354,20 @@ class ParseTest extends TestCase
      */
     public function test__attrValSpec2(array $source, array $matches, array $expect)
     {
-//        $state = $this->getParserStateFromSource(...$source);
-//
-//        if (array_key_exists('initial', $expect)) {
-//            $value = $expect['initial'];
-//        }
-//
-//        $result = Parse::attrValSpec2($state, $matches, $value);
-//        $this->assertSame($expect['result'], $result);
-//        $this->assertSame($expect['value'], $value);
-//        $this->assertParserStateHas($expect['state'], $state);
-        $this->markTestIncomplete('The test needs to be reimplemented');
+        $state = $this->getParserStateFromSource(...$source);
+
+        if ($expect['init'] ?? null) {
+            $value = $this->getMockBuilder(AttrValInterface::class)->getMockForAbstractClass();
+        }
+
+        $result = Parse::attrValSpec2($state, $matches, $value);
+        $this->assertSame($expect['result'], $result);
+        if (is_array($expect['value'])) {
+            $this->assertAttrValHas($expect['value'], $value);
+        } else {
+            $this->assertSame($expect['value'], $value);
+        }
+        $this->assertParserStateHas($expect['state'], $state);
     }
 
     //
@@ -1286,7 +1385,8 @@ class ParseTest extends TestCase
                 'expect' => [
                     'result' => true,
                     'value' => [
-                        //'value' => 'xbvDs8WCdGEgxYJ5xbxrYQ==',
+                        'type' => ValueInterface::TYPE_BASE64,
+                        'spec' => 'xbvDs8WCdGEgxYJ5xbxrYQ==',
                         'content' => 'Żółta łyżka',
                     ],
                     'state' => [
@@ -1296,47 +1396,49 @@ class ParseTest extends TestCase
                     ]
                 ]
             ],
-//            'invalid value_b64' => [
-//                'source' => ['::xbvDs8WCdGEgxYJ5xbxrYQ==', 121],
-//                'matches' => [
-//                    'value_b64' => ['xbvDs8WCdGEgxYJ5xbxrYQ=', 123]
-//                ],
-//                'expect' => [
-//                    'result' => false,
-//                    'value' => [
-//                        'value_b64' => 'xbvDs8WCdGEgxYJ5xbxrYQ=',
-//                        'value' => null,
-//                    ],
-//                    'state' => [
-//                        'cursor' => ['offset' => 121],
-//                        'errors' => [
-//                            [
-//                                'sourceOffset' => 123,
-//                                'message' => 'syntax error: invalid BASE64 string'
-//                            ]
-//                        ],
-//                        'records' => [],
-//                    ]
-//                ]
-//            ],
-//            'value_safe' => [
-//                'source' => ['John Smith', 121],
-//                'matches' => [
-//                    'value_safe' => ['John Smith', 123]
-//                ],
-//                'expect' => [
-//                    'result' => true,
-//                    'value' => [
-//                        'value_safe' => 'John Smith',
-//                        'value' => 'John Smith',
-//                    ],
-//                    'state' => [
-//                        'cursor' => ['offset' => 121],
-//                        'errors' => [],
-//                        'records' => [],
-//                    ]
-//                ]
-//            ],
+            'invalid value_b64' => [
+                'source' => ['::xbvDs8WCdGEgxYJ5xbxrYQ==', 121],
+                'matches' => [
+                    'value_b64' => ['xbvDs8WCdGEgxYJ5xbxrYQ=', 123]
+                ],
+                'expect' => [
+                    'result' => false,
+                    'value' => [
+                        'type'  => ValueInterface::TYPE_BASE64,
+                        'spec'  => 'xbvDs8WCdGEgxYJ5xbxrYQ=',
+                        //'content' => null,
+                    ],
+                    'state' => [
+                        'cursor' => ['offset' => 121],
+                        'errors' => [
+                            [
+                                'sourceOffset' => 123,
+                                'message' => 'syntax error: invalid BASE64 string'
+                            ]
+                        ],
+                        'records' => [],
+                    ]
+                ]
+            ],
+            'value_safe' => [
+                'source' => ['John Smith', 121],
+                'matches' => [
+                    'value_safe' => ['John Smith', 123]
+                ],
+                'expect' => [
+                    'result' => true,
+                    'value' => [
+                        'type' => ValueInterface::TYPE_SAFE,
+                        'spec' => 'John Smith',
+                        'content' => 'John Smith',
+                    ],
+                    'state' => [
+                        'cursor' => ['offset' => 121],
+                        'errors' => [],
+                        'records' => [],
+                    ]
+                ]
+            ],
 //            'value_url (file_uri)' => [
 //                'source' => ['file:///home/jsmith/foo.txt', 121],
 //                'matches' => [
@@ -1347,20 +1449,17 @@ class ParseTest extends TestCase
 //                'expect' => [
 //                    'result' => true,
 //                    'value' => [
-//                        'value_url' => 'file:///home/jsmith/foo.txt',
-//                        'uri' => [
-//                            'uri' => 'file:///home/jsmith/foo.txt',
+//                        'type' => ValueInterface::TYPE_URL,
+//                        'spec' => [
+//                            'string' => 'file:///home/jsmith/foo.txt',
 //                            'scheme' => 'file',
-//                        ],
-//                        'file_uri' => [
-//                            'file_uri' => 'file:///home/jsmith/foo.txt',
-//                            'file_scheme' => 'file',
-//                            'file_hier_part' => '///home/jsmith/foo.txt',
-//                            'auth_path' => '/home/jsmith/foo.txt',
-//                            'file_auth' => '',
+//                            'authority' => '',
+//                            'userinfo' => null,
 //                            'host' => '',
-//                            'reg_name' => '',
-//                            'path_absolute' => '/home/jsmith/foo.txt'
+//                            'port' => null,
+//                            'path' => '/home/jsmith/foo.txt',
+//                            'query' => null,
+//                            'fragment' => null
 //                        ],
 //                    ],
 //                    'state' => [
@@ -1370,29 +1469,29 @@ class ParseTest extends TestCase
 //                    ]
 //                ]
 //            ],
-//            'missing value' => [
-//                'source' => ['file:///home/jsmith/foo.txt', 121],
-//                'matches' => [
-//                    'value_b64' => ['xyz', -1],
-//                    'value_url' => [null, 123],
-//                ],
-//                'expect' => [
-//                    'initial' => ['I'],
-//                    'result' => false,
-//                    'value' => null,
-//                    'state' => [
-//                        'cursor' => ['offset' => 121],
-//                        'errors' => [
-//                            [
-//                                'sourceOffset' => 121,
-//                                'message' => 'internal error: missing or invalid capture groups '.
-//                                             '"value_safe", "value_b64" and "value_url"'
-//                            ]
-//                        ],
-//                        'records' => [],
-//                    ]
-//                ]
-//            ],
+            'missing value' => [
+                'source' => ['file:///home/jsmith/foo.txt', 121],
+                'matches' => [
+                    'value_b64' => ['xyz', -1],
+                    'value_url' => [null, 123],
+                ],
+                'expect' => [
+                    'init' => true,
+                    'result' => false,
+                    'value' => null,
+                    'state' => [
+                        'cursor' => ['offset' => 121],
+                        'errors' => [
+                            [
+                                'sourceOffset' => 121,
+                                'message' => 'internal error: missing or invalid capture groups '.
+                                             '"value_safe", "value_b64" and "value_url"'
+                            ]
+                        ],
+                        'records' => [],
+                    ]
+                ]
+            ],
         ];
     }
 
@@ -1403,13 +1502,17 @@ class ParseTest extends TestCase
     {
         $state = $this->getParserStateFromSource(...$source);
 
-        if (array_key_exists('initial', $expect)) {
-            $value = $expect['initial'];
+        if ($expect['init'] ?? null) {
+            $value = $this->getMockBuilder(ValueInterface::class)->getMockForAbstractClass();
         }
 
         $result = Parse::valueSpec2($state, $matches, $value);
         $this->assertSame($expect['result'], $result);
-        $this->assertValueHas($expect['value'], $value);
+        if (is_array($expect['value'])) {
+            $this->assertValueHas($expect['value'], $value);
+        } else {
+            $this->assertSame($expect['value'], $value);
+        }
         $this->assertParserStateHas($expect['state'], $state);
     }
 }

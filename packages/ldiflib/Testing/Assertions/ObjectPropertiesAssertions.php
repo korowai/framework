@@ -22,6 +22,7 @@ use Korowai\Lib\Ldif\SnippetInterface;
 use Korowai\Lib\Ldif\ValueInterface;
 use Korowai\Lib\Ldif\AttrValInterface;
 use Korowai\Lib\Ldif\SourceLocationInterface;
+use League\Uri\Contracts\UriInterface;
 
 // Specific records
 use Korowai\Lib\Ldif\Records\AbstractRecord;
@@ -185,11 +186,11 @@ trait ObjectPropertiesAssertions
      */
     public static function getValuePropertyGetters() : array
     {
-        return array_merge(static::getAbstractRecordPropertyGetters(), [
+        return [
             'type'                      => 'getType',
-            'value'                     => 'getValue',
+            'spec'                      => 'getSpec',
             'content'                   => 'getContent'
-        ]);
+        ];
     }
 
     /**
@@ -202,6 +203,26 @@ trait ObjectPropertiesAssertions
         return array_merge(static::getAbstractRecordPropertyGetters(), [
             'attribute'                 => 'getAttribute',
         ]);
+    }
+
+    /**
+     * Returns getters for UriInterface object's properties.
+     *
+     * @return array
+     */
+    public static function getUriPropertyGetters() : array
+    {
+        return [
+            'string'                    => '__toString',
+            'scheme'                    => 'getScheme',
+            'authority'                 => 'getAuthority',
+            'userinfo'                  => 'getUserInfo',
+            'host'                      => 'getHost',
+            'port'                      => 'getPort',
+            'path'                      => 'getPath',
+            'query'                     => 'getQuery',
+            'fragment'                  => 'getFragment',
+        ];
     }
 
     /**
@@ -367,8 +388,14 @@ trait ObjectPropertiesAssertions
         ValueInterface $object,
         string $message = ''
     ) : void {
+        $expectedValues = array_filter($expected, function ($value, $key) {
+            return $key !== 'spec' || is_string($value) ;
+        }, ARRAY_FILTER_USE_BOTH);
         $options = ['getters' => static::getValuePropertyGetters(), 'message' => $message];
-        static::assertHasPropertiesSameAs($expected, $object, $options);
+        static::assertHasPropertiesSameAs($expectedValues, $object, $options);
+        if (array_key_exists('spec', $expected) && !array_key_exists('spec', $expectedValues)) {
+            static::assertUriHas($expected['spec'], $object->getSpec(), $message);
+        }
     }
 
     /**
@@ -414,6 +441,22 @@ trait ObjectPropertiesAssertions
         for ($i = 0; $i < count($items); $i++) {
             call_user_func($callback, $expected[$i], $items[$i], $message);
         }
+    }
+
+    /**
+     * Assert that UriInterface *$object* has *$expected* properties.
+     *
+     * @param  array $expected A array of key-value pairs with expected values of attributes.
+     * @param  UriInterface $object An object to be examined.
+     * @param  string|null $message Optional message.
+     */
+    public static function assertUriHas(
+        array $expected,
+        UriInterface $object,
+        string $message = ''
+    ) : void {
+        $options = ['getters' => static::getUriPropertyGetters(), 'message' => $message];
+        static::assertHasPropertiesSameAs($expected, $object, $options);
     }
 }
 

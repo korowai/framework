@@ -23,6 +23,7 @@ use Korowai\Lib\Ldif\ValueInterface;
 use Korowai\Lib\Ldif\AttrValInterface;
 use Korowai\Lib\Ldif\ParserErrorInterface;
 use Korowai\Lib\Ldif\ParserError;
+use League\Uri\Contracts\UriInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -220,22 +221,22 @@ class ObjectPropertiesAssertionsTest extends TestCase
         $error = new ParserError($location, 'syntax error: foo', 0, $previous);
 
         $this->assertParserErrorHas([
-            'fileName'               => 'foo.ldif',
-            'sourceString'           => "# comment\nversion: 1\n",
-	        'sourceOffset'           => 10,
-	        'sourceCharOffset'       => 10,
-	        'sourceLineIndex'        => 1,
-	        'sourceLine'             => "version: 1",
-	        'sourceLineAndOffset'    => [1, 0],
-	        'sourceLineAndCharOffset'=> [1, 0],
-            'message'                => "syntax error: foo",
-            'code'                   => 0,
-            'file'                   => __file__,
-            'line'                   => $line,
-//            'trace'                  => ['T'],
-//            'traceAsString'          => 'T',
-            'previous'               => $previous,
-            'multilineMessage'       => "foo.ldif:2:1:syntax error: foo\nfoo.ldif:2:1:version: 1\nfoo.ldif:2:1:^",
+            'fileName'                  => 'foo.ldif',
+            'sourceString'              => "# comment\nversion: 1\n",
+	        'sourceOffset'              => 10,
+	        'sourceCharOffset'          => 10,
+	        'sourceLineIndex'           => 1,
+	        'sourceLine'                => "version: 1",
+	        'sourceLineAndOffset'       => [1, 0],
+	        'sourceLineAndCharOffset'   => [1, 0],
+            'message'                   => "syntax error: foo",
+            'code'                      => 0,
+            'file'                      => __file__,
+            'line'                      => $line,
+//            'trace'                     => ['T'],
+//            'traceAsString'             => 'T',
+            'previous'                  => $previous,
+            'multilineMessage'          => "foo.ldif:2:1:syntax error: foo\nfoo.ldif:2:1:version: 1\nfoo.ldif:2:1:^",
         ], $error);
     }
 
@@ -254,12 +255,12 @@ class ObjectPropertiesAssertionsTest extends TestCase
         $this->markTestIncomplete('The test has not been implemented yet.');
     }
 
-    public function test__assertValueHas()
+    public function test__assertValueHas__withStringSpec()
     {
         $getters = [
-//            'getType'                   => 1,
-//            'getValue'                  => 'Zm9v',
-	        'getContent'                => 'foo',
+            'getType'       => 1,
+            'getSpec'       => 'Zm9v',
+	        'getContent'    => 'foo',
         ];
 
         $valueObject = $this->getMockBuilder(ValueInterface::class)->getMockForAbstractClass();
@@ -271,18 +272,71 @@ class ObjectPropertiesAssertionsTest extends TestCase
         }
 
         $this->assertValueHas([
-//            'type'                   => 1,
-//            'value'                  => 'Zm9v',
-            'content'                => 'foo',
+            'type'          => 1,
+            'spec'          => 'Zm9v',
+            'content'       => 'foo',
         ], $valueObject);
     }
 
-    public function test__assertAttrValHas()
+    public function test__assertValueHas__withUriSpec()
+    {
+        $uriGetters = [
+            '__toString'    => 'http://jsmith:pass@example.com:123/foo/bar?q=1#f=2',
+            'getScheme'     => 'http',
+            'getAuthority'  => 'jsmith:pass@example.com:123',
+            'getUserInfo'   => 'jsmith:pass',
+            'getHost'       => 'example.com',
+            'getPort'       => 123,
+            'getPath'       => '/foo/bar',
+            'getQuery'      => 'q=1',
+            'getFragment'   => 'f=2',
+        ];
+
+        $uriObject = $this->getMockBuilder(UriInterface::class)->getMockForAbstractClass();
+        foreach ($uriGetters as $method => $value) {
+            $uriObject->expects($this->atLeastOnce())
+                        ->method($method)
+                        ->with()
+                        ->willReturn($value);
+        }
+
+        $getters = [
+            'getType'       => 1,
+            'getSpec'       => $uriObject,
+	        'getContent'    => 'foo',
+        ];
+
+        $valueObject = $this->getMockBuilder(ValueInterface::class)->getMockForAbstractClass();
+        foreach ($getters as $method => $value) {
+            $valueObject->expects($this->atLeastOnce())
+                        ->method($method)
+                        ->with()
+                        ->willReturn($value);
+        }
+
+        $this->assertValueHas([
+            'type'          => 1,
+            'spec'          => [
+                'string'    => 'http://jsmith:pass@example.com:123/foo/bar?q=1#f=2',
+                'scheme'    => 'http',
+                'authority' => 'jsmith:pass@example.com:123',
+                'userinfo'  => 'jsmith:pass',
+                'host'      => 'example.com',
+                'port'      => 123,
+                'path'      => '/foo/bar',
+                'query'     => 'q=1',
+                'fragment'  => 'f=2',
+            ],
+            'content'       => 'foo',
+        ], $valueObject);
+    }
+
+    public function test__assertAttrValHas__withStringValue()
     {
         $valueGetters = [
-//            'getType'                   => 1,
-//            'getValue'                  => 'Zm9v',
-	        'getContent'                => 'foo',
+            'getType'       => 1,
+            'getSpec'       => 'Zm9v',
+	        'getContent'    => 'foo',
         ];
 
         $valueObject = $this->getMockBuilder(ValueInterface::class)->getMockForAbstractClass();
@@ -294,8 +348,8 @@ class ObjectPropertiesAssertionsTest extends TestCase
         }
 
         $attrValGetters = [
-            'getAttribute'              => 'bar',
-            'getValueObject'            => $valueObject
+            'getAttribute'  => 'bar',
+            'getValueObject'=> $valueObject
         ];
         $attrVal = $this->getMockBuilder(AttrValInterface::class)->getMockForAbstractClass();
         foreach ($attrValGetters as $method => $value) {
@@ -307,13 +361,117 @@ class ObjectPropertiesAssertionsTest extends TestCase
 
 
         $this->assertAttrValHas([
-            'attribute'                 => 'bar',
-            'valueObject'               => [
-//                'type'                  => 1,
-//                'value'                 => 'Zm9v',
-                'content'               => 'foo',
+            'attribute'     => 'bar',
+            'valueObject'   => [
+                'type'      => 1,
+                'spec'      => 'Zm9v',
+                'content'   => 'foo',
             ]
         ], $attrVal);
+    }
+
+    public function test__assertAttrValHas__withUriValue()
+    {
+        $uriGetters = [
+            '__toString'    => 'http://jsmith:pass@example.com:123/foo/bar?q=1#f=2',
+            'getScheme'     => 'http',
+            'getAuthority'  => 'jsmith:pass@example.com:123',
+            'getUserInfo'   => 'jsmith:pass',
+            'getHost'       => 'example.com',
+            'getPort'       => 123,
+            'getPath'       => '/foo/bar',
+            'getQuery'      => 'q=1',
+            'getFragment'   => 'f=2',
+        ];
+
+        $uriObject = $this->getMockBuilder(UriInterface::class)->getMockForAbstractClass();
+        foreach ($uriGetters as $method => $value) {
+            $uriObject->expects($this->atLeastOnce())
+                        ->method($method)
+                        ->with()
+                        ->willReturn($value);
+        }
+
+        $valueGetters = [
+            'getType'       => 1,
+            'getSpec'       => $uriObject,
+	        'getContent'    => 'foo',
+        ];
+
+        $valueObject = $this->getMockBuilder(ValueInterface::class)->getMockForAbstractClass();
+        foreach ($valueGetters as $method => $value) {
+            $valueObject->expects($this->atLeastOnce())
+                        ->method($method)
+                        ->with()
+                        ->willReturn($value);
+        }
+
+        $attrValGetters = [
+            'getAttribute'  => 'bar',
+            'getValueObject'=> $valueObject
+        ];
+        $attrVal = $this->getMockBuilder(AttrValInterface::class)->getMockForAbstractClass();
+        foreach ($attrValGetters as $method => $value) {
+            $attrVal->expects($this->atLeastOnce())
+                    ->method($method)
+                    ->with()
+                    ->willReturn($value);
+        }
+
+
+        $this->assertAttrValHas([
+            'attribute'         => 'bar',
+            'valueObject'       => [
+                'type'          => 1,
+                'spec'          => [
+                    'string'    => 'http://jsmith:pass@example.com:123/foo/bar?q=1#f=2',
+                    'scheme'    => 'http',
+                    'authority' => 'jsmith:pass@example.com:123',
+                    'userinfo'  => 'jsmith:pass',
+                    'host'      => 'example.com',
+                    'port'      => 123,
+                    'path'      => '/foo/bar',
+                    'query'     => 'q=1',
+                    'fragment'  => 'f=2',
+                ],
+                'content'       => 'foo',
+            ]
+        ], $attrVal);
+    }
+
+    public function test__assertUriHas()
+    {
+        $getters = [
+            '__toString'    => 'http://jsmith:pass@example.com:123/foo/bar?q=1#f=2',
+            'getScheme'     => 'http',
+            'getAuthority'  => 'jsmith:pass@example.com:123',
+            'getUserInfo'   => 'jsmith:pass',
+            'getHost'       => 'example.com',
+            'getPort'       => 123,
+            'getPath'       => '/foo/bar',
+            'getQuery'      => 'q=1',
+            'getFragment'   => 'f=2',
+        ];
+
+        $uriObject = $this->getMockBuilder(UriInterface::class)->getMockForAbstractClass();
+        foreach ($getters as $method => $value) {
+            $uriObject->expects($this->atLeastOnce())
+                        ->method($method)
+                        ->with()
+                        ->willReturn($value);
+        }
+
+        $this->assertUriHas([
+            'string'        => 'http://jsmith:pass@example.com:123/foo/bar?q=1#f=2',
+            'scheme'        => 'http',
+            'authority'     => 'jsmith:pass@example.com:123',
+            'userinfo'      => 'jsmith:pass',
+            'host'          => 'example.com',
+            'port'          => 123,
+            'path'          => '/foo/bar',
+            'query'         => 'q=1',
+            'fragment'      => 'f=2',
+        ], $uriObject);
     }
 }
 

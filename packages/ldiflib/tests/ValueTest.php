@@ -42,7 +42,7 @@ class ValueTest extends TestCase
         $value = Value::createSafeString('safe string');
         $this->assertInstanceOf(Value::class, $value);
         $this->assertSame(Value::TYPE_SAFE, $value->getType());
-        $this->assertSame('safe string', $value->getValue());
+        $this->assertSame('safe string', $value->getSpec());
         $this->assertSame('safe string', $value->getContent());
     }
 
@@ -51,7 +51,7 @@ class ValueTest extends TestCase
         $value = Value::createBase64String('YmFzZTY0IHN0cmluZw==');
         $this->assertInstanceOf(Value::class, $value);
         $this->assertSame(Value::TYPE_BASE64, $value->getType());
-        $this->assertSame('YmFzZTY0IHN0cmluZw==', $value->getValue());
+        $this->assertSame('YmFzZTY0IHN0cmluZw==', $value->getSpec());
         $this->assertSame('base64 string', $value->getContent());
 
         //
@@ -59,7 +59,7 @@ class ValueTest extends TestCase
         $value = Value::createBase64String('YmFzZTY0IHN0cmluZw==', 'already decoded');
         $this->assertInstanceOf(Value::class, $value);
         $this->assertSame(Value::TYPE_BASE64, $value->getType());
-        $this->assertSame('YmFzZTY0IHN0cmluZw==', $value->getValue());
+        $this->assertSame('YmFzZTY0IHN0cmluZw==', $value->getSpec());
         $this->assertSame('already decoded', $value->getContent());
     }
 
@@ -77,7 +77,7 @@ class ValueTest extends TestCase
         $value = Value::createUri($uri);
         $this->assertInstanceOf(Value::class, $value);
         $this->assertSame(Value::TYPE_URL, $value->getType());
-        $this->assertSame($uri, $value->getValue());
+        $this->assertSame($uri, $value->getSpec());
         $this->assertSame(file_get_contents(__file__), $value->getContent());
     }
 
@@ -87,7 +87,7 @@ class ValueTest extends TestCase
         $value = Value::createUriFromComponents($components);
         $this->assertInstanceOf(Value::class, $value);
         $this->assertSame(Value::TYPE_URL, $value->getType());
-        $this->assertInstanceOf(UriInterface::class, $value->getValue());
+        $this->assertInstanceOf(UriInterface::class, $value->getSpec());
         $this->assertSame(file_get_contents(__file__), $value->getContent());
     }
 
@@ -96,7 +96,7 @@ class ValueTest extends TestCase
         $value = Value::createUriFromRfc3986Matches(['path_absolute' => [ __file__, 123]]);
         $this->assertInstanceOf(Value::class, $value);
         $this->assertSame(Value::TYPE_URL, $value->getType());
-        $uri = $value->getValue();
+        $uri = $value->getSpec();
         $this->assertInstanceOf(UriInterface::class, $uri);
         $this->assertSame(__file__, $uri->getPath());
         $this->assertSame(file_get_contents(__file__), $value->getContent());
@@ -182,7 +182,7 @@ class ValueTest extends TestCase
         $value = Value::createUriFromRfc3986Matches($matches);
         $this->assertInstanceOf(Value::class, $value);
 
-        $uri = $value->getValue();
+        $uri = $value->getSpec();
         $this->assertInstanceOf(UriInterface::class, $uri);
 
         $this->assertSame($expect['scheme'] ?? null, $uri->getScheme());
@@ -218,11 +218,19 @@ class ValueTest extends TestCase
         $value = Value::createUriFromComponents(['path' => __dir__.'/inexistent.txt']);
         $this->assertInstanceOf(Value::class, $value);
         $this->assertSame(Value::TYPE_URL, $value->getType());
-        $this->assertInstanceOf(UriInterface::class, $value->getValue());
+        $this->assertInstanceOf(UriInterface::class, $value->getSpec());
 
         $this->expectException(\ErrorException::class);
         $this->expectExceptionMessage("failed to open stream");
         $value->getContent();
+    }
+
+    public function test__throwInvalidTypeException()
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('internal error: invalid type (5) set to '.Value::class.' object');
+
+        Value::throwInvalidTypeException(5);
     }
 }
 

@@ -31,19 +31,19 @@ class Parse
     protected const RULES = [
         'version-spec' => [
             'rule' => [Rfc2849x::class, 'VERSION_SPEC_X'],
-            'completion' => 'versionSpec2'
+            'completion' => [self::class, 'versionSpec2'],
         ],
         'dn-spec' => [
             'rule' => [Rfc2849x::class, 'DN_SPEC_X'],
-            'completion' => 'dnSpec2'
+            'completion' => [self::class, 'dnSpec2'],
         ],
         'value-spec' => [
             'rule' => [Rfc2849x::class, 'VALUE_SPEC_X'],
-            'completion' => 'valueSpec2'
+            'completion' => [self::class, 'valueSpec2'],
         ],
         'attrval-spec' => [
             'rule' => [Rfc2849x::class, 'ATTRVAL_SPEC_X'],
-            'completion' => 'attrValSpec2'
+            'completion' => [self::class, 'attrValSpec2'],
         ],
     ];
 
@@ -209,7 +209,8 @@ class Parse
     {
         $args = static::RULES[$ruleName]['rule'];
         $rule = new Rule($args[0], $args[1], $tryOnly);
-        $completion = \Closure::fromCallable([static::class, static::RULES[$ruleName]['completion']]);
+        $completion = static::RULES[$ruleName]['completion'];
+        $completion = \Closure::fromCallable($completion);
         return static::withRfcRule($state, $rule, $completion, $value);
     }
 
@@ -338,6 +339,7 @@ class Parse
     {
         if (Scan::matched('attr_desc', $matches, $string, $offset)) {
             if (!static::valueSpec2($state, $matches, $value)) {
+                $attrVal = null;
                 return false;
             }
             $attrVal = new AttrVal($string, $value);

@@ -21,11 +21,9 @@ use SebastianBergmann\Comparator\ComparisonFailure;
  * Constraint that accepts object having prescribed properties.
  *
  * Compares only properties present in the array of expectations. Additional
- * parameter named *$getters* is a key-value array of method names that shall
- * be used to access particular attributes of the objects being examined. For
- * example
+ * parameter *$getters* is a key-value array with property names as keys and
+ * their corresponding getter method names as values. For example
  *
- *    ```
  *      class Person {
  *          private $name;
  *          public $age;
@@ -36,7 +34,15 @@ use SebastianBergmann\Comparator\ComparisonFailure;
  *          ['name' => 'John', 'age' => 21],
  *          ['name' => 'getName']
  *      );
- *    ```
+ *
+ * The array of *$expected* values may also refer getter methods directly. Any
+ * key in *$expected* array ending with ``"()"`` is considered to be a method
+ * that returns property value.
+ *
+ *      // ...
+ *      $matcher = new HasPropertiesIdenticalTo(
+ *          ['getName()' => 'John', 'age' => 21],
+ *      );
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
@@ -170,7 +176,8 @@ final class HasPropertiesIdenticalTo extends Constraint
 
     protected function updateActual(array &$actual, object $object, string $key, array $getters) : void
     {
-        if (($getter = $getters[$key] ?? null) !== null) {
+        $getter = (substr($key, -2) === '()') ? substr($key, 0, -2) : ($getters[$key] ?? null);
+        if ($getter !== null) {
             if (!is_callable([$object, $getter])) {
                 throw new \PHPUnit\Framework\Exception('$object->'.$getter.'() is not callable');
             }

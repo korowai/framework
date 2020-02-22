@@ -59,6 +59,7 @@ class ObjectPropertiesAssertionsTest extends TestCase
             [['name' => 'John', 'last' => 'Smith'],              $jsmith],
             [['age' => 21],                                      $jsmith],
             [['age' => 21, 'salary' => 123],                     $jsmith, ['salary' => 'getSalary']],
+            [['age' => 21, 'getSalary()' => 123],                $jsmith],
         ];
     }
 
@@ -77,6 +78,7 @@ class ObjectPropertiesAssertionsTest extends TestCase
             [['name' => 'John', 'last' => 'Brown'],              $jsmith],
             [['age' => 19],                                      $jsmith],
             [['age' => 21, 'salary' => 1230],                    $jsmith, ['salary' => 'getSalary'] ],
+            [['age' => 21, 'getSalary()' => 1230],               $jsmith],
         ];
     }
 
@@ -118,6 +120,16 @@ class ObjectPropertiesAssertionsTest extends TestCase
     }
 
     public function test__hasPropertiesIdenticalTo__withInvalidGetter()
+    {
+        $object = new class { protected $a; };
+
+        self::expectException(\PHPUnit\Framework\Exception::class);
+        self::expectExceptionMessage('$object->xxx() is not callable');
+
+        self::hasPropertiesIdenticalTo(['xxx()' => 'A'])->matches($object);
+    }
+
+    public function test__hasPropertiesIdenticalTo__withInvalidGetterOption()
     {
         $object = new class { protected $a; };
 

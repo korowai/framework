@@ -21,6 +21,7 @@ use Korowai\Lib\Ldif\CursorInterface;
 use Korowai\Lib\Ldif\SnippetInterface;
 use Korowai\Lib\Ldif\ValueInterface;
 use Korowai\Lib\Ldif\AttrValInterface;
+use Korowai\Lib\Ldif\ParserStateInterface;
 use Korowai\Lib\Ldif\ParserErrorInterface;
 use Korowai\Lib\Ldif\ParserError;
 use League\Uri\Contracts\UriInterface;
@@ -38,181 +39,260 @@ class ObjectPropertiesAssertionsTest extends TestCase
         return self::$ldiflibObjectPropertyGettersMap;
     }
 
+    //
+    // assertSourceLocationHas
+    //
+
     public function test__assertSourceLocationHas()
     {
         $getters = [
-            'getSourceFileName'         => 'foo.ldif',
-            'getSourceString'           => "# comment\nversion: 1\n",
-	        'getSourceOffset'           => 10,
-	        'getSourceCharOffset'       => 10,
-	        'getSourceLineIndex'        => 1,
-	        'getSourceLine'             => "version: 1",
-	        'getSourceLineAndOffset'    => [1, 0],
-	        'getSourceLineAndCharOffset'=> [1, 0],
+            'getSourceFileName'             => 'foo.ldif',
+            'getSourceString'               => "# comment\nversion: 1\n",
+	        'getSourceOffset'               => 10,
+	        'getSourceCharOffset'           => 10,
+	        'getSourceLineIndex'            => 1,
+	        'getSourceLine'                 => "version: 1",
+	        'getSourceLineAndOffset'        => [1, 0],
+	        'getSourceLineAndCharOffset'    => [1, 0],
         ];
 
         $location = $this->getMockBuilder(SourceLocationInterface::class)->getMockForAbstractClass();
         foreach ($getters as $method => $value) {
-            $location->expects($this->once())
+            $location->expects($this->exactly(2))
                      ->method($method)
                      ->with()
                      ->willReturn($value);
         }
 
         $this->assertSourceLocationHas([
-            'fileName'               => 'foo.ldif',
-            'sourceString'           => "# comment\nversion: 1\n",
-	        'sourceOffset'           => 10,
-	        'sourceCharOffset'       => 10,
-	        'sourceLineIndex'        => 1,
-	        'sourceLine'             => "version: 1",
-	        'sourceLineAndOffset'    => [1, 0],
-	        'sourceLineAndCharOffset'=> [1, 0],
+            'fileName'                      => 'foo.ldif',
+            'sourceString'                  => "# comment\nversion: 1\n",
+	        'sourceOffset'                  => 10,
+	        'sourceCharOffset'              => 10,
+	        'sourceLineIndex'               => 1,
+	        'sourceLine'                    => "version: 1",
+	        'sourceLineAndOffset'           => [1, 0],
+	        'sourceLineAndCharOffset'       => [1, 0],
+        ], $location);
+
+        $this->assertSourceLocationHas([
+            'getSourceFileName()'           => 'foo.ldif',
+            'getSourceString()'             => "# comment\nversion: 1\n",
+	        'getSourceOffset()'             => 10,
+	        'getsourceCharOffset()'         => 10,
+	        'getSourceLineIndex()'          => 1,
+	        'getSourceLine()'               => "version: 1",
+	        'getSourceLineAndOffset()'      => [1, 0],
+	        'getSourceLineAndCharOffset()'  => [1, 0],
         ], $location);
     }
+
+    //
+    // assertLocationHas
+    //
 
     public function test__assertLocationHas()
     {
         $getters = [
-            'getSourceFileName'         => 'foo.ldif',
-            'getSourceString'           => "# comment\nversion: 1\n",
-	        'getSourceOffset'           => 10,
-	        'getSourceCharOffset'       => 10,
-	        'getSourceLineIndex'        => 1,
-	        'getSourceLine'             => "version: 1",
-	        'getSourceLineAndOffset'    => [1, 0],
-	        'getSourceLineAndCharOffset'=> [1, 0],
-            'getString'                 => "version: 1\n",
-            'getOffset'                 => 0,
-            'getCharOffset'             => 0,
+            'getSourceFileName'             => 'foo.ldif',
+            'getSourceString'               => "# comment\nversion: 1\n",
+	        'getSourceOffset'               => 10,
+	        'getSourceCharOffset'           => 10,
+	        'getSourceLineIndex'            => 1,
+	        'getSourceLine'                 => "version: 1",
+	        'getSourceLineAndOffset'        => [1, 0],
+	        'getSourceLineAndCharOffset'    => [1, 0],
+            'getString'                     => "version: 1\n",
+            'getOffset'                     => 0,
+            'getCharOffset'                 => 0,
         ];
 
         $location = $this->getMockBuilder(LocationInterface::class)->getMockForAbstractClass();
         foreach ($getters as $method => $value) {
-            $location->expects($this->once())
+            $location->expects($this->exactly(2))
                      ->method($method)
                      ->with()
                      ->willReturn($value);
         }
 
         $this->assertLocationHas([
-            'fileName'               => 'foo.ldif',
-            'sourceString'           => "# comment\nversion: 1\n",
-	        'sourceOffset'           => 10,
-	        'sourceCharOffset'       => 10,
-	        'sourceLineIndex'        => 1,
-	        'sourceLine'             => "version: 1",
-	        'sourceLineAndOffset'    => [1, 0],
-	        'sourceLineAndCharOffset'=> [1, 0],
-            'string'                 => "version: 1\n",
-            'offset'                 => 0,
-            'charOffset'             => 0,
+            'fileName'                      => 'foo.ldif',
+            'sourceString'                  => "# comment\nversion: 1\n",
+	        'sourceOffset'                  => 10,
+	        'sourceCharOffset'              => 10,
+	        'sourceLineIndex'               => 1,
+	        'sourceLine'                    => "version: 1",
+	        'sourceLineAndOffset'           => [1, 0],
+	        'sourceLineAndCharOffset'       => [1, 0],
+            'string'                        => "version: 1\n",
+            'offset'                        => 0,
+            'charOffset'                    => 0,
+        ], $location);
+
+        $this->assertLocationHas([
+            'getSourceFileName()'           => 'foo.ldif',
+            'getSourceString()'             => "# comment\nversion: 1\n",
+	        'getSourceOffset()'             => 10,
+	        'getSourceCharOffset()'         => 10,
+	        'getSourceLineIndex()'          => 1,
+	        'getSourceLine()'               => "version: 1",
+	        'getSourceLineAndOffset()'      => [1, 0],
+	        'getSourceLineAndCharOffset()'  => [1, 0],
+            'getString()'                   => "version: 1\n",
+            'getOffset()'                   => 0,
+            'getCharOffset()'               => 0,
         ], $location);
     }
+
+    //
+    // assertCursorHas
+    //
 
     public function test__assertCursorHas()
     {
         $getters = [
-            'getSourceFileName'         => 'foo.ldif',
-            'getSourceString'           => "# comment\nversion: 1\n",
-	        'getSourceOffset'           => 10,
-	        'getSourceCharOffset'       => 10,
-	        'getSourceLineIndex'        => 1,
-	        'getSourceLine'             => "version: 1",
-	        'getSourceLineAndOffset'    => [1, 0],
-	        'getSourceLineAndCharOffset'=> [1, 0],
-            'getString'                 => "version: 1\n",
-            'getOffset'                 => 0,
-            'getCharOffset'             => 0,
+            'getSourceFileName'             => 'foo.ldif',
+            'getSourceString'               => "# comment\nversion: 1\n",
+	        'getSourceOffset'               => 10,
+	        'getSourceCharOffset'           => 10,
+	        'getSourceLineIndex'            => 1,
+	        'getSourceLine'                 => "version: 1",
+	        'getSourceLineAndOffset'        => [1, 0],
+	        'getSourceLineAndCharOffset'    => [1, 0],
+            'getString'                     => "version: 1\n",
+            'getOffset'                     => 0,
+            'getCharOffset'                 => 0,
         ];
 
         $cursor = $this->getMockBuilder(CursorInterface::class)->getMockForAbstractClass();
         foreach ($getters as $method => $value) {
-            $cursor->expects($this->once())
+            $cursor->expects($this->exactly(2))
                    ->method($method)
                    ->with()
                    ->willReturn($value);
         }
 
         $this->assertCursorHas([
-            'fileName'               => 'foo.ldif',
-            'sourceString'           => "# comment\nversion: 1\n",
-	        'sourceOffset'           => 10,
-	        'sourceCharOffset'       => 10,
-	        'sourceLineIndex'        => 1,
-	        'sourceLine'             => "version: 1",
-	        'sourceLineAndOffset'    => [1, 0],
-	        'sourceLineAndCharOffset'=> [1, 0],
-            'string'                 => "version: 1\n",
-            'offset'                 => 0,
-            'charOffset'             => 0,
+            'fileName'                      => 'foo.ldif',
+            'sourceString'                  => "# comment\nversion: 1\n",
+	        'sourceOffset'                  => 10,
+	        'sourceCharOffset'              => 10,
+	        'sourceLineIndex'               => 1,
+	        'sourceLine'                    => "version: 1",
+	        'sourceLineAndOffset'           => [1, 0],
+	        'sourceLineAndCharOffset'       => [1, 0],
+            'string'                        => "version: 1\n",
+            'offset'                        => 0,
+            'charOffset'                    => 0,
+        ], $cursor);
+
+        $this->assertCursorHas([
+            'getSourceFileName()'           => 'foo.ldif',
+            'getSourceString()'             => "# comment\nversion: 1\n",
+	        'getSourceOffset()'             => 10,
+	        'getSourceCharOffset()'         => 10,
+	        'getSourceLineIndex()'          => 1,
+	        'getSourceLine()'               => "version: 1",
+	        'getSourceLineAndOffset()'      => [1, 0],
+	        'getSourceLineAndCharOffset()'  => [1, 0],
+            'getString()'                   => "version: 1\n",
+            'getOffset()'                   => 0,
+            'getCharOffset()'               => 0,
         ], $cursor);
     }
+
+    //
+    // assertSnippetHas
+    //
 
     public function test__assertSnippetHas()
     {
         $getters = [
-            'getSourceFileName'         => 'foo.ldif',
-            'getSourceString'           => "# comment\nversion: 1\n",
-	        'getSourceOffset'           => 10,
-	        'getSourceCharOffset'       => 10,
-	        'getSourceLineIndex'        => 1,
-	        'getSourceLine'             => "version: 1",
-	        'getSourceLineAndOffset'    => [1, 0],
-	        'getSourceLineAndCharOffset'=> [1, 0],
-            'getString'                 => "version: 1\n",
-            'getOffset'                 => 0,
-            'getCharOffset'             => 0,
-            'getLength'                 => 7,
-	        'getEndOffset'              => 7,
-	        'getSourceLength'           => 7,
-	        'getSourceEndOffset'        => 17,
-	        'getSourceCharLength'       => 7,
-	        'getSourceCharEndOffset'    => 17,
+            'getSourceFileName'             => 'foo.ldif',
+            'getSourceString'               => "# comment\nversion: 1\n",
+	        'getSourceOffset'               => 10,
+	        'getSourceCharOffset'           => 10,
+	        'getSourceLineIndex'            => 1,
+	        'getSourceLine'                 => "version: 1",
+	        'getSourceLineAndOffset'        => [1, 0],
+	        'getSourceLineAndCharOffset'    => [1, 0],
+            'getString'                     => "version: 1\n",
+            'getOffset'                     => 0,
+            'getCharOffset'                 => 0,
+            'getLength'                     => 7,
+	        'getEndOffset'                  => 7,
+	        'getSourceLength'               => 7,
+	        'getSourceEndOffset'            => 17,
+	        'getSourceCharLength'           => 7,
+	        'getSourceCharEndOffset'        => 17,
         ];
 
         $snippet = $this->getMockBuilder(SnippetInterface::class)->getMockForAbstractClass();
         foreach ($getters as $method => $value) {
-            $snippet->expects($this->once())
+            $snippet->expects($this->exactly(2))
                     ->method($method)
                     ->with()
                     ->willReturn($value);
         }
 
         $this->assertSnippetHas([
-            'fileName'               => 'foo.ldif',
-            'sourceString'           => "# comment\nversion: 1\n",
-	        'sourceOffset'           => 10,
-	        'sourceCharOffset'       => 10,
-	        'sourceLineIndex'        => 1,
-	        'sourceLine'             => "version: 1",
-	        'sourceLineAndOffset'    => [1, 0],
-	        'sourceLineAndCharOffset'=> [1, 0],
-            'string'                 => "version: 1\n",
-            'offset'                 => 0,
-            'charOffset'             => 0,
-            'length'                 => 7,
-	        'endOffset'              => 7,
-	        'sourceLength'           => 7,
-	        'sourceEndOffset'        => 17,
-	        'sourceCharLength'       => 7,
-	        'sourceCharEndOffset'    => 17,
+            'fileName'                      => 'foo.ldif',
+            'sourceString'                  => "# comment\nversion: 1\n",
+	        'sourceOffset'                  => 10,
+	        'sourceCharOffset'              => 10,
+	        'sourceLineIndex'               => 1,
+	        'sourceLine'                    => "version: 1",
+	        'sourceLineAndOffset'           => [1, 0],
+	        'sourceLineAndCharOffset'       => [1, 0],
+            'string'                        => "version: 1\n",
+            'offset'                        => 0,
+            'charOffset'                    => 0,
+            'length'                        => 7,
+	        'endOffset'                     => 7,
+	        'sourceLength'                  => 7,
+	        'sourceEndOffset'               => 17,
+	        'sourceCharLength'              => 7,
+	        'sourceCharEndOffset'           => 17,
+        ], $snippet);
+
+        $this->assertSnippetHas([
+            'getSourceFileName()'           => 'foo.ldif',
+            'getSourceString()'             => "# comment\nversion: 1\n",
+	        'getSourceOffset()'             => 10,
+	        'getSourceCharOffset()'         => 10,
+	        'getSourceLineIndex()'          => 1,
+	        'getSourceLine()'               => "version: 1",
+	        'getSourceLineAndOffset()'      => [1, 0],
+	        'getSourceLineAndCharOffset()'  => [1, 0],
+            'getString()'                   => "version: 1\n",
+            'getOffset()'                   => 0,
+            'getCharOffset()'               => 0,
+            'getLength()'                   => 7,
+	        'getEndOffset()'                => 7,
+	        'getSourceLength()'             => 7,
+	        'getSourceEndOffset()'          => 17,
+	        'getSourceCharLength()'         => 7,
+	        'getSourceCharEndOffset()'      => 17,
         ], $snippet);
     }
+
+    //
+    // assertParserErrorHas
+    //
 
     public function test__assertParserErrorHas()
     {
         $previous = new \Exception('previous');
 
         $getters = [
-            'getSourceFileName'         => 'foo.ldif',
-            'getSourceString'           => "# comment\nversion: 1\n",
-	        'getSourceOffset'           => 10,
-	        'getSourceCharOffset'       => 10,
-	        'getSourceLineIndex'        => 1,
-	        'getSourceLine'             => "version: 1",
-	        'getSourceLineAndOffset'    => [1, 0],
-	        'getSourceLineAndCharOffset'=> [1, 0],
+            'getSourceFileName'             => 'foo.ldif',
+            'getSourceString'               => "# comment\nversion: 1\n",
+	        'getSourceOffset'               => 10,
+	        'getSourceCharOffset'           => 10,
+	        'getSourceLineIndex'            => 1,
+	        'getSourceLine'                 => "version: 1",
+	        'getSourceLineAndOffset'        => [1, 0],
+	        'getSourceLineAndCharOffset'    => [1, 0],
         ];
 
         $location = $this->getMockBuilder(SourceLocationInterface::class)->getMockForAbstractClass();
@@ -227,122 +307,312 @@ class ObjectPropertiesAssertionsTest extends TestCase
         $error = new ParserError($location, 'syntax error: foo', 0, $previous);
 
         $this->assertParserErrorHas([
-            'fileName'                  => 'foo.ldif',
-            'sourceString'              => "# comment\nversion: 1\n",
-	        'sourceOffset'              => 10,
-	        'sourceCharOffset'          => 10,
-	        'sourceLineIndex'           => 1,
-	        'sourceLine'                => "version: 1",
-	        'sourceLineAndOffset'       => [1, 0],
-	        'sourceLineAndCharOffset'   => [1, 0],
-            'message'                   => "syntax error: foo",
-            'code'                      => 0,
-            'file'                      => __file__,
-            'line'                      => $line,
-//            'trace'                     => ['T'],
-//            'traceAsString'             => 'T',
-            'previous'                  => $previous,
-            'multilineMessage'          => "foo.ldif:2:1:syntax error: foo\nfoo.ldif:2:1:version: 1\nfoo.ldif:2:1:^",
+            'fileName'                      => 'foo.ldif',
+            'sourceString'                  => "# comment\nversion: 1\n",
+	        'sourceOffset'                  => 10,
+	        'sourceCharOffset'              => 10,
+	        'sourceLineIndex'               => 1,
+	        'sourceLine'                    => "version: 1",
+	        'sourceLineAndOffset'           => [1, 0],
+	        'sourceLineAndCharOffset'       => [1, 0],
+            'message'                       => "syntax error: foo",
+            'code'                          => 0,
+            'file'                          => __file__,
+            'line'                          => $line,
+//            'trace'                         => ['T'],
+//            'traceAsString'                 => 'T',
+            'previous'                      => $previous,
+            'multilineMessage'              => "foo.ldif:2:1:syntax error: foo\nfoo.ldif:2:1:version: 1\nfoo.ldif:2:1:^",
+        ], $error);
+
+        $this->assertParserErrorHas([
+            'getSourceFileName()'           => 'foo.ldif',
+            'getSourceString()'             => "# comment\nversion: 1\n",
+	        'getSourceOffset()'             => 10,
+	        'getSourceCharOffset()'         => 10,
+	        'getSourceLineIndex()'          => 1,
+	        'getSourceLine()'               => "version: 1",
+	        'getSourceLineAndOffset()'      => [1, 0],
+	        'getSourceLineAndCharOffset()'  => [1, 0],
+            'getMessage()'                  => "syntax error: foo",
+            'getCode()'                     => 0,
+            'getFile()'                     => __file__,
+            'getLine()'                     => $line,
+//            'getTrace()'                    => ['T'],
+//            'getTraceAsString()'            => 'T',
+            'getPrevious()'                 => $previous,
+            'getMultilineMessage()'         => "foo.ldif:2:1:syntax error: foo\nfoo.ldif:2:1:version: 1\nfoo.ldif:2:1:^",
         ], $error);
     }
+
+    //
+    // assertRecordHas
+    //
 
     public function test__assertRecordHas()
     {
         $this->markTestIncomplete('The test has not been implemented yet.');
     }
 
+    //
+    // assertParserStateHas
+    //
+
     public function test__assertParserStateHas()
     {
-        $this->markTestIncomplete('The test has not been implemented yet.');
+        $previous = new \Exception('previous');
+
+        $errorGetters = [
+            'getSourceFileName'             => 'foo.ldif',
+            'getSourceString'               => "# comment\nversion: 1\n",
+	        'getSourceOffset'               => 10,
+	        'getSourceCharOffset'           => 10,
+	        'getSourceLineIndex'            => 1,
+	        'getSourceLine'                 => "version: 1",
+	        'getSourceLineAndOffset'        => [1, 0],
+	        'getSourceLineAndCharOffset'    => [1, 0],
+        ];
+
+        $errorLocation = $this->getMockBuilder(SourceLocationInterface::class)->getMockForAbstractClass();
+        foreach ($errorGetters as $method => $value) {
+            $errorLocation->expects($this->atLeastOnce())
+                     ->method($method)
+                     ->with()
+                     ->willReturn($value);
+        }
+
+        $line = 1 + __line__;
+        $error = new ParserError($errorLocation, 'syntax error: foo', 0, $previous);
+
+
+        $cursorGetters = [
+            'getSourceFileName'             => 'foo.ldif',
+            'getSourceString'               => "# comment\nversion: 1\n",
+	        'getSourceOffset'               => 10,
+	        'getSourceCharOffset'           => 10,
+	        'getSourceLineIndex'            => 1,
+	        'getSourceLine'                 => "version: 1",
+	        'getSourceLineAndOffset'        => [1, 0],
+	        'getSourceLineAndCharOffset'    => [1, 0],
+            'getString'                     => "version: 1\n",
+            'getOffset'                     => 0,
+            'getCharOffset'                 => 0,
+        ];
+
+        $cursor = $this->getMockBuilder(CursorInterface::class)->getMockForAbstractClass();
+        foreach ($cursorGetters as $method => $value) {
+            $cursor->expects($this->exactly(2))
+                   ->method($method)
+                   ->with()
+                   ->willReturn($value);
+        }
+
+        $getters = [
+            'getCursor'                     => $cursor,
+            'getErrors'                     => [$error],
+            'getRecords'                    => [],
+            'isOk'                          => false,
+        ];
+
+        $state = $this->getMockBuilder(ParserStateInterface::class)->getMockForAbstractClass();
+        foreach ($getters as $method => $value) {
+            $state->expects($this->exactly(2))
+                  ->method($method)
+                  ->with()
+                  ->willReturn($value);
+        }
+
+        $this->assertParserStateHas([
+            'cursor'                        => [
+                'fileName'                  => 'foo.ldif',
+                'sourceString'              => "# comment\nversion: 1\n",
+                'sourceOffset'              => 10,
+                'sourceCharOffset'          => 10,
+                'sourceLineIndex'           => 1,
+                'sourceLine'                => "version: 1",
+                'sourceLineAndOffset'       => [1, 0],
+                'sourceLineAndCharOffset'   => [1, 0],
+                'string'                    => "version: 1\n",
+                'offset'                    => 0,
+                'charOffset'                => 0,
+            ],
+            'errors'                        => [
+                [
+                    'fileName'              => 'foo.ldif',
+                    'sourceString'          => "# comment\nversion: 1\n",
+                    'sourceOffset'          => 10,
+                    'sourceCharOffset'      => 10,
+                    'sourceLineIndex'       => 1,
+                    'sourceLine'            => "version: 1",
+                    'sourceLineAndOffset'   => [1, 0],
+                    'sourceLineAndCharOffset' => [1, 0],
+                    'message'               => "syntax error: foo",
+                    'code'                  => 0,
+                    'file'                  => __file__,
+                    'line'                  => $line,
+//                    'trace'               => ['T'],
+//                    'traceAsString'       => 'T',
+                    'previous'              => $previous,
+                    'multilineMessage'      => "foo.ldif:2:1:syntax error: foo\nfoo.ldif:2:1:version: 1\nfoo.ldif:2:1:^",
+                ]
+            ],
+            'records'                       => [
+            ],
+            'isOk'                          => false,
+        ], $state);
+
+        $this->assertParserStateHas([
+            'getCursor()'                   => [
+                'getSourceFileName()'       => 'foo.ldif',
+                'getSourceString()'         => "# comment\nversion: 1\n",
+                'getSourceOffset()'         => 10,
+                'getSourceCharOffset()'     => 10,
+                'getSourceLineIndex()'      => 1,
+                'getSourceLine()'           => "version: 1",
+                'getSourceLineAndOffset()'     => [1, 0],
+                'getSourceLineAndCharOffset()' => [1, 0],
+                'getString()'               => "version: 1\n",
+                'getOffset()'               => 0,
+                'getCharOffset()'           => 0,
+            ],
+            'getErrors()'                   => [
+                [
+                    'getSourceFileName()'   => 'foo.ldif',
+                    'getSourceString()'     => "# comment\nversion: 1\n",
+                    'getSourceOffset()'     => 10,
+                    'getSourceCharOffset()' => 10,
+                    'getSourceLineIndex()'  => 1,
+                    'getSourceLine()'       => "version: 1",
+                    'getSourceLineAndOffset()'     => [1, 0],
+                    'getSourceLineAndCharOffset()' => [1, 0],
+                    'getMessage()'          => "syntax error: foo",
+                    'getCode()'             => 0,
+                    'getFile()'             => __file__,
+                    'getLine()'             => $line,
+//                    'getTrace()'          => ['T'],
+//                    'getTraceAsString()'  => 'T',
+                    'getPrevious()'         => $previous,
+                    'getMultilineMessage()' => "foo.ldif:2:1:syntax error: foo\nfoo.ldif:2:1:version: 1\nfoo.ldif:2:1:^",
+                ]
+            ],
+            'getRecords()'                  => [
+            ],
+            'isOk()'                        => false,
+        ], $state);
     }
 
-    public function test__assertArrayItemsUsingCallback()
-    {
-        $this->markTestIncomplete('The test has not been implemented yet.');
-    }
+    //
+    // assertValueHas
+    //
 
     public function test__assertValueHas__withStringSpec()
     {
         $getters = [
-            'getType'       => 1,
-            'getSpec'       => 'Zm9v',
-	        'getContent'    => 'foo',
+            'getType'                       => 1,
+            'getSpec'                       => 'Zm9v',
+	        'getContent'                    => 'foo',
         ];
 
         $valueObject = $this->getMockBuilder(ValueInterface::class)->getMockForAbstractClass();
         foreach ($getters as $method => $value) {
-            $valueObject->expects($this->atLeastOnce())
+            $valueObject->expects($this->exactly(2))
                         ->method($method)
                         ->with()
                         ->willReturn($value);
         }
 
         $this->assertValueHas([
-            'type'          => 1,
-            'spec'          => 'Zm9v',
-            'content'       => 'foo',
+            'type'                          => 1,
+            'spec'                          => 'Zm9v',
+            'content'                       => 'foo',
+        ], $valueObject);
+
+        $this->assertValueHas([
+            'getType()'                     => 1,
+            'getSpec()'                     => 'Zm9v',
+            'getContent()'                  => 'foo',
         ], $valueObject);
     }
 
     public function test__assertValueHas__withUriSpec()
     {
         $uriGetters = [
-            '__toString'    => 'http://jsmith:pass@example.com:123/foo/bar?q=1#f=2',
-            'getScheme'     => 'http',
-            'getAuthority'  => 'jsmith:pass@example.com:123',
-            'getUserInfo'   => 'jsmith:pass',
-            'getHost'       => 'example.com',
-            'getPort'       => 123,
-            'getPath'       => '/foo/bar',
-            'getQuery'      => 'q=1',
-            'getFragment'   => 'f=2',
+            '__toString'                    => 'http://jsmith:pass@example.com:123/foo/bar?q=1#f=2',
+            'getScheme'                     => 'http',
+            'getAuthority'                  => 'jsmith:pass@example.com:123',
+            'getUserInfo'                   => 'jsmith:pass',
+            'getHost'                       => 'example.com',
+            'getPort'                       => 123,
+            'getPath'                       => '/foo/bar',
+            'getQuery'                      => 'q=1',
+            'getFragment'                   => 'f=2',
         ];
 
         $uriObject = $this->getMockBuilder(UriInterface::class)->getMockForAbstractClass();
         foreach ($uriGetters as $method => $value) {
-            $uriObject->expects($this->atLeastOnce())
+            $uriObject->expects($this->exactly(2))
                         ->method($method)
                         ->with()
                         ->willReturn($value);
         }
 
         $getters = [
-            'getType'       => 1,
-            'getSpec'       => $uriObject,
-	        'getContent'    => 'foo',
+            'getType'                       => 1,
+            'getSpec'                       => $uriObject,
+	        'getContent'                    => 'foo',
         ];
 
         $valueObject = $this->getMockBuilder(ValueInterface::class)->getMockForAbstractClass();
         foreach ($getters as $method => $value) {
-            $valueObject->expects($this->atLeastOnce())
+            $valueObject->expects($this->exactly(2))
                         ->method($method)
                         ->with()
                         ->willReturn($value);
         }
 
         $this->assertValueHas([
-            'type'          => 1,
-            'spec'          => [
-                'string'    => 'http://jsmith:pass@example.com:123/foo/bar?q=1#f=2',
-                'scheme'    => 'http',
-                'authority' => 'jsmith:pass@example.com:123',
-                'userinfo'  => 'jsmith:pass',
-                'host'      => 'example.com',
-                'port'      => 123,
-                'path'      => '/foo/bar',
-                'query'     => 'q=1',
-                'fragment'  => 'f=2',
+            'type'                          => 1,
+            'spec'                          => [
+                'string'                    => 'http://jsmith:pass@example.com:123/foo/bar?q=1#f=2',
+                'scheme'                    => 'http',
+                'authority'                 => 'jsmith:pass@example.com:123',
+                'userinfo'                  => 'jsmith:pass',
+                'host'                      => 'example.com',
+                'port'                      => 123,
+                'path'                      => '/foo/bar',
+                'query'                     => 'q=1',
+                'fragment'                  => 'f=2',
             ],
-            'content'       => 'foo',
+            'content'                       => 'foo',
+        ], $valueObject);
+
+        $this->assertValueHas([
+            'getType()'                     => 1,
+            'getSpec()'                     => [
+                '__toString()'              => 'http://jsmith:pass@example.com:123/foo/bar?q=1#f=2',
+                'getScheme()'               => 'http',
+                'getAuthority()'            => 'jsmith:pass@example.com:123',
+                'getUserinfo()'             => 'jsmith:pass',
+                'getHost()'                 => 'example.com',
+                'getPort()'                 => 123,
+                'getPath()'                 => '/foo/bar',
+                'getQuery()'                => 'q=1',
+                'getFragment()'             => 'f=2',
+            ],
+            'getContent()'                  => 'foo',
         ], $valueObject);
     }
+
+    //
+    // assertAttrValHas
+    //
 
     public function test__assertAttrValHas__withStringValue()
     {
         $valueGetters = [
-            'getType'       => 1,
-            'getSpec'       => 'Zm9v',
-	        'getContent'    => 'foo',
+            'getType'                       => 1,
+            'getSpec'                       => 'Zm9v',
+	        'getContent'                    => 'foo',
         ];
 
         $valueObject = $this->getMockBuilder(ValueInterface::class)->getMockForAbstractClass();
@@ -354,12 +624,12 @@ class ObjectPropertiesAssertionsTest extends TestCase
         }
 
         $attrValGetters = [
-            'getAttribute'  => 'bar',
-            'getValueObject'=> $valueObject
+            'getAttribute'                  => 'bar',
+            'getValueObject'                => $valueObject
         ];
         $attrVal = $this->getMockBuilder(AttrValInterface::class)->getMockForAbstractClass();
         foreach ($attrValGetters as $method => $value) {
-            $attrVal->expects($this->atLeastOnce())
+            $attrVal->expects($this->exactly(2))
                     ->method($method)
                     ->with()
                     ->willReturn($value);
@@ -367,11 +637,20 @@ class ObjectPropertiesAssertionsTest extends TestCase
 
 
         $this->assertAttrValHas([
-            'attribute'     => 'bar',
-            'valueObject'   => [
-                'type'      => 1,
-                'spec'      => 'Zm9v',
-                'content'   => 'foo',
+            'attribute'                     => 'bar',
+            'valueObject'                   => [
+                'type'                      => 1,
+                'spec'                      => 'Zm9v',
+                'content'                   => 'foo',
+            ]
+        ], $attrVal);
+
+        $this->assertAttrValHas([
+            'getAttribute()'                => 'bar',
+            'getValueObject()'              => [
+                'getType()'                 => 1,
+                'getSpec()'                 => 'Zm9v',
+                'getContent()'              => 'foo',
             ]
         ], $attrVal);
     }
@@ -379,104 +658,138 @@ class ObjectPropertiesAssertionsTest extends TestCase
     public function test__assertAttrValHas__withUriValue()
     {
         $uriGetters = [
-            '__toString'    => 'http://jsmith:pass@example.com:123/foo/bar?q=1#f=2',
-            'getScheme'     => 'http',
-            'getAuthority'  => 'jsmith:pass@example.com:123',
-            'getUserInfo'   => 'jsmith:pass',
-            'getHost'       => 'example.com',
-            'getPort'       => 123,
-            'getPath'       => '/foo/bar',
-            'getQuery'      => 'q=1',
-            'getFragment'   => 'f=2',
+            '__toString'                    => 'http://jsmith:pass@example.com:123/foo/bar?q=1#f=2',
+            'getScheme'                     => 'http',
+            'getAuthority'                  => 'jsmith:pass@example.com:123',
+            'getUserInfo'                   => 'jsmith:pass',
+            'getHost'                       => 'example.com',
+            'getPort'                       => 123,
+            'getPath'                       => '/foo/bar',
+            'getQuery'                      => 'q=1',
+            'getFragment'                   => 'f=2',
         ];
 
         $uriObject = $this->getMockBuilder(UriInterface::class)->getMockForAbstractClass();
         foreach ($uriGetters as $method => $value) {
-            $uriObject->expects($this->atLeastOnce())
+            $uriObject->expects($this->exactly(2))
                         ->method($method)
                         ->with()
                         ->willReturn($value);
         }
 
         $valueGetters = [
-            'getType'       => 1,
-            'getSpec'       => $uriObject,
-	        'getContent'    => 'foo',
+            'getType'                       => 1,
+            'getSpec'                       => $uriObject,
+	        'getContent'                    => 'foo',
         ];
 
         $valueObject = $this->getMockBuilder(ValueInterface::class)->getMockForAbstractClass();
         foreach ($valueGetters as $method => $value) {
-            $valueObject->expects($this->atLeastOnce())
+            $valueObject->expects($this->exactly(2))
                         ->method($method)
                         ->with()
                         ->willReturn($value);
         }
 
         $attrValGetters = [
-            'getAttribute'  => 'bar',
-            'getValueObject'=> $valueObject
+            'getAttribute'                  => 'bar',
+            'getValueObject'                => $valueObject
         ];
         $attrVal = $this->getMockBuilder(AttrValInterface::class)->getMockForAbstractClass();
         foreach ($attrValGetters as $method => $value) {
-            $attrVal->expects($this->atLeastOnce())
+            $attrVal->expects($this->exactly(2))
                     ->method($method)
                     ->with()
                     ->willReturn($value);
         }
 
+        $this->assertAttrValHas([
+            'attribute'                     => 'bar',
+            'valueObject'                   => [
+                'type'                      => 1,
+                'spec'                      => [
+                    'string'                => 'http://jsmith:pass@example.com:123/foo/bar?q=1#f=2',
+                    'scheme'                => 'http',
+                    'authority'             => 'jsmith:pass@example.com:123',
+                    'userinfo'              => 'jsmith:pass',
+                    'host'                  => 'example.com',
+                    'port'                  => 123,
+                    'path'                  => '/foo/bar',
+                    'query'                 => 'q=1',
+                    'fragment'              => 'f=2',
+                ],
+                'content'                   => 'foo',
+            ]
+        ], $attrVal);
 
         $this->assertAttrValHas([
-            'attribute'         => 'bar',
-            'valueObject'       => [
-                'type'          => 1,
-                'spec'          => [
-                    'string'    => 'http://jsmith:pass@example.com:123/foo/bar?q=1#f=2',
-                    'scheme'    => 'http',
-                    'authority' => 'jsmith:pass@example.com:123',
-                    'userinfo'  => 'jsmith:pass',
-                    'host'      => 'example.com',
-                    'port'      => 123,
-                    'path'      => '/foo/bar',
-                    'query'     => 'q=1',
-                    'fragment'  => 'f=2',
+            'getAttribute()'                => 'bar',
+            'getValueObject()'              => [
+                'getType()'                 => 1,
+                'getSpec()'                 => [
+                    '__toString()'          => 'http://jsmith:pass@example.com:123/foo/bar?q=1#f=2',
+                    'getScheme()'           => 'http',
+                    'getAuthority()'        => 'jsmith:pass@example.com:123',
+                    'getUserinfo()'         => 'jsmith:pass',
+                    'getHost()'             => 'example.com',
+                    'getPort()'             => 123,
+                    'getPath()'             => '/foo/bar',
+                    'getQuery()'            => 'q=1',
+                    'getFragment()'         => 'f=2',
                 ],
-                'content'       => 'foo',
+                'getContent()'              => 'foo',
             ]
         ], $attrVal);
     }
 
+    //
+    // assertUriHas
+    //
+
     public function test__assertUriHas()
     {
         $getters = [
-            '__toString'    => 'http://jsmith:pass@example.com:123/foo/bar?q=1#f=2',
-            'getScheme'     => 'http',
-            'getAuthority'  => 'jsmith:pass@example.com:123',
-            'getUserInfo'   => 'jsmith:pass',
-            'getHost'       => 'example.com',
-            'getPort'       => 123,
-            'getPath'       => '/foo/bar',
-            'getQuery'      => 'q=1',
-            'getFragment'   => 'f=2',
+            '__toString'                    => 'http://jsmith:pass@example.com:123/foo/bar?q=1#f=2',
+            'getScheme'                     => 'http',
+            'getAuthority'                  => 'jsmith:pass@example.com:123',
+            'getUserInfo'                   => 'jsmith:pass',
+            'getHost'                       => 'example.com',
+            'getPort'                       => 123,
+            'getPath'                       => '/foo/bar',
+            'getQuery'                      => 'q=1',
+            'getFragment'                   => 'f=2',
         ];
 
         $uriObject = $this->getMockBuilder(UriInterface::class)->getMockForAbstractClass();
         foreach ($getters as $method => $value) {
-            $uriObject->expects($this->atLeastOnce())
+            $uriObject->expects($this->exactly(2))
                         ->method($method)
                         ->with()
                         ->willReturn($value);
         }
 
         $this->assertUriHas([
-            'string'        => 'http://jsmith:pass@example.com:123/foo/bar?q=1#f=2',
-            'scheme'        => 'http',
-            'authority'     => 'jsmith:pass@example.com:123',
-            'userinfo'      => 'jsmith:pass',
-            'host'          => 'example.com',
-            'port'          => 123,
-            'path'          => '/foo/bar',
-            'query'         => 'q=1',
-            'fragment'      => 'f=2',
+            'string'                        => 'http://jsmith:pass@example.com:123/foo/bar?q=1#f=2',
+            'scheme'                        => 'http',
+            'authority'                     => 'jsmith:pass@example.com:123',
+            'userinfo'                      => 'jsmith:pass',
+            'host'                          => 'example.com',
+            'port'                          => 123,
+            'path'                          => '/foo/bar',
+            'query'                         => 'q=1',
+            'fragment'                      => 'f=2',
+        ], $uriObject);
+
+        $this->assertUriHas([
+            '__toString()'                  => 'http://jsmith:pass@example.com:123/foo/bar?q=1#f=2',
+            'getScheme()'                   => 'http',
+            'getAuthority()'                => 'jsmith:pass@example.com:123',
+            'getUserinfo()'                 => 'jsmith:pass',
+            'getHost()'                     => 'example.com',
+            'getPort()'                     => 123,
+            'getPath()'                     => '/foo/bar',
+            'getQuery()'                    => 'q=1',
+            'getFragment()'                 => 'f=2',
         ], $uriObject);
     }
 }

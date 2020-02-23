@@ -91,6 +91,7 @@ trait ObjectPropertiesAssertions
 
         AttrValInterface::class         => [
             'attribute'                 => 'getAttribute',
+            'valueObject'               => 'getValueObject',
         ],
 
         ValueInterface::class           => [
@@ -117,7 +118,8 @@ trait ObjectPropertiesAssertions
      *
      * @param  array $expected An array of key-value pairs with expected values of attributes.
      * @param  object $object An object to be examined.
-     * @param  array $options An array of options.
+     * @param  string $message Optional message.
+     * @param  array $getters An array of options.
      *
      * @throws ExpectationFailedException
      * @throws \PHPUnit\Framework\Exception when a non-string keys are found in *$expected*
@@ -125,27 +127,8 @@ trait ObjectPropertiesAssertions
     abstract public static function assertHasPropertiesSameAs(
         array $expected,
         object $object,
-        array $options = []
-    ) : void;
-
-    /**
-     * Asserts that selected properties of *$object* are identical with *$expected* ones.
-     *
-     * This is just a similar to assertHasPropertiesSameAs(). The difference is
-     * that this method calls ``getObjectPropertyGetters()`` to retrieve the
-     * array of registered property getters for the *$object*.
-     *
-     * @param  array $expected An array of key-value pairs with expected values of attributes.
-     * @param  object $object An object to be examined.
-     * @param  array $message Optional message.
-     *
-     * @throws ExpectationFailedException
-     * @throws \PHPUnit\Framework\Exception when a non-string keys are found in *$expected*
-     */
-    abstract public static function assertObjectHasProperties(
-        array $expected,
-        object $object,
-        string $message = ''
+        string $message = '',
+        array $getters = null
     ) : void;
 
     /**
@@ -180,7 +163,7 @@ trait ObjectPropertiesAssertions
         SourceLocationInterface $object,
         string $message = ''
     ) : void {
-        static::assertObjectHasProperties($expected, $object, $message);
+        static::assertHasPropertiesSameAs($expected, $object, $message);
     }
 
     /**
@@ -195,7 +178,7 @@ trait ObjectPropertiesAssertions
         LocationInterface $object,
         string $message = ''
     ) : void {
-        static::assertObjectHasProperties($expected, $object, $message);
+        static::assertHasPropertiesSameAs($expected, $object, $message);
     }
 
     /**
@@ -210,7 +193,7 @@ trait ObjectPropertiesAssertions
         CursorInterface $object,
         string $message = ''
     ) : void {
-        static::assertObjectHasProperties($expected, $object, $message);
+        static::assertHasPropertiesSameAs($expected, $object, $message);
     }
 
     /**
@@ -225,7 +208,7 @@ trait ObjectPropertiesAssertions
         SnippetInterface $object,
         string $message = ''
     ) : void {
-        static::assertObjectHasProperties($expected, $object, $message);
+        static::assertHasPropertiesSameAs($expected, $object, $message);
     }
 
     /**
@@ -240,7 +223,7 @@ trait ObjectPropertiesAssertions
         ParserErrorInterface $object,
         string $message = ''
     ) : void {
-        static::assertObjectHasProperties($expected, $object, $message);
+        static::assertHasPropertiesSameAs($expected, $object, $message);
     }
 
     /**
@@ -268,8 +251,7 @@ trait ObjectPropertiesAssertions
         }, ARRAY_FILTER_USE_KEY);
         $getGetters = $getGettersMap[$class] ?? $getGettersMap[AbstractRecord::class];
         $getters = call_user_func([static::class, $getGetters]);
-        $options = ['getters' => $getters, 'message' => $message];
-        static::assertHasPropertiesSameAs($expectedProperties, $object, $options);
+        static::assertHasPropertiesSameAs($expectedProperties, $object, $message, $getters);
     }
 
     /**
@@ -290,22 +272,17 @@ trait ObjectPropertiesAssertions
             'records'       => true, 'getRecords()'  => true,
             'errors'        => true, 'getErrors()'   => true,
         ]);
-        static::assertObjectHasProperties($values, $object, $message);
 
-        static::assertParserStateNestedObjects($expected, $object, $message);
-    }
+        // non-object attributes
+        static::assertHasPropertiesSameAs($values, $object, $message);
 
-    public static function assertParserStateNestedObjects(
-        array $expected,
-        ParserStateInterface $object,
-        string $message = ''
-    ) : void {
-
+        // object attributes
         static::assertObjectEachProperty([
             'cursor'        => [static::class, 'assertCursorHas'],
             'getCursor()'   => [static::class, 'assertCursorHas']
         ], $expected, $object, $message);
 
+        // array of objects attributes
         static::assertObjectEachPropertyArrayValue([
             'errors'        => [static::class, 'assertParserErrorHas'],
             'getErrors()'   => [static::class, 'assertParserErrorHas'],
@@ -321,20 +298,20 @@ trait ObjectPropertiesAssertions
      * @param  ValueInterface $object An object to be examined.
      * @param  string|null $message Optional message.
      */
-    public static function assertValueHas(
-        array $expected,
-        ValueInterface $object,
-        string $message = ''
-    ) : void {
-        $expectedValues = array_filter($expected, function ($value, $key) {
-            return !in_array($key, ['spec', 'getSpec()']) || is_string($value) ;
+    public static function assertValueHas(array $expected, ValueInterface $object, string $message = '') : void
+    {
+        // non-object properties
+        $values = array_filter($expected, function ($value, $key) {
+            return !in_array($key, ['spec', 'getSpec()']) || is_string($value);
         }, ARRAY_FILTER_USE_BOTH);
+        static::assertHasPropertiesSameAs($values, $object, $message);
 
-        static::assertObjectHasProperties($expectedValues, $object, $message);
-
-        if (array_key_exists('spec', $expected) && !array_key_exists('spec', $expectedValues)) {
-            static::assertUriHas($expected['spec'], $object->getSpec(), $message);
-        }
+        // object properties
+        $objects = array_diff_key($expected, $values);
+        static::assertObjectEachProperty([
+            'spec'      => [static::class, 'assertUriHas'],
+            'getSpec()' => [static::class, 'assertUriHas'],
+        ], $objects, $object, $message);
     }
 
     /**
@@ -344,20 +321,17 @@ trait ObjectPropertiesAssertions
      * @param  AttrValInterface $object An object to be examined.
      * @param  string|null $message Optional message.
      */
-    public static function assertAttrValHas(
-        array $expected,
-        AttrValInterface $object,
-        string $message = ''
-    ) : void {
-        $expectedValues = array_filter($expected, function ($key) {
-            return $key !== 'valueObject';
-        }, ARRAY_FILTER_USE_KEY);
-        $options = ['getters' => static::getObjectPropertyGetters(AttrValInterface::class), 'message' => $message];
-        static::assertHasPropertiesSameAs($expectedValues, $object, $options);
+    public static function assertAttrValHas(array $expected, AttrValInterface $object, string $message = '') : void
+    {
+        // non-object properties
+        $values = array_diff_key($expected, ['valueObject' => true, 'getValueObject()' => true]);
+        static::assertHasPropertiesSameAs($values, $object, $message);
 
-        if (array_key_exists('valueObject', $expected)) {
-            static::assertValueHas($expected['valueObject'], $object->getValueObject(), $message);
-        }
+        // object properties
+        static::assertObjectEachProperty([
+            'valueObject'       => [static::class, 'assertValueHas'],
+            'getValueObject()'  => [static::class, 'assertValueHas']
+        ], $expected, $object, $message);
     }
 
     /**
@@ -367,13 +341,9 @@ trait ObjectPropertiesAssertions
      * @param  UriInterface $object An object to be examined.
      * @param  string|null $message Optional message.
      */
-    public static function assertUriHas(
-        array $expected,
-        UriInterface $object,
-        string $message = ''
-    ) : void {
-        $options = ['getters' => static::getObjectPropertyGetters(UriInterface::class), 'message' => $message];
-        static::assertHasPropertiesSameAs($expected, $object, $options);
+    public static function assertUriHas(array $expected, UriInterface $object, string $message = '') : void
+    {
+        static::assertHasPropertiesSameAs($expected, $object, $message);
     }
 }
 

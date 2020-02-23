@@ -45,7 +45,8 @@ trait ObjectPropertiesAssertions
      *
      * @param  array $expected An array of key-value pairs with expected values of attributes.
      * @param  object $object An object to be examined.
-     * @param  array $options An array of options.
+     * @param  string $message Optional failure message.
+     * @param  array $getters Optional array of getters.
      *
      * @throws ExpectationFailedException
      * @throws \PHPUnit\Framework\Exception when a non-string keys are found in *$expected*
@@ -65,7 +66,8 @@ trait ObjectPropertiesAssertions
      *
      * @param  array $expected An array of key-value pairs with expected values of attributes.
      * @param  object $object An object to be examined.
-     * @param  array $options An array of options.
+     * @param  string $message Optional failure message.
+     * @param  array $getters Optional array of getters.
      *
      * @throws ExpectationFailedException
      * @throws \PHPUnit\Framework\Exception when a non-string keys are found in *$expected*

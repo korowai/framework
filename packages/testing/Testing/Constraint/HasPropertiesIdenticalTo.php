@@ -18,7 +18,7 @@ use PHPUnit\Framework\ExpectationFailedException;
 use SebastianBergmann\Comparator\ComparisonFailure;
 
 /**
- * Constraint that accepts object having prescribed properties.
+ * Constraint that accepts objects having prescribed properties.
  *
  * Compares only properties present in the array of expectations. Additional
  * parameter *$getters* is a key-value array with property names as keys and

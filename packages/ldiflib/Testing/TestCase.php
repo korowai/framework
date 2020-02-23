@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Korowai\Testing\Lib\Ldif;
 
 use Korowai\Testing\Lib\Ldif\Assertions\ObjectPropertiesAssertions;
+use Korowai\Testing\Lib\Ldif\Traits\ObjectProperties;
 
 /**
  * Abstract base class for korowai/ldiflib unit tests.

@@ -24,11 +24,18 @@ class ObjectPropertiesAssertionsTest extends TestCase
 {
     use ObjectPropertiesAssertions;
 
+    // Required by the trait.
+    public static function getObjectPropertyGetters(string $class) : array
+    {
+        return ['salary' => 'getSalary'];
+    }
+
     public function staticMethodsThatMustAppear()
     {
         return [
             ['assertHasPropertiesSameAs'],
             ['assertHasPropertiesNotSameAs'],
+            ['assertObjectHasProperties'],
             ['hasPropertiesIdenticalTo']
         ];
     }
@@ -164,7 +171,7 @@ class ObjectPropertiesAssertionsTest extends TestCase
     public function test__assertHasPropertiesSameAs__withNonMatchingProperties(
         array $expected,
         object $object,
-        array $options = null
+        array $getters = null
     ) {
         $regexp = '/^Failed asserting that object class\@.+ has required properties with prescribed values/';
         self::expectException(ExpectationFailedException::class);
@@ -179,7 +186,7 @@ class ObjectPropertiesAssertionsTest extends TestCase
     public function test__assertHasPropertiesNotSameAs__withNonMatchingProperties(
         array $expected,
         object $object,
-        array $options = null
+        array $getters = null
     ) {
         self::assertHasPropertiesNotSameAs(...(self::adjustCaseForAssert(func_get_args())));
     }
@@ -190,13 +197,39 @@ class ObjectPropertiesAssertionsTest extends TestCase
     public function test__assertHasPropertiesNotSameAs__whithMatchingProperties(
         array $expected,
         object $object,
-        array $options = null
+        array $getters = null
     ) {
         $regexp = '/^Failed asserting that object class@.+ does not have required properties with prescribed values/';
         self::expectException(ExpectationFailedException::class);
         self::expectExceptionMessageMatches($regexp);
 
         self::assertHasPropertiesNotSameAs(...(self::adjustCaseForAssert(func_get_args())));
+    }
+
+    /**
+     * @dataProvider propertiesSameAs__cases
+     */
+    public function test__assertObjectHasProperties__withMatchingProperties(
+        array $expected,
+        object $object,
+        array $getters = null
+    ) {
+        self::assertObjectHasProperties($expected, $object);
+    }
+
+    /**
+     * @dataProvider propertiesNotSameAs__cases
+     */
+    public function test__assertObjectHasProperties__withNonMatchingProperties(
+        array $expected,
+        object $object,
+        array $getters = null
+    ) {
+        $regexp = '/^Failed asserting that object class\@.+ has required properties with prescribed values/';
+        self::expectException(ExpectationFailedException::class);
+        self::expectExceptionMessageMatches($regexp);
+
+        self::assertObjectHasProperties($expected, $object);
     }
 }
 

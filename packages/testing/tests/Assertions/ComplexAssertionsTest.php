@@ -171,7 +171,7 @@ class ComplexAssertionsTest extends TestCase
              ->withConsecutive(
                  [ 0,   0,  'Lorem ipsum'],
                  ['A', 'A', 'Lorem ipsum'],
-                 ['B', 'C', 'Lorem ipsum'],
+                 ['B', 'C', 'Lorem ipsum']
              );
 
         self::assertArrayEachValue(

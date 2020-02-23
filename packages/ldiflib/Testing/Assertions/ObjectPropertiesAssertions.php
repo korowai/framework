@@ -267,22 +267,21 @@ trait ObjectPropertiesAssertions
         string $message = ''
     ) : void {
 
+        // non-object properties
         $values = array_diff_key($expected, [
             'cursor'        => true, 'getCursor()'   => true,
             'records'       => true, 'getRecords()'  => true,
             'errors'        => true, 'getErrors()'   => true,
         ]);
-
-        // non-object attributes
         static::assertHasPropertiesSameAs($values, $object, $message);
 
-        // object attributes
+        // object properties
         static::assertObjectEachProperty([
             'cursor'        => [static::class, 'assertCursorHas'],
             'getCursor()'   => [static::class, 'assertCursorHas']
         ], $expected, $object, $message);
 
-        // array of objects attributes
+        // array-of-objects properties
         static::assertObjectEachPropertyArrayValue([
             'errors'        => [static::class, 'assertParserErrorHas'],
             'getErrors()'   => [static::class, 'assertParserErrorHas'],

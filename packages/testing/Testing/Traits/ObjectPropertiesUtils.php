@@ -33,7 +33,8 @@ trait ObjectPropertiesUtils
      * Returns array of property getters intended to be used with objects of
      * given *$class*.
      *
-     * @param  mixed $objectOfClass An object of a fully qualified class name
+     * @param  mixed $objectOrClass
+     *       An object of a fully qualified class name.
      * @return array
      */
     public static function getObjectPropertyGetters($objectOrClass) : array

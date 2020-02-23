@@ -29,6 +29,16 @@ trait ComplexAssertions
     abstract public static function getObjectProperty(object $object, string $key, array $getters = null);
 
     /**
+     * Asserts that two variables have the same type and value.
+     * Used on objects, it asserts that two variables reference
+     * the same object.
+     *
+     * @throws ExpectationFailedException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     */
+    abstract public static function assertSame($expected, $actual, string $message = '') : void;
+
+    /**
      * Passes object's property values to individual assert callbacks.
      *
      * For each key *$key* common to *$asserts* and *$expected* the method invokes
@@ -126,7 +136,10 @@ trait ComplexAssertions
         array $array,
         string $message = ''
     ) : void {
-        static::assertSame(array_keys($expected), array_keys($array));
+        $m = 'Failed asserting that two arrays have identical keys.';
+        $expectKeys = array_keys($expected);
+        $actualKeys = array_keys($array);
+        static::assertSame($expectKeys, $actualKeys, empty($message) ? $m : $message."\n".$m);
         foreach ($array as $key => $value) {
             call_user_func($assert, $expected[$key], $value, $message);
         }

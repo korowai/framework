@@ -16,6 +16,8 @@ namespace Korowai\Tests\Testing\Assertions;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\ExpectationFailedException;
 use Korowai\Testing\Assertions\ComplexAssertions;
+use Korowai\Testing\Examples\ExampleFooClass;
+use Korowai\Testing\Examples\ExampleBarClass;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -57,17 +59,127 @@ class ComplexAssertionsTest extends TestCase
 
     public function test__assertObjectEachProperty()
     {
-        $this->markTestIncomplete('The test is not implemented yet!');
+        $test = $this->getMockBuilder('TestCaseMock')
+                     ->setMethods(['assertFoo', 'assertBar', 'assertQux'])
+                     ->getMock();
+
+        $test->expects($this->once())
+             ->method('assertFoo')
+             ->with('FOO', 'Foo', 'Lorem ipsum');
+
+        $test->expects($this->once())
+             ->method('assertBar')
+             ->with('BAR', 'Bar', 'Lorem ipsum');
+
+        $test->expects($this->never())
+             ->method('assertQux');
+
+        self::assertObjectEachProperty(
+            [
+                'getFoo()' => [$test, 'assertFoo'],
+                'getBar()' => [$test, 'assertBar'],
+                'qux'      => [$test, 'assertQux'],
+            ],
+            [
+                'getFoo()' => 'FOO',
+                'getBar()' => 'BAR',
+                'baz' => 'BAZ'
+            ],
+            new ExampleBarClass([
+                'foo' => 'Foo',
+                'bar' => 'Bar',
+                'baz' => 'Baz',
+                'qux' => 'Qux'
+            ]),
+            'Lorem ipsum'
+        );
     }
 
     public function test__assertObjectEachPropertyArrayValue()
     {
-        $this->markTestIncomplete('The test is not implemented yet!');
+        $test = $this->getMockBuilder('TestCaseMock')
+                     ->setMethods(['assertFoo', 'assertBar', 'assertQux'])
+                     ->getMock();
+
+        $test->expects($this->exactly(3))
+             ->method('assertFoo')
+             ->withConsecutive(['F', 'F', 'Lorem ipsum'],
+                               ['O', 'o', 'Lorem ipsum'],
+                               ['O', 'o', 'Lorem ipsum']);
+
+        $test->expects($this->exactly(3))
+             ->method('assertBar')
+             ->withConsecutive(['B', 'B', 'Lorem ipsum'],
+                               ['A', 'a', 'Lorem ipsum'],
+                               ['R', 'r', 'Lorem ipsum']);
+
+        $test->expects($this->never())
+             ->method('assertQux');
+
+        self::assertObjectEachPropertyArrayValue(
+            [
+                'getFoo()' => [$test, 'assertFoo'],
+                'getBar()' => [$test, 'assertBar'],
+                'qux'      => [$test, 'assertQux'],
+            ],
+            [
+                'getFoo()' => ['F', 'O', 'O'],
+                'getBar()' => ['B', 'A', 'R'],
+                'baz'      => ['B', 'A', 'Z'],
+            ],
+            new ExampleBarClass([
+                'foo'      => ['F', 'o', 'o'],
+                'bar'      => ['B', 'a', 'r'],
+                'baz'      => ['B', 'a', 'z'],
+                'qux'      => ['Q', 'u', 'x']
+            ]),
+            'Lorem ipsum'
+        );
+    }
+
+    public function test__assertArrayEachValue__withDifferentKeys()
+    {
+        $test = $this->getMockBuilder('TestCaseMock')
+                     ->setMethods(['assertFoo'])
+                     ->getMock();
+
+        $test->expects($this->never())
+             ->method('assertFoo');
+
+        $regexp = '/^Lorem ipsum.\n'.
+                    'Failed asserting that two arrays have identical keys.\n'.
+                    'Failed asserting that two arrays are identical.$/';
+        self::expectException(ExpectationFailedException::class);
+        self::expectExceptionMessageMatches($regexp);
+
+        self::assertArrayEachValue(
+            [$test, 'assertFoo'],
+            [0, 'a' => 'A', 'b' => 'B'],
+            [0, 'b' => 'A', 'a' => 'B'],
+            'Lorem ipsum.'
+        );
     }
 
     public function test__assertArrayEachValue()
     {
-        $this->markTestIncomplete('The test is not implemented yet!');
+        $test = $this->getMockBuilder('TestCaseMock')
+                     ->setMethods(['assertFoo'])
+                     ->getMock();
+
+        $test->expects($this->exactly(3))
+             ->method('assertFoo')
+             ->withConsecutive(
+                 [ 0,   0,  'Lorem ipsum'],
+                 ['A', 'A', 'Lorem ipsum'],
+                 ['B', 'C', 'Lorem ipsum'],
+             );
+
+        self::assertArrayEachValue(
+            [$test, 'assertFoo'],
+            [0, 'a' => 'A', 'b' => 'B'],
+            [0, 'a' => 'A', 'b' => 'C'],
+            'Lorem ipsum'
+        );
     }
 }
 

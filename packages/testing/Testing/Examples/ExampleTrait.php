@@ -1,6 +1,6 @@
 <?php
 /**
- * @file Testing/Classes/ExampleClassUsingTrait.php
+ * @file Testing/Examples/ExampleTrait.php
  *
  * This file is part of the Korowai package
  *
@@ -11,18 +11,15 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Testing\Classes;
-
-use Korowai\Testing\Traits\ExampleTrait;
+namespace Korowai\Testing\Examples;
 
 /**
- * Example class for testing purposes.
+ * Example trait for testing purposes.
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class ExampleClassUsingTrait
+trait ExampleTrait
 {
-    use ExampleTrait;
 }
 
 // vim: syntax=php sw=4 ts=4 et:

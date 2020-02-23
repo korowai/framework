@@ -34,11 +34,11 @@ use Korowai\Lib\Ldif\Records\VersionSpec;
 trait ObjectPropertiesAssertions
 {
     /**
-     * Property getters per class.
+     * Object property getters per class for korowai/ldiflib package.
      *
      * @var array
      */
-    protected static $classPropertyGettersMap = [
+    protected static $ldiflibObjectPropertyGettersMap = [
         SourceLocationInterface::class  => [
             'fileName'                  => 'getSourceFileName',
             'sourceString'              => 'getSourceString',
@@ -111,6 +111,7 @@ trait ObjectPropertiesAssertions
             'fragment'                  => 'getFragment',
         ]
     ];
+
     /**
      * Asserts that selected properties of *$object* are identical with *$expected* ones.
      *

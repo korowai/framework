@@ -32,6 +32,12 @@ class ObjectPropertiesAssertionsTest extends TestCase
 {
     use ObjectPropertiesAssertions;
 
+    // Required by ObjectPropertiesAssertions
+    public static function objectPropertyGettersMap() : array
+    {
+        return self::$ldiflibObjectPropertyGettersMap;
+    }
+
     public function test__assertSourceLocationHas()
     {
         $getters = [

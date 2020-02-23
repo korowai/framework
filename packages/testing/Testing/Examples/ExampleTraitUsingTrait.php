@@ -1,6 +1,6 @@
 <?php
 /**
- * @file Testing/Traits/ExampleTraitUsingTrait.php
+ * @file Testing/Examples/ExampleTraitUsingTrait.php
  *
  * This file is part of the Korowai package
  *
@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Testing\Traits;
+namespace Korowai\Testing\Examples;
 
 /**
  * Example trait for testing purposes.

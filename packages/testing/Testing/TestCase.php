@@ -39,9 +39,9 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
      *
      * @return array
      */
-    public static function classPropertyGettersMap() : array
+    public static function objectPropertyGettersMap() : array
     {
-        return static::$classPropertyGettersMap ?? [];
+        return [];
     }
 }
 

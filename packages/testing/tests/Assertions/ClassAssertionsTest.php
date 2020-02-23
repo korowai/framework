@@ -17,10 +17,10 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\ExpectationFailedException;
 use Korowai\Testing\Assertions\ClassAssertions;
 
-use Korowai\Testing\Traits\ExampleTrait;
-use Korowai\Testing\Traits\ExampleTraitUsingTrait;
-use Korowai\Testing\Classes\ExampleClassUsingTrait;
-use Korowai\Testing\Classes\ExampleClassNotUsingTrait;
+use Korowai\Testing\Examples\ExampleTrait;
+use Korowai\Testing\Examples\ExampleTraitUsingTrait;
+use Korowai\Testing\Examples\ExampleClassUsingTrait;
+use Korowai\Testing\Examples\ExampleClassNotUsingTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

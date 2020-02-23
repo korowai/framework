@@ -27,7 +27,7 @@ trait ObjectPropertiesUtils
      *
      * @return array
      */
-    abstract public static function classPropertyGettersMap() : array;
+    abstract public static function objectPropertyGettersMap() : array;
 
     /**
      * Returns array of property getters intended to be used with objects of
@@ -46,7 +46,7 @@ trait ObjectPropertiesUtils
         }
 
         return array_merge(...array_map(function (string $key) {
-            $getters = static::classPropertyGettersMap();
+            $getters = static::objectPropertyGettersMap();
             return $getters[$key] ?? [];
         }, array_keys($all)));
     }

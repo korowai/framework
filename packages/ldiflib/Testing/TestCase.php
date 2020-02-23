@@ -25,6 +25,17 @@ abstract class TestCase extends \Korowai\Testing\TestCase
 {
     use ParserTestHelpers;
     use ObjectPropertiesAssertions;
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function objectPropertyGettersMap() : array
+    {
+        return array_merge_recursive(
+            parent::objectPropertyGettersMap(),
+            self::$ldiflibObjectPropertyGettersMap
+        );
+    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

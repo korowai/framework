@@ -25,7 +25,7 @@ class ObjectPropertiesAssertionsTest extends TestCase
     use ObjectPropertiesAssertions;
 
     // Required by the trait.
-    public static function getObjectPropertyGetters(string $class) : array
+    public static function getObjectPropertyGetters($objectOfClass) : array
     {
         return ['salary' => 'getSalary'];
     }
@@ -35,8 +35,7 @@ class ObjectPropertiesAssertionsTest extends TestCase
         return [
             ['assertHasPropertiesSameAs'],
             ['assertHasPropertiesNotSameAs'],
-            ['assertObjectHasProperties'],
-            ['hasPropertiesIdenticalTo']
+            ['hasPropertiesIdenticalTo'],
         ];
     }
 
@@ -146,10 +145,14 @@ class ObjectPropertiesAssertionsTest extends TestCase
         self::hasPropertiesIdenticalTo(['a' => 'A'], ['a' => 'xxx'])->matches($object);
     }
 
-    protected static function adjustCaseForAssert(array $case)
+    protected static function adjustCase(array $case, string $message = '')
     {
+        $args = func_get_args();
         if (is_array($case[2] ?? null)) {
-            $case[2] = ['getters' => $case[2]];
+            $case[] = $case[2];
+            $case[2] = $args[1] ?? '';
+        } elseif (($msg = $args[1] ?? null) !== null) {
+            $case[2] = $msg;
         }
         return $case;
     }
@@ -162,7 +165,7 @@ class ObjectPropertiesAssertionsTest extends TestCase
         object $object,
         array $getters = null
     ) {
-        self::assertHasPropertiesSameAs(...(self::adjustCaseForAssert(func_get_args())));
+        self::assertHasPropertiesSameAs(...(self::adjustCase(func_get_args())));
     }
 
     /**
@@ -173,11 +176,12 @@ class ObjectPropertiesAssertionsTest extends TestCase
         object $object,
         array $getters = null
     ) {
-        $regexp = '/^Failed asserting that object class\@.+ has required properties with prescribed values/';
+        $regexp = '/^Lorem ipsum.\n'.
+                    'Failed asserting that object class\@.+ has required properties with prescribed values/';
         self::expectException(ExpectationFailedException::class);
         self::expectExceptionMessageMatches($regexp);
 
-        self::assertHasPropertiesSameAs(...(self::adjustCaseForAssert(func_get_args())));
+        self::assertHasPropertiesSameAs(...(self::adjustCase(func_get_args(), 'Lorem ipsum.')));
     }
 
     /**
@@ -188,7 +192,7 @@ class ObjectPropertiesAssertionsTest extends TestCase
         object $object,
         array $getters = null
     ) {
-        self::assertHasPropertiesNotSameAs(...(self::adjustCaseForAssert(func_get_args())));
+        self::assertHasPropertiesNotSameAs(...(self::adjustCase(func_get_args())));
     }
 
     /**
@@ -199,38 +203,14 @@ class ObjectPropertiesAssertionsTest extends TestCase
         object $object,
         array $getters = null
     ) {
-        $regexp = '/^Failed asserting that object class@.+ does not have required properties with prescribed values/';
+        $regexp = '/^Lorem ipsum.\n'.
+                    'Failed asserting that object class@.+ does not have required properties with prescribed values/';
         self::expectException(ExpectationFailedException::class);
         self::expectExceptionMessageMatches($regexp);
 
-        self::assertHasPropertiesNotSameAs(...(self::adjustCaseForAssert(func_get_args())));
+        self::assertHasPropertiesNotSameAs(...(self::adjustCase(func_get_args(), 'Lorem ipsum.')));
     }
 
-    /**
-     * @dataProvider propertiesSameAs__cases
-     */
-    public function test__assertObjectHasProperties__withMatchingProperties(
-        array $expected,
-        object $object,
-        array $getters = null
-    ) {
-        self::assertObjectHasProperties($expected, $object);
-    }
-
-    /**
-     * @dataProvider propertiesNotSameAs__cases
-     */
-    public function test__assertObjectHasProperties__withNonMatchingProperties(
-        array $expected,
-        object $object,
-        array $getters = null
-    ) {
-        $regexp = '/^Failed asserting that object class\@.+ has required properties with prescribed values/';
-        self::expectException(ExpectationFailedException::class);
-        self::expectExceptionMessageMatches($regexp);
-
-        self::assertObjectHasProperties($expected, $object);
-    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

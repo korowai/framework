@@ -55,47 +55,64 @@ class ObjectPropertiesUtilsTest extends TestCase
         return [
             // #0
             [
-                'class'   => ExampleFooInterface::class,
-                'getters' => [
-                    'foo' => 'getFoo'
+                'argument'  => ExampleFooInterface::class,
+                'getters'   => [
+                    'foo'   => 'getFoo'
                 ],
             ],
             // #1
             [
-                'class'   => ExampleBarInterface::class,
-                'getters' => [
-                    'bar' => 'getBar'
+                'argument'  => ExampleBarInterface::class,
+                'getters'   => [
+                    'bar'   => 'getBar'
                 ],
             ],
             // #2
             [
-                'class'   => ExampleBazTrait::class,
-                'getters' => [
-                    'baz' => 'getBaz'
+                'argument'  => ExampleBazTrait::class,
+                'getters'   => [
+                    'baz'   => 'getBaz'
                 ],
             ],
             // #3
             [
-                'class'   => ExampleQuxTrait::class,
-                'getters' => [
+                'argument'  => ExampleQuxTrait::class,
+                'getters'   => [
                 ],
             ],
             // #4
             [
-                'class'   => ExampleFooClass::class,
-                'getters' => [
-                    'foo' => 'getFoo',
-                    'baz' => 'getBaz',
+                'argument'  => ExampleFooClass::class,
+                'getters'   => [
+                    'foo'   => 'getFoo',
+                    'baz'   => 'getBaz',
                 ],
             ],
             // #5
             [
-                'class'   => ExampleBarClass::class,
-                'getters' => [
-                    'foo' => 'getFoo',
-                    'bar' => 'getBar',
-                    'baz' => 'getBaz',
+                'argument'  => ExampleBarClass::class,
+                'getters'   => [
+                    'foo'   => 'getFoo',
+                    'bar'   => 'getBar',
+                    'baz'   => 'getBaz',
                 ],
+            ],
+            // #6
+            [
+                'argument'  => new ExampleFooClass(),
+                'getters'   => [
+                    'foo'   => 'getFoo',
+                    'baz'   => 'getBaz',
+                ]
+            ],
+            // #7
+            [
+                'argument'  => new ExampleBarClass(),
+                'getters'   => [
+                    'foo'   => 'getFoo',
+                    'bar'   => 'getBar',
+                    'baz'   => 'getBaz',
+                ]
             ],
         ];
     }
@@ -103,9 +120,30 @@ class ObjectPropertiesUtilsTest extends TestCase
     /**
      * @dataProvider getObjectPropertyGetters__cases
      */
-    public function test__getObjectPropertyGetters(string $class, array $getters)
+    public function test__getObjectPropertyGetters($argument, array $getters)
     {
-        $this->assertSame($getters, self::getObjectPropertyGetters($class));
+        $this->assertSame($getters, self::getObjectPropertyGetters($argument));
+    }
+
+    public function test__getObjectPropertyGetters__withInvalidArgumentType()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Argument 1 to '.self::class.'::getObjectPropertyGetters() '.
+            'must be of type object or string, array given.'
+        );
+        self::getObjectPropertyGetters([]);
+    }
+
+    public function test__getObjectPropertyGetters__withNonClassString()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Argument 1 to '.self::class.'::getObjectPropertyGetters() '.
+            'must be an object or a class, interface, or trait name, '.
+            '"Inexistent Planet" given.'
+        );
+        self::getObjectPropertyGetters('Inexistent Planet');
     }
 
     public static function getObjectProperty__cases()

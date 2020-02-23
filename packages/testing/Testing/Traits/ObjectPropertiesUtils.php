@@ -33,11 +33,27 @@ trait ObjectPropertiesUtils
      * Returns array of property getters intended to be used with objects of
      * given *$class*.
      *
-     * @param  string $class Fully qualified class name
+     * @param  mixed $objectOfClass An object of a fully qualified class name
      * @return array
      */
-    public static function getObjectPropertyGetters(string $class) : array
+    public static function getObjectPropertyGetters($objectOrClass) : array
     {
+        $class = is_object($objectOrClass) ? get_class($objectOrClass) : $objectOrClass;
+
+        if (!is_string($class)) {
+            throw new \InvalidArgumentException(
+                'Argument 1 to '.__class__.'::'.__function__.'() must be of type object or string, '.
+                gettype($class).' given.'
+            );
+        }
+
+        if (!class_exists($class) && !interface_exists($class) && !trait_exists($class)) {
+            throw new \InvalidArgumentException(
+                'Argument 1 to '.__class__.'::'.__function__.'() must be an object or '.
+                'a class, interface, or trait name, "'.$class.'" given.'
+            );
+        }
+
         $all = class_implements($class);
         $classes = array_merge(class_parents($class), [$class => $class]);
 
@@ -61,8 +77,7 @@ trait ObjectPropertiesUtils
      */
     public static function getObjectProperty(object $object, string $key, array $getters = null)
     {
-        $class = get_class($object);
-        $getters = $getters ?? static::getObjectPropertyGetters($class);
+        $getters = $getters ?? static::getObjectPropertyGetters($object);
         $getter = substr($key, -2) === '()' ? substr($key, 0, -2) : $getters[$key] ?? null;
         if ($getter !== null) {
             return call_user_func([$object, $getter]);

@@ -49,12 +49,12 @@ class DocExampleContext implements Context
         return implode(" ", [PHP_BINARY, "-d auto_prepend_file=vendor/autoload.php", $path]);
     }
 
-    protected function getPHPUnitCmd(string $file)
+    protected function getPhpUnitCmd(string $file)
     {
         $tst = $this->getExamplePath($file);
         $bin = $this->getTopPath('vendor/bin/phpunit');
         $xml = $this->getExamplePath('phpunit.xml');
-        return implode(" ", [PHP_BINARY, $bin, '-c', $xml, $tst]);
+        return implode(" ", [PHP_BINARY, $bin, '-c', $xml, '--colors=never', $tst]);
     }
 
     protected function runDocExample(string $file)
@@ -63,23 +63,40 @@ class DocExampleContext implements Context
         $this->runCommand($cmd);
     }
 
-    protected function runPHPUnitExample(string $file)
+    protected function runPhpUnitExample(string $file)
     {
-        $cmd = $this->getPHPUnitCmd($file);
+        $cmd = $this->getPhpUnitCmd($file);
         $this->runCommand($cmd);
     }
 
-    protected function cleanupPHPUnitOutput(string $string)
+    protected function sanitizeOutput(string $string)
     {
-        $lines = explode(PHP_EOL, $string);
-        static $garbage = [
-            '/^PHPUnit \d+(?:\.\d+)* by \w+ \w+ and contributors\.\s*$/',
-            '/^Time: \d+ \w+, Memory: \d(?:\.\d+)*(?: \d+)?( \w+)?\s*$/'
+        //$lines = explode(PHP_EOL, $string);
+        static $patterns = [
+            '/\r/',
         ];
-        foreach ($garbage as $re) {
-            $lines = preg_grep($re, $lines, PREG_GREP_INVERT);
-        }
-        return implode(PHP_EOL, $lines);
+        static $replaces = [
+            '',
+        ];
+        return preg_replace($patterns, $replaces, $string);
+    }
+
+    protected function sanitizePhpUnitOutput(string $string)
+    {
+        //$lines = explode(PHP_EOL, $string);
+        static $patterns = [
+            '/\r/',
+            '/^(PHPUnit )(?:\$version|\d+(?:\.\w+)*)( by Sebastian Bergmann and contributors\.)$/m',
+            '/^(Time: )(?:\d+ \w+)(, Memory: )(?:\d(?:\.\d+)*(?: \d+)?( \w+)?)$/m',
+            '/^(\/code\/packages\/testing\/Testing(?:\/\w+)+\.php):\d+$/m',
+        ];
+        static $replaces = [
+            '',
+            '\1$version\2',
+            '\1$time\2$memory',
+            '\1:##',
+        ];
+        return preg_replace($patterns, $replaces, $string);
     }
 
     protected function runCommand(string $cmd)
@@ -142,10 +159,10 @@ class DocExampleContext implements Context
     /**
      * @When I tested :file with PHPUnit
      */
-    public function iTestedWithPHPUnit(string $file)
+    public function iTestedWithPhpUnit(string $file)
     {
         $this->resetExample();
-        $this->runPHPUnitExample($file);
+        $this->runPhpUnitExample($file);
     }
 
     /**
@@ -154,7 +171,10 @@ class DocExampleContext implements Context
     public function iShouldSeeStdoutFrom(?string $file = null)
     {
         if (!is_null($file)) {
-            Assert::assertSame($this->getExampleFileContents($file), $this->stdout);
+            Assert::assertSame(
+                $this->getExampleFileContents($file),
+                $this->sanitizeOutput($this->stdout)
+            );
         }
     }
 
@@ -164,7 +184,10 @@ class DocExampleContext implements Context
     public function iShouldSeeStderrFrom(?string $file = null)
     {
         if (!is_null($file)) {
-            Assert::assertSame($this->getExampleFileContents($file), $this->stderr);
+            Assert::assertSame(
+                $this->getExampleFileContents($file),
+                $this->sanitizeOutput($this->stderr)
+            );
         }
     }
 
@@ -179,11 +202,11 @@ class DocExampleContext implements Context
     /**
      * @Then I should see PHPunit stdout from :file
      */
-    public function iShouldSeePHPUnitStdoutFrom(?string $file = null)
+    public function iShouldSeePhpUnitStdoutFrom(?string $file = null)
     {
         if (!is_null($file)) {
-            $expect = $this->cleanupPHPUnitOutput($this->getExampleFileContents($file));
-            $actual = $this->cleanupPHPUnitOutput($this->stdout);
+            $expect = $this->sanitizePhpUnitOutput($this->getExampleFileContents($file));
+            $actual = $this->sanitizePhpUnitOutput($this->stdout);
             Assert::assertSame($expect, $actual);
         }
     }

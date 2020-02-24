@@ -12,7 +12,7 @@ the Korowai_ project.
 .. toctree::
    :caption: Table of Contents
    :maxdepth: 3
-   :numbered: 1
+   :numbered: 3
 
    install
    lib/index

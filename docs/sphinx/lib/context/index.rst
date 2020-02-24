@@ -24,6 +24,5 @@ The Context library provides functionality similar to that of Python's
 
 
 .. _with-statement: https://docs.python.org/reference/compound_stmts.html#with
-.. _PHP resources: https://www.php.net/manual/en/language.types.resource.php
 
 .. <!--- vim: set syntax=rst spell: -->

@@ -59,3 +59,4 @@ Feature: Examples
     Examples:
       | example_file                              | stdout_file                                   | stderr_file                                   | exit_code |
       | "testing/AssertExtendsClassTest.php"      | "testing/AssertExtendsClassTest.stdout"       | "testing/AssertExtendsClassTest.stderr"       | 1         |
+      | "testing/AssertHasPregCapturesTest.php"   | "testing/AssertHasPregCapturesTest.stdout"    | "testing/AssertHasPregCapturesTest.stderr"       | 1         |

@@ -1,0 +1,29 @@
+PHPUnit 8.5.2 by Sebastian Bergmann and contributors.
+
+.F                                                                  2 / 2 (100%)
+
+Time: 51 ms, Memory: 4.00 MB
+
+There was 1 failure:
+
+1) AssertHasPregCapturesTest::testAssertHasPregCapturesFailure
+Failed asserting that array has expected PCRE capture groups.
+--- Expected
++++ Actual
+@@ @@
+ Array &0 (
+     'name' => 'John'
+-    'surname' => 'Brown'
+-    'age' => true
+-    'city' => false
++    'surname' => 'Smith'
++    'age' => null
++    'city' => 'London'
+ )
+
+/code/packages/testing/Testing/Constraint/HasPregCaptures.php:96
+/code/packages/testing/Testing/Assertions/PregAssertions.php:60
+/code/docs/sphinx/examples/testing/AssertHasPregCapturesTest.php:35
+
+FAILURES!
+Tests: 2, Assertions: 2, Failures: 1.

@@ -1,6 +1,6 @@
 .. index::
-   :single: Ldap; Adapter
-   :single: Lib; Ldap; Adapter
+   single: Ldap; Adapter
+   single: Lib; Ldap; Adapter
 
 .. _LdapAdapters:
 

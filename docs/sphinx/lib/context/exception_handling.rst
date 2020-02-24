@@ -1,6 +1,6 @@
 .. index::
-   :single: Context; Exception Handling
-   :single: Lib; Context; Exception Handling
+   single: Context; Exception Handling
+   single: Lib; Context; Exception Handling
 .. _ContextExceptionHandling:
 
 Exception Handling

@@ -1,6 +1,6 @@
 .. index::
-   :single: Ldap; Mocking
-   :single: Lib; Ldap; Mocking
+   single: Ldap; Mocking
+   single: Lib; Ldap; Mocking
 
 .. _LdapMocking:
 

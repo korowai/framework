@@ -1,6 +1,6 @@
 .. index::
-   :single: Context; Context Factories
-   :single: Lib; Context; Context Factories
+   single: Context; Context Factories
+   single: Lib; Context; Context Factories
 .. _ContextFactories:
 
 Context Factories

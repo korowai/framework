@@ -1,7 +1,7 @@
 
 .. index::
-   :single: Context; Exception Error Handlers
-   :single: Lib; Context; Exception Error Handlers
+   single: Context; Exception Error Handlers
+   single: Lib; Context; Exception Error Handlers
 .. _ExceptionErrorHandlers:
 
 Exception Error Handlers

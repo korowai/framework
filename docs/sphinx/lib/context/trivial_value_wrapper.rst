@@ -1,6 +1,6 @@
 .. index::
-   :single: Context; Trivial Value Wrapper
-   :single: Lib; Context; Trivial Value Wrapper
+   single: Context; Trivial Value Wrapper
+   single: Lib; Context; Trivial Value Wrapper
 .. _TrivialValueWrapper:
 
 Trivial Value Wrapper

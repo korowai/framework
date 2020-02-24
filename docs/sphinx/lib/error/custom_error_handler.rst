@@ -1,6 +1,6 @@
 .. index::
-   :single: Context; Custom Error Handlers
-   :single: Lib; Context; Custom Error Handlers
+   single: Context; Custom Error Handlers
+   single: Lib; Context; Custom Error Handlers
 .. _CustomErrorHandlers:
 
 Custom Error Handlers

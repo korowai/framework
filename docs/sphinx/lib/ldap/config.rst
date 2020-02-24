@@ -1,6 +1,6 @@
 .. index::
-   :single: Ldap; Configuration
-   :single: Lib; Ldap; Configuration
+   single: Ldap; Configuration
+   single: Lib; Ldap; Configuration
 
 
 .. _LdapConfiguration:

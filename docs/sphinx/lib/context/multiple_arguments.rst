@@ -1,6 +1,6 @@
 .. index::
-   :single: Context; Multiple Arguments
-   :single: Lib; Context; Multiple Arguments
+   single: Context; Multiple Arguments
+   single: Lib; Context; Multiple Arguments
 .. _MultipleContextArguments:
 
 Multiple context arguments

@@ -1,6 +1,6 @@
 .. index::
-   :single: Context; Caller Error Handlers
-   :single: Lib; Context; Caller Error Handlers
+   single: Context; Caller Error Handlers
+   single: Lib; Context; Caller Error Handlers
 .. _CallerErrorHandlers:
 
 Caller Error Handlers

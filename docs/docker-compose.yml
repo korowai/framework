@@ -7,8 +7,8 @@ services:
         KRW_IMG: "korowai/sphinx:${KRW_SPHINX_TAG:-latest}"
         KRW_UID: "${KRW_UID:-6789}"
         KRW_GID: "${KRW_GID:-6789}"
-    environment:
-      - "SPHINX_AUTOBUILD_FLAGS=-b singlehtml"
+##    environment:
+##      - "SPHINX_AUTOBUILD_FLAGS=-b singlehtml"
     ports:
       - "8000:8000"
     volumes:

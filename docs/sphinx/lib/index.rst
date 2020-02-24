@@ -1,14 +1,15 @@
+*****************
 Korowai Libraries
-=================
+*****************
 
-.. include:: intro.rst.inc
+A korowai library is a package containing reusable code.
 
 .. toctree::
    :caption: List of Libraries
    :maxdepth: 1
 
-   context
-   error
-   ldap
+   context/index
+   error/index
+   ldap/index
 
 .. <!--- vim: set syntax=rst spell: -->

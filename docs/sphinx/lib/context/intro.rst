@@ -1,25 +1,14 @@
-.. index::
-   single: Context
-   single: Lib; Context
-
-
-.. _TheContextLibrary:
-
-The Context Library
--------------------
-
-The Context library provides functionality similar to that of Python's
-`with-statement`_ contexts.
-
 Installation
-^^^^^^^^^^^^
+============
 
 .. code-block:: shell
 
    php composer.phar require "korowai/contextlib:dev-master"
 
+
+
 Basic Usage
-^^^^^^^^^^^
+===========
 
 The library provides :func:`Korowai\\Lib\\Context\\with` function, whose
 typical use is like
@@ -47,8 +36,9 @@ gets invoked just after the user-provided callback returns (or throws an
 exception). Whatever ``$cm#->enterContext()`` returns, is passed to the
 user-provided callback as ``$arg#`` argument.
 
+
 Simple Example
-^^^^^^^^^^^^^^
+==============
 
 A relatively popular use of Python's `with-statement`_ is for automatic
 management of opened file handles. Similar goals can be achieved with the
@@ -59,7 +49,7 @@ close it automatically when leaving the context.
 The example requires the function :func:`Korowai\\Lib\\Context\\with` to be
 imported to current scope
 
-.. literalinclude:: ../examples/lib/context/basic_with_usage.php
+.. literalinclude:: ../../examples/lib/context/basic_with_usage.php
    :linenos:
    :start-after: [use]
    :end-before: [/use]
@@ -68,24 +58,7 @@ Once it's done, the following three-liner can be used to open file and read its
 contents. The file gets closed automatically as soon, as the user callback
 returns (or throws an exception).
 
-.. literalinclude:: ../examples/lib/context/basic_with_usage.php
+.. literalinclude:: ../../examples/lib/context/basic_with_usage.php
    :linenos:
    :start-after: [test]
    :end-before: [/test]
-
-
-.. toctree::
-   :maxdepth: 1
-   :hidden:
-   :glob:
-
-   context/trivial_value_wrapper.rst
-   context/custom_context_manager.rst
-   context/context_factories.rst
-   context/multiple_arguments.rst
-   context/exception_handling.rst
-
-.. _with-statement: https://docs.python.org/reference/compound_stmts.html#with
-.. _PHP resources: https://www.php.net/manual/en/language.types.resource.php
-
-.. <!--- vim: set syntax=rst spell: -->

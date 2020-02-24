@@ -6,7 +6,7 @@
 .. _LdapConfiguration:
 
 Ldap Configuration
-------------------
+==================
 
 :class:`Korowai\\Lib\\Ldap\\Ldap` instances are configured according to
 settings provided with ``$config`` array (an argument to
@@ -19,7 +19,7 @@ by any adapter type. Other options may be specific to a particular adapter type
 where the adapter-specific options are stored in ``$config['options']``).
 
 Common LDAP settings
-^^^^^^^^^^^^^^^^^^^^
+--------------------
 
 The following table lists configuration settings supported by any adapter.
 
@@ -55,7 +55,7 @@ The following table lists configuration settings supported by any adapter.
 
 
 LDAP options specific to ExtLdap adapter
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+----------------------------------------
 
 The ``$config['options']`` specific to
 :class:`ExtLdap\\Adapter <Korowai\\Lib\\Ldap\\Adapter\\ExtLdap\\Adapter>`

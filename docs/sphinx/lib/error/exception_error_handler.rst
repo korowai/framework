@@ -1,11 +1,11 @@
-.. index::
-   :single: Context; Custom Error Handlers
-   :single: Lib; Context; Custom Error Handlers
 
+.. index::
+   :single: Context; Exception Error Handlers
+   :single: Lib; Context; Exception Error Handlers
 .. _ExceptionErrorHandlers:
 
 Exception Error Handlers
-------------------------
+========================
 
 :ref:`ExceptionErrorHandlers` are error handlers that throw predefined
 exceptions in response to PHP errors. :ref:`TheErrorLibrary` provides
@@ -13,7 +13,7 @@ exceptions in response to PHP errors. :ref:`TheErrorLibrary` provides
 exception-throwing error handlers.
 
 A simple example with ExceptionErrorHandler
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+-------------------------------------------
 
 In this example we'll set up a context to throw :phpclass:`\\ErrorException` in
 response to PHP errors of severity ``E_USER_ERROR``. We'll use following two
@@ -39,6 +39,7 @@ The output from our example is like
 - stderr
 
    .. literalinclude:: ../../examples/lib/error/simple_exception_thrower.stderr
-      :language: none
+      :linenos:
+      :language: stderr
 
 .. <!--- vim: set syntax=rst spell: -->

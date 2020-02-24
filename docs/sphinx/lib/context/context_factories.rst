@@ -1,11 +1,10 @@
 .. index::
    :single: Context; Context Factories
    :single: Lib; Context; Context Factories
-
 .. _ContextFactories:
 
 Context Factories
------------------
+=================
 
 :ref:`TheContextLibrary` has a concept of *Context Factory* (a precise name
 should actually be *Context Manager Factory*). A *Context Factory* is an object
@@ -25,7 +24,7 @@ is used to generate *Context Managers*. A custom factory object can be pushed
 to the top of the stack to get precedence over other factories.
 
 Creating custom Context Factories
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+---------------------------------
 
 A simplest way to create new *Context Factory* is to extend the
 :class:`Korowai\\Lib\\Context\\AbstractManagedContextFactory`. The new
@@ -40,7 +39,7 @@ and popped when exiting (so the new *Context Factory* works for all nested
 contexts).
 
 Example with custom Managed Context Factory
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+-------------------------------------------
 
 In the following example we'll wrap an integer value with an object named
 ``MyCounter``. Then, we'll create a dedicated *Context Manager*, named
@@ -96,7 +95,7 @@ Following is the output from our example
 
 .. literalinclude:: ../../examples/lib/context/my_context_factory.stdout
    :linenos:
-   :language: console
+   :language: stdout
 
 .. _PHP resource: https://www.php.net/manual/en/language.types.resource.php
 

@@ -5,7 +5,7 @@
 .. _LdapAdapters:
 
 Ldap Adapters
--------------
+=============
 
 :ref:`TheLdapLibrary` uses *adapters* to interact with the actual LDAP
 implementation (client library). An adapter is a class that converts the
@@ -25,7 +25,7 @@ the scenes.
 .. _LdapAdapterFactory:
 
 Adapter Factory
-^^^^^^^^^^^^^^^
+---------------
 
 An adapter class is accompanied with its adapter factory. This configurable
 object creates adapter instances. Adapter factories implement

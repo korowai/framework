@@ -4,7 +4,7 @@
 
 
 Ldap Exceptions
----------------
+===============
 
 :ref:`Ldap Library <TheLdapLibrary>` uses exceptions to report most of
 errors. Exceptions used by :ref:`TheLdapLibrary` are defined in
@@ -27,7 +27,7 @@ namespace. The following exception classes are currently defined:
 
 
 AttributeException
-^^^^^^^^^^^^^^^^^^
+------------------
 
 Derived from `OutOfRangeException <https://php.net/OutOfRangeException>`_.
 It's being thrown when accessing nonexistent attribute of an
@@ -40,7 +40,7 @@ LDAP :class:`Korowai\\Lib\\Ldap\\Entry`. For example
 
 
 LdapException
-^^^^^^^^^^^^^
+-------------
 
 Derived from `ErrorException <https://php.net/ErrorException>`_. It's being
 thrown when an LDAP operation fails. The exception message and code are taken
@@ -55,7 +55,7 @@ The output from above example is the following
 
 .. literalinclude:: ../../examples/lib/ldap/ldap_exception_1.stderr
    :linenos:
-   :language: none
+   :language: stderr
 
 To handle particular LDAP errors in an application, exception code may be used
 
@@ -68,7 +68,7 @@ The output from above example is the following
 
 .. literalinclude:: ../../examples/lib/ldap/ldap_exception_2.stderr
    :linenos:
-   :language: none
+   :language: stderr
 
 Standard LDAP result codes (including error codes) are defined in several
 documents including `RFC 4511`_, `RFC 3928`_, `RFC 3909`_, `RFC 4528`_, and

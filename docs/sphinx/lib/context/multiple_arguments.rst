@@ -1,11 +1,10 @@
 .. index::
    :single: Context; Multiple Arguments
    :single: Lib; Context; Multiple Arguments
-
 .. _MultipleContextArguments:
 
 Multiple context arguments
---------------------------
+==========================
 
 Multiple arguments may be passed to :func:`Korowai\\Lib\\Context\\with`:
 
@@ -49,6 +48,7 @@ The order or argument processing may be then illustrated by the following test
 The output from above snippet will be
 
 .. literalinclude:: ../../examples/lib/context/multiple_args.stdout
-   :language: none
+   :linenos:
+   :language: stdout
 
 .. <!--- vim: set syntax=rst spell: -->

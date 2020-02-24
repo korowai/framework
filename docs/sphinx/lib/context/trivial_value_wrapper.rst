@@ -1,9 +1,10 @@
 .. index::
    :single: Context; Trivial Value Wrapper
    :single: Lib; Context; Trivial Value Wrapper
+.. _TrivialValueWrapper:
 
 Trivial Value Wrapper
----------------------
+=====================
 
 The :class:`Korowai\\Lib\\Context\\TrivialValueWrapper` class is a dummy
 context manager, which only passes value to user-provided callback. This is

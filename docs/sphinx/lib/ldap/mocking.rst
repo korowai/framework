@@ -5,7 +5,7 @@
 .. _LdapMocking:
 
 Mocking Ldap objects
---------------------
+====================
 
 Unit-testing applications that use :ref:`TheLdapLibrary` can be troublesome.
 The code under test may depend on :ref:`ldap library's <TheLdapLibrary>`
@@ -72,7 +72,7 @@ The full example is the following
 .. _LdapMockingPredefinedFakeObjects:
 
 Predefined fake objects
-^^^^^^^^^^^^^^^^^^^^^^^
+-----------------------
 
 The :class:`Korowai\\Lib\\Ldap\\Adapter\\Mock\\Result` object, used in previous
 example, is an example of what we'll call "fake objects". A fake object is an

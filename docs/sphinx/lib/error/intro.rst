@@ -1,24 +1,12 @@
-.. index::
-   single: Error
-   single: Lib; Error
-
-
-.. _TheErrorLibrary:
-
-The Error Library
------------------
-
-The Error library provides handy utilities for error flow alteration.
-
 Installation
-^^^^^^^^^^^^
+============
 
 .. code-block:: shell
 
    php composer.phar require "korowai/errorlib:dev-master"
 
 Purpose
-^^^^^^^
+=======
 
 The main purpose of Error library is to provide handy utilities to control the
 flow of PHP errors within an application. It is designed to play nicely with
@@ -30,21 +18,22 @@ code.
 PHP functions to throw predefined exceptions when the original functions
 trigger errors.
 
+
 Basic Example
-^^^^^^^^^^^^^
+=============
 
 In the following example we'll redirect errors from one invocation of a
 problematic function to a no-op error handler. The example uses the
 following functions
 
-.. literalinclude:: ../examples/lib/error/basic_example.php
+.. literalinclude:: ../../examples/lib/error/basic_example.php
    :linenos:
    :start-after: [use]
    :end-before: [/use]
 
 and the problematic function is
 
-.. literalinclude:: ../examples/lib/error/basic_example.php
+.. literalinclude:: ../../examples/lib/error/basic_example.php
    :linenos:
    :start-after: [trouble]
    :end-before: [/trouble]
@@ -56,20 +45,9 @@ by temporarily replacing original handler with our own empty handler. This is
 easily achieved with :ref:`Contexts <TheContextLibrary>` and
 :class:`Korowai\\Lib\\Error\\EmptyErrorHandler`.
 
-.. literalinclude:: ../examples/lib/error/basic_example.php
+.. literalinclude:: ../../examples/lib/error/basic_example.php
    :linenos:
    :start-after: [test]
    :end-before: [/test]
-
-
-.. toctree::
-   :maxdepth: 1
-   :hidden:
-   :glob:
-
-   error/custom_error_handler
-   error/exception_error_handler
-   error/caller_error_handler
-
 
 .. <!--- vim: set syntax=rst spell: -->

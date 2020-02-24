@@ -34,7 +34,7 @@ class ObjectPropertiesAssertionsTest extends TestCase
     {
         return [
             ['assertHasPropertiesSameAs'],
-            ['assertHasPropertiesNotSameAs'],
+            ['assertNotHasPropertiesSameAs'],
             ['hasPropertiesIdenticalTo'],
         ];
     }
@@ -197,18 +197,18 @@ class ObjectPropertiesAssertionsTest extends TestCase
     /**
      * @dataProvider propertiesNotSameAs__cases
      */
-    public function test__assertHasPropertiesNotSameAs__withNonMatchingProperties(
+    public function test__assertNotHasPropertiesSameAs__withNonMatchingProperties(
         array $expected,
         object $object,
         callable $getters = null
     ) {
-        self::assertHasPropertiesNotSameAs(...(self::adjustCase(func_get_args())));
+        self::assertNotHasPropertiesSameAs(...(self::adjustCase(func_get_args())));
     }
 
     /**
      * @dataProvider propertiesSameAs__cases
      */
-    public function test__assertHasPropertiesNotSameAs__whithMatchingProperties(
+    public function test__assertNotHasPropertiesSameAs__whithMatchingProperties(
         array $expected,
         object $object,
         callable $getters = null
@@ -218,7 +218,7 @@ class ObjectPropertiesAssertionsTest extends TestCase
         self::expectException(ExpectationFailedException::class);
         self::expectExceptionMessageMatches($regexp);
 
-        self::assertHasPropertiesNotSameAs(...(self::adjustCase(func_get_args(), 'Lorem ipsum.')));
+        self::assertNotHasPropertiesSameAs(...(self::adjustCase(func_get_args(), 'Lorem ipsum.')));
     }
 
 }

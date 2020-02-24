@@ -26,7 +26,12 @@ class DocExampleContext implements Context
 
     protected function getExamplePath(string $file)
     {
-        return realpath(__dir__ . '/../examples/' . $file);
+        return realpath(__dir__.'/../examples/'.$file);
+    }
+
+    protected function getTopPath(string $file)
+    {
+        return realpath(__dir__.'/../../../'.$file);
     }
 
     protected function getExampleFileContents(string $file, $default = '')
@@ -44,14 +49,46 @@ class DocExampleContext implements Context
         return implode(" ", [PHP_BINARY, "-d auto_prepend_file=vendor/autoload.php", $path]);
     }
 
+    protected function getPHPUnitCmd(string $file)
+    {
+        $tst = $this->getExamplePath($file);
+        $bin = $this->getTopPath('vendor/bin/phpunit');
+        $xml = $this->getExamplePath('phpunit.xml');
+        return implode(" ", [PHP_BINARY, $bin, '-c', $xml, $tst]);
+    }
+
     protected function runDocExample(string $file)
+    {
+        $cmd = $this->getExampleCmd($file);
+        $this->runCommand($cmd);
+    }
+
+    protected function runPHPUnitExample(string $file)
+    {
+        $cmd = $this->getPHPUnitCmd($file);
+        $this->runCommand($cmd);
+    }
+
+    protected function cleanupPHPUnitOutput(string $string)
+    {
+        $lines = explode(PHP_EOL, $string);
+        static $garbage = [
+            '/^PHPUnit \d+(?:\.\d+)* by \w+ \w+ and contributors\.\s*$/',
+            '/^Time: \d+ \w+, Memory: \d(?:\.\d+)*(?: \d+)?( \w+)?\s*$/'
+        ];
+        foreach ($garbage as $re) {
+            $lines = preg_grep($re, $lines, PREG_GREP_INVERT);
+        }
+        return implode(PHP_EOL, $lines);
+    }
+
+    protected function runCommand(string $cmd)
     {
         $descriptorspec = [
             0 => ["pipe", "r"],
             1 => ["pipe", "w"],
             2 => ["pipe", "w"]
         ];
-        $cmd = $this->getExampleCmd($file);
         $cwd = realpath(__dir__ . "/../../..");
 
         $proc = proc_open($cmd, $descriptorspec, $pipes, $cwd);
@@ -103,12 +140,21 @@ class DocExampleContext implements Context
     }
 
     /**
+     * @When I tested :file with PHPUnit
+     */
+    public function iTestedWithPHPUnit(string $file)
+    {
+        $this->resetExample();
+        $this->runPHPUnitExample($file);
+    }
+
+    /**
      * @Then I should see stdout from :file
      */
     public function iShouldSeeStdoutFrom(?string $file = null)
     {
         if (!is_null($file)) {
-            Assert::assertEquals($this->getExampleFileContents($file), $this->stdout);
+            Assert::assertSame($this->getExampleFileContents($file), $this->stdout);
         }
     }
 
@@ -118,7 +164,7 @@ class DocExampleContext implements Context
     public function iShouldSeeStderrFrom(?string $file = null)
     {
         if (!is_null($file)) {
-            Assert::assertEquals($this->getExampleFileContents($file), $this->stderr);
+            Assert::assertSame($this->getExampleFileContents($file), $this->stderr);
         }
     }
 
@@ -127,7 +173,19 @@ class DocExampleContext implements Context
      */
     public function iShouldSeeExitCode(int $code)
     {
-        Assert::assertEquals($code, $this->status);
+        Assert::assertSame($code, $this->status);
+    }
+
+    /**
+     * @Then I should see PHPunit stdout from :file
+     */
+    public function iShouldSeePHPUnitStdoutFrom(?string $file = null)
+    {
+        if (!is_null($file)) {
+            $expect = $this->cleanupPHPUnitOutput($this->getExampleFileContents($file));
+            $actual = $this->cleanupPHPUnitOutput($this->stdout);
+            Assert::assertSame($expect, $actual);
+        }
     }
 }
 

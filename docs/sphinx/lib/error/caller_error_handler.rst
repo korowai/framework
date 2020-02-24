@@ -1,11 +1,10 @@
 .. index::
-   :single: Context; Custom Error Handlers
-   :single: Lib; Context; Custom Error Handlers
-
+   :single: Context; Caller Error Handlers
+   :single: Lib; Context; Caller Error Handlers
 .. _CallerErrorHandlers:
 
 Caller Error Handlers
----------------------
+=====================
 
 :ref:`CallerErrorHandlers` are useful when a function implementer wants to
 "blame" function's callers for errors occurring within the function. Normally,
@@ -16,7 +15,7 @@ when error is triggered with ``trigger_error()``, the error handler receives
 function's caller or its caller's caller, and so on.
 
 Simple example with Caller Error Handler
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+----------------------------------------
 
 The example uses the following symbols
 
@@ -55,10 +54,10 @@ The outputs from the above example are
 
 .. literalinclude:: ../../examples/lib/error/caller_error_handler.stdout
    :linenos:
-   :language: none
+   :language: stdout
 
 Exception-throwing Caller Error Handler
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+---------------------------------------
 
 The example uses the following symbols
 
@@ -89,6 +88,6 @@ The outputs from the above example are
 
 .. literalinclude:: ../../examples/lib/error/caller_error_thrower.stdout
    :linenos:
-   :language: none
+   :language: stdout
 
 .. <!--- vim: set syntax=rst spell: -->

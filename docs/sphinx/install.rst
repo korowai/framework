@@ -1,5 +1,6 @@
+****************************
 Installing Korowai Framework
-============================
+****************************
 
 Use composer_ to install the framework or some of its components.
 

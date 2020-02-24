@@ -49,3 +49,13 @@ Feature: Examples
       | "lib/error/simple_exception_thrower.php"  | "lib/error/simple_exception_thrower.stdout"   | "lib/error/simple_exception_thrower.stderr"   | 1         |
       | "lib/error/caller_error_handler.php"      | "lib/error/caller_error_handler.stdout"       | "lib/error/caller_error_handler.stderr"       | 0         |
       | "lib/error/caller_error_thrower.php"      | "lib/error/caller_error_thrower.stdout"       | "lib/error/caller_error_thrower.stderr"       | 1         |
+
+  Scenario Outline: Examples for korowai/testing
+    Given I tested <example_file> with PHPUnit
+    Then I should see PHPUnit stdout from <stdout_file>
+    And I should see stderr from <stderr_file>
+    And I should see exit code <exit_code>
+
+    Examples:
+      | example_file                              | stdout_file                                   | stderr_file                                   | exit_code |
+      | "testing/AssertExtendsClassTest.php"      | "testing/AssertExtendsClassTest.stdout"       | "testing/AssertExtendsClassTest.stderr"       | 1         |

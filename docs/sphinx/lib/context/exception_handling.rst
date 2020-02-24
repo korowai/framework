@@ -1,14 +1,13 @@
 .. index::
    :single: Context; Exception Handling
    :single: Lib; Context; Exception Handling
-
 .. _ContextExceptionHandling:
 
 Exception Handling
-------------------
+==================
 
 Default behavior
-^^^^^^^^^^^^^^^^
+----------------
 
 One of the main benefits of using contexts is their "unroll" feature which
 works even when an exception occurs in a user-provided callback. This means,
@@ -47,17 +46,17 @@ The outputs from above snippet shall be
 
    .. literalinclude:: ../../examples/lib/context/exception_handling.stdout
       :linenos:
-      :language: none
+      :language: stdout
 
 - stderr:
 
    .. literalinclude:: ../../examples/lib/context/exception_handling.stderr
       :linenos:
-      :language: none
+      :language: stderr
 
 
 Handling exceptions in exitContext
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+----------------------------------
 
 If one of the context managers returns ``true`` from its
 :method:`Korowai\\Lib\\Context\\ContextManagerInterface::exitContext`,
@@ -90,6 +89,6 @@ exception and outputs the following text
 
 .. literalinclude:: ../../examples/lib/context/exit_true.stdout
    :linenos:
-   :language: none
+   :language: stdout
 
 .. <!--- vim: set syntax=rst spell: -->

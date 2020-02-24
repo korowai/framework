@@ -16,6 +16,7 @@ Korowai Framework
    install
    lib/index
    devel_guide/index
+   testing
 
 
 Indices and tables

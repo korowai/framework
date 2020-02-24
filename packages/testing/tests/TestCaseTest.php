@@ -17,6 +17,8 @@ use Korowai\Testing\TestCase;
 use Korowai\Testing\Assertions\ClassAssertions;
 use Korowai\Testing\Assertions\ObjectPropertiesAssertions;
 use Korowai\Testing\Assertions\PregAssertions;
+use Korowai\Testing\Assertions\ComplexAssertions;
+use Korowai\Testing\Traits\ObjectPropertiesUtils;
 use Korowai\Testing\Traits\PregUtils;
 
 /**
@@ -39,9 +41,24 @@ class TestCaseTest extends TestCase
         $this->assertUsesTrait(PregAssertions::class, TestCase::class);
     }
 
+    public function test__uses__ComplexAssertions()
+    {
+        $this->assertUsesTrait(ComplexAssertions::class, TestCase::class);
+    }
+
+    public function test__uses__ObjectPropertiesUtils()
+    {
+        $this->assertUsesTrait(ObjectPropertiesUtils::class, TestCase::class);
+    }
+
     public function test__uses__PregUtils()
     {
         $this->assertUsesTrait(PregUtils::class, TestCase::class);
+    }
+
+    public function test__objectPropertyGettersMap()
+    {
+        $this->assertSame([], TestCase::objectPropertyGettersMap());
     }
 }
 

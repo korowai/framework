@@ -42,6 +42,10 @@ trait PregAssertions
      * - ``['foo' => true]`` asserts that group ``'foo'`` was captured,
      * - ``['foo' => 'FOO']`` asserts that group ``'foo'`` was captured and it's value equals ``'FOO'``.
      *
+     * Boolean expectations (``['foo' => true]`` or ``['foo' => false]``) work
+     * properly only with arrays obtained from ``preg_match()`` invoked with
+     * ``PREG_UNMATCHED_AS_NULL`` flag.
+     *
      * @param  array $expected
      *      An array of expectations.
      * @param  array $matches
@@ -84,6 +88,10 @@ trait PregAssertions
      * - ``['foo' => false]`` asserts that group ``'foo'`` was not captured,
      * - ``['foo' => true]`` asserts that group ``'foo'`` was captured,
      * - ``['foo' => 'FOO']`` asserts that group ``'foo'`` was captured and it's value equals ``'FOO'``.
+     *
+     * Boolean expectations (``['foo' => true]`` or ``['foo' => false]``) work
+     * properly only with arrays obtained from ``preg_match()`` invoked with
+     * ``PREG_UNMATCHED_AS_NULL`` flag.
      *
      * @param  array $expected
      *

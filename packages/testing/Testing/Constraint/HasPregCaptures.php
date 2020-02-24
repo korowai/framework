@@ -28,8 +28,9 @@ use SebastianBergmann\Comparator\ComparisonFailure;
  * - ``['foo' => true]`` asserts that group ``'foo'`` was captured,
  * - ``['foo' => 'FOO']`` asserts that group ``'foo'`` was captured and it's value equals ``'FOO'``.
  *
- * Boolean expectations (``true``/``false``) work properly only with arrays
- * obtained by using ``preg_match()`` with PREG_UNMATCHED_AS_NULL flag.
+ * Boolean expectations (``['foo' => true]`` or ``['foo' => false]``) work
+ * properly only with arrays obtained from ``preg_match()`` invoked with
+ * ``PREG_UNMATCHED_AS_NULL`` flag.
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
@@ -134,27 +135,30 @@ final class HasPregCaptures extends Constraint
     private function getArraysForComparison(array $matches)
     {
         [$expect, $actual] = [[], []];
-        foreach (array_keys($this->expected) as $key) {
-            self::updateArraysForComparison($expect, $actual, $matches, $key);
+        foreach ($this->expected as $key => $value) {
+            self::updateExpectForComparison($expect, $matches, $key, $value);
+            self::updateActualForComparison($actual, $matches, $key);
         }
         return [$expect, $actual];
     }
 
-    private function updateArraysForComparison(array &$expect, array &$actual, array $matches, $key)
+    private static function updateExpectForComparison(array &$expect, array $matches, $key, $value)
     {
         $exists = ($matches[$key] ?? [null, -1])[0] !== null;
-        if (($expval = $this->expected[$key]) === $exists) {
+        if ($value === $exists) {
             if (array_key_exists($key, $matches)) {
                 $expect[$key] = $matches[$key];
-                $actual[$key] = $matches[$key];
             }
         } else {
-            $expect[$key] = $expval;
-            if (array_key_exists($key, $matches)) {
-                $actual[$key] = $matches[$key];
-            }
+            $expect[$key] = $value;
         }
+    }
 
+    private static function updateActualForComparison(array &$actual, array $matches, $key)
+    {
+        if (array_key_exists($key, $matches)) {
+            $actual[$key] = $matches[$key];
+        }
     }
 }
 

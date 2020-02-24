@@ -41,12 +41,18 @@ trait ObjectPropertiesAssertions
     abstract public static function getObjectPropertyGetters($objectOrClass) : array;
 
     /**
-     * Asserts that selected properties of *$object* are identical with *$expected* ones.
+     * Asserts that selected properties of *$object* are identical to *$expected* ones.
      *
-     * @param  array $expected An array of key-value pairs with expected values of attributes.
-     * @param  object $object An object to be examined.
-     * @param  string $message Optional failure message.
-     * @param  array $getters Optional array of getters.
+     * @param  array $expected
+     *      An array of key => value pairs with property names as keys and
+     *      their expected values as values.
+     * @param  object $object
+     *      An object to be examined.
+     * @param  string $message
+     *      Optional failure message.
+     * @param  callable $getters
+     *      A function that defines mappings between property names and their
+     *      getter method names for particular objects.
      *
      * @throws ExpectationFailedException
      * @throws \PHPUnit\Framework\Exception when a non-string keys are found in *$expected*
@@ -55,19 +61,28 @@ trait ObjectPropertiesAssertions
         array $expected,
         object $object,
         string $message = '',
-        array $getters = null
+        callable $getters = null
     ) : void {
-        $getters = $getters ?? static::getObjectPropertyGetters($object);
-        static::assertThat($object, static::hasPropertiesIdenticalTo($expected, $getters), $message);
+        static::assertThat(
+            $object,
+            static::hasPropertiesIdenticalTo($expected, $getters),
+            $message
+        );
     }
 
     /**
-     * Asserts that selected properties of *$object* are not identical with *$expected* ones.
+     * Asserts that selected properties of *$object* are not identical to *$expected* ones.
      *
-     * @param  array $expected An array of key-value pairs with expected values of attributes.
-     * @param  object $object An object to be examined.
-     * @param  string $message Optional failure message.
-     * @param  array $getters Optional array of getters.
+     * @param  array $expected
+     *      An array of key => value pairs with property names as keys and
+     *      their expected values as values.
+     * @param  object $object
+     *      An object to be examined.
+     * @param  string $message
+     *      Optional failure message.
+     * @param  callable $getters
+     *      A function that defines mappings between property names and their
+     *      getter method names for particular objects.
      *
      * @throws ExpectationFailedException
      * @throws \PHPUnit\Framework\Exception when a non-string keys are found in *$expected*
@@ -76,23 +91,34 @@ trait ObjectPropertiesAssertions
         array $expected,
         object $object,
         string $message = '',
-        array $getters = null
+        callable $getters = null
     ) : void {
-        $getters = $getters ?? static::getObjectPropertyGetters($object);
-        static::assertThat($object, new LogicalNot(static::hasPropertiesIdenticalTo($expected, $getters)), $message);
+        static::assertThat(
+            $object,
+            new LogicalNot(static::hasPropertiesIdenticalTo($expected, $getters)),
+            $message
+        );
     }
 
     /**
      * Compares selected properties of *$object* with *$expected* ones.
      *
-     * @param  array $expected An array of key-value pairs with expected values of attributes.
-     * @param  array $getters An array of key-value pairs mapping property names onto their getter method names.
+     * @param  array $expected
+     *      An array of key => value pairs with expected values of attributes.
+     * @param  callable $getters
+     *      A function that defines mappings between property names and their
+     *      getter method names for particular objects.
      *
      * @return HasPropertiesIdenticalTo
      * @throws \PHPUnit\Framework\Exception when non-string keys are found in *$expected*
      */
-    public static function hasPropertiesIdenticalTo(array $expected, array $getters = []) : HasPropertiesIdenticalTo
-    {
+    public static function hasPropertiesIdenticalTo(
+        array $expected,
+        callable $getters = null
+    ) : HasPropertiesIdenticalTo {
+        $getters = $getters ?? function (object $object) {
+            return static::getObjectPropertyGetters($object);
+        };
         return new HasPropertiesIdenticalTo($expected, $getters);
     }
 }

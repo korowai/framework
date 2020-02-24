@@ -18,11 +18,14 @@ use PHPUnit\Framework\ExpectationFailedException;
 use SebastianBergmann\Comparator\ComparisonFailure;
 
 /**
- * Constraint that accepts objects having prescribed properties.
+ * Constraint that accepts objects having properties identical to expected
+ * ones. A property is defined as either an attribute value or a value
+ * returned by object's method callable without arguments.
  *
  * Compares only properties present in the array of expectations. Additional
- * parameter *$getters* is a key-value array with property names as keys and
- * their corresponding getter method names as values. For example
+ * parameter *$getters* provides a callback that defines mappings between
+ * property names and corresponding getter methods for particular objects.
+ * For example
  *
  *      class Person {
  *          private $name;
@@ -32,12 +35,13 @@ use SebastianBergmann\Comparator\ComparisonFailure;
  *      // ...
  *      $matcher = new HasPropertiesIdenticalTo(
  *          ['name' => 'John', 'age' => 21],
- *          ['name' => 'getName']
+ *          function (object $object) {
+ *              return ($object instanceof Person) ? ['name' => 'getName'] : [];
+ *          }
  *      );
  *
- * The array of *$expected* values may also refer getter methods directly. Any
- * key in *$expected* array ending with ``"()"`` is considered to be a method
- * that returns property value.
+ * Any key in *$expected* array ending with ``"()"`` is considered to be a
+ * method that returns property value.
  *
  *      // ...
  *      $matcher = new HasPropertiesIdenticalTo(
@@ -54,19 +58,27 @@ final class HasPropertiesIdenticalTo extends Constraint
     private $expected;
 
     /**
-     * @var array
+     * @var callable
      */
     private $getters;
 
     /**
      * Initializes the constraint.
      *
-     * @param  array $expected An array of expected values.
-     * @param  array $getters Maps property names into their getter method names.
+     * @param  array $expected
+     *      An array of key => value pairs where keys are property names and
+     *      values are their expected values.
+     * @param  callable $getters
+     *      A callback which takes an object as an argument and returns an
+     *      array of key => value pairs with property names as keys and
+     *      corresponding getter method names as values. The function prototype
+     *      is
+     *
+     *          array getters(object $object);
      *
      * @throws \PHPUnit\Framework\Exception when non-string keys are found in *$expected*.
      */
-    public function __construct(array $expected, array $getters = [])
+    public function __construct(array $expected, callable $getters = null)
     {
         $valid = array_filter($expected, \is_string::class, ARRAY_FILTER_USE_KEY);
         if (($count = count($expected) - count($valid)) > 0) {
@@ -158,23 +170,17 @@ final class HasPropertiesIdenticalTo extends Constraint
         return $what.' '.$this->toString();
     }
 
-    /**
-     * Retrieves an array of object properties for comparison.
-     *
-     * @param  object $object
-     * @return array
-     */
-    protected function getPropertiesForComparison(object $object) : array
+    private function getPropertiesForComparison(object $object) : array
     {
         $actual = [];
-        $getters = $this->getters;
+        $getters = $this->getters ? call_user_func($this->getters, $object) : [];
         foreach (array_keys($this->expected) as $key) {
             $this->updateActual($actual, $object, $key, $getters);
         }
         return $actual;
     }
 
-    protected function updateActual(array &$actual, object $object, string $key, array $getters) : void
+    private function updateActual(array &$actual, object $object, string $key, array $getters) : void
     {
         $getter = (substr($key, -2) === '()') ? substr($key, 0, -2) : ($getters[$key] ?? null);
         if ($getter !== null) {

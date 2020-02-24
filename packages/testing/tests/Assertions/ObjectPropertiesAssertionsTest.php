@@ -58,14 +58,17 @@ class ObjectPropertiesAssertionsTest extends TestCase
             public $age = 21;
             private $salary = 123;
             public function getSalary() { return $this->salary; }
+            public function getDebit() { return -$this->salary; }
         };
 
         return [
             [['name' => 'John', 'last' => 'Smith', 'age' => 21], $jsmith],
             [['name' => 'John', 'last' => 'Smith'],              $jsmith],
             [['age' => 21],                                      $jsmith],
-            [['age' => 21, 'salary' => 123],                     $jsmith, ['salary' => 'getSalary']],
-            [['age' => 21, 'getSalary()' => 123],                $jsmith],
+            [['age' => 21, 'salary' => 123, 'debit' => -123],    $jsmith, function (object $o) {
+                return ['salary' => 'getSalary', 'debit' => 'getDebit'];
+            }],
+            [['age' => 21, 'getSalary()' => 123, 'getDebit()' => -123], $jsmith],
         ];
     }
 
@@ -77,13 +80,19 @@ class ObjectPropertiesAssertionsTest extends TestCase
             public $age = 21;
             private $salary = 123;
             public function getSalary() { return $this->salary; }
+            public function getDebit() { return -$this->salary; }
         };
 
         return [
             [['name' => 'John', 'last' => 'Brown', 'age' => 21], $jsmith],
             [['name' => 'John', 'last' => 'Brown'],              $jsmith],
             [['age' => 19],                                      $jsmith],
-            [['age' => 21, 'salary' => 1230],                    $jsmith, ['salary' => 'getSalary'] ],
+            [['age' => 21, 'salary' => 1230],                    $jsmith, function (object $o) {
+                return ['salary' => 'getSalary', 'debit' => 'getDebit'];
+            }],
+            [['age' => 21, 'salary' => 123, 'debit' => -1230],   $jsmith, function (object $o) {
+                return ['salary' => 'getSalary', 'debit' => 'getDebit'];
+            }],
             [['age' => 21, 'getSalary()' => 1230],               $jsmith],
         ];
     }
@@ -94,7 +103,7 @@ class ObjectPropertiesAssertionsTest extends TestCase
     public function test__hasPropertiesIdenticalTo__withMatchingProperties(
         array $expected,
         object $object,
-        array $getters = []
+        callable $getters = null
     ) {
         self::assertTrue(self::hasPropertiesIdenticalTo($expected, $getters)->matches($object));
     }
@@ -105,7 +114,7 @@ class ObjectPropertiesAssertionsTest extends TestCase
     public function test__hasPropertiesIdenticalTo__withNonMatchingProperties(
         array $expected,
         object $object,
-        array $getters = []
+        callable $getters = null
     ) {
         self::assertFalse(self::hasPropertiesIdenticalTo($expected, $getters)->matches($object));
     }
@@ -142,13 +151,14 @@ class ObjectPropertiesAssertionsTest extends TestCase
         self::expectException(\PHPUnit\Framework\Exception::class);
         self::expectExceptionMessage('$object->xxx() is not callable');
 
-        self::hasPropertiesIdenticalTo(['a' => 'A'], ['a' => 'xxx'])->matches($object);
+        $getters = function (object $o) { return ['a' => 'xxx']; };
+        self::hasPropertiesIdenticalTo(['a' => 'A'], $getters)->matches($object);
     }
 
     protected static function adjustCase(array $case, string $message = '')
     {
         $args = func_get_args();
-        if (is_array($case[2] ?? null)) {
+        if (is_callable($case[2] ?? null)) {
             $case[] = $case[2];
             $case[2] = $args[1] ?? '';
         } elseif (($msg = $args[1] ?? null) !== null) {
@@ -163,7 +173,7 @@ class ObjectPropertiesAssertionsTest extends TestCase
     public function test__assertHasPropertiesSameAs__withMatchingProperties(
         array $expected,
         object $object,
-        array $getters = null
+        callable $getters = null
     ) {
         self::assertHasPropertiesSameAs(...(self::adjustCase(func_get_args())));
     }
@@ -174,7 +184,7 @@ class ObjectPropertiesAssertionsTest extends TestCase
     public function test__assertHasPropertiesSameAs__withNonMatchingProperties(
         array $expected,
         object $object,
-        array $getters = null
+        callable $getters = null
     ) {
         $regexp = '/^Lorem ipsum.\n'.
                     'Failed asserting that object class\@.+ has required properties with prescribed values/';
@@ -190,7 +200,7 @@ class ObjectPropertiesAssertionsTest extends TestCase
     public function test__assertHasPropertiesNotSameAs__withNonMatchingProperties(
         array $expected,
         object $object,
-        array $getters = null
+        callable $getters = null
     ) {
         self::assertHasPropertiesNotSameAs(...(self::adjustCase(func_get_args())));
     }
@@ -201,7 +211,7 @@ class ObjectPropertiesAssertionsTest extends TestCase
     public function test__assertHasPropertiesNotSameAs__whithMatchingProperties(
         array $expected,
         object $object,
-        array $getters = null
+        callable $getters = null
     ) {
         $regexp = '/^Lorem ipsum.\n'.
                     'Failed asserting that object class@.+ does not have required properties with prescribed values/';

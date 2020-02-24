@@ -114,12 +114,18 @@ trait ObjectPropertiesAssertions
     ];
 
     /**
-     * Asserts that selected properties of *$object* are identical with *$expected* ones.
+     * Asserts that selected properties of *$object* are identical to *$expected* ones.
      *
-     * @param  array $expected An array of key-value pairs with expected values of attributes.
-     * @param  object $object An object to be examined.
-     * @param  string $message Optional message.
-     * @param  array $getters An array of options.
+     * @param  array $expected
+     *      An array of key => value pairs with property names as keys and
+     *      their expected values as values.
+     * @param  object $object
+     *      An object to be examined.
+     * @param  string $message
+     *      Optional failure message.
+     * @param  callable $getters
+     *      A function that defines mappings between property names and their
+     *      getter method names for particular objects.
      *
      * @throws ExpectationFailedException
      * @throws \PHPUnit\Framework\Exception when a non-string keys are found in *$expected*
@@ -128,7 +134,7 @@ trait ObjectPropertiesAssertions
         array $expected,
         object $object,
         string $message = '',
-        array $getters = null
+        callable $getters = null
     ) : void;
 
     /**

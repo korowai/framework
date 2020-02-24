@@ -105,38 +105,38 @@ class PregAssertionsTest extends TestCase
     public function test__assertNotHasPregCapture__failing(array $expected, $other)
     {
         $this->expectException(ExpectationFailedException::class);
-        $this->expectExceptionMessageMatches('/Failed asserting that .* does not have capture groups satisfying /sD');
+        $this->expectExceptionMessageMatches('/^Failed asserting that array does not have expected PCRE capture groups.$/sD');
         $this->assertNotHasPregCaptures($expected, $other);
     }
 
     public function hasPregCaptures__failing__cases()
     {
-        $re = function ($part) { return '/.* has capture groups satisfying '.$part.'/sD'; };
+        $re = 'array has expected PCRE capture groups';
         return [
-            [['foo' => true],                       [],                     $re('.* \'foo\' => \'<must exist>\'')],
-            [['foo' => true],                       ['foo' => [null,-1]],   $re('.* \'foo\' => \'<must exist>\'')],
+            [['foo' => true],                       [],                     $re],
+            [['foo' => true],                       ['foo' => [null,-1]],   $re],
 
-            [['foo' => 'FOO'],                      [],                     $re('.* \'foo\' => \'FOO\'')],
-            [['foo' => 'FOO'],                      ['bar' => 'FOO'],       $re('.* \'foo\' => \'FOO\'')],
-            [['foo' => 'FOO'],                      ['foo' => [null,-1]],   $re('.* \'foo\' => \'FOO\'')],
-            [['foo' => 'FOO'],                      ['foo' => ['FOO',-1]],  $re('.* \'foo\' => \'FOO\'')],
+            [['foo' => 'FOO'],                      [],                     $re],
+            [['foo' => 'FOO'],                      ['bar' => 'FOO'],       $re],
+            [['foo' => 'FOO'],                      ['foo' => [null,-1]],   $re],
+            [['foo' => 'FOO'],                      ['foo' => ['FOO',-1]],  $re],
 
-            [['foo' => false],                      ['foo' => 'FOO'],       $re('.* \'foo\' => \'<must not exist>\'')],
-            [['foo' => 'BAR'],                      ['foo' => 'FOO'],       $re('.* \'foo\' => \'BAR\'')],
-            [['foo' => 'BAR'],                      ['foo' => ['FOO',-1]],  $re('.* \'foo\' => \'BAR\'')],
+            [['foo' => false],                      ['foo' => 'FOO'],       $re],
+            [['foo' => 'BAR'],                      ['foo' => 'FOO'],       $re],
+            [['foo' => 'BAR'],                      ['foo' => ['FOO',-1]],  $re],
 
             // other corner cases
-            [['foo' => null],                       [],                     $re('.* \'foo\' => null')],
-            [['foo' => [null,-1]],                  ['foo' => null],        $re('.* \'foo\' => Array')],
-            [['foo' => [null,-1]],                  [],                     $re('.* \'foo\' => Array')],
+            [['foo' => null],                       [],                     $re],
+            [['foo' => [null,-1]],                  ['foo' => null],        $re],
+            [['foo' => [null,-1]],                  [],                     $re],
         ];
     }
 
     public function hasPregCaptures__nonArray__cases()
     {
-        $re = function ($part) { return '/.* has capture groups satisfying '.$part.'/sD'; };
+        $re = 'string has expected PCRE capture groups';
         return [
-            [['foo' => false],  'stuff', $re('.* \'foo\' => \'<must not exist>\'')],
+            [['foo' => false],  'stuff', $re],
         ];
     }
 
@@ -148,7 +148,7 @@ class PregAssertionsTest extends TestCase
     {
         $constraint = $this->hasPregCaptures($expected);
         $this->assertFalse($constraint->matches($other));
-        $this->assertRegExp($regexp, $constraint->failureDescription($other));
+        $this->assertRegExp('/^'.$regexp.'$/sD', $constraint->failureDescription($other));
     }
 
     /**
@@ -157,7 +157,7 @@ class PregAssertionsTest extends TestCase
     public function test__assertHasPregCaptures__failing(array $expected, $other, string $regexp)
     {
         $this->expectException(ExpectationFailedException::class);
-        $this->expectExceptionMessageMatches($regexp);
+        $this->expectExceptionMessageMatches('/^Failed asserting that '.$regexp.'.$/sD');
         $this->assertHasPregCaptures($expected, $other);
     }
 

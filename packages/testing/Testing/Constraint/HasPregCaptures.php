@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace Korowai\Testing\Constraint;
 
 use PHPUnit\Framework\Constraint\Constraint;
+use PHPUnit\Framework\ExpectationFailedException;
+use SebastianBergmann\Comparator\ComparisonFailure;
 
 /**
  * Constraint that accepts arrays of matches returned from ``preg_match()``
@@ -25,6 +27,9 @@ use PHPUnit\Framework\Constraint\Constraint;
  * - ``['foo' => false]`` asserts that group ``'foo'`` was not captured,
  * - ``['foo' => true]`` asserts that group ``'foo'`` was captured,
  * - ``['foo' => 'FOO']`` asserts that group ``'foo'`` was captured and it's value equals ``'FOO'``.
+ *
+ * Boolean expectations (``true``/``false``) work properly only with arrays
+ * obtained by using ``preg_match()`` with PREG_UNMATCHED_AS_NULL flag.
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
@@ -50,10 +55,47 @@ final class HasPregCaptures extends Constraint
      */
     public function toString() : string
     {
-        $expectations = array_map(function ($value) {
-            return $value === true ? '<must exist>' : ($value === false ? '<must not exist>' : $value);
-        }, $this->expected);
-        return sprintf('has capture groups satisfying %s', $this->exporter()->export($expectations));
+        return 'has expected PCRE capture groups';
+    }
+
+    /**
+     * Evaluates the constraint for parameter $other
+     *
+     * If $returnResult is set to false (the default), an exception is thrown
+     * in case of a failure. null is returned otherwise.
+     *
+     * If $returnResult is true, the result of the evaluation is returned as
+     * a boolean value instead: true in case of success, false in case of a
+     * failure.
+     *
+     * @throws ExpectationFailedException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     */
+    public function evaluate($other, string $description = '', bool $returnResult = false): ?bool
+    {
+        $success = $this->matches($other);
+
+        if ($returnResult) {
+            return $success;
+        }
+
+        if (!$success) {
+            $f = null;
+
+            if (is_array($other)) {
+                [$expected, $actual] = $this->getArraysForComparison($other);
+                $f = new ComparisonFailure(
+                    $this->expected,
+                    $other,
+                    $this->exporter()->export($expected),
+                    $this->exporter()->export($actual)
+                );
+            }
+
+            $this->fail($other, $description, $f);
+        }
+
+        return null;
     }
 
     /**
@@ -67,24 +109,8 @@ final class HasPregCaptures extends Constraint
         if (!is_array($other)) {
             return false;
         }
-        foreach ($this->expected as $key => $expected) {
-            if (!$this->captureGroupMatches($expected, $other, $key)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    protected function captureGroupMatches($expected, array $other, $key) : bool
-    {
-        $exists = ($other[$key] ?? [null, -1])[0] !== null;
-        if ($expected === false) {
-            return !$exists;
-        } elseif ($expected === true) {
-            return $exists;
-        } else {
-            return array_key_exists($key, $other) && ($other[$key] === $expected);
-        }
+        [$expected, $actual] = $this->getArraysForComparison($other);
+        return ($expected === $actual);
     }
 
     /**
@@ -97,10 +123,38 @@ final class HasPregCaptures extends Constraint
      */
     public function failureDescription($other) : string
     {
-        if (is_array($other)) {
-            $other = array_intersect_key($other, $this->expected);
+        if (is_object($other)) {
+            $what = 'object '.get_class($other);
+        } else {
+            $what = gettype($other);
         }
-        return $this->exporter()->export($other).' '.$this->toString();
+        return $what.' '.$this->toString();
+    }
+
+    private function getArraysForComparison(array $matches)
+    {
+        [$expect, $actual] = [[], []];
+        foreach (array_keys($this->expected) as $key) {
+            self::updateArraysForComparison($expect, $actual, $matches, $key);
+        }
+        return [$expect, $actual];
+    }
+
+    private function updateArraysForComparison(array &$expect, array &$actual, array $matches, $key)
+    {
+        $exists = ($matches[$key] ?? [null, -1])[0] !== null;
+        if (($expval = $this->expected[$key]) === $exists) {
+            if (array_key_exists($key, $matches)) {
+                $expect[$key] = $matches[$key];
+                $actual[$key] = $matches[$key];
+            }
+        } else {
+            $expect[$key] = $expval;
+            if (array_key_exists($key, $matches)) {
+                $actual[$key] = $matches[$key];
+            }
+        }
+
     }
 }
 

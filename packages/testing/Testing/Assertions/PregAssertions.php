@@ -32,11 +32,22 @@ trait PregAssertions
     abstract public static function assertThat($value, Constraint $constraint, string $message = '') : void;
 
     /**
-     * Asserts that selected properties of *$object* are identical with *$expected* ones.
+     * Asserts that an array of *$matches* returned from ``preg_match()`` has
+     * capture groups as specified in *$expected*.
      *
-     * @param  array $expected An array of key-value pairs with expected values of attributes.
-     * @param  array $matches An array of preg matches to be examined.
-     * @param  string $message Additional message.
+     * Checks only entries present in *$expected*, so *$expected = []* accepts
+     * any array. Special values may be used in the expectations:
+     *
+     * - ``['foo' => false]`` asserts that group ``'foo'`` was not captured,
+     * - ``['foo' => true]`` asserts that group ``'foo'`` was captured,
+     * - ``['foo' => 'FOO']`` asserts that group ``'foo'`` was captured and it's value equals ``'FOO'``.
+     *
+     * @param  array $expected
+     *      An array of expectations.
+     * @param  array $matches
+     *      An array of preg matches to be examined.
+     * @param  string $message
+     *      Additional message.
      *
      * @throws ExpectationFailedException
      */
@@ -46,11 +57,14 @@ trait PregAssertions
     }
 
     /**
-     * Asserts that selected properties of *$object* are not identical with *$expected* ones.
+     * Negated assertHasPregCaptures().
      *
-     * @param  array $expected An array of key-value pairs with expected values of attributes.
-     * @param  array $matches An array of preg matches to be examined.
-     * @param  string $message Additional message.
+     * @param  array $expected
+     *      An array of expectations.
+     * @param  array $matches
+     *      An array of preg matches to be examined.
+     * @param  string $message
+     *      Additional message.
      *
      * @throws ExpectationFailedException
      * @throws \PHPUnit\Framework\Exception when a non-string keys are found in *$expected*

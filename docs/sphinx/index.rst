@@ -12,16 +12,18 @@ the Korowai_ project.
 .. toctree::
    :caption: Table of Contents
    :maxdepth: 3
-   :numbered: 3
+   :numbered: 2
 
    install
-   lib/index
-   devel_guide/index
+   lib/context/index
+   lib/error/index
+   lib/ldap/index
    testing/index
+   devel_guide/index
 
-
+******************
 Indices and tables
-==================
+******************
 
 * :ref:`genindex`
 * :ref:`modindex`

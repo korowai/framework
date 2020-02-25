@@ -6,10 +6,9 @@
 Assertions
 ==========
 
-This section lists the various assertion methods that are available. These
-assertions are implemented in several traits that are included by the
-:class:`Korowai\\Testing\\TestCase` class. The assertion methods are declared
-as static and can be invoked from any context.
+This section lists the various assertion methods that are available. The
+methods are included in :class:`Korowai\\Testing\\TestCase` class. The
+assertion methods are declared as static and can be invoked from any context.
 
 .. _testing.assertions.assertExtendsClass:
 
@@ -50,7 +49,7 @@ is the inverse of this.
 
 .. literalinclude:: ../examples/testing/AssertExtendsClassTest.stdout
   :linenos:
-  :language: stdout
+  :language: none
 
 
 .. _testing.assertions.assertHasPregCaptures:
@@ -100,7 +99,7 @@ is the inverse of this.
 
 .. literalinclude:: ../examples/testing/AssertHasPregCapturesTest.stdout
   :linenos:
-  :language: stdout
+  :language: none
 
 .. _testing.assertions.assertHasPropertiesSameAs:
 

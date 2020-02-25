@@ -57,6 +57,6 @@ Obviously, the expected output will be
 
 .. literalinclude:: ../../examples/lib/context/my_value_wrapper.stdout
    :linenos:
-   :language: stdout
+   :language: none
 
 .. <!--- vim: set syntax=rst spell: -->

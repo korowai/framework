@@ -25,16 +25,7 @@ code, .rst-content tt, .rst-content code {
   margin-left: 0px;
 }
 
-.highlight-stdout .highlight,
-.highlight-stderr .highlight{
+.highlight-none .highlight {
   background-color: black;
-}
-
-.highlight-stdout .highlight {
   color: white;
 }
-
-.highlight-stderr .highlight {
-  color: red;
-}
-

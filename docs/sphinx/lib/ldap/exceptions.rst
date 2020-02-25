@@ -55,7 +55,7 @@ The output from above example is the following
 
 .. literalinclude:: ../../examples/lib/ldap/ldap_exception_1.stderr
    :linenos:
-   :language: stderr
+   :language: none
 
 To handle particular LDAP errors in an application, exception code may be used
 
@@ -68,7 +68,7 @@ The output from above example is the following
 
 .. literalinclude:: ../../examples/lib/ldap/ldap_exception_2.stderr
    :linenos:
-   :language: stderr
+   :language: none
 
 Standard LDAP result codes (including error codes) are defined in several
 documents including `RFC 4511`_, `RFC 3928`_, `RFC 3909`_, `RFC 4528`_, and

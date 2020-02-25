@@ -54,7 +54,7 @@ The outputs from the above example are
 
 .. literalinclude:: ../../examples/lib/error/caller_error_handler.stdout
    :linenos:
-   :language: stdout
+   :language: none
 
 Exception-throwing Caller Error Handler
 ---------------------------------------
@@ -88,6 +88,6 @@ The outputs from the above example are
 
 .. literalinclude:: ../../examples/lib/error/caller_error_thrower.stdout
    :linenos:
-   :language: stdout
+   :language: none
 
 .. <!--- vim: set syntax=rst spell: -->

@@ -95,7 +95,7 @@ Following is the output from our example
 
 .. literalinclude:: ../../examples/lib/context/my_context_factory.stdout
    :linenos:
-   :language: stdout
+   :language: none
 
 .. _PHP resource: https://www.php.net/manual/en/language.types.resource.php
 

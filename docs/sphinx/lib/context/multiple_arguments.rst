@@ -49,6 +49,6 @@ The output from above snippet will be
 
 .. literalinclude:: ../../examples/lib/context/multiple_args.stdout
    :linenos:
-   :language: stdout
+   :language: none
 
 .. <!--- vim: set syntax=rst spell: -->

@@ -3,9 +3,9 @@
    single: Lib; Error
 .. _TheErrorLibrary:
 
-#################
+*****************
 The Error Library
-#################
+*****************
 
 The Error library provides handy utilities for error flow alteration.
 

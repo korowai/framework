@@ -46,13 +46,13 @@ The outputs from above snippet shall be
 
    .. literalinclude:: ../../examples/lib/context/exception_handling.stdout
       :linenos:
-      :language: stdout
+      :language: none
 
 - stderr:
 
    .. literalinclude:: ../../examples/lib/context/exception_handling.stderr
       :linenos:
-      :language: stderr
+      :language: none
 
 
 Handling exceptions in exitContext
@@ -89,6 +89,6 @@ exception and outputs the following text
 
 .. literalinclude:: ../../examples/lib/context/exit_true.stdout
    :linenos:
-   :language: stdout
+   :language: none
 
 .. <!--- vim: set syntax=rst spell: -->

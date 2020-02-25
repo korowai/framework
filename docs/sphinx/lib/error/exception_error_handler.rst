@@ -40,6 +40,6 @@ The output from our example is like
 
    .. literalinclude:: ../../examples/lib/error/simple_exception_thrower.stderr
       :linenos:
-      :language: stderr
+      :language: none
 
 .. <!--- vim: set syntax=rst spell: -->

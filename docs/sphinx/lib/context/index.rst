@@ -4,9 +4,9 @@
 
 .. _TheContextLibrary:
 
-###################
+*******************
 The Context Library
-###################
+*******************
 
 The Context library provides functionality similar to that of Python's
 `with-statement`_ contexts.

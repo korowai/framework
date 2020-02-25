@@ -42,13 +42,13 @@ The outputs from the above example are
 
 .. literalinclude:: ../../examples/lib/error/custom_error_handler.stdout
    :linenos:
-   :language: stdout
+   :language: none
 
 - stderr:
 
 .. literalinclude:: ../../examples/lib/error/custom_error_handler.stderr
    :linenos:
-   :language: stderr
+   :language: none
 
 Note, that the last call to ``@trigger_error()`` (line 5) didn't output
 anything.

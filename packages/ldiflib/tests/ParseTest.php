@@ -1515,6 +1515,39 @@ class ParseTest extends TestCase
         }
         $this->assertParserStateHas($expect['state'], $state);
     }
+
+    public function test__uriReference2__SyntaxError()
+    {
+        //           111111111111111111
+        //           222222222333333333
+        //           123456789012345678
+        $source = [ 'http://abc.def:xyz', 121 ];
+        $matches = [
+            'schema' => ['http', 121],
+            'host' => ['abc.def', 128],
+            'port' => ['xyz', 136]
+        ];
+        $expect = [
+                'state' => [
+                    'cursor' => ['offset' => 121],
+                    'errors' => [
+                        [
+                            'sourceOffset' => 121,
+                            'message' => 'syntax error: in URL: The port `xyz` is invalid (not an integer)'
+                        ]
+                    ],
+                    'records' => [],
+                ]
+        ];
+
+        $state = $this->getParserStateFromSource(...$source);
+        $value = $this->getMockBuilder(ValueInterface::class)->getMockForAbstractClass();
+
+        $result = Parse::uriReference2($state, $matches, $value);
+        $this->assertFalse($result);
+        $this->assertNull($value);
+        $this->assertParserStateHas($expect['state'], $state);
+    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

@@ -327,7 +327,7 @@ class Parse
     }
 
     /**
-     * Completion callback for parseAttrValSpec().
+     * Completion callback for attrValSpec().
      *
      * @param  State $state
      * @param  array $matches
@@ -394,7 +394,7 @@ class Parse
         try {
             $value = Value::createUriFromRfc3986Matches($matches);
         } catch (UriSyntaxError $e) {
-            $state->errorAt($offset, 'syntax error: in URL: '.$e->getMessage());
+            $state->errorHere('syntax error: in URL: '.$e->getMessage());
             $value = null;
             return false;
         }

@@ -87,7 +87,7 @@ class DocExampleContext implements Context
         static $patterns = [
             '/\r/',
             '/^(PHPUnit )(?:\$version|\d+(?:\.\w+)*)( by Sebastian Bergmann and contributors\.)$/m',
-            '/^(Time: )(?:\d+ \w+)(, Memory: )(?:\d(?:\.\d+)*(?: \d+)?( \w+)?)$/m',
+            '/^(Time: )(?:(?:\d+)(?:\.\d+)? \w+)(, Memory: )(?:\d+(?:\.\d+)?(?: \d+)?( \w+)?)$/m',
             '/^(\/code\/packages\/testing\/Testing(?:\/\w+)+\.php):\d+$/m',
         ];
         static $replaces = [

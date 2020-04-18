@@ -1,0 +1,16 @@
+PHPUnit 8.5.2 by Sebastian Bergmann and contributors.
+
+.F                                                                  2 / 2 (100%)
+
+Time: 40 ms, Memory: 4.00 MB
+
+There was 1 failure:
+
+1) AssertImplementsInterfaceTest::testAssertImplementsInterfaceFailure
+Failed asserting that AssertImplementsInterfaceTest implements interface Throwable.
+
+/code/packages/testing/Testing/Assertions/ClassAssertions.php:90
+/code/docs/sphinx/examples/testing/AssertImplementsInterfaceTest.php:13
+
+FAILURES!
+Tests: 2, Assertions: 3, Failures: 1.

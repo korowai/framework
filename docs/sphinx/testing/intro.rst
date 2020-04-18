@@ -18,7 +18,9 @@ Beginning
 =========
 
 All testing facilities are provided by the new
-:class:`Korowai\\Testing\\TestCase` class.
+:class:`Korowai\\Testing\\TestCase <Korowai\\Testing\\TestCase>` class. Just
+use this class as a base for your test case instead of the PHPUnit_'s
+``TestCase`` class.
 
 .. _PHPUnit: https://phpunit.de/
 

@@ -203,6 +203,6 @@ intersphinx_mapping = {'https://docs.python.org/': None}
 
 
 def setup(app):
-    app.add_stylesheet('css/custom.css')
+    app.add_css_file('css/custom.css')
 
 # vim: set ts=4 sw=4 et:

@@ -5,13 +5,17 @@
 
 Constraints
 ===========
+This section lists the various constraint methods that are available. The
+methods are included in :class:`Korowai\\Testing\\TestCase` class. The
+constraint methods are declared as static and can be invoked from any context.
 
 PHPUnit constraints are objects designed to accept or reject PHP values.
 Constraint objects are useful when defining new assertions (e.g, composite
 assertion based on multiple constraints) or creating test doubles (accepting
-arguments that satisfy custom constraints). Constraints are usually created
-with dedicated methods. The following subsections document constraint methods
-provided by the :class:`Korowai\\Testing\\TestCase` class.
+arguments that satisfy custom constraints). The methods of
+:class:`Korowai\\Testing\\TestCase` class documented below create and return
+constraint objects.
+
 
 .. _testing.constraints.extendsClass:
 

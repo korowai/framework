@@ -68,7 +68,6 @@ release = ''
 extensions = [
     'sphinx.ext.intersphinx',
     'sensio.sphinx.php',
-    'sensio.sphinx.refinclude',
     'sensio.sphinx.configurationblock',
     'sensio.sphinx.phpcode',
     # 'sensio.sphinx.bestpractice',     # buggy

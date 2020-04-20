@@ -7,8 +7,8 @@
 Exception Error Handlers
 ========================
 
-:ref:`ExceptionErrorHandlers` are error handlers that throw predefined
-exceptions in response to PHP errors. :ref:`TheErrorLibrary` provides
+:ref:`lib.error.exception-error-handlers` are error handlers that throw predefined
+exceptions in response to PHP errors. :ref:`lib.error` provides
 :class:`Korowai\\Lib\\Error\\ExceptionErrorHandler` class to easily create
 exception-throwing error handlers.
 

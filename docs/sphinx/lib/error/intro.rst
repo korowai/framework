@@ -14,7 +14,7 @@ our :ref:`Context Library <lib.context>`, so one can temporarily redirect
 PHP errors to custom handlers in one location without altering other parts of
 code.
 
-:ref:`TheKorowaiFramework` uses :ref:`TheErrorLibrary` to implement variants of
+:ref:`TheKorowaiFramework` uses :ref:`lib.error` to implement variants of
 PHP functions to throw predefined exceptions when the original functions
 trigger errors.
 

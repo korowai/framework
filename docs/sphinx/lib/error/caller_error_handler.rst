@@ -6,12 +6,12 @@
 Caller Error Handlers
 =====================
 
-:ref:`CallerErrorHandlers` are useful when a function implementer wants to
+:ref:`lib.error.caller-error-handlers` are useful when a function implementer wants to
 "blame" function's callers for errors occurring within the function. Normally,
 when error is triggered with ``trigger_error()``, the error handler receives
 ``$file`` and ``$line`` pointing to the line of code where the
 ``trigger_error()`` was invoked. This can be easily changed with
-:ref:`CallerErrorHandlers`, where the developer can easily point to current
+:ref:`lib.error.caller-error-handlers`, where the developer can easily point to current
 function's caller or its caller's caller, and so on.
 
 Simple example with Caller Error Handler

@@ -15,6 +15,7 @@ namespace Korowai\Lib\Ldif;
 
 /**
  * Interface for semantic value of RFC2849 value-spec rule.
+ * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
 interface ValueInterface
 {

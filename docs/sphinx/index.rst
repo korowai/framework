@@ -15,9 +15,12 @@ the Korowai_ project.
    :numbered: 2
 
    install
+   lib/basic/index
    lib/context/index
    lib/error/index
    lib/ldap/index
+   lib/ldif/index
+   lib/rfc/index
    testing/index
    devel_guide/index
 

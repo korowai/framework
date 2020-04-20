@@ -25,8 +25,7 @@ use Korowai\Lib\Ldif\SourceLocationInterface;
 use League\Uri\Contracts\UriInterface;
 
 // Specific records
-use Korowai\Lib\Ldif\Records\AbstractRecord;
-use Korowai\Lib\Ldif\Records\VersionSpec;
+use Korowai\Lib\Ldif\AbstractRecord;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -246,7 +245,6 @@ trait ObjectPropertiesAssertions
     ) : void {
         static $getGettersMap = [
             AbstractRecord::class   => 'getAbstractRecordPropertyGetters',
-            VersionSpec::class      => 'getVersionSpecPropertyGetters',
         ];
         $class = get_class($object);
         if (($expectedClass = $expected['class'] ?? null) !== null) {

@@ -2,7 +2,7 @@
    single: Context
    single: Lib; Context
 
-.. _TheContextLibrary:
+.. _lib.context:
 
 *******************
 The Context Library

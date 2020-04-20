@@ -6,7 +6,7 @@
 Custom Error Handlers
 =====================
 
-With :ref:`TheErrorLibrary` and :ref:`Contexts <TheContextLibrary>` you can
+With :ref:`TheErrorLibrary` and :ref:`Contexts <lib.context>` you can
 easily use your own functions as error handlers for particular calls. A class
 named :class:`Korowai\\Lib\\Error\\ErrorHandler` serves the purpose.
 

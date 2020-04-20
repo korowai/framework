@@ -1,7 +1,7 @@
 .. index::
    single: Context; Custom Context Manager
    single: Lib; Context; Custom Context Manager
-.. _CustomContextManagers:
+.. _lib.context.custom-context-managers:
 
 Custom Context Managers
 =======================

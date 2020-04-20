@@ -26,7 +26,7 @@ The arguments ``$cm1, ...`` are subject of context management.
 certain types are context-managed out-of-the box. It supports most of the
 standard `PHP resources`_ and objects that implement
 :class:`Korowai\\Lib\\Context\\ContextManagerInterface`. A support for other
-already-existing types and classes can be added with :ref:`ContextFactories`.
+already-existing types and classes can be added with :ref:`lib.context.context-factories`.
 
 For any instance of :class:`Korowai\\Lib\\Context\\ContextManagerInterface`,
 its method :method:`Korowai\\Lib\\Context\\ContextManagerInterface::enterContext`

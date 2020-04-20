@@ -1,7 +1,7 @@
 .. index::
    single: Context; Trivial Value Wrapper
    single: Lib; Context; Trivial Value Wrapper
-.. _TrivialValueWrapper:
+.. _lib.context.trivial-value-wrapper:
 
 Trivial Value Wrapper
 =====================

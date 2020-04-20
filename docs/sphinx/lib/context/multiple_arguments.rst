@@ -1,7 +1,7 @@
 .. index::
    single: Context; Multiple Arguments
    single: Lib; Context; Multiple Arguments
-.. _MultipleContextArguments:
+.. _lib.context.multiple-context-arguments:
 
 Multiple context arguments
 ==========================

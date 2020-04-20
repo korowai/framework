@@ -1,7 +1,7 @@
 .. index::
    single: Context; Exception Handling
    single: Lib; Context; Exception Handling
-.. _ContextExceptionHandling:
+.. _lib.context.exception-handling:
 
 Exception Handling
 ==================
@@ -14,7 +14,7 @@ works even when an exception occurs in a user-provided callback. This means,
 that :method:`Korowai\\Lib\\Context\\ContextManagerInterface::exitContext` is
 invoked, even if the user's code execution gets interrupted by an exception. To
 illustrate this, we'll slightly modify the example from the section named
-:ref:`MultipleContextArguments`. We'll use same ``MyInt`` objects as context
+:ref:`lib.context.multiple-context-arguments`. We'll use same ``MyInt`` objects as context
 managers for all context arguments
 
 .. literalinclude:: ../../examples/lib/context/exception_handling.php

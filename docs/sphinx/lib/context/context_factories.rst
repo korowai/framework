@@ -1,12 +1,12 @@
 .. index::
    single: Context; Context Factories
    single: Lib; Context; Context Factories
-.. _ContextFactories:
+.. _lib.context.context-factories:
 
 Context Factories
 =================
 
-:ref:`TheContextLibrary` has a concept of *Context Factory* (a precise name
+:ref:`lib.context` has a concept of *Context Factory* (a precise name
 should actually be *Context Manager Factory*). A *Context Factory* is an object
 which takes a *value* and returns a new instance of
 :class:`\\Korowai\\Lib\\Context\\ContextManagerInterface`, appropriate for
@@ -17,7 +17,7 @@ given *value*, or ``null`` if it won't handle the *value*. For example, the
 other *value* (except for *values* that are already instances of
 :class:`Korowai\\Lib\\Context\\ContextManagerInterface`).
 
-:ref:`TheContextLibrary` has a single stack of (custom) *Context Factories*
+:ref:`lib.context` has a single stack of (custom) *Context Factories*
 (:class:`Korowai\\Lib\\Context\\ContextFactoryStack`). It's empty by
 default, so initially only the :class:`Korowai\\Lib\\Context\\DefaultContextFactory`
 is used to generate *Context Managers*. A custom factory object can be pushed

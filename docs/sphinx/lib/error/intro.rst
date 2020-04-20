@@ -10,7 +10,7 @@ Purpose
 
 The main purpose of Error library is to provide handy utilities to control the
 flow of PHP errors within an application. It is designed to play nicely with
-our :ref:`Context Library <TheContextLibrary>`, so one can temporarily redirect
+our :ref:`Context Library <lib.context>`, so one can temporarily redirect
 PHP errors to custom handlers in one location without altering other parts of
 code.
 
@@ -42,7 +42,7 @@ The function could normally cause some noise. For example, it could call
 default or an application-wide error handler. Invoking it with ``@`` only
 disables error messages, but the handler is still invoked. We can prevent this
 by temporarily replacing original handler with our own empty handler. This is
-easily achieved with :ref:`Contexts <TheContextLibrary>` and
+easily achieved with :ref:`Contexts <lib.context>` and
 :class:`Korowai\\Lib\\Error\\EmptyErrorHandler`.
 
 .. literalinclude:: ../../examples/lib/error/basic_example.php

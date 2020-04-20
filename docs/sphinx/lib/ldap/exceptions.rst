@@ -6,8 +6,8 @@
 Ldap Exceptions
 ===============
 
-:ref:`Ldap Library <TheLdapLibrary>` uses exceptions to report most of
-errors. Exceptions used by :ref:`TheLdapLibrary` are defined in
+:ref:`Ldap Library <lib.ldap>` uses exceptions to report most of
+errors. Exceptions used by :ref:`lib.ldap` are defined in
 :namespace:`Korowai\\Lib\\Ldap\\Exception <Korowai\\Lib\\Ldap\\Exception>`
 namespace. The following exception classes are currently defined:
 

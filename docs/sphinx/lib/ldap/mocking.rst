@@ -2,13 +2,13 @@
    single: Ldap; Mocking
    single: Lib; Ldap; Mocking
 
-.. _LdapMocking:
+.. _lib.ldap.mocking:
 
 Mocking Ldap objects
 ====================
 
-Unit-testing applications that use :ref:`TheLdapLibrary` can be troublesome.
-The code under test may depend on :ref:`ldap library's <TheLdapLibrary>`
+Unit-testing applications that use :ref:`lib.ldap` can be troublesome.
+The code under test may depend on :ref:`ldap library's <lib.ldap>`
 interfaces, such as :class:`Korowai\\Lib\\Ldap\\Adapter\\SearchQueryInterface`.
 A common practice for unit-testing is to not depend on real services, so we
 can't just use actual implementations, such as
@@ -17,7 +17,7 @@ which operate on real LDAP databases.
 
 Mocking is a technique of replacing actual object with fake ones called mocks
 or stubs. It's applicable also to our case, but creating mocks for
-objects/interfaces of :ref:`TheLdapLibrary` becomes complicated when it comes
+objects/interfaces of :ref:`lib.ldap` becomes complicated when it comes
 to higher-level interfaces such as the
 :class:`Korowai\\Lib\\Ldap\\Adapter\\SearchQueryInterface`.
 
@@ -38,7 +38,7 @@ provide ``getResult()`` method returning an instance of
 :class:`Korowai\\Lib\\Ldap\\Adapter\\ResultEntryIteratorInterface` (yet another
 mock?) and so on. Quite complicated as for single unit-test, isn't it?
 
-To facilitate unit-testing and mocking, :ref:`TheLdapLibrary` provides a bunch
+To facilitate unit-testing and mocking, :ref:`lib.ldap` provides a bunch
 of classes for "fake objects" under the :namespace:`Korowai\\Lib\\Ldap\\Adapter\\Mock <Korowai\\Lib\\Ldap\\Adapter\\Mock>`
 namespace. For the purpose of our example, an instance of
 :class:`Korowai\\Lib\\Ldap\\Adapter\\Mock\\Result` class (from the above
@@ -69,7 +69,7 @@ The full example is the following
    :start-after: [code]
    :end-before: [/code]
 
-.. _LdapMockingPredefinedFakeObjects:
+.. _lib.ldap.mocking.predefinedfakeobjects:
 
 Predefined fake objects
 -----------------------

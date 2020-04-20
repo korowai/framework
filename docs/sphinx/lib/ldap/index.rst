@@ -2,7 +2,7 @@
    single: Ldap
    single: Lib; Ldap
 
-.. _TheLdapLibrary:
+.. _lib.ldap:
 
 ****************
 The Ldap Library

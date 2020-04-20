@@ -8,7 +8,7 @@ Installation
 Basic Usage
 ===========
 
-:ref:`Ldap Library <TheLdapLibrary>` provides
+:ref:`Ldap Library <lib.ldap>` provides
 :class:`Korowai\\Lib\\Ldap\\Ldap` class to authenticate and
 query against an LDAP server. 
 

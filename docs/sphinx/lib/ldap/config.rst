@@ -3,7 +3,7 @@
    single: Lib; Ldap; Configuration
 
 
-.. _LdapConfiguration:
+.. _lib.ldap.configuration:
 
 Ldap Configuration
 ==================
@@ -12,7 +12,7 @@ Ldap Configuration
 settings provided with ``$config`` array (an argument to
 :method:`Ldap::createWithConfig() <Korowai\\Lib\\Ldap\\Ldap::createWithConfig>`).
 The ``$config`` array is internally passed to an
-:ref:`adapter factory <LdapAdapterFactory>` to create the
+:ref:`adapter factory <lib.ldap.adapterfactory>` to create the
 supporting adapter object. Some settings are "standard" and shall be accepted
 by any adapter type. Other options may be specific to a particular adapter type
 (such as the default :class:`ExtLdap\\Adapter <Korowai\\Lib\\Ldap\\Adapter\\ExtLdap\\Adapter>`,

@@ -54,7 +54,7 @@ parts of the string being scanned with ``preg_match()``. By convention, the
 rule may define *value captures* and *error captures*. Value captures are
 capture groups that extract semantic values from string being scanned. Error
 captures come into play when we match a string that is considered erroneous
-(but our expression is designed to match such a string for better error
+(and our expression is designed to match such a string for better error
 diagnostics). The array of all defined capture group names may be retrieved
 with :method:`Korowai\\Lib\\Rfc\\Rule::captures` method. The array of value
 captures is returned by :method:`Korowai\\Lib\\Rfc\\Rule::valueCaptures`. Error

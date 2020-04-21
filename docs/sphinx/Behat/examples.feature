@@ -19,6 +19,17 @@ Feature: Examples
       | "lib/ldap/ldap_exception_2.php"    | "lib/ldap/ldap_exception_2.stdout"    | "lib/ldap/ldap_exception_2.stderr"    | 2         |
       | "lib/ldap/mock_searchquery.php"    | "lib/ldap/mock_searchquery.stdout"    | "lib/ldap/mock_searchquery.stderr"    | 0         |
 
+  Scenario Outline: Examples for korowai/basiclib
+    Given I executed doc example <example_file>
+    Then I should see stdout from <stdout_file>
+    And I should see stderr from <stderr_file>
+    And I should see exit code <exit_code>
+
+    Examples:
+      | example_file                              | stdout_file                                  | stderr_file                                  | exit_code |
+      | "lib/basic/trivial_singleton.php"         | "lib/basic/trivial_singleton.stdout"         | "lib/basic/trivial_singleton.stderr"         | 0         |
+      | "lib/basic/count_singleton.php"           | "lib/basic/count_singleton.stdout"           | "lib/basic/count_singleton.stderr"           | 0         |
+
   Scenario Outline: Examples for korowai/contextlib
     Given I executed doc example <example_file>
     Then I should see stdout from <stdout_file>

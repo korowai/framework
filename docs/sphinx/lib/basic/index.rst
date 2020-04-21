@@ -16,5 +16,6 @@ implementing software design patterns.
    :glob:
 
    intro
+   singleton
 
 .. <!--- vim: set syntax=rst spell: -->

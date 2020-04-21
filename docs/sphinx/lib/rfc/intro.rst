@@ -8,17 +8,7 @@ Installation
 Purpose
 =======
 
-TODO
-
-Basic Usage
-===========
-
-TODO
-
-.. <!-- .. literalinclude:: ../../examples/lib/rfc/rfc_intro.php -->
-.. <!--    :linenos:-->
-.. <!--    :start-after: [use]-->
-.. <!--    :end-before: [/use]-->
+To facilitate implementation of grammars defined across several RFCs.
 
 
 .. <!--- vim: set syntax=rst spell: -->

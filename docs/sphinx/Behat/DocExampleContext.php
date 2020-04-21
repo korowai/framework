@@ -29,6 +29,15 @@ class DocExampleContext implements Context
         return realpath(__dir__.'/../examples/'.$file);
     }
 
+    protected function getExampleFilePath(string $file)
+    {
+        $path = $this->getExamplePath($file);
+        if ($path === false) {
+            throw new \RuntimeException("example file does not exist: $file");
+        }
+        return $path;
+    }
+
     protected function getTopPath(string $file)
     {
         return realpath(__dir__.'/../../../'.$file);
@@ -45,13 +54,13 @@ class DocExampleContext implements Context
 
     protected function getExampleCmd(string $file)
     {
-        $path = $this->getExamplePath($file);
+        $path = $this->getExampleFilePath($file);
         return implode(" ", [PHP_BINARY, "-d auto_prepend_file=vendor/autoload.php", $path]);
     }
 
     protected function getPhpUnitCmd(string $file)
     {
-        $tst = $this->getExamplePath($file);
+        $tst = $this->getExampleFilePath($file);
         $bin = $this->getTopPath('vendor/bin/phpunit');
         $xml = $this->getExamplePath('phpunit.xml');
         return implode(" ", [PHP_BINARY, $bin, '-c', $xml, '--colors=never', $tst]);
@@ -111,7 +120,7 @@ class DocExampleContext implements Context
         $proc = proc_open($cmd, $descriptorspec, $pipes, $cwd);
 
         if (!is_resource($proc)) {
-            throw \RuntimeException("could not execute example: $file");
+            throw new \RuntimeException("could not execute example: $file");
         }
 
         fclose($pipes[0]);

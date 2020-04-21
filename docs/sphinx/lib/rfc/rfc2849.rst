@@ -1,0 +1,25 @@
+.. index::
+   single: Rfc2849
+   single: Rfc; Rfc2849
+
+.. _lib.rfc.rfc2849:
+
+Rfc2849
+=======
+
+The class :class:`Korowai\\Lib\\Rfc\\Rfc2849` provides rules for parsing
+LDIF files as defined in RFC2849_. See API docs of
+:class:`Korowai\\Lib\\Rfc\\Rfc2849`. See also :ref:`lib.rfc.rfc2849x`.
+
+.. _RFC2849: https://tools.ietf.org/html/rfc2849
+
+.. <!--.. literalinclude:: ../../examples/lib/rfc/rfc2849.php -->
+.. <!--   :linenos: -->
+.. <!--   :caption: Rfc2849 usage -->
+.. <!--   :name: lib.rfc.rfc2849.example -->
+.. <!-- -->
+.. <!--.. literalinclude:: ../../examples/lib/basic/rfc2849.stdout -->
+.. <!--  :linenos: -->
+.. <!--  :language: none -->
+
+.. <!--- vim: set syntax=rst spell: -->

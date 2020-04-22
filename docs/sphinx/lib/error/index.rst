@@ -1,7 +1,7 @@
 .. index::
    single: Error
    single: Lib; Error
-.. _TheErrorLibrary:
+.. _lib.error:
 
 *****************
 The Error Library

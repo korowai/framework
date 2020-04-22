@@ -8,7 +8,7 @@ Installation
 Purpose
 =======
 
-TODO
+Parse LDIF files according to rules specified in RFC2849_.
 
 Basic Usage
 ===========
@@ -20,5 +20,6 @@ TODO
 .. <!--    :start-after: [use]-->
 .. <!--    :end-before: [/use]-->
 
+.. _RFC2849: https://tools.ietf.org/html/rfc2849
 
 .. <!--- vim: set syntax=rst spell: -->

@@ -1,10 +1,10 @@
 .. index::
-   single: Rfc3896
-   single: Rfc; Rfc3896
+   single: Rfc3986
+   single: Rfc; Rfc3986
 
-.. _lib.rfc.rfc3896:
+.. _lib.rfc.rfc3986:
 
-Rfc3896
+Rfc3986
 =======
 
 The class :class:`Korowai\\Lib\\Rfc\\Rfc3986` provides rules for parsing

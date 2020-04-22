@@ -26,6 +26,11 @@ class ParserState implements ParserStateInterface
     protected $cursor;
 
     /**
+     * @var VersionSpec
+     */
+    protected $versionSpec;
+
+    /**
      * @var array
      */
     protected $records;
@@ -42,9 +47,13 @@ class ParserState implements ParserStateInterface
      * @param  array|null $errors
      * @param  array|null $records
      */
-    public function __construct(CursorInterface $cursor, array $errors = null, array $records = null)
-    {
-        $this->initParserState($cursor, $errors, $records);
+    public function __construct(
+        CursorInterface $cursor,
+        array $errors = null,
+        array $records = null,
+        VersionSpecInterface $versionSpec = null
+    ) {
+        $this->initParserState($cursor, $errors, $records, $versionSpec);
     }
 
     /**
@@ -69,6 +78,14 @@ class ParserState implements ParserStateInterface
     public function getRecords() : array
     {
         return $this->records;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getVersionSpec() : ?VersionSpecInterface
+    {
+        return $this->versionSpec;
     }
 
     /**
@@ -152,17 +169,31 @@ class ParserState implements ParserStateInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function setVersionSpec(?VersionSpecInterface $versionSpec)
+    {
+        $this->versionSpec = $versionSpec;
+        return $this;
+    }
+
+    /**
      * Initializes the ParserState object
      *
      * @param  CursorInterface $cursor
      * @param  array|null $errors
      * @param  array|null $records
      */
-    protected function initParserState(CursorInterface $cursor, array $errors = null, array $records = null)
-    {
+    protected function initParserState(
+        CursorInterface $cursor,
+        array $errors = null,
+        array $records = null,
+        VersionSpecInterface $versionSpec = null
+    ) {
         $this->setCursor($cursor);
         $this->setErrors($errors ?? []);
         $this->setRecords($records ?? []);
+        $this->setVersionSpec($versionSpec);
     }
 }
 

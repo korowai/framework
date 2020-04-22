@@ -19,6 +19,7 @@ use Korowai\Lib\Ldif\RecordInterface;
 use Korowai\Lib\Ldif\CursorInterface;
 use Korowai\Lib\Ldif\LocationInterface;
 use Korowai\Lib\Ldif\ParserError;
+use Korowai\Lib\Ldif\VersionSpecInterface;
 
 use Korowai\Testing\Lib\Ldif\TestCase;
 
@@ -35,7 +36,8 @@ class ParserStateTest extends TestCase
 
     public function constructCases()
     {
-        $cursor = $this->getMockBuilder(CursorInterface::class)->getMockForAbstractClass();
+        $cursor = $this->getMockBuilder(CursorInterface::class)->getMock();
+        $version = $this->getMockBuilder(VersionSpecInterface::class)->getMock();
         return [
             [$cursor],
             [$cursor, []],
@@ -44,6 +46,8 @@ class ParserStateTest extends TestCase
             [$cursor, ['E'], []],
             [$cursor, ['E'], null],
             [$cursor, ['E'], ['R']],
+            [$cursor, ['E'], ['R'], null],
+            [$cursor, ['E'], ['R'], $version],
         ];
     }
 
@@ -69,18 +73,24 @@ class ParserStateTest extends TestCase
         } else {
             $this->assertSame($args[2], $state->getRecords());
         }
+
+        if (count($args) >= 4) {
+            $this->assertSame($args[3], $state->getVersionSpec());
+        } else {
+            $this->assertNull($state->getVersionSpec());
+        }
     }
 
     protected function createParserState(...$args)
     {
-        $cursor = $args[0] ?? $this->getMockBuilder(CursorInterface::class)->getMockForAbstractClass();
+        $cursor = $args[0] ?? $this->getMockBuilder(CursorInterface::class)->getMock();
         return new ParserState($cursor, array_slice($args, 1));
     }
 
     public function test__cursor()
     {
         $state = $this->createParserState();
-        $cursor = $this->getMockBuilder(CursorInterface::class)->getMockForAbstractClass();
+        $cursor = $this->getMockBuilder(CursorInterface::class)->getMock();
 
         $this->assertSame($state, $state->setCursor($cursor));
         $this->assertSame($cursor, $state->getCursor());
@@ -119,6 +129,16 @@ class ParserStateTest extends TestCase
         $this->assertSame([$error], $state->getErrors());
     }
 
+    public function test__versionSpec()
+    {
+        $state = $this->createParserState();
+        $version = $this->getMockBuilder(VersionSpecInterface::class)->getMock();
+
+        $this->assertNull($state->getVersionSpec());
+        $this->assertSame($state, $state->setVersionSpec($version));
+        $this->assertSame($version, $state->getVersionSpec());
+    }
+
     public static function errorHere__cases()
     {
         return [
@@ -136,7 +156,7 @@ class ParserStateTest extends TestCase
     {
         $state = $this->createParserState();
 
-        $location = $this->getMockBuilder(LocationInterface::class)->getMockForAbstractClass();
+        $location = $this->getMockBuilder(LocationInterface::class)->getMock();
 
         $cursor = $state->getCursor();
         $cursor->expects($this->once())
@@ -184,7 +204,7 @@ class ParserStateTest extends TestCase
     {
         $state = $this->createParserState();
 
-        $location = $this->getMockBuilder(LocationInterface::class)->getMockForAbstractClass();
+        $location = $this->getMockBuilder(LocationInterface::class)->getMock();
 
         $cursor = $state->getCursor();
         $cursor->expects($this->once())
@@ -218,8 +238,7 @@ class ParserStateTest extends TestCase
     public function test__appendRecord()
     {
         $state = $this->createParserState();
-        // Due to a bug in phpunit we can't mock interfaces that extend \Throwable.
-        $record = $this->getMockBuilder(RecordInterface::class)->getMockForAbstractClass();
+        $record = $this->getMockBuilder(RecordInterface::class)->getMock();
 
         $this->assertSame([], $state->getRecords());
         $this->assertSame($state, $state->appendRecord($record));

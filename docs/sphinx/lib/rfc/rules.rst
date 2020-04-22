@@ -59,9 +59,10 @@ diagnostics). The array of all defined capture group names may be retrieved
 with :method:`Korowai\\Lib\\Rfc\\Rule::captures` method. The array of value
 captures is returned by :method:`Korowai\\Lib\\Rfc\\Rule::valueCaptures`. Error
 captures are listed with :method:`Korowai\\Lib\\Rfc\\Rule::errorCaptures`.
-The ``DISTINGUISHED_NAME`` rule of :class:`Korowai\\Lib\\Rfc\\Rfc2253` defines
-only one capture group named ``'dn'`` and it's a value group (it does not
-define any error captures):
+
+In our example, the ``DISTINGUISHED_NAME`` rule of
+:class:`Korowai\\Lib\\Rfc\\Rfc2253` defines only one capture group, named
+``'dn'``. It's a value group. The rule does not define any error captures:
 
 
 .. literalinclude:: ../../examples/lib/rfc/rfc_rules.php
@@ -70,8 +71,8 @@ define any error captures):
     :end-before: [/captures]
 
 
-Values caught by capture groups are stored in ``$matches``. They may be easily
-processed with :method:`Korowai\\Lib\\Rfc::findCapturedValues` and
+Substrings caught by capture groups get stored in ``$matches`` and may be
+easily processed with :method:`Korowai\\Lib\\Rfc::findCapturedValues` and
 :method:`Korowai\\Lib\\Rfc::findCapturedErorrs`.
 
 .. literalinclude:: ../../examples/lib/rfc/rfc_rules.php

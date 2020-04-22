@@ -41,6 +41,14 @@ interface ParserStateInterface
     public function getRecords() : array;
 
     /**
+     * Returns an object encapsulating version-spec as it is found from source
+     * LDIF file, or null if there was no version-spec.
+     *
+     * @return VersionSpecInterface|null
+     */
+    public function getVersionSpec() : ?VersionSpecInterface;
+
+    /**
      * Returns true if there are no errors.
      *
      * @return bool
@@ -87,6 +95,15 @@ interface ParserStateInterface
      * @return object $this
      */
     public function appendRecord(RecordInterface $record);
+
+    /**
+     * Set version-spec.
+     *
+     * @param VersionSpecInterface|null $versionSpec
+     *
+     * @return object $this
+     */
+    public function setVersionSpec(?VersionSpecInterface $versionSpec);
 }
 
 // vim: syntax=php sw=4 ts=4 et:

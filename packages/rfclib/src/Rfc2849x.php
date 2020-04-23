@@ -138,7 +138,7 @@ class Rfc2849x extends Rfc2849
     /**
      * ATTRVAL_SPEC with enhanced error detection. TODO:
      */
-    public const ATTRVAL_SPEC_X = '(?:'.self::ATTRIBUTE_DESCRIPTION.self::VALUE_SPEC_X.self::SEP_X.')';
+    public const ATTRVAL_SPEC_X = '(?:'.self::ATTRIBUTE_DESCRIPTION.self::VALUE_SPEC_X.')';
 
     /**
      * Defined named capture groups that appear in patterns of the Rfc2849x

@@ -43,13 +43,13 @@ class Parser implements ParserInterface
      * @return string
      * @throws RuntimeException
      */
-    protected function getParseRecordsMethod(string $fileType) : string
+    protected function getRecordParserMethod(string $fileType) : string
     {
         $methods = [
-            'content' => 'parseContentRecords',
-            'changes' => 'parseChangesRecords',
-            'mixed'   => 'parseMixedRecords',
-            'detect'  => 'parseDetectRecords',
+            'content' => 'parseContentRecord',
+            'changes' => 'parseChangesRecord',
+            'mixed'   => 'parseMixedRecord',
+            'detect'  => 'parseDetectRecord',
         ];
         if (($method = $methods[$fileType] ?? null) === null) {
             throw new \RuntimeException('internal error: invalid file type: "'.$type.'"');
@@ -97,7 +97,13 @@ class Parser implements ParserInterface
      */
     public function parse(ParserStateInterface $state) : bool
     {
-        if (!$this->parseVersionSpec($state)) {
+        $prevErrCount = count($state->getErrors());
+        $tryOnly = !(($this->getConfig())['version_required'] ?? true);
+        $success = $this->parseVersionSpec($state, $tryOnly);
+        if (!$success && (count($state->getErrors()) > $prevErrCount)) {
+            return false;
+        }
+        if ($success && !$this->parseSeps($state)) {
             return false;
         }
         return $this->parseRecords($state);
@@ -109,21 +115,36 @@ class Parser implements ParserInterface
     public function parseRecords(ParserStateInterface $state) : bool
     {
         $fileType = ($this->getConfig())['file_type'];
-        $method = $this->getParseRecordsMethod($fileType);
-        return call_user_func([$this, $method], $state);
+        $method = $this->getRecordParserMethod($fileType);
+
+        $cursor = $state->getCursor();
+        $endOffset = strlen($cursor->getString());
+
+        //
+        // ldif-foo-record *(1*SEP ldif-foo-record)
+        //
+        if (!call_user_func([$this, $method], $state)) {
+            return false;
+        }
+
+        while ($this->parseSeps($state, true)) {
+            if (($cursor->getOffset() < $endOffset) && !call_user_func([$this, $method], $state)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
      * @todo Write documentation
      */
-    public function parseContentRecords(ParserStateInterface $state) : bool
+    public function parseSeps(ParserStateInterface $state, bool $tryOnly = false) : bool
     {
-        $cursor = $state->getCursor();
-        $endOffset = strlen((string)($cursor->getInput()));
-        while ($cursor->getOffset() < $endOffset) {
-            if (!$this->parseContentRecord($state)) {
-                return false;
-            }
+        if (!Parse::sep($state, $sep, $tryOnly)) {
+            return false;
+        }
+        while (Parse::sep($state, $sep, true)) {
         }
         return true;
     }
@@ -131,64 +152,67 @@ class Parser implements ParserInterface
     /**
      * @todo Write documentation
      */
-    public function parseChangesRecords(ParserStateInterface $state) : bool
-    {
-        throw \BadMethodCallException('not implemented');
-    }
-    /**
-     * @todo Write documentation
-     */
-    public function parseMixedRecords(ParserStateInterface $state) : bool
-    {
-        throw \BadMethodCallException('not implemented');
-    }
-
-    /**
-     * @todo Write documentation
-     */
-    public function parseDetectRecords(ParserStateInterface $state) : bool
-    {
-        throw \BadMethodCallException('not implemented');
-    }
-
-    /**
-     * @todo Write documentation
-     */
-    public function parseVersionSpec(ParserStateInterface $state) : bool
+    public function parseVersionSpec(ParserStateInterface $state, bool $tryOnly = false) : bool
     {
         $begin = $state->getCursor()->getClonedLocation();
-        $tryOnly = !(($this->getConfig())['version_required'] ?? true);
-        if (Parse::versionSpec($state, $version, $tryOnly)) {
-            $length = $state->getCursor()->getOffset() - $begin->getOffset();
-            $snippet = new Snippet($begin, $length);
-            $versionSpec = new VersionSpec($snippet, $version);
-            $state->setVersionSpec($versionSpec);
-            return true;
+        if (!Parse::versionSpec($state, $version, $tryOnly)) {
+            return false;
         }
-        $state->setVersionSpec(null);
-        return empty($state->getErrors());
+        $length = $state->getCursor()->getOffset() - $begin->getOffset();
+        $snippet = new Snippet($begin, $length);
+        $versionSpec = new VersionSpec($snippet, $version);
+        $state->setVersionSpec($versionSpec);
+        return true;
     }
 
     /**
      * @todo Write documentation
      */
-    public function parseContentRecord(ParserStateInterface $state) : bool
+    public function parseContentRecord(ParserStateInterface $state, bool $tryOnly = false) : bool
     {
-        if (!Parse::dnSpec($state, $dn)) {
+        $begin = $state->getCursor()->getClonedLocation();
+
+        //
+        // dn-spec SEP 1*attrval-spec
+        //
+        if (!Parse::dnSpec($state, $dn, $tryOnly) ||
+            !Parse::sep($state) ||
+            !Parse::attrValSpec($state, $attrValSpec)) {
             return false;
         }
-        if (!Parse::sep($state) || !Parse::attrValSpec($state, $attrValSpec)) {
-            return false;
-        }
+
         $attrValSpecs[] = $attrValSpec;
 
-        $record = new AttrValRecord($dn, $attrValSpecs);
+        while (Parse::sep($state, $sep, true) && Parse::attrValSpec($state, $attrValSpec, true)) {
+            $attrValSpecs[] = $attrValSpec;
+        }
+
+        $offset = $state->getCursor()->getOffset();
+        $snippet = new Snippet($begin, $offset - $begin->getOffset());
+        $record = new AttrValRecord($snippet, $dn, $attrValSpecs);
+        $state->appendRecord($record);
+
+        return true;
     }
 
     /**
      * @todo Write documentation
      */
     public function parseChangeRecord(ParserStateInterface $state) : bool
+    {
+    }
+
+    /**
+     * @todo Write documentation
+     */
+    public function parseMixedRecord(ParserStateInterface $state) : bool
+    {
+    }
+
+    /**
+     * @todo Write documentation
+     */
+    public function parseDetectRecord(ParserStateInterface $state) : bool
     {
     }
 

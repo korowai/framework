@@ -37,6 +37,17 @@ class Rfc2849Test extends TestCase
         $class = self::getRfcClass();
         $this->assertSame(array_keys(self::findRfcConstants()), $class::getClassRuleNames());
     }
+
+    public function test__getDefinedErrors()
+    {
+        $class = self::getRfcClass();
+        $rfc2849Errors = [
+            '' => [
+                'SEP' => 'expected line separator (RFC2849)',
+            ]
+        ];
+        $this->assertSame($rfc2849Errors, $class::getDefinedErrors());
+    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

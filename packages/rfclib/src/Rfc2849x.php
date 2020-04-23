@@ -141,7 +141,8 @@ class Rfc2849x extends Rfc2849
     public const ATTRVAL_SPEC_X = '(?:'.self::ATTRIBUTE_DESCRIPTION.self::VALUE_SPEC_X.self::SEP_X.')';
 
     /**
-     * @todo Write documentation.
+     * Defined named capture groups that appear in patterns of the Rfc2849x
+     * class.
      */
     protected static $rfc2849xRules = [
         'SEP_X',
@@ -153,8 +154,7 @@ class Rfc2849x extends Rfc2849
     ];
 
     /**
-     * Defined named capture groups that appear in patterns of the Rfc2849x
-     * class.
+     * Defined error messages related to patterns from the Rfc2849x class.
      */
     protected static $rfc2849xErrors = [
         ''                  => [
@@ -184,7 +184,7 @@ class Rfc2849x extends Rfc2849
      */
     public static function getDefinedErrors() : array
     {
-        return array_merge(self::$rfc2849xErrors, parent::getDefinedErrors());
+        return array_merge_recursive(parent::getDefinedErrors(), self::$rfc2849xErrors);
     }
 }
 

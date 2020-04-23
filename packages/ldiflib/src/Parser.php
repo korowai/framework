@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldif;
 
+use Korowai\Lib\Rfc\Rfc2849;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\Options;
 
@@ -25,6 +26,36 @@ class Parser implements ParserInterface
      * @var array
      */
     protected $config;
+
+    /**
+     * Returns the name of the records parsing method for the given
+     * *$fileType*. Throws an exception for unsupported file type.
+     *
+     * Supported file types are:
+     *
+     * - ``'content'``,
+     * - ``'changes'``,
+     * - ``'mixed'``, and
+     * - ``'detect'``.
+     *
+     * @param string $fileType
+     *
+     * @return string
+     * @throws RuntimeException
+     */
+    protected function getParseRecordsMethod(string $fileType) : string
+    {
+        $methods = [
+            'content' => 'parseContentRecords',
+            'changes' => 'parseChangesRecords',
+            'mixed'   => 'parseMixedRecords',
+            'detect'  => 'parseDetectRecords',
+        ];
+        if (($method = $methods[$fileType] ?? null) === null) {
+            throw new \RuntimeException('internal error: invalid file type: "'.$type.'"');
+        }
+        return $method;
+    }
 
     /**
      * Initializes the parser
@@ -56,7 +87,7 @@ class Parser implements ParserInterface
      *
      * @return array|null
      */
-    public function getConfig() : array
+    public function getConfig() : ?array
     {
         return $this->config;
     }
@@ -66,25 +97,48 @@ class Parser implements ParserInterface
      */
     public function parse(ParserStateInterface $state) : bool
     {
-        switch($this->config['file_type']) {
-            case 'content':
-                return $this->parseContentFile($state);
-            case 'changes':
-                return $this->parseChangesFile($state);
-            case 'mixed':
-                return $this->parseMixedFile($state);
-            case 'detect':
-                return $this->parseDetectFile($state);
-            default:
-                // FIXME: dedicated exception
-                throw new \RuntimeException('internal error: wrong value of "file_type" option: '.var_export($this->config['file_type'], true));
+        if (!$this->parseVersionSpec($state)) {
+            return false;
         }
+        return $this->parseRecords($state);
     }
 
     /**
      * @todo Write documentation
      */
-    public function parseContentFile(ParserStateInterface $state) : bool
+    public function parseRecords(ParserStateInterface $state) : bool
+    {
+        $fileType = ($this->getConfig())['file_type'];
+        $method = $this->getParseRecordsMethod($fileType);
+        return call_user_func([$this, $method], $state);
+    }
+
+    /**
+     * @todo Write documentation
+     */
+    public function parseContentRecords(ParserStateInterface $state) : bool
+    {
+        $cursor = $state->getCursor();
+        $endOffset = strlen((string)($cursor->getInput()));
+        while ($cursor->getOffset() < $endOffset) {
+            if (!$this->parseContentRecord($state)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * @todo Write documentation
+     */
+    public function parseChangesRecords(ParserStateInterface $state) : bool
+    {
+        throw \BadMethodCallException('not implemented');
+    }
+    /**
+     * @todo Write documentation
+     */
+    public function parseMixedRecords(ParserStateInterface $state) : bool
     {
         throw \BadMethodCallException('not implemented');
     }
@@ -92,22 +146,7 @@ class Parser implements ParserInterface
     /**
      * @todo Write documentation
      */
-    public function parseChangesFile(ParserStateInterface $state) : bool
-    {
-        throw \BadMethodCallException('not implemented');
-    }
-    /**
-     * @todo Write documentation
-     */
-    public function parseMixedFile(ParserStateInterface $state) : bool
-    {
-        throw \BadMethodCallException('not implemented');
-    }
-
-    /**
-     * @todo Write documentation
-     */
-    public function parseDetectFile(ParserStateInterface $state) : bool
+    public function parseDetectRecords(ParserStateInterface $state) : bool
     {
         throw \BadMethodCallException('not implemented');
     }
@@ -135,6 +174,15 @@ class Parser implements ParserInterface
      */
     public function parseContentRecord(ParserStateInterface $state) : bool
     {
+        if (!Parse::dnSpec($state, $dn)) {
+            return false;
+        }
+        if (!Parse::sep($state) || !Parse::attrValSpec($state, $attrValSpec)) {
+            return false;
+        }
+        $attrValSpecs[] = $attrValSpec;
+
+        $record = new AttrValRecord($dn, $attrValSpecs);
     }
 
     /**

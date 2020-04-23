@@ -48,7 +48,7 @@ class Rfc2849xTest extends TestCase
     public function test__getDefinedErrors()
     {
         $class = self::getRfcClass();
-        $expected = [
+        $rfc2849xErrors = [
             ''                  => [
                 'VERSION_SPEC_X'    => 'expected "version:" (RFC2849)',
                 'DN_SPEC_X'         => 'expected "dn:" (RFC2849)',
@@ -62,6 +62,7 @@ class Rfc2849xTest extends TestCase
             'value_url_error'   => 'malformed URL (RFC2849/RFC3986)',
             'version_error'     => 'expected valid version number (RFC2849)',
         ];
+        $expected = array_merge_recursive(Rfc2849::getDefinedErrors(), $rfc2849xErrors);
         $this->assertSame($expected, $class::getDefinedErrors());
     }
 }

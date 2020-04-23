@@ -29,6 +29,10 @@ class Parse
      * Provides parsing rules.
      */
     protected const RULES = [
+        'sep' => [
+            'rule' => [Rfc2849x::class, 'SEP'],
+            'completion' => [self::class, 'sep2']
+        ],
         'version-spec' => [
             'rule' => [Rfc2849x::class, 'VERSION_SPEC_X'],
             'completion' => [self::class, 'versionSpec2'],
@@ -215,6 +219,25 @@ class Parse
     }
 
     /**
+     * Parses SEP (line separator) as defined in [RFC 2849](https://tools.ietf.org/html/rfc2849).
+     *
+     * @param  State $state
+     *      Provides the input string, cursor, containers for errors, etc..
+     * @param  string $sep
+     *      Returns the parsed line separator as string
+     * @param  bool $tryOnly
+     *      If false (defaul), an error is appended to state if there is no SEP
+     *      sequence at the current position. If true, the error is not
+     *      appended (but the function still returns false).
+     *
+     * @return bool
+     */
+    public static function sep(State $state, string &$sep = null, bool $tryOnly = false) : bool
+    {
+        return static::withRule($state, 'sep', $sep, $tryOnly);
+    }
+
+    /**
      * Parses version-spec as defined in [RFC 2849](https://tools.ietf.org/html/rfc2849).
      *
      * @param  State $state
@@ -266,6 +289,22 @@ class Parse
     public static function attrValSpec(State $state, AttrValInterface &$attrVal = null, bool $tryOnly = false) : bool
     {
         return static::withRule($state, 'attrval-spec', $attrVal, $tryOnly);
+    }
+
+    /**
+     * Completes parsing line separator SEP assuming that SEP regular
+     * expression matched successfully.
+     *
+     * @param  State $state
+     * @param  array $matches
+     * @param  string $sep Returns the matched SEP sequence (``"\n"`` or ``"\r\n"``).
+     *
+     * @return bool Always ``true``.
+     */
+    public static function sep2(State $state, array $matches, string &$sep = null) : bool
+    {
+        $sep = $matches[0][0];
+        return true;
     }
 
     /**

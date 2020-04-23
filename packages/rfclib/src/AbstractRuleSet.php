@@ -112,7 +112,7 @@ abstract class AbstractRuleSet implements StaticRuleSetInterface
         $error = $definedErrors[$errorKey];
 
         if (is_array($error)) {
-            $message = $error[$ruleName] ?? ($error[0] ?? array_values($error)[0]);
+            $message = $error[$ruleName] ?? $error[0];
         } else {
             $message = $error;
         }

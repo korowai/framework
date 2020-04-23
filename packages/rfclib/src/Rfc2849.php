@@ -358,11 +358,61 @@ class Rfc2849 extends AbstractRuleSet
     ];
 
     /**
+     * Error messages.
+     */
+    protected static $rfc2849Errors = [
+        '' => [
+            'ALPHACHARS'                => 'expected ALPHACHARS (RFC2849)',
+            'DIGITCHARS'                => 'expected DIGITCHARS (RFC2849)',
+            'ALPHA'                     => 'expected ALPHA (RFC2849)',
+            'DIGIT'                     => 'expected DIGIT (RFC2849)',
+            'CR'                        => 'expected CR (RFC2849)',
+            'LF'                        => 'expected LF (RFC2849)',
+            'SPACE'                     => 'expected SPACE (RFC2849)',
+            'ATTR_TYPE_CHARS'           => 'expected attr-type-chars (RFC2849)',
+            'BASE64_CHAR'               => 'expected BASE64-CHAR (RFC2849)',
+            'OPT_CHAR'                  => 'expected OPT-CHAR (RFC2849)',
+            'SAFE_CHAR'                 => 'expected SAFE-CHAR (RFC2849)',
+            'SAFE_INIT_CHAR'            => 'expected SAFE-INIT-CHAR (RFC2849)',
+            'SEP'                       => 'expected SEP (RFC2849)',
+            'FILL'                      => 'expected FILL (RFC2849)',
+            'VERSION_NUMBER'            => 'expected version-number (RFC2849)',
+            'VERSION_SPEC'              => 'expected version-spec (RFC2849)',
+            'BASE64_STRING'             => 'expected BASE64-STRING (RFC2849)',
+            'BASE64_UTF8_STRING'        => 'expected BASE64-UTF8-STRING (RFC2849)',
+            'SAFE_STRING'               => 'expected SAFE-STRING (RFC2849)',
+            'LDAP_OID'                  => 'expected ldap-oid (RFC2849)',
+            'OPTION'                    => 'expected option (RFC2849)',
+            'OPTIONS'                   => 'expected options (RFC2849)',
+            'ATTRIBUTE_TYPE'            => 'expected AttributeType (RFC2849)',
+            'ATTRIBUTE_DESCRIPTION'     => 'expected AttributeDescription (RFC2849)',
+            'DISTINGUISHED_NAME'        => 'expected distinguishedName (RFC2849)',
+            'BASE64_DISTINGUISHED_NAME' => 'expected base64-distinguishedName (RFC2849)',
+            'RDN'                       => 'expected rdn (RFC2849)',
+            'BASE64_RDN'                => 'expected base64-rdn (RFC2849)',
+            'DN_SPEC'                   => 'expected dn-spec (RFC2849)',
+            'URL'                       => 'expected URL (RFC2849)',
+            'VALUE_SPEC'                => 'expected value-spec (RFC2849)',
+            'CONTROL'                   => 'expected control (RFC2849)',
+            'ATTRVAL_SPEC'              => 'expected attrval-spec (RFC2849)',
+            'LDIF_ATTRVAL_RECORD'       => 'expected ldif-attrval-record (RFC2849)'
+        ]
+    ];
+
+    /**
      * {@inheritdoc}
      */
     public static function getClassRuleNames() : array
     {
         return self::$rfc2849Rules;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getDefinedErrors() : array
+    {
+        return array_merge_recursive(parent::getDefinedErrors(), self::$rfc2849Errors);
     }
 }
 

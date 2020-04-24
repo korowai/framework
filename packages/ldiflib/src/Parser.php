@@ -97,7 +97,13 @@ class Parser implements ParserInterface
      */
     public function parse(ParserStateInterface $state) : bool
     {
+
         $prevErrCount = count($state->getErrors());
+        // skip leading empty lines
+        if (!$this->parseSeps($state, true) && (count($state->getErrors()) > $prevErrCount)) {
+            return false;
+        }
+        // version-spec
         $tryOnly = !(($this->getConfig())['version_required'] ?? true);
         $success = $this->parseVersionSpec($state, $tryOnly);
         if (!$success && (count($state->getErrors()) > $prevErrCount)) {
@@ -106,7 +112,17 @@ class Parser implements ParserInterface
         if ($success && !$this->parseSeps($state)) {
             return false;
         }
-        return $this->parseRecords($state);
+
+        if (!$this->parseRecords($state)) {
+            return false;
+        }
+
+        if ($state->getCursor()->isValid()) {
+            $state->errorHere("syntax error: parsing finished before end of file");
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -117,9 +133,6 @@ class Parser implements ParserInterface
         $fileType = ($this->getConfig())['file_type'];
         $method = $this->getRecordParserMethod($fileType);
 
-        $cursor = $state->getCursor();
-        $endOffset = strlen($cursor->getString());
-
         //
         // ldif-foo-record *(1*SEP ldif-foo-record)
         //
@@ -128,7 +141,7 @@ class Parser implements ParserInterface
         }
 
         while ($this->parseSeps($state, true)) {
-            if (($cursor->getOffset() < $endOffset) && !call_user_func([$this, $method], $state)) {
+            if ($state->getCursor()->isValid() && !call_user_func([$this, $method], $state)) {
                 return false;
             }
         }
@@ -154,12 +167,12 @@ class Parser implements ParserInterface
      */
     public function parseVersionSpec(ParserStateInterface $state, bool $tryOnly = false) : bool
     {
-        $begin = $state->getCursor()->getClonedLocation();
+        $cursor = $state->getCursor();
+        $begin = $cursor->getClonedLocation();
         if (!Parse::versionSpec($state, $version, $tryOnly)) {
             return false;
         }
-        $length = $state->getCursor()->getOffset() - $begin->getOffset();
-        $snippet = new Snippet($begin, $length);
+        $snippet = new Snippet($begin, $cursor->getOffset() - $begin->getOffset());
         $versionSpec = new VersionSpec($snippet, $version);
         $state->setVersionSpec($versionSpec);
         return true;
@@ -170,7 +183,8 @@ class Parser implements ParserInterface
      */
     public function parseContentRecord(ParserStateInterface $state, bool $tryOnly = false) : bool
     {
-        $begin = $state->getCursor()->getClonedLocation();
+        $cursor = $state->getCursor();
+        $begin = $cursor->getClonedLocation();
 
         //
         // dn-spec SEP 1*attrval-spec
@@ -183,12 +197,11 @@ class Parser implements ParserInterface
 
         $attrValSpecs[] = $attrValSpec;
 
-        while (Parse::sep($state, $sep, true) && Parse::attrValSpec($state, $attrValSpec, true)) {
+        while (Parse::attrValSpec($state, $attrValSpec, true)) {
             $attrValSpecs[] = $attrValSpec;
         }
 
-        $offset = $state->getCursor()->getOffset();
-        $snippet = new Snippet($begin, $offset - $begin->getOffset());
+        $snippet = new Snippet($begin, $cursor->getOffset() - $begin->getOffset());
         $record = new AttrValRecord($snippet, $dn, $attrValSpecs);
         $state->appendRecord($record);
 

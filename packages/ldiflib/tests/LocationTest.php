@@ -40,6 +40,32 @@ class LocationTest extends TestCase
         $this->assertSame(12, $location->getOffset());
     }
 
+    public function test__isValid()
+    {
+        $input = $this->getMockBuilder(InputInterface::class)
+                      ->getMock();
+
+        $input->expects($this->any())
+              ->method('getString')
+              ->with()
+              ->willReturn('FOO');
+
+        $location = new Location($input, -1);
+        $this->assertFalse($location->isValid());
+
+        $location = new Location($input, 0);
+        $this->assertTrue($location->isValid());
+
+        $location = new Location($input, 1);
+        $this->assertTrue($location->isValid());
+
+        $location = new Location($input, 2);
+        $this->assertTrue($location->isValid());
+
+        $location = new Location($input, 3);
+        $this->assertFalse($location->isValid());
+    }
+
     public function test__getClonedLocation()
     {
         $input = $this->getMockBuilder(InputInterface::class)

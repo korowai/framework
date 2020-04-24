@@ -89,6 +89,14 @@ class Location implements LocationInterface
     /**
      * {@inheritdoc}
      */
+    public function isValid() : bool
+    {
+        return $this->getOffset() >= 0 && ($this->getOffset() < strlen($this->getString()));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getCharOffset(string $encoding = null) : int
     {
         $substring = substr($this->getString(), 0, $this->getOffset());

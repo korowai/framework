@@ -75,6 +75,19 @@ class ExposesLocationInterfaceTest extends TestCase
         $this->assertSame(123, $obj->getOffset());
     }
 
+    public function test__isValid()
+    {
+        $location = $this->getMockBuilder(LocationInterface::class)
+                         ->getMockForAbstractClass();
+        $location->expects($this->once())
+                 ->method('isValid')
+                 ->with()
+                 ->willReturn(true);
+        $obj = $this->getTestObject($location);
+
+        $this->assertTrue($obj->isValid());
+    }
+
     public function test__getCharOffset()
     {
         $location = $this->getMockBuilder(LocationInterface::class)

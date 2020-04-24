@@ -33,6 +33,19 @@ interface LocationInterface extends SourceLocationInterface
     public function getOffset() : int;
 
     /**
+     * Returns whether the offset points at a character within the string.
+     *
+     * The method shall return the value of the following expression
+     *
+     * ```
+     *  (getOffset() >= 0 && getOffset() < strlen(getString()))
+     * ```
+     *
+     * @return bool
+     */
+    public function isValid() : bool;
+
+    /**
      * Returns zero-based (multibyte) character offset in the input string of the location.
      *
      * @return int

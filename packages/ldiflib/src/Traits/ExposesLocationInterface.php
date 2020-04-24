@@ -62,6 +62,22 @@ trait ExposesLocationInterface
     }
 
     /**
+     * Returns whether the offset points at a character within the string.
+     *
+     * The method shall return the value of the following expression
+     *
+     * ```
+     *  (getOffset() >= 0 && getOffset() < strlen(getString()))
+     * ```
+     *
+     * @return bool
+     */
+    public function isValid() : bool
+    {
+        return $this->getLocation()->isValid();
+    }
+
+    /**
      * Returns zero-based (multibyte) character offset in the input string of the location.
      *
      * @return int

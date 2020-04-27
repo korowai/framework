@@ -99,11 +99,13 @@ class Parser implements ParserInterface
     {
 
         $prevErrCount = count($state->getErrors());
+
         // skip leading empty lines
         if (!$this->parseSeps($state, true) && (count($state->getErrors()) > $prevErrCount)) {
             return false;
         }
-        // version-spec
+
+        // version-spec (may be optional or required, depending on parser's config option)
         $tryOnly = !(($this->getConfig())['version_required'] ?? true);
         $success = $this->parseVersionSpec($state, $tryOnly);
         if (!$success && (count($state->getErrors()) > $prevErrCount)) {

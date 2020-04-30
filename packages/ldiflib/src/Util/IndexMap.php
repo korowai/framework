@@ -61,7 +61,7 @@ class IndexMap
      * preg_split(..., PREG_SPLIT_OFFSET_CAPTURE);
      * ```
      *
-     * @param array $pieces
+     * @param  array $pieces
      *      Pieces of the original string that will form the resultant string
      *      (see function description above)
      * @return array
@@ -83,10 +83,10 @@ class IndexMap
      * Applies index map array $im to index value $i returning the mapped index
      * corresponding to $i.
      *
-     * @param array $im Index map array.
-     * @param int $i An offset to be mapped.
-     * @param int $inc Increment. Typically ``$inc=1``, but there are cases when ``$inc=0``.
-     * @param int $index Returns the index in $im used to compute the offset
+     * @param  array $im Index map array.
+     * @param  int $i An offset to be mapped.
+     * @param  int $inc Increment. Typically ``$inc=1``, but there are cases when ``$inc=0``.
+     * @param  int $index Returns the index in $im used to compute the offset
      *
      * @return int The result of mapping.
      */
@@ -146,9 +146,9 @@ class IndexMap
      * into original string at offset 1. Such an array is returned by
      * ``preg_split(..., PREG_SPLIT_OFFSET_CAPTURE)``.
      *
-     * @param array $pieces Pieces of the original string that will form the
+     * @param  array $pieces Pieces of the original string that will form the
      *                      resultant string (see function description above)
-     * @param int $increment
+     * @param  int $increment
      *
      * @return array
      */
@@ -215,8 +215,8 @@ class IndexMap
     /**
      * Returns the mapped index corresponding to $i.
      *
-     * @param int $i An offset to be mapped.
-     * @param int $index Returns the index of the entry in the internal index
+     * @param  int $i An offset to be mapped.
+     * @param  int $index Returns the index of the entry in the internal index
      *                   map array (getArray()) used to compute the offset.
      *
      * @return int The result of mapping.
@@ -229,8 +229,8 @@ class IndexMap
     /**
      * Returns the mapped index corresponding to $i.
      *
-     * @param int $i An offset to be mapped.
-     * @param int $index Returns the index of the entry in the internal index
+     * @param  int $i An offset to be mapped.
+     * @param  int $index Returns the index of the entry in the internal index
      *                   map array (getArray()) used to compute the offset.
      *
      * @return int The result of mapping.
@@ -246,7 +246,7 @@ class IndexMap
      * This shall be used to implement consecutive string manipulations, where
      * each step produces index map.
      *
-     * @param array $array a new index map array to be combined with $this
+     * @param  array $array a new index map array to be combined with $this
      *
      */
     public function combineWithArray(array $array) : IndexMap

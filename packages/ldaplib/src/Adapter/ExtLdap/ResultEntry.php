@@ -32,7 +32,7 @@ class ResultEntry extends ResultRecord implements ResultEntryInterface
     /**
      * Initializes the ``ResultEntry`` instance
      *
-     * @param resource|null $entry
+     * @param  resource|null $entry
      * @param Result $result
      */
     public function __construct($entry, Result $result)

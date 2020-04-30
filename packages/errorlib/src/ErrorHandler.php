@@ -26,8 +26,8 @@ class ErrorHandler extends AbstractManagedErrorHandler
     /**
      * Initializes the object.
      *
-     * @param callable $errorHandler User-provided error handler function.
-     * @param int $errorTypes Can be used to mask the triggering of the error
+     * @param  callable $errorHandler User-provided error handler function.
+     * @param  int $errorTypes Can be used to mask the triggering of the error
      *                        handler function.
      */
     public function __construct(callable $errorHandler, int $errorTypes = E_ALL | E_STRICT)

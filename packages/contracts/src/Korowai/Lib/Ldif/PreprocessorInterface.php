@@ -21,8 +21,8 @@ interface PreprocessorInterface
     /**
      * Runs preprocessor on source string.
      *
-     * @param string $source
-     * @param string $filename
+     * @param  string $source
+     * @param  string $filename
      *
      * @return InputInterface
      */

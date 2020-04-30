@@ -38,8 +38,8 @@ class Ldap extends AbstractLdap
 
     /**
      *
-     * @param array $config
-     * @param string $factoryClass
+     * @param  array $config
+     * @param  string $factoryClass
      *
      * @return Ldap
      * @throws InvalidArgumentException

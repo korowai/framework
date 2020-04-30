@@ -42,7 +42,7 @@ class Result extends AbstractResult
      * ``$result`` may be a resource returned from
      * ``\ldap_search($link->getResource(), ...)``.
      *
-     * @param resource $result An ldap result resource to be wrapped
+     * @param  resource $result An ldap result resource to be wrapped
      * @param LdapLink $link   An ldap link object related to the ``$result``
      */
     public function __construct($result, LdapLink $link)

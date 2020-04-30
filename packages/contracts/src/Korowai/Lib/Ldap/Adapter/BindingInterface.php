@@ -30,8 +30,8 @@ interface BindingInterface
     /**
      * Binds the connection against a DN and password
      *
-     * @param string $dn        The user's DN
-     * @param string $password  The associated password
+     * @param  string $dn        The user's DN
+     * @param  string $password  The associated password
      */
     public function bind(string $dn = null, string $password = null);
 

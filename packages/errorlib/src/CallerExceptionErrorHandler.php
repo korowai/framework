@@ -23,9 +23,9 @@ class CallerExceptionErrorHandler extends ExceptionErrorHandler
     /**
      * Initializes the object.
      *
-     * @param callable $exceptionGenerator
-     * @param int $distance
-     * @param int $errorTypes
+     * @param  callable $exceptionGenerator
+     * @param  int $distance
+     * @param  int $errorTypes
      */
     public function __construct(callable $exceptionGenerator, int $distance = 1, int $errorTypes = E_ALL | E_STRICT)
     {

@@ -32,7 +32,7 @@ abstract class AbstractResultRecord implements ResultRecordInterface
     /**
      * Returns a ResultEntry/ResultReference object made out of *$record* argument.
      *
-     * @param mixed $record an instance of ResultEntryInterface/ResultReferenceInterface or an array.
+     * @param  mixed $record an instance of ResultEntryInterface/ResultReferenceInterface or an array.
      *
      * @return ResultEntry
      * @throws \InvalidArgumentException when *$record* is of wrong type
@@ -57,7 +57,7 @@ abstract class AbstractResultRecord implements ResultRecordInterface
     /**
      * Initializes the ``AbstractResultRecord`` instance
      *
-     * @param string $dn
+     * @param  string $dn
      */
     protected function initResultRecord(string $dn)
     {

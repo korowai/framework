@@ -19,7 +19,7 @@ namespace Korowai\Lib\Context;
 interface ContextFactoryInterface
 {
     /**
-     * @param mixed $arg An argument to be turned into a context manager.
+     * @param  mixed $arg An argument to be turned into a context manager.
      *
      * @return ContextManagerInterface
      */

@@ -30,7 +30,7 @@ class ResultRecord implements ResultRecordInterface
     /**
      * Initializes the ``ResultRecord`` instance
      *
-     * @param resource|null $record
+     * @param  resource|null $record
      * @param Result $result
      */
     protected function initResultRecord($record, Result $result)

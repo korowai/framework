@@ -31,9 +31,9 @@ abstract class AbstractCompareQuery implements CompareQueryInterface
     /**
      * Constructs AbstractCompareQuery
      *
-     * @param string $dn
-     * @param string $attribute
-     * @param string $value
+     * @param  string $dn
+     * @param  string $attribute
+     * @param  string $value
      */
     public function __construct(string $dn, string $attribute, string $value)
     {

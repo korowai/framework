@@ -49,7 +49,7 @@ class ResultAttributeIterator implements ResultAttributeIteratorInterface
      * it should be null.
      *
      * @param ResultEntry $entry An ldap entry containing the attributes
-     * @param string|null $attribute Name of the current attribute pointed to by Iterator
+     * @param  string|null $attribute Name of the current attribute pointed to by Iterator
      */
     public function __construct(ResultEntry $entry, $attribute)
     {

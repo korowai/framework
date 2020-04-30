@@ -27,7 +27,7 @@ class ClassContextFactory extends AbstractManagedContextFactory
     /**
      * Initializes the object
      *
-     * @param array $wrappers
+     * @param  array $wrappers
      */
     public function __construct(array $wrappers = [])
     {
@@ -57,8 +57,8 @@ class ClassContextFactory extends AbstractManagedContextFactory
     /**
      * Register new class.
      *
-     * @param string $class
-     * @param mixed $contextManager
+     * @param  string $class
+     * @param  mixed $contextManager
      *
      * @return ClassContextFactory $this
      */
@@ -83,7 +83,7 @@ class ClassContextFactory extends AbstractManagedContextFactory
     /**
      * Unregister the $class.
      *
-     * @param string $class
+     * @param  string $class
      * @return ClassContextFactory $this
      */
     public function remove(string $class) : ClassContextFactory

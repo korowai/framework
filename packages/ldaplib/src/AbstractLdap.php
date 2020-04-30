@@ -27,9 +27,9 @@ abstract class AbstractLdap implements LdapInterface
     /**
      * Create search query, execute and return its result
      *
-     * @param string $base_dn
-     * @param string $filter
-     * @param array $options
+     * @param  string $base_dn
+     * @param  string $filter
+     * @param  array $options
      *
      * @return ResultInterface Query result
      */
@@ -41,9 +41,9 @@ abstract class AbstractLdap implements LdapInterface
     /**
      * Create compare query, execute and return its result
      *
-     * @param string $dn
-     * @param string $attribute
-     * @param string $value
+     * @param  string $dn
+     * @param  string $attribute
+     * @param  string $value
      *
      * @return bool Result of the comparison
      */

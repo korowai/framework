@@ -21,7 +21,7 @@ interface CursorInterface extends LocationInterface
     /**
      * Change the cursor position by $offset.
      *
-     * @param int $offset
+     * @param  int $offset
      *
      * @return CursorInterface
      */
@@ -30,7 +30,7 @@ interface CursorInterface extends LocationInterface
     /**
      * Move the cursor to a given $position.
      *
-     * @param int $position
+     * @param  int $position
      *
      * @return CursorInterface
      */

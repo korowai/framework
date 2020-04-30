@@ -33,7 +33,7 @@ class Location implements LocationInterface
      * Initializes the error object.
      *
      * @param InputInterface $input Preprocessed source code.
-     * @param int $position Character offset (in bytes) the $input,
+     * @param  int $position Character offset (in bytes) the $input,
      */
     public function __construct(InputInterface $input, int $position = 0)
     {
@@ -44,7 +44,7 @@ class Location implements LocationInterface
      * Initializes the error object.
      *
      * @param InputInterface $input Preprocessed source code.
-     * @param int $position Character offset (in bytes) the $input,
+     * @param  int $position Character offset (in bytes) the $input,
      */
     public function init(InputInterface $input, int $position)
     {

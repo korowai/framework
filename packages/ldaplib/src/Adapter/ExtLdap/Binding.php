@@ -107,7 +107,7 @@ class Binding implements BindingInterface
     /**
      * Get LDAP option's value (as per ldap_get_option())
      *
-     * @param int $option Option identifier (name)
+     * @param  int $option Option identifier (name)
      * @return mixed Option value
      * @throws LdapException
      */
@@ -119,8 +119,8 @@ class Binding implements BindingInterface
     /**
      * Set value to LDAP option
      *
-     * @param int $option Option identifier (name)
-     * @param mixed $value New value
+     * @param  int $option Option identifier (name)
+     * @param  mixed $value New value
      * @throws LdapException
      */
     public function setOption(int $option, $value)

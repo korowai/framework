@@ -36,9 +36,9 @@ interface AdapterInterface
     /**
      * Creates a search query.
      *
-     * @param string $base_dn Base DN where the search will start
-     * @param string $filter Filter used by ldap search
-     * @param array $options Additional search options
+     * @param  string $base_dn Base DN where the search will start
+     * @param  string $filter Filter used by ldap search
+     * @param  array $options Additional search options
      *
      * @return SearchQueryInterface
      */
@@ -46,9 +46,9 @@ interface AdapterInterface
     /**
      * Creates a compare query.
      *
-     * @param string $dn DN of the target entry
-     * @param string $attribute Target attribute
-     * @param string $value Value used for comparison
+     * @param  string $dn DN of the target entry
+     * @param  string $attribute Target attribute
+     * @param  string $value Value used for comparison
      *
      * @return CompareQueryInterface
      */

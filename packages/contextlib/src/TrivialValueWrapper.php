@@ -29,7 +29,7 @@ class TrivialValueWrapper implements ContextManagerInterface
     /**
      * Initializes the object.
      *
-     * @param mixed $value The value being wrapped by the object.
+     * @param  mixed $value The value being wrapped by the object.
      */
     public function __construct($value)
     {

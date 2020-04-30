@@ -29,7 +29,7 @@ abstract class AbstractAdapterFactory implements AdapterFactoryInterface
     /**
      * Creates an AbstractAdapterFactory
      *
-     * @param array $config A config to be passed to configure() (if present).
+     * @param  array $config A config to be passed to configure() (if present).
      */
     public function __construct(array $config = null)
     {

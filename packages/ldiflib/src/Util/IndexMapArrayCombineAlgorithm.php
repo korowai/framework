@@ -69,8 +69,8 @@ class IndexMapArrayCombineAlgorithm
     /**
      * Reset the algorithm to initial state.
      *
-     * @param array $old
-     * @param array $new
+     * @param  array $old
+     * @param  array $new
      */
     protected function reset(array $old, array $new)
     {

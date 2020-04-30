@@ -133,7 +133,7 @@ class ResourceContextManager implements ContextManagerInterface
     /**
      * Constructs the context manager.
      *
-     * @param resource $resource The resource to be wrapped;
+     * @param  resource $resource The resource to be wrapped;
      */
     public function __construct($resource)
     {

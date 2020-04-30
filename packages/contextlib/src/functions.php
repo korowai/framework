@@ -16,7 +16,7 @@ namespace Korowai\Lib\Context;
 /**
  * Turns $arg into a context manager.
  *
- * @param mixed $arg
+ * @param  mixed $arg
  * @return ContextManagerInterface
  */
 function get_context_manager($arg) : ContextManagerInterface

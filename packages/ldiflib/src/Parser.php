@@ -38,7 +38,7 @@ class Parser implements ParserInterface
      * - ``'mixed'``, and
      * - ``'detect'``.
      *
-     * @param string $fileType
+     * @param  string $fileType
      *
      * @return string
      * @throws RuntimeException
@@ -60,7 +60,7 @@ class Parser implements ParserInterface
     /**
      * Initializes the parser
      *
-     * @param array $config
+     * @param  array $config
      */
     public function __construct(array $config = [])
     {
@@ -70,7 +70,7 @@ class Parser implements ParserInterface
     /**
      * Configure the parser with configuration options.
      *
-     * @param array $config
+     * @param  array $config
      *
      * @return object $this
      */
@@ -234,7 +234,7 @@ class Parser implements ParserInterface
     /**
      * Validate and resolve configuration options for the Parser.
      *
-     * @param array $config Input config options.
+     * @param  array $config Input config options.
      *
      * @return array returns the array of resolved config options.
      */

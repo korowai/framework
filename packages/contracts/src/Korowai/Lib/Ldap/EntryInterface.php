@@ -30,7 +30,7 @@ interface EntryInterface
     /**
      * Sets the entry's DN.
      *
-     * @param string $dn
+     * @param  string $dn
      * @throws \TypeError
      */
     public function setDn(string $dn);
@@ -46,7 +46,7 @@ interface EntryInterface
     /**
      * Returns a specific attribute's values
      *
-     * @param string $name
+     * @param  string $name
      *
      * @return array
      */
@@ -66,15 +66,15 @@ interface EntryInterface
      * its values will be replaced with values provided in $attributes. If
      * there is no attribute in Entry, it'll be added to Entry.
      *
-     * @param array $attributes
+     * @param  array $attributes
      */
     public function setAttributes(array $attributes);
 
     /**
      * Sets values for the given attribute
      *
-     * @param string $name
-     * @param array $values
+     * @param  string $name
+     * @param  array $values
      */
     public function setAttribute(string $name, array $values);
 }

@@ -84,8 +84,8 @@ class LdapService
     /**
      * Deletes all the data, except bind dn.
      *
-     * @param string $base Base dn of the search
-     * @param string $filter Search filter.
+     * @param  string $base Base dn of the search
+     * @param  string $filter Search filter.
      *
      * @return array A list of distinguished names deleted (only roots of the deleted sub-trees are returned).
      */
@@ -100,8 +100,8 @@ class LdapService
      *
      * Only the $config['bindDn'] is preserved.
      *
-     * @param string $base Base dn of the search
-     * @param string $filter Search filter.
+     * @param  string $base Base dn of the search
+     * @param  string $filter Search filter.
      *
      * @return array A list of distinguished names deleted (only roots of the deleted sub-trees are returned).
      */
@@ -124,7 +124,7 @@ class LdapService
     /**
      * Check if the $entry can be safely deleted from database.
      *
-     * @param array $entry
+     * @param  array $entry
      */
     public function isSafeToDeleteEntry(array $entry) : bool
     {
@@ -136,7 +136,7 @@ class LdapService
      *
      * For example, current bindDn should not be deleted.
      *
-     * @param string $dn
+     * @param  string $dn
      * @return bool
      */
     public function isSafeToDeleteDn(string $dn) : bool
@@ -150,7 +150,7 @@ class LdapService
     /**
      * Add entries from LDIF file.
      *
-     * @param string $file
+     * @param  string $file
      */
     public function addFromLdifFile(string $file)
     {
@@ -160,7 +160,7 @@ class LdapService
     /**
      * Add entries from LDIF string.
      *
-     * @param string $ldif
+     * @param  string $ldif
      */
     protected function addFromLdifString(string $ldif)
     {

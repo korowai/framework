@@ -35,7 +35,7 @@ class ResultReference extends ResultRecord implements ResultReferenceInterface, 
     /**
      * Initializes the ``ResultReference`` instance
      *
-     * @param resource|null $reference
+     * @param  resource|null $reference
      * @param Result $result
      */
     public function __construct($reference, Result $result)

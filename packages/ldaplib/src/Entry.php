@@ -57,7 +57,7 @@ class Entry implements EntryInterface
     /**
      * Validates string provided as DN.
      *
-     * @param string $dn
+     * @param  string $dn
      * @throws \TypeError
      */
     public function validateDn(string $dn)

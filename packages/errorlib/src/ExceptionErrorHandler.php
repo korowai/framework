@@ -29,7 +29,7 @@ class ExceptionErrorHandler extends AbstractManagedErrorHandler
      * An exception generator is a function (or callable object) which creates
      * and returns exception objects.
      *
-     * @param mixed $arg Either a callable or a class name. If it's a callable
+     * @param  mixed $arg Either a callable or a class name. If it's a callable
      *                   then it gets returned as is, if it is a class name
      *                   then a new callable is returned which creates and
      *                   returns new instance of this class. The constructor of
@@ -68,8 +68,8 @@ class ExceptionErrorHandler extends AbstractManagedErrorHandler
     /**
      * Initializes the object.
      *
-     * @param callable $exceptionGenerator
-     * @param int $errorTypes Error types to be handled by this handler.
+     * @param  callable $exceptionGenerator
+     * @param  int $errorTypes Error types to be handled by this handler.
      */
     public function __construct(callable $exceptionGenerator, int $errorTypes = E_ALL | E_STRICT)
     {
@@ -90,10 +90,10 @@ class ExceptionErrorHandler extends AbstractManagedErrorHandler
     /**
      * Creates and returns new exception using the encapsulated $exceptionGenerator.
      *
-     * @param int $severity The level of error raised
-     * @param string $message The error message, as a string
-     * @param string $file The file name that the error was raised in
-     * @param int $line The line number the error was raised at
+     * @param  int $severity The level of error raised
+     * @param  string $message The error message, as a string
+     * @param  string $file The file name that the error was raised in
+     * @param  int $line The line number the error was raised at
      */
     public function getException(int $severity, string $message, string $file, int $line)
     {

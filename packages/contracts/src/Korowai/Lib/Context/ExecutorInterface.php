@@ -21,7 +21,7 @@ interface ExecutorInterface
     /**
      * Invokes user function.
      *
-     * @param callable $func The user function to be called
+     * @param  callable $func The user function to be called
      * @return mixed The value returned by ``$func``.
      */
     public function __invoke(callable $func);

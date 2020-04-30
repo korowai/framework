@@ -141,7 +141,7 @@ final class HasPropertiesIdenticalTo extends Constraint
      * Evaluates the constraint for parameter $other. Returns true if the
      * constraint is met, false otherwise.
      *
-     * @param mixed $other value or object to evaluate
+     * @param  mixed $other value or object to evaluate
      */
     public function matches($other) : bool
     {
@@ -158,7 +158,7 @@ final class HasPropertiesIdenticalTo extends Constraint
      * The beginning of failure messages is "Failed asserting that" in most
      * cases. This method should return the second part of that sentence.
      *
-     * @param mixed $other evaluated value or object
+     * @param  mixed $other evaluated value or object
      */
     public function failureDescription($other) : string
     {

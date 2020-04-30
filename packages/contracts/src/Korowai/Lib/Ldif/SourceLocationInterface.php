@@ -57,7 +57,7 @@ interface SourceLocationInterface
     /**
      * Returns the source line at location as string.
      *
-     * @param int $index Zero-based line index of the line to be returned. If
+     * @param  int $index Zero-based line index of the line to be returned. If
      *                   not given, an implementation should use the value
      *                   returned by ``getSourceLineIndex()`` instead.
      *

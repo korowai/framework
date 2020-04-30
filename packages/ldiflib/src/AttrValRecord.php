@@ -30,8 +30,8 @@ class AttrValRecord extends AbstractRecord implements AttrValRecordInterface
      * Initializes the object.
      *
      * @param SnippetInterface $snippet
-     * @param string $dn
-     * @param array $attrValSpecs
+     * @param  string $dn
+     * @param  array $attrValSpecs
      */
     public function __construct(SnippetInterface $snippet, string $dn, array $attrValSpecs)
     {
@@ -42,7 +42,7 @@ class AttrValRecord extends AbstractRecord implements AttrValRecordInterface
     /**
      * Sets the new array of attribute value specifications to this record.
      *
-     * @param array $attrValSpec
+     * @param  array $attrValSpec
      *
      * @return object $this
      */

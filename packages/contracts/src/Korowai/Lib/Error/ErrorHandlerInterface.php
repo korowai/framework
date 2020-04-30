@@ -21,10 +21,10 @@ interface ErrorHandlerInterface
     /**
      * Actual error handler function.
      *
-     * @param int $severity Level of the error raised.
-     * @param string $message Error message.
-     * @param string $file File name the the error was raised in.
-     * @param int $line Line number the error was raised at.
+     * @param  int $severity Level of the error raised.
+     * @param  string $message Error message.
+     * @param  string $file File name the the error was raised in.
+     * @param  int $line Line number the error was raised at.
      *
      *
      * @return bool If it returns ``false``, then the normal error handler

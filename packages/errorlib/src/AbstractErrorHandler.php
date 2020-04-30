@@ -28,7 +28,7 @@ abstract class AbstractErrorHandler implements ErrorHandlerInterface
     /**
      * Initializes the object
      *
-     * @param int $errorTypes
+     * @param  int $errorTypes
      *        Can be used to mask the triggering of the error handler.
      */
     public function __construct(int $errorTypes = E_ALL | E_STRICT)

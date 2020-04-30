@@ -72,7 +72,7 @@ class ResultReference extends AbstractResultRecord implements ResultReferenceInt
      *          ...
      *      ]
      *
-     * @param array $reference
+     * @param  array $reference
      * @return ResultReference
      */
     public static function createWithArray(array $reference)
@@ -92,8 +92,8 @@ class ResultReference extends AbstractResultRecord implements ResultReferenceInt
     /**
      * Initializes the ``ResultEntry`` instance
      *
-     * @param string $dn
-     * @param array $referrals
+     * @param  string $dn
+     * @param  array $referrals
      */
     public function __construct(string $dn, array $referrals = array())
     {

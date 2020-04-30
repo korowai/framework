@@ -28,7 +28,7 @@ abstract class AbstractResultIterator
      * Constructs ResultEntryIterator
      *
      * @param Result $result        The ldap search result which provides first entry in the entry chain
-     * @param object|null $pointed  The element currently pointed to by iterator.
+     * @param  object|null $pointed  The element currently pointed to by iterator.
      *
      * The ``$result`` object is used by ``rewind()`` method.
      */

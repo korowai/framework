@@ -69,10 +69,10 @@ class Input implements InputInterface
     /**
      * Initializes the object
      *
-     * @param string $source Source string
-     * @param string $string Preprocessed string
-     * @param array $im Index map produced by preprocessor
-     * @param string $sourceFileName Input name (file name)
+     * @param  string $source Source string
+     * @param  string $string Preprocessed string
+     * @param  array $im Index map produced by preprocessor
+     * @param  string $sourceFileName Input name (file name)
      */
     public function __construct(string $source, string $string, IndexMap $im, string $sourceFileName = null)
     {
@@ -82,10 +82,10 @@ class Input implements InputInterface
     /**
      * Initializes the object
      *
-     * @param string $source Source string
-     * @param string $string Preprocessed string
-     * @param array $im Index map produced by preprocessor
-     * @param string $sourceFileName Input name (file name)
+     * @param  string $source Source string
+     * @param  string $string Preprocessed string
+     * @param  array $im Index map produced by preprocessor
+     * @param  string $sourceFileName Input name (file name)
      */
     public function init(string $source, string $string, IndexMap $im, string $sourceFileName = null)
     {
@@ -242,7 +242,7 @@ class Input implements InputInterface
     /**
      * Sets the source file name.
      *
-     * @param string $sourceFileName
+     * @param  string $sourceFileName
      *
      * @return Input
      */

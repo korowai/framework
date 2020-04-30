@@ -46,7 +46,7 @@ class WithContextExecutor implements ExecutorInterface
     /**
      * Calls user function within context.
      *
-     * @param callable $func The user function to be called
+     * @param  callable $func The user function to be called
      * @return mixed The value returned by ``$func``.
      */
     public function __invoke(callable $func)
@@ -76,7 +76,7 @@ class WithContextExecutor implements ExecutorInterface
      * Invokes ``enterContext()`` method on the context managers from
      * ``$this->context`` array.
      *
-     * @param int $i
+     * @param  int $i
      *          Index used by the internal loop (passed by reference, so
      *          its value is not lost when an exception is thrown).
      *
@@ -96,7 +96,7 @@ class WithContextExecutor implements ExecutorInterface
      * Invokes ``exitContext()`` method on the context managers from
      * ``$this->context`` array.
      *
-     * @param int $i
+     * @param  int $i
      *          Index used by the internal loop (passed by reference, so its
      *          value is not lost when an exception is thrown).
      * @param \Throwable $exception

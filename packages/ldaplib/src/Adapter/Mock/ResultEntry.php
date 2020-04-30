@@ -74,7 +74,7 @@ class ResultEntry extends AbstractResultRecord implements ResultEntryInterface
      *          ...
      *      ]
      *
-     * @param array $entry
+     * @param  array $entry
      * @return ResultEntry
      */
     public static function createWithArray(array $entry)
@@ -99,8 +99,8 @@ class ResultEntry extends AbstractResultRecord implements ResultEntryInterface
     /**
      * Initializes the ``ResultEntry`` instance
      *
-     * @param string $dn
-     * @param array $attributes
+     * @param  string $dn
+     * @param  array $attributes
      */
     public function __construct(string $dn, array $attributes = array())
     {

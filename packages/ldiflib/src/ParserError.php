@@ -27,8 +27,8 @@ class ParserError extends \Exception implements ParserErrorInterface
      * Initializes the error object.
      *
      * @param SourceLocationInterface $location Error location
-     * @param string $message Error message.
-     * @param int $code User-defined code.
+     * @param  string $message Error message.
+     * @param  int $code User-defined code.
      * @param Exception $previous
      */
     public function __construct(
@@ -56,7 +56,7 @@ class ParserError extends \Exception implements ParserErrorInterface
      * Returns a string which consists of a number of leading spaces and the
      * ``"^"`` character.
      *
-     * @param array $line_and_char
+     * @param  array $line_and_char
      *
      * The position of the ``"^"`` character corresponds to the error location
      * in the source line. The typical use of the function is as

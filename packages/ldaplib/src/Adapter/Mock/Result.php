@@ -34,7 +34,7 @@ class Result extends AbstractResult
     /**
      * Returns a Result object made out of *$result* argument.
      *
-     * @param mixed $result an instance of ResultInterface or an array.
+     * @param  mixed $result an instance of ResultInterface or an array.
      *
      * @return Result
      * @throws \InvalidArgumentException when *$entry* is of wrong type
@@ -80,7 +80,7 @@ class Result extends AbstractResult
      * ``ResultEntry::make`` and ``ResultReference::make`` respectively.  In
      * each form, the ``'references'`` item is optional (result without references).
      *
-     * @param array $result
+     * @param  array $result
      * @return Result
      */
     public static function createWithArray(array $result)
@@ -107,8 +107,8 @@ class Result extends AbstractResult
     /**
      * Initializes new ``Result`` instance
      *
-     * @param array $entries
-     * @param array $references
+     * @param  array $entries
+     * @param  array $references
      */
     public function __construct(array $entries, array $references = [])
     {

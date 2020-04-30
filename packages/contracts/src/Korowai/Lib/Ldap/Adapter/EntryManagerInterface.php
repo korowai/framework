@@ -38,8 +38,8 @@ interface EntryManagerInterface
      * Renames an entry on the Ldap server
      *
      * @param EntryInterface $entry
-     * @param string $newRdn
-     * @param bool $deleteOldRdn
+     * @param  string $newRdn
+     * @param  bool $deleteOldRdn
      */
     public function rename(EntryInterface $entry, string $newRdn, bool $deleteOldRdn = true);
 

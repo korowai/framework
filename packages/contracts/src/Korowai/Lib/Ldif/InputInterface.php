@@ -66,8 +66,8 @@ interface InputInterface
      * corresponding (multibyte) character offset in the original $source
      * string.
      *
-     * @param int $i character offset in the preprocessed string
-     * @param string $encoding
+     * @param  int $i character offset in the preprocessed string
+     * @param  string $encoding
      *
      * @return int the resultant offset of the corresponding character in
      *             $source string
@@ -91,7 +91,7 @@ interface InputInterface
     /**
      * Returns $i'th line of the source string.
      *
-     * @param int $i
+     * @param  int $i
      *
      * @return string
      */
@@ -101,7 +101,7 @@ interface InputInterface
      * Given a character offset $i in the preprocessed string, returns its
      * corresponding line number (zero-based) in the original $source string.
      *
-     * @param int $i Character offset in the preprocessed string
+     * @param  int $i Character offset in the preprocessed string
      *
      * @return int
      */
@@ -112,7 +112,7 @@ interface InputInterface
      * corresponding line number in the $source string (zero-based) and the
      * character offset relative to the beginning of the source line.
      *
-     * @param int $i Character offset in the preprocessed string
+     * @param  int $i Character offset in the preprocessed string
      *
      * @return array 2-element array with line index at position 0 and
      *               character offset at position 1.
@@ -124,8 +124,8 @@ interface InputInterface
      * corresponding line number in the $source string (zero-based) and the
      * character offset relative to the beginning of the source line.
      *
-     * @param int $i Character offset in the preprocessed string
-     * @param string $encoding
+     * @param  int $i Character offset in the preprocessed string
+     * @param  string $encoding
      *
      * @return array 2-element array with line index at position 0 and
      *               character offset at position 1.

@@ -32,7 +32,7 @@ class VersionSpec implements VersionSpecInterface
      * Initializes the object.
      *
      * @param SnippetInterface $snippet
-     * @param int $version
+     * @param  int $version
      */
     public function __construct(SnippetInterface $snippet, int $version)
     {
@@ -43,7 +43,7 @@ class VersionSpec implements VersionSpecInterface
     /**
      * Sets version number.
      *
-     * @param int $version
+     * @param  int $version
      *
      * @return object $this
      */

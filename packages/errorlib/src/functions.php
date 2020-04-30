@@ -26,8 +26,8 @@ function emptyErrorHandler() : EmptyErrorHandler
 /**
 * A shortcut to new ErrorHandler(...).
 *
-* @param callable $errorHandler User-provided error handler function.
-* @param int $errorTypes Can be used to mask the triggering of the error
+* @param  callable $errorHandler User-provided error handler function.
+* @param  int $errorTypes Can be used to mask the triggering of the error
 *                        handler function.
 *
 * @return ErrorHandler
@@ -51,8 +51,8 @@ function errorHandler(callable $errorHandler, int $errorTypes = E_ALL | E_STRICT
  * If it is a class name, the class should provide constructor
  * having interface compatible with PHP's \ErrorException class.
  *
- * @param mixed $arg Either a callable or an exception's class name.
- * @param int $errorTypes Error types handled by the new handler.
+ * @param  mixed $arg Either a callable or an exception's class name.
+ * @param  int $errorTypes Error types handled by the new handler.
  *
  * @return ExceptionErrorHandler
  */
@@ -65,9 +65,9 @@ function exceptionErrorHandler($arg = null, int $errorTypes = E_ALL | E_STRICT) 
 /**
  * A shortcut to new CallerErrorHandler(...).
  *
- * @param callable $errorHandler
- * @param int $distance
- * @param int $errorTypes
+ * @param  callable $errorHandler
+ * @param  int $distance
+ * @param  int $errorTypes
  *
  * @return CallerErrorHandler
  */
@@ -93,9 +93,9 @@ function callerErrorHandler(
  * If it is a class name, the class should provide constructor
  * having interface compatible with PHP's \ErrorException class.
  *
- * @param mixed $arg Either a callable or an exception's class name.
- * @param mixed $distance The distance from our caller to his caller.
- * @param int $errorTypes Error types handled by the new handler.
+ * @param  mixed $arg Either a callable or an exception's class name.
+ * @param  mixed $distance The distance from our caller to his caller.
+ * @param  int $errorTypes Error types handled by the new handler.
  *
  * @return ExceptionErrorHandler
  */

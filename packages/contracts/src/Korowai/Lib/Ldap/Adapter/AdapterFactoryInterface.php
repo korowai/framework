@@ -23,7 +23,7 @@ interface AdapterFactoryInterface
     /**
      * Set configuration for later use by createAdapter().
      *
-     * @param array $config Configuration options used to configure every new
+     * @param  array $config Configuration options used to configure every new
      *                      adapter instance created by createAdapter().
      */
     public function configure(array $config);

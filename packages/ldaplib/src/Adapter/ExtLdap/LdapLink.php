@@ -27,7 +27,7 @@ class LdapLink
     /**
      * Return whether $arg is a valid "ldap link" resource.
      *
-     * @param mixed $arg An argument to be examined.
+     * @param  mixed $arg An argument to be examined.
      * @return bool
      *
      * @link http://php.net/manual/en/resource.php
@@ -41,7 +41,7 @@ class LdapLink
     /**
      * Constructs LdapLink
      *
-     * @param resource $link Should be a resource returned by ldap_connect().
+     * @param  resource $link Should be a resource returned by ldap_connect().
      * @link http://php.net/manual/en/function.ldap-connect.php ldap_connect()
      */
     public function __construct($link)
@@ -84,8 +84,8 @@ class LdapLink
     /**
      * Add entries to LDAP directory
      *
-     * @param string $dn
-     * @param array  $entry
+     * @param  string $dn
+     * @param  array  $entry
      *
      * @link http://php.net/manual/en/function.ldap-add.php ldap_add()
      */
@@ -97,8 +97,8 @@ class LdapLink
     /**
      * Bind to LDAP directory
      *
-     * @param string $bind_rdn
-     * @param string $bind_password
+     * @param  string $bind_rdn
+     * @param  string $bind_password
      *
      * @link http://php.net/manual/en/function.ldap-bind.php ldap_bind()
      */
@@ -121,9 +121,9 @@ class LdapLink
     /**
      * Compare value of attribute found in entry specified with DN
      *
-     * @param string $dn
-     * @param string $attribute
-     * @param string $value
+     * @param  string $dn
+     * @param  string $attribute
+     * @param  string $value
      *
      * @link http://php.net/manual/en/function.ldap-compare.php ldap_compare()
      */
@@ -159,8 +159,8 @@ class LdapLink
     /**
      * Send LDAP pagination control
      *
-     * @param int $pagesize
-     * @param mixed $tail remaining arguments passed to ldap_control_paged_result().
+     * @param  int $pagesize
+     * @param  mixed $tail remaining arguments passed to ldap_control_paged_result().
      *
      * @link http://php.net/manual/en/function.ldap-control-paged-result.php ldap_control_paged_result()
      */
@@ -197,7 +197,7 @@ class LdapLink
     /**
      * Delete an entry from a directory
      *
-     * @param string $dn
+     * @param  string $dn
      *
      * @link http://php.net/manual/en/function.ldap-delete.php ldap_delete()
      */
@@ -209,7 +209,7 @@ class LdapLink
     /**
      * Convert DN to User Friendly Naming format
      *
-     * @param string $dn
+     * @param  string $dn
      *
      * @link http://php.net/manual/en/function.ldap-dn2ufn.php ldap_dn2ufn()
      */
@@ -221,7 +221,7 @@ class LdapLink
     /**
      * Convert LDAP error number into string error message
      *
-     * @param int $errno
+     * @param  int $errno
      *
      * @link http://php.net/manual/en/function.ldap-err2str.php ldap_err2str()
      */
@@ -253,8 +253,8 @@ class LdapLink
     /**
      * Escape a string for use in an LDAP filter or DN
      *
-     * @param string $value
-     * @param mixed $tail remaining arguments passed to ldap_escape()
+     * @param  string $value
+     * @param  mixed $tail remaining arguments passed to ldap_escape()
      *
      * @link http://php.net/manual/en/function.ldap-escape.php ldap_escape()
      */
@@ -266,8 +266,8 @@ class LdapLink
     /**
      * Splits DN into its component parts
      *
-     * @param string $dn
-     * @param int with_attrib
+     * @param  string $dn
+     * @param  int with_attrib
      *
      * @link http://php.net/manual/en/function.ldap-explode-dn.php ldap_explode_dn()
      */
@@ -365,8 +365,8 @@ class LdapLink
     /**
      * Get the current value for given option
      *
-     * @param int $option
-     * @param mixed $retval
+     * @param  int $option
+     * @param  mixed $retval
      *
      * @link http://php.net/manual/en/function.ldap-get-option.php ldap_get_option()
      */
@@ -389,7 +389,7 @@ class LdapLink
      * Get all values from a result entry
      *
      * @param ResultEntry $result_entry
-     * @param string $attribute
+     * @param  string $attribute
      *
      * @link http://php.net/manual/en/function.ldap-get-values.php ldap_get_values()
      */
@@ -401,9 +401,9 @@ class LdapLink
     /**
      * Single-level search
      *
-     * @param string $base_dn
-     * @param string $filter
-     * @param mixed $tail remaining arguments passed to ldap_list()
+     * @param  string $base_dn
+     * @param  string $filter
+     * @param  mixed $tail remaining arguments passed to ldap_list()
      *
      * @link http://php.net/manual/en/function.ldap-list.php ldap_list()
      */
@@ -416,8 +416,8 @@ class LdapLink
     /**
      * Add attribute values to current attributes
      *
-     * @param string $dn
-     * @param array $entry
+     * @param  string $dn
+     * @param  array $entry
      *
      * @link http://php.net/manual/en/function.ldap-mod-add.php ldap_mod_add()
      */
@@ -429,8 +429,8 @@ class LdapLink
     /**
      * Delete attribute values from current attributes
      *
-     * @param string $dn
-     * @param array $entry
+     * @param  string $dn
+     * @param  array $entry
      *
      * @link http://php.net/manual/en/function.ldap-mod-del.php ldap_mod_del()
      */
@@ -442,8 +442,8 @@ class LdapLink
     /**
      * Replace attribute values with new ones
      *
-     * @param string $dn
-     * @param array $entry
+     * @param  string $dn
+     * @param  array $entry
      *
      * @link http://php.net/manual/en/function.ldap-mod-replace.php ldap_mod_replace()
      */
@@ -455,8 +455,8 @@ class LdapLink
     /**
      * Batch and execute modifications on an LDAP entry
      *
-     * @param string $dn
-     * @param array $entry
+     * @param  string $dn
+     * @param  array $entry
      *
      * @link http://php.net/manual/en/function.ldap-modify-batch.php ldap_modify_batch()
      */
@@ -468,8 +468,8 @@ class LdapLink
     /**
      * Modify an LDAP entry
      *
-     * @param string $dn
-     * @param array $entry
+     * @param  string $dn
+     * @param  array $entry
      *
      * @link http://php.net/manual/en/function.ldap-modify.php ldap_modify()
      */
@@ -520,7 +520,7 @@ class LdapLink
      * Extract information from reference entry
      *
      * @param ResultReference $reference
-     * @param array &$referrals
+     * @param  array &$referrals
      *
      * @link http://php.net/manual/en/function.ldap-parse-reference.php ldap_parse_reference()
      */
@@ -533,8 +533,8 @@ class LdapLink
      * Extract information from result
      *
      * @param Result $result
-     * @param int &$errcode
-     * @param mixed $tail remaining arguments passed to ldap_parse_result()
+     * @param  int &$errcode
+     * @param  mixed $tail remaining arguments passed to ldap_parse_result()
      *
      * @link http://php.net/manual/en/function.ldap-parse-result.php ldap_parse_result()
      */
@@ -546,9 +546,9 @@ class LdapLink
     /**
      * Read an entry
      *
-     * @param string $base_dn
-     * @param string $filter
-     * @param mixed $tail remaining arguments passed to ldap_read()
+     * @param  string $base_dn
+     * @param  string $filter
+     * @param  mixed $tail remaining arguments passed to ldap_read()
      *
      * @link http://php.net/manual/en/function.ldap-read.php ldap_read()
      */
@@ -561,10 +561,10 @@ class LdapLink
     /**
      * Modify the name of an entry
      *
-     * @param string $dn
-     * @param string $newrdn
-     * @param string $newparent
-     * @param bool $deleteoldrdn
+     * @param  string $dn
+     * @param  string $newrdn
+     * @param  string $newparent
+     * @param  bool $deleteoldrdn
      *
      * @link http://php.net/manual/en/function.ldap-rename.php ldap_rename()
      */
@@ -586,9 +586,9 @@ class LdapLink
     /**
      * Search LDAP tree
      *
-     * @param string $base_dn
-     * @param string $filter
-     * @param mixed $tail remaining arguments passed to ldap_search()
+     * @param  string $base_dn
+     * @param  string $filter
+     * @param  mixed $tail remaining arguments passed to ldap_search()
      *
      * @link http://php.net/manual/en/function.ldap-search.php ldap_search()
      */
@@ -601,8 +601,8 @@ class LdapLink
     /**
      * Set the value of the given option
      *
-     * @param int $option
-     * @param mixed $newval
+     * @param  int $option
+     * @param  mixed $newval
      *
      * @link http://php.net/manual/en/function.ldap-set-option.php ldap_set_option()
      */
@@ -614,7 +614,7 @@ class LdapLink
     /**
      * Set a callback function to do re-binds on referral chasing
      *
-     * @param callable $callback
+     * @param  callable $callback
      *
      * @link http://php.net/manual/en/function.ldap-set-rebind-proc.php ldap_set_rebind_proc()
      */
@@ -627,7 +627,7 @@ class LdapLink
      * Sort LDAP result entries on the client side
      *
      * @param Result $result
-     * @param string $sortfilter
+     * @param  string $sortfilter
      *
      * @link http://php.net/manual/en/function.ldap-sort.php ldap_sort()
      */

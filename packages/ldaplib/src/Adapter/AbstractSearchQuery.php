@@ -34,9 +34,9 @@ abstract class AbstractSearchQuery implements SearchQueryInterface
     /**
      * Constructs AbstractSearchQuery
      *
-     * @param string $base_dn
-     * @param string $filter
-     * @param array $options
+     * @param  string $base_dn
+     * @param  string $filter
+     * @param  array $options
      */
     public function __construct(string $base_dn, string $filter, array $options = array())
     {

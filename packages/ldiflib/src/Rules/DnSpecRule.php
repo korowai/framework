@@ -113,7 +113,8 @@ class DnSpecRule extends AbstractRule
      *
      * @return bool
      */
-    protected static function checkWith(callable $func, State $state, ?string &$value, int $offset) {
+    protected static function checkWith(callable $func, State $state, ?string &$value, int $offset)
+    {
         if ($value === null) {
             return  false;
         }

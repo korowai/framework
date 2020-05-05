@@ -91,7 +91,8 @@ class ValueSpecRule extends AbstractRule
         int $offset,
         ValueInterface &$value = null
     ) : bool {
-        if(null === ($decoded = Util::base64Decode($state, $string, $offset))) {
+        $decoded = Util::base64Decode($state, $string, $offset);
+        if (null === $decoded) {
             $value = null;
             return false;
         }

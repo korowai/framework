@@ -104,21 +104,18 @@ class Parser implements ParserInterface
         $prevErrCount = count($state->getErrors());
 
         // skip leading empty lines
-        if (!$this->parseLineSeparators($state, 0) && (count($state->getErrors()) > $prevErrCount)) {
+        if ($this->skipEmptyLines($state) === 0 && (count($state->getErrors()) > $prevErrCount)) {
             return false;
         }
 
         // version-spec (may be optional or required, depending on parser's config option)
         $tryOnly = !(($this->getConfig())['version_required'] ?? true);
         $success = $this->parseVersionSpec($state, $tryOnly);
-        if (!$success && (count($state->getErrors()) > $prevErrCount)) {
-            return false;
-        }
-        if ($success && !$this->parseLineSeparators($state)) {
-            return false;
-        }
 
-        if (!$this->parseRecords($state)) {
+        if ((!$success && (count($state->getErrors()) > $prevErrCount)) ||
+            ($success && ($this->skipEmptyLines($state) === 0)) ||
+            (!$this->parseRecords($state))
+        ) {
             return false;
         }
 
@@ -145,7 +142,7 @@ class Parser implements ParserInterface
             return false;
         }
 
-        while ($this->parseLineSeparators($state, 0)) {
+        while ($this->skipEmptyLines($state) > 0) {
             if ($state->getCursor()->isValid() && !call_user_func([$this, $method], $state)) {
                 return false;
             }
@@ -161,17 +158,14 @@ class Parser implements ParserInterface
      * @param  int $min Minimum required number of repetitions.
      * @param  int $max Maximum number of repetitions (including the required minimum).
      *
-     * @return bool
+     * @return int the number of empty lines skipped
      */
-    public function parseLineSeparators(State $state, int $min = 1, int $max = PHP_INT_MAX) : bool
+    public function skipEmptyLines(State $state, int $max = PHP_INT_MAX) : int
     {
-        for ($i = 0;$i < $max; ++$i) {
-            $tryOnly = ($i >= $min);
-            if (!$this->sepRule($tryOnly)->parse($state)) {
-                return $tryOnly;
-            }
+        $sep = $this->sepRule(true);
+        for ($i = 0; $i < $max && $sep->parse($state); ++$i) {
         }
-        return true;
+        return $i;
     }
 
     /**
@@ -202,7 +196,7 @@ class Parser implements ParserInterface
         // dn-spec SEP 1*attrval-spec
         //
         if (!$this->dnSpecRule($tryOnly)->parse($state, $dn) ||
-            !$tihs->sepRule()->parse($state) ||
+            !$this->sepRule()->parse($state) ||
             !$this->attrValSpecRule()->parse($state, $attrValSpec)) {
             return false;
         }

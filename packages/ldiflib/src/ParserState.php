@@ -46,6 +46,7 @@ class ParserState implements ParserStateInterface
      * @param  CursorInterface $cursor
      * @param  array|null $errors
      * @param  array|null $records
+     * @param  VersionSpecInterface|null $versionSpec
      */
     public function __construct(
         CursorInterface $cursor,
@@ -183,6 +184,7 @@ class ParserState implements ParserStateInterface
      * @param  CursorInterface $cursor
      * @param  array|null $errors
      * @param  array|null $records
+     * @param  VersionSpecInterface|null $versionSpec
      */
     protected function initParserState(
         CursorInterface $cursor,

@@ -42,7 +42,7 @@ class AttrValRecord extends AbstractRecord implements AttrValRecordInterface
     /**
      * Sets the new array of attribute value specifications to this record.
      *
-     * @param  array $attrValSpec
+     * @param  array $attrValSpecs
      *
      * @return object $this
      */

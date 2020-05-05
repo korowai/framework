@@ -58,17 +58,17 @@ class ExposesRuleInterfaceTest extends TestCase
         $this->assertSame('foo', $obj->__toString());
     }
 
-    public function test__rule()
+    public function test__regexp()
     {
         $rule = $this->getMockBuilder(RuleInterface::class)
                          ->getMockForAbstractClass();
         $rule->expects($this->once())
-             ->method('rule')
+             ->method('regexp')
              ->with()
              ->willReturn('/^foo$/');
         $obj = $this->getTestObject($rule);
 
-        $this->assertSame('/^foo$/', $obj->rule());
+        $this->assertSame('/^foo$/', $obj->regexp());
     }
 
     public function test__captures()

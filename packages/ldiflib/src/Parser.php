@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace Korowai\Lib\Ldif;
 
 use Korowai\Lib\Rfc\Rfc2849;
+use Korowai\Lib\Ldif\Traits\HasParserRules;
+use Korowai\Lib\Ldif\ParserStateInterface as State;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\Options;
 
@@ -22,6 +24,8 @@ use Symfony\Component\OptionsResolver\Options;
  */
 class Parser implements ParserInterface
 {
+    use HasParserRules;
+
     /**
      * @var array
      */
@@ -95,13 +99,12 @@ class Parser implements ParserInterface
     /**
      * {@inheritdoc}
      */
-    public function parse(ParserStateInterface $state) : bool
+    public function parse(State $state) : bool
     {
-
         $prevErrCount = count($state->getErrors());
 
         // skip leading empty lines
-        if (!$this->parseSeps($state, true) && (count($state->getErrors()) > $prevErrCount)) {
+        if (!$this->parseLineSeparators($state, 0) && (count($state->getErrors()) > $prevErrCount)) {
             return false;
         }
 
@@ -111,7 +114,7 @@ class Parser implements ParserInterface
         if (!$success && (count($state->getErrors()) > $prevErrCount)) {
             return false;
         }
-        if ($success && !$this->parseSeps($state)) {
+        if ($success && !$this->parseLineSeparators($state)) {
             return false;
         }
 
@@ -130,7 +133,7 @@ class Parser implements ParserInterface
     /**
      * @todo Write documentation
      */
-    public function parseRecords(ParserStateInterface $state) : bool
+    public function parseRecords(State $state) : bool
     {
         $fileType = ($this->getConfig())['file_type'];
         $method = $this->getRecordParserMethod($fileType);
@@ -142,7 +145,7 @@ class Parser implements ParserInterface
             return false;
         }
 
-        while ($this->parseSeps($state, true)) {
+        while ($this->parseLineSeparators($state, 0)) {
             if ($state->getCursor()->isValid() && !call_user_func([$this, $method], $state)) {
                 return false;
             }
@@ -152,14 +155,21 @@ class Parser implements ParserInterface
     }
 
     /**
-     * @todo Write documentation
+     * Parse line separators.
+     *
+     * @param  State $state
+     * @param  int $min Minimum required number of repetitions.
+     * @param  int $max Maximum number of repetitions (including the required minimum).
+     *
+     * @return bool
      */
-    public function parseSeps(ParserStateInterface $state, bool $tryOnly = false) : bool
+    public function parseLineSeparators(State $state, int $min = 1, int $max = PHP_INT_MAX) : bool
     {
-        if (!Parse::sep($state, $sep, $tryOnly)) {
-            return false;
-        }
-        while (Parse::sep($state, $sep, true)) {
+        for ($i = 0;$i < $max; ++$i) {
+            $tryOnly = ($i >= $min);
+            if (!$this->sepRule($tryOnly)->parse($state)) {
+                return $tryOnly;
+            }
         }
         return true;
     }
@@ -167,11 +177,11 @@ class Parser implements ParserInterface
     /**
      * @todo Write documentation
      */
-    public function parseVersionSpec(ParserStateInterface $state, bool $tryOnly = false) : bool
+    public function parseVersionSpec(State $state, bool $tryOnly = false) : bool
     {
         $cursor = $state->getCursor();
         $begin = $cursor->getClonedLocation();
-        if (!Parse::versionSpec($state, $version, $tryOnly)) {
+        if (!$this->versionSpecRule($tryOnly)->parse($state, $version)) {
             return false;
         }
         $snippet = new Snippet($begin, $cursor->getOffset() - $begin->getOffset());
@@ -183,7 +193,7 @@ class Parser implements ParserInterface
     /**
      * @todo Write documentation
      */
-    public function parseContentRecord(ParserStateInterface $state, bool $tryOnly = false) : bool
+    public function parseContentRecord(State $state, bool $tryOnly = false) : bool
     {
         $cursor = $state->getCursor();
         $begin = $cursor->getClonedLocation();
@@ -191,15 +201,15 @@ class Parser implements ParserInterface
         //
         // dn-spec SEP 1*attrval-spec
         //
-        if (!Parse::dnSpec($state, $dn, $tryOnly) ||
-            !Parse::sep($state) ||
-            !Parse::attrValSpec($state, $attrValSpec)) {
+        if (!$this->dnSpecRule($tryOnly)->parse($state, $dn) ||
+            !$tihs->sepRule()->parse($state) ||
+            !$this->attrValSpecRule()->parse($state, $attrValSpec)) {
             return false;
         }
 
         $attrValSpecs[] = $attrValSpec;
 
-        while (Parse::attrValSpec($state, $attrValSpec, true)) {
+        while ($this->attrValSpecRule(true)->parse($state, $attrValSpec)) {
             $attrValSpecs[] = $attrValSpec;
         }
 
@@ -213,21 +223,21 @@ class Parser implements ParserInterface
     /**
      * @todo Write documentation
      */
-    public function parseChangeRecord(ParserStateInterface $state) : bool
+    public function parseChangeRecord(State $state) : bool
     {
     }
 
     /**
      * @todo Write documentation
      */
-    public function parseMixedRecord(ParserStateInterface $state) : bool
+    public function parseMixedRecord(State $state) : bool
     {
     }
 
     /**
      * @todo Write documentation
      */
-    public function parseDetectRecord(ParserStateInterface $state) : bool
+    public function parseDetectRecord(State $state) : bool
     {
     }
 

@@ -5,7 +5,7 @@ use Korowai\Lib\Rfc\Rfc2253;
 /* [/use] */
 
 /* [dnRule] */
-$dnRule = Rfc2253::rule('DISTINGUISHED_NAME');
+$dnRule = Rfc2253::regexp('DISTINGUISHED_NAME');
 /* [/dnRule] */
 
 /* [preg_match] */

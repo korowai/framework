@@ -31,7 +31,7 @@ trait DecoratesRuleInterface
      * Returns the instance of RFC [RuleInterface](\.\./RuleInterface.html)
      * encapsulated by this object.
      *
-     * @return RuleInterface
+     * @return RuleInterface|null
      */
     public function getRfcRule() : ?RuleInterface
     {
@@ -42,7 +42,7 @@ trait DecoratesRuleInterface
      * Sets the new instance of RFC [RuleInterface](\.\./RuleInterface.html) to
      * this object.
      *
-     * @param  RuleInterface $rfcRule
+     * @param  RuleInterface|null $rfcRule
      *
      * @return object $this
      */

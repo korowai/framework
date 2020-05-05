@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Rules/VersionSpec.php
+ * @file src/Rules/DnSpecRule.php
  *
  * This file is part of the Korowai package
  *
@@ -13,17 +13,18 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldif\Rules;
 
+use Korowai\Lib\Ldif\AbstractRule;
 use Korowai\Lib\Ldif\ParserStateInterface as State;
 use Korowai\Lib\Ldif\Scan;
 use Korowai\Lib\Rfc\Rule;
 use Korowai\Lib\Rfc\Rfc2849x;
 
 /**
- * A rule that parses RFC2849 version-spec.
+ * A rule that parses RFC2849 dn-spec.
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class VersionSpec extends AbstractRule
+class DnSpecRule extends AbstractRule
 {
     /**
      * Initializes the object.
@@ -34,7 +35,7 @@ class VersionSpec extends AbstractRule
      */
     public function __construct(bool $tryOnly = false)
     {
-        parent::__construct(new Rule(Rfc2849x::class, 'VERSION_SPEC_X', $tryOnly));
+        $this->setRfcRule(new Rule(Rfc2849x::class, 'DN_SPEC_X', $tryOnly));
     }
 
     /**
@@ -53,22 +54,24 @@ class VersionSpec extends AbstractRule
      *      substrings captured by the encapsulated RFC rule.
      * @param  mixed $value
      *      Semantic value to be returned to caller.
+     * @return bool true on success, false on failure.
      */
     public function parseMatched(State $state, array $matches, &$value = null) : bool
     {
-        if (Scan::matched('version_number', $matches, $string, $offset)) {
-            if (($number = (int)$string) === 1) {
-                $value = $number;
-                return true;
+        if (Scan::matched('dn_b64', $matches, $string, $offset)) {
+            $value = Util::base64Decode($state, $string, $offset);
+            if ($value === null || !Util::utf8Check($state, $value, $offset)) {
+                return false;
             }
-            $state->errorAt($offset, "syntax error: unsupported version number: $number");
-            $value = null;
-            return false;
+            return Util::dnCheck($state, $value, $offset);
+        } elseif (Scan::matched('dn_safe', $matches, $string, $offset)) {
+            $value = $string;
+            return Util::dnCheck($state, $value, $offset);
         }
 
-        // This may happen with broken Rfc2849x::VERSION_SPEC_X rule.
+        // This may happen with broken Rfc2849x::DN_SPEC_X rule.
         $value = null;
-        $state->errorHere('internal error: missing or invalid capture group "version_number"');
+        $state->errorHere('internal error: missing or invalid capture groups "dn_safe" and "dn_b64"');
         return false;
     }
 }

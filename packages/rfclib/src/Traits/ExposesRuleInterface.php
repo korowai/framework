@@ -55,9 +55,9 @@ trait ExposesRuleInterface
      *
      * @return string
      */
-    public function rule() : string
+    public function regexp() : string
     {
-        return $this->getRfcRule()->rule();
+        return $this->getRfcRule()->regexp();
     }
 
     /**

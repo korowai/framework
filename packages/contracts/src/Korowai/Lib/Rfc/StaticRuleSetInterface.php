@@ -32,7 +32,7 @@ interface StaticRuleSetInterface
      * @param  string $ruleName
      * @return string
      */
-    public static function rule(string $ruleName) : string;
+    public static function regexp(string $ruleName) : string;
 
     /**
      * Returns an array of capture group names for given rule.

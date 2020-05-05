@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Rules/ValueSpec.php
+ * @file src/Rules/ValueSpecRule.php
  *
  * This file is part of the Korowai package
  *
@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldif\Rules;
 
+use Korowai\Lib\Ldif\AbstractRule;
 use Korowai\Lib\Ldif\ParserStateInterface as State;
 use Korowai\Lib\Ldif\Scan;
 use Korowai\Lib\Ldif\ValueInterface;
@@ -25,7 +26,7 @@ use Korowai\Lib\Rfc\Rfc2849x;
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class ValueSpec extends AbstractRule
+class ValueSpecRule extends AbstractRule
 {
     /**
      * Initializes the object.
@@ -36,7 +37,7 @@ class ValueSpec extends AbstractRule
      */
     public function __construct(bool $tryOnly = false)
     {
-        parent::__construct(new Rule(Rfc2849x::class, 'VALUE_SPEC_X', $tryOnly));
+        $this->setRfcRule(new Rule(Rfc2849x::class, 'VALUE_SPEC_X', $tryOnly));
     }
 
     /**
@@ -55,6 +56,7 @@ class ValueSpec extends AbstractRule
      *      substrings captured by the encapsulated RFC rule.
      * @param  mixed $value
      *      Semantic value to be returned to caller.
+     * @return bool true on success, false on failure.
      */
     public function parseMatched(State $state, array $matches, &$value = null) : bool
     {

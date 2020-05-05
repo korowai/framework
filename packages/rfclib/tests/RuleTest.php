@@ -122,7 +122,7 @@ class RuleTest extends TestCase
     public function test__toString(string $ruleSetClass, string $ruleName)
     {
         $rule = new Rule($ruleSetClass, $ruleName);
-        $this->assertSame($ruleSetClass::rule($ruleName), (string)$rule);
+        $this->assertSame($ruleSetClass::regexp($ruleName), (string)$rule);
     }
 
     /**
@@ -131,7 +131,7 @@ class RuleTest extends TestCase
     public function test__rule(string $ruleSetClass, string $ruleName)
     {
         $rule = new Rule($ruleSetClass, $ruleName);
-        $this->assertSame($ruleSetClass::rule($ruleName), $rule->rule());
+        $this->assertSame($ruleSetClass::regexp($ruleName), $rule->regexp());
     }
 
     /**

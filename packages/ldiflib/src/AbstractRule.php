@@ -11,16 +11,14 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Lib\Ldif\Rules;
+namespace Korowai\Lib\Ldif;
 
 use Korowai\Lib\Ldif\ParserStateInterface as State;
-use Korowai\Lib\Rfc\RuleInterface;
 use Korowai\Lib\Rfc\Traits\DecoratesRuleInterface;
-use Korowai\Lib\Ldif\Scan;
 
 /**
  * Base class for LDIF parsing rules. The LDIF rule decorates RFC
- * [RuleInterface](\.\./\.\./Rfc/RuleInterface.html).
+ * [RuleInterface](RuleInterface.html).
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
@@ -48,16 +46,6 @@ abstract class AbstractRule implements RuleInterface
     abstract public function parseMatched(State $state, array $matches, &$value = null) : bool;
 
     /**
-     * Initializes the object.
-     *
-     * @param  RuleInterfce $rfcRule
-     */
-    public function __construct(RuleInterface $rfcRule)
-    {
-        $this->setRfcRule($rfcRule);
-    }
-
-    /**
      * Parse string starting at position defined by *$state*.
      *
      * There are three scenarios. The rule can either:
@@ -80,22 +68,11 @@ abstract class AbstractRule implements RuleInterface
      */
     public function parse(State $state, &$value = null) : bool
     {
-        if (!$this->matchRfcRule($state, $this->getRfcRule(), $matches)) {
+        if (!$this->match($state, $matches)) {
             $value = null;
             return false;
         }
         return $this->parseMatched($state, $matches, $value);
-    }
-
-    /**
-     * Returns instance of [RuleInterface](\.\./\.\./Rfc/RuleInterface.html)
-     * used to parse strings.
-     *
-     * @return RuleInterface
-     */
-    public function getRfcRule() : RuleInterface
-    {
-        return $this->rfcRule;
     }
 
     /**
@@ -108,32 +85,30 @@ abstract class AbstractRule implements RuleInterface
      *      of the match. If the *$rule* matches anything, the *$state*'s
      *      cursor gets moved to the character next after the matched string.
      *      If *$rule* matches any errors, they will be appended to *$state*.
-     * @param  RuleInterface $rule
-     *      The rule to be used for matching.
      * @param  array $matches
      *      Returns matched captured groups including matched errors. If the
      *      rule doesn't match at all, the function returns empty *$matches*.
      *
      * @return bool
-     *      Returns false if *$rule* doesn't match, or if the returned
-     *      *$matches* include errors.
+     *      Returns false if rule doesn't match, or if the returned *$matches*
+     *      include errors.
      */
-    public static function matchRfcRule(State $state, RuleInterface $rule, array &$matches = null) : bool
+    public function match(State $state, array &$matches = null) : bool
     {
         $cursor = $state->getCursor();
 
-        $matches = Scan::matchAhead('/\G'.$rule.'/D', $cursor, PREG_UNMATCHED_AS_NULL);
+        $matches = Scan::matchAhead('/\G'.$this.'/D', $cursor, PREG_UNMATCHED_AS_NULL);
         if (empty($matches)) {
-            if (!$rule->isOptional()) {
-                $message = $rule->getErrorMessage();
+            if (!$this->isOptional()) {
+                $message = $this->getErrorMessage();
                 $state->errorHere('syntax error: '.$message);
             }
             return false;
         }
 
-        $errors = $rule->findCapturedErrors($matches);
+        $errors = $this->findCapturedErrors($matches);
         foreach ($errors as $errorKey => $errorMatch) {
-            $message = $rule->getErrorMessage($errorKey);
+            $message = $this->getErrorMessage($errorKey);
             $state->errorAt($errorMatch[1], 'syntax error: '.$message);
         }
 

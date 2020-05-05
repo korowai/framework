@@ -31,7 +31,7 @@ A few initial ABNF rules from this RFC document are listed below
     ; ...
 
 These RFC rules have corresponding rules in the
-:class:`Korowai\\Lib\\Rfc\\Rfc2253` ruleset - a class implementing
+:class:`Korowai\\Lib\\Rfc\\Rfc2253` ruleset class - a class implementing
 :class:`Korowai\\Lib\\Rfc\\StaticRuleSetInterface`. For example the
 ``distinguishedName`` rule is accessible by
 
@@ -40,8 +40,8 @@ These RFC rules have corresponding rules in the
     :start-after: [dnRule]
     :end-before: [/dnRule]
 
-Each rule is actually a regular expression string that may be used to match
-source strings
+The returned string is a perl-compatible regular expression (PCRE) which work
+with ``pcre_*`` functions, for example:
 
 .. literalinclude:: ../../examples/lib/rfc/rfc_rules.php
     :linenos:

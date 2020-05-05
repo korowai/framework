@@ -38,7 +38,7 @@ interface RuleInterface
      *
      * @return string
      */
-    public function rule() : string;
+    public function regexp() : string;
 
     /**
      * Returns an array of capture group names for the rule.

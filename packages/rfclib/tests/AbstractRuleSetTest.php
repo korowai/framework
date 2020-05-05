@@ -86,11 +86,11 @@ class AbstractRuleSetTest extends TestCase
     /**
      * @dataProvider classRulename__cases
      */
-    public function test__rule(string $class, string $ruleName)
+    public function test__regexp(string $class, string $ruleName)
     {
         $expected = constant($class.'::'.$ruleName);
-        $actual = $class::rule($ruleName);
-        $message = 'Failed asserting that '.$class.'::rule('.$ruleName.') is correct';
+        $actual = $class::regexp($ruleName);
+        $message = 'Failed asserting that '.$class.'::regexp('.$ruleName.') is correct';
         $this->assertSame($expected, $actual, $message);
     }
 

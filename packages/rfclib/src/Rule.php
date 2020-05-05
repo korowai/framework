@@ -45,7 +45,7 @@ class Rule implements RuleInterface
      *      [StaticRuleSetInterface](StaticRuleSetInterface.html).
      * @param  string $name
      *      Name of the rule in the $ruleSetClass (i.e.
-     *      ``$ruleSetClass::rule($name)`` must be available).
+     *      ``$ruleSetClass::regexp($name)`` must be available).
      * @param  bool $optional
      *      Set to true if the rule matching is optional (i.e. it's an
      *      alternative in a higher-level syntactic rule).
@@ -88,15 +88,15 @@ class Rule implements RuleInterface
      */
     public function __toString() : string
     {
-        return $this->rule();
+        return $this->regexp();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function rule() : string
+    public function regexp() : string
     {
-        return $this->delegate('rule', [$this->name()]);
+        return $this->delegate('regexp', [$this->name()]);
     }
 
     /**

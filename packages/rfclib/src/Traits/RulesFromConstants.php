@@ -64,7 +64,7 @@ trait RulesFromConstants
      * @param  string $ruleName
      * @return array
      */
-    public static function rule(string $ruleName) : string
+    public static function regexp(string $ruleName) : string
     {
         return constant(static::class.'::'.$ruleName);
     }
@@ -78,7 +78,7 @@ trait RulesFromConstants
     public static function rules() : array
     {
         $ruleNames = static::getClassRuleNames();
-        return array_combine($ruleNames, array_map([static::class, 'rule'], $ruleNames));
+        return array_combine($ruleNames, array_map([static::class, 'regexp'], $ruleNames));
     }
 
     /**

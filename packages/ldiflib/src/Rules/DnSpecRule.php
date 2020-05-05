@@ -76,7 +76,13 @@ class DnSpecRule extends AbstractRule
     }
 
     /**
-     * @todo Write documentation
+     * Checks DN string using Util::dnCheck().
+     *
+     * @param  State $state
+     * @param  string $value
+     * @param  int $offset
+     *
+     * @return bool
      */
     protected static function dnCheck(State $state, string &$value, int $offset) : bool
     {
@@ -84,7 +90,13 @@ class DnSpecRule extends AbstractRule
     }
 
     /**
-     * @todo Write documentation
+     * Checks UTF8 string using Util::utf8Check().
+     *
+     * @param  State $state
+     * @param  string $value
+     * @param  int $offset
+     *
+     * @return bool
      */
     protected static function utf8Check(State $state, ?string &$value, int $offset)
     {
@@ -92,7 +104,14 @@ class DnSpecRule extends AbstractRule
     }
 
     /**
-     * @todo Write documentation
+     * Delegates value checking to *$func*.
+     *
+     * @param  callable $func
+     * @param  State $state
+     * @param  string $value
+     * @param  int $offset
+     *
+     * @return bool
      */
     protected static function checkWith(callable $func, State $state, ?string &$value, int $offset) {
         if ($value === null) {

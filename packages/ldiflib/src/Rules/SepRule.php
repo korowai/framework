@@ -15,6 +15,7 @@ namespace Korowai\Lib\Ldif\Rules;
 
 use Korowai\Lib\Ldif\AbstractRule;
 use Korowai\Lib\Ldif\ParserStateInterface as State;
+use Korowai\Lib\Ldif\Scan;
 use Korowai\Lib\Rfc\Rule;
 use Korowai\Lib\Rfc\Rfc2849x;
 
@@ -57,8 +58,12 @@ class SepRule extends AbstractRule
      */
     public function parseMatched(State $state, array $matches, &$value = null) : bool
     {
-        $value = $matches[0][0];
-        return true;
+        if (Scan::matched(0, $matches, $value, $offset)) {
+            return true;
+        }
+        $value = null;
+        $state->errorHere('internal error: missing or invalid capture group 0');
+        return false;
     }
 }
 // vim: syntax=php sw=4 ts=4 et:

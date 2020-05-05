@@ -14,9 +14,7 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Ldif\Rules;
 
 use Korowai\Lib\Ldif\Rules\DnSpecRule;
-use Korowai\Lib\Ldif\Rules\ValueSpecRule;
 use Korowai\Lib\Ldif\AbstractRule;
-use Korowai\Lib\Ldif\ValueInterface;
 use Korowai\Testing\Lib\Ldif\TestCase;
 
 /**
@@ -330,8 +328,18 @@ class DnSpecRuleTest extends TestCase
     public static function parse__cases()
     {
         $missingTagCases = array_map(function (array $case) {
+            $args = $case['args'] ?? [];
+            $optional = $args[0] ?? false;
+            $errors = $optional ? [] : [
+                [
+                    'sourceOffset' => $case['offset'],
+                    'sourceCharOffset' => $case['charOffset'],
+                    'message' => 'syntax error: expected "dn:" (RFC2849)',
+                ]
+            ];
             return [
                 'source' => $case[0],
+                'args'   => $args,
                 'expect' => [
                     'result' => false,
                     'init' => 'preset string',
@@ -342,19 +350,15 @@ class DnSpecRuleTest extends TestCase
                             'sourceOffset' => $case['offset'],
                             'sourceCharOffset' => $case['charOffset']
                         ],
-                        'errors' => [
-                            [
-                                'sourceOffset' => $case['offset'],
-                                'sourceCharOffset' => $case['charOffset'],
-                                'message' => 'syntax error: expected "dn:" (RFC2849)',
-                            ]
-                        ],
+                        'errors' => $errors,
                         'records' => [],
                     ],
                 ]
             ];
         }, [
             [["ł ", 3],         'offset' => 3, 'charOffset' => 2],
+            [["ł ", 3],         'offset' => 3, 'charOffset' => 2, 'args' => [false]],
+            [["ł ", 3],         'offset' => 3, 'charOffset' => 2, 'args' => [true]],
             [["ł x", 3],        'offset' => 3, 'charOffset' => 2],
             [["ł dns:", 3],     'offset' => 3, 'charOffset' => 2],
             [["ł dn :", 3],     'offset' => 3, 'charOffset' => 2],
@@ -393,6 +397,7 @@ class DnSpecRuleTest extends TestCase
 
             return [
                 'source' => $source,
+                'args'   => [],
                 'expect' => $expect
             ];
         }, static::dnMatch__cases());
@@ -429,6 +434,7 @@ class DnSpecRuleTest extends TestCase
 
             return [
                 'source' => $source,
+                'args'   => [],
                 'expect' => $expect
             ];
         }, static::dnMatch__cases());
@@ -463,7 +469,11 @@ class DnSpecRuleTest extends TestCase
                 ],
             ];
 
-            return [$source, $expect];
+            return [
+                'source' => $source,
+                'args'   => [],
+                'expect' => $expect
+            ];
         }, [
         //    0000000 00
         //    0123456 78
@@ -500,7 +510,11 @@ class DnSpecRuleTest extends TestCase
                 ],
             ];
 
-            return [$source, $expect];
+            return [
+                'source' => $source,
+                'args'   => [],
+                'expect' => $expect
+            ];
         }, [
         //    00000000 0
         //    01234567 8
@@ -539,7 +553,11 @@ class DnSpecRuleTest extends TestCase
                 ],
             ];
 
-            return [$source, $expect];
+            return [
+                'source' => $source,
+                'args'   => [],
+                'expect' => $expect
+            ];
         }, [
             [' ',  ':sdf',     0],  // 1'st is not SAFE-INIT-CHAR (colon)
             [' ',  'tłuszcz',  1],  // 2'nd is not SAFE-CHAR (>0x7F)
@@ -560,7 +578,7 @@ class DnSpecRuleTest extends TestCase
     /**
      * @dataProvider parse__cases
      */
-    public function test__parse(array $source, array $expect)
+    public function test__parse(array $source, array $args, array $expect)
     {
         $state = $this->getParserStateFromSource(...$source);
 
@@ -568,7 +586,7 @@ class DnSpecRuleTest extends TestCase
             $dn = $expect['init'];
         }
 
-        $rule = new DnSpecRule();
+        $rule = new DnSpecRule(...$args);
 
         $result = $rule->parse($state, $dn);
 

@@ -20,6 +20,7 @@ use Korowai\Lib\Ldif\ValueInterface;
 use Korowai\Lib\Ldif\Value;
 use Korowai\Lib\Rfc\Rule;
 use Korowai\Lib\Rfc\Rfc2849x;
+use League\Uri\Exceptions\SyntaxError as UriSyntaxError;
 
 /**
  * A rule that parses RFC2849 value-spec.
@@ -64,9 +65,7 @@ class ValueSpecRule extends AbstractRule
             $value = Value::createSafeString($string);
             return true;
         } elseif (Scan::matched('value_b64', $matches, $string, $offset)) {
-            $decoded = Util::base64Decode($state, $string, $offset);
-            $value = Value::createBase64String($string, $decoded);
-            return ($decoded !== null);
+            return $this->parseMatchedBase64String($state, $string, $offset, $value);
         } elseif (Scan::matched('value_url', $matches, $string, $offset)) {
             return $this->parseMatchedUriReference($state, $matches, $value);
         }
@@ -78,6 +77,29 @@ class ValueSpecRule extends AbstractRule
     }
 
     /**
+     *
+     * @param  State $state
+     * @param  string $string
+     * @param  int $offset
+     * @param  ValueInterface $value
+     *
+     * @return bool
+     */
+    protected function parseMatchedBase64String(
+        State $state,
+        string $string,
+        int $offset,
+        ValueInterface &$value = null
+    ) : bool {
+        if(null === ($decoded = Util::base64Decode($state, $string, $offset))) {
+            $value = null;
+            return false;
+        }
+        $value = Value::createBase64String($string, $decoded);
+        return true;
+    }
+
+    /**
      * Make URI reference
      *
      * @param  State $state
@@ -86,8 +108,11 @@ class ValueSpecRule extends AbstractRule
      *
      * @return bool
      */
-    public static function parseMatchedUriReference(State $state, array $matches, ValueInterface &$value = null) : bool
-    {
+    protected function parseMatchedUriReference(
+        State $state,
+        array $matches,
+        ValueInterface &$value = null
+    ) : bool {
         try {
             $value = Value::createUriFromRfc3986Matches($matches);
         } catch (UriSyntaxError $e) {

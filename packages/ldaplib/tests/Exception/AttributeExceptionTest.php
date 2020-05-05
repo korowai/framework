@@ -21,21 +21,26 @@ use Korowai\Lib\Ldap\Exception\AttributeException;
  */
 class AttributeExceptionTest extends TestCase
 {
-    public function testBaseClass()
+    public function test__extendsOutOfRangeException()
     {
-        $this->assertInstanceOf(\OutOfRangeException::class, new AttributeException());
+        $this->assertExtendsClass(\OutOfRangeException::class, AttributeException::class);
     }
 
-    public function test_getMessage_DefaultMessage()
+    public static function getMessage__cases()
     {
-        $e = new AttributeException();
-        $this->assertEquals("No such attribute", $e->getMessage());
+        return [
+            'default message' => [[], 'No such attribute'],
+            'custom message'  => [['custom message'], 'custom message']
+        ];
     }
 
-    public function test_getMessage_CustomMessage()
+    /**
+     * @dataProvider getMessage__cases
+     */
+    public function test__getMessage(array $args, string $expect)
     {
-        $e = new AttributeException("Custom message");
-        $this->assertEquals("Custom message", $e->getMessage());
+        $e = new AttributeException(...$args);
+        $this->assertEquals($expect, $e->getMessage());
     }
 }
 

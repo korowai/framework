@@ -18,6 +18,7 @@ use Korowai\Lib\Ldif\ParserStateInterface as State;
 use Korowai\Lib\Ldif\Scan;
 use Korowai\Lib\Rfc\Rule;
 use Korowai\Lib\Rfc\Rfc2849x;
+use Korowai\Lib\Rfc\Rfc2253;
 
 /**
  * A rule that parses RFC2849 dn-spec.
@@ -60,13 +61,12 @@ class DnSpecRule extends AbstractRule
     {
         if (Scan::matched('dn_b64', $matches, $string, $offset)) {
             $value = Util::base64Decode($state, $string, $offset);
-            if ($value === null || !Util::utf8Check($state, $value, $offset)) {
+            if (!$this->utf8Check($state, $value, $offset)) {
                 return false;
             }
-            return Util::dnCheck($state, $value, $offset);
-        } elseif (Scan::matched('dn_safe', $matches, $string, $offset)) {
-            $value = $string;
-            return Util::dnCheck($state, $value, $offset);
+            return $this->dnCheck($state, $value, $offset);
+        } elseif (Scan::matched('dn_safe', $matches, $value, $offset)) {
+            return $this->dnCheck($state, $value, $offset);
         }
 
         // This may happen with broken Rfc2849x::DN_SPEC_X rule.
@@ -74,5 +74,36 @@ class DnSpecRule extends AbstractRule
         $state->errorHere('internal error: missing or invalid capture groups "dn_safe" and "dn_b64"');
         return false;
     }
+
+    /**
+     * @todo Write documentation
+     */
+    protected static function dnCheck(State $state, string &$value, int $offset) : bool
+    {
+        return static::checkWith([Util::class, 'dnCheck'], $state, $value, $offset);
+    }
+
+    /**
+     * @todo Write documentation
+     */
+    protected static function utf8Check(State $state, ?string &$value, int $offset)
+    {
+        return static::checkWith([Util::class, 'utf8Check'], $state, $value, $offset);
+    }
+
+    /**
+     * @todo Write documentation
+     */
+    protected static function checkWith(callable $func, State $state, ?string &$value, int $offset) {
+        if ($value === null) {
+            return  false;
+        }
+        if (!call_user_func_array($func, [$state, $value, $offset])) {
+            $value = null;
+            return false;
+        }
+        return true;
+    }
 }
+
 // vim: syntax=php sw=4 ts=4 et:

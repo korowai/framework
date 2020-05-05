@@ -21,21 +21,26 @@ use Korowai\Lib\Ldif\Exception\InvalidRuleNameException;
  */
 class InvalidRuleNameExceptionTest extends TestCase
 {
-    public function testBaseClass()
+    public function test__extendsInvalidArgumentException()
     {
-        $this->assertInstanceOf(\InvalidArgumentException::class, new InvalidRuleNameException());
+        $this->assertExtendsClass(\InvalidArgumentException::class, InvalidRuleNameException::class);
     }
 
-    public function test_getMessage_DefaultMessage()
+    public static function getMessage__cases()
     {
-        $e = new InvalidRuleNameException();
-        $this->assertEquals("", $e->getMessage());
+        return [
+            'default message' => [[], ''],
+            'custom message'  => [['custom message'], 'custom message']
+        ];
     }
 
-    public function test_getMessage_CustomMessage()
+    /**
+     * @dataProvider getMessage__cases
+     */
+    public function test__getMessage(array $args, string $expect)
     {
-        $e = new InvalidRuleNameException("Custom message");
-        $this->assertEquals("Custom message", $e->getMessage());
+        $e = new InvalidRuleNameException(...$args);
+        $this->assertEquals($expect, $e->getMessage());
     }
 }
 

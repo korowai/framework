@@ -28,7 +28,7 @@ use Korowai\Lib\Rfc\Rfc2849x;
 class AttrValSpecRule extends AbstractRule
 {
     /**
-     * @var ValueSpecRule
+     * @var Rule
      */
     protected $valueSpecRule;
 
@@ -48,7 +48,30 @@ class AttrValSpecRule extends AbstractRule
         if ($valueSpecRule === null) {
             $valueSpecRule = new ValueSpecRule;
         }
+        $this->setValueSpecRule($valueSpecRule);
+    }
+
+    /**
+     * Returns the internal instance of [ValueSpecRule](ValueSpecRule.html).
+     *
+     * @return ValueSpecRule|null
+     */
+    public function getValueSpecRule() : ?ValueSpecRule
+    {
+        return $this->valueSpecRule;
+    }
+
+    /**
+     * Sets the new instance of ValueSpecRule to this object.
+     *
+     * @param  ValueSpecRule $valueSpecRule
+     *
+     * @return object $this
+     */
+    public function setValueSpecRule(?ValueSpecRule $valueSpecRule)
+    {
         $this->valueSpecRule = $valueSpecRule;
+        return $this;
     }
 
     /**

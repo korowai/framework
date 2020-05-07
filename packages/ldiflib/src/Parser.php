@@ -155,8 +155,7 @@ class Parser implements ParserInterface
      * Parse line separators.
      *
      * @param  State $state
-     * @param  int $min Minimum required number of repetitions.
-     * @param  int $max Maximum number of repetitions (including the required minimum).
+     * @param  int $max Maximum number of repetitions.
      *
      * @return int the number of empty lines skipped
      */

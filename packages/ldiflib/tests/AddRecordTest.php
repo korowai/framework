@@ -1,6 +1,6 @@
 <?php
 /**
- * @file tests/AttrValRecordTest.php
+ * @file tests/AddRecordTest.php
  *
  * This file is part of the Korowai package
  *
@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldif;
 
-use Korowai\Lib\Ldif\AttrValRecord;
-use Korowai\Lib\Ldif\AttrValRecordInterface;
+use Korowai\Lib\Ldif\AddRecord;
+use Korowai\Lib\Ldif\AddRecordInterface;
 use Korowai\Lib\Ldif\RecordVisitorInterface;
 use Korowai\Lib\Ldif\AbstractRecord;
 use Korowai\Lib\Ldif\SnippetInterface;
@@ -26,21 +26,21 @@ use Korowai\Testing\Lib\Ldif\TestCase;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class AttrValRecordTest extends TestCase
+class AddRecordTest extends TestCase
 {
     public function tets__extends__AbstractRecord()
     {
         $this->assertExtendsClass(AbstractRecord::class, AttraValRecord::class);
     }
 
-    public function test__implements__AttrValRecordInterface()
+    public function test__implements__AddRecordInterface()
     {
-        $this->assertImplementsInterface(AttrValRecordInterface::class, AttrValRecord::class);
+        $this->assertImplementsInterface(AddRecordInterface::class, AddRecord::class);
     }
 
     public function test__uses__HasAttrValSpecs()
     {
-        $this->assertUsesTrait(HasAttrValSpecs::class, AttrValRecord::class);
+        $this->assertUsesTrait(HasAttrValSpecs::class, AddRecord::class);
     }
 
     public function test__construct()
@@ -48,7 +48,7 @@ class AttrValRecordTest extends TestCase
         $snippet = $this->getMockBuilder(SnippetInterface::class)
                         ->getMockForAbstractClass();
 
-        $record = new AttrValRecord($snippet, "DN", ['attrVal1']);
+        $record = new AddRecord($snippet, "DN", ['attrVal1']);
 
         $this->assertSame($snippet, $record->getSnippet());
         $this->assertSame("DN", $record->getDn());
@@ -60,7 +60,7 @@ class AttrValRecordTest extends TestCase
         $snippet = $this->getMockBuilder(SnippetInterface::class)
                         ->getMockForAbstractClass();
 
-        $record = new AttrValRecord($snippet, "DN", []);
+        $record = new AddRecord($snippet, "DN", []);
 
         $this->assertSame($record, $record->setAttrValSpecs(['attrVal1']));
         $this->assertSame(['attrVal1'], $record->getAttrValSpecs());
@@ -73,10 +73,10 @@ class AttrValRecordTest extends TestCase
         $visitor = $this->getMockBuilder(RecordVisitorInterface::class)
                         ->getMockForAbstractClass();
 
-        $record = new AttrValRecord($snippet, "DN", []);
+        $record = new AddRecord($snippet, "DN", []);
 
         $visitor->expects($this->once())
-                ->method('visitAttrValRecord')
+                ->method('visitAddRecord')
                 ->with($record)
                 ->will($this->returnValue('ok'));
 

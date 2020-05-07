@@ -28,11 +28,32 @@ interface RecordVisitorInterface
     public function visitAttrValRecord(AttrValRecordInterface $record);
 
     /**
-     * Visits instance of ChangeRecordInterface.
+     * Visits instance of AddRecordInterface.
      *
-     * @param ChangeRecordInterface $record
+     * @param AddRecordInterface $record
      */
-    public function visitChangeRecord(ChangeRecordInterface $record);
+    public function visitAddRecord(AddRecordInterface $record);
+
+    /**
+     * Visits instance of DeleteRecordInterface.
+     *
+     * @param DeleteRecordInterface $record
+     */
+    public function visitDeleteRecord(DeleteRecordInterface $record);
+
+    /**
+     * Visits instance of ModDnRecordInterface.
+     *
+     * @param ModDnRecordInterface $record
+     */
+    public function visitModDnRecord(ModDnRecordInterface $record);
+
+    /**
+     * Visits instance of ModifyRecordInterface.
+     *
+     * @param ModifyRecordInterface $record
+     */
+    public function visitModifyRecord(ModifyRecordInterface $record);
 }
 
 // vim: syntax=php sw=4 ts=4 et:

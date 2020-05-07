@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/AttrValRecord.php
+ * @file src/DeleteRecord.php
  *
  * This file is part of the Korowai package
  *
@@ -13,29 +13,24 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldif;
 
-use Korowai\Lib\Ldif\Traits\HasAttrValSpecs;
-
 /**
  * Represents [RFC2849](https://tools.ietf.org/html/rfc2849)
- * ldif-attrval-record.
+ * ldif-change-record of type change-delete.
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class AttrValRecord extends AbstractRecord implements AttrValRecordInterface
+class DeleteRecord extends AbstractRecord implements DeleteRecordInterface
 {
-    use HasAttrValSpecs;
-
     /**
      * Initializes the object.
      *
-     * @param SnippetInterface $snippet
+     * @param  SnippetInterface $snippet
      * @param  string $dn
      * @param  array $attrValSpecs
      */
-    public function __construct(SnippetInterface $snippet, string $dn, array $attrValSpecs)
+    public function __construct(SnippetInterface $snippet, string $dn)
     {
         parent::initAbstractRecord($snippet, $dn);
-        $this->setAttrValSpecs($attrValSpecs);
     }
 
     /**
@@ -43,7 +38,7 @@ class AttrValRecord extends AbstractRecord implements AttrValRecordInterface
      */
     public function acceptRecordVisitor(RecordVisitorInterface $visitor)
     {
-        return $visitor->visitAttrValRecord($this);
+        return $visitor->visitDeleteRecord($this);
     }
 }
 

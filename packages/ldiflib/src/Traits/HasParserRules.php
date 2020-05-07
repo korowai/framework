@@ -18,7 +18,7 @@ use Korowai\Lib\Ldif\Rules\AttrValSpecRule;
 use Korowai\Lib\Ldif\Rules\DnSpecRule;
 use Korowai\Lib\Ldif\Rules\SepRule;
 use Korowai\Lib\Ldif\Rules\VersionSpecRule;
-use Korowai\Lib\Ldif\Exception\InvalidRuleClassException;
+use Korowai\Lib\Ldif\Exception\InvalidRuleNameException;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -28,12 +28,7 @@ trait HasParserRules
     /**
      * @var array
      */
-    protected $parserRules = [
-        AttrValSpecRule::class  => [],
-        DnSpecRule::class       => [],
-        SepRule::class          => [],
-        VersionSpecRule::class  => [],
-    ];
+    protected $parserRules;
 
     /**
      * Returns instance of RuleInterface of given type.
@@ -45,7 +40,7 @@ trait HasParserRules
     {
         if (!isset($this->parserRules[$ruleClass][$tryOnly])) {
             if (!is_subclass_of($ruleClass, RuleInterface::class)) {
-                $message = 'Argument 1 passed to '.__class__.'::getParserRule() must be'.
+                $message = 'Argument 1 passed to '.__class__.'::getParserRule() must be '.
                            'a name of class implementing '.RuleInterface::class.', '.
                            '"'.$ruleClass.'" given';
                 throw new InvalidRuleNameException($message);

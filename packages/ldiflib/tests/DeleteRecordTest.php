@@ -1,6 +1,6 @@
 <?php
 /**
- * @file tests/AttrValRecordTest.php
+ * @file tests/DeleteRecordTest.php
  *
  * This file is part of the Korowai package
  *
@@ -13,12 +13,11 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldif;
 
-use Korowai\Lib\Ldif\AttrValRecord;
-use Korowai\Lib\Ldif\AttrValRecordInterface;
+use Korowai\Lib\Ldif\DeleteRecord;
+use Korowai\Lib\Ldif\DeleteRecordInterface;
 use Korowai\Lib\Ldif\RecordVisitorInterface;
 use Korowai\Lib\Ldif\AbstractRecord;
 use Korowai\Lib\Ldif\SnippetInterface;
-use Korowai\Lib\Ldif\Traits\HasAttrValSpecs;
 
 use Korowai\Testing\Lib\Ldif\TestCase;
 
@@ -26,21 +25,16 @@ use Korowai\Testing\Lib\Ldif\TestCase;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class AttrValRecordTest extends TestCase
+class DeleteRecordTest extends TestCase
 {
     public function tets__extends__AbstractRecord()
     {
         $this->assertExtendsClass(AbstractRecord::class, AttraValRecord::class);
     }
 
-    public function test__implements__AttrValRecordInterface()
+    public function test__implements__DeleteRecordInterface()
     {
-        $this->assertImplementsInterface(AttrValRecordInterface::class, AttrValRecord::class);
-    }
-
-    public function test__uses__HasAttrValSpecs()
-    {
-        $this->assertUsesTrait(HasAttrValSpecs::class, AttrValRecord::class);
+        $this->assertImplementsInterface(DeleteRecordInterface::class, DeleteRecord::class);
     }
 
     public function test__construct()
@@ -48,22 +42,10 @@ class AttrValRecordTest extends TestCase
         $snippet = $this->getMockBuilder(SnippetInterface::class)
                         ->getMockForAbstractClass();
 
-        $record = new AttrValRecord($snippet, "DN", ['attrVal1']);
+        $record = new DeleteRecord($snippet, "DN");
 
         $this->assertSame($snippet, $record->getSnippet());
         $this->assertSame("DN", $record->getDn());
-        $this->assertSame(['attrVal1'], $record->getAttrValSpecs());
-    }
-
-    public function test__setAttrValSpecs()
-    {
-        $snippet = $this->getMockBuilder(SnippetInterface::class)
-                        ->getMockForAbstractClass();
-
-        $record = new AttrValRecord($snippet, "DN", []);
-
-        $this->assertSame($record, $record->setAttrValSpecs(['attrVal1']));
-        $this->assertSame(['attrVal1'], $record->getAttrValSpecs());
     }
 
     public function test__acceptRecordVisitor()
@@ -73,10 +55,10 @@ class AttrValRecordTest extends TestCase
         $visitor = $this->getMockBuilder(RecordVisitorInterface::class)
                         ->getMockForAbstractClass();
 
-        $record = new AttrValRecord($snippet, "DN", []);
+        $record = new DeleteRecord($snippet, "DN");
 
         $visitor->expects($this->once())
-                ->method('visitAttrValRecord')
+                ->method('visitDeleteRecord')
                 ->with($record)
                 ->will($this->returnValue('ok'));
 

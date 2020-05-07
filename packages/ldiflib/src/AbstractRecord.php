@@ -32,7 +32,7 @@ abstract class AbstractRecord implements RecordInterface
     /**
      * Initializes the object. Should be invoked from subclass' constructor.
      *
-     * @param SnippetInterface $snippet
+     * @param  SnippetInterface $snippet
      * @param  string $dn
      *
      * @return object $this

@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/AttrValRecord.php
+ * @file src/AddRecord.php
  *
  * This file is part of the Korowai package
  *
@@ -17,18 +17,18 @@ use Korowai\Lib\Ldif\Traits\HasAttrValSpecs;
 
 /**
  * Represents [RFC2849](https://tools.ietf.org/html/rfc2849)
- * ldif-attrval-record.
+ * ldif-change-record of type change-add.
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class AttrValRecord extends AbstractRecord implements AttrValRecordInterface
+class AddRecord extends AbstractRecord implements AddRecordInterface
 {
     use HasAttrValSpecs;
 
     /**
      * Initializes the object.
      *
-     * @param SnippetInterface $snippet
+     * @param  SnippetInterface $snippet
      * @param  string $dn
      * @param  array $attrValSpecs
      */
@@ -43,7 +43,7 @@ class AttrValRecord extends AbstractRecord implements AttrValRecordInterface
      */
     public function acceptRecordVisitor(RecordVisitorInterface $visitor)
     {
-        return $visitor->visitAttrValRecord($this);
+        return $visitor->visitAddRecord($this);
     }
 }
 

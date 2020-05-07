@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Lib/Ldif/AttrValRecordInterface.php
+ * @file src/Korowai/Lib/Ldif/AddRecordInterface.php
  *
  * This file is part of the Korowai package
  *
@@ -14,12 +14,13 @@ declare(strict_types=1);
 namespace Korowai\Lib\Ldif;
 
 /**
- * Interface for record objects representing
- * [RFC2849](https://tools.ietf.org/html/rfc2849) ldif-attrval-records.
+ * Interface for a record object representing
+ * [RFC2849](https://tools.ietf.org/html/rfc2849)
+ * *ldif-change-record* of type *change-add*.
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-interface AttrValRecordInterface extends RecordInterface, AttrValSpecsInterface
+interface AddRecordInterface extends ChangeRecordInterface, AttrValSpecsInterface
 {
 }
 

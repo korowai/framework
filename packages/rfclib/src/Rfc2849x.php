@@ -32,7 +32,7 @@ class Rfc2849x extends Rfc2849
     /**
      * Matches any character except [Rfc2849x::SEP_X](Rfc2849x.html).
      */
-    public const NOT_SEP_X = '(?:[^'.self::CR.self::LF.'$]|'.self::CR.'(?!'.self::LF.'))';
+    public const NOT_SEP_X = '(?:[^'.self::CR.self::LF.']|'.self::CR.'(?!'.self::LF.'))';
 
     /**
      * [Rfc2849::VERSION_SPEC](Rfc2849.html) with error detection.
@@ -41,7 +41,7 @@ class Rfc2849x extends Rfc2849
      * nearest [Rfc::2849x::SEP_X](Rfc2849x.html). Returns ``version_error``
      * capture group if there is an error after the ``"version:"`` tag.
      *
-     * *Capture groups*:
+     * Capture groups:
      *
      *  - ``version_number``: only set if the subject contains no syntax errors,
      *  - ``version_error``: only set if there is an error after the
@@ -63,8 +63,8 @@ class Rfc2849x extends Rfc2849
     /**
      * [Rfc2849::DN_SPEC](Rfc2849.html) with error detection.
      *
-     * Matches any string that starts with ``"dn:"``, and spans to the nearses
-     * [Rfc::2849x::SEP_X](Rfc2849x.html). Returns one of the ``dn_*_error``
+     * Matches any string that starts with ``"dn:"``, and spans to the nearest
+     * [Rfc2849x::SEP_X](Rfc2849x.html). Returns one of the ``dn_*_error``
      * capture groups if there is an error after the ``"version:"`` tag.
      *
      * Capture groups:
@@ -72,9 +72,9 @@ class Rfc2849x extends Rfc2849
      *  - ``dn_safe``: only set if the subject contains no syntax errors and the initial tag is ``"dn:"``,
      *  - ``dn_b64``: only set if the subject contains no syntax errors and the initial tag is ``"dn::"``,
      *  - ``dn_safe_error``: only set if there is an error after the ``"dn:"``
-     *    tag (single colon); contains the substring that failed to match,
+     *    tag (single colon); contains the substring that failed to match [Rfc2849::SAFE_STRING](Rfc2849.html),
      *  - ``dn_b64_error``: only set if there is an error after the ``"dn::"``
-     *    tag (double colon); contains the substring that failed to match,
+     *    tag (double colon); contains the substring that failed to match [Rfc2849::BASE64_STRING](Rfc2849.html),
      */
     public const DN_SPEC_X =
         '(?:'.
@@ -100,7 +100,29 @@ class Rfc2849x extends Rfc2849
         ')';
 
     /**
-     * VALUE_SPEC with enhanced error detection. TODO:
+     * [Rfc2849::VALUE_SPEC](Rfc2849.html) with enhanced error detection.
+     *
+     * Matches any string that starts with one of ``":"``, ``"::"`` or ``":<"``
+     * and spans to the nearest [Rfc2849x::SEP_X](Rfc2849x.html). Returns one of
+     * the ``value_*_error`` capture groups (below) if there is an error after
+     * the ``":"``/``"::"``/``":<"`` tag.
+     *
+     * Capture groups:
+     *
+     *  - ``value_safe``: only set if the value-spec specifies SAFE-STRING using
+     *    single colon ``":"`` notation and there is no error in the string,
+     *  - ``value_b64``: only set if the value-space specifies BASE64-STRING
+     *    using double colon ``"::"`` notation and there is no error in the
+     *    string,
+     *  - ``value_url``: only set if the value-spec specifies URL using
+     *    colon-less-than ``":<"`` notation and there is no error in the
+     *    string,
+     *  - ``value_safe_error``: only set if there is an error after ``":"`` tag
+     *    (single colon); contains the string that failed to match [Rfc2849::SAFE_STRING](Rfc2849.html),
+     *  - ``value_b64_error``: only set if there is an error after ``"::"`` tag
+     *    (double colon); contains the string that failed to match [Rfc2849::BASE64_STRING](Rfc2849.html),
+     *  - ``value_url_error``: only set if there is an error after ``":<"`` tag
+     *    (colon less-than); contains the string that failed to match [Rfc2849::URL](Rfc2849.html),
      */
     public const VALUE_SPEC_X =
         '(?:'.
@@ -136,7 +158,65 @@ class Rfc2849x extends Rfc2849
         ')';
 
     /**
-     * ATTRVAL_SPEC with enhanced error detection. TODO:
+     * [Rfc2849::CONTROL](Rfc2849.html) with enhanced error detection.
+     *
+     * Matches any string that starts with ``"control:"`` tag and spans to the
+     * nearest [Rfc2849x::SEP_X](Rfc2849x.html).
+     *
+     * Capture groups:
+     *
+     *  - ``ctl_type``: only set if the matched string has no errors; contains OID of the control,
+     *  - ``ctl_crit``: only set if the matched string defines criticality as ``true`` or ``false`` and does not
+     *    contain any errors,
+     *  - ``value_safe``: only set if the matched string specifies SAFE-STRING value and does not contain any errors,
+     *  - ``value_b64``: only set if the matched string specifies BASE64-STRING value and does not contain any errors,
+     *  - ``value_url``: only set if the matched string specifies URL value and does ont contain any errors,
+     *  - ``ctl_type_error``: only set if the control type is missing or is not a properly formed OID,
+     *  - ``ctl_crit_error``: only set if the control criticality is invalid (other than ``"true"`` or ``"false"``),
+     *  - ``value_safe_error``: only set if the matched string specifies malformed SAFE-STRING as a value,
+     *  - ``value_b64_error``: only set if the matched string specifies malformed BASE64-STRING as a value,
+     *  - ``value_url_error``: only set if the matched string specifies malformed URL as a value.
+     */
+    public const CONTROL_X =
+        '(?:'.
+            'control:'.self::FILL.'(?:(?:'.
+                '(?<ctl_type>'.self::LDAP_OID.')'.
+                '(?:'.self::SPACE.'+(?<ctl_crit>true|false))?'.
+                '(?:'.self::VALUE_SPEC_X.')?'.
+                '(?='.self::SEP_X.')'.
+            ')|(?:'.
+                '(?:'.self::LDAP_OID.')'.
+                '(?:'.self::SPACE.'+)'.
+                '(?<ctl_crit_error>'.self::NOT_SEP_X.'*)'.
+                '(?='.self::SEP_X.')'.
+            ')|(?:'.
+                '(?:'.self::LDAP_OID.')?'.
+                '(?<ctl_type_error>'.self::NOT_SEP_X.'*)'.
+                '(?='.self::SEP_X.')'.
+            '))'.
+            self::SEP_X.
+        ')';
+
+    /**
+     * [Rfc2849::ATTRVAL_SPEC](Rfc2849.html) with enhanced error detection.
+     *
+     * Capture groups:
+     *
+     *  - ``attr_desc``: always set, contains the attribute description (attribute type with options),
+     *  - ``value_safe``: only set if the value-spec specifies SAFE-STRING using
+     *    single colon ``":"`` notation and there is no error in the string,
+     *  - ``value_b64``: only set if the value-space specifies BASE64-STRING
+     *    using double colon ``"::"`` notation and there is no error in the
+     *    string,
+     *  - ``value_url``: only set if the value-spec specifies URL using
+     *    colon-less-than ``":<"`` notation and there is no error in the
+     *    string,
+     *  - ``value_safe_error``: only set if there is an error after ``":"`` tag
+     *    (single colon); contains the string that failed to match [Rfc2849::SAFE_STRING](Rfc2849.html),
+     *  - ``value_b64_error``: only set if there is an error after ``"::"`` tag
+     *    (double colon); contains the string that failed to match [Rfc2849::BASE64_STRING](Rfc2849.html),
+     *  - ``value_url_error``: only set if there is an error after ``":<"`` tag
+     *    (colon less-than); contains the string that failed to match [Rfc2849::URL](Rfc2849.html),
      */
     public const ATTRVAL_SPEC_X = '(?:'.self::ATTRIBUTE_DESCRIPTION.self::VALUE_SPEC_X.self::SEP_X.')';
 
@@ -150,6 +230,7 @@ class Rfc2849x extends Rfc2849
         'VERSION_SPEC_X',
         'DN_SPEC_X',
         'VALUE_SPEC_X',
+        'CONTROL_X',
         'ATTRVAL_SPEC_X',
     ];
 
@@ -161,10 +242,13 @@ class Rfc2849x extends Rfc2849
             'VERSION_SPEC_X'    => 'expected "version:" (RFC2849)',
             'DN_SPEC_X'         => 'expected "dn:" (RFC2849)',
             'VALUE_SPEC_X'      => 'expected ":" (RFC2849)',
+            'CONTROL_X'         => 'expected "control:" (RFC2849)',
             'ATTRVAL_SPEC_X'    => 'expected <AttributeDescription>":" (RFC2849)',
         ],
         'dn_b64_error'      => 'malformed BASE64-STRING (RFC2849)',
         'dn_safe_error'     => 'malformed SAFE-STRING (RFC2849)',
+        'ctl_type_error'    => 'missing or invalid OID (RFC2849)',
+        'ctl_crit_error'    => 'expected "true" or "false" (RFC2849)',
         'value_b64_error'   => 'malformed BASE64-STRING (RFC2849)',
         'value_safe_error'  => 'malformed SAFE-STRING (RFC2849)',
         'value_url_error'   => 'malformed URL (RFC2849/RFC3986)',

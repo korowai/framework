@@ -21,6 +21,7 @@ use Korowai\Lib\Ldif\CursorInterface;
 use Korowai\Lib\Ldif\SnippetInterface;
 use Korowai\Lib\Ldif\ValueInterface;
 use Korowai\Lib\Ldif\AttrValInterface;
+use Korowai\Lib\Ldif\ControlInterface;
 use Korowai\Lib\Ldif\ParserStateInterface;
 use Korowai\Lib\Ldif\ParserErrorInterface;
 use Korowai\Lib\Ldif\ParserError;
@@ -740,6 +741,180 @@ class ObjectPropertiesAssertionsTest extends TestCase
                 'getContent()'              => 'foo',
             ]
         ], $attrVal);
+    }
+
+    //
+    // assertControlHas
+    //
+
+    public function test__assertControlHas__withNullValue()
+    {
+        $ctlGetters = [
+            'getOid'                        => 'bar',
+            'getCriticality'                => null,
+            'getValueObject'                => null
+        ];
+        $ctl = $this->getMockBuilder(ControlInterface::class)->getMockForAbstractClass();
+        foreach ($ctlGetters as $method => $value) {
+            $ctl->expects($this->exactly(2))
+                ->method($method)
+                ->with()
+                ->willReturn($value);
+        }
+
+
+        $this->assertControlHas([
+            'oid'                           => 'bar',
+            'criticality'                   => null,
+            'valueObject'                   => null,
+        ], $ctl);
+
+        $this->assertControlHas([
+            'getOid()'                      => 'bar',
+            'getCriticality()'              => null,
+            'getValueObject()'              => null,
+        ], $ctl);
+    }
+
+    public function test__assertControlHas__withStringValue()
+    {
+        $valueGetters = [
+            'getType'                       => 1,
+            'getSpec'                       => 'Zm9v',
+	        'getContent'                    => 'foo',
+        ];
+
+        $valueObject = $this->getMockBuilder(ValueInterface::class)->getMockForAbstractClass();
+        foreach ($valueGetters as $method => $value) {
+            $valueObject->expects($this->atLeastOnce())
+                        ->method($method)
+                        ->with()
+                        ->willReturn($value);
+        }
+
+        $ctlGetters = [
+            'getOid'                        => 'bar',
+            'getCriticality'                => true,
+            'getValueObject'                => $valueObject
+        ];
+        $ctl = $this->getMockBuilder(ControlInterface::class)->getMockForAbstractClass();
+        foreach ($ctlGetters as $method => $value) {
+            $ctl->expects($this->exactly(2))
+                ->method($method)
+                ->with()
+                ->willReturn($value);
+        }
+
+
+        $this->assertControlHas([
+            'oid'                           => 'bar',
+            'criticality'                   => true,
+            'valueObject'                   => [
+                'type'                      => 1,
+                'spec'                      => 'Zm9v',
+                'content'                   => 'foo',
+            ]
+        ], $ctl);
+
+        $this->assertControlHas([
+            'getOid()'                      => 'bar',
+            'getCriticality()'              => true,
+            'getValueObject()'              => [
+                'getType()'                 => 1,
+                'getSpec()'                 => 'Zm9v',
+                'getContent()'              => 'foo',
+            ]
+        ], $ctl);
+    }
+
+    public function test__assertControlHas__withUriValue()
+    {
+        $uriGetters = [
+            '__toString'                    => 'http://jsmith:pass@example.com:123/foo/bar?q=1#f=2',
+            'getScheme'                     => 'http',
+            'getAuthority'                  => 'jsmith:pass@example.com:123',
+            'getUserInfo'                   => 'jsmith:pass',
+            'getHost'                       => 'example.com',
+            'getPort'                       => 123,
+            'getPath'                       => '/foo/bar',
+            'getQuery'                      => 'q=1',
+            'getFragment'                   => 'f=2',
+        ];
+
+        $uriObject = $this->getMockBuilder(UriInterface::class)->getMockForAbstractClass();
+        foreach ($uriGetters as $method => $value) {
+            $uriObject->expects($this->exactly(2))
+                        ->method($method)
+                        ->with()
+                        ->willReturn($value);
+        }
+
+        $valueGetters = [
+            'getType'                       => 1,
+            'getSpec'                       => $uriObject,
+	        'getContent'                    => 'foo',
+        ];
+
+        $valueObject = $this->getMockBuilder(ValueInterface::class)->getMockForAbstractClass();
+        foreach ($valueGetters as $method => $value) {
+            $valueObject->expects($this->exactly(2))
+                        ->method($method)
+                        ->with()
+                        ->willReturn($value);
+        }
+
+        $ctlGetters = [
+            'getOid'                        => 'bar',
+            'getCriticality'                => true,
+            'getValueObject'                => $valueObject
+        ];
+        $ctl = $this->getMockBuilder(ControlInterface::class)->getMockForAbstractClass();
+        foreach ($ctlGetters as $method => $value) {
+            $ctl->expects($this->exactly(2))
+                ->method($method)
+                ->with()
+                ->willReturn($value);
+        }
+
+        $this->assertControlHas([
+            'oid'                           => 'bar',
+            'criticality'                   => true,
+            'valueObject'                   => [
+                'type'                      => 1,
+                'spec'                      => [
+                    'string'                => 'http://jsmith:pass@example.com:123/foo/bar?q=1#f=2',
+                    'scheme'                => 'http',
+                    'authority'             => 'jsmith:pass@example.com:123',
+                    'userinfo'              => 'jsmith:pass',
+                    'host'                  => 'example.com',
+                    'port'                  => 123,
+                    'path'                  => '/foo/bar',
+                    'query'                 => 'q=1',
+                    'fragment'              => 'f=2',
+                ],
+                'content'                   => 'foo',
+            ]
+        ], $ctl);
+
+        $this->assertControlHas([
+            'getOid()'                      => 'bar',
+            'getCriticality()'              => true,
+            'getValueObject()'              => [
+                'getType()'                 => 1,
+                'getSpec()'                 => [
+                    '__toString()'          => 'http://jsmith:pass@example.com:123/foo/bar?q=1#f=2',
+                    'getScheme()'           => 'http',
+                    'getAuthority()'        => 'jsmith:pass@example.com:123',
+                    'getUserinfo()'         => 'jsmith:pass',
+                    'getHost()'             => 'example.com',
+                    'getPort()'             => 123,
+                    'getPath()'             => '/foo/bar',
+                    'getQuery()'            => 'q=1',
+                    'getFragment()'         => 'f=2',
+                ],
+                'getContent()'              => 'foo',
+            ]
+        ], $ctl);
     }
 
     //

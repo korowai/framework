@@ -21,6 +21,7 @@ use Korowai\Lib\Ldif\RecordInterface;
 use Korowai\Lib\Ldif\SnippetInterface;
 use Korowai\Lib\Ldif\ValueInterface;
 use Korowai\Lib\Ldif\AttrValInterface;
+use Korowai\Lib\Ldif\ControlInterface;
 use Korowai\Lib\Ldif\SourceLocationInterface;
 use League\Uri\Contracts\UriInterface;
 
@@ -90,6 +91,12 @@ trait ObjectPropertiesAssertions
 
         AttrValInterface::class         => [
             'attribute'                 => 'getAttribute',
+            'valueObject'               => 'getValueObject',
+        ],
+
+        ControlInterface::class         => [
+            'oid'                       => 'getOid',
+            'criticality'               => 'getCriticality',
             'valueObject'               => 'getValueObject',
         ],
 
@@ -347,6 +354,28 @@ trait ObjectPropertiesAssertions
     public static function assertUriHas(array $expected, UriInterface $object, string $message = '') : void
     {
         static::assertHasPropertiesSameAs($expected, $object, $message);
+    }
+
+    /**
+     * Assert that ControlInterface *$object* has *$expected* properties.
+     *
+     * @param  array $expected A array of key-value pairs with expected values of attributes.
+     * @param  ControlInterface $object An object to be examined.
+     * @param  string|null $message Optional message.
+     */
+    public static function assertControlHas(array $expected, ControlInterface $object, string $message = '') : void
+    {
+        // non-object properties
+        $values = array_filter($expected, function ($val, $key) {
+            return !in_array($key, ['valueObject', 'getValueObject()'], true) || !is_array($val);
+        }, ARRAY_FILTER_USE_BOTH);
+        static::assertHasPropertiesSameAs($values, $object, $message);
+
+        // object properties
+        static::assertObjectEachProperty(array_diff_key([
+            'valueObject'       => [static::class, 'assertValueHas'],
+            'getValueObject()'  => [static::class, 'assertValueHas']
+        ], $values), $expected, $object, $message);
     }
 }
 

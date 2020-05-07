@@ -134,7 +134,7 @@ class Rfc2849 extends AbstractRuleSet
      *
      * Capture groups:
      *
-     *  - *version_number*: always set.
+     *  - ``version_number``: always set.
      */
     public const VERSION_NUMBER = '(?<version_number>'.self::DIGIT.'+)';
 
@@ -193,7 +193,7 @@ class Rfc2849 extends AbstractRuleSet
      *
      * Capture groups:
      *
-     *  - *attr_desc*: always set, contains the whole matched string.
+     *  - ``attr_desc``: always set, contains the whole matched string.
      */
     public const ATTRIBUTE_DESCRIPTION = '(?<attr_desc>'.self::ATTRIBUTE_TYPE.'(?:;'.self::OPTIONS.')?)';
 
@@ -203,7 +203,7 @@ class Rfc2849 extends AbstractRuleSet
      *
      * Capture groups:
      *
-     *  - *dn_safe*: always set, contains the whole matched string.
+     *  - ``dn_safe``: always set, contains the whole matched string.
      */
     public const DISTINGUISHED_NAME = '(?<dn_safe>'.self::SAFE_STRING.')';
 
@@ -213,7 +213,7 @@ class Rfc2849 extends AbstractRuleSet
      *
      * Capture groups:
      *
-     *  - *dn_b64*: always set, contains the whole matched string.
+     *  - ``dn_b64``: always set, contains the whole matched string.
      */
     public const BASE64_DISTINGUISHED_NAME = '(?<dn_b64>'.self::BASE64_UTF8_STRING.')';
 
@@ -238,8 +238,8 @@ class Rfc2849 extends AbstractRuleSet
      *
      * Capture groups:
      *
-     *  - *dn_safe*: only set if distinguished name is specified as SAFE-STRING using single colon ``":"`` notation,
-     *  - *dn_b64*: only set if distinguished name is specified as BASE64-STRING using double colon ``"::"`` notation.
+     *  - ``dn_safe``: only set if distinguished name is specified as SAFE-STRING using single colon ``":"`` notation,
+     *  - ``dn_b64``: only set if distinguished name is specified as BASE64-STRING using double colon ``"::"`` notation.
      */
     public const DN_SPEC =
         '(?:'.
@@ -263,9 +263,9 @@ class Rfc2849 extends AbstractRuleSet
      *
      * Capture groups:
      *
-     *  - *value_safe*: only set if the value-spec specifies SAFE-STRING using single colon ``":"`` notation,
-     *  - *value_b64*: only set if the value-space specifies BASE64-STRING using double colon ``"::"`` notation,
-     *  - *value_url*: only set if the value-spec specifies URL using colon-less-than ``":<"`` notation.
+     *  - ``value_safe``: only set if the value-spec specifies SAFE-STRING using single colon ``":"`` notation,
+     *  - ``value_b64``: only set if the value-space specifies BASE64-STRING using double colon ``"::"`` notation,
+     *  - ``value_url``: only set if the value-spec specifies URL using colon-less-than ``":<"`` notation.
      *
      *
      * If *value_url* is present, then the capture groups of
@@ -289,9 +289,9 @@ class Rfc2849 extends AbstractRuleSet
      *
      * Capture groups:
      *
-     *  - *ctl_type*: always set, contains OID of the control,
-     *  - *ctl_crit*: only set if the matched string defines criticality as ``true`` or ``false``,
-     *  - *ctl_value_spec*: only set if the value-spec part is present in the matched string.
+     *  - ``ctl_type``: always set, contains OID of the control,
+     *  - ``ctl_crit``: only set if the matched string defines criticality as ``true`` or ``false``,
+     *  - ``ctl_value_spec``: only set if the value-spec part is present in the matched string.
      *
      *
      * If *ctl_value_spec* is present, then also the capture groups of
@@ -308,6 +308,10 @@ class Rfc2849 extends AbstractRuleSet
     /**
      * [RFC2849](https://tools.ietf.org/html/rfc2849):
      * ``attrval-spec = AttributeDescription value-spec SEP``
+     *
+     * Capture groups:
+     *
+     *  - ``attr_desc``: always set, contains the attribute description (attribute type with options).
      */
     public const ATTRVAL_SPEC = '(?:'.self::ATTRIBUTE_DESCRIPTION.self::VALUE_SPEC.self::SEP.')';
 

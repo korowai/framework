@@ -196,7 +196,7 @@ class AttrValSpecRuleTest extends TestCase
                 //            00000000001111111111222222222233333
                 //            01234567890123456789012345678901234
                 'source' => ['', 0],
-                'tail' => [],
+                'args' => [],
                 'expect' => [
                     'init' => true,
                     'result' => false,
@@ -217,7 +217,7 @@ class AttrValSpecRuleTest extends TestCase
                 //            00000000001111111111222222222233333
                 //            01234567890123456789012345678901234
                 'source' => ['', 0],
-                'tail' => [true],
+                'args' => [true],
                 'expect' => [
                     'init' => true,
                     'result' => false,
@@ -233,7 +233,7 @@ class AttrValSpecRuleTest extends TestCase
                 //            00000000001111111111222222222233333
                 //            01234567890123456789012345678901234
                 'source' => ['attrType;: FOO', 0],
-                'tail' => [true],
+                'args' => [true],
                 'expect' => [
                     'init' => true,
                     'result' => false,
@@ -249,7 +249,7 @@ class AttrValSpecRuleTest extends TestCase
                 //            00000000001111111111222222222233333
                 //            01234567890123456789012345678901234
                 'source' => ['attrType', 0],
-                'tail' => [],
+                'args' => [],
                 'expect' => [
                     'init' => true,
                     'result' => false,
@@ -270,7 +270,7 @@ class AttrValSpecRuleTest extends TestCase
                 //            00000000001111111111222222222233333
                 //            01234567890123456789012345678901234
                 'source' => ['attrType', 0],
-                'tail' => [true],
+                'args' => [true],
                 'expect' => [
                     'init' => true,
                     'result' => false,
@@ -286,7 +286,7 @@ class AttrValSpecRuleTest extends TestCase
                 //            00000000001111111111222222222233333
                 //            01234567890123456789012345678901234
                 'source' => ['attrType: FOO', 0],
-                'tail' => [],
+                'args' => [],
                 'expect' => [
                     'result' => true,
                     'value' => [
@@ -308,7 +308,7 @@ class AttrValSpecRuleTest extends TestCase
                 //            00000000001111111111222222222233333
                 //            01234567890123456789012345678901234
                 'source' => ['attrType;option-1: FOO', 0],
-                'tail' => [],
+                'args' => [],
                 'expect' => [
                     'result' => true,
                     'value' => [
@@ -330,7 +330,7 @@ class AttrValSpecRuleTest extends TestCase
                 //            0000000000111111111222222222233333
                 //            0123456789012356789012345678901234
                 'source' => ['attrType: FOOŁXXX', 0],
-                'tail' => [],
+                'args' => [],
                 'expect' => [
                     'init' => true,
                     'result' => false,
@@ -351,7 +351,7 @@ class AttrValSpecRuleTest extends TestCase
                 //            000000000011111111112222222222333333
                 //            012345678901234567890123456789012345
                 'source' => ['attrType:: xbvDs8WCdGEgxYHDs2TFug==', 0],
-                'tail' => [],
+                'args' => [],
                 'expect' => [
                     'result' => true,
                     'value' => [
@@ -373,7 +373,7 @@ class AttrValSpecRuleTest extends TestCase
                 //            00000000001111111112222222222333333
                 //            01234567890123457890123456789012345
                 'source' => ['attrType:: xbvDł8W', 0],
-                'tail' => [],
+                'args' => [],
                 'expect' => [
                     'init' => true,
                     'result' => false,
@@ -394,7 +394,7 @@ class AttrValSpecRuleTest extends TestCase
                 //            00000000001111111112222222222333333
                 //            01234567890123457890123456789012345
                 'source' => ['attrType:: R', 0],
-                'tail' => [],
+                'args' => [],
                 'expect' => [
                     'init' => true,
                     'result' => false,
@@ -415,7 +415,7 @@ class AttrValSpecRuleTest extends TestCase
                 //            000000000011111111112222222222333333333
                 //            012345678901234567890123456789012345678
                 'source' => ['attrType:< file:///home/jsmith/foo.txt', 0],
-                'tail' => [],
+                'args' => [],
                 'expect' => [
                     'result' => true,
                     'value' => [
@@ -447,7 +447,7 @@ class AttrValSpecRuleTest extends TestCase
                 //            000000000011111111112222222222333333333
                 //            012345678901234567890123456789012345678
                 'source' => ['attrType:< ##', 0],
-                'tail' => [],
+                'args' => [],
                 'expect' => [
                     'init' => true,
                     'result' => false,

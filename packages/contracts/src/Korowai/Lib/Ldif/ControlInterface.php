@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Lib/Ldif/AttrValInterface.php
+ * @file src/Korowai/Lib/Ldif/ControlInterface.php
  *
  * This file is part of the Korowai package
  *
@@ -16,25 +16,31 @@ namespace Korowai\Lib\Ldif;
 /**
  * Interface for semantic value of the
  * [RFC2849](https://tools.ietf.org/html/rfc2849)
- * *attrval-spec* rule.
+ * *control* rule.
  */
-interface AttrValInterface
+interface ControlInterface
 {
     /**
      * Returns [RFC2849](https://tools.ietf.org/html/rfc2849#page-3)
-     * AttributeDescription string consisting of attribute type and
-     * options.
+     * control type OID as string.
      *
      * @return string
      */
-    public function getAttribute() : string;
+    public function getOid() : string;
 
     /**
-     * Returns the object representing attribute value.
+     * Returns the control's criticality as bool, or nul (if not specified).
      *
-     * @return ValueInterface
+     * @return bool|null
      */
-    public function getValueObject() : ValueInterface;
+    public function getCriticality() : ?bool;
+
+    /**
+     * Returns an object representing control's value, or null (if not set).
+     *
+     * @return ValueInterface|null
+     */
+    public function getValueObject() : ?ValueInterface;
 }
 
 // vim: syntax=php sw=4 ts=4 et:

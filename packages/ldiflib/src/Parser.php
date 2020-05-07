@@ -217,8 +217,33 @@ class Parser implements ParserInterface
     /**
      * @todo Write documentation
      */
-    public function parseChangeRecord(State $state) : bool
+    public function parseChangeRecord(State $state, bool $tryOnly = false) : bool
     {
+        // FIXME: remove this line when implemented
+        throw new \BadMethodCallException('not implemented');
+
+        $cursor = $state->getCursor();
+        $begin = $cursor->getClonedLocation();
+
+        //
+        // dn-spec SEP *control changerecord
+        //
+        if (!$this->dnSpecRule($tryOnly)->parse($state, $dn) ||
+            !$this->sepRule()->parse($state)) {
+            return false;
+        }
+
+        $prevErrCount = count($state->getErrors());
+
+        // TODO: implement
+
+        /*
+        if (!$this->controlRule() && (count($state->getErrors()) > $prevErrCount)) {
+            return false;
+        }
+        */
+
+        return true;
     }
 
     /**

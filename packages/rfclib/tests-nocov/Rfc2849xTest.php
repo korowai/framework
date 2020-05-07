@@ -43,7 +43,105 @@ class Rfc2849xTest extends TestCase
     public function test__simpleProductions()
     {
         $this->assertSame('(?:'.Rfc2849::SEP.'|$)',                                     Rfc2849x::SEP_X);
-        $this->assertSame('(?:[^'.Rfc2849::CR.Rfc2849::LF.'$]|'.Rfc2849::CR.'(?!'.Rfc2849::LF.'))', Rfc2849x::NOT_SEP_X);
+        $this->assertSame('(?:[^'.Rfc2849::CR.Rfc2849::LF.']|'.Rfc2849::CR.'(?!'.Rfc2849::LF.'))', Rfc2849x::NOT_SEP_X);
+    }
+
+    public function SEP_X__cases()
+    {
+        return [
+            [
+                "\n",
+                [
+                    ["\n", 0]
+                ]
+            ],
+            [
+                "\r\n",
+                [
+                    ["\r\n", 0]
+                ]
+            ],
+            [
+                "",
+                [
+                    ["", 0]
+                ]
+            ],
+        ];
+    }
+
+    public function non__SEP_X__cases()
+    {
+        $strings = ["x", "\r", "\r\t", "\rx"];
+        return static::stringsToPregTuples($strings);
+    }
+
+    /**
+     * @dataProvider SEP_X__cases
+     */
+    public function test__SEP_X__matches(string $string, array $pieces = [])
+    {
+        $this->assertRfcMatches($string, 'SEP_X', $pieces);
+    }
+
+    /**
+     * @dataProvider non__SEP_X__cases
+     */
+    public function test__SEP_X__notMatches(string $string)
+    {
+        $this->assertRfcNotMatches($string, 'SEP_X');
+    }
+
+    public function NOT_SEP_X__cases()
+    {
+        return [
+            [
+                "x",
+                [
+                    ["x", 0]
+                ]
+            ],
+            [
+                "\r",
+                [
+                    ["\r", 0]
+                ]
+            ],
+            [
+                "\r\t",
+                [
+                    ["\r", 0]
+                ]
+            ],
+            [
+                "$",
+                [
+                    ["$", 0]
+                ]
+            ],
+        ];
+    }
+
+    public function non__NOT_SEP_X__cases()
+    {
+        $strings = ["\n", "\r\n", "\n foo", ""];
+        return static::stringsToPregTuples($strings);
+    }
+
+    /**
+     * @dataProvider NOT_SEP_X__cases
+     */
+    public function test__NOT_SEP_X__matches(string $string, array $pieces = [])
+    {
+        $this->assertRfcMatches($string, 'NOT_SEP_X', $pieces);
+    }
+
+    /**
+     * @dataProvider non__NOT_SEP_X__cases
+     */
+    public function test__NOT_SEP_X__notMatches(string $string)
+    {
+        $this->assertRfcNotMatches($string, 'NOT_SEP_X');
     }
 
     //
@@ -325,7 +423,7 @@ class Rfc2849xTest extends TestCase
             //   0123
                 ":\n",
                 [
-                    0 => [":", 0],
+//                    0 => [":", 0],
                     'value_safe' => ['', 1],
                     'value_b64' => false,
                     'value_url' => false,
@@ -339,7 +437,7 @@ class Rfc2849xTest extends TestCase
             //   01234
                 "::\n",
                 [
-                    0 => ["::", 0],
+//                    0 => ["::", 0],
                     'value_safe' => false,
                     'value_b64' => ['', 2],
                     'value_url' => false,
@@ -353,7 +451,7 @@ class Rfc2849xTest extends TestCase
             //   01 23
                 ":<\n",
                 [
-                    0 => [":<", 0],
+//                    0 => [":<", 0],
                     'value_safe' => false,
                     'value_b64' => false,
                     'value_url' => ['', 2],
@@ -367,7 +465,7 @@ class Rfc2849xTest extends TestCase
             //   012 34
                 ":</\n",
                 [
-                    0 => [":</", 0],
+//                    0 => [":</", 0],
                     'value_safe' => false,
                     'value_b64' => false,
                     'value_url' => ['/', 2],
@@ -381,7 +479,7 @@ class Rfc2849xTest extends TestCase
             //   01234567 89
                 ":<file:/\n",
                 [
-                    0 => [":<file:/", 0],
+//                    0 => [":<file:/", 0],
                     'value_safe' => false,
                     'value_b64' => false,
                     'value_url' => ['file:/', 2],
@@ -395,7 +493,7 @@ class Rfc2849xTest extends TestCase
             //   012 34
                 ":<#\n",
                 [
-                    0 => [":<#", 0],
+//                    0 => [":<#", 0],
                     'value_safe' => false,
                     'value_b64' => false,
                     'value_url' => ['#', 2],
@@ -409,7 +507,7 @@ class Rfc2849xTest extends TestCase
             //   0123456
                 ": :foo",
                 [
-                    0 => [": :foo", 0],
+//                    0 => [": :foo", 0],
                     'value_safe' => false,
                     'value_b64' => false,
                     'value_url' => false,
@@ -423,7 +521,7 @@ class Rfc2849xTest extends TestCase
             //   01234567 89
                 ": łuszcz\n",
                 [
-                    0 => [": łuszcz", 0],
+//                    0 => [": łuszcz", 0],
                     'value_safe' => false,
                     'value_b64' => false,
                     'value_url' => false,
@@ -437,7 +535,7 @@ class Rfc2849xTest extends TestCase
             //   012345678 90
                 ": tłuszcz\n",
                 [
-                    0 => [": tłuszcz", 0],
+//                    0 => [": tłuszcz", 0],
                     'value_safe' => false,
                     'value_b64' => false,
                     'value_url' => false,
@@ -451,7 +549,7 @@ class Rfc2849xTest extends TestCase
             //   0123456
                 ":::foo",
                 [
-                    0 => [":::foo", 0],
+//                    0 => [":::foo", 0],
                     'value_safe' => false,
                     'value_b64' => false,
                     'value_url' => false,
@@ -465,7 +563,7 @@ class Rfc2849xTest extends TestCase
             //   01234567
                 ":: :foo",
                 [
-                    0 => [":: :foo", 0],
+//                    0 => [":: :foo", 0],
                     'value_safe' => false,
                     'value_b64' => false,
                     'value_url' => false,
@@ -479,7 +577,7 @@ class Rfc2849xTest extends TestCase
             //   012345678 90
                 ":: A1@x=+\n",
                 [
-                    0 => [":: A1@x=+", 0],
+//                    0 => [":: A1@x=+", 0],
                     'value_safe' => false,
                     'value_b64' => false,
                     'value_url' => false,
@@ -493,7 +591,7 @@ class Rfc2849xTest extends TestCase
             //   0123 45
                 ":<# \n",
                 [
-                    0 => [":<# ", 0],
+//                    0 => [":<# ", 0],
                     'value_safe' => false,
                     'value_b64' => false,
                     'value_url' => false,
@@ -507,7 +605,7 @@ class Rfc2849xTest extends TestCase
             //   01234567 89
                 ":<##  xx\n",
                 [
-                    0 => [":<##  xx", 0],
+//                    0 => [":<##  xx", 0],
                     'value_safe' => false,
                     'value_b64' => false,
                     'value_url' => false,
@@ -521,7 +619,7 @@ class Rfc2849xTest extends TestCase
             //   012345678901234567890 1
                 ":<http://with spaces/\n",
                 [
-                    0 => [":<http://with spaces/", 0],
+//                    0 => [":<http://with spaces/", 0],
                     'value_safe' => false,
                     'value_b64' => false,
                     'value_url' => false,
@@ -565,6 +663,376 @@ class Rfc2849xTest extends TestCase
     {
         $this->assertRfcNotMatches($string, 'VALUE_SPEC_X');
     }
+
+    //
+    // CONTROL_X
+    //
+    public static function CONTROL_X__cases()
+    {
+        $cases = [
+            [
+            //   012345678
+                "control:",
+                [
+                    'ctl_type' => false,
+                    'ctl_crit' => false,
+                    'value_safe' => false,
+                    'value_b64' => false,
+                    'value_url' => false,
+                    'value_safe_error' => false,
+                    'value_b64_error' => false,
+                    'value_url_error' => false,
+                    'ctl_type_error' => ['', 8],
+                    'ctl_crit_error' => false,
+                ]
+            ],
+            [
+            //   0123456789
+                "control: ",
+                [
+                    'ctl_type' => false,
+                    'ctl_crit' => false,
+                    'value_safe' => false,
+                    'value_b64' => false,
+                    'value_url' => false,
+                    'value_safe_error' => false,
+                    'value_b64_error' => false,
+                    'value_url_error' => false,
+                    'ctl_type_error' => ['', 9],
+                    'ctl_crit_error' => false,
+                ]
+            ],
+            [
+            //   0000000000011
+            //   0123456789012
+                "control: #$%",
+                [
+                    'ctl_type' => false,
+                    'ctl_crit' => false,
+                    'value_safe' => false,
+                    'value_b64' => false,
+                    'value_url' => false,
+                    'value_safe_error' => false,
+                    'value_b64_error' => false,
+                    'value_url_error' => false,
+                    'ctl_type_error' => ['#$%', 9],
+                    'ctl_crit_error' => false,
+                ]
+            ],
+            [
+            //   0000000000011
+            //   0123456789012
+                "control: :",
+                [
+                    'ctl_type' => false,
+                    'ctl_crit' => false,
+                    'value_safe' => false,
+                    'value_b64' => false,
+                    'value_url' => false,
+                    'value_safe_error' => false,
+                    'value_b64_error' => false,
+                    'value_url_error' => false,
+                    'ctl_type_error' => [':', 9],
+                    'ctl_crit_error' => false,
+                ]
+            ],
+            [
+            //   000000000001111
+            //   012345678901234
+                "control: :asdf",
+                [
+                    'ctl_type' => false,
+                    'ctl_crit' => false,
+                    'value_safe' => false,
+                    'value_b64' => false,
+                    'value_url' => false,
+                    'value_safe_error' => false,
+                    'value_b64_error' => false,
+                    'value_url_error' => false,
+                    'ctl_type_error' => [':asdf', 9],
+                    'ctl_crit_error' => false,
+                ]
+            ],
+            [
+            //   0000000000011
+            //   0123456789012
+                "control: 1.2.",
+                [
+                    'ctl_type' => false,
+                    'ctl_crit' => false,
+                    'value_safe' => false,
+                    'value_b64' => false,
+                    'value_url' => false,
+                    'value_safe_error' => false,
+                    'value_b64_error' => false,
+                    'value_url_error' => false,
+                    'ctl_type_error' => ['.', 12],
+                    'ctl_crit_error' => false,
+                ]
+            ],
+            [
+            //   0000000000011
+            //   0123456789012
+                "control: 1.2. ",
+                [
+                    'ctl_type' => false,
+                    'ctl_crit' => false,
+                    'value_safe' => false,
+                    'value_b64' => false,
+                    'value_url' => false,
+                    'value_safe_error' => false,
+                    'value_b64_error' => false,
+                    'value_url_error' => false,
+                    'ctl_type_error' => ['. ', 12],
+                    'ctl_crit_error' => false,
+                ]
+            ],
+            [
+            //   0000000000011111111
+            //   0123456789012345678
+                "control: 1.2. true",
+                [
+                    'ctl_type' => false,
+                    'ctl_crit' => false,
+                    'value_safe' => false,
+                    'value_b64' => false,
+                    'value_url' => false,
+                    'value_safe_error' => false,
+                    'value_b64_error' => false,
+                    'value_url_error' => false,
+                    'ctl_type_error' => ['. true', 12],
+                    'ctl_crit_error' => false,
+                ]
+            ],
+            [
+            //   0000000000011
+            //   0123456789012
+                "control: 1.2. ",
+                [
+                    'ctl_type' => false,
+                    'ctl_crit' => false,
+                    'value_safe' => false,
+                    'value_b64' => false,
+                    'value_url' => false,
+                    'value_safe_error' => false,
+                    'value_b64_error' => false,
+                    'value_url_error' => false,
+                    'ctl_type_error' => ['. ', 12],
+                    'ctl_crit_error' => false,
+                ]
+            ],
+            [
+            //   0000000000011111
+            //   0123456789012345
+                "control: 1.2.33",
+                [
+                    'ctl_type' => ['1.2.33', 9],
+                    'ctl_crit' => false,
+                    'value_safe' => false,
+                    'value_b64' => false,
+                    'value_url' => false,
+                    'value_safe_error' => false,
+                    'value_b64_error' => false,
+                    'value_url_error' => false,
+                    'ctl_type_error' => false,
+                    'ctl_crit_error' => false,
+                ]
+            ],
+            [
+            //   00000000000111111
+            //   01234567890123456
+                "control: 1.2.33 ",
+                [
+                    'ctl_type' => false,
+                    'ctl_crit' => false,
+                    'value_safe' => false,
+                    'value_b64' => false,
+                    'value_url' => false,
+                    'value_safe_error' => false,
+                    'value_b64_error' => false,
+                    'value_url_error' => false,
+                    'ctl_type_error' => false,
+                    'ctl_crit_error' => ['', 16],
+                ]
+            ],
+            [
+            //   00000000000111111111
+            //   01234567890123456789
+                "control: 1.2.33 true",
+                [
+                    'ctl_type' => ['1.2.33', 9],
+                    'ctl_crit' => ['true', 16],
+                    'value_safe' => false,
+                    'value_b64' => false,
+                    'value_url' => false,
+                    'value_safe_error' => false,
+                    'value_b64_error' => false,
+                    'value_url_error' => false,
+                    'ctl_type_error' => false,
+                    'ctl_crit_error' => false,
+                ]
+            ],
+            [
+            //   00000000000111111111
+            //   01234567890123456789
+                "control: 1.2.33 false",
+                [
+                    'ctl_type' => ['1.2.33', 9],
+                    'ctl_crit' => ['false', 16],
+                    'value_safe' => false,
+                    'value_b64' => false,
+                    'value_url' => false,
+                    'value_safe_error' => false,
+                    'value_b64_error' => false,
+                    'value_url_error' => false,
+                    'ctl_type_error' => false,
+                    'ctl_crit_error' => false,
+                ]
+            ],
+            [
+            //   00000000000111111111
+            //   01234567890123456789
+                "control: 1.2.33 xyz",
+                [
+                    'ctl_type' => false,
+                    'ctl_crit' => false,
+                    'value_safe' => false,
+                    'value_b64' => false,
+                    'value_url' => false,
+                    'value_safe_error' => false,
+                    'value_b64_error' => false,
+                    'value_url_error' => false,
+                    'ctl_type_error' => false,
+                    'ctl_crit_error' => ['xyz', 16],
+                ]
+            ],
+            [
+            //   000000000001111111112222
+            //   012345678901234567890123
+                "control: 1.2.33 truexyz",
+                [
+                    'ctl_type' => false,
+                    'ctl_crit' => false,
+                    'value_safe' => false,
+                    'value_b64' => false,
+                    'value_url' => false,
+                    'value_safe_error' => false,
+                    'value_b64_error' => false,
+                    'value_url_error' => false,
+                    'ctl_type_error' => false,
+                    'ctl_crit_error' => ['truexyz', 16],
+                ]
+            ],
+            [
+            //   000000000001111111112222
+            //   012345678901234567890123
+                "control: 1.2.33 falsexyz",
+                [
+                    'ctl_type' => false,
+                    'ctl_crit' => false,
+                    'value_safe' => false,
+                    'value_b64' => false,
+                    'value_url' => false,
+                    'value_safe_error' => false,
+                    'value_b64_error' => false,
+                    'value_url_error' => false,
+                    'ctl_type_error' => false,
+                    'ctl_crit_error' => ['falsexyz', 16],
+                ]
+            ],
+            [
+            //   000000000001111111112222
+            //   012345678901234567890123
+                "control: 1.2.33 :asdf",
+                [
+                    'ctl_type' => false,
+                    'ctl_crit' => false,
+                    'value_safe' => false,
+                    'value_b64' => false,
+                    'value_url' => false,
+                    'value_safe_error' => false,
+                    'value_b64_error' => false,
+                    'value_url_error' => false,
+                    'ctl_type_error' => false,
+                    'ctl_crit_error' => [':asdf', 16],
+                ]
+            ],
+            [
+            //   000000000001111111112222
+            //   012345678901234567890123
+                "control: 1.2.33: asdf",
+                [
+                    'ctl_type' => ['1.2.33', 9],
+                    'ctl_crit' => false,
+                    'value_safe' => ['asdf', 17],
+                    'value_b64' => false,
+                    'value_url' => false,
+                    'value_safe_error' => false,
+                    'value_b64_error' => false,
+                    'value_url_error' => false,
+                    'ctl_type_error' => false,
+                    'ctl_crit_error' => false,
+                ]
+            ],
+            [
+            //   000000000001111111112222222
+            //   012345678901234567890123456
+                "control: 1.2.33 true: asdf",
+                [
+                    'ctl_type' => ['1.2.33', 9],
+                    'ctl_crit' => ['true', 16],
+                    'value_safe' => ['asdf', 22],
+                    'value_b64' => false,
+                    'value_url' => false,
+                    'value_safe_error' => false,
+                    'value_b64_error' => false,
+                    'value_url_error' => false,
+                    'ctl_type_error' => false,
+                    'ctl_crit_error' => false,
+                ]
+            ],
+        ];
+
+        $inheritedCases = [];
+        foreach (static::VALUE_SPEC_X__cases() as $case) {
+            $captures = [
+                'ctl_type' => ['1.22.345', 9],
+                'ctl_crit' => false,
+                'ctl_type_error' => false,
+                'ctl_crit_error' => false,
+            ];
+            $inheritedCases[] = static::transformPregTuple($case, [
+                //           000000000011111111
+                //           012345678901234567
+                'prefix' => 'control: 1.22.345',
+                'merge' => $captures
+            ]);
+        }
+        return array_merge($inheritedCases, $cases);
+    }
+
+    public static function non__CONTROL_X__cases()
+    {
+        return [
+        ];
+    }
+
+    /**
+     * @dataProvider CONTROL_X__cases
+     */
+    public function test__CONTROL_X__matches(string $string, array $pieces = [])
+    {
+        $this->assertRfcMatches($string, 'CONTROL_X', $pieces);
+    }
+
+    /**
+     * @dataProvider non__CONTROL_X__cases
+     */
+    public function test__CONTROL_X__notMatches(string $string)
+    {
+        $this->assertRfcNotMatches($string, 'CONTROL_X');
+    }
+
 
     //
     // ATTRVAL_SPEC_X

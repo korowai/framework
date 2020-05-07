@@ -65,6 +65,9 @@ trait PregUtils
     /**
      * Takes an array of capture groups, as returned by ``preg_match()``,
      * and transforms all captures with ``shiftPregCaptures($captures, strlen($prefix))``.
+     * The capture group ``$captures[0]``, if present, is treated in a slightly
+     * different way - it's being prefixed with *$prefix* and its its offset
+     * (``$captures[0][1]``) is preserved.
      *
      * @param  array $captures
      * @param  string $prefix

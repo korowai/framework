@@ -17,7 +17,7 @@ use Korowai\Lib\Ldif\Traits\HasAttrValSpecs;
 
 /**
  * Represents [RFC2849](https://tools.ietf.org/html/rfc2849)
- * ldif-change-record of type change-add.
+ * *ldif-change-record* of type *change-add*.
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
@@ -36,6 +36,14 @@ class AddRecord extends AbstractRecord implements AddRecordInterface
     {
         parent::initAbstractRecord($snippet, $dn);
         $this->setAttrValSpecs($attrValSpecs);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getChangeType() : string
+    {
+        return 'add';
     }
 
     /**

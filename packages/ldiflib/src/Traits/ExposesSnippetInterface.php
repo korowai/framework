@@ -23,6 +23,11 @@ trait ExposesSnippetInterface
 {
     use ExposesLocationInterface;
 
+    /**
+     * Returns the encapsulated instance of SnippetInterface.
+     *
+     * @return SnippetInterface|null
+     */
     abstract public function getSnippet() : ?SnippetInterface;
 
     /**
@@ -36,7 +41,9 @@ trait ExposesSnippetInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Returns the snippet length in bytes.
+     *
+     * @return int
      */
     public function getLength() : int
     {
@@ -44,7 +51,9 @@ trait ExposesSnippetInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Returns the end offset of the snippet in bytes.
+     *
+     * @return int
      */
     public function getEndOffset() : int
     {
@@ -52,7 +61,9 @@ trait ExposesSnippetInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Returns the length in bytes of the snippet mapped to source string.
+     *
+     * @return int
      */
     public function getSourceLength() : int
     {
@@ -60,7 +71,9 @@ trait ExposesSnippetInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Returns the end offset in bytes of the snippet mapped to source string.
+     *
+     * @return int
      */
     public function getSourceEndOffset() : int
     {
@@ -68,7 +81,9 @@ trait ExposesSnippetInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Returns the length in characters of the snippet mapped to source string.
+     *
+     * @return int
      */
     public function getSourceCharLength(string $encoding = null) : int
     {
@@ -76,7 +91,9 @@ trait ExposesSnippetInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Returns the end offset in characters of the snippet mapped to source string.
+     *
+     * @return int
      */
     public function getSourceCharEndOffset(string $encoding = null) : int
     {

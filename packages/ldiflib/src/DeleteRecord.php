@@ -15,7 +15,7 @@ namespace Korowai\Lib\Ldif;
 
 /**
  * Represents [RFC2849](https://tools.ietf.org/html/rfc2849)
- * ldif-change-record of type change-delete.
+ * *ldif-change-record* of type *change-delete*.
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
@@ -31,6 +31,14 @@ class DeleteRecord extends AbstractRecord implements DeleteRecordInterface
     public function __construct(SnippetInterface $snippet, string $dn)
     {
         parent::initAbstractRecord($snippet, $dn);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getChangeType() : string
+    {
+        return "delete";
     }
 
     /**

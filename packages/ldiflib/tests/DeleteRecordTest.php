@@ -44,6 +44,7 @@ class DeleteRecordTest extends TestCase
 
         $record = new DeleteRecord($snippet, "DN");
 
+        $this->assertSame("delete", $record->getChangeType());
         $this->assertSame($snippet, $record->getSnippet());
         $this->assertSame("DN", $record->getDn());
     }

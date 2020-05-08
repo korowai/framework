@@ -50,6 +50,7 @@ class AddRecordTest extends TestCase
 
         $record = new AddRecord($snippet, "DN", ['attrVal1']);
 
+        $this->assertSame("add", $record->getChangeType());
         $this->assertSame($snippet, $record->getSnippet());
         $this->assertSame("DN", $record->getDn());
         $this->assertSame(['attrVal1'], $record->getAttrValSpecs());

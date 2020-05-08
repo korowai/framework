@@ -22,18 +22,6 @@ namespace Korowai\Lib\Ldif;
  */
 interface ModDnRecordInterface extends ChangeRecordInterface
 {
-    public const TYPE_MODRDN = 'moddn';
-    public const TYPE_MODDN = 'modrdn';
-
-    /**
-     * Returns the type of modification, must be one of the
-     * ``ModDnRecordInterface::TYPE_MODRDN`` or
-     * ``ModDnRecordInterface::TYPE_MODDN``.
-     *
-     * @return string
-     */
-    public function getModDnType() : string;
-
     /**
      * Returns the string value of new RDN.
      *
@@ -42,7 +30,7 @@ interface ModDnRecordInterface extends ChangeRecordInterface
     public function getNewRdn() : string;
 
     /**
-     * Returns the boolean value of the "deleteoldrdn:" field.
+     * Returns boolean flag determining whether to delete old RDN or not.
      *
      * @return bool
      */

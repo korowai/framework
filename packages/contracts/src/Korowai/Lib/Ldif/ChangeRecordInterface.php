@@ -21,6 +21,19 @@ namespace Korowai\Lib\Ldif;
  */
 interface ChangeRecordInterface extends RecordInterface
 {
+    /**
+     * Returns the change type as string.
+     *
+     * The returned value is one of
+     *
+     * - ``"add"``,
+     * - ``"delete"``,
+     * - ``"modrdn"`` or ``"moddn"``,
+     * - ``"modify"``.
+     *
+     * @return string
+     */
+    public function getChangeType() : string;
 }
 
 // vim: syntax=php sw=4 ts=4 et:

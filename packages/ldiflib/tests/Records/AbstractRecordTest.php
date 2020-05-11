@@ -43,9 +43,9 @@ class AbstractRecordTest extends TestCase
         $record = $this->getMockBuilder(AbstractRecord::class)
                        ->getMockForAbstractClass();
 
-        $this->assertSame($record, $record->initAbstractRecord($snippet, "DN"));
+        $this->assertSame($record, $record->initAbstractRecord($snippet, "dc=example,dc=org"));
         $this->assertSame($snippet, $record->getSnippet());
-        $this->assertSame("DN", $record->getDn());
+        $this->assertSame("dc=example,dc=org", $record->getDn());
     }
 
     public function test__setSnippet()
@@ -64,8 +64,8 @@ class AbstractRecordTest extends TestCase
         $record = $this->getMockBuilder(AbstractRecord::class)
                        ->getMockForAbstractClass();
 
-        $this->assertSame($record, $record->setDn("DN"));
-        $this->assertSame("DN", $record->getDn());
+        $this->assertSame($record, $record->setDn("dc=example,dc=org"));
+        $this->assertSame("dc=example,dc=org", $record->getDn());
     }
 }
 

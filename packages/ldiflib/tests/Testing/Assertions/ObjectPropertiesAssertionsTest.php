@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Tests\Lib\Ldif\Assertions;
+namespace Korowai\Tests\Testing\Lib\Ldif\Assertions;
 
 use Korowai\Testing\TestCase;
 use Korowai\Testing\Lib\Ldif\Traits\ObjectProperties;

@@ -11,10 +11,10 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Tests\Lib\Ldif;
+namespace Korowai\Tests\Testing\Lib\Ldif\Traits;
 
 use Korowai\Testing\TestCase;
-use Korowai\Testing\Lib\Ldif\ParserTestHelpers;
+use Korowai\Testing\Lib\Ldif\Traits\ParserTestHelpers;
 use Korowai\Lib\Ldif\Input;
 use Korowai\Lib\Ldif\Cursor;
 use Korowai\Lib\Ldif\ParserState;

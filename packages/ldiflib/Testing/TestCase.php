@@ -15,6 +15,7 @@ namespace Korowai\Testing\Lib\Ldif;
 
 use Korowai\Testing\Lib\Ldif\Assertions\ObjectPropertiesAssertions;
 use Korowai\Testing\Lib\Ldif\Traits\ObjectProperties;
+use Korowai\Testing\Lib\Ldif\Traits\ParserTestHelpers;
 
 /**
  * Abstract base class for korowai/ldiflib unit tests.

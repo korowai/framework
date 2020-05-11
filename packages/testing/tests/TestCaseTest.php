@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Tests\Tests\Testing;
+namespace Korowai\Tests\Testing;
 
 use Korowai\Testing\TestCase;
 use Korowai\Testing\Assertions\ClassAssertions;

@@ -1,6 +1,6 @@
 <?php
 /**
- * @file Testing/ParserTestHelpers.php
+ * @file Testing/Traits/ParserTestHelpers.php
  *
  * This file is part of the Korowai package
  *
@@ -11,14 +11,12 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Testing\Lib\Ldif;
+namespace Korowai\Testing\Lib\Ldif\Traits;
 
 use Korowai\Lib\Ldif\ParserState;
 use Korowai\Lib\Ldif\Preprocessor;
 use Korowai\Lib\Ldif\Cursor;
 use Korowai\Lib\Ldif\Input;
-
-use Korowai\Testing\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

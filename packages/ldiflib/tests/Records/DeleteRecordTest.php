@@ -1,6 +1,6 @@
 <?php
 /**
- * @file tests/DeleteRecordTest.php
+ * @file tests/Records/DeleteRecordTest.php
  *
  * This file is part of the Korowai package
  *
@@ -11,12 +11,12 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Tests\Lib\Ldif;
+namespace Korowai\Tests\Lib\Ldif\Records;
 
-use Korowai\Lib\Ldif\DeleteRecord;
+use Korowai\Lib\Ldif\Records\DeleteRecord;
+use Korowai\Lib\Ldif\Records\AbstractRecord;
 use Korowai\Lib\Ldif\DeleteRecordInterface;
 use Korowai\Lib\Ldif\RecordVisitorInterface;
-use Korowai\Lib\Ldif\AbstractRecord;
 use Korowai\Lib\Ldif\SnippetInterface;
 
 use Korowai\Testing\Lib\Ldif\TestCase;

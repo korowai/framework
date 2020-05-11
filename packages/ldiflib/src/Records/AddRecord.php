@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/DeleteRecord.php
+ * @file src/Records/AddRecord.php
  *
  * This file is part of the Korowai package
  *
@@ -11,16 +11,23 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Lib\Ldif;
+namespace Korowai\Lib\Ldif\Records;
+
+use Korowai\Lib\Ldif\AddRecordInterface;
+use Korowai\Lib\Ldif\SnippetInterface;
+use Korowai\Lib\Ldif\RecordVisitorInterface;
+use Korowai\Lib\Ldif\Traits\HasAttrValSpecs;
 
 /**
  * Represents [RFC2849](https://tools.ietf.org/html/rfc2849)
- * *ldif-change-record* of type *change-delete*.
+ * *ldif-change-record* of type *change-add*.
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class DeleteRecord extends AbstractRecord implements DeleteRecordInterface
+class AddRecord extends AbstractRecord implements AddRecordInterface
 {
+    use HasAttrValSpecs;
+
     /**
      * Initializes the object.
      *
@@ -28,9 +35,10 @@ class DeleteRecord extends AbstractRecord implements DeleteRecordInterface
      * @param  string $dn
      * @param  array $attrValSpecs
      */
-    public function __construct(SnippetInterface $snippet, string $dn)
+    public function __construct(SnippetInterface $snippet, string $dn, array $attrValSpecs)
     {
         parent::initAbstractRecord($snippet, $dn);
+        $this->setAttrValSpecs($attrValSpecs);
     }
 
     /**
@@ -38,7 +46,7 @@ class DeleteRecord extends AbstractRecord implements DeleteRecordInterface
      */
     public function getChangeType() : string
     {
-        return "delete";
+        return 'add';
     }
 
     /**
@@ -46,7 +54,7 @@ class DeleteRecord extends AbstractRecord implements DeleteRecordInterface
      */
     public function acceptRecordVisitor(RecordVisitorInterface $visitor)
     {
-        return $visitor->visitDeleteRecord($this);
+        return $visitor->visitAddRecord($this);
     }
 }
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/AttrValRecord.php
+ * @file src/Records/AttrValRecord.php
  *
  * This file is part of the Korowai package
  *
@@ -11,8 +11,11 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Lib\Ldif;
+namespace Korowai\Lib\Ldif\Records;
 
+use Korowai\Lib\Ldif\AttrValRecordInterface;
+use Korowai\Lib\Ldif\SnippetInterface;
+use Korowai\Lib\Ldif\RecordVisitorInterface;
 use Korowai\Lib\Ldif\Traits\HasAttrValSpecs;
 
 /**

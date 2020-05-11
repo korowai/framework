@@ -1,6 +1,6 @@
 <?php
 /**
- * @file tests/AbstractRecordTest.php
+ * @file tests/Records/AbstractRecordTest.php
  *
  * This file is part of the Korowai package
  *
@@ -11,9 +11,9 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Tests\Lib\Ldif;
+namespace Korowai\Tests\Lib\Ldif\Records;
 
-use Korowai\Lib\Ldif\AbstractRecord;
+use Korowai\Lib\Ldif\Records\AbstractRecord;
 use Korowai\Lib\Ldif\RecordInterface;
 use Korowai\Lib\Ldif\SnippetInterface;
 use Korowai\Lib\Ldif\Traits\DecoratesSnippetInterface;

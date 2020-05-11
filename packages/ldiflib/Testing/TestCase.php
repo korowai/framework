@@ -24,6 +24,7 @@ use Korowai\Testing\Lib\Ldif\Traits\ObjectProperties;
 abstract class TestCase extends \Korowai\Testing\TestCase
 {
     use ParserTestHelpers;
+    use ObjectProperties;
     use ObjectPropertiesAssertions;
 
     /**

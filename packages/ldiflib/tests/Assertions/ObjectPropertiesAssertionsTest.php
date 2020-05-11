@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Ldif\Assertions;
 
 use Korowai\Testing\TestCase;
+use Korowai\Testing\Lib\Ldif\Traits\ObjectProperties;
 use Korowai\Testing\Lib\Ldif\Assertions\ObjectPropertiesAssertions;
 use Korowai\Lib\Ldif\SourceLocationInterface;
 use Korowai\Lib\Ldif\LocationInterface;
@@ -25,6 +26,13 @@ use Korowai\Lib\Ldif\ControlInterface;
 use Korowai\Lib\Ldif\ParserStateInterface;
 use Korowai\Lib\Ldif\ParserErrorInterface;
 use Korowai\Lib\Ldif\ParserError;
+use Korowai\Lib\Ldif\RecordInterface;
+use Korowai\Lib\Ldif\Records\AttrValRecordInterface;
+use Korowai\Lib\Ldif\Records\ChangeRecordInterface;
+use Korowai\Lib\Ldif\Records\AddRecordInterface;
+use Korowai\Lib\Ldif\Records\DeleteRecordInterface;
+use Korowai\Lib\Ldif\Records\ModDnRecordInterface;
+use Korowai\Lib\Ldif\Records\ModifyRecordInterface;
 use League\Uri\Contracts\UriInterface;
 
 /**
@@ -32,6 +40,7 @@ use League\Uri\Contracts\UriInterface;
  */
 class ObjectPropertiesAssertionsTest extends TestCase
 {
+    use ObjectProperties;
     use ObjectPropertiesAssertions;
 
     // Required by ObjectPropertiesAssertions
@@ -347,79 +356,546 @@ class ObjectPropertiesAssertionsTest extends TestCase
     }
 
     //
+    // assertRecordHas
+    //
+
+    public function test__assertRecordHas()
+    {
+        $getters = [
+            'getSourceFileName'             => 'foo.ldif',
+            'getSourceString'               => "# comment\nversion: 1\n",
+	        'getSourceOffset'               => 10,
+	        'getSourceCharOffset'           => 10,
+	        'getSourceLineIndex'            => 1,
+	        'getSourceLine'                 => "version: 1",
+	        'getSourceLineAndOffset'        => [1, 0],
+	        'getSourceLineAndCharOffset'    => [1, 0],
+            'getString'                     => "version: 1\n",
+            'getOffset'                     => 0,
+            'getCharOffset'                 => 0,
+            'getLength'                     => 7,
+	        'getEndOffset'                  => 7,
+	        'getSourceLength'               => 7,
+	        'getSourceEndOffset'            => 17,
+	        'getSourceCharLength'           => 7,
+	        'getSourceCharEndOffset'        => 17,
+            'getDn'                         => 'dc=exaple,dc=org',
+        ];
+
+        $record = $this->getMockBuilder(RecordInterface::class)->getMockForAbstractClass();
+        foreach ($getters as $method => $value) {
+            $record->expects($this->exactly(2))
+                    ->method($method)
+                    ->with()
+                    ->willReturn($value);
+        }
+
+        $this->assertRecordHas([
+            'fileName'                      => 'foo.ldif',
+            'sourceString'                  => "# comment\nversion: 1\n",
+	        'sourceOffset'                  => 10,
+	        'sourceCharOffset'              => 10,
+	        'sourceLineIndex'               => 1,
+	        'sourceLine'                    => "version: 1",
+	        'sourceLineAndOffset'           => [1, 0],
+	        'sourceLineAndCharOffset'       => [1, 0],
+            'string'                        => "version: 1\n",
+            'offset'                        => 0,
+            'charOffset'                    => 0,
+            'length'                        => 7,
+	        'endOffset'                     => 7,
+	        'sourceLength'                  => 7,
+	        'sourceEndOffset'               => 17,
+	        'sourceCharLength'              => 7,
+	        'sourceCharEndOffset'           => 17,
+            'dn'                            => 'dc=exaple,dc=org',
+        ], $record);
+
+        $this->assertRecordHas([
+            'getSourceFileName()'           => 'foo.ldif',
+            'getSourceString()'             => "# comment\nversion: 1\n",
+	        'getSourceOffset()'             => 10,
+	        'getSourceCharOffset()'         => 10,
+	        'getSourceLineIndex()'          => 1,
+	        'getSourceLine()'               => "version: 1",
+	        'getSourceLineAndOffset()'      => [1, 0],
+	        'getSourceLineAndCharOffset()'  => [1, 0],
+            'getString()'                   => "version: 1\n",
+            'getOffset()'                   => 0,
+            'getCharOffset()'               => 0,
+            'getLength()'                   => 7,
+	        'getEndOffset()'                => 7,
+	        'getSourceLength()'             => 7,
+	        'getSourceEndOffset()'          => 17,
+	        'getSourceCharLength()'         => 7,
+	        'getSourceCharEndOffset()'      => 17,
+            'getDn()'                       => 'dc=exaple,dc=org',
+        ], $record);
+    }
+
+    //
+    // assertAttrValRecordHas
+    //
+
+    public function test__assertAttrValRecordHas()
+    {
+        $valueObject = $this->getMockBuilder(ValueInterface::class)->getMockForAbstractClass();
+        $valueObject->expects($this->exactly(2))
+                    ->method('getType')
+                    ->with()
+                    ->willReturn(ValueInterface::TYPE_BASE64);
+        $valueObject->expects($this->exactly(2))
+                    ->method('getSpec')
+                    ->with()
+                    ->willReturn('Zm9v');
+        $valueObject->expects($this->exactly(2))
+                    ->method('getContent')
+                    ->with()
+                    ->willReturn('foo');
+
+        $attrValSpec0 = $this->getMockBuilder(AttrValInterface::class)->getMockForAbstractClass();
+        $attrValSpec0->expects($this->exactly(2))
+                     ->method('getAttribute')
+                     ->with()
+                     ->willReturn('cn');
+        $attrValSpec0->expects($this->exactly(2))
+                     ->method('getValueObject')
+                     ->with()
+                     ->willReturn($valueObject);
+
+        $getters = [
+            'getSourceFileName'             => 'foo.ldif',
+            'getSourceString'               => "# comment\nversion: 1\n",
+	        'getSourceOffset'               => 10,
+	        'getSourceCharOffset'           => 10,
+	        'getSourceLineIndex'            => 1,
+	        'getSourceLine'                 => "version: 1",
+	        'getSourceLineAndOffset'        => [1, 0],
+	        'getSourceLineAndCharOffset'    => [1, 0],
+            'getString'                     => "version: 1\n",
+            'getOffset'                     => 0,
+            'getCharOffset'                 => 0,
+            'getLength'                     => 7,
+	        'getEndOffset'                  => 7,
+	        'getSourceLength'               => 7,
+	        'getSourceEndOffset'            => 17,
+	        'getSourceCharLength'           => 7,
+	        'getSourceCharEndOffset'        => 17,
+            'getDn'                         => 'dc=exaple,dc=org',
+            'getAttrValSpecs'               => [$attrValSpec0]
+        ];
+
+        $record = $this->getMockBuilder(AttrValRecordInterface::class)->getMockForAbstractClass();
+        foreach ($getters as $method => $value) {
+            $record->expects($this->exactly(2))
+                    ->method($method)
+                    ->with()
+                    ->willReturn($value);
+        }
+
+        $this->assertAttrValRecordHas([
+            'fileName'                      => 'foo.ldif',
+            'sourceString'                  => "# comment\nversion: 1\n",
+	        'sourceOffset'                  => 10,
+	        'sourceCharOffset'              => 10,
+	        'sourceLineIndex'               => 1,
+	        'sourceLine'                    => "version: 1",
+	        'sourceLineAndOffset'           => [1, 0],
+	        'sourceLineAndCharOffset'       => [1, 0],
+            'string'                        => "version: 1\n",
+            'offset'                        => 0,
+            'charOffset'                    => 0,
+            'length'                        => 7,
+	        'endOffset'                     => 7,
+	        'sourceLength'                  => 7,
+	        'sourceEndOffset'               => 17,
+	        'sourceCharLength'              => 7,
+	        'sourceCharEndOffset'           => 17,
+            'dn'                            => 'dc=exaple,dc=org',
+            'attrValSpecs'                  => [
+                [
+                    'attribute'             => 'cn',
+                    'valueObject'           => [
+                        'type'              => ValueInterface::TYPE_BASE64,
+                        'spec'              => 'Zm9v',
+                        'content'           => 'foo',
+                    ],
+                ]
+            ],
+        ], $record);
+
+        $this->assertAttrValRecordHas([
+            'getSourceFileName()'           => 'foo.ldif',
+            'getSourceString()'             => "# comment\nversion: 1\n",
+	        'getSourceOffset()'             => 10,
+	        'getSourceCharOffset()'         => 10,
+	        'getSourceLineIndex()'          => 1,
+	        'getSourceLine()'               => "version: 1",
+	        'getSourceLineAndOffset()'      => [1, 0],
+	        'getSourceLineAndCharOffset()'  => [1, 0],
+            'getString()'                   => "version: 1\n",
+            'getOffset()'                   => 0,
+            'getCharOffset()'               => 0,
+            'getLength()'                   => 7,
+	        'getEndOffset()'                => 7,
+	        'getSourceLength()'             => 7,
+	        'getSourceEndOffset()'          => 17,
+	        'getSourceCharLength()'         => 7,
+	        'getSourceCharEndOffset()'      => 17,
+            'getDn()'                       => 'dc=exaple,dc=org',
+            'getAttrValSpecs()'             => [
+                [
+                    'getAttribute()'        => 'cn',
+                    'getValueObject()'      => [
+                        'getType()'         => ValueInterface::TYPE_BASE64,
+                        'getSpec()'         => 'Zm9v',
+                        'getContent()'      => 'foo',
+                    ],
+                ]
+            ],
+        ], $record);
+    }
+
+    //
     // assertAddRecordHas
     //
 
-//    public function test__assertAddRecordHas()
-//    {
-//        $getters = [
-//            'getSourceFileName'             => 'foo.ldif',
-//            'getSourceString'               => "# comment\nversion: 1\n",
-//	        'getSourceOffset'               => 10,
-//	        'getSourceCharOffset'           => 10,
-//	        'getSourceLineIndex'            => 1,
-//	        'getSourceLine'                 => "version: 1",
-//	        'getSourceLineAndOffset'        => [1, 0],
-//	        'getSourceLineAndCharOffset'    => [1, 0],
-//            'getString'                     => "version: 1\n",
-//            'getOffset'                     => 0,
-//            'getCharOffset'                 => 0,
-//            'getLength'                     => 7,
-//	        'getEndOffset'                  => 7,
-//	        'getSourceLength'               => 7,
-//	        'getSourceEndOffset'            => 17,
-//	        'getSourceCharLength'           => 7,
-//	        'getSourceCharEndOffset'        => 17,
-//        ];
-//
-//        $record = $this->getMockBuilder(AddRecordInterface::class)->getMockForAbstractClass();
-//        foreach ($getters as $method => $value) {
-//            $record->expects($this->exactly(2))
-//                    ->method($method)
-//                    ->with()
-//                    ->willReturn($value);
-//        }
-//
-//        $this->assertSnippetHas([
-//            'fileName'                      => 'foo.ldif',
-//            'sourceString'                  => "# comment\nversion: 1\n",
-//	        'sourceOffset'                  => 10,
-//	        'sourceCharOffset'              => 10,
-//	        'sourceLineIndex'               => 1,
-//	        'sourceLine'                    => "version: 1",
-//	        'sourceLineAndOffset'           => [1, 0],
-//	        'sourceLineAndCharOffset'       => [1, 0],
-//            'string'                        => "version: 1\n",
-//            'offset'                        => 0,
-//            'charOffset'                    => 0,
-//            'length'                        => 7,
-//	        'endOffset'                     => 7,
-//	        'sourceLength'                  => 7,
-//	        'sourceEndOffset'               => 17,
-//	        'sourceCharLength'              => 7,
-//	        'sourceCharEndOffset'           => 17,
-//        ], $record);
-//
-//        $this->assertSnippetHas([
-//            'getSourceFileName()'           => 'foo.ldif',
-//            'getSourceString()'             => "# comment\nversion: 1\n",
-//	        'getSourceOffset()'             => 10,
-//	        'getSourceCharOffset()'         => 10,
-//	        'getSourceLineIndex()'          => 1,
-//	        'getSourceLine()'               => "version: 1",
-//	        'getSourceLineAndOffset()'      => [1, 0],
-//	        'getSourceLineAndCharOffset()'  => [1, 0],
-//            'getString()'                   => "version: 1\n",
-//            'getOffset()'                   => 0,
-//            'getCharOffset()'               => 0,
-//            'getLength()'                   => 7,
-//	        'getEndOffset()'                => 7,
-//	        'getSourceLength()'             => 7,
-//	        'getSourceEndOffset()'          => 17,
-//	        'getSourceCharLength()'         => 7,
-//	        'getSourceCharEndOffset()'      => 17,
-//        ], $record);
-//    }
+    public function test__assertAddRecordHas()
+    {
+        $valueObject = $this->getMockBuilder(ValueInterface::class)->getMockForAbstractClass();
+        $valueObject->expects($this->exactly(2))
+                    ->method('getType')
+                    ->with()
+                    ->willReturn(ValueInterface::TYPE_BASE64);
+        $valueObject->expects($this->exactly(2))
+                    ->method('getSpec')
+                    ->with()
+                    ->willReturn('Zm9v');
+        $valueObject->expects($this->exactly(2))
+                    ->method('getContent')
+                    ->with()
+                    ->willReturn('foo');
+
+        $attrValSpec0 = $this->getMockBuilder(AttrValInterface::class)->getMockForAbstractClass();
+        $attrValSpec0->expects($this->exactly(2))
+                     ->method('getAttribute')
+                     ->with()
+                     ->willReturn('cn');
+        $attrValSpec0->expects($this->exactly(2))
+                     ->method('getValueObject')
+                     ->with()
+                     ->willReturn($valueObject);
+
+        $getters = [
+            'getSourceFileName'             => 'foo.ldif',
+            'getSourceString'               => "# comment\nversion: 1\n",
+	        'getSourceOffset'               => 10,
+	        'getSourceCharOffset'           => 10,
+	        'getSourceLineIndex'            => 1,
+	        'getSourceLine'                 => "version: 1",
+	        'getSourceLineAndOffset'        => [1, 0],
+	        'getSourceLineAndCharOffset'    => [1, 0],
+            'getString'                     => "version: 1\n",
+            'getOffset'                     => 0,
+            'getCharOffset'                 => 0,
+            'getLength'                     => 7,
+	        'getEndOffset'                  => 7,
+	        'getSourceLength'               => 7,
+	        'getSourceEndOffset'            => 17,
+	        'getSourceCharLength'           => 7,
+	        'getSourceCharEndOffset'        => 17,
+            'getDn'                         => 'dc=exaple,dc=org',
+            'getChangeType'                 => 'add',
+            'getAttrValSpecs'               => [$attrValSpec0]
+        ];
+
+        $record = $this->getMockBuilder(AddRecordInterface::class)->getMockForAbstractClass();
+        foreach ($getters as $method => $value) {
+            $record->expects($this->exactly(2))
+                    ->method($method)
+                    ->with()
+                    ->willReturn($value);
+        }
+
+        $this->assertAddRecordHas([
+            'fileName'                      => 'foo.ldif',
+            'sourceString'                  => "# comment\nversion: 1\n",
+	        'sourceOffset'                  => 10,
+	        'sourceCharOffset'              => 10,
+	        'sourceLineIndex'               => 1,
+	        'sourceLine'                    => "version: 1",
+	        'sourceLineAndOffset'           => [1, 0],
+	        'sourceLineAndCharOffset'       => [1, 0],
+            'string'                        => "version: 1\n",
+            'offset'                        => 0,
+            'charOffset'                    => 0,
+            'length'                        => 7,
+	        'endOffset'                     => 7,
+	        'sourceLength'                  => 7,
+	        'sourceEndOffset'               => 17,
+	        'sourceCharLength'              => 7,
+	        'sourceCharEndOffset'           => 17,
+            'dn'                            => 'dc=exaple,dc=org',
+            'changeType'                    => 'add',
+            'attrValSpecs'                  => [
+                [
+                    'attribute'             => 'cn',
+                    'valueObject'           => [
+                        'type'              => ValueInterface::TYPE_BASE64,
+                        'spec'              => 'Zm9v',
+                        'content'           => 'foo',
+                    ],
+                ]
+            ],
+        ], $record);
+
+        $this->assertAddRecordHas([
+            'getSourceFileName()'           => 'foo.ldif',
+            'getSourceString()'             => "# comment\nversion: 1\n",
+	        'getSourceOffset()'             => 10,
+	        'getSourceCharOffset()'         => 10,
+	        'getSourceLineIndex()'          => 1,
+	        'getSourceLine()'               => "version: 1",
+	        'getSourceLineAndOffset()'      => [1, 0],
+	        'getSourceLineAndCharOffset()'  => [1, 0],
+            'getString()'                   => "version: 1\n",
+            'getOffset()'                   => 0,
+            'getCharOffset()'               => 0,
+            'getLength()'                   => 7,
+	        'getEndOffset()'                => 7,
+	        'getSourceLength()'             => 7,
+	        'getSourceEndOffset()'          => 17,
+	        'getSourceCharLength()'         => 7,
+	        'getSourceCharEndOffset()'      => 17,
+            'getDn()'                       => 'dc=exaple,dc=org',
+            'getChangeType()'               => 'add',
+            'getAttrValSpecs()'             => [
+                [
+                    'getAttribute()'        => 'cn',
+                    'getValueObject()'      => [
+                        'getType()'         => ValueInterface::TYPE_BASE64,
+                        'getSpec()'         => 'Zm9v',
+                        'getContent()'      => 'foo',
+                    ],
+                ]
+            ],
+        ], $record);
+    }
+
+    //
+    // assertDeleteRecordHas
+    //
+
+    public function test__assertDeleteRecordHas()
+    {
+        $getters = [
+            'getSourceFileName'             => 'foo.ldif',
+            'getSourceString'               => "# comment\nversion: 1\n",
+	        'getSourceOffset'               => 10,
+	        'getSourceCharOffset'           => 10,
+	        'getSourceLineIndex'            => 1,
+	        'getSourceLine'                 => "version: 1",
+	        'getSourceLineAndOffset'        => [1, 0],
+	        'getSourceLineAndCharOffset'    => [1, 0],
+            'getString'                     => "version: 1\n",
+            'getOffset'                     => 0,
+            'getCharOffset'                 => 0,
+            'getLength'                     => 7,
+	        'getEndOffset'                  => 7,
+	        'getSourceLength'               => 7,
+	        'getSourceEndOffset'            => 17,
+	        'getSourceCharLength'           => 7,
+	        'getSourceCharEndOffset'        => 17,
+            'getDn'                         => 'dc=exaple,dc=org',
+            'getChangeType'                 => 'delete'
+        ];
+
+        $record = $this->getMockBuilder(DeleteRecordInterface::class)->getMockForAbstractClass();
+        foreach ($getters as $method => $value) {
+            $record->expects($this->exactly(4))
+                    ->method($method)
+                    ->with()
+                    ->willReturn($value);
+        }
+
+        $this->assertDeleteRecordHas([
+            'fileName'                      => 'foo.ldif',
+            'sourceString'                  => "# comment\nversion: 1\n",
+	        'sourceOffset'                  => 10,
+	        'sourceCharOffset'              => 10,
+	        'sourceLineIndex'               => 1,
+	        'sourceLine'                    => "version: 1",
+	        'sourceLineAndOffset'           => [1, 0],
+	        'sourceLineAndCharOffset'       => [1, 0],
+            'string'                        => "version: 1\n",
+            'offset'                        => 0,
+            'charOffset'                    => 0,
+            'length'                        => 7,
+	        'endOffset'                     => 7,
+	        'sourceLength'                  => 7,
+	        'sourceEndOffset'               => 17,
+	        'sourceCharLength'              => 7,
+	        'sourceCharEndOffset'           => 17,
+            'dn'                            => 'dc=exaple,dc=org',
+            'changeType'                    => 'delete',
+        ], $record);
+
+        $this->assertDeleteRecordHas([
+            'getSourceFileName()'           => 'foo.ldif',
+            'getSourceString()'             => "# comment\nversion: 1\n",
+	        'getSourceOffset()'             => 10,
+	        'getSourceCharOffset()'         => 10,
+	        'getSourceLineIndex()'          => 1,
+	        'getSourceLine()'               => "version: 1",
+	        'getSourceLineAndOffset()'      => [1, 0],
+	        'getSourceLineAndCharOffset()'  => [1, 0],
+            'getString()'                   => "version: 1\n",
+            'getOffset()'                   => 0,
+            'getCharOffset()'               => 0,
+            'getLength()'                   => 7,
+	        'getEndOffset()'                => 7,
+	        'getSourceLength()'             => 7,
+	        'getSourceEndOffset()'          => 17,
+	        'getSourceCharLength()'         => 7,
+	        'getSourceCharEndOffset()'      => 17,
+            'getDn()'                       => 'dc=exaple,dc=org',
+            'getChangeType()'               => 'delete',
+        ], $record);
+
+        $this->assertRecordHas([
+            'fileName'                      => 'foo.ldif',
+            'sourceString'                  => "# comment\nversion: 1\n",
+	        'sourceOffset'                  => 10,
+	        'sourceCharOffset'              => 10,
+	        'sourceLineIndex'               => 1,
+	        'sourceLine'                    => "version: 1",
+	        'sourceLineAndOffset'           => [1, 0],
+	        'sourceLineAndCharOffset'       => [1, 0],
+            'string'                        => "version: 1\n",
+            'offset'                        => 0,
+            'charOffset'                    => 0,
+            'length'                        => 7,
+	        'endOffset'                     => 7,
+	        'sourceLength'                  => 7,
+	        'sourceEndOffset'               => 17,
+	        'sourceCharLength'              => 7,
+	        'sourceCharEndOffset'           => 17,
+            'dn'                            => 'dc=exaple,dc=org',
+            'changeType'                    => 'delete',
+        ], $record);
+
+        $this->assertRecordHas([
+            'getSourceFileName()'           => 'foo.ldif',
+            'getSourceString()'             => "# comment\nversion: 1\n",
+	        'getSourceOffset()'             => 10,
+	        'getSourceCharOffset()'         => 10,
+	        'getSourceLineIndex()'          => 1,
+	        'getSourceLine()'               => "version: 1",
+	        'getSourceLineAndOffset()'      => [1, 0],
+	        'getSourceLineAndCharOffset()'  => [1, 0],
+            'getString()'                   => "version: 1\n",
+            'getOffset()'                   => 0,
+            'getCharOffset()'               => 0,
+            'getLength()'                   => 7,
+	        'getEndOffset()'                => 7,
+	        'getSourceLength()'             => 7,
+	        'getSourceEndOffset()'          => 17,
+	        'getSourceCharLength()'         => 7,
+	        'getSourceCharEndOffset()'      => 17,
+            'getDn()'                       => 'dc=exaple,dc=org',
+            'getChangeType()'               => 'delete',
+        ], $record);
+    }
+
+    //
+    // assertModDnRecordHas
+    //
+
+    public function test__assertModDnRecordHas()
+    {
+        $getters = [
+            'getSourceFileName'             => 'foo.ldif',
+            'getSourceString'               => "# comment\nversion: 1\n",
+	        'getSourceOffset'               => 10,
+	        'getSourceCharOffset'           => 10,
+	        'getSourceLineIndex'            => 1,
+	        'getSourceLine'                 => "version: 1",
+	        'getSourceLineAndOffset'        => [1, 0],
+	        'getSourceLineAndCharOffset'    => [1, 0],
+            'getString'                     => "version: 1\n",
+            'getOffset'                     => 0,
+            'getCharOffset'                 => 0,
+            'getLength'                     => 7,
+	        'getEndOffset'                  => 7,
+	        'getSourceLength'               => 7,
+	        'getSourceEndOffset'            => 17,
+	        'getSourceCharLength'           => 7,
+	        'getSourceCharEndOffset'        => 17,
+            'getDn'                         => 'dc=exaple,dc=org',
+            'getChangeType'                 => 'delete',
+            'getNewRdn'                     => 'dc=asme',
+            'getDeleteOldRdn'               => true,
+            'getNewSuperior'                => 'dc=com'
+        ];
+
+        $record = $this->getMockBuilder(ModDnRecordInterface::class)->getMockForAbstractClass();
+        foreach ($getters as $method => $value) {
+            $record->expects($this->exactly(2))
+                    ->method($method)
+                    ->with()
+                    ->willReturn($value);
+        }
+
+        $this->assertModDnRecordHas([
+            'fileName'                      => 'foo.ldif',
+            'sourceString'                  => "# comment\nversion: 1\n",
+	        'sourceOffset'                  => 10,
+	        'sourceCharOffset'              => 10,
+	        'sourceLineIndex'               => 1,
+	        'sourceLine'                    => "version: 1",
+	        'sourceLineAndOffset'           => [1, 0],
+	        'sourceLineAndCharOffset'       => [1, 0],
+            'string'                        => "version: 1\n",
+            'offset'                        => 0,
+            'charOffset'                    => 0,
+            'length'                        => 7,
+	        'endOffset'                     => 7,
+	        'sourceLength'                  => 7,
+	        'sourceEndOffset'               => 17,
+	        'sourceCharLength'              => 7,
+	        'sourceCharEndOffset'           => 17,
+            'dn'                            => 'dc=exaple,dc=org',
+            'changeType'                    => 'delete',
+            'newRdn'                        => 'dc=asme',
+            'deleteOldRdn'                  => true,
+            'newSuperior'                   => 'dc=com'
+        ], $record);
+
+        $this->assertModDnRecordHas([
+            'getSourceFileName()'           => 'foo.ldif',
+            'getSourceString()'             => "# comment\nversion: 1\n",
+	        'getSourceOffset()'             => 10,
+	        'getSourceCharOffset()'         => 10,
+	        'getSourceLineIndex()'          => 1,
+	        'getSourceLine()'               => "version: 1",
+	        'getSourceLineAndOffset()'      => [1, 0],
+	        'getSourceLineAndCharOffset()'  => [1, 0],
+            'getString()'                   => "version: 1\n",
+            'getOffset()'                   => 0,
+            'getCharOffset()'               => 0,
+            'getLength()'                   => 7,
+	        'getEndOffset()'                => 7,
+	        'getSourceLength()'             => 7,
+	        'getSourceEndOffset()'          => 17,
+	        'getSourceCharLength()'         => 7,
+	        'getSourceCharEndOffset()'      => 17,
+            'getDn()'                       => 'dc=exaple,dc=org',
+            'getChangeType()'               => 'delete',
+            'getNewRdn()'                   => 'dc=asme',
+            'getDeleteOldRdn()'             => true,
+            'getNewSuperior()'              => 'dc=com'
+        ], $record);
+    }
 
     //
     // assertParserStateHas

@@ -18,6 +18,7 @@ use Korowai\Lib\Ldif\LocationInterface;
 use Korowai\Lib\Ldif\ParserErrorInterface;
 use Korowai\Lib\Ldif\ParserStateInterface;
 use Korowai\Lib\Ldif\RecordInterface;
+use Korowai\Lib\Ldif\Records\AttrValSpecsInterface;
 use Korowai\Lib\Ldif\Records\AttrValRecordInterface;
 use Korowai\Lib\Ldif\Records\ChangeRecordInterface;
 use Korowai\Lib\Ldif\Records\AddRecordInterface;
@@ -31,121 +32,11 @@ use Korowai\Lib\Ldif\ControlInterface;
 use Korowai\Lib\Ldif\SourceLocationInterface;
 use League\Uri\Contracts\UriInterface;
 
-// Specific records
-use Korowai\Lib\Ldif\AbstractRecord;
-
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
 trait ObjectPropertiesAssertions
 {
-    /**
-     * Object property getters per class for korowai/ldiflib package.
-     *
-     * @var array
-     */
-    protected static $ldiflibObjectPropertyGettersMap = [
-        SourceLocationInterface::class  => [
-            'fileName'                  => 'getSourceFileName',
-            'sourceString'              => 'getSourceString',
-            'sourceOffset'              => 'getSourceOffset',
-            'sourceCharOffset'          => 'getSourceCharOffset',
-            'sourceLineIndex'           => 'getSourceLineIndex',
-            'sourceLine'                => 'getSourceLine',
-            'sourceLineAndOffset'       => 'getSourceLineAndOffset',
-            'sourceLineAndCharOffset'   => 'getSourceLineAndCharOffset',
-        ],
-
-        LocationInterface::class        => [
-            'string'                    => 'getString',
-            'offset'                    => 'getOffset',
-            'charOffset'                => 'getCharOffset',
-        ],
-
-        CursorInterface::class          => [
-        ],
-
-        \Throwable::class               => [
-            'message'                   => 'getMessage',
-            'code'                      => 'getCode',
-            'file'                      => 'getFile',
-            'line'                      => 'getLine',
-            'trace'                     => 'getTrace',
-            'traceAsString'             => 'getTraceAsString',
-            'previous'                  => 'getPrevious',
-        ],
-
-        ParserErrorInterface::class     => [
-            'multilineMessage'          => 'getMultilineMessage'
-        ],
-
-        ParserStateInterface::class     => [
-            'cursor'                    => 'getCursor',
-            'errors'                    => 'getErrors',
-            'records'                   => 'getRecords',
-            'isOk'                      => 'isOk',
-        ],
-
-        SnippetInterface::class         => [
-            'length'                    => 'getLength',
-            'endOffset'                 => 'getEndOffset',
-            'sourceLength'              => 'getSourceLength',
-            'sourceEndOffset'           => 'getSourceEndOffset',
-            'sourceCharLength'          => 'getSourceCharLength',
-            'sourceCharEndOffset'       => 'getSourceCharEndOffset'
-        ],
-
-        AttrValInterface::class         => [
-            'attribute'                 => 'getAttribute',
-            'valueObject'               => 'getValueObject',
-        ],
-
-        ControlInterface::class         => [
-            'oid'                       => 'getOid',
-            'criticality'               => 'getCriticality',
-            'valueObject'               => 'getValueObject',
-        ],
-
-        ValueInterface::class           => [
-            'type'                      => 'getType',
-            'spec'                      => 'getSpec',
-            'content'                   => 'getContent'
-        ],
-
-        UriInterface::class             => [
-            'string'                    => '__toString',
-            'scheme'                    => 'getScheme',
-            'authority'                 => 'getAuthority',
-            'userinfo'                  => 'getUserInfo',
-            'host'                      => 'getHost',
-            'port'                      => 'getPort',
-            'path'                      => 'getPath',
-            'query'                     => 'getQuery',
-            'fragment'                  => 'getFragment',
-        ],
-
-        RecordInterface::class          => [
-            'dn'                        => 'getDn',
-        ],
-
-        AttrValSpecsInterface::class    => [
-            'attrValSpecs'              => 'getAttrValSpecs'
-        ],
-
-        ChangeRecordInterface::class    => [
-            'changeType'                => 'getChangeType'
-        ],
-
-        ModDnRecordInterface::class     => [
-            'newRdn'                    => 'getNewRdn',
-            'deleteOldRdn'              => 'getDeleteOldRdn',
-            'newSuperior'               => 'getNewSuperior',
-        ],
-
-        ModifyRecordInterface::class    => [
-        ],
-    ];
-
     /**
      * Asserts that selected properties of *$object* are identical to *$expected* ones.
      *
@@ -191,9 +82,53 @@ trait ObjectPropertiesAssertions
     ) : void;
 
     /**
+     * Assert that *$object* has *$expected* properties. Delegate certain
+     * properties to specific assertion methods.
+     *
+     * Supported *$options*
+     *
+     * - ``delegate`` (array); keys of *$options['delegate']* specify which
+     *   of the *$object* properties should be delegated to other assertion
+     *   methods (provided with corresponding values of *$options['delegate']*).
+     * - ``delegateArray`` (array) - keys of *$options['delegateArray]* specify
+     *   which of the *$object* properties should be treated as arrays whose
+     *   items should be delegated to other assertion methods (provided with
+     *   corresponding values of *$options['delegateArray']*).
+     *
+     * @param  array $expected
+     *      An array of key-value pairs with expected values of attributes.
+     * @param  object $object
+     *      An object to be examined.
+     * @param  string|null $message
+     *      Optional message.
+     * @param  array $options A key-value array of options.
+     */
+    public static function assertLdifObjectHas(
+        array $expected,
+        object $object,
+        string $message = '',
+        array $options = []
+    ) : void {
+        $delegate = $options['delegate'] ?? [];
+        $delegateArray = $options['delegateArray'] ?? [];
+        $nonValues = array_merge($delegate, $delegateArray);
+
+        // non-object properties
+        $values = array_diff_key($expected, $nonValues);
+        static::assertHasPropertiesSameAs($values, $object, $message);
+
+        // object properties
+        static::assertObjectEachProperty($delegate, $expected, $object, $message);
+
+        // array-of-objects properties
+        static::assertObjectEachPropertyArrayValue($delegateArray, $expected, $object, $message);
+    }
+
+
+    /**
      * Assert that SourceLocationInterface *$object* has *$expected* properties.
      *
-     * @param  array $expected A array of key-value pairs with expected values of attributes.
+     * @param  array $expected An array of key-value pairs with expected values of attributes.
      * @param  SourceLocationInterface $object An object to be examined.
      * @param  string|null $message Optional message.
      */
@@ -208,7 +143,7 @@ trait ObjectPropertiesAssertions
     /**
      * Assert that LocationInterface *$object* has *$expected* properties.
      *
-     * @param  array $expected A array of key-value pairs with expected values of attributes.
+     * @param  array $expected An array of key-value pairs with expected values of attributes.
      * @param  LocationInterface $object An object to be examined.
      * @param  string|null $message Optional message.
      */
@@ -223,7 +158,7 @@ trait ObjectPropertiesAssertions
     /**
      * Assert that CursorInterface *$object* has *$expected* properties.
      *
-     * @param  array $expected A array of key-value pairs with expected values of attributes.
+     * @param  array $expected An array of key-value pairs with expected values of attributes.
      * @param  CursorInterface $object An object to be examined.
      * @param  string|null $message Optional message.
      */
@@ -238,7 +173,7 @@ trait ObjectPropertiesAssertions
     /**
      * Assert that SnippetInterface *$object* has *$expected* properties.
      *
-     * @param  array $expected A array of key-value pairs with expected values of attributes.
+     * @param  array $expected An array of key-value pairs with expected values of attributes.
      * @param  SnippetInterface $object An object to be examined.
      * @param  string|null $message Optional message.
      */
@@ -253,7 +188,7 @@ trait ObjectPropertiesAssertions
     /**
      * Assert that ParserErrorInterface *$object* has *$expected* properties.
      *
-     * @param  array $expected A array of key-value pairs with expected values of attributes.
+     * @param  array $expected An array of key-value pairs with expected values of attributes.
      * @param  ParserErrorInterface $object An object to be examined.
      * @param  string|null $message Optional message.
      */
@@ -265,38 +200,125 @@ trait ObjectPropertiesAssertions
         static::assertHasPropertiesSameAs($expected, $object, $message);
     }
 
-//    /**
-//     * Assert that AddRecordInterface *$object* has *$expected* properties.
-//     *
-//     * @param  array $expected A array of key-value pairs with expected values of attributes.
-//     * @param  AddRecordInterface $object An object to be examined.
-//     * @param  string|null $message Optional message.
-//     */
-//    public static function assertAddRecordHas(
-//        array $expected,
-//        AddRecordInterface $object,
-//        string $message = ''
-//    ) : void {
-//        static::assertHasPropertiesSameAs($expected, $object, $message);
-////        static $getGettersMap = [
-////            AbstractRecord::class   => 'getAbstractRecordPropertyGetters',
-////        ];
-////        $class = get_class($object);
-////        if (($expectedClass = $expected['class'] ?? null) !== null) {
-////            static::assertSame($expectedClass, $class);
-////        }
-////        $expectedProperties = array_filter($expected, function ($key) {
-////            return !in_array($key, ['class']);
-////        }, ARRAY_FILTER_USE_KEY);
-////        $getGetters = $getGettersMap[$class] ?? $getGettersMap[AbstractRecord::class];
-////        $getters = call_user_func([static::class, $getGetters]);
-////        static::assertHasPropertiesSameAs($expectedProperties, $object, $message, $getters);
-//    }
+    /**
+     * Assert that AddRecordInterface *$object* has *$expected* properties.
+     *
+     * @param  array $expected An array of key-value pairs with expected values of attributes.
+     * @param  AddRecordInterface $object An object to be examined.
+     * @param  string|null $message Optional message.
+     */
+    public static function assertRecordHas(
+        array $expected,
+        RecordInterface $object,
+        string $message = ''
+    ) : void {
+        static::assertHasPropertiesSameAs($expected, $object, $message);
+    }
+
+    /**
+     * Assert that AttrValRecordInterface *$object* has *$expected* properties.
+     *
+     * @param  array $expected An array of key-value pairs with expected values of attributes.
+     * @param  AttrValRecordInterface $object An object to be examined.
+     * @param  string|null $message Optional message.
+     */
+    public static function assertAttrValRecordHas(
+        array $expected,
+        AttrValRecordInterface $object,
+        string $message = ''
+    ) : void {
+        static::assertLdifObjectHas($expected, $object, $message, [
+            'delegateArray' => [
+                'attrValSpecs'      => [static::class, 'assertAttrValHas'],
+                'getAttrValSpecs()' => [static::class, 'assertAttrValHas'],
+            ]
+        ]);
+    }
+
+    /**
+     * Assert that ChangeRecordInterface *$object* has *$expected* properties.
+     *
+     * @param  array $expected An array of key-value pairs with expected values of attributes.
+     * @param  ChangeRecordInterface $object An object to be examined.
+     * @param  string|null $message Optional message.
+     */
+    public static function assertChangeRecordHas(
+        array $expected,
+        ChangeRecordInterface $object,
+        string $message = ''
+    ) : void {
+        static::assertHasPropertiesSameAs($expected, $object, $message);
+    }
+
+    /**
+     * Assert that AddRecordInterface *$object* has *$expected* properties.
+     *
+     * @param  array $expected An array of key-value pairs with expected values of attributes.
+     * @param  AddRecordInterface $object An object to be examined.
+     * @param  string|null $message Optional message.
+     */
+    public static function assertAddRecordHas(
+        array $expected,
+        AddRecordInterface $object,
+        string $message = ''
+    ) : void {
+        static::assertLdifObjectHas($expected, $object, $message, [
+            'delegateArray' => [
+                'attrValSpecs'      => [static::class, 'assertAttrValHas'],
+                'getAttrValSpecs()' => [static::class, 'assertAttrValHas'],
+            ]
+        ]);
+    }
+
+    /**
+     * Assert that DeleteRecordInterface *$object* has *$expected* properties.
+     *
+     * @param  array $expected An array of key-value pairs with expected values of attributes.
+     * @param  DeleteRecordInterface $object An object to be examined.
+     * @param  string|null $message Optional message.
+     */
+    public static function assertDeleteRecordHas(
+        array $expected,
+        DeleteRecordInterface $object,
+        string $message = ''
+    ) : void {
+        static::assertHasPropertiesSameAs($expected, $object, $message);
+    }
+
+    /**
+     * Assert that ModDnRecordInterface *$object* has *$expected* properties.
+     *
+     * @param  array $expected An array of key-value pairs with expected values of attributes.
+     * @param  ModDnRecordInterface $object An object to be examined.
+     * @param  string|null $message Optional message.
+     */
+    public static function assertModDnRecordHas(
+        array $expected,
+        ModDnRecordInterface $object,
+        string $message = ''
+    ) : void {
+        static::assertHasPropertiesSameAs($expected, $object, $message);
+    }
+
+    /**
+     * Assert that ModifyRecordInterface *$object* has *$expected* properties.
+     *
+     * @param  array $expected An array of key-value pairs with expected values of attributes.
+     * @param  ModifyRecordInterface $object An object to be examined.
+     * @param  string|null $message Optional message.
+     */
+    public static function assertModifyRecordHas(
+        array $expected,
+        ModifyRecordInterface $object,
+        string $message = ''
+    ) : void {
+        static::assertHasPropertiesSameAs($expected, $object, $message);
+    }
 
     /**
      * Assert that ParserStateInterface *$object* has *$expected* properties.
      *
-     * @param  array $expected A array of key-value pairs with expected values of attributes.
+     * @param  array $expected An array of key-value pairs with expected values of attributes.
      * @param  ParserStateInterface $object An object to be examined.
      * @param  string|null $message Optional message.
      */
@@ -305,77 +327,60 @@ trait ObjectPropertiesAssertions
         ParserStateInterface $object,
         string $message = ''
     ) : void {
-
-        // non-object properties
-        $values = array_diff_key($expected, [
-            'cursor'        => true, 'getCursor()'   => true,
-            'records'       => true, 'getRecords()'  => true,
-            'errors'        => true, 'getErrors()'   => true,
+        static::assertLdifObjectHas($expected, $object, $message, [
+            'delegate' => [
+                'cursor'        => [static::class, 'assertCursorHas'],
+                'getCursor()'   => [static::class, 'assertCursorHas']
+            ],
+            'delegateArray' => [
+                'errors'        => [static::class, 'assertParserErrorHas'],
+                'getErrors()'   => [static::class, 'assertParserErrorHas'],
+                'records'       => [static::class, 'assertRecordHas'],
+                'getRecords()'  => [static::class, 'assertRecordHas']
+            ]
         ]);
-        static::assertHasPropertiesSameAs($values, $object, $message);
-
-        // object properties
-        static::assertObjectEachProperty([
-            'cursor'        => [static::class, 'assertCursorHas'],
-            'getCursor()'   => [static::class, 'assertCursorHas']
-        ], $expected, $object, $message);
-
-        // array-of-objects properties
-        static::assertObjectEachPropertyArrayValue([
-            'errors'        => [static::class, 'assertParserErrorHas'],
-            'getErrors()'   => [static::class, 'assertParserErrorHas'],
-            'records'       => [static::class, 'assertRecordHas'],
-            'getRecords()'  => [static::class, 'assertRecordHas']
-        ], $expected, $object, $message);
     }
 
     /**
      * Assert that ValueInterface *$object* has *$expected* properties.
      *
-     * @param  array $expected A array of key-value pairs with expected values of attributes.
+     * @param  array $expected An array of key-value pairs with expected values of attributes.
      * @param  ValueInterface $object An object to be examined.
      * @param  string|null $message Optional message.
      */
     public static function assertValueHas(array $expected, ValueInterface $object, string $message = '') : void
     {
-        // non-object properties
-        $values = array_filter($expected, function ($value, $key) {
-            return !in_array($key, ['spec', 'getSpec()']) || is_string($value);
-        }, ARRAY_FILTER_USE_BOTH);
-        static::assertHasPropertiesSameAs($values, $object, $message);
-
-        // object properties
-        $objects = array_diff_key($expected, $values);
-        static::assertObjectEachProperty([
+        $delegate = array_filter([
             'spec'      => [static::class, 'assertUriHas'],
             'getSpec()' => [static::class, 'assertUriHas'],
-        ], $objects, $object, $message);
+        ], function ($value, $key) use ($expected) {
+            return !is_string($expected[$key] ?? null);
+        }, ARRAY_FILTER_USE_BOTH);
+
+        static::assertLdifObjectHas($expected, $object, $message, ['delegate' => $delegate]);
     }
 
     /**
      * Assert that AttrValInterface *$object* has *$expected* properties.
      *
-     * @param  array $expected A array of key-value pairs with expected values of attributes.
+     * @param  array $expected An array of key-value pairs with expected values of attributes.
      * @param  AttrValInterface $object An object to be examined.
      * @param  string|null $message Optional message.
      */
     public static function assertAttrValHas(array $expected, AttrValInterface $object, string $message = '') : void
     {
-        // non-object properties
-        $values = array_diff_key($expected, ['valueObject' => true, 'getValueObject()' => true]);
-        static::assertHasPropertiesSameAs($values, $object, $message);
-
-        // object properties
-        static::assertObjectEachProperty([
-            'valueObject'       => [static::class, 'assertValueHas'],
-            'getValueObject()'  => [static::class, 'assertValueHas']
-        ], $expected, $object, $message);
+        static::assertLdifObjectHas($expected, $object, $message, [
+            'delegate' => [
+                'valueObject'       => [static::class, 'assertValueHas'],
+                'getValueObject()'  => [static::class, 'assertValueHas']
+            ]
+        ]);
     }
 
     /**
      * Assert that UriInterface *$object* has *$expected* properties.
      *
-     * @param  array $expected A array of key-value pairs with expected values of attributes.
+     * @param  array $expected An array of key-value pairs with expected values of attributes.
      * @param  UriInterface $object An object to be examined.
      * @param  string|null $message Optional message.
      */
@@ -387,23 +392,20 @@ trait ObjectPropertiesAssertions
     /**
      * Assert that ControlInterface *$object* has *$expected* properties.
      *
-     * @param  array $expected A array of key-value pairs with expected values of attributes.
+     * @param  array $expected An array of key-value pairs with expected values of attributes.
      * @param  ControlInterface $object An object to be examined.
      * @param  string|null $message Optional message.
      */
     public static function assertControlHas(array $expected, ControlInterface $object, string $message = '') : void
     {
-        // non-object properties
-        $values = array_filter($expected, function ($val, $key) {
-            return !in_array($key, ['valueObject', 'getValueObject()'], true) || !is_array($val);
-        }, ARRAY_FILTER_USE_BOTH);
-        static::assertHasPropertiesSameAs($values, $object, $message);
-
-        // object properties
-        static::assertObjectEachProperty(array_diff_key([
+        $delegate = array_filter([
             'valueObject'       => [static::class, 'assertValueHas'],
             'getValueObject()'  => [static::class, 'assertValueHas']
-        ], $values), $expected, $object, $message);
+        ], function ($value, $key) use ($expected) {
+            return is_array($expected[$key] ?? null);
+        }, ARRAY_FILTER_USE_BOTH);
+
+        static::assertLdifObjectHas($expected, $object, $message, ['delegate' => $delegate]);
     }
 }
 

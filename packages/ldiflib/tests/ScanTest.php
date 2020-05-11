@@ -1,6 +1,6 @@
 <?php
 /**
- * @file tests/FunctionsTest.php
+ * @file tests/ScanTest.php
  *
  * This file is part of the Korowai package
  *

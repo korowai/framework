@@ -29,7 +29,6 @@ class DeleteRecord extends AbstractRecord implements DeleteRecordInterface
      *
      * @param  SnippetInterface $snippet
      * @param  string $dn
-     * @param  array $attrValSpecs
      */
     public function __construct(SnippetInterface $snippet, string $dn)
     {

@@ -347,13 +347,79 @@ class ObjectPropertiesAssertionsTest extends TestCase
     }
 
     //
-    // assertRecordHas
+    // assertAddRecordHas
     //
 
-    public function test__assertRecordHas()
-    {
-        $this->markTestIncomplete('The test has not been implemented yet.');
-    }
+//    public function test__assertAddRecordHas()
+//    {
+//        $getters = [
+//            'getSourceFileName'             => 'foo.ldif',
+//            'getSourceString'               => "# comment\nversion: 1\n",
+//	        'getSourceOffset'               => 10,
+//	        'getSourceCharOffset'           => 10,
+//	        'getSourceLineIndex'            => 1,
+//	        'getSourceLine'                 => "version: 1",
+//	        'getSourceLineAndOffset'        => [1, 0],
+//	        'getSourceLineAndCharOffset'    => [1, 0],
+//            'getString'                     => "version: 1\n",
+//            'getOffset'                     => 0,
+//            'getCharOffset'                 => 0,
+//            'getLength'                     => 7,
+//	        'getEndOffset'                  => 7,
+//	        'getSourceLength'               => 7,
+//	        'getSourceEndOffset'            => 17,
+//	        'getSourceCharLength'           => 7,
+//	        'getSourceCharEndOffset'        => 17,
+//        ];
+//
+//        $record = $this->getMockBuilder(AddRecordInterface::class)->getMockForAbstractClass();
+//        foreach ($getters as $method => $value) {
+//            $record->expects($this->exactly(2))
+//                    ->method($method)
+//                    ->with()
+//                    ->willReturn($value);
+//        }
+//
+//        $this->assertSnippetHas([
+//            'fileName'                      => 'foo.ldif',
+//            'sourceString'                  => "# comment\nversion: 1\n",
+//	        'sourceOffset'                  => 10,
+//	        'sourceCharOffset'              => 10,
+//	        'sourceLineIndex'               => 1,
+//	        'sourceLine'                    => "version: 1",
+//	        'sourceLineAndOffset'           => [1, 0],
+//	        'sourceLineAndCharOffset'       => [1, 0],
+//            'string'                        => "version: 1\n",
+//            'offset'                        => 0,
+//            'charOffset'                    => 0,
+//            'length'                        => 7,
+//	        'endOffset'                     => 7,
+//	        'sourceLength'                  => 7,
+//	        'sourceEndOffset'               => 17,
+//	        'sourceCharLength'              => 7,
+//	        'sourceCharEndOffset'           => 17,
+//        ], $record);
+//
+//        $this->assertSnippetHas([
+//            'getSourceFileName()'           => 'foo.ldif',
+//            'getSourceString()'             => "# comment\nversion: 1\n",
+//	        'getSourceOffset()'             => 10,
+//	        'getSourceCharOffset()'         => 10,
+//	        'getSourceLineIndex()'          => 1,
+//	        'getSourceLine()'               => "version: 1",
+//	        'getSourceLineAndOffset()'      => [1, 0],
+//	        'getSourceLineAndCharOffset()'  => [1, 0],
+//            'getString()'                   => "version: 1\n",
+//            'getOffset()'                   => 0,
+//            'getCharOffset()'               => 0,
+//            'getLength()'                   => 7,
+//	        'getEndOffset()'                => 7,
+//	        'getSourceLength()'             => 7,
+//	        'getSourceEndOffset()'          => 17,
+//	        'getSourceCharLength()'         => 7,
+//	        'getSourceCharEndOffset()'      => 17,
+//        ], $record);
+//    }
 
     //
     // assertParserStateHas

@@ -18,6 +18,12 @@ use Korowai\Lib\Ldif\LocationInterface;
 use Korowai\Lib\Ldif\ParserErrorInterface;
 use Korowai\Lib\Ldif\ParserStateInterface;
 use Korowai\Lib\Ldif\RecordInterface;
+use Korowai\Lib\Ldif\Records\AttrValRecordInterface;
+use Korowai\Lib\Ldif\Records\ChangeRecordInterface;
+use Korowai\Lib\Ldif\Records\AddRecordInterface;
+use Korowai\Lib\Ldif\Records\DeleteRecordInterface;
+use Korowai\Lib\Ldif\Records\ModDnRecordInterface;
+use Korowai\Lib\Ldif\Records\ModifyRecordInterface;
 use Korowai\Lib\Ldif\SnippetInterface;
 use Korowai\Lib\Ldif\ValueInterface;
 use Korowai\Lib\Ldif\AttrValInterface;
@@ -116,7 +122,28 @@ trait ObjectPropertiesAssertions
             'path'                      => 'getPath',
             'query'                     => 'getQuery',
             'fragment'                  => 'getFragment',
-        ]
+        ],
+
+        RecordInterface::class          => [
+            'dn'                        => 'getDn',
+        ],
+
+        AttrValSpecsInterface::class    => [
+            'attrValSpecs'              => 'getAttrValSpecs'
+        ],
+
+        ChangeRecordInterface::class    => [
+            'changeType'                => 'getChangeType'
+        ],
+
+        ModDnRecordInterface::class     => [
+            'newRdn'                    => 'getNewRdn',
+            'deleteOldRdn'              => 'getDeleteOldRdn',
+            'newSuperior'               => 'getNewSuperior',
+        ],
+
+        ModifyRecordInterface::class    => [
+        ],
     ];
 
     /**
@@ -238,32 +265,33 @@ trait ObjectPropertiesAssertions
         static::assertHasPropertiesSameAs($expected, $object, $message);
     }
 
-    /**
-     * Assert that RecordInterface *$object* has *$expected* properties.
-     *
-     * @param  array $expected A array of key-value pairs with expected values of attributes.
-     * @param  RecordInterface $object An object to be examined.
-     * @param  string|null $message Optional message.
-     */
-    public static function assertRecordHas(
-        array $expected,
-        RecordInterface $object,
-        string $message = ''
-    ) : void {
-        static $getGettersMap = [
-            AbstractRecord::class   => 'getAbstractRecordPropertyGetters',
-        ];
-        $class = get_class($object);
-        if (($expectedClass = $expected['class'] ?? null) !== null) {
-            static::assertSame($expectedClass, $class);
-        }
-        $expectedProperties = array_filter($expected, function ($key) {
-            return !in_array($key, ['class']);
-        }, ARRAY_FILTER_USE_KEY);
-        $getGetters = $getGettersMap[$class] ?? $getGettersMap[AbstractRecord::class];
-        $getters = call_user_func([static::class, $getGetters]);
-        static::assertHasPropertiesSameAs($expectedProperties, $object, $message, $getters);
-    }
+//    /**
+//     * Assert that AddRecordInterface *$object* has *$expected* properties.
+//     *
+//     * @param  array $expected A array of key-value pairs with expected values of attributes.
+//     * @param  AddRecordInterface $object An object to be examined.
+//     * @param  string|null $message Optional message.
+//     */
+//    public static function assertAddRecordHas(
+//        array $expected,
+//        AddRecordInterface $object,
+//        string $message = ''
+//    ) : void {
+//        static::assertHasPropertiesSameAs($expected, $object, $message);
+////        static $getGettersMap = [
+////            AbstractRecord::class   => 'getAbstractRecordPropertyGetters',
+////        ];
+////        $class = get_class($object);
+////        if (($expectedClass = $expected['class'] ?? null) !== null) {
+////            static::assertSame($expectedClass, $class);
+////        }
+////        $expectedProperties = array_filter($expected, function ($key) {
+////            return !in_array($key, ['class']);
+////        }, ARRAY_FILTER_USE_KEY);
+////        $getGetters = $getGettersMap[$class] ?? $getGettersMap[AbstractRecord::class];
+////        $getters = call_user_func([static::class, $getGetters]);
+////        static::assertHasPropertiesSameAs($expectedProperties, $object, $message, $getters);
+//    }
 
     /**
      * Assert that ParserStateInterface *$object* has *$expected* properties.

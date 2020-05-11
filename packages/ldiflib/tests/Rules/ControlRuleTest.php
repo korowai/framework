@@ -15,7 +15,7 @@ namespace Korowai\Tests\Lib\Ldif\Rules;
 
 use Korowai\Lib\Ldif\Rules\ControlRule;
 use Korowai\Lib\Ldif\Rules\ValueSpecRule;
-use Korowai\Lib\Ldif\AbstractRule;
+use Korowai\Lib\Ldif\Rules\AbstractRule;
 use Korowai\Lib\Ldif\ControlInterface;
 use Korowai\Lib\Ldif\ValueInterface;
 use Korowai\Testing\Lib\Ldif\TestCase;

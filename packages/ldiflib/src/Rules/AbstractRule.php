@@ -11,9 +11,11 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Lib\Ldif;
+namespace Korowai\Lib\Ldif\Rules;
 
+use Korowai\Lib\Ldif\RuleInterface;
 use Korowai\Lib\Ldif\ParserStateInterface as State;
+use Korowai\Lib\Ldif\Scan;
 use Korowai\Lib\Rfc\Traits\DecoratesRuleInterface;
 
 /**

@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Lib/Ldif/ChangeRecordInterface.php
+ * @file src/Korowai/Lib/Ldif/Records/ChangeRecordInterface.php
  *
  * This file is part of the Korowai package
  *
@@ -11,7 +11,9 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Lib\Ldif;
+namespace Korowai\Lib\Ldif\Records;
+
+use Korowai\Lib\Ldif\RecordInterface;
 
 /**
  * Interface for record objects representing

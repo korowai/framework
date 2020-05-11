@@ -13,6 +13,12 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldif;
 
+use Korowai\Lib\Ldif\Records\AttrValRecordInterface;
+use Korowai\Lib\Ldif\Records\AddRecordInterface;
+use Korowai\Lib\Ldif\Records\DeleteRecordInterface;
+use Korowai\Lib\Ldif\Records\ModDnRecordInterface;
+use Korowai\Lib\Ldif\Records\ModifyRecordInterface;
+
 /**
  * Interface for LDIF record visitor objects.
  *

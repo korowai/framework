@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Ldif\Records;
 
 use Korowai\Lib\Ldif\Records\AddRecord;
+use Korowai\Lib\Ldif\Records\AddRecordInterface;
 use Korowai\Lib\Ldif\Records\AbstractRecord;
-use Korowai\Lib\Ldif\AddRecordInterface;
 use Korowai\Lib\Ldif\RecordVisitorInterface;
 use Korowai\Lib\Ldif\SnippetInterface;
 use Korowai\Lib\Ldif\Traits\HasAttrValSpecs;

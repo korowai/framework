@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Lib/Ldif/ModDnRecordInterface.php
+ * @file src/Korowai/Lib/Ldif/Records/ModDnRecordInterface.php
  *
  * This file is part of the Korowai package
  *
@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Lib\Ldif;
+namespace Korowai\Lib\Ldif\Records;
 
 /**
  * Interface for a record object representing

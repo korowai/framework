@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Ldif\Records;
 
 use Korowai\Lib\Ldif\Records\ModDnRecord;
+use Korowai\Lib\Ldif\Records\ModDnRecordInterface;
 use Korowai\Lib\Ldif\Records\AbstractRecord;
-use Korowai\Lib\Ldif\ModDnRecordInterface;
 use Korowai\Lib\Ldif\RecordVisitorInterface;
 use Korowai\Lib\Ldif\SnippetInterface;
 use Korowai\Lib\Ldif\Exception\InvalidChangeTypeException;

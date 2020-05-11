@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Lib/Ldif/Records/VersionSpecInterface.php
+ * @file src/Korowai/Lib/Ldif/Records/AddRecordInterface.php
  *
  * This file is part of the Korowai package
  *
@@ -13,20 +13,15 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldif\Records;
 
-use Korowai\Lib\Ldif\RecordInterface;
-
 /**
- * Interface for the VersionSpec record.
+ * Interface for a record object representing
+ * [RFC2849](https://tools.ietf.org/html/rfc2849)
+ * *ldif-change-record* of type *change-add*.
+ *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-interface VersionSpecInterface extends RecordInterface
+interface AddRecordInterface extends ChangeRecordInterface, AttrValSpecsInterface
 {
-    /**
-     * Returns the version number stored as semantic value.
-     *
-     * @return int
-     */
-    public function getVersion() : int;
 }
 
 // vim: syntax=php sw=4 ts=4 et:

@@ -11,9 +11,9 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Tests\Lib\Ldif;
+namespace Korowai\Tests\Lib\Ldif\Rules;
 
-use Korowai\Lib\Ldif\AbstractRule;
+use Korowai\Lib\Ldif\Rules\AbstractRule;
 use Korowai\Lib\Ldif\RuleInterface;
 use Korowai\Lib\Ldif\ParserStateInterface;
 use Korowai\Lib\Rfc\Rule as RfcRule;

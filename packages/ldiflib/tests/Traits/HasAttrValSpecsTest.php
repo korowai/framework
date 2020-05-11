@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Ldif\Traits;
 
 use Korowai\Lib\Ldif\Traits\HasAttrValSpecs;
-use Korowai\Lib\Ldif\AttrValSpecsInterface;
+use Korowai\Lib\Ldif\Records\AttrValSpecsInterface;
 
 use Korowai\Testing\Lib\Ldif\TestCase;
 

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Ldif\Rules;
 
 use Korowai\Lib\Ldif\Rules\SepRule;
-use Korowai\Lib\Ldif\AbstractRule;
+use Korowai\Lib\Ldif\Rules\AbstractRule;
 use Korowai\Testing\Lib\Ldif\TestCase;
 
 /**

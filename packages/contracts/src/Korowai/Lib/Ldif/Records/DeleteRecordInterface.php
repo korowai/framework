@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Lib/Ldif/ModifyRecordInterface.php
+ * @file src/Korowai/Lib/Ldif/Records/DeleteRecordInterface.php
  *
  * This file is part of the Korowai package
  *
@@ -11,18 +11,17 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Lib\Ldif;
+namespace Korowai\Lib\Ldif\Records;
 
 /**
  * Interface for a record object representing
  * [RFC2849](https://tools.ietf.org/html/rfc2849)
- * *ldif-change-record* of type *change-modify*.
+ * *ldif-change-record* of type *change-delete*.
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-interface ModifyRecordInterface extends ChangeRecordInterface
+interface DeleteRecordInterface extends ChangeRecordInterface
 {
-
 }
 
 // vim: syntax=php sw=4 ts=4 et:

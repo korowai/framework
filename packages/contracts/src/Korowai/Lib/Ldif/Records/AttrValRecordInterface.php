@@ -16,22 +16,13 @@ namespace Korowai\Lib\Ldif\Records;
 use Korowai\Lib\Ldif\RecordInterface;
 
 /**
- * Interface for the AttrValRecord record.
+ * Interface for record objects representing
+ * [RFC2849](https://tools.ietf.org/html/rfc2849) ldif-attrval-records.
+ *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-interface AttrValRecordInterface extends RecordInterface
+interface AttrValRecordInterface extends RecordInterface, AttrValSpecsInterface
 {
-    /**
-     * Returns the distinguished name stored as semantic value.
-     *
-     * @return string
-     */
-    public function getDn() : string;
-
-    /**
-     * @todo Write documentation
-     */
-    public function getAttrValSpecs() : array;
 }
 
 // vim: syntax=php sw=4 ts=4 et:

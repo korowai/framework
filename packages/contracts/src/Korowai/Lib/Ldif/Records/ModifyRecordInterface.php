@@ -22,7 +22,12 @@ namespace Korowai\Lib\Ldif\Records;
  */
 interface ModifyRecordInterface extends ChangeRecordInterface
 {
-
+    /**
+     * Returns array of [ModSpecInterface](ModSpecInterface.html) objects.
+     *
+     * @return array
+     */
+    public function getModSpecs() : array;
 }
 
 // vim: syntax=php sw=4 ts=4 et:

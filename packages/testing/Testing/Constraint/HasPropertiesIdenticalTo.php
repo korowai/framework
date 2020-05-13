@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Korowai\Testing\Constraint;
 
+use Korowai\Testing\ObjectProperties;
+use Korowai\Testing\ObjectPropertiesInterface;
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\ExpectationFailedException;
 use SebastianBergmann\Comparator\ComparisonFailure;
@@ -50,7 +52,7 @@ use SebastianBergmann\Comparator\ComparisonFailure;
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-final class HasPropertiesIdenticalTo extends Constraint
+final class HasPropertiesIdenticalTo extends Constraint implements ObjectPropertiesComparatorInterface
 {
     /**
      * @var array
@@ -122,12 +124,13 @@ final class HasPropertiesIdenticalTo extends Constraint
             $f = null;
 
             if (is_object($other)) {
-                $actual = $this->getPropertiesForComparison($other);
+                $actual = $this->getActualPropertiesForComparison($other);
+                $expect = $this->getExpectedPropertiesForComparison();
                 $f = new ComparisonFailure(
                     $this->expected,
                     $other,
-                    $this->exporter()->export($this->expected),
-                    $this->exporter()->export($actual)
+                    $this->exporter()->export($expect->getArrayForComparison()),
+                    $this->exporter()->export($actual->getArrayForComparison())
                 );
             }
 
@@ -148,8 +151,9 @@ final class HasPropertiesIdenticalTo extends Constraint
         if (!is_object($other)) {
             return false;
         }
-        $actual = $this->getPropertiesForComparison($other);
-        return ($this->expected === $actual);
+        $actual = $this->getActualPropertiesForComparison($other);
+        $expect = $this->getExpectedPropertiesForComparison();
+        return ($expect->getArrayForComparison() === $actual->getArrayForComparison());
     }
 
     /**
@@ -170,14 +174,28 @@ final class HasPropertiesIdenticalTo extends Constraint
         return $what.' '.$this->toString();
     }
 
-    private function getPropertiesForComparison(object $object) : array
+    /**
+     * {@inheritdoc}
+     */
+    public function getExpectedPropertiesForComparison() : ObjectPropertiesInterface
+    {
+        $expect = array_map(function ($e) {
+            return ($e instanceof ObjectPropertiesComparatorInterface) ? $e->getExpectedPropertiesForComparison() : $e;
+        }, $this->expected);
+        return new ObjectProperties($expect);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getActualPropertiesForComparison(object $object) : ObjectPropertiesInterface
     {
         $actual = [];
         $getters = $this->getters ? call_user_func($this->getters, $object) : [];
         foreach (array_keys($this->expected) as $key) {
             $this->updateActual($actual, $object, $key, $getters);
         }
-        return $actual;
+        return new ObjectProperties($actual);
     }
 
     private function updateActual(array &$actual, object $object, string $key, array $getters) : void
@@ -187,10 +205,19 @@ final class HasPropertiesIdenticalTo extends Constraint
             if (!is_callable([$object, $getter])) {
                 throw new \PHPUnit\Framework\Exception('$object->'.$getter.'() is not callable');
             }
-            $actual[$key] = call_user_func([$object, $getter]);
+            $actual[$key] = $this->adjustActualForComparison(call_user_func([$object, $getter]), $key);
         } elseif (property_exists($object, $key)) {
-            $actual[$key] = $object->{$key};
+            $actual[$key] = $this->adjustActualForComparison($object->{$key}, $key);
         }
+    }
+
+    private function adjustActualForComparison($value, string $key)
+    {
+        if (($expected = $this->expected[$key]) instanceof ObjectPropertiesComparatorInterface && is_object($value)) {
+            // a kind of recursion
+            return $expected->getActualPropertiesForComparison($value);
+        }
+        return $value;
     }
 }
 

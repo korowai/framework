@@ -301,6 +301,30 @@ trait ObjectPropertiesAssertions
     }
 
     /**
+     * Assert that ModSpecInterface *$object* has *$expected* properties.
+     *
+     * @param  array $expected An array of key-value pairs with expected values of attributes.
+     * @param  ModifyRecordInterface $object An object to be examined.
+     * @param  string|null $message Optional message.
+     */
+    public static function assertModifyRecordHas(
+        array $expected,
+        ModSpecRecordInterface $object,
+        string $message = ''
+    ) : void {
+        static::assertLdifObjectHas($expected, $object, $message, [
+            'delegate' => [
+                'snippet'           => [static::class, 'assertSnippetHas']
+                'getSnippet'        => [static::class, 'assertSnippetHas']
+            ],
+            'delegateArray' => [
+                'attrValSpecs'      => [static::class, 'assertAttrValHas'],
+                'getAttrValSpecs()' => [static::class, 'assertAttrValHas'],
+            ]
+        ]);
+    }
+
+    /**
      * Assert that ModifyRecordInterface *$object* has *$expected* properties.
      *
      * @param  array $expected An array of key-value pairs with expected values of attributes.

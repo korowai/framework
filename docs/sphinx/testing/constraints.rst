@@ -114,6 +114,9 @@ The constraint accepts objects having selected properties identical to
   :linenos:
   :language: none
 
+The constraint may be used recursively, i.e. it may be used to require given
+property to be an object with prescribed properties.
+
 
 .. _testing.constraints.implementsInterface:
 

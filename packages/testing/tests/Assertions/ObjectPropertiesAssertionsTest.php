@@ -52,48 +52,212 @@ class ObjectPropertiesAssertionsTest extends TestCase
 
     public static function propertiesSameAs__cases()
     {
+        $esmith = new class {
+            public $name = 'Emily';
+            public $last = 'Smith';
+            public $age = 20;
+            public $husband = null;
+            private $salary = 98;
+            public function getSalary() { return $this->salary; }
+            public function getDebit() { return -$this->salary; }
+            public function marry($husband) { $this->husband = $husband; }
+        };
+
         $jsmith = new class {
             public $name = 'John';
             public $last = 'Smith';
             public $age = 21;
+            public $wife = null;
             private $salary = 123;
             public function getSalary() { return $this->salary; }
             public function getDebit() { return -$this->salary; }
+            public function marry($wife) { $this->wife = $wife;}
         };
 
+        $esmith->marry($jsmith);
+        $jsmith->marry($esmith);
+
         return [
-            [['name' => 'John', 'last' => 'Smith', 'age' => 21], $jsmith],
-            [['name' => 'John', 'last' => 'Smith'],              $jsmith],
-            [['age' => 21],                                      $jsmith],
-            [['age' => 21, 'salary' => 123, 'debit' => -123],    $jsmith, function (object $o) {
-                return ['salary' => 'getSalary', 'debit' => 'getDebit'];
-            }],
-            [['age' => 21, 'getSalary()' => 123, 'getDebit()' => -123], $jsmith],
+            [
+                'expect'  => ['name' => 'John', 'last' => 'Smith', 'age' => 21, 'wife' => $esmith],
+                'object'  => $jsmith
+            ],
+            [
+                'expect'  => [
+                    'name' => 'John',
+                    'last' => 'Smith',
+                    'age' => 21,
+                    'wife' => $esmith,
+                ],
+                'object'  => $jsmith
+            ],
+            [
+                'expect'  => ['name' => 'John', 'last' => 'Smith', 'age' => 21],
+                'object'  => $jsmith
+            ],
+            [
+                'expect'  => ['name' => 'John', 'last' => 'Smith'],
+                'object'  => $jsmith
+            ],
+            [
+                'expect'  => ['age' => 21],
+                'object'  => $jsmith
+            ],
+            [
+                'expect'  => ['age' => 21, 'salary' => 123, 'debit' => -123],
+                'object'  => $jsmith,
+                'getters' => function (object $o) {return ['salary' => 'getSalary', 'debit' => 'getDebit'];}
+            ],
+            [
+                'expect'  => ['age' => 21, 'getSalary()' => 123, 'getDebit()' => -123],
+                'object'  => $jsmith
+            ],
+            [
+                'expect'  => [
+                    'name' => 'John',
+                    'last' => 'Smith',
+                    'age' => 21,
+                    'wife' => self::hasPropertiesIdenticalTo([
+                        'name' => 'Emily',
+                        'last' => 'Smith',
+                        'age' => 20,
+                        'husband' => $jsmith,
+                        'getSalary()' => 98
+                    ])
+                ],
+                'object'  => $jsmith
+            ],
+            [
+                'expect'  => [
+                    'name' => 'John',
+                    'last' => 'Smith',
+                    'age' => 21,
+                    'wife' => self::hasPropertiesIdenticalTo([
+                        'name' => 'Emily',
+                        'last' => 'Smith',
+                        'age' => 20,
+                        'husband' => self::hasPropertiesIdenticalTo([
+                            'name' => 'John',
+                            'last' => 'Smith',
+                            'age' => 21,
+                            'getSalary()' => 123,
+                        ]),
+                        'getSalary()' => 98
+                    ])
+                ],
+                'object'  => $jsmith
+            ],
+            [
+                'expect'  => [
+                    'age' => 21,
+                    'salary' => 123,
+                    'debit' => -123,
+                    'wife' => self::hasPropertiesIdenticalTo([
+                        'name' => 'Emily',
+                        'salary' => 98,
+                        'debit' => -98,
+                    ], function (object $o) {
+                        return ['salary' => 'getSalary', 'debit' => 'getDebit'];
+                    })
+                ],
+                'object'  => $jsmith,
+                'getters' => function (object $o) {return ['salary' => 'getSalary', 'debit' => 'getDebit'];}
+            ],
         ];
     }
 
     public static function propertiesNotSameAs__cases()
     {
+        $hbrown = new class {
+            public $name = 'Helen';
+            public $last = 'Brown';
+            public $age = 44;
+        };
+
+        $esmith = new class {
+            public $name = 'Emily';
+            public $last = 'Smith';
+            public $age = 20;
+            public $husband = null;
+            private $salary = 98;
+            public function getSalary() { return $this->salary; }
+            public function getDebit() { return -$this->salary; }
+            public function marry($husband) { $this->husband = $husband; }
+        };
+
         $jsmith = new class {
             public $name = 'John';
             public $last = 'Smith';
             public $age = 21;
+            public $wife = null;
             private $salary = 123;
             public function getSalary() { return $this->salary; }
             public function getDebit() { return -$this->salary; }
+            public function marry($wife) { $this->wife = $wife;}
         };
 
+        $esmith->marry($jsmith);
+        $jsmith->marry($esmith);
+
         return [
-            [['name' => 'John', 'last' => 'Brown', 'age' => 21], $jsmith],
-            [['name' => 'John', 'last' => 'Brown'],              $jsmith],
-            [['age' => 19],                                      $jsmith],
-            [['age' => 21, 'salary' => 1230],                    $jsmith, function (object $o) {
-                return ['salary' => 'getSalary', 'debit' => 'getDebit'];
-            }],
-            [['age' => 21, 'salary' => 123, 'debit' => -1230],   $jsmith, function (object $o) {
-                return ['salary' => 'getSalary', 'debit' => 'getDebit'];
-            }],
-            [['age' => 21, 'getSalary()' => 1230],               $jsmith],
+            [
+                'expect' => ['name' => 'John', 'last' => 'Brown', 'age' => 21],
+                'object' => $jsmith
+            ],
+            [
+                'expect' => ['name' => 'John', 'last' => 'Smith', 'wife' => null],
+                'object' => $jsmith
+            ],
+            [
+                'expect' => ['name' => 'John', 'last' => 'Smith', 'wife' => 'Emily'],
+                'object' => $jsmith
+            ],
+            [
+                'expect' => ['name' => 'John', 'last' => 'Smith', 'wife' => $hbrown],
+                'object' => $jsmith
+            ],
+            [
+                'expect' => ['name' => 'John', 'last' => 'Brown'],
+                'object' => $jsmith
+            ],
+            [
+                'expect' => ['age' => 19],
+                'object' => $jsmith
+            ],
+            [
+                'expect' => ['age' => 21, 'salary' => 1230],
+                'object' => $jsmith,
+                'getters' => function (object $o) {return ['salary' => 'getSalary', 'debit' => 'getDebit'];}
+            ],
+            [
+                'expect' => ['age' => 21, 'salary' => 123, 'debit' => -1230],
+                'object' => $jsmith,
+                'getters' => function (object $o) {return ['salary' => 'getSalary', 'debit' => 'getDebit'];}
+            ],
+            [
+                'expect' => ['age' => 21, 'getSalary()' => 1230],
+                'object' => $jsmith
+            ],
+            [
+                'expect'  => [
+                    'name' => 'John',
+                    'last' => 'Smith',
+                    'age' => 21,
+                    'wife' => [
+                        'name' => 'Emily',
+                        'last' => 'Smith',
+                        'age' => 20,
+                        'husband' => [
+                            'name' => 'John',
+                            'last' => 'Smith',
+                            'age' => 21,
+                            'getSalary()' => 123,
+                        ],
+                        'getSalary()' => 98
+                    ]
+                ],
+                'object'  => $jsmith
+            ],
         ];
     }
 
@@ -101,11 +265,11 @@ class ObjectPropertiesAssertionsTest extends TestCase
      * @dataProvider propertiesSameAs__cases
      */
     public function test__hasPropertiesIdenticalTo__withMatchingProperties(
-        array $expected,
+        array $expect,
         object $object,
         callable $getters = null
     ) {
-        self::assertTrue(self::hasPropertiesIdenticalTo($expected, $getters)->matches($object));
+        self::assertTrue(self::hasPropertiesIdenticalTo($expect, $getters)->matches($object));
     }
 
     /**

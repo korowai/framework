@@ -56,7 +56,7 @@ class ModDnRecord extends AbstractRecord implements ModDnRecordInterface
      *
      * @param  SnippetInterface $snippet
      * @param  string $dn
-     * @param  array $newRdn
+     * @param  string $newRdn
      * @param  array $options
      * @throws InvalidChangeTypeException
      */

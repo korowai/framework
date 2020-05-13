@@ -144,7 +144,17 @@ trait ObjectProperties
         ],
 
         ModifyRecordInterface::class    => [
+            'attribute'                 => 'getAttribute',
+            'modSpecs'                  => 'getModSpecs'
         ],
+
+        ModSpecInterface::class         => [
+            'modType'                   => 'getModType',
+            'attribute'                 => 'getAttribute'
+        ],
+    ];
+
+    protected static $ldiflibPropertyAsserters[] = [
     ];
 }
 

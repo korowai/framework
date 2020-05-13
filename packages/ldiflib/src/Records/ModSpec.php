@@ -43,9 +43,11 @@ class ModSpec implements ModSpecInterface
     /**
      * Initializes the object.
      *
+     * @param  SnippetInterface $snippet
      * @param  string $modType
      * @param  string $attribute
      * @param  array $attrValSpecs
+     *
      * @throws InvalidModTypeException
      */
     public function __construct(

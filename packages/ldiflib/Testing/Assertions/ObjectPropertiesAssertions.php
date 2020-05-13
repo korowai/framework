@@ -307,15 +307,15 @@ trait ObjectPropertiesAssertions
      * @param  ModifyRecordInterface $object An object to be examined.
      * @param  string|null $message Optional message.
      */
-    public static function assertModifyRecordHas(
+    public static function assertModSpecRecordHas(
         array $expected,
         ModSpecRecordInterface $object,
         string $message = ''
     ) : void {
         static::assertLdifObjectHas($expected, $object, $message, [
             'delegate' => [
-                'snippet'           => [static::class, 'assertSnippetHas']
-                'getSnippet'        => [static::class, 'assertSnippetHas']
+                'snippet'           => [static::class, 'assertSnippetHas'],
+                'getSnippet'        => [static::class, 'assertSnippetHas'],
             ],
             'delegateArray' => [
                 'attrValSpecs'      => [static::class, 'assertAttrValHas'],

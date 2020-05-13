@@ -95,17 +95,6 @@ class ModSpecTest extends TestCase
         $this->assertSame($record, $record->setAttrValSpecs(['attrVal1']));
         $this->assertSame(['attrVal1'], $record->getAttrValSpecs());
     }
-
-    public function test__setAttrValSpecs()
-    {
-        $snippet = $this->getMockBuilder(SnippetInterface::class)
-                        ->getMockForAbstractClass();
-
-        $record = new ModSpec($snippet, "dc=example,dc=org", []);
-
-        $this->assertSame($record, $record->setAttrValSpecs(['attrVal1']));
-        $this->assertSame(['attrVal1'], $record->getAttrValSpecs());
-    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

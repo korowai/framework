@@ -154,7 +154,7 @@ trait ObjectProperties
         ],
     ];
 
-    protected static $ldiflibPropertyAsserters[] = [
+    protected static $ldiflibPropertyAsserters = [
     ];
 }
 

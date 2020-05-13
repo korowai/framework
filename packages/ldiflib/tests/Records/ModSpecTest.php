@@ -43,58 +43,108 @@ class ModSpecTest extends TestCase
         $this->assertUsesTrait(HasAttrValSpecs::class, ModSpec::class);
     }
 
-//    public static function construct__cases()
-//    {
-//        return [
-//            'w/o attrValSpecs' => [
-//                'args' => [
-//                    'add',
-//                    'cn',
-//                ],
-//                'expect' => [
-//                    'modType' => 'add',
-//                    'attribute' => 'cn',
-//                    'attrValSpecs' => []
-//                ]
-//            ]
-//        ];
-//    }
-//
-//    /**
-//     * @dataProvider construct__cases
-//     */
-//    public function test__construct(array $args, array $expect)
-//    {
-//        $snippet = $this->getMockBuilder(SnippetInterface::class)
-//                        ->getMockForAbstractClass();
-//
-//        $record = new ModSpec($snippet, "add", "cn", ['attrVal1']);
-//
-//        $this->assertSame($snippet, $record->getSnippet());
-//        $this->assertModSpecHas($expect, $record);
-//    }
-//
-//    public function test__setModType()
-//    {
-//        $snippet = $this->getMockBuilder(SnippetInterface::class)
-//                        ->getMockForAbstractClass();
-//
-//        $record = new ModSpec($snippet, "add", "cn", ['attrVal1']);
-//
-//        $this->assertSame($record, $record->setModType(['attrVal1']));
-//        $this->assertSame(['attrVal1'], $record->getModType());
-//    }
-//
-//    public function test__setAttrValSpecs()
-//    {
-//        $snippet = $this->getMockBuilder(SnippetInterface::class)
-//                        ->getMockForAbstractClass();
-//
-//        $record = new ModSpec($snippet, "dc=example,dc=org", []);
-//
-//        $this->assertSame($record, $record->setAttrValSpecs(['attrVal1']));
-//        $this->assertSame(['attrVal1'], $record->getAttrValSpecs());
-//    }
+    public static function construct__cases()
+    {
+        return [
+            'ModSpec("delete", "cn")' => [
+                'args' => [
+                    'delete',
+                    'cn'
+                ],
+                'expect' => [
+                    'modType' => 'delete',
+                    'attribute' => 'cn',
+                ]
+            ],
+            'ModSpec("add", "cn", [])' => [
+                'args' => [
+                    'add',
+                    'cn',
+                    [ 'attrVal0' ]
+                ],
+                'expect' => [
+                    'modType' => 'add',
+                    'attribute' => 'cn',
+                    'attrValSpecs' => [ 'attrVal0' ]
+                ]
+            ],
+            'ModSpec("replace", "cn", [])' => [
+                'args' => [
+                    'replace',
+                    'cn',
+                    [ 'attrVal0' ]
+                ],
+                'expect' => [
+                    'modType' => 'replace',
+                    'attribute' => 'cn',
+                    'attrValSpecs' => [ 'attrVal0' ]
+                ]
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider construct__cases
+     */
+    public function test__construct(array $args, array $expect)
+    {
+        $snippet = $this->getMockBuilder(SnippetInterface::class)
+                        ->getMockForAbstractClass();
+
+        $record = new ModSpec($snippet, ...$args);
+
+        $this->assertSame($snippet, $record->getSnippet());
+        $this->assertHasPropertiesSameAs($expect, $record);
+    }
+
+    public function modType__cases()
+    {
+        return [
+            ['add'],
+            ['delete'],
+            ['replace']
+        ];
+    }
+
+    /**
+     * @dataProvider modType__cases
+     */
+    public function test__setModType(string $modType)
+    {
+        $snippet = $this->getMockBuilder(SnippetInterface::class)
+                        ->getMockForAbstractClass();
+
+        $record = new ModSpec($snippet, "add", "cn");
+
+        $this->assertSame($record, $record->setModType($modType));
+        $this->assertSame($modType, $record->getModType());
+    }
+
+    public function test__setModType__withInvalidArg()
+    {
+        $snippet = $this->getMockBuilder(SnippetInterface::class)
+                        ->getMockForAbstractClass();
+
+        $record = new ModSpec($snippet, "add", "cn");
+
+        $message = 'Argument 1 to '.ModSpec::class.'::setModType() must be one of "add", "delete", or "replace", "foo" given.';
+        $this->expectException(InvalidModTypeException::class);
+        $this->expectExceptionMessage($message);
+
+        $record->setModType("foo");
+    }
+
+
+    public function test__setAttribute()
+    {
+        $snippet = $this->getMockBuilder(SnippetInterface::class)
+                        ->getMockForAbstractClass();
+
+        $record = new ModSpec($snippet, "add", "cn");
+
+        $this->assertSame($record, $record->setAttribute("objectclass"));
+        $this->assertSame("objectclass", $record->getAttribute());
+    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

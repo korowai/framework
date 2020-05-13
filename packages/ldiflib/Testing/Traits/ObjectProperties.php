@@ -25,6 +25,15 @@ use Korowai\Lib\Ldif\Records\AddRecordInterface;
 use Korowai\Lib\Ldif\Records\DeleteRecordInterface;
 use Korowai\Lib\Ldif\Records\ModDnRecordInterface;
 use Korowai\Lib\Ldif\Records\ModifyRecordInterface;
+use Korowai\Lib\Ldif\Records\ModSpecInterface;
+use Korowai\Lib\Ldif\Traits\DecoratesLocationInterface;
+use Korowai\Lib\Ldif\Traits\DecoratesSnippetInterface;
+use Korowai\Lib\Ldif\Traits\DecoratesSourceInterface;
+use Korowai\Lib\Ldif\Traits\ExposesLocationInterface;
+use Korowai\Lib\Ldif\Traits\ExposesSnippetInterface;
+use Korowai\Lib\Ldif\Traits\ExposesSourceInterface;
+use Korowai\Lib\Ldif\Traits\HasAttrValSpecs;
+use Korowai\Lib\Ldif\Traits\HasParserRules;
 use Korowai\Lib\Ldif\SnippetInterface;
 use Korowai\Lib\Ldif\ValueInterface;
 use Korowai\Lib\Ldif\AttrValInterface;
@@ -57,7 +66,10 @@ trait ObjectProperties
         LocationInterface::class        => [
             'string'                    => 'getString',
             'offset'                    => 'getOffset',
+            'isValid'                   => 'isValid',
             'charOffset'                => 'getCharOffset',
+            'input'                     => 'getInput',
+            'clonedLocation'            => 'getClonedLocation',
         ],
 
         CursorInterface::class          => [
@@ -151,6 +163,59 @@ trait ObjectProperties
         ModSpecInterface::class         => [
             'modType'                   => 'getModType',
             'attribute'                 => 'getAttribute'
+        ],
+
+        ExposesSourceLocationInterface::class => [
+            'fileName'                  => 'getSourceFileName',
+            'sourceString'              => 'getSourceString',
+            'sourceOffset'              => 'getSourceOffset',
+            'sourceCharOffset'          => 'getSourceCharOffset',
+            'sourceLineIndex'           => 'getSourceLineIndex',
+            'sourceLine'                => 'getSourceLine',
+            'sourceLineAndOffset'       => 'getSourceLineAndOffset',
+            'sourceLineAndCharOffset'   => 'getSourceLineAndCharOffset',
+        ],
+
+        ExposesLocationInterface::class => [
+            'sourceLocation'            => 'getSourceLocation',
+            'string'                    => 'getString',
+            'offset'                    => 'getOffset',
+            'isValid'                   => 'isValid',
+            'charOffset'                => 'getCharOffset',
+            'input'                     => 'getInput',
+            'clonedLocation'            => 'getClonedLocation',
+        ],
+
+        ExposesSnippetInterface::class  => [
+            'length'                    => 'getLength',
+            'endOffset'                 => 'getEndOffset',
+            'sourceLength'              => 'getSourceLength',
+            'sourceEndOffset'           => 'getSourceEndOffset',
+            'sourceCharLength'          => 'getSourceCharLength',
+            'sourceCharEndOffset'       => 'getSourceCharEndOffset'
+        ],
+
+        DecoratesSourceLocationInterface::class => [
+            'sourceLocation'            => 'getSourceLocation',
+        ],
+
+        DecoratesLocationInterface::class => [
+            'location'                  => 'getLocation',
+        ],
+
+        DecoratesSnippetInterface::class => [
+            'snippet'                   => 'getSnippet',
+        ],
+
+        HasAttrValSpecs::class          => [
+            'attrValSpecs'              => 'getAttrValSpecs'
+        ],
+
+        HasParserRules::class           => [
+            'attrValSpecRule'           => 'attrValSpecRule',
+            'dnSpecRule'                => 'dnSpecRule',
+            'sepRule'                   => 'sepRule',
+            'versionSpecRule'           => 'versionSpecRule',
         ],
     ];
 }

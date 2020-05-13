@@ -48,10 +48,10 @@ class AttrValRecordTest extends TestCase
         $snippet = $this->getMockBuilder(SnippetInterface::class)
                         ->getMockForAbstractClass();
 
-        $record = new AttrValRecord($snippet, "DN", ['attrVal1']);
+        $record = new AttrValRecord($snippet, "dc=example,dc=org", ['attrVal1']);
 
         $this->assertSame($snippet, $record->getSnippet());
-        $this->assertSame("DN", $record->getDn());
+        $this->assertSame("dc=example,dc=org", $record->getDn());
         $this->assertSame(['attrVal1'], $record->getAttrValSpecs());
     }
 
@@ -60,7 +60,7 @@ class AttrValRecordTest extends TestCase
         $snippet = $this->getMockBuilder(SnippetInterface::class)
                         ->getMockForAbstractClass();
 
-        $record = new AttrValRecord($snippet, "DN", []);
+        $record = new AttrValRecord($snippet, "dc=example,dc=org", []);
 
         $this->assertSame($record, $record->setAttrValSpecs(['attrVal1']));
         $this->assertSame(['attrVal1'], $record->getAttrValSpecs());
@@ -73,7 +73,7 @@ class AttrValRecordTest extends TestCase
         $visitor = $this->getMockBuilder(RecordVisitorInterface::class)
                         ->getMockForAbstractClass();
 
-        $record = new AttrValRecord($snippet, "DN", []);
+        $record = new AttrValRecord($snippet, "dc=example,dc=org", []);
 
         $visitor->expects($this->once())
                 ->method('visitAttrValRecord')

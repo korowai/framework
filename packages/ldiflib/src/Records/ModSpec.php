@@ -74,7 +74,7 @@ class ModSpec implements ModSpecInterface
     {
         if (!in_array(strtolower($modType), ['add', 'delete', 'replace'])) {
             $message = 'Argument 1 to '.__class__.'::setModType() must be one of "add", "delete", or "replace", "'.
-                       $changeType.'" given.';
+                       $modType.'" given.';
             throw new InvalidModTypeException($message);
         }
         $this->modType = strtolower($modType);

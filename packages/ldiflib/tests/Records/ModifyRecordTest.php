@@ -76,7 +76,7 @@ class ModifyRecordTest extends TestCase
         $record = new ModifyRecord($snippet, ...$args);
 
         $this->assertSame($snippet, $record->getSnippet());
-        $this->assertModifyRecordHas($expect, $record);
+        $this->assertHasPropertiesSameAs($expect, $record);
     }
 
     public function test__setModSpecs()

@@ -42,11 +42,11 @@ class DeleteRecordTest extends TestCase
         $snippet = $this->getMockBuilder(SnippetInterface::class)
                         ->getMockForAbstractClass();
 
-        $record = new DeleteRecord($snippet, "DN");
+        $record = new DeleteRecord($snippet, "dc=example,dc=org");
 
         $this->assertSame("delete", $record->getChangeType());
         $this->assertSame($snippet, $record->getSnippet());
-        $this->assertSame("DN", $record->getDn());
+        $this->assertSame("dc=example,dc=org", $record->getDn());
     }
 
     public function test__acceptRecordVisitor()
@@ -56,7 +56,7 @@ class DeleteRecordTest extends TestCase
         $visitor = $this->getMockBuilder(RecordVisitorInterface::class)
                         ->getMockForAbstractClass();
 
-        $record = new DeleteRecord($snippet, "DN");
+        $record = new DeleteRecord($snippet, "dc=example,dc=org");
 
         $visitor->expects($this->once())
                 ->method('visitDeleteRecord')

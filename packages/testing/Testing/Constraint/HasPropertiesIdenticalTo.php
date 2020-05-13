@@ -180,7 +180,7 @@ final class HasPropertiesIdenticalTo extends Constraint implements ObjectPropert
     public function getExpectedPropertiesForComparison() : ObjectPropertiesInterface
     {
         $expect = array_map(function ($e) {
-            return ($e instanceof ObjectPropertiesComparatorInterface) ? $e->getExpectedPropertiesForComparison() : $e;
+            return $this->adjustExpectedValueForComparison($e);
         }, $this->expected);
         return new ObjectProperties($expect);
     }
@@ -201,23 +201,42 @@ final class HasPropertiesIdenticalTo extends Constraint implements ObjectPropert
     private function updateActual(array &$actual, object $object, string $key, array $getters) : void
     {
         $getter = (substr($key, -2) === '()') ? substr($key, 0, -2) : ($getters[$key] ?? null);
+        $expected = $this->expected[$key];
         if ($getter !== null) {
             if (!is_callable([$object, $getter])) {
                 throw new \PHPUnit\Framework\Exception('$object->'.$getter.'() is not callable');
             }
-            $actual[$key] = $this->adjustActualForComparison(call_user_func([$object, $getter]), $key);
+            $actual[$key] = $this->adjustActualValueForComparison(call_user_func([$object, $getter]), $expected);
         } elseif (property_exists($object, $key)) {
-            $actual[$key] = $this->adjustActualForComparison($object->{$key}, $key);
+            $actual[$key] = $this->adjustActualValueForComparison($object->{$key}, $expected);
         }
     }
 
-    private function adjustActualForComparison($value, string $key)
+    private function adjustActualValueForComparison($value, $expected)
     {
-        if (($expected = $this->expected[$key]) instanceof ObjectPropertiesComparatorInterface && is_object($value)) {
-            // a kind of recursion
+        if ($expected instanceof ObjectPropertiesComparatorInterface && is_object($value)) {
             return $expected->getActualPropertiesForComparison($value);
+        } elseif (is_array($expected) && is_array($value)) {
+            array_walk($value, function (&$v, $k) use ($expected) {
+                if (($e = $expected[$k] ?? null) instanceof ObjectPropertiesComparatorInterface && is_object($v)) {
+                    $v = $e->getActualPropertiesForComparison($v);
+                }
+            });
         }
         return $value;
+    }
+
+    private function adjustExpectedValueForComparison($expected)
+    {
+        if ($expected instanceof ObjectPropertiesComparatorInterface) {
+            return $expected->getExpectedPropertiesForComparison();
+        } elseif (is_array($expected)) {
+            return array_map(function ($e) {
+                return ($e instanceof ObjectPropertiesComparatorInterface) ?
+                    $e->getExpectedPropertiesForComparison() : $e;
+            }, $expected);
+        }
+        return $expected;
     }
 }
 

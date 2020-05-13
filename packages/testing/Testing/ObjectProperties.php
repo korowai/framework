@@ -34,8 +34,20 @@ final class ObjectProperties extends \ArrayObject implements ObjectPropertiesInt
     public function getArrayForComparison() : array
     {
         return array_map(function ($v) {
-            return $v instanceof ObjectPropertiesInterface ? $v->getArrayForComparison() : $v;
+            return $this->getValueForComparison($v);
         }, (array)$this);
+    }
+
+    private function getValueForComparison($value)
+    {
+        if ($value instanceof ObjectPropertiesInterface) {
+            return $value->getArrayForComparison();
+        } elseif (is_array($value)) {
+            return array_map(function ($v) {
+                return $v instanceof ObjectPropertiesInterface ? $v->getArrayForComparison() : $v;
+            }, $value);
+        }
+        return $value;
     }
 }
 

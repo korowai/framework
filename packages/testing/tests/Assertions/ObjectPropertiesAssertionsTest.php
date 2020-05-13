@@ -57,10 +57,14 @@ class ObjectPropertiesAssertionsTest extends TestCase
             public $last = 'Smith';
             public $age = 20;
             public $husband = null;
+            public $family = [];
             private $salary = 98;
             public function getSalary() { return $this->salary; }
             public function getDebit() { return -$this->salary; }
-            public function marry($husband) { $this->husband = $husband; }
+            public function marry($husband) {
+                $this->husband = $husband;
+                $this->family[] = $husband;
+            }
         };
 
         $jsmith = new class {
@@ -68,10 +72,14 @@ class ObjectPropertiesAssertionsTest extends TestCase
             public $last = 'Smith';
             public $age = 21;
             public $wife = null;
+            public $family = [];
             private $salary = 123;
             public function getSalary() { return $this->salary; }
             public function getDebit() { return -$this->salary; }
-            public function marry($wife) { $this->wife = $wife;}
+            public function marry($wife) {
+                $this->wife = $wife;
+                $this->family[] = $wife;
+            }
         };
 
         $esmith->marry($jsmith);
@@ -163,6 +171,20 @@ class ObjectPropertiesAssertionsTest extends TestCase
                 'object'  => $jsmith,
                 'getters' => function (object $o) {return ['salary' => 'getSalary', 'debit' => 'getDebit'];}
             ],
+            [
+                'expect' => [
+                    'family' => [ $esmith ],
+                ],
+                'object' => $jsmith
+            ],
+            [
+                'expect' => [
+                    'family' => [
+                        self::hasPropertiesIdenticalTo(['name' => 'Emily', 'last' => 'Smith']),
+                    ],
+                ],
+                'object' => $jsmith
+            ]
         ];
     }
 
@@ -179,10 +201,14 @@ class ObjectPropertiesAssertionsTest extends TestCase
             public $last = 'Smith';
             public $age = 20;
             public $husband = null;
+            public $family = [];
             private $salary = 98;
             public function getSalary() { return $this->salary; }
             public function getDebit() { return -$this->salary; }
-            public function marry($husband) { $this->husband = $husband; }
+            public function marry($husband) {
+                $this->husband = $husband;
+                $this->family[] = $husband;
+            }
         };
 
         $jsmith = new class {
@@ -190,10 +216,14 @@ class ObjectPropertiesAssertionsTest extends TestCase
             public $last = 'Smith';
             public $age = 21;
             public $wife = null;
+            public $family = [];
             private $salary = 123;
             public function getSalary() { return $this->salary; }
             public function getDebit() { return -$this->salary; }
-            public function marry($wife) { $this->wife = $wife;}
+            public function marry($wife) {
+                $this->wife = $wife;
+                $this->family[] = $wife;
+            }
         };
 
         $esmith->marry($jsmith);
@@ -258,6 +288,14 @@ class ObjectPropertiesAssertionsTest extends TestCase
                 ],
                 'object'  => $jsmith
             ],
+            [
+                'expect' => [
+                    'family' => [
+                        ['name' => 'Emily', 'last' => 'Smith'],
+                    ],
+                ],
+                'object' => $jsmith
+            ]
         ];
     }
 

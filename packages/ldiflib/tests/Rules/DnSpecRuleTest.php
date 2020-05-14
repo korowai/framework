@@ -33,19 +33,19 @@ class DnSpecRuleTest extends TestCase
             'default' => [
                 'args'   => [],
                 'expect' => [
-                    'isOptional()' => false
+                    'isOptional' => false
                 ]
             ],
             'required' => [
                 'args'   => [false],
                 'expect' => [
-                    'isOptional()' => false
+                    'isOptional' => false
                 ]
             ],
             'optional' => [
                 'args'   => [true],
                 'expect' => [
-                    'isOptional()' => true
+                    'isOptional' => true
                 ]
             ],
         ];
@@ -78,18 +78,18 @@ class DnSpecRuleTest extends TestCase
             $source = ['ł dn: '.$dn, 3 + 4 + strlen($dn)];
             // the 4 below is from strlen('dn: ')
             $errors = $result ? [] : [
-                [
+                self::hasPropertiesIdenticalTo([
                     'sourceOffset' => 3 + 4,
                     'sourceCharOffset' => 2 + 4,
                     'message' => 'syntax error: invalid DN syntax: \''.$dn.'\'',
-                ]
+                ])
             ];
             $matches = [[$dn, 3 + 4], 'dn_safe' => [$dn, 3 + 4]];
-            $cursor = [
+            $cursor = self::hasPropertiesIdenticalTo([
                 'offset' => 3 + 4 + strlen($dn),
                 'sourceOffset' => 3 + 4 + strlen($dn),
                 'sourceCharOffset' => 2 + 4 + mb_strlen($dn),
-            ];
+            ]);
             $expect = [
                 'result' => $result,
                 'dn' => $result ? $dn : null,
@@ -112,18 +112,18 @@ class DnSpecRuleTest extends TestCase
             $source = ['ł dn:: '.$dnBase64, 3 + 5 + strlen($dnBase64)];
             // the 5 below is from strlen('dn:: ')
             $errors = $result ? [] : [
-                [
+                self::hasPropertiesIdenticalTo([
                     'sourceOffset' => 3 + 5,
                     'sourceCharOffset' => 2 + 5,
                     'message' => 'syntax error: invalid DN syntax: \''.$dn.'\'',
-                ]
+                ]),
             ];
             $matches = [[$dnBase64, 3 + 5], 'dn_b64' => [$dnBase64, 3 + 5]];
-            $cursor = [
+            $cursor = self::hasPropertiesIdenticalTo([
                 'offset' => 3 + 5 + strlen($dnBase64),
                 'sourceOffset' => 3 + 5 + strlen($dnBase64),
                 'sourceCharOffset' => 2 + 5 + mb_strlen($dnBase64),
-            ];
+            ]);
             $expect = [
                 'result' => $result,
                 'dn' => $result ? $dn : null,
@@ -145,17 +145,17 @@ class DnSpecRuleTest extends TestCase
             $source = ['ł dn:: '.$dnBase64, 3 + 5 + $case['offset']];
             // the 5 below is from strlen('dn:: ')
             $errors = $result ? [] : [
-                [
+                self::hasPropertiesIdenticalTo([
                     'sourceOffset' => 3 + 5,
                     'sourceCharOffset' => 2 + 5,
                     'message' => 'syntax error: invalid BASE64 string',
-                ]
+                ]),
             ];
-            $cursor = [
+            $cursor = self::hasPropertiesIdenticalTo([
                 'offset' => 3 + 5 + $case['offset'],
                 'sourceOffset' => 3 + 5 + $case['offset'],
                 'sourceCharOffset' => 2 + 5 + $case['offset'],
-            ];
+            ]);
             $matches = [[$dnBase64, 3 + 5], 'dn_b64' => [$dnBase64, 3 + 5]];
             $expect = [
                 'result' => $result,
@@ -183,17 +183,17 @@ class DnSpecRuleTest extends TestCase
             $source = ['ł dn:: '.$dnBase64, 3 + 5 + $case['offset']];
             // the 5 below is from strlen('dn:: ')
             $errors = $result ? [] : [
-                [
+                self::hasPropertiesIdenticalTo([
                     'sourceOffset' => 3 + 5,
                     'sourceCharOffset' => 2 + 5,
                     'message' => 'syntax error: the string is not a valid UTF8',
-                ]
+                ]),
             ];
-            $cursor = [
+            $cursor = self::hasPropertiesIdenticalTo([
                 'offset' => 3 + 5 + $case['offset'],
                 'sourceOffset' => 3 + 5 + $case['offset'],
                 'sourceCharOffset' => 2 + 5 + $case['charOffset'],
-            ];
+            ]);
             $matches = [[$dnBase64, 3 + 5], 'dn_b64' => [$dnBase64, 3 + 5]];
             $expect = [
                 'result' => $result,
@@ -225,17 +225,17 @@ class DnSpecRuleTest extends TestCase
             $message = $type === 'BASE64' ? 'invalid BASE64 string' : "invalid DN syntax: '$dn'";
             $dnOffset = strlen('dn:'.$sep) + $case[2];
             $errors = $result ? [] : [
-                [
+                self::hasPropertiesIdenticalTo([
                     'sourceOffset' => $dnOffset,
                     'sourceCharOffset' => $dnOffset,
                     'message' => 'syntax error: '.$message,
-                ]
+                ]),
             ];
-            $cursor = [
+            $cursor = self::hasPropertiesIdenticalTo([
                 'offset' => strlen($source[0]),
                 'sourceOffset' => strlen($source[0]),
                 'sourceCharOffset' => mb_strlen($source[0]),
-            ];
+            ]);
 
             $dnKey = $type === 'BASE64' ? 'dn_b64' : 'dn_safe';
             $matches = [[$dn, $dnOffset], $dnKey => [$dn, $dnOffset]];
@@ -269,17 +269,17 @@ class DnSpecRuleTest extends TestCase
                     'init'   => 'preset string',
                     'dn'     => null,
                     'state'  => [
-                        'cursor' => [
+                        'cursor' => self::hasPropertiesIdenticalTo([
                             'offset' => 6,
                             'sourceOffset' => 6,
                             'sourceCharOffset' => 6,
-                        ],
+                        ]),
                         'errors' => [
-                            [
+                            self::hasPropertiesIdenticalTo([
                                 'sourceOffset' => 6,
                                 'sourceCharOffset' => 6,
                                 'message' => 'internal error: missing or invalid capture groups "dn_safe" and "dn_b64"'
-                            ]
+                            ]),
                         ],
                         'records' => [],
                     ]
@@ -318,7 +318,7 @@ class DnSpecRuleTest extends TestCase
 
         $this->assertSame($expect['result'], $result);
         $this->assertSame($expect['dn'], $dn);
-        $this->assertParserStateHas($expect['state'], $state);
+        $this->assertHasPropertiesSameAs($expect['state'], $state);
     }
 
     //
@@ -331,11 +331,11 @@ class DnSpecRuleTest extends TestCase
             $args = $case['args'] ?? [];
             $optional = $args[0] ?? false;
             $errors = $optional ? [] : [
-                [
+                self::hasPropertiesIdenticalTo([
                     'sourceOffset' => $case['offset'],
                     'sourceCharOffset' => $case['charOffset'],
                     'message' => 'syntax error: expected "dn:" (RFC2849)',
-                ]
+                ]),
             ];
             return [
                 'source' => $case[0],
@@ -345,11 +345,11 @@ class DnSpecRuleTest extends TestCase
                     'init' => 'preset string',
                     'dn' => null,
                     'state' => [
-                        'cursor' => [
+                        'cursor' => self::hasPropertiesIdenticalTo([
                             'offset' => $case['offset'],
                             'sourceOffset' => $case['offset'],
                             'sourceCharOffset' => $case['charOffset']
-                        ],
+                        ]),
                         'errors' => $errors,
                         'records' => [],
                     ],
@@ -374,17 +374,17 @@ class DnSpecRuleTest extends TestCase
             $source = ['ł dn: '.$dn, 3];
             // the 4 below is from strlen('dn: ')
             $errors = $result ? [] : [
-                [
+                self::hasPropertiesIdenticalTo([
                     'sourceOffset' => 3 + 4,
                     'sourceCharOffset' => 2 + 4,
                     'message' => 'syntax error: invalid DN syntax: \''.$dn.'\'',
-                ]
+                ]),
             ];
-            $cursor = [
+            $cursor = self::hasPropertiesIdenticalTo([
                 'offset' => 3 + 4 + strlen($dn),
                 'sourceOffset' => 3 + 4 + strlen($dn),
                 'sourceCharOffset' => 2 + 4 + mb_strlen($dn),
-            ];
+            ]);
             $expect = [
                 'result' => $result,
                 'dn' => $result ? $dn : null,
@@ -411,17 +411,17 @@ class DnSpecRuleTest extends TestCase
             $source = ['ł dn:: '.$dnBase64, 3];
             // the 5 below is from strlen('dn:: ')
             $errors = $result ? [] : [
-                [
+                self::hasPropertiesIdenticalTo([
                     'sourceOffset' => 3 + 5,
                     'sourceCharOffset' => 2 + 5,
                     'message' => 'syntax error: invalid DN syntax: \''.$dn.'\'',
-                ]
+                ]),
             ];
-            $cursor = [
+            $cursor = self::hasPropertiesIdenticalTo([
                 'offset' => 3 + 5 + strlen($dnBase64),
                 'sourceOffset' => 3 + 5 + strlen($dnBase64),
                 'sourceCharOffset' => 2 + 5 + mb_strlen($dnBase64),
-            ];
+            ]);
             $expect = [
                 'result' => $result,
                 'dn' => $result ? $dn : null,
@@ -447,17 +447,17 @@ class DnSpecRuleTest extends TestCase
             $source = ['ł dn:: '.$dnBase64, 3];
             // the 5 below is from strlen('dn:: ')
             $errors = $result ? [] : [
-                [
+                self::hasPropertiesIdenticalTo([
                     'sourceOffset' => 3 + 5,
                     'sourceCharOffset' => 2 + 5,
                     'message' => 'syntax error: invalid BASE64 string',
-                ]
+                ]),
             ];
-            $cursor = [
+            $cursor = self::hasPropertiesIdenticalTo([
                 'offset' => 3 + 5 + $case['offset'],
                 'sourceOffset' => 3 + 5 + $case['offset'],
                 'sourceCharOffset' => 2 + 5 + $case['offset'],
-            ];
+            ]);
             $expect = [
                 'result' => $result,
                 'init' => 'preset string',
@@ -488,17 +488,17 @@ class DnSpecRuleTest extends TestCase
             $source = ['ł dn:: '.$dnBase64, 3];
             // the 5 below is from strlen('dn:: ')
             $errors = $result ? [] : [
-                [
+                self::hasPropertiesIdenticalTo([
                     'sourceOffset' => 3 + 5,
                     'sourceCharOffset' => 2 + 5,
                     'message' => 'syntax error: the string is not a valid UTF8',
-                ]
+                ])
             ];
-            $cursor = [
+            $cursor = self::hasPropertiesIdenticalTo([
                 'offset' => 3 + 5 + $case['offset'],
                 'sourceOffset' => 3 + 5 + $case['offset'],
                 'sourceCharOffset' => 2 + 5 + $case['charOffset'],
-            ];
+            ]);
             $expect = [
                 'result' => $result,
                 'init' => 'preset string',
@@ -531,17 +531,17 @@ class DnSpecRuleTest extends TestCase
             $type = substr($sep, 0, 1) === ':' ? 'BASE64': 'SAFE';
             $message = 'malformed '.$type.'-STRING (RFC2849)';
             $errors = $result ? [] : [
-                [
+                self::hasPropertiesIdenticalTo([
                     'sourceOffset' => strlen('dn:'.$sep) + $case[2],
                     'sourceCharOffset' => strlen('dn:'.$sep) + $case[2],
                     'message' => 'syntax error: '.$message,
-                ]
+                ]),
             ];
-            $cursor = [
+            $cursor = self::hasPropertiesIdenticalTo([
                 'offset' => strlen($source[0]),
                 'sourceOffset' => strlen($source[0]),
                 'sourceCharOffset' => mb_strlen($source[0]),
-            ];
+            ]);
             $expect = [
                 'result' => $result,
                 'init' => 'preset string',
@@ -592,7 +592,7 @@ class DnSpecRuleTest extends TestCase
 
         $this->assertSame($expect['result'], $result);
         $this->assertSame($expect['dn'], $dn);
-        $this->assertParserStateHas($expect['state'], $state);
+        $this->assertHasPropertiesSameAs($expect['state'], $state);
     }
 }
 

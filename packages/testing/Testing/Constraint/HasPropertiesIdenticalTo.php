@@ -179,9 +179,10 @@ final class HasPropertiesIdenticalTo extends Constraint implements ObjectPropert
      */
     public function getExpectedPropertiesForComparison() : ObjectPropertiesInterface
     {
-        $expect = array_map(function ($e) {
-            return $this->adjustExpectedValueForComparison($e);
-        }, $this->expected);
+        $expect = $this->expected;
+        array_walk_recursive($expect, function (&$e) {
+            $e = $this->adjustExpectedValueForComparison($e);
+        });
         return new ObjectProperties($expect);
     }
 
@@ -220,6 +221,8 @@ final class HasPropertiesIdenticalTo extends Constraint implements ObjectPropert
             array_walk($value, function (&$v, $k) use ($expected) {
                 if (($e = $expected[$k] ?? null) instanceof ObjectPropertiesComparatorInterface && is_object($v)) {
                     $v = $e->getActualPropertiesForComparison($v);
+                } elseif (is_array($e) && is_array($v)) {
+                    $v = $this->adjustActualValueForComparison($v, $e);
                 }
             });
         }
@@ -228,15 +231,8 @@ final class HasPropertiesIdenticalTo extends Constraint implements ObjectPropert
 
     private function adjustExpectedValueForComparison($expected)
     {
-        if ($expected instanceof ObjectPropertiesComparatorInterface) {
-            return $expected->getExpectedPropertiesForComparison();
-        } elseif (is_array($expected)) {
-            return array_map(function ($e) {
-                return ($e instanceof ObjectPropertiesComparatorInterface) ?
-                    $e->getExpectedPropertiesForComparison() : $e;
-            }, $expected);
-        }
-        return $expected;
+        return ($expected instanceof ObjectPropertiesComparatorInterface) ?
+            $expected->getExpectedPropertiesForComparison() : $expected;
     }
 }
 

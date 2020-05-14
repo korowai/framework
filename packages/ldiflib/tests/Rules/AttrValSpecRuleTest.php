@@ -38,25 +38,25 @@ class AttrValSpecRuleTest extends TestCase
             'default' => [
                 'args'   => [],
                 'expect' => [
-                    'isOptional()' => false
+                    'isOptional' => false
                 ]
             ],
             'required' => [
                 'args'   => [false],
                 'expect' => [
-                    'isOptional()' => false
+                    'isOptional' => false
                 ]
             ],
             'optional' => [
                 'args'   => [true],
                 'expect' => [
-                    'isOptional()' => true
+                    'isOptional' => true
                 ]
             ],
             'valueSpecRule' => [
                 'args'   => [false, $valueSpecRule],
                 'expect' => [
-                    'isOptional()' => false,
+                    'isOptional' => false,
                     'getValueSpecRule()' => $valueSpecRule
                 ]
             ]
@@ -102,14 +102,14 @@ class AttrValSpecRuleTest extends TestCase
                     'result' => true,
                     'value' => [
                         'attribute' => 'attrType;lang-pl',
-                        'valueObject' => [
+                        'valueObject' => self::hasPropertiesIdenticalTo([
                             'type' => ValueInterface::TYPE_SAFE,
                             'spec' => 'AAA',
                             'content' => 'AAA'
-                        ],
+                        ]),
                     ],
                     'state' => [
-                        'cursor' => ['offset' => 21],
+                        'cursor' => self::hasPropertiesIdenticalTo(['offset' => 21]),
                         'errors' => [],
                         'records' => [],
                     ]
@@ -126,12 +126,12 @@ class AttrValSpecRuleTest extends TestCase
                     'result' => false,
                     'value' => null,
                     'state' => [
-                        'cursor' => ['offset' => 12],
+                        'cursor' => self::hasPropertiesIdenticalTo(['offset' => 12]),
                         'errors' => [
-                            [
+                            self::hasPropertiesIdenticalTo([
                                 'sourceOffset' => 11,
                                 'message' => 'syntax error: invalid BASE64 string',
-                            ],
+                            ]),
                         ],
                         'records' => [],
                     ]
@@ -147,12 +147,12 @@ class AttrValSpecRuleTest extends TestCase
                     'result' => false,
                     'value' => null,
                     'state' => [
-                        'cursor' => ['offset' => 21],
+                        'cursor' => self::hasPropertiesIdenticalTo(['offset' => 21]),
                         'errors' => [
-                            [
+                            self::hasPropertiesIdenticalTo([
                                 'sourceOffset' => 21,
                                 'message' => 'internal error: missing or invalid capture group "attr_desc"'
-                            ],
+                            ]),
                         ],
                         'records' => [],
                     ]
@@ -178,11 +178,11 @@ class AttrValSpecRuleTest extends TestCase
 
         $this->assertSame($expect['result'], $result);
         if (is_array($expect['value'])) {
-            $this->assertAttrValHas($expect['value'], $value);
+            $this->assertHasPropertiesSameAs($expect['value'], $value);
         } else {
             $this->assertSame($expect['value'], $value);
         }
-        $this->assertParserStateHas($expect['state'], $state);
+        $this->assertHasPropertiesSameAs($expect['state'], $state);
     }
 
     //
@@ -202,12 +202,12 @@ class AttrValSpecRuleTest extends TestCase
                     'result' => false,
                     'value' => null,
                     'state' => [
-                        'cursor' => ['offset' => 0],
+                        'cursor' => self::hasPropertiesIdenticalTo(['offset' => 0]),
                         'errors' => [
-                            [
+                            self::hasPropertiesIdenticalTo([
                                 'sourceOffset' => 0,
                                 'message' => 'syntax error: expected <AttributeDescription>":" (RFC2849)',
-                            ]
+                            ])
                         ],
                         'records' => []
                     ],
@@ -223,7 +223,7 @@ class AttrValSpecRuleTest extends TestCase
                     'result' => false,
                     'value' => null,
                     'state' => [
-                        'cursor' => ['offset' => 0],
+                        'cursor' => self::hasPropertiesIdenticalTo(['offset' => 0]),
                         'errors' => [],
                         'records' => []
                     ],
@@ -239,7 +239,7 @@ class AttrValSpecRuleTest extends TestCase
                     'result' => false,
                     'value' => null,
                     'state' => [
-                        'cursor' => ['offset' => 0],
+                        'cursor' => self::hasPropertiesIdenticalTo(['offset' => 0]),
                         'errors' => [],
                         'records' => []
                     ],
@@ -255,12 +255,12 @@ class AttrValSpecRuleTest extends TestCase
                     'result' => false,
                     'value' => null,
                     'state' => [
-                        'cursor' => ['offset' => 0],
+                        'cursor' => self::hasPropertiesIdenticalTo(['offset' => 0]),
                         'errors' => [
-                            [
+                            self::hasPropertiesIdenticalTo([
                                 'sourceOffset' => 0,
                                 'message' => 'syntax error: expected <AttributeDescription>":" (RFC2849)',
-                            ]
+                            ]),
                         ],
                         'records' => []
                     ],
@@ -276,7 +276,7 @@ class AttrValSpecRuleTest extends TestCase
                     'result' => false,
                     'value' => null,
                     'state' => [
-                        'cursor' => ['offset' => 0],
+                        'cursor' => self::hasPropertiesIdenticalTo(['offset' => 0]),
                         'errors' => [],
                         'records' => []
                     ],
@@ -291,14 +291,14 @@ class AttrValSpecRuleTest extends TestCase
                     'result' => true,
                     'value' => [
                         'attribute' => 'attrType',
-                        'valueObject' => [
+                        'valueObject' => self::hasPropertiesIdenticalTo([
                             'type' => ValueInterface::TYPE_SAFE,
                             'spec' => 'FOO',
                             'content' => 'FOO',
-                        ]
+                        ])
                     ],
                     'state' => [
-                        'cursor' => ['offset' => 13],
+                        'cursor' => self::hasPropertiesIdenticalTo(['offset' => 13]),
                         'errors' => [],
                         'records' => []
                     ],
@@ -313,14 +313,14 @@ class AttrValSpecRuleTest extends TestCase
                     'result' => true,
                     'value' => [
                         'attribute' => 'attrType;option-1',
-                        'valueObject' => [
+                        'valueObject' => self::hasPropertiesIdenticalTo([
                             'type' => ValueInterface::TYPE_SAFE,
                             'spec' => 'FOO',
                             'content' => 'FOO',
-                        ]
+                        ])
                     ],
                     'state' => [
-                        'cursor' => ['offset' => 22],
+                        'cursor' => self::hasPropertiesIdenticalTo(['offset' => 22]),
                         'errors' => [],
                         'records' => []
                     ],
@@ -336,12 +336,12 @@ class AttrValSpecRuleTest extends TestCase
                     'result' => false,
                     'value' => null,
                     'state' => [
-                        'cursor' => ['offset' => 18],
+                        'cursor' => self::hasPropertiesIdenticalTo(['offset' => 18]),
                         'errors' => [
-                            [
+                            self::hasPropertiesIdenticalTo([
                                 'sourceOffset' => 13,
                                 'message' => 'syntax error: malformed SAFE-STRING (RFC2849)',
-                            ]
+                            ]),
                         ],
                         'records' => []
                     ],
@@ -356,14 +356,14 @@ class AttrValSpecRuleTest extends TestCase
                     'result' => true,
                     'value' => [
                         'attribute' => 'attrType',
-                        'valueObject' => [
+                        'valueObject' => self::hasPropertiesIdenticalTo([
                             'type' => ValueInterface::TYPE_BASE64,
                             'spec' => 'xbvDs8WCdGEgxYHDs2TFug==',
                             'content' => 'Żółta Łódź',
-                        ]
+                        ])
                     ],
                     'state' => [
-                        'cursor' => ['offset' => 35],
+                        'cursor' => self::hasPropertiesIdenticalTo(['offset' => 35]),
                         'errors' => [],
                         'records' => []
                     ],
@@ -379,12 +379,12 @@ class AttrValSpecRuleTest extends TestCase
                     'result' => false,
                     'value' => null,
                     'state' => [
-                        'cursor' => ['offset' => 19],
+                        'cursor' => self::hasPropertiesIdenticalTo(['offset' => 19]),
                         'errors' => [
-                            [
+                            self::hasPropertiesIdenticalTo([
                                 'sourceOffset' => 15,
                                 'message' => 'syntax error: malformed BASE64-STRING (RFC2849)'
-                            ],
+                            ]),
                         ],
                         'records' => []
                     ],
@@ -400,12 +400,12 @@ class AttrValSpecRuleTest extends TestCase
                     'result' => false,
                     'value' => null,
                     'state' => [
-                        'cursor' => ['offset' => 12],
+                        'cursor' => self::hasPropertiesIdenticalTo(['offset' => 12]),
                         'errors' => [
-                            [
+                            self::hasPropertiesIdenticalTo([
                                 'sourceOffset' => 11,
                                 'message' => 'syntax error: invalid BASE64 string'
-                            ],
+                            ]),
                         ],
                         'records' => []
                     ],
@@ -420,9 +420,9 @@ class AttrValSpecRuleTest extends TestCase
                     'result' => true,
                     'value' => [
                         'attribute' => 'attrType',
-                        'valueObject' => [
+                        'valueObject' => self::hasPropertiesIdenticalTo([
                             'type' => ValueInterface::TYPE_URL,
-                            'spec' => [
+                            'spec' => self::hasPropertiesIdenticalTo([
                                 'string' => 'file:///home/jsmith/foo.txt',
                                 'scheme' => 'file',
                                 'authority' => '',
@@ -432,12 +432,12 @@ class AttrValSpecRuleTest extends TestCase
                                 'path' => '/home/jsmith/foo.txt',
                                 'query' => null,
                                 'fragment' => null,
-                            ]
+                            ])
                             //'value_url' => 'file:///home/jsmith/foo.txt',
-                        ],
+                        ]),
                     ],
                     'state' => [
-                        'cursor' => ['offset' => 38],
+                        'cursor' => self::hasPropertiesIdenticalTo(['offset' => 38]),
                         'errors' => [],
                         'records' => []
                     ],
@@ -453,12 +453,12 @@ class AttrValSpecRuleTest extends TestCase
                     'result' => false,
                     'value' => null,
                     'state' => [
-                        'cursor' => ['offset' => 13],
+                        'cursor' => self::hasPropertiesIdenticalTo(['offset' => 13]),
                         'errors' => [
-                            [
+                            self::hasPropertiesIdenticalTo([
                                 'sourceOffset' => 12,
                                 'message' => 'syntax error: malformed URL (RFC2849/RFC3986)',
-                            ]
+                            ])
                         ],
                         'records' => []
                     ],
@@ -486,11 +486,11 @@ class AttrValSpecRuleTest extends TestCase
         $this->assertSame($expect['result'], $result);
 
         if (is_array($expect['value'])) {
-            $this->assertAttrValHas($expect['value'], $value);
+            $this->assertHasPropertiesSameAs($expect['value'], $value);
         } else {
             $this->assertSame($expect['value'], $value);
         }
-        $this->assertParserStateHas($expect['state'], $state);
+        $this->assertHasPropertiesSameAs($expect['state'], $state);
     }
 }
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * @file tests/TestCaseTest.php
+ * @file tests/Testing/TestCaseTest.php
  *
  * This file is part of the Korowai package
  *
@@ -15,9 +15,9 @@ namespace Korowai\Tests\Testing\Lib\Ldif;
 
 use Korowai\Testing\TestCase as BaseTestCase;
 use Korowai\Testing\Lib\Ldif\TestCase;
-use Korowai\Testing\Lib\Ldif\Traits\ObjectProperties;
+use Korowai\Testing\Contracts\ObjectPropertyGettersMap as ContractsPropertyGettersMap;
+use Korowai\Testing\Lib\Ldif\ObjectPropertyGettersMap as LdiflibPropertyGettersMap;
 use Korowai\Testing\Lib\Ldif\Traits\ParserTestHelpers;
-use Korowai\Testing\Lib\Ldif\Assertions\ObjectPropertiesAssertions;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -29,16 +29,6 @@ class TestCaseTest extends TestCase
         $this->assertExtendsClass(BaseTestCase::class, parent::class);
     }
 
-    public function test__uses__ObjectProperties()
-    {
-        $this->assertUsesTrait(ObjectProperties::class, parent::class);
-    }
-
-    public function test__uses__ObjectPropertiesAssertions()
-    {
-        $this->assertUsesTrait(ObjectPropertiesAssertions::class, parent::class);
-    }
-
     public function test__uses__ParserTestHelpers()
     {
         $this->assertUsesTrait(ParserTestHelpers::class, parent::class);
@@ -46,7 +36,11 @@ class TestCaseTest extends TestCase
 
     public function test__objectPropertyGettersMap()
     {
-        $this->assertSame(parent::$ldiflibObjectPropertyGettersMap, parent::objectPropertyGettersMap());
+        $expected = array_merge_recursive(
+            ContractsPropertyGettersMap::getObjectPropertyGettersMap(),
+            LdiflibPropertyGettersMap::getObjectPropertyGettersMap()
+        );
+        $this->assertSame($expected, parent::objectPropertyGettersMap());
     }
 }
 

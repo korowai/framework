@@ -50,15 +50,15 @@ class AbstractRuleTest extends TestCase
                 'expect'    => [
                     'result' => false,
                     'state' => [
-                        'cursor' => [
+                        'cursor' => self::hasPropertiesIdenticalTo([
                             'offset' => 0,
-                        ],
+                        ]),
                         'records' => [],
                         'errors'  => [
-                            [
+                            self::hasPropertiesIdenticalTo([
                                 'message' => 'syntax error: missing "var_name =" in integer assignment',
                                 'sourceOffset' => 0
-                            ]
+                            ]),
                         ],
                     ],
                     'matches' => [],
@@ -71,9 +71,9 @@ class AbstractRuleTest extends TestCase
                 'expect'    => [
                     'result' => false,
                     'state' => [
-                        'cursor' => [
+                        'cursor' => self::hasPropertiesIdenticalTo([
                             'offset' => 0,
-                        ],
+                        ]),
                         'records' => [],
                         'errors'  => [],
                     ],
@@ -87,15 +87,15 @@ class AbstractRuleTest extends TestCase
                 'expect'    => [
                     'result' => false,
                     'state' => [
-                        'cursor' => [
+                        'cursor' => self::hasPropertiesIdenticalTo([
                             'offset' => 0,
-                        ],
+                        ]),
                         'records' => [],
                         'errors'  => [
-                            [
+                            self::hasPropertiesIdenticalTo([
                                 'message' => 'syntax error: missing "var_name =" in integer assignment',
                                 'sourceOffset' => 0
-                            ]
+                            ]),
                         ],
                     ],
                     'matches' => [
@@ -113,9 +113,9 @@ class AbstractRuleTest extends TestCase
                 'expect'    => [
                     'result' => false,
                     'state' => [
-                        'cursor' => [
+                        'cursor' => self::hasPropertiesIdenticalTo([
                             'offset' => 0,
-                        ],
+                        ]),
                         'records' => [],
                         'errors'  => [],
                     ],
@@ -134,15 +134,15 @@ class AbstractRuleTest extends TestCase
                 'expect'    => [
                     'result' => false,
                     'state' => [
-                        'cursor' => [
+                        'cursor' => self::hasPropertiesIdenticalTo([
                             'offset' => 6,
-                        ],
+                        ]),
                         'records' => [],
                         'errors'  => [
-                            [
+                            self::hasPropertiesIdenticalTo([
                                 'sourceOffset' => 6,
                                 'message' => 'syntax error: malformed integer value'
-                            ]
+                            ]),
                         ],
                     ],
                     'matches' => [
@@ -160,15 +160,15 @@ class AbstractRuleTest extends TestCase
                 'expect'    => [
                     'result' => false,
                     'state' => [
-                        'cursor' => [
+                        'cursor' => self::hasPropertiesIdenticalTo([
                             'offset' => 9,
-                        ],
+                        ]),
                         'records' => [],
                         'errors'  => [
-                            [
+                            self::hasPropertiesIdenticalTo([
                                 'sourceOffset' => 6,
                                 'message' => 'syntax error: malformed integer value'
-                            ]
+                            ]),
                         ],
                     ],
                     'matches' => [
@@ -186,15 +186,15 @@ class AbstractRuleTest extends TestCase
                 'expect'    => [
                     'result' => false,
                     'state' => [
-                        'cursor' => [
+                        'cursor' => self::hasPropertiesIdenticalTo([
                             'offset' => 9,
-                        ],
+                        ]),
                         'records' => [],
                         'errors'  => [
-                            [
+                            self::hasPropertiesIdenticalTo([
                                 'sourceOffset' => 9,
                                 'message' => 'syntax error: malformed integer value'
-                            ]
+                            ])
                         ],
                     ],
                     'matches' => [
@@ -212,9 +212,9 @@ class AbstractRuleTest extends TestCase
                 'expect'    => [
                     'result' => true,
                     'state' => [
-                        'cursor' => [
+                        'cursor' => self::hasPropertiesIdenticalTo([
                             'offset' => 10,
-                        ],
+                        ]),
                         'records' => [],
                         'errors'  => [],
                     ],
@@ -247,7 +247,7 @@ class AbstractRuleTest extends TestCase
         $result = $rule->match($state, $matches);
 
         $this->assertSame($expect['result'] ?? true, $result);
-        $this->assertParserStateHas($expect['state'], $state);
+        $this->assertHasPropertiesSameAs($expect['state'], $state);
         $this->assertHasPregCaptures($expect['matches'], $matches);
     }
 
@@ -283,7 +283,7 @@ class AbstractRuleTest extends TestCase
         $result = $rule->parse($state, $value);
 
         $this->assertSame($expect['result'] ?? true, $result);
-        $this->assertParserStateHas($expect['state'], $state);
+        $this->assertHasPropertiesSameAs($expect['state'], $state);
     }
 }
 

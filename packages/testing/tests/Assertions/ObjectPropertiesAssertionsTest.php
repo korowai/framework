@@ -85,6 +85,18 @@ class ObjectPropertiesAssertionsTest extends TestCase
         $esmith->marry($jsmith);
         $jsmith->marry($esmith);
 
+        $registry = new class {
+            public $persons = [];
+            public $families = [];
+            public function addFamily(string $key, array $persons)
+            {
+                $this->families[$key] = $persons;
+                $this->persons = array_merge($this->persons, $persons);
+            }
+        };
+
+        $registry->addFamily('smith', [$esmith, $jsmith]);
+
         return [
             [
                 'expect'  => ['name' => 'John', 'last' => 'Smith', 'age' => 21, 'wife' => $esmith],
@@ -184,7 +196,37 @@ class ObjectPropertiesAssertionsTest extends TestCase
                     ],
                 ],
                 'object' => $jsmith
-            ]
+            ],
+            [
+                'expect' => [
+                    'persons' => [
+                        self::hasPropertiesIdenticalTo(['name' => 'Emily', 'last' => 'Smith']),
+                        self::hasPropertiesIdenticalTo(['name' => 'John', 'last' => 'Smith']),
+                    ],
+                    'families' => [
+                        'smith' => [
+                            self::hasPropertiesIdenticalTo(['name' => 'Emily', 'last' => 'Smith']),
+                            self::hasPropertiesIdenticalTo(['name' => 'John', 'last' => 'Smith']),
+                        ]
+                    ]
+                ],
+                'object' => $registry
+            ],
+            [
+                'expect' => [
+                    'persons' => [
+                        $esmith,
+                        $jsmith,
+                    ],
+                    'families' => [
+                        'smith' => [
+                            $esmith,
+                            $jsmith,
+                        ]
+                    ]
+                ],
+                'object' => $registry
+            ],
         ];
     }
 
@@ -228,6 +270,18 @@ class ObjectPropertiesAssertionsTest extends TestCase
 
         $esmith->marry($jsmith);
         $jsmith->marry($esmith);
+
+        $registry = new class {
+            public $persons = [];
+            public $families = [];
+            public function addFamily(string $key, array $persons)
+            {
+                $this->families[$key] = $persons;
+                $this->persons = array_merge($this->persons, $persons);
+            }
+        };
+
+        $registry->addFamily('smith', [$esmith, $jsmith]);
 
         return [
             [
@@ -295,6 +349,21 @@ class ObjectPropertiesAssertionsTest extends TestCase
                     ],
                 ],
                 'object' => $jsmith
+            ],
+            [
+                'expect' => [
+                    'persons' => [
+                        ['name' => 'Emily', 'last' => 'Smith'],
+                        ['name' => 'John', 'last' => 'Smith'],
+                    ],
+                    'families' => [
+                        'smith' => [
+                            ['name' => 'Emily', 'last' => 'Smith'],
+                            ['name' => 'John', 'last' => 'Smith'],
+                        ]
+                    ]
+                ],
+                'object' => $registry
             ]
         ];
     }

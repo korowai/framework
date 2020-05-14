@@ -80,6 +80,36 @@ class ObjectPropertiesTest extends TestCase
                     ]
                 ],
             ],
+            [
+                'properties' => [
+                    'foo' => [
+                        [
+                            new ObjectProperties([
+                                'bar' => 'BAR',
+                                'gez' => [
+                                    new ObjectProperties([
+                                        'qux' => 'QUX'
+                                    ])
+                                ]
+                            ])
+                        ]
+                    ]
+                ],
+                'expect' => [
+                    'foo' => [
+                        [
+                            [
+                                'bar' => 'BAR',
+                                'gez' => [
+                                    [
+                                        'qux' => 'QUX'
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ],
+            ]
         ];
     }
 

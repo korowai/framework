@@ -43,22 +43,24 @@ class ModifyRecordTest extends TestCase
         return [
             'w/o modSpecs' => [
                 'args' => [
-                    'cn=foo,dc=example,dc=org',
+                    'dc=example,dc=org',
                 ],
                 'expect' => [
-                    'dn' => 'cn=foo,dc=example,dc=org',
+                    'dn' => 'dc=example,dc=org',
+                    'changeType' => 'modify',
                     'modSpecs' => []
                 ]
             ],
             'w/ modSpecs' => [
                 'args' => [
-                    'cn=foo,dc=example,dc=org',
+                    'dc=example,dc=org',
                     [
                         'X'
                     ],
                 ],
                 'expect' => [
-                    'dn' => 'cn=foo,dc=example,dc=org',
+                    'dn' => 'dc=example,dc=org',
+                    'changeType' => 'modify',
                     'modSpecs' => ['X']
                 ]
             ]
@@ -79,12 +81,21 @@ class ModifyRecordTest extends TestCase
         $this->assertHasPropertiesSameAs($expect, $record);
     }
 
+    public function test__getChangeType()
+    {
+        $snippet = $this->getMockBuilder(SnippetInterface::class)
+                        ->getMockForAbstractClass();
+
+        $record = new ModifyRecord($snippet, "dc=example,dc=org");
+        $this->assertSame("modify", $record->getChangeType());
+    }
+
     public function test__setModSpecs()
     {
         $snippet = $this->getMockBuilder(SnippetInterface::class)
                         ->getMockForAbstractClass();
 
-        $record = new ModifyRecord($snippet, "cn=foo,dc=example,dc=org");
+        $record = new ModifyRecord($snippet, "dc=example,dc=org");
 
         $this->assertSame($record, $record->setModSpecs(['X']));
         $this->assertSame(['X'], $record->getModSpecs());
@@ -97,7 +108,7 @@ class ModifyRecordTest extends TestCase
         $visitor = $this->getMockBuilder(RecordVisitorInterface::class)
                         ->getMockForAbstractClass();
 
-        $record = new ModifyRecord($snippet, "cn=foo,dc=example,dc=org", ['X']);
+        $record = new ModifyRecord($snippet, "dc=example,dc=org", ['X']);
 
         $visitor->expects($this->once())
                 ->method('visitModifyRecord')

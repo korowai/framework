@@ -1,6 +1,6 @@
 <?php
 /**
- * @file Testing/ObjectPropertiesComparatorInterface.php
+ * @file Testing/Constraint/ObjectPropertiesComparatorInterface.php
  *
  * This file is part of the Korowai package
  *

@@ -33,19 +33,19 @@ class SepRuleTest extends TestCase
             'default' => [
                 'args'   => [],
                 'expect' => [
-                    'isOptional()' => false
+                    'isOptional' => false
                 ]
             ],
             'required' => [
                 'args'   => [false],
                 'expect' => [
-                    'isOptional()' => false
+                    'isOptional' => false
                 ]
             ],
             'optional' => [
                 'args'   => [true],
                 'expect' => [
-                    'isOptional()' => true
+                    'isOptional' => true
                 ]
             ],
         ];
@@ -78,11 +78,11 @@ class SepRuleTest extends TestCase
                     'result' => true,
                     'value' => "\n",
                     'state'  => [
-                        'cursor' => [
+                        'cursor' => self::hasPropertiesIdenticalTo([
                             'offset' => 1,
                             'sourceOffset' => 1,
                             'sourceCharOffset' => 1
-                        ],
+                        ]),
                         'errors' => [],
                         'records' => []
                     ],
@@ -95,11 +95,11 @@ class SepRuleTest extends TestCase
                     'result' => true,
                     'value' => "\r\n",
                     'state'  => [
-                        'cursor' => [
+                        'cursor' => self::hasPropertiesIdenticalTo([
                             'offset' => 2,
                             'sourceOffset' => 2,
                             'sourceCharOffset' => 2
-                        ],
+                        ]),
                         'errors' => [],
                         'records' => []
                     ],
@@ -112,17 +112,17 @@ class SepRuleTest extends TestCase
                     'result' => false,
                     'value' => null,
                     'state'  => [
-                        'cursor' => [
+                        'cursor' => self::hasPropertiesIdenticalTo([
                             'offset' => 2,
                             'sourceOffset' => 2,
                             'sourceCharOffset' => 2
-                        ],
+                        ]),
                         'errors' => [
-                            [
+                            self::hasPropertiesIdenticalTo([
                                 'sourceOffset' => 2,
                                 'sourceCharOffset' => 2,
                                 'message' => 'internal error: missing or invalid capture group 0'
-                            ]
+                            ]),
                         ],
                         'records' => []
                     ],
@@ -135,17 +135,17 @@ class SepRuleTest extends TestCase
                     'result' => false,
                     'value' => null,
                     'state'  => [
-                        'cursor' => [
+                        'cursor' => self::hasPropertiesIdenticalTo([
                             'offset' => 2,
                             'sourceOffset' => 2,
                             'sourceCharOffset' => 2
-                        ],
+                        ]),
                         'errors' => [
-                            [
+                            self::hasPropertiesIdenticalTo([
                                 'sourceOffset' => 2,
                                 'sourceCharOffset' => 2,
                                 'message' => 'internal error: missing or invalid capture group 0'
-                            ]
+                            ]),
                         ],
                         'records' => []
                     ],
@@ -171,7 +171,7 @@ class SepRuleTest extends TestCase
 
         $this->assertSame($expect['result'], $result);
         $this->assertSame($expect['value'], $value);
-        $this->assertParserStateHas($expect['state'], $state);
+        $this->assertHasPropertiesSameAs($expect['state'], $state);
     }
 
     //
@@ -188,11 +188,11 @@ class SepRuleTest extends TestCase
                     'result' => true,
                     'value' => "\n",
                     'state'  => [
-                        'cursor' => [
+                        'cursor' => self::hasPropertiesIdenticalTo([
                             'offset' => 1,
                             'sourceOffset' => 1,
                             'sourceCharOffset' => 1
-                        ],
+                        ]),
                         'errors' => [],
                         'records' => []
                     ],
@@ -205,11 +205,11 @@ class SepRuleTest extends TestCase
                     'result' => true,
                     'value' => "\r\n",
                     'state'  => [
-                        'cursor' => [
+                        'cursor' => self::hasPropertiesIdenticalTo([
                             'offset' => 2,
                             'sourceOffset' => 2,
                             'sourceCharOffset' => 2
-                        ],
+                        ]),
                         'errors' => [],
                         'records' => []
                     ],
@@ -222,17 +222,17 @@ class SepRuleTest extends TestCase
                     'result' => false,
                     'value' => null,
                     'state'  => [
-                        'cursor' => [
+                        'cursor' => self::hasPropertiesIdenticalTo([
                             'offset' => 0,
                             'sourceOffset' => 0,
                             'sourceCharOffset' => 0
-                        ],
+                        ]),
                         'errors' => [
-                            [
+                            self::hasPropertiesIdenticalTo([
                                 'sourceOffset' => 0,
                                 'sourceCharOffset' => 0,
                                 'message' => 'syntax error: expected line separator (RFC2849)'
-                            ]
+                            ]),
                         ],
                         'records' => []
                     ],
@@ -245,11 +245,11 @@ class SepRuleTest extends TestCase
                     'result' => false,
                     'value' => null,
                     'state'  => [
-                        'cursor' => [
+                        'cursor' => self::hasPropertiesIdenticalTo([
                             'offset' => 0,
                             'sourceOffset' => 0,
                             'sourceCharOffset' => 0
-                        ],
+                        ]),
                         'errors' => [],
                         'records' => []
                     ],
@@ -275,7 +275,7 @@ class SepRuleTest extends TestCase
 
         $this->assertSame($expect['result'], $result);
         $this->assertSame($expect['value'], $value);
-        $this->assertParserStateHas($expect['state'], $state);
+        $this->assertHasPropertiesSameAs($expect['state'], $state);
     }
 }
 

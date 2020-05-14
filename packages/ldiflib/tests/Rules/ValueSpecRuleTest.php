@@ -34,19 +34,19 @@ class ValueSpecRuleTest extends TestCase
             'default' => [
                 'args'   => [],
                 'expect' => [
-                    'isOptional()' => false
+                    'isOptional' => false
                 ]
             ],
             'required' => [
                 'args'   => [false],
                 'expect' => [
-                    'isOptional()' => false
+                    'isOptional' => false
                 ]
             ],
             'optional' => [
                 'args'   => [true],
                 'expect' => [
-                    'isOptional()' => true
+                    'isOptional' => true
                 ]
             ],
         ];
@@ -80,7 +80,7 @@ class ValueSpecRuleTest extends TestCase
                         'content' => 'Żółta łyżka',
                     ],
                     'state' => [
-                        'cursor' => ['offset' => 121],
+                        'cursor' => self::hasPropertiesIdenticalTo(['offset' => 121]),
                         'errors' => [],
                         'records' => [],
                     ]
@@ -95,12 +95,12 @@ class ValueSpecRuleTest extends TestCase
                     'result' => false,
                     'value' => null,
                     'state' => [
-                        'cursor' => ['offset' => 121],
+                        'cursor' => self::hasPropertiesIdenticalTo(['offset' => 121]),
                         'errors' => [
-                            [
+                            self::hasPropertiesIdenticalTo([
                                 'sourceOffset' => 123,
                                 'message' => 'syntax error: invalid BASE64 string'
-                            ]
+                            ]),
                         ],
                         'records' => [],
                     ]
@@ -119,7 +119,7 @@ class ValueSpecRuleTest extends TestCase
                         'content' => 'John Smith',
                     ],
                     'state' => [
-                        'cursor' => ['offset' => 121],
+                        'cursor' => self::hasPropertiesIdenticalTo(['offset' => 121]),
                         'errors' => [],
                         'records' => [],
                     ]
@@ -138,7 +138,7 @@ class ValueSpecRuleTest extends TestCase
                     'result' => true,
                     'value' => [
                         'type' => ValueInterface::TYPE_URL,
-                        'spec' => [
+                        'spec' => self::hasPropertiesIdenticalTo([
                             'string' => 'file:///home/jsmith/foo.txt',
                             'scheme' => 'file',
                             'authority' => '',
@@ -148,10 +148,10 @@ class ValueSpecRuleTest extends TestCase
                             'path' => '/home/jsmith/foo.txt',
                             'query' => null,
                             'fragment' => null
-                        ],
+                        ]),
                     ],
                     'state' => [
-                        'cursor' => ['offset' => 121],
+                        'cursor' => self::hasPropertiesIdenticalTo(['offset' => 121]),
                         'errors' => [],
                         'records' => [],
                     ]
@@ -168,13 +168,13 @@ class ValueSpecRuleTest extends TestCase
                     'result' => false,
                     'value' => null,
                     'state' => [
-                        'cursor' => ['offset' => 121],
+                        'cursor' => self::hasPropertiesIdenticalTo(['offset' => 121]),
                         'errors' => [
-                            [
+                            self::hasPropertiesIdenticalTo([
                                 'sourceOffset' => 121,
                                 'message' => 'internal error: missing or invalid capture groups '.
                                              '"value_safe", "value_b64" and "value_url"'
-                            ]
+                            ]),
                         ],
                         'records' => [],
                     ]
@@ -201,11 +201,11 @@ class ValueSpecRuleTest extends TestCase
         $this->assertSame($expect['result'], $result);
         if (is_array($expect['value'])) {
             $this->assertInstanceOf(ValueInterface::class, $value);
-            $this->assertValueHas($expect['value'], $value);
+            $this->assertHasPropertiesSameAs($expect['value'], $value);
         } else {
             $this->assertSame($expect['value'], $value);
         }
-        $this->assertParserStateHas($expect['state'], $state);
+        $this->assertHasPropertiesSameAs($expect['state'], $state);
     }
 
     //
@@ -228,11 +228,11 @@ class ValueSpecRuleTest extends TestCase
                         'content' => 'Żółta łyżka',
                     ],
                     'state' => [
-                        'cursor' => [
+                        'cursor' => self::hasPropertiesIdenticalTo([
                             'offset' => 26,
                             'sourceOffset' => 26,
                             'sourceCharOffset' => 26
-                        ],
+                        ]),
                         'errors' => [],
                         'records' => [],
                     ]
@@ -247,16 +247,16 @@ class ValueSpecRuleTest extends TestCase
                     'result' => false,
                     'value' => null,
                     'state' => [
-                        'cursor' => [
+                        'cursor' => self::hasPropertiesIdenticalTo([
                             'offset' => 25,
                             'sourceOffset' => 25,
                             'sourceCharOffset' => 25
-                        ],
+                        ]),
                         'errors' => [
-                            [
+                            self::hasPropertiesIdenticalTo([
                                 'sourceOffset' => 2,
                                 'message' => 'syntax error: invalid BASE64 string'
-                            ]
+                            ]),
                         ],
                         'records' => [],
                     ]
@@ -275,11 +275,11 @@ class ValueSpecRuleTest extends TestCase
                         'content' => 'John Smith',
                     ],
                     'state' => [
-                        'cursor' => [
+                        'cursor' => self::hasPropertiesIdenticalTo([
                             'offset' => 11,
                             'sourceOffset' => 11,
                             'sourceCharOffset' => 11
-                        ],
+                        ]),
                         'errors' => [],
                         'records' => [],
                     ]
@@ -294,7 +294,7 @@ class ValueSpecRuleTest extends TestCase
                     'result' => true,
                     'value' => [
                         'type' => ValueInterface::TYPE_URL,
-                        'spec' => [
+                        'spec' => self::hasPropertiesIdenticalTo([
                             'string' => 'file:///home/jsmith/foo.txt',
                             'scheme' => 'file',
                             'authority' => '',
@@ -304,14 +304,14 @@ class ValueSpecRuleTest extends TestCase
                             'path' => '/home/jsmith/foo.txt',
                             'query' => null,
                             'fragment' => null
-                        ],
+                        ]),
                     ],
                     'state' => [
-                        'cursor' => [
+                        'cursor' => self::hasPropertiesIdenticalTo([
                             'offset' => 29,
                             'sourceOffset' => 29,
                             'sourceCharOffset' => 29
-                        ],
+                        ]),
                         'errors' => [],
                         'records' => [],
                     ]
@@ -340,11 +340,11 @@ class ValueSpecRuleTest extends TestCase
 
         if (is_array($expect['value'])) {
             $this->assertInstanceOf(ValueInterface::class, $value);
-            $this->assertValueHas($expect['value'], $value);
+            $this->assertHasPropertiesSameAs($expect['value'], $value);
         } else {
             $this->assertSame($expect['value'], $value);
         }
-        $this->assertParserStateHas($expect['state'], $state);
+        $this->assertHasPropertiesSameAs($expect['state'], $state);
     }
 }
 

@@ -54,9 +54,7 @@ class VersionSpec implements VersionSpecInterface
     }
 
     /**
-     * Returns the version number.
-     *
-     * @return int
+     * {@inheritdoc}
      */
     public function getVersion() : int
     {

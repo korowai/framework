@@ -933,6 +933,61 @@ class Rfc2849Test extends TestCase
     {
         $this->assertRfcNotMatches($string, 'LDIF_ATTRVAL_RECORD');
     }
+
+    //
+    // MOD_SPEC_INIT
+    //
+
+    public static function MOD_SPEC_INIT__cases()
+    {
+        $cases = [];
+
+        $types = ['add', 'delete', 'replace'];
+        $inheritedCases = [];
+
+        foreach (static::ATTRIBUTE_DESCRIPTION__cases() as $attr) {
+            foreach ($types as $type) {
+                $typeTuples = [$type.': ', 'mod_type' => [$type, 0]];
+                $inheritedCases[] = static::joinPregTuples([$typeTuples, $attr]);
+            }
+        }
+        return array_merge($inheritedCases, $cases);
+    }
+
+    public static function non__MOD_SPEC_INIT__cases()
+    {
+        $types = ['add', 'delete', 'replace'];
+
+        $strings = [];
+
+        $inheritedCases = [];
+        foreach (static::non__ATTRIBUTE_DESCRIPTION__cases() as $nonAttr) {
+            foreach ($types as $type) {
+                $inheritedCases[] = [$type.': '.$nonAttr[0]];
+            }
+        }
+        foreach (static::ATTRIBUTE_DESCRIPTION__cases() as $attr) {
+            $inheritedCases[] = ['foo: '.$attr[0]];
+        }
+
+        return array_merge($inheritedCases, static::stringsToPregTuples($strings));
+    }
+
+    /**
+     * @dataProvider MOD_SPEC_INIT__cases
+     */
+    public function test__MOD_SPEC_INIT__matches(string $string, array $pieces = [])
+    {
+        $this->assertRfcMatches($string, 'MOD_SPEC_INIT', $pieces);
+    }
+
+    /**
+     * @dataProvider non__MOD_SPEC_INIT__cases
+     */
+    public function test__MOD_SPEC_INIT__notMatches(string $string)
+    {
+        $this->assertRfcNotMatches($string, 'MOD_SPEC_INIT');
+    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

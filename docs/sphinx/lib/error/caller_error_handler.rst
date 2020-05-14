@@ -1,7 +1,7 @@
 .. index::
    single: Context; Caller Error Handlers
    single: Lib; Context; Caller Error Handlers
-.. _CallerErrorHandlers:
+.. _lib.error.caller-error-handlers:
 
 Caller Error Handlers
 =====================

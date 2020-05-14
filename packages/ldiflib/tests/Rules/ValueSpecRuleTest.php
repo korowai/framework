@@ -157,6 +157,35 @@ class ValueSpecRuleTest extends TestCase
                     ]
                 ]
             ],
+            'value_url (UriSyntaxError)' => [
+                //            00000000001111111111222222222233333333334444
+                //            01234567890123456789012345678901234567890123
+                'source' => [':<file://example.org:80/home/jsmith/foo.txt', 43],
+                'matches' => [
+                    'value_url' => ['file://example.org:80/home/jsmith/foo.txt', 2],
+                    'uri' => ['file://example.org:80/home/jsmith/foo.txt', 2],
+                    'scheme' => ['file', 2],
+                    'host' => ['example.org', 9],
+                    'port' => ['80', 21],
+                    'path_absolute' => ['/home/jsmith/foo.txt', 23],
+                ],
+                'expect' => [
+                    'result' => false,
+                    'value' => null,
+                    'state' => [
+                        'cursor' => self::hasPropertiesIdenticalTo(['offset' => 43]),
+                        'errors' => [
+                            self::hasPropertiesIdenticalTo([
+                                'sourceOffset' => 43,
+                                'message' => 'syntax error: in URL: '.
+                                             'The uri `file://example.org:80/home/jsmith/foo.txt` '.
+                                             'is invalid for the data scheme'
+                            ])
+                        ],
+                        'records' => [],
+                    ]
+                ]
+            ],
             'missing value' => [
                 'source' => [':<file:///home/jsmith/foo.txt', 121],
                 'matches' => [

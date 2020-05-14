@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Rules/AbstractRule.php
+ * @file src/Rules/AbstractRfcRule.php
  *
  * This file is part of the Korowai package
  *
@@ -19,12 +19,12 @@ use Korowai\Lib\Ldif\Scan;
 use Korowai\Lib\Rfc\Traits\DecoratesRuleInterface;
 
 /**
- * Base class for LDIF parsing rules. The LDIF rule decorates RFC
- * [RuleInterface](RuleInterface.html).
+ * Base class for LDIF parsing rules that decorate RFC
+ * [RuleInterface](\.\./\.\./Rfc/RuleInterface.html).
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-abstract class AbstractRule implements RuleInterface
+abstract class AbstractRfcRule implements RuleInterface, \Korowai\Lib\Rfc\RuleInterface
 {
     use DecoratesRuleInterface;
 

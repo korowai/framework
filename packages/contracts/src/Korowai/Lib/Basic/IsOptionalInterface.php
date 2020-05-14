@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Lib/Basic/SingletonInterface.php
+ * @file src/Korowai/Lib/Basic/IsOptionalInterface.php
  *
  * This file is part of the Korowai package
  *
@@ -14,18 +14,19 @@ declare(strict_types=1);
 namespace Korowai\Lib\Basic;
 
 /**
- * An interface implemented by singleton classes.
+ * Provides ``isOptional()`` method that returns a boolean flag.
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-interface SingletonInterface
+interface IsOptionalInterface
 {
     /**
-     * Fetch an instance of the class.
+     * Returns boolean flag that specifies if this instance is optional in some
+     * algorithm.
      *
-     * @return object
+     * @return bool
      */
-    public static function getInstance();
+    public function isOptional() : bool;
 }
 
 // vim: syntax=php sw=4 ts=4 et:

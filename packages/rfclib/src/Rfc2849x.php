@@ -221,6 +221,28 @@ class Rfc2849x extends Rfc2849
     public const ATTRVAL_SPEC_X = '(?:'.self::ATTRIBUTE_DESCRIPTION.self::VALUE_SPEC_X.self::SEP_X.')';
 
     /**
+     * [Rfc2849::MOD_SPEC_INIT](Rfc2849.html) with enhanced error detection.
+     *
+     * Capture groups:
+     *
+     *  - ``mod_type``: always set, contains the modification type indicator,
+     *    either ``"add"``, ``"delete"``, or ``"replace"``,
+     *  - ``attr_desc``: contains the attribute description (attribute type with options).
+     *  - ``attr_desc_error``: only set if there is an error after the initial
+     *    ``"add:"`` / ``"delete:"`` / ``"replace:"`` tag.
+     */
+    public const MOD_SPEC_INIT_X =
+        '(?:'.
+            '(?<mod_type>add|delete|replace):'.
+            self::FILL.
+            '(?:'.
+                '(?:'.self::ATTRIBUTE_DESCRIPTION.'(?='.self::SEP_X.'))'.
+                '|'.
+                '(?:'.self::ATTRIBUTE_DESCRIPTION.'?(?<attr_desc_error>'.self::NOT_SEP_X.'*)(?='.self::SEP_X.'))'.
+            ')'.
+        ')';
+
+    /**
      * Defined named capture groups that appear in patterns of the Rfc2849x
      * class.
      */
@@ -232,6 +254,7 @@ class Rfc2849x extends Rfc2849
         'VALUE_SPEC_X',
         'CONTROL_X',
         'ATTRVAL_SPEC_X',
+        'MOD_SPEC_INIT_X',
     ];
 
     /**
@@ -244,7 +267,9 @@ class Rfc2849x extends Rfc2849
             'VALUE_SPEC_X'      => 'expected ":" (RFC2849)',
             'CONTROL_X'         => 'expected "control:" (RFC2849)',
             'ATTRVAL_SPEC_X'    => 'expected <AttributeDescription>":" (RFC2849)',
+            'MOD_SPEC_INIT_X'   => 'expected one of "add:", "delete:" or "replace:" (RFC2849)',
         ],
+        'attr_desc_error'   => 'missing or invalid AttributeDescription (RFC2849)',
         'dn_b64_error'      => 'malformed BASE64-STRING (RFC2849)',
         'dn_safe_error'     => 'malformed SAFE-STRING (RFC2849)',
         'ctl_type_error'    => 'missing or invalid OID (RFC2849)',

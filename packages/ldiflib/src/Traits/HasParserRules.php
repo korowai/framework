@@ -15,8 +15,10 @@ namespace Korowai\Lib\Ldif\Traits;
 
 use Korowai\Lib\Ldif\RuleInterface;
 use Korowai\Lib\Ldif\Rules\AttrValSpecRule;
+use Korowai\Lib\Ldif\Rules\ControlRule;
 use Korowai\Lib\Ldif\Rules\DnSpecRule;
 use Korowai\Lib\Ldif\Rules\SepRule;
+use Korowai\Lib\Ldif\Rules\ValueSpecRule;
 use Korowai\Lib\Ldif\Rules\VersionSpecRule;
 use Korowai\Lib\Ldif\Exception\InvalidRuleNameException;
 
@@ -62,6 +64,17 @@ trait HasParserRules
     }
 
     /**
+     * Returns instance of ControlRule.
+     *
+     * @Param bool $tryOnly
+     * @return ControlRule
+     */
+    public function controlRule(bool $tryOnly = false) : ControlRule
+    {
+        return $this->getParserRule(ControlRule::class, $tryOnly);
+    }
+
+    /**
      * Returns instance of DnSpecRule.
      *
      * @param  bool $tryOnly
@@ -81,6 +94,17 @@ trait HasParserRules
     public function sepRule(bool $tryOnly = false) : SepRule
     {
         return $this->getParserRule(SepRule::class, $tryOnly);
+    }
+
+    /**
+     * Returns instance of ValueSpecRule.
+     *
+     * @param  bool $tryOnly
+     * @return ValueSpecRule
+     */
+    public function valueSpecRule(bool $tryOnly = false) : ValueSpecRule
+    {
+        return $this->getParserRule(ValueSpecRule::class, $tryOnly);
     }
 
     /**

@@ -17,8 +17,10 @@ use Korowai\Lib\Ldif\Traits\HasParserRules;
 use Korowai\Lib\Ldif\Exception\InvalidRuleNameException;
 use Korowai\Lib\Ldif\RuleInterface;
 use Korowai\Lib\Ldif\Rules\AttrValSpecRule;
+use Korowai\Lib\Ldif\Rules\ControlRule;
 use Korowai\Lib\Ldif\Rules\DnSpecRule;
 use Korowai\Lib\Ldif\Rules\SepRule;
+use Korowai\Lib\Ldif\Rules\ValueSpecRule;
 use Korowai\Lib\Ldif\Rules\VersionSpecRule;
 
 use Korowai\Testing\Lib\Ldif\TestCase;
@@ -38,8 +40,10 @@ class HasParserRulesTest extends TestCase
     {
         return [
             ['attrValSpecRule', AttrValSpecRule::class],
+            ['controlRule', ControlRule::class],
             ['dnSpecRule', DnSpecRule::class],
             ['sepRule', SepRule::class],
+            ['valueSpecRule', ValueSpecRule::class],
             ['versionSpecRule', VersionSpecRule::class],
         ];
     }

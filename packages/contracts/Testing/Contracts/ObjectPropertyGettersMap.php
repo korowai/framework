@@ -35,6 +35,10 @@ class ObjectPropertyGettersMap
             'instance'                  => 'getInstance',
         ],
 
+        \Korowai\Lib\Basic\IsOptionalInterface::class => [
+            'isOptional'                => 'isOptional',
+        ],
+
         \Korowai\Lib\Context\ContextFactoryInterface::class => [
         ],
 
@@ -254,7 +258,6 @@ class ObjectPropertyGettersMap
             'captures'                  => 'captures',
             'errorCaptures'             => 'errorCaptures',
             'valueCaptures'             => 'valueCaptures',
-            'isOptional'                => 'isOptional'
         ],
 
         \Korowai\Lib\Rfc\StaticRuleSetInterface::class => [

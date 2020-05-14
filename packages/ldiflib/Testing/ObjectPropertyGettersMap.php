@@ -172,6 +172,7 @@ class ObjectPropertyGettersMap
         \Korowai\Lib\Ldif\Traits\HasParserRules::class => [
             'attrValSpecRule'           => 'attrValSpecRule',
             'dnSpecRule'                => 'dnSpecRule',
+            'controlRule'               => 'controlRule',
             'sepRule'                   => 'sepRule',
             'versionSpecRule'           => 'versionSpecRule',
         ],

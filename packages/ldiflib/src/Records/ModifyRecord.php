@@ -19,7 +19,7 @@ use Korowai\Lib\Ldif\Exception\InvalidChangeTypeException;
 
 /**
  * Represents [RFC2849](https://tools.ietf.org/html/rfc2849)
- * *ldif-change-record* of type *change-moddn*.
+ * *ldif-change-record* of type *change-modify*.
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */

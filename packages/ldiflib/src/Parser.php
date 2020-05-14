@@ -50,8 +50,8 @@ class Parser implements ParserInterface
     protected function getRecordParserMethod(string $fileType) : string
     {
         $methods = [
-            'content' => 'parseContentRecord',
-            'changes' => 'parseChangesRecord',
+            'content' => 'parseLdifAttrValRecord',
+            'changes' => 'parseLdifChangeRecord',
             'mixed'   => 'parseMixedRecord',
             'detect'  => 'parseDetectRecord',
         ];
@@ -186,7 +186,7 @@ class Parser implements ParserInterface
     /**
      * @todo Write documentation
      */
-    public function parseContentRecord(State $state, bool $tryOnly = false) : bool
+    public function parseLdifAttrValRecord(State $state, bool $tryOnly = false) : bool
     {
         $cursor = $state->getCursor();
         $begin = $cursor->getClonedLocation();
@@ -216,7 +216,7 @@ class Parser implements ParserInterface
     /**
      * @todo Write documentation
      */
-    public function parseChangeRecord(State $state, bool $tryOnly = false) : bool
+    public function parseLdifChangeRecord(State $state, bool $tryOnly = false) : bool
     {
         // FIXME: remove this line when implemented
         throw new \BadMethodCallException('not implemented');
@@ -232,17 +232,26 @@ class Parser implements ParserInterface
             return false;
         }
 
+        $controls = [];
         $prevErrCount = count($state->getErrors());
-
-        // TODO: implement
-
-        /*
-        if (!$this->controlRule() && (count($state->getErrors()) > $prevErrCount)) {
+        if ($this->controlRule(true)->parse($state, $control)) {
+            $controls[] = $control;
+            while($this->controlRule(true)->parse($state, $control)) {
+                $controls[] = $control;
+            }
+        }
+        if (count($state->getErrors()) > $prevErrCount) {
             return false;
         }
-        */
 
-        return true;
+        return $this->parseChangeRecord($state);;
+    }
+
+    /**
+     * @todo Write documentation
+     */
+    public function parseChangeRecord(State $state, bool $tryOnly = false) : bool
+    {
     }
 
     /**

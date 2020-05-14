@@ -13,10 +13,14 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Rfc;
 
+use Korowai\Lib\Basic\IsOptionalInterface;
+
 /**
  * Represents a single rule in a set of rules.
+ *
+ * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-interface RuleInterface
+interface RuleInterface extends IsOptionalInterface
 {
     /**
      * Returns the rule name as it appears in the set of rules.
@@ -88,14 +92,6 @@ interface RuleInterface
      * @return array
      */
     public function getErrorMessage(string $errorKey = '') : string;
-
-    /**
-     * Returns true if the rule is optional (e.g. it's an alternative in
-     * higher-level syntactic rule).
-     *
-     * @return bool
-     */
-    public function isOptional() : bool;
 }
 
 // vim: syntax=php sw=4 ts=4 et:

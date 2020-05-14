@@ -322,6 +322,24 @@ class Rfc2849 extends AbstractRuleSet
     public const LDIF_ATTRVAL_RECORD = '(?:'.self::DN_SPEC.self::SEP.self::ATTRVAL_SPEC.'+)';
 
     /**
+     * [RFC2849](https://tools.ietf.org/html/rfc2849):
+     * ``mod-spec = ("add:" / "delete:" / "replace:") FILL AttributeDescription SEP *attrval-spec "-" SEP``
+     *
+     * This pattern implements the initial line of the *mod-spec* rule (call it
+     * *mod-spec-init*), such that::
+     *
+     *      mod-spec = mod-spec-init SEP *attrval-spec "-" SEP
+     *      mod-spec-init = ("add:" / "delete:" / "replace:") FILL AttributeDescription
+     *
+     * Capture groups:
+     *
+     *  - ``mod_type``: always set, contains the modification type indicator,
+     *    either ``"add"``, ``"delete"``, or ``"replace"``,
+     *  - ``attr_desc``: always set, contains the attribute description (attribute type with options).
+     */
+    public const MOD_SPEC_INIT = '(?:(?<mod_type>add|delete|replace):'.self::FILL.self::ATTRIBUTE_DESCRIPTION.')';
+
+    /**
      * Rules provided by this class.
      */
     protected static $rfc2849Rules = [
@@ -359,6 +377,7 @@ class Rfc2849 extends AbstractRuleSet
         'CONTROL',
         'ATTRVAL_SPEC',
         'LDIF_ATTRVAL_RECORD',
+        'MOD_SPEC_INIT',
     ];
 
     /**
@@ -400,7 +419,9 @@ class Rfc2849 extends AbstractRuleSet
 //            'VALUE_SPEC'                => 'expected value-spec (RFC2849)',
 //            'CONTROL'                   => 'expected control (RFC2849)',
 //            'ATTRVAL_SPEC'              => 'expected attrval-spec (RFC2849)',
-//            'LDIF_ATTRVAL_RECORD'       => 'expected ldif-attrval-record (RFC2849)'
+//            'LDIF_ATTRVAL_RECORD'       => 'expected ldif-attrval-record (RFC2849)',
+            'MOD_SPEC_INIT'             => 'expected one of "add:", "delete:" or "replace:" '.
+                                           'followed by AttributeDescription (RFC2849)',
         ]
     ];
 

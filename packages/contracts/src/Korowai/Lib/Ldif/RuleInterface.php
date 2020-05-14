@@ -13,10 +13,12 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldif;
 
+use Korowai\Lib\Basic\IsOptionalInterface;
+
 /**
  * Interface for cursor objects.
  */
-interface RuleInterface extends \Korowai\Lib\Rfc\RuleInterface
+interface RuleInterface extends IsOptionalInterface
 {
     /**
      * Parse string starting at position defined by *$state*.

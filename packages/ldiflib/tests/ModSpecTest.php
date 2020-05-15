@@ -1,6 +1,6 @@
 <?php
 /**
- * @file tests/Records/ModSpecTest.php
+ * @file tests/ModSpecTest.php
  *
  * This file is part of the Korowai package
  *
@@ -11,12 +11,10 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Tests\Lib\Ldif\Records;
+namespace Korowai\Tests\Lib\Ldif;
 
-use Korowai\Lib\Ldif\Records\ModSpec;
-use Korowai\Lib\Ldif\Records\ModSpecInterface;
-use Korowai\Lib\Ldif\SnippetInterface;
-use Korowai\Lib\Ldif\Traits\DecoratesSnippetInterface;
+use Korowai\Lib\Ldif\ModSpec;
+use Korowai\Lib\Ldif\ModSpecInterface;
 use Korowai\Lib\Ldif\Traits\HasAttrValSpecs;
 use Korowai\Lib\Ldif\Exception\InvalidModTypeException;
 
@@ -31,11 +29,6 @@ class ModSpecTest extends TestCase
     public function test__implements__ModSpecInterface()
     {
         $this->assertImplementsInterface(ModSpecInterface::class, ModSpec::class);
-    }
-
-    public function test__uses__DecoratesSnippetInterface()
-    {
-        $this->assertUsesTrait(DecoratesSnippetInterface::class, ModSpec::class);
     }
 
     public function test__uses__HasAttrValSpecs()
@@ -88,12 +81,7 @@ class ModSpecTest extends TestCase
      */
     public function test__construct(array $args, array $expect)
     {
-        $snippet = $this->getMockBuilder(SnippetInterface::class)
-                        ->getMockForAbstractClass();
-
-        $record = new ModSpec($snippet, ...$args);
-
-        $this->assertSame($snippet, $record->getSnippet());
+        $record = new ModSpec(...$args);
         $this->assertHasPropertiesSameAs($expect, $record);
     }
 
@@ -111,10 +99,7 @@ class ModSpecTest extends TestCase
      */
     public function test__setModType(string $modType)
     {
-        $snippet = $this->getMockBuilder(SnippetInterface::class)
-                        ->getMockForAbstractClass();
-
-        $record = new ModSpec($snippet, "add", "cn");
+        $record = new ModSpec("add", "cn");
 
         $this->assertSame($record, $record->setModType($modType));
         $this->assertSame($modType, $record->getModType());
@@ -122,10 +107,7 @@ class ModSpecTest extends TestCase
 
     public function test__setModType__withInvalidArg()
     {
-        $snippet = $this->getMockBuilder(SnippetInterface::class)
-                        ->getMockForAbstractClass();
-
-        $record = new ModSpec($snippet, "add", "cn");
+        $record = new ModSpec("add", "cn");
 
         $message = 'Argument 1 to '.ModSpec::class.'::setModType() must be one of "add", "delete", or "replace", "foo" given.';
         $this->expectException(InvalidModTypeException::class);
@@ -137,10 +119,7 @@ class ModSpecTest extends TestCase
 
     public function test__setAttribute()
     {
-        $snippet = $this->getMockBuilder(SnippetInterface::class)
-                        ->getMockForAbstractClass();
-
-        $record = new ModSpec($snippet, "add", "cn");
+        $record = new ModSpec("add", "cn");
 
         $this->assertSame($record, $record->setAttribute("objectclass"));
         $this->assertSame("objectclass", $record->getAttribute());

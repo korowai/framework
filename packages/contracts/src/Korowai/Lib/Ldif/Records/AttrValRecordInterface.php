@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Korowai\Lib\Ldif\Records;
 
 use Korowai\Lib\Ldif\RecordInterface;
+use Korowai\Lib\Ldif\AttrValSpecsInterface;
 
 /**
  * Interface for record objects representing

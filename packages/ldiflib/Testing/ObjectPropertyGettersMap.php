@@ -53,6 +53,9 @@ class ObjectPropertyGettersMap
         \Korowai\Lib\Ldif\Location::class => [
         ],
 
+        \Korowai\Lib\Ldif\ModSpec::class => [
+        ],
+
         \Korowai\Lib\Ldif\Parser::class => [
             /* TODO: */
         ],
@@ -82,9 +85,6 @@ class ObjectPropertyGettersMap
         ],
 
         \Korowai\Lib\Ldif\Records\ModDnRecord::class => [
-        ],
-
-        \Korowai\Lib\Ldif\Records\ModSpec::class => [
         ],
 
         \Korowai\Lib\Ldif\Records\ModifyRecord::class => [

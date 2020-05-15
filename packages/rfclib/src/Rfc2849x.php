@@ -227,18 +227,36 @@ class Rfc2849x extends Rfc2849
      *
      *  - ``mod_type``: always set, contains the modification type indicator,
      *    either ``"add"``, ``"delete"``, or ``"replace"``,
-     *  - ``attr_desc``: contains the attribute description (attribute type with options).
-     *  - ``attr_desc_error``: only set if there is an error after the initial
-     *    ``"add:"`` / ``"delete:"`` / ``"replace:"`` tag.
+     *  - ``attr_desc``: only set if the rule matched and there is no error in
+     *    *attributeDescripton*; contains the attribute description (attribute
+     *    type with options).
+     *  - ``attr_type_error``: only set if there is an error in the
+     *    *AttributeType* part of the *attributeDescription*.
+     *  - ``attr_opts_error``: only set if there is an error in the *options*
+     *    part of the *attributeDescription*,
      */
     public const MOD_SPEC_INIT_X =
         '(?:'.
             '(?<mod_type>add|delete|replace):'.
             self::FILL.
             '(?:'.
-                '(?:'.self::ATTRIBUTE_DESCRIPTION.'(?='.self::SEP_X.'))'.
+                '(?:'.
+                    self::ATTRIBUTE_DESCRIPTION.
+                    '(?='.self::SEP_X.')'.
+                ')'.
                 '|'.
-                '(?:'.self::ATTRIBUTE_DESCRIPTION.'?(?<attr_desc_error>'.self::NOT_SEP_X.'*)(?='.self::SEP_X.'))'.
+                '(?:'.
+                    self::ATTRIBUTE_TYPE.
+                    '(?:;'.self::OPTIONS.'?)'.
+                    '(?<attr_opts_error>'.self::NOT_SEP_X.'*)'.
+                    '(?='.self::SEP_X.')'.
+                ')'.
+                '|'.
+                '(?:'.
+                    self::ATTRIBUTE_TYPE.'?'.
+                    '(?<attr_type_error>'.self::NOT_SEP_X.'*'.')'.
+                    '(?='.self::SEP_X.')'.
+                ')'.
             ')'.
         ')';
 
@@ -269,7 +287,8 @@ class Rfc2849x extends Rfc2849
             'ATTRVAL_SPEC_X'    => 'expected <AttributeDescription>":" (RFC2849)',
             'MOD_SPEC_INIT_X'   => 'expected one of "add:", "delete:" or "replace:" (RFC2849)',
         ],
-        'attr_desc_error'   => 'missing or invalid AttributeDescription (RFC2849)',
+        'attr_opts_error'   => 'missing or invalid options (RFC2849)',
+        'attr_type_error'   => 'missing or invalid AttributeType (RFC2849)',
         'dn_b64_error'      => 'malformed BASE64-STRING (RFC2849)',
         'dn_safe_error'     => 'malformed SAFE-STRING (RFC2849)',
         'ctl_type_error'    => 'missing or invalid OID (RFC2849)',

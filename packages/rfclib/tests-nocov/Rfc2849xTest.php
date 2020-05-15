@@ -1013,8 +1013,10 @@ class Rfc2849xTest extends TestCase
 
     public static function non__CONTROL_X__cases()
     {
-        return [
+        $strings = [
+            '<:', '< %', '< %1', ':: %$', ': ł',
         ];
+        return static::stringsToPregTuples($strings);
     }
 
     /**
@@ -1360,6 +1362,162 @@ class Rfc2849xTest extends TestCase
     public function test__ATTRVAL_SPEC_X__notMatches(string $string)
     {
         $this->assertRfcNotMatches($string, 'ATTRVAL_SPEC_X');
+    }
+
+    //
+    // MOD_SPEC_INIT_X
+    //
+
+    public static function MOD_SPEC_INIT_X__cases()
+    {
+        $types = ['add', 'delete', 'replace'];
+
+        $cases = [
+            [
+            //   0000000000111111111122222222223
+            //   0123456789012345678901234567890
+                "add:",
+                [
+                    'mod_type' => ['add', 0],
+                    'attr_desc' => false,
+                    'attr_type_error' => ['', 4],
+                    'attr_opts_error' => false,
+                ]
+            ],
+            [
+            //   0000000000111111111122222222223
+            //   0123456789012345678901234567890
+                "add:  ",
+                [
+                    'mod_type' => ['add', 0],
+                    'attr_desc' => false,
+                    'attr_type_error' => ['', 6],
+                    'attr_opts_error' => false,
+                ]
+            ],
+            [
+            //   0000000000111111111122222222223
+            //   0123456789012345678901234567890
+                "add:\next",
+                [
+                    'mod_type' => ['add', 0],
+                    'attr_desc' => false,
+                    'attr_type_error' => ['', 4],
+                    'attr_opts_error' => false,
+                ]
+            ],
+            [
+            //   0000000000111111111122222222223
+            //   0123456789012345678901234567890
+                "add: atłybut ",
+                [
+                    'mod_type' => ['add', 0],
+                    'attr_desc' => false,
+                    'attr_type_error' => ['łybut ', 7],
+                    'attr_opts_error' => false,
+                ]
+            ],
+            [
+            //   0000000000111111111122222222223
+            //   0123456789012345678901234567890
+                "add: atłybut \next",
+                [
+                    'mod_type' => ['add', 0],
+                    'attr_desc' => false,
+                    'attr_type_error' => ['łybut ', 7],
+                    'attr_opts_error' => false,
+                ]
+            ],
+            [
+            //   0000000000111111111122222222223
+            //   0123456789012345678901234567890
+                "add: cn;",
+                [
+                    'mod_type' => ['add', 0],
+                    'attr_desc' => false,
+                    'attr_type_error' => false,
+                    'attr_opts_error' => ['', 8],
+                ]
+            ],
+            [
+            //   0000000000111111111122222222223
+            //   0123456789012345678901234567890
+                "add: cn;a;",
+                [
+                    'mod_type' => ['add', 0],
+                    'attr_desc' => false,
+                    'attr_type_error' => false,
+                    'attr_opts_error' => [';', 9],
+                ]
+            ],
+            [
+            //   0000000000111111111122222222223
+            //   0123456789012345678901234567890
+                "add: cn;a;błąd",
+                [
+                    'mod_type' => ['add', 0],
+                    'attr_desc' => false,
+                    'attr_type_error' => false,
+                    'attr_opts_error' => ['łąd', 11],
+                ]
+            ],
+            [
+            //   0000000000111111111122222222223
+            //   0123456789012345678901234567890
+                "add: cn;a;błąd\nnext",
+                [
+                    'mod_type' => ['add', 0],
+                    'attr_desc' => false,
+                    'attr_type_error' => false,
+                    'attr_opts_error' => ['łąd', 11],
+                ]
+            ],
+        ];
+
+        $inheritedCases = [];
+
+        foreach (Rfc2849Test::ATTRIBUTE_DESCRIPTION__cases() as $attr) {
+            foreach ($types as $type) {
+                $typeTuples = [$type, ['mod_type' => [$type, 0]]];
+                $inheritedCases[] = static::joinPregTuples([$typeTuples, $attr], [
+                    'glue' => ': ',
+                    'merge' => [
+                        'mod_type_error' => false,
+                        'attr_opts_error' => false,
+                        'attr_type_error' => false
+                    ]
+                ]);
+            }
+        }
+        return array_merge($inheritedCases, $cases);
+    }
+
+    public static function non__MOD_SPEC_INIT_X__cases()
+    {
+        $strings = [];
+
+        $inheritedCases = [];
+        foreach (Rfc2849Test::ATTRIBUTE_DESCRIPTION__cases() as $attr) {
+            $inheritedCases[] = ['foo: '.$attr[0]];
+        }
+
+        return array_merge($inheritedCases, static::stringsToPregTuples($strings));
+    }
+
+    /**
+     * @dataProvider MOD_SPEC_INIT_X__cases
+     */
+    public function test__MOD_SPEC_INIT_X__matches(string $string, array $pieces = [])
+    {
+        $this->assertRfcMatches($string, 'MOD_SPEC_INIT_X', $pieces);
+    }
+
+    /**
+     * @dataProvider non__MOD_SPEC_INIT_X__cases
+     */
+    public function test__MOD_SPEC_INIT_X__notMatches(string $string)
+    {
+        $this->assertRfcNotMatches($string, 'MOD_SPEC_INIT_X');
     }
 }
 

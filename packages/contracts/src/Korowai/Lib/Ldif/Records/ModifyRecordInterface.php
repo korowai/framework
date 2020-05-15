@@ -23,7 +23,7 @@ namespace Korowai\Lib\Ldif\Records;
 interface ModifyRecordInterface extends ChangeRecordInterface
 {
     /**
-     * Returns array of [ModSpecInterface](ModSpecInterface.html) objects.
+     * Returns array of [ModSpecInterface](\.\./ModSpecInterface.html) objects.
      *
      * @return array
      */

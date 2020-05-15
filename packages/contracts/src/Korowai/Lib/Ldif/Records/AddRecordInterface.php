@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldif\Records;
 
+use Korowai\Lib\Ldif\AttrValSpecsInterface;
+
 /**
  * Interface for a record object representing
  * [RFC2849](https://tools.ietf.org/html/rfc2849)

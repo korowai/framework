@@ -173,7 +173,7 @@ trait PregUtils
      * Joins multiple preg *$tuples* with a glue.
      *
      * @param  array $tuples
-     * @param  array $options Supported options are *mergeLeft*, *merge*, *prefix*, and *suffix*.
+     * @param  array $options Supported options are *mergeLeft*, *merge*, *prefix*, *suffix* and *glue*.
      * @return array
      */
     public static function joinPregTuples(array $tuples, array $options = [])

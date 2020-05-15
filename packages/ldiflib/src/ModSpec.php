@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Records/ModSpec.php
+ * @file src/ModSpec.php
  *
  * This file is part of the Korowai package
  *
@@ -11,11 +11,8 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Lib\Ldif\Records;
+namespace Korowai\Lib\Ldif;
 
-use Korowai\Lib\Ldif\SnippetInterface;
-use Korowai\Lib\Ldif\RecordVisitorInterface;
-use Korowai\Lib\Ldif\Traits\DecoratesSnippetInterface;
 use Korowai\Lib\Ldif\Traits\HasAttrValSpecs;
 use Korowai\Lib\Ldif\Exception\InvalidModTypeException;
 
@@ -27,7 +24,6 @@ use Korowai\Lib\Ldif\Exception\InvalidModTypeException;
  */
 class ModSpec implements ModSpecInterface
 {
-    use DecoratesSnippetInterface;
     use HasAttrValSpecs;
 
     /**
@@ -43,7 +39,6 @@ class ModSpec implements ModSpecInterface
     /**
      * Initializes the object.
      *
-     * @param  SnippetInterface $snippet
      * @param  string $modType
      * @param  string $attribute
      * @param  array $attrValSpecs
@@ -51,12 +46,10 @@ class ModSpec implements ModSpecInterface
      * @throws InvalidModTypeException
      */
     public function __construct(
-        SnippetInterface $snippet,
         string $modType,
         string $attribute,
         array $attrValSpecs = []
     ) {
-        $this->setSnippet($snippet);
         $this->setModType($modType);
         $this->setAttribute($attribute);
         $this->setAttrValSpecs($attrValSpecs);

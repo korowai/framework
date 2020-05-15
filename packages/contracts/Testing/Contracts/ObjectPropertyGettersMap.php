@@ -133,6 +133,10 @@ class ObjectPropertyGettersMap
             'valueObject'               => 'getValueObject',
         ],
 
+        \Korowai\Lib\Ldif\AttrValSpecsInterface::class => [
+            'attrValSpecs'              => 'getAttrValSpecs'
+        ],
+
         \Korowai\Lib\Ldif\ControlInterface::class => [
             'oid'                       => 'getOid',
             'criticality'               => 'getCriticality',
@@ -158,6 +162,11 @@ class ObjectPropertyGettersMap
             'charOffset'                => 'getCharOffset',
             'input'                     => 'getInput',
             'clonedLocation'            => 'getClonedLocation',
+        ],
+
+        \Korowai\Lib\Ldif\ModSpecInterface::class => [
+            'modType'                   => 'getModType',
+            'attribute'                 => 'getAttribute'
         ],
 
         \Korowai\Lib\Ldif\ParserErrorInterface::class => [
@@ -191,10 +200,6 @@ class ObjectPropertyGettersMap
         \Korowai\Lib\Ldif\Records\AttrValRecordInterface::class => [
         ],
 
-        \Korowai\Lib\Ldif\Records\AttrValSpecsInterface::class => [
-            'attrValSpecs'              => 'getAttrValSpecs'
-        ],
-
         \Korowai\Lib\Ldif\Records\ChangeRecordInterface::class => [
             'changeType'                => 'getChangeType'
         ],
@@ -206,11 +211,6 @@ class ObjectPropertyGettersMap
             'newRdn'                    => 'getNewRdn',
             'deleteOldRdn'              => 'getDeleteOldRdn',
             'newSuperior'               => 'getNewSuperior',
-        ],
-
-        \Korowai\Lib\Ldif\Records\ModSpecInterface::class => [
-            'modType'                   => 'getModType',
-            'attribute'                 => 'getAttribute'
         ],
 
         \Korowai\Lib\Ldif\Records\ModifyRecordInterface::class => [

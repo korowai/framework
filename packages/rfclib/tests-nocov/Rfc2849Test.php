@@ -947,8 +947,8 @@ class Rfc2849Test extends TestCase
 
         foreach (static::ATTRIBUTE_DESCRIPTION__cases() as $attr) {
             foreach ($types as $type) {
-                $typeTuples = [$type.': ', 'mod_type' => [$type, 0]];
-                $inheritedCases[] = static::joinPregTuples([$typeTuples, $attr]);
+                $typeTuples = [$type, ['mod_type' => [$type, 0]]];
+                $inheritedCases[] = static::joinPregTuples([$typeTuples, $attr], ['glue' => ': ']);
             }
         }
         return array_merge($inheritedCases, $cases);

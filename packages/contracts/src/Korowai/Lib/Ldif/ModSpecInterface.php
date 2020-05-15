@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Lib/Ldif/Records/ModSpecInterface.php
+ * @file src/Korowai/Lib/Ldif/ModSpecInterface.php
  *
  * This file is part of the Korowai package
  *
@@ -11,9 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Lib\Ldif\Records;
-
-use Korowai\Lib\Ldif\SnippetInterface;
+namespace Korowai\Lib\Ldif;
 
 /**
  * Interface for objects representing
@@ -21,7 +19,7 @@ use Korowai\Lib\Ldif\SnippetInterface;
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-interface ModSpecInterface extends SnippetInterface, AttrValSpecsInterface
+interface ModSpecInterface extends AttrValSpecsInterface
 {
     /**
      * Returns the modification type. Must return one of ``"add"``,

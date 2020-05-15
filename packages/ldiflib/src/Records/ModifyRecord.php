@@ -57,7 +57,7 @@ class ModifyRecord extends AbstractRecord implements ModifyRecordInterface
     }
 
     /**
-     * Sets new array of [ModSpecInterface](ModSpecInterface.html) objects.
+     * Sets new array of [ModSpecInterface](\.\./ModSpecInterface.html) objects.
      *
      * @param  array $modSpecs
      * @return object $this

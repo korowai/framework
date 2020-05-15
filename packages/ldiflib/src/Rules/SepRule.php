@@ -23,7 +23,7 @@ use Korowai\Lib\Rfc\Rfc2849x;
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class SepRule extends AbstractRule
+class SepRule extends AbstractRfcRule
 {
     /**
      * Initializes the object.

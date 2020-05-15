@@ -16,7 +16,9 @@ namespace Korowai\Lib\Ldif;
 use Korowai\Lib\Basic\IsOptionalInterface;
 
 /**
- * Interface for cursor objects.
+ * Interface for parser rules.
+ *
+ * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
 interface RuleInterface extends IsOptionalInterface
 {
@@ -30,9 +32,11 @@ interface RuleInterface extends IsOptionalInterface
      * - match successfully.
      *
      * In the first two cases, the method will append errors to *$state*, set
-     * *$value* to null and return false. The *parseMatched()* method is not
-     * invoked. In the third case, the *parseMatched()* method is invoked and
-     * it's return value is returned to caller.
+     * *$value* to null and return false. In the third case, the matched string
+     * is being validated and processed. If successful, a semantic *$value* is
+     * returned and function returns ``true``. Otherwise, *$value* is set to
+     * ``null``, appropriate error is appended to *$state* and the function
+     * returns ``false``.
      *
      * @param  State $state
      *      Provides the input string, cursor, containers for errors, etc..

@@ -1,6 +1,6 @@
 <?php
 /**
- * @file tests/Rules/AbstractRuleTest.php
+ * @file tests/Rules/AbstractRfcRuleTest.php
  *
  * This file is part of the Korowai package
  *
@@ -13,27 +13,33 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldif\Rules;
 
-use Korowai\Lib\Ldif\Rules\AbstractRule;
+use Korowai\Lib\Ldif\Rules\AbstractRfcRule;
 use Korowai\Lib\Ldif\RuleInterface;
 use Korowai\Lib\Ldif\ParserStateInterface;
+use Korowai\Lib\Rfc\RuleInterface as RfcRuleInterface;
 use Korowai\Lib\Rfc\Rule as RfcRule;
-use Korowai\Lib\Rfc\Traits\DecoratesRuleInterface;
+use Korowai\Lib\Rfc\Traits\DecoratesRuleInterface as DecoratesRfcRuleInterface;
 use Korowai\Testing\Lib\Rfc\RuleSet1;
 use Korowai\Testing\Lib\Ldif\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class AbstractRuleTest extends TestCase
+class AbstractRfcRuleTest extends TestCase
 {
     public function test__implements__RuleInterface()
     {
-        $this->assertImplementsInterface(RuleInterface::class, AbstractRule::class);
+        $this->assertImplementsInterface(RuleInterface::class, AbstractRfcRule::class);
+    }
+
+    public function test__implements__RfcRuleInterface()
+    {
+        $this->assertImplementsInterface(RfcRuleInterface::class, AbstractRfcRule::class);
     }
 
     public function test__uses__DecoratesRuleInterface()
     {
-        $this->assertUsesTrait(DecoratesRuleInterface::class, AbstractRule::class);
+        $this->assertUsesTrait(DecoratesRfcRuleInterface::class, AbstractRfcRule::class);
     }
 
     //
@@ -236,7 +242,7 @@ class AbstractRuleTest extends TestCase
     {
         $state = $this->getParserStateFromSource(...$source);
 
-        $rule = $this->getMockBuilder(AbstractRule::class)
+        $rule = $this->getMockBuilder(AbstractRfcRule::class)
                      ->setMethods(['parseMatched'])
                      ->getMockForAbstractClass()
                      ->setRfcRule(new RfcRule(...$rfcArgs));
@@ -262,7 +268,7 @@ class AbstractRuleTest extends TestCase
     {
         $state = $this->getParserStateFromSource(...$source);
 
-        $rule = $this->getMockBuilder(AbstractRule::class)
+        $rule = $this->getMockBuilder(AbstractRfcRule::class)
                      ->setMethods(['parseMatched'])
                      ->getMockForAbstractClass()
                      ->setRfcRule(new RfcRule(...$rfcArgs));

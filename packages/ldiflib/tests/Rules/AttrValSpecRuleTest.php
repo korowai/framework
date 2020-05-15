@@ -15,7 +15,7 @@ namespace Korowai\Tests\Lib\Ldif\Rules;
 
 use Korowai\Lib\Ldif\Rules\AttrValSpecRule;
 use Korowai\Lib\Ldif\Rules\ValueSpecRule;
-use Korowai\Lib\Ldif\Rules\AbstractRule;
+use Korowai\Lib\Ldif\Rules\AbstractRfcRule;
 use Korowai\Lib\Ldif\AttrValInterface;
 use Korowai\Lib\Ldif\ValueInterface;
 use Korowai\Testing\Lib\Ldif\TestCase;
@@ -25,9 +25,9 @@ use Korowai\Testing\Lib\Ldif\TestCase;
  */
 class AttrValSpecRuleTest extends TestCase
 {
-    public function test__extendsAbstractRule()
+    public function test__extendsAbstractRfcRule()
     {
-        $this->assertExtendsClass(AbstractRule::class, AttrValSpecRule::class);
+        $this->assertExtendsClass(AbstractRfcRule::class, AttrValSpecRule::class);
     }
 
     public static function construct__cases()

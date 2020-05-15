@@ -24,7 +24,7 @@ use Korowai\Lib\Rfc\Rfc2253;
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class DnSpecRule extends AbstractRule
+class DnSpecRule extends AbstractRfcRule
 {
     /**
      * Initializes the object.

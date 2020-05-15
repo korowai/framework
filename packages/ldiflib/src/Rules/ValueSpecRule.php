@@ -26,7 +26,7 @@ use League\Uri\Exceptions\SyntaxError as UriSyntaxError;
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class ValueSpecRule extends AbstractRule
+class ValueSpecRule extends AbstractRfcRule
 {
     /**
      * Initializes the object.

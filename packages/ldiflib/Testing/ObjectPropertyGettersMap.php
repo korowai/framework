@@ -90,7 +90,7 @@ class ObjectPropertyGettersMap
         \Korowai\Lib\Ldif\Records\ModifyRecord::class => [
         ],
 
-        \Korowai\Lib\Ldif\Rules\AbstractRule::class => [
+        \Korowai\Lib\Ldif\Rules\AbstractRfcRule::class => [
         ],
 
         \Korowai\Lib\Ldif\Rules\AttrValSpecRule::class => [

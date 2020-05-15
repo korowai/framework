@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Ldif\Rules;
 
 use Korowai\Lib\Ldif\Rules\VersionSpecRule;
-use Korowai\Lib\Ldif\Rules\AbstractRule;
+use Korowai\Lib\Ldif\Rules\AbstractRfcRule;
 use Korowai\Lib\Ldif\ValueInterface;
 use Korowai\Testing\Lib\Ldif\TestCase;
 
@@ -23,9 +23,9 @@ use Korowai\Testing\Lib\Ldif\TestCase;
  */
 class VersionSpecRuleTest extends TestCase
 {
-    public function test__extendsAbstractRule()
+    public function test__extendsAbstractRfcRule()
     {
-        $this->assertExtendsClass(AbstractRule::class, VersionSpecRule::class);
+        $this->assertExtendsClass(AbstractRfcRule::class, VersionSpecRule::class);
     }
 
     public static function construct__cases()

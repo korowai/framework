@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Ldif\Rules;
 
 use Korowai\Lib\Ldif\Rules\SepRule;
-use Korowai\Lib\Ldif\Rules\AbstractRule;
+use Korowai\Lib\Ldif\Rules\AbstractRfcRule;
 use Korowai\Testing\Lib\Ldif\TestCase;
 
 /**
@@ -22,9 +22,9 @@ use Korowai\Testing\Lib\Ldif\TestCase;
  */
 class SepRuleTest extends TestCase
 {
-    public function test__extendsAbstractRule()
+    public function test__extendsAbstractRfcRule()
     {
-        $this->assertExtendsClass(AbstractRule::class, SepRule::class);
+        $this->assertExtendsClass(AbstractRfcRule::class, SepRule::class);
     }
 
     public static function construct__cases()

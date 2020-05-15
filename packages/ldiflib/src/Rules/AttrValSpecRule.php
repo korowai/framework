@@ -24,7 +24,7 @@ use Korowai\Lib\Rfc\Rfc2849x;
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class AttrValSpecRule extends AbstractRule
+class AttrValSpecRule extends AbstractRfcRule
 {
     /**
      * @var Rule

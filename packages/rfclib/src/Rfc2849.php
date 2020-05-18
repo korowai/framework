@@ -337,7 +337,11 @@ class Rfc2849 extends AbstractRuleSet
      *    either ``"add"``, ``"delete"``, or ``"replace"``,
      *  - ``attr_desc``: always set, contains the attribute description (attribute type with options).
      */
-    public const MOD_SPEC_INIT = '(?:(?<mod_type>add|delete|replace):'.self::FILL.self::ATTRIBUTE_DESCRIPTION.')';
+    public const MOD_SPEC_INIT =
+        '(?:'.
+            '(?<mod_type>add|delete|replace):'.
+            self::FILL.self::ATTRIBUTE_DESCRIPTION.self::SEP.
+        ')';
 
     /**
      * Rules provided by this class.

@@ -242,20 +242,20 @@ class Rfc2849x extends Rfc2849
             '(?:'.
                 '(?:'.
                     self::ATTRIBUTE_DESCRIPTION.
-                    '(?='.self::SEP_X.')'.
+                    '(?:'.self::SEP_X.')'.
                 ')'.
                 '|'.
                 '(?:'.
                     self::ATTRIBUTE_TYPE.
                     '(?:;'.self::OPTIONS.'?)'.
                     '(?<attr_opts_error>'.self::NOT_SEP_X.'*)'.
-                    '(?='.self::SEP_X.')'.
+                    '(?:'.self::SEP_X.')'.
                 ')'.
                 '|'.
                 '(?:'.
                     self::ATTRIBUTE_TYPE.'?'.
                     '(?<attr_type_error>'.self::NOT_SEP_X.'*'.')'.
-                    '(?='.self::SEP_X.')'.
+                    '(?:'.self::SEP_X.')'.
                 ')'.
             ')'.
         ')';

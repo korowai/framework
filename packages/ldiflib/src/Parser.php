@@ -236,7 +236,7 @@ class Parser implements ParserInterface
         $prevErrCount = count($state->getErrors());
         if ($this->controlRule(true)->parse($state, $control)) {
             $controls[] = $control;
-            while($this->controlRule(true)->parse($state, $control)) {
+            while ($this->controlRule(true)->parse($state, $control)) {
                 $controls[] = $control;
             }
         }
@@ -244,7 +244,7 @@ class Parser implements ParserInterface
             return false;
         }
 
-        return $this->parseChangeRecord($state);;
+        return $this->parseChangeRecord($state);
     }
 
     /**

@@ -104,6 +104,14 @@ class ObjectPropertyGettersMap
         \Korowai\Lib\Ldif\Rules\DnSpecRule::class => [
         ],
 
+        \Korowai\Lib\Ldif\Rules\ModSpecRule::class => [
+            'modSpecInitRule'           => 'getModSpecInitRule',
+            'attrValSpecRule'           => 'getAttrValSpecRule',
+        ],
+
+        \Korowai\Lib\Ldif\Rules\ModSpecInitRule::class => [
+        ],
+
         \Korowai\Lib\Ldif\Rules\SepRule::class => [
         ],
 

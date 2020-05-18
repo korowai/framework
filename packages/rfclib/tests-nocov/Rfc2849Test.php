@@ -948,7 +948,7 @@ class Rfc2849Test extends TestCase
         foreach (static::ATTRIBUTE_DESCRIPTION__cases() as $attr) {
             foreach ($types as $type) {
                 $typeTuples = [$type, ['mod_type' => [$type, 0]]];
-                $inheritedCases[] = static::joinPregTuples([$typeTuples, $attr], ['glue' => ': ']);
+                $inheritedCases[] = static::joinPregTuples([$typeTuples, $attr], ['glue' => ': ', 'suffix' => "\n"]);
             }
         }
         return array_merge($inheritedCases, $cases);
@@ -958,7 +958,9 @@ class Rfc2849Test extends TestCase
     {
         $types = ['add', 'delete', 'replace'];
 
-        $strings = [];
+        $strings = [
+            "add: foo", // missing \n
+        ];
 
         $inheritedCases = [];
         foreach (static::non__ATTRIBUTE_DESCRIPTION__cases() as $nonAttr) {

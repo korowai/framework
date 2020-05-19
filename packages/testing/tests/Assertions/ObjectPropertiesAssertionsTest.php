@@ -394,7 +394,13 @@ class ObjectPropertiesAssertionsTest extends TestCase
     {
         $matcher = self::hasPropertiesIdenticalTo(['a' => 'A']);
         self::assertFalse($matcher->matches(123));
-        self::assertRegexp('/^123 has required properties with prescribed values$/', $matcher->failureDescription(123));
+
+        $regexp = '/^123 has required properties with prescribed values$/';
+        if (method_exists(self::class, 'assertMatchesRegularExpression')) {
+            self::assertMatchesRegularExpression($regexp, $matcher->failureDescription(123));
+        } else {
+            self::assertRegExp($regexp, $matcher->failureDescription(123));
+        }
     }
 
     public function test__hasPropertiesIdenticalTo__withInvalidArray()

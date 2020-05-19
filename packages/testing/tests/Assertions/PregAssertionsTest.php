@@ -148,7 +148,14 @@ class PregAssertionsTest extends TestCase
     {
         $constraint = $this->hasPregCaptures($expected);
         $this->assertFalse($constraint->matches($other));
-        $this->assertRegExp('/^'.$regexp.'$/sD', $constraint->failureDescription($other));
+
+        if (method_exists($this, 'assertMatchesRegularExpression')) {
+            // phpunit >= 9.1
+            $this->assertMatchesRegularExpression('/^'.$regexp.'$/sD', $constraint->failureDescription($other));
+        } else {
+            // phpunit < 9.1
+            $this->assertRegExp('/^'.$regexp.'$/sD', $constraint->failureDescription($other));
+        }
     }
 
     /**

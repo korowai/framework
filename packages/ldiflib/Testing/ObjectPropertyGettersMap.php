@@ -94,11 +94,15 @@ class ObjectPropertyGettersMap
         ],
 
         \Korowai\Lib\Ldif\Rules\AttrValSpecRule::class => [
-            'valueSpecRule'             => 'getValueSpecRule'
+            'valueSpecRule'             => 'getValueSpecRule',
+        ],
+
+        \Korowai\Lib\Ldif\Rules\ChangeModifyRule::class => [
+            'modSpecRule'               => 'getModSpecRule',
         ],
 
         \Korowai\Lib\Ldif\Rules\ControlRule::class => [
-            'valueSpecRule'             => 'getValueSpecRule'
+            'valueSpecRule'             => 'getValueSpecRule',
         ],
 
         \Korowai\Lib\Ldif\Rules\DnSpecRule::class => [

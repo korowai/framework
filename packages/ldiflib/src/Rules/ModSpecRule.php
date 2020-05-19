@@ -43,13 +43,11 @@ class ModSpecRule implements RuleInterface
      * @param  bool $tryOnly
      * @param  ModSpecInitRule $modSpecInitRule
      * @param  AttrValSpecRule $attrValSpecRule
-     * @param  ValueSpecRule $valueSpecRule
      */
     public function __construct(
         bool $tryOnly = false,
         ModSpecInitRule $modSpecInitRule = null,
-        AttrValSpecRule $attrValSpecRule = null,
-        ValueSpecRule $valueSpecRule = null
+        AttrValSpecRule $attrValSpecRule = null
     ) {
         if ($modSpecInitRule === null) {
             $modSpecInitRule = new ModSpecInitRule($tryOnly);
@@ -61,11 +59,7 @@ class ModSpecRule implements RuleInterface
         }
 
         if ($attrValSpecRule === null) {
-            $attrValSpecRule = new AttrValSpecRule(true, $valueSpecRule);
-        }
-
-        if ($valueSpecRule !== null) {
-            $attrValSpecRule->setValueSpecRule($valueSpecRule);
+            $attrValSpecRule = new AttrValSpecRule(true);
         }
 
         $this->setModSpecInitRule($modSpecInitRule);
@@ -134,14 +128,9 @@ class ModSpecRule implements RuleInterface
      */
     public function parse(State $state, &$value = null) : bool
     {
-        if (!$this->getModSpecInitRule()->parse($state, $value)) {
+        if (!$this->getModSpecInitRule()->parse($state, $value) || !$this->parseAttrValSpecs($state, $value)) {
             return false;
         }
-
-        if (!$this->parseAttrValSpecs($state, $value)) {
-            return false;
-        }
-
         return $this->parseEndMarker($state);
     }
 

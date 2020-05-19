@@ -37,7 +37,6 @@ class ModSpecRuleTest extends TestCase
         $modSpecInitRuleReq = new ModSpecInitRule(false);
         $modSpecInitRuleOpt = new ModSpecInitRule(true);
         $attrValSpecRule = new AttrValSpecRule(true);
-        $valueSpecRule = new ValueSpecRule();
 
         return [
             'default' => [
@@ -110,50 +109,6 @@ class ModSpecRuleTest extends TestCase
                     'isOptional' => true,
                     'modSpecInitRule' => $modSpecInitRuleOpt,
                     'attrValSpecRule' => $attrValSpecRule,
-                ]
-            ],
-            'required w/ modSpecInitRule & attrValSpecRule & valueSpecRule' => [
-                'args'   => [false, $modSpecInitRuleReq, $attrValSpecRule, $valueSpecRule],
-                'expect' => [
-                    'isOptional' => false,
-                    'modSpecInitRule' => $modSpecInitRuleReq,
-                    'attrValSpecRule' => self::hasPropertiesIdenticalTo([
-                        'isOptional' => true,
-                        'valueSpecRule' => $valueSpecRule
-                    ]),
-                ]
-            ],
-            'optional w/ modSpecInitRule & attrValSpecRule & valueSpecRule' => [
-                'args'   => [true, $modSpecInitRuleOpt, $attrValSpecRule, $valueSpecRule],
-                'expect' => [
-                    'isOptional' => true,
-                    'modSpecInitRule' => $modSpecInitRuleOpt,
-                    'attrValSpecRule' => self::hasPropertiesIdenticalTo([
-                        'isOptional' => true,
-                        'valueSpecRule' => $valueSpecRule
-                    ]),
-                ]
-            ],
-            'required w/ modSpecInitRule & null & valueSpecRule' => [
-                'args'   => [false, $modSpecInitRuleReq, null, $valueSpecRule],
-                'expect' => [
-                    'isOptional' => false,
-                    'modSpecInitRule' => $modSpecInitRuleReq,
-                    'attrValSpecRule' => self::hasPropertiesIdenticalTo([
-                        'isOptional' => true,
-                        'valueSpecRule' => $valueSpecRule
-                    ]),
-                ]
-            ],
-            'optional w/ modSpecInitRule & null & valueSpecRule' => [
-                'args'   => [true, $modSpecInitRuleOpt, null, $valueSpecRule],
-                'expect' => [
-                    'isOptional' => true,
-                    'modSpecInitRule' => $modSpecInitRuleOpt,
-                    'attrValSpecRule' => self::hasPropertiesIdenticalTo([
-                        'isOptional' => true,
-                        'valueSpecRule' => $valueSpecRule
-                    ]),
                 ]
             ],
         ];

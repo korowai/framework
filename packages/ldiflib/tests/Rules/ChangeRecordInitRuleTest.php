@@ -1,6 +1,6 @@
 <?php
 /**
- * @file tests/Rules/ModSpecInitRuleTest.php
+ * @file tests/Rules/ChangeRecordInitRuleTest.php
  *
  * This file is part of the Korowai package
  *
@@ -13,19 +13,18 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldif\Rules;
 
-use Korowai\Lib\Ldif\Rules\ModSpecInitRule;
+use Korowai\Lib\Ldif\Rules\ChangeRecordInitRule;
 use Korowai\Lib\Ldif\Rules\AbstractRfcRule;
-use Korowai\Lib\Ldif\ModSpecInterface;
 use Korowai\Testing\Lib\Ldif\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class ModSpecInitRuleTest extends TestCase
+class ChangeRecordInitRuleTest extends TestCase
 {
     public function test__extendsAbstractRfcRule()
     {
-        $this->assertExtendsClass(AbstractRfcRule::class, ModSpecInitRule::class);
+        $this->assertExtendsClass(AbstractRfcRule::class, ChangeRecordInitRule::class);
     }
 
     public static function construct__cases()
@@ -57,7 +56,7 @@ class ModSpecInitRuleTest extends TestCase
      */
     public function test__construct(array $args, array $expect)
     {
-        $rule = new ModSpecInitRule(...$args);
+        $rule = new ChangeRecordInitRule(...$args);
         $this->assertHasPropertiesSameAs($expect, $rule);
     }
 
@@ -67,134 +66,128 @@ class ModSpecInitRuleTest extends TestCase
     public static function parseMatched__cases()
     {
         return [
-            'add: cn' => [
-                //            01234567
-                'source' => ['add: cn', 7],
+            'changetype: add' => [
+                //            0000000000111111
+                //            0123456789012345
+                'source' => ['changetype: add', 15],
                 'matches' => [
-                    'mod_type' => ['add', 0],
-                    'attr_desc' => ['cn', 5]
+                    'chg_type' => ['add', 12],
                 ],
                 'expect' => [
                     'result' => true,
-                    'value' => [
-                        'modType' => 'add',
-                        'attribute' => 'cn',
-                        'attrValSpecs' => []
-                    ],
+                    'value' => 'add',
                     'state' => [
-                        'cursor' => self::hasPropertiesIdenticalTo(['offset' => 7]),
+                        'cursor' => self::hasPropertiesIdenticalTo(['offset' => 15]),
                         'errors' => [],
                         'records' => [],
                     ]
                 ]
             ],
-            'delete: cn' => [
-                //            00000000001
-                //            01234567890
-                'source' => ['delete: cn', 10],
+            'changetype: delete' => [
+                //            0000000000111111111
+                //            0123456789012345678
+                'source' => ['changetype: delete', 18],
                 'matches' => [
-                    'mod_type' => ['delete', 0],
-                    'attr_desc' => ['cn', 8]
+                    'chg_type' => ['delete', 12],
                 ],
                 'expect' => [
                     'result' => true,
-                    'value' => [
-                        'modType' => 'delete',
-                        'attribute' => 'cn',
-                        'attrValSpecs' => []
-                    ],
+                    'value' => 'delete',
                     'state' => [
-                        'cursor' => self::hasPropertiesIdenticalTo(['offset' => 10]),
+                        'cursor' => self::hasPropertiesIdenticalTo(['offset' => 18]),
                         'errors' => [],
                         'records' => [],
                     ]
                 ]
             ],
-            'replace: cn' => [
-                //            000000000011
-                //            012345678901
-                'source' => ['replace: cn', 11],
+            'changetype: moddn' => [
+                //            0000000000111111111
+                //            0123456789012345678
+                'source' => ['changetype: moddn', 17],
                 'matches' => [
-                    'mod_type' => ['replace', 0],
-                    'attr_desc' => ['cn', 9]
+                    'chg_type' => ['moddn', 12],
                 ],
                 'expect' => [
                     'result' => true,
-                    'value' => [
-                        'modType' => 'replace',
-                        'attribute' => 'cn',
-                        'attrValSpecs' => []
-                    ],
+                    'value' => 'moddn',
                     'state' => [
-                        'cursor' => self::hasPropertiesIdenticalTo(['offset' => 11]),
+                        'cursor' => self::hasPropertiesIdenticalTo(['offset' => 17]),
                         'errors' => [],
                         'records' => [],
                     ]
                 ]
             ],
-            'qux: cn' => [
-                //            00000000
-                //            01234567
-                'source' => ['qux: cn', 7],
+            'changetype: modrdn' => [
+                //            0000000000111111111
+                //            0123456789012345678
+                'source' => ['changetype: modrdn', 18],
                 'matches' => [
-                    'mod_type' => ['qux', 0],
-                    'attr_desc' => ['cn', 5]
+                    'chg_type' => ['modrdn', 12],
+                ],
+                'expect' => [
+                    'result' => true,
+                    'value' => 'modrdn',
+                    'state' => [
+                        'cursor' => self::hasPropertiesIdenticalTo(['offset' => 18]),
+                        'errors' => [],
+                        'records' => [],
+                    ]
+                ]
+            ],
+            'changetype: modify' => [
+                //            0000000000111111111
+                //            0123456789012345678
+                'source' => ['changetype: modify', 18],
+                'matches' => [
+                    'chg_type' => ['modify', 12],
+                ],
+                'expect' => [
+                    'result' => true,
+                    'value' => 'modify',
+                    'state' => [
+                        'cursor' => self::hasPropertiesIdenticalTo(['offset' => 18]),
+                        'errors' => [],
+                        'records' => [],
+                    ]
+                ]
+            ],
+            'changetype: qux' => [
+                //            0000000000111111111
+                //            0123456789012345678
+                'source' => ['changetype: qux', 15],
+                'matches' => [
+                    'chg_type' => ['qux', 12],
                 ],
                 'expect' => [
                     'result' => false,
                     'value' => null,
                     'state' => [
-                        'cursor' => self::hasPropertiesIdenticalTo(['offset' => 7]),
+                        'cursor' => self::hasPropertiesIdenticalTo(['offset' => 15]),
                         'errors' => [
                             self::hasPropertiesIdenticalTo([
-                                'sourceOffset' => 0,
-                                'message' => 'syntax error: invalid mod-spec type: "qux"'
-                            ]),
+                                'sourceOffset' => 12,
+                                'message' => 'syntax error: unsupported change type: "qux"'
+                            ])
                         ],
                         'records' => [],
                     ]
                 ]
             ],
-            'missing mod_type' => [
-                //            00000000
-                //            01234567
-                'source' => ['___: cn', 7],
+            'missing chg_type' => [
+                //            0000000000111111
+                //            0123456789012345
+                'source' => ['changetype: ___', 15],
                 'matches' => [
-                    'attr_desc' => ['cn', 5]
                 ],
                 'expect' => [
                     'result' => false,
                     'value' => null,
                     'state' => [
-                        'cursor' => self::hasPropertiesIdenticalTo(['offset' => 7]),
+                        'cursor' => self::hasPropertiesIdenticalTo(['offset' => 15]),
                         'errors' => [
                             self::hasPropertiesIdenticalTo([
-                                'sourceOffset' => 7,
-                                'message' => 'internal error: missing or invalid capture groups '.
-                                             '"mod_type" or "attr_desc"'
-                            ]),
-                        ],
-                        'records' => [],
-                    ]
-                ]
-            ],
-            'missing attr_desc' => [
-                //            00000000
-                //            01234567
-                'source' => ['add: __', 7],
-                'matches' => [
-                    'mod_type' => ['add', 0]
-                ],
-                'expect' => [
-                    'result' => false,
-                    'value' => null,
-                    'state' => [
-                        'cursor' => self::hasPropertiesIdenticalTo(['offset' => 7]),
-                        'errors' => [
-                            self::hasPropertiesIdenticalTo([
-                                'sourceOffset' => 7,
-                                'message' => 'internal error: missing or invalid capture groups '.
-                                             '"mod_type" or "attr_desc"'
+                                'sourceOffset' => 15,
+                                'message' => 'internal error: missing or invalid capture group "chg_type"',
                             ]),
                         ],
                         'records' => [],
@@ -215,7 +208,7 @@ class ModSpecInitRuleTest extends TestCase
             $value = $this->getMockBuilder(ModSpecInterface::class)->getMockForAbstractClass();
         }
 
-        $rule = new ModSpecInitRule();
+        $rule = new ChangeRecordInitRule();
 
         $result = $rule->parseMatched($state, $matches, $value);
 
@@ -236,79 +229,105 @@ class ModSpecInitRuleTest extends TestCase
     public static function parse__cases()
     {
         return [
-            'add: cn' => [
+            'changetype: add' => [
                 //            000000000011111111112222222
                 //            012345678901234567890123456
-                'source' => ['add: cn', 0],
+                'source' => ['changetype: add', 0],
                 'args'   => [],
                 'expect' => [
                     'result' => true,
-                    'value' => [
-                        'modType' => 'add',
-                        'attribute' => 'cn',
-                        'attrValSpecs' => []
-                    ],
+                    'value' => 'add',
                     'state' => [
                         'cursor' => self::hasPropertiesIdenticalTo([
-                            'offset' => 7,
-                            'sourceOffset' => 7,
-                            'sourceCharOffset' => 7
+                            'offset' => 15,
+                            'sourceOffset' => 15,
+                            'sourceCharOffset' => 15
                         ]),
                         'errors' => [],
                         'records' => [],
                     ]
                 ]
             ],
-            'delete: cn' => [
+            'changetype: delete' => [
                 //            000000000011111111112222222
                 //            012345678901234567890123456
-                'source' => ['delete: cn', 0],
+                'source' => ['changetype: delete', 0],
                 'args'   => [],
                 'expect' => [
                     'result' => true,
-                    'value' => [
-                        'modType' => 'delete',
-                        'attribute' => 'cn',
-                        'attrValSpecs' => []
-                    ],
+                    'value' => 'delete',
                     'state' => [
                         'cursor' => self::hasPropertiesIdenticalTo([
-                            'offset' => 10,
-                            'sourceOffset' => 10,
-                            'sourceCharOffset' => 10
+                            'offset' => 18,
+                            'sourceOffset' => 18,
+                            'sourceCharOffset' => 18
                         ]),
                         'errors' => [],
                         'records' => [],
                     ]
                 ]
             ],
-            'replace: cn' => [
+            'changetype: moddn' => [
                 //            000000000011111111112222222
                 //            012345678901234567890123456
-                'source' => ['replace: cn', 0],
+                'source' => ['changetype: moddn', 0],
                 'args'   => [],
                 'expect' => [
                     'result' => true,
-                    'value' => [
-                        'modType' => 'replace',
-                        'attribute' => 'cn',
-                        'attrValSpecs' => []
-                    ],
+                    'value' => 'moddn',
                     'state' => [
                         'cursor' => self::hasPropertiesIdenticalTo([
-                            'offset' => 11,
-                            'sourceOffset' => 11,
-                            'sourceCharOffset' => 11
+                            'offset' => 17,
+                            'sourceOffset' => 17,
+                            'sourceCharOffset' => 17
                         ]),
                         'errors' => [],
                         'records' => [],
                     ]
                 ]
             ],
-            'foo: cn' => [
+            'changetype: modrdn' => [
                 //            000000000011111111112222222
                 //            012345678901234567890123456
-                'source' => ['foo: cn', 0],
+                'source' => ['changetype: modrdn', 0],
+                'args'   => [],
+                'expect' => [
+                    'result' => true,
+                    'value' => 'modrdn',
+                    'state' => [
+                        'cursor' => self::hasPropertiesIdenticalTo([
+                            'offset' => 18,
+                            'sourceOffset' => 18,
+                            'sourceCharOffset' => 18
+                        ]),
+                        'errors' => [],
+                        'records' => [],
+                    ]
+                ]
+            ],
+            'changetype: modify' => [
+                //            000000000011111111112222222
+                //            012345678901234567890123456
+                'source' => ['changetype: modify', 0],
+                'args'   => [],
+                'expect' => [
+                    'result' => true,
+                    'value' => 'modify',
+                    'state' => [
+                        'cursor' => self::hasPropertiesIdenticalTo([
+                            'offset' => 18,
+                            'sourceOffset' => 18,
+                            'sourceCharOffset' => 18
+                        ]),
+                        'errors' => [],
+                        'records' => [],
+                    ]
+                ]
+            ],
+            'foo: add' => [
+                //            000000000011111111112222222
+                //            012345678901234567890123456
+                'source' => ['foo: add', 0],
                 'args'   => [],
                 'expect' => [
                     'result' => false,
@@ -322,17 +341,17 @@ class ModSpecInitRuleTest extends TestCase
                         'errors' => [
                             self::hasPropertiesIdenticalTo([
                                 'sourceOffset' => 0,
-                                'message' => 'syntax error: expected one of "add:", "delete:" or "replace:" (RFC2849)',
+                                'message' => 'syntax error: expected "changetype:" (RFC2849)',
                             ]),
                         ],
                         'records' => [],
                     ]
                 ]
             ],
-            'foo: cn (tryOnly)' => [
+            'foo: add (tryOnly)' => [
                 //            000000000011111111112222222
                 //            012345678901234567890123456
-                'source' => ['foo: cn', 0],
+                'source' => ['foo: add', 0],
                 'args'   => [true],
                 'expect' => [
                     'result' => false,
@@ -348,120 +367,48 @@ class ModSpecInitRuleTest extends TestCase
                     ]
                 ]
             ],
-            'add: ' => [
+            'changetype: ' => [
                 //            000000000011111111112222222
                 //            012345678901234567890123456
-                'source' => ['add: ', 0],
+                'source' => ['changetype: ', 0],
                 'args'   => [],
                 'expect' => [
                     'result' => false,
                     'value' => null,
                     'state' => [
                         'cursor' => self::hasPropertiesIdenticalTo([
-                            'offset' => 5,
-                            'sourceOffset' => 5,
-                            'sourceCharOffset' => 5
-                        ]),
-                        'errors' => [
-                            self::hasPropertiesIdenticalTo([
-                                'sourceOffset' => 5,
-                                'message' => 'syntax error: missing or invalid AttributeType (RFC2849)'
-                            ])
-                        ],
-                        'records' => [],
-                    ]
-                ]
-            ],
-            'add: atłybut' => [
-                //            000000000111111111122222222
-                //            012345679012345678901234567
-                'source' => ['add: atłybut', 0],
-                'args'   => [],
-                'expect' => [
-                    'result' => false,
-                    'value' => null,
-                    'state' => [
-                        'cursor' => self::hasPropertiesIdenticalTo([
-                            'offset' => 13,
-                            'sourceOffset' => 13,
+                            'offset' => 12,
+                            'sourceOffset' => 12,
                             'sourceCharOffset' => 12
                         ]),
                         'errors' => [
                             self::hasPropertiesIdenticalTo([
-                                'sourceOffset' => 7,
-                                'message' => 'syntax error: missing or invalid AttributeType (RFC2849)'
+                                'sourceOffset' => 12,
+                                'message' => 'syntax error: missing or invalid change type (RFC2849)'
                             ])
                         ],
                         'records' => [],
                     ]
                 ]
             ],
-            'add: ;' => [
-                //            000000000011111111112222222
-                //            012345678901234567890123456
-                'source' => ['add: ;', 0],
+            'changetype: foo' => [
+                //            0000000001111111111222222222
+                //            0123456789012345678901234567
+                'source' => ['changetype: foo', 0],
                 'args'   => [],
                 'expect' => [
                     'result' => false,
                     'value' => null,
                     'state' => [
                         'cursor' => self::hasPropertiesIdenticalTo([
-                            'offset' => 6,
-                            'sourceOffset' => 6,
-                            'sourceCharOffset' => 6
+                            'offset' => 15,
+                            'sourceOffset' => 15,
+                            'sourceCharOffset' => 15
                         ]),
                         'errors' => [
                             self::hasPropertiesIdenticalTo([
-                                'sourceOffset' => 5,
-                                'message' => 'syntax error: missing or invalid AttributeType (RFC2849)'
-                            ])
-                        ],
-                        'records' => [],
-                    ]
-                ]
-            ],
-            'add: cn;' => [
-                //            000000000011111111112222222
-                //            012345678901234567890123456
-                'source' => ['add: cn;', 0],
-                'args'   => [],
-                'expect' => [
-                    'result' => false,
-                    'value' => null,
-                    'state' => [
-                        'cursor' => self::hasPropertiesIdenticalTo([
-                            'offset' => 8,
-                            'sourceOffset' => 8,
-                            'sourceCharOffset' => 8
-                        ]),
-                        'errors' => [
-                            self::hasPropertiesIdenticalTo([
-                                'sourceOffset' => 8,
-                                'message' => 'syntax error: missing or invalid options (RFC2849)'
-                            ])
-                        ],
-                        'records' => [],
-                    ]
-                ]
-            ],
-            'add: cn;błąd' => [
-                //            0000000000111111112222222
-                //            0123456789134567890123456
-                'source' => ['add: cn;błąd', 0],
-                'args'   => [],
-                'expect' => [
-                    'result' => false,
-                    'value' => null,
-                    'state' => [
-                        'cursor' => self::hasPropertiesIdenticalTo([
-                            'offset' => 14,
-                            'sourceOffset' => 14,
-                            'sourceCharOffset' => 12
-                        ]),
-                        'errors' => [
-                            self::hasPropertiesIdenticalTo([
-                                'sourceOffset' => 9,
-                                'message' => 'syntax error: missing or invalid options (RFC2849)'
+                                'sourceOffset' => 12,
+                                'message' => 'syntax error: missing or invalid change type (RFC2849)'
                             ])
                         ],
                         'records' => [],
@@ -483,7 +430,7 @@ class ModSpecInitRuleTest extends TestCase
             $value = $this->getMockBuilder(ModSpecInterface::class)->getMockForAbstractClass();
         }
 
-        $rule = new ModSpecInitRule(...$args);
+        $rule = new ChangeRecordInitRule(...$args);
 
         $result = $rule->parse($state, $value);
 

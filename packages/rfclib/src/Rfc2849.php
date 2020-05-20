@@ -344,6 +344,22 @@ class Rfc2849 extends AbstractRuleSet
         ')';
 
     /**
+     * [RFC2849](https://tools.ietf.org/html/rfc2849)
+     * ``changerecord = "changetype:" FILL (change-add / change-delete / change-modify / change-moddn)``
+     *
+     * This pattern implements the initial line of the *changerecord* rule (call it *changerecord-init*).
+     *
+     * Capture groups:
+     *
+     *  - ``chg_type``: always set, contains the change type indicator, either
+     *    ``"add"``, ``"delete"``, ``"moddn"``, ``"modrdn"``, or ``"modify"``.
+     */
+    public const CHANGERECORD_INIT =
+        '(?:'.
+            'changetype:'.self::FILL.'(?<chg_type>add|delete|modrdn|moddn|modify)'.self::SEP.
+        ')';
+
+    /**
      * Rules provided by this class.
      */
     protected static $rfc2849Rules = [
@@ -382,6 +398,7 @@ class Rfc2849 extends AbstractRuleSet
         'ATTRVAL_SPEC',
         'LDIF_ATTRVAL_RECORD',
         'MOD_SPEC_INIT',
+        'CHANGERECORD_INIT',
     ];
 
     /**
@@ -426,6 +443,9 @@ class Rfc2849 extends AbstractRuleSet
 //            'LDIF_ATTRVAL_RECORD'       => 'expected ldif-attrval-record (RFC2849)',
             'MOD_SPEC_INIT'             => 'expected one of "add:", "delete:" or "replace:" '.
                                            'followed by AttributeDescription (RFC2849)',
+            'CHANGERECORD_INIT'         => 'expected "changetype:" followed by one of "add", '.
+                                           '"delete", "modrdn", "moddn", or "modify" followed '.
+                                           'by line separator (RFC2849)',
         ]
     ];
 

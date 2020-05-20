@@ -261,6 +261,25 @@ class Rfc2849x extends Rfc2849
         ')';
 
     /**
+     * [Rfc2849::CHANGERECORD_INIT](Rfc2849.html) with enhanced error detection.
+     *
+     * Capture groups:
+     *
+     *  - ``chg_type``: only set if the rule matched and there is no error;
+     *    contains the change type indicator, either ``"add"``, ``"delete"``,
+     *    ``"moddn"``, ``"modrdn"``, or ``"modify"``.
+     * - ``chg_type_error``: only set if the rule matched but there is error
+     *   after the ``"changetype:"`` tag.
+     */
+    public const CHANGERECORD_INIT_X =
+        '(?:'.
+            'changetype:'.self::FILL.
+            '(?:(?<chg_type>add|delete|modrdn|moddn|modify)|(?<chg_type_error>'.self::NOT_SEP_X.'*))'.
+            self::SEP_X.
+        ')';
+
+
+    /**
      * Defined named capture groups that appear in patterns of the Rfc2849x
      * class.
      */
@@ -273,6 +292,7 @@ class Rfc2849x extends Rfc2849
         'CONTROL_X',
         'ATTRVAL_SPEC_X',
         'MOD_SPEC_INIT_X',
+        'CHANGERECORD_INIT_X',
     ];
 
     /**
@@ -280,17 +300,19 @@ class Rfc2849x extends Rfc2849
      */
     protected static $rfc2849xErrors = [
         ''                  => [
-            'VERSION_SPEC_X'    => 'expected "version:" (RFC2849)',
-            'DN_SPEC_X'         => 'expected "dn:" (RFC2849)',
-            'VALUE_SPEC_X'      => 'expected ":" (RFC2849)',
-            'CONTROL_X'         => 'expected "control:" (RFC2849)',
-            'ATTRVAL_SPEC_X'    => 'expected <AttributeDescription>":" (RFC2849)',
-            'MOD_SPEC_INIT_X'   => 'expected one of "add:", "delete:" or "replace:" (RFC2849)',
+            'VERSION_SPEC_X'        => 'expected "version:" (RFC2849)',
+            'DN_SPEC_X'             => 'expected "dn:" (RFC2849)',
+            'VALUE_SPEC_X'          => 'expected ":" (RFC2849)',
+            'CONTROL_X'             => 'expected "control:" (RFC2849)',
+            'ATTRVAL_SPEC_X'        => 'expected <AttributeDescription>":" (RFC2849)',
+            'MOD_SPEC_INIT_X'       => 'expected one of "add:", "delete:" or "replace:" (RFC2849)',
+            'CHANGERECORD_INIT_X'   => 'expected "changetype:" (RFC2849)',
         ],
         'attr_opts_error'   => 'missing or invalid options (RFC2849)',
         'attr_type_error'   => 'missing or invalid AttributeType (RFC2849)',
         'dn_b64_error'      => 'malformed BASE64-STRING (RFC2849)',
         'dn_safe_error'     => 'malformed SAFE-STRING (RFC2849)',
+        'chg_type_error'    => 'missing or invalid change type (RFC2849)',
         'ctl_type_error'    => 'missing or invalid OID (RFC2849)',
         'ctl_crit_error'    => 'expected "true" or "false" (RFC2849)',
         'value_b64_error'   => 'malformed BASE64-STRING (RFC2849)',

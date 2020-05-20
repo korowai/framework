@@ -990,6 +990,79 @@ class Rfc2849Test extends TestCase
     {
         $this->assertRfcNotMatches($string, 'MOD_SPEC_INIT');
     }
+
+    //
+    // CHANGERECORD_INIT
+    //
+
+    public static function CHANGERECORD_INIT__cases()
+    {
+        return [
+            [
+            //   000000000011111 11
+            //   012345678901234 56
+                "changetype: add\n",
+                ['chg_type' => ['add', 12]]
+            ],
+            [
+            //   000000000011111 11
+            //   012345678901234 56
+                "changetype: delete\n",
+                ['chg_type' => ['delete', 12]]
+            ],
+            [
+            //   000000000011111 11
+            //   012345678901234 56
+                "changetype: moddn\n",
+                ['chg_type' => ['moddn', 12]]
+            ],
+            [
+            //   000000000011111 11
+            //   012345678901234 56
+                "changetype: modrdn\n",
+                ['chg_type' => ['modrdn', 12]]
+            ],
+            [
+            //   000000000011111 11
+            //   012345678901234 56
+                "changetype: modify\n",
+                ['chg_type' => ['modify', 12]]
+            ],
+        ];
+    }
+
+    public static function non__CHANGERECORD_INIT__cases()
+    {
+        $strings = [
+            "",
+            "foo",
+            "changetype add",
+            "changetype:",
+            "changetype:\n",
+            "changetype: add", // missing \n
+            "changetype: foo\n",
+        ];
+
+        $inheritedCases = [];
+
+        return array_merge($inheritedCases, static::stringsToPregTuples($strings));
+    }
+
+    /**
+     * @dataProvider CHANGERECORD_INIT__cases
+     */
+    public function test__CHANGERECORD_INIT__matches(string $string, array $pieces = [])
+    {
+        $this->assertRfcMatches($string, 'CHANGERECORD_INIT', $pieces);
+    }
+
+    /**
+     * @dataProvider non__CHANGERECORD_INIT__cases
+     */
+    public function test__CHANGERECORD_INIT__notMatches(string $string)
+    {
+        $this->assertRfcNotMatches($string, 'CHANGERECORD_INIT');
+    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

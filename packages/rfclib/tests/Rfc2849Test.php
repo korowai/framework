@@ -46,6 +46,9 @@ class Rfc2849Test extends TestCase
                 'SEP' => 'expected line separator (RFC2849)',
                 'MOD_SPEC_INIT' => 'expected one of "add:", "delete:" or "replace:" '.
                                    'followed by AttributeDescription (RFC2849)',
+                'CHANGERECORD_INIT' => 'expected "changetype:" followed by one of "add", '.
+                                       '"delete", "modrdn", "moddn", or "modify" followed '.
+                                       'by line separator (RFC2849)',
             ]
         ];
         $this->assertSame($rfc2849Errors, $class::getDefinedErrors());

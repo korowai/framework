@@ -1519,6 +1519,123 @@ class Rfc2849xTest extends TestCase
     {
         $this->assertRfcNotMatches($string, 'MOD_SPEC_INIT_X');
     }
+
+    //
+    // CHANGERECORD_INIT_X
+    //
+
+    public static function CHANGERECORD_INIT_X__cases()
+    {
+        $cases = [
+            [
+            //   0000000000111111111122222222223
+            //   0123456789012345678901234567890
+                "changetype: add",
+                [
+                    'chg_type' => ['add', 12],
+                    'chg_type_error' => false,
+                ]
+            ],
+            [
+            //   0000000000111111111122222222223
+            //   0123456789012345678901234567890
+                "changetype: delete",
+                [
+                    'chg_type' => ['delete', 12],
+                    'chg_type_error' => false,
+                ]
+            ],
+            [
+            //   0000000000111111111122222222223
+            //   0123456789012345678901234567890
+                "changetype: moddn",
+                [
+                    'chg_type' => ['moddn', 12],
+                    'chg_type_error' => false,
+                ]
+            ],
+            [
+            //   0000000000111111111122222222223
+            //   0123456789012345678901234567890
+                "changetype: modrdn",
+                [
+                    'chg_type' => ['modrdn', 12],
+                    'chg_type_error' => false,
+                ]
+            ],
+            [
+            //   0000000000111111111122222222223
+            //   0123456789012345678901234567890
+                "changetype: modify",
+                [
+                    'chg_type' => ['modify', 12],
+                    'chg_type_error' => false,
+                ]
+            ],
+            [
+            //   0000000000111111111122222222223
+            //   0123456789012345678901234567890
+                "changetype: foo",
+                [
+                    'chg_type' => false,
+                    'chg_type_error' => ['foo', 12],
+                ]
+            ],
+            [
+            //   0000000000111111111122222222223
+            //   0123456789012345678901234567890
+                "changetype: ",
+                [
+                    'chg_type' => false,
+                    'chg_type_error' => ['', 12],
+                ]
+            ],
+            [
+            //   000000000011 1111111122222222223
+            //   012345678901 2345678901234567890
+                "changetype: \n",
+                [
+                    'chg_type' => false,
+                    'chg_type_error' => ['', 12],
+                ]
+            ],
+        ];
+
+        $inheritedCases = [];
+
+        return array_merge($inheritedCases, $cases);
+    }
+
+    public static function non__CHANGERECORD_INIT_X__cases()
+    {
+        $strings = [
+            "",
+            "foo:",
+            "changetype",
+            "changetype foo\n",
+            "changetype\n",
+        ];
+
+        $inheritedCases = [];
+
+        return array_merge($inheritedCases, static::stringsToPregTuples($strings));
+    }
+
+    /**
+     * @dataProvider CHANGERECORD_INIT_X__cases
+     */
+    public function test__CHANGERECORD_INIT_X__matches(string $string, array $pieces = [])
+    {
+        $this->assertRfcMatches($string, 'CHANGERECORD_INIT_X', $pieces);
+    }
+
+    /**
+     * @dataProvider non__CHANGERECORD_INIT_X__cases
+     */
+    public function test__CHANGERECORD_INIT_X__notMatches(string $string)
+    {
+        $this->assertRfcNotMatches($string, 'CHANGERECORD_INIT_X');
+    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

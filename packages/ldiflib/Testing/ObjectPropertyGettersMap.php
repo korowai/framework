@@ -101,6 +101,9 @@ class ObjectPropertyGettersMap
             'modSpecRule'               => 'getModSpecRule',
         ],
 
+        \Korowai\Lib\Ldif\Rules\ChangeRecordInitRule::class => [
+        ],
+
         \Korowai\Lib\Ldif\Rules\ControlRule::class => [
             'valueSpecRule'             => 'getValueSpecRule',
         ],

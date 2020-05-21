@@ -54,15 +54,14 @@ class ModDnRecord extends AbstractChangeRecord implements ModDnRecordInterface
      * - ``deleteoldrdn`` (bool) - whether to delete old RDN or not, defaults to ``false``,
      * - ``newsuperior`` (string|null) - new superior DN, defaults to ``null``.
      *
-     * @param  SnippetInterface $snippet
      * @param  string $dn
      * @param  string $newRdn
      * @param  array $options
      * @throws InvalidChangeTypeException
      */
-    public function __construct(SnippetInterface $snippet, string $dn, string $newRdn, array $options = [])
+    public function __construct(string $dn, string $newRdn, array $options = [])
     {
-        parent::initAbstractChangeRecord($snippet, $dn, $options['controls'] ?? []);
+        parent::initAbstractChangeRecord($dn, $options['controls'] ?? [], $options['snippet'] ?? null);
         $this->setNewRdn($newRdn);
 
         $options = array_change_key_case($options, CASE_LOWER);

@@ -38,10 +38,11 @@ class ModifyRecordTest extends TestCase
         $this->assertImplementsInterface(ModifyRecordInterface::class, ModifyRecord::class);
     }
 
-    public static function construct__cases()
+    public function construct__cases()
     {
+        $snippet = $this->getMockBuilder(SnippetInterface::class)->getMockForAbstractClass();
         return [
-            '__construct($snippet, "dc=example,dc=org")' => [
+            '__construct(, "dc=example,dc=org")' => [
                 'args' => [
                     'dc=example,dc=org',
                 ],
@@ -50,14 +51,16 @@ class ModifyRecordTest extends TestCase
                     'changeType' => 'modify',
                     'modSpecs' => [],
                     'controls' => [],
+                    'snippet' => null,
                 ]
             ],
-            '__construct($snippet, "dc=example,dc=org", ["modSpecs" => ["X"], "controls" => ["Y"]]' => [
+            '__construct("dc=example,dc=org", ["modSpecs" => ["X"], "controls" => ["Y"], "snippet" => $snippet]' => [
                 'args' => [
                     'dc=example,dc=org',
                     [
                         "modSpecs" => ['X'],
                         "controls" => ['Y'],
+                        "snippet" => $snippet
                     ],
                 ],
                 'expect' => [
@@ -65,6 +68,7 @@ class ModifyRecordTest extends TestCase
                     'changeType' => 'modify',
                     'modSpecs' => ['X'],
                     'controls' => ['Y'],
+                    'snippet' => $snippet,
                 ]
             ]
         ];
@@ -75,30 +79,19 @@ class ModifyRecordTest extends TestCase
      */
     public function test__construct(array $args, array $expect)
     {
-        $snippet = $this->getMockBuilder(SnippetInterface::class)
-                        ->getMockForAbstractClass();
-
-        $record = new ModifyRecord($snippet, ...$args);
-
-        $this->assertSame($snippet, $record->getSnippet());
+        $record = new ModifyRecord(...$args);
         $this->assertHasPropertiesSameAs($expect, $record);
     }
 
     public function test__getChangeType()
     {
-        $snippet = $this->getMockBuilder(SnippetInterface::class)
-                        ->getMockForAbstractClass();
-
-        $record = new ModifyRecord($snippet, "dc=example,dc=org");
+        $record = new ModifyRecord("dc=example,dc=org");
         $this->assertSame("modify", $record->getChangeType());
     }
 
     public function test__setModSpecs()
     {
-        $snippet = $this->getMockBuilder(SnippetInterface::class)
-                        ->getMockForAbstractClass();
-
-        $record = new ModifyRecord($snippet, "dc=example,dc=org");
+        $record = new ModifyRecord("dc=example,dc=org");
 
         $this->assertSame($record, $record->setModSpecs(['X']));
         $this->assertSame(['X'], $record->getModSpecs());
@@ -106,12 +99,10 @@ class ModifyRecordTest extends TestCase
 
     public function test__acceptRecordVisitor()
     {
-        $snippet = $this->getMockBuilder(SnippetInterface::class)
-                        ->getMockForAbstractClass();
         $visitor = $this->getMockBuilder(RecordVisitorInterface::class)
                         ->getMockForAbstractClass();
 
-        $record = new ModifyRecord($snippet, "dc=example,dc=org", ['X']);
+        $record = new ModifyRecord("dc=example,dc=org", ['X']);
 
         $visitor->expects($this->once())
                 ->method('visitModifyRecord')

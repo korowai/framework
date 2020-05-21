@@ -30,13 +30,12 @@ class AddRecord extends AbstractChangeRecord implements AddRecordInterface
     /**
      * Initializes the object.
      *
-     * @param  SnippetInterface $snippet
      * @param  string $dn
      * @param  array $options
      */
-    public function __construct(SnippetInterface $snippet, string $dn, array $options = [])
+    public function __construct(string $dn, array $options = [])
     {
-        parent::initAbstractChangeRecord($snippet, $dn, $options['controls'] ?? []);
+        parent::initAbstractChangeRecord($dn, $options['controls'] ?? [], $options['snippet'] ?? null);
         $this->setAttrValSpecs($options['attrValSpecs'] ?? []);
     }
 

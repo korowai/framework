@@ -29,7 +29,7 @@ namespace Korowai\Lib\Ldif;
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-interface RecordInterface extends SnippetInterface
+interface RecordInterface
 {
     /**
      * Returns the DN of this record.
@@ -44,6 +44,13 @@ interface RecordInterface extends SnippetInterface
      * @param  RecordVisitorInterface $visitor
      */
     public function acceptRecordVisitor(RecordVisitorInterface $visitor);
+
+    /**
+     * Returns optional snippet attached to this record.
+     *
+     * @return SnippetInterface|null
+     */
+    public function getSnippet() : ?SnippetInterface;
 }
 
 // vim: syntax=php sw=4 ts=4 et:

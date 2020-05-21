@@ -147,7 +147,6 @@ class ObjectPropertyGettersMap
         ],
 
         \Korowai\Lib\Ldif\Traits\DecoratesSnippetInterface::class => [
-            'snippet'                   => 'getSnippet',
         ],
 
         \Korowai\Lib\Ldif\Traits\DecoratesSourceLocationInterface::class => [
@@ -187,6 +186,10 @@ class ObjectPropertyGettersMap
 
         \Korowai\Lib\Ldif\Traits\HasAttrValSpecs::class => [
             'attrValSpecs'              => 'getAttrValSpecs'
+        ],
+
+        \Korowai\Lib\Ldif\Traits\HasSnippet::class => [
+            'snippet'                   => 'getSnippet',
         ],
 
         \Korowai\Lib\Ldif\Traits\HasNestedRules::class => [

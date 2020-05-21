@@ -35,7 +35,7 @@ class DecoratesLocationInterfaceTest extends TestCase
         $this->assertUsesTrait(ExposesLocationInterface::class, DecoratesLocationInterface::class);
     }
 
-    public function test__coupledLocation()
+    public function test__location()
     {
         $location = $this->getMockBuilder(LocationInterface::class)
                          ->getMockForAbstractClass();

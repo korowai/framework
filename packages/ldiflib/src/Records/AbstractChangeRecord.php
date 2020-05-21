@@ -13,9 +13,7 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldif\Records;
 
-use Korowai\Lib\Ldif\RecordInterface;
 use Korowai\Lib\Ldif\SnippetInterface;
-use Korowai\Lib\Ldif\Traits\DecoratesSnippetInterface;
 
 /**
  * An abstract base class for parsed LDIF records.
@@ -32,15 +30,15 @@ abstract class AbstractChangeRecord extends AbstractRecord
     /**
      * Initializes the object. Should be invoked from subclass' constructor.
      *
-     * @param  SnippetInterface $snippet
      * @param  string $dn
      * @param  array $controls
+     * @param  SnippetInterface $snippet
      *
      * @return object $this
      */
-    public function initAbstractChangeRecord(SnippetInterface $snippet, string $dn, array $controls = [])
+    public function initAbstractChangeRecord(string $dn, array $controls = [], SnippetInterface $snippet = null)
     {
-        $this->initAbstractRecord($snippet, $dn);
+        $this->initAbstractRecord($dn, $snippet);
         $this->setControls($controls);
         return $this;
     }

@@ -88,22 +88,15 @@ final class LdifChangeRecordRule implements RuleInterface
         ) {
             return false;
         }
-        $vars = compact('begin', 'dn', 'controls');
-        return $this->parseRecord($state, $value, $vars);
-    }
 
-    /**
-     * Parses sequence of zero or more *control*'s defined in RFC2849.
-     *
-     * @param  State $state
-     * @param  array $controls
-     * @return bool
-     */
-    public function parseControls(State $state, array &$controls = null) : bool
-    {
-        $count = count($state->getErrors());
-        $controls = Util::repeat($this->getControlRule(), $state);
-        return !(count($state->getErrors()) > $count);
+        $vars = compact('begin', 'dn', 'controls');
+        if (!$result = $this->parseRecord($state, $value, $vars)) {
+            return false;
+        }
+
+        $snippet = Snippet::createFromLocationAndState($begin, $state);
+        $value->setSnippet($snippet);
+        return true;
     }
 
     /**
@@ -144,13 +137,10 @@ final class LdifChangeRecordRule implements RuleInterface
     public function parseAdd(State $state, AddRecordInterface &$record = null, array $vars = []) : bool
     {
         extract($vars);
-        $offset = $state->getCursor()->getOffset();
-        $input = $state->getCursor()->getInput();
         if (!$this->parseAddAttrValSpecs($state, $attrValSpecs)) {
             return false;
         }
-        $snippet = Snippet::createFromLocationAndState($begin, $state);
-        $record = new AddRecord($snippet, $dn, compact('controls', 'attrValSpecs'));
+        $record = new AddRecord($dn, compact('controls', 'attrValSpecs'));
         return true;
     }
 
@@ -160,8 +150,7 @@ final class LdifChangeRecordRule implements RuleInterface
     public function parseDelete(State $state, DeleteRecordInterface &$record = null, array $vars = []) : bool
     {
         extract($vars);
-        $snippet = Snippet::createFromLocationAndState($begin, $state);
-        $record = new DeleteRecord($snippet, $dn, compact('controls'));
+        $record = new DeleteRecord($dn, compact('controls'));
         return true;
     }
 
@@ -174,9 +163,8 @@ final class LdifChangeRecordRule implements RuleInterface
 
         throw new \BadMethodCallException('not implemented');
 
-        $snippet = Snippet::createFromLocationAndState($begin, $state);
         $options = compact('controls', 'changeType', 'deleteOldRdn', 'newSuperior');
-        $record = new ModDnRecord($snippet, $dn, $newRdn, $options);
+        $record = new ModDnRecord($dn, $newRdn, $options);
         return true;
     }
 
@@ -190,9 +178,22 @@ final class LdifChangeRecordRule implements RuleInterface
             $record = null;
             return false;
         }
-        $snippet = Snippet::createFromLocationAndState($begin, $state);
-        $record = new ModifyRecord($snippet, $dn, compact('controls', 'modSpecs'));
+        $record = new ModifyRecord($dn, compact('controls', 'modSpecs'));
         return true;
+    }
+
+    /**
+     * Parses sequence of zero or more *control*'s defined in RFC2849.
+     *
+     * @param  State $state
+     * @param  array $controls
+     * @return bool
+     */
+    public function parseControls(State $state, array &$controls = null) : bool
+    {
+        $count = count($state->getErrors());
+        $controls = Util::repeat($this->getControlRule(), $state);
+        return !(count($state->getErrors()) > $count);
     }
 
     /**

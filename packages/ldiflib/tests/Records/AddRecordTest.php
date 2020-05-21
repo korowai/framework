@@ -46,7 +46,7 @@ class AddRecordTest extends TestCase
     public static function construct__cases()
     {
         return [
-            '__construct($snippet, "dc=example,dc=org")' => [
+            '__construct("dc=example,dc=org")' => [
                 'args' => [
                     'dc=example,dc=org',
                 ],
@@ -55,9 +55,10 @@ class AddRecordTest extends TestCase
                     'changeType' => 'add',
                     'attrValSpecs' => [],
                     'controls' => [],
+                    'snippet' => null,
                 ]
             ],
-            '__construct($snippet, "dc=example,dc=org", ["attrValSpecs" => ["X"], "controls" => ["Y"]]' => [
+            '__construct("dc=example,dc=org", ["attrValSpecs" => ["X"], "controls" => ["Y"]]' => [
                 'args' => [
                     'dc=example,dc=org',
                     [
@@ -70,6 +71,7 @@ class AddRecordTest extends TestCase
                     'changeType' => 'add',
                     'attrValSpecs' => ['X'],
                     'controls' => ['Y'],
+                    'snippet' => null
                 ]
             ]
         ];
@@ -80,34 +82,23 @@ class AddRecordTest extends TestCase
      */
     public function test__construct(array $args, array $expect)
     {
-        $snippet = $this->getMockBuilder(SnippetInterface::class)
-                        ->getMockForAbstractClass();
-
-        $record = new AddRecord($snippet, ...$args);
-
-        $this->assertSame($snippet, $record->getSnippet());
+        $record = new AddRecord(...$args);
         $this->assertHasPropertiesSameAs($expect, $record);
     }
 
     public function test__setAttrValSpecs()
     {
-        $snippet = $this->getMockBuilder(SnippetInterface::class)
-                        ->getMockForAbstractClass();
-
-        $record = new AddRecord($snippet, "dc=example,dc=org", []);
-
-        $this->assertSame($record, $record->setAttrValSpecs(['attrVal1']));
-        $this->assertSame(['attrVal1'], $record->getAttrValSpecs());
+        $record = new AddRecord("dc=example,dc=org");
+        $this->assertSame($record, $record->setAttrValSpecs(['X']));
+        $this->assertSame(['X'], $record->getAttrValSpecs());
     }
 
     public function test__acceptRecordVisitor()
     {
-        $snippet = $this->getMockBuilder(SnippetInterface::class)
-                        ->getMockForAbstractClass();
         $visitor = $this->getMockBuilder(RecordVisitorInterface::class)
                         ->getMockForAbstractClass();
 
-        $record = new AddRecord($snippet, "dc=example,dc=org", []);
+        $record = new AddRecord("dc=example,dc=org");
 
         $visitor->expects($this->once())
                 ->method('visitAddRecord')

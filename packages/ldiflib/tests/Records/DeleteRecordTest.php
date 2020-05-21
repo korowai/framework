@@ -37,10 +37,12 @@ class DeleteRecordTest extends TestCase
         $this->assertImplementsInterface(DeleteRecordInterface::class, DeleteRecord::class);
     }
 
-    public static function construct__cases()
+    public function construct__cases()
     {
+        $snippet = $this->getMockBuilder(SnippetInterface::class)->getMockForAbstractClass();
+
         return [
-            '__construct($snippet, "dc=example,dc=org")' => [
+            '__construct("dc=example,dc=org")' => [
                 'args' => [
                     'dc=example,dc=org',
                 ],
@@ -48,19 +50,22 @@ class DeleteRecordTest extends TestCase
                     'dn' => 'dc=example,dc=org',
                     'changeType' => 'delete',
                     'controls' => [],
+                    'snippet' => null,
                 ]
             ],
-            '__construct($snippet, "dc=example,dc=org", ["controls" => ["Y"]]' => [
+            '__construct("dc=example,dc=org", ["controls" => ["Y"], "snippet" => $snippet]' => [
                 'args' => [
                     'dc=example,dc=org',
                     [
                         "controls" => ['Y'],
+                        "snippet" => $snippet,
                     ],
                 ],
                 'expect' => [
                     'dn' => 'dc=example,dc=org',
                     'changeType' => 'delete',
                     'controls' => ['Y'],
+                    'snippet' => $snippet
                 ]
             ]
         ];
@@ -71,23 +76,16 @@ class DeleteRecordTest extends TestCase
      */
     public function test__construct(array $args, array $expect)
     {
-        $snippet = $this->getMockBuilder(SnippetInterface::class)
-                        ->getMockForAbstractClass();
-
-        $record = new DeleteRecord($snippet, ...$args);
-
-        $this->assertSame($snippet, $record->getSnippet());
+        $record = new DeleteRecord(...$args);
         $this->assertHasPropertiesSameAs($expect, $record);
     }
 
     public function test__acceptRecordVisitor()
     {
-        $snippet = $this->getMockBuilder(SnippetInterface::class)
-                        ->getMockForAbstractClass();
         $visitor = $this->getMockBuilder(RecordVisitorInterface::class)
                         ->getMockForAbstractClass();
 
-        $record = new DeleteRecord($snippet, "dc=example,dc=org");
+        $record = new DeleteRecord("dc=example,dc=org");
 
         $visitor->expects($this->once())
                 ->method('visitDeleteRecord')

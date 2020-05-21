@@ -1,6 +1,6 @@
 <?php
 /**
- * @file tests/Traits/DecoratesSnippetInterfaceTest.php
+ * @file tests/Traits/HasSnippetTest.php
  *
  * This file is part of the Korowai package
  *
@@ -13,9 +13,8 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldif\Traits;
 
-use Korowai\Lib\Ldif\Traits\DecoratesSnippetInterface;
-use Korowai\Lib\Ldif\Traits\ExposesSnippetInterface;
 use Korowai\Lib\Ldif\Traits\HasSnippet;
+use Korowai\Lib\Ldif\Traits\ExposesSnippetInterface;
 use Korowai\Lib\Ldif\SnippetInterface;
 
 use Korowai\Testing\Lib\Ldif\TestCase;
@@ -24,24 +23,14 @@ use Korowai\Testing\Lib\Ldif\TestCase;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class DecoratesSnippetInterfaceTest extends TestCase
+class HasSnippetTest extends TestCase
 {
-    public function test__uses__ExposesSnippetInterface()
-    {
-        $this->assertUsesTrait(ExposesSnippetInterface::class, DecoratesSnippetInterface::class);
-    }
-
-    public function test__uses__HasSnippet()
-    {
-        $this->assertUsesTrait(HasSnippet::class, DecoratesSnippetInterface::class);
-    }
-
     public function test__snippet()
     {
         $snippet = $this->getMockBuilder(SnippetInterface::class)
                         ->getMockForAbstractClass();
 
-        $object = $this->getMockBuilder(DecoratesSnippetInterface::class)
+        $object = $this->getMockBuilder(HasSnippet::class)
                        ->getMockForTrait();
 
         $this->assertNull($object->getSnippet());

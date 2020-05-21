@@ -113,6 +113,9 @@ class ObjectPropertyGettersMap
         \Korowai\Lib\Ldif\Rules\DnSpecRule::class => [
         ],
 
+        \Korowai\Lib\Ldif\Rules\LdifAttrValRecordRule::class => [
+        ],
+
         \Korowai\Lib\Ldif\Rules\LdifChangeRecordRule::class => [
         ],
 
@@ -140,6 +143,13 @@ class ObjectPropertyGettersMap
         ],
 
         \Korowai\Lib\Ldif\Snippet::class => [
+        ],
+
+        \Korowai\Lib\Ldif\Traits\AbstractLdifRecordNestedRules::class => [
+            'dnSpecRule'                => 'getDnSpecRule',
+            'sepRule'                   => 'getSepRule',
+            'attrValSpecReqRule'        => 'getAttrValSpecReqRule',
+            'attrValSpecOptRule'        => 'getAttrValSpecOptRule',
         ],
 
         \Korowai\Lib\Ldif\Traits\DecoratesLocationInterface::class => [
@@ -205,14 +215,13 @@ class ObjectPropertyGettersMap
             'versionSpecRule'           => 'versionSpecRule',
         ],
 
+        \Korowai\Lib\Ldif\Traits\LdifAttrValRecordNestedRules::class => [
+        ],
+
         \Korowai\Lib\Ldif\Traits\LdifChangeRecordNestedRules::class => [
-            'dnSpecRule'                => 'getDnSpecRule',
             'controlRule'               => 'getControlRule',
             'changeRecordInitRule'      => 'getChangeRecordInitRule',
             'modSpecRule'               => 'getModSpecRule',
-            'sepRule'                   => 'getSepRule',
-            'attrValSpecReqRule'        => 'getAttrValSpecReqRule',
-            'attrValSpecOptRule'        => 'getAttrValSpecOptRule',
         ],
 
         \Korowai\Lib\Ldif\Util\IndexMap::class => [

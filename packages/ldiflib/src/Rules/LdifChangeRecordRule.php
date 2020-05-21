@@ -30,15 +30,38 @@ use Korowai\Lib\Ldif\Records\ModifyRecordInterface;
 use Korowai\Lib\Ldif\Exception\InvalidRuleClassException;
 
 /**
- * A rule object that parses *ldif-change-record* rule defined in Rfc2849.
+ * A rule object that parses *ldif-change-record* rule defined in [RFC2849](https://tools.ietf.org/html/rfc2849).
  *
- * - semantic value: [ChangeRecordInterface](\.\./ChangeRecordInterface.html).
+ * - semantic value: [ChangeRecordInterface](\.\./Records/ChangeRecordInterface.html).
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-final class LdifChangeRecordRule implements RuleInterface
+final class LdifChangeRecordRule extends AbstractLdifRecordRule
 {
-    use LdifChangeRecordNestedRules;
+    use LdifChangeRecordNestedRules {
+        getNestedRulesSpecs as getLdifChangeRecordNestedRulesSpecs;
+    }
+
+    /**
+     * Returns an array of nested rule specifications for the given class.
+     *
+     * @return array
+     *      Returns array of key => value pairs, where keys are names of nested
+     *      rules, unique within the class, and values are arrays of the
+     *      following key => value options:
+     *
+     * - ``class`` (string): name of the class implementing given rule, the
+     *   class itself must implement [RuleInterface](\.\./RuleInterface.html),
+     * - ``construct`` (?array): if set, provides argument values to be passed
+     *   to rule's constructor when creating the rule during default
+     *   initialization,
+     * - ``optional`` (?bool): if set, then the class ensures that the given
+     *   nested *$rule* satisfies ``$rule->isOptional() === $optional``.
+     */
+    public static function getNestedRulesSpecs() : array
+    {
+        return array_merge(parent::getNestedRulesSpecs(), self::getLdifChangeRecordNestedRulesSpecs());
+    }
 
     /**
      * Initializes the object.
@@ -48,32 +71,7 @@ final class LdifChangeRecordRule implements RuleInterface
      */
     public function __construct(bool $tryOnly = false, array $options = [])
     {
-        $rules = array_intersect_key($options, static::getNestedRulesSpecs());
-        if (($dnSpecRule = ($rules['dnSpecRule'] ?? null)) === null) {
-            $rules['dnSpecRule'] = new DnSpecRule($tryOnly);
-        } elseif (!($dnSpecRule instanceof DnSpecRule)) {
-            $given = is_object($dnSpecRule) ? get_class($dnSpecRule).' object' : gettype($dnSpecRule);
-            $call = __class__.'::__construct($tryOnly, $options)';
-            $message = 'Argument $options["dnSpecRule"] in '.$call.' must be an instance of '.
-                       DnSpecRule::class.', '.$given.' given.';
-            throw new InvalidRuleClassException($message);
-        } elseif ($tryOnly !== $dnSpecRule->isOptional()) {
-            $optional = $tryOnly ? 'true' : 'false';
-            $call = __class__.'::__construct('.$optional.', $options)';
-            $message = 'Argument $options in '.$call.' must satisfy '.
-                       '$options["dnSpecRule"]->isOptional() === '.$optional.'.';
-            // FIXME: dedicated exception
-            throw new \InvalidArgumentException($message);
-        }
-        $this->initNestedRules($rules);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isOptional() : bool
-    {
-        return $this->getDnSpecRule()->isOptional();
+        $this->initAbstractLdifRecordRule($tryOnly, $options);
     }
 
     /**
@@ -137,7 +135,7 @@ final class LdifChangeRecordRule implements RuleInterface
     public function parseAdd(State $state, AddRecordInterface &$record = null, array $vars = []) : bool
     {
         extract($vars);
-        if (!$this->parseAddAttrValSpecs($state, $attrValSpecs)) {
+        if (!$this->parseAttrValSpecs($state, $attrValSpecs)) {
             return false;
         }
         $record = new AddRecord($dn, compact('controls', 'attrValSpecs'));
@@ -174,7 +172,7 @@ final class LdifChangeRecordRule implements RuleInterface
     public function parseModify(State $state, ModifyRecordInterface &$record = null, array $vars = []) : bool
     {
         extract($vars);
-        if (!$this->parseModifyModSpecs($state, $modSpecs)) {
+        if (!$this->parseModSpecs($state, $modSpecs)) {
             $record = null;
             return false;
         }
@@ -199,21 +197,7 @@ final class LdifChangeRecordRule implements RuleInterface
     /**
      * @todo Write documentation
      */
-    public function parseAddAttrValSpecs(State $state, array &$attrVals = null) : bool
-    {
-        if (!$this->getAttrValSpecReqRule()->parse($state, $attrVal0)) {
-            return false;
-        }
-
-        $count = count($state->getErrors());
-        $attrVals = array_merge([$attrVal0], Util::repeat($this->getAttrValSpecOptRule(), $state));
-        return !(count($state->getErrors()) > $count);
-    }
-
-    /**
-     * @todo Write documentation
-     */
-    public function parseModifyModSpecs(State $state, array &$modSpecs = null) : bool
+    public function parseModSpecs(State $state, array &$modSpecs = null) : bool
     {
         $count = count($state->getErrors());
         $modSpecs = Util::repeat($this->getModSpecRule(), $state);

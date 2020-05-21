@@ -192,7 +192,8 @@ class HasNestedRulesTest extends TestCase
     public function test__getNestedRulesSpecs()
     {
         $object = $this->getTestObject();
-        $this->assertSame(static::getNestedRulesSpecs(), $object->getNestedRulesSpecs());
+        $class = get_class($object);
+        $this->assertSame(static::getNestedRulesSpecs(), $class::getNestedRulesSpecs());
     }
 
     public function test__getNestedRules__uninitialized()
@@ -241,9 +242,12 @@ class HasNestedRulesTest extends TestCase
     public function test__getNestedRule__uninitialized()
     {
         $object = $this->getTestObject();
+        $qclass = preg_quote(get_class($object), '/');
 
         $this->expectException(NoRulesDefinedException::class);
-        $this->expectExceptionMessageMatches('/^[^:]+::getNestedRule\(\) can\'t be used, no nested rules set.$/');
+        $this->expectExceptionMessageMatches(
+            '/^'.$qclass.'::getNestedRule\(\) can\'t be used, no nested rules set\.$/'
+        );
 
         $object->getNestedRule('dnSpecRule');
     }
@@ -251,10 +255,11 @@ class HasNestedRulesTest extends TestCase
     public function test__getNestedRule__withInvalidKey__1()
     {
         $object = $this->getTestObject1([]);
+        $qclass = preg_quote(get_class($object), '/');
 
         $this->expectException(InvalidRuleNameException::class);
         $this->expectExceptionMessageMatches(
-            '/^Argument 1 to [^:]+::getNestedRule\(\) must be exactly "dnSpecRule", "foo" given\.$/'
+            '/^Argument 1 to '.$qclass.'::getNestedRule\(\) must be exactly "dnSpecRule", "foo" given\.$/'
         );
 
         $object->getNestedRule('foo');
@@ -263,10 +268,11 @@ class HasNestedRulesTest extends TestCase
     public function test__getNestedRule__withInvalidKey__2()
     {
         $object = $this->getTestObject2([]);
+        $qclass = preg_quote(get_class($object), '/');
 
         $this->expectException(InvalidRuleNameException::class);
         $this->expectExceptionMessageMatches(
-            '/^Argument 1 to [^:]+::getNestedRule\(\) must be either "dnSpecRule" or "sepRule", "foo" given\.$/'
+            '/^Argument 1 to '.$qclass.'::getNestedRule\(\) must be either "dnSpecRule" or "sepRule", "foo" given\.$/'
         );
 
         $object->getNestedRule('foo');
@@ -275,10 +281,11 @@ class HasNestedRulesTest extends TestCase
     public function test__getNestedRule__withInvalidKey__3()
     {
         $object = $this->getTestObject([]);
+        $qclass = preg_quote(get_class($object), '/');
 
         $this->expectException(InvalidRuleNameException::class);
         $this->expectExceptionMessageMatches(
-            '/^Argument 1 to [^:]+::getNestedRule\(\) must be one of "dnSpecRule", "sepRule", or "controlRule", '.
+            '/^Argument 1 to '.$qclass.'::getNestedRule\(\) must be one of "dnSpecRule", "sepRule", or "controlRule", '.
             '"foo" given\.$/'
         );
 
@@ -309,11 +316,12 @@ class HasNestedRulesTest extends TestCase
     public function test__setNestedRule__withNoRules()
     {
         $object = $this->getTestObject0();
+        $qclass = preg_quote(get_class($object), '/');
         $sepRule = new SepRule();
 
         $this->expectException(NoRulesDefinedException::class);
         $this->expectExceptionMessageMatches(
-            '/^[^:]+::setNestedRule\(\) can\'t be used, no nested rules defined.$/'
+            '/^'.$qclass.'::setNestedRule\(\) can\'t be used, no nested rules defined\.$/'
         );
 
         $object->setNestedRule('dnSpecRule', $sepRule);
@@ -322,12 +330,13 @@ class HasNestedRulesTest extends TestCase
     public function test__setNestedRule__withInvalidKey()
     {
         $object = $this->getTestObject();
+        $qclass = preg_quote(get_class($object), '/');
         $sepRule = new SepRule();
 
         $this->expectException(InvalidRuleNameException::class);
         $this->expectExceptionMessageMatches(
-            '/^Argument 1 to [^:]+::setNestedRule\(\) must be one of "dnSpecRule", "sepRule", or "controlRule", '.
-            '"foo" given.$/'
+            '/^Argument 1 to '.$qclass.'::setNestedRule\(\) must be one of "dnSpecRule", "sepRule", or "controlRule", '.
+            '"foo" given\.$/'
         );
 
         $object->setNestedRule('foo', $sepRule);
@@ -336,11 +345,12 @@ class HasNestedRulesTest extends TestCase
     public function test__setNestedRule__withInvalidRuleClass()
     {
         $object = $this->getTestObject();
+        $qclass = preg_quote(get_class($object), '/');
         $sepRule = new SepRule();
 
         $this->expectException(InvalidRuleClassException::class);
         $this->expectExceptionMessageMatches(
-            '/^Argument \$rule in [^:]+::setNestedRule\("dnSpecRule", \$rule\) must be an instance of '.
+            '/^Argument \$rule in '.$qclass.'::setNestedRule\("dnSpecRule", \$rule\) must be an instance of '.
             preg_quote(DnSpecRule::class).', instance of '.preg_quote(SepRule::class).' given\.$/'
         );
 
@@ -350,11 +360,12 @@ class HasNestedRulesTest extends TestCase
     public function test__setNestedRule__withInvalidOptionalFlag()
     {
         $object = $this->getTestObject();
+        $qclass = preg_quote(get_class($object), '/');
         $sepRule = new SepRule(true);
 
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessageMatches(
-            '/^Argument \$rule in [^:]+::setNestedRule\("sepRule", \$rule\) must satisfy '.
+            '/^Argument \$rule in '.$qclass.'::setNestedRule\("sepRule", \$rule\) must satisfy '.
             '\$rule->isOptional\(\) === false\.$/'
         );
         $object->setNestedRule('sepRule', $sepRule);
@@ -363,48 +374,59 @@ class HasNestedRulesTest extends TestCase
     public function test__getNestedRuleSpec__noNestedRulesDefined()
     {
         $object = $this->getTestObject0();
+        $class = get_class($object);
+        $qclass = preg_quote($class, '/');
 
         $this->expectException(NoRulesDefinedException::class);
-        $this->expectExceptionMessageMatches('/^[^:]+::getNestedRuleSpec\(\) can\'t be used, no nested rules defined.$/');
+        $this->expectExceptionMessageMatches(
+            '/^'.$qclass.'::getNestedRuleSpec\(\) can\'t be used, no nested rules defined\.$/'
+        );
 
-        $object->getNestedRuleSpec('dnSpec');
+        $class::getNestedRuleSpec('dnSpec');
     }
 
     public function test__getNestedRuleSpec__invalidKey__1()
     {
         $object = $this->getTestObject1();
+        $class = get_class($object);
+        $qclass = preg_quote($class, '/');
 
         $this->expectException(InvalidRuleNameException::class);
         $this->expectExceptionMessageMatches(
-            '/^Argument 1 to [^:]+::getNestedRuleSpec\(\) must be exactly "dnSpecRule", "foo" given\.$/'
+            '/^Argument 1 to '.$qclass.'::getNestedRuleSpec\(\) must be exactly "dnSpecRule", "foo" given\.$/'
         );
 
-        $object->getNestedRuleSpec('foo');
+        $class::getNestedRuleSpec('foo');
     }
 
     public function test__getNestedRuleSpec__invalidKey__2()
     {
         $object = $this->getTestObject2();
+        $class = get_class($object);
+        $qclass = preg_quote($class, '/');
 
         $this->expectException(InvalidRuleNameException::class);
         $this->expectExceptionMessageMatches(
-            '/^Argument 1 to [^:]+::getNestedRuleSpec\(\) must be either "dnSpecRule" or "sepRule", "foo" given\.$/'
+            '/^Argument 1 to '.$qclass.'::getNestedRuleSpec\(\) must be either "dnSpecRule" or "sepRule", '.
+            '"foo" given\.$/'
         );
 
-        $object->getNestedRuleSpec('foo');
+        $class::getNestedRuleSpec('foo');
     }
 
     public function test__getNestedRuleSpec__invalidKey__3()
     {
         $object = $this->getTestObject();
+        $class = get_class($object);
+        $qclass = preg_quote($class, '/');
 
         $this->expectException(InvalidRuleNameException::class);
         $this->expectExceptionMessageMatches(
-            '/^Argument 1 to [^:]+::getNestedRuleSpec\(\) must be one of "dnSpecRule", "sepRule", or "controlRule", '.
-            '"foo" given\.$/'
+            '/^Argument 1 to '.$qclass.'::getNestedRuleSpec\(\) must be one of "dnSpecRule", "sepRule", or '.
+            '"controlRule", "foo" given\.$/'
         );
 
-        $object->getNestedRuleSpec('foo');
+        $class::getNestedRuleSpec('foo');
     }
 
 

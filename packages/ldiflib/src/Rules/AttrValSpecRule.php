@@ -20,11 +20,13 @@ use Korowai\Lib\Rfc\Rule;
 use Korowai\Lib\Rfc\Rfc2849x;
 
 /**
- * A rule that parses RFC2849 value-spec.
+ * A rule object that implements *value-spec* rule defined in RFC2849.
+ *
+ * - semantic value: [AttrVal](\.\./AttrVal.html).
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class AttrValSpecRule extends AbstractRfcRule
+final class AttrValSpecRule extends AbstractRfcRule
 {
     /**
      * @var Rule

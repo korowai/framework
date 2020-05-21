@@ -20,11 +20,13 @@ use Korowai\Lib\Rfc\Rfc2849x;
 use Korowai\Lib\Rfc\Rfc2253;
 
 /**
- * A rule that parses RFC2849 dn-spec.
+ * A rule object that implements *dn-spec* rule defined in RFC2849.
+ *
+ * - semantic value: string
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class DnSpecRule extends AbstractRfcRule
+final class DnSpecRule extends AbstractRfcRule
 {
     /**
      * Initializes the object.

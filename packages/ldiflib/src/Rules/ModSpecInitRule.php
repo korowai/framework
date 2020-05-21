@@ -25,7 +25,7 @@ use Korowai\Lib\Rfc\Rfc2849x;
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class ModSpecInitRule extends AbstractRfcRule
+final class ModSpecInitRule extends AbstractRfcRule
 {
     /**
      * Initializes the object.

@@ -42,7 +42,13 @@ class ObjectPropertyGettersMap
         \Korowai\Lib\Ldif\Exception\InvalidModTypeException::class => [
         ],
 
+        \Korowai\Lib\Ldif\Exception\InvalidRuleclassException::class => [
+        ],
+
         \Korowai\Lib\Ldif\Exception\InvalidRuleNameException::class => [
+        ],
+
+        \Korowai\Lib\Ldif\Exception\NoRulesDefinedException::class => [
         ],
 
         \Korowai\Lib\Ldif\Input::class => [
@@ -97,10 +103,6 @@ class ObjectPropertyGettersMap
             'valueSpecRule'             => 'getValueSpecRule',
         ],
 
-        \Korowai\Lib\Ldif\Rules\ChangeModifyRule::class => [
-            'modSpecRule'               => 'getModSpecRule',
-        ],
-
         \Korowai\Lib\Ldif\Rules\ChangeRecordInitRule::class => [
         ],
 
@@ -109,6 +111,9 @@ class ObjectPropertyGettersMap
         ],
 
         \Korowai\Lib\Ldif\Rules\DnSpecRule::class => [
+        ],
+
+        \Korowai\Lib\Ldif\Rules\LdifChangeRecordRule::class => [
         ],
 
         \Korowai\Lib\Ldif\Rules\ModSpecRule::class => [
@@ -184,12 +189,26 @@ class ObjectPropertyGettersMap
             'attrValSpecs'              => 'getAttrValSpecs'
         ],
 
+        \Korowai\Lib\Ldif\Traits\HasNestedRules::class => [
+            'nestedRulesSpecs'          => 'getNestedRulesSpecs',
+            'nestedRules'               => 'getNestedRules',
+        ],
+
         \Korowai\Lib\Ldif\Traits\HasParserRules::class => [
             'attrValSpecRule'           => 'attrValSpecRule',
             'dnSpecRule'                => 'dnSpecRule',
             'controlRule'               => 'controlRule',
             'sepRule'                   => 'sepRule',
             'versionSpecRule'           => 'versionSpecRule',
+        ],
+
+        \Korowai\Lib\Ldif\Traits\LdifChangeRecordNestedRules::class => [
+            'dnSpecRule'                => 'getDnSpecRule',
+            'controlRule'               => 'getControlRule',
+            'changeRecordInitRule'      => 'getChangeRecordInitRule',
+            'modSpecRule'               => 'getModSpecRule',
+            'sepRule'                   => 'getSepRule',
+            'attrValSpecRule'           => 'getAttrValSpecRule',
         ],
 
         \Korowai\Lib\Ldif\Util\IndexMap::class => [

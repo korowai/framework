@@ -268,8 +268,8 @@ class Rfc2849x extends Rfc2849
      *  - ``chg_type``: only set if the rule matched and there is no error;
      *    contains the change type indicator, either ``"add"``, ``"delete"``,
      *    ``"moddn"``, ``"modrdn"``, or ``"modify"``.
-     * - ``chg_type_error``: only set if the rule matched but there is error
-     *   after the ``"changetype:"`` tag.
+     *  - ``chg_type_error``: only set if the rule matched but there is an
+     *    error after the ``"changetype:"`` tag.
      */
     public const CHANGERECORD_INIT_X =
         '(?:'.

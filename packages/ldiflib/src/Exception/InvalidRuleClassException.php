@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Exception/InvalidRuleNameException.php
+ * @file src/Exception/InvalidRuleClassException.php
  *
  * This file is part of the Korowai package
  *
@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace Korowai\Lib\Ldif\Exception;
 
 /**
- * An exception thrown when a caller was expected to provide supported rule
- * name, but it failed to do so.
+ * An exception thrown when a caller was expected to provide rule object of
+ * given class, but it failed to do so.
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class InvalidRuleNameException extends \InvalidArgumentException
+class InvalidRuleClassException extends \InvalidArgumentException
 {
 }
 

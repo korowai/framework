@@ -16,7 +16,7 @@ namespace Korowai\Lib\Ldif;
 /**
  * Semantic value of the
  * [RFC2849](https://tools.ietf.org/html/rfc2849)
- * attrval-spec rule.
+ * *attrval-spec* rule.
  */
 final class AttrVal implements AttrValInterface
 {

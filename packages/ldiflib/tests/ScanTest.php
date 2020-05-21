@@ -21,7 +21,7 @@ use Korowai\Testing\Lib\Ldif\TestCase;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class FunctionsTest extends TestCase
+class ScanTest extends TestCase
 {
     protected function configureLocationMock(LocationInterface $location, array $case)
     {

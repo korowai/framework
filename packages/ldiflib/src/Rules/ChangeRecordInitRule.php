@@ -21,11 +21,12 @@ use Korowai\Lib\Rfc\Rule;
 use Korowai\Lib\Rfc\Rfc2849x;
 
 /**
- * A rule that parses *mod-spec-init* rule defined in Rfc2849.
+ * A rule object that implements ``CHANGERECORD_INIT_X`` rule defined in
+ * [Rfc2849x](\.\./\.\./Rfc/Rfc2849x.html).
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class ChangeRecordInitRule extends AbstractRfcRule
+final class ChangeRecordInitRule extends AbstractRfcRule
 {
     /**
      * Initializes the object.

@@ -15,7 +15,7 @@ namespace Korowai\Tests\Lib\Ldif\Records;
 
 use Korowai\Lib\Ldif\Records\DeleteRecord;
 use Korowai\Lib\Ldif\Records\DeleteRecordInterface;
-use Korowai\Lib\Ldif\Records\AbstractRecord;
+use Korowai\Lib\Ldif\Records\AbstractChangeRecord;
 use Korowai\Lib\Ldif\RecordVisitorInterface;
 use Korowai\Lib\Ldif\SnippetInterface;
 
@@ -27,9 +27,9 @@ use Korowai\Testing\Lib\Ldif\TestCase;
  */
 class DeleteRecordTest extends TestCase
 {
-    public function tets__extends__AbstractRecord()
+    public function tets__extends__AbstractChangeRecord()
     {
-        $this->assertExtendsClass(AbstractRecord::class, AttraValRecord::class);
+        $this->assertExtendsClass(AbstractChangeRecord::class, AttraValRecord::class);
     }
 
     public function test__implements__DeleteRecordInterface()
@@ -37,16 +37,47 @@ class DeleteRecordTest extends TestCase
         $this->assertImplementsInterface(DeleteRecordInterface::class, DeleteRecord::class);
     }
 
-    public function test__construct()
+    public static function construct__cases()
+    {
+        return [
+            '__construct($snippet, "dc=example,dc=org")' => [
+                'args' => [
+                    'dc=example,dc=org',
+                ],
+                'expect' => [
+                    'dn' => 'dc=example,dc=org',
+                    'changeType' => 'delete',
+                    'controls' => [],
+                ]
+            ],
+            '__construct($snippet, "dc=example,dc=org", ["controls" => ["Y"]]' => [
+                'args' => [
+                    'dc=example,dc=org',
+                    [
+                        "controls" => ['Y'],
+                    ],
+                ],
+                'expect' => [
+                    'dn' => 'dc=example,dc=org',
+                    'changeType' => 'delete',
+                    'controls' => ['Y'],
+                ]
+            ]
+        ];
+    }
+
+    /**
+     * @dataProvider construct__cases
+     */
+    public function test__construct(array $args, array $expect)
     {
         $snippet = $this->getMockBuilder(SnippetInterface::class)
                         ->getMockForAbstractClass();
 
-        $record = new DeleteRecord($snippet, "dc=example,dc=org");
+        $record = new DeleteRecord($snippet, ...$args);
 
-        $this->assertSame("delete", $record->getChangeType());
         $this->assertSame($snippet, $record->getSnippet());
-        $this->assertSame("dc=example,dc=org", $record->getDn());
+        $this->assertHasPropertiesSameAs($expect, $record);
     }
 
     public function test__acceptRecordVisitor()

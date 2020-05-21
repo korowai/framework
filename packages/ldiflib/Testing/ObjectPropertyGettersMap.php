@@ -208,7 +208,8 @@ class ObjectPropertyGettersMap
             'changeRecordInitRule'      => 'getChangeRecordInitRule',
             'modSpecRule'               => 'getModSpecRule',
             'sepRule'                   => 'getSepRule',
-            'attrValSpecRule'           => 'getAttrValSpecRule',
+            'attrValSpecReqRule'        => 'getAttrValSpecReqRule',
+            'attrValSpecOptRule'        => 'getAttrValSpecOptRule',
         ],
 
         \Korowai\Lib\Ldif\Util\IndexMap::class => [

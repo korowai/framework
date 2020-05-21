@@ -16,6 +16,18 @@ namespace Korowai\Lib\Ldif\Rules;
 use Korowai\Lib\Ldif\RuleInterface;
 use Korowai\Lib\Ldif\ParserStateInterface as State;
 use Korowai\Lib\Ldif\Traits\LdifChangeRecordNestedRules;
+use Korowai\Lib\Ldif\LocationInterface;
+use Korowai\Lib\Ldif\Snippet;
+use Korowai\Lib\Ldif\Records\AddRecord;
+use Korowai\Lib\Ldif\Records\DeleteRecord;
+use Korowai\Lib\Ldif\Records\ModDnRecord;
+use Korowai\Lib\Ldif\Records\ModifyRecord;
+use Korowai\Lib\Ldif\Records\ChangeRecordInterface;
+use Korowai\Lib\Ldif\Records\AddRecordInterface;
+use Korowai\Lib\Ldif\Records\DeleteRecordInterface;
+use Korowai\Lib\Ldif\Records\ModDnRecordInterface;
+use Korowai\Lib\Ldif\Records\ModifyRecordInterface;
+use Korowai\Lib\Ldif\Exception\InvalidRuleClassException;
 
 /**
  * A rule object that parses *ldif-change-record* rule defined in Rfc2849.
@@ -39,10 +51,17 @@ final class LdifChangeRecordRule implements RuleInterface
         $rules = array_intersect_key($options, static::getNestedRulesSpecs());
         if (($dnSpecRule = ($rules['dnSpecRule'] ?? null)) === null) {
             $rules['dnSpecRule'] = new DnSpecRule($tryOnly);
-        } elseif ($tryOnly !== $dnSpecRule) {
+        } elseif (!($dnSpecRule instanceof DnSpecRule)) {
+            $given = is_object($dnSpecRule) ? get_class($dnSpecRule).' object' : gettype($dnSpecRule);
             $call = __class__.'::__construct($tryOnly, $options)';
-            $message = 'Argument $tryOnly in '.$call.' must be consistent with $options["dnSpecRule"], '.
-                       '$tryOnly === $options["dnSpecRule"]->isOptional() must hold.';
+            $message = 'Argument $options["dnSpecRule"] in '.$call.' must be an instance of '.
+                       DnSpecRule::class.', '.$given.' given.';
+            throw new InvalidRuleClassException($message);
+        } elseif ($tryOnly !== $dnSpecRule->isOptional()) {
+            $optional = $tryOnly ? 'true' : 'false';
+            $call = __class__.'::__construct('.$optional.', $options)';
+            $message = 'Argument $options in '.$call.' must satisfy '.
+                       '$options["dnSpecRule"]->isOptional() === '.$optional.'.';
             // FIXME: dedicated exception
             throw new \InvalidArgumentException($message);
         }
@@ -62,85 +81,142 @@ final class LdifChangeRecordRule implements RuleInterface
      */
     public function parse(State $state, &$value = null) : bool
     {
-        $cursor = $state->getCursor();
-        $begin = $cursor->getClonedLocation();
-
-        if (!$this->getDnSpecRule()->parse($state, $dn) || !$this->getSepRule()->parse($state)) {
+        $begin = $state->getCursor()->getClonedLocation();
+        if (!$this->getDnSpecRule()->parse($state, $dn) ||
+            !$this->getSepRule()->parse($state) ||
+            !$this->parseControls($state, $controls)
+        ) {
             return false;
         }
-
-        $initErrCount = count($state->getErrors());
-        $controls = Util::repeat($this->getControlRule(), $state);
-        if (count($state->getErrors()) > $initErrCount) {
-            return false;
-        }
-
-        return $this->parseChangeRecord($state, $dn, $value);
+        $vars = compact('begin', 'dn', 'controls');
+        return $this->parseRecord($state, $value, $vars);
     }
 
     /**
-     * @todo Write documentation
+     * Parses sequence of zero or more *control*'s defined in RFC2849.
+     *
+     * @param  State $state
+     * @param  array $controls
+     * @return bool
      */
-    public function parseChangeRecord(State $state, string $dn, &$value = null) : bool
+    public function parseControls(State $state, array &$controls = null) : bool
+    {
+        $count = count($state->getErrors());
+        $controls = Util::repeat($this->getControlRule(), $state);
+        return !(count($state->getErrors()) > $count);
+    }
+
+    /**
+     * Parses the *changerecord* rule of the *ldif-change-record*.
+     *
+     * @param  State $state
+     * @param  ChangeRecordInterface $record
+     * @param  array $vars
+     */
+    public function parseRecord(State $state, ChangeRecordInterface &$record = null, array $vars = []) : bool
     {
         static $parsers = [
             'add'    => 'parseAdd',
             'delete' => 'parseDelete',
             'moddn'  => 'parseModDn',
-            'modrdn' => 'parseModRdn',
+            'modrdn' => 'parseModDn',
             'modify' => 'parseModify',
         ];
 
-        if (!$this->getChangeRecordInitRule($state, $changeType)) {
+        if (!$this->getChangeRecordInitRule()->parse($state, $changeType)) {
             return false;
         }
+
+        $vars['changeType'] = $changeType;
 
         if (($parser = $parsers[$changeType] ?? null) === null) {
             $state->errorHere('internal error: unsupported changeType: "'.$changeType.'"');
-            $value = null;
+            $record = null;
             return false;
         }
 
-        return $this->{$parser}($state, $dn, $value);
+        return $this->{$parser}($state, $record, $vars);
     }
 
     /**
      * @todo Write documentation
      */
-    public function parseAdd(State $state, string $dn, &$value = null)
+    public function parseAdd(State $state, AddRecordInterface &$record = null, array $vars = []) : bool
     {
+        extract($vars);
+        $offset = $state->getCursor()->getOffset();
+        $input = $state->getCursor()->getInput();
+        if (!$this->parseAddAttrValSpecs($state, $attrValSpecs)) {
+            return false;
+        }
+        $snippet = Snippet::createFromLocationAndState($begin, $state);
+        $record = new AddRecord($snippet, $dn, compact('controls', 'attrValSpecs'));
+        return true;
+    }
+
+    /**
+     * @todo Write documentation
+     */
+    public function parseDelete(State $state, DeleteRecordInterface &$record = null, array $vars = []) : bool
+    {
+        extract($vars);
+        $snippet = Snippet::createFromLocationAndState($begin, $state);
+        $record = new DeleteRecord($snippet, $dn, compact('controls'));
+        return true;
+    }
+
+    /**
+     * @todo Write documentation
+     */
+    public function parseModDn(State $state, ModDnRecordInterface &$record = null, array $vars = []) : bool
+    {
+        extract($vars);
+
         throw new \BadMethodCallException('not implemented');
+
+        $snippet = Snippet::createFromLocationAndState($begin, $state);
+        $options = compact('controls', 'changeType', 'deleteOldRdn', 'newSuperior');
+        $record = new ModDnRecord($snippet, $dn, $newRdn, $options);
+        return true;
     }
 
     /**
      * @todo Write documentation
      */
-    public function parseDelete(State $state, string $dn, &$value = null)
+    public function parseModify(State $state, ModifyRecordInterface &$record = null, array $vars = []) : bool
     {
-        throw new \BadMethodCallException('not implemented');
+        extract($vars);
+        if (!$this->parseModifyModSpecs($state, $modSpecs)) {
+            $record = null;
+            return false;
+        }
+        $snippet = Snippet::createFromLocationAndState($begin, $state);
+        $record = new ModifyRecord($snippet, $dn, compact('controls', 'modSpecs'));
+        return true;
     }
 
     /**
      * @todo Write documentation
      */
-    public function parseModDn(State $state, string $dn, &$value = null)
+    public function parseAddAttrValSpecs(State $state, array &$attrVals = null) : bool
     {
-        throw new \BadMethodCallException('not implemented');
+        if (!$this->getAttrValSpecReqRule()->parse($state, $attrVal0)) {
+            return false;
+        }
+
+        $count = count($state->getErrors());
+        $attrVals = array_merge([$attrVal0], Util::repeat($this->getAttrValSpecOptRule(), $state));
+        return !(count($state->getErrors()) > $count);
     }
 
     /**
      * @todo Write documentation
      */
-    public function parseModRdn(State $state, string $dn, &$value = null)
+    public function parseModifyModSpecs(State $state, array &$modSpecs = null) : bool
     {
-        throw new \BadMethodCallException('not implemented');
-    }
-
-    /**
-     * @todo Write documentation
-     */
-    public function parseModify(State $state, string $dn, &$value = null)
-    {
+        $count = count($state->getErrors());
+        $modSpecs = Util::repeat($this->getModSpecRule(), $state);
+        return !(count($state->getErrors()) > $count);
     }
 }
 // vim: syntax=php sw=4 ts=4 et:

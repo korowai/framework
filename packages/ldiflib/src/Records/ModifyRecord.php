@@ -23,7 +23,7 @@ use Korowai\Lib\Ldif\Exception\InvalidChangeTypeException;
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class ModifyRecord extends AbstractRecord implements ModifyRecordInterface
+class ModifyRecord extends AbstractChangeRecord implements ModifyRecordInterface
 {
     /**
      * @var string
@@ -40,12 +40,12 @@ class ModifyRecord extends AbstractRecord implements ModifyRecordInterface
      *
      * @param  SnippetInterface $snippet
      * @param  string $dn
-     * @param  array $modSpecs
+     * @param  array $options
      */
-    public function __construct(SnippetInterface $snippet, string $dn, array $modSpecs = [])
+    public function __construct(SnippetInterface $snippet, string $dn, array $options = [])
     {
-        parent::initAbstractRecord($snippet, $dn);
-        $this->setModSpecs($modSpecs);
+        parent::initAbstractChangeRecord($snippet, $dn, $options['controls'] ?? []);
+        $this->setModSpecs($options['modSpecs'] ?? []);
     }
 
     /**

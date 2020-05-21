@@ -22,17 +22,18 @@ use Korowai\Lib\Ldif\RecordVisitorInterface;
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class DeleteRecord extends AbstractRecord implements DeleteRecordInterface
+class DeleteRecord extends AbstractChangeRecord implements DeleteRecordInterface
 {
     /**
      * Initializes the object.
      *
      * @param  SnippetInterface $snippet
      * @param  string $dn
+     * @param  array $options
      */
-    public function __construct(SnippetInterface $snippet, string $dn)
+    public function __construct(SnippetInterface $snippet, string $dn, array $options = [])
     {
-        parent::initAbstractRecord($snippet, $dn);
+        parent::initAbstractChangeRecord($snippet, $dn, $options['controls'] ?? []);
     }
 
     /**

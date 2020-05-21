@@ -23,7 +23,7 @@ use Korowai\Lib\Ldif\Traits\HasAttrValSpecs;
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class AddRecord extends AbstractRecord implements AddRecordInterface
+class AddRecord extends AbstractChangeRecord implements AddRecordInterface
 {
     use HasAttrValSpecs;
 
@@ -32,12 +32,12 @@ class AddRecord extends AbstractRecord implements AddRecordInterface
      *
      * @param  SnippetInterface $snippet
      * @param  string $dn
-     * @param  array $attrValSpecs
+     * @param  array $options
      */
-    public function __construct(SnippetInterface $snippet, string $dn, array $attrValSpecs)
+    public function __construct(SnippetInterface $snippet, string $dn, array $options = [])
     {
-        parent::initAbstractRecord($snippet, $dn);
-        $this->setAttrValSpecs($attrValSpecs);
+        parent::initAbstractChangeRecord($snippet, $dn, $options['controls'] ?? []);
+        $this->setAttrValSpecs($options['attrValSpecs'] ?? []);
     }
 
     /**

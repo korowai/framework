@@ -16,7 +16,10 @@ namespace Korowai\Lib\Ldif;
 use Korowai\Lib\Ldif\Traits\DecoratesLocationInterface;
 
 /**
- * @todo Write documentation.
+ * Represents a code snippet with well defined input, beginning location and
+ * length.
+ *
+ * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
 class Snippet implements SnippetInterface
 {
@@ -26,6 +29,36 @@ class Snippet implements SnippetInterface
      * @var int
      */
     protected $length;
+
+    /**
+     * Creates snippet out of begin and end locations.
+     *
+     * @param  LocationInterface $begin
+     * @param  LocationInterface $end
+     * @return Snippet
+     */
+    public static function createFromLocations(LocationInterface $begin, LocationInterface $end) : Snippet
+    {
+        if ($begin->getInput() !== $end->getInput()) {
+            // FIXME: dedicated exception
+            $call = __class__.'::'.__function__.'($begin, $end)';
+            $message = 'Arguments $begin and $end in '.$call.' must satisfy $begin->getInput() === $end->getInput().';
+            throw new \InvalidArgumentException($message);
+        }
+        return new self($begin, $end->getOffset() - $begin->getOffset());
+    }
+
+    /**
+     * Creates snippet out of beginning location and parser state.
+     *
+     * @param  LocationInterface $begin
+     * @param  ParserStateInterface $state
+     * @return Snippet
+     */
+    public static function createFromLocationAndState(LocationInterface $begin, ParserStateInterface $state) : Snippet
+    {
+        return self::createFromLocations($begin, $state->getCursor());
+    }
 
     /**
      * Initializes the object.

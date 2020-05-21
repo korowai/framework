@@ -41,35 +41,38 @@ class ModDnRecordTest extends TestCase
     public static function construct__cases()
     {
         return [
-            'w/o options' => [
+            '__construct("dc=example,dc=org", "cn=bar")' => [
                 'args' => [
-                    'cn=foo,dc=example,dc=org',
+                    'dc=example,dc=org',
                     'cn=bar',
                 ],
                 'expect' => [
-                    'getDn()' => 'cn=foo,dc=example,dc=org',
-                    'getNewRdn()' => 'cn=bar',
-                    'getChangeType()' => 'modrdn',
-                    'getDeleteOldRdn()' => false,
-                    'getNewSuperior()' => null,
+                    'dn' => 'dc=example,dc=org',
+                    'newRdn' => 'cn=bar',
+                    'changeType' => 'modrdn',
+                    'deleteOldRdn' => false,
+                    'newSuperior' => null,
+                    'controls' => [],
                 ]
             ],
-            'w/ options' => [
+            '__construct("dc=example,dc=org", "cn=bar", [...])' => [
                 'args' => [
-                    'cn=foo,dc=example,dc=org',
+                    'dc=example,dc=org',
                     'cn=bar',
                     [
                         'changetype' => 'moddn',
                         'deleteoldrdn' => true,
                         'newsuperior' => 'dc=foobar,dc=com',
+                        'controls' => ['Y'],
                     ],
                 ],
                 'expect' => [
-                    'getDn()' => 'cn=foo,dc=example,dc=org',
-                    'getNewRdn()' => 'cn=bar',
-                    'getChangeType()' => 'moddn',
-                    'getDeleteOldRdn()' => true,
-                    'getNewSuperior()' => 'dc=foobar,dc=com',
+                    'dn' => 'dc=example,dc=org',
+                    'newRdn' => 'cn=bar',
+                    'changeType' => 'moddn',
+                    'deleteOldRdn' => true,
+                    'newSuperior' => 'dc=foobar,dc=com',
+                    'controls' => ['Y'],
                 ]
             ]
         ];
@@ -104,7 +107,7 @@ class ModDnRecordTest extends TestCase
         $snippet = $this->getMockBuilder(SnippetInterface::class)
                         ->getMockForAbstractClass();
 
-        $record = new ModDnRecord($snippet, "cn=foo,dc=example,dc=org", "cn=bar");
+        $record = new ModDnRecord($snippet, "dc=example,dc=org", "cn=bar");
 
         $this->assertSame($record, $record->setChangeType($changeType));
         $this->assertSame($changeType, $record->getChangeType());
@@ -115,7 +118,7 @@ class ModDnRecordTest extends TestCase
         $snippet = $this->getMockBuilder(SnippetInterface::class)
                         ->getMockForAbstractClass();
 
-        $record = new ModDnRecord($snippet, "cn=foo,dc=example,dc=org", "cn=bar");
+        $record = new ModDnRecord($snippet, "dc=example,dc=org", "cn=bar");
 
         $message = 'Argument 1 to '.ModDnRecord::class.'::setChangeType() must be one of "moddn" or "modrdn", '.
                    '"foo" given.';
@@ -130,7 +133,7 @@ class ModDnRecordTest extends TestCase
         $snippet = $this->getMockBuilder(SnippetInterface::class)
                         ->getMockForAbstractClass();
 
-        $record = new ModDnRecord($snippet, "cn=foo,dc=example,dc=org", "cn=bar");
+        $record = new ModDnRecord($snippet, "dc=example,dc=org", "cn=bar");
 
         $this->assertSame($record, $record->setNewRdn("cn=gez"));
         $this->assertSame("cn=gez", $record->getNewRdn());
@@ -141,7 +144,7 @@ class ModDnRecordTest extends TestCase
         $snippet = $this->getMockBuilder(SnippetInterface::class)
                         ->getMockForAbstractClass();
 
-        $record = new ModDnRecord($snippet, "cn=foo,dc=example,dc=org", "cn=bar");
+        $record = new ModDnRecord($snippet, "dc=example,dc=org", "cn=bar");
 
         $this->assertSame($record, $record->setDeleteOldRdn(true));
         $this->assertSame(true, $record->getDeleteOldRdn());
@@ -155,7 +158,7 @@ class ModDnRecordTest extends TestCase
         $snippet = $this->getMockBuilder(SnippetInterface::class)
                         ->getMockForAbstractClass();
 
-        $record = new ModDnRecord($snippet, "cn=foo,dc=example,dc=org", "cn=bar");
+        $record = new ModDnRecord($snippet, "dc=example,dc=org", "cn=bar");
 
         $this->assertSame($record, $record->setNewSuperior("dc=foobar,dc=com"));
         $this->assertSame("dc=foobar,dc=com", $record->getNewSuperior());
@@ -171,7 +174,7 @@ class ModDnRecordTest extends TestCase
         $visitor = $this->getMockBuilder(RecordVisitorInterface::class)
                         ->getMockForAbstractClass();
 
-        $record = new ModDnRecord($snippet, "cn=foo,dc=example,dc=org", "cn=bar");
+        $record = new ModDnRecord($snippet, "dc=example,dc=org", "cn=bar");
 
         $visitor->expects($this->once())
                 ->method('visitModDnRecord')

@@ -15,7 +15,7 @@ namespace Korowai\Tests\Lib\Ldif\Records;
 
 use Korowai\Lib\Ldif\Records\AddRecord;
 use Korowai\Lib\Ldif\Records\AddRecordInterface;
-use Korowai\Lib\Ldif\Records\AbstractRecord;
+use Korowai\Lib\Ldif\Records\AbstractChangeRecord;
 use Korowai\Lib\Ldif\RecordVisitorInterface;
 use Korowai\Lib\Ldif\SnippetInterface;
 use Korowai\Lib\Ldif\Traits\HasAttrValSpecs;
@@ -28,9 +28,9 @@ use Korowai\Testing\Lib\Ldif\TestCase;
  */
 class AddRecordTest extends TestCase
 {
-    public function tets__extends__AbstractRecord()
+    public function tets__extends__AbstractChangeRecord()
     {
-        $this->assertExtendsClass(AbstractRecord::class, AttraValRecord::class);
+        $this->assertExtendsClass(AbstractChangeRecord::class, AttraValRecord::class);
     }
 
     public function test__implements__AddRecordInterface()
@@ -43,17 +43,50 @@ class AddRecordTest extends TestCase
         $this->assertUsesTrait(HasAttrValSpecs::class, AddRecord::class);
     }
 
-    public function test__construct()
+    public static function construct__cases()
+    {
+        return [
+            '__construct($snippet, "dc=example,dc=org")' => [
+                'args' => [
+                    'dc=example,dc=org',
+                ],
+                'expect' => [
+                    'dn' => 'dc=example,dc=org',
+                    'changeType' => 'add',
+                    'attrValSpecs' => [],
+                    'controls' => [],
+                ]
+            ],
+            '__construct($snippet, "dc=example,dc=org", ["attrValSpecs" => ["X"], "controls" => ["Y"]]' => [
+                'args' => [
+                    'dc=example,dc=org',
+                    [
+                        "attrValSpecs" => ['X'],
+                        "controls" => ['Y'],
+                    ],
+                ],
+                'expect' => [
+                    'dn' => 'dc=example,dc=org',
+                    'changeType' => 'add',
+                    'attrValSpecs' => ['X'],
+                    'controls' => ['Y'],
+                ]
+            ]
+        ];
+    }
+
+    /**
+     * @dataProvider construct__cases
+     */
+    public function test__construct(array $args, array $expect)
     {
         $snippet = $this->getMockBuilder(SnippetInterface::class)
                         ->getMockForAbstractClass();
 
-        $record = new AddRecord($snippet, "dc=example,dc=org", ['attrVal1']);
+        $record = new AddRecord($snippet, ...$args);
 
-        $this->assertSame("add", $record->getChangeType());
         $this->assertSame($snippet, $record->getSnippet());
-        $this->assertSame("dc=example,dc=org", $record->getDn());
-        $this->assertSame(['attrVal1'], $record->getAttrValSpecs());
+        $this->assertHasPropertiesSameAs($expect, $record);
     }
 
     public function test__setAttrValSpecs()

@@ -15,7 +15,7 @@ namespace Korowai\Tests\Lib\Ldif\Records;
 
 use Korowai\Lib\Ldif\Records\ModifyRecord;
 use Korowai\Lib\Ldif\Records\ModifyRecordInterface;
-use Korowai\Lib\Ldif\Records\AbstractRecord;
+use Korowai\Lib\Ldif\Records\AbstractChangeRecord;
 use Korowai\Lib\Ldif\RecordVisitorInterface;
 use Korowai\Lib\Ldif\SnippetInterface;
 use Korowai\Lib\Ldif\Exception\InvalidChangeTypeException;
@@ -28,9 +28,9 @@ use Korowai\Testing\Lib\Ldif\TestCase;
  */
 class ModifyRecordTest extends TestCase
 {
-    public function tets__extends__AbstractRecord()
+    public function tets__extends__AbstractChangeRecord()
     {
-        $this->assertExtendsClass(AbstractRecord::class, AttraValRecord::class);
+        $this->assertExtendsClass(AbstractChangeRecord::class, AttraValRecord::class);
     }
 
     public function test__implements__ModifyRecordInterface()
@@ -41,27 +41,30 @@ class ModifyRecordTest extends TestCase
     public static function construct__cases()
     {
         return [
-            'w/o modSpecs' => [
+            '__construct($snippet, "dc=example,dc=org")' => [
                 'args' => [
                     'dc=example,dc=org',
                 ],
                 'expect' => [
                     'dn' => 'dc=example,dc=org',
                     'changeType' => 'modify',
-                    'modSpecs' => []
+                    'modSpecs' => [],
+                    'controls' => [],
                 ]
             ],
-            'w/ modSpecs' => [
+            '__construct($snippet, "dc=example,dc=org", ["modSpecs" => ["X"], "controls" => ["Y"]]' => [
                 'args' => [
                     'dc=example,dc=org',
                     [
-                        'X'
+                        "modSpecs" => ['X'],
+                        "controls" => ['Y'],
                     ],
                 ],
                 'expect' => [
                     'dn' => 'dc=example,dc=org',
                     'changeType' => 'modify',
-                    'modSpecs' => ['X']
+                    'modSpecs' => ['X'],
+                    'controls' => ['Y'],
                 ]
             ]
         ];

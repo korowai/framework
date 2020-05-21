@@ -57,10 +57,15 @@ trait LdifChangeRecordNestedRules
             'optional'          => false,
             'construct'         => [false],
         ],
-        'attrValSpecRule'       => [
+        'attrValSpecReqRule'    => [
             'class'             => AttrValSpecRule::class,
             'optional'          => false,
             'construct'         => [false],
+        ],
+        'attrValSpecOptRule'    => [
+            'class'             => AttrValSpecRule::class,
+            'optional'          => true,
+            'construct'         => [true],
         ],
     ];
 
@@ -195,9 +200,9 @@ trait LdifChangeRecordNestedRules
      *
      * @return AttrValSpecRule
      */
-    public function getAttrValSpecRule() : AttrValSpecRule
+    public function getAttrValSpecReqRule() : AttrValSpecRule
     {
-        return $this->getNestedRule('attrValSpecRule');
+        return $this->getNestedRule('attrValSpecReqRule');
     }
 
     /**
@@ -206,9 +211,30 @@ trait LdifChangeRecordNestedRules
      * @param  AttrValSpecRule $rule
      * @return object $this
      */
-    public function setAttrValSpecRule(AttrValSpecRule $rule)
+    public function setAttrValSpecReqRule(AttrValSpecRule $rule)
     {
-        return $this->setNestedRule('attrValSpecRule', $rule);
+        return $this->setNestedRule('attrValSpecReqRule', $rule);
+    }
+
+    /**
+     * Returns the nested AttrValSpecRule object.
+     *
+     * @return AttrValSpecRule
+     */
+    public function getAttrValSpecOptRule() : AttrValSpecRule
+    {
+        return $this->getNestedRule('attrValSpecOptRule');
+    }
+
+    /**
+     * Sets new nested AttrValSpecRule object.
+     *
+     * @param  AttrValSpecRule $rule
+     * @return object $this
+     */
+    public function setAttrValSpecOptRule(AttrValSpecRule $rule)
+    {
+        return $this->setNestedRule('attrValSpecOptRule', $rule);
     }
 }
 

@@ -16,7 +16,9 @@ namespace Korowai\Tests\Lib\Ldif;
 use Korowai\Lib\Ldif\Snippet;
 use Korowai\Lib\Ldif\SnippetInterface;
 use Korowai\Lib\Ldif\LocationInterface;
+use Korowai\Lib\Ldif\CursorInterface;
 use Korowai\Lib\Ldif\InputInterface;
+use Korowai\Lib\Ldif\ParserStateInterface;
 use Korowai\Lib\Ldif\Traits\DecoratesLocationInterface;
 
 use Korowai\Testing\Lib\Ldif\TestCase;
@@ -35,6 +37,149 @@ class SnippetTest extends TestCase
     public function test__uses__DecoratesLocationInterface()
     {
         $this->assertUsesTrait(DecoratesLocationInterface::class, Snippet::class);
+    }
+
+    public function test__createFromLocations()
+    {
+        $input = $this->getMockBuilder(InputInterface::class)
+                      ->getMockForAbstractClass();
+        $begin = $this->getMockBuilder(LocationInterface::class)
+                      ->setMethods(['getInput', 'getOffset'])
+                      ->getMockForAbstractClass();
+        $end = $this->getMockBuilder(LocationInterface::class)
+                    ->setMethods(['getInput', 'getOffset'])
+                    ->getMockForAbstractClass();
+
+        $begin->expects($this->once())
+              ->method('getInput')
+              ->with()
+              ->willReturn($input);
+        $begin->expects($this->any())
+              ->method('getOffset')
+              ->with()
+              ->willReturn(12);
+        $end->expects($this->once())
+            ->method('getInput')
+            ->with()
+            ->willReturn($input);
+        $end->expects($this->any())
+             ->method('getOffset')
+             ->with()
+             ->willReturn(22);
+
+        $snippet = Snippet::createFromLocations($begin, $end);
+        $this->assertInstanceOf(Snippet::class, $snippet);
+        $this->assertSame($begin, $snippet->getLocation());
+        $this->assertSame(10, $snippet->getLength());
+    }
+
+    public function test__createFromLocations__withInconsistentLocations()
+    {
+        $input1 = $this->getMockBuilder(InputInterface::class)
+                       ->getMockForAbstractClass();
+        $input2 = $this->getMockBuilder(InputInterface::class)
+                       ->getMockForAbstractClass();
+        $begin = $this->getMockBuilder(LocationInterface::class)
+                      ->setMethods(['getInput', 'getOffset'])
+                      ->getMockForAbstractClass();
+        $end = $this->getMockBuilder(LocationInterface::class)
+                    ->setMethods(['getInput', 'getOffset'])
+                    ->getMockForAbstractClass();
+        $begin->expects($this->once())
+              ->method('getInput')
+              ->with()
+              ->willReturn($input1);
+        $end->expects($this->once())
+            ->method('getInput')
+            ->with()
+            ->willReturn($input2);
+
+        $this->expectException(\InvalidArgumentException::class);
+        $call = Snippet::class.'::createFromLocations($begin, $end)';
+        $this->expectExceptionMessage(
+            'Arguments $begin and $end in '.$call.' must satisfy $begin->getInput() === $end->getInput().'
+        );
+
+        Snippet::createFromLocations($begin, $end);
+    }
+
+    public function test__createFromLocationAndState()
+    {
+        $input = $this->getMockBuilder(InputInterface::class)
+                      ->getMockForAbstractClass();
+        $begin = $this->getMockBuilder(LocationInterface::class)
+                      ->setMethods(['getInput', 'getOffset'])
+                      ->getMockForAbstractClass();
+        $cursor = $this->getMockBuilder(CursorInterface::class)
+                       ->setMethods(['getInput', 'getOffset'])
+                       ->getMockForAbstractClass();
+        $state = $this->getMockBuilder(ParserStateInterface::class)
+                      ->setMethods(['getCursor'])
+                      ->getMockForAbstractClass();
+
+        $begin->expects($this->once())
+              ->method('getInput')
+              ->with()
+              ->willReturn($input);
+        $begin->expects($this->any())
+              ->method('getOffset')
+              ->with()
+              ->willReturn(12);
+        $cursor->expects($this->once())
+               ->method('getInput')
+               ->with()
+               ->willReturn($input);
+        $cursor->expects($this->any())
+               ->method('getOffset')
+               ->with()
+               ->willReturn(22);
+        $state->expects($this->once())
+              ->method('getCursor')
+              ->with()
+              ->willReturn($cursor);
+
+        $snippet = Snippet::createFromLocationAndState($begin, $state);
+        $this->assertInstanceOf(Snippet::class, $snippet);
+        $this->assertSame($begin, $snippet->getLocation());
+        $this->assertSame(10, $snippet->getLength());
+    }
+
+    public function test__createFromLocationAndState__withInconsistentLocations()
+    {
+        $input1 = $this->getMockBuilder(InputInterface::class)
+                       ->getMockForAbstractClass();
+        $input2 = $this->getMockBuilder(InputInterface::class)
+                       ->getMockForAbstractClass();
+        $begin = $this->getMockBuilder(LocationInterface::class)
+                      ->setMethods(['getInput'])
+                      ->getMockForAbstractClass();
+        $cursor = $this->getMockBuilder(CursorInterface::class)
+                       ->setMethods(['getInput'])
+                       ->getMockForAbstractClass();
+        $state = $this->getMockBuilder(ParserStateInterface::class)
+                      ->setMethods(['getCursor'])
+                      ->getMockForAbstractClass();
+
+        $begin->expects($this->once())
+              ->method('getInput')
+              ->with()
+              ->willReturn($input1);
+        $cursor->expects($this->once())
+               ->method('getInput')
+               ->with()
+               ->willReturn($input2);
+        $state->expects($this->once())
+              ->method('getCursor')
+              ->with()
+              ->willReturn($cursor);
+
+        $this->expectException(\InvalidArgumentException::class);
+        $call = Snippet::class.'::createFromLocations($begin, $end)';
+        $this->expectExceptionMessage(
+            'Arguments $begin and $end in '.$call.' must satisfy $begin->getInput() === $end->getInput().'
+        );
+
+        Snippet::createFromLocationAndState($begin, $state);
     }
 
     public function test__construct()

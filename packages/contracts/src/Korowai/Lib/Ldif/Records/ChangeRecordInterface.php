@@ -36,6 +36,13 @@ interface ChangeRecordInterface extends RecordInterface
      * @return string
      */
     public function getChangeType() : string;
+
+    /**
+     * Returns controls assigned to the record.
+     *
+     * @return array Array of [ControlInterface](\.\./ControlInterface.html) objects.
+     */
+    public function getControls() : array;
 }
 
 // vim: syntax=php sw=4 ts=4 et:

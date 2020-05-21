@@ -201,7 +201,8 @@ class ObjectPropertyGettersMap
         ],
 
         \Korowai\Lib\Ldif\Records\ChangeRecordInterface::class => [
-            'changeType'                => 'getChangeType'
+            'changeType'                => 'getChangeType',
+            'controls'                  => 'getControls',
         ],
 
         \Korowai\Lib\Ldif\Records\DeleteRecordInterface::class => [

@@ -65,10 +65,15 @@ class LdifChangeRecordNestedRulesTest extends TestCase
                     'optional'          => false,
                     'construct'         => [false],
                 ],
-                'attrValSpecRule'       => [
+                'attrValSpecReqRule'    => [
                     'class'             => AttrValSpecRule::class,
                     'optional'          => false,
                     'construct'         => [false],
+                ],
+                'attrValSpecOptRule'    => [
+                    'class'             => AttrValSpecRule::class,
+                    'optional'          => true,
+                    'construct'         => [true],
                 ],
             ],
             get_class($object)::getNestedRulesSpecs()
@@ -225,7 +230,7 @@ class LdifChangeRecordNestedRulesTest extends TestCase
         $this->assertSame($object, $object->setSepRule($rule));
     }
 
-    public function test__getAttrValSpecRule()
+    public function test__getAttrValSpecReqRule()
     {
         $object = $this->getMockBuilder(LdifChangeRecordNestedRules::class)
                        ->setMethods(['getNestedRule'])
@@ -234,13 +239,13 @@ class LdifChangeRecordNestedRulesTest extends TestCase
 
         $object->expects($this->once())
                ->method('getNestedRule')
-               ->with('attrValSpecRule')
+               ->with('attrValSpecReqRule')
                ->will($this->returnValue($rule));
 
-        $this->assertSame($rule, $object->getAttrValSpecRule());
+        $this->assertSame($rule, $object->getAttrValSpecReqRule());
     }
 
-    public function test__setAttrValSpecRule()
+    public function test__setAttrValSpecReqRule()
     {
         $object = $this->getMockBuilder(LdifChangeRecordNestedRules::class)
                        ->setMethods(['setNestedRule'])
@@ -249,10 +254,40 @@ class LdifChangeRecordNestedRulesTest extends TestCase
 
         $object->expects($this->once())
                ->method('setNestedRule')
-               ->with('attrValSpecRule', $rule)
+               ->with('attrValSpecReqRule', $rule)
                ->will($this->returnValue($object));
 
-        $this->assertSame($object, $object->setAttrValSpecRule($rule));
+        $this->assertSame($object, $object->setAttrValSpecReqRule($rule));
+    }
+
+    public function test__getAttrValSpecOptRule()
+    {
+        $object = $this->getMockBuilder(LdifChangeRecordNestedRules::class)
+                       ->setMethods(['getNestedRule'])
+                       ->getMockForTrait();
+        $rule = new AttrValSpecRule;
+
+        $object->expects($this->once())
+               ->method('getNestedRule')
+               ->with('attrValSpecOptRule')
+               ->will($this->returnValue($rule));
+
+        $this->assertSame($rule, $object->getAttrValSpecOptRule());
+    }
+
+    public function test__setAttrValSpecOptRule()
+    {
+        $object = $this->getMockBuilder(LdifChangeRecordNestedRules::class)
+                       ->setMethods(['setNestedRule'])
+                       ->getMockForTrait();
+        $rule = new AttrValSpecRule;
+
+        $object->expects($this->once())
+               ->method('setNestedRule')
+               ->with('attrValSpecOptRule', $rule)
+               ->will($this->returnValue($object));
+
+        $this->assertSame($object, $object->setAttrValSpecOptRule($rule));
     }
 }
 

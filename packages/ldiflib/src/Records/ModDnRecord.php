@@ -23,7 +23,7 @@ use Korowai\Lib\Ldif\Exception\InvalidChangeTypeException;
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class ModDnRecord extends AbstractRecord implements ModDnRecordInterface
+class ModDnRecord extends AbstractChangeRecord implements ModDnRecordInterface
 {
     /**
      * @var string
@@ -62,7 +62,7 @@ class ModDnRecord extends AbstractRecord implements ModDnRecordInterface
      */
     public function __construct(SnippetInterface $snippet, string $dn, string $newRdn, array $options = [])
     {
-        parent::initAbstractRecord($snippet, $dn);
+        parent::initAbstractChangeRecord($snippet, $dn, $options['controls'] ?? []);
         $this->setNewRdn($newRdn);
 
         $options = array_change_key_case($options, CASE_LOWER);

@@ -48,20 +48,27 @@ class ModDnRecord extends AbstractChangeRecord implements ModDnRecordInterface
     /**
      * Initializes the object.
      *
-     * Supported *$options* (case insensitive):
-     *
-     * - ``changetype`` (string) - one of ``"moddn"`` or ``"modrdn"``, defaults to ``"modrdn"``,
-     * - ``deleteoldrdn`` (bool) - whether to delete old RDN or not, defaults to ``false``,
-     * - ``newsuperior`` (string|null) - new superior DN, defaults to ``null``.
-     *
      * @param  string $dn
+     *      Distinguished name of the entry being altered by the record.
      * @param  string $newRdn
+     *      New rdn.
      * @param  array $options
+     *      An array of key => value pairs. Supported options are:
+     *
+     * - ``"changetype" => string`` (optional): one of ``"moddn"`` or ``"modrdn"``, defaults to ``"modrdn"``,
+     * - ``"deleteoldrdn" => bool`` (optional): whether to delete old RDN or not, defaults to ``false``,
+     * - ``"newsuperior" => string|null`` (optional): new superior DN, defaults to ``null``,
+     * - ``"controls" => ControlInterface[]`` (optional): an optional array of controls for the operation,
+     * - ``"snippet" => SnippetInterface`` (optional): an optional instance of
+     *   [SnippetInterface](\.\./SnippetInterface.html) to be attached to this record.
+     *
+     * Unsupported keys are silently ignored.
+     *
      * @throws InvalidChangeTypeException
      */
     public function __construct(string $dn, string $newRdn, array $options = [])
     {
-        parent::initAbstractChangeRecord($dn, $options['controls'] ?? [], $options['snippet'] ?? null);
+        parent::initAbstractChangeRecord($dn, $options);
         $this->setNewRdn($newRdn);
 
         $options = array_change_key_case($options, CASE_LOWER);

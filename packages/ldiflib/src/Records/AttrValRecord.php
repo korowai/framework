@@ -36,7 +36,7 @@ class AttrValRecord extends AbstractRecord implements AttrValRecordInterface
      */
     public function __construct(string $dn, array $attrValSpecs, array $options = [])
     {
-        parent::initAbstractRecord($dn, $options['snippet'] ?? null);
+        parent::initAbstractRecord($dn, $options);
         $this->setAttrValSpecs($attrValSpecs);
     }
 

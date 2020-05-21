@@ -31,15 +31,24 @@ abstract class AbstractChangeRecord extends AbstractRecord
      * Initializes the object. Should be invoked from subclass' constructor.
      *
      * @param  string $dn
-     * @param  array $controls
-     * @param  SnippetInterface $snippet
+     *      Distinguished name of the entry being altered by the record.
+     * @param  array $options
+     *      An array of key => value pairs. Supported options are:
+     *
+     * - ``"controls" => ControlInterface[]`` (optional): an optional
+     *   array of controls for the operation.
+     * - ``"snippet" => SnippetInterface`` (optional): an optional
+     *   instance of [SnippetInterface](\.\./SnippetInterface.html) to be
+     *   attached to this record.
+     *
+     * Unsupported keys are silently ignored.
      *
      * @return object $this
      */
-    public function initAbstractChangeRecord(string $dn, array $controls = [], SnippetInterface $snippet = null)
+    public function initAbstractChangeRecord(string $dn, array $options = [])
     {
-        $this->initAbstractRecord($dn, $snippet);
-        $this->setControls($controls);
+        $this->initAbstractRecord($dn, $options);
+        $this->setControls($options['controls'] ?? []);
         return $this;
     }
 

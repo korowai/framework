@@ -39,10 +39,11 @@ class AbstractChangeRecordTest extends TestCase
         $record = $this->getMockBuilder(AbstractChangeRecord::class)
                        ->getMockForAbstractClass();
 
-        $this->assertSame($record, $record->initAbstractChangeRecord("dc=example,dc=org", ['Y'], $snippet));
-        $this->assertSame($snippet, $record->getSnippet());
+        $options = ['controls' => ['Y'], 'snippet' => $snippet];
+        $this->assertSame($record, $record->initAbstractChangeRecord("dc=example,dc=org", $options));
         $this->assertSame("dc=example,dc=org", $record->getDn());
         $this->assertSame(['Y'], $record->getControls());
+        $this->assertSame($snippet, $record->getSnippet());
     }
 
     public function test__setControls()

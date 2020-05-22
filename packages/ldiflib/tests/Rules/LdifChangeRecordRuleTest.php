@@ -364,13 +364,14 @@ class LdifChangeRecordRuleTest extends TestCase
                     ],
                 ]
             ],
+
             'add #1' => [
                 //            000000000011111111112 2222222223333333 3334444444
                 //            012345678901234567890 1234567890123456 7890123456
                 'source' => ["dn: dc=example,dc=org\nchangetype: add\ncn: John", 0],
                 'args' => [true],
                 'expect' => [
-                    'init' => AddRecordInterface::class,
+                    'init' => null,
                     'result' => true,
                     'class' => AddRecordInterface::class,
                     'value' => [
@@ -387,6 +388,12 @@ class LdifChangeRecordRuleTest extends TestCase
                                 ])
                             ])
                         ],
+                        'snippet' => self::hasPropertiesIdenticalTo([
+                            'location' => self::hasPropertiesIdenticalTo([
+                                'offset' => 0,
+                            ]),
+                            'length' => 46
+                        ]),
                     ],
                     'state' => [
                         'cursor' => self::hasPropertiesIdenticalTo(['offset' => 46]),
@@ -395,13 +402,14 @@ class LdifChangeRecordRuleTest extends TestCase
                     ],
                 ]
             ],
+
             'add #2' => [
                 //            000000000011111111112 2222222223333333 333444444444455 5555555566
                 //            012345678901234567890 1234567890123456 789012345678901 2345678901
                 'source' => ["dn: dc=example,dc=org\ncontrol: 1.2.3\nchangetype: add\ncn: John", 0],
                 'args' => [true],
                 'expect' => [
-                    'init' => AddRecordInterface::class,
+                    'init' => null,
                     'result' => true,
                     'class' => AddRecordInterface::class,
                     'value' => [
@@ -424,6 +432,12 @@ class LdifChangeRecordRuleTest extends TestCase
                                 ])
                             ])
                         ],
+                        'snippet' => self::hasPropertiesIdenticalTo([
+                            'location' => self::hasPropertiesIdenticalTo([
+                                'offset' => 0,
+                            ]),
+                            'length' => 61
+                        ]),
                     ],
                     'state' => [
                         'cursor' => self::hasPropertiesIdenticalTo(['offset' => 61]),
@@ -432,6 +446,7 @@ class LdifChangeRecordRuleTest extends TestCase
                     ],
                 ]
             ],
+
             'add #3' => [
                 //            000000000011111111112 222222222333333 33334444444444555555555 5
                 //            012345678901234567890 123456789012345 67890123456789012345678 9
@@ -441,7 +456,7 @@ class LdifChangeRecordRuleTest extends TestCase
                              "changetype: add\ncn: John\ncomment: Johnny\n", 0],
                 'args' => [true],
                 'expect' => [
-                    'init' => AddRecordInterface::class,
+                    'init' => null,
                     'result' => true,
                     'class' => AddRecordInterface::class,
                     'value' => [
@@ -481,6 +496,12 @@ class LdifChangeRecordRuleTest extends TestCase
                                 ])
                             ])
                         ],
+                        'snippet' => self::hasPropertiesIdenticalTo([
+                            'location' => self::hasPropertiesIdenticalTo([
+                                'offset' => 0,
+                            ]),
+                            'length' => 101
+                        ]),
                     ],
                     'state' => [
                         'cursor' => self::hasPropertiesIdenticalTo(['offset' => 101]),
@@ -495,6 +516,110 @@ class LdifChangeRecordRuleTest extends TestCase
     public static function parseDelete__cases()
     {
         return [
+            'delete #0' => [
+                //            000000000011111111112 22222222233333333334
+                //            012345678901234567890 12345678901234567890
+                'source' => ["dn: dc=example,dc=org\nchangetype: delete", 0],
+                'args' => [true],
+                'expect' => [
+                    'init' => null,
+                    'result' => true,
+                    'class' => DeleteRecordInterface::class,
+                    'value' => [
+                        'dn' => 'dc=example,dc=org',
+                        'changeType' => 'delete',
+                        'controls' => [],
+                        'snippet' => self::hasPropertiesIdenticalTo([
+                            'location' => self::hasPropertiesIdenticalTo([
+                                'offset' => 0,
+                            ]),
+                            'length' => 40
+                        ]),
+                    ],
+                    'state' => [
+                        'cursor' => self::hasPropertiesIdenticalTo(['offset' => 40]),
+                        'errors' => [],
+                        'records' => []
+                    ],
+                ]
+            ],
+
+            'delete #1' => [
+                //            000000000011111111112 2222222223333333 333444444444455555 5555566
+                //            012345678901234567890 1234567890123456 789012345678901234 5678901
+                'source' => ["dn: dc=example,dc=org\ncontrol: 1.2.3\nchangetype: delete\n", 0],
+                'args' => [true],
+                'expect' => [
+                    'init' => null,
+                    'result' => true,
+                    'class' => DeleteRecordInterface::class,
+                    'value' => [
+                        'dn' => 'dc=example,dc=org',
+                        'changeType' => 'delete',
+                        'controls' => [
+                            self::hasPropertiesIdenticalTo([
+                                'oid' => '1.2.3',
+                                'criticality' => null,
+                                'valueObject' => null,
+                            ]),
+                        ],
+                        'snippet' => self::hasPropertiesIdenticalTo([
+                            'location' => self::hasPropertiesIdenticalTo([
+                                'offset' => 0,
+                            ]),
+                            'length' => 56
+                        ]),
+                    ],
+                    'state' => [
+                        'cursor' => self::hasPropertiesIdenticalTo(['offset' => 56]),
+                        'errors' => [],
+                        'records' => []
+                    ],
+                ]
+            ],
+
+            'delete #2' => [
+                //            000000000011111111112 222222222333333 33334444444444555555555 56666666666777777777
+                //            012345678901234567890 123456789012345 67890123456789012345678 90123456789012345678
+                'source' => ["dn: dc=example,dc=org\ncontrol: 1.2.3\ncontrol: 4.5 true: foo\nchangetype: delete", 0],
+                'args' => [true],
+                'expect' => [
+                    'init' => null,
+                    'result' => true,
+                    'class' => DeleteRecordInterface::class,
+                    'value' => [
+                        'dn' => 'dc=example,dc=org',
+                        'changeType' => 'delete',
+                        'controls' => [
+                            self::hasPropertiesIdenticalTo([
+                                'oid' => '1.2.3',
+                                'criticality' => null,
+                                'valueObject' => null,
+                            ]),
+                            self::hasPropertiesIdenticalTo([
+                                    'oid' => '4.5',
+                                'criticality' => true,
+                                'valueObject' => self::hasPropertiesIdenticalTo([
+                                    'type' => ValueInterface::TYPE_SAFE,
+                                    'spec' => 'foo',
+                                    'content' => 'foo'
+                                ]),
+                            ]),
+                        ],
+                        'snippet' => self::hasPropertiesIdenticalTo([
+                            'location' => self::hasPropertiesIdenticalTo([
+                                'offset' => 0,
+                            ]),
+                            'length' => 78
+                        ]),
+                    ],
+                    'state' => [
+                        'cursor' => self::hasPropertiesIdenticalTo(['offset' => 78]),
+                        'errors' => [],
+                        'records' => []
+                    ],
+                ]
+            ],
         ];
     }
 
@@ -506,7 +631,738 @@ class LdifChangeRecordRuleTest extends TestCase
 
     public static function parseModify__cases()
     {
+        $cases = [
+            'modify #0' => [
+                //            000000000011111111112 22222222233333333334
+                //            012345678901234567890 12345678901234567890
+                'source' => ["dn: dc=example,dc=org\nchangetype: modify", 0],
+                'args' => [true],
+                'expect' => [
+                    'init' => null,
+                    'result' => true,
+                    'class' => ModifyRecordInterface::class,
+                    'value' => [
+                        'dn' => 'dc=example,dc=org',
+                        'changeType' => 'modify',
+                        'controls' => [],
+                        'modSpecs' => [],
+                        'snippet' => self::hasPropertiesIdenticalTo([
+                            'location' => self::hasPropertiesIdenticalTo([
+                                'offset' => 0,
+                            ]),
+                            'length' => 40
+                        ]),
+                    ],
+                    'state' => [
+                        'cursor' => self::hasPropertiesIdenticalTo(['offset' => 40]),
+                        'errors' => [],
+                        'records' => []
+                    ],
+                ]
+            ],
+
+            'modify #1' => [
+                //            000000000011111111112 2222222223333333 333444444444455555 5555566
+                //            012345678901234567890 1234567890123456 789012345678901234 5678901
+                'source' => ["dn: dc=example,dc=org\ncontrol: 1.2.3\nchangetype: modify\n", 0],
+                'args' => [true],
+                'expect' => [
+                    'init' => null,
+                    'result' => true,
+                    'class' => ModifyRecordInterface::class,
+                    'value' => [
+                        'dn' => 'dc=example,dc=org',
+                        'changeType' => 'modify',
+                        'controls' => [
+                            self::hasPropertiesIdenticalTo([
+                                'oid' => '1.2.3',
+                                'criticality' => null,
+                                'valueObject' => null,
+                            ]),
+                        ],
+                        'modSpecs' => [],
+                        'snippet' => self::hasPropertiesIdenticalTo([
+                            'location' => self::hasPropertiesIdenticalTo([
+                                'offset' => 0,
+                            ]),
+                            'length' => 56
+                        ]),
+                    ],
+                    'state' => [
+                        'cursor' => self::hasPropertiesIdenticalTo(['offset' => 56]),
+                        'errors' => [],
+                        'records' => []
+                    ],
+                ]
+            ],
+
+            'modify #2' => [
+                //            000000000011111111112 222222222333333 33334444444444555555555 56666666666777777777
+                //            012345678901234567890 123456789012345 67890123456789012345678 90123456789012345678
+                'source' => ["dn: dc=example,dc=org\ncontrol: 1.2.3\ncontrol: 4.5 true: foo\nchangetype: modify", 0],
+                'args' => [true],
+                'expect' => [
+                    'init' => null,
+                    'result' => true,
+                    'class' => ModifyRecordInterface::class,
+                    'value' => [
+                        'dn' => 'dc=example,dc=org',
+                        'changeType' => 'modify',
+                        'controls' => [
+                            self::hasPropertiesIdenticalTo([
+                                'oid' => '1.2.3',
+                                'criticality' => null,
+                                'valueObject' => null,
+                            ]),
+                            self::hasPropertiesIdenticalTo([
+                                    'oid' => '4.5',
+                                'criticality' => true,
+                                'valueObject' => self::hasPropertiesIdenticalTo([
+                                    'type' => ValueInterface::TYPE_SAFE,
+                                    'spec' => 'foo',
+                                    'content' => 'foo'
+                                ]),
+                            ]),
+                        ],
+                        'modSpecs' => [],
+                        'snippet' => self::hasPropertiesIdenticalTo([
+                            'location' => self::hasPropertiesIdenticalTo([
+                                'offset' => 0,
+                            ]),
+                            'length' => 78
+                        ]),
+                    ],
+                    'state' => [
+                        'cursor' => self::hasPropertiesIdenticalTo(['offset' => 78]),
+                        'errors' => [],
+                        'records' => []
+                    ],
+                ]
+            ],
+        ];
+
+        return array_merge(
+            static::parseModifyAdd__cases(),
+            static::parseModifyDelete__cases(),
+            static::parseModifyReplace__cases(),
+            $cases
+        );
+    }
+
+    public static function parseModifyAdd__cases()
+    {
         return [
+            'modify add #0' => [
+                //            000000000011111111112 2222222223333333333 444444 44 44
+                //            012345678901234567890 1234567890123456789 012345 67 89
+                'source' => ["dn: dc=example,dc=org\nchangetype: modify\nadd: \n-\n", 0],
+                'args' => [true],
+                'expect' => [
+                    'init' => ModifyRecordInterface::class,
+                    'result' => false,
+                    'value' => null,
+                    'state' => [
+                        'cursor' => self::hasPropertiesIdenticalTo(['offset' => 47]),
+                        'errors' => [
+                            self::hasPropertiesIdenticalTo([
+                                'sourceOffset' => 46,
+                                'message' => 'syntax error: missing or invalid AttributeType (RFC2849)'
+                            ])
+                        ],
+                        'records' => []
+                    ],
+                ]
+            ],
+
+            'modify add #1' => [
+                //            000000000011111111112 2222222223333333333 44444444 4 4
+                //            012345678901234567890 1234567890123456789 01234567 8 9
+                'source' => ["dn: dc=example,dc=org\nchangetype: modify\nadd: cn\n\n", 0],
+                'args' => [true],
+                'expect' => [
+                    'init' => ModifyRecordInterface::class,
+                    'result' => false,
+                    'value' => null,
+                    'state' => [
+                        'cursor' => self::hasPropertiesIdenticalTo(['offset' => 49]),
+                        'errors' => [
+                            self::hasPropertiesIdenticalTo([
+                                'sourceOffset' => 49,
+                                'message' => 'syntax error: expected "-" followed by end of line',
+                            ])
+                        ],
+                        'records' => []
+                    ],
+                ]
+            ],
+
+            'modify add #2' => [
+                //            000000000011111111112 2222222223333333333 44444444 44 55
+                //            012345678901234567890 1234567890123456789 01234567 89 01
+                'source' => ["dn: dc=example,dc=org\nchangetype: modify\nadd: cn\n-\n", 0],
+                'args' => [true],
+                'expect' => [
+                    'init' => null,
+                    'result' => true,
+                    'class' => ModifyRecordInterface::class,
+                    'value' => [
+                        'dn' => 'dc=example,dc=org',
+                        'changeType' => 'modify',
+                        'controls' => [],
+                        'modSpecs' => [
+                            self::hasPropertiesIdenticalTo([
+                                'modType' => 'add',
+                                'attribute' => 'cn',
+                                'attrValSpecs' => []
+                            ])
+                        ],
+                        'snippet' => self::hasPropertiesIdenticalTo([
+                            'location' => self::hasPropertiesIdenticalTo([
+                                'offset' => 0,
+                            ]),
+                            'length' => 51
+                        ]),
+                    ],
+                    'state' => [
+                        'cursor' => self::hasPropertiesIdenticalTo(['offset' => 51]),
+                        'errors' => [],
+                        'records' => []
+                    ],
+                ]
+            ],
+
+            'modify add #3' => [
+                //            000000000011111111112 2222222223333333333 44444444 44 55555555 55 66
+                //            012345678901234567890 1234567890123456789 01234567 89 01234567 89 01
+                'source' => ["dn: dc=example,dc=org\nchangetype: modify\nadd: cn\n-\nadd: ou\n-\n", 0],
+                'args' => [true],
+                'expect' => [
+                    'init' => null,
+                    'result' => true,
+                    'class' => ModifyRecordInterface::class,
+                    'value' => [
+                        'dn' => 'dc=example,dc=org',
+                        'changeType' => 'modify',
+                        'controls' => [],
+                        'modSpecs' => [
+                            self::hasPropertiesIdenticalTo([
+                                'modType' => 'add',
+                                'attribute' => 'cn',
+                                'attrValSpecs' => []
+                            ]),
+                            self::hasPropertiesIdenticalTo([
+                                'modType' => 'add',
+                                'attribute' => 'ou',
+                                'attrValSpecs' => []
+                            ])
+                        ],
+                        'snippet' => self::hasPropertiesIdenticalTo([
+                            'location' => self::hasPropertiesIdenticalTo([
+                                'offset' => 0,
+                            ]),
+                            'length' => 61
+                        ]),
+                    ],
+                    'state' => [
+                        'cursor' => self::hasPropertiesIdenticalTo(['offset' => 61]),
+                        'errors' => [],
+                        'records' => []
+                    ],
+                ]
+            ],
+
+            'modify add #4' => [
+                //            000000000011111111112 222222222333333 3333444444444455555 55555666 66 66
+                //            012345678901234567890 123456789012345 6789012345678901234 56789012 34 56
+                'source' => ["dn: dc=example,dc=org\ncontrol: 1.2.3\nchangetype: modify\nadd: cn\n-\n", 0],
+                'args' => [true],
+                'expect' => [
+                    'init' => null,
+                    'result' => true,
+                    'class' => ModifyRecordInterface::class,
+                    'value' => [
+                        'dn' => 'dc=example,dc=org',
+                        'changeType' => 'modify',
+                        'controls' => [
+                            self::hasPropertiesIdenticalTo([
+                                'oid' => '1.2.3',
+                                'criticality' => null,
+                                'valueObject' => null,
+                            ])
+                        ],
+                        'modSpecs' => [
+                            self::hasPropertiesIdenticalTo([
+                                'modType' => 'add',
+                                'attribute' => 'cn',
+                                'attrValSpecs' => []
+                            ])
+                        ],
+                        'snippet' => self::hasPropertiesIdenticalTo([
+                            'location' => self::hasPropertiesIdenticalTo([
+                                'offset' => 0,
+                            ]),
+                            'length' => 66
+                        ]),
+                    ],
+                    'state' => [
+                        'cursor' => self::hasPropertiesIdenticalTo(['offset' => 66]),
+                        'errors' => [],
+                        'records' => []
+                    ],
+                ]
+            ],
+
+            'modify add #5' => [
+                //            000000000011111111112 222222222333333 3333444444444455555 55555666 66666
+                //            012345678901234567890 123456789012345 6789012345678901234 56789012 34567
+                'source' => ["dn: dc=example,dc=org\ncontrol: 1.2.3\nchangetype: modify\nadd: cn\ncn: ".
+                //            6677 7777777788 88 88
+                //            8901 2345678901 23 45
+                             "John\ncn: Clark\n-\n", 0],
+                'args' => [true],
+                'expect' => [
+                    'init' => null,
+                    'result' => true,
+                    'class' => ModifyRecordInterface::class,
+                    'value' => [
+                        'dn' => 'dc=example,dc=org',
+                        'changeType' => 'modify',
+                        'controls' => [
+                            self::hasPropertiesIdenticalTo([
+                                'oid' => '1.2.3',
+                                'criticality' => null,
+                                'valueObject' => null,
+                            ])
+                        ],
+                        'modSpecs' => [
+                            self::hasPropertiesIdenticalTo([
+                                'modType' => 'add',
+                                'attribute' => 'cn',
+                                'attrValSpecs' => [
+                                    self::hasPropertiesIdenticalTo([
+                                        'attribute' => 'cn',
+                                        'valueObject' => self::hasPropertiesIdenticalTo([
+                                            'type' => ValueInterface::TYPE_SAFE,
+                                            'spec' => 'John',
+                                            'content' => 'John',
+                                        ]),
+                                    ]),
+                                    self::hasPropertiesIdenticalTo([
+                                        'attribute' => 'cn',
+                                        'valueObject' => self::hasPropertiesIdenticalTo([
+                                            'type' => ValueInterface::TYPE_SAFE,
+                                            'spec' => 'Clark',
+                                            'content' => 'Clark',
+                                        ]),
+                                    ]),
+                                ]
+                            ]),
+                        ],
+                        'snippet' => self::hasPropertiesIdenticalTo([
+                            'location' => self::hasPropertiesIdenticalTo([
+                                'offset' => 0,
+                            ]),
+                            'length' => 85
+                        ]),
+                    ],
+                    'state' => [
+                        'cursor' => self::hasPropertiesIdenticalTo(['offset' => 85]),
+                        'errors' => [],
+                        'records' => []
+                    ],
+                ]
+            ],
+        ];
+    }
+
+    public static function parseModifyDelete__cases()
+    {
+        return [
+            'modify delete #0' => [
+                //            000000000011111111112 2222222223333333333 444444444 45 55
+                //            012345678901234567890 1234567890123456789 012345678 90 12
+                'source' => ["dn: dc=example,dc=org\nchangetype: modify\ndelete: \n-\n", 0],
+                'args' => [true],
+                'expect' => [
+                    'init' => ModifyRecordInterface::class,
+                    'result' => false,
+                    'value' => null,
+                    'state' => [
+                        'cursor' => self::hasPropertiesIdenticalTo(['offset' => 50]),
+                        'errors' => [
+                            self::hasPropertiesIdenticalTo([
+                                'sourceOffset' => 49,
+                                'message' => 'syntax error: missing or invalid AttributeType (RFC2849)'
+                            ])
+                        ],
+                        'records' => []
+                    ],
+                ]
+            ],
+
+            'modify delete #1' => [
+                //            000000000011111111112 2222222223333333333 44444444445 5 55
+                //            012345678901234567890 1234567890123456789 01234567890 1 23
+                'source' => ["dn: dc=example,dc=org\nchangetype: modify\ndelete: cn\n\n", 0],
+                'args' => [true],
+                'expect' => [
+                    'init' => ModifyRecordInterface::class,
+                    'result' => false,
+                    'value' => null,
+                    'state' => [
+                        'cursor' => self::hasPropertiesIdenticalTo(['offset' => 52]),
+                        'errors' => [
+                            self::hasPropertiesIdenticalTo([
+                                'sourceOffset' => 52,
+                                'message' => 'syntax error: expected "-" followed by end of line',
+                            ])
+                        ],
+                        'records' => []
+                    ],
+                ]
+            ],
+
+            'modify delete #2' => [
+                //            000000000011111111112 2222222223333333333 44444444445 55 55
+                //            012345678901234567890 1234567890123456789 01234567890 12 34
+                'source' => ["dn: dc=example,dc=org\nchangetype: modify\ndelete: cn\n-\n", 0],
+                'args' => [true],
+                'expect' => [
+                    'init' => null,
+                    'result' => true,
+                    'class' => ModifyRecordInterface::class,
+                    'value' => [
+                        'dn' => 'dc=example,dc=org',
+                        'changeType' => 'modify',
+                        'controls' => [],
+                        'modSpecs' => [
+                            self::hasPropertiesIdenticalTo([
+                                'modType' => 'delete',
+                                'attribute' => 'cn',
+                                'attrValSpecs' => []
+                            ])
+                        ],
+                        'snippet' => self::hasPropertiesIdenticalTo([
+                            'location' => self::hasPropertiesIdenticalTo([
+                                'offset' => 0,
+                            ]),
+                            'length' => 54
+                        ]),
+                    ],
+                    'state' => [
+                        'cursor' => self::hasPropertiesIdenticalTo(['offset' => 54]),
+                        'errors' => [],
+                        'records' => []
+                    ],
+                ]
+            ],
+
+            'modify delete #3' => [
+                //            000000000011111111112 2222222223333333333 44444444445 55 55555556666 66 66
+                //            012345678901234567890 1234567890123456789 01234567890 12 34567890123 45 67
+                'source' => ["dn: dc=example,dc=org\nchangetype: modify\ndelete: cn\n-\ndelete: ou\n-\n", 0],
+                'args' => [true],
+                'expect' => [
+                    'init' => null,
+                    'result' => true,
+                    'class' => ModifyRecordInterface::class,
+                    'value' => [
+                        'dn' => 'dc=example,dc=org',
+                        'changeType' => 'modify',
+                        'controls' => [],
+                        'modSpecs' => [
+                            self::hasPropertiesIdenticalTo([
+                                'modType' => 'delete',
+                                'attribute' => 'cn',
+                                'attrValSpecs' => []
+                            ]),
+                            self::hasPropertiesIdenticalTo([
+                                'modType' => 'delete',
+                                'attribute' => 'ou',
+                                'attrValSpecs' => []
+                            ])
+                        ],
+                        'snippet' => self::hasPropertiesIdenticalTo([
+                            'location' => self::hasPropertiesIdenticalTo([
+                                'offset' => 0,
+                            ]),
+                            'length' => 67
+                        ]),
+                    ],
+                    'state' => [
+                        'cursor' => self::hasPropertiesIdenticalTo(['offset' => 67]),
+                        'errors' => [],
+                        'records' => []
+                    ],
+                ]
+            ],
+
+            'modify delete #4' => [
+                //            000000000011111111112 222222222333333 3333444444444455555 55555666666 66 66
+                //            012345678901234567890 123456789012345 6789012345678901234 56789012345 67 89
+                'source' => ["dn: dc=example,dc=org\ncontrol: 1.2.3\nchangetype: modify\ndelete: cn\n-\n", 0],
+                'args' => [true],
+                'expect' => [
+                    'init' => null,
+                    'result' => true,
+                    'class' => ModifyRecordInterface::class,
+                    'value' => [
+                        'dn' => 'dc=example,dc=org',
+                        'changeType' => 'modify',
+                        'controls' => [
+                            self::hasPropertiesIdenticalTo([
+                                'oid' => '1.2.3',
+                                'criticality' => null,
+                                'valueObject' => null,
+                            ])
+                        ],
+                        'modSpecs' => [
+                            self::hasPropertiesIdenticalTo([
+                                'modType' => 'delete',
+                                'attribute' => 'cn',
+                                'attrValSpecs' => []
+                            ])
+                        ],
+                        'snippet' => self::hasPropertiesIdenticalTo([
+                            'location' => self::hasPropertiesIdenticalTo([
+                                'offset' => 0,
+                            ]),
+                            'length' => 69
+                        ]),
+                    ],
+                    'state' => [
+                        'cursor' => self::hasPropertiesIdenticalTo(['offset' => 69]),
+                        'errors' => [],
+                        'records' => []
+                    ],
+                ]
+            ],
+        ];
+    }
+
+    public static function parseModifyReplace__cases()
+    {
+        return [
+            'modify replace #0' => [
+                //            000000000011111111112 2222222223333333333 4444444444 55 55
+                //            012345678901234567890 1234567890123456789 0123456789 01 23
+                'source' => ["dn: dc=example,dc=org\nchangetype: modify\nreplace: \n-\n", 0],
+                'args' => [true],
+                'expect' => [
+                    'init' => ModifyRecordInterface::class,
+                    'result' => false,
+                    'value' => null,
+                    'state' => [
+                        'cursor' => self::hasPropertiesIdenticalTo(['offset' => 51]),
+                        'errors' => [
+                            self::hasPropertiesIdenticalTo([
+                                'sourceOffset' => 50,
+                                'message' => 'syntax error: missing or invalid AttributeType (RFC2849)'
+                            ])
+                        ],
+                        'records' => []
+                    ],
+                ]
+            ],
+
+            'modify replace #1' => [
+                //            000000000011111111112 2222222223333333333 444444444455 5 5
+                //            012345678901234567890 1234567890123456789 012345678901 2 3
+                'source' => ["dn: dc=example,dc=org\nchangetype: modify\nreplace: cn\n\n", 0],
+                'args' => [true],
+                'expect' => [
+                    'init' => ModifyRecordInterface::class,
+                    'result' => false,
+                    'value' => null,
+                    'state' => [
+                        'cursor' => self::hasPropertiesIdenticalTo(['offset' => 53]),
+                        'errors' => [
+                            self::hasPropertiesIdenticalTo([
+                                'sourceOffset' => 53,
+                                'message' => 'syntax error: expected "-" followed by end of line',
+                            ])
+                        ],
+                        'records' => []
+                    ],
+                ]
+            ],
+
+            'modify replace #2' => [
+                //            000000000011111111112 2222222223333333333 444444444455 55 55
+                //            012345678901234567890 1234567890123456789 012345678901 23 45
+                'source' => ["dn: dc=example,dc=org\nchangetype: modify\nreplace: cn\n-\n", 0],
+                'args' => [true],
+                'expect' => [
+                    'init' => null,
+                    'result' => true,
+                    'class' => ModifyRecordInterface::class,
+                    'value' => [
+                        'dn' => 'dc=example,dc=org',
+                        'changeType' => 'modify',
+                        'controls' => [],
+                        'modSpecs' => [
+                            self::hasPropertiesIdenticalTo([
+                                'modType' => 'replace',
+                                'attribute' => 'cn',
+                                'attrValSpecs' => []
+                            ])
+                        ],
+                        'snippet' => self::hasPropertiesIdenticalTo([
+                            'location' => self::hasPropertiesIdenticalTo([
+                                'offset' => 0,
+                            ]),
+                            'length' => 55
+                        ]),
+                    ],
+                    'state' => [
+                        'cursor' => self::hasPropertiesIdenticalTo(['offset' => 55]),
+                        'errors' => [],
+                        'records' => []
+                    ],
+                ]
+            ],
+
+            'modify replace #3' => [
+                //            000000000011111111112 2222222223333333333 444444444455 55 555555666666 66 66
+                //            012345678901234567890 1234567890123456789 012345678901 23 456789012345 67 89
+                'source' => ["dn: dc=example,dc=org\nchangetype: modify\nreplace: cn\n-\nreplace: ou\n-\n", 0],
+                'args' => [true],
+                'expect' => [
+                    'init' => null,
+                    'result' => true,
+                    'class' => ModifyRecordInterface::class,
+                    'value' => [
+                        'dn' => 'dc=example,dc=org',
+                        'changeType' => 'modify',
+                        'controls' => [],
+                        'modSpecs' => [
+                            self::hasPropertiesIdenticalTo([
+                                'modType' => 'replace',
+                                'attribute' => 'cn',
+                                'attrValSpecs' => []
+                            ]),
+                            self::hasPropertiesIdenticalTo([
+                                'modType' => 'replace',
+                                'attribute' => 'ou',
+                                'attrValSpecs' => []
+                            ])
+                        ],
+                        'snippet' => self::hasPropertiesIdenticalTo([
+                            'location' => self::hasPropertiesIdenticalTo([
+                                'offset' => 0,
+                            ]),
+                            'length' => 69
+                        ]),
+                    ],
+                    'state' => [
+                        'cursor' => self::hasPropertiesIdenticalTo(['offset' => 69]),
+                        'errors' => [],
+                        'records' => []
+                    ],
+                ]
+            ],
+
+            'modify replace #4' => [
+                //            000000000011111111112 222222222333333 3333444444444455555 555556666666 66 67
+                //            012345678901234567890 123456789012345 6789012345678901234 567890123456 78 90
+                'source' => ["dn: dc=example,dc=org\ncontrol: 1.2.3\nchangetype: modify\nreplace: cn\n-\n", 0],
+                'args' => [true],
+                'expect' => [
+                    'init' => null,
+                    'result' => true,
+                    'class' => ModifyRecordInterface::class,
+                    'value' => [
+                        'dn' => 'dc=example,dc=org',
+                        'changeType' => 'modify',
+                        'controls' => [
+                            self::hasPropertiesIdenticalTo([
+                                'oid' => '1.2.3',
+                                'criticality' => null,
+                                'valueObject' => null,
+                            ])
+                        ],
+                        'modSpecs' => [
+                            self::hasPropertiesIdenticalTo([
+                                'modType' => 'replace',
+                                'attribute' => 'cn',
+                                'attrValSpecs' => []
+                            ])
+                        ],
+                        'snippet' => self::hasPropertiesIdenticalTo([
+                            'location' => self::hasPropertiesIdenticalTo([
+                                'offset' => 0,
+                            ]),
+                            'length' => 70
+                        ]),
+                    ],
+                    'state' => [
+                        'cursor' => self::hasPropertiesIdenticalTo(['offset' => 70]),
+                        'errors' => [],
+                        'records' => []
+                    ],
+                ]
+            ],
+
+            'modify replace #5' => [
+                //            000000000011111111112 222222222333333 3333444444444455555 555556666666 66677
+                //            012345678901234567890 123456789012345 6789012345678901234 567890123456 78901
+                'source' => ["dn: dc=example,dc=org\ncontrol: 1.2.3\nchangetype: modify\nreplace: cn\ncn: ".
+                //            7777 7777888888 88 88
+                //            2345 6789012345 67 89
+                             "John\ncn: Clark\n-\n", 0],
+                'args' => [true],
+                'expect' => [
+                    'init' => null,
+                    'result' => true,
+                    'class' => ModifyRecordInterface::class,
+                    'value' => [
+                        'dn' => 'dc=example,dc=org',
+                        'changeType' => 'modify',
+                        'controls' => [
+                            self::hasPropertiesIdenticalTo([
+                                'oid' => '1.2.3',
+                                'criticality' => null,
+                                'valueObject' => null,
+                            ])
+                        ],
+                        'modSpecs' => [
+                            self::hasPropertiesIdenticalTo([
+                                'modType' => 'replace',
+                                'attribute' => 'cn',
+                                'attrValSpecs' => [
+                                    self::hasPropertiesIdenticalTo([
+                                        'attribute' => 'cn',
+                                        'valueObject' => self::hasPropertiesIdenticalTo([
+                                            'type' => ValueInterface::TYPE_SAFE,
+                                            'spec' => 'John',
+                                            'content' => 'John',
+                                        ]),
+                                    ]),
+                                    self::hasPropertiesIdenticalTo([
+                                        'attribute' => 'cn',
+                                        'valueObject' => self::hasPropertiesIdenticalTo([
+                                            'type' => ValueInterface::TYPE_SAFE,
+                                            'spec' => 'Clark',
+                                            'content' => 'Clark',
+                                        ]),
+                                    ]),
+                                ]
+                            ]),
+                        ],
+                        'snippet' => self::hasPropertiesIdenticalTo([
+                            'location' => self::hasPropertiesIdenticalTo([
+                                'offset' => 0,
+                            ]),
+                            'length' => 89
+                        ]),
+                    ],
+                    'state' => [
+                        'cursor' => self::hasPropertiesIdenticalTo(['offset' => 89]),
+                        'errors' => [],
+                        'records' => []
+                    ],
+                ]
+            ],
         ];
     }
 

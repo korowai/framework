@@ -80,6 +80,23 @@ class Util
     }
 
     /**
+     * Validates *$string* against RFC2253 name-component regular expression.
+     *
+     * @param  State $state
+     * @param  string $string String containing the (decoded) name-component.
+     * @param  int $offset Offset of the beginning of *$string* in the input.
+     */
+    public static function rdnCheck(State $state, string $string, int $offset) : bool
+    {
+        if (!Scan::matchString('/\G'.Rfc2253::NAME_COMPONENT.'$/D', $string)) {
+            $state->errorAt($offset, 'syntax error: invalid RDN syntax: "'.$string.'"');
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * Parses string by repeatedly applying *$rule* until *$rule->parse()*
      * returns ``false`` (or *$max* repetitions is reached).
      *

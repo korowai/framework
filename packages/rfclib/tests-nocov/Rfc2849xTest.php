@@ -1636,6 +1636,246 @@ class Rfc2849xTest extends TestCase
     {
         $this->assertRfcNotMatches($string, 'CHANGERECORD_INIT_X');
     }
+
+    //
+    // NEWRDN_SPEC_X
+    //
+
+    public static function NEWRDN_SPEC_X__cases()
+    {
+        $cases = [
+            #0
+            [
+            //   0000000000111111111122222222223
+            //   0123456789012345678901234567890
+                "newrdn: \nxx",
+                [
+                    ["newrdn: \n", 0],
+                    'rdn_safe' => ['', 8],
+                    'rdn_b64' => false,
+                    'rdn_safe_error' => false,
+                    'rdn_b64_error' => false,
+                ]
+            ],
+            #1
+            [
+            //   0000000000111111111122222222223
+            //   0123456789012345678901234567890
+                "newrdn:: \nxx",
+                [
+                    ["newrdn:: \n", 0],
+                    'rdn_safe' => false,
+                    'rdn_b64' => ['', 9],
+                    'rdn_safe_error' => false,
+                    'rdn_b64_error' => false,
+                ]
+            ],
+            #2
+            [
+            //   0000000000111111111122222222223
+            //   0123456789012345678901234567890
+                "newrdn: błąd \nxx",
+                [
+                    ["newrdn: błąd \n", 0],
+                    'rdn_safe' => false,
+                    'rdn_b64' => false,
+                    'rdn_safe_error' => ['łąd ', 9],
+                    'rdn_b64_error' => false,
+                ]
+            ],
+            #3
+            [
+            //   0000000000111111111122222222223
+            //   0123456789012345678901234567890
+                "newrdn:: błąd \nxx",
+                [
+                    ["newrdn:: błąd \n", 0],
+                    'rdn_safe' => false,
+                    'rdn_b64' => false,
+                    'rdn_safe_error' => false,
+                    'rdn_b64_error' => ['łąd ', 10],
+                ]
+            ],
+        ];
+
+        $inheritedCases = [];
+
+        return array_merge($inheritedCases, $cases);
+    }
+
+    public static function non__NEWRDN_SPEC_X__cases()
+    {
+        $strings = [
+            "",
+            "foo:",
+            "newrdn",
+            "newrdn foo\n",
+        ];
+
+        $inheritedCases = [];
+
+        return array_merge($inheritedCases, static::stringsToPregTuples($strings));
+    }
+
+    /**
+     * @dataProvider NEWRDN_SPEC_X__cases
+     */
+    public function test__NEWRDN_SPEC_X__matches(string $string, array $pieces = [])
+    {
+        $this->assertRfcMatches($string, 'NEWRDN_SPEC_X', $pieces);
+    }
+
+    /**
+     * @dataProvider non__NEWRDN_SPEC_X__cases
+     */
+    public function test__NEWRDN_SPEC_X__notMatches(string $string)
+    {
+        $this->assertRfcNotMatches($string, 'NEWRDN_SPEC_X');
+    }
+
+    //
+    // NEWSUPERIOR_SPEC_X
+    //
+
+    public static function NEWSUPERIOR_SPEC_X__cases()
+    {
+        $cases = [
+            [
+            //   000000000011 11
+            //   012345678901 23
+                "newsuperior:\n",
+                [
+                    0 => ["newsuperior:\n", 0],
+                    'dn_safe' => ['', 12],
+                    'dn_b64' => false,
+                    'dn_safe_error' => false,
+                    'dn_b64_error' => false,
+                ]
+            ],
+            [
+            //   0000000000111 11
+            //   0123456789012 34
+                "newsuperior::\n",
+                [
+                    0 => ["newsuperior::\n", 0],
+                    'dn_safe' => false,
+                    'dn_b64' => ['', 13],
+                    'dn_safe_error' => false,
+                    'dn_b64_error' => false,
+                ]
+            ],
+            [
+            //   000000000011111111
+            //   012345678901234567
+                "newsuperior: :foo",
+                [
+                    0 => ["newsuperior: :foo", 0],
+                    'dn_safe' => false,
+                    'dn_b64' => false,
+                    'dn_safe_error' => [':foo', 13],
+                    'dn_b64_error' => false,
+                ]
+            ],
+            [
+            //   0000000000111111111 22
+            //   0123456789012356789 01
+                "newsuperior: łuszcz\n",
+                [
+                    0 => ["newsuperior: łuszcz\n", 0],
+                    'dn_safe' => false,
+                    'dn_b64' => false,
+                    'dn_safe_error' => ['łuszcz', 13],
+                    'dn_b64_error' => false,
+                ]
+            ],
+            [
+            //   00000000001111111112 22
+            //   01234567890123467890 12
+                "newsuperior: tłuszcz\n",
+                [
+                    0 => ["newsuperior: tłuszcz\n", 0],
+                    'dn_safe' => false,
+                    'dn_b64' => false,
+                    'dn_safe_error' => ['łuszcz', 14],
+                    'dn_b64_error' => false,
+                ]
+            ],
+            [
+            //   000000000011111111
+            //   012345678901234567
+                "newsuperior:::foo",
+                [
+                    0 => ["newsuperior:::foo", 0],
+                    'dn_safe' => false,
+                    'dn_b64' => false,
+                    'dn_safe_error' => false,
+                    'dn_b64_error' => [':foo', 13],
+                ]
+            ],
+            [
+            //   000000000011111111
+            //   012345678901234567
+                "newsuperior:: :foo",
+                [
+                    0 => ["newsuperior:: :foo", 0],
+                    'dn_safe' => false,
+                    'dn_b64' => false,
+                    'dn_safe_error' => false,
+                    'dn_b64_error' => [':foo', 14],
+                ]
+            ],
+            [
+            //   00000000001111111111 22
+            //   01234567890123456789 01
+                "newsuperior:: A1@x=+\n",
+                [
+                    0 => ["newsuperior:: A1@x=+\n", 0],
+                    'dn_safe' => false,
+                    'dn_b64' => false,
+                    'dn_safe_error' => false,
+                    'dn_b64_error' => ['@x=+', 16],
+                ]
+            ],
+        ];
+        $inheritedCases = [];
+        foreach (Rfc2849Test::DN_SPEC__cases() as $case) {
+            $case[0] = preg_replace('/dn:/', 'newsuperior:', $case[0], 1);
+            foreach (['dn_safe', 'dn_b64', 'dn_safe_error', 'dn_b64_error'] as $key) {
+                if (isset($case[1][$key][1])) {
+                    $case[1][$key][1] += (strlen("newsuperior") - strlen("dn"));
+                }
+            }
+            $inheritedCases[] = static::transformPregTuple($case, [
+                'merge' => [
+                    'dn_safe_error' => false,
+                    'dn_b64_error' => false
+                ]
+            ]);
+        }
+        return array_merge($inheritedCases, $cases);
+    }
+
+    public static function non__NEWSUPERIOR_SPEC_X__cases()
+    {
+        $strings = ['', 'a', 'xyz:123', 'a', '1F'];
+        return static::stringsToPregTuples($strings);
+    }
+
+    /**
+     * @dataProvider NEWSUPERIOR_SPEC_X__cases
+     */
+    public function test__NEWSUPERIOR_SPEC_X__matches(string $string, array $pieces = [])
+    {
+        $this->assertRfcMatches($string, 'NEWSUPERIOR_SPEC_X', $pieces);
+    }
+
+    /**
+     * @dataProvider non__NEWSUPERIOR_SPEC_X__cases
+     */
+    public function test__NEWSUPERIOR_SPEC_X__notMatches(string $string)
+    {
+        $this->assertRfcNotMatches($string, 'NEWSUPERIOR_SPEC_X');
+    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

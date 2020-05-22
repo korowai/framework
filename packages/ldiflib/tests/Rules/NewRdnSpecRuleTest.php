@@ -1,6 +1,6 @@
 <?php
 /**
- * @file tests/Rules/DnSpecRuleTest.php
+ * @file tests/Rules/NewRdnSpecRuleTest.php
  *
  * This file is part of the Korowai package
  *
@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldif\Rules;
 
-use Korowai\Lib\Ldif\Rules\DnSpecRule;
+use Korowai\Lib\Ldif\Rules\NewRdnSpecRule;
 use Korowai\Lib\Ldif\Rules\AbstractNameSpecRule;
 use Korowai\Lib\Ldif\Rules\Util;
 use Korowai\Lib\Rfc\Rfc2849x;
@@ -23,11 +23,11 @@ use Korowai\Testing\Lib\Ldif\TestCase;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class DnSpecRuleTest extends TestCase
+class NewRdnSpecRuleTest extends TestCase
 {
     public function test__extendsAbstractNameSpecRule()
     {
-        $this->assertExtendsClass(AbstractNameSpecRule::class, DnSpecRule::class);
+        $this->assertExtendsClass(AbstractNameSpecRule::class, NewRdnSpecRule::class);
     }
 
     public static function construct__cases()
@@ -59,38 +59,38 @@ class DnSpecRuleTest extends TestCase
      */
     public function test__construct(array $args, array $expect)
     {
-        $rule = new DnSpecRule(...$args);
+        $rule = new NewRdnSpecRule(...$args);
         $this->assertHasPropertiesSameAs($expect, $rule);
     }
 
     public function test__b64Capture()
     {
-        $this->assertSame('dn_b64', DnSpecRule::b64Capture());
+        $this->assertSame('rdn_b64', NewRdnSpecRule::b64Capture());
     }
 
     public function test__safeCapture()
     {
-        $this->assertSame('dn_safe', DnSpecRule::safeCapture());
+        $this->assertSame('rdn_safe', NewRdnSpecRule::safeCapture());
     }
 
     public function test__rfcRuleSet()
     {
-        $this->assertSame(Rfc2849x::class, DnSpecRule::rfcRuleSet());
+        $this->assertSame(Rfc2849x::class, NewRdnSpecRule::rfcRuleSet());
     }
 
     public function test__rfcRuleId()
     {
-        $this->assertSame('DN_SPEC_X', DnSpecRule::rfcRuleId());
+        $this->assertSame('NEWRDN_SPEC_X', NewRdnSpecRule::rfcRuleId());
     }
 
     public function test__validator()
     {
-        $this->assertSame([Util::class, 'dnCheck'], DnSpecRule::validator());
+        $this->assertSame([Util::class, 'rdnCheck'], NewRdnSpecRule::validator());
     }
 
-    public static function dnMatch__cases()
+    public static function rdnMatch__cases()
     {
-        return UtilTest::dnMatch__cases();
+        return UtilTest::rdnMatch__cases();
     }
 
     //
@@ -100,27 +100,26 @@ class DnSpecRuleTest extends TestCase
     {
         $safeStringCases = array_map(function ($case) {
 
-            $tl = strlen('dn: ');
-            $dn = $case[0];
+            $rdn = $case[0];
             $result = $case[1];
             //          0234567
-            $source = ['ł dn: '.$dn, 3 + strlen('dn: ') + strlen($dn)];
+            $source = ['ł newrdn: '.$rdn, 3 + strlen('newrdn: ') + strlen($rdn)];
             $errors = $result ? [] : [
                 self::hasPropertiesIdenticalTo([
-                    'sourceOffset' => 3 + strlen('dn: '),
-                    'sourceCharOffset' => 2 + mb_strlen('dn: '),
-                    'message' => 'syntax error: invalid DN syntax: "'.$dn.'"',
+                    'sourceOffset' => 3 + strlen('newrdn: '),
+                    'sourceCharOffset' => 2 + mb_strlen('newrdn: '),
+                    'message' => 'syntax error: invalid RDN syntax: "'.$rdn.'"',
                 ])
             ];
-            $matches = [[$dn, 3 + strlen('dn: ')], 'dn_safe' => [$dn, 3 + strlen('dn: ')]];
+            $matches = [[$rdn, 3 + strlen('newrdn: ')], 'rdn_safe' => [$rdn, 3 + strlen('newrdn: ')]];
             $cursor = self::hasPropertiesIdenticalTo([
-                'offset' => 3 + strlen('dn: ') + strlen($dn),
-                'sourceOffset' => 3 + strlen('dn: ') + strlen($dn),
-                'sourceCharOffset' => 2 + mb_strlen('dn: ') + mb_strlen($dn),
+                'offset' => 3 + strlen('newrdn: ') + strlen($rdn),
+                'sourceOffset' => 3 + strlen('newrdn: ') + strlen($rdn),
+                'sourceCharOffset' => 2 + mb_strlen('newrdn: ') + mb_strlen($rdn),
             ]);
             $expect = [
                 'result' => $result,
-                'dn' => $result ? $dn : null,
+                'rdn' => $result ? $rdn : null,
                 'state' => [
                     'cursor' => $cursor,
                     'errors' => $errors,
@@ -129,31 +128,31 @@ class DnSpecRuleTest extends TestCase
             ];
 
             return [$source, $matches, $expect];
-        }, static::dnMatch__cases());
+        }, static::rdnMatch__cases());
 
         $base64StringCases = array_map(function ($case) {
 
-            $dn = $case[0];
-            $dnBase64 = base64_encode($dn);
+            $rdn = $case[0];
+            $dnBase64 = base64_encode($rdn);
             $result = $case[1];
             //          0234567
-            $source = ['ł dn:: '.$dnBase64, 3 + strlen('dn:: ') + strlen($dnBase64)];
+            $source = ['ł newrdn:: '.$dnBase64, 3 + strlen('newrdn:: ') + strlen($dnBase64)];
             $errors = $result ? [] : [
                 self::hasPropertiesIdenticalTo([
-                    'sourceOffset' => 3 + strlen('dn:: '),
-                    'sourceCharOffset' => 2 + mb_strlen('dn:: '),
-                    'message' => 'syntax error: invalid DN syntax: "'.$dn.'"',
+                    'sourceOffset' => 3 + strlen('newrdn:: '),
+                    'sourceCharOffset' => 2 + strlen('newrdn:: '),
+                    'message' => 'syntax error: invalid RDN syntax: "'.$rdn.'"',
                 ]),
             ];
-            $matches = [[$dnBase64, 3 + strlen('dn:: ')], 'dn_b64' => [$dnBase64, 3 + strlen('dn:: ')]];
+            $matches = [[$dnBase64, 3 + strlen('newrdn:: ')], 'rdn_b64' => [$dnBase64, 3 + strlen('newrdn:: ')]];
             $cursor = self::hasPropertiesIdenticalTo([
-                'offset' => 3 + strlen('dn:: ') + strlen($dnBase64),
-                'sourceOffset' => 3 + strlen('dn:: ') + strlen($dnBase64),
-                'sourceCharOffset' => 2 + mb_strlen('dn:: ') + mb_strlen($dnBase64),
+                'offset' => 3 + strlen('newrdn:: ') + strlen($dnBase64),
+                'sourceOffset' => 3 + strlen('newrdn:: ') + strlen($dnBase64),
+                'sourceCharOffset' => 2 + strlen('newrdn:: ') + mb_strlen($dnBase64),
             ]);
             $expect = [
                 'result' => $result,
-                'dn' => $result ? $dn : null,
+                'rdn' => $result ? $rdn : null,
                 'state' => [
                     'cursor' => $cursor,
                     'errors' => $errors,
@@ -162,31 +161,31 @@ class DnSpecRuleTest extends TestCase
             ];
 
             return [$source, $matches, $expect];
-        }, static::dnMatch__cases());
+        }, static::rdnMatch__cases());
 
         $invalidBase64StringCases = array_map(function ($case) {
 
             $dnBase64 = $case[0];
             $result = false;
             //          02345678
-            $source = ['ł dn:: '.$dnBase64, 3 + strlen('dn:: ') + $case['offset']];
+            $source = ['ł newrdn:: '.$dnBase64, 3 + strlen('newrdn:: ') + $case['offset']];
             $errors = $result ? [] : [
                 self::hasPropertiesIdenticalTo([
-                    'sourceOffset' => 3 + strlen('dn:: '),
-                    'sourceCharOffset' => 2 + mb_strlen('dn:: '),
+                    'sourceOffset' => 3 + strlen('newrdn:: '),
+                    'sourceCharOffset' => 2 + strlen('newrdn:: '),
                     'message' => 'syntax error: invalid BASE64 string',
                 ]),
             ];
             $cursor = self::hasPropertiesIdenticalTo([
-                'offset' => 3 + strlen('dn:: ') + $case['offset'],
-                'sourceOffset' => 3 + strlen('dn:: ') + $case['offset'],
-                'sourceCharOffset' => 2 + mb_strlen('dn:: ') + $case['offset'],
+                'offset' => 3 + strlen('newrdn:: ') + $case['offset'],
+                'sourceOffset' => 3 + strlen('newrdn:: ') + $case['offset'],
+                'sourceCharOffset' => 2 + strlen('newrdn:: ') + $case['offset'],
             ]);
-            $matches = [[$dnBase64, 3 + strlen('dn:: ')], 'dn_b64' => [$dnBase64, 3 + strlen('dn:: ')]];
+            $matches = [[$dnBase64, 3 + strlen('newrdn:: ')], 'rdn_b64' => [$dnBase64, 3 + strlen('newrdn:: ')]];
             $expect = [
                 'result' => $result,
                 'init' => 'preset string',
-                'dn' => null,
+                'rdn' => null,
                 'state' => [
                     'cursor' => $cursor,
                     'errors' => $errors,
@@ -206,24 +205,24 @@ class DnSpecRuleTest extends TestCase
             $dnBase64 = $case[0];
             $result = false;
             //          02345678
-            $source = ['ł dn:: '.$dnBase64, 3 + strlen('dn:: ') + $case['offset']];
+            $source = ['ł newrdn:: '.$dnBase64, 3 + strlen('newrdn:: ') + $case['offset']];
             $errors = $result ? [] : [
                 self::hasPropertiesIdenticalTo([
-                    'sourceOffset' => 3 + strlen('dn:: '),
-                    'sourceCharOffset' => 2 + mb_strlen('dn:: '),
+                    'sourceOffset' => 3 + strlen('newrdn:: '),
+                    'sourceCharOffset' => 2 + strlen('newrdn:: '),
                     'message' => 'syntax error: the string is not a valid UTF8',
                 ]),
             ];
             $cursor = self::hasPropertiesIdenticalTo([
-                'offset' => 3 + strlen('dn:: ') + $case['offset'],
-                'sourceOffset' => 3 + strlen('dn:: ') + $case['offset'],
-                'sourceCharOffset' => 2 + mb_strlen('dn:: ') + $case['charOffset'],
+                'offset' => 3 + strlen('newrdn:: ') + $case['offset'],
+                'sourceOffset' => 3 + strlen('newrdn:: ') + $case['offset'],
+                'sourceCharOffset' => 2 + strlen('newrdn:: ') + $case['charOffset'],
             ]);
-            $matches = [[$dnBase64, 3 + strlen('dn:: ')], 'dn_b64' => [$dnBase64, 3 + strlen('dn:: ')]];
+            $matches = [[$dnBase64, 3 + strlen('newrdn:: ')], 'rdn_b64' => [$dnBase64, 3 + strlen('newrdn:: ')]];
             $expect = [
                 'result' => $result,
                 'init' => 'preset string',
-                'dn' => $result ? $case['dn'] : null,
+                'rdn' => $result ? $case['rdn'] : null,
                 'state' => [
                     'cursor' => $cursor,
                     'errors' => $errors,
@@ -235,20 +234,20 @@ class DnSpecRuleTest extends TestCase
         }, [
         //    00000000 0
         //    01234567 8
-            ["YXNkgGZm", 'offset' => 8, 'charOffset' => 8, 'dn' => "asd\x80ff"],
+            ["YXNkgGZm", 'offset' => 8, 'charOffset' => 8, 'rdn' => "asd\x80ff"],
         ]);
 
         $malformedStringCases = array_map(function ($case) {
 
             $sep = $case[0];
-            $dn = $case[1];
+            $rdn = $case[1];
             $result = false;
             //          0123456
-            $source = ['dn:'.$sep.$dn];
+            $source = ['newrdn:'.$sep.$rdn];
             $source[] = strlen($source[0]);
             $type = substr($sep, 0, 1) === ':' ? 'BASE64': 'SAFE';
-            $message = $type === 'BASE64' ? 'invalid BASE64 string' : 'invalid DN syntax: "'.$dn.'"';
-            $dnOffset = strlen('dn:'.$sep) + $case[2];
+            $message = $type === 'BASE64' ? 'invalid BASE64 string' : 'invalid RDN syntax: "'.$rdn.'"';
+            $dnOffset = strlen('newrdn:'.$sep) + $case[2];
             $errors = $result ? [] : [
                 self::hasPropertiesIdenticalTo([
                     'sourceOffset' => $dnOffset,
@@ -262,13 +261,13 @@ class DnSpecRuleTest extends TestCase
                 'sourceCharOffset' => mb_strlen($source[0]),
             ]);
 
-            $dnKey = $type === 'BASE64' ? 'dn_b64' : 'dn_safe';
-            $matches = [[$dn, $dnOffset], $dnKey => [$dn, $dnOffset]];
+            $dnKey = $type === 'BASE64' ? 'rdn_b64' : 'rdn_safe';
+            $matches = [[$rdn, $dnOffset], $dnKey => [$rdn, $dnOffset]];
 
             $expect = [
                 'result' => $result,
                 'init' => 'preset string',
-                'dn' => null,
+                'rdn' => null,
                 'state' => [
                     'cursor' => $cursor,
                     'errors' => $errors,
@@ -292,7 +291,7 @@ class DnSpecRuleTest extends TestCase
                 'expect'   => [
                     'result' => false,
                     'init'   => 'preset string',
-                    'dn'     => null,
+                    'rdn'     => null,
                     'state'  => [
                         'cursor' => self::hasPropertiesIdenticalTo([
                             'offset' => 6,
@@ -303,7 +302,7 @@ class DnSpecRuleTest extends TestCase
                             self::hasPropertiesIdenticalTo([
                                 'sourceOffset' => 6,
                                 'sourceCharOffset' => 6,
-                                'message' => 'internal error: missing or invalid capture groups "dn_safe" and "dn_b64"'
+                                'message' => 'internal error: missing or invalid capture groups "rdn_safe" and "rdn_b64"'
                             ]),
                         ],
                         'records' => [],
@@ -312,8 +311,8 @@ class DnSpecRuleTest extends TestCase
             ];
         }, [
             [],
-            [[null,-1], 'dn_safe' => [null,-1]],
-            [[null,-1], 'dn_b64'  => [null,-1]],
+            [[null,-1], 'rdn_safe' => [null,-1]],
+            [[null,-1], 'rdn_b64'  => [null,-1]],
         ]);
 
         return array_merge(
@@ -334,15 +333,15 @@ class DnSpecRuleTest extends TestCase
         $state = $this->getParserStateFromSource(...$source);
 
         if ($expect['init'] ?? null) {
-            $dn = $expect['init'];
+            $rdn = $expect['init'];
         }
 
-        $rule = new DnSpecRule();
+        $rule = new NewRdnSpecRule();
 
-        $result = $rule->parseMatched($state, $matches, $dn);
+        $result = $rule->parseMatched($state, $matches, $rdn);
 
         $this->assertSame($expect['result'], $result);
-        $this->assertSame($expect['dn'], $dn);
+        $this->assertSame($expect['rdn'], $rdn);
         $this->assertHasPropertiesSameAs($expect['state'], $state);
     }
 
@@ -359,7 +358,7 @@ class DnSpecRuleTest extends TestCase
                 self::hasPropertiesIdenticalTo([
                     'sourceOffset' => $case['offset'],
                     'sourceCharOffset' => $case['charOffset'],
-                    'message' => 'syntax error: expected "dn:" (RFC2849)',
+                    'message' => 'syntax error: expected "newrdn:" (RFC2849)',
                 ]),
             ];
             return [
@@ -368,7 +367,7 @@ class DnSpecRuleTest extends TestCase
                 'expect' => [
                     'result' => false,
                     'init' => 'preset string',
-                    'dn' => null,
+                    'rdn' => null,
                     'state' => [
                         'cursor' => self::hasPropertiesIdenticalTo([
                             'offset' => $case['offset'],
@@ -386,33 +385,32 @@ class DnSpecRuleTest extends TestCase
             [["ł ", 3],         'offset' => 3, 'charOffset' => 2, 'args' => [true]],
             [["ł x", 3],        'offset' => 3, 'charOffset' => 2],
             [["ł dns:", 3],     'offset' => 3, 'charOffset' => 2],
-            [["ł dn :", 3],     'offset' => 3, 'charOffset' => 2],
-            [["ł dn\n:", 3],    'offset' => 3, 'charOffset' => 2],
+            [["ł rdn :", 3],     'offset' => 3, 'charOffset' => 2],
+            [["ł rdn\n:", 3],    'offset' => 3, 'charOffset' => 2],
         ]);
 
 
         $safeStringCases = array_map(function ($case) {
 
-            $dn = $case[0];
+            $rdn = $case[0];
             $result = $case[1];
             //          0234567
-            $source = ['ł dn: '.$dn, 3];
-            // the 4 below is from strlen('dn: ')
+            $source = ['ł newrdn: '.$rdn, 3];
             $errors = $result ? [] : [
                 self::hasPropertiesIdenticalTo([
-                    'sourceOffset' => 3 + 4,
-                    'sourceCharOffset' => 2 + 4,
-                    'message' => 'syntax error: invalid DN syntax: "'.$dn.'"',
+                    'sourceOffset' => 3 + strlen('newrdn: '),
+                    'sourceCharOffset' => 2 + mb_strlen('newrdn: '),
+                    'message' => 'syntax error: invalid RDN syntax: "'.$rdn.'"',
                 ]),
             ];
             $cursor = self::hasPropertiesIdenticalTo([
-                'offset' => 3 + 4 + strlen($dn),
-                'sourceOffset' => 3 + 4 + strlen($dn),
-                'sourceCharOffset' => 2 + 4 + mb_strlen($dn),
+                'offset' => 3 + strlen('newrdn: ') + strlen($rdn),
+                'sourceOffset' => 3 + strlen('newrdn: ') + strlen($rdn),
+                'sourceCharOffset' => 2 + mb_strlen('newrdn: ') + mb_strlen($rdn),
             ]);
             $expect = [
                 'result' => $result,
-                'dn' => $result ? $dn : null,
+                'rdn' => $result ? $rdn : null,
                 'state' => [
                     'cursor' => $cursor,
                     'errors' => $errors,
@@ -425,31 +423,30 @@ class DnSpecRuleTest extends TestCase
                 'args'   => [],
                 'expect' => $expect
             ];
-        }, static::dnMatch__cases());
+        }, static::rdnMatch__cases());
 
         $base64StringCases = array_map(function ($case) {
 
-            $dn = $case[0];
-            $dnBase64 = base64_encode($dn);
+            $rdn = $case[0];
+            $dnBase64 = base64_encode($rdn);
             $result = $case[1];
             //          0234567
-            $source = ['ł dn:: '.$dnBase64, 3];
-            // the 5 below is from strlen('dn:: ')
+            $source = ['ł newrdn:: '.$dnBase64, 3];
             $errors = $result ? [] : [
                 self::hasPropertiesIdenticalTo([
-                    'sourceOffset' => 3 + 5,
-                    'sourceCharOffset' => 2 + 5,
-                    'message' => 'syntax error: invalid DN syntax: "'.$dn.'"',
+                    'sourceOffset' => 3 + strlen('newrdn:: '),
+                    'sourceCharOffset' => 2 + mb_strlen('newrdn:: '),
+                    'message' => 'syntax error: invalid RDN syntax: "'.$rdn.'"',
                 ]),
             ];
             $cursor = self::hasPropertiesIdenticalTo([
-                'offset' => 3 + 5 + strlen($dnBase64),
-                'sourceOffset' => 3 + 5 + strlen($dnBase64),
-                'sourceCharOffset' => 2 + 5 + mb_strlen($dnBase64),
+                'offset' => 3 + strlen('newrdn:: ') + strlen($dnBase64),
+                'sourceOffset' => 3 + strlen('newrdn:: ') + strlen($dnBase64),
+                'sourceCharOffset' => 2 + mb_strlen('newrdn:: ') + mb_strlen($dnBase64),
             ]);
             $expect = [
                 'result' => $result,
-                'dn' => $result ? $dn : null,
+                'rdn' => $result ? $rdn : null,
                 'state' => [
                     'cursor' => $cursor,
                     'errors' => $errors,
@@ -462,31 +459,30 @@ class DnSpecRuleTest extends TestCase
                 'args'   => [],
                 'expect' => $expect
             ];
-        }, static::dnMatch__cases());
+        }, static::rdnMatch__cases());
 
         $invalidBase64StringCases = array_map(function ($case) {
 
             $dnBase64 = $case[0];
             $result = false;
             //          02345678
-            $source = ['ł dn:: '.$dnBase64, 3];
-            // the 5 below is from strlen('dn:: ')
+            $source = ['ł newrdn:: '.$dnBase64, 3];
             $errors = $result ? [] : [
                 self::hasPropertiesIdenticalTo([
-                    'sourceOffset' => 3 + 5,
-                    'sourceCharOffset' => 2 + 5,
+                    'sourceOffset' => 3 + strlen('newrdn:: '),
+                    'sourceCharOffset' => 2 + mb_strlen('newrdn:: '),
                     'message' => 'syntax error: invalid BASE64 string',
                 ]),
             ];
             $cursor = self::hasPropertiesIdenticalTo([
-                'offset' => 3 + 5 + $case['offset'],
-                'sourceOffset' => 3 + 5 + $case['offset'],
-                'sourceCharOffset' => 2 + 5 + $case['offset'],
+                'offset' => 3 + strlen('newrdn:: ') + $case['offset'],
+                'sourceOffset' => 3 + strlen('newrdn:: ') + $case['offset'],
+                'sourceCharOffset' => 2 + mb_strlen('newrdn:: ') + $case['offset'],
             ]);
             $expect = [
                 'result' => $result,
                 'init' => 'preset string',
-                'dn' => null,
+                'rdn' => null,
                 'state' => [
                     'cursor' => $cursor,
                     'errors' => $errors,
@@ -502,7 +498,7 @@ class DnSpecRuleTest extends TestCase
         }, [
         //    0000000 00
         //    0123456 78
-            ["Zm9vgA=\n", 'offset' => 7, 'charOffset' => 7],
+            ["Zm9vgA=\n", 'offset' => 8, 'charOffset' => 8],
         ]);
 
         $base64InvalidUtf8StringCases = array_map(function ($case) {
@@ -510,24 +506,23 @@ class DnSpecRuleTest extends TestCase
             $dnBase64 = $case[0];
             $result = false;
             //          02345678
-            $source = ['ł dn:: '.$dnBase64, 3];
-            // the 5 below is from strlen('dn:: ')
+            $source = ['ł newrdn:: '.$dnBase64, 3];
             $errors = $result ? [] : [
                 self::hasPropertiesIdenticalTo([
-                    'sourceOffset' => 3 + 5,
-                    'sourceCharOffset' => 2 + 5,
+                    'sourceOffset' => 3 + strlen('newrdn:: '),
+                    'sourceCharOffset' => 2 + mb_strlen('newrdn:: '),
                     'message' => 'syntax error: the string is not a valid UTF8',
                 ])
             ];
             $cursor = self::hasPropertiesIdenticalTo([
-                'offset' => 3 + 5 + $case['offset'],
-                'sourceOffset' => 3 + 5 + $case['offset'],
-                'sourceCharOffset' => 2 + 5 + $case['charOffset'],
+                'offset' => 3 + strlen('newrdn:: ') + $case['offset'],
+                'sourceOffset' => 3 + strlen('newrdn:: ') + $case['offset'],
+                'sourceCharOffset' => 2 + mb_strlen('newrdn:: ') + $case['charOffset'],
             ]);
             $expect = [
                 'result' => $result,
                 'init' => 'preset string',
-                'dn' => null,
+                'rdn' => null,
                 'state' => [
                     'cursor' => $cursor,
                     'errors' => $errors,
@@ -541,24 +536,24 @@ class DnSpecRuleTest extends TestCase
                 'expect' => $expect
             ];
         }, [
-        //    00000000 0
-        //    01234567 8
-            ["YXNkgGZm\n", 'offset' => 8, 'charOffset' => 8, 'dn' => "asd\x80ff"],
+        //    00000000 00
+        //    01234567 89
+            ["YXNkgGZm\n", 'offset' => 9, 'charOffset' => 9, 'rdn' => "asd\x80ff"],
         ]);
 
         $malformedStringCases = array_map(function ($case) {
 
             $sep = $case[0];
-            $dn = $case[1];
+            $rdn = $case[1];
             $result = false;
             //          0123456
-            $source = ['dn:'.$sep.$dn, 0];
+            $source = ['newrdn:'.$sep.$rdn, 0];
             $type = substr($sep, 0, 1) === ':' ? 'BASE64': 'SAFE';
             $message = 'malformed '.$type.'-STRING (RFC2849)';
             $errors = $result ? [] : [
                 self::hasPropertiesIdenticalTo([
-                    'sourceOffset' => strlen('dn:'.$sep) + $case[2],
-                    'sourceCharOffset' => strlen('dn:'.$sep) + $case[2],
+                    'sourceOffset' => strlen('newrdn:'.$sep) + $case[2],
+                    'sourceCharOffset' => mb_strlen('newrdn:'.$sep) + $case[2],
                     'message' => 'syntax error: '.$message,
                 ]),
             ];
@@ -570,7 +565,7 @@ class DnSpecRuleTest extends TestCase
             $expect = [
                 'result' => $result,
                 'init' => 'preset string',
-                'dn' => null,
+                'rdn' => null,
                 'state' => [
                     'cursor' => $cursor,
                     'errors' => $errors,
@@ -608,15 +603,15 @@ class DnSpecRuleTest extends TestCase
         $state = $this->getParserStateFromSource(...$source);
 
         if (array_key_exists('init', $expect)) {
-            $dn = $expect['init'];
+            $rdn = $expect['init'];
         }
 
-        $rule = new DnSpecRule(...$args);
+        $rule = new NewRdnSpecRule(...$args);
 
-        $result = $rule->parse($state, $dn);
+        $result = $rule->parse($state, $rdn);
 
         $this->assertSame($expect['result'], $result);
-        $this->assertSame($expect['dn'], $dn);
+        $this->assertSame($expect['rdn'], $rdn);
         $this->assertHasPropertiesSameAs($expect['state'], $state);
     }
 }

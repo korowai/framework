@@ -54,18 +54,13 @@ class Rfc2849x extends Rfc2849
                 '(?:'.
                     '(?:'.self::VERSION_NUMBER.'(?='.self::SEP_X.'))'.
                     '|'.
-                    /*'(?:'.self::DIGIT.'*(?<version_error>(?=[^'.self::DIGITCHARS.']*)))'.*/
                     '(?:'.self::DIGIT.'*(?<version_error>'.self::NOT_SEP_X.'*)(?='.self::SEP_X.'))'.
                 ')'.
             ')'.
         '?)';
 
     /**
-     * [Rfc2849::DN_SPEC](Rfc2849.html) with error detection.
-     *
-     * Matches any string that starts with ``"dn:"``, and spans to the nearest
-     * [Rfc2849x::SEP_X](Rfc2849x.html). Returns one of the ``dn_*_error``
-     * capture groups if there is an error after the ``"version:"`` tag.
+     * ``dn-value-spec = ":" ( FILL distinguishedName / ":" FILL base64-distinguishedName )``
      *
      * Capture groups:
      *
@@ -76,9 +71,10 @@ class Rfc2849x extends Rfc2849
      *  - ``dn_b64_error``: only set if there is an error after the ``"dn::"``
      *    tag (double colon); contains the substring that failed to match [Rfc2849::BASE64_STRING](Rfc2849.html),
      */
-    public const DN_SPEC_X =
+    public const DN_VALUE_SPEC_X =
         '(?:'.
-            'dn:(?:'.
+            ':'.
+            '(?:'.
                 '(?:(?!:)'.
                     self::FILL.
                     '(?:'.
@@ -98,6 +94,24 @@ class Rfc2849x extends Rfc2849
                 ')'.
             ')'.
         ')';
+
+    /**
+     * [Rfc2849::DN_SPEC](Rfc2849.html) with error detection.
+     *
+     * Matches any string that starts with ``"dn:"``, and spans to the nearest
+     * [Rfc2849x::SEP_X](Rfc2849x.html). Returns one of the ``dn_*_error``
+     * capture groups if there is an error after the ``"version:"`` tag.
+     *
+     * Capture groups:
+     *
+     *  - ``dn_safe``: only set if the subject contains no syntax errors and the initial tag is ``"dn:"``,
+     *  - ``dn_b64``: only set if the subject contains no syntax errors and the initial tag is ``"dn::"``,
+     *  - ``dn_safe_error``: only set if there is an error after the ``"dn:"``
+     *    tag (single colon); contains the substring that failed to match [Rfc2849::SAFE_STRING](Rfc2849.html),
+     *  - ``dn_b64_error``: only set if there is an error after the ``"dn::"``
+     *    tag (double colon); contains the substring that failed to match [Rfc2849::BASE64_STRING](Rfc2849.html),
+     */
+    public const DN_SPEC_X = '(?:dn'.self::DN_VALUE_SPEC_X.')';
 
     /**
      * [Rfc2849::VALUE_SPEC](Rfc2849.html) with enhanced error detection.
@@ -278,6 +292,53 @@ class Rfc2849x extends Rfc2849
             self::SEP_X.
         ')';
 
+    /**
+     * Matches the following production and provides enhanced error detection.
+     *
+     * ``newrdn-spec = "newrdn:" ( FILL rdn / ":" FILL base64-rdn ) SEP``
+     *
+     * Capture groups:
+     *
+     *  - ``rdn_safe``: only set if rule matches, and the string after "newrdn:" is a valid SAFE-STRING,
+     *  - ``rdn_b64``: only set if rule matches, and the string after "newrdn::" is a valid BASE64-STRING,
+     *  - ``rdn_safe_error``: only set if rule matches, but there is an error after "newrdn:",
+     *  - ``rdn_b64_error``: only set if rule matches, but there is an error after "newrdn::".
+     */
+    public const NEWRDN_SPEC_X =
+        '(?:'.
+            'newrdn:'.
+            '(?:'.
+                '(?:(?!:)'.self::FILL.'(?:'.
+                    '(?:(?<rdn_safe>'.self::RDN.'))'.
+                    '|'.
+                    '(?:'.self::RDN.'?(?<rdn_safe_error>'.self::NOT_SEP_X.'*))'.
+                '))'.
+                '|'.
+                '(?::'.self::FILL.'(?:'.
+                    '(?:(?<rdn_b64>'.self::BASE64_RDN.'))'.
+                    '|'.
+                    '(?:'.self::BASE64_RDN.'?(?<rdn_b64_error>'.self::NOT_SEP_X.'*))'.
+                '))'.
+            ')'.self::SEP_X.
+        ')';
+
+    /**
+     * ``newsuperior-spec = "newsuperior:" (FILL distinguishedName / ":" FILL base64-distinguishedName) SEP``
+     *
+     * Matches any string that starts with ``"newsuperior:"``, and spans to the nearest
+     * [Rfc2849x::SEP_X](Rfc2849x.html) including it. Returns one of the ``dn_*_error``
+     * capture groups if there is an error after the ``"version:"`` tag.
+     *
+     * Capture groups:
+     *
+     *  - ``dn_safe``: only set if the subject contains no syntax errors and the initial tag is ``"newsuperior:"``,
+     *  - ``dn_b64``: only set if the subject contains no syntax errors and the initial tag is ``"newsuperior::"``,
+     *  - ``dn_safe_error``: only set if there is an error after the ``"newsuperior:"``
+     *    tag (single colon); contains the substring that failed to match [Rfc2849::SAFE_STRING](Rfc2849.html),
+     *  - ``dn_b64_error``: only set if there is an error after the ``"newsuperior::"``
+     *    tag (double colon); contains the substring that failed to match [Rfc2849::BASE64_STRING](Rfc2849.html),
+     */
+    public const NEWSUPERIOR_SPEC_X = '(?:newsuperior'.self::DN_VALUE_SPEC_X.self::SEP_X.')';
 
     /**
      * Defined named capture groups that appear in patterns of the Rfc2849x
@@ -287,12 +348,15 @@ class Rfc2849x extends Rfc2849
         'SEP_X',
         'NOT_SEP_X',
         'VERSION_SPEC_X',
+        'DN_VALUE_SPEC_X',
         'DN_SPEC_X',
         'VALUE_SPEC_X',
         'CONTROL_X',
         'ATTRVAL_SPEC_X',
         'MOD_SPEC_INIT_X',
         'CHANGERECORD_INIT_X',
+        'NEWRDN_SPEC_X',
+        'NEWSUPERIOR_SPEC_X',
     ];
 
     /**
@@ -307,6 +371,8 @@ class Rfc2849x extends Rfc2849
             'ATTRVAL_SPEC_X'        => 'expected <AttributeDescription>":" (RFC2849)',
             'MOD_SPEC_INIT_X'       => 'expected one of "add:", "delete:" or "replace:" (RFC2849)',
             'CHANGERECORD_INIT_X'   => 'expected "changetype:" (RFC2849)',
+            'NEWRDN_SPEC_X'         => 'expected "newrdn:" (RFC2849)',
+            'NEWSUPERIOR_SPEC_X'    => 'expected "newsuperior:" (RFC2849)',
         ],
         'attr_opts_error'   => 'missing or invalid options (RFC2849)',
         'attr_type_error'   => 'missing or invalid AttributeType (RFC2849)',
@@ -315,6 +381,8 @@ class Rfc2849x extends Rfc2849
         'chg_type_error'    => 'missing or invalid change type (RFC2849)',
         'ctl_type_error'    => 'missing or invalid OID (RFC2849)',
         'ctl_crit_error'    => 'expected "true" or "false" (RFC2849)',
+        'rdn_b64_error'     => 'malformed BASE64-STRING (RFC2849)',
+        'rdn_safe_error'    => 'malformed SAFE-STRING (RFC2849)',
         'value_b64_error'   => 'malformed BASE64-STRING (RFC2849)',
         'value_safe_error'  => 'malformed SAFE-STRING (RFC2849)',
         'value_url_error'   => 'malformed URL (RFC2849/RFC3986)',

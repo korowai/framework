@@ -279,6 +279,75 @@ class UtilTest extends TestCase
         $this->assertHasPropertiesSameAs($expect['state'], $state);
     }
 
+    //
+    // rdnCheck()
+    //
+
+    public static function rdnMatch__cases()
+    {
+        return [
+            ['', false],
+            ['ASDF', false],
+            ['O=', true],
+            ['OU=', true],
+            ['O=1', true],
+            ['O=1,', false],
+            ['OU=1', true],
+            ['O---=1', true],
+            ['attr-Type=XYZ', true],
+            ['OU=Sales+CN=J. Smith', true],
+            ['OU=Sales+CN=J. Smith,O=Widget Inc.,C=US', false],
+            ['1.3.6.1.4.1.1466.0=#04024869', true],
+            ['CN=Before\0DAfter', true],
+            ['SN=Lu\C4\8Di\C4\87', true],
+        ];
+    }
+
+    public static function rdnCheck__cases()
+    {
+        $cases = [];
+
+        $inheritedCases = [];
+        foreach (static::rdnMatch__cases() as $case) {
+            $string = $case[0];
+            $result = $case[1];
+            $offset = 5;
+            $end = $offset + strlen($string);
+            $errors = $result ? []: [
+                self::hasPropertiesIdenticalTo([
+                    'sourceOffset' => $offset,
+                    'message' => 'syntax error: invalid RDN syntax: "'.$string.'"'
+                ]),
+            ];
+            $inheritedCases[] = [
+                'source' => [$string, $end],
+                'string' => $string,
+                'offset' => $offset,
+                'expect' => [
+                    'result' => $result,
+                    'state' => [
+                        'cursor' => self::hasPropertiesIdenticalTo([
+                            'offset' => $end,
+                        ]),
+                        'errors' => $errors,
+                    ]
+                ]
+            ];
+        }
+        return array_merge($inheritedCases, $cases);
+    }
+
+    /**
+     * @dataProvider rdnCheck__cases
+     */
+    public function test__rdnCheck(array $source, string $string, int $offset, array $expect)
+    {
+        $state = $this->getParserStateFromSource(...$source);
+        $result = Util::rdnCheck($state, $string, $offset);
+        $this->assertSame($expect['result'], $result);
+        $this->assertHasPropertiesSameAs($expect['state'], $state);
+    }
+
     public static function repeat__cases()
     {
         $rule = new class implements RuleInterface {

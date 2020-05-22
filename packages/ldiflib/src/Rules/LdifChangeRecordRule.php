@@ -82,11 +82,15 @@ final class LdifChangeRecordRule extends AbstractLdifRecordRule
         $begin = $state->getCursor()->getClonedLocation();
         if (!$this->getDnSpecRule()->parse($state, $dn) ||
             !$this->getSepRule()->parse($state) ||
-            !$this->parseControls($state, $controls)) {
+            !$this->parseControls($state, $controls) ||
+            !$this->parseRecord($state, $value, compact('dn', 'controls'))) {
             $value = null;
             return false;
         }
-        return $this->parseRecord($state, $value, compact('begin', 'dn', 'controls'));
+
+        $snippet = Snippet::createFromLocationAndState($begin, $state);
+        $value->setSnippet($snippet);
+        return true;
     }
 
     /**
@@ -115,7 +119,6 @@ final class LdifChangeRecordRule extends AbstractLdifRecordRule
 
         if (($parser = $parsers[$changeType] ?? null) === null) {
             $state->errorHere('internal error: unsupported changeType: "'.$changeType.'"');
-            $record = null;
             return false;
         }
 
@@ -129,11 +132,9 @@ final class LdifChangeRecordRule extends AbstractLdifRecordRule
     {
         extract($vars);
         if (!$this->parseAttrValSpecs($state, $attrValSpecs)) {
-            $record = null;
             return false;
         }
-        $snippet = Snippet::createFromLocationAndState($begin, $state);
-        $record = new AddRecord($dn, compact('controls', 'attrValSpecs', 'snippet'));
+        $record = new AddRecord($dn, compact('controls', 'attrValSpecs'));
         return true;
     }
 
@@ -143,8 +144,7 @@ final class LdifChangeRecordRule extends AbstractLdifRecordRule
     protected function parseDelete(State $state, DeleteRecordInterface &$record = null, array $vars = []) : bool
     {
         extract($vars);
-        $snippet = Snippet::createFromLocationAndState($begin, $state);
-        $record = new DeleteRecord($dn, compact('controls', 'snippet'));
+        $record = new DeleteRecord($dn, compact('controls'));
         return true;
     }
 
@@ -157,8 +157,7 @@ final class LdifChangeRecordRule extends AbstractLdifRecordRule
 
         throw new \BadMethodCallException('not implemented');
 
-        $snippet = Snippet::createFromLocationAndState($begin, $state);
-        $options = compact('controls', 'changeType', 'deleteOldRdn', 'newSuperior', 'snippet');
+        $options = compact('controls', 'changeType', 'deleteOldRdn', 'newSuperior');
         $record = new ModDnRecord($dn, $newRdn, $options);
         return true;
     }
@@ -170,11 +169,9 @@ final class LdifChangeRecordRule extends AbstractLdifRecordRule
     {
         extract($vars);
         if (!$this->parseModSpecs($state, $modSpecs)) {
-            $record = null;
             return false;
         }
-        $snippet = Snippet::createFromLocationAndState($begin, $state);
-        $record = new ModifyRecord($dn, compact('controls', 'modSpecs', 'snippet'));
+        $record = new ModifyRecord($dn, compact('controls', 'modSpecs'));
         return true;
     }
 

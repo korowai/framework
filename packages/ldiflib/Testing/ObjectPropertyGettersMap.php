@@ -96,6 +96,14 @@ class ObjectPropertyGettersMap
         \Korowai\Lib\Ldif\Records\ModifyRecord::class => [
         ],
 
+        \Korowai\Lib\Ldif\Rules\AbstractNameSpecRule::class => [
+            'b64Capture'                => 'b64Capture',
+            'safeCapture'               => 'safeCapture',
+            'rfcRuleSet'                => 'rfcRuleSet',
+            'rfcRuleId'                 => 'rfcRuleId',
+            'validator'                 => 'validator'
+        ],
+
         \Korowai\Lib\Ldif\Rules\AbstractRfcRule::class => [
         ],
 
@@ -125,6 +133,12 @@ class ObjectPropertyGettersMap
         ],
 
         \Korowai\Lib\Ldif\Rules\ModSpecInitRule::class => [
+        ],
+
+        \Korowai\Lib\Ldif\Rules\NewRdnSpecRule::class => [
+        ],
+
+        \Korowai\Lib\Ldif\Rules\NewSuperiorSpecRule::class => [
         ],
 
         \Korowai\Lib\Ldif\Rules\SepRule::class => [

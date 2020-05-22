@@ -9,7 +9,6 @@ env:
   - KOROWAI_NOCOV=true
 jobs:
   allow_failures:
-    - php: '7.4'
     - php: 'nightly'
 install:
   - php -i

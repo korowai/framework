@@ -20,7 +20,7 @@ use Korowai\Lib\Ldif\Snippet;
 use Korowai\Lib\Ldif\Records\AttrValRecord;
 
 /**
- * A rule object that parses *ldif-attrval-record* rule defined in [RFC2849](https://tools.ietf.org/html/rfc2849).
+ * A rule object that parses *ldif-attrval-record* as defined in [RFC2849](https://tools.ietf.org/html/rfc2849).
  *
  * - semantic value: [AttrValRecordInterface](\.\./Records/AttrValRecordInterface.html).
  *
@@ -72,14 +72,13 @@ final class LdifAttrValRecordRule extends AbstractLdifRecordRule
         $begin = $state->getCursor()->getClonedLocation();
         if (!$this->getDnSpecRule()->parse($state, $dn) ||
             !$this->getSepRule()->parse($state) ||
-            !$this->parseAttrValSpecs($state, $attrVals)
-        ) {
+            !$this->parseAttrValSpecs($state, $attrVals)) {
             $value = null;
             return false;
         }
 
         $snippet = Snippet::createFromLocationAndState($begin, $state);
-        $value = new AttrValRecord($dn, $attrVals, ['snippet' => $snippet]);
+        $value = new AttrValRecord($dn, $attrVals, compact('snippet'));
         return true;
     }
 }

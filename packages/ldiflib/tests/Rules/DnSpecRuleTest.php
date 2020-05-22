@@ -81,7 +81,7 @@ class DnSpecRuleTest extends TestCase
                 self::hasPropertiesIdenticalTo([
                     'sourceOffset' => 3 + 4,
                     'sourceCharOffset' => 2 + 4,
-                    'message' => 'syntax error: invalid DN syntax: \''.$dn.'\'',
+                    'message' => 'syntax error: invalid DN syntax: "'.$dn.'"',
                 ])
             ];
             $matches = [[$dn, 3 + 4], 'dn_safe' => [$dn, 3 + 4]];
@@ -115,7 +115,7 @@ class DnSpecRuleTest extends TestCase
                 self::hasPropertiesIdenticalTo([
                     'sourceOffset' => 3 + 5,
                     'sourceCharOffset' => 2 + 5,
-                    'message' => 'syntax error: invalid DN syntax: \''.$dn.'\'',
+                    'message' => 'syntax error: invalid DN syntax: "'.$dn.'"',
                 ]),
             ];
             $matches = [[$dnBase64, 3 + 5], 'dn_b64' => [$dnBase64, 3 + 5]];
@@ -222,7 +222,7 @@ class DnSpecRuleTest extends TestCase
             $source = ['dn:'.$sep.$dn];
             $source[] = strlen($source[0]);
             $type = substr($sep, 0, 1) === ':' ? 'BASE64': 'SAFE';
-            $message = $type === 'BASE64' ? 'invalid BASE64 string' : "invalid DN syntax: '$dn'";
+            $message = $type === 'BASE64' ? 'invalid BASE64 string' : 'invalid DN syntax: "'.$dn.'"';
             $dnOffset = strlen('dn:'.$sep) + $case[2];
             $errors = $result ? [] : [
                 self::hasPropertiesIdenticalTo([
@@ -377,7 +377,7 @@ class DnSpecRuleTest extends TestCase
                 self::hasPropertiesIdenticalTo([
                     'sourceOffset' => 3 + 4,
                     'sourceCharOffset' => 2 + 4,
-                    'message' => 'syntax error: invalid DN syntax: \''.$dn.'\'',
+                    'message' => 'syntax error: invalid DN syntax: "'.$dn.'"',
                 ]),
             ];
             $cursor = self::hasPropertiesIdenticalTo([
@@ -414,7 +414,7 @@ class DnSpecRuleTest extends TestCase
                 self::hasPropertiesIdenticalTo([
                     'sourceOffset' => 3 + 5,
                     'sourceCharOffset' => 2 + 5,
-                    'message' => 'syntax error: invalid DN syntax: \''.$dn.'\'',
+                    'message' => 'syntax error: invalid DN syntax: "'.$dn.'"',
                 ]),
             ];
             $cursor = self::hasPropertiesIdenticalTo([

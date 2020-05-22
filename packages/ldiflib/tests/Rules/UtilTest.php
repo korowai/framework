@@ -247,7 +247,7 @@ class UtilTest extends TestCase
             $errors = $result ? []: [
                 self::hasPropertiesIdenticalTo([
                     'sourceOffset' => $offset,
-                    'message' => "syntax error: invalid DN syntax: '".$string."'"
+                    'message' => 'syntax error: invalid DN syntax: "'.$string.'"'
                 ]),
             ];
             $inheritedCases[] = [

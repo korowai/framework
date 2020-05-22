@@ -30,7 +30,7 @@ use Korowai\Lib\Ldif\Records\ModifyRecordInterface;
 use Korowai\Lib\Ldif\Exception\InvalidRuleClassException;
 
 /**
- * A rule object that parses *ldif-change-record* rule defined in [RFC2849](https://tools.ietf.org/html/rfc2849).
+ * A rule object that parses *ldif-change-record* as defined in [RFC2849](https://tools.ietf.org/html/rfc2849).
  *
  * - semantic value: [ChangeRecordInterface](\.\./Records/ChangeRecordInterface.html).
  *
@@ -82,19 +82,11 @@ final class LdifChangeRecordRule extends AbstractLdifRecordRule
         $begin = $state->getCursor()->getClonedLocation();
         if (!$this->getDnSpecRule()->parse($state, $dn) ||
             !$this->getSepRule()->parse($state) ||
-            !$this->parseControls($state, $controls)
-        ) {
+            !$this->parseControls($state, $controls)) {
+            $value = null;
             return false;
         }
-
-        $vars = compact('begin', 'dn', 'controls');
-        if (!$result = $this->parseRecord($state, $value, $vars)) {
-            return false;
-        }
-
-        $snippet = Snippet::createFromLocationAndState($begin, $state);
-        $value->setSnippet($snippet);
-        return true;
+        return $this->parseRecord($state, $value, compact('begin', 'dn', 'controls'));
     }
 
     /**
@@ -104,7 +96,7 @@ final class LdifChangeRecordRule extends AbstractLdifRecordRule
      * @param  ChangeRecordInterface $record
      * @param  array $vars
      */
-    public function parseRecord(State $state, ChangeRecordInterface &$record = null, array $vars = []) : bool
+    protected function parseRecord(State $state, ChangeRecordInterface &$record = null, array $vars = []) : bool
     {
         static $parsers = [
             'add'    => 'parseAdd',
@@ -115,6 +107,7 @@ final class LdifChangeRecordRule extends AbstractLdifRecordRule
         ];
 
         if (!$this->getChangeRecordInitRule()->parse($state, $changeType)) {
+            $record = null;
             return false;
         }
 
@@ -132,36 +125,40 @@ final class LdifChangeRecordRule extends AbstractLdifRecordRule
     /**
      * @todo Write documentation
      */
-    public function parseAdd(State $state, AddRecordInterface &$record = null, array $vars = []) : bool
+    protected function parseAdd(State $state, AddRecordInterface &$record = null, array $vars = []) : bool
     {
         extract($vars);
         if (!$this->parseAttrValSpecs($state, $attrValSpecs)) {
+            $record = null;
             return false;
         }
-        $record = new AddRecord($dn, compact('controls', 'attrValSpecs'));
+        $snippet = Snippet::createFromLocationAndState($begin, $state);
+        $record = new AddRecord($dn, compact('controls', 'attrValSpecs', 'snippet'));
         return true;
     }
 
     /**
      * @todo Write documentation
      */
-    public function parseDelete(State $state, DeleteRecordInterface &$record = null, array $vars = []) : bool
+    protected function parseDelete(State $state, DeleteRecordInterface &$record = null, array $vars = []) : bool
     {
         extract($vars);
-        $record = new DeleteRecord($dn, compact('controls'));
+        $snippet = Snippet::createFromLocationAndState($begin, $state);
+        $record = new DeleteRecord($dn, compact('controls', 'snippet'));
         return true;
     }
 
     /**
      * @todo Write documentation
      */
-    public function parseModDn(State $state, ModDnRecordInterface &$record = null, array $vars = []) : bool
+    protected function parseModDn(State $state, ModDnRecordInterface &$record = null, array $vars = []) : bool
     {
         extract($vars);
 
         throw new \BadMethodCallException('not implemented');
 
-        $options = compact('controls', 'changeType', 'deleteOldRdn', 'newSuperior');
+        $snippet = Snippet::createFromLocationAndState($begin, $state);
+        $options = compact('controls', 'changeType', 'deleteOldRdn', 'newSuperior', 'snippet');
         $record = new ModDnRecord($dn, $newRdn, $options);
         return true;
     }
@@ -169,14 +166,15 @@ final class LdifChangeRecordRule extends AbstractLdifRecordRule
     /**
      * @todo Write documentation
      */
-    public function parseModify(State $state, ModifyRecordInterface &$record = null, array $vars = []) : bool
+    protected function parseModify(State $state, ModifyRecordInterface &$record = null, array $vars = []) : bool
     {
         extract($vars);
         if (!$this->parseModSpecs($state, $modSpecs)) {
             $record = null;
             return false;
         }
-        $record = new ModifyRecord($dn, compact('controls', 'modSpecs'));
+        $snippet = Snippet::createFromLocationAndState($begin, $state);
+        $record = new ModifyRecord($dn, compact('controls', 'modSpecs', 'snippet'));
         return true;
     }
 

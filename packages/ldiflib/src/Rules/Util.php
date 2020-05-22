@@ -72,7 +72,7 @@ class Util
     public static function dnCheck(State $state, string $string, int $offset) : bool
     {
         if (!Scan::matchString('/\G'.Rfc2253::DISTINGUISHED_NAME.'$/D', $string)) {
-            $state->errorAt($offset, 'syntax error: invalid DN syntax: \''.$string.'\'');
+            $state->errorAt($offset, 'syntax error: invalid DN syntax: "'.$string.'"');
             return false;
         }
 

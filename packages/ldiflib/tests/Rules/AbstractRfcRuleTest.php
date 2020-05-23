@@ -43,6 +43,84 @@ class AbstractRfcRuleTest extends TestCase
     }
 
     //
+    // rfcRuleSet()
+    //
+    public function test__rfcRuleSet()
+    {
+        $rule = new class extends AbstractRfcRule {
+            protected static $rfcRuleSet = 'FOO';
+            public function __construct() { }
+            public function parseMatched(ParserStateInterface $state, array $matches, &$value = null) : bool {}
+        };
+        $class = get_class($rule);
+        $this->assertSame('FOO', $class::rfcRuleSet());
+    }
+
+    //
+    // rfcRuleId()
+    //
+    public function test__rfcRuleId()
+    {
+        $rule = new class extends AbstractRfcRule {
+            protected static $rfcRuleId = 'FOO';
+            public function __construct() { }
+            public function parseMatched(ParserStateInterface $state, array $matches, &$value = null) : bool {}
+        };
+        $class = get_class($rule);
+        $this->assertSame('FOO', $class::rfcRuleId());
+    }
+
+    //
+    // __construct()
+    //
+    public static function construct__cases()
+    {
+        return [
+            '__construct()' => [
+                'args' => [],
+                'expect' => [
+                    'isOptional' => false,
+                ]
+            ],
+
+            '__construct(false)' => [
+                'args' => [false],
+                'expect' => [
+                    'isOptional' => false,
+                ]
+            ],
+
+            '__construct(true)' => [
+                'args' => [true],
+                'expect' => [
+                    'isOptional' => true,
+                ]
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider construct__cases
+     */
+    public function test__construct(array $args, array $expect)
+    {
+        $rule = new class (...$args) extends AbstractRfcRule {
+            public static function rfcRuleSet() : string { return RuleSet1::class; }
+            public static function rfcRuleId() : string { return 'ASSIGNMENT_INT'; }
+            public function parseMatched(ParserStateInterface $state, array $matches, &$value = null) : bool {}
+        };
+
+        $expect = array_merge([
+            'rfcRule' => self::hasPropertiesIdenticalTo([
+                'name' => 'ASSIGNMENT_INT',
+                'ruleSetClass' => RuleSet1::class
+            ]),
+        ], $expect);
+
+        $this->assertHasPropertiesSameAs($expect, $rule);
+    }
+
+    //
     // match()
     //
 
@@ -243,6 +321,7 @@ class AbstractRfcRuleTest extends TestCase
         $state = $this->getParserStateFromSource(...$source);
 
         $rule = $this->getMockBuilder(AbstractRfcRule::class)
+                     ->disableOriginalConstructor()
                      ->setMethods(['parseMatched'])
                      ->getMockForAbstractClass()
                      ->setRfcRule(new RfcRule(...$rfcArgs));
@@ -269,6 +348,7 @@ class AbstractRfcRuleTest extends TestCase
         $state = $this->getParserStateFromSource(...$source);
 
         $rule = $this->getMockBuilder(AbstractRfcRule::class)
+                     ->disableOriginalConstructor()
                      ->setMethods(['parseMatched'])
                      ->getMockForAbstractClass()
                      ->setRfcRule(new RfcRule(...$rfcArgs));

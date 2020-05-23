@@ -99,12 +99,12 @@ class ObjectPropertyGettersMap
         \Korowai\Lib\Ldif\Rules\AbstractNameSpecRule::class => [
             'b64Capture'                => 'b64Capture',
             'safeCapture'               => 'safeCapture',
-            'rfcRuleSet'                => 'rfcRuleSet',
-            'rfcRuleId'                 => 'rfcRuleId',
             'validator'                 => 'validator'
         ],
 
         \Korowai\Lib\Ldif\Rules\AbstractRfcRule::class => [
+            'rfcRuleSet'                => 'rfcRuleSet',
+            'rfcRuleId'                 => 'rfcRuleId',
         ],
 
         \Korowai\Lib\Ldif\Rules\AttrValSpecRule::class => [

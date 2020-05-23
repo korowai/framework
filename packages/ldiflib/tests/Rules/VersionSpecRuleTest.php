@@ -16,6 +16,7 @@ namespace Korowai\Tests\Lib\Ldif\Rules;
 use Korowai\Lib\Ldif\Rules\VersionSpecRule;
 use Korowai\Lib\Ldif\Rules\AbstractRfcRule;
 use Korowai\Lib\Ldif\ValueInterface;
+use Korowai\Lib\Rfc\Rfc2849x;
 use Korowai\Testing\Lib\Ldif\TestCase;
 
 /**
@@ -26,6 +27,16 @@ class VersionSpecRuleTest extends TestCase
     public function test__extendsAbstractRfcRule()
     {
         $this->assertExtendsClass(AbstractRfcRule::class, VersionSpecRule::class);
+    }
+
+    public function test__rfcRuleSet()
+    {
+        $this->assertSame(Rfc2849x::class, VersionSpecRule::rfcRuleSet());
+    }
+
+    public function test__rfcRuleId()
+    {
+        $this->assertSame('VERSION_SPEC_X', VersionSpecRule::rfcRuleId());
     }
 
     public static function construct__cases()
@@ -58,6 +69,12 @@ class VersionSpecRuleTest extends TestCase
     public function test__construct(array $args, array $expect)
     {
         $rule = new VersionSpecRule(...$args);
+        $expect = array_merge([
+            'rfcRule' => self::hasPropertiesIdenticalTo([
+                'ruleSetClass' => Rfc2849x::class,
+                'name' => 'VERSION_SPEC_X',
+            ])
+        ], $expect);
         $this->assertHasPropertiesSameAs($expect, $rule);
     }
 

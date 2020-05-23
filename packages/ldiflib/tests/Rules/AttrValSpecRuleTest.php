@@ -18,6 +18,7 @@ use Korowai\Lib\Ldif\Rules\ValueSpecRule;
 use Korowai\Lib\Ldif\Rules\AbstractRfcRule;
 use Korowai\Lib\Ldif\AttrValInterface;
 use Korowai\Lib\Ldif\ValueInterface;
+use Korowai\Lib\Rfc\Rfc2849x;
 use Korowai\Testing\Lib\Ldif\TestCase;
 
 /**
@@ -30,6 +31,16 @@ class AttrValSpecRuleTest extends TestCase
         $this->assertExtendsClass(AbstractRfcRule::class, AttrValSpecRule::class);
     }
 
+    public function test__rfcRuleSet()
+    {
+        $this->assertSame(Rfc2849x::class, AttrValSpecRule::rfcRuleSet());
+    }
+
+    public function test__rfcRuleId()
+    {
+        $this->assertSame('ATTRVAL_SPEC_X', AttrValSpecRule::rfcRuleId());
+    }
+
     public static function construct__cases()
     {
         $valueSpecRule = new ValueSpecRule;
@@ -38,7 +49,7 @@ class AttrValSpecRuleTest extends TestCase
             'default' => [
                 'args'   => [],
                 'expect' => [
-                    'isOptional' => false
+                    'isOptional' => false,
                 ]
             ],
             'required' => [
@@ -57,7 +68,7 @@ class AttrValSpecRuleTest extends TestCase
                 'args'   => [false, $valueSpecRule],
                 'expect' => [
                     'isOptional' => false,
-                    'getValueSpecRule()' => $valueSpecRule
+                    'valueSpecRule' => $valueSpecRule
                 ]
             ]
         ];
@@ -69,9 +80,17 @@ class AttrValSpecRuleTest extends TestCase
     public function test__construct(array $args, array $expect)
     {
         $rule = new AttrValSpecRule(...$args);
+
+        $expect = array_merge([
+            'rfcRule' => self::hasPropertiesIdenticalTo([
+                'ruleSetClass' => Rfc2849x::class,
+                'name' => 'ATTRVAL_SPEC_X',
+            ])
+        ], $expect);
+
         $this->assertHasPropertiesSameAs($expect, $rule);
 
-        if (null === ($expect['getValueSpecRule()'] ?? null)) {
+        if (null === ($expect['valueSpecRule'] ?? null)) {
             $this->assertInstanceOf(ValueSpecRule::class, $rule->getValueSpecRule());
         }
     }

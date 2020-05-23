@@ -16,6 +16,7 @@ namespace Korowai\Tests\Lib\Ldif\Rules;
 use Korowai\Lib\Ldif\Rules\ModSpecInitRule;
 use Korowai\Lib\Ldif\Rules\AbstractRfcRule;
 use Korowai\Lib\Ldif\ModSpecInterface;
+use Korowai\Lib\Rfc\Rfc2849x;
 use Korowai\Testing\Lib\Ldif\TestCase;
 
 /**
@@ -26,6 +27,16 @@ class ModSpecInitRuleTest extends TestCase
     public function test__extendsAbstractRfcRule()
     {
         $this->assertExtendsClass(AbstractRfcRule::class, ModSpecInitRule::class);
+    }
+
+    public function test__rfcRuleSet()
+    {
+        $this->assertSame(Rfc2849x::class, ModSpecInitRule::rfcRuleSet());
+    }
+
+    public function test__rfcRuleId()
+    {
+        $this->assertSame('MOD_SPEC_INIT_X', ModSpecInitRule::rfcRuleId());
     }
 
     public static function construct__cases()
@@ -58,6 +69,12 @@ class ModSpecInitRuleTest extends TestCase
     public function test__construct(array $args, array $expect)
     {
         $rule = new ModSpecInitRule(...$args);
+        $expect = array_merge([
+            'rfcRule' => self::hasPropertiesIdenticalTo([
+                'ruleSetClass' => Rfc2849x::class,
+                'name' => 'MOD_SPEC_INIT_X',
+            ])
+        ], $expect);
         $this->assertHasPropertiesSameAs($expect, $rule);
     }
 

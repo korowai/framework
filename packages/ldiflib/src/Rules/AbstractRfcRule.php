@@ -17,6 +17,7 @@ use Korowai\Lib\Ldif\RuleInterface;
 use Korowai\Lib\Ldif\ParserStateInterface as State;
 use Korowai\Lib\Ldif\Scan;
 use Korowai\Lib\Rfc\Traits\DecoratesRuleInterface;
+use Korowai\Lib\Rfc\Rule;
 
 /**
  * Base class for LDIF parsing rules that decorate RFC
@@ -46,6 +47,38 @@ abstract class AbstractRfcRule implements RuleInterface, \Korowai\Lib\Rfc\RuleIn
      *      Semantic value to be returned to caller.
      */
     abstract public function parseMatched(State $state, array $matches, &$value = null) : bool;
+
+    /**
+     * Returns name of the class ruleset class to be used.
+     *
+     * @return string
+     */
+    public static function rfcRuleSet() : string
+    {
+        return static::$rfcRuleSet;
+    }
+
+    /**
+     * Returns the identifier of the rule from rfcRuleSet() to be used.
+     *
+     * @return string
+     */
+    public static function rfcRuleId() : string
+    {
+        return static::$rfcRuleId;
+    }
+
+    /**
+     * Initializes the object.
+     *
+     * @param  bool $tryOnly
+     *      Passed to the constructor of RFC [Rule](\.\./\.\./Rfc/Rule.html)
+     *      being created internally.
+     */
+    public function __construct(bool $tryOnly = false)
+    {
+        $this->setRfcRule(new Rule($this->rfcRuleSet(), $this->rfcRuleId(), $tryOnly));
+    }
 
     /**
      * Parse string starting at position defined by *$state*.

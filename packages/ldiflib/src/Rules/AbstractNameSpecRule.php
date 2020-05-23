@@ -15,8 +15,6 @@ namespace Korowai\Lib\Ldif\Rules;
 
 use Korowai\Lib\Ldif\ParserStateInterface as State;
 use Korowai\Lib\Ldif\Scan;
-use Korowai\Lib\Rfc\Rule;
-use Korowai\Lib\Rfc\Rfc2849x;
 
 /**
  * A rule object that implements *dn-spec* rule defined in RFC2849.
@@ -48,26 +46,6 @@ abstract class AbstractNameSpecRule extends AbstractRfcRule
     }
 
     /**
-     * Returns name of the class ruleset class to be used.
-     *
-     * @return string
-     */
-    public static function rfcRuleSet() : string
-    {
-        return static::$rfcRuleSet;
-    }
-
-    /**
-     * Returns the identifier of the rule from rfcRuleSet() to be used.
-     *
-     * @return string
-     */
-    public static function rfcRuleId() : string
-    {
-        return static::$rfcRuleId;
-    }
-
-    /**
      * Returns callable to be used to validate decoded name.
      *
      * @return callable
@@ -75,18 +53,6 @@ abstract class AbstractNameSpecRule extends AbstractRfcRule
     public static function validator() : callable
     {
         return static::$validator;
-    }
-
-    /**
-     * Initializes the object.
-     *
-     * @param  bool $tryOnly
-     *      Passed to the constructor of RFC [Rule](\.\./\.\./Rfc/Rule.html)
-     *      being created internally.
-     */
-    public function __construct(bool $tryOnly = false)
-    {
-        $this->setRfcRule(new Rule(static::rfcRuleSet(), static::rfcRuleId(), $tryOnly));
     }
 
     /**

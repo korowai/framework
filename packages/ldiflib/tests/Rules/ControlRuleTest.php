@@ -18,6 +18,7 @@ use Korowai\Lib\Ldif\Rules\ValueSpecRule;
 use Korowai\Lib\Ldif\Rules\AbstractRfcRule;
 use Korowai\Lib\Ldif\ControlInterface;
 use Korowai\Lib\Ldif\ValueInterface;
+use Korowai\Lib\Rfc\Rfc2849x;
 use Korowai\Testing\Lib\Ldif\TestCase;
 
 /**
@@ -30,6 +31,16 @@ class ControlRuleTest extends TestCase
         $this->assertExtendsClass(AbstractRfcRule::class, ControlRule::class);
     }
 
+    public function test__rfcRuleSet()
+    {
+        $this->assertSame(Rfc2849x::class, ControlRule::rfcRuleSet());
+    }
+
+    public function test__rfcRuleId()
+    {
+        $this->assertSame('CONTROL_X', ControlRule::rfcRuleId());
+    }
+
     public static function construct__cases()
     {
         $valueSpecRule = new ValueSpecRule;
@@ -38,26 +49,26 @@ class ControlRuleTest extends TestCase
             'default' => [
                 'args'   => [],
                 'expect' => [
-                    'isOptional()' => false
+                    'isOptional' => false
                 ]
             ],
             'required' => [
                 'args'   => [false],
                 'expect' => [
-                    'isOptional()' => false
+                    'isOptional' => false
                 ]
             ],
             'optional' => [
                 'args'   => [true],
                 'expect' => [
-                    'isOptional()' => true
+                    'isOptional' => true
                 ]
             ],
             'valueSpecRule' => [
                 'args'   => [false, $valueSpecRule],
                 'expect' => [
-                    'isOptional()' => false,
-                    'getValueSpecRule()' => $valueSpecRule
+                    'isOptional' => false,
+                    'valueSpecRule' => $valueSpecRule
                 ]
             ]
         ];
@@ -69,9 +80,15 @@ class ControlRuleTest extends TestCase
     public function test__construct(array $args, array $expect)
     {
         $rule = new ControlRule(...$args);
+        $expect = array_merge([
+            'rfcRule' => self::hasPropertiesIdenticalTo([
+                'ruleSetClass' => Rfc2849x::class,
+                'name' => 'CONTROL_X',
+            ])
+        ], $expect);
         $this->assertHasPropertiesSameAs($expect, $rule);
 
-        if (null === ($expect['getValueSpecRule()'] ?? null)) {
+        if (null === ($expect['valueSpecRule'] ?? null)) {
             $this->assertInstanceOf(ValueSpecRule::class, $rule->getValueSpecRule());
         }
     }

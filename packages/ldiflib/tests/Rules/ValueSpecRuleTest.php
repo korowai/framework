@@ -16,6 +16,7 @@ namespace Korowai\Tests\Lib\Ldif\Rules;
 use Korowai\Lib\Ldif\Rules\ValueSpecRule;
 use Korowai\Lib\Ldif\Rules\AbstractRfcRule;
 use Korowai\Lib\Ldif\ValueInterface;
+use Korowai\Lib\Rfc\Rfc2849x;
 use Korowai\Testing\Lib\Ldif\TestCase;
 
 /**
@@ -26,6 +27,16 @@ class ValueSpecRuleTest extends TestCase
     public function test__extendsAbstractRfcRule()
     {
         $this->assertExtendsClass(AbstractRfcRule::class, ValueSpecRule::class);
+    }
+
+    public function test__rfcRuleSet()
+    {
+        $this->assertSame(Rfc2849x::class, ValueSpecRule::rfcRuleSet());
+    }
+
+    public function test__rfcRuleId()
+    {
+        $this->assertSame('VALUE_SPEC_X', ValueSpecRule::rfcRuleId());
     }
 
     public static function construct__cases()
@@ -58,6 +69,12 @@ class ValueSpecRuleTest extends TestCase
     public function test__construct(array $args, array $expect)
     {
         $rule = new ValueSpecRule(...$args);
+        $expect = array_merge([
+            'rfcRule' => self::hasPropertiesIdenticalTo([
+                'ruleSetClass' => Rfc2849x::class,
+                'name' => 'VALUE_SPEC_X',
+            ])
+        ], $expect);
         $this->assertHasPropertiesSameAs($expect, $rule);
     }
 

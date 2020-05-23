@@ -16,7 +16,6 @@ namespace Korowai\Lib\Ldif\Rules;
 use Korowai\Lib\Ldif\ParserStateInterface as State;
 use Korowai\Lib\Ldif\Scan;
 use Korowai\Lib\Ldif\AttrVal;
-use Korowai\Lib\Rfc\Rule;
 use Korowai\Lib\Rfc\Rfc2849x;
 
 /**
@@ -28,6 +27,16 @@ use Korowai\Lib\Rfc\Rfc2849x;
  */
 final class AttrValSpecRule extends AbstractRfcRule
 {
+    /**
+     * @var string
+     */
+    protected static $rfcRuleSet = Rfc2849x::class;
+
+    /**
+     * @var string
+     */
+    protected static $rfcRuleId = 'ATTRVAL_SPEC_X';
+
     /**
      * @var Rule
      */
@@ -45,7 +54,7 @@ final class AttrValSpecRule extends AbstractRfcRule
      */
     public function __construct(bool $tryOnly = false, ValueSpecRule $valueSpecRule = null)
     {
-        $this->setRfcRule(new Rule(Rfc2849x::class, 'ATTRVAL_SPEC_X', $tryOnly));
+        parent::__construct($tryOnly);
         if ($valueSpecRule === null) {
             $valueSpecRule = new ValueSpecRule;
         }

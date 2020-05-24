@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Ldif\Rules;
 
 use Korowai\Lib\Ldif\Rules\NewRdnSpecRule;
-use Korowai\Lib\Ldif\Rules\AbstractNameSpecRule;
+use Korowai\Lib\Ldif\Rules\AbstractRdnSpecRule;
 use Korowai\Lib\Ldif\Rules\Util;
-use Korowai\Lib\Rfc\Rfc2849x;
+use Korowai\Lib\Rfc\Rfc2849;
 
 use Korowai\Testing\Lib\Ldif\TestCase;
 
@@ -25,30 +25,21 @@ use Korowai\Testing\Lib\Ldif\TestCase;
  */
 class NewRdnSpecRuleTest extends TestCase
 {
-    public function test__extendsAbstractNameSpecRule()
+    public function test__extends__AbstractRdnSpecRule()
     {
-        $this->assertExtendsClass(AbstractNameSpecRule::class, NewRdnSpecRule::class);
+        $this->assertExtendsClass(AbstractRdnSpecRule::class, NewRdnSpecRule::class);
     }
 
     public static function construct__cases()
     {
         return [
-            'default' => [
+            '__construct()' => [
                 'args'   => [],
                 'expect' => [
-                    'isOptional' => false
-                ]
-            ],
-            'required' => [
-                'args'   => [false],
-                'expect' => [
-                    'isOptional' => false
-                ]
-            ],
-            'optional' => [
-                'args'   => [true],
-                'expect' => [
-                    'isOptional' => true
+                    'rfcRule' => self::hasPropertiesIdenticalTo([
+                        'ruleSetClass' => Rfc2849::class,
+                        'name' => 'NEWRDN_SPEC',
+                    ])
                 ]
             ],
         ];
@@ -61,31 +52,6 @@ class NewRdnSpecRuleTest extends TestCase
     {
         $rule = new NewRdnSpecRule(...$args);
         $this->assertHasPropertiesSameAs($expect, $rule);
-    }
-
-    public function test__b64Capture()
-    {
-        $this->assertSame('rdn_b64', NewRdnSpecRule::b64Capture());
-    }
-
-    public function test__safeCapture()
-    {
-        $this->assertSame('rdn_safe', NewRdnSpecRule::safeCapture());
-    }
-
-    public function test__rfcRuleSet()
-    {
-        $this->assertSame(Rfc2849x::class, NewRdnSpecRule::rfcRuleSet());
-    }
-
-    public function test__rfcRuleId()
-    {
-        $this->assertSame('NEWRDN_SPEC_X', NewRdnSpecRule::rfcRuleId());
-    }
-
-    public function test__validator()
-    {
-        $this->assertSame([Util::class, 'rdnCheck'], NewRdnSpecRule::validator());
     }
 
     public static function rdnMatch__cases()
@@ -606,9 +572,9 @@ class NewRdnSpecRuleTest extends TestCase
             $rdn = $expect['init'];
         }
 
-        $rule = new NewRdnSpecRule(...$args);
+        $rule = new NewRdnSpecRule;
 
-        $result = $rule->parse($state, $rdn);
+        $result = $rule->parse($state, $rdn, ...$args);
 
         $this->assertSame($expect['result'], $result);
         $this->assertSame($expect['rdn'], $rdn);

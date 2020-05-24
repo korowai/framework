@@ -93,16 +93,6 @@ class RuleTest extends TestCase
         $rule = new Rule($ruleSetClass, $ruleName);
         $this->assertSame($ruleSetClass, $rule->ruleSetClass());
         $this->assertSame($ruleName, $rule->name());
-        $this->assertFalse($rule->isOptional());
-    }
-
-    public function test__construct__optional()
-    {
-        $rule = new Rule(RuleSet0::class, 'FOO', false);
-        $this->assertFalse($rule->isOptional());
-
-        $rule = new Rule(RuleSet0::class, 'FOO', true);
-        $this->assertTrue($rule->isOptional());
     }
 
     public function test__construct__exception()

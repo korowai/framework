@@ -15,7 +15,7 @@ namespace Korowai\Lib\Ldif\Rules;
 
 use Korowai\Lib\Ldif\ParserStateInterface as State;
 use Korowai\Lib\Ldif\Scan;
-use Korowai\Lib\Rfc\Rfc2849x;
+use Korowai\Lib\Rfc\Rfc2849;
 
 /**
  * A rule that parses single line separator RFC2849.
@@ -25,14 +25,12 @@ use Korowai\Lib\Rfc\Rfc2849x;
 final class SepRule extends AbstractRfcRule
 {
     /**
-     * @var string
+     * Initializes the object.
      */
-    protected static $rfcRuleSet = Rfc2849x::class;
-
-    /**
-     * @var string
-     */
-    protected static $rfcRuleId = 'SEP';
+    public function __construct()
+    {
+        parent::__construct(Rfc2849::class, 'SEP');
+    }
 
     /**
      * Completes parsing with rule by validating substrings captured by the

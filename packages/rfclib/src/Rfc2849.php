@@ -118,6 +118,16 @@ class Rfc2849 extends AbstractRuleSet
      */
     public const SEP = '(?:'.self::CR.self::LF.'|'.self::LF.')';
 
+    /**
+     * Matches [SEP](Rfc2849.html) or end of string ``$``.
+     */
+    public const EOL = '(?:'.self::SEP.'|$)';
+
+    /**
+     * Matches any character except [EOL](Rfc2849.html).
+     */
+    public const NOTEOL = '(?:[^'.self::CR.self::LF.']|'.self::CR.'(?!'.self::LF.'))';
+
     //
     // productions
     //
@@ -131,36 +141,54 @@ class Rfc2849 extends AbstractRuleSet
     /**
      * [RFC2849](https://tools.ietf.org/html/rfc2849):
      * ``version-number = 1*DIGIT``
-     *
-     * Capture groups:
-     *
-     *  - ``version_number``: always set.
      */
-    public const VERSION_NUMBER = '(?<version_number>'.self::DIGIT.'+)';
+    public const VERSION_NUMBER = '(?:'.self::DIGIT.'+)';
+    // [/VERSION_NUMBER]
 
     /**
      * [RFC2849](https://tools.ietf.org/html/rfc2849):
      * ``version-spec = "version:" FILL version-number``
+     *
+     * Capture groups:
+     *
+     * - ``version_number``: only set if there is no error after the "version:"
+     *   tag; contains the version number,
+     * - ``version_error``: only set if there is an error after the "version:"
+     *   tag; contains the erroneous string.
+     *
      */
-    public const VERSION_SPEC = '(?:version:'.self::FILL.self::VERSION_NUMBER.')';
+    public const VERSION_SPEC =
+        '(?:'.
+            'version:'.self::FILL.
+            '(?:'.
+                '(?<version_number>'.self::VERSION_NUMBER.')'.
+                '|'.
+                '(?:'.self::VERSION_NUMBER.'?(?<version_error>'.self::NOTEOL.'))'.
+            ')'.
+            '(?='.self::EOL.')'.
+        ')';
+    // [/VERSION_SPEC]
 
     /**
      * [RFC2849](https://tools.ietf.org/html/rfc2849):
      * ``BASE64-STRING = [*(BASE64-CHAR)]``
      */
     public const BASE64_STRING = '(?:'.self::BASE64_CHAR.'*)';
+    // [/BASE64_STRING]
 
     /**
      * [RFC2849](https://tools.ietf.org/html/rfc2849):
      * ``BASE64-UTF8-STRING = BASE64-STRING``
      */
     public const BASE64_UTF8_STRING = self::BASE64_STRING;
+    // [/BASE64_UTF8_STRING]
 
     /**
      * [RFC2849](https://tools.ietf.org/html/rfc2849)
      * ``SAFE-STRING = [SAFE-INIT-CHAR *SAFE-CHAR]``
      */
     public const SAFE_STRING = '(?:(?:'.self::SAFE_INIT_CHAR.self::SAFE_CHAR.'*)?)';
+    // [/SAFE_STRING]
 
     /**
      * [RFC2849](https://tools.ietf.org/html/rfc2849):
@@ -168,24 +196,28 @@ class Rfc2849 extends AbstractRuleSet
      * An LDAPOID, as defined in [RFC2251](https://tools.ietf.org/html/rfc2251)
      */
     public const LDAP_OID = Rfc2253::OID;
+    // [/LDAP_OID]
 
     /**
      * [RFC2849](https://tools.ietf.org/html/rfc2849):
      * ``option = 1*opt-char``;
      */
     public const OPTION = '(?:'.self::OPT_CHAR.'+)';
+    // [/OPTION]
 
     /**
      * [RFC2849](https://tools.ietf.org/html/rfc2849):
      * ``options = option / (option ";" options)``
      */
     public const OPTIONS = '(?:'.self::OPTION.'(?:;'.self::OPTION.')*)';
+    // [/OPTIONS]
 
     /**
      * [RFC2849](https://tools.ietf.org/html/rfc2849):
      * ``AttributeType = ldap-oid / (ALPHA *(attr-type-chars))``
      */
     public const ATTRIBUTE_TYPE = '(?:'.self::LDAP_OID.'|(?:'.self::ALPHA.self::ATTR_TYPE_CHARS.'*))';
+    // [/ATTRIBUTE_TYPE]
 
     /**
      * [RFC2849](https://tools.ietf.org/html/rfc2849):
@@ -195,7 +227,8 @@ class Rfc2849 extends AbstractRuleSet
      *
      *  - ``attr_desc``: always set, contains the whole matched string.
      */
-    public const ATTRIBUTE_DESCRIPTION = '(?<attr_desc>'.self::ATTRIBUTE_TYPE.'(?:;'.self::OPTIONS.')?)';
+    public const ATTRIBUTE_DESCRIPTION = '(?:'.self::ATTRIBUTE_TYPE.'(?:;'.self::OPTIONS.')?)';
+    // [/ATTRIBUTE_DESCRIPTION]
 
     /**
      * [RFC2849](https://tools.ietf.org/html/rfc2849):
@@ -205,7 +238,8 @@ class Rfc2849 extends AbstractRuleSet
      *
      *  - ``dn_safe``: always set, contains the whole matched string.
      */
-    public const DISTINGUISHED_NAME = '(?<dn_safe>'.self::SAFE_STRING.')';
+    public const DISTINGUISHED_NAME = self::SAFE_STRING;
+    // [/DISTINGUISHED_NAME]
 
     /**
      * [RFC2849](https://tools.ietf.org/html/rfc2849):
@@ -215,7 +249,8 @@ class Rfc2849 extends AbstractRuleSet
      *
      *  - ``dn_b64``: always set, contains the whole matched string.
      */
-    public const BASE64_DISTINGUISHED_NAME = '(?<dn_b64>'.self::BASE64_UTF8_STRING.')';
+    public const BASE64_DISTINGUISHED_NAME = self::BASE64_UTF8_STRING;
+    // [/BASE64_DISTINGUISHED_NAME]
 
     /**
      * [RFC2849](https://tools.ietf.org/html/rfc2849):
@@ -224,6 +259,7 @@ class Rfc2849 extends AbstractRuleSet
      * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3)
      */
     public const RDN = self::SAFE_STRING;
+    // [/RDN]
 
     /**
      * [RFC2849](https://tools.ietf.org/html/rfc2849):
@@ -231,6 +267,45 @@ class Rfc2849 extends AbstractRuleSet
      * an rdn which has been base64 encoded
      */
     public const BASE64_RDN = self::BASE64_UTF8_STRING;
+    // [/BASE64_RDN]
+
+    /**
+     * ``dn-value-spec = ":" ( FILL distinguishedName / ":" FILL base64-distinguishedName )``
+     *
+     * Capture groups:
+     *
+     *  - ``dn_safe``: only set if the subject contains no syntax errors and the initial tag is ``"dn:"``,
+     *  - ``dn_b64``: only set if the subject contains no syntax errors and the initial tag is ``"dn::"``,
+     *  - ``dn_safe_error``: only set if there is an error after the ``"dn:"``
+     *    tag (single colon); contains the substring that failed to match [Rfc2849::SAFE_STRING](Rfc2849.html),
+     *  - ``dn_b64_error``: only set if there is an error after the ``"dn::"``
+     *    tag (double colon); contains the substring that failed to match [Rfc2849::BASE64_STRING](Rfc2849.html),
+     */
+    public const DN_VALUE_SPEC =
+        '(?:'.
+            ':'.
+            '(?:'.
+                '(?:(?!:)'.
+                    self::FILL.
+                    '(?:'.
+                        '(?<dn_safe>'.self::DISTINGUISHED_NAME.')'.
+                        '|'.
+                        '(?:'.self::DISTINGUISHED_NAME.'?(?<dn_safe_error>'.self::NOTEOL.'*))'.
+                    ')'.
+                ')'.
+                '|'.
+                '(?::'.
+                    self::FILL.
+                    '(?:'.
+                        '(?<dn_b64>'.self::BASE64_DISTINGUISHED_NAME.')'.
+                        '|'.
+                        '(?:'.self::BASE64_DISTINGUISHED_NAME.'?(?<dn_b64_error>'.self::NOTEOL.'*))'.
+                    ')'.
+                ')'.
+            ')'.
+            '(?='.self::EOL.')'.
+        ')';
+    // [/DN_VALUE_SPEC]
 
     /**
      * [RFC2849](https://tools.ietf.org/html/rfc2849):
@@ -241,14 +316,8 @@ class Rfc2849 extends AbstractRuleSet
      *  - ``dn_safe``: only set if distinguished name is specified as SAFE-STRING using single colon ``":"`` notation,
      *  - ``dn_b64``: only set if distinguished name is specified as BASE64-STRING using double colon ``"::"`` notation.
      */
-    public const DN_SPEC =
-        '(?:'.
-            'dn:(?:'.
-                self::FILL.'(?:'.self::DISTINGUISHED_NAME.')'.
-                '|'.
-                ':'.self::FILL.'(?:'.self::BASE64_DISTINGUISHED_NAME.')'.
-            ')'.
-        ')';
+    public const DN_SPEC = '(?:dn'.self::DN_VALUE_SPEC.')';
+    // [/DN_SPEC]
 
     /**
      * [RFC2849](https://tools.ietf.org/html/rfc2849):
@@ -256,54 +325,108 @@ class Rfc2849 extends AbstractRuleSet
      * (we use URI-reference from [RFC3986](https://tools.ietf.org/html/rfc3986) instead of RFC1738)
      */
     public const URL = Rfc3986::URI_REFERENCE;
+    // [/URL]
 
     /**
      * [RFC2849](https://tools.ietf.org/html/rfc2849):
      * ``value-spec = ":" (FILL 0*1(SAFE-STRING) / ":" FILL (BASE64-STRING) / "<" FILL url)``
      *
+     * Matches any string that starts with one of ``":"``, ``"::"`` or ``":<"``
+     * and spans to the nearest [EOL](Rfc2849.html). Returns one of
+     * the ``value_*_error`` capture groups (below) if there is an error after
+     * the ``":"``/``"::"``/``":<"`` tag.
+     *
      * Capture groups:
      *
-     *  - ``value_safe``: only set if the value-spec specifies SAFE-STRING using single colon ``":"`` notation,
-     *  - ``value_b64``: only set if the value-space specifies BASE64-STRING using double colon ``"::"`` notation,
-     *  - ``value_url``: only set if the value-spec specifies URL using colon-less-than ``":<"`` notation.
-     *
-     *
-     * If *value_url* is present, then the capture groups of
-     * [Rfc3986::URI_REFERENCE](Rfc3986.html) pattern are also present.
+     *  - ``value_safe``: only set if the value-spec specifies SAFE-STRING using
+     *    single colon ``":"`` notation and there is no error in the string,
+     *  - ``value_b64``: only set if the value-space specifies BASE64-STRING
+     *    using double colon ``"::"`` notation and there is no error in the
+     *    string,
+     *  - ``value_url``: only set if the value-spec specifies URL using
+     *    colon-less-than ``":<"`` notation and there is no error in the
+     *    string,
+     *  - ``value_safe_error``: only set if there is an error after ``":"`` tag
+     *    (single colon); contains the string that failed to match [Rfc2849::SAFE_STRING](Rfc2849.html),
+     *  - ``value_b64_error``: only set if there is an error after ``"::"`` tag
+     *    (double colon); contains the string that failed to match [Rfc2849::BASE64_STRING](Rfc2849.html),
+     *  - ``value_url_error``: only set if there is an error after ``":<"`` tag
+     *    (colon less-than); contains the string that failed to match [Rfc2849::URL](Rfc2849.html),
      */
     public const VALUE_SPEC =
         '(?:'.
             ':'.
             '(?:'.
-                '(?:'. self::FILL.'(?<value_safe>'.self::SAFE_STRING.'))'.
+                '(?:(?![:<])'.
+                    self::FILL.
+                    '(?:'.
+                        '(?<value_safe>'.self::SAFE_STRING.')'.
+                        '|'.
+                        '(?:'.self::SAFE_STRING.'(?<value_safe_error>'.self::NOTEOL.'*))'.
+                    ')'.
+                ')'.
                 '|'.
-                '(?::'.self::FILL.'(?<value_b64>'.self::BASE64_STRING.'))'.
+                '(?::'.
+                    self::FILL.
+                    '(?:'.
+                        '(?<value_b64>'.self::BASE64_STRING.')'.
+                        '|'.
+                        '(?:'.self::BASE64_STRING.'(?<value_b64_error>'.self::NOTEOL.'*))'.
+                    ')'.
+                ')'.
                 '|'.
-                '(?:<'.self::FILL.'(?<value_url>'.self::URL.'))'.
+                '(?:<'.
+                    self::FILL.
+                    '(?:(?J)'.
+                        '(?<value_url>'.self::URL.')'.
+                        '|'.
+                        '(?:(?:'.self::URL.')?(?<value_url_error>'.self::NOTEOL.'*))'.
+                    ')'.
+                ')'.
             ')'.
+            '(?='.self::EOL.')'.
         ')';
+    // [/VALUE_SPEC]
 
     /**
      * [RFC2849](https://tools.ietf.org/html/rfc2849):
      * ``control = "control:" FILL ldap-oid 0*1(1*SPACE ("true" / "false")) 0*1(value-spec) SEP``
      *
+     * Matches any string that starts with ``"control:"`` tag and spans to the
+     * nearest [EOL](Rfc2849.html).
+     *
      * Capture groups:
      *
-     *  - ``ctl_type``: always set, contains OID of the control,
-     *  - ``ctl_crit``: only set if the matched string defines criticality as ``true`` or ``false``,
-     *  - ``ctl_value_spec``: only set if the value-spec part is present in the matched string.
-     *
-     *
-     * If *ctl_value_spec* is present, then also the capture groups of
-     * ``VALUE_SPEC`` pattern are present.
+     *  - ``ctl_type``: only set if the matched string has no errors; contains OID of the control,
+     *  - ``ctl_crit``: only set if the matched string defines criticality as ``true`` or ``false`` and does not
+     *    contain any errors,
+     *  - ``value_safe``: only set if the matched string specifies SAFE-STRING value and does not contain any errors,
+     *  - ``value_b64``: only set if the matched string specifies BASE64-STRING value and does not contain any errors,
+     *  - ``value_url``: only set if the matched string specifies URL value and does ont contain any errors,
+     *  - ``ctl_type_error``: only set if the control type is missing or is not a properly formed OID,
+     *  - ``ctl_crit_error``: only set if the control criticality is invalid (other than ``"true"`` or ``"false"``),
+     *  - ``value_safe_error``: only set if the matched string specifies malformed SAFE-STRING as a value,
+     *  - ``value_b64_error``: only set if the matched string specifies malformed BASE64-STRING as a value,
+     *  - ``value_url_error``: only set if the matched string specifies malformed URL as a value.
      */
     public const CONTROL =
         '(?:'.
-            'control:'.self::FILL.'(?<ctl_type>'.self::LDAP_OID.')'.
-            '(?:'.self::SPACE.'+(?<ctl_crit>true|false))?'.
-            '(?<ctl_value_spec>'.self::VALUE_SPEC.')?'.
-            self::SEP.
+            'control:'.self::FILL.'(?:(?:'.
+                '(?<ctl_type>'.self::LDAP_OID.')'.
+                '(?:'.self::SPACE.'+(?<ctl_crit>true|false))?'.
+                '(?:'.self::VALUE_SPEC.')?'.
+            ')|(?:'.
+                '(?:'.self::LDAP_OID.')'.
+                '(?:'.self::SPACE.'+)'.
+                '(?<ctl_crit_error>'.self::NOTEOL.'*)'.
+            ')|(?:'.
+                '(?:'.self::LDAP_OID.')?'.
+                '(?<ctl_type_error>'.self::NOTEOL.'*)'.
+            '))'.
+            self::EOL.
         ')';
+    // [/CONTROL]
+
 
     /**
      * [RFC2849](https://tools.ietf.org/html/rfc2849):
@@ -311,15 +434,29 @@ class Rfc2849 extends AbstractRuleSet
      *
      * Capture groups:
      *
-     *  - ``attr_desc``: always set, contains the attribute description (attribute type with options).
+     *  - ``attr_desc``: always set, contains the attribute description (attribute type with options),
+     *  - ``value_safe``: only set if the value-spec specifies SAFE-STRING using
+     *    single colon ``":"`` notation and there is no error in the string,
+     *  - ``value_b64``: only set if the value-space specifies BASE64-STRING
+     *    using double colon ``"::"`` notation and there is no error in the
+     *    string,
+     *  - ``value_url``: only set if the value-spec specifies URL using
+     *    colon-less-than ``":<"`` notation and there is no error in the
+     *    string,
+     *  - ``value_safe_error``: only set if there is an error after ``":"`` tag
+     *    (single colon); contains the string that failed to match [Rfc2849::SAFE_STRING](Rfc2849.html),
+     *  - ``value_b64_error``: only set if there is an error after ``"::"`` tag
+     *    (double colon); contains the string that failed to match [Rfc2849::BASE64_STRING](Rfc2849.html),
+     *  - ``value_url_error``: only set if there is an error after ``":<"`` tag
+     *    (colon less-than); contains the string that failed to match [Rfc2849::URL](Rfc2849.html),
      */
-    public const ATTRVAL_SPEC = '(?:'.self::ATTRIBUTE_DESCRIPTION.self::VALUE_SPEC.self::SEP.')';
-
-    /**
-     * [RFC2849](https://tools.ietf.org/html/rfc2849):
-     * ``ldif-attrval-record = dn-spec SEP 1*attrval-spec``
-     */
-    public const LDIF_ATTRVAL_RECORD = '(?:'.self::DN_SPEC.self::SEP.self::ATTRVAL_SPEC.'+)';
+    public const ATTRVAL_SPEC =
+        '(?:'.
+            '(?<attr_desc>'.self::ATTRIBUTE_DESCRIPTION.')'.
+            self::VALUE_SPEC.
+            self::EOL.
+        ')';
+    // [/ATTRVAL_SPEC]
 
     /**
      * [RFC2849](https://tools.ietf.org/html/rfc2849):
@@ -335,29 +472,114 @@ class Rfc2849 extends AbstractRuleSet
      *
      *  - ``mod_type``: always set, contains the modification type indicator,
      *    either ``"add"``, ``"delete"``, or ``"replace"``,
-     *  - ``attr_desc``: always set, contains the attribute description (attribute type with options).
+     *  - ``attr_desc``: only set if the rule matched and there is no error in
+     *    *attributeDescripton*; contains the attribute description (attribute
+     *    type with options).
+     *  - ``attr_type_error``: only set if there is an error in the
+     *    *AttributeType* part of the *attributeDescription*.
+     *  - ``attr_opts_error``: only set if there is an error in the *options*
+     *    part of the *attributeDescription*,
      */
     public const MOD_SPEC_INIT =
         '(?:'.
             '(?<mod_type>add|delete|replace):'.
-            self::FILL.self::ATTRIBUTE_DESCRIPTION.self::SEP.
+            self::FILL.
+            '(?:'.
+                '(?:'.
+                    '(?<attr_desc>'.self::ATTRIBUTE_DESCRIPTION.')'.
+                ')'.
+                '|'.
+                '(?:'.
+                    self::ATTRIBUTE_TYPE.
+                    '(?:;'.self::OPTIONS.'?)'.
+                    '(?<attr_opts_error>'.self::NOTEOL.'*)'.
+                ')'.
+                '|'.
+                '(?:'.
+                    self::ATTRIBUTE_TYPE.'?'.
+                    '(?<attr_type_error>'.self::NOTEOL.'*'.')'.
+                ')'.
+            ')'.
+            '(?:'.self::EOL.')'.
         ')';
+    // [/MOD_SPEC_INIT]
 
     /**
-     * [RFC2849](https://tools.ietf.org/html/rfc2849)
+     * [RFC2849](https://tools.ietf.org/html/rfc2849):
      * ``changerecord = "changetype:" FILL (change-add / change-delete / change-modify / change-moddn)``
      *
-     * This pattern implements the initial line of the *changerecord* rule (call it *changerecord-init*).
+     * This pattern implements the initial line of the *changerecord* rule (call it *changerecord-init*),
+     * such that:
+     *
+     * ```
+     * changerecord-init = "changetype:" FILL ("add" / "delete" / "modrdn" / "moddn" / "modify") SEP
+     * ```
      *
      * Capture groups:
      *
-     *  - ``chg_type``: always set, contains the change type indicator, either
-     *    ``"add"``, ``"delete"``, ``"moddn"``, ``"modrdn"``, or ``"modify"``.
+     *  - ``chg_type``: only set if the rule matched and there is no error;
+     *    contains the change type indicator, either ``"add"``, ``"delete"``,
+     *    ``"moddn"``, ``"modrdn"``, or ``"modify"``.
+     *  - ``chg_type_error``: only set if the rule matched but there is an
+     *    error after the ``"changetype:"`` tag.
      */
     public const CHANGERECORD_INIT =
         '(?:'.
-            'changetype:'.self::FILL.'(?<chg_type>add|delete|modrdn|moddn|modify)'.self::SEP.
+            'changetype:'.self::FILL.
+            '(?:(?<chg_type>add|delete|modrdn|moddn|modify)|(?<chg_type_error>'.self::NOTEOL.'*))'.
+            self::EOL.
         ')';
+    // [/CHANGERECORD_INIT]
+
+    /**
+     * Matches the following production and provides enhanced error detection.
+     *
+     * ``newrdn-spec = "newrdn:" ( FILL rdn / ":" FILL base64-rdn ) SEP``
+     *
+     * Capture groups:
+     *
+     *  - ``rdn_safe``: only set if rule matches, and the string after "newrdn:" is a valid SAFE-STRING,
+     *  - ``rdn_b64``: only set if rule matches, and the string after "newrdn::" is a valid BASE64-STRING,
+     *  - ``rdn_safe_error``: only set if rule matches, but there is an error after "newrdn:",
+     *  - ``rdn_b64_error``: only set if rule matches, but there is an error after "newrdn::".
+     */
+    public const NEWRDN_SPEC =
+        '(?:'.
+            'newrdn:'.
+            '(?:'.
+                '(?:(?!:)'.self::FILL.'(?:'.
+                    '(?:(?<rdn_safe>'.self::RDN.'))'.
+                    '|'.
+                    '(?:'.self::RDN.'?(?<rdn_safe_error>'.self::NOTEOL.'*))'.
+                '))'.
+                '|'.
+                '(?::'.self::FILL.'(?:'.
+                    '(?:(?<rdn_b64>'.self::BASE64_RDN.'))'.
+                    '|'.
+                    '(?:'.self::BASE64_RDN.'?(?<rdn_b64_error>'.self::NOTEOL.'*))'.
+                '))'.
+            ')'.self::EOL.
+        ')';
+    // [/NEWRDN_SPEC]
+
+    /**
+     * ``newsuperior-spec = "newsuperior:" (FILL distinguishedName / ":" FILL base64-distinguishedName) SEP``
+     *
+     * Matches any string that starts with ``"newsuperior:"``, and spans to the nearest
+     * [EOL](Rfc2849.html) including it. Returns one of the ``dn_*_error``
+     * capture groups if there is an error after the ``"version:"`` tag.
+     *
+     * Capture groups:
+     *
+     *  - ``dn_safe``: only set if the subject contains no syntax errors and the initial tag is ``"newsuperior:"``,
+     *  - ``dn_b64``: only set if the subject contains no syntax errors and the initial tag is ``"newsuperior::"``,
+     *  - ``dn_safe_error``: only set if there is an error after the ``"newsuperior:"``
+     *    tag (single colon); contains the substring that failed to match [Rfc2849::SAFE_STRING](Rfc2849.html),
+     *  - ``dn_b64_error``: only set if there is an error after the ``"newsuperior::"``
+     *    tag (double colon); contains the substring that failed to match [Rfc2849::BASE64_STRING](Rfc2849.html),
+     */
+    public const NEWSUPERIOR_SPEC = '(?:newsuperior'.self::DN_VALUE_SPEC.self::EOL.')';
+    // [/NEWSUPERIOR_SPEC]
 
     /**
      * Rules provided by this class.
@@ -376,6 +598,8 @@ class Rfc2849 extends AbstractRuleSet
         'SAFE_CHAR',
         'SAFE_INIT_CHAR',
         'SEP',
+        'EOL',
+        'NOTEOL',
         'FILL',
         'VERSION_NUMBER',
         'VERSION_SPEC',
@@ -391,14 +615,16 @@ class Rfc2849 extends AbstractRuleSet
         'BASE64_DISTINGUISHED_NAME',
         'RDN',
         'BASE64_RDN',
+        'DN_VALUE_SPEC',
         'DN_SPEC',
         'URL',
         'VALUE_SPEC',
         'CONTROL',
         'ATTRVAL_SPEC',
-        'LDIF_ATTRVAL_RECORD',
         'MOD_SPEC_INIT',
         'CHANGERECORD_INIT',
+        'NEWRDN_SPEC',
+        'NEWSUPERIOR_SPEC',
     ];
 
     /**
@@ -420,33 +646,50 @@ class Rfc2849 extends AbstractRuleSet
 //            'SAFE_CHAR'                 => 'expected SAFE-CHAR (RFC2849)',
 //            'SAFE_INIT_CHAR'            => 'expected SAFE-INIT-CHAR (RFC2849)',
             'SEP'                       => 'expected line separator (RFC2849)',
-//            'FILL'                      => 'expected FILL (RFC2849)',
-//            'VERSION_NUMBER'            => 'expected version-number (RFC2849)',
-//            'VERSION_SPEC'              => 'expected version-spec (RFC2849)',
-//            'BASE64_STRING'             => 'expected BASE64-STRING (RFC2849)',
-//            'BASE64_UTF8_STRING'        => 'expected BASE64-UTF8-STRING (RFC2849)',
-//            'SAFE_STRING'               => 'expected SAFE-STRING (RFC2849)',
-//            'LDAP_OID'                  => 'expected ldap-oid (RFC2849)',
-//            'OPTION'                    => 'expected option (RFC2849)',
-//            'OPTIONS'                   => 'expected options (RFC2849)',
-//            'ATTRIBUTE_TYPE'            => 'expected AttributeType (RFC2849)',
-//            'ATTRIBUTE_DESCRIPTION'     => 'expected AttributeDescription (RFC2849)',
-//            'DISTINGUISHED_NAME'        => 'expected distinguishedName (RFC2849)',
-//            'BASE64_DISTINGUISHED_NAME' => 'expected base64-distinguishedName (RFC2849)',
-//            'RDN'                       => 'expected rdn (RFC2849)',
-//            'BASE64_RDN'                => 'expected base64-rdn (RFC2849)',
-//            'DN_SPEC'                   => 'expected dn-spec (RFC2849)',
-//            'URL'                       => 'expected URL (RFC2849)',
-//            'VALUE_SPEC'                => 'expected value-spec (RFC2849)',
-//            'CONTROL'                   => 'expected control (RFC2849)',
-//            'ATTRVAL_SPEC'              => 'expected attrval-spec (RFC2849)',
-//            'LDIF_ATTRVAL_RECORD'       => 'expected ldif-attrval-record (RFC2849)',
-            'MOD_SPEC_INIT'             => 'expected one of "add:", "delete:" or "replace:" '.
-                                           'followed by AttributeDescription (RFC2849)',
-            'CHANGERECORD_INIT'         => 'expected "changetype:" followed by one of "add", '.
-                                           '"delete", "modrdn", "moddn", or "modify" followed '.
-                                           'by line separator (RFC2849)',
-        ]
+////            'FILL'                      => 'expected FILL (RFC2849)',
+////            'VERSION_NUMBER'            => 'expected version-number (RFC2849)',
+////            'VERSION_SPEC'              => 'expected version-spec (RFC2849)',
+////            'BASE64_STRING'             => 'expected BASE64-STRING (RFC2849)',
+////            'BASE64_UTF8_STRING'        => 'expected BASE64-UTF8-STRING (RFC2849)',
+////            'SAFE_STRING'               => 'expected SAFE-STRING (RFC2849)',
+////            'LDAP_OID'                  => 'expected ldap-oid (RFC2849)',
+////            'OPTION'                    => 'expected option (RFC2849)',
+////            'OPTIONS'                   => 'expected options (RFC2849)',
+////            'ATTRIBUTE_TYPE'            => 'expected AttributeType (RFC2849)',
+////            'ATTRIBUTE_DESCRIPTION'     => 'expected AttributeDescription (RFC2849)',
+////            'DISTINGUISHED_NAME'        => 'expected distinguishedName (RFC2849)',
+////            'BASE64_DISTINGUISHED_NAME' => 'expected base64-distinguishedName (RFC2849)',
+////            'RDN'                       => 'expected rdn (RFC2849)',
+////            'BASE64_RDN'                => 'expected base64-rdn (RFC2849)',
+////            'DN_SPEC'                   => 'expected dn-spec (RFC2849)',
+////            'URL'                       => 'expected URL (RFC2849)',
+////            'VALUE_SPEC'                => 'expected value-spec (RFC2849)',
+////            'CONTROL'                   => 'expected control (RFC2849)',
+////            'ATTRVAL_SPEC'              => 'expected attrval-spec (RFC2849)',
+////            'LDIF_ATTRVAL_RECORD'       => 'expected ldif-attrval-record (RFC2849)',
+            'VERSION_SPEC'          => 'expected "version:" (RFC2849)',
+            'DN_SPEC'               => 'expected "dn:" (RFC2849)',
+            'VALUE_SPEC'            => 'expected ":" (RFC2849)',
+            'CONTROL'               => 'expected "control:" (RFC2849)',
+            'ATTRVAL_SPEC'          => 'expected <AttributeDescription>":" (RFC2849)',
+            'MOD_SPEC_INIT'         => 'expected one of "add:", "delete:" or "replace:" (RFC2849)',
+            'CHANGERECORD_INIT'     => 'expected "changetype:" (RFC2849)',
+            'NEWRDN_SPEC'           => 'expected "newrdn:" (RFC2849)',
+            'NEWSUPERIOR_SPEC'      => 'expected "newsuperior:" (RFC2849)',
+        ],
+        'attr_opts_error'   => 'missing or invalid options (RFC2849)',
+        'attr_type_error'   => 'missing or invalid AttributeType (RFC2849)',
+        'dn_b64_error'      => 'malformed BASE64-STRING (RFC2849)',
+        'dn_safe_error'     => 'malformed SAFE-STRING (RFC2849)',
+        'chg_type_error'    => 'missing or invalid change type (RFC2849)',
+        'ctl_type_error'    => 'missing or invalid OID (RFC2849)',
+        'ctl_crit_error'    => 'expected "true" or "false" (RFC2849)',
+        'rdn_b64_error'     => 'malformed BASE64-STRING (RFC2849)',
+        'rdn_safe_error'    => 'malformed SAFE-STRING (RFC2849)',
+        'value_b64_error'   => 'malformed BASE64-STRING (RFC2849)',
+        'value_safe_error'  => 'malformed SAFE-STRING (RFC2849)',
+        'value_url_error'   => 'malformed URL (RFC2849/RFC3986)',
+        'version_error'     => 'expected valid version number (RFC2849)',
     ];
 
     /**

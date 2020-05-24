@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Ldif\Rules;
 
 use Korowai\Lib\Ldif\Rules\NewSuperiorSpecRule;
-use Korowai\Lib\Ldif\Rules\AbstractNameSpecRule;
+use Korowai\Lib\Ldif\Rules\AbstractDnSpecRule;
 use Korowai\Lib\Ldif\Rules\Util;
-use Korowai\Lib\Rfc\Rfc2849x;
+use Korowai\Lib\Rfc\Rfc2849;
 
 use Korowai\Testing\Lib\Ldif\TestCase;
 
@@ -25,30 +25,21 @@ use Korowai\Testing\Lib\Ldif\TestCase;
  */
 class NewSuperiorSpecRuleTest extends TestCase
 {
-    public function test__extendsAbstractNameSpecRule()
+    public function test__extends__AbstractDnSpecRule()
     {
-        $this->assertExtendsClass(AbstractNameSpecRule::class, NewSuperiorSpecRule::class);
+        $this->assertExtendsClass(AbstractDnSpecRule::class, NewSuperiorSpecRule::class);
     }
 
     public static function construct__cases()
     {
         return [
-            'default' => [
+            '__construct()' => [
                 'args'   => [],
                 'expect' => [
-                    'isOptional' => false
-                ]
-            ],
-            'required' => [
-                'args'   => [false],
-                'expect' => [
-                    'isOptional' => false
-                ]
-            ],
-            'optional' => [
-                'args'   => [true],
-                'expect' => [
-                    'isOptional' => true
+                    'rfcRule' => self::hasPropertiesIdenticalTo([
+                        'ruleSetClass' => Rfc2849::class,
+                        'name' => 'NEWSUPERIOR_SPEC',
+                    ])
                 ]
             ],
         ];
@@ -61,31 +52,6 @@ class NewSuperiorSpecRuleTest extends TestCase
     {
         $rule = new NewSuperiorSpecRule(...$args);
         $this->assertHasPropertiesSameAs($expect, $rule);
-    }
-
-    public function test__b64Capture()
-    {
-        $this->assertSame('dn_b64', NewSuperiorSpecRule::b64Capture());
-    }
-
-    public function test__safeCapture()
-    {
-        $this->assertSame('dn_safe', NewSuperiorSpecRule::safeCapture());
-    }
-
-    public function test__rfcRuleSet()
-    {
-        $this->assertSame(Rfc2849x::class, NewSuperiorSpecRule::rfcRuleSet());
-    }
-
-    public function test__rfcRuleId()
-    {
-        $this->assertSame('NEWSUPERIOR_SPEC_X', NewSuperiorSpecRule::rfcRuleId());
-    }
-
-    public function test__validator()
-    {
-        $this->assertSame([Util::class, 'dnCheck'], NewSuperiorSpecRule::validator());
     }
 
     public static function dnMatch__cases()
@@ -606,9 +572,9 @@ class NewSuperiorSpecRuleTest extends TestCase
             $dn = $expect['init'];
         }
 
-        $rule = new NewSuperiorSpecRule(...$args);
+        $rule = new NewSuperiorSpecRule;
 
-        $result = $rule->parse($state, $dn);
+        $result = $rule->parse($state, $dn, ...$args);
 
         $this->assertSame($expect['result'], $result);
         $this->assertSame($expect['dn'], $dn);

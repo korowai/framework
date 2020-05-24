@@ -17,7 +17,7 @@ use Korowai\Lib\Ldif\ParserStateInterface as State;
 use Korowai\Lib\Ldif\Scan;
 use Korowai\Lib\Ldif\ValueInterface;
 use Korowai\Lib\Ldif\Value;
-use Korowai\Lib\Rfc\Rfc2849x;
+use Korowai\Lib\Rfc\Rfc2849;
 use League\Uri\Exceptions\SyntaxError as UriSyntaxError;
 
 /**
@@ -28,14 +28,12 @@ use League\Uri\Exceptions\SyntaxError as UriSyntaxError;
 final class ValueSpecRule extends AbstractRfcRule
 {
     /**
-     * @var string
+     * Initializes the object.
      */
-    protected static $rfcRuleSet = Rfc2849x::class;
-
-    /**
-     * @var string
-     */
-    protected static $rfcRuleId = 'VALUE_SPEC_X';
+    public function __construct()
+    {
+        parent::__construct(Rfc2849::class, 'VALUE_SPEC');
+    }
 
     /**
      * Completes parsing with rule by validating substrings captured by the

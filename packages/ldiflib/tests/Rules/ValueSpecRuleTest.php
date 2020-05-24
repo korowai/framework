@@ -16,7 +16,7 @@ namespace Korowai\Tests\Lib\Ldif\Rules;
 use Korowai\Lib\Ldif\Rules\ValueSpecRule;
 use Korowai\Lib\Ldif\Rules\AbstractRfcRule;
 use Korowai\Lib\Ldif\ValueInterface;
-use Korowai\Lib\Rfc\Rfc2849x;
+use Korowai\Lib\Rfc\Rfc2849;
 use Korowai\Testing\Lib\Ldif\TestCase;
 
 /**
@@ -29,36 +29,12 @@ class ValueSpecRuleTest extends TestCase
         $this->assertExtendsClass(AbstractRfcRule::class, ValueSpecRule::class);
     }
 
-    public function test__rfcRuleSet()
-    {
-        $this->assertSame(Rfc2849x::class, ValueSpecRule::rfcRuleSet());
-    }
-
-    public function test__rfcRuleId()
-    {
-        $this->assertSame('VALUE_SPEC_X', ValueSpecRule::rfcRuleId());
-    }
-
     public static function construct__cases()
     {
         return [
             'default' => [
                 'args'   => [],
-                'expect' => [
-                    'isOptional' => false
-                ]
-            ],
-            'required' => [
-                'args'   => [false],
-                'expect' => [
-                    'isOptional' => false
-                ]
-            ],
-            'optional' => [
-                'args'   => [true],
-                'expect' => [
-                    'isOptional' => true
-                ]
+                'expect' => [],
             ],
         ];
     }
@@ -71,8 +47,8 @@ class ValueSpecRuleTest extends TestCase
         $rule = new ValueSpecRule(...$args);
         $expect = array_merge([
             'rfcRule' => self::hasPropertiesIdenticalTo([
-                'ruleSetClass' => Rfc2849x::class,
-                'name' => 'VALUE_SPEC_X',
+                'ruleSetClass' => Rfc2849::class,
+                'name' => 'VALUE_SPEC',
             ])
         ], $expect);
         $this->assertHasPropertiesSameAs($expect, $rule);
@@ -378,9 +354,9 @@ class ValueSpecRuleTest extends TestCase
             $value = $this->getMockBuilder(ValueInterface::class)->getMockForAbstractClass();
         }
 
-        $rule = new ValueSpecRule(...$args);
+        $rule = new ValueSpecRule;
 
-        $result = $rule->parse($state, $value);
+        $result = $rule->parse($state, $value, ...$args);
 
         $this->assertSame($expect['result'], $result);
 

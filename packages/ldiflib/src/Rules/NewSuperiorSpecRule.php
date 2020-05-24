@@ -13,22 +13,24 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldif\Rules;
 
-use Korowai\Lib\Rfc\Rfc2849x;
+use Korowai\Lib\Rfc\Rfc2849;
 
 /**
- * A rule object that implements *newsuperior-spec* rule defined in [Rfc2849x](\.\./\.\./Rfc/Rfc2849x.html).
+ * A rule object that implements *newsuperior-spec* rule defined in [Rfc2849](\.\./\.\./Rfc/Rfc2849.html).
  *
  * - semantic value: string
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-final class NewSuperiorSpecRule extends AbstractNameSpecRule
+final class NewSuperiorSpecRule extends AbstractDnSpecRule
 {
-    protected static $b64Capture = 'dn_b64';
-    protected static $safeCapture = 'dn_safe';
-    protected static $rfcRuleSet = Rfc2849x::class;
-    protected static $rfcRuleId = 'NEWSUPERIOR_SPEC_X';
-    protected static $validator = [Util::class, 'dnCheck'];
+    /**
+     * Initializes the object.
+     */
+    public function __construct()
+    {
+        parent::__construct(Rfc2849::class, 'NEWSUPERIOR_SPEC');
+    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

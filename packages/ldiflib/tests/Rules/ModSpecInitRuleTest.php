@@ -16,7 +16,7 @@ namespace Korowai\Tests\Lib\Ldif\Rules;
 use Korowai\Lib\Ldif\Rules\ModSpecInitRule;
 use Korowai\Lib\Ldif\Rules\AbstractRfcRule;
 use Korowai\Lib\Ldif\ModSpecInterface;
-use Korowai\Lib\Rfc\Rfc2849x;
+use Korowai\Lib\Rfc\Rfc2849;
 use Korowai\Testing\Lib\Ldif\TestCase;
 
 /**
@@ -29,36 +29,12 @@ class ModSpecInitRuleTest extends TestCase
         $this->assertExtendsClass(AbstractRfcRule::class, ModSpecInitRule::class);
     }
 
-    public function test__rfcRuleSet()
-    {
-        $this->assertSame(Rfc2849x::class, ModSpecInitRule::rfcRuleSet());
-    }
-
-    public function test__rfcRuleId()
-    {
-        $this->assertSame('MOD_SPEC_INIT_X', ModSpecInitRule::rfcRuleId());
-    }
-
     public static function construct__cases()
     {
         return [
             'default' => [
                 'args'   => [],
-                'expect' => [
-                    'isOptional' => false
-                ]
-            ],
-            'required' => [
-                'args'   => [false],
-                'expect' => [
-                    'isOptional' => false
-                ]
-            ],
-            'optional' => [
-                'args'   => [true],
-                'expect' => [
-                    'isOptional' => true
-                ]
+                'expect' => [],
             ],
         ];
     }
@@ -71,8 +47,8 @@ class ModSpecInitRuleTest extends TestCase
         $rule = new ModSpecInitRule(...$args);
         $expect = array_merge([
             'rfcRule' => self::hasPropertiesIdenticalTo([
-                'ruleSetClass' => Rfc2849x::class,
-                'name' => 'MOD_SPEC_INIT_X',
+                'ruleSetClass' => Rfc2849::class,
+                'name' => 'MOD_SPEC_INIT',
             ])
         ], $expect);
         $this->assertHasPropertiesSameAs($expect, $rule);
@@ -500,9 +476,9 @@ class ModSpecInitRuleTest extends TestCase
             $value = $this->getMockBuilder(ModSpecInterface::class)->getMockForAbstractClass();
         }
 
-        $rule = new ModSpecInitRule(...$args);
+        $rule = new ModSpecInitRule;
 
-        $result = $rule->parse($state, $value);
+        $result = $rule->parse($state, $value, ...$args);
 
         $this->assertSame($expect['result'], $result);
 

@@ -16,7 +16,7 @@ namespace Korowai\Tests\Lib\Ldif\Rules;
 use Korowai\Lib\Ldif\Rules\VersionSpecRule;
 use Korowai\Lib\Ldif\Rules\AbstractRfcRule;
 use Korowai\Lib\Ldif\ValueInterface;
-use Korowai\Lib\Rfc\Rfc2849x;
+use Korowai\Lib\Rfc\Rfc2849;
 use Korowai\Testing\Lib\Ldif\TestCase;
 
 /**
@@ -29,36 +29,12 @@ class VersionSpecRuleTest extends TestCase
         $this->assertExtendsClass(AbstractRfcRule::class, VersionSpecRule::class);
     }
 
-    public function test__rfcRuleSet()
-    {
-        $this->assertSame(Rfc2849x::class, VersionSpecRule::rfcRuleSet());
-    }
-
-    public function test__rfcRuleId()
-    {
-        $this->assertSame('VERSION_SPEC_X', VersionSpecRule::rfcRuleId());
-    }
-
     public static function construct__cases()
     {
         return [
             'default' => [
                 'args'   => [],
-                'expect' => [
-                    'isOptional' => false
-                ]
-            ],
-            'required' => [
-                'args'   => [false],
-                'expect' => [
-                    'isOptional' => false
-                ]
-            ],
-            'optional' => [
-                'args'   => [true],
-                'expect' => [
-                    'isOptional' => true
-                ]
+                'expect' => [],
             ],
         ];
     }
@@ -71,8 +47,8 @@ class VersionSpecRuleTest extends TestCase
         $rule = new VersionSpecRule(...$args);
         $expect = array_merge([
             'rfcRule' => self::hasPropertiesIdenticalTo([
-                'ruleSetClass' => Rfc2849x::class,
-                'name' => 'VERSION_SPEC_X',
+                'ruleSetClass' => Rfc2849::class,
+                'name' => 'VERSION_SPEC',
             ])
         ], $expect);
         $this->assertHasPropertiesSameAs($expect, $rule);
@@ -377,9 +353,9 @@ class VersionSpecRuleTest extends TestCase
             $value = $this->getMockBuilder(ValueInterface::class)->getMockForAbstractClass();
         }
 
-        $rule = new VersionSpecRule(...$args);
+        $rule = new VersionSpecRule;
 
-        $result = $rule->parse($state, $value);
+        $result = $rule->parse($state, $value, ...$args);
 
         $this->assertSame($expect['result'], $result);
 

@@ -17,7 +17,7 @@ use Korowai\Lib\Ldif\ParserStateInterface as State;
 use Korowai\Lib\Ldif\Scan;
 use Korowai\Lib\Ldif\ModSpec;
 use Korowai\Lib\Ldif\Exception\InvalidModTypeException;
-use Korowai\Lib\Rfc\Rfc2849x;
+use Korowai\Lib\Rfc\Rfc2849;
 
 /**
  * A rule that parses *mod-spec-init* rule defined in Rfc2849.
@@ -27,15 +27,12 @@ use Korowai\Lib\Rfc\Rfc2849x;
 final class ModSpecInitRule extends AbstractRfcRule
 {
     /**
-     * @var string
+     * Initializes the object.
      */
-    protected static $rfcRuleSet = Rfc2849x::class;
-
-    /**
-     * @var string
-     */
-    protected static $rfcRuleId = 'MOD_SPEC_INIT_X';
-
+    public function __construct()
+    {
+        parent::__construct(Rfc2849::class, 'MOD_SPEC_INIT');
+    }
 
     /**
      * Completes parsing with rule by validating substrings captured by the

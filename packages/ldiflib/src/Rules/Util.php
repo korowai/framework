@@ -95,28 +95,5 @@ class Util
 
         return true;
     }
-
-    /**
-     * Parses string by repeatedly applying *$rule* until *$rule->parse()*
-     * returns ``false`` (or *$max* repetitions is reached).
-     *
-     * @param  RuleInterface $rule
-     * @param  State $state
-     * @param  int $max
-     *
-     * @return array|null
-     *      Returns semantic *$value*s from consecutive ``$rule->parse(...)`` calls.
-     */
-    public static function repeat(RuleInterface $rule, State $state, int $max = PHP_INT_MAX) : ?array
-    {
-        $values = [];
-        for ($count = 0; $count < $max; $count++) {
-            if (!$rule->parse($state, $value)) {
-                return $values;
-            }
-            $values[] = $value;
-        }
-        return $values;
-    }
 }
 // vim: syntax=php sw=4 ts=4 et:

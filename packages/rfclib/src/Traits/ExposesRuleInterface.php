@@ -30,16 +30,6 @@ trait ExposesRuleInterface
     abstract public function getRfcRule() : ?RuleInterface;
 
     /**
-     * Returns the rule name as it appears in the set of rules.
-     *
-     * @return string
-     */
-    public function name() : string
-    {
-        return $this->getRfcRule()->name();
-    }
-
-    /**
      * Returns the regular expression that implements the rule. Same as
      * *$this->rule()*.
      *
@@ -125,17 +115,6 @@ trait ExposesRuleInterface
     public function getErrorMessage(string $errorKey = '') : string
     {
         return $this->getRfcRule()->getErrorMessage($errorKey);
-    }
-
-    /**
-     * Returns true if the rule is optional (e.g. it's an alternative in
-     * higher-level syntactic rule).
-     *
-     * @return bool
-     */
-    public function isOptional() : bool
-    {
-        return $this->getRfcRule()->isOptional();
     }
 }
 

@@ -32,19 +32,6 @@ class ExposesRuleInterfaceTest extends TestCase
         return $obj;
     }
 
-    public function test__name()
-    {
-        $rule = $this->getMockBuilder(RuleInterface::class)
-                         ->getMockForAbstractClass();
-        $rule->expects($this->once())
-             ->method('name')
-             ->with()
-             ->willReturn('xyz');
-        $obj = $this->getTestObject($rule);
-
-        $this->assertSame('xyz', $obj->name());
-    }
-
     public function test____toString()
     {
         $rule = $this->getMockBuilder(RuleInterface::class)
@@ -148,19 +135,6 @@ class ExposesRuleInterfaceTest extends TestCase
 
         $this->assertSame('foo', $obj->getErrorMessage());
         $this->assertSame('bar', $obj->getErrorMessage('asd'));
-    }
-
-    public function test__isOptional()
-    {
-        $rule = $this->getMockBuilder(RuleInterface::class)
-                         ->getMockForAbstractClass();
-        $rule->expects($this->once())
-             ->method('isOptional')
-             ->with()
-             ->willReturn(true);
-        $obj = $this->getTestObject($rule);
-
-        $this->assertTrue($obj->isOptional());
     }
 }
 

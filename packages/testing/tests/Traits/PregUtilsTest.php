@@ -28,11 +28,11 @@ class PregUtilsTest extends TestCase
     {
         $this->assertSame([['a'], ['b']], static::stringsToPregTuples(['a', 'b']));
 
-        $expected = [['a', ['key' => ['a', 0]]], ['b', ['key' => ['b', 0]]]];
-        $this->assertSame($expected, static::stringsToPregTuples(['a', 'b'], 'key'));
+        $expect = [['a', ['key' => ['a', 0]]], ['b', ['key' => ['b', 0]]]];
+        $this->assertSame($expect, static::stringsToPregTuples(['a', 'b'], 'key'));
 
-        $expected = [['a', ['key' => ['a', 3]]], ['b', ['key' => ['b', 3]]]];
-        $this->assertSame($expected, static::stringsToPregTuples(['a', 'b'], 'key', 3));
+        $expect = [['a', ['key' => ['a', 3]]], ['b', ['key' => ['b', 3]]]];
+        $this->assertSame($expect, static::stringsToPregTuples(['a', 'b'], 'key', 3));
     }
 
     public function shiftPregCaptures__cases()
@@ -68,9 +68,9 @@ class PregUtilsTest extends TestCase
     /**
      * @dataProvider shiftPregCaptures__cases
      */
-    public function test__shiftPregCaptures(array $args, array $expected)
+    public function test__shiftPregCaptures(array $args, array $expect)
     {
-        $this->assertSame($expected, self::shiftPregCaptures(...$args));
+        $this->assertSame($expect, self::shiftPregCaptures(...$args));
     }
 
     public function prefixPregCaptures__cases()
@@ -107,8 +107,13 @@ class PregUtilsTest extends TestCase
             ],
 
             [
-                [[['whole string', 2], 'second' => ['string',  8]], 'prefix ', []],
-                [ ['whole string', 9], 'second' => ['string', 15]]
+                [[[       'whole string', 2], 'second' => ['string',  8]], 'prefix ', true],
+                [ ['prefix whole string', 2], 'second' => ['string', 15]]
+            ],
+
+            [
+                [[[       'whole string', 2], 'second' => ['string',  8]], 'prefix ', 'Idefix '],
+                [ ['Idefix whole string', 2], 'second' => ['string', 15]]
             ],
         ];
     }
@@ -116,9 +121,313 @@ class PregUtilsTest extends TestCase
     /**
      * @dataProvider prefixPregCaptures__cases
      */
-    public function test__prefixPregCaptures(array $args, array $expected)
+    public function test__prefixPregCaptures(array $args, array $expect)
     {
-        $this->assertSame($expected, self::prefixPregCaptures(...$args));
+        $this->assertSame($expect, self::prefixPregCaptures(...$args));
+    }
+
+    public function mergePregCaptures__cases()
+    {
+        return [
+            // #0
+            [
+                'args' => [
+                    [                'left' => 'LEFT', 'both' => 'LEFT'],
+                    [                'rght' => 'RGHT', 'both' => 'RGHT'],
+                ],
+                'expect' => ['left' => 'LEFT', 'both' => 'RGHT', 'rght' => 'RGHT'],
+            ],
+
+            // #1
+            [
+                'args' => [
+                    [0 => 'LEFT 0',  'left' => 'LEFT', 'both' => 'LEFT'],
+                    [                'rght' => 'RGHT', 'both' => 'RGHT'],
+                ],
+                'expect' => [0 => 'LEFT 0', 'left' => 'LEFT', 'both' => 'RGHT',  'rght' => 'RGHT'],
+            ],
+
+            // #2
+            [
+                'args' => [
+                    [               'left' => 'LEFT', 'both' => 'LEFT'],
+                    [0 => 'RGHT 0', 'rght' => 'RGHT', 'both' => 'RGHT'],
+                ],
+                'expect' => ['left' => 'LEFT', 'both' => 'RGHT', 0 => 'RGHT 0', 'rght' => 'RGHT'],
+            ],
+
+            // #3
+            [
+                'args' => [
+                    [0 => 'LEFT 0', 'left' => 'LEFT', 'both' => 'LEFT'],
+                    [0 => 'RGHT 0', 'rght' => 'RGHT', 'both' => 'RGHT'],
+                ],
+                'expect' => [0 => 'LEFT 0', 'left' => 'LEFT', 'both' => 'RGHT', 1 => 'RGHT 0', 'rght' => 'RGHT'],
+            ],
+
+            // #4
+            [
+                'args' => [
+                    [               'left' => 'LEFT', 'both' => 'LEFT'],
+                    [               'rght' => 'RGHT', 'both' => 'RGHT'],
+                    true
+                ],
+                'expect' => ['left' => 'LEFT', 'both' => 'RGHT', 'rght' => 'RGHT'],
+            ],
+
+            // #5
+            [
+                'args' => [
+                    [               'left' => 'LEFT', 'both' => 'LEFT'],
+                    [0 => 'RGHT 0', 'rght' => 'RGHT', 'both' => 'RGHT'],
+                    true
+                ],
+                'expect' => [0 => 'RGHT 0', 'left' => 'LEFT', 'both' => 'RGHT', 'rght' => 'RGHT'],
+            ],
+
+            // #6
+            [
+                'args' => [
+                    [0 => 'LEFT 0', 'left' => 'LEFT', 'both' => 'LEFT'],
+                    [               'rght' => 'RGHT', 'both' => 'RGHT'],
+                    true
+                ],
+                'expect' => [0 => 'LEFT 0', 'left' => 'LEFT', 'both' => 'RGHT', 'rght' => 'RGHT'],
+            ],
+
+            // #7
+            [
+                'args' => [
+                    [0 => 'LEFT 0', 'left' => 'LEFT', 'both' => 'LEFT'],
+                    [0 => 'RGHT 0', 'rght' => 'RGHT', 'both' => 'RGHT'],
+                    true
+                ],
+                'expect' => [0 => 'RGHT 0', 'left' => 'LEFT', 'both' => 'RGHT', 'rght' => 'RGHT'],
+            ],
+
+            // #8
+            [
+                'args' => [
+                    [               'left' => 'LEFT', 'both' => 'LEFT'],
+                    [               'rght' => 'RGHT', 'both' => 'RGHT'],
+                    'FOO'
+                ],
+                'expect' => [0 => 'FOO', 'left' => 'LEFT', 'both' => 'RGHT', 'rght' => 'RGHT'],
+            ],
+
+            // #9
+            [
+                'args' => [
+                    [0 => 'LEFT 0', 'left' => 'LEFT', 'both' => 'LEFT'],
+                    [               'rght' => 'RGHT', 'both' => 'RGHT'],
+                    'FOO'
+                ],
+                'expect' => [0 => 'FOO', 'left' => 'LEFT', 'both' => 'RGHT', 'rght' => 'RGHT'],
+            ],
+
+            // #10
+            [
+                'args' => [
+                    [               'left' => 'LEFT', 'both' => 'LEFT'],
+                    [0 => 'RGHT 0', 'rght' => 'RGHT', 'both' => 'RGHT'],
+                    'FOO'
+                ],
+                'expect' => [0 => 'FOO', 'left' => 'LEFT', 'both' => 'RGHT', 'rght' => 'RGHT'],
+            ],
+
+            // #11
+            [
+                'args' => [
+                    [0 => 'LEFT 0', 'left' => 'LEFT', 'both' => 'LEFT'],
+                    [0 => 'RGHT 0', 'rght' => 'RGHT', 'both' => 'RGHT'],
+                    'FOO'
+                ],
+                'expect' => [0 => 'FOO', 'left' => 'LEFT', 'both' => 'RGHT', 'rght' => 'RGHT'],
+            ],
+
+            // #12
+            [
+                'args' => [
+                    [                   'left' => ['LEFT', 0], 'both' => ['LEFT', 1]],
+                    [                   'rght' => ['RGHT', 2], 'both' => ['RGHT', 3]],
+                ],
+                'expect' => [
+                    'left' => ['LEFT', 0],
+                    'both' => ['RGHT', 3],
+                    'rght' => ['RGHT', 2]
+                ],
+            ],
+
+            // #13
+            [
+                'args' => [
+                    [                  'left' => ['LEFT', 1], 'both' => ['LEFT', 2]],
+                    [0 => ['RGHT', 3], 'rght' => ['RGHT', 4], 'both' => ['RGHT', 5]],
+                ],
+                'expect' => [
+                    'left' => ['LEFT', 1],
+                    'both' => ['RGHT', 5],
+                    0 => ['RGHT', 3],
+                    'rght' => ['RGHT', 4]
+                ],
+            ],
+
+            // #14
+            [
+                'args' => [
+                    [0 => ['LEFT', 0], 'left' => ['LEFT', 1], 'both' => ['LEFT', 2]],
+                    [                  'rght' => ['RGHT', 4], 'both' => ['RGHT', 5]],
+                ],
+                'expect' => [
+                    0 => ['LEFT', 0],
+                    'left' => ['LEFT', 1],
+                    'both' => ['RGHT', 5],
+                    'rght' => ['RGHT', 4],
+                ],
+            ],
+
+            // #15
+            [
+                'args' => [
+                    [0 => ['LEFT', 0], 'left' => ['LEFT', 1], 'both' => ['LEFT', 2]],
+                    [0 => ['RGHT', 3], 'rght' => ['RGHT', 4], 'both' => ['RGHT', 5]],
+                ],
+                'expect' => [
+                    0 => ['LEFT', 0],
+                    'left' => ['LEFT', 1],
+                    'both' => ['RGHT', 5],
+                    1 => ['RGHT', 3],
+                    'rght' => ['RGHT', 4]
+                ],
+            ],
+
+            // #16
+            [
+                'args' => [
+                    [                  'left' => ['LEFT', 1], 'both' => ['LEFT', 2]],
+                    [                  'rght' => ['RGHT', 4], 'both' => ['RGHT', 5]],
+                    true
+                ],
+                'expect' => [
+                    'left' => ['LEFT', 1],
+                    'both' => ['RGHT', 5],
+                    'rght' => ['RGHT', 4]
+                ],
+            ],
+
+            // #17
+            [
+                'args' => [
+                    [0 => ['LEFT', 0], 'left' => ['LEFT', 1], 'both' => ['LEFT', 2]],
+                    [                  'rght' => ['RGHT', 4], 'both' => ['RGHT', 5]],
+                    true
+                ],
+                'expect' => [
+                    0 => ['LEFT', 0],
+                    'left' => ['LEFT', 1],
+                    'both' => ['RGHT', 5],
+                    'rght' => ['RGHT', 4]
+                ],
+            ],
+
+            // #18
+            [
+                'args' => [
+                    [                  'left' => ['LEFT', 1], 'both' => ['LEFT', 2]],
+                    [0 => ['RGHT', 3], 'rght' => ['RGHT', 4], 'both' => ['RGHT', 5]],
+                    true
+                ],
+                'expect' => [
+                    0 => ['RGHT', 3],
+                    'left' => ['LEFT', 1],
+                    'both' => ['RGHT', 5],
+                    'rght' => ['RGHT', 4]
+                ],
+            ],
+
+            // #19
+            [
+                'args' => [
+                    [0 => ['LEFT', 0], 'left' => ['LEFT', 1], 'both' => ['LEFT', 2]],
+                    [0 => ['RGHT', 3], 'rght' => ['RGHT', 4], 'both' => ['RGHT', 5]],
+                    true
+                ],
+                'expect' => [
+                    0 => ['RGHT', 3],
+                    'left' => ['LEFT', 1],
+                    'both' => ['RGHT', 5],
+                    'rght' => ['RGHT', 4]
+                ],
+            ],
+
+            // #20
+            [
+                'args' => [
+                    [                  'left' => ['LEFT', 1], 'both' => ['LEFT', 2]],
+                    [                  'rght' => ['RGHT', 4], 'both' => ['RGHT', 5]],
+                    ['FOO', 6]
+                ],
+                'expect' => [
+                    0 => ['FOO', 6],
+                    'left' => ['LEFT', 1],
+                    'both' => ['RGHT', 5],
+                    'rght' => ['RGHT', 4]
+                ],
+            ],
+
+            // #21
+            [
+                'args' => [
+                    [0 => ['LEFT', 0], 'left' => ['LEFT', 1], 'both' => ['LEFT', 2]],
+                    [                  'rght' => ['RGHT', 4], 'both' => ['RGHT', 5]],
+                    ['FOO', 6]
+                ],
+                'expect' => [
+                    0 => ['FOO', 6],
+                    'left' => ['LEFT', 1],
+                    'both' => ['RGHT', 5],
+                    'rght' => ['RGHT', 4]
+                ],
+            ],
+
+            // #22
+            [
+                'args' => [
+                    [                  'left' => ['LEFT', 1], 'both' => ['LEFT', 2]],
+                    [0 => ['RGHT', 3], 'rght' => ['RGHT', 4], 'both' => ['RGHT', 5]],
+                    ['FOO', 6]
+                ],
+                'expect' => [
+                    0 => ['FOO', 6],
+                    'left' => ['LEFT', 1],
+                    'both' => ['RGHT', 5],
+                    'rght' => ['RGHT', 4]
+                ],
+            ],
+
+            // #23
+            [
+                'args' => [
+                    [0 => ['LEFT', 0], 'left' => ['LEFT', 1], 'both' => ['LEFT', 2]],
+                    [0 => ['RGHT', 3], 'rght' => ['RGHT', 4], 'both' => ['RGHT', 5]],
+                    ['FOO', 6]
+                ],
+                'expect' => [
+                    0 => ['FOO', 6],
+                    'left' => ['LEFT', 1],
+                    'both' => ['RGHT', 5],
+                    'rght' => ['RGHT', 4]
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider mergePregCaptures__cases
+     */
+    public function test__mergePregCaptures(array $args, array $expect)
+    {
+        $this->assertSame($expect, self::mergePregCaptures(...$args));
     }
 
     public function prefixPregTuple__cases()
@@ -160,8 +469,13 @@ class PregUtilsTest extends TestCase
             ],
 
             [ // #7
-                [      ['whole string', [['whole string', 2], 'second' => ['string',  8]]], 'prefix ', []],
-                ['prefix whole string', [['whole string', 9], 'second' => ['string', 15]]]
+                [      ['whole string', [[       'whole string', 2], 'second' => ['string',  8]]], 'prefix ', true],
+                ['prefix whole string', [['prefix whole string', 2], 'second' => ['string', 15]]]
+            ],
+
+            [ // #8
+                [      ['whole string', [[       'whole string', 2], 'second' => ['string',  8]]], 'prefix ', 'Idefix '],
+                ['prefix whole string', [['Idefix whole string', 2], 'second' => ['string', 15]]]
             ],
         ];
     }
@@ -169,42 +483,61 @@ class PregUtilsTest extends TestCase
     /**
      * @dataProvider prefixPregTuple__cases
      */
-    public function test__prefixPregTuple(array $args, array $expected)
+    public function test__prefixPregTuple(array $args, array $expect)
     {
-        $this->assertSame($expected, self::prefixPregTuple(...$args));
+        $this->assertSame($expect, self::prefixPregTuple(...$args));
     }
 
 
     public function suffixPregTuple__cases()
     {
         return [
+            // #0
             [
                 [[''], ' suffix'],
                  [' suffix']
             ],
+
+            // #1
             [
                 [['', []], ' suffix'],
                  [' suffix', []]
             ],
 
+            // #2
             [
                 [['whole string',        ['whole string']       ], ' suffix'],
                 [ 'whole string suffix', ['whole string']]
             ],
 
+            // #3
             [
                 [['whole string',        ['whole string', 'second' => 'string']], ' suffix'],
                 [ 'whole string suffix', ['whole string', 'second' => 'string']]
             ],
 
+            // #4
             [
                 [['whole string',        ['whole string', 'second' => ['string',  6]]], ' suffix'],
                 [ 'whole string suffix', ['whole string', 'second' => ['string',  6]]]
             ],
 
+            // #5
             [
                 [['whole string',        [['whole string', 2], 'second' => ['string',  8]]], ' suffix'],
                 [ 'whole string suffix', [['whole string', 2], 'second' => ['string',  8]]]
+            ],
+
+            // #6
+            [
+                [['whole string',        [['whole string',        2], 'second' => ['string',  8]]], ' suffix', true],
+                [ 'whole string suffix', [['whole string suffix', 2], 'second' => ['string',  8]]]
+            ],
+
+            // #7
+            [
+                [['whole string',        [['whole string',        2], 'second' => ['string',  8]]], ' suffix', ' Idefix'],
+                [ 'whole string suffix', [['whole string Idefix', 2], 'second' => ['string',  8]]]
             ],
         ];
     }
@@ -212,9 +545,9 @@ class PregUtilsTest extends TestCase
     /**
      * @dataProvider suffixPregTuple__cases
      */
-    public function test__suffixPregTuple(array $args, array $expected)
+    public function test__suffixPregTuple(array $args, array $expect)
     {
-        $this->assertSame($expected, self::suffixPregTuple(...$args));
+        $this->assertSame($expect, self::suffixPregTuple(...$args));
     }
 
     public function transformPregTuple__cases()
@@ -256,8 +589,18 @@ class PregUtilsTest extends TestCase
             ],
 
             [ // #7
+                [      ['whole string',        [['whole string', 2], 'second' => ['string',  8]]], ['prefix' => 'prefix ', 'prefixMain' => true, 'suffix' => ' suffix', 'suffixMain' => true]],
+                ['prefix whole string suffix', [['prefix whole string suffix', 2], 'second' => ['string', 15]]]
+            ],
+
+            [ // #8
                 [       ['whole string', ['whole string', 'second' => ['string',  6]]], ['prefix' => 'prefix ', 'merge' => ['first' => ['whole', 7]], 'mergeLeft' => ['left' => ['string', 13]]]],
                 [ 'prefix whole string', ['left' => ['string', 13], 'whole string', 'second' => ['string', 13], 'first' => ['whole', 7]]]
+            ],
+
+            [ // #9
+                [       ['whole string', ['whole string', 'second' => ['string',  6]]], ['prefix' => 'prefix ', 'merge' => ['whole right', 'first' => ['whole', 7]], 'mergeMain' => true]],
+                [ 'prefix whole string', ['whole right',  'second' => ['string', 13], 'first' => ['whole', 7]]]
             ],
         ];
     }
@@ -265,9 +608,9 @@ class PregUtilsTest extends TestCase
     /**
      * @dataProvider transformPregTuple__cases
      */
-    public function test__transformPregTuple(array $args, array $expected)
+    public function test__transformPregTuple(array $args, array $expect)
     {
-        $this->assertSame($expected, self::transformPregTuple(...$args));
+        $this->assertSame($expect, self::transformPregTuple(...$args));
     }
 
     public function joinPregTuples__cases()
@@ -366,9 +709,9 @@ class PregUtilsTest extends TestCase
     /**
      * @dataProvider joinPregTuples__cases
      */
-    public function test__joinPregTuples(array $args, array $expected)
+    public function test__joinPregTuples(array $args, array $expect)
     {
-        $this->assertSame($expected, self::joinPregTuples(...$args));
+        $this->assertSame($expect, self::joinPregTuples(...$args));
     }
 
     public function test__joinPregTuples__exception()

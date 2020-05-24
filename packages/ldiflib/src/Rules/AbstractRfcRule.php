@@ -25,7 +25,7 @@ use Korowai\Lib\Rfc\Rule;
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-abstract class AbstractRfcRule implements RuleInterface, \Korowai\Lib\Rfc\RuleInterface
+abstract class AbstractRfcRule extends AbstractRule implements \Korowai\Lib\Rfc\RuleInterface
 {
     use DecoratesRuleInterface;
 
@@ -49,61 +49,24 @@ abstract class AbstractRfcRule implements RuleInterface, \Korowai\Lib\Rfc\RuleIn
     abstract public function parseMatched(State $state, array $matches, &$value = null) : bool;
 
     /**
-     * Returns name of the class ruleset class to be used.
-     *
-     * @return string
-     */
-    public static function rfcRuleSet() : string
-    {
-        return static::$rfcRuleSet;
-    }
-
-    /**
-     * Returns the identifier of the rule from rfcRuleSet() to be used.
-     *
-     * @return string
-     */
-    public static function rfcRuleId() : string
-    {
-        return static::$rfcRuleId;
-    }
-
-    /**
      * Initializes the object.
      *
-     * @param  bool $tryOnly
-     *      Passed to the constructor of RFC [Rule](\.\./\.\./Rfc/Rule.html)
-     *      being created internally.
+     * @param  string $rfcRuleSet
+     *      Name of the rfc ruleset class.
+     * @param  string $rfcRuleId
+     *      Name of the rule in the ruleset class.
      */
-    public function __construct(bool $tryOnly = false)
+    public function __construct(string $rfcRuleSet, string $rfcRuleId)
     {
-        $this->setRfcRule(new Rule($this->rfcRuleSet(), $this->rfcRuleId(), $tryOnly));
+        $this->setRfcRule(new Rule($rfcRuleSet, $rfcRuleId));
     }
 
     /**
-     * Parse string starting at position defined by *$state*.
-     *
-     * There are three scenarios. The rule can either:
-     *
-     * - fail to match (the string does not match the rule at all),
-     * - match with errors (string matched but error substrings are captured),
-     * - match successfully.
-     *
-     * In the first two cases, the method will append errors to *$state*, set
-     * *$value* to null and return false. The *parseMatched()* method is not
-     * invoked. In the third case, the *parseMatched()* method is invoked and
-     * it's return value is returned to caller.
-     *
-     * @param  State $state
-     *      Provides the input string, cursor, containers for errors, etc..
-     * @param  mixed $value
-     *      Semantic value to be returned to caller.
-     *
-     * @return bool Returns true on success or false on error.
+     * {@inheritdoc}
      */
-    public function parse(State $state, &$value = null) : bool
+    public function parse(State $state, &$value = null, bool $trying = false) : bool
     {
-        if (!$this->match($state, $matches)) {
+        if (!$this->match($state, $matches, $trying)) {
             $value = null;
             return false;
         }
@@ -123,18 +86,20 @@ abstract class AbstractRfcRule implements RuleInterface, \Korowai\Lib\Rfc\RuleIn
      * @param  array $matches
      *      Returns matched captured groups including matched errors. If the
      *      rule doesn't match at all, the function returns empty *$matches*.
+     * @param  bool $trying
+     *      If ``false``, error is appended to *$state* when the rule does not match.
      *
      * @return bool
      *      Returns false if rule doesn't match, or if the returned *$matches*
      *      include errors.
      */
-    public function match(State $state, array &$matches = null) : bool
+    public function match(State $state, array &$matches = null, bool $trying = false) : bool
     {
         $cursor = $state->getCursor();
 
         $matches = Scan::matchAhead('/\G'.$this.'/D', $cursor, PREG_UNMATCHED_AS_NULL);
         if (empty($matches)) {
-            if (!$this->isOptional()) {
+            if (!$trying) {
                 $message = $this->getErrorMessage();
                 $state->errorHere('syntax error: '.$message);
             }

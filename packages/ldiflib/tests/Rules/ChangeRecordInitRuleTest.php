@@ -15,7 +15,7 @@ namespace Korowai\Tests\Lib\Ldif\Rules;
 
 use Korowai\Lib\Ldif\Rules\ChangeRecordInitRule;
 use Korowai\Lib\Ldif\Rules\AbstractRfcRule;
-use Korowai\Lib\Rfc\Rfc2849x;
+use Korowai\Lib\Rfc\Rfc2849;
 use Korowai\Testing\Lib\Ldif\TestCase;
 
 /**
@@ -28,36 +28,12 @@ class ChangeRecordInitRuleTest extends TestCase
         $this->assertExtendsClass(AbstractRfcRule::class, ChangeRecordInitRule::class);
     }
 
-    public function test__rfcRuleSet()
-    {
-        $this->assertSame(Rfc2849x::class, ChangeRecordInitRule::rfcRuleSet());
-    }
-
-    public function test__rfcRuleId()
-    {
-        $this->assertSame('CHANGERECORD_INIT_X', ChangeRecordInitRule::rfcRuleId());
-    }
-
     public static function construct__cases()
     {
         return [
             'default' => [
                 'args'   => [],
-                'expect' => [
-                    'isOptional' => false
-                ]
-            ],
-            'required' => [
-                'args'   => [false],
-                'expect' => [
-                    'isOptional' => false
-                ]
-            ],
-            'optional' => [
-                'args'   => [true],
-                'expect' => [
-                    'isOptional' => true
-                ]
+                'expect' => [],
             ],
         ];
     }
@@ -70,8 +46,8 @@ class ChangeRecordInitRuleTest extends TestCase
         $rule = new ChangeRecordInitRule(...$args);
         $expect = array_merge([
             'rfcRule' => self::hasPropertiesIdenticalTo([
-                'ruleSetClass' => Rfc2849x::class,
-                'name' => 'CHANGERECORD_INIT_X',
+                'ruleSetClass' => Rfc2849::class,
+                'name' => 'CHANGERECORD_INIT',
             ])
         ], $expect);
         $this->assertHasPropertiesSameAs($expect, $rule);
@@ -447,9 +423,9 @@ class ChangeRecordInitRuleTest extends TestCase
             $value = $this->getMockBuilder(ModSpecInterface::class)->getMockForAbstractClass();
         }
 
-        $rule = new ChangeRecordInitRule(...$args);
+        $rule = new ChangeRecordInitRule;
 
-        $result = $rule->parse($state, $value);
+        $result = $rule->parse($state, $value, ...$args);
 
         $this->assertSame($expect['result'], $result);
 

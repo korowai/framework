@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Korowai\Testing\Lib\Ldif;
 
-use Korowai\Testing\Contracts\ObjectPropertyGettersMap as ContractsPropertyGettersMap;
-use Korowai\Testing\Lib\Rfc\ObjectPropertyGettersMap as RfclibPropertyGettersMap;
-use Korowai\Testing\Lib\Ldif\ObjectPropertyGettersMap as LdiflibPropertyGettersMap;
 use Korowai\Testing\Lib\Ldif\Traits\ParserTestHelpers;
 
 /**
@@ -34,9 +31,9 @@ abstract class TestCase extends \Korowai\Testing\TestCase
     {
         return array_merge_recursive(
             parent::objectPropertyGettersMap(),
-            ContractsPropertyGettersMap::getObjectPropertyGettersMap(),
-            RfclibPropertyGettersMap::getObjectPropertyGettersMap(),
-            LdiflibPropertyGettersMap::getObjectPropertyGettersMap()
+            \Korowai\Testing\Contracts\ObjectPropertyGettersMap::getObjectPropertyGettersMap(),
+            \Korowai\Testing\Lib\Rfc\ObjectPropertyGettersMap::getObjectPropertyGettersMap(),
+            \Korowai\Testing\Lib\Ldif\ObjectPropertyGettersMap::getObjectPropertyGettersMap()
         );
     }
 }

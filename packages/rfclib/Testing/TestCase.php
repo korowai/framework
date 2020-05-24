@@ -28,6 +28,18 @@ abstract class TestCase extends \Korowai\Testing\TestCase
     abstract public static function getRfcClass() : string;
 
     /**
+     * {@inheritdoc}
+     */
+    public static function objectPropertyGettersMap() : array
+    {
+        return array_merge_recursive(
+            parent::objectPropertyGettersMap(),
+            \Korowai\Testing\Contracts\ObjectPropertyGettersMap::getObjectPropertyGettersMap(),
+            \Korowai\Testing\Lib\Rfc\ObjectPropertyGettersMap::getObjectPropertyGettersMap()
+        );
+    }
+
+    /**
      * Returns the fully qualified name of RFC constant being tested.
      *
      * @return string
@@ -41,12 +53,15 @@ abstract class TestCase extends \Korowai\Testing\TestCase
      * Returns full PCRE expression for an expression stored in RFC constant.
      *
      * @param  string $fqdnConstName
+     * @param  array $options
      *
      * @return string
      */
-    public static function getRfcRegexp(string $fqdnConstName)
+    public static function getRfcRegexp(string $fqdnConstName, array $options = [])
     {
-        return '/^'.constant($fqdnConstName).'$/D';
+        $prefix = $options['prefix'] ?? '/^';
+        $suffix = $options['suffix'] ?? '$/D';
+        return $prefix.constant($fqdnConstName).$suffix;
     }
 
     /**
@@ -57,11 +72,16 @@ abstract class TestCase extends \Korowai\Testing\TestCase
      * @param  string $subject
      * @param  string $constname
      * @param  array $expMatches
+     * @param  array $options
      */
-    public static function assertRfcMatches(string $subject, string $constname, array $expMatches = []) : void
-    {
+    public static function assertRfcMatches(
+        string $subject,
+        string $constname,
+        array $expMatches = [],
+        array $options = []
+    ) : void {
         $fqdnConstName = static::getRfcFqdnConstName($constname);
-        $re = static::getRfcRegexp($fqdnConstName);
+        $re = static::getRfcRegexp($fqdnConstName, $options);
         $result = preg_match($re, $subject, $matches, PREG_UNMATCHED_AS_NULL|PREG_OFFSET_CAPTURE);
         $msg = 'Failed asserting that '.$fqdnConstName.' matches '.var_export($subject, true);
         static::assertSame(1, $result, $msg);
@@ -74,11 +94,12 @@ abstract class TestCase extends \Korowai\Testing\TestCase
      *
      * @param  string $subject
      * @param  string $constname
+     * @param  array $options
      */
-    public static function assertRfcNotMatches(string $subject, string $constname) : void
+    public static function assertRfcNotMatches(string $subject, string $constname, array $options = []) : void
     {
         $fqdnConstName = static::getRfcFqdnConstName($constname);
-        $re = static::getRfcRegexp($fqdnConstName);
+        $re = static::getRfcRegexp($fqdnConstName, $options);
         $result = preg_match($re, $subject);
         $msg = 'Failed asserting that '.$fqdnConstName.' does not match '.var_export($subject, true);
         static::assertSame(0, $result, $msg);

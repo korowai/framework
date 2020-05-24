@@ -16,7 +16,7 @@ namespace Korowai\Lib\Ldif\Rules;
 use Korowai\Lib\Ldif\ParserStateInterface as State;
 use Korowai\Lib\Ldif\Scan;
 use Korowai\Lib\Ldif\Control;
-use Korowai\Lib\Rfc\Rfc2849x;
+use Korowai\Lib\Rfc\Rfc2849;
 
 /**
  * @todo Write documentation.
@@ -26,32 +26,14 @@ use Korowai\Lib\Rfc\Rfc2849x;
 final class ControlRule extends AbstractRfcRule
 {
     /**
-     * @var string
-     */
-    protected static $rfcRuleSet = Rfc2849x::class;
-
-    /**
-     * @var string
-     */
-    protected static $rfcRuleId = 'CONTROL_X';
-
-    /**
      * Initializes the object.
      *
-     * @param  bool $tryOnly
-     *      Passed to the constructor of RFC [Rule](\.\./\.\./Rfc/Rule.html)
-     *      being created internally.
-     * @param  ValueSpecRule $valueSpecRule
-     *      Optional instance of [ValueSpecRule](ValueSpecRule.html), if not provided,
-     *      the instance is created internally.
+     * @param  array $options
      */
-    public function __construct(bool $tryOnly = false, ValueSpecRule $valueSpecRule = null)
+    public function __construct(array $options = [])
     {
-        parent::__construct($tryOnly);
-        if ($valueSpecRule === null) {
-            $valueSpecRule = new ValueSpecRule;
-        }
-        $this->setValueSpecRule($valueSpecRule);
+        parent::__construct(Rfc2849::class, 'CONTROL');
+        $this->setValueSpecRule($options['valueSpecRule'] ?? new ValueSpecRule);
     }
 
     /**

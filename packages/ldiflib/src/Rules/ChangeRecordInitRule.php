@@ -17,25 +17,23 @@ use Korowai\Lib\Ldif\ParserStateInterface as State;
 use Korowai\Lib\Ldif\Scan;
 use Korowai\Lib\Ldif\ChangeRecord;
 use Korowai\Lib\Ldif\Exception\InvalidModTypeException;
-use Korowai\Lib\Rfc\Rfc2849x;
+use Korowai\Lib\Rfc\Rfc2849;
 
 /**
- * A rule object that implements ``CHANGERECORD_INIT_X`` rule defined in
- * [Rfc2849x](\.\./\.\./Rfc/Rfc2849x.html).
+ * A rule object that implements ``CHANGERECORD_INIT`` rule defined in
+ * [Rfc2849](\.\./\.\./Rfc/Rfc2849.html).
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
 final class ChangeRecordInitRule extends AbstractRfcRule
 {
     /**
-     * @var string
+     * Initializes the object.
      */
-    protected static $rfcRuleSet = Rfc2849x::class;
-
-    /**
-     * @var string
-     */
-    protected static $rfcRuleId = 'CHANGERECORD_INIT_X';
+    public function __construct()
+    {
+        parent::__construct(Rfc2849::class, 'CHANGERECORD_INIT');
+    }
 
     /**
      * Completes parsing with rule by validating substrings captured by the

@@ -15,7 +15,6 @@ namespace Korowai\Lib\Ldif\Rules;
 
 use Korowai\Lib\Ldif\RuleInterface;
 use Korowai\Lib\Ldif\ParserStateInterface as State;
-use Korowai\Lib\Ldif\Traits\LdifChangeRecordNestedRules;
 use Korowai\Lib\Ldif\LocationInterface;
 use Korowai\Lib\Ldif\Snippet;
 use Korowai\Lib\Ldif\Records\AddRecord;
@@ -38,30 +37,20 @@ use Korowai\Lib\Ldif\Exception\InvalidRuleClassException;
  */
 final class LdifChangeRecordRule extends AbstractLdifRecordRule
 {
-    use LdifChangeRecordNestedRules {
-        getNestedRulesSpecs as getLdifChangeRecordNestedRulesSpecs;
-    }
+    /**
+     * @var ControlRule
+     */
+    private $controlRule;
 
     /**
-     * Returns an array of nested rule specifications for the given class.
-     *
-     * @return array
-     *      Returns array of key => value pairs, where keys are names of nested
-     *      rules, unique within the class, and values are arrays of the
-     *      following key => value options:
-     *
-     * - ``class`` (string): name of the class implementing given rule, the
-     *   class itself must implement [RuleInterface](\.\./RuleInterface.html),
-     * - ``construct`` (?array): if set, provides argument values to be passed
-     *   to rule's constructor when creating the rule during default
-     *   initialization,
-     * - ``optional`` (?bool): if set, then the class ensures that the given
-     *   nested *$rule* satisfies ``$rule->isOptional() === $optional``.
+     * @var ChangeRecordInitRule
      */
-    public static function getNestedRulesSpecs() : array
-    {
-        return array_merge(parent::getNestedRulesSpecs(), self::getLdifChangeRecordNestedRulesSpecs());
-    }
+    private $changeRecordInitRule;
+
+    /**
+     * @var ModSpecRule
+     */
+    private $modSpecRule;
 
     /**
      * Initializes the object.
@@ -69,20 +58,89 @@ final class LdifChangeRecordRule extends AbstractLdifRecordRule
      * @param  bool $tryOnly
      * @param  array $options
      */
-    public function __construct(bool $tryOnly = false, array $options = [])
+    public function __construct(array $options = [])
     {
-        $this->initAbstractLdifRecordRule($tryOnly, $options);
+        $this->setControlRule($options['controlRule'] ?? new ControlRule);
+        $this->setChangeRecordInitRule($options['changeRecordInitRule'] ?? new ChangeRecordInitRule);
+        $this->setModSpecRule($options['modSpecRule'] ?? new ModSpecRule);
+        parent::__construct($options);
+    }
+
+    /**
+     * Returns the nested ControlRule object.
+     *
+     * @return ControlRule
+     */
+    public function getControlRule() : ?ControlRule
+    {
+        return $this->controlRule;
+    }
+
+    /**
+     * Sets new nested ControlRule object.
+     *
+     * @param  ControlRule $rule
+     * @return object $this
+     */
+    public function setControlRule(ControlRule $rule)
+    {
+        $this->controlRule = $rule;
+        return $this;
+    }
+
+    /**
+     * Returns the nested ChangeRecordInitRule object.
+     *
+     * @return ChangeRecordInitRule
+     */
+    public function getChangeRecordInitRule() : ?ChangeRecordInitRule
+    {
+        return $this->changeRecordInitRule;
+    }
+
+    /**
+     * Sets new nested ChangeRecordInitRule object.
+     *
+     * @param  ChangeRecordInitRule $rule
+     * @return object $this
+     */
+    public function setChangeRecordInitRule(ChangeRecordInitRule $rule)
+    {
+        $this->changeRecordInitRule = $rule;
+        return $this;
+    }
+
+    /**
+     * Returns the nested ModSpecRule object.
+     *
+     * @return ModSpecRule
+     */
+    public function getModSpecRule() : ?ModSpecRule
+    {
+        return $this->modSpecRule;
+    }
+
+    /**
+     * Sets new nested ModSpecRule object.
+     *
+     * @param  ModSpecRule $rule
+     * @return object $this
+     */
+    public function setModSpecRule(ModSpecRule $rule)
+    {
+        $this->modSpecRule = $rule;
+        return $this;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function parse(State $state, &$value = null) : bool
+    public function parse(State $state, &$value = null, bool $trying = false) : bool
     {
         $begin = $state->getCursor()->getClonedLocation();
-        if (!$this->getDnSpecRule()->parse($state, $dn) ||
+        if (!$this->getDnSpecRule()->parse($state, $dn, $trying) ||
             !$this->getSepRule()->parse($state) ||
-            !$this->parseControls($state, $controls) ||
+            !$this->getControlRule()->repeat($state, $controls) ||
             !$this->parseRecord($state, $value, compact('dn', 'controls'))) {
             $value = null;
             return false;
@@ -131,7 +189,7 @@ final class LdifChangeRecordRule extends AbstractLdifRecordRule
     protected function parseAdd(State $state, AddRecordInterface &$record = null, array $vars = []) : bool
     {
         extract($vars);
-        if (!$this->parseAttrValSpecs($state, $attrValSpecs)) {
+        if (!$this->getAttrValSpecRule()->repeat($state, $attrValSpecs, 1)) {
             return false;
         }
         $record = new AddRecord($dn, compact('controls', 'attrValSpecs'));
@@ -168,35 +226,11 @@ final class LdifChangeRecordRule extends AbstractLdifRecordRule
     protected function parseModify(State $state, ModifyRecordInterface &$record = null, array $vars = []) : bool
     {
         extract($vars);
-        if (!$this->parseModSpecs($state, $modSpecs)) {
+        if (!$this->getModSpecRule()->repeat($state, $modSpecs)) {
             return false;
         }
         $record = new ModifyRecord($dn, compact('controls', 'modSpecs'));
         return true;
-    }
-
-    /**
-     * Parses sequence of zero or more *control*'s defined in RFC2849.
-     *
-     * @param  State $state
-     * @param  array $controls
-     * @return bool
-     */
-    public function parseControls(State $state, array &$controls = null) : bool
-    {
-        $count = count($state->getErrors());
-        $controls = Util::repeat($this->getControlRule(), $state);
-        return !(count($state->getErrors()) > $count);
-    }
-
-    /**
-     * @todo Write documentation
-     */
-    public function parseModSpecs(State $state, array &$modSpecs = null) : bool
-    {
-        $count = count($state->getErrors());
-        $modSpecs = Util::repeat($this->getModSpecRule(), $state);
-        return !(count($state->getErrors()) > $count);
     }
 }
 // vim: syntax=php sw=4 ts=4 et:

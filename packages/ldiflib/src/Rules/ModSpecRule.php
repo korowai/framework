@@ -17,14 +17,14 @@ use Korowai\Lib\Ldif\RuleInterface;
 use Korowai\Lib\Ldif\ParserStateInterface as State;
 use Korowai\Lib\Ldif\Scan;
 use Korowai\Lib\Ldif\ModSpec;
-use Korowai\Lib\Rfc\Rfc2849x;
+use Korowai\Lib\Rfc\Rfc2849;
 
 /**
  * @todo Write documentation.
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-final class ModSpecRule implements RuleInterface
+final class ModSpecRule extends AbstractRule
 {
 
     /**
@@ -40,38 +40,12 @@ final class ModSpecRule implements RuleInterface
     /**
      * Initializes the object.
      *
-     * @param  bool $tryOnly
-     * @param  ModSpecInitRule $modSpecInitRule
-     * @param  AttrValSpecRule $attrValSpecRule
+     * @param  array $options
      */
-    public function __construct(
-        bool $tryOnly = false,
-        ModSpecInitRule $modSpecInitRule = null,
-        AttrValSpecRule $attrValSpecRule = null
-    ) {
-        if ($modSpecInitRule === null) {
-            $modSpecInitRule = new ModSpecInitRule($tryOnly);
-        } elseif ($modSpecInitRule->isOptional() !== $tryOnly) {
-            $message = 'Argument 1 to '.__class__.'::__construct() must be consistent with argument 2, '.
-                       'however the condition $1 === $2->isOptional() is not satisfied.';
-            // FIXME: dedicated exception
-            throw new \InvalidArgumentException($message);
-        }
-
-        if ($attrValSpecRule === null) {
-            $attrValSpecRule = new AttrValSpecRule(true);
-        }
-
-        $this->setModSpecInitRule($modSpecInitRule);
-        $this->setAttrValSpecRule($attrValSpecRule);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isOptional() : bool
+    public function __construct(array $options = [])
     {
-        return $this->getModSpecInitRule()->isOptional();
+        $this->setModSpecInitRule($options['modSpecInitRule'] ?? new ModSpecInitRule());
+        $this->setAttrValSpecRule($options['attrValSpecRule'] ?? new AttrValSpecRule());
     }
 
     /**
@@ -104,11 +78,6 @@ final class ModSpecRule implements RuleInterface
      */
     public function setAttrValSpecRule(AttrValSpecRule $attrValSpecRule)
     {
-        if (!$attrValSpecRule->isOptional()) {
-            // FIXME: dedicated exception
-            $message = 'Argument 1 to '.__class__.'::setAttrValSpecRule() must satisfy $1->isOptional() === true.';
-            throw new \InvalidArgumentException($message);
-        }
         $this->attrValSpecRule = $attrValSpecRule;
         return $this;
     }
@@ -126,26 +95,14 @@ final class ModSpecRule implements RuleInterface
     /**
      * {@inheritdoc}
      */
-    public function parse(State $state, &$value = null) : bool
+    public function parse(State $state, &$value = null, bool $trying = false) : bool
     {
-        if (!$this->getModSpecInitRule()->parse($state, $value) || !$this->parseAttrValSpecs($state, $value)) {
+        if (!$this->getModSpecInitRule()->parse($state, $value, $trying) ||
+            !$this->getAttrValSpecRule()->repeat($state, $attrVals)) {
             return false;
         }
+        $value->setAttrValSpecs($attrVals);
         return $this->parseEndMarker($state);
-    }
-
-    /**
-     * Parses zero or more *attrval-spec*s.
-     *
-     * @param  State $state
-     * @param  ModSpec $modSpec
-     */
-    protected function parseAttrValSpecs(State $state, ModSpec $modSpec)
-    {
-        $initErrCount = count($state->getErrors());
-        $attrVals = Util::repeat($this->getAttrValSpecRule(), $state);
-        $modSpec->setAttrValSpecs($attrVals);
-        return !(count($state->getErrors()) > $initErrCount);
     }
 
     /**
@@ -157,7 +114,7 @@ final class ModSpecRule implements RuleInterface
     protected function parseEndMarker(State $state) : bool
     {
         $cursor = $state->getCursor();
-        if (!Scan::matchAhead('/\G-'.Rfc2849x::SEP_X.'/D', $cursor, PREG_UNMATCHED_AS_NULL)) {
+        if (!Scan::matchAhead('/\G-'.Rfc2849::EOL.'/D', $cursor, PREG_UNMATCHED_AS_NULL)) {
             $state->errorHere('syntax error: expected "-" followed by end of line');
             return false;
         }

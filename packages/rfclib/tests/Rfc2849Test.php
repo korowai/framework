@@ -43,13 +43,30 @@ class Rfc2849Test extends TestCase
         $class = self::getRfcClass();
         $rfc2849Errors = [
             '' => [
-                'SEP' => 'expected line separator (RFC2849)',
-                'MOD_SPEC_INIT' => 'expected one of "add:", "delete:" or "replace:" '.
-                                   'followed by AttributeDescription (RFC2849)',
-                'CHANGERECORD_INIT' => 'expected "changetype:" followed by one of "add", '.
-                                       '"delete", "modrdn", "moddn", or "modify" followed '.
-                                       'by line separator (RFC2849)',
-            ]
+                'SEP'                   => 'expected line separator (RFC2849)',
+                'VERSION_SPEC'          => 'expected "version:" (RFC2849)',
+                'DN_SPEC'               => 'expected "dn:" (RFC2849)',
+                'VALUE_SPEC'            => 'expected ":" (RFC2849)',
+                'CONTROL'               => 'expected "control:" (RFC2849)',
+                'ATTRVAL_SPEC'          => 'expected <AttributeDescription>":" (RFC2849)',
+                'MOD_SPEC_INIT'         => 'expected one of "add:", "delete:" or "replace:" (RFC2849)',
+                'CHANGERECORD_INIT'     => 'expected "changetype:" (RFC2849)',
+                'NEWRDN_SPEC'           => 'expected "newrdn:" (RFC2849)',
+                'NEWSUPERIOR_SPEC'      => 'expected "newsuperior:" (RFC2849)',
+            ],
+            'attr_opts_error'   => 'missing or invalid options (RFC2849)',
+            'attr_type_error'   => 'missing or invalid AttributeType (RFC2849)',
+            'dn_b64_error'      => 'malformed BASE64-STRING (RFC2849)',
+            'dn_safe_error'     => 'malformed SAFE-STRING (RFC2849)',
+            'chg_type_error'    => 'missing or invalid change type (RFC2849)',
+            'ctl_type_error'    => 'missing or invalid OID (RFC2849)',
+            'ctl_crit_error'    => 'expected "true" or "false" (RFC2849)',
+            'rdn_b64_error'     => 'malformed BASE64-STRING (RFC2849)',
+            'rdn_safe_error'    => 'malformed SAFE-STRING (RFC2849)',
+            'value_b64_error'   => 'malformed BASE64-STRING (RFC2849)',
+            'value_safe_error'  => 'malformed SAFE-STRING (RFC2849)',
+            'value_url_error'   => 'malformed URL (RFC2849/RFC3986)',
+            'version_error'     => 'expected valid version number (RFC2849)',
         ];
         $this->assertSame($rfc2849Errors, $class::getDefinedErrors());
     }

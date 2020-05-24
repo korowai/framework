@@ -26,34 +26,13 @@ use Korowai\Lib\Ldif\Scan;
 abstract class AbstractNameSpecRule extends AbstractRfcRule
 {
     /**
-     * Returns name of capture group that captures base64-encoded name.
+     * Returns prefix which determines what kind of names we're parsing. Should
+     * return ``"dn"`` for distringuished names and ``"rdn"`` for relative
+     * distinguished names.
      *
      * @return string
      */
-    public static function b64Capture() : string
-    {
-        return static::$b64Capture;
-    }
-
-    /**
-     * Returns name of capture group that captures safe-string name.
-     *
-     * @return string
-     */
-    public static function safeCapture() : string
-    {
-        return static::$safeCapture;
-    }
-
-    /**
-     * Returns callable to be used to validate decoded name.
-     *
-     * @return callable
-     */
-    public static function validator() : callable
-    {
-        return static::$validator;
-    }
+    abstract public function prefix() : string;
 
     /**
      * Completes parsing with rule by validating substrings captured by the
@@ -75,9 +54,9 @@ abstract class AbstractNameSpecRule extends AbstractRfcRule
      */
     public function parseMatched(State $state, array $matches, &$value = null) : bool
     {
-        $b64 = static::b64Capture();
-        $safe = static::safeCapture();
-
+        $prefix = $this->prefix();
+        $b64 = $prefix.'_b64';
+        $safe = $prefix.'_safe';
         if (Scan::matched($b64, $matches, $string, $offset)) {
             $value = Util::base64Decode($state, $string, $offset);
             if (!$this->utf8Check($state, $value, $offset)) {
@@ -103,13 +82,13 @@ abstract class AbstractNameSpecRule extends AbstractRfcRule
      *
      * @return bool
      */
-    protected static function utf8Check(State $state, ?string &$value, int $offset)
+    protected function utf8Check(State $state, ?string &$value, int $offset)
     {
         return static::checkWith([Util::class, 'utf8Check'], $state, $value, $offset);
     }
 
     /**
-     * Checks DN string using Util::dnCheck().
+     * Checks the captured string with $this->validator().
      *
      * @param  State $state
      * @param  string $value
@@ -117,9 +96,10 @@ abstract class AbstractNameSpecRule extends AbstractRfcRule
      *
      * @return bool
      */
-    protected static function validate(State $state, string &$value, int $offset) : bool
+    protected function validate(State $state, string &$value, int $offset) : bool
     {
-        return static::checkWith(static::validator(), $state, $value, $offset);
+        $func = [Util::class, $this->prefix().'Check'];
+        return static::checkWith($func, $state, $value, $offset);
     }
 
     /**
@@ -132,7 +112,7 @@ abstract class AbstractNameSpecRule extends AbstractRfcRule
      *
      * @return bool
      */
-    protected static function checkWith(callable $func, State $state, ?string &$value, int $offset)
+    protected function checkWith(callable $func, State $state, ?string &$value, int $offset)
     {
         if ($value === null) {
             return  false;

@@ -15,70 +15,107 @@ namespace Korowai\Lib\Ldif\Rules;
 
 use Korowai\Lib\Ldif\RuleInterface;
 use Korowai\Lib\Ldif\ParserStateInterface as State;
-use Korowai\Lib\Ldif\Traits\AbstractLdifRecordNestedRules;
-use Korowai\Lib\Ldif\Exception\InvalidRuleClassException;
 
 /**
  * @todo Write documentation.
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-abstract class AbstractLdifRecordRule implements RuleInterface
+abstract class AbstractLdifRecordRule extends AbstractRule
 {
-    use AbstractLdifRecordNestedRules;
+    /**
+     * @var DnSpecRule
+     */
+    private $dnSpecRule;
+
+    /**
+     * @var SepRule
+     */
+    private $sepRule;
+
+    /**
+     * @var attrValSpecRule
+     */
+    private $attrValSpecRule;
 
     /**
      * Initializes the object.
      *
-     * @param  bool $tryOnly
      * @param  array $options
+     * @return object $this
      */
-    public function initAbstractLdifRecordRule(bool $tryOnly = false, array $options = [])
+    public function __construct(array $options = [])
     {
-        $rules = array_intersect_key($options, static::getNestedRulesSpecs());
-        if (($dnSpecRule = ($rules['dnSpecRule'] ?? null)) === null) {
-            $rules['dnSpecRule'] = new DnSpecRule($tryOnly);
-        } elseif (!($dnSpecRule instanceof DnSpecRule)) {
-            $given = is_object($dnSpecRule) ? get_class($dnSpecRule).' object' : gettype($dnSpecRule);
-            $call = __class__.'::'.__function__.'($tryOnly, $options)';
-            $message = 'Argument $options["dnSpecRule"] in '.$call.' must be an instance of '.
-                       DnSpecRule::class.', '.$given.' given.';
-            throw new InvalidRuleClassException($message);
-        } elseif ($tryOnly !== $dnSpecRule->isOptional()) {
-            $optional = $tryOnly ? 'true' : 'false';
-            $call = __class__.'::'.__function__.'('.$optional.', $options)';
-            $message = 'Argument $options in '.$call.' must satisfy '.
-                       '$options["dnSpecRule"]->isOptional() === '.$optional.'.';
-            // FIXME: dedicated exception
-            throw new \InvalidArgumentException($message);
-        }
-        $this->initNestedRules($rules);
+        $this->setDnSpecRule($options['dnSpecRule'] ?? new DnSpecRule);
+        $this->setSepRule($options['sepRule'] ?? new SepRule);
+        $this->setAttrValSpecRule($options['attrValSpecRule'] ?? new AttrValSpecRule);
+        return $this;
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function isOptional() : bool
-    {
-        return $this->getDnSpecRule()->isOptional();
-    }
-
-    /**
-     * Parses one or more occurences of attrval-spec.
+     * Returns the nested DnSpecRule object.
      *
-     * @param  State $state
-     * @param  array $attrVals
-     * @return bool
+     * @return DnSpecRule
      */
-    public function parseAttrValSpecs(State $state, array &$attrVals = null) : bool
+    public function getDnSpecRule() : ?DnSpecRule
     {
-        if (!$this->getAttrValSpecReqRule()->parse($state, $attrVal0)) {
-            return false;
-        }
+        return $this->dnSpecRule;
+    }
 
-        $count = count($state->getErrors());
-        $attrVals = array_merge([$attrVal0], Util::repeat($this->getAttrValSpecOptRule(), $state));
-        return !(count($state->getErrors()) > $count);
+    /**
+     * Sets new nested DnSpecRule object.
+     *
+     * @param  DnSpecRule $rule
+     * @return object $this
+     */
+    public function setDnSpecRule(DnSpecRule $rule)
+    {
+        $this->dnSpecRule = $rule;
+        return $this;
+    }
+
+    /**
+     * Returns the nested SepRule object.
+     *
+     * @return SepRule
+     */
+    public function getSepRule() : ?SepRule
+    {
+        return $this->sepRule;
+    }
+
+    /**
+     * Sets new nested SepRule object.
+     *
+     * @param  SepRule $rule
+     * @return object $this
+     */
+    public function setSepRule(SepRule $rule)
+    {
+        $this->sepRule = $rule;
+        return $this;
+    }
+
+    /**
+     * Returns the nested AttrValSpecRule object.
+     *
+     * @return AttrValSpecRule
+     */
+    public function getAttrValSpecRule() : ?AttrValSpecRule
+    {
+        return $this->attrValSpecRule;
+    }
+
+    /**
+     * Sets new nested AttrValSpecRule object.
+     *
+     * @param  AttrValSpecRule $rule
+     * @return object $this
+     */
+    public function setAttrValSpecRule(AttrValSpecRule $rule)
+    {
+        $this->attrValSpecRule = $rule;
+        return $this;
     }
 }
 // vim: syntax=php sw=4 ts=4 et:

@@ -37,8 +37,6 @@ class ObjectPropertyGettersMap
         ],
         \Korowai\Lib\Rfc\Rfc2849::class => [
         ],
-        \Korowai\Lib\Rfc\Rfc2849x::class => [
-        ],
         \Korowai\Lib\Rfc\Rfc3986::class => [
         ],
         \Korowai\Lib\Rfc\Rfc5234::class => [
@@ -46,6 +44,7 @@ class ObjectPropertyGettersMap
         \Korowai\Lib\Rfc\Rfc8089::class => [
         ],
         \Korowai\Lib\Rfc\Rule::class => [
+            'name'                  => 'name',
             'ruleSetClass'          => 'ruleSetClass',
         ],
         \Korowai\Lib\Rfc\Traits\DecoratesRuleInterface::class => [

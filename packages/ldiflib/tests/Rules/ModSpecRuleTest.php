@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Ldif\Rules;
 
 use Korowai\Lib\Ldif\Rules\ModSpecRule;
+use Korowai\Lib\Ldif\Rules\AbstractRule;
 use Korowai\Lib\Ldif\RuleInterface;
 use Korowai\Lib\Ldif\Rules\ModSpecInitRule;
 use Korowai\Lib\Ldif\Rules\AttrValSpecRule;
@@ -26,87 +27,29 @@ use Korowai\Testing\Lib\Ldif\TestCase;
  */
 class ModSpecRuleTest extends TestCase
 {
-    public function test__implementsRuleInterface()
+    public function test__extends__AbstractRule()
     {
-        $this->assertImplementsInterface(RuleInterface::class, ModSpecRule::class);
+        $this->assertExtendsClass(AbstractRule::class, ModSpecRule::class);
     }
 
     public static function construct__cases()
     {
-        $modSpecInitRuleReq = new ModSpecInitRule(false);
-        $modSpecInitRuleOpt = new ModSpecInitRule(true);
-        $attrValSpecRule = new AttrValSpecRule(true);
+        $modSpecInitRule = new ModSpecInitRule;
+        $attrValSpecRule = new AttrValSpecRule;
 
         return [
-            'default' => [
+            '__construct()' => [
                 'args'   => [],
                 'expect' => [
-                    'isOptional' => false,
-                    'modSpecInitRule' => self::hasPropertiesIdenticalTo([
-                        'isOptional' => false,
-                    ]),
-                    'attrValSpecRule' => self::hasPropertiesIdenticalTo([
-                        'isOptional' => true,
-                    ]),
                 ]
             ],
-            'required' => [
-                'args'   => [false],
-                'expect' => [
-                    'isOptional' => false,
-                    'modSpecInitRule' => self::hasPropertiesIdenticalTo([
-                        'isOptional' => false,
-                    ]),
-                    'attrValSpecRule' => self::hasPropertiesIdenticalTo([
-                        'isOptional' => true,
-                    ]),
-                ]
-            ],
-            'optional' => [
-                'args'   => [true],
-                'expect' => [
-                    'isOptional' => true,
-                    'modSpecInitRule' => self::hasPropertiesIdenticalTo([
-                        'isOptional' => true,
-                    ]),
-                    'attrValSpecRule' => self::hasPropertiesIdenticalTo([
-                        'isOptional' => true,
-                    ]),
-                ]
-            ],
-            'required w/ modSpecInitRule' => [
-                'args'   => [false, $modSpecInitRuleReq],
-                'expect' => [
-                    'isOptional' => false,
-                    'modSpecInitRule' => $modSpecInitRuleReq,
-                    'attrValSpecRule' => self::hasPropertiesIdenticalTo([
-                        'isOptional' => true,
-                    ]),
-                ]
-            ],
-            'optional w/ modSpecInitRule' => [
-                'args'   => [true, $modSpecInitRuleOpt],
-                'expect' => [
-                    'isOptional' => true,
-                    'modSpecInitRule' => $modSpecInitRuleOpt,
-                    'attrValSpecRule' => self::hasPropertiesIdenticalTo([
-                        'isOptional' => true,
-                    ]),
-                ]
-            ],
-            'required w/ modSpecInitRule & attrValSpecRule' => [
-                'args'   => [false, $modSpecInitRuleReq, $attrValSpecRule],
-                'expect' => [
-                    'isOptional' => false,
-                    'modSpecInitRule' => $modSpecInitRuleReq,
+            '__construct([...])' => [
+                'args'   => [[
+                    'modSpecInitRule' => $modSpecInitRule,
                     'attrValSpecRule' => $attrValSpecRule,
-                ]
-            ],
-            'optional w/ modSpecInitRule & attrValSpecRule' => [
-                'args'   => [true, $modSpecInitRuleOpt, $attrValSpecRule],
+                ]],
                 'expect' => [
-                    'isOptional' => true,
-                    'modSpecInitRule' => $modSpecInitRuleOpt,
+                    'modSpecInitRule' => $modSpecInitRule,
                     'attrValSpecRule' => $attrValSpecRule,
                 ]
             ],
@@ -120,27 +63,6 @@ class ModSpecRuleTest extends TestCase
     {
         $rule = new ModSpecRule(...$args);
         $this->assertHasPropertiesSameAs($expect, $rule);
-    }
-
-    public function test__construct__withInvalidModSpecInitRule()
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage(
-            'Argument 1 to '.ModSpecRule::class.'::__construct() must be consistent with argument 2, '.
-            'however the condition $1 === $2->isOptional() is not satisfied.'
-        );
-
-        new ModSpecRule(false, new ModSpecInitRule(true));
-    }
-
-    public function test__construct__withInvalidAttrValSpecRule()
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage(
-            'Argument 1 to '.ModSpecRule::class.'::setAttrValSpecRule() must satisfy $1->isOptional() === true.'
-        );
-
-        new ModSpecRule(false, null, new AttrValSpecRule(false));
     }
 
     //
@@ -347,7 +269,7 @@ class ModSpecRuleTest extends TestCase
                     ]
                 ]
             ],
-            'foo: cn\n- (tryOnly)' => [
+            'foo: cn\n- (trying)' => [
                 //            000000000011111111112222222
                 //            012345678901234567890123456
                 'source' => ["foo: cn\n-", 0],
@@ -538,9 +460,9 @@ class ModSpecRuleTest extends TestCase
             $value = $this->getMockBuilder(ModSpecInterface::class)->getMockForAbstractClass();
         }
 
-        $rule = new ModSpecRule(...$args);
+        $rule = new ModSpecRule;
 
-        $result = $rule->parse($state, $value);
+        $result = $rule->parse($state, $value, ...$args);
 
         $this->assertSame($expect['result'], $result);
 

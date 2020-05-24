@@ -16,7 +16,7 @@ namespace Korowai\Lib\Ldif\Rules;
 use Korowai\Lib\Ldif\ParserStateInterface as State;
 use Korowai\Lib\Ldif\Scan;
 use Korowai\Lib\Ldif\AttrVal;
-use Korowai\Lib\Rfc\Rfc2849x;
+use Korowai\Lib\Rfc\Rfc2849;
 
 /**
  * A rule object that implements *value-spec* rule defined in RFC2849.
@@ -28,16 +28,6 @@ use Korowai\Lib\Rfc\Rfc2849x;
 final class AttrValSpecRule extends AbstractRfcRule
 {
     /**
-     * @var string
-     */
-    protected static $rfcRuleSet = Rfc2849x::class;
-
-    /**
-     * @var string
-     */
-    protected static $rfcRuleId = 'ATTRVAL_SPEC_X';
-
-    /**
      * @var Rule
      */
     protected $valueSpecRule;
@@ -45,16 +35,13 @@ final class AttrValSpecRule extends AbstractRfcRule
     /**
      * Initializes the object.
      *
-     * @param  bool $tryOnly
-     *      Passed to the constructor of RFC [Rule](\.\./\.\./Rfc/Rule.html)
-     *      being created internally.
      * @param  ValueSpecRule $valueSpecRule
      *      Optional instance of [ValueSpecRule](ValueSpecRule.html), if not provided,
      *      the instance is created internally.
      */
-    public function __construct(bool $tryOnly = false, ValueSpecRule $valueSpecRule = null)
+    public function __construct(ValueSpecRule $valueSpecRule = null)
     {
-        parent::__construct($tryOnly);
+        parent::__construct(Rfc2849::class, 'ATTRVAL_SPEC');
         if ($valueSpecRule === null) {
             $valueSpecRule = new ValueSpecRule;
         }
@@ -113,7 +100,7 @@ final class AttrValSpecRule extends AbstractRfcRule
             return true;
         }
 
-        // This may happen with broken Rfc2849x::ATTRVAL_SPEC_X rule.
+        // This may happen with broken Rfc2849::ATTRVAL_SPEC rule.
         $state->errorHere('internal error: missing or invalid capture group "attr_desc"');
         $value = null;
         return false;

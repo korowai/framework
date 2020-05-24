@@ -1,6 +1,6 @@
 <?php
 /**
- * @file tests/TestCaseTest.php
+ * @file tests/Testing/TestCaseTest.php
  *
  * This file is part of the Korowai package
  *
@@ -11,8 +11,9 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Tests\Lib\Rfc;
+namespace Korowai\Tests\Testing\Lib\Rfc;
 
+use Korowai\Testing\TestCase as BaseTestCase;
 use Korowai\Testing\Lib\Rfc\TestCase;
 
 /**
@@ -26,6 +27,20 @@ class TestCaseTest extends TestCase
     public static function getRfcClass() : string
     {
         return self::class;
+    }
+
+    public function test__extends__TestCase()
+    {
+        $this->assertExtendsClass(BaseTestCase::class, parent::class);
+    }
+
+    public function test__objectPropertyGettersMap()
+    {
+        $expected = array_merge_recursive(
+            \Korowai\Testing\Contracts\ObjectPropertyGettersMap::getObjectPropertyGettersMap(),
+            \Korowai\Testing\Lib\Rfc\ObjectPropertyGettersMap::getObjectPropertyGettersMap(),
+        );
+        $this->assertSame($expected, parent::objectPropertyGettersMap());
     }
 
     public function test__getRfcFqdnConstName()

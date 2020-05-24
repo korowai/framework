@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Rules/NewRdnSpecRule.php
+ * @file src/Rules/AbstractRdnSpecRule.php
  *
  * This file is part of the Korowai package
  *
@@ -13,23 +13,23 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldif\Rules;
 
-use Korowai\Lib\Rfc\Rfc2849;
+use Korowai\Lib\Ldif\ParserStateInterface as State;
 
 /**
- * A rule object that implements *newrdn-spec* rule defined in [Rfc2849](\.\./\.\./Rfc/Rfc2849.html).
+ * @todo Write documentation
  *
  * - semantic value: string
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-final class NewRdnSpecRule extends AbstractRdnSpecRule
+abstract class AbstractRdnSpecRule extends AbstractNameSpecRule
 {
     /**
-     * Initializes the object.
+     * {@inheritdoc}
      */
-    public function __construct()
+    public function prefix() : string
     {
-        parent::__construct(Rfc2849::class, 'NEWRDN_SPEC');
+        return 'rdn';
     }
 }
 

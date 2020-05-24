@@ -18,7 +18,7 @@ use Korowai\Lib\Ldif\Rules\ValueSpecRule;
 use Korowai\Lib\Ldif\Rules\AbstractRfcRule;
 use Korowai\Lib\Ldif\AttrValInterface;
 use Korowai\Lib\Ldif\ValueInterface;
-use Korowai\Lib\Rfc\Rfc2849x;
+use Korowai\Lib\Rfc\Rfc2849;
 use Korowai\Testing\Lib\Ldif\TestCase;
 
 /**
@@ -31,16 +31,6 @@ class AttrValSpecRuleTest extends TestCase
         $this->assertExtendsClass(AbstractRfcRule::class, AttrValSpecRule::class);
     }
 
-    public function test__rfcRuleSet()
-    {
-        $this->assertSame(Rfc2849x::class, AttrValSpecRule::rfcRuleSet());
-    }
-
-    public function test__rfcRuleId()
-    {
-        $this->assertSame('ATTRVAL_SPEC_X', AttrValSpecRule::rfcRuleId());
-    }
-
     public static function construct__cases()
     {
         $valueSpecRule = new ValueSpecRule;
@@ -48,28 +38,11 @@ class AttrValSpecRuleTest extends TestCase
         return [
             'default' => [
                 'args'   => [],
-                'expect' => [
-                    'isOptional' => false,
-                ]
-            ],
-            'required' => [
-                'args'   => [false],
-                'expect' => [
-                    'isOptional' => false
-                ]
-            ],
-            'optional' => [
-                'args'   => [true],
-                'expect' => [
-                    'isOptional' => true
-                ]
+                'expect' => []
             ],
             'valueSpecRule' => [
-                'args'   => [false, $valueSpecRule],
-                'expect' => [
-                    'isOptional' => false,
-                    'valueSpecRule' => $valueSpecRule
-                ]
+                'args'   => [$valueSpecRule],
+                'expect' => ['valueSpecRule' => $valueSpecRule],
             ]
         ];
     }
@@ -83,8 +56,8 @@ class AttrValSpecRuleTest extends TestCase
 
         $expect = array_merge([
             'rfcRule' => self::hasPropertiesIdenticalTo([
-                'ruleSetClass' => Rfc2849x::class,
-                'name' => 'ATTRVAL_SPEC_X',
+                'ruleSetClass' => Rfc2849::class,
+                'name' => 'ATTRVAL_SPEC',
             ])
         ], $expect);
 
@@ -498,9 +471,9 @@ class AttrValSpecRuleTest extends TestCase
             $value = $this->getMockBuilder(AttrValInterface::class)->getMockForAbstractClass();
         }
 
-        $rule = new AttrValSpecRule(...$args);
+        $rule = new AttrValSpecRule;
 
-        $result = $rule->parse($state, $value);
+        $result = $rule->parse($state, $value, ...$args);
 
         $this->assertSame($expect['result'], $result);
 

@@ -13,25 +13,16 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Rfc;
 
-use Korowai\Lib\Basic\IsOptionalInterface;
-
 /**
  * Represents a single rule in a set of rules.
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-interface RuleInterface extends IsOptionalInterface
+interface RuleInterface
 {
     /**
-     * Returns the rule name as it appears in the set of rules.
-     *
-     * @return string
-     */
-    public function name() : string;
-
-    /**
      * Returns the regular expression that implements the rule. Same as
-     * *$this->rule()*.
+     * *$this->regexp()*.
      *
      * @return string
      */
@@ -52,8 +43,7 @@ interface RuleInterface extends IsOptionalInterface
     public function captures() : array;
 
     /**
-     * Returns an array of error-catching capture group names (*errorKey*s) for
-     * the rule.
+     * Returns an array of error-catching capture group names for the rule.
      *
      * @return array Array of error-catching captures.
      */
@@ -77,7 +67,7 @@ interface RuleInterface extends IsOptionalInterface
 
     /**
      * Returns an array containing all entries of *$matches* which have keys
-     * that are present in *valueCaptures($ruleName)*.
+     * that are present in *valueCaptures()*.
      *
      * @param  array $matches
      * @return array

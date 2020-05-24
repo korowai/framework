@@ -15,7 +15,7 @@ namespace Korowai\Lib\Ldif\Rules;
 
 use Korowai\Lib\Ldif\ParserStateInterface as State;
 use Korowai\Lib\Ldif\Scan;
-use Korowai\Lib\Rfc\Rfc2849x;
+use Korowai\Lib\Rfc\Rfc2849;
 
 /**
  * A rule that parses RFC2849 version-spec.
@@ -25,14 +25,12 @@ use Korowai\Lib\Rfc\Rfc2849x;
 final class VersionSpecRule extends AbstractRfcRule
 {
     /**
-     * @var string
+     * Initializes the object.
      */
-    protected static $rfcRuleSet = Rfc2849x::class;
-
-    /**
-     * @var string
-     */
-    protected static $rfcRuleId = 'VERSION_SPEC_X';
+    public function __construct()
+    {
+        parent::__construct(Rfc2849::class, 'VERSION_SPEC');
+    }
 
     /**
      * Completes parsing with rule by validating substrings captured by the
@@ -64,7 +62,7 @@ final class VersionSpecRule extends AbstractRfcRule
             return false;
         }
 
-        // This may happen with broken Rfc2849x::VERSION_SPEC_X rule.
+        // This may happen with broken Rfc2849::VERSION_SPEC rule.
         $value = null;
         $state->errorHere('internal error: missing or invalid capture group "version_number"');
         return false;

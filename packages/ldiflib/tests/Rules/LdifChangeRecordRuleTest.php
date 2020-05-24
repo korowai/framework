@@ -17,7 +17,6 @@ use Korowai\Lib\Ldif\Rules\LdifChangeRecordRule;
 use Korowai\Lib\Ldif\Rules\AbstractLdifRecordRule;
 use Korowai\Lib\Ldif\RuleInterface;
 use Korowai\Lib\Ldif\ValueInterface;
-use Korowai\Lib\Ldif\Traits\LdifChangeRecordNestedRules;
 use Korowai\Lib\Ldif\Rules\DnSpecRule;
 use Korowai\Lib\Ldif\Rules\ControlRule;
 use Korowai\Lib\Ldif\Rules\ChangeRecordInitRule;
@@ -37,162 +36,42 @@ use Korowai\Testing\Lib\Ldif\TestCase;
  */
 class LdifChangeRecordRuleTest extends TestCase
 {
-    public function test__implements__RuleInterface()
-    {
-        $this->assertImplementsInterface(RuleInterface::class, LdifChangeRecordRule::class);
-    }
-
     public function test__extends__AbstractLdifRecordRule()
     {
         $this->assertExtendsClass(AbstractLdifRecordRule::class, LdifChangeRecordRule::class);
     }
 
-    public function test__uses__LdifChangeRecordNestedRules()
-    {
-        $this->assertUsesTrait(LdifChangeRecordNestedRules::class, LdifChangeRecordRule::class);
-    }
-
-    public function test__getNestedRulesSpecs()
-    {
-        $trait = $this->getMockBuilder(LdifChangeRecordNestedRules::class)
-                      ->getMockForTrait();
-        $expect = array_merge(AbstractLdifRecordRule::getNestedRulesSpecs(), get_class($trait)::getNestedRulesSpecs());
-        $this->assertSame($expect, LdifChangeRecordRule::getNestedRulesSpecs());
-    }
-
     public static function construct__cases()
     {
-        $dnSpecRuleReq = new DnSpecRule(false);
-        $dnSpecRuleOpt = new DnSpecRule(true);
-        $controlRule = new ControlRule(true);
-        $changeRecordInitRule = new ChangeRecordInitRule(false);
-        $modSpecRule = new ModSpecRule(true);
-        $sepRule = new SepRule(false);
-        $attrValSpecReqRule = new AttrValSpecRule(false);
-        $attrValSpecOptRule = new AttrValSpecRule(true);
+        $dnSpecRule = new DnSpecRule;
+        $controlRule = new ControlRule;
+        $changeRecordInitRule = new ChangeRecordInitRule;
+        $modSpecRule = new ModSpecRule;
+        $sepRule = new SepRule;
+        $attrValSpecRule = new AttrValSpecRule;
 
         return [
             '__construct()' => [
                 'args'   => [],
                 'expect' => [
-                    'isOptional' => false,
-                    'dnSpecRule' => self::hasPropertiesIdenticalTo([
-                        'isOptional' => false,
-                    ]),
-                    'controlRule' => self::hasPropertiesIdenticalTo([
-                        'isOptional' => true,
-                    ]),
-                    'changeRecordInitRule' => self::hasPropertiesIdenticalTo([
-                        'isOptional' => false,
-                    ]),
-                    'modSpecRule' => self::hasPropertiesIdenticalTo([
-                        'isOptional' => true,
-                    ]),
-                    'sepRule' => self::hasPropertiesIdenticalTo([
-                        'isOptional' => false,
-                    ]),
-                    'attrValSpecReqRule' => self::hasPropertiesIdenticalTo([
-                        'isOptional' => false,
-                    ]),
-                    'attrValSpecOptRule' => self::hasPropertiesIdenticalTo([
-                        'isOptional' => true,
-                    ]),
                 ]
             ],
-            '__construct(false)' => [
-                'args'   => [false],
-                'expect' => [
-                    'isOptional' => false,
-                    'dnSpecRule' => self::hasPropertiesIdenticalTo([
-                        'isOptional' => false,
-                    ]),
-                    'controlRule' => self::hasPropertiesIdenticalTo([
-                        'isOptional' => true,
-                    ]),
-                    'changeRecordInitRule' => self::hasPropertiesIdenticalTo([
-                        'isOptional' => false,
-                    ]),
-                    'modSpecRule' => self::hasPropertiesIdenticalTo([
-                        'isOptional' => true,
-                    ]),
-                    'sepRule' => self::hasPropertiesIdenticalTo([
-                        'isOptional' => false,
-                    ]),
-                    'attrValSpecReqRule' => self::hasPropertiesIdenticalTo([
-                        'isOptional' => false,
-                    ]),
-                    'attrValSpecOptRule' => self::hasPropertiesIdenticalTo([
-                        'isOptional' => true,
-                    ]),
-                ]
-            ],
-            '__construct(true)' => [
-                'args'   => [true],
-                'expect' => [
-                    'isOptional' => true,
-                    'dnSpecRule' => self::hasPropertiesIdenticalTo([
-                        'isOptional' => true,
-                    ]),
-                    'controlRule' => self::hasPropertiesIdenticalTo([
-                        'isOptional' => true,
-                    ]),
-                    'changeRecordInitRule' => self::hasPropertiesIdenticalTo([
-                        'isOptional' => false,
-                    ]),
-                    'modSpecRule' => self::hasPropertiesIdenticalTo([
-                        'isOptional' => true,
-                    ]),
-                    'sepRule' => self::hasPropertiesIdenticalTo([
-                        'isOptional' => false,
-                    ]),
-                    'attrValSpecReqRule' => self::hasPropertiesIdenticalTo([
-                        'isOptional' => false,
-                    ]),
-                    'attrValSpecOptRule' => self::hasPropertiesIdenticalTo([
-                        'isOptional' => true,
-                    ]),
-                ]
-            ],
-            '__construct(false, [...])' => [
-                'args'   => [false, [
-                    'dnSpecRule' => $dnSpecRuleReq,
+            '__construct([...])' => [
+                'args'   => [[
+                    'dnSpecRule' => $dnSpecRule,
                     'controlRule' => $controlRule,
                     'changeRecordInitRule' => $changeRecordInitRule,
                     'modSpecRule' => $modSpecRule,
                     'sepRule' => $sepRule,
-                    'attrValSpecReqRule' => $attrValSpecReqRule,
-                    'attrValSpecOptRule' => $attrValSpecOptRule,
+                    'attrValSpecRule' => $attrValSpecRule,
                 ]],
                 'expect' => [
-                    'isOptional' => false,
-                    'dnSpecRule' => $dnSpecRuleReq,
+                    'dnSpecRule' => $dnSpecRule,
                     'controlRule' => $controlRule,
                     'changeRecordInitRule' => $changeRecordInitRule,
                     'modSpecRule' => $modSpecRule,
                     'sepRule' => $sepRule,
-                    'attrValSpecReqRule' => $attrValSpecReqRule,
-                    'attrValSpecOptRule' => $attrValSpecOptRule,
-                ]
-            ],
-            '__construct(true, [...])' => [
-                'args'   => [true, [
-                    'dnSpecRule' => $dnSpecRuleOpt,
-                    'controlRule' => $controlRule,
-                    'changeRecordInitRule' => $changeRecordInitRule,
-                    'modSpecRule' => $modSpecRule,
-                    'sepRule' => $sepRule,
-                    'attrValSpecReqRule' => $attrValSpecReqRule,
-                    'attrValSpecOptRule' => $attrValSpecOptRule,
-                ]],
-                'expect' => [
-                    'isOptional' => true,
-                    'dnSpecRule' => $dnSpecRuleOpt,
-                    'controlRule' => $controlRule,
-                    'changeRecordInitRule' => $changeRecordInitRule,
-                    'modSpecRule' => $modSpecRule,
-                    'sepRule' => $sepRule,
-                    'attrValSpecReqRule' => $attrValSpecReqRule,
-                    'attrValSpecOptRule' => $attrValSpecOptRule,
+                    'attrValSpecRule' => $attrValSpecRule,
                 ]
             ],
         ];
@@ -204,141 +83,45 @@ class LdifChangeRecordRuleTest extends TestCase
     public function test__construct(array $args, array $expect)
     {
         $rule = new LdifChangeRecordRule(...$args);
+        $this->assertInstanceOf(DnSpecRule::class, $rule->getDnSpecRule());
+        $this->assertInstanceOf(ControlRule::class, $rule->getControlRule());
+        $this->assertInstanceOf(ChangeRecordInitRule::class, $rule->getChangeRecordInitRule());
+        $this->assertInstanceOf(ModSpecRule::class, $rule->getModSpecRule());
+        $this->assertInstanceOf(SepRule::class, $rule->getSepRule());
+        $this->assertInstanceOf(AttrValSpecRule::class, $rule->getAttrValSpecRule());
         $this->assertHasPropertiesSameAs($expect, $rule);
     }
 
-    public static function makeInitDnSpecOptionalMessage(bool $tryOnly)
+    public function test__setControlRule()
     {
-        $optional = $tryOnly ? 'true' : 'false';
-        $call = AbstractLdifRecordRule::class.'::initAbstractLdifRecordRule('.$optional.', $options)';
-        return 'Argument $options in '.$call.' must satisfy $options["dnSpecRule"]->isOptional() === '.$optional.'.';
+        $rule = new LdifChangeRecordRule;
+        $controlRule = new ControlRule;
+
+        $this->assertSame($rule, $rule->setControlRule($controlRule));
+        $this->assertSame($controlRule, $rule->getControlRule());
     }
 
-    public static function makeInitDnSpecTypeMessage(string $given)
+    public function test__setChangeRecordInitRule()
     {
-        $call = AbstractLdifRecordRule::class.'::initAbstractLdifRecordRule($tryOnly, $options)';
-        return 'Argument $options["dnSpecRule"] in '.$call.' must be an instance of '.DnSpecRule::class.', '.
-               $given.' given';
+        $rule = new LdifChangeRecordRule;
+        $changeRecordInitRule = new ChangeRecordInitRule;
+
+        $this->assertSame($rule, $rule->setChangeRecordInitRule($changeRecordInitRule));
+        $this->assertSame($changeRecordInitRule, $rule->getChangeRecordInitRule());
     }
 
-    public static function makeSetNestedRuleClassMessage(string $key, string $expect, string $given)
+    public function test__setModSpecRule()
     {
-        $call = AbstractLdifRecordRule::class.'::setNestedRule("'.$key.'", $rule)';
-        return 'Argument $rule in '.$call.' must be an instance of '.$expect.', instance of '.$given.' given.';
+        $rule = new LdifChangeRecordRule;
+        $modSpecRule = new ModSpecRule;
+
+        $this->assertSame($rule, $rule->setModSpecRule($modSpecRule));
+        $this->assertSame($modSpecRule, $rule->getModSpecRule());
     }
 
-    public static function makeSetNestedRuleOptionalMessage(string $key, bool $tryOnly)
-    {
-        $optional = $tryOnly ? 'true' : 'false';
-        $call = AbstractLdifRecordRule::class.'::setNestedRule("'.$key.'", $rule)';
-        return 'Argument $rule in '.$call.' must satisfy $rule->isOptional() === '.$optional.'.';
-    }
-
-    public static function constructInvalidNestedRule__cases()
-    {
-        return [
-            '__construct(false, ["dnSpecRule" => new DnSpecRule(true)])' => [
-                'args' => [false, ['dnSpecRule' => new DnSpecRule(true)]],
-                'expect' => [
-                    'exception' => \InvalidArgumentException::class,
-                    'message'   => static::makeInitDnSpecOptionalMessage(false),
-                ],
-            ],
-            '__construct(true, ["dnSpecRule" => new DnSpecRule(false)])' => [
-                'args' => [true, ['dnSpecRule' => new DnSpecRule(false)]],
-                'expect' => [
-                    'exception' => \InvalidArgumentException::class,
-                    'message'   => static::makeInitDnSpecOptionalMessage(true),
-                ],
-            ],
-            '__construct(true, ["controlRule" => new ControlRule(false)])' => [
-                'args' => [true, ['controlRule' => new ControlRule(false)]],
-                'expect' => [
-                    'exception' => \InvalidArgumentException::class,
-                    'message'   => static::makeSetNestedRuleOptionalMessage("controlRule", true),
-                ],
-            ],
-            '__construct(true, ["changeRecordInitRule" => new ChangeRecordInitRule(true)])' => [
-                'args' => [true, ['changeRecordInitRule' => new ChangeRecordInitRule(true)]],
-                'expect' => [
-                    'exception' => \InvalidArgumentException::class,
-                    'message' => static::makeSetNestedRuleOptionalMessage("changeRecordInitRule", false),
-                ],
-            ],
-            '__construct(true, ["modSpecRule" => new ModSpecRule(false)])' => [
-                'args' => [true, ['modSpecRule' => new ModSpecRule(false)]],
-                'expect' => [
-                    'exception' => \InvalidArgumentException::class,
-                    'message'   => static::makeSetNestedRuleOptionalMessage("modSpecRule", true),
-                ],
-            ],
-            '__construct(true, ["sepRule" => new SepRule(true)])' => [
-                'args' => [true, ['sepRule' => new SepRule(true)]],
-                'expect' => [
-                    'exception' => \InvalidArgumentException::class,
-                    'message'   => static::makeSetNestedRuleOptionalMessage("sepRule", false),
-                ],
-            ],
-            '__construct(true, ["attrValSpecReqRule" => new AttrValSpecRule(true)])' => [
-                'args' => [true, ['attrValSpecReqRule' => new AttrValSpecRule(true)]],
-                'expect' => [
-                    'exception' => \InvalidArgumentException::class,
-                    'message'   => static::makeSetNestedRuleOptionalMessage("attrValSpecReqRule", false),
-                ],
-            ],
-            '__construct(true, ["attrValSpecOptRule" => new AttrValSpecRule(false)])' => [
-                'args' => [true, ['attrValSpecOptRule' => new AttrValSpecRule(false)]],
-                'expect' => [
-                    'exception' => \InvalidArgumentException::class,
-                    'message'   => static::makeSetNestedRuleOptionalMessage("attrValSpecOptRule", true),
-                ],
-            ],
-            '__construct(true, ["controlRule" => new AttrValSpecRule(false)])' => [
-                'args' => [true, ['controlRule' => new AttrValSpecRule(false)]],
-                'expect' => [
-                    'exception' => InvalidRuleClassException::class,
-                    'message'   => static::makeSetNestedRuleClassMessage(
-                        "controlRule",
-                        ControlRule::class,
-                        AttrValSpecRule::class
-                    ),
-                ],
-            ],
-            '__construct(true, ["dnSpecRule" => new AttrValSpecRule(false)])' => [
-                'args' => [true, ['dnSpecRule' => new AttrValSpecRule(false)]],
-                'expect' => [
-                    'exception' => InvalidRuleClassException::class,
-                    'message'   => static::makeInitDnSpecTypeMessage(AttrValSpecRule::class.' object'),
-                ],
-            ],
-            '__construct(true, ["dnSpecRule" => "foo"])' => [
-                'args' => [true, ['dnSpecRule' => "foo"]],
-                'expect' => [
-                    'exception' => InvalidRuleClassException::class,
-                    'message'   => static::makeInitDnSpecTypeMessage('string'),
-                ],
-            ],
-        ];
-    }
-
-    /**
-     * @dataProvider constructInvalidNestedRule__cases
-     */
-    public function test__construct__withInvalidNestedRule(array $args, array $expect)
-    {
-        $this->expectException($expect['exception']);
-        $this->expectExceptionMessage($expect['message']);
-        new LdifChangeRecordRule(...$args);
-    }
-
-    public function test__isOptional()
-    {
-        $rule = new LdifChangeRecordRule();
-        $this->assertFalse($rule->isOptional());
-
-        $rule->setDnSpecRule(new DnSpecRule(true));
-        $this->assertTrue($rule->isOptional());
-    }
+    //
+    // parse()
+    //
 
     public static function parseAdd__cases()
     {
@@ -1627,9 +1410,9 @@ class LdifChangeRecordRuleTest extends TestCase
             $value = $this->getMockBuilder($expect['init'])->getMockForAbstractClass();
         }
 
-        $rule = new LdifChangeRecordRule(...$args);
+        $rule = new LdifChangeRecordRule();
 
-        $result = $rule->parse($state, $value);
+        $result = $rule->parse($state, $value, ...$args);
 
         $this->assertSame($expect['result'], $result);
 

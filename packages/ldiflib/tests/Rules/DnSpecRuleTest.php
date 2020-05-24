@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Ldif\Rules;
 
 use Korowai\Lib\Ldif\Rules\DnSpecRule;
-use Korowai\Lib\Ldif\Rules\AbstractNameSpecRule;
+use Korowai\Lib\Ldif\Rules\AbstractDnSpecRule;
 use Korowai\Lib\Ldif\Rules\Util;
-use Korowai\Lib\Rfc\Rfc2849x;
+use Korowai\Lib\Rfc\Rfc2849;
 
 use Korowai\Testing\Lib\Ldif\TestCase;
 
@@ -27,28 +27,19 @@ class DnSpecRuleTest extends TestCase
 {
     public function test__extendsAbstractNameSpecRule()
     {
-        $this->assertExtendsClass(AbstractNameSpecRule::class, DnSpecRule::class);
+        $this->assertExtendsClass(AbstractDnSpecRule::class, DnSpecRule::class);
     }
 
     public static function construct__cases()
     {
         return [
-            'default' => [
+            '__construct()' => [
                 'args'   => [],
                 'expect' => [
-                    'isOptional' => false
-                ]
-            ],
-            'required' => [
-                'args'   => [false],
-                'expect' => [
-                    'isOptional' => false
-                ]
-            ],
-            'optional' => [
-                'args'   => [true],
-                'expect' => [
-                    'isOptional' => true
+                    'rfcRule' => self::hasPropertiesIdenticalTo([
+                        'ruleSetClass' => Rfc2849::class,
+                        'name' => 'DN_SPEC',
+                    ]),
                 ]
             ],
         ];
@@ -61,31 +52,6 @@ class DnSpecRuleTest extends TestCase
     {
         $rule = new DnSpecRule(...$args);
         $this->assertHasPropertiesSameAs($expect, $rule);
-    }
-
-    public function test__b64Capture()
-    {
-        $this->assertSame('dn_b64', DnSpecRule::b64Capture());
-    }
-
-    public function test__safeCapture()
-    {
-        $this->assertSame('dn_safe', DnSpecRule::safeCapture());
-    }
-
-    public function test__rfcRuleSet()
-    {
-        $this->assertSame(Rfc2849x::class, DnSpecRule::rfcRuleSet());
-    }
-
-    public function test__rfcRuleId()
-    {
-        $this->assertSame('DN_SPEC_X', DnSpecRule::rfcRuleId());
-    }
-
-    public function test__validator()
-    {
-        $this->assertSame([Util::class, 'dnCheck'], DnSpecRule::validator());
     }
 
     public static function dnMatch__cases()
@@ -611,9 +577,9 @@ class DnSpecRuleTest extends TestCase
             $dn = $expect['init'];
         }
 
-        $rule = new DnSpecRule(...$args);
+        $rule = new DnSpecRule;
 
-        $result = $rule->parse($state, $dn);
+        $result = $rule->parse($state, $dn, ...$args);
 
         $this->assertSame($expect['result'], $result);
         $this->assertSame($expect['dn'], $dn);

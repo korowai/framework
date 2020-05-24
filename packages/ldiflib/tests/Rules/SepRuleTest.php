@@ -15,7 +15,7 @@ namespace Korowai\Tests\Lib\Ldif\Rules;
 
 use Korowai\Lib\Ldif\Rules\SepRule;
 use Korowai\Lib\Ldif\Rules\AbstractRfcRule;
-use Korowai\Lib\Rfc\Rfc2849x;
+use Korowai\Lib\Rfc\Rfc2849;
 use Korowai\Testing\Lib\Ldif\TestCase;
 
 /**
@@ -28,36 +28,12 @@ class SepRuleTest extends TestCase
         $this->assertExtendsClass(AbstractRfcRule::class, SepRule::class);
     }
 
-    public function test__rfcRuleSet()
-    {
-        $this->assertSame(Rfc2849x::class, SepRule::rfcRuleSet());
-    }
-
-    public function test__rfcRuleId()
-    {
-        $this->assertSame('SEP', SepRule::rfcRuleId());
-    }
-
     public static function construct__cases()
     {
         return [
             'default' => [
                 'args'   => [],
-                'expect' => [
-                    'isOptional' => false
-                ]
-            ],
-            'required' => [
-                'args'   => [false],
-                'expect' => [
-                    'isOptional' => false
-                ]
-            ],
-            'optional' => [
-                'args'   => [true],
-                'expect' => [
-                    'isOptional' => true
-                ]
+                'expect' => [],
             ],
         ];
     }
@@ -70,7 +46,7 @@ class SepRuleTest extends TestCase
         $rule = new SepRule(...$args);
         $expect = array_merge([
             'rfcRule' => self::hasPropertiesIdenticalTo([
-                'ruleSetClass' => Rfc2849x::class,
+                'ruleSetClass' => Rfc2849::class,
                 'name' => 'SEP',
             ])
         ], $expect);
@@ -286,9 +262,9 @@ class SepRuleTest extends TestCase
             $value = $expect['init'];
         }
 
-        $rule = new SepRule(...$args);
+        $rule = new SepRule;
 
-        $result = $rule->parse($state, $value);
+        $result = $rule->parse($state, $value, ...$args);
 
         $this->assertSame($expect['result'], $result);
         $this->assertSame($expect['value'], $value);

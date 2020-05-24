@@ -55,7 +55,6 @@ final class LdifChangeRecordRule extends AbstractLdifRecordRule
     /**
      * Initializes the object.
      *
-     * @param  bool $tryOnly
      * @param  array $options
      */
     public function __construct(array $options = [])

@@ -545,7 +545,11 @@ class Rfc2849 extends AbstractRuleSet
     public const CHANGERECORD_INIT =
         '(?:'.
             'changetype:'.self::FILL.
-            '(?:(?<chg_type>add|delete|modrdn|moddn|modify)|(?<chg_type_error>'.self::NOTEOL.'*))'.
+            '(?:'.
+                '(?<chg_type>add|delete|modify|modrdn|moddn)'.
+                '|'.
+                '(?<chg_type_error>'.self::NOTEOL.'*)'.
+            ')'.
             self::EOL.
         ')';
     // [/CHANGERECORD_INIT]

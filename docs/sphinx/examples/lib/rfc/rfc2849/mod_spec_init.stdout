@@ -1,0 +1,14 @@
+failed: "foo:"
+-
+matched: "add: cn\n"
+matches: {"0":"add: cn\n","mod_type":"add","attr_desc":"cn"}
+-
+matched: "add: błąd\n"
+matches: {"0":"add: błąd\n","mod_type":"add","attr_type_error":"łąd"}
+-
+matched: "add: cn;lang-pl\n"
+matches: {"0":"add: cn;lang-pl\n","mod_type":"add","attr_desc":"cn;lang-pl"}
+-
+matched: "add: cn;lang-błąd\n"
+matches: {"0":"add: cn;lang-błąd\n","mod_type":"add","attr_opts_error":"łąd"}
+-

@@ -1,0 +1,20 @@
+failed: "foo\n"
+-
+matched: ": safe\n"
+matches: {"0":": safe","value_safe":"safe"}
+-
+matched: ":: YmFzZTY0\n"
+matches: {"0":":: YmFzZTY0","value_b64":"YmFzZTY0"}
+-
+matched: ":< file:///cn.txt\n"
+matches: {"0":":< file:///cn.txt","value_url":"file:///cn.txt","uri_reference":"file:///cn.txt","uri":"file:///cn.txt","scheme":"file","hier_part":"///cn.txt","authority":"","host":"","reg_name":"","path_abempty":"/cn.txt"}
+-
+matched: ": błąd\n"
+matches: {"0":": błąd","value_safe_error":"łąd"}
+-
+matched: ":: YmF***Y0\n"
+matches: {"0":":: YmF***Y0","value_b64_error":"***Y0"}
+-
+matched: ":< file:błąd.txt\n"
+matches: {"0":":< file:błąd.txt","uri_reference":"file:b","uri":"file:b","scheme":"file","hier_part":"b","path_rootless":"b","value_url_error":"łąd.txt"}
+-

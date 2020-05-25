@@ -1,0 +1,14 @@
+failed: "foo:"
+-
+matched: "newsuperior: dc=example,dc=org\n"
+matches: {"0":"newsuperior: dc=example,dc=org\n","value_safe":"dc=example,dc=org"}
+-
+matched: "newsuperior: dc=pomyłka,dc=org\n"
+matches: {"0":"newsuperior: dc=pomyłka,dc=org\n","value_safe_error":"łka,dc=org"}
+-
+matched: "newsuperior:: ZGM9YXNtZSxkYz1jb20=\n"
+matches: {"0":"newsuperior:: ZGM9YXNtZSxkYz1jb20=\n","value_b64":"ZGM9YXNtZSxkYz1jb20="}
+-
+matched: "newsuperior:: ZGM9YXNt***kYz1jb20=\n"
+matches: {"0":"newsuperior:: ZGM9YXNt***kYz1jb20=\n","value_b64_error":"***kYz1jb20="}
+-

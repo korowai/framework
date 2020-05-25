@@ -123,8 +123,8 @@ final class Demo
         $flags |= PREG_UNMATCHED_AS_NULL;
         if (preg_match($this->regex(), $subject, $matches, $flags)) {
             $matches = static::filterCaptures($matches);
-            $matches = json_encode($matches, JSON_UNESCAPED_UNICODE);
-            return sprintf("matched: %s, captures: %s", static::quote($subject), $matches);
+            $matches = json_encode($matches, JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES);
+            return sprintf("matched: %s\nmatches: %s", static::quote($subject), $matches);
         } else {
             return sprintf("failed: %s", static::quote($subject));
         }
@@ -132,7 +132,7 @@ final class Demo
 
     public function matchAndReport(string $subject, int $flags = 0)
     {
-        printf("%s\n", $this->matchAndGetReport($subject, $flags));
+        printf("%s\n-\n", $this->matchAndGetReport($subject, $flags));
     }
 
     /**

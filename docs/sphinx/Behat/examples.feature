@@ -72,6 +72,13 @@ Feature: Examples
       | "lib/rfc/rfc_rules.php"                   | "lib/rfc/rfc_rules.stdout"                    | "lib/rfc/rfc_rules.stderr"                    | 0         |
       | "lib/rfc/rfc2849/version_spec.php"        | "lib/rfc/rfc2849/version_spec.stdout"         | "lib/rfc/rfc2849/version_spec.stderr"         | 0         |
       | "lib/rfc/rfc2849/dn_spec.php"             | "lib/rfc/rfc2849/dn_spec.stdout"              | "lib/rfc/rfc2849/dn_spec.stderr"              | 0         |
+      | "lib/rfc/rfc2849/changerecord_init.php"   | "lib/rfc/rfc2849/changerecord_init.stdout"    | "lib/rfc/rfc2849/changerecord_init.stderr"    | 0         |
+      | "lib/rfc/rfc2849/mod_spec_init.php"       | "lib/rfc/rfc2849/mod_spec_init.stdout"        | "lib/rfc/rfc2849/mod_spec_init.stderr"        | 0         |
+      | "lib/rfc/rfc2849/control.php"             | "lib/rfc/rfc2849/control.stdout"              | "lib/rfc/rfc2849/control.stderr"              | 0         |
+      | "lib/rfc/rfc2849/newrdn_spec.php"         | "lib/rfc/rfc2849/newrdn_spec.stdout"          | "lib/rfc/rfc2849/newrdn_spec.stderr"          | 0         |
+      | "lib/rfc/rfc2849/newsuperior_spec.php"    | "lib/rfc/rfc2849/newsuperior_spec.stdout"     | "lib/rfc/rfc2849/newsuperior_spec.stderr"     | 0         |
+      | "lib/rfc/rfc2849/attrval_spec.php"        | "lib/rfc/rfc2849/attrval_spec.stdout"         | "lib/rfc/rfc2849/attrval_spec.stderr"         | 0         |
+      | "lib/rfc/rfc2849/value_spec.php"          | "lib/rfc/rfc2849/value_spec.stdout"           | "lib/rfc/rfc2849/value_spec.stderr"           | 0         |
 
   Scenario Outline: Examples for korowai/testing
     Given I tested <example_file> with PHPUnit

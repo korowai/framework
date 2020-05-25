@@ -216,8 +216,8 @@ class DemoTest extends TestCase
         $subject = $args[0];
         $qsubject = $demo->quote($subject);
         if ($expect['result']) {
-            $matches = json_encode($expect['matches'], JSON_UNESCAPED_UNICODE);
-            $this->assertSame(sprintf('matched: %s, captures: %s', $qsubject, $matches), $report);
+            $matches = json_encode($expect['matches'], JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES);
+            $this->assertSame(sprintf('matched: %s\nmatches: %s', $qsubject, $matches), $report);
         } else {
             $this->assertSame(sprintf('failed: %s', $qsubject), $report);
         }
@@ -231,10 +231,10 @@ class DemoTest extends TestCase
         $subject = $args[0];
         $qsubject = $demo->quote($subject);
         if ($expect['result']) {
-            $matches = json_encode($expect['matches'], JSON_UNESCAPED_UNICODE);
-            $this->expectOutputString(sprintf("matched: %s, captures: %s\n", $qsubject, $matches));
+            $matches = json_encode($expect['matches'], JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES);
+            $this->expectOutputString(sprintf("matched: %s\nmatches: %s\n-\n", $qsubject, $matches));
         } else {
-            $this->expectOutputString(sprintf("failed: %s\n", $qsubject));
+            $this->expectOutputString(sprintf("failed: %s\n-\n", $qsubject));
         }
         $report = $demo->matchAndReport(...$args);
     }

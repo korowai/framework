@@ -20,7 +20,6 @@ as PRCE regular expressions encapsulated with objects.
    rules
    rfc2253
    rfc2849
-   rfc2849x
    rfc3986
    rfc5234
    rfc8089

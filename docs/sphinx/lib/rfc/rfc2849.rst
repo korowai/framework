@@ -7,11 +7,539 @@
 Rfc2849
 =======
 
-The class :class:`Korowai\\Lib\\Rfc\\Rfc2849` provides rules for parsing
-LDIF files as defined in RFC2849_. See API docs of
-:class:`Korowai\\Lib\\Rfc\\Rfc2849`. See also :ref:`lib.rfc.rfc2849x`.
+The class :class:`Korowai\\Lib\\Rfc\\Rfc2849` provides regular expressions that
+help parsing LDIF files according to RFC2849_ syntax. Not all RFC2849_
+productions are available as regular expressions. High-level productions, such
+as the ``ldif-file`` or ``changerecord`` need to be implemented as PHP
+algorithms, possibly using PCRE and expressions from the
+:class:`Korowai\\Lib\\Rfc\\Rfc2849` class.
+
+
+.. _lib.rfc.rfc2849.syntax:
+
+The syntax
+----------
+
+Few top-level rules (commented as *N/A* below) are not defined in the
+:class:`Korowai\\Lib\\Rfc\\Rfc2849` class, however they're listed here to give
+the full context. The correspondence between RFC2849_ productions and
+expressions defined in :class:`Korowai\\Lib\\Rfc\\Rfc2849` is NOT one-to-one.
+We use few modifications to facilitate assembly of more complex regular
+expressions and to enable precise error reporting. Regular expressions provided
+by the class rules define named capture groups for capturing semantic values
+and erroneous substrings.
+
+
+
+
+.. _lib.rfc.rfc2849.top-level:
+
+Top-level rules
+---------------
+
+The LDIF syntax starts with these top-level rules:
+
+.. code:: abnf
+
+   ldif-file                = ldif-content / ldif-changes                 ; N/A
+
+   ldif-content             = version-spec 1*(1*SEP ldif-attrval-record)  ; N/A
+
+   ldif-changes             = version-spec 1*(1*SEP ldif-change-record)   ; N/A
+
+   ldif-attrval-record      = dn-spec SEP 1*attrval-spec                  ; N/A
+
+   ldif-change-record       = dn-spec SEP *control changerecord           ; N/A
+
+   changerecord             = "changetype:" FILL                          ; N/A
+                              (change-add / change-delete /
+                               change-modify / change-moddn)
+
+.. seealso::
+
+  - :ref:`lib.rfc.rfc2849.version-spec`
+  - :ref:`lib.rfc.rfc2849.dn-spec`
+  - :ref:`lib.rfc.rfc2849.attrval-spec`
+  - :ref:`lib.rfc.rfc2849.control`
+  - :ref:`lib.rfc.rfc2849.changerecord-init`
+
+
+
+
+.. _lib.rfc.rfc2849.relevant:
+
+Relevant rules
+--------------
+
+The following rules are meant to be used to implement LDIF parsers. An
+implementation of top-level rules shall be made in PHP and the code shall use
+regular expressions defined herein.
+
+
+
+
+.. _lib.rfc.rfc2849.version-spec:
+
+version-spec
+""""""""""""
+
+The ``version-spec`` rule
+
+.. code:: abnf
+
+   version-spec             = "version:" FILL version-number
+
+is implemented in :class:`Korowai\\Lib\\Rfc\\Rfc2849` class as
+
+.. literalinclude:: ../../../../packages/rfclib/src/Rfc2849.php
+   :linenos:
+   :dedent: 4
+   :start-at: const VERSION_SPEC =
+   :end-before: [/VERSION_SPEC]
+
+The ``VERSION_SPEC`` pattern accepts strings that start with ``"version:"``
+and span to the end of line (exclusive). The expression defines the following
+capture groups:
+
+- ``version_number`` |---| filled with the whole substring between ``"version:"``
+  and nearest :ref:`lib.rfc.rfc2849.eol`, if the whole substring matches
+  :ref:`version-number <lib.rfc.rfc2849.version-number>` rule,
+- ``version_error`` |---| filled with the erroneous part of the string (the
+  part that failed to match :ref:`lib.rfc.rfc2849.version-number` rule),
+  if the whole substring failed to match the
+  :ref:`lib.rfc.rfc2849.version-number`.
+
+.. literalinclude:: ../../examples/lib/rfc/rfc2849/version_spec.php
+   :linenos:
+   :start-after: [code]
+   :end-before: [/code]
+   :caption: Rfc2849::VERSION_SPEC
+   :name: lib.rfc.rfc2849.version_spec.example
+
+.. literalinclude:: ../../examples/lib/rfc/rfc2849/version_spec.stdout
+   :linenos:
+   :language: none
+
+.. seealso::
+
+  - :ref:`lib.rfc.rfc2849.version-number`
+
+
+.. _lib.rfc.rfc2849.dn-spec:
+
+dn-spec
+"""""""
+
+The ``dn-spec`` rule of RFC2849_
+
+.. code:: abnf
+
+   dn-spec             = "dn:" (FILL distinguishedName /
+                                ":" FILL base64-distinguishedName)
+
+is implemented in :class:`Korowai\\Lib\\Rfc\\Rfc2849` class as
+
+.. literalinclude:: ../../../../packages/rfclib/src/Rfc2849.php
+   :linenos:
+   :dedent: 4
+   :start-at: const DN_SPEC =
+   :end-before: [/DN_SPEC]
+
+The ``DN_SPEC`` pattern accepts strings that start with ``"dn:"``
+and span to the end of line (exclusive). The expression defines 
+following capture groups
+
+- ``value_safe``
+- ``value_b64``
+- ``value_safe_error``
+- ``value_b64_error``
+
+.. literalinclude:: ../../examples/lib/rfc/rfc2849/dn_spec.php
+   :linenos:
+   :start-after: [code]
+   :end-before: [/code]
+   :caption: Rfc2849::DN_SPEC
+   :name: lib.rfc.rfc2849.version_spec.example
+
+.. literalinclude:: ../../examples/lib/rfc/rfc2849/dn_spec.stdout
+   :linenos:
+   :language: none
+
+.. seealso::
+
+  - :ref:`lib.rfc.rfc2849.fill`
+
+
+.. _lib.rfc.rfc2849.simple:
+
+Simple productions
+------------------
+
+
+
+
+.. _lib.rfc.rfc2849.version-number:
+
+version-number
+""""""""""""""
+
+The ``version-number`` rule
+
+.. code:: abnf
+
+   version-number           = 1*DIGIT
+                              ; version-number MUST be "1" for the
+                              ; LDIF format described in RFC2849
+
+is implemented in :class:`Korowai\\Lib\\Rfc\\Rfc2849` class as
+
+.. literalinclude:: ../../../../packages/rfclib/src/Rfc2849.php
+   :linenos:
+   :dedent: 4
+   :start-at: const VERSION_NUMBER =
+   :end-before: [/VERSION_NUMBER]
+
+.. note::
+
+   The condition *version-number MUST be "1"*, is not enforced by the pattern.
+   The pattern only ensures, that the matched string contains non-negative
+   decimal number.
+
+.. seealso::
+
+  - :ref:`lib.rfc.rfc2849.digit`
+
+
+
+
+
+.. _lib.rfc.rfc2849.sep:
+
+SEP
+"""
+
+The ``SEP`` rule of RFC2849_
+
+.. code:: abnf
+
+   SEP                      = (CR LF / LF)
+
+is implemented in :class:`Korowai\\Lib\\Rfc\\Rfc2849` class as
+
+.. literalinclude:: ../../../../packages/rfclib/src/Rfc2849.php
+   :linenos:
+   :dedent: 4
+   :start-at: const SEP =
+   :end-at: const SEP =
+
+
+
+
+.. _lib.rfc.rfc2849.eol:
+
+EOL
+"""
+
+``EOL`` is a convenience rule, similar to :ref:`lib.rfc.rfc2849.sep`. The
+difference is, that it matches also end of string (end of last line, not ended
+with (CR LF/LF)). It's implemented as
+
+.. literalinclude:: ../../../../packages/rfclib/src/Rfc2849.php
+   :linenos:
+   :dedent: 4
+   :start-at: const EOL =
+   :end-at: const EOL =
+
+
+
+
+.. _lib.rfc.rfc2849.noteol:
+
+NOTEOL
+""""""
+
+``NOTEOL`` is an inverse of :ref:`lib.rfc.rfc2849.eol`. It matches any real
+character except :ref:`lib.rfc.rfc2849.lf` and :ref:`lib.rfc.rfc2849.cr`
+(except for :ref:`lib.rfc.rfc2849.cr` is not followed by
+:ref:`lib.rfc.rfc2849.lf`).
+
+.. literalinclude:: ../../../../packages/rfclib/src/Rfc2849.php
+   :linenos:
+   :dedent: 4
+   :start-at: const NOTEOL =
+   :end-at: const NOTEOL =
+
+
+
+
+.. _lib.rfc.rfc2849.fill:
+
+FILL
+""""
+
+.. literalinclude:: ../../../../packages/rfclib/src/Rfc2849.php
+   :linenos:
+   :dedent: 4
+   :start-at: const FILL =
+   :end-at: const FILL =
+
+
+
+
+
+.. _lib.rfc.rfc2849.chars:
+
+Character sets and classes
+--------------------------
+
+
+
+
+.. _lib.rfc.rfc2849.alpha:
+
+ALPHA
+"""""
+
+The ``ALPHA`` rule of RFC2849_
+
+.. code:: abnf
+
+   ALPHA                    = %x41-5A / %x61-7A
+                              ; A-Z / a-z
+
+is same as for RFC5234_, and is implemented in the
+:class:`Korowai\\Lib\\Rfc\\Rfc2849` class as
+
+.. literalinclude:: ../../../../packages/rfclib/src/Rfc2849.php
+   :linenos:
+   :dedent: 4
+   :start-at: const ALPHA =
+   :end-at: const ALPHA =
+
+
+
+
+.. _lib.rfc.rfc2849.digit:
+
+DIGIT
+"""""
+
+The ``DIGIT`` rule of RFC2849_
+
+.. code:: abnf
+
+   DIGIT                    = %x30-39
+                              ; 0-9
+
+is same as for RFC5234_, and is implemented in the
+:class:`Korowai\\Lib\\Rfc\\Rfc2849` class as
+
+.. literalinclude:: ../../../../packages/rfclib/src/Rfc2849.php
+   :linenos:
+   :dedent: 4
+   :start-at: const DIGIT =
+   :end-at: const DIGIT =
+
+
+
+
+.. _lib.rfc.rfc2849.cr:
+
+CR
+""
+
+The ``CR`` rule of RFC2849_
+
+.. code:: abnf
+
+   CR                       = %x0D
+                              ; ASCII CR, carriage return
+
+is same as for RFC5234_, and is implemented in the
+:class:`Korowai\\Lib\\Rfc\\Rfc2849` class as
+
+.. literalinclude:: ../../../../packages/rfclib/src/Rfc2849.php
+   :linenos:
+   :dedent: 4
+   :start-at: const CR =
+   :end-at: const CR =
+
+
+
+
+.. _lib.rfc.rfc2849.lf:
+
+LF
+""
+
+The ``LF`` rule of RFC2849_
+
+.. code:: abnf
+
+   LF                       = %x0A
+                              ; ASCII LF, line feed
+
+is same as for RFC5234_, and is implemented in the
+:class:`Korowai\\Lib\\Rfc\\Rfc2849` class as
+
+.. literalinclude:: ../../../../packages/rfclib/src/Rfc2849.php
+   :linenos:
+   :dedent: 4
+   :start-at: const LF =
+   :end-at: const LF =
+
+
+
+
+.. _lib.rfc.rfc2849.space:
+
+SPACE
+"""""
+
+The ``SPACE`` rule of RFC2849_
+
+.. code:: abnf
+
+   SP                       = %x20
+                              ; ASCII SP, line feed
+
+is same as ``SP`` for RFC5234_, and is implemented in the
+:class:`Korowai\\Lib\\Rfc\\Rfc2849` class as
+
+.. literalinclude:: ../../../../packages/rfclib/src/Rfc2849.php
+   :linenos:
+   :dedent: 4
+   :start-at: const SPACE =
+   :end-at: const SPACE =
+
+
+
+
+.. _lib.rfc.rfc2849.attr-type-chars:
+
+attr-type-chars
+"""""""""""""""
+
+The ``attr-type-chars`` rule of RFC2849_
+
+.. code:: abnf
+
+   attr-type-chars          = ALPHA / DIGIT / "-"
+
+is implemented in the :class:`Korowai\\Lib\\Rfc\\Rfc2849` class as
+
+.. literalinclude:: ../../../../packages/rfclib/src/Rfc2849.php
+   :linenos:
+   :dedent: 4
+   :start-at: const ATTR_TYPE_CHARS =
+   :end-at: const ATTR_TYPE_CHARS =
+
+
+
+
+.. _lib.rfc.rfc2849.base64-char:
+
+BASE64-CHAR
+"""""""""""
+
+The ``BASE64-CHAR`` rule of RFC2849_
+
+.. code:: abnf
+
+   BASE64-CHAR              = %x2B / %x2F / %x30-39 / %x3D / %x41-5A /
+                              %x61-7A
+                              ; +, /, 0-9, =, A-Z, and a-z
+
+is implemented in the :class:`Korowai\\Lib\\Rfc\\Rfc2849` class as
+
+.. literalinclude:: ../../../../packages/rfclib/src/Rfc2849.php
+   :linenos:
+   :dedent: 4
+   :start-at: const BASE64_CHAR =
+   :end-at: const BASE64_CHAR =
+
+
+
+
+.. _lib.rfc.rfc2849.opt-char:
+
+opt-char
+""""""""
+
+The ``opt-char`` rule of RFC2849_
+
+.. code:: abnf
+
+   opt-char                 = attr-type-chars
+
+is implemented in the :class:`Korowai\\Lib\\Rfc\\Rfc2849` class as
+
+.. literalinclude:: ../../../../packages/rfclib/src/Rfc2849.php
+   :linenos:
+   :dedent: 4
+   :start-at: const OPT_CHAR =
+   :end-at: const OPT_CHAR =
+
+
+
+
+.. _lib.rfc.rfc2849.safe-char:
+
+SAFE-CHAR
+"""""""""
+
+The ``SAFE-CHAR`` rule of RFC2849_
+
+.. code:: abnf
+
+   SAFE-CHAR                = %x01-09 / %x0B-0C / %x0E-7F
+                              ; any value <= 127 decimal except NUL, LF,
+                              ; and CR
+
+is implemented in the :class:`Korowai\\Lib\\Rfc\\Rfc2849` class as
+
+.. literalinclude:: ../../../../packages/rfclib/src/Rfc2849.php
+   :linenos:
+   :dedent: 4
+   :start-at: const SAFE_CHAR =
+   :end-at: const SAFE_CHAR =
+
+
+
+
+.. _lib.rfc.rfc2849.safe-init-char:
+
+SAFE-INIT-CHAR
+""""""""""""""
+
+The ``SAFE-INIT-CHAR`` rule of RFC2849_
+
+.. code:: abnf
+
+   SAFE-INIT-CHAR           = %x01-09 / %x0B-0C / %x0E-1F /
+                              %x21-39 / %x3B / %x3D-7F
+                              ; any value <= 127 except NUL, LF, CR,
+                              ; SPACE, colon (":", ASCII 58 decimal)
+                              ; and less-than ("<" , ASCII 60 decimal)
+
+
+is implemented in the :class:`Korowai\\Lib\\Rfc\\Rfc2849` class as
+
+.. literalinclude:: ../../../../packages/rfclib/src/Rfc2849.php
+   :linenos:
+   :dedent: 4
+   :start-at: const SAFE_INIT_CHAR =
+   :end-at: const SAFE_INIT_CHAR =
+
+
+
+
 
 .. _RFC2849: https://tools.ietf.org/html/rfc2849
+.. _RFC5234: https://tools.ietf.org/html/rfc5234
+
+.. |--| unicode:: U+2013 .. en dash
+.. |---| unicode:: U+2014 .. em dash,
 
 .. <!--.. literalinclude:: ../../examples/lib/rfc/rfc2849.php -->
 .. <!--   :linenos: -->

@@ -1,0 +1,3 @@
+failed: "foo:"
+matched: "version: 123\n", captures: {"0":"version: 123","version_number":"123"}
+matched: "version: 12x\n", captures: {"0":"version: 12x","version_error":"x"}

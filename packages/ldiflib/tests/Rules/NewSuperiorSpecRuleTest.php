@@ -77,7 +77,7 @@ class NewSuperiorSpecRuleTest extends TestCase
                     'message' => 'syntax error: invalid DN syntax: "'.$dn.'"',
                 ])
             ];
-            $matches = [[$dn, 3 + strlen('newsuperior: ')], 'dn_safe' => [$dn, 3 + strlen('newsuperior: ')]];
+            $matches = [[$dn, 3 + strlen('newsuperior: ')], 'value_safe' => [$dn, 3 + strlen('newsuperior: ')]];
             $cursor = self::hasPropertiesIdenticalTo([
                 'offset' => 3 + strlen('newsuperior: ') + strlen($dn),
                 'sourceOffset' => 3 + strlen('newsuperior: ') + strlen($dn),
@@ -110,7 +110,7 @@ class NewSuperiorSpecRuleTest extends TestCase
                     'message' => 'syntax error: invalid DN syntax: "'.$dn.'"',
                 ]),
             ];
-            $matches = [[$dnBase64, 3 + strlen('newsuperior:: ')], 'dn_b64' => [$dnBase64, 3 + strlen('newsuperior:: ')]];
+            $matches = [[$dnBase64, 3 + strlen('newsuperior:: ')], 'value_b64' => [$dnBase64, 3 + strlen('newsuperior:: ')]];
             $cursor = self::hasPropertiesIdenticalTo([
                 'offset' => 3 + strlen('newsuperior:: ') + strlen($dnBase64),
                 'sourceOffset' => 3 + strlen('newsuperior:: ') + strlen($dnBase64),
@@ -147,7 +147,7 @@ class NewSuperiorSpecRuleTest extends TestCase
                 'sourceOffset' => 3 + strlen('newsuperior:: ') + $case['offset'],
                 'sourceCharOffset' => 2 + strlen('newsuperior:: ') + $case['offset'],
             ]);
-            $matches = [[$dnBase64, 3 + strlen('newsuperior:: ')], 'dn_b64' => [$dnBase64, 3 + strlen('newsuperior:: ')]];
+            $matches = [[$dnBase64, 3 + strlen('newsuperior:: ')], 'value_b64' => [$dnBase64, 3 + strlen('newsuperior:: ')]];
             $expect = [
                 'result' => $result,
                 'init' => 'preset string',
@@ -184,7 +184,7 @@ class NewSuperiorSpecRuleTest extends TestCase
                 'sourceOffset' => 3 + strlen('newsuperior:: ') + $case['offset'],
                 'sourceCharOffset' => 2 + strlen('newsuperior:: ') + $case['charOffset'],
             ]);
-            $matches = [[$dnBase64, 3 + strlen('newsuperior:: ')], 'dn_b64' => [$dnBase64, 3 + strlen('newsuperior:: ')]];
+            $matches = [[$dnBase64, 3 + strlen('newsuperior:: ')], 'value_b64' => [$dnBase64, 3 + strlen('newsuperior:: ')]];
             $expect = [
                 'result' => $result,
                 'init' => 'preset string',
@@ -227,7 +227,7 @@ class NewSuperiorSpecRuleTest extends TestCase
                 'sourceCharOffset' => mb_strlen($source[0]),
             ]);
 
-            $dnKey = $type === 'BASE64' ? 'dn_b64' : 'dn_safe';
+            $dnKey = $type === 'BASE64' ? 'value_b64' : 'value_safe';
             $matches = [[$dn, $dnOffset], $dnKey => [$dn, $dnOffset]];
 
             $expect = [
@@ -268,7 +268,7 @@ class NewSuperiorSpecRuleTest extends TestCase
                             self::hasPropertiesIdenticalTo([
                                 'sourceOffset' => 6,
                                 'sourceCharOffset' => 6,
-                                'message' => 'internal error: missing or invalid capture groups "dn_safe" and "dn_b64"'
+                                'message' => 'internal error: missing or invalid capture groups "value_safe" and "value_b64"'
                             ]),
                         ],
                         'records' => [],
@@ -277,8 +277,8 @@ class NewSuperiorSpecRuleTest extends TestCase
             ];
         }, [
             [],
-            [[null,-1], 'dn_safe' => [null,-1]],
-            [[null,-1], 'dn_b64'  => [null,-1]],
+            [[null,-1], 'value_safe' => [null,-1]],
+            [[null,-1], 'value_b64'  => [null,-1]],
         ]);
 
         return array_merge(

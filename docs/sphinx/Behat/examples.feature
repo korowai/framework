@@ -70,6 +70,8 @@ Feature: Examples
     Examples:
       | example_file                              | stdout_file                                   | stderr_file                                   | exit_code |
       | "lib/rfc/rfc_rules.php"                   | "lib/rfc/rfc_rules.stdout"                    | "lib/rfc/rfc_rules.stderr"                    | 0         |
+      | "lib/rfc/rfc2849/version_spec.php"        | "lib/rfc/rfc2849/version_spec.stdout"         | "lib/rfc/rfc2849/version_spec.stderr"         | 0         |
+      | "lib/rfc/rfc2849/dn_spec.php"             | "lib/rfc/rfc2849/dn_spec.stdout"              | "lib/rfc/rfc2849/dn_spec.stderr"              | 0         |
 
   Scenario Outline: Examples for korowai/testing
     Given I tested <example_file> with PHPUnit

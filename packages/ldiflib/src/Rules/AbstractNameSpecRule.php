@@ -54,22 +54,19 @@ abstract class AbstractNameSpecRule extends AbstractRfcRule
      */
     public function parseMatched(State $state, array $matches, &$value = null) : bool
     {
-        $prefix = $this->prefix();
-        $b64 = $prefix.'_b64';
-        $safe = $prefix.'_safe';
-        if (Scan::matched($b64, $matches, $string, $offset)) {
+        if (Scan::matched('value_b64', $matches, $string, $offset)) {
             $value = Util::base64Decode($state, $string, $offset);
             if (!$this->utf8Check($state, $value, $offset)) {
                 return false;
             }
             return $this->validate($state, $value, $offset);
-        } elseif (Scan::matched($safe, $matches, $value, $offset)) {
+        } elseif (Scan::matched('value_safe', $matches, $value, $offset)) {
             return $this->validate($state, $value, $offset);
         }
 
         // This may happen with broken Rfc rule.
         $value = null;
-        $state->errorHere('internal error: missing or invalid capture groups "'.$safe.'" and "'.$b64.'"');
+        $state->errorHere('internal error: missing or invalid capture groups "value_safe" and "value_b64"');
         return false;
     }
 

@@ -20,7 +20,7 @@ namespace Korowai\Lib\Rfc;
  * **Example**:
  *
  * ```
- * $result = preg_match('/\G'.Rfc2253::ATTRVAL_SPEC.'/', $subject, $matches, PREG_UNMATCHED_AS_NULL)
+ * $result = preg_match('/\G'.Rfc2849::ATTRVAL_SPEC.'/', $subject, $matches, PREG_UNMATCHED_AS_NULL)
  * ```
  */
 class Rfc2849 extends AbstractRuleSet
@@ -163,7 +163,7 @@ class Rfc2849 extends AbstractRuleSet
             '(?:'.
                 '(?<version_number>'.self::VERSION_NUMBER.')'.
                 '|'.
-                '(?:'.self::VERSION_NUMBER.'?(?<version_error>'.self::NOTEOL.'))'.
+                '(?:'.self::VERSION_NUMBER.'?(?<version_error>'.self::NOTEOL.'*))'.
             ')'.
             '(?='.self::EOL.')'.
         ')';
@@ -233,10 +233,6 @@ class Rfc2849 extends AbstractRuleSet
     /**
      * [RFC2849](https://tools.ietf.org/html/rfc2849):
      * ``distinguishedName = SAFE-STRING``
-     *
-     * Capture groups:
-     *
-     *  - ``dn_safe``: always set, contains the whole matched string.
      */
     public const DISTINGUISHED_NAME = self::SAFE_STRING;
     // [/DISTINGUISHED_NAME]
@@ -244,10 +240,6 @@ class Rfc2849 extends AbstractRuleSet
     /**
      * [RFC2849](https://tools.ietf.org/html/rfc2849):
      * ``base64-distinguishedName = SAFE-STRING``
-     *
-     * Capture groups:
-     *
-     *  - ``dn_b64``: always set, contains the whole matched string.
      */
     public const BASE64_DISTINGUISHED_NAME = self::BASE64_UTF8_STRING;
     // [/BASE64_DISTINGUISHED_NAME]
@@ -270,40 +262,89 @@ class Rfc2849 extends AbstractRuleSet
     // [/BASE64_RDN]
 
     /**
+     * ``value-safe = SAFE-STRING``
+     *
+     * Capture groups:
+     *
+     *  - ``value_safe``: only set if the subject contains no errors before [EOL],
+     *  - ``value_b64_error``: only set if there is an error before EOL;
+     *      contains the substring that failed to match [SAFE_STRING](Rfc2849.html),
+     */
+    public const VALUE_SAFE =
+        '(?:(?![:<])'.
+            self::FILL.
+            '(?:'.
+                '(?<value_safe>'.self::SAFE_STRING.')'.
+                '|'.
+                '(?:'.self::SAFE_STRING.'(?<value_safe_error>'.self::NOTEOL.'*))'.
+            ')'.
+            '(?='.self::EOL.')'.
+        ')';
+    // [/VALUE_SAFE]
+
+    /**
+     * ``value-base64 = BASE64-STRING``
+     *
+     * Capture groups:
+     *
+     *  - ``value_b64``: only set if the subject contains no errors after ``":"`` and before [EOL],
+     *  - ``value_b64_error``: only set if there is an error after ``":"`` and before EOL;
+     *      contains the substring that failed to match [BASE64_STRING](Rfc2849.html),
+     */
+    public const VALUE_BASE64 =
+        '(?::'.
+            self::FILL.
+            '(?:'.
+                '(?<value_b64>'.self::BASE64_STRING.')'.
+                '|'.
+                '(?:'.self::BASE64_STRING.'(?<value_b64_error>'.self::NOTEOL.'*))'.
+            ')'.
+            '(?='.self::EOL.')'.
+        ')';
+    // [/VALUE_BASE64]
+
+    /**
+     * ``value-url = URL``
+     *
+     * Capture groups
+     *
+     *  - ``value_url``: only set if the is no error in the string after ``"<"`` and before [EOL](Rfc2849.html),
+     *  - ``value_url_error``: only set if there is an error after ``"<"`` and before [EOL](Rfc2849.html);
+     *    contains the substring that failed to match [URL](Rfc2849.html),
+     */
+    public const VALUE_URL =
+        '(?:<'.
+            self::FILL.
+            '(?:(?J)'.
+                '(?<value_url>'.self::URL.')'.
+                '|'.
+                '(?:(?:'.self::URL.')?(?<value_url_error>'.self::NOTEOL.'*))'.
+            ')'.
+            '(?='.self::EOL.')'.
+        ')';
+    // [/VALUE_URL]
+
+
+    /**
      * ``dn-value-spec = ":" ( FILL distinguishedName / ":" FILL base64-distinguishedName )``
      *
      * Capture groups:
      *
-     *  - ``dn_safe``: only set if the subject contains no syntax errors and the initial tag is ``"dn:"``,
-     *  - ``dn_b64``: only set if the subject contains no syntax errors and the initial tag is ``"dn::"``,
-     *  - ``dn_safe_error``: only set if there is an error after the ``"dn:"``
+     *  - ``value_safe``: only set if the subject contains no syntax errors and the initial tag is ``"dn:"``,
+     *  - ``value_b64``: only set if the subject contains no syntax errors and the initial tag is ``"dn::"``,
+     *  - ``value_safe_error``: only set if there is an error after the ``"dn:"``
      *    tag (single colon); contains the substring that failed to match [Rfc2849::SAFE_STRING](Rfc2849.html),
-     *  - ``dn_b64_error``: only set if there is an error after the ``"dn::"``
+     *  - ``value_b64_error``: only set if there is an error after the ``"dn::"``
      *    tag (double colon); contains the substring that failed to match [Rfc2849::BASE64_STRING](Rfc2849.html),
      */
     public const DN_VALUE_SPEC =
         '(?:'.
             ':'.
             '(?:'.
-                '(?:(?!:)'.
-                    self::FILL.
-                    '(?:'.
-                        '(?<dn_safe>'.self::DISTINGUISHED_NAME.')'.
-                        '|'.
-                        '(?:'.self::DISTINGUISHED_NAME.'?(?<dn_safe_error>'.self::NOTEOL.'*))'.
-                    ')'.
-                ')'.
+                self::VALUE_SAFE.
                 '|'.
-                '(?::'.
-                    self::FILL.
-                    '(?:'.
-                        '(?<dn_b64>'.self::BASE64_DISTINGUISHED_NAME.')'.
-                        '|'.
-                        '(?:'.self::BASE64_DISTINGUISHED_NAME.'?(?<dn_b64_error>'.self::NOTEOL.'*))'.
-                    ')'.
-                ')'.
+                self::VALUE_BASE64.
             ')'.
-            '(?='.self::EOL.')'.
         ')';
     // [/DN_VALUE_SPEC]
 
@@ -313,8 +354,8 @@ class Rfc2849 extends AbstractRuleSet
      *
      * Capture groups:
      *
-     *  - ``dn_safe``: only set if distinguished name is specified as SAFE-STRING using single colon ``":"`` notation,
-     *  - ``dn_b64``: only set if distinguished name is specified as BASE64-STRING using double colon ``"::"`` notation.
+     *  - ``value_safe``: only set if distinguished name is specified as SAFE-STRING using single colon ``":"`` notation,
+     *  - ``value_b64``: only set if distinguished name is specified as BASE64-STRING using double colon ``"::"`` notation.
      */
     public const DN_SPEC = '(?:dn'.self::DN_VALUE_SPEC.')';
     // [/DN_SPEC]
@@ -357,34 +398,12 @@ class Rfc2849 extends AbstractRuleSet
         '(?:'.
             ':'.
             '(?:'.
-                '(?:(?![:<])'.
-                    self::FILL.
-                    '(?:'.
-                        '(?<value_safe>'.self::SAFE_STRING.')'.
-                        '|'.
-                        '(?:'.self::SAFE_STRING.'(?<value_safe_error>'.self::NOTEOL.'*))'.
-                    ')'.
-                ')'.
+                self::VALUE_SAFE.
                 '|'.
-                '(?::'.
-                    self::FILL.
-                    '(?:'.
-                        '(?<value_b64>'.self::BASE64_STRING.')'.
-                        '|'.
-                        '(?:'.self::BASE64_STRING.'(?<value_b64_error>'.self::NOTEOL.'*))'.
-                    ')'.
-                ')'.
+                self::VALUE_BASE64.
                 '|'.
-                '(?:<'.
-                    self::FILL.
-                    '(?:(?J)'.
-                        '(?<value_url>'.self::URL.')'.
-                        '|'.
-                        '(?:(?:'.self::URL.')?(?<value_url_error>'.self::NOTEOL.'*))'.
-                    ')'.
-                ')'.
+                self::VALUE_URL.
             ')'.
-            '(?='.self::EOL.')'.
         ')';
     // [/VALUE_SPEC]
 
@@ -538,44 +557,28 @@ class Rfc2849 extends AbstractRuleSet
      *
      * Capture groups:
      *
-     *  - ``rdn_safe``: only set if rule matches, and the string after "newrdn:" is a valid SAFE-STRING,
-     *  - ``rdn_b64``: only set if rule matches, and the string after "newrdn::" is a valid BASE64-STRING,
-     *  - ``rdn_safe_error``: only set if rule matches, but there is an error after "newrdn:",
-     *  - ``rdn_b64_error``: only set if rule matches, but there is an error after "newrdn::".
+     *  - ``value_safe``: only set if rule matches, and the string after "newrdn:" is a valid SAFE-STRING,
+     *  - ``value_b64``: only set if rule matches, and the string after "newrdn::" is a valid BASE64-STRING,
+     *  - ``value_safe_error``: only set if rule matches, but there is an error after "newrdn:",
+     *  - ``value_b64_error``: only set if rule matches, but there is an error after "newrdn::".
      */
-    public const NEWRDN_SPEC =
-        '(?:'.
-            'newrdn:'.
-            '(?:'.
-                '(?:(?!:)'.self::FILL.'(?:'.
-                    '(?:(?<rdn_safe>'.self::RDN.'))'.
-                    '|'.
-                    '(?:'.self::RDN.'?(?<rdn_safe_error>'.self::NOTEOL.'*))'.
-                '))'.
-                '|'.
-                '(?::'.self::FILL.'(?:'.
-                    '(?:(?<rdn_b64>'.self::BASE64_RDN.'))'.
-                    '|'.
-                    '(?:'.self::BASE64_RDN.'?(?<rdn_b64_error>'.self::NOTEOL.'*))'.
-                '))'.
-            ')'.self::EOL.
-        ')';
+    public const NEWRDN_SPEC = '(?:newrdn'.self::DN_VALUE_SPEC.self::EOL.')';
     // [/NEWRDN_SPEC]
 
     /**
      * ``newsuperior-spec = "newsuperior:" (FILL distinguishedName / ":" FILL base64-distinguishedName) SEP``
      *
      * Matches any string that starts with ``"newsuperior:"``, and spans to the nearest
-     * [EOL](Rfc2849.html) including it. Returns one of the ``dn_*_error``
+     * [EOL](Rfc2849.html) including it. Returns one of the ``value_*_error``
      * capture groups if there is an error after the ``"version:"`` tag.
      *
      * Capture groups:
      *
-     *  - ``dn_safe``: only set if the subject contains no syntax errors and the initial tag is ``"newsuperior:"``,
-     *  - ``dn_b64``: only set if the subject contains no syntax errors and the initial tag is ``"newsuperior::"``,
-     *  - ``dn_safe_error``: only set if there is an error after the ``"newsuperior:"``
+     *  - ``value_safe``: only set if the subject contains no syntax errors and the initial tag is ``"newsuperior:"``,
+     *  - ``value_b64``: only set if the subject contains no syntax errors and the initial tag is ``"newsuperior::"``,
+     *  - ``value_safe_error``: only set if there is an error after the ``"newsuperior:"``
      *    tag (single colon); contains the substring that failed to match [Rfc2849::SAFE_STRING](Rfc2849.html),
-     *  - ``dn_b64_error``: only set if there is an error after the ``"newsuperior::"``
+     *  - ``value_b64_error``: only set if there is an error after the ``"newsuperior::"``
      *    tag (double colon); contains the substring that failed to match [Rfc2849::BASE64_STRING](Rfc2849.html),
      */
     public const NEWSUPERIOR_SPEC = '(?:newsuperior'.self::DN_VALUE_SPEC.self::EOL.')';
@@ -615,6 +618,9 @@ class Rfc2849 extends AbstractRuleSet
         'BASE64_DISTINGUISHED_NAME',
         'RDN',
         'BASE64_RDN',
+        'VALUE_SAFE',
+        'VALUE_BASE64',
+        'VALUE_URL',
         'DN_VALUE_SPEC',
         'DN_SPEC',
         'URL',
@@ -679,13 +685,9 @@ class Rfc2849 extends AbstractRuleSet
         ],
         'attr_opts_error'   => 'missing or invalid options (RFC2849)',
         'attr_type_error'   => 'missing or invalid AttributeType (RFC2849)',
-        'dn_b64_error'      => 'malformed BASE64-STRING (RFC2849)',
-        'dn_safe_error'     => 'malformed SAFE-STRING (RFC2849)',
         'chg_type_error'    => 'missing or invalid change type (RFC2849)',
         'ctl_type_error'    => 'missing or invalid OID (RFC2849)',
         'ctl_crit_error'    => 'expected "true" or "false" (RFC2849)',
-        'rdn_b64_error'     => 'malformed BASE64-STRING (RFC2849)',
-        'rdn_safe_error'    => 'malformed SAFE-STRING (RFC2849)',
         'value_b64_error'   => 'malformed BASE64-STRING (RFC2849)',
         'value_safe_error'  => 'malformed SAFE-STRING (RFC2849)',
         'value_url_error'   => 'malformed URL (RFC2849/RFC3986)',

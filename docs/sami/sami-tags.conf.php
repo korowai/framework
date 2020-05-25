@@ -5,7 +5,7 @@ use Sami\Version\GitVersionCollection;
 use Sami\RemoteRepository\GitHubRemoteRepository;
 use Symfony\Component\Finder\Finder;
 
-$srcdirs = ['src', 'packages'];
+$srcdirs = ['src', 'packages/*'];
 $srcdirs = array_map(function ($p) {
   return __DIR__ . "/../../" . $p;
 }, $srcdirs);
@@ -14,6 +14,8 @@ $iterator = Finder::create()
   ->files()
   ->name("*.php")
   ->exclude("Tests")
+  ->exclude("tests")
+  ->exclude("tests-nocov")
   ->exclude("Resources")
   ->exclude("Behat")
   ->exclude("vendor")

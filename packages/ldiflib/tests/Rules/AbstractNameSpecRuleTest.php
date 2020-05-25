@@ -73,7 +73,7 @@ class AbstractNameSpecRuleTest extends TestCase
                     'message' => 'syntax error: invalid DN syntax: "'.$dn.'"',
                 ])
             ];
-            $matches = [[$dn, strlen('ł dn: ')], 'dn_safe' => [$dn, strlen('ł dn: ')]];
+            $matches = [[$dn, strlen('ł dn: ')], 'value_safe' => [$dn, strlen('ł dn: ')]];
             $cursor = self::hasPropertiesIdenticalTo([
                 'offset' => 3 + strlen('dn: ') + strlen($dn),
                 'sourceOffset' => 3 + strlen('dn: ') + strlen($dn),
@@ -106,7 +106,7 @@ class AbstractNameSpecRuleTest extends TestCase
                     'message' => 'syntax error: invalid DN syntax: "'.$dn.'"',
                 ]),
             ];
-            $matches = [[$dnBase64, 3 + strlen('dn:: ')], 'dn_b64' => [$dnBase64, 3 + strlen('dn:: ')]];
+            $matches = [[$dnBase64, 3 + strlen('dn:: ')], 'value_b64' => [$dnBase64, 3 + strlen('dn:: ')]];
             $cursor = self::hasPropertiesIdenticalTo([
                 'offset' => 3 + strlen('dn:: ') + strlen($dnBase64),
                 'sourceOffset' => 3 + strlen('dn:: ') + strlen($dnBase64),
@@ -143,7 +143,7 @@ class AbstractNameSpecRuleTest extends TestCase
                 'sourceOffset' => 3 + strlen('dn:: ') + $case['offset'],
                 'sourceCharOffset' => 2 + mb_strlen('dn:: ') + $case['offset'],
             ]);
-            $matches = [[$dnBase64, 3 + strlen('dn:: ')], 'dn_b64' => [$dnBase64, 3 + strlen('dn:: ')]];
+            $matches = [[$dnBase64, 3 + strlen('dn:: ')], 'value_b64' => [$dnBase64, 3 + strlen('dn:: ')]];
             $expect = [
                 'result' => $result,
                 'init' => 'preset string',
@@ -180,7 +180,7 @@ class AbstractNameSpecRuleTest extends TestCase
                 'sourceOffset' => 3 + strlen('dn:: ') + $case['offset'],
                 'sourceCharOffset' => 2 + mb_strlen('dn:: ') + $case['charOffset'],
             ]);
-            $matches = [[$dnBase64, 3 + strlen('dn:: ')], 'dn_b64' => [$dnBase64, 3 + strlen('dn:: ')]];
+            $matches = [[$dnBase64, 3 + strlen('dn:: ')], 'value_b64' => [$dnBase64, 3 + strlen('dn:: ')]];
             $expect = [
                 'result' => $result,
                 'init' => 'preset string',
@@ -223,7 +223,7 @@ class AbstractNameSpecRuleTest extends TestCase
                 'sourceCharOffset' => mb_strlen($source[0]),
             ]);
 
-            $dnKey = $type === 'BASE64' ? 'dn_b64' : 'dn_safe';
+            $dnKey = $type === 'BASE64' ? 'value_b64' : 'value_safe';
             $matches = [[$dn, $dnOffset], $dnKey => [$dn, $dnOffset]];
 
             $expect = [
@@ -264,7 +264,7 @@ class AbstractNameSpecRuleTest extends TestCase
                             self::hasPropertiesIdenticalTo([
                                 'sourceOffset' => 6,
                                 'sourceCharOffset' => 6,
-                                'message' => 'internal error: missing or invalid capture groups "dn_safe" and "dn_b64"'
+                                'message' => 'internal error: missing or invalid capture groups "value_safe" and "value_b64"'
                             ]),
                         ],
                         'records' => [],
@@ -273,8 +273,8 @@ class AbstractNameSpecRuleTest extends TestCase
             ];
         }, [
             [],
-            [[null,-1], 'dn_safe' => [null,-1]],
-            [[null,-1], 'dn_b64'  => [null,-1]],
+            [[null,-1], 'value_safe' => [null,-1]],
+            [[null,-1], 'value_b64'  => [null,-1]],
         ]);
 
         return array_merge(

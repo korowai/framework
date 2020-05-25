@@ -2,7 +2,7 @@
 .. index::
    single: Context; Exception Error Handlers
    single: Lib; Context; Exception Error Handlers
-.. _ExceptionErrorHandlers:
+.. _lib.error.exception-error-handlers:
 
 Exception Error Handlers
 ========================

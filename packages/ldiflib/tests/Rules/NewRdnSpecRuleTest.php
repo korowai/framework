@@ -77,7 +77,7 @@ class NewRdnSpecRuleTest extends TestCase
                     'message' => 'syntax error: invalid RDN syntax: "'.$rdn.'"',
                 ])
             ];
-            $matches = [[$rdn, 3 + strlen('newrdn: ')], 'rdn_safe' => [$rdn, 3 + strlen('newrdn: ')]];
+            $matches = [[$rdn, 3 + strlen('newrdn: ')], 'value_safe' => [$rdn, 3 + strlen('newrdn: ')]];
             $cursor = self::hasPropertiesIdenticalTo([
                 'offset' => 3 + strlen('newrdn: ') + strlen($rdn),
                 'sourceOffset' => 3 + strlen('newrdn: ') + strlen($rdn),
@@ -110,7 +110,7 @@ class NewRdnSpecRuleTest extends TestCase
                     'message' => 'syntax error: invalid RDN syntax: "'.$rdn.'"',
                 ]),
             ];
-            $matches = [[$dnBase64, 3 + strlen('newrdn:: ')], 'rdn_b64' => [$dnBase64, 3 + strlen('newrdn:: ')]];
+            $matches = [[$dnBase64, 3 + strlen('newrdn:: ')], 'value_b64' => [$dnBase64, 3 + strlen('newrdn:: ')]];
             $cursor = self::hasPropertiesIdenticalTo([
                 'offset' => 3 + strlen('newrdn:: ') + strlen($dnBase64),
                 'sourceOffset' => 3 + strlen('newrdn:: ') + strlen($dnBase64),
@@ -147,7 +147,7 @@ class NewRdnSpecRuleTest extends TestCase
                 'sourceOffset' => 3 + strlen('newrdn:: ') + $case['offset'],
                 'sourceCharOffset' => 2 + strlen('newrdn:: ') + $case['offset'],
             ]);
-            $matches = [[$dnBase64, 3 + strlen('newrdn:: ')], 'rdn_b64' => [$dnBase64, 3 + strlen('newrdn:: ')]];
+            $matches = [[$dnBase64, 3 + strlen('newrdn:: ')], 'value_b64' => [$dnBase64, 3 + strlen('newrdn:: ')]];
             $expect = [
                 'result' => $result,
                 'init' => 'preset string',
@@ -184,7 +184,7 @@ class NewRdnSpecRuleTest extends TestCase
                 'sourceOffset' => 3 + strlen('newrdn:: ') + $case['offset'],
                 'sourceCharOffset' => 2 + strlen('newrdn:: ') + $case['charOffset'],
             ]);
-            $matches = [[$dnBase64, 3 + strlen('newrdn:: ')], 'rdn_b64' => [$dnBase64, 3 + strlen('newrdn:: ')]];
+            $matches = [[$dnBase64, 3 + strlen('newrdn:: ')], 'value_b64' => [$dnBase64, 3 + strlen('newrdn:: ')]];
             $expect = [
                 'result' => $result,
                 'init' => 'preset string',
@@ -227,7 +227,7 @@ class NewRdnSpecRuleTest extends TestCase
                 'sourceCharOffset' => mb_strlen($source[0]),
             ]);
 
-            $dnKey = $type === 'BASE64' ? 'rdn_b64' : 'rdn_safe';
+            $dnKey = $type === 'BASE64' ? 'value_b64' : 'value_safe';
             $matches = [[$rdn, $dnOffset], $dnKey => [$rdn, $dnOffset]];
 
             $expect = [
@@ -268,7 +268,7 @@ class NewRdnSpecRuleTest extends TestCase
                             self::hasPropertiesIdenticalTo([
                                 'sourceOffset' => 6,
                                 'sourceCharOffset' => 6,
-                                'message' => 'internal error: missing or invalid capture groups "rdn_safe" and "rdn_b64"'
+                                'message' => 'internal error: missing or invalid capture groups "value_safe" and "value_b64"'
                             ]),
                         ],
                         'records' => [],
@@ -277,8 +277,8 @@ class NewRdnSpecRuleTest extends TestCase
             ];
         }, [
             [],
-            [[null,-1], 'rdn_safe' => [null,-1]],
-            [[null,-1], 'rdn_b64'  => [null,-1]],
+            [[null,-1], 'value_safe' => [null,-1]],
+            [[null,-1], 'value_b64'  => [null,-1]],
         ]);
 
         return array_merge(

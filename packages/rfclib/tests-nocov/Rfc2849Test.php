@@ -81,8 +81,7 @@ class Rfc2849Test extends TestCase
             'RDN'                       => [ Rfc2849::RDN,                      Rfc2849::SAFE_STRING ],
             'BASE64_RDN'                => [ Rfc2849::BASE64_RDN,               Rfc2849::BASE64_UTF8_STRING ],
             'URL'                       => [ Rfc2849::URL,                      Rfc3986::URI_REFERENCE ],
-//        'ATTRVAL_SPEC' => [ Rfc2849::ATTRVAL_SPEC, '(?:'.Rfc2849::ATTRIBUTE_DESCRIPTION.Rfc2849::VALUE_SPEC.Rfc2849::SEP.')' ],
-//        'LDIF_ATTRVAL_RECORD' => [ Rfc2849::LDIF_ATTRVAL_RECORD, '(?:'.Rfc2849::DN_SPEC.Rfc2849::SEP.Rfc2849::ATTRVAL_SPEC.'+)' ],
+            'ATTRVAL_SPEC'              => [ Rfc2849::ATTRVAL_SPEC,             '(?:(?<attr_desc>'.Rfc2849::ATTRIBUTE_DESCRIPTION.')'.Rfc2849::VALUE_SPEC.Rfc2849::EOL.')' ],
         ];
     }
 
@@ -153,6 +152,26 @@ class Rfc2849Test extends TestCase
                     0 => ['version: 0123', 0],
                     'version_number' => ['0123', 9],
                     'version_error' => false,
+                ],
+            ],
+            'version: ' => [
+                //           0000000000111111
+                //           0123456789012345
+                'string' => "version: ",
+                'pieces' => [
+                    0 => ['version: ', 0],
+                    'version_number' => false,
+                    'version_error' => ['', 9],
+                ],
+            ],
+            'version: foo' => [
+                //           0000000000111111
+                //           0123456789012345
+                'string' => "version: foo",
+                'pieces' => [
+                    0 => ['version: foo', 0],
+                    'version_number' => false,
+                    'version_error' => ['foo', 9],
                 ],
             ],
         ];
@@ -483,10 +502,10 @@ class Rfc2849Test extends TestCase
                 'string' => "dn: ",
                 'pieces' => [
                     0 => ["dn: ", 0],
-                    'dn_safe' => ['', strlen('dn: ')],
-                    'dn_b64' => false,
-                    'dn_safe_error' => false,
-                    'dn_b64_error' => false,
+                    'value_safe' => ['', strlen('dn: ')],
+                    'value_b64' => false,
+                    'value_safe_error' => false,
+                    'value_b64_error' => false,
                 ],
             ],
 
@@ -494,10 +513,10 @@ class Rfc2849Test extends TestCase
                 'string' => "dn: \nnext",
                 'pieces' => [
                     0 => ["dn: ", 0],
-                    'dn_safe' => ['', strlen('dn: ')],
-                    'dn_b64' => false,
-                    'dn_safe_error' => false,
-                    'dn_b64_error' => false,
+                    'value_safe' => ['', strlen('dn: ')],
+                    'value_b64' => false,
+                    'value_safe_error' => false,
+                    'value_b64_error' => false,
                 ],
             ],
 
@@ -505,10 +524,10 @@ class Rfc2849Test extends TestCase
                 'string' => "dn: dc=example,dc=org",
                 'pieces' => [
                     0 => ["dn: dc=example,dc=org", 0],
-                    'dn_safe' => ['dc=example,dc=org', strlen('dn: ')],
-                    'dn_b64' => false,
-                    'dn_safe_error' => false,
-                    'dn_b64_error' => false,
+                    'value_safe' => ['dc=example,dc=org', strlen('dn: ')],
+                    'value_b64' => false,
+                    'value_safe_error' => false,
+                    'value_b64_error' => false,
                 ],
             ],
 
@@ -516,10 +535,10 @@ class Rfc2849Test extends TestCase
                 'string' => "dn: dc=example,dc=org\nnext",
                 'pieces' => [
                     0 => ["dn: dc=example,dc=org", 0],
-                    'dn_safe' => ['dc=example,dc=org', strlen('dn: ')],
-                    'dn_b64' => false,
-                    'dn_safe_error' => false,
-                    'dn_b64_error' => false,
+                    'value_safe' => ['dc=example,dc=org', strlen('dn: ')],
+                    'value_b64' => false,
+                    'value_safe_error' => false,
+                    'value_b64_error' => false,
                 ],
             ],
 
@@ -527,10 +546,10 @@ class Rfc2849Test extends TestCase
                 'string' => "dn: :unsafe\nnext",
                 'pieces' => [
                     0 => ["dn: :unsafe", 0],
-                    'dn_safe' => false,
-                    'dn_b64' => false,
-                    'dn_safe_error' => [':unsafe', strlen('dn: ')],
-                    'dn_b64_error' => false,
+                    'value_safe' => false,
+                    'value_b64' => false,
+                    'value_safe_error' => [':unsafe', strlen('dn: ')],
+                    'value_b64_error' => false,
                 ],
             ],
 
@@ -538,10 +557,10 @@ class Rfc2849Test extends TestCase
                 'string' => "dn: błąd\nnext",
                 'pieces' => [
                     0 => ["dn: błąd", 0],
-                    'dn_safe' => false,
-                    'dn_b64' => false,
-                    'dn_safe_error' => ['łąd', strlen('dn: b')],
-                    'dn_b64_error' => false,
+                    'value_safe' => false,
+                    'value_b64' => false,
+                    'value_safe_error' => ['łąd', strlen('dn: b')],
+                    'value_b64_error' => false,
                 ],
             ],
 
@@ -549,10 +568,10 @@ class Rfc2849Test extends TestCase
                 'string' => "dn:: ",
                 'pieces' => [
                     0 => ["dn:: ", 0],
-                    'dn_safe' => false,
-                    'dn_b64' => ['', strlen('dn:: ')],
-                    'dn_safe_error' => false,
-                    'dn_b64_error' => false,
+                    'value_safe' => false,
+                    'value_b64' => ['', strlen('dn:: ')],
+                    'value_safe_error' => false,
+                    'value_b64_error' => false,
                 ],
             ],
 
@@ -560,10 +579,10 @@ class Rfc2849Test extends TestCase
                 'string' => "dn:: \nnext",
                 'pieces' => [
                     0 => ["dn:: ", 0],
-                    'dn_safe' => false,
-                    'dn_b64' => ['', strlen('dn:: ')],
-                    'dn_safe_error' => false,
-                    'dn_b64_error' => false,
+                    'value_safe' => false,
+                    'value_b64' => ['', strlen('dn:: ')],
+                    'value_safe_error' => false,
+                    'value_b64_error' => false,
                 ],
             ],
 
@@ -571,10 +590,10 @@ class Rfc2849Test extends TestCase
                 'string' => "dn:: ASDF==\nnext",
                 'pieces' => [
                     0 => ["dn:: ASDF==", 0],
-                    'dn_safe' => false,
-                    'dn_b64' => ['ASDF==', strlen('dn:: ')],
-                    'dn_safe_error' => false,
-                    'dn_b64_error' => false,
+                    'value_safe' => false,
+                    'value_b64' => ['ASDF==', strlen('dn:: ')],
+                    'value_safe_error' => false,
+                    'value_b64_error' => false,
                 ],
             ],
 
@@ -582,10 +601,10 @@ class Rfc2849Test extends TestCase
                 'string' => "dn:: błąd==\nnext",
                 'pieces' => [
                     0 => ["dn:: błąd==", 0],
-                    'dn_safe' => false,
-                    'dn_b64' => false,
-                    'dn_safe_error' => false,
-                    'dn_b64_error' => ['łąd==', strlen('dn:: b')],
+                    'value_safe' => false,
+                    'value_b64' => false,
+                    'value_safe_error' => false,
+                    'value_b64_error' => ['łąd==', strlen('dn:: b')],
                 ],
             ],
         ];
@@ -2193,10 +2212,10 @@ class Rfc2849Test extends TestCase
                 "newrdn: \nxx",
                 [
                     ["newrdn: \n", 0],
-                    'rdn_safe' => ['', 8],
-                    'rdn_b64' => false,
-                    'rdn_safe_error' => false,
-                    'rdn_b64_error' => false,
+                    'value_safe' => ['', 8],
+                    'value_b64' => false,
+                    'value_safe_error' => false,
+                    'value_b64_error' => false,
                 ]
             ],
             #1
@@ -2206,10 +2225,10 @@ class Rfc2849Test extends TestCase
                 "newrdn:: \nxx",
                 [
                     ["newrdn:: \n", 0],
-                    'rdn_safe' => false,
-                    'rdn_b64' => ['', 9],
-                    'rdn_safe_error' => false,
-                    'rdn_b64_error' => false,
+                    'value_safe' => false,
+                    'value_b64' => ['', 9],
+                    'value_safe_error' => false,
+                    'value_b64_error' => false,
                 ]
             ],
             #2
@@ -2219,10 +2238,10 @@ class Rfc2849Test extends TestCase
                 "newrdn: błąd \nxx",
                 [
                     ["newrdn: błąd \n", 0],
-                    'rdn_safe' => false,
-                    'rdn_b64' => false,
-                    'rdn_safe_error' => ['łąd ', 9],
-                    'rdn_b64_error' => false,
+                    'value_safe' => false,
+                    'value_b64' => false,
+                    'value_safe_error' => ['łąd ', 9],
+                    'value_b64_error' => false,
                 ]
             ],
             #3
@@ -2232,10 +2251,10 @@ class Rfc2849Test extends TestCase
                 "newrdn:: błąd \nxx",
                 [
                     ["newrdn:: błąd \n", 0],
-                    'rdn_safe' => false,
-                    'rdn_b64' => false,
-                    'rdn_safe_error' => false,
-                    'rdn_b64_error' => ['łąd ', 10],
+                    'value_safe' => false,
+                    'value_b64' => false,
+                    'value_safe_error' => false,
+                    'value_b64_error' => ['łąd ', 10],
                 ]
             ],
         ];
@@ -2288,10 +2307,10 @@ class Rfc2849Test extends TestCase
                 'string' => "newsuperior:\n",
                 'pieces' => [
                     0 => ["newsuperior:\n", 0],
-                    'dn_safe' => ['', 12],
-                    'dn_b64' => false,
-                    'dn_safe_error' => false,
-                    'dn_b64_error' => false,
+                    'value_safe' => ['', 12],
+                    'value_b64' => false,
+                    'value_safe_error' => false,
+                    'value_b64_error' => false,
                 ]
             ],
             'newsuperior::\n' => [
@@ -2300,10 +2319,10 @@ class Rfc2849Test extends TestCase
                 'string' => "newsuperior::\n",
                 'pieces' => [
                     0 => ["newsuperior::\n", 0],
-                    'dn_safe' => false,
-                    'dn_b64' => ['', 13],
-                    'dn_safe_error' => false,
-                    'dn_b64_error' => false,
+                    'value_safe' => false,
+                    'value_b64' => ['', 13],
+                    'value_safe_error' => false,
+                    'value_b64_error' => false,
                 ]
             ],
             'newsuperior: :foo' => [
@@ -2312,10 +2331,10 @@ class Rfc2849Test extends TestCase
                 'string' => "newsuperior: :foo",
                 'pieces' => [
                     0 => ["newsuperior: :foo", 0],
-                    'dn_safe' => false,
-                    'dn_b64' => false,
-                    'dn_safe_error' => [':foo', 13],
-                    'dn_b64_error' => false,
+                    'value_safe' => false,
+                    'value_b64' => false,
+                    'value_safe_error' => [':foo', 13],
+                    'value_b64_error' => false,
                 ]
             ],
             'newsuperior: łuszcz\nnext' => [
@@ -2324,10 +2343,10 @@ class Rfc2849Test extends TestCase
                 'string' => "newsuperior: łuszcz\nnext",
                 'pieces' => [
                     0 => ["newsuperior: łuszcz\n", 0],
-                    'dn_safe' => false,
-                    'dn_b64' => false,
-                    'dn_safe_error' => ['łuszcz', 13],
-                    'dn_b64_error' => false,
+                    'value_safe' => false,
+                    'value_b64' => false,
+                    'value_safe_error' => ['łuszcz', 13],
+                    'value_b64_error' => false,
                 ]
             ],
             'newsuperior: tłuszcz\nnext' => [
@@ -2336,10 +2355,10 @@ class Rfc2849Test extends TestCase
                 'string' => "newsuperior: tłuszcz\nnext",
                 'pieces' => [
                     0 => ["newsuperior: tłuszcz\n", 0],
-                    'dn_safe' => false,
-                    'dn_b64' => false,
-                    'dn_safe_error' => ['łuszcz', 14],
-                    'dn_b64_error' => false,
+                    'value_safe' => false,
+                    'value_b64' => false,
+                    'value_safe_error' => ['łuszcz', 14],
+                    'value_b64_error' => false,
                 ]
             ],
             'newsuperior:::foo' => [
@@ -2348,10 +2367,10 @@ class Rfc2849Test extends TestCase
                 'string' => "newsuperior:::foo",
                 'pieces' => [
                     0 => ["newsuperior:::foo", 0],
-                    'dn_safe' => false,
-                    'dn_b64' => false,
-                    'dn_safe_error' => false,
-                    'dn_b64_error' => [':foo', 13],
+                    'value_safe' => false,
+                    'value_b64' => false,
+                    'value_safe_error' => false,
+                    'value_b64_error' => [':foo', 13],
                 ]
             ],
             'newsuperior:: :foo' => [
@@ -2360,10 +2379,10 @@ class Rfc2849Test extends TestCase
                 'string' => "newsuperior:: :foo",
                 'pieces' => [
                     0 => ["newsuperior:: :foo", 0],
-                    'dn_safe' => false,
-                    'dn_b64' => false,
-                    'dn_safe_error' => false,
-                    'dn_b64_error' => [':foo', 14],
+                    'value_safe' => false,
+                    'value_b64' => false,
+                    'value_safe_error' => false,
+                    'value_b64_error' => [':foo', 14],
                 ]
             ],
             'newsuperior:: A1@x=+\n' => [
@@ -2372,10 +2391,10 @@ class Rfc2849Test extends TestCase
                 'string' => "newsuperior:: A1@x=+\n",
                 'pieces' => [
                     0 => ["newsuperior:: A1@x=+\n", 0],
-                    'dn_safe' => false,
-                    'dn_b64' => false,
-                    'dn_safe_error' => false,
-                    'dn_b64_error' => ['@x=+', 16],
+                    'value_safe' => false,
+                    'value_b64' => false,
+                    'value_safe_error' => false,
+                    'value_b64_error' => ['@x=+', 16],
                 ]
             ],
         ];

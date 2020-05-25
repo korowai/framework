@@ -11,7 +11,8 @@ The class :class:`Korowai\\Lib\\Rfc\\Rfc2849` provides regular expressions that
 help parsing LDIF files according to RFC2849_ syntax. Not all RFC2849_
 productions are available as regular expressions. High-level productions, such
 as the ``ldif-file`` or ``changerecord`` need to be implemented as PHP
-algorithms, possibly using PCRE and patterns provided by the
+algorithms, using PCRE_ and
+:ref:`entry-level patterns<lib.rfc.rfc2849.entry-level-rules>` provided by the
 :class:`Korowai\\Lib\\Rfc\\Rfc2849` class.
 
 
@@ -23,11 +24,11 @@ The syntax
 Few top-level rules (commented as *N/A* below) are not defined in the
 :class:`Korowai\\Lib\\Rfc\\Rfc2849` class, however they're listed here to give
 the full context. The correspondence between RFC2849_ productions and
-expressions defined in :class:`Korowai\\Lib\\Rfc\\Rfc2849` is NOT one-to-one.
-We use few modifications to facilitate assembly of more complex regular
-expressions and to enable precise error reporting. Regular expressions provided
-by the class rules define named capture groups for capturing semantic values
-and erroneous substrings.
+expressions defined in :class:`Korowai\\Lib\\Rfc\\Rfc2849` class is NOT
+one-to-one. We use few modifications to facilitate assembly of more complex
+regular expressions and to enable precise error reporting. In addition, the
+regular expressions provided by the class rules define named capture groups for
+capturing semantic values and erroneous substrings.
 
 
 
@@ -55,12 +56,29 @@ The LDIF syntax starts with these top-level rules:
                               (change-add / change-delete /
                                change-modify / change-moddn)
 
+   change-add               = "add"                SEP 1*attrval-spec     ; N/A
+
+   change-delete            = "delete"             SEP                    ; N/A
+
+   change-moddn             = ("modrdn" / "moddn") SEP
+                               "newrdn:" (    FILL rdn /
+                                          ":" FILL base64-rdn) SEP
+                               "deleteoldrdn:" FILL ("0" / "1")  SEP
+                               0*1("newsuperior:"
+                               (    FILL distinguishedName /
+                                ":" FILL base64-distinguishedName) SEP)
+
+   change-modify            = "modify"             SEP *mod-spec          ; N/A
+
+   mod-spec                 = ("add:" / "delete:" / "replace:")           ; N/A
+                              FILL AttributeDescription SEP
+                              *attrval-spec
+                              "-" SEP
+
 These rules have no corresponding regular expressions in the
 :class:`Korowai\\Lib\\Rfc\\Rfc2849` class. They are rather assumed to be
 implemented in a higher-level language (PHP), not via bare regular
-expressions. The syntax of :ref:`lib.rfc.rfc2849.changerecord` is
-refactored to an equivalent form, which introduces custom
-:ref:`lib.rfc.rfc2849.changerecord-init` rule.
+expressions.
 
 .. seealso::
 
@@ -88,6 +106,9 @@ The rule specifies whole file syntax.
 
    ldif-file                = ldif-content / ldif-changes                 ; N/A
 
+There is no corresponding pattern in the :class:`Korowai\\Lib\\Rfc\\Rfc2849`
+class.
+
 .. seealso::
 
    :ref:`lib.rfc.rfc2849.ldif-content` |o|
@@ -106,6 +127,9 @@ be added to an LDAP database.
 .. code:: abnf
 
    ldif-content             = version-spec 1*(1*SEP ldif-attrval-record)  ; N/A
+
+There is no corresponding pattern in the :class:`Korowai\\Lib\\Rfc\\Rfc2849`
+class.
 
 .. seealso::
 
@@ -127,6 +151,9 @@ modifications to be applied to to an LDAP database.
 
    ldif-changes             = version-spec 1*(1*SEP ldif-change-record)   ; N/A
 
+There is no corresponding pattern in the :class:`Korowai\\Lib\\Rfc\\Rfc2849`
+class.
+
 .. seealso::
 
    :ref:`lib.rfc.rfc2849.version-spec` |o|
@@ -147,6 +174,9 @@ The rule specifies syntax of single record of the
 
    ldif-attrval-record      = dn-spec SEP 1*attrval-spec                  ; N/A
 
+There is no corresponding pattern in the :class:`Korowai\\Lib\\Rfc\\Rfc2849`
+class.
+
 .. seealso::
 
    :ref:`lib.rfc.rfc2849.dn-spec` |o|
@@ -166,6 +196,9 @@ The rule specifies syntax of single record of the
 .. code:: abnf
 
    ldif-change-record       = dn-spec SEP *control changerecord           ; N/A
+
+There is no corresponding pattern in the :class:`Korowai\\Lib\\Rfc\\Rfc2849`
+class.
 
 .. seealso::
 
@@ -339,7 +372,7 @@ The ``mod-spec`` rule is defined in RFC2849_ as
 
 There is no corresponding pattern defined in the
 :class:`Korowai\\Lib\\Rfc\\Rfc2849` class. The initial line, however, may be
-matched with custom rule :ref:`lib.rfc.rfc2849.mod-spec-init` defined later as.
+matched with custom rule :ref:`lib.rfc.rfc2849.mod-spec-init` defined later as
 
 .. code:: abnf
 
@@ -374,7 +407,7 @@ The ``version-spec`` rule
 
    version-spec             = "version:" FILL version-number
 
-is implemented in :class:`Korowai\\Lib\\Rfc\\Rfc2849` class as
+is implemented in the :class:`Korowai\\Lib\\Rfc\\Rfc2849` class as
 
 .. literalinclude:: ../../../../packages/rfclib/src/Rfc2849.php
    :linenos:
@@ -392,13 +425,13 @@ and spans to the nearest :ref:`lib.rfc.rfc2849.eol` (exclusive).
 
    * - ``version_number``
      - The whole substring between ``"version:"`` and nearest
-       :ref:`lib.rfc.rfc2849.eol`, if the whole substring matches
+       :ref:`lib.rfc.rfc2849.eol`, when the whole substring matches
        :ref:`version-number <lib.rfc.rfc2849.version-number>` rule.
    * - ``version_error``
      - The erroneous part of the substring between ``"version:"`` and nearest
-       :ref:`lib.rfc.rfc2849.eol` (the part that failed to match
-       :ref:`lib.rfc.rfc2849.version-number` rule), if the whole substring
-       failed to match the :ref:`lib.rfc.rfc2849.version-number`.
+       :ref:`lib.rfc.rfc2849.eol` (the part that fails to match
+       :ref:`lib.rfc.rfc2849.version-number` rule), when the whole substring
+       fails to match the :ref:`lib.rfc.rfc2849.version-number`.
 
 **Example**:
 
@@ -447,7 +480,7 @@ is refactored to an equivalent form, more suitable for implementation
    value-base64             = ":" FILL BASE64-STRING
 
 
-and is implemented in :class:`Korowai\\Lib\\Rfc\\Rfc2849` class as
+and is implemented in the :class:`Korowai\\Lib\\Rfc\\Rfc2849` class as
 
 .. literalinclude:: ../../../../packages/rfclib/src/Rfc2849.php
    :linenos:
@@ -534,7 +567,7 @@ The ``control`` rule from RFC2849_
                               0*1(value-spec)                 ; controlValue
                               SEP
 
-is implemented in :class:`Korowai\\Lib\\Rfc\\Rfc2849` class as
+is implemented in the :class:`Korowai\\Lib\\Rfc\\Rfc2849` class as
 
 .. literalinclude:: ../../../../packages/rfclib/src/Rfc2849.php
    :linenos:
@@ -966,7 +999,7 @@ The custom ``dn-value-spec`` rule
 
    dn-value-spec            = ":" ( value-safe / value-base64)
 
-is implemented in :class:`Korowai\\Lib\\Rfc\\Rfc2849` class as
+is implemented in the :class:`Korowai\\Lib\\Rfc\\Rfc2849` class as
 
 .. literalinclude:: ../../../../packages/rfclib/src/Rfc2849.php
    :linenos:
@@ -981,9 +1014,9 @@ is implemented in :class:`Korowai\\Lib\\Rfc\\Rfc2849` class as
     :ref:`lib.rfc.rfc2849.value-base64`
 
 
-.. _lib.rfc.rfc2849.value-spec:
-
 ------------------------------------------------------------------------------
+
+.. _lib.rfc.rfc2849.value-spec:
 
 value-spec
 """"""""""
@@ -1086,7 +1119,7 @@ The custom ``value-safe`` rule
 
    value-safe               = FILL SAFE-STRING
 
-is implemented in :class:`Korowai\\Lib\\Rfc\\Rfc2849` class as
+is implemented in the :class:`Korowai\\Lib\\Rfc\\Rfc2849` class as
 
 .. literalinclude:: ../../../../packages/rfclib/src/Rfc2849.php
    :linenos:
@@ -1133,7 +1166,7 @@ The custom ``value-base64`` rule
 
    value-base64             = ":" FILL BASE64-STRING
 
-is implemented in :class:`Korowai\\Lib\\Rfc\\Rfc2849` class as
+is implemented in the :class:`Korowai\\Lib\\Rfc\\Rfc2849` class as
 
 .. literalinclude:: ../../../../packages/rfclib/src/Rfc2849.php
    :linenos:
@@ -1180,7 +1213,7 @@ The custom ``value-url`` rule
 
    value-url                = "<" FILL url
 
-is implemented in :class:`Korowai\\Lib\\Rfc\\Rfc2849` class as
+is implemented in the :class:`Korowai\\Lib\\Rfc\\Rfc2849` class as
 
 .. literalinclude:: ../../../../packages/rfclib/src/Rfc2849.php
    :linenos:
@@ -1246,7 +1279,7 @@ The ``ldap-oid`` rule from RFC2849_
    ldap-oid                 = 1*DIGIT 0*("." 1*DIGIT)
                               ; An LDAPOID, as defined in RFC2253
 
-is implemented in :class:`Korowai\\Lib\\Rfc\\Rfc2849` class as
+is implemented in the :class:`Korowai\\Lib\\Rfc\\Rfc2849` class as
 
 .. literalinclude:: ../../../../packages/rfclib/src/Rfc2849.php
    :linenos:
@@ -1498,7 +1531,7 @@ The ``SEP`` rule from RFC2849_
 
    SEP                      = (CR LF / LF)
 
-is implemented in :class:`Korowai\\Lib\\Rfc\\Rfc2849` class as
+is implemented in the :class:`Korowai\\Lib\\Rfc\\Rfc2849` class as
 
 .. literalinclude:: ../../../../packages/rfclib/src/Rfc2849.php
    :linenos:
@@ -1911,6 +1944,7 @@ is implemented in the :class:`Korowai\\Lib\\Rfc\\Rfc2849` class as
 .. _RFC2849: https://tools.ietf.org/html/rfc2849
 .. _RFC3986: https://tools.ietf.org/html/rfc3986
 .. _RFC5234: https://tools.ietf.org/html/rfc5234
+.. _PCRE: https://www.php.net/manual/en/book.pcre.php
 
 .. |--| unicode:: U+2013 .. en dash
 .. |---| unicode:: U+2014 .. em dash

@@ -140,14 +140,6 @@ class Rule implements RuleInterface
         return $this->delegate('getErrorMessage', [$errorKey, $this->name()]);
     }
 
-//    /**
-//     * {@inheritdoc}
-//     */
-//    public function isOptional() : bool
-//    {
-//        return $this->optional;
-//    }
-
     /**
      * Delegates method call to the $this->ruleSetClass.
      *

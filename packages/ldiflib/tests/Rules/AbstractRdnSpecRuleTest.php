@@ -30,23 +30,9 @@ class AbstractRdnSpecRuleTest extends TestCase
 //    public static function construct__cases()
 //    {
 //        return [
-//            'default' => [
+//            '__construct()' => [
 //                'args'   => [],
-//                'expect' => [
-//                    'isOptional' => false
-//                ]
-//            ],
-//            'required' => [
-//                'args'   => [false],
-//                'expect' => [
-//                    'isOptional' => false
-//                ]
-//            ],
-//            'optional' => [
-//                'args'   => [true],
-//                'expect' => [
-//                    'isOptional' => true
-//                ]
+//                'expect' => []
 //            ],
 //        ];
 //    }

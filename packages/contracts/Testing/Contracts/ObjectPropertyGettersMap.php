@@ -119,11 +119,6 @@ class ObjectPropertyGettersMap
             'adapter'                   => 'getAdapter',
         ],
 
-        \Korowai\Lib\Ldif\AttrModInterface::class => [
-            'attribute'                 => 'getAttribute',
-            'valueObject'               => 'getValueObject'
-        ],
-
         \Korowai\Lib\Ldif\AttrValInterface::class => [
             'attribute'                 => 'getAttribute',
             'valueObject'               => 'getValueObject',

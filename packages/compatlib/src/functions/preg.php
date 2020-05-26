@@ -1,6 +1,7 @@
 <?php
 /**
  * @file src/functions/preg.php
+ * @test tests/FunctionsTest.php
  *
  * This file is part of the Korowai package
  *

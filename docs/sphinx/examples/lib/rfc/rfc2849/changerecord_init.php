@@ -1,9 +1,9 @@
 <?php
 /* [code] */
 use Korowai\Lib\Rfc\Rfc2849;
-use Korowai\Testing\Lib\Rfc\Demo;
+use Korowai\Testing\Lib\Rfc\RuleDemo;
 
-$demo = Demo::create(Rfc2849::class, 'CHANGERECORD_INIT');
+$demo = RuleDemo::create(Rfc2849::class, 'CHANGERECORD_INIT');
 
 $demo->matchAndReport("foo:");
 $demo->matchAndReport("changetype: add\n");

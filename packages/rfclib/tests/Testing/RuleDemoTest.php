@@ -1,6 +1,6 @@
 <?php
 /**
- * @file tests/Testing/DemoTest.php
+ * @file tests/Testing/RuleDemoTest.php
  *
  * This file is part of the Korowai package
  *
@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Testing\Lib\Rfc;
 
-use Korowai\Testing\Lib\Rfc\Demo;
+use Korowai\Testing\Lib\Rfc\RuleDemo;
 use Korowai\Lib\Rfc\Rule;
 use Korowai\Lib\Rfc\RuleInterface;
 use Korowai\Lib\Rfc\Rfc2849;
@@ -22,7 +22,7 @@ use Korowai\Testing\TestCase;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class DemoTest extends TestCase
+class RuleDemoTest extends TestCase
 {
     /**
      * {@inheritdoc}
@@ -62,7 +62,7 @@ class DemoTest extends TestCase
      */
     public function test__construct(array $args, array $expect)
     {
-        $demo = new Demo(...$args);
+        $demo = new RuleDemo(...$args);
         $this->assertInstanceOf(RuleInterface::class, $demo->getRule());
         $this->assertIsString($demo->getFormat());
         $this->assertHasPropertiesSameAs($expect, $demo);
@@ -99,7 +99,7 @@ class DemoTest extends TestCase
      */
     public function test__create(array $args, array $expect)
     {
-        $demo = Demo::create(...$args);
+        $demo = RuleDemo::create(...$args);
         $this->assertInstanceOf(RuleInterface::class, $demo->getRule());
         $this->assertIsString($demo->getFormat());
         $this->assertHasPropertiesSameAs($expect, $demo);
@@ -107,7 +107,7 @@ class DemoTest extends TestCase
 
     public function test__setRule()
     {
-        $demo = Demo::create(Rfc2849::class, 'DN_SPEC');
+        $demo = RuleDemo::create(Rfc2849::class, 'DN_SPEC');
         $rule = new Rule(Rfc2849::class, 'VALUE_SPEC');
 
         $this->assertSame($demo, $demo->setRule($rule));
@@ -116,7 +116,7 @@ class DemoTest extends TestCase
 
     public function test__setFormat()
     {
-        $demo = Demo::create(Rfc2849::class, 'DN_SPEC');
+        $demo = RuleDemo::create(Rfc2849::class, 'DN_SPEC');
 
         $this->assertSame($demo, $demo->setFormat('/^%s$/'));
         $this->assertSame('/^%s$/', $demo->getFormat());
@@ -125,7 +125,7 @@ class DemoTest extends TestCase
     public function test__getRegex()
     {
         $rule = new Rule(Rfc2849::class, 'DIGIT');
-        $demo = new Demo($rule);
+        $demo = new RuleDemo($rule);
 
         $this->assertSame('/\G'.(string)$rule.'/D', $demo->regex());
         $this->assertSame($demo, $demo->setFormat('/^%s$/'));
@@ -134,7 +134,7 @@ class DemoTest extends TestCase
 
     public function test__quote()
     {
-        $this->assertSame('"foo\\nbar\\tgez\\"qux"', Demo::quote("foo\nbar\tgez\"qux"));
+        $this->assertSame('"foo\\nbar\\tgez\\"qux"', RuleDemo::quote("foo\nbar\tgez\"qux"));
     }
 
     public function test__filterCaptures()
@@ -145,7 +145,7 @@ class DemoTest extends TestCase
                 'a' => 'A',
                 'd' => ['D', 4]
             ],
-            Demo::filterCaptures([
+            RuleDemo::filterCaptures([
                 ['0', 0],
                 'a' => 'A',
                 'b' => null,
@@ -159,7 +159,7 @@ class DemoTest extends TestCase
 
     public static function matchAndGetReport__cases()
     {
-        $demo = Demo::create(Rfc2849::class, 'DN_SPEC');
+        $demo = RuleDemo::create(Rfc2849::class, 'DN_SPEC');
         return [
             'foo: ' => [
                 'demo' => $demo,
@@ -210,23 +210,23 @@ class DemoTest extends TestCase
     /**
      * @dataProvider matchAndGetReport__cases
      */
-    public function test__matchAndGetReport(Demo $demo, array $args, array $expect)
+    public function test__matchAndGetReport(RuleDemo $demo, array $args, array $expect)
     {
         $report = $demo->matchAndGetReport(...$args);
         $subject = $args[0];
         $qsubject = $demo->quote($subject);
         if ($expect['result']) {
             $matches = json_encode($expect['matches'], JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES);
-            $this->assertSame(sprintf('matched: %s\nmatches: %s', $qsubject, $matches), $report);
+            $this->assertSame(sprintf("matched: %s\nmatches: %s", $qsubject, $matches), $report);
         } else {
-            $this->assertSame(sprintf('failed: %s', $qsubject), $report);
+            $this->assertSame(sprintf("failed: %s", $qsubject), $report);
         }
     }
 
     /**
      * @dataProvider matchAndGetReport__cases
      */
-    public function test__matchAndReport(Demo $demo, array $args, array $expect)
+    public function test__matchAndReport(RuleDemo $demo, array $args, array $expect)
     {
         $subject = $args[0];
         $qsubject = $demo->quote($subject);

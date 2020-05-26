@@ -1,6 +1,6 @@
 <?php
 /**
- * @file Testing/Demo.php
+ * @file Testing/RuleDemo.php
  *
  * This file is part of the Korowai package
  *
@@ -21,7 +21,7 @@ use Korowai\Lib\Rfc\RuleInterface;
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-final class Demo
+final class RuleDemo
 {
     /**
      * @var RuleInterface
@@ -39,9 +39,9 @@ final class Demo
      * @param  string $ruleSet Rule set class name.
      * @param  string $rule Rule name in the rule set class.
      *
-     * @return Demo
+     * @return RuleDemo
      */
-    public static function create(string $ruleSet, string $rule, string $format = null) : Demo
+    public static function create(string $ruleSet, string $rule, string $format = null) : RuleDemo
     {
         return new self(new Rule($ruleSet, $rule), $format);
     }

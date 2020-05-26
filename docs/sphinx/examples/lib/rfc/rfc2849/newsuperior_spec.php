@@ -1,9 +1,9 @@
 <?php
 /* [code] */
 use Korowai\Lib\Rfc\Rfc2849;
-use Korowai\Testing\Lib\Rfc\Demo;
+use Korowai\Testing\Lib\Rfc\RuleDemo;
 
-$demo = Demo::create(Rfc2849::class, 'NEWSUPERIOR_SPEC');
+$demo = RuleDemo::create(Rfc2849::class, 'NEWSUPERIOR_SPEC');
 
 $demo->matchAndReport("foo:");
 $demo->matchAndReport("newsuperior: dc=example,dc=org\n");

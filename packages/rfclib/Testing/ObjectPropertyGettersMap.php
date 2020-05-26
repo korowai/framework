@@ -54,7 +54,7 @@ class ObjectPropertyGettersMap
         ],
         \Korowai\Lib\Rfc\Traits\RulesFromConstants::class => [
         ],
-        \Korowai\Testing\Lib\Rfc\Demo::class => [
+        \Korowai\Testing\Lib\Rfc\RuleDemo::class => [
             'rule'                  => 'getRule',
             'format'                => 'getFormat',
             'regex'                 => 'regex'

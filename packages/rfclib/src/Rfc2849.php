@@ -151,11 +151,8 @@ class Rfc2849 extends AbstractRuleSet
      *
      * Capture groups:
      *
-     * - ``version_number``: only set if there is no error after the "version:"
-     *   tag; contains the version number,
-     * - ``version_error``: only set if there is an error after the "version:"
-     *   tag; contains the erroneous string.
-     *
+     * - ``version_number``
+     * - ``version_error``
      */
     public const VERSION_SPEC =
         '(?:'.
@@ -222,10 +219,6 @@ class Rfc2849 extends AbstractRuleSet
     /**
      * [RFC2849](https://tools.ietf.org/html/rfc2849):
      * ``AttributeDescription = AttributeType [";" options]``
-     *
-     * Capture groups:
-     *
-     *  - ``attr_desc``: always set, contains the whole matched string.
      */
     public const ATTRIBUTE_DESCRIPTION = '(?:'.self::ATTRIBUTE_TYPE.'(?:;'.self::OPTIONS.')?)';
     // [/ATTRIBUTE_DESCRIPTION]
@@ -266,9 +259,8 @@ class Rfc2849 extends AbstractRuleSet
      *
      * Capture groups:
      *
-     *  - ``value_safe``: only set if the subject contains no errors before [EOL],
-     *  - ``value_b64_error``: only set if there is an error before EOL;
-     *      contains the substring that failed to match [SAFE_STRING](Rfc2849.html),
+     *  - ``value_safe``
+     *  - ``value_safe_error``
      */
     public const VALUE_SAFE =
         '(?:(?![:<])'.
@@ -287,9 +279,8 @@ class Rfc2849 extends AbstractRuleSet
      *
      * Capture groups:
      *
-     *  - ``value_b64``: only set if the subject contains no errors after ``":"`` and before [EOL],
-     *  - ``value_b64_error``: only set if there is an error after ``":"`` and before EOL;
-     *      contains the substring that failed to match [BASE64_STRING](Rfc2849.html),
+     *  - ``value_b64``
+     *  - ``value_b64_error``
      */
     public const VALUE_BASE64 =
         '(?::'.
@@ -308,9 +299,8 @@ class Rfc2849 extends AbstractRuleSet
      *
      * Capture groups
      *
-     *  - ``value_url``: only set if the is no error in the string after ``"<"`` and before [EOL](Rfc2849.html),
-     *  - ``value_url_error``: only set if there is an error after ``"<"`` and before [EOL](Rfc2849.html);
-     *    contains the substring that failed to match [URL](Rfc2849.html),
+     *  - ``value_url``
+     *  - ``value_url_error``
      */
     public const VALUE_URL =
         '(?:<'.
@@ -330,12 +320,10 @@ class Rfc2849 extends AbstractRuleSet
      *
      * Capture groups:
      *
-     *  - ``value_safe``: only set if the subject contains no syntax errors and the initial tag is ``"dn:"``,
-     *  - ``value_b64``: only set if the subject contains no syntax errors and the initial tag is ``"dn::"``,
-     *  - ``value_safe_error``: only set if there is an error after the ``"dn:"``
-     *    tag (single colon); contains the substring that failed to match [Rfc2849::SAFE_STRING](Rfc2849.html),
-     *  - ``value_b64_error``: only set if there is an error after the ``"dn::"``
-     *    tag (double colon); contains the substring that failed to match [Rfc2849::BASE64_STRING](Rfc2849.html),
+     *  - ``value_safe``
+     *  - ``value_b64``
+     *  - ``value_safe_error``
+     *  - ``value_b64_error``
      */
     public const DN_VALUE_SPEC =
         '(?:'.
@@ -354,8 +342,8 @@ class Rfc2849 extends AbstractRuleSet
      *
      * Capture groups:
      *
-     *  - ``value_safe``: only set if distinguished name is specified as SAFE-STRING using single colon ``":"`` notation,
-     *  - ``value_b64``: only set if distinguished name is specified as BASE64-STRING using double colon ``"::"`` notation.
+     *  - ``value_safe``
+     *  - ``value_b64``
      */
     public const DN_SPEC = '(?:dn'.self::DN_VALUE_SPEC.')';
     // [/DN_SPEC]
@@ -379,20 +367,12 @@ class Rfc2849 extends AbstractRuleSet
      *
      * Capture groups:
      *
-     *  - ``value_safe``: only set if the value-spec specifies SAFE-STRING using
-     *    single colon ``":"`` notation and there is no error in the string,
-     *  - ``value_b64``: only set if the value-space specifies BASE64-STRING
-     *    using double colon ``"::"`` notation and there is no error in the
-     *    string,
-     *  - ``value_url``: only set if the value-spec specifies URL using
-     *    colon-less-than ``":<"`` notation and there is no error in the
-     *    string,
-     *  - ``value_safe_error``: only set if there is an error after ``":"`` tag
-     *    (single colon); contains the string that failed to match [Rfc2849::SAFE_STRING](Rfc2849.html),
-     *  - ``value_b64_error``: only set if there is an error after ``"::"`` tag
-     *    (double colon); contains the string that failed to match [Rfc2849::BASE64_STRING](Rfc2849.html),
-     *  - ``value_url_error``: only set if there is an error after ``":<"`` tag
-     *    (colon less-than); contains the string that failed to match [Rfc2849::URL](Rfc2849.html),
+     *  - ``value_safe``
+     *  - ``value_b64``
+     *  - ``value_url``
+     *  - ``value_safe_error``
+     *  - ``value_b64_error``
+     *  - ``value_url_error``
      */
     public const VALUE_SPEC =
         '(?:'.
@@ -416,17 +396,16 @@ class Rfc2849 extends AbstractRuleSet
      *
      * Capture groups:
      *
-     *  - ``ctl_type``: only set if the matched string has no errors; contains OID of the control,
-     *  - ``ctl_crit``: only set if the matched string defines criticality as ``true`` or ``false`` and does not
-     *    contain any errors,
-     *  - ``value_safe``: only set if the matched string specifies SAFE-STRING value and does not contain any errors,
-     *  - ``value_b64``: only set if the matched string specifies BASE64-STRING value and does not contain any errors,
-     *  - ``value_url``: only set if the matched string specifies URL value and does ont contain any errors,
-     *  - ``ctl_type_error``: only set if the control type is missing or is not a properly formed OID,
-     *  - ``ctl_crit_error``: only set if the control criticality is invalid (other than ``"true"`` or ``"false"``),
-     *  - ``value_safe_error``: only set if the matched string specifies malformed SAFE-STRING as a value,
-     *  - ``value_b64_error``: only set if the matched string specifies malformed BASE64-STRING as a value,
-     *  - ``value_url_error``: only set if the matched string specifies malformed URL as a value.
+     *  - ``ctl_type``
+     *  - ``ctl_crit``
+     *  - ``value_safe``
+     *  - ``value_b64``
+     *  - ``value_url``
+     *  - ``ctl_type_error``
+     *  - ``ctl_crit_error``
+     *  - ``value_safe_error``
+     *  - ``value_b64_error``
+     *  - ``value_url_error``
      */
     public const CONTROL =
         '(?:'.
@@ -453,21 +432,13 @@ class Rfc2849 extends AbstractRuleSet
      *
      * Capture groups:
      *
-     *  - ``attr_desc``: always set, contains the attribute description (attribute type with options),
-     *  - ``value_safe``: only set if the value-spec specifies SAFE-STRING using
-     *    single colon ``":"`` notation and there is no error in the string,
-     *  - ``value_b64``: only set if the value-space specifies BASE64-STRING
-     *    using double colon ``"::"`` notation and there is no error in the
-     *    string,
-     *  - ``value_url``: only set if the value-spec specifies URL using
-     *    colon-less-than ``":<"`` notation and there is no error in the
-     *    string,
-     *  - ``value_safe_error``: only set if there is an error after ``":"`` tag
-     *    (single colon); contains the string that failed to match [Rfc2849::SAFE_STRING](Rfc2849.html),
-     *  - ``value_b64_error``: only set if there is an error after ``"::"`` tag
-     *    (double colon); contains the string that failed to match [Rfc2849::BASE64_STRING](Rfc2849.html),
-     *  - ``value_url_error``: only set if there is an error after ``":<"`` tag
-     *    (colon less-than); contains the string that failed to match [Rfc2849::URL](Rfc2849.html),
+     *  - ``attr_desc``
+     *  - ``value_safe``
+     *  - ``value_b64``
+     *  - ``value_url``
+     *  - ``value_safe_error``
+     *  - ``value_b64_error``
+     *  - ``value_url_error``
      */
     public const ATTRVAL_SPEC =
         '(?:'.
@@ -489,15 +460,10 @@ class Rfc2849 extends AbstractRuleSet
      *
      * Capture groups:
      *
-     *  - ``mod_type``: always set, contains the modification type indicator,
-     *    either ``"add"``, ``"delete"``, or ``"replace"``,
-     *  - ``attr_desc``: only set if the rule matched and there is no error in
-     *    *attributeDescripton*; contains the attribute description (attribute
-     *    type with options).
-     *  - ``attr_type_error``: only set if there is an error in the
-     *    *AttributeType* part of the *attributeDescription*.
-     *  - ``attr_opts_error``: only set if there is an error in the *options*
-     *    part of the *attributeDescription*,
+     *  - ``mod_type``
+     *  - ``attr_desc``
+     *  - ``attr_type_error``
+     *  - ``attr_opts_error``
      */
     public const MOD_SPEC_INIT =
         '(?:'.
@@ -536,11 +502,8 @@ class Rfc2849 extends AbstractRuleSet
      *
      * Capture groups:
      *
-     *  - ``chg_type``: only set if the rule matched and there is no error;
-     *    contains the change type indicator, either ``"add"``, ``"delete"``,
-     *    ``"moddn"``, ``"modrdn"``, or ``"modify"``.
-     *  - ``chg_type_error``: only set if the rule matched but there is an
-     *    error after the ``"changetype:"`` tag.
+     *  - ``chg_type``
+     *  - ``chg_type_error``
      */
     public const CHANGERECORD_INIT =
         '(?:'.
@@ -561,10 +524,10 @@ class Rfc2849 extends AbstractRuleSet
      *
      * Capture groups:
      *
-     *  - ``value_safe``: only set if rule matches, and the string after "newrdn:" is a valid SAFE-STRING,
-     *  - ``value_b64``: only set if rule matches, and the string after "newrdn::" is a valid BASE64-STRING,
-     *  - ``value_safe_error``: only set if rule matches, but there is an error after "newrdn:",
-     *  - ``value_b64_error``: only set if rule matches, but there is an error after "newrdn::".
+     *  - ``value_safe``
+     *  - ``value_b64``
+     *  - ``value_safe_error``
+     *  - ``value_b64_error``
      */
     public const NEWRDN_SPEC = '(?:newrdn'.self::DN_VALUE_SPEC.self::EOL.')';
     // [/NEWRDN_SPEC]
@@ -578,12 +541,10 @@ class Rfc2849 extends AbstractRuleSet
      *
      * Capture groups:
      *
-     *  - ``value_safe``: only set if the subject contains no syntax errors and the initial tag is ``"newsuperior:"``,
-     *  - ``value_b64``: only set if the subject contains no syntax errors and the initial tag is ``"newsuperior::"``,
-     *  - ``value_safe_error``: only set if there is an error after the ``"newsuperior:"``
-     *    tag (single colon); contains the substring that failed to match [Rfc2849::SAFE_STRING](Rfc2849.html),
-     *  - ``value_b64_error``: only set if there is an error after the ``"newsuperior::"``
-     *    tag (double colon); contains the substring that failed to match [Rfc2849::BASE64_STRING](Rfc2849.html),
+     *  - ``value_safe``
+     *  - ``value_b64``
+     *  - ``value_safe_error``
+     *  - ``value_b64_error``
      */
     public const NEWSUPERIOR_SPEC = '(?:newsuperior'.self::DN_VALUE_SPEC.self::EOL.')';
     // [/NEWSUPERIOR_SPEC]
@@ -676,7 +637,6 @@ class Rfc2849 extends AbstractRuleSet
 ////            'VALUE_SPEC'                => 'expected value-spec (RFC2849)',
 ////            'CONTROL'                   => 'expected control (RFC2849)',
 ////            'ATTRVAL_SPEC'              => 'expected attrval-spec (RFC2849)',
-////            'LDIF_ATTRVAL_RECORD'       => 'expected ldif-attrval-record (RFC2849)',
             'VERSION_SPEC'          => 'expected "version:" (RFC2849)',
             'DN_SPEC'               => 'expected "dn:" (RFC2849)',
             'VALUE_SPEC'            => 'expected ":" (RFC2849)',

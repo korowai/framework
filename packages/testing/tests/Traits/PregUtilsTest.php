@@ -24,43 +24,123 @@ class PregUtilsTest extends TestCase
 {
     use PregUtils;
 
-    public function test__stringsToPregTuples()
-    {
-        $this->assertSame([['a'], ['b']], static::stringsToPregTuples(['a', 'b']));
-
-        $expect = [['a', ['key' => ['a', 0]]], ['b', ['key' => ['b', 0]]]];
-        $this->assertSame($expect, static::stringsToPregTuples(['a', 'b'], 'key'));
-
-        $expect = [['a', ['key' => ['a', 3]]], ['b', ['key' => ['b', 3]]]];
-        $this->assertSame($expect, static::stringsToPregTuples(['a', 'b'], 'key', 3));
-    }
-
-    public function shiftPregCaptures__cases()
+    public static function pregTupleKeysAt__cases()
     {
         return [
-            [
-                [[], 1],
-                []
+            // #0
+            'pregTupleKeysAt([], [0, 1])' => [
+                'args'   => [[], [0, 1]],
+                'expect' => [0, 1],
             ],
 
-            [
-                [['whole string'], 1],
-                [ 'whole string']
+            // #1
+            'pregTupleKeysAt(["A"], [0, 1])' => [
+                'args'   => [["A"], [0, 1]],
+                'expect' => [0, 1],
             ],
 
-            [
-                [['whole string', 'second' => 'string'], 5],
-                [ 'whole string', 'second' => 'string']
+            // #2
+            'pregTupleKeysAt(["A", "B"], [0, 1])' => [
+                'args'   => [["A", "B"], [0, 1]],
+                'expect' => [0, 1],
             ],
 
-            [
-                [['whole string', 'second' => ['string',  6]], 5],
-                [ 'whole string', 'second' => ['string', 11]]
+            // #3
+            'pregTupleKeysAt(["a" => "A"], [0, 1])' => [
+                'args'   => [["a" => "A"], [0, 1]],
+                'expect' => ["a", 1],
             ],
 
-            [
-                [[['whole string', 2], 'second' => ['string',  8]], 5],
-                [ ['whole string', 7], 'second' => ['string', 13]]
+            // #4
+            'pregTupleKeysAt(["a" => "A", "B"], [0, 1])' => [
+                'args'   => [["a" => "A", "B"], [0, 1]],
+                'expect' => ["a", 0],
+            ],
+
+            // #5
+            'pregTupleKeysAt(["a" => "A", 8 => "B"], [0, 1])' => [
+                'args'   => [["a" => "A", 8 => "B"], [0, 1]],
+                'expect' => ["a", 8],
+            ],
+
+            // #6
+            'pregTupleKeysAt(["a" => "A", 8 => "B"], [0, 1, 2, 5])' => [
+                'args'   => [["a" => "A", 8 => "B"], [0, 1, 2, 5]],
+                'expect' => ["a", 8, 2, 5],
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider pregTupleKeysAt__cases
+     */
+    public function test__pregTupleKeysAt(array $args, array $expect)
+    {
+        $this->assertSame($expect, static::pregTupleKeysAt(...$args));
+    }
+
+    public static function stringsToPregTuples__cases()
+    {
+        return [
+            // #0
+            'stringsToPregTuples(["a", "b"])' => [
+                'args'       => [["a", "b"]],
+                'expect'     => [["a"], ["b"]],
+            ],
+
+            // #1
+            'stringsToPregTuples(["a", "b"], "key")' => [
+                'args'       => [["a", "b"], "key"],
+                'expect'     => [["a", ["key" => ["a", 0]]], ["b", ["key" => ["b", 0]]]],
+            ],
+
+            // #2
+            'stringsToPregTuples(["a", "b"], "key", 3)' => [
+                'args'       => [["a", "b"], "key", 3],
+                'expect'     => [["a", ["key" => ["a", 3]]], ["b", ["key" => ["b", 3]]]],
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider stringsToPregTuples__cases
+     */
+    public function test__stringsToPregTuples(array $args, array $expect)
+    {
+        $this->assertSame($expect, static::stringsToPregTuples(...$args));
+    }
+
+    public static function shiftPregCaptures__cases()
+    {
+        return [
+            // #1
+            'shiftPregCaptures([], 1)' => [
+                'args'     => [[], 1],
+                'expect'   => []
+            ],
+
+            // #2
+            'shiftPregCaptures(["whole string"], 1)' => [
+                'args'     => [['whole string'], 1],
+                'expect'   => [ 'whole string']
+            ],
+
+            // #3
+            'shiftPregCaptures(["whole string", "second" => "string"], 5)' => [
+                'args'     => [['whole string', 'second' => 'string'], 5],
+                'expect'   => [ 'whole string', 'second' => 'string']
+            ],
+
+            // #4
+            'shiftPregCaptures(["whole string", "second" => ["string", 6]], 5)' => [
+                'args'     => [['whole string', 'second' => ['string',  6]], 5],
+                'expect'   => [ 'whole string', 'second' => ['string', 11]]
+            ],
+
+            // #5
+            'shiftPregCaptures([["whole string", 2], "second" => ["string", 8]], 5)' => [
+                'args'     => [[['whole string', 2], 'second' => ['string',  8]], 5],
+                'expect'   => [ ['whole string', 7], 'second' => ['string', 13]]
             ],
         ];
     }
@@ -73,44 +153,52 @@ class PregUtilsTest extends TestCase
         $this->assertSame($expect, self::shiftPregCaptures(...$args));
     }
 
-    public function prefixPregCaptures__cases()
+    public static function prefixPregCaptures__cases()
     {
         return [
+            // #0
             [
                 [[], 'prefix '],
                 []
             ],
 
+            // #1
             [
                 [['whole string'], 'prefix '],
                 [ 'whole string']
             ],
 
+            // #2
             [
                 [['whole string', 'second' => 'string'], 'prefix '],
                 [ 'whole string', 'second' => 'string']
             ],
 
+            // #3
             [
                 [['whole string', 'second' => ['string',  6]], 'prefix '],
                 [ 'whole string', 'second' => ['string', 13]]
             ],
 
+            // #4
             [
                 [['whole string', 'second' => ['string',  6], ['string',  6]], 'prefix '],
                 [ 'whole string', 'second' => ['string', 13], ['string', 13]]
             ],
 
+            // #5
             [
                 [[['whole string', 2], 'second' => ['string',  8]], 'prefix '],
                 [ ['whole string', 9], 'second' => ['string', 15]]
             ],
 
+            // #6
             [
                 [[[       'whole string', 2], 'second' => ['string',  8]], 'prefix ', true],
                 [ ['prefix whole string', 2], 'second' => ['string', 15]]
             ],
 
+            // #7
             [
                 [[[       'whole string', 2], 'second' => ['string',  8]], 'prefix ', 'Idefix '],
                 [ ['Idefix whole string', 2], 'second' => ['string', 15]]
@@ -126,7 +214,7 @@ class PregUtilsTest extends TestCase
         $this->assertSame($expect, self::prefixPregCaptures(...$args));
     }
 
-    public function mergePregCaptures__cases()
+    public static function mergePregCaptures__cases()
     {
         return [
             // #0
@@ -430,7 +518,7 @@ class PregUtilsTest extends TestCase
         $this->assertSame($expect, self::mergePregCaptures(...$args));
     }
 
-    public function prefixPregTuple__cases()
+    public static function prefixPregTuple__cases()
     {
         return [
             [ // #0
@@ -477,6 +565,11 @@ class PregUtilsTest extends TestCase
                 [      ['whole string', [[       'whole string', 2], 'second' => ['string',  8]]], 'prefix ', 'Idefix '],
                 ['prefix whole string', [['Idefix whole string', 2], 'second' => ['string', 15]]]
             ],
+
+            [ // #9 (top-level keys are preserved)
+                [      ['string' => 'whole string', 'matches' => ['whole string']], 'prefix '],
+                ['string' => 'prefix whole string', 'matches' => ['whole string']]
+            ],
         ];
     }
 
@@ -489,7 +582,7 @@ class PregUtilsTest extends TestCase
     }
 
 
-    public function suffixPregTuple__cases()
+    public static function suffixPregTuple__cases()
     {
         return [
             // #0
@@ -539,6 +632,12 @@ class PregUtilsTest extends TestCase
                 [['whole string',        [['whole string',        2], 'second' => ['string',  8]]], ' suffix', ' Idefix'],
                 [ 'whole string suffix', [['whole string Idefix', 2], 'second' => ['string',  8]]]
             ],
+
+            // #8 (top-level keys are preserved)
+            [
+                [['string' => 'whole string',        'matches' => ['whole string']       ], ' suffix'],
+                [ 'string' => 'whole string suffix', 'matches' => ['whole string']]
+            ],
         ];
     }
 
@@ -550,7 +649,7 @@ class PregUtilsTest extends TestCase
         $this->assertSame($expect, self::suffixPregTuple(...$args));
     }
 
-    public function transformPregTuple__cases()
+    public static function transformPregTuple__cases()
     {
         return [
             [ // #0
@@ -594,13 +693,23 @@ class PregUtilsTest extends TestCase
             ],
 
             [ // #8
-                [       ['whole string', ['whole string', 'second' => ['string',  6]]], ['prefix' => 'prefix ', 'merge' => ['first' => ['whole', 7]], 'mergeLeft' => ['left' => ['string', 13]]]],
-                [ 'prefix whole string', ['left' => ['string', 13], 'whole string', 'second' => ['string', 13], 'first' => ['whole', 7]]]
+                [       ['whole string', ['whole string', 'second' => ['string',  6]]], ['prefix' => 'prefix ', 'merge' => ['whole right', 'first' => ['whole', 7]], 'mergeMain' => true]],
+                [ 'prefix whole string', ['whole right',  'second' => ['string', 13], 'first' => ['whole', 7]]]
             ],
 
             [ // #9
-                [       ['whole string', ['whole string', 'second' => ['string',  6]]], ['prefix' => 'prefix ', 'merge' => ['whole right', 'first' => ['whole', 7]], 'mergeMain' => true]],
-                [ 'prefix whole string', ['whole right',  'second' => ['string', 13], 'first' => ['whole', 7]]]
+                [['whole string', ['whole string']], ['merge' => null, 'mergeMain' => true]],
+                [ 'whole string', ['whole string']]
+            ],
+
+            [ // #10
+                [['whole string', ['whole string']], ['merge' => null, 'mergeMain' => 'main']],
+                [ 'whole string', ['main']]
+            ],
+
+            [ // #11 (top-level keys are preserved)
+                [       ['string' => 'whole string', 'matches' => ['whole string', 'second' => ['string',  6]]], ['prefix' => 'prefix ', 'merge' => ['whole right', 'first' => ['whole', 7]], 'mergeMain' => true]],
+                [ 'string' => 'prefix whole string', 'matches' => ['whole right',  'second' => ['string', 13], 'first' => ['whole', 7]]]
             ],
         ];
     }
@@ -613,7 +722,68 @@ class PregUtilsTest extends TestCase
         $this->assertSame($expect, self::transformPregTuple(...$args));
     }
 
-    public function joinPregTuples__cases()
+    public static function joinTwoPregTuples__cases()
+    {
+        return [
+            [ // #0
+                'args'      => [['first'], ['second']],
+                'expect'    => [ 'firstsecond']
+            ],
+
+            [ // #0
+                'args'      => [['first'], ['second'], ['glue' => ' ']],
+                'expect'    => [ 'first second']
+            ],
+
+            [ // #1
+                'args'      => [
+                    ['first',   ['f' => ['first',  0]]],
+                    ['second',  ['s' => ['second', 0]]],
+                    ['glue' => ' ']
+                ],
+                'expect'    => [
+                //   0000000000111111111
+                //   0123456789012345678
+                    'first second',
+                    [
+                        'f' => ['first',   0],
+                        's' => ['second',  6],
+                    ]
+                ]
+            ],
+
+            [ // #2
+                'args'      => [
+                    ['first',   [['first',  0], 'f' => ['first',  0], ['first',  0]]],
+                    ['second',  [['second', 0], 's' => ['second', 0], ['second', 0]]],
+                    ['glue' => ' ']
+                ],
+                'expect'    => [
+                //   0000000000111111111
+                //   0123456789012345678
+                    'first second',
+                    [
+                        ['first', 0],
+                        'f' => ['first',   0],
+                        ['first', 0],
+                        ['second', 6],
+                        's' => ['second',  6],
+                        ['second', 6],
+                    ]
+                ]
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider joinTwoPregTuples__cases
+     */
+    public function test__joinTwoPregTuples(array $args, array $expect)
+    {
+        $this->assertSame($expect, static::joinTwoPregTuples(...$args));
+    }
+
+    public static function joinPregTuples__cases()
     {
         return [
             [ // #0

@@ -20,15 +20,31 @@ namespace Korowai\Testing\Traits;
  */
 trait PregUtils
 {
-    public static function pregTupleKeys(array $tuple, array $indices = null)
+    /**
+     * Returns keys of *$array* at given *$positions*.
+     *
+     * Let
+     *
+     *      $keys = array_keys($array),
+     *
+     * then the function returns a *$result* array with
+     *
+     *      $result[$i] = $keys[$i] ?? $i;
+     *
+     * for each ``$i`` from *$positions*.
+     *
+     * @param  array $array
+     *      An array to take keys from.
+     * @param  array $positions
+     *      An array of integer offsets.
+     * @return array
+     */
+    public static function pregTupleKeysAt(array $array, array $positions) : array
     {
-        if ($indices === null) {
-            $indices = range(0,1);
-        }
-        $keys = array_keys($tuple);
+        $keys = array_keys($array);
         return array_map(function (int $i) use ($keys) {
             return $keys[$i] ?? $i;
-        }, $indices);
+        }, $positions);
     }
 
     /**
@@ -104,7 +120,25 @@ trait PregUtils
     }
 
     /**
-     * @todo Write documentation.
+     * A version of array_merge() for PCRE captures.
+     *
+     * The function behaves as PHP's ``array_merge($left, $right)`` as long as
+     * *$mergeMain* is missing or is ``null``. When *$mergeMain* is not null,
+     * the behavior is changed with respect to array elements at offset 0 (the
+     * whole-pattern capture). If *$mergeMain* it is ``true``, then the
+     * function tries to set *$result[0]* to either *$right[0]* or *$left[0]*
+     * (if *$right[0]* is not set). If *$mergeMain* is not null and is not a
+     * bool, it's returned at offset 0 of the resultant array.
+     *
+     * **Examples**:
+     *
+     *      assert(self::mergePregCaptures(['A', 'x' => 'L'], ['B', 'x' => 'R']) === [0 => 'A', 'x' => 'R', 1 => 'B']);
+     *      assert(self::mergePregCaptures(['A', 'x' => 'L'], ['B', 'x' => 'R'], true) === [0 => 'B', 'x' => 'R']);
+     *      assert(self::mergePregCaptures(['A', 'x' => 'L'], ['B', 'x' => 'R'], 'M') === [0 => 'M', 'x' => 'R']);
+     *
+     * @param  array $left
+     * @param  array $right
+     * @param  mixed $mergeMain
      *
      * @return array
      */
@@ -135,7 +169,7 @@ trait PregUtils
      */
     public static function prefixPregTuple(array $tuple, string $prefix, $prefixMain = false) : array
     {
-        [$_0, $_1] = self::pregTupleKeys($tuple);
+        [$_0, $_1] = self::pregTupleKeysAt($tuple, [0, 1]);
         $tuple[$_0] = $prefix.$tuple[$_0];
         if (($captures = $tuple[$_1] ?? null) !== null) {
             $tuple[$_1] = static::prefixPregCaptures($captures, $prefix, $prefixMain);
@@ -148,6 +182,8 @@ trait PregUtils
      *
      * If *$suffixMain* is ``true`` and capture group ``$tuple[1][0][0]`` is
      * present, the *$tuple[1][0][0]* gets suffixed with *$suffix* as well.
+     * If *$suffixMain* is a string and capture group ``$tuple[1][0][0]`` is
+     * present, the *$tuple[1][0][0]* gets suffixed with *$suffixMain*.
      *
      * @param  array $tuple
      * @param  string $suffix
@@ -158,7 +194,7 @@ trait PregUtils
      */
     public static function suffixPregTuple(array $tuple, string $suffix, $suffixMain = false) : array
     {
-        [$_0, $_1] = self::pregTupleKeys($tuple);
+        [$_0, $_1] = self::pregTupleKeysAt($tuple, [0, 1]);
         $tuple[$_0] = $tuple[$_0].$suffix;
         if (($captures = $tuple[$_1] ?? null) !== null) {
             if ($suffixMain && ($captures[0][0] ?? null) !== null) {
@@ -180,13 +216,7 @@ trait PregUtils
      *   $tuple = static::prefixPregTuple($tuple, $options['prefix'], $options['prefixMain'] ?? false);
      *   ```
      *
-     * - if *$options['mergeLeft']* (array) is present and is not null, then:
-     *
-     *   ```
-     *   $tuple[1] = static::mergePregCaptures($options['mergeLeft'], $tuple[1] ?? [], $options['mergeMain'] ?? null);
-     *   ```
-     *
-     * - if *$options['merge']* (array) is present and is not null, then:
+     * - if *$options['merge']* (array) and is not null or *$options['mergeMain']* is present and is not null, then:
      *
      *   ```
      *   $tuple[1] = static::mergePregCaptures($tuple[1] ?? [], $options['merge'], $options['mergeMain'] ?? null);
@@ -202,7 +232,6 @@ trait PregUtils
      * @param  array $options Supported options:
      *
      * - *merge*,
-     * - *mergeLeft*,
      * - *mergeMain*,
      * - *prefix*,
      * - *prefixMain*,
@@ -213,66 +242,83 @@ trait PregUtils
      */
     public static function transformPregTuple(array $tuple, array $options = []) : array
     {
-        [$_0, $_1] = self::pregTupleKeys($tuple);
-        if (($prefix = $options['prefix'] ?? null) !== null) {
-            $tuple = static::prefixPregTuple($tuple, $prefix, $options['prefixMain'] ?? false);
+        static $defaults = [
+            'prefix' => null,
+            'prefixMain' => null,
+            'merge' => [],
+            'mergeMain' => null,
+            'suffix' => null,
+            'suffixMain' => false,
+        ];
+        $options = array_merge($defaults, array_intersect_key($options, $defaults));
+        extract($options);
+
+        [$_0, $_1] = self::pregTupleKeysAt($tuple, [0, 1]);
+        if ($prefix !== null) {
+            $tuple = static::prefixPregTuple($tuple, $prefix, $prefixMain);
         }
-        if (($merge = $options['mergeLeft'] ?? []) || ($options['mergeMain'] ?? null) !== null) {
-            $tuple[$_1] = static::mergePregCaptures($merge, $tuple[$_1] ?? [], $options['mergeMain'] ?? null);
+        if ($merge || $mergeMain !== null) {
+            $tuple[$_1] = static::mergePregCaptures($tuple[$_1] ?? [], $merge ?? [], $mergeMain);
         }
-        if (($merge = $options['merge'] ?? []) || ($options['mergeMain'] ?? null) !== null) {
-            $tuple[$_1] = static::mergePregCaptures($tuple[$_1] ?? [], $merge, $options['mergeMain'] ?? null);
-        }
-        if (($suffix = $options['suffix'] ?? null) !== null) {
-            $tuple = static::suffixPregTuple($tuple, $suffix, $options['suffixMain'] ?? false);
+        if ($suffix !== null) {
+            $tuple = static::suffixPregTuple($tuple, $suffix, $suffixMain);
         }
         return $tuple;
     }
 
     /**
-     * Joins multiple preg *$tuples* with a glue.
+     * Joins two PREG tuples, *$left* and *$right* with *$glue*.
+     *
+     * @param  array $left
+     * @param  array $right
+     * @param  array $options
+     * @return array
+     */
+    public static function joinTwoPregTuples(array $left, array $right, array $options = [])
+    {
+        static $defaults = [
+            'glue' => '',
+            'joinMain' => false
+        ];
+        $options = array_merge($defaults, array_intersect_key($options, $defaults));
+        extract($options);
+
+        $left = array_values($left);    // string keys get lost, sorry
+        $right = array_values($right);  // string keys get lost, sorry
+        $options = ['suffix' => $glue.$right[0], 'suffixMain' => $joinMain];
+        if (($captures = $right[1] ?? null) !== null) {
+            $options['merge'] = static::shiftPregCaptures($captures, strlen($left[0].$glue));
+        }
+        return static::transformPregTuple($left, $options);
+    }
+
+    /**
+     * Joins multiple PREG *$tuples* with a glue.
      *
      * @param  array $tuples
-     * @param  array $options Supported options *glue* and all options of ``transformPregTuple()``.
+     *      An array of tuples to be "concatenated".
+     * @param  array $options
+     *      Supported options:
+     *
+     * - *glue*,
+     * - *joinMain*, and
+     * - all options supported by ``transformPregTuple()``.
+     *
      * @return array
      */
     public static function joinPregTuples(array $tuples, array $options = [])
     {
-        static $transformPregTupleOptions = [
-            'merge'         => 'merge',
-            'mergeLeft'     => 'mergeLeft',
-            'mergeMain'     => 'mergeMain',
-            'prefix'        => 'prefix',
-            'prefixMain'    => 'prefixMain',
-            'suffix'        => 'suffix',
-            'suffixMain'    => 'suffixMain'
-        ];
-
         if (empty($tuples)) {
             $message = '$tuples array passed to '.__class__.'::'.__function__.'() can not be empty';
             throw new \InvalidArgumentException($message);
         }
 
-        $joint = array_values(array_shift($tuples)); // string keys get lost, sorry
-        $glue = ($options['glue'] ?? '');
-        foreach ($tuples as $tuple) {
-            $tuple = array_values($tuple); // string keys get lost, sorry
-            $suffix = $glue.$tuple[0];
-            if (($captures = $tuple[1] ?? null) !== null) {
-                $captures = static::shiftPregCaptures($captures, strlen($joint[0].$glue));
-            }
-            $joint = static::transformPregTuple($joint, ['suffix' => $suffix, 'merge' => $captures]);
-        }
+        $left = array_shift($tuples);
+        $joint = array_reduce($tuples, function (array $carry, array $tuple) use ($options) {
+            return static::joinTwoPregTuples($carry, $tuple, $options);
+        }, $left);
 
-        $supported = array_intersect_key($options, $transformPregTupleOptions);
-        $transform = array_filter($supported, function ($val) {
-            return !empty($val);
-        });
-        if (!empty($transform)) {
-            $joint = static::transformPregTuple($joint, $transform);
-        }
-
-        return $joint;
+        return static::transformPregTuple($joint, $options);
     }
 }
 

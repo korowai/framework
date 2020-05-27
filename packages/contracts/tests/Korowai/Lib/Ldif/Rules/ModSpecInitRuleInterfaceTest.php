@@ -1,6 +1,6 @@
 <?php
 /**
- * @file tests/Korowai/Lib/Ldif/Rules/ChangeRecordInitRuleInterfaceTest.php
+ * @file tests/Korowai/Lib/Ldif/Rules/ModSpecInitRuleInterfaceTest.php
  *
  * This file is part of the Korowai package
  *
@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldif\Rules;
 
-use Korowai\Lib\Ldif\Rules\ChangeRecordInitRuleInterface;
+use Korowai\Lib\Ldif\Rules\ModSpecInitRuleInterface;
 use Korowai\Lib\Ldif\RuleInterface;
 
 use Korowai\Testing\Contracts\TestCase;
@@ -21,12 +21,12 @@ use Korowai\Testing\Contracts\TestCase;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class ChangeRecordInitRuleInterfaceTest extends TestCase
+class ModSpecInitRuleInterfaceTest extends TestCase
 {
     public static function createDummyInstance()
     {
-        return new class implements ChangeRecordInitRuleInterface {
-            use ChangeRecordInitRuleInterfaceTrait;
+        return new class implements ModSpecInitRuleInterface {
+            use ModSpecInitRuleInterfaceTrait;
         };
     }
 
@@ -42,19 +42,19 @@ class ChangeRecordInitRuleInterfaceTest extends TestCase
      */
     public function test__extendsInterface(string $extends)
     {
-        $this->assertImplementsInterface($extends, ChangeRecordInitRuleInterface::class);
+        $this->assertImplementsInterface($extends, ModSpecInitRuleInterface::class);
     }
 
     public function test__dummyImplementation()
     {
         $dummy = $this->createDummyInstance();
-        $this->assertImplementsInterface(ChangeRecordInitRuleInterface::class, $dummy);
+        $this->assertImplementsInterface(ModSpecInitRuleInterface::class, $dummy);
     }
 
     public function test__objectPropertyGettersMap()
     {
         $expect = [];
-        $this->assertObjectPropertyGetters($expect, ChangeRecordInitRuleInterface::class);
+        $this->assertObjectPropertyGetters($expect, ModSpecInitRuleInterface::class);
     }
 }
 

@@ -23,6 +23,13 @@ use Korowai\Testing\Contracts\TestCase;
  */
 class SepRuleInterfaceTest extends TestCase
 {
+    public static function createDummyInstance()
+    {
+        return new class implements SepRuleInterface {
+            use SepRuleInterfaceTrait;
+        };
+    }
+
     public static function extendsInterface__cases()
     {
         return [
@@ -40,9 +47,7 @@ class SepRuleInterfaceTest extends TestCase
 
     public function test__dummyImplementation()
     {
-        $dummy = new class implements SepRuleInterface {
-            use SepRuleInterfaceTrait;
-        };
+        $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(SepRuleInterface::class, $dummy);
     }
 

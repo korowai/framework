@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Lib/Ldif/Rules/LdifAttrValRecordRuleInterface.php
+ * @file src/Korowai/Lib/Ldif/Rules/LdifContentRuleInterface.php
  *
  * This file is part of the Korowai package
  *
@@ -20,14 +20,14 @@ use Korowai\Lib\Ldif\RuleInterface;
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-interface LdifAttrValRecordRuleInterface extends RuleInterface
+interface LdifContentRuleInterface extends RuleInterface
 {
     /**
-     * Returns the nested DnSpecRuleInteface.
+     * Returns the nested VersionSpecRuleInteface.
      *
-     * @return DnSpecRuleInterface
+     * @return VersionSpecRuleInterface
      */
-    public function getDnSpecRule() : DnSpecRuleInterface;
+    public function getVersionSpecRule() : VersionSpecRuleInterface;
 
     /**
      * Returns the nested SepRuleInteface.
@@ -37,11 +37,11 @@ interface LdifAttrValRecordRuleInterface extends RuleInterface
     public function getSepRule() : SepRuleInterface;
 
     /**
-     * Returns the nested AttrValSpecRuleInteface.
+     * Returns the nested LdifAttrValRecordRuleInteface.
      *
-     * @return AttrValSpecRuleInterface
+     * @return LdifAttrValRecordRuleInterface
      */
-    public function getAttrValSpecRule() : AttrValSpecRuleInterface;
+    public function getLdifAttrValRecordRule() : LdifAttrValRecordRuleInterface;
 }
 
 // vim: syntax=php sw=4 ts=4 et:

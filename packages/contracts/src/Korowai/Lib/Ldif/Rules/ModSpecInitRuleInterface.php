@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Lib/Ldif/Rules/NewSuperiorRuleInterface.php
+ * @file src/Korowai/Lib/Ldif/Rules/ModSpecInitRuleInterface.php
  *
  * This file is part of the Korowai package
  *
@@ -20,7 +20,7 @@ use Korowai\Lib\Ldif\RuleInterface;
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-interface NewSuperiorRuleInterface extends RuleInterface
+interface ModSpecInitRuleInterface extends RuleInterface
 {
 }
 

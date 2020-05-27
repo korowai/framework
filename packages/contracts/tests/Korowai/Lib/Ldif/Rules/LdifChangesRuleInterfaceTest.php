@@ -1,6 +1,6 @@
 <?php
 /**
- * @file tests/Korowai/Lib/Ldif/Rules/ModSpecRuleInterfaceTest.php
+ * @file tests/Korowai/Lib/Ldif/Rules/LdifChangesRuleInterfaceTest.php
  *
  * This file is part of the Korowai package
  *
@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldif\Rules;
 
-use Korowai\Lib\Ldif\Rules\ModSpecRuleInterface;
-use Korowai\Lib\Ldif\Rules\ModSpecInitRuleInterface;
+use Korowai\Lib\Ldif\Rules\LdifChangesRuleInterface;
+use Korowai\Lib\Ldif\Rules\VersionSpecRuleInterface;
 use Korowai\Lib\Ldif\Rules\SepRuleInterface;
-use Korowai\Lib\Ldif\Rules\AttrValSpecRuleInterface;
+use Korowai\Lib\Ldif\Rules\LdifChangeRecordRuleInterface;
 use Korowai\Lib\Ldif\RuleInterface;
 
 use Korowai\Testing\Contracts\TestCase;
@@ -24,12 +24,12 @@ use Korowai\Testing\Contracts\TestCase;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class ModSpecRuleInterfaceTest extends TestCase
+class LdifChangesRuleInterfaceTest extends TestCase
 {
     public static function createDummyInstance()
     {
-        return new class implements ModSpecRuleInterface {
-            use ModSpecRuleInterfaceTrait;
+        return new class implements LdifChangesRuleInterface {
+            use LdifChangesRuleInterfaceTrait;
         };
     }
 
@@ -45,40 +45,40 @@ class ModSpecRuleInterfaceTest extends TestCase
      */
     public function test__extendsInterface(string $extends)
     {
-        $this->assertImplementsInterface($extends, ModSpecRuleInterface::class);
+        $this->assertImplementsInterface($extends, LdifChangesRuleInterface::class);
     }
 
     public function test__dummyImplementation()
     {
         $dummy = $this->createDummyInstance();
-        $this->assertImplementsInterface(ModSpecRuleInterface::class, $dummy);
+        $this->assertImplementsInterface(LdifChangesRuleInterface::class, $dummy);
     }
 
     public function test__objectPropertyGettersMap()
     {
         $expect = [
-            'modSpecInitRule'           => 'getModSpecInitRule',
+            'versionSpecRule'           => 'getVersionSpecRule',
             'sepRule'                   => 'getSepRule',
-            'attrValSpecRule'           => 'getAttrValSpecRule',
+            'ldifChangeRecordRule'     => 'getLdifChangeRecordRule',
         ];
-        $this->assertObjectPropertyGetters($expect, ModSpecRuleInterface::class);
+        $this->assertObjectPropertyGetters($expect, LdifChangesRuleInterface::class);
     }
 
-    public function test__getModSpecInitRule()
+    public function test__getVersionSpecRule()
     {
         $dummy = $this->createDummyInstance();
-        $dummy->modSpecInitRule = $this->createStub(ModSpecInitRuleInterface::class);
-        $this->assertSame($dummy->modSpecInitRule, $dummy->getModSpecInitRule());
+        $dummy->versionSpecRule = $this->createStub(VersionSpecRuleInterface::class);
+        $this->assertSame($dummy->versionSpecRule, $dummy->getVersionSpecRule());
     }
 
-    public function test__getModSpecInitRule__withNull()
+    public function test__getVersionSpecRule__withNull()
     {
         $dummy = $this->createDummyInstance();
         $this->expectException(\TypeError::class);
-        $this->expectExceptionMessage(ModSpecInitRuleInterface::class);
+        $this->expectExceptionMessage(VersionSpecRuleInterface::class);
 
-        $dummy->modSpecInitRule = null;
-        $dummy->getModSpecInitRule();
+        $dummy->versionSpecRule = null;
+        $dummy->getVersionSpecRule();
     }
 
     public function test__getSepRule()
@@ -98,21 +98,21 @@ class ModSpecRuleInterfaceTest extends TestCase
         $dummy->getSepRule();
     }
 
-    public function test__getAttrValSpecRule()
+    public function test__getLdifChangeRecordRule()
     {
         $dummy = $this->createDummyInstance();
-        $dummy->attrValSpecRule = $this->createStub(AttrValSpecRuleInterface::class);
-        $this->assertSame($dummy->attrValSpecRule, $dummy->getAttrValSpecRule());
+        $dummy->ldifChangeRecordRule = $this->createStub(LdifChangeRecordRuleInterface::class);
+        $this->assertSame($dummy->ldifChangeRecordRule, $dummy->getLdifChangeRecordRule());
     }
 
-    public function test__getAttrValSpecRule__withNull()
+    public function test__getLdifChangeRecordRule__withNull()
     {
         $dummy = $this->createDummyInstance();
         $this->expectException(\TypeError::class);
-        $this->expectExceptionMessage(AttrValSpecRuleInterface::class);
+        $this->expectExceptionMessage(LdifChangeRecordRuleInterface::class);
 
-        $dummy->attrValSpecRule = null;
-        $dummy->getAttrValSpecRule();
+        $dummy->ldifChangeRecordRule = null;
+        $dummy->getLdifChangeRecordRule();
     }
 }
 

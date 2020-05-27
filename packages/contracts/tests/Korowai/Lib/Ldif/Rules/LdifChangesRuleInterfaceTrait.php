@@ -1,6 +1,6 @@
 <?php
 /**
- * @file tests/Korowai/Lib/Ldif/Rules/ModSpecRuleInterfaceTrait.php
+ * @file tests/Korowai/Lib/Ldif/Rules/LdifChangesRuleInterfaceTrait.php
  *
  * This file is part of the Korowai package
  *
@@ -14,24 +14,24 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Ldif\Rules;
 
 use Korowai\Tests\Lib\Ldif\RuleInterfaceTrait;
-use Korowai\Lib\Ldif\Rules\ModSpecInitRuleInterface;
+use Korowai\Lib\Ldif\Rules\VersionSpecRuleInterface;
 use Korowai\Lib\Ldif\Rules\SepRuleInterface;
-use Korowai\Lib\Ldif\Rules\AttrValSpecRuleInterface;
+use Korowai\Lib\Ldif\Rules\LdifChangeRecordRuleInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-trait ModSpecRuleInterfaceTrait
+trait LdifChangesRuleInterfaceTrait
 {
     use RuleInterfaceTrait;
 
-    public $modSpecInitRule = null;
+    public $versionSpecRule = null;
     public $sepRule = null;
-    public $attrValSpecRule = null;
+    public $ldifChangeRecordRule = null;
 
-    public function getModSpecInitRule() : ModSpecInitRuleInterface
+    public function getVersionSpecRule() : VersionSpecRuleInterface
     {
-        return $this->modSpecInitRule;
+        return $this->versionSpecRule;
     }
 
     public function getSepRule() : SepRuleInterface
@@ -39,9 +39,9 @@ trait ModSpecRuleInterfaceTrait
         return $this->sepRule;
     }
 
-    public function getAttrValSpecRule() : AttrValSpecRuleInterface
+    public function getLdifChangeRecordRule() : LdifChangeRecordRuleInterface
     {
-        return $this->attrValSpecRule;
+        return $this->ldifChangeRecordRule;
     }
 }
 

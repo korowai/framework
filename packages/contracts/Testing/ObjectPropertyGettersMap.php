@@ -28,7 +28,7 @@ class ObjectPropertyGettersMap
      */
     protected static $contractsObjectPropertyGettersMap = [
         \Iterator::class => [
-            'current'                   => 'current'
+            'current'                   => 'current',
         ],
 
         \Korowai\Lib\Basic\SingletonInterface::class => [
@@ -89,11 +89,11 @@ class ObjectPropertyGettersMap
             'resultReferenceIterator'   => 'getResultReferenceIterator',
             'resultEntries'             => 'getResultEntries',
             'resultReferences'          => 'getResultReferences',
-            'entries'                   => 'getEntries'
+            'entries'                   => 'getEntries',
         ],
 
         \Korowai\Lib\Ldap\Adapter\ResultRecordInterface::class => [
-            'dn'                        => 'getDn'
+            'dn'                        => 'getDn',
         ],
 
         \Korowai\Lib\Ldap\Adapter\ResultReferenceInterface::class => [
@@ -166,7 +166,7 @@ class ObjectPropertyGettersMap
         ],
 
         \Korowai\Lib\Ldif\Nodes\HasAttrValSpecsInterface::class => [
-            'attrValSpecs'              => 'getAttrValSpecs'
+            'attrValSpecs'              => 'getAttrValSpecs',
         ],
 
         \Korowai\Lib\Ldif\Nodes\LdifAttrValRecordInterface::class => [
@@ -184,18 +184,18 @@ class ObjectPropertyGettersMap
         ],
 
         \Korowai\Lib\Ldif\Nodes\LdifModifyRecordInterface::class => [
-            'modSpecs'                  => 'getModSpecs'
+            'modSpecs'                  => 'getModSpecs',
         ],
 
         \Korowai\Lib\Ldif\Nodes\ModSpecInterface::class => [
             'modType'                   => 'getModType',
-            'attribute'                 => 'getAttribute'
+            'attribute'                 => 'getAttribute',
         ],
 
         \Korowai\Lib\Ldif\Nodes\ValueSpecInterface::class => [
             'type'                      => 'getType',
             'spec'                      => 'getSpec',
-            'content'                   => 'getContent'
+            'content'                   => 'getContent',
         ],
 
         \Korowai\Lib\Ldif\Nodes\VersionSpecInterface::class => [
@@ -206,7 +206,7 @@ class ObjectPropertyGettersMap
         ],
 
         \Korowai\Lib\Ldif\ParserErrorInterface::class => [
-            'multilineMessage'          => 'getMultilineMessage'
+            'multilineMessage'          => 'getMultilineMessage',
         ],
 
         \Korowai\Lib\Ldif\ParserInterface::class => [
@@ -216,7 +216,6 @@ class ObjectPropertyGettersMap
         \Korowai\Lib\Ldif\ParserStateInterface::class => [
             'cursor'                    => 'getCursor',
             'errors'                    => 'getErrors',
-//            'records'                   => 'getRecords',
             'isOk'                      => 'isOk',
         ],
 
@@ -234,6 +233,7 @@ class ObjectPropertyGettersMap
         ],
 
         \Korowai\Lib\Ldif\Rules\AttrValSpecRuleInterface::class => [
+            'valueSpecRule'             => 'getValueSpecRule',
         ],
 
         \Korowai\Lib\Ldif\Rules\ChangeRecordInitRuleInterface::class => [
@@ -246,12 +246,42 @@ class ObjectPropertyGettersMap
         ],
 
         \Korowai\Lib\Ldif\Rules\LdifAttrValRecordRuleInterface::class => [
+            'dnSpecRule'                => 'getDnSpecRule',
+            'sepRule'                   => 'getSepRule',
+            'attrValSpecRule'           => 'getAttrValSpecRule',
         ],
 
         \Korowai\Lib\Ldif\Rules\LdifChangeRecordRuleInterface::class => [
+            'dnSpecRule'                => 'getDnSpecRule',
+            'sepRule'                   => 'getSepRule',
+            'controlRule'               => 'getControlRule',
+            'changeRecordInitRule'      => 'getChangeRecordInitRule',
+        ],
+
+        \Korowai\Lib\Ldif\Rules\LdifChangesRuleInterface::class => [
+            'versionSpecRule'           => 'getVersionSpecRule',
+            'sepRule'                   => 'getSepRule',
+            'ldifChangeRecordRule'      => 'getLdifChangeRecordRule',
+        ],
+
+        \Korowai\Lib\Ldif\Rules\LdifContentRuleInterface::class => [
+            'versionSpecRule'           => 'getVersionSpecRule',
+            'sepRule'                   => 'getSepRule',
+            'ldifAttrValRecordRule'     => 'getLdifAttrValRecordRule',
+        ],
+
+        \Korowai\Lib\Ldif\Rules\LdifFileRuleInterface::class => [
+            'ldifContentRule'           => 'getLdifContentRule',
+            'ldifChangesRule'           => 'getLdifChangesRule',
         ],
 
         \Korowai\Lib\Ldif\Rules\ModSpecRuleInterface::class => [
+            'modSpecInitRule'           => 'getModSpecInitRule',
+            'sepRule'                   => 'getSepRule',
+            'attrValSpecRule'           => 'getAttrValSpecRule',
+        ],
+
+        \Korowai\Lib\Ldif\Rules\ModSpecInitRuleInterface::class => [
         ],
 
         \Korowai\Lib\Ldif\Rules\NewRdnRuleInterface::class => [
@@ -275,7 +305,7 @@ class ObjectPropertyGettersMap
             'sourceLength'              => 'getSourceLength',
             'sourceEndOffset'           => 'getSourceEndOffset',
             'sourceCharLength'          => 'getSourceCharLength',
-            'sourceCharEndOffset'       => 'getSourceCharEndOffset'
+            'sourceCharEndOffset'       => 'getSourceCharEndOffset',
         ],
 
         \Korowai\Lib\Ldif\SourceLocationInterface::class => [

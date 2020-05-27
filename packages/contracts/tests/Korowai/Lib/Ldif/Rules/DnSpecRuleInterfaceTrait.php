@@ -14,8 +14,6 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Ldif\Rules;
 
 use Korowai\Tests\Lib\Ldif\RuleInterfaceTrait;
-use Korowai\Lib\Ldif\ParserStateInterface;
-use Korowai\Lib\Ldif\Nodes\DnSpecInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -23,14 +21,6 @@ use Korowai\Lib\Ldif\Nodes\DnSpecInterface;
 trait DnSpecRuleInterfaceTrait
 {
     use RuleInterfaceTrait;
-
-    public function parse(
-        ParserStateInterface $state,
-        DnSpecInterface &$value = null,
-        bool $trying = false
-    ) : bool {
-        return false;
-    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

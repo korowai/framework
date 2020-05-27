@@ -23,6 +23,13 @@ use Korowai\Testing\Contracts\TestCase;
  */
 class ValueSpecRuleInterfaceTest extends TestCase
 {
+    public static function createDummyInstance()
+    {
+        return new class implements ValueSpecRuleInterface {
+            use ValueSpecRuleInterfaceTrait;
+        };
+    }
+
     public static function extendsInterface__cases()
     {
         return [
@@ -40,9 +47,7 @@ class ValueSpecRuleInterfaceTest extends TestCase
 
     public function test__dummyImplementation()
     {
-        $dummy = new class implements ValueSpecRuleInterface {
-            use ValueSpecRuleInterfaceTrait;
-        };
+        $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(ValueSpecRuleInterface::class, $dummy);
     }
 

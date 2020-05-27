@@ -23,6 +23,13 @@ use Korowai\Testing\Contracts\TestCase;
  */
 class NewRdnRuleInterfaceTest extends TestCase
 {
+    public static function createDummyInstance()
+    {
+        return new class implements NewRdnRuleInterface {
+            use NewRdnRuleInterfaceTrait;
+        };
+    }
+
     public static function extendsInterface__cases()
     {
         return [
@@ -40,9 +47,7 @@ class NewRdnRuleInterfaceTest extends TestCase
 
     public function test__dummyImplementation()
     {
-        $dummy = new class implements NewRdnRuleInterface {
-            use NewRdnRuleInterfaceTrait;
-        };
+        $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(NewRdnRuleInterface::class, $dummy);
     }
 

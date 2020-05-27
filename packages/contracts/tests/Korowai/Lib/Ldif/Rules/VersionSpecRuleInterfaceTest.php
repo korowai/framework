@@ -23,6 +23,13 @@ use Korowai\Testing\Contracts\TestCase;
  */
 class VersionSpecRuleInterfaceTest extends TestCase
 {
+    public static function createDummyInstance()
+    {
+        return new class implements VersionSpecRuleInterface {
+            use VersionSpecRuleInterfaceTrait;
+        };
+    }
+
     public static function extendsInterface__cases()
     {
         return [
@@ -40,9 +47,7 @@ class VersionSpecRuleInterfaceTest extends TestCase
 
     public function test__dummyImplementation()
     {
-        $dummy = new class implements VersionSpecRuleInterface {
-            use VersionSpecRuleInterfaceTrait;
-        };
+        $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(VersionSpecRuleInterface::class, $dummy);
     }
 

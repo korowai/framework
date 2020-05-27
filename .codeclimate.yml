@@ -34,3 +34,6 @@ plugins:
             - "(Const VALUE_SAFE ___)"
             - "(Const VALUE_BASE64 ___)"
             - "(Const VALUE_URL ___)"
+
+  fixme:
+    enabled: true

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Ldif\Rules;
 
 use Korowai\Lib\Ldif\Rules\ControlRuleInterface;
+use Korowai\Lib\Ldif\Rules\ValueSpecRuleInterface;
 use Korowai\Lib\Ldif\RuleInterface;
 
 use Korowai\Testing\Contracts\TestCase;
@@ -23,6 +24,13 @@ use Korowai\Testing\Contracts\TestCase;
  */
 class ControlRuleInterfaceTest extends TestCase
 {
+    public static function createDummyInstance()
+    {
+        return new class implements ControlRuleInterface {
+            use ControlRuleInterfaceTrait;
+        };
+    }
+
     public static function extendsInterface__cases()
     {
         return [
@@ -40,9 +48,7 @@ class ControlRuleInterfaceTest extends TestCase
 
     public function test__dummyImplementation()
     {
-        $dummy = new class implements ControlRuleInterface {
-            use ControlRuleInterfaceTrait;
-        };
+        $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(ControlRuleInterface::class, $dummy);
     }
 
@@ -50,6 +56,23 @@ class ControlRuleInterfaceTest extends TestCase
     {
         $expect = [];
         $this->assertObjectPropertyGetters($expect, ControlRuleInterface::class);
+    }
+
+    public function test__getValueSpecRule()
+    {
+        $dummy = $this->createDummyInstance();
+        $dummy->valueSpecRule = $this->createStub(ValueSpecRuleInterface::class);
+        $this->assertSame($dummy->valueSpecRule, $dummy->getValueSpecRule());
+    }
+
+    public function test__getValueSpecRule__withNull()
+    {
+        $dummy = $this->createDummyInstance();
+        $dummy->valueSpecRule = null;
+
+        $this->expectException(\TypeError::class);
+        $this->expectExceptionMessage(ValueSpecRuleInterface::class);
+        $dummy->getValueSpecRule();
     }
 }
 

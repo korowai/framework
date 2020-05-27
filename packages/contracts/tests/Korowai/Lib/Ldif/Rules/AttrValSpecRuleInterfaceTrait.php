@@ -14,8 +14,7 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Ldif\Rules;
 
 use Korowai\Tests\Lib\Ldif\RuleInterfaceTrait;
-use Korowai\Lib\Ldif\ParserStateInterface;
-use Korowai\Lib\Ldif\Nodes\AttrValSpecInterface;
+use Korowai\Lib\Ldif\Rules\ValueSpecRuleInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -24,12 +23,11 @@ trait AttrValSpecRuleInterfaceTrait
 {
     use RuleInterfaceTrait;
 
-    public function parse(
-        ParserStateInterface $state,
-        AttrValSpecInterface &$value = null,
-        bool $trying = false
-    ) : bool {
-        return false;
+    public $valueSpecRule = null;
+
+    public function getValueSpecRule() : ValueSpecRuleInterface
+    {
+        return $this->valueSpecRule;
     }
 }
 

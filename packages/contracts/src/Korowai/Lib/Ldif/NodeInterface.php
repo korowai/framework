@@ -22,7 +22,7 @@ interface NodeInterface
 {
     /**
      * Returns this node's snippet.
-     * 
+     *
      * @return SnippetInterface|null
      */
     public function getSnippet() : ?SnippetInterface;

@@ -23,6 +23,13 @@ use Korowai\Testing\Contracts\TestCase;
  */
 class DnSpecRuleInterfaceTest extends TestCase
 {
+    public static function createDummyInstance()
+    {
+        return new class implements DnSpecRuleInterface {
+            use DnSpecRuleInterfaceTrait;
+        };
+    }
+
     public static function extendsInterface__cases()
     {
         return [
@@ -40,9 +47,7 @@ class DnSpecRuleInterfaceTest extends TestCase
 
     public function test__dummyImplementation()
     {
-        $dummy = new class implements DnSpecRuleInterface {
-            use DnSpecRuleInterfaceTrait;
-        };
+        $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(DnSpecRuleInterface::class, $dummy);
     }
 

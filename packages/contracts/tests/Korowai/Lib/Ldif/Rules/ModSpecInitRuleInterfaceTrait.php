@@ -1,27 +1,26 @@
 <?php
 /**
- * @file src/Korowai/Lib/Ldif/Rules/NewSuperiorRuleInterface.php
+ * @file tests/Korowai/Lib/Ldif/Rules/ModSpecInitRuleInterfaceTrait.php
  *
  * This file is part of the Korowai package
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @package korowai/contracts
+ * @package korowai/ldiflib
  * @license Distributed under MIT license.
  */
 
 declare(strict_types=1);
 
-namespace Korowai\Lib\Ldif\Rules;
+namespace Korowai\Tests\Lib\Ldif\Rules;
 
-use Korowai\Lib\Ldif\RuleInterface;
+use Korowai\Tests\Lib\Ldif\RuleInterfaceTrait;
 
 /**
- * @todo Write documentation.
- *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-interface NewSuperiorRuleInterface extends RuleInterface
+trait ModSpecInitRuleInterfaceTrait
 {
+    use RuleInterfaceTrait;
 }
 
 // vim: syntax=php sw=4 ts=4 et:

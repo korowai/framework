@@ -119,21 +119,6 @@ class ObjectPropertyGettersMap
             'adapter'                   => 'getAdapter',
         ],
 
-        \Korowai\Lib\Ldif\AttrValInterface::class => [
-            'attribute'                 => 'getAttribute',
-            'valueObject'               => 'getValueObject',
-        ],
-
-        \Korowai\Lib\Ldif\AttrValSpecsInterface::class => [
-            'attrValSpecs'              => 'getAttrValSpecs'
-        ],
-
-        \Korowai\Lib\Ldif\ControlInterface::class => [
-            'oid'                       => 'getOid',
-            'criticality'               => 'getCriticality',
-            'valueObject'               => 'getValueObject',
-        ],
-
         \Korowai\Lib\Ldif\CursorInterface::class => [
         ],
 
@@ -155,9 +140,69 @@ class ObjectPropertyGettersMap
             'clonedLocation'            => 'getClonedLocation',
         ],
 
-        \Korowai\Lib\Ldif\ModSpecInterface::class => [
+        \Korowai\Lib\Ldif\NodeInterface::class => [
+            'snippet'                   => 'getSnippet',
+        ],
+
+        \Korowai\Lib\Ldif\Nodes\LdifAddRecordInterface::class => [
+        ],
+
+        \Korowai\Lib\Ldif\Nodes\AttrValSpecInterface::class => [
+            'attribute'                 => 'getAttribute',
+            'valueSpec'                 => 'getValueSpec',
+        ],
+
+        \Korowai\Lib\Ldif\Nodes\ControlInterface::class => [
+            'oid'                       => 'getOid',
+            'criticality'               => 'getCriticality',
+            'valueSpec'                 => 'getValueSpec',
+        ],
+
+        \Korowai\Lib\Ldif\Nodes\LdifDeleteRecordInterface::class => [
+        ],
+
+        \Korowai\Lib\Ldif\Nodes\DnSpecInterface::class => [
+            'dn'                        => 'getDn',
+        ],
+
+        \Korowai\Lib\Ldif\Nodes\HasAttrValSpecsInterface::class => [
+            'attrValSpecs'              => 'getAttrValSpecs'
+        ],
+
+        \Korowai\Lib\Ldif\Nodes\LdifAttrValRecordInterface::class => [
+        ],
+
+        \Korowai\Lib\Ldif\Nodes\LdifChangeRecordInterface::class => [
+            'changeType'                => 'getChangeType',
+            'controls'                  => 'getControls',
+        ],
+
+        \Korowai\Lib\Ldif\Nodes\LdifModDnRecordInterface::class => [
+            'newRdn'                    => 'getNewRdn',
+            'deleteOldRdn'              => 'getDeleteOldRdn',
+            'newSuperior'               => 'getNewSuperior',
+        ],
+
+        \Korowai\Lib\Ldif\Nodes\LdifModifyRecordInterface::class => [
+            'modSpecs'                  => 'getModSpecs'
+        ],
+
+        \Korowai\Lib\Ldif\Nodes\ModSpecInterface::class => [
             'modType'                   => 'getModType',
             'attribute'                 => 'getAttribute'
+        ],
+
+        \Korowai\Lib\Ldif\Nodes\ValueSpecInterface::class => [
+            'type'                      => 'getType',
+            'spec'                      => 'getSpec',
+            'content'                   => 'getContent'
+        ],
+
+        \Korowai\Lib\Ldif\Nodes\VersionSpecInterface::class => [
+            'version'                   => 'getVersion',
+        ],
+
+        \Korowai\Lib\Ldif\NodeVisitorInterface::class => [
         ],
 
         \Korowai\Lib\Ldif\ParserErrorInterface::class => [
@@ -171,7 +216,7 @@ class ObjectPropertyGettersMap
         \Korowai\Lib\Ldif\ParserStateInterface::class => [
             'cursor'                    => 'getCursor',
             'errors'                    => 'getErrors',
-            'records'                   => 'getRecords',
+//            'records'                   => 'getRecords',
             'isOk'                      => 'isOk',
         ],
 
@@ -185,32 +230,43 @@ class ObjectPropertyGettersMap
         \Korowai\Lib\Ldif\RecordVisitorInterface::class => [
         ],
 
-        \Korowai\Lib\Ldif\Records\AddRecordInterface::class => [
-        ],
-
-        \Korowai\Lib\Ldif\Records\AttrValRecordInterface::class => [
-        ],
-
-        \Korowai\Lib\Ldif\Records\ChangeRecordInterface::class => [
-            'changeType'                => 'getChangeType',
-            'controls'                  => 'getControls',
-        ],
-
-        \Korowai\Lib\Ldif\Records\DeleteRecordInterface::class => [
-        ],
-
-        \Korowai\Lib\Ldif\Records\ModDnRecordInterface::class => [
-            'newRdn'                    => 'getNewRdn',
-            'deleteOldRdn'              => 'getDeleteOldRdn',
-            'newSuperior'               => 'getNewSuperior',
-        ],
-
-        \Korowai\Lib\Ldif\Records\ModifyRecordInterface::class => [
-            'attribute'                 => 'getAttribute',
-            'modSpecs'                  => 'getModSpecs'
-        ],
-
         \Korowai\Lib\Ldif\RuleInterface::class => [
+        ],
+
+        \Korowai\Lib\Ldif\Rules\AttrValSpecRuleInterface::class => [
+        ],
+
+        \Korowai\Lib\Ldif\Rules\ChangeRecordInitRuleInterface::class => [
+        ],
+
+        \Korowai\Lib\Ldif\Rules\ControlRuleInterface::class => [
+        ],
+
+        \Korowai\Lib\Ldif\Rules\DnSpecRuleInterface::class => [
+        ],
+
+        \Korowai\Lib\Ldif\Rules\LdifAttrValRecordRuleInterface::class => [
+        ],
+
+        \Korowai\Lib\Ldif\Rules\LdifChangeRecordRuleInterface::class => [
+        ],
+
+        \Korowai\Lib\Ldif\Rules\ModSpecRuleInterface::class => [
+        ],
+
+        \Korowai\Lib\Ldif\Rules\NewRdnRuleInterface::class => [
+        ],
+
+        \Korowai\Lib\Ldif\Rules\NewSuperiorRuleInterface::class => [
+        ],
+
+        \Korowai\Lib\Ldif\Rules\SepRuleInterface::class => [
+        ],
+
+        \Korowai\Lib\Ldif\Rules\ValueSpecRuleInterface::class => [
+        ],
+
+        \Korowai\Lib\Ldif\Rules\VersionSpecRuleInterface::class => [
         ],
 
         \Korowai\Lib\Ldif\SnippetInterface::class => [
@@ -233,15 +289,6 @@ class ObjectPropertyGettersMap
             'sourceLineAndCharOffset'   => 'getSourceLineAndCharOffset',
         ],
 
-        \Korowai\Lib\Ldif\ValueInterface::class => [
-            'type'                      => 'getType',
-            'spec'                      => 'getSpec',
-            'content'                   => 'getContent'
-        ],
-
-        \Korowai\Lib\Ldif\VersionSpecInterface::class => [
-            'version'                   => 'getVersion',
-        ],
 
         \Korowai\Lib\Rfc\RuleInterface::class => [
             'toString'                  => '__toString',

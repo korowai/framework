@@ -33,20 +33,20 @@ interface ParserStateInterface
      */
     public function getErrors() : array;
 
-    /**
-     * Returns records extracted from LDIF source so far.
-     *
-     * @return array an array of RecordInterface instances.
-     */
-    public function getRecords() : array;
+    // /**
+    //  * Returns records extracted from LDIF source so far.
+    //  *
+    //  * @return array an array of RecordInterface instances.
+    //  */
+    // public function getRecords() : array;
 
-    /**
-     * Returns an object encapsulating version-spec as it is found from source
-     * LDIF file, or null if there was no version-spec.
-     *
-     * @return VersionSpecInterface|null
-     */
-    public function getVersionSpec() : ?VersionSpecInterface;
+    // /**
+    //  * Returns an object encapsulating version-spec as it is found from source
+    //  * LDIF file, or null if there was no version-spec.
+    //  *
+    //  * @return VersionSpecInterface|null
+    //  */
+    // public function getVersionSpec() : ?VersionSpecInterface;
 
     /**
      * Returns true if there are no errors.
@@ -87,23 +87,23 @@ interface ParserStateInterface
      */
     public function errorAt(int $offset, string $message, array $arguments = []);
 
-    /**
-     * Append new record.
-     *
-     * @param  RecordInterface $record
-     *
-     * @return object $this
-     */
-    public function appendRecord(RecordInterface $record);
+    // /**
+    //  * Append new record.
+    //  *
+    //  * @param  RecordInterface $record
+    //  *
+    //  * @return object $this
+    //  */
+    // public function appendRecord(RecordInterface $record);
 
-    /**
-     * Set version-spec.
-     *
-     * @param VersionSpecInterface|null $versionSpec
-     *
-     * @return object $this
-     */
-    public function setVersionSpec(?VersionSpecInterface $versionSpec);
+    // /**
+    //  * Set version-spec.
+    //  *
+    //  * @param VersionSpecInterface|null $versionSpec
+    //  *
+    //  * @return object $this
+    //  */
+    // public function setVersionSpec(?VersionSpecInterface $versionSpec);
 }
 
 // vim: syntax=php sw=4 ts=4 et:

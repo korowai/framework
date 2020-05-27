@@ -20,7 +20,7 @@ use Korowai\Lib\Ldif\ValueInterface;
 use Korowai\Lib\Ldif\Rules\DnSpecRule;
 use Korowai\Lib\Ldif\Rules\SepRule;
 use Korowai\Lib\Ldif\Rules\AttrValSpecRule;
-use Korowai\Lib\Ldif\Records\AttrValRecordInterface;
+use Korowai\Lib\Ldif\Nodes\AttrValRecordInterface;
 use Korowai\Lib\Ldif\Exception\InvalidRuleClassException;
 use Korowai\Testing\Lib\Ldif\TestCase;
 

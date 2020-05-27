@@ -16,12 +16,12 @@ namespace Korowai\Lib\Ldif\Rules;
 use Korowai\Lib\Ldif\RuleInterface;
 use Korowai\Lib\Ldif\ParserStateInterface as State;
 use Korowai\Lib\Ldif\Snippet;
-use Korowai\Lib\Ldif\Records\AttrValRecord;
+use Korowai\Lib\Ldif\Nodes\AttrValRecord;
 
 /**
  * A rule object that parses *ldif-attrval-record* as defined in [RFC2849](https://tools.ietf.org/html/rfc2849).
  *
- * - semantic value: [AttrValRecordInterface](\.\./Records/AttrValRecordInterface.html).
+ * - semantic value: [AttrValRecordInterface](\.\./Nodes/AttrValRecordInterface.html).
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */

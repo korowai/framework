@@ -68,7 +68,7 @@ interface LocationInterface extends SourceLocationInterface
      *
      * @return LocationInterface
      */
-    public function getClonedLocation(?int $offset = null) : LocationInterface;
+    public function getClonedLocation(int $offset = null) : LocationInterface;
 }
 
 // vim: syntax=php sw=4 ts=4 et:

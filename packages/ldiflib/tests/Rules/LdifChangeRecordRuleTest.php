@@ -23,11 +23,11 @@ use Korowai\Lib\Ldif\Rules\ChangeRecordInitRule;
 use Korowai\Lib\Ldif\Rules\ModSpecRule;
 use Korowai\Lib\Ldif\Rules\SepRule;
 use Korowai\Lib\Ldif\Rules\AttrValSpecRule;
-use Korowai\Lib\Ldif\Records\ChangeRecordInterface;
-use Korowai\Lib\Ldif\Records\AddRecordInterface;
-use Korowai\Lib\Ldif\Records\DeleteRecordInterface;
-use Korowai\Lib\Ldif\Records\ModDnRecordInterface;
-use Korowai\Lib\Ldif\Records\ModifyRecordInterface;
+use Korowai\Lib\Ldif\Nodes\ChangeRecordInterface;
+use Korowai\Lib\Ldif\Nodes\AddRecordInterface;
+use Korowai\Lib\Ldif\Nodes\DeleteRecordInterface;
+use Korowai\Lib\Ldif\Nodes\ModDnRecordInterface;
+use Korowai\Lib\Ldif\Nodes\ModifyRecordInterface;
 use Korowai\Lib\Ldif\Exception\InvalidRuleClassException;
 use Korowai\Testing\Lib\Ldif\TestCase;
 

@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldif;
 
-use Korowai\Lib\Ldif\Records\AttrValRecordInterface;
-use Korowai\Lib\Ldif\Records\AddRecordInterface;
-use Korowai\Lib\Ldif\Records\DeleteRecordInterface;
-use Korowai\Lib\Ldif\Records\ModDnRecordInterface;
-use Korowai\Lib\Ldif\Records\ModifyRecordInterface;
+use Korowai\Lib\Ldif\Nodes\LdifAttrValRecordInterface;
+use Korowai\Lib\Ldif\Nodes\LdifAddRecordInterface;
+use Korowai\Lib\Ldif\Nodes\LdifDeleteRecordInterface;
+use Korowai\Lib\Ldif\Nodes\LdifModDnRecordInterface;
+use Korowai\Lib\Ldif\Nodes\LdifModifyRecordInterface;
 
 /**
  * Interface for LDIF record visitor objects.
@@ -27,39 +27,39 @@ use Korowai\Lib\Ldif\Records\ModifyRecordInterface;
 interface RecordVisitorInterface
 {
     /**
-     * Visits instance of AttrValRecordInterface.
+     * Visits instance of LdifAttrValRecordInterface.
      *
-     * @param AttrValRecordInterface $record
+     * @param LdifAttrValRecordInterface $record
      */
-    public function visitAttrValRecord(AttrValRecordInterface $record);
+    public function visitLdifAttrValRecord(LdifAttrValRecordInterface $record);
 
     /**
-     * Visits instance of AddRecordInterface.
+     * Visits instance of LdifAddRecordInterface.
      *
-     * @param AddRecordInterface $record
+     * @param LdifAddRecordInterface $record
      */
-    public function visitAddRecord(AddRecordInterface $record);
+    public function visitLdifAddRecord(LdifAddRecordInterface $record);
 
     /**
-     * Visits instance of DeleteRecordInterface.
+     * Visits instance of LdifDeleteRecordInterface.
      *
-     * @param DeleteRecordInterface $record
+     * @param LdifDeleteRecordInterface $record
      */
-    public function visitDeleteRecord(DeleteRecordInterface $record);
+    public function visitLdifDeleteRecord(LdifDeleteRecordInterface $record);
 
     /**
-     * Visits instance of ModDnRecordInterface.
+     * Visits instance of LdifModDnRecordInterface.
      *
-     * @param ModDnRecordInterface $record
+     * @param LdifModDnRecordInterface $record
      */
-    public function visitModDnRecord(ModDnRecordInterface $record);
+    public function visitLdifModDnRecord(LdifModDnRecordInterface $record);
 
     /**
-     * Visits instance of ModifyRecordInterface.
+     * Visits instance of LdifModifyRecordInterface.
      *
-     * @param ModifyRecordInterface $record
+     * @param LdifModifyRecordInterface $record
      */
-    public function visitModifyRecord(ModifyRecordInterface $record);
+    public function visitLdifModifyRecord(LdifModifyRecordInterface $record);
 }
 
 // vim: syntax=php sw=4 ts=4 et:

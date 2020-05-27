@@ -17,21 +17,21 @@ use Korowai\Lib\Ldif\RuleInterface;
 use Korowai\Lib\Ldif\ParserStateInterface as State;
 use Korowai\Lib\Ldif\LocationInterface;
 use Korowai\Lib\Ldif\Snippet;
-use Korowai\Lib\Ldif\Records\AddRecord;
-use Korowai\Lib\Ldif\Records\DeleteRecord;
-use Korowai\Lib\Ldif\Records\ModDnRecord;
-use Korowai\Lib\Ldif\Records\ModifyRecord;
-use Korowai\Lib\Ldif\Records\ChangeRecordInterface;
-use Korowai\Lib\Ldif\Records\AddRecordInterface;
-use Korowai\Lib\Ldif\Records\DeleteRecordInterface;
-use Korowai\Lib\Ldif\Records\ModDnRecordInterface;
-use Korowai\Lib\Ldif\Records\ModifyRecordInterface;
+use Korowai\Lib\Ldif\Nodes\AddRecord;
+use Korowai\Lib\Ldif\Nodes\DeleteRecord;
+use Korowai\Lib\Ldif\Nodes\ModDnRecord;
+use Korowai\Lib\Ldif\Nodes\ModifyRecord;
+use Korowai\Lib\Ldif\Nodes\ChangeRecordInterface;
+use Korowai\Lib\Ldif\Nodes\AddRecordInterface;
+use Korowai\Lib\Ldif\Nodes\DeleteRecordInterface;
+use Korowai\Lib\Ldif\Nodes\ModDnRecordInterface;
+use Korowai\Lib\Ldif\Nodes\ModifyRecordInterface;
 use Korowai\Lib\Ldif\Exception\InvalidRuleClassException;
 
 /**
  * A rule object that parses *ldif-change-record* as defined in [RFC2849](https://tools.ietf.org/html/rfc2849).
  *
- * - semantic value: [ChangeRecordInterface](\.\./Records/ChangeRecordInterface.html).
+ * - semantic value: [ChangeRecordInterface](\.\./Nodes/ChangeRecordInterface.html).
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */

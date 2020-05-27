@@ -78,22 +78,22 @@ class ObjectPropertyGettersMap
         \Korowai\Lib\Ldif\Preprocessor::class => [
         ],
 
-        \Korowai\Lib\Ldif\Records\AbstractRecord::class => [
+        \Korowai\Lib\Ldif\Nodes\AbstractRecord::class => [
         ],
 
-        \Korowai\Lib\Ldif\Records\AddRecord::class => [
+        \Korowai\Lib\Ldif\Nodes\AddRecord::class => [
         ],
 
-        \Korowai\Lib\Ldif\Records\AttrValRecord::class => [
+        \Korowai\Lib\Ldif\Nodes\AttrValRecord::class => [
         ],
 
-        \Korowai\Lib\Ldif\Records\DeleteRecord::class => [
+        \Korowai\Lib\Ldif\Nodes\DeleteRecord::class => [
         ],
 
-        \Korowai\Lib\Ldif\Records\ModDnRecord::class => [
+        \Korowai\Lib\Ldif\Nodes\ModDnRecord::class => [
         ],
 
-        \Korowai\Lib\Ldif\Records\ModifyRecord::class => [
+        \Korowai\Lib\Ldif\Nodes\ModifyRecord::class => [
         ],
 
         \Korowai\Lib\Ldif\Rules\AbstractDnSpecRule::class => [

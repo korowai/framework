@@ -21,6 +21,22 @@ namespace Korowai\Lib\Ldif;
 interface RuleInterface
 {
     /**
+     * Applies ``$this->parse()`` repeatedly.
+     *
+     * The function returns ``true`` if and only if at least *$min* repetitions
+     * were successful. The first *$min* iterations are performed with
+     * ``$this->parse($state, $value, false)``, the remaining iterations with
+     * ``$this->parse($state, $value, true)``.
+     *
+     * @param  ParserStateInterface $state
+     * @param  array $values
+     * @param  int $min
+     * @param  int $max
+     *
+     * @return bool Returns ``true`` on success of ``false`` on failure.
+     */
+    public function repeat(ParserStateInterface $state, array &$values = null, int $min = 0, int $max = null) : bool;
+        /**
      * Parse string starting at position defined by *$state*.
      *
      * Four cases should be considered:
@@ -50,23 +66,6 @@ interface RuleInterface
      * @return bool Returns true on success or false on error.
      */
     public function parse(ParserStateInterface $state, &$value = null, bool $trying = false) : bool;
-
-    /**
-     * Applies ``$this->parse()`` repeatedly.
-     *
-     * The function returns ``true`` if and only if at least *$min* repetitions
-     * were successful. The first *$min* iterations are performed with
-     * ``$this->parse($state, $value, false)``, the remaining iterations with
-     * ``$this->parse($state, $value, true)``.
-     *
-     * @param  ParserStateInterface $state
-     * @param  array $values
-     * @param  int $min
-     * @param  int $max
-     *
-     * @return bool Returns ``true`` on success of ``false`` on failure.
-     */
-    public function repeat(ParserStateInterface $state, array &$values = null, int $min = 0, int $max = null) : bool;
 }
 
 // vim: syntax=php sw=4 ts=4 et:

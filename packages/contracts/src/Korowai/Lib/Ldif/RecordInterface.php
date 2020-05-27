@@ -36,7 +36,7 @@ interface RecordInterface
      *
      * @return string
      */
-    public function getDn(): string;
+    public function getDn() : string;
 
     /**
      * Accept record visitor.
@@ -44,13 +44,6 @@ interface RecordInterface
      * @param  RecordVisitorInterface $visitor
      */
     public function acceptRecordVisitor(RecordVisitorInterface $visitor);
-
-    /**
-     * Returns optional snippet attached to this record.
-     *
-     * @return SnippetInterface|null
-     */
-    public function getSnippet() : ?SnippetInterface;
 }
 
 // vim: syntax=php sw=4 ts=4 et:

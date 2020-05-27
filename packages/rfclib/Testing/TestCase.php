@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Testing\Lib\Rfc;
+namespace Korowai\Testing\Rfclib;
 
 /**
  * Abstract base class for korowai/rfclib unit tests.
@@ -35,7 +35,7 @@ abstract class TestCase extends \Korowai\Testing\TestCase
         return array_merge_recursive(
             parent::objectPropertyGettersMap(),
             \Korowai\Testing\Contracts\ObjectPropertyGettersMap::getObjectPropertyGettersMap(),
-            \Korowai\Testing\Lib\Rfc\ObjectPropertyGettersMap::getObjectPropertyGettersMap()
+            \Korowai\Testing\Rfclib\ObjectPropertyGettersMap::getObjectPropertyGettersMap()
         );
     }
 

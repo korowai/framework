@@ -36,7 +36,7 @@
       "psr-4" : {
         "Korowai\\Tests\\Lib\\Rfc\\" : "tests/",
         "Korowai\\TestsNocov\\Lib\\Rfc\\" : "tests-nocov/",
-        "Korowai\\Testing\\Lib\\Rfc\\" : "Testing/"
+        "Korowai\\Testing\\Rfclib\\" : "Testing/"
       }
     }
 }

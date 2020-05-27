@@ -1,7 +1,7 @@
 <?php
 /* [code] */
 use Korowai\Lib\Rfc\Rfc2849;
-use Korowai\Testing\Lib\Rfc\RuleDemo;
+use Korowai\Testing\Rfclib\RuleDemo;
 
 $demo = RuleDemo::create(Rfc2849::class, 'NEWRDN_SPEC');
 

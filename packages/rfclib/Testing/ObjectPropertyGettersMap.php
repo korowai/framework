@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Testing\Lib\Rfc;
+namespace Korowai\Testing\Rfclib;
 
 /**
  * Defines getters map for properties of objects from korowai/rfclib
@@ -54,7 +54,7 @@ class ObjectPropertyGettersMap
         ],
         \Korowai\Lib\Rfc\Traits\RulesFromConstants::class => [
         ],
-        \Korowai\Testing\Lib\Rfc\RuleDemo::class => [
+        \Korowai\Testing\Rfclib\RuleDemo::class => [
             'rule'                  => 'getRule',
             'format'                => 'getFormat',
             'regex'                 => 'regex'

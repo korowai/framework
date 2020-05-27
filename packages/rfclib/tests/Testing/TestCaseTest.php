@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Korowai\Tests\Testing\Lib\Rfc;
 
 use Korowai\Testing\TestCase as BaseTestCase;
-use Korowai\Testing\Lib\Rfc\TestCase;
+use Korowai\Testing\Rfclib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -38,7 +38,7 @@ class TestCaseTest extends TestCase
     {
         $expected = array_merge_recursive(
             \Korowai\Testing\Contracts\ObjectPropertyGettersMap::getObjectPropertyGettersMap(),
-            \Korowai\Testing\Lib\Rfc\ObjectPropertyGettersMap::getObjectPropertyGettersMap()
+            \Korowai\Testing\Rfclib\ObjectPropertyGettersMap::getObjectPropertyGettersMap()
         );
         $this->assertSame($expected, parent::objectPropertyGettersMap());
     }

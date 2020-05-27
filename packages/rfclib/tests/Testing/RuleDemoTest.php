@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Testing\Lib\Rfc;
 
-use Korowai\Testing\Lib\Rfc\RuleDemo;
+use Korowai\Testing\Rfclib\RuleDemo;
 use Korowai\Lib\Rfc\Rule;
 use Korowai\Lib\Rfc\RuleInterface;
 use Korowai\Lib\Rfc\Rfc2849;
@@ -32,7 +32,7 @@ class RuleDemoTest extends TestCase
         return array_merge_recursive(
             parent::objectPropertyGettersMap(),
             \Korowai\Testing\Contracts\ObjectPropertyGettersMap::getObjectPropertyGettersMap(),
-            \Korowai\Testing\Lib\Rfc\ObjectPropertyGettersMap::getObjectPropertyGettersMap()
+            \Korowai\Testing\Rfclib\ObjectPropertyGettersMap::getObjectPropertyGettersMap()
         );
     }
 

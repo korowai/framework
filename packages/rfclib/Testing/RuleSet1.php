@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Testing\Lib\Rfc;
+namespace Korowai\Testing\Rfclib;
 
 /**
  * Sample class that extends AbstractRuleSet. Allows testing static methods of

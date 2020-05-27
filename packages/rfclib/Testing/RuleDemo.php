@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Testing\Lib\Rfc;
+namespace Korowai\Testing\Rfclib;
 
 use Korowai\Lib\Rfc\Rule;
 use Korowai\Lib\Rfc\RuleInterface;

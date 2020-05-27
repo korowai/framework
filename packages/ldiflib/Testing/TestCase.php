@@ -32,7 +32,7 @@ abstract class TestCase extends \Korowai\Testing\TestCase
         return array_merge_recursive(
             parent::objectPropertyGettersMap(),
             \Korowai\Testing\Contracts\ObjectPropertyGettersMap::getObjectPropertyGettersMap(),
-            \Korowai\Testing\Lib\Rfc\ObjectPropertyGettersMap::getObjectPropertyGettersMap(),
+            \Korowai\Testing\Rfclib\ObjectPropertyGettersMap::getObjectPropertyGettersMap(),
             \Korowai\Testing\Lib\Ldif\ObjectPropertyGettersMap::getObjectPropertyGettersMap()
         );
     }

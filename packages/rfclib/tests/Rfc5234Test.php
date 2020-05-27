@@ -15,7 +15,7 @@ namespace Korowai\Tests\Lib\Rfc;
 
 use Korowai\Lib\Rfc\Rfc5234;
 use Korowai\Lib\Rfc\AbstractRuleSet;
-use Korowai\Testing\Lib\Rfc\TestCase;
+use Korowai\Testing\Rfclib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

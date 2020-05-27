@@ -15,7 +15,7 @@ namespace Korowai\TestsNocov\Lib\Rfc;
 
 use Korowai\Lib\Rfc\Rfc3986;
 use Korowai\Lib\Rfc\Rfc5234;
-use Korowai\Testing\Lib\Rfc\TestCase;
+use Korowai\Testing\Rfclib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

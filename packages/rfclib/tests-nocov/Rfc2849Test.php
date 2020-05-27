@@ -17,7 +17,7 @@ use Korowai\Lib\Rfc\Rfc2849;
 use Korowai\Lib\Rfc\Rfc2253;
 use Korowai\Lib\Rfc\Rfc3986;
 use Korowai\Lib\Rfc\Rfc5234;
-use Korowai\Testing\Lib\Rfc\TestCase;
+use Korowai\Testing\Rfclib\TestCase;
 
 
 /**

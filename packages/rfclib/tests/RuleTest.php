@@ -17,9 +17,9 @@ use Korowai\Lib\Rfc\Rule;
 use Korowai\Lib\Rfc\RuleInterface;
 use Korowai\Lib\Rfc\StaticRuleSetInterface;
 use Korowai\Lib\Rfc\Exception\InvalidRuleSetNameException;
-use Korowai\Testing\Lib\Rfc\RuleSet0;
-use Korowai\Testing\Lib\Rfc\RuleSet1;
-use Korowai\Testing\Lib\Rfc\RuleSet2;
+use Korowai\Testing\Rfclib\RuleSet0;
+use Korowai\Testing\Rfclib\RuleSet1;
+use Korowai\Testing\Rfclib\RuleSet2;
 use Korowai\Testing\TestCase;
 
 /**

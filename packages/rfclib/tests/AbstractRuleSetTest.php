@@ -16,9 +16,9 @@ namespace Korowai\Tests\Lib\Rfc;
 use Korowai\Lib\Rfc\StaticRuleSetInterface;
 use Korowai\Lib\Rfc\AbstractRuleSet;
 use Korowai\Lib\Rfc\Traits\RulesFromConstants;
-use Korowai\Testing\Lib\Rfc\RuleSet0;
-use Korowai\Testing\Lib\Rfc\RuleSet1;
-use Korowai\Testing\Lib\Rfc\RuleSet2;
+use Korowai\Testing\Rfclib\RuleSet0;
+use Korowai\Testing\Rfclib\RuleSet1;
+use Korowai\Testing\Rfclib\RuleSet2;
 use Korowai\Testing\TestCase;
 
 /**

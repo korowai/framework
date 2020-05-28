@@ -42,7 +42,7 @@ interface AdapterInterface
      *
      * @return SearchQueryInterface
      */
-    public function createSearchQuery(string $base_dn, string $filter, array $options = array()) : SearchQueryInterface;
+    public function createSearchQuery(string $base_dn, string $filter, array $options = []) : SearchQueryInterface;
     /**
      * Creates a compare query.
      *

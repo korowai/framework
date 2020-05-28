@@ -22,9 +22,11 @@ trait VersionSpecInterfaceTrait
 {
     use NodeInterfaceTrait;
 
+    public $version = null;
+
     public function getVersion() : int
     {
-        return 0;
+        return $this->version;
     }
 }
 

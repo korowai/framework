@@ -22,11 +22,16 @@ use Korowai\Testing\Contracts\TestCase;
  */
 class HasAttrValSpecsInterfaceTest extends TestCase
 {
-    public function test__dummyImplementation()
+    public static function createDummyInstance()
     {
-        $dummy = new class implements HasAttrValSpecsInterface {
+        return new class implements HasAttrValSpecsInterface {
             use HasAttrValSpecsInterfaceTrait;
         };
+    }
+
+    public function test__dummyImplementation()
+    {
+        $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(HasAttrValSpecsInterface::class, $dummy);
     }
 
@@ -36,6 +41,23 @@ class HasAttrValSpecsInterfaceTest extends TestCase
             'attrValSpecs'  => 'getAttrValSpecs'
         ];
         $this->assertObjectPropertyGetters($expect, HasAttrValSpecsInterface::class);
+    }
+
+    public function test__getAttrValSpecs()
+    {
+        $dummy = $this->createDummyInstance();
+        $dummy->attrValSpecs = [];
+        $this->assertSame($dummy->attrValSpecs, $dummy->getAttrValSpecs());
+    }
+
+    public function test__getAttrValSpecs__withNull()
+    {
+        $dummy = $this->createDummyInstance();
+        $dummy->attrValSpecs = null;
+
+        $this->expectException(\TypeError::class);
+        $this->expectExceptionMessage('array');
+        $dummy->getAttrValSpecs();
     }
 }
 

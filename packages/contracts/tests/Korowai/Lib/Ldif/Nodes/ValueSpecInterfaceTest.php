@@ -23,6 +23,13 @@ use Korowai\Testing\Contracts\TestCase;
  */
 class ValueSpecInterfaceTest extends TestCase
 {
+    public static function createDummyInstance()
+    {
+        return new class implements ValueSpecInterface {
+            use ValueSpecInterfaceTrait;
+        };
+    }
+
     public static function extendsInterface__cases()
     {
         return [
@@ -40,9 +47,7 @@ class ValueSpecInterfaceTest extends TestCase
 
     public function test__dummyImplementation()
     {
-        $dummy = new class implements ValueSpecInterface {
-            use ValueSpecInterfaceTrait;
-        };
+        $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(ValueSpecInterface::class, $dummy);
     }
 
@@ -54,6 +59,47 @@ class ValueSpecInterfaceTest extends TestCase
             'content' => 'getContent',
         ];
         $this->assertObjectPropertyGetters($expect, ValueSpecInterface::class);
+    }
+
+    public function test__getType()
+    {
+        $dummy = $this->createDummyInstance();
+        $dummy->type = 0;
+        $this->assertSame($dummy->type, $dummy->getType());
+    }
+
+    public function test__getType__withNull()
+    {
+        $dummy = $this->createDummyInstance();
+        $dummy->type = null;
+
+        $this->expectException(\TypeError::class);
+        $this->expectExceptionMessage(\int::class);
+        $dummy->getType();
+    }
+
+    public function test__getSpec()
+    {
+        $dummy = $this->createDummyInstance();
+        $dummy->spec = '';
+        $this->assertSame($dummy->spec, $dummy->getSpec());
+    }
+
+    public function test__getContent()
+    {
+        $dummy = $this->createDummyInstance();
+        $dummy->content = '';
+        $this->assertSame($dummy->content, $dummy->getContent());
+    }
+
+    public function test__getContent__withNull()
+    {
+        $dummy = $this->createDummyInstance();
+        $dummy->content = null;
+
+        $this->expectException(\TypeError::class);
+        $this->expectExceptionMessage(\string::class);
+        $dummy->getContent();
     }
 }
 

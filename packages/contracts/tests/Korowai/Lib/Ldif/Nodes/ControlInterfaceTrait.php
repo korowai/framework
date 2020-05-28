@@ -23,19 +23,23 @@ trait ControlInterfaceTrait
 {
     use NodeInterfaceTrait;
 
+    public $oid = null;
+    public $criticality = null;
+    public $valueSpec = null;
+
     public function getOid() : string
     {
-        return "";
+        return $this->oid;
     }
 
     public function getCriticality() : ?bool
     {
-        return null;
+        return $this->criticality;
     }
 
     public function getValueSpec() : ?ValueSpecInterface
     {
-        return null;
+        return $this->valueSpec;
     }
 }
 

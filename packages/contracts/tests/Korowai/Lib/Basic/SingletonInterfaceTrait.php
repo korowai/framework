@@ -18,8 +18,12 @@ namespace Korowai\Tests\Lib\Basic;
  */
 trait SingletonInterfaceTrait
 {
-  // TODO:
-  // Korowai\Lib\Basic\SingletonInterface
+    public static $instance;
+
+    public static function getInstance()
+    {
+        return self::$instance;
+    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

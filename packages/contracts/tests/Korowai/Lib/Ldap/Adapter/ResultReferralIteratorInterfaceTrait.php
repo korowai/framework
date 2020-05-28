@@ -13,13 +13,14 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldap\Adapter;
 
+use Korowai\Tests\PhpIteratorTrait;
+
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
 trait ResultReferralIteratorInterfaceTrait
 {
-  // TODO:
-  // Korowai\Lib\Ldap\Adapter\ResultReferralIteratorInterface
+    use PhpIteratorTrait;
 }
 
 // vim: syntax=php sw=4 ts=4 et:

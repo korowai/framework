@@ -24,6 +24,13 @@ use Korowai\Testing\Contracts\TestCase;
  */
 class LdifDeleteRecordInterfaceTest extends TestCase
 {
+    public static function createDummyInstance()
+    {
+        return new class implements LdifDeleteRecordInterface {
+            use LdifDeleteRecordInterfaceTrait;
+        };
+    }
+
     public static function extendsInterface__cases()
     {
         return [
@@ -42,9 +49,7 @@ class LdifDeleteRecordInterfaceTest extends TestCase
 
     public function test__dummyImplementation()
     {
-        $dummy = new class implements LdifDeleteRecordInterface {
-            use LdifDeleteRecordInterfaceTrait;
-        };
+        $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(LdifDeleteRecordInterface::class, $dummy);
     }
 

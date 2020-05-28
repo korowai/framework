@@ -18,7 +18,7 @@ use Korowai\Lib\Ldif\CursorInterface;
 use Korowai\Lib\Ldif\Location;
 use Korowai\Lib\Ldif\Input;
 
-use Korowai\Testing\Lib\Ldif\TestCase;
+use Korowai\Testing\Ldiflib\TestCase;
 
 
 /**

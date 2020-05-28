@@ -19,7 +19,7 @@ use Korowai\Lib\Ldif\Nodes\AbstractChangeRecord;
 use Korowai\Lib\Ldif\RecordVisitorInterface;
 use Korowai\Lib\Ldif\SnippetInterface;
 
-use Korowai\Testing\Lib\Ldif\TestCase;
+use Korowai\Testing\Ldiflib\TestCase;
 
 
 /**

@@ -1,6 +1,6 @@
 <?php
 /**
- * @file tests/Korowai/Lib/Context/ExecutorInterfaceTrait.php
+ * @file tests/PhpIteratorAggregateTrait.php
  *
  * This file is part of the Korowai package
  *
@@ -11,18 +11,18 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Tests\Lib\Context;
+namespace Korowai\Tests;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-trait ExecutorInterfaceTrait
+trait PhpIteratorAggregateTrait
 {
-    public $invoke = null;
+    public $iterator = null;
 
-    public function __invoke(callable $func)
+    public function getIterator()
     {
-        return $this->invoke;
+        return $this->iterator;
     }
 }
 

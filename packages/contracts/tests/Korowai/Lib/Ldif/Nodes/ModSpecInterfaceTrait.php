@@ -23,14 +23,17 @@ trait ModSpecInterfaceTrait
     use NodeInterfaceTrait;
     use HasAttrValSpecsInterfaceTrait;
 
+    public $modType = null;
+    public $attribute = null;
+
     public function getModType() : string
     {
-        return "";
+        return $this->modType;
     }
 
     public function getAttribute() : string
     {
-        return "";
+        return $this->attribute;
     }
 }
 

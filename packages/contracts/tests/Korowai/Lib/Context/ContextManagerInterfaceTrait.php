@@ -18,8 +18,18 @@ namespace Korowai\Tests\Lib\Context;
  */
 trait ContextManagerInterfaceTrait
 {
-  // TODO:
-  // Korowai\Lib\Context\ContextManagerInterface
+    public $enterContext = null;
+    public $exitContext = null;
+
+    public function enterContext()
+    {
+        return $this->enterContext;
+    }
+
+    public function exitContext(\Throwable $exception = null) : bool
+    {
+        return $this->exitContext;
+    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

@@ -19,7 +19,7 @@ use Korowai\Lib\Ldif\Rules\AbstractRule;
 use Korowai\Lib\Ldif\Rules\DnSpecRule;
 use Korowai\Lib\Ldif\Rules\SepRule;
 use Korowai\Lib\Ldif\Rules\AttrValSpecRule;
-use Korowai\Testing\Lib\Ldif\TestCase;
+use Korowai\Testing\Ldiflib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

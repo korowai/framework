@@ -22,9 +22,43 @@ use Korowai\Testing\Contracts\TestCase;
  */
 class ResultReferenceInterfaceTest extends TestCase
 {
-    public function test__notImplemented()
+    public static function createDummyInstance()
     {
-        $this->markTestIncomplete("test not implemented yet");
+        return new class implements ResultReferenceInterface {
+            use ResultReferenceInterfaceTrait;
+        };
+    }
+
+    public function test__dummyImplementation()
+    {
+        $dummy = $this->createDummyInstance();
+        $this->assertImplementsInterface(ResultReferenceInterface::class, $dummy);
+    }
+
+    public function test__objectPropertyGettersMap()
+    {
+        $expect = [
+            'referrals' => 'getReferrals'
+        ];
+        $this->assertObjectPropertyGetters($expect, ResultReferenceInterface::class);
+    }
+
+    public function test__getReferrals()
+    {
+        $dummy = $this->createDummyInstance();
+
+        $dummy->referrals = [];
+        $this->assertSame($dummy->referrals, $dummy->getReferrals());
+    }
+
+    public function test__getReferrals__withRetTypeError()
+    {
+        $dummy = $this->createDummyInstance();
+        $dummy->referrals = null;
+
+        $this->expectException(\TypeError::class);
+        $this->expectExceptionMessage('array');
+        $dummy->getReferrals();
     }
 }
 

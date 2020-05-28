@@ -18,7 +18,7 @@ use Korowai\Lib\Ldif\ValueInterface;
 use League\Uri\Contracts\UriInterface;
 use League\Uri\Exceptions\SyntaxError;
 use League\Uri\Uri;
-use Korowai\Testing\Lib\Ldif\TestCase;
+use Korowai\Testing\Ldiflib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

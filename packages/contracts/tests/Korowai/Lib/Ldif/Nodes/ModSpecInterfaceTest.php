@@ -24,6 +24,13 @@ use Korowai\Testing\Contracts\TestCase;
  */
 class ModSpecInterfaceTest extends TestCase
 {
+    public static function createDummyInstance()
+    {
+        return new class implements ModSpecInterface {
+            use ModSpecInterfaceTrait;
+        };
+    }
+
     public static function extendsInterface__cases()
     {
         return [
@@ -42,9 +49,7 @@ class ModSpecInterfaceTest extends TestCase
 
     public function test__dummyImplementation()
     {
-        $dummy = new class implements ModSpecInterface {
-            use ModSpecInterfaceTrait;
-        };
+        $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(ModSpecInterface::class, $dummy);
     }
 
@@ -55,6 +60,40 @@ class ModSpecInterfaceTest extends TestCase
             'attribute' => 'getAttribute'
         ];
         $this->assertObjectPropertyGetters($expect, ModSpecInterface::class);
+    }
+
+    public function test__getModType()
+    {
+        $dummy = $this->createDummyInstance();
+        $dummy->modType = '';
+        $this->assertSame($dummy->modType, $dummy->getModType());
+    }
+
+    public function test__getModType__withNull()
+    {
+        $dummy = $this->createDummyInstance();
+        $dummy->modType = null;
+
+        $this->expectException(\TypeError::class);
+        $this->expectExceptionMessage(\string::class);
+        $dummy->getModType();
+    }
+
+    public function test__getAttribute()
+    {
+        $dummy = $this->createDummyInstance();
+        $dummy->attribute = '';
+        $this->assertSame($dummy->attribute, $dummy->getAttribute());
+    }
+
+    public function test__getAttribute__withNull()
+    {
+        $dummy = $this->createDummyInstance();
+        $dummy->attribute = null;
+
+        $this->expectException(\TypeError::class);
+        $this->expectExceptionMessage(\string::class);
+        $dummy->getAttribute();
     }
 }
 

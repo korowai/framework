@@ -23,6 +23,13 @@ use Korowai\Testing\Contracts\TestCase;
  */
 class DnSpecInterfaceTest extends TestCase
 {
+    public static function createDummyInstance()
+    {
+        return new class implements DnSpecInterface {
+            use DnSpecInterfaceTrait;
+        };
+    }
+
     public static function extendsInterface__cases()
     {
         return [
@@ -40,9 +47,7 @@ class DnSpecInterfaceTest extends TestCase
 
     public function test__dummyImplementation()
     {
-        $dummy = new class implements DnSpecInterface {
-            use DnSpecInterfaceTrait;
-        };
+        $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(DnSpecInterface::class, $dummy);
     }
 
@@ -52,6 +57,23 @@ class DnSpecInterfaceTest extends TestCase
             'dn' => 'getDn'
         ];
         $this->assertObjectPropertyGetters($expect, DnSpecInterface::class);
+    }
+
+    public function test__getdn()
+    {
+        $dummy = $this->createDummyInstance();
+        $dummy->dn = '';
+        $this->assertSame($dummy->dn, $dummy->getdn());
+    }
+
+    public function test__getdn__withNull()
+    {
+        $dummy = $this->createDummyInstance();
+        $dummy->dn = null;
+
+        $this->expectException(\TypeError::class);
+        $this->expectExceptionMessage(\string::class);
+        $dummy->getdn();
     }
 }
 

@@ -16,7 +16,7 @@ namespace Korowai\Tests\Lib\Ldif\Traits;
 use Korowai\Lib\Ldif\Traits\HasAttrValSpecs;
 use Korowai\Lib\Ldif\AttrValSpecsInterface;
 
-use Korowai\Testing\Lib\Ldif\TestCase;
+use Korowai\Testing\Ldiflib\TestCase;
 
 
 /**

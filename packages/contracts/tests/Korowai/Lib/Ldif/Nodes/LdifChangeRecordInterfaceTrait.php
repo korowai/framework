@@ -22,14 +22,17 @@ trait LdifChangeRecordInterfaceTrait
 {
     use RecordInterfaceTrait;
 
+    public $changeType = null;
+    public $controls = null;
+
     public function getChangeType() : string
     {
-        return "";
+        return $this->changeType;
     }
 
     public function getControls() : array
     {
-        return [];
+        return $this->controls;
     }
 }
 

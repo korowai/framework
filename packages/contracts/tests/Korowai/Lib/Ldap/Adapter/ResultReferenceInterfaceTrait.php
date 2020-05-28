@@ -18,8 +18,14 @@ namespace Korowai\Tests\Lib\Ldap\Adapter;
  */
 trait ResultReferenceInterfaceTrait
 {
-  // TODO:
-  // Korowai\Lib\Ldap\Adapter\ResultReferenceInterface
+    use ResultRecordInterfaceTrait;
+
+    public $referrals;
+
+    public function getReferrals() : array
+    {
+        return $this->referrals;
+    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

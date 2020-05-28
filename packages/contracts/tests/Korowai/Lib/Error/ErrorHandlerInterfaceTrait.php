@@ -18,8 +18,18 @@ namespace Korowai\Tests\Lib\Error;
  */
 trait ErrorHandlerInterfaceTrait
 {
-  // TODO:
-  // Korowai\Lib\Error\ErrorHandlerInterface
+    public $invoke = null;
+    public $errorTypes = null;
+
+    public function __invoke(int $severity, string $message, string $file, int $line) : bool
+    {
+        return $this->invoke;
+    }
+
+    public function getErrorTypes() : int
+    {
+        return $this->errorTypes;
+    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

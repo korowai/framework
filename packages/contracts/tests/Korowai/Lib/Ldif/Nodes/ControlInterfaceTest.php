@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Ldif\Nodes;
 
 use Korowai\Lib\Ldif\Nodes\ControlInterface;
+use Korowai\Lib\Ldif\Nodes\ValueSpecInterface;
 use Korowai\Lib\Ldif\NodeInterface;
 
 use Korowai\Testing\Contracts\TestCase;
@@ -23,6 +24,13 @@ use Korowai\Testing\Contracts\TestCase;
  */
 class ControlInterfaceTest extends TestCase
 {
+    public static function createDummyInstance()
+    {
+        return new class implements ControlInterface {
+            use ControlInterfaceTrait;
+        };
+    }
+
     public static function extendsInterface__cases()
     {
         return [
@@ -40,9 +48,7 @@ class ControlInterfaceTest extends TestCase
 
     public function test__dummyImplementation()
     {
-        $dummy = new class implements ControlInterface {
-            use ControlInterfaceTrait;
-        };
+        $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(ControlInterface::class, $dummy);
     }
 
@@ -54,6 +60,60 @@ class ControlInterfaceTest extends TestCase
             'valueSpec'     => 'getValueSpec'
         ];
         $this->assertObjectPropertyGetters($expect, ControlInterface::class);
+    }
+
+    public function test__getOid()
+    {
+        $dummy = $this->createDummyInstance();
+        $dummy->oid = '';
+        $this->assertSame($dummy->oid, $dummy->getOid());
+    }
+
+    public function test__getOid__withNull()
+    {
+        $dummy = $this->createDummyInstance();
+        $dummy->oid = null;
+
+        $this->expectException(\TypeError::class);
+        $this->expectExceptionMessage(\string::class);
+        $dummy->getOid();
+    }
+
+    public function test__getCriticality()
+    {
+        $dummy = $this->createDummyInstance();
+        $dummy->criticality = false;
+        $this->assertSame($dummy->criticality, $dummy->getCriticality());
+
+        $dummy->criticality = null;
+        $this->assertSame($dummy->criticality, $dummy->getCriticality());
+    }
+
+    public function test__getCriticality__withTypeError()
+    {
+        $dummy = $this->createDummyInstance();
+        $dummy->criticality = '';
+
+        $this->expectException(\TypeError::class);
+        $this->expectExceptionMessage(\bool::class.' or null');
+        $dummy->getCriticality();
+    }
+
+    public function test__getValueSpec()
+    {
+        $dummy = $this->createDummyInstance();
+        $dummy->valueSpec = $this->createStub(ValueSpecInterface::class);
+        $this->assertSame($dummy->valueSpec, $dummy->getValueSpec());
+    }
+
+    public function test__getValueSpec__withTypeError()
+    {
+        $dummy = $this->createDummyInstance();
+        $dummy->valueSpec = '';
+
+        $this->expectException(\TypeError::class);
+        $this->expectExceptionMessage(ValueSpecInterface::class);
+        $dummy->getValueSpec();
     }
 }
 

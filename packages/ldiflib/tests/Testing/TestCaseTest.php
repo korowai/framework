@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Korowai\Tests\Testing\Lib\Ldif;
 
 use Korowai\Testing\TestCase as BaseTestCase;
-use Korowai\Testing\Lib\Ldif\TestCase;
-use Korowai\Testing\Lib\Ldif\Traits\ParserTestHelpers;
+use Korowai\Testing\Ldiflib\TestCase;
+use Korowai\Testing\Ldiflib\Traits\ParserTestHelpers;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -37,7 +37,7 @@ class TestCaseTest extends TestCase
         $expected = array_merge_recursive(
             \Korowai\Testing\Contracts\ObjectPropertyGettersMap::getObjectPropertyGettersMap(),
             \Korowai\Testing\Rfclib\ObjectPropertyGettersMap::getObjectPropertyGettersMap(),
-            \Korowai\Testing\Lib\Ldif\ObjectPropertyGettersMap::getObjectPropertyGettersMap()
+            \Korowai\Testing\Ldiflib\ObjectPropertyGettersMap::getObjectPropertyGettersMap()
         );
         $this->assertSame($expected, parent::objectPropertyGettersMap());
     }

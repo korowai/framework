@@ -23,16 +23,17 @@ trait AttrValSpecInterfaceTrait
 {
     use NodeInterfaceTrait;
 
+    public $attribute = null;
+    public $valueSpec = null;
+
     public function getAttribute() : string
     {
-        return "";
+        return $this->attribute;
     }
 
     public function getValueSpec() : ValueSpecInterface
     {
-        return new class implements ValueSpecInterface {
-            use ValueSpecInterfaceTrait;
-        };
+        return $this->valueSpec;
     }
 }
 

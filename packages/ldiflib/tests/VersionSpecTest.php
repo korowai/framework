@@ -17,7 +17,7 @@ use Korowai\Lib\Ldif\VersionSpec;
 use Korowai\Lib\Ldif\VersionSpecInterface;
 use Korowai\Lib\Ldif\SnippetInterface;
 
-use Korowai\Testing\Lib\Ldif\TestCase;
+use Korowai\Testing\Ldiflib\TestCase;
 
 
 /**

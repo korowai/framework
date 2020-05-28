@@ -23,6 +23,13 @@ use Korowai\Testing\Contracts\TestCase;
  */
 class VersionSpecInterfaceTest extends TestCase
 {
+    public static function createDummyInstance()
+    {
+        return new class implements VersionSpecInterface {
+            use VersionSpecInterfaceTrait;
+        };
+    }
+
     public static function extendsInterface__cases()
     {
         return [
@@ -40,9 +47,7 @@ class VersionSpecInterfaceTest extends TestCase
 
     public function test__dummyImplementation()
     {
-        $dummy = new class implements VersionSpecInterface {
-            use VersionSpecInterfaceTrait;
-        };
+        $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(VersionSpecInterface::class, $dummy);
     }
 
@@ -52,6 +57,23 @@ class VersionSpecInterfaceTest extends TestCase
             'version'   => 'getVersion'
         ];
         $this->assertObjectPropertyGetters($expect, VersionSpecInterface::class);
+    }
+
+    public function test__getVersion()
+    {
+        $dummy = $this->createDummyInstance();
+        $dummy->version = 0;
+        $this->assertSame($dummy->version, $dummy->getVersion());
+    }
+
+    public function test__getVersion__withNull()
+    {
+        $dummy = $this->createDummyInstance();
+        $dummy->version = null;
+
+        $this->expectException(\TypeError::class);
+        $this->expectExceptionMessage(\int::class);
+        $dummy->getVersion();
     }
 }
 

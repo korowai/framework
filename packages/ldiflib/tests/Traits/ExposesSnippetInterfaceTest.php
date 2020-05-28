@@ -17,7 +17,7 @@ use Korowai\Lib\Ldif\Traits\ExposesSnippetInterface;
 use Korowai\Lib\Ldif\Traits\ExposesLocationInterface;
 use Korowai\Lib\Ldif\SnippetInterface;
 
-use Korowai\Testing\Lib\Ldif\TestCase;
+use Korowai\Testing\Ldiflib\TestCase;
 
 
 /**

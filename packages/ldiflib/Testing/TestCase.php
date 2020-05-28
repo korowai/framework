@@ -11,9 +11,9 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Testing\Lib\Ldif;
+namespace Korowai\Testing\Ldiflib;
 
-use Korowai\Testing\Lib\Ldif\Traits\ParserTestHelpers;
+use Korowai\Testing\Ldiflib\Traits\ParserTestHelpers;
 
 /**
  * Abstract base class for korowai/ldiflib unit tests.
@@ -33,7 +33,7 @@ abstract class TestCase extends \Korowai\Testing\TestCase
             parent::objectPropertyGettersMap(),
             \Korowai\Testing\Contracts\ObjectPropertyGettersMap::getObjectPropertyGettersMap(),
             \Korowai\Testing\Rfclib\ObjectPropertyGettersMap::getObjectPropertyGettersMap(),
-            \Korowai\Testing\Lib\Ldif\ObjectPropertyGettersMap::getObjectPropertyGettersMap()
+            \Korowai\Testing\Ldiflib\ObjectPropertyGettersMap::getObjectPropertyGettersMap()
         );
     }
 }

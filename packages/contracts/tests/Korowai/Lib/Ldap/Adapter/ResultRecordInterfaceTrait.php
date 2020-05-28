@@ -18,8 +18,12 @@ namespace Korowai\Tests\Lib\Ldap\Adapter;
  */
 trait ResultRecordInterfaceTrait
 {
-  // TODO:
-  // Korowai\Lib\Ldap\Adapter\ResultRecordInterface
+    public $dn;
+
+    public function getDn() : string
+    {
+        return $this->dn;
+    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

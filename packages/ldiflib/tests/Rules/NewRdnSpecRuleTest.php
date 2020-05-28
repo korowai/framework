@@ -18,7 +18,7 @@ use Korowai\Lib\Ldif\Rules\AbstractRdnSpecRule;
 use Korowai\Lib\Ldif\Rules\Util;
 use Korowai\Lib\Rfc\Rfc2849;
 
-use Korowai\Testing\Lib\Ldif\TestCase;
+use Korowai\Testing\Ldiflib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

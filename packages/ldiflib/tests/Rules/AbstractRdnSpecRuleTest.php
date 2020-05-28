@@ -15,7 +15,7 @@ namespace Korowai\Tests\Lib\Ldif\Rules;
 
 use Korowai\Lib\Ldif\Rules\AbstractRdnSpecRule;
 use Korowai\Lib\Ldif\Rules\AbstractNameSpecRule;
-use Korowai\Testing\Lib\Ldif\TestCase;
+use Korowai\Testing\Ldiflib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

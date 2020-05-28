@@ -16,7 +16,7 @@ namespace Korowai\Tests\Lib\Ldif;
 use Korowai\Lib\Ldif\AttrVal;
 use Korowai\Lib\Ldif\AttrValInterface;
 use Korowai\Lib\Ldif\ValueInterface;
-use Korowai\Testing\Lib\Ldif\TestCase;
+use Korowai\Testing\Ldiflib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

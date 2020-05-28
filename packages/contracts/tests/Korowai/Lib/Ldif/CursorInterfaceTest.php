@@ -23,6 +23,13 @@ use Korowai\Testing\Contracts\TestCase;
  */
 class CursorInterfaceTest extends TestCase
 {
+    public static function createDummyInstance()
+    {
+        return new class implements CursorInterface {
+            use CursorInterfaceTrait;
+        };
+    }
+
     public static function extendsInterface__cases()
     {
         return [
@@ -40,9 +47,7 @@ class CursorInterfaceTest extends TestCase
 
     public function test__dummyImplementation()
     {
-        $dummy = new class implements CursorInterface {
-            use CursorInterfaceTrait;
-        };
+        $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(CursorInterface::class, $dummy);
     }
 

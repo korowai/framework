@@ -23,6 +23,13 @@ use Korowai\Testing\Contracts\TestCase;
  */
 class LdifChangeRecordInterfaceTest extends TestCase
 {
+    public static function createDummyInstance()
+    {
+        return new class implements LdifChangeRecordInterface {
+            use LdifChangeRecordInterfaceTrait;
+        };
+    }
+
     public static function extendsInterface__cases()
     {
         return [
@@ -40,9 +47,7 @@ class LdifChangeRecordInterfaceTest extends TestCase
 
     public function test__dummyImplementation()
     {
-        $dummy = new class implements LdifChangeRecordInterface {
-            use LdifChangeRecordInterfaceTrait;
-        };
+        $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(LdifChangeRecordInterface::class, $dummy);
     }
 
@@ -53,6 +58,40 @@ class LdifChangeRecordInterfaceTest extends TestCase
             'controls'      => 'getControls',
         ];
         $this->assertObjectPropertyGetters($expect, LdifChangeRecordInterface::class);
+    }
+
+    public function test__getChangeType()
+    {
+        $dummy = $this->createDummyInstance();
+        $dummy->changeType = '';
+        $this->assertSame($dummy->changeType, $dummy->getChangeType());
+    }
+
+    public function test__getChangeType__withNull()
+    {
+        $dummy = $this->createDummyInstance();
+        $dummy->changeType = null;
+
+        $this->expectException(\TypeError::class);
+        $this->expectExceptionMessage(\string::class);
+        $dummy->getChangeType();
+    }
+
+    public function test__getControls()
+    {
+        $dummy = $this->createDummyInstance();
+        $dummy->controls = [];
+        $this->assertSame($dummy->controls, $dummy->getControls());
+    }
+
+    public function test__getControls__withNull()
+    {
+        $dummy = $this->createDummyInstance();
+        $dummy->controls = null;
+
+        $this->expectException(\TypeError::class);
+        $this->expectExceptionMessage('array');
+        $dummy->getControls();
     }
 }
 

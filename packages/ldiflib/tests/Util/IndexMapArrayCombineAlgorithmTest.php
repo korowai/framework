@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldif;
 
-use Korowai\Testing\Lib\Ldif\TestCase;
+use Korowai\Testing\Ldiflib\TestCase;
 use Korowai\Lib\Ldif\Util\IndexMapArrayCombineAlgorithm as Algorithm;
 
 /**

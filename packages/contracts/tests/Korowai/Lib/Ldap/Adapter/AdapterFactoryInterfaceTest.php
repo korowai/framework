@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Ldap\Adapter;
 
 use Korowai\Lib\Ldap\Adapter\AdapterFactoryInterface;
+use Korowai\Lib\Ldap\Adapter\AdapterInterface;
 
 use Korowai\Testing\Contracts\TestCase;
 
@@ -22,9 +23,65 @@ use Korowai\Testing\Contracts\TestCase;
  */
 class AdapterFactoryInterfaceTest extends TestCase
 {
-    public function test__notImplemented()
+    public static function createDummyInstance()
     {
-        $this->markTestIncomplete("test not implemented yet");
+        return new class implements AdapterFactoryInterface {
+            use AdapterFactoryInterfaceTrait;
+        };
+    }
+
+    public function test__dummyImplementation()
+    {
+        $dummy = $this->createDummyInstance();
+        $this->assertImplementsInterface(AdapterFactoryInterface::class, $dummy);
+    }
+
+    public function test__objectPropertyGettersMap()
+    {
+        $expect = [];
+        $this->assertObjectPropertyGetters($expect, AdapterFactoryInterface::class);
+    }
+
+    public function test__configure()
+    {
+        $dummy = $this->createDummyInstance();
+
+        $dummy->configure = '';
+        $this->assertSame($dummy->configure, $dummy->configure([]));
+
+        $dummy->configure = 0;
+        $this->assertSame($dummy->configure, $dummy->configure([]));
+
+        $dummy->configure = null;
+        $this->assertSame($dummy->configure, $dummy->configure([]));
+    }
+
+    public function test__configure__withArgTypeError()
+    {
+        $dummy = $this->createDummyInstance();
+        $dummy->configure = '';
+
+        $this->expectException(\TypeError::class);
+        $this->expectExceptionMessage('array');
+        $dummy->configure(null);
+    }
+
+    public function test__createAdapter()
+    {
+        $dummy = $this->createDummyInstance();
+
+        $dummy->createAdapter = $this->createStub(AdapterInterface::class);
+        $this->assertSame($dummy->createAdapter, $dummy->createAdapter(''));
+    }
+
+    public function test__createAdapter__withTypeError()
+    {
+        $dummy = $this->createDummyInstance();
+        $dummy->createAdapter = null;
+
+        $this->expectException(\TypeError::class);
+        $this->expectExceptionMessage(AdapterInterface::class);
+        $dummy->createAdapter();
     }
 }
 

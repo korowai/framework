@@ -17,7 +17,7 @@ use Korowai\Lib\Ldif\Parser;
 use Korowai\Lib\Ldif\ParserInterface;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 
-use Korowai\Testing\Lib\Ldif\TestCase;
+use Korowai\Testing\Ldiflib\TestCase;
 
 
 /**

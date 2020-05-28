@@ -18,7 +18,7 @@ use Korowai\Lib\Ldif\Rules\AbstractRule;
 use Korowai\Lib\Ldif\RuleInterface;
 use Korowai\Lib\Ldif\ParserStateInterface;
 use Korowai\Testing\Rfclib\RuleSet1;
-use Korowai\Testing\Lib\Ldif\TestCase;
+use Korowai\Testing\Ldiflib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Ldif\Nodes;
 
 use Korowai\Lib\Ldif\Nodes\AttrValSpecInterface;
+use Korowai\Lib\Ldif\Nodes\ValueSpecInterface;
 use Korowai\Lib\Ldif\NodeInterface;
 
 use Korowai\Testing\Contracts\TestCase;
@@ -23,6 +24,13 @@ use Korowai\Testing\Contracts\TestCase;
  */
 class AttrValSpecInterfaceTest extends TestCase
 {
+    public static function createDummyInstance()
+    {
+        return new class implements AttrValSpecInterface {
+            use AttrValSpecInterfaceTrait;
+        };
+    }
+
     public static function extendsInterface__cases()
     {
         return [
@@ -40,9 +48,7 @@ class AttrValSpecInterfaceTest extends TestCase
 
     public function test__dummyImplementation()
     {
-        $dummy = new class implements AttrValSpecInterface {
-            use AttrValSpecInterfaceTrait;
-        };
+        $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(AttrValSpecInterface::class, $dummy);
     }
 
@@ -53,6 +59,40 @@ class AttrValSpecInterfaceTest extends TestCase
             'valueSpec' => 'getValueSpec'
         ];
         $this->assertObjectPropertyGetters($expect, AttrValSpecInterface::class);
+    }
+
+    public function test__getAttribute()
+    {
+        $dummy = $this->createDummyInstance();
+        $dummy->attribute = '';
+        $this->assertSame($dummy->attribute, $dummy->getAttribute());
+    }
+
+    public function test__getAttribute__withNull()
+    {
+        $dummy = $this->createDummyInstance();
+        $dummy->attribute = null;
+
+        $this->expectException(\TypeError::class);
+        $this->expectExceptionMessage(\string::class);
+        $dummy->getAttribute();
+    }
+
+    public function test__getValueSpec()
+    {
+        $dummy = $this->createDummyInstance();
+        $dummy->valueSpec = $this->createStub(ValueSpecInterface::class);
+        $this->assertSame($dummy->valueSpec, $dummy->getValueSpec());
+    }
+
+    public function test__getValueSpec__withNull()
+    {
+        $dummy = $this->createDummyInstance();
+        $dummy->valueSpec = null;
+
+        $this->expectException(\TypeError::class);
+        $this->expectExceptionMessage(ValueSpecInterface::class);
+        $dummy->getValueSpec();
     }
 }
 

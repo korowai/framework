@@ -29,7 +29,7 @@ interface CompareQueryInterface
      * Returns the result of last execution of the query, calls execute() if
      * necessary.
      *
-     * @return ResultInterface
+     * @return bool
      */
     public function getResult() : bool;
 }

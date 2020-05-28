@@ -29,6 +29,12 @@ class ObjectPropertyGettersMap
     protected static $contractsObjectPropertyGettersMap = [
         \Iterator::class => [
             'current'                   => 'current',
+            'key'                       => 'key',
+            'valid'                     => 'valid',
+        ],
+
+        \IteratorAggregate::class => [
+            'iterator'                  => 'getIterator',
         ],
 
         \Korowai\Lib\Basic\SingletonInterface::class => [
@@ -322,7 +328,7 @@ class ObjectPropertyGettersMap
 
         \Korowai\Lib\Rfc\RuleInterface::class => [
             'toString'                  => '__toString',
-            'regex'                     => 'regexp',
+            'regexp'                    => 'regexp',
             'captures'                  => 'captures',
             'errorCaptures'             => 'errorCaptures',
             'valueCaptures'             => 'valueCaptures',

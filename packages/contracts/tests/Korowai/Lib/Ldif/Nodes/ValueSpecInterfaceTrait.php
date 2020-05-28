@@ -22,19 +22,23 @@ trait ValueSpecInterfaceTrait
 {
     use NodeInterfaceTrait;
 
+    public $type = null;
+    public $spec = null;
+    public $content = null;
+
     public function getType() : int
     {
-        return 0;
+        return $this->type;;
     }
 
     public function getSpec()
     {
-        return null;
+        return $this->spec;
     }
 
     public function getContent() : string
     {
-        return "";
+        return $this->content;
     }
 }
 

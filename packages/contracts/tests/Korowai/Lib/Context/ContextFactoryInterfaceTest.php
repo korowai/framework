@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Context;
 
 use Korowai\Lib\Context\ContextFactoryInterface;
+use Korowai\Lib\Context\ContextManagerInterface;
 
 use Korowai\Testing\Contracts\TestCase;
 
@@ -22,9 +23,44 @@ use Korowai\Testing\Contracts\TestCase;
  */
 class ContextFactoryInterfaceTest extends TestCase
 {
-    public function test__notImplemented()
+    public static function createDummyInstance()
     {
-        $this->markTestIncomplete("test not implemented yet");
+        return new class implements ContextFactoryInterface {
+            use ContextFactoryInterfaceTrait;
+        };
+    }
+
+    public function test__dummyImplementation()
+    {
+        $dummy = $this->createDummyInstance();
+        $this->assertImplementsInterface(ContextFactoryInterface::class, $dummy);
+    }
+
+    public function test__objectPropertyGettersMap()
+    {
+        $expect = [];
+        $this->assertObjectPropertyGetters($expect, ContextFactoryInterface::class);
+    }
+
+    public function test__getContextManager()
+    {
+        $dummy = $this->createDummyInstance();
+
+        $dummy->contextManager = $this->createStub(ContextManagerInterface::class);
+        $this->assertSame($dummy->contextManager, $dummy->getContextManager(''));
+
+        $dummy->contextManager = null;
+        $this->assertSame($dummy->contextManager, $dummy->getContextManager(''));
+    }
+
+    public function test__getContextManager__withTypeError()
+    {
+        $dummy = $this->createDummyInstance();
+        $dummy->contextManager = '';
+
+        $this->expectException(\TypeError::class);
+        $this->expectExceptionMessage(ContextManagerInterface::class.' or be null');
+        $dummy->getContextManager('');
     }
 }
 

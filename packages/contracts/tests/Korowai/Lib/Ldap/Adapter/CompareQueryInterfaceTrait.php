@@ -18,8 +18,18 @@ namespace Korowai\Tests\Lib\Ldap\Adapter;
  */
 trait CompareQueryInterfaceTrait
 {
-  // TODO:
-  // Korowai\Lib\Ldap\Adapter\CompareQueryInterface
+    public $execute = null;
+    public $result = null;
+
+    public function execute() : bool
+    {
+        return $this->execute;
+    }
+
+    public function getResult() : bool
+    {
+        return $this->result;
+    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

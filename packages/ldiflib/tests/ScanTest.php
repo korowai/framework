@@ -16,7 +16,7 @@ namespace Korowai\Tests\Lib\Ldif;
 use Korowai\Lib\Ldif\Scan;
 use Korowai\Lib\Ldif\CursorInterface;
 use Korowai\Lib\Ldif\LocationInterface;
-use Korowai\Testing\Lib\Ldif\TestCase;
+use Korowai\Testing\Ldiflib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

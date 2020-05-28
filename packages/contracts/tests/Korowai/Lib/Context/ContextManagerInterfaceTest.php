@@ -22,9 +22,60 @@ use Korowai\Testing\Contracts\TestCase;
  */
 class ContextManagerInterfaceTest extends TestCase
 {
-    public function test__notImplemented()
+    public static function createDummyInstance()
     {
-        $this->markTestIncomplete("test not implemented yet");
+        return new class implements ContextManagerInterface {
+            use ContextManagerInterfaceTrait;
+        };
+    }
+
+    public function test__dummyImplementation()
+    {
+        $dummy = $this->createDummyInstance();
+        $this->assertImplementsInterface(ContextManagerInterface::class, $dummy);
+    }
+
+    public function test__objectPropertyGettersMap()
+    {
+        $expect = [];
+        $this->assertObjectPropertyGetters($expect, ContextManagerInterface::class);
+    }
+
+    public function test__enterContext()
+    {
+        $dummy = $this->createDummyInstance();
+
+        $dummy->enterContext = '';
+        $this->assertSame($dummy->enterContext, $dummy->enterContext());
+    }
+
+    public function test__exitContext()
+    {
+        $dummy = $this->createDummyInstance();
+
+        $dummy->exitContext = false;
+        $this->assertSame($dummy->exitContext, $dummy->exitContext(new \Exception));
+        $this->assertSame($dummy->exitContext, $dummy->exitContext(null));
+        $this->assertSame($dummy->exitContext, $dummy->exitContext());
+    }
+
+    public function test__exitContext__withArgTypeError()
+    {
+        $dummy = $this->createDummyInstance();
+
+        $this->expectException(\TypeError::class);
+        $this->expectExceptionMessage(\Throwable::class.' or be null');
+        $dummy->exitContext('');
+    }
+
+    public function test__exitContext__withRetTypeError()
+    {
+        $dummy = $this->createDummyInstance();
+        $dummy->exitContext = '';
+
+        $this->expectException(\TypeError::class);
+        $this->expectExceptionMessage(\bool::class);
+        $dummy->exitContext(new \Exception);
     }
 }
 

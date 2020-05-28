@@ -44,7 +44,7 @@ interface ContextManagerInterface
      *                              ``null``.
      * @return bool
      */
-    public function exitContext(?\Throwable $exception = null) : bool;
+    public function exitContext(\Throwable $exception = null) : bool;
 }
 
 // vim: syntax=php sw=4 ts=4 et:

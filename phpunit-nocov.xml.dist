@@ -23,8 +23,8 @@
         <whitelist>
             <directory>./packages/</directory>
             <exclude>
-                <directory>./packages/*/tests</directory>
-                <directory>./packages/*/tests-nocov</directory>
+                <directory suffix="Test.php">./packages/*/tests</directory>
+                <directory suffix="Test.php">./packages/*/tests-nocov</directory>
                 <directory>./packages/*/Behat</directory>
                 <directory>./packages/*/Resources</directory>
                 <directory>./packages/*/vendor</directory>

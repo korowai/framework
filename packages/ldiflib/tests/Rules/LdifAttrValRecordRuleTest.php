@@ -22,7 +22,7 @@ use Korowai\Lib\Ldif\Rules\SepRule;
 use Korowai\Lib\Ldif\Rules\AttrValSpecRule;
 use Korowai\Lib\Ldif\Nodes\AttrValRecordInterface;
 use Korowai\Lib\Ldif\Exception\InvalidRuleClassException;
-use Korowai\Testing\Lib\Ldif\TestCase;
+use Korowai\Testing\Ldiflib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

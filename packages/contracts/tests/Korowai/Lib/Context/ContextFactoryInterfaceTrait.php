@@ -13,13 +13,19 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Context;
 
+use Korowai\Lib\Context\ContextManagerInterface;
+
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
 trait ContextFactoryInterfaceTrait
 {
-  // TODO:
-  // Korowai\Lib\Context\ContextFactoryInterface
+    public $contextManager = null;
+
+    public function getContextManager($arg) : ?ContextManagerInterface
+    {
+        return $this->contextManager;
+    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

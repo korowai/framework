@@ -22,9 +22,32 @@ use Korowai\Testing\Contracts\TestCase;
  */
 class SingletonInterfaceTest extends TestCase
 {
-    public function test__notImplemented()
+    public static function createDummyClass()
     {
-        $this->markTestIncomplete("test not implemented yet");
+        return get_class(new class implements SingletonInterface {
+            use SingletonInterfaceTrait;
+        });
+    }
+
+    public function test__dummyImplementation()
+    {
+        $dummy = $this->createDummyClass();
+        $this->assertImplementsInterface(SingletonInterface::class, $dummy);
+    }
+
+    public function test__objectPropertyGettersMap()
+    {
+        $expect = [
+            'instance' => 'getInstance'
+        ];
+        $this->assertObjectPropertyGetters($expect, SingletonInterface::class);
+    }
+
+    public function test__getInstance()
+    {
+        $dummy = $this->createDummyClass();
+        $dummy::$instance = 'instance';
+        $this->assertSame($dummy::$instance, $dummy::getInstance());
     }
 }
 

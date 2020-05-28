@@ -22,9 +22,23 @@ use Korowai\Testing\Contracts\TestCase;
  */
 class ResultReferralIteratorInterfaceTest extends TestCase
 {
-    public function test__notImplemented()
+    public static function createDummyInstance()
     {
-        $this->markTestIncomplete("test not implemented yet");
+        return new class implements ResultReferralIteratorInterface {
+            use ResultReferralIteratorInterfaceTrait;
+        };
+    }
+
+    public function test__dummyImplementation()
+    {
+        $dummy = $this->createDummyInstance();
+        $this->assertImplementsInterface(ResultReferralIteratorInterface::class, $dummy);
+    }
+
+    public function test__objectPropertyGettersMap()
+    {
+        $expect = [];
+        $this->assertObjectPropertyGetters($expect, ResultReferralIteratorInterface::class);
     }
 }
 

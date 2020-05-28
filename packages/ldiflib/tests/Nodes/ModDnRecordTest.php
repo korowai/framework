@@ -20,7 +20,7 @@ use Korowai\Lib\Ldif\RecordVisitorInterface;
 use Korowai\Lib\Ldif\SnippetInterface;
 use Korowai\Lib\Ldif\Exception\InvalidChangeTypeException;
 
-use Korowai\Testing\Lib\Ldif\TestCase;
+use Korowai\Testing\Ldiflib\TestCase;
 
 
 /**

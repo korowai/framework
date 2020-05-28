@@ -18,7 +18,7 @@ use Korowai\Lib\Ldif\ModSpecInterface;
 use Korowai\Lib\Ldif\Traits\HasAttrValSpecs;
 use Korowai\Lib\Ldif\Exception\InvalidModTypeException;
 
-use Korowai\Testing\Lib\Ldif\TestCase;
+use Korowai\Testing\Ldiflib\TestCase;
 
 
 /**

@@ -25,6 +25,13 @@ use Korowai\Testing\Contracts\TestCase;
  */
 class LdifAddRecordInterfaceTest extends TestCase
 {
+    public static function createDummyInstance()
+    {
+        return new class implements LdifAddRecordInterface {
+            use LdifAddRecordInterfaceTrait;
+        };
+    }
+
     public static function extendsInterface__cases()
     {
         return [
@@ -44,9 +51,7 @@ class LdifAddRecordInterfaceTest extends TestCase
 
     public function test__dummyImplementation()
     {
-        $dummy = new class implements LdifAddRecordInterface {
-            use LdifAddRecordInterfaceTrait;
-        };
+        $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(LdifAddRecordInterface::class, $dummy);
     }
 

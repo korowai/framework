@@ -16,7 +16,7 @@ namespace Korowai\Tests\Lib\Ldif\Rules;
 use Korowai\Lib\Ldif\Rules\Util;
 use Korowai\Lib\Ldif\ParserStateInterface;
 use Korowai\Lib\Ldif\RuleInterface;
-use Korowai\Testing\Lib\Ldif\TestCase;
+use Korowai\Testing\Ldiflib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

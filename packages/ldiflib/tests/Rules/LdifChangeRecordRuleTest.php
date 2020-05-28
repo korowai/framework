@@ -29,7 +29,7 @@ use Korowai\Lib\Ldif\Nodes\DeleteRecordInterface;
 use Korowai\Lib\Ldif\Nodes\ModDnRecordInterface;
 use Korowai\Lib\Ldif\Nodes\ModifyRecordInterface;
 use Korowai\Lib\Ldif\Exception\InvalidRuleClassException;
-use Korowai\Testing\Lib\Ldif\TestCase;
+use Korowai\Testing\Ldiflib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

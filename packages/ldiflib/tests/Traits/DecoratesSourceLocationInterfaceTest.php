@@ -17,7 +17,7 @@ use Korowai\Lib\Ldif\Traits\DecoratesSourceLocationInterface;
 use Korowai\Lib\Ldif\Traits\ExposesSourceLocationInterface;
 use Korowai\Lib\Ldif\SourceLocationInterface;
 
-use Korowai\Testing\Lib\Ldif\TestCase;
+use Korowai\Testing\Ldiflib\TestCase;
 
 
 /**

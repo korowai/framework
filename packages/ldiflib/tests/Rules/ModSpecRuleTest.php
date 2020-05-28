@@ -20,7 +20,7 @@ use Korowai\Lib\Ldif\Rules\ModSpecInitRule;
 use Korowai\Lib\Ldif\Rules\AttrValSpecRule;
 use Korowai\Lib\Ldif\ModSpecInterface;
 use Korowai\Lib\Ldif\ValueInterface;
-use Korowai\Testing\Lib\Ldif\TestCase;
+use Korowai\Testing\Ldiflib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

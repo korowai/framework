@@ -23,19 +23,23 @@ trait LdifModDnRecordInterfaceTrait
     use LdifChangeRecordInterfaceTrait;
     use NodeInterfaceTrait;
 
+    public $newRdn = null;
+    public $deleteOldRdn = null;
+    public $newSuperior = null;
+
     public function getNewRdn() : string
     {
-        return "";
+        return $this->newRdn;
     }
 
     public function getDeleteOldRdn() : bool
     {
-        return false;
+        return $this->deleteOldRdn;
     }
 
     public function getNewSuperior() : ?string
     {
-        return null;
+        return $this->newSuperior;
     }
 }
 

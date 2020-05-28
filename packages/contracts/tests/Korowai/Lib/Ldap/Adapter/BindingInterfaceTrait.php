@@ -18,8 +18,24 @@ namespace Korowai\Tests\Lib\Ldap\Adapter;
  */
 trait BindingInterfaceTrait
 {
-  // TODO:
-  // Korowai\Lib\Ldap\Adapter\BindingInterface
+    public $isBound = null;
+    public $bind = null;
+    public $unbind = null;
+
+    public function isBound() : bool
+    {
+        return $this->isBound;
+    }
+
+    public function bind(string $dn = null, string $password = null)
+    {
+        return $this->bind;
+    }
+
+    public function unbind()
+    {
+        return $this->unbind;
+    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

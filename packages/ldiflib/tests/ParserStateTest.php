@@ -21,7 +21,7 @@ use Korowai\Lib\Ldif\LocationInterface;
 use Korowai\Lib\Ldif\ParserError;
 use Korowai\Lib\Ldif\VersionSpecInterface;
 
-use Korowai\Testing\Lib\Ldif\TestCase;
+use Korowai\Testing\Ldiflib\TestCase;
 
 
 /**

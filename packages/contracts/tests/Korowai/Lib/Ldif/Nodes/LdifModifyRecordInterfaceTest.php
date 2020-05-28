@@ -24,6 +24,13 @@ use Korowai\Testing\Contracts\TestCase;
  */
 class LdifModifyRecordInterfaceTest extends TestCase
 {
+    public static function createDummyInstance()
+    {
+        return new class implements LdifModifyRecordInterface {
+            use LdifModifyRecordInterfaceTrait;
+        };
+    }
+
     public static function extendsInterface__cases()
     {
         return [
@@ -42,9 +49,7 @@ class LdifModifyRecordInterfaceTest extends TestCase
 
     public function test__dummyImplementation()
     {
-        $dummy = new class implements LdifModifyRecordInterface {
-            use LdifModifyRecordInterfaceTrait;
-        };
+        $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(LdifModifyRecordInterface::class, $dummy);
     }
 
@@ -54,6 +59,23 @@ class LdifModifyRecordInterfaceTest extends TestCase
             'modSpecs'      => 'getModSpecs'
         ];
         $this->assertObjectPropertyGetters($expect, LdifModifyRecordInterface::class);
+    }
+
+    public function test__getModSpecs()
+    {
+        $dummy = $this->createDummyInstance();
+        $dummy->modSpecs = [];
+        $this->assertSame($dummy->modSpecs, $dummy->getModSpecs());
+    }
+
+    public function test__getModSpecs__withNull()
+    {
+        $dummy = $this->createDummyInstance();
+        $dummy->modSpecs = null;
+
+        $this->expectException(\TypeError::class);
+        $this->expectExceptionMessage('array');
+        $dummy->getModSpecs();
     }
 }
 

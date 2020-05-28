@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Control.php
+ * @file src/Nodes/Control.php
  *
  * This file is part of the Korowai package
  *

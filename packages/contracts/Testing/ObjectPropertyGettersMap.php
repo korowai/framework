@@ -1,6 +1,6 @@
 <?php
 /**
- * @file Testing/Contracts/ObjectPropertyGettersMap.php
+ * @file Testing/ObjectPropertyGettersMap.php
  *
  * This file is part of the Korowai package
  *

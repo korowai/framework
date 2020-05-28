@@ -1,6 +1,6 @@
 <?php
 /**
- * @file src/Korowai/Lib/Ldif/Nodes/AttrValSpecsInterface.php
+ * @file src/Korowai/Lib/Ldif/Nodes/HasAttrValSpecsInterface.php
  *
  * This file is part of the Korowai package
  *

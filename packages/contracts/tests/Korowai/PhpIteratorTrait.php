@@ -1,11 +1,11 @@
 <?php
 /**
- * @file tests/PhpIteratorTrait.php
+ * @file tests/Korowai/PhpIteratorTrait.php
  *
  * This file is part of the Korowai package
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @package korowai/ldiflib
+ * @package korowai/contracts
  * @license Distributed under MIT license.
  */
 

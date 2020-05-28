@@ -1,11 +1,11 @@
 <?php
 /**
- * @file tests/Korowai/Lib/Ldif/AttrValSpecsInterfaceTest.php
+ * @file tests/Korowai/Lib/Ldif/Nodes/HasAttrValSpecsInterfaceTest.php
  *
  * This file is part of the Korowai package
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @package korowai/ldiflib
+ * @package korowai/contracts
  * @license Distributed under MIT license.
  */
 

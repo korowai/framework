@@ -275,6 +275,99 @@ class ClassAssertionsTest extends TestCase
         self::assertFalse(self::usesTrait(ExampleTrait::class)->matches('lorem ipsum'));
         self::assertFalse(self::usesTrait(ExampleTrait::class)->matches(123));
     }
+
+    public function assertDeclaresMethod__cases()
+    {
+        return [
+            "('test__assertDeclaresMethod', self::class)" => [
+                ['test__assertDeclaresMethod', self::class],
+                "Failed asserting that class ".self::class." does not declare method test__assertDeclaresMethod()"
+            ],
+            "('test__assertDeclaresMethod', \$this)" => [
+                ['test__assertDeclaresMethod', $this],
+                "",
+            ],
+            "('assertDeclaresMethod', self::class)" => [
+                ['assertDeclaresMethod', self::class],
+                "",
+            ],
+            "('assertDeclaresMethod', ClassAssertions::class)" => [
+                ['assertDeclaresMethod', ClassAssertions::class],
+                "",
+            ],
+        ];
+    }
+
+    public function assertDeclaresMethod__failure__cases()
+    {
+        return [
+            "('inexistent', self::class)" => [
+                ['inexistent', self::class],
+                "Failed asserting that class ".self::class." declares method inexistent()",
+            ],
+            "('inexistent', \$this)" => [
+                ['inexistent', $this],
+                "Failed asserting that class ".self::class." declares method inexistent()",
+            ],
+            "('inexistent', ClassAssertions::class)" => [
+                ['inexistent', ClassAssertions::class],
+                "Failed asserting that trait ".ClassAssertions::class." declares method inexistent()",
+            ],
+            "(linexistent', \Throwable::class)" => [
+                ['inexistent', \Throwable::class],
+                "Failed asserting that interface ".\Throwable::class." declares method inexistent()",
+            ],
+            // assertThat() exists, but it's defined in parent class.
+            "('assertThat', self::class)" => [
+                ['assertThat', self::class],
+                "Failed asserting that class ".self::class." declares method assertThat()",
+            ],
+            "('assertThat', 1)" => [
+                ['assertThat', 1],
+                "Failed asserting that ".gettype(1)." declares method assertThat()",
+            ],
+            "('assertThat', [])" => [
+                ['assertThat', []],
+                "Failed asserting that ".gettype([])." declares method assertThat()",
+            ],
+            "('foo', '#@#@#@')" => [
+                ['foo', '#@#@#@'],
+                "Failed asserting that ".gettype('#@#@#@')." declares method foo()",
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider assertDeclaresMethod__cases
+     */
+    public function test__assertDeclaresMethod(array $args, string $message = '')
+    {
+        self::assertDeclaresMethod(...$args);
+    }
+
+
+    /**
+     * @dataProvider assertDeclaresMethod__failure__cases
+     */
+    public function test__assertDeclaresMethod__failure(array $args, string $message)
+    {
+        self::expectException(ExpectationFailedException::class);
+        self::expectExceptionMessage($message);
+        self::assertDeclaresMethod(...$args);
+    }
+
+    /**
+     * @dataProvider assertDeclaresMethod__cases
+     */
+    public function test__assertNotDeclaresMethod__failure(array $args, string $message)
+    {
+        self::expectException(ExpectationFailedException::class);
+        // Sorry, but LogicalNot is currently unable to negate our message.
+        //self::expectExceptionMessage($message);
+        self::assertNotDeclaresMethod(...$args);
+    }
+
+    //public function test__assertDeclaresMethod__failure()
 }
 
 // vim: syntax=php sw=4 ts=4 et:

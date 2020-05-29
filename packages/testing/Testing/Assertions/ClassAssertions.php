@@ -16,6 +16,7 @@ namespace Korowai\Testing\Assertions;
 use Korowai\Testing\Constraint\ImplementsInterface;
 use Korowai\Testing\Constraint\ExtendsClass;
 use Korowai\Testing\Constraint\UsesTrait;
+use Korowai\Testing\Constraint\DeclaresMethod;
 use PHPUnit\Framework\Constraint\LogicalNot;
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\ExpectationFailedException;
@@ -169,6 +170,38 @@ trait ClassAssertions
     public static function usesTrait(string $trait) : UsesTrait
     {
         return new UsesTrait($trait);
+    }
+
+    /**
+     * @todo Write documentation.
+     */
+    public static function assertDeclaresMethod(string $method, $object, string $message = '') : void
+    {
+        static::assertThat(
+            $object,
+            static::declaresMethod($method),
+            $message
+        );
+    }
+
+    /**
+     * @todo Write documentation.
+     */
+    public static function assertNotDeclaresMethod(string $method, $object, string $message = '') : void
+    {
+        static::assertThat(
+            $object,
+            new LogicalNot(static::declaresMethod($method)),
+            $message
+        );
+    }
+
+    /**
+     * @todo Write documentation.
+     */
+    public static function declaresMethod(string $method) : DeclaresMethod
+    {
+        return new DeclaresMethod($method);
     }
 }
 

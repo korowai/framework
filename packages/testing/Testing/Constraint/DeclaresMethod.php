@@ -13,14 +13,13 @@ declare(strict_types=1);
 
 namespace Korowai\Testing\Constraint;
 
-//use Korowai\Testing\ObjectProperties;
-//use Korowai\Testing\ObjectPropertiesInterface;
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\ExpectationFailedException;
 use SebastianBergmann\Comparator\ComparisonFailure;
 
 /**
- * @todo Write documentation.
+ * Accepts objects or classes that declare a method given by name.
+ *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
 final class DeclaresMethod extends Constraint
@@ -77,12 +76,19 @@ final class DeclaresMethod extends Constraint
      * cases. This method should return the second part of that sentence.
      *
      * @param  mixed $other evaluated value or object
+     * @return string
      */
     public function failureDescription($other) : string
     {
         return $this->getSubjectString($other).' '.$this->toString();
     }
 
+    /**
+     * Returns a string describing $other.
+     *
+     * @param  mixed $other
+     * @return string
+     */
     protected function getSubjectString($other) : string
     {
         if (is_object($other) || is_string($other)) {

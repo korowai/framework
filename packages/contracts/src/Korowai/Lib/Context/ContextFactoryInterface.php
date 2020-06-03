@@ -1,7 +1,5 @@
 <?php
 /**
- * @file src/Korowai/Lib/Context/ContextFactoryInterface.php
- *
  * This file is part of the Korowai package
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

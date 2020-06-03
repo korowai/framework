@@ -1,7 +1,5 @@
 <?php
 /**
- * @file tests/ExceptionA98DB973.php
- *
  * This file is part of the Korowai package
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

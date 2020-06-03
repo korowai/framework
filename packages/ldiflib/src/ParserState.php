@@ -1,7 +1,5 @@
 <?php
 /**
- * @file src/ParserState.php
- *
  * This file is part of the Korowai package
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

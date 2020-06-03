@@ -1,7 +1,5 @@
 <?php
 /**
- * @file tests/Korowai/Lib/Ldap/Adapter/ResultRecordInterfaceTrait.php
- *
  * This file is part of the Korowai package
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

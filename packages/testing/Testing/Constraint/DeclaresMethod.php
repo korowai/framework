@@ -56,7 +56,7 @@ final class DeclaresMethod extends Constraint
      *
      * @param  mixed $other value or object to evaluate
      */
-    public function matches($other) : bool
+    protected function matches($other) : bool
     {
         $class = is_object($other) ? get_class($other) : $other;
         try {
@@ -76,7 +76,7 @@ final class DeclaresMethod extends Constraint
      * @param  mixed $other evaluated value or object
      * @return string
      */
-    public function failureDescription($other) : string
+    protected function failureDescription($other) : string
     {
         return $this->getSubjectString($other).' '.$this->toString();
     }

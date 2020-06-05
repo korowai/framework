@@ -1,10 +1,11 @@
 <?php
-/**
- * This file is part of the Korowai package
+
+/*
+ * This file is part of Korowai framework.
  *
- * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @package korowai/ldiflib
- * @license Distributed under MIT license.
+ * (c) Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ *
+ * Distributed under MIT license.
  */
 
 declare(strict_types=1);
@@ -17,7 +18,6 @@ use Korowai\Lib\Ldif\SourceLocationInterface;
 
 use Korowai\Testing\Ldiflib\TestCase;
 
-
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
@@ -25,7 +25,9 @@ class DecoratesSourceLocationInterfaceTest extends TestCase
 {
     public function getTestObject()
     {
-        return new class { use DecoratesSourceLocationInterface; };
+        return new class {
+            use DecoratesSourceLocationInterface;
+        };
     }
 
     public function test__uses__ExposesSourceLocationInterface()

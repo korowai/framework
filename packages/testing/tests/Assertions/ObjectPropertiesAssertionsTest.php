@@ -1,10 +1,11 @@
 <?php
-/**
- * This file is part of the Korowai package
+
+/*
+ * This file is part of Korowai framework.
  *
- * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @package korowai/testing
- * @license Distributed under MIT license.
+ * (c) Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ *
+ * Distributed under MIT license.
  */
 
 declare(strict_types=1);
@@ -57,9 +58,16 @@ class ObjectPropertiesAssertionsTest extends TestCase
             public $husband = null;
             public $family = [];
             private $salary = 98;
-            public function getSalary() { return $this->salary; }
-            public function getDebit() { return -$this->salary; }
-            public function marry($husband) {
+            public function getSalary()
+            {
+                return $this->salary;
+            }
+            public function getDebit()
+            {
+                return -$this->salary;
+            }
+            public function marry($husband)
+            {
                 $this->husband = $husband;
                 $this->family[] = $husband;
             }
@@ -72,9 +80,16 @@ class ObjectPropertiesAssertionsTest extends TestCase
             public $wife = null;
             public $family = [];
             private $salary = 123;
-            public function getSalary() { return $this->salary; }
-            public function getDebit() { return -$this->salary; }
-            public function marry($wife) {
+            public function getSalary()
+            {
+                return $this->salary;
+            }
+            public function getDebit()
+            {
+                return -$this->salary;
+            }
+            public function marry($wife)
+            {
                 $this->wife = $wife;
                 $this->family[] = $wife;
             }
@@ -124,7 +139,9 @@ class ObjectPropertiesAssertionsTest extends TestCase
             [
                 'expect'  => ['age' => 21, 'salary' => 123, 'debit' => -123],
                 'object'  => $jsmith,
-                'getters' => function (object $o) {return ['salary' => 'getSalary', 'debit' => 'getDebit'];}
+                'getters' => function (object $o) {
+                    return ['salary' => 'getSalary', 'debit' => 'getDebit'];
+                }
             ],
             [
                 'expect'  => ['age' => 21, 'getSalary()' => 123, 'getDebit()' => -123],
@@ -179,7 +196,9 @@ class ObjectPropertiesAssertionsTest extends TestCase
                     })
                 ],
                 'object'  => $jsmith,
-                'getters' => function (object $o) {return ['salary' => 'getSalary', 'debit' => 'getDebit'];}
+                'getters' => function (object $o) {
+                    return ['salary' => 'getSalary', 'debit' => 'getDebit'];
+                }
             ],
             [
                 'expect' => [
@@ -243,9 +262,16 @@ class ObjectPropertiesAssertionsTest extends TestCase
             public $husband = null;
             public $family = [];
             private $salary = 98;
-            public function getSalary() { return $this->salary; }
-            public function getDebit() { return -$this->salary; }
-            public function marry($husband) {
+            public function getSalary()
+            {
+                return $this->salary;
+            }
+            public function getDebit()
+            {
+                return -$this->salary;
+            }
+            public function marry($husband)
+            {
                 $this->husband = $husband;
                 $this->family[] = $husband;
             }
@@ -258,9 +284,16 @@ class ObjectPropertiesAssertionsTest extends TestCase
             public $wife = null;
             public $family = [];
             private $salary = 123;
-            public function getSalary() { return $this->salary; }
-            public function getDebit() { return -$this->salary; }
-            public function marry($wife) {
+            public function getSalary()
+            {
+                return $this->salary;
+            }
+            public function getDebit()
+            {
+                return -$this->salary;
+            }
+            public function marry($wife)
+            {
                 $this->wife = $wife;
                 $this->family[] = $wife;
             }
@@ -309,12 +342,16 @@ class ObjectPropertiesAssertionsTest extends TestCase
             [
                 'expect' => ['age' => 21, 'salary' => 1230],
                 'object' => $jsmith,
-                'getters' => function (object $o) {return ['salary' => 'getSalary', 'debit' => 'getDebit'];}
+                'getters' => function (object $o) {
+                    return ['salary' => 'getSalary', 'debit' => 'getDebit'];
+                }
             ],
             [
                 'expect' => ['age' => 21, 'salary' => 123, 'debit' => -1230],
                 'object' => $jsmith,
-                'getters' => function (object $o) {return ['salary' => 'getSalary', 'debit' => 'getDebit'];}
+                'getters' => function (object $o) {
+                    return ['salary' => 'getSalary', 'debit' => 'getDebit'];
+                }
             ],
             [
                 'expect' => ['age' => 21, 'getSalary()' => 1230],
@@ -411,7 +448,9 @@ class ObjectPropertiesAssertionsTest extends TestCase
 
     public function test__hasPropertiesIdenticalTo__withInvalidGetter()
     {
-        $object = new class { protected $a; };
+        $object = new class {
+            protected $a;
+        };
 
         self::expectException(\PHPUnit\Framework\Exception::class);
         self::expectExceptionMessage('$object->xxx() is not callable');
@@ -421,12 +460,16 @@ class ObjectPropertiesAssertionsTest extends TestCase
 
     public function test__hasPropertiesIdenticalTo__withInvalidGetterOption()
     {
-        $object = new class { protected $a; };
+        $object = new class {
+            protected $a;
+        };
 
         self::expectException(\PHPUnit\Framework\Exception::class);
         self::expectExceptionMessage('$object->xxx() is not callable');
 
-        $getters = function (object $o) { return ['a' => 'xxx']; };
+        $getters = function (object $o) {
+            return ['a' => 'xxx'];
+        };
         self::hasPropertiesIdenticalTo(['a' => 'A'], $getters)->matches($object);
     }
 
@@ -495,7 +538,6 @@ class ObjectPropertiesAssertionsTest extends TestCase
 
         self::assertNotHasPropertiesSameAs(...(self::adjustCase(func_get_args(), 'Lorem ipsum.')));
     }
-
 }
 
 // vim: syntax=php sw=4 ts=4 et:

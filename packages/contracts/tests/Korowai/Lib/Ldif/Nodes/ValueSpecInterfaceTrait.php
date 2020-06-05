@@ -1,10 +1,11 @@
 <?php
-/**
- * This file is part of the Korowai package
+
+/*
+ * This file is part of Korowai framework.
  *
- * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @package korowai/contracts
- * @license Distributed under MIT license.
+ * (c) Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ *
+ * Distributed under MIT license.
  */
 
 declare(strict_types=1);
@@ -26,7 +27,8 @@ trait ValueSpecInterfaceTrait
 
     public function getType() : int
     {
-        return $this->type;;
+        return $this->type;
+        ;
     }
 
     public function getSpec()

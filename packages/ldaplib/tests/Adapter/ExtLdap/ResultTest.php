@@ -1,10 +1,11 @@
 <?php
-/**
- * This file is part of the Korowai package
+
+/*
+ * This file is part of Korowai framework.
  *
- * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @package korowai/ldaplib
- * @license Distributed under MIT license.
+ * (c) Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ *
+ * Distributed under MIT license.
  */
 
 declare(strict_types=1);
@@ -60,8 +61,12 @@ class ResultTest extends TestCase
         $result = new Result('ldap result', $link);
 
         $callback = function ($result, &...$tail) {
-            if(count($tail) > 0) { $tail[0] = 'cookie'; }
-            if(count($tail) > 1) { $tail[1] = 123; }
+            if (count($tail) > 0) {
+                $tail[0] = 'cookie';
+            }
+            if (count($tail) > 1) {
+                $tail[1] = 123;
+            }
             return 'ok';
         };
 
@@ -152,8 +157,8 @@ class ResultTest extends TestCase
         $link->expects($this->once())
              ->method('get_entries')
              ->with($this->identicalTo($result))
-             ->willReturn(array('entries'));
-        $this->assertSame(array('entries'), $result->get_entries());
+             ->willReturn(['entries']);
+        $this->assertSame(['entries'], $result->get_entries());
     }
 
     public function test__parse_result()
@@ -164,9 +169,15 @@ class ResultTest extends TestCase
 
         $callback = function ($result, &$errcode, &...$tail) {
             $errcode = 2;
-            if(count($tail) > 0) { $tail[0] = 'dc=korowai,dc=org'; }
-            if(count($tail) > 1) { $tail[1] = 'Error message'; }
-            if(count($tail) > 2) { $tail[2] = array('Referrals'); }
+            if (count($tail) > 0) {
+                $tail[0] = 'dc=korowai,dc=org';
+            }
+            if (count($tail) > 1) {
+                $tail[1] = 'Error message';
+            }
+            if (count($tail) > 2) {
+                $tail[2] = ['Referrals'];
+            }
             return false;
         };
 
@@ -185,7 +196,7 @@ class ResultTest extends TestCase
         $this->assertSame(2, $errcode);
         $this->assertSame('dc=korowai,dc=org', $matcheddn);
         $this->assertSame('Error message', $errmsg);
-        $this->assertSame(array('Referrals'), $referrals);
+        $this->assertSame(['Referrals'], $referrals);
     }
 
     public function test__sort()
@@ -196,8 +207,8 @@ class ResultTest extends TestCase
         $link->expects($this->once())
              ->method('sort')
              ->with($this->identicalTo($result), 'sortfilter')
-             ->willReturn(array('sorted'));
-        $this->assertSame(array('sorted'), $result->sort('sortfilter'));
+             ->willReturn(['sorted']);
+        $this->assertSame(['sorted'], $result->sort('sortfilter'));
     }
 
     public function test__getResultEntries()

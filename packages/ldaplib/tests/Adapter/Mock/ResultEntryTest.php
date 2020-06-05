@@ -1,10 +1,11 @@
 <?php
-/**
- * This file is part of the Korowai package
+
+/*
+ * This file is part of Korowai framework.
  *
- * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @package korowai/ldaplib
- * @license Distributed under MIT license.
+ * (c) Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ *
+ * Distributed under MIT license.
  */
 
 declare(strict_types=1);
@@ -16,7 +17,6 @@ use Korowai\Testing\TestCase;
 use Korowai\Lib\Ldap\Adapter\Mock\ResultEntry;
 use Korowai\Lib\Ldap\Adapter\Mock\ResultAttributeIterator;
 use Korowai\Lib\Ldap\Adapter\ResultEntryInterface;
-
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -75,7 +75,6 @@ class ResultEntryTest extends TestCase
 
         $this->assertSame(['F'], $entry->attributes_reset());
         $this->assertSame('firstAttr', $entry->attributes_key());
-
     }
 
     public function test__createWithArray__nonFlat()

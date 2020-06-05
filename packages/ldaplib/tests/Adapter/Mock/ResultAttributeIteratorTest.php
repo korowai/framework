@@ -1,10 +1,11 @@
 <?php
-/**
- * This file is part of the Korowai package
+
+/*
+ * This file is part of Korowai framework.
  *
- * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @package korowai/ldaplib
- * @license Distributed under MIT license.
+ * (c) Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ *
+ * Distributed under MIT license.
  */
 
 declare(strict_types=1);
@@ -15,7 +16,6 @@ use Korowai\Testing\TestCase;
 
 use Korowai\Lib\Ldap\Adapter\Mock\ResultAttributeIterator;
 use Korowai\Lib\Ldap\Adapter\Mock\ResultEntry;
-
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -86,7 +86,7 @@ class ResultAttributeIteratorTest extends TestCase
 
         $entry->expects($this->exactly(2))
               ->method('attributes_key')
-              ->withConsecutive([],[])
+              ->withConsecutive([], [])
               ->will($this->onConsecutiveCalls(['firstAttr', null]));
 
         $this->assertTrue($iterator->valid());

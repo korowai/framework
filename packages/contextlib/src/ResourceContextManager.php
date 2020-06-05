@@ -194,11 +194,11 @@ class ResourceContextManager implements ContextManagerInterface
     {
         if (PHP_VERSION_ID >= 70200) {
             return function (object $resource) use ($method) {
-                return call_user_func(array($resource, $method));
+                return call_user_func([$resource, $method]);
             };
         } else {
             return function ($resource) use ($method) {
-                return call_user_func(array($resource, $method));
+                return call_user_func([$resource, $method]);
             };
         }
     }

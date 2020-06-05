@@ -70,7 +70,7 @@ class Adapter implements AdapterInterface
     /**
      * {@inheritdoc}
      */
-    public function createSearchQuery(string $base_dn, string $filter, array $options = array()) : SearchQueryInterface
+    public function createSearchQuery(string $base_dn, string $filter, array $options = []) : SearchQueryInterface
     {
         return new SearchQuery($this->getLdapLink(), $base_dn, $filter, $options);
     }

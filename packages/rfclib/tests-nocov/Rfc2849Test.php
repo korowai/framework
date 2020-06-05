@@ -1,10 +1,11 @@
 <?php
-/**
- * This file is part of the Korowai package
+
+/*
+ * This file is part of Korowai framework.
  *
- * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @package korowai/rfclib
- * @license Distributed under MIT license.
+ * (c) Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ *
+ * Distributed under MIT license.
  */
 
 declare(strict_types=1);
@@ -16,7 +17,6 @@ use Korowai\Lib\Rfc\Rfc2253;
 use Korowai\Lib\Rfc\Rfc3986;
 use Korowai\Lib\Rfc\Rfc5234;
 use Korowai\Testing\Rfclib\TestCase;
-
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

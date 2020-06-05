@@ -1,10 +1,11 @@
 <?php
-/**
- * This file is part of the Korowai package
+
+/*
+ * This file is part of Korowai framework.
  *
- * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @package korowai/ldiflib
- * @license Distributed under MIT license.
+ * (c) Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ *
+ * Distributed under MIT license.
  */
 
 declare(strict_types=1);
@@ -16,7 +17,6 @@ use Korowai\Lib\Ldif\SourceLocationInterface;
 
 use Korowai\Testing\Ldiflib\TestCase;
 
-
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
@@ -24,10 +24,16 @@ class ExposesSourceLocationInterfaceTest extends TestCase
 {
     public function getTestObject(SourceLocationInterface $location = null)
     {
-        $obj = new class ($location) implements SourceLocationInterface {
+        $obj = new class($location) implements SourceLocationInterface {
             use ExposesSourceLocationInterface;
-            public function __construct(?SourceLocationInterface $location) { $this->location = $location; }
-            public function getSourceLocation() : ?SourceLocationInterface { return $this->location; }
+            public function __construct(?SourceLocationInterface $location)
+            {
+                $this->location = $location;
+            }
+            public function getSourceLocation() : ?SourceLocationInterface
+            {
+                return $this->location;
+            }
         };
         return $obj;
     }
@@ -77,7 +83,7 @@ class ExposesSourceLocationInterfaceTest extends TestCase
                          ->getMockForAbstractClass();
         $location->expects($this->exactly(2))
                  ->method('getSourceCharOffset')
-                 ->withConsecutive([],['U'])
+                 ->withConsecutive([], ['U'])
                  ->will($this->onConsecutiveCalls(123, 321));
         $obj = $this->getTestObject($location);
 

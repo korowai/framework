@@ -1,10 +1,11 @@
 <?php
-/**
- * This file is part of the Korowai package
+
+/*
+ * This file is part of Korowai framework.
  *
- * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @package korowai/ldaplib
- * @license Distributed under MIT license.
+ * (c) Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ *
+ * Distributed under MIT license.
  */
 
 declare(strict_types=1);
@@ -62,7 +63,7 @@ class AdapterTest extends TestCase
 
         $adapter = new Adapter($link);
 
-        $query = $adapter->createSearchQuery("dc=korowai,dc=org", "objectClass=*", array('scope' => 'one'));
+        $query = $adapter->createSearchQuery("dc=korowai,dc=org", "objectClass=*", ['scope' => 'one']);
 
         $this->assertInstanceOf(SearchQuery::class, $query);
         $this->assertEquals("dc=korowai,dc=org", $query->getBaseDn());

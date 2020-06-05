@@ -1,10 +1,11 @@
 <?php
-/**
- * This file is part of the Korowai package
+
+/*
+ * This file is part of Korowai framework.
  *
- * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @package korowai/ldiflib
- * @license Distributed under MIT license.
+ * (c) Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ *
+ * Distributed under MIT license.
  */
 
 declare(strict_types=1);
@@ -17,7 +18,6 @@ use Korowai\Lib\Ldif\SnippetInterface;
 
 use Korowai\Testing\Ldiflib\TestCase;
 
-
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
@@ -25,10 +25,16 @@ class ExposesSnippetInterfaceTest extends TestCase
 {
     public function getTestObject(SnippetInterface $snippet = null)
     {
-        $obj = new class ($snippet) implements SnippetInterface {
+        $obj = new class($snippet) implements SnippetInterface {
             use ExposesSnippetInterface;
-            public function __construct(?SnippetInterface $snippet) { $this->snippet = $snippet; }
-            public function getSnippet() : ?SnippetInterface { return $this->snippet; }
+            public function __construct(?SnippetInterface $snippet)
+            {
+                $this->snippet = $snippet;
+            }
+            public function getSnippet() : ?SnippetInterface
+            {
+                return $this->snippet;
+            }
         };
         return $obj;
     }

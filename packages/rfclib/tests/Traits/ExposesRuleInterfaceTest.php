@@ -1,10 +1,11 @@
 <?php
-/**
- * This file is part of the Korowai package
+
+/*
+ * This file is part of Korowai framework.
  *
- * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @package korowai/rfclib
- * @license Distributed under MIT license.
+ * (c) Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ *
+ * Distributed under MIT license.
  */
 
 declare(strict_types=1);
@@ -22,10 +23,16 @@ class ExposesRuleInterfaceTest extends TestCase
 {
     public function getTestObject(RuleInterface $rule = null)
     {
-        $obj = new class ($rule) implements RuleInterface {
+        $obj = new class($rule) implements RuleInterface {
             use ExposesRuleInterface;
-            public function __construct(?RuleInterface $rule) { $this->rule = $rule; }
-            public function getRfcRule() : ?RuleInterface { return $this->rule; }
+            public function __construct(?RuleInterface $rule)
+            {
+                $this->rule = $rule;
+            }
+            public function getRfcRule() : ?RuleInterface
+            {
+                return $this->rule;
+            }
         };
         return $obj;
     }
@@ -127,7 +134,7 @@ class ExposesRuleInterfaceTest extends TestCase
                          ->getMockForAbstractClass();
         $rule->expects($this->exactly(2))
              ->method('getErrorMessage')
-             ->withConsecutive([],['asd'])
+             ->withConsecutive([], ['asd'])
              ->will($this->onConsecutiveCalls('foo', 'bar'));
         $obj = $this->getTestObject($rule);
 

@@ -43,7 +43,7 @@ class Ldap extends AbstractLdap
      * @return Ldap
      * @throws InvalidArgumentException
      */
-    public static function createWithConfig(array $config = array(), string $factoryClass = null)
+    public static function createWithConfig(array $config = [], string $factoryClass = null)
     {
         if (!isset($factoryClass)) {
             $factoryClass = static::$defaultAdapterFactory;
@@ -161,7 +161,7 @@ class Ldap extends AbstractLdap
     /**
      * {@inheritdoc}
      */
-    public function createSearchQuery(string $base_dn, string $filter, array $options = array()) : SearchQueryInterface
+    public function createSearchQuery(string $base_dn, string $filter, array $options = []) : SearchQueryInterface
     {
         return $this->getAdapter()->createSearchQuery($base_dn, $filter, $options);
     }

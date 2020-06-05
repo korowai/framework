@@ -1,10 +1,11 @@
 <?php
-/**
- * This file is part of the Korowai package
+
+/*
+ * This file is part of Korowai framework.
  *
- * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @package korowai/ldaplib
- * @license Distributed under MIT license.
+ * (c) Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ *
+ * Distributed under MIT license.
  */
 
 declare(strict_types=1);
@@ -148,7 +149,7 @@ class ResultTest extends TestCase
                    ->willReturn('dc=a');
 
         $count = 0;
-        foreach($result as $dn => $entry) {
+        foreach ($result as $dn => $entry) {
             $this->assertSame($entries[$count]->getDn(), $dn);
             $this->assertInstanceOf(EntryInterface::class, $entry);
             $count++;
@@ -183,7 +184,7 @@ class ResultTest extends TestCase
                    ->willReturn('dc=a');
 
         $count = 0;
-        foreach($result->getResultEntryIterator() as $dn => $entry) {
+        foreach ($result->getResultEntryIterator() as $dn => $entry) {
             $this->assertSame($entries[$count]->getDn(), $dn);
             $this->assertSame($entries[$count], $entry);
             $count++;
@@ -218,7 +219,7 @@ class ResultTest extends TestCase
                    ->willReturn('dc=a');
 
         $count = 0;
-        foreach($result->getResultReferenceIterator() as $dn => $reference) {
+        foreach ($result->getResultReferenceIterator() as $dn => $reference) {
             $this->assertSame($references[$count]->getDn(), $dn);
             $this->assertSame($references[$count], $reference);
             $count++;

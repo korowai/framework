@@ -1,10 +1,11 @@
 <?php
-/**
- * This file is part of the Korowai package
+
+/*
+ * This file is part of Korowai framework.
  *
- * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @package korowai/rfclib
- * @license Distributed under MIT license.
+ * (c) Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ *
+ * Distributed under MIT license.
  */
 
 declare(strict_types=1);
@@ -49,7 +50,7 @@ class Rfc3986Test extends TestCase
     //
     public function test__HEXDIG()
     {
-        $this->assertSame('0-9A-Fa-f',   Rfc3986::HEXDIGCHARS);
+        $this->assertSame('0-9A-Fa-f', Rfc3986::HEXDIGCHARS);
         $this->assertSame('[0-9A-Fa-f]', Rfc3986::HEXDIG);
     }
 
@@ -59,8 +60,8 @@ class Rfc3986Test extends TestCase
     //
     public function test__SUB_DELIMS()
     {
-        $this->assertSame( '!\$&\'\(\)\*\+,;=',   Rfc3986::SUB_DELIM_CHARS);
-        $this->assertSame('[!\$&\'\(\)\*\+,;=]',  Rfc3986::SUB_DELIMS);
+        $this->assertSame('!\$&\'\(\)\*\+,;=', Rfc3986::SUB_DELIM_CHARS);
+        $this->assertSame('[!\$&\'\(\)\*\+,;=]', Rfc3986::SUB_DELIMS);
     }
 
     //
@@ -69,8 +70,8 @@ class Rfc3986Test extends TestCase
 
     public function test__GEN_DELIMS()
     {
-        $this->assertSame( ':\/\?#\[\]@',   Rfc3986::GEN_DELIM_CHARS);
-        $this->assertSame('[:\/\?#\[\]@]',  Rfc3986::GEN_DELIMS);
+        $this->assertSame(':\/\?#\[\]@', Rfc3986::GEN_DELIM_CHARS);
+        $this->assertSame('[:\/\?#\[\]@]', Rfc3986::GEN_DELIMS);
     }
 
     //
@@ -79,8 +80,8 @@ class Rfc3986Test extends TestCase
 
     public function test__RESERVED()
     {
-        $this->assertSame( ':\/\?#\[\]@!\$&\'\(\)\*\+,;=',    Rfc3986::RESERVEDCHARS);
-        $this->assertSame('[:\/\?#\[\]@!\$&\'\(\)\*\+,;=]',   Rfc3986::RESERVED);
+        $this->assertSame(':\/\?#\[\]@!\$&\'\(\)\*\+,;=', Rfc3986::RESERVEDCHARS);
+        $this->assertSame('[:\/\?#\[\]@!\$&\'\(\)\*\+,;=]', Rfc3986::RESERVED);
     }
 
     //
@@ -88,8 +89,8 @@ class Rfc3986Test extends TestCase
     //
     public function test__UNRESERVED()
     {
-        $this->assertSame( 'A-Za-z0-9\._~-',    Rfc3986::UNRESERVEDCHARS);
-        $this->assertSame('[A-Za-z0-9\._~-]',   Rfc3986::UNRESERVED);
+        $this->assertSame('A-Za-z0-9\._~-', Rfc3986::UNRESERVEDCHARS);
+        $this->assertSame('[A-Za-z0-9\._~-]', Rfc3986::UNRESERVED);
     }
 
     //
@@ -105,7 +106,7 @@ class Rfc3986Test extends TestCase
     //
     public function test__PCHAR()
     {
-        $this->assertSame(    ':@!\$&\'\(\)\*\+,;=A-Za-z0-9\._~-',                             Rfc3986::PCHARCHARS);
+        $this->assertSame(':@!\$&\'\(\)\*\+,;=A-Za-z0-9\._~-', Rfc3986::PCHARCHARS);
         $this->assertSame('(?:[:@!\$&\'\(\)\*\+,;=A-Za-z0-9\._~-]|(?:%[0-9A-Fa-f][0-9A-Fa-f]))', Rfc3986::PCHAR);
     }
 

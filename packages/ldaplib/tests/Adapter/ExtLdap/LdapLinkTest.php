@@ -1,10 +1,11 @@
 <?php
-/**
- * This file is part of the Korowai package
+
+/*
+ * This file is part of Korowai framework.
  *
- * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @package korowai/ldaplib
- * @license Distributed under MIT license.
+ * (c) Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ *
+ * Distributed under MIT license.
  */
 
 declare(strict_types=1);
@@ -42,12 +43,12 @@ class LdapLinkTest extends TestCase
     private function getResultMock($link = null, $resource = 'ldap result')
     {
         $result = $this->createMock(Result::class);
-        if($link) {
+        if ($link) {
             $result->method('getLink')
                    ->with()
                    ->willReturn($link);
         }
-        if($resource) {
+        if ($resource) {
             $result->method('getResource')
                    ->with()
                    ->willReturn($resource);
@@ -58,12 +59,12 @@ class LdapLinkTest extends TestCase
     private function getResultEntryMock($result = null, $resource = 'ldap result entry')
     {
         $entry = $this->createMock(ResultEntry::class);
-        if($result) {
+        if ($result) {
             $entry->method('getResult')
                   ->with()
                   ->willReturn($result);
         }
-        if($resource) {
+        if ($resource) {
             $entry->method('getResource')
                   ->with()
                   ->willReturn($resource);
@@ -152,10 +153,10 @@ class LdapLinkTest extends TestCase
         $ldap = $this->createLdapLink();
         $this   ->getLdapFunctionMock("ldap_add")
                 ->expects($this->once())
-                ->with('ldap link', 'dc=korowai,dc=org', array('foo', 'bar'))
+                ->with('ldap link', 'dc=korowai,dc=org', ['foo', 'bar'])
                 ->willReturn('ok');
 
-        $this->assertSame('ok', $ldap->add('dc=korowai,dc=org', array('foo', 'bar')));
+        $this->assertSame('ok', $ldap->add('dc=korowai,dc=org', ['foo', 'bar']));
     }
 
     /**
@@ -300,9 +301,13 @@ class LdapLinkTest extends TestCase
         $this   ->getLdapFunctionMock("ldap_control_paged_result_response")
                 ->expects($this->once())
                 ->with('ldap link', 'ldap result')
-                ->willReturnCallback(function($ldap, $result, &...$tail) {
-                    if(count($tail) > 0) { $tail[0] = 'cookie'; }
-                    if(count($tail) > 1) { $tail[1] = 'estimated'; }
+                ->willReturnCallback(function ($ldap, $result, &...$tail) {
+                    if (count($tail) > 0) {
+                        $tail[0] = 'cookie';
+                    }
+                    if (count($tail) > 1) {
+                        $tail[1] = 'estimated';
+                    }
                     return 'ok';
                 });
 
@@ -321,9 +326,13 @@ class LdapLinkTest extends TestCase
         $this   ->getLdapFunctionMock("ldap_control_paged_result_response")
                 ->expects($this->once())
                 ->with('ldap link', 'ldap result')
-                ->willReturnCallback(function($ldap, $result, &...$tail) {
-                    if(count($tail) > 0) { $tail[0] = 'cookie'; }
-                    if(count($tail) > 1) { $tail[1] = 'estimated'; }
+                ->willReturnCallback(function ($ldap, $result, &...$tail) {
+                    if (count($tail) > 0) {
+                        $tail[0] = 'cookie';
+                    }
+                    if (count($tail) > 1) {
+                        $tail[1] = 'estimated';
+                    }
                     return 'ok';
                 });
 
@@ -386,7 +395,7 @@ class LdapLinkTest extends TestCase
         $ldap = $this->createLdapLink();
         $result = $this->getResultMock($ldap);
 
-// FIXME: uncomment, once it's implemented
+        // FIXME: uncomment, once it's implemented
 //        $this   ->getLdapFunctionMock("ldap_count_references")
 //                ->expects($this->once())
 //                ->with('ldap link', 'ldap result')
@@ -497,13 +506,13 @@ class LdapLinkTest extends TestCase
         $this   ->getLdapFunctionMock("ldap_explode_dn")
                 ->expects($this->once())
                 ->with('dc=korowai,dc=org', 0)
-                ->willReturn(array(
+                ->willReturn([
                     0 => 'dc=korowai',
                     1 => 'dc=org',
                     'count' => 2,
-                ));
+                ]);
 
-        $this->assertSame(array(0 => 'dc=korowai', 1 => 'dc=org', 'count' => 2), LdapLink::explode_dn('dc=korowai,dc=org', 0));
+        $this->assertSame([0 => 'dc=korowai', 1 => 'dc=org', 'count' => 2], LdapLink::explode_dn('dc=korowai,dc=org', 0));
     }
 
     /**
@@ -673,7 +682,7 @@ class LdapLinkTest extends TestCase
         $this   ->getLdapFunctionMock("ldap_get_option")
                 ->expects($this->once())
                 ->with('ldap link', 12)
-                ->willReturnCallback(function($link, $name, &$value) {
+                ->willReturnCallback(function ($link, $name, &$value) {
                     $value = 12;
                     return 'ok';
                 });
@@ -753,10 +762,10 @@ class LdapLinkTest extends TestCase
 
         $this   ->getLdapFunctionMock("ldap_mod_add")
                 ->expects($this->once())
-                ->with('ldap link', 'dc=korowai,dc=org', array('entry'))
+                ->with('ldap link', 'dc=korowai,dc=org', ['entry'])
                 ->willReturn('ok');
 
-        $this->assertSame('ok', $ldap->mod_add('dc=korowai,dc=org', array('entry')));
+        $this->assertSame('ok', $ldap->mod_add('dc=korowai,dc=org', ['entry']));
     }
 
     /**
@@ -768,10 +777,10 @@ class LdapLinkTest extends TestCase
 
         $this   ->getLdapFunctionMock("ldap_mod_del")
                 ->expects($this->once())
-                ->with('ldap link', 'dc=korowai,dc=org', array('entry'))
+                ->with('ldap link', 'dc=korowai,dc=org', ['entry'])
                 ->willReturn('ok');
 
-        $this->assertSame('ok', $ldap->mod_del('dc=korowai,dc=org', array('entry')));
+        $this->assertSame('ok', $ldap->mod_del('dc=korowai,dc=org', ['entry']));
     }
 
     /**
@@ -783,10 +792,10 @@ class LdapLinkTest extends TestCase
 
         $this   ->getLdapFunctionMock("ldap_mod_replace")
                 ->expects($this->once())
-                ->with('ldap link', 'dc=korowai,dc=org', array('entry'))
+                ->with('ldap link', 'dc=korowai,dc=org', ['entry'])
                 ->willReturn('ok');
 
-        $this->assertSame('ok', $ldap->mod_replace('dc=korowai,dc=org', array('entry')));
+        $this->assertSame('ok', $ldap->mod_replace('dc=korowai,dc=org', ['entry']));
     }
 
     /**
@@ -798,10 +807,10 @@ class LdapLinkTest extends TestCase
 
         $this   ->getLdapFunctionMock("ldap_modify_batch")
                 ->expects($this->once())
-                ->with('ldap link', 'dc=korowai,dc=org', array('entry'))
+                ->with('ldap link', 'dc=korowai,dc=org', ['entry'])
                 ->willReturn('ok');
 
-        $this->assertSame('ok', $ldap->modify_batch('dc=korowai,dc=org', array('entry')));
+        $this->assertSame('ok', $ldap->modify_batch('dc=korowai,dc=org', ['entry']));
     }
 
     /**
@@ -813,10 +822,10 @@ class LdapLinkTest extends TestCase
 
         $this   ->getLdapFunctionMock("ldap_modify")
                 ->expects($this->once())
-                ->with('ldap link', 'dc=korowai,dc=org', array('entry'))
+                ->with('ldap link', 'dc=korowai,dc=org', ['entry'])
                 ->willReturn('ok');
 
-        $this->assertSame('ok', $ldap->modify('dc=korowai,dc=org', array('entry')));
+        $this->assertSame('ok', $ldap->modify('dc=korowai,dc=org', ['entry']));
     }
 
     /**
@@ -915,14 +924,14 @@ class LdapLinkTest extends TestCase
         $this   ->getLdapFunctionMock("ldap_parse_reference")
                 ->expects($this->once())
                 ->with('ldap link', 'ldap result reference')
-                ->willReturnCallback(function($link, $ref, &$referrals) {
-                    $referrals = array('ref 1', 'ref 2');
+                ->willReturnCallback(function ($link, $ref, &$referrals) {
+                    $referrals = ['ref 1', 'ref 2'];
                     return 'ok';
                 });
 
 
         $this->assertSame('ok', $ldap->parse_reference($ref, $referrals));
-        $this->assertSame(array('ref 1', 'ref 2'), $referrals);
+        $this->assertSame(['ref 1', 'ref 2'], $referrals);
     }
 
     /**
@@ -938,9 +947,15 @@ class LdapLinkTest extends TestCase
                 ->with('ldap link', 'ldap result')
                 ->willReturnCallback(function ($link, $result, &$errcode, &...$tail) {
                     $errcode = 12;
-                    if(count($tail) > 0) { $tail[0] = 'matcheddn'; }
-                    if(count($tail) > 1) { $tail[1] = 'errmsg'; }
-                    if(count($tail) > 2) { $tail[2] = 'referrals'; }
+                    if (count($tail) > 0) {
+                        $tail[0] = 'matcheddn';
+                    }
+                    if (count($tail) > 1) {
+                        $tail[1] = 'errmsg';
+                    }
+                    if (count($tail) > 2) {
+                        $tail[2] = 'referrals';
+                    }
                     return 'ok';
                 });
 
@@ -1059,7 +1074,8 @@ class LdapLinkTest extends TestCase
     {
         $ldap = $this->createLdapLink();
 
-        $proc = function() {};
+        $proc = function () {
+        };
 
         $this   ->getLdapFunctionMock("ldap_set_rebind_proc")
                 ->expects($this->once())

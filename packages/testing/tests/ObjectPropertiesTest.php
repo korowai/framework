@@ -1,10 +1,11 @@
 <?php
-/**
- * This file is part of the Korowai package
+
+/*
+ * This file is part of Korowai framework.
  *
- * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @package korowai/testing
- * @license Distributed under MIT license.
+ * (c) Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ *
+ * Distributed under MIT license.
  */
 
 declare(strict_types=1);
@@ -14,6 +15,7 @@ namespace Korowai\Tests\Testing;
 use Korowai\Testing\TestCase;
 use Korowai\Testing\ObjectProperties;
 use Korowai\Testing\ObjectPropertiesInterface;
+
 //use Korowai\Testing\Assertions\ClassAssertions;
 //use Korowai\Testing\Assertions\ObjectPropertiesAssertions;
 //use Korowai\Testing\Assertions\PregAssertions;

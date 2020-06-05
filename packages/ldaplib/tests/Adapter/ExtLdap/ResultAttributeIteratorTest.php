@@ -1,10 +1,11 @@
 <?php
-/**
- * This file is part of the Korowai package
+
+/*
+ * This file is part of Korowai framework.
  *
- * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @package korowai/ldaplib
- * @license Distributed under MIT license.
+ * (c) Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ *
+ * Distributed under MIT license.
  */
 
 declare(strict_types=1);
@@ -17,7 +18,6 @@ use Korowai\Lib\Ldap\Adapter\ExtLdap\ResultAttributeIterator;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\ResultEntry;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\Result;
 use Korowai\Lib\Ldap\Adapter\ResultAttributeIteratorInterface;
-
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -38,7 +38,7 @@ class ResultAttributeIteratorTest extends TestCase
 
     public function test__current()
     {
-        $values = array('val1', 'val2', 'count' => 2);
+        $values = ['val1', 'val2', 'count' => 2];
         $entry = $this->createMock(ResultEntry::class);
         $iterator = new ResultAttributeIterator($entry, 'attribName');
         $entry->expects($this->once())

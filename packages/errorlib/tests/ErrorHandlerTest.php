@@ -1,10 +1,11 @@
 <?php
-/**
- * This file is part of the Korowai package
+
+/*
+ * This file is part of Korowai framework.
  *
- * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @package korowai/errorlib
- * @license Distributed under MIT license.
+ * (c) Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ *
+ * Distributed under MIT license.
  */
 
 declare(strict_types=1);
@@ -28,19 +29,21 @@ class ErrorHandlerTest extends TestCase
 
     public function test__construct__withoutErrorTypes()
     {
-        $func = function () {};
+        $func = function () {
+        };
         $handler = new ErrorHandler($func);
         $this->assertSame($func, $handler->getErrorHandler());
-        $this->assertEquals(E_ALL | E_STRICT,  $handler->getErrorTypes());
+        $this->assertEquals(E_ALL | E_STRICT, $handler->getErrorTypes());
     }
 
     public function test__construct__withErrorTypes()
     {
-        $func = function () {};
+        $func = function () {
+        };
         $handler = new ErrorHandler($func, 123);
 
         $this->assertSame($func, $handler->getErrorHandler());
-        $this->assertEquals(123,  $handler->getErrorTypes());
+        $this->assertEquals(123, $handler->getErrorTypes());
     }
 
     public function test__invoke()
@@ -49,8 +52,7 @@ class ErrorHandlerTest extends TestCase
         $args = [];
 
         $handler = new ErrorHandler(
-            function (int $severity, string $message, string $file, int $line)
-            use (&$called, &$args) : bool {
+            function (int $severity, string $message, string $file, int $line) use (&$called, &$args) : bool {
                 $called += 1;
                 $args = func_get_args();
                 return true;

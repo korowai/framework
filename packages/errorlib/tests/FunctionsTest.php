@@ -1,10 +1,11 @@
 <?php
-/**
- * This file is part of the Korowai package
+
+/*
+ * This file is part of Korowai framework.
  *
- * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @package korowai/errorlib
- * @license Distributed under MIT license.
+ * (c) Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ *
+ * Distributed under MIT license.
  */
 
 declare(strict_types=1);
@@ -36,7 +37,8 @@ class FunctionsTest extends TestCase
 
     public function test__errorHandler__withCallable()
     {
-        $func = function () {};
+        $func = function () {
+        };
         $handler = errorHandler($func);
         $this->assertInstanceof(ErrorHandler::class, $handler);
         $this->assertSame($func, $handler->getErrorHandler());
@@ -45,7 +47,8 @@ class FunctionsTest extends TestCase
 
     public function test__errorHandler__withCallableAndErrorTypes()
     {
-        $func = function () {};
+        $func = function () {
+        };
         $handler = errorHandler($func, E_USER_ERROR);
         $this->assertInstanceof(ErrorHandler::class, $handler);
         $this->assertSame($func, $handler->getErrorHandler());
@@ -126,7 +129,7 @@ class FunctionsTest extends TestCase
 
     public function test__exceptionErrorHandler__withCallable()
     {
-        $func = function(int $severity, string $message, string $file, int $line) {
+        $func = function (int $severity, string $message, string $file, int $line) {
             return new ExceptionA98DB973($message, 0, $severity, $file, $line);
         };
         $handler = exceptionErrorHandler($func);
@@ -149,7 +152,7 @@ class FunctionsTest extends TestCase
 
     public function test__exceptionErrorHandler__withCallableAndErrorTypes()
     {
-        $func = function(int $severity, string $message, string $file, int $line) {
+        $func = function (int $severity, string $message, string $file, int $line) {
             return new ExceptionA98DB973($message, 0, $severity, $file, $line);
         };
         $handler = exceptionErrorHandler($func, E_USER_NOTICE);
@@ -172,7 +175,8 @@ class FunctionsTest extends TestCase
 
     public function test__callerErrorHandler__withCallable()
     {
-        $func = function () {};
+        $func = function () {
+        };
 
         $caller_line = __line__ + 1;
         $handler = callerErrorHandler($func);
@@ -186,7 +190,8 @@ class FunctionsTest extends TestCase
 
     public function test__callerErrorHandler__withCallableAndDistance()
     {
-        $func = function () {};
+        $func = function () {
+        };
 
         $caller_line = __line__ + 1;
         $handler = callerErrorHandler($func, 0);
@@ -200,7 +205,8 @@ class FunctionsTest extends TestCase
 
     public function test__callerErrorHandler__withCallableDistanceAndErrorTypes()
     {
-        $func = function () {};
+        $func = function () {
+        };
 
         $caller_line = __line__ + 1;
         $handler = callerErrorHandler($func, 0, E_USER_ERROR);
@@ -214,7 +220,8 @@ class FunctionsTest extends TestCase
 
     public function test__callerExceptionErrorHandler__withCallable()
     {
-        $generator = function() {};
+        $generator = function () {
+        };
 
         $caller_line = __line__ + 1;
         $handler = callerExceptionErrorHandler($generator);
@@ -228,7 +235,8 @@ class FunctionsTest extends TestCase
 
     public function test__callerExceptionErrorHandler__withCallableAndDistance()
     {
-        $generator = function() {};
+        $generator = function () {
+        };
 
         $caller_line = __line__ + 1;
         $handler = callerExceptionErrorHandler($generator, 0);
@@ -242,7 +250,8 @@ class FunctionsTest extends TestCase
 
     public function test__callerExceptionErrorHandler__withCallableAndErrorTypes()
     {
-        $generator = function() {};
+        $generator = function () {
+        };
 
         $caller_line = __line__ + 1;
         $handler = callerExceptionErrorHandler($generator, 0, 123);

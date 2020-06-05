@@ -1,10 +1,11 @@
 <?php
-/**
- * This file is part of the Korowai package
+
+/*
+ * This file is part of Korowai framework.
  *
- * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @package korowai/ldiflib
- * @license Distributed under MIT license.
+ * (c) Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ *
+ * Distributed under MIT license.
  */
 
 declare(strict_types=1);
@@ -18,7 +19,6 @@ use Korowai\Lib\Ldif\InputInterface;
 
 use Korowai\Testing\Ldiflib\TestCase;
 
-
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
@@ -26,10 +26,16 @@ class ExposesLocationInterfaceTest extends TestCase
 {
     public function getTestObject(LocationInterface $location = null)
     {
-        $obj = new class ($location) implements LocationInterface {
+        $obj = new class($location) implements LocationInterface {
             use ExposesLocationInterface;
-            public function __construct(?LocationInterface $location) { $this->location = $location; }
-            public function getLocation() : ?LocationInterface { return $this->location; }
+            public function __construct(?LocationInterface $location)
+            {
+                $this->location = $location;
+            }
+            public function getLocation() : ?LocationInterface
+            {
+                return $this->location;
+            }
         };
         return $obj;
     }
@@ -92,7 +98,7 @@ class ExposesLocationInterfaceTest extends TestCase
                          ->getMockForAbstractClass();
         $location->expects($this->exactly(2))
                  ->method('getCharOffset')
-                 ->withConsecutive([],['U'])
+                 ->withConsecutive([], ['U'])
                  ->will($this->onConsecutiveCalls(123, 321));
         $obj = $this->getTestObject($location);
 
@@ -125,7 +131,7 @@ class ExposesLocationInterfaceTest extends TestCase
                       ->getMockForAbstractClass();
         $location->expects($this->exactly(3))
                  ->method('getClonedLocation')
-                 ->withConsecutive([],[null], [321])
+                 ->withConsecutive([], [null], [321])
                  ->will($this->onConsecutiveCalls($defaultClone, $defaultClone, $clone));
         $obj = $this->getTestObject($location);
 

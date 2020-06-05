@@ -77,11 +77,11 @@ abstract class AbstractAdapterFactory implements AdapterFactoryInterface
      */
     protected function configureOptionsResolver(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'host' => 'localhost',
             'uri' => null,
             'encryption' => 'none',
-        ));
+        ]);
 
         $resolver->setDefault('port', function (Options $options) {
             return ('ssl' === $options['encryption']) ? 636 : 389;
@@ -99,7 +99,7 @@ abstract class AbstractAdapterFactory implements AdapterFactoryInterface
         $resolver->setAllowedTypes('host', 'string');
         $resolver->setAllowedTypes('port', 'numeric');
         $resolver->setAllowedTypes('uri', 'string');
-        $resolver->setAllowedValues('encryption', array('none', 'ssl', 'tls'));
+        $resolver->setAllowedValues('encryption', ['none', 'ssl', 'tls']);
 
         $resolver->setAllowedValues('port', function ($port) {
             return $port > 0 && $port < 65536;

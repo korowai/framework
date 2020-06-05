@@ -1,10 +1,11 @@
 <?php
-/**
- * This file is part of the Korowai package
+
+/*
+ * This file is part of Korowai framework.
  *
- * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @package korowai/contracts
- * @license Distributed under MIT license.
+ * (c) Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ *
+ * Distributed under MIT license.
  */
 
 declare(strict_types=1);
@@ -36,7 +37,7 @@ trait AdapterInterfaceTrait
         return $this->entryManager;
     }
 
-    public function createSearchQuery(string $base_dn, string $filter, array $options = array()) : SearchQueryInterface
+    public function createSearchQuery(string $base_dn, string $filter, array $options = []) : SearchQueryInterface
     {
         return $this->createSearchQuery;
     }

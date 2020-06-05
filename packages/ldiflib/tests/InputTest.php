@@ -1,10 +1,11 @@
 <?php
-/**
- * This file is part of the Korowai package
+
+/*
+ * This file is part of Korowai framework.
  *
- * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @package korowai/ldiflib
- * @license Distributed under MIT license.
+ * (c) Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ *
+ * Distributed under MIT license.
  */
 
 declare(strict_types=1);
@@ -16,7 +17,6 @@ use Korowai\Lib\Ldif\InputInterface;
 use Korowai\Lib\Ldif\Util\IndexMap;
 
 use Korowai\Testing\Ldiflib\TestCase;
-
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -316,7 +316,7 @@ class InputTest extends TestCase
 
     public function test__getSourceLineAndOffset__withEmptyMap()
     {
-        $input = new class ("", "", new IndexMap([])) extends Input {
+        $input = new class("", "", new IndexMap([])) extends Input {
             public function getSourceLinesMap() : IndexMap
             {
                 return new IndexMap([], 0);
@@ -324,8 +324,8 @@ class InputTest extends TestCase
         };
 
         $this->assertSame([-1,0], $input->getSourceLineAndOffset(-1));
-        $this->assertSame([ 0,0], $input->getSourceLineAndOffset( 0));
-        $this->assertSame([ 1,0], $input->getSourceLineAndOffset( 1));
+        $this->assertSame([ 0,0], $input->getSourceLineAndOffset(0));
+        $this->assertSame([ 1,0], $input->getSourceLineAndOffset(1));
     }
 
     public function sourceLineAndCharOffsetCases()

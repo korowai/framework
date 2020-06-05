@@ -1,10 +1,11 @@
 <?php
-/**
- * This file is part of the Korowai package
+
+/*
+ * This file is part of Korowai framework.
  *
- * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @package korowai/contextlib
- * @license Distributed under MIT license.
+ * (c) Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ *
+ * Distributed under MIT license.
  */
 
 declare(strict_types=1);
@@ -156,7 +157,9 @@ class ResourceContextManagerTest extends TestCase
         $cm->expects($this->once())
            ->method('getResourceDestructor')
            ->with($arg)
-           ->willReturn(function ($res) use (&$deleted) { $deleted = $res; });
+           ->willReturn(function ($res) use (&$deleted) {
+               $deleted = $res;
+           });
 
         $this->getFunctionMock('Korowai\\Lib\\Context', 'is_resource')
              ->expects($this->once())
@@ -531,7 +534,10 @@ class ResourceContextManagerTest extends TestCase
     {
         $res = new class {
             public $destroyed = false;
-            public function free() { $this->destroyed = true; }
+            public function free()
+            {
+                $this->destroyed = true;
+            }
         };
 
         $cm = $this->prepareForGetResourceDestructor($res, 'oci8 collection');
@@ -554,7 +560,10 @@ class ResourceContextManagerTest extends TestCase
     {
         $res = new class {
             public $destroyed = false;
-            public function free() { $this->destroyed = true; }
+            public function free()
+            {
+                $this->destroyed = true;
+            }
         };
 
         $cm = $this->prepareForGetResourceDestructor($res, 'oci8 lob');

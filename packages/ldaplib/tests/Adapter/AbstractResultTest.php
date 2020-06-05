@@ -1,10 +1,11 @@
 <?php
-/**
- * This file is part of the Korowai package
+
+/*
+ * This file is part of Korowai framework.
  *
- * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @package korowai/ldaplib
- * @license Distributed under MIT license.
+ * (c) Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ *
+ * Distributed under MIT license.
  */
 
 declare(strict_types=1);
@@ -16,28 +17,39 @@ use Korowai\Lib\Ldap\Adapter\AbstractResult;
 use Korowai\Lib\Ldap\Adapter\ResultEntryInterface;
 use Korowai\Lib\Ldap\Adapter\ResultEntryIteratorInterface;
 
-class _FakeEntry {
+class _FakeEntry
+{
     private $dn;
     private $attribs;
 
-    public function __construct($dn, $attribs) {
+    public function __construct($dn, $attribs)
+    {
         $this->dn  = $dn;
         $this->attribs = $attribs;
     }
-    public function getDn() { return $this->dn; }
-    public function getAttributes() { return $this->attribs; }
+    public function getDn()
+    {
+        return $this->dn;
+    }
+    public function getAttributes()
+    {
+        return $this->attribs;
+    }
 }
 
-class _FakeResultEntry {
+class _FakeResultEntry
+{
     private $dn;
     private $attribs;
 
-    public function __construct($dn, $attribs) {
+    public function __construct($dn, $attribs)
+    {
         $this->dn  = $dn;
         $this->attribs = $attribs;
     }
 
-    public function toEntry() {
+    public function toEntry()
+    {
         return new _FakeEntry($this->dn, $this->attribs);
     }
 }
@@ -46,27 +58,33 @@ class _FakeResultEntryIterator implements ResultEntryIteratorInterface
 {
     private $entries;
 
-    public function __construct($entries) {
+    public function __construct($entries)
+    {
         $this->entries = $entries;
     }
 
-    public function current() {
+    public function current()
+    {
         return new _FakeResultEntry(key($this->entries), current($this->entries));
     }
 
-    public function key() {
+    public function key()
+    {
         return key($this->entries);
     }
 
-    public function next() {
+    public function next()
+    {
         next($this->entries);
     }
 
-    public function rewind() {
+    public function rewind()
+    {
         reset($this->entries);
     }
 
-    public function valid() {
+    public function valid()
+    {
         return current($this->entries) !== false;
     }
 }
@@ -76,18 +94,18 @@ class _FakeResultEntryIterator implements ResultEntryIteratorInterface
  */
 class AbstractResultTest extends TestCase
 {
-    private function getAbstractResultMock($ctor = true, array $methods = array())
+    private function getAbstractResultMock($ctor = true, array $methods = [])
     {
         $builder = $this->getMockBuilder(AbstractResult::class);
 
-        if(!$ctor) {
+        if (!$ctor) {
             $builder->disableOriginalConstructor();
-        } elseif(is_array($ctor)) {
+        } elseif (is_array($ctor)) {
             $builder->setConstructorArgs($ctor);
         }
 
-        foreach(['getResultEntryIterator', 'getResultReferenceIterator'] as $method) {
-            if(!in_array($method, $methods)) {
+        foreach (['getResultEntryIterator', 'getResultReferenceIterator'] as $method) {
+            if (!in_array($method, $methods)) {
                 $methods[] = $method;
             }
         }
@@ -97,8 +115,8 @@ class AbstractResultTest extends TestCase
 
     public function test_getEntries()
     {
-        $entries = array('k1' => 'e1', 'k2' => 'e2');
-        $result = $this->getAbstractResultMock(true, array('getIterator'));
+        $entries = ['k1' => 'e1', 'k2' => 'e2'];
+        $result = $this->getAbstractResultMock(true, ['getIterator']);
         $result->expects($this->once())
                ->method('getIterator')
                ->with()
@@ -108,31 +126,31 @@ class AbstractResultTest extends TestCase
 
     public function test_getIterator()
     {
-        $entries = array(
-            'dc=korowai,dc=org' => array(
-                'objectclass' => array(
+        $entries = [
+            'dc=korowai,dc=org' => [
+                'objectclass' => [
                     'top', 'dcObject'
-                ),
-                'dc' => array(
+                ],
+                'dc' => [
                     'korowai'
-                )
-            ),
-            'dc=sub,dc=korowai,dc=org' => array(
-                'objectclass' => array(
+                ]
+            ],
+            'dc=sub,dc=korowai,dc=org' => [
+                'objectclass' => [
                     'top', 'dcObject'
-                ),
-                'dc' => array(
+                ],
+                'dc' => [
                     'sub'
-                )
-            )
-        );
+                ]
+            ]
+        ];
         $result = $this->getAbstractResultMock();
         $result->expects($this->once())
                ->method('getResultEntryIterator')
                ->with()
                ->willReturn(new _FakeResultEntryIterator($entries));
 
-        foreach($result->getIterator() as $dn => $entry) {
+        foreach ($result->getIterator() as $dn => $entry) {
             $this->assertInstanceOf(_FakeEntry::class, $entry);
             $this->assertEquals($dn, $entry->getDn());
             $this->assertEquals($entries[$dn], $entry->getAttributes());

@@ -94,7 +94,7 @@ class ResultReference extends AbstractResultRecord implements ResultReferenceInt
      * @param  string $dn
      * @param  array $referrals
      */
-    public function __construct(string $dn, array $referrals = array())
+    public function __construct(string $dn, array $referrals = [])
     {
         $this->initResultRecord($dn);
         $this->referrals = $referrals;

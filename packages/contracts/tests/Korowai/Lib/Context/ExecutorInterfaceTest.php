@@ -1,10 +1,11 @@
 <?php
-/**
- * This file is part of the Korowai package
+
+/*
+ * This file is part of Korowai framework.
  *
- * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @package korowai/contracts
- * @license Distributed under MIT license.
+ * (c) Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ *
+ * Distributed under MIT license.
  */
 
 declare(strict_types=1);
@@ -44,7 +45,8 @@ class ExecutorInterfaceTest extends TestCase
         $dummy = $this->createDummyInstance();
 
         $dummy->invoke = '';
-        $this->assertSame($dummy->invoke, $dummy(function () {}));
+        $this->assertSame($dummy->invoke, $dummy(function () {
+        }));
     }
 
     public function test__invoke__withTypeError()

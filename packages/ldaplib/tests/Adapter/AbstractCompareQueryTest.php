@@ -1,10 +1,11 @@
 <?php
-/**
- * This file is part of the Korowai package
+
+/*
+ * This file is part of Korowai framework.
  *
- * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @package korowai/ldaplib
- * @license Distributed under MIT license.
+ * (c) Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ *
+ * Distributed under MIT license.
  */
 
 declare(strict_types=1);
@@ -20,17 +21,17 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class AbstractCompareQueryTest extends TestCase
 {
-    private function getAbstractCompareQueryMock($ctor = true, array $methods = array())
+    private function getAbstractCompareQueryMock($ctor = true, array $methods = [])
     {
         $builder = $this->getMockBuilder(AbstractCompareQuery::class);
 
-        if(!$ctor) {
+        if (!$ctor) {
             $builder->disableOriginalConstructor();
-        } elseif(is_array($ctor)) {
+        } elseif (is_array($ctor)) {
             $builder->setConstructorArgs($ctor);
         }
 
-        if(!in_array('doExecuteQuery', $methods)) {
+        if (!in_array('doExecuteQuery', $methods)) {
             $methods[] = 'doExecuteQuery';
         }
         $builder->setMethods($methods);
@@ -43,7 +44,7 @@ class AbstractCompareQueryTest extends TestCase
             ["uid=jsmith,ou=people,dc=example,dc=org", "userpassword", "secret"]
         );
 
-        $this->assertEquals("uid=jsmith,ou=people,dc=example,dc=org",  $query->getDn());
+        $this->assertEquals("uid=jsmith,ou=people,dc=example,dc=org", $query->getDn());
     }
 
     public function test__getAttribute()
@@ -51,7 +52,7 @@ class AbstractCompareQueryTest extends TestCase
         $query = $this->getAbstractCompareQueryMock(
             ["uid=jsmith,ou=people,dc=example,dc=org", "userpassword", "secret"]
         );
-        $this->assertEquals("userpassword",  $query->getAttribute());
+        $this->assertEquals("userpassword", $query->getAttribute());
     }
 
     public function test__getValue()
@@ -59,7 +60,7 @@ class AbstractCompareQueryTest extends TestCase
         $query = $this->getAbstractCompareQueryMock(
             ["uid=jsmith,ou=people,dc=example,dc=org", "userpassword", "secret"]
         );
-        $this->assertEquals("secret",  $query->getValue());
+        $this->assertEquals("secret", $query->getValue());
     }
 
     public function test__getResult()

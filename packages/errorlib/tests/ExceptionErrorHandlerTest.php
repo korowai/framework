@@ -1,10 +1,11 @@
 <?php
-/**
- * This file is part of the Korowai package
+
+/*
+ * This file is part of Korowai framework.
  *
- * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @package korowai/errorlib
- * @license Distributed under MIT license.
+ * (c) Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ *
+ * Distributed under MIT license.
  */
 
 declare(strict_types=1);
@@ -39,7 +40,8 @@ class ExceptionErrorHandlerTest extends TestCase
 
     public function test__makeExceptionGenerator__withCallable()
     {
-        $func = function() {};
+        $func = function () {
+        };
         $this->assertSame($func, ExceptionErrorHandler::makeExceptionGenerator($func));
     }
 
@@ -97,19 +99,21 @@ class ExceptionErrorHandlerTest extends TestCase
 
     public function test__construct__withoutErrorTypes()
     {
-        $func = function () {};
+        $func = function () {
+        };
         $handler = new ExceptionErrorHandler($func);
         $this->assertSame($func, $handler->getExceptionGenerator());
-        $this->assertEquals(E_ALL | E_STRICT,  $handler->getErrorTypes());
+        $this->assertEquals(E_ALL | E_STRICT, $handler->getErrorTypes());
     }
 
     public function test__construct__withErrorTypes()
     {
-        $func = function () {};
+        $func = function () {
+        };
         $handler = new ExceptionErrorHandler($func, 123);
 
         $this->assertSame($func, $handler->getExceptionGenerator());
-        $this->assertEquals(123,  $handler->getErrorTypes());
+        $this->assertEquals(123, $handler->getErrorTypes());
     }
 
     public function test__invoke__whenSeverityIsRelevant()

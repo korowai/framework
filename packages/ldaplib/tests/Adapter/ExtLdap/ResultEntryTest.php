@@ -1,10 +1,11 @@
 <?php
-/**
- * This file is part of the Korowai package
+
+/*
+ * This file is part of Korowai framework.
  *
- * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @package korowai/ldaplib
- * @license Distributed under MIT license.
+ * (c) Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ *
+ * Distributed under MIT license.
  */
 
 declare(strict_types=1);
@@ -19,7 +20,6 @@ use Korowai\Lib\Ldap\Adapter\ExtLdap\ResultAttributeIterator;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLink;
 use Korowai\Lib\Ldap\Adapter\ResultEntryInterface;
 
-
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
@@ -28,7 +28,7 @@ class ResultEntryTest extends TestCase
     private function getResultMock(bool $withLink = true)
     {
         $result = $this->createMock(Result::class);
-        if($withLink) {
+        if ($withLink) {
             $link = $this->createMock(LdapLink::class);
 
             $result->method('getLink')
@@ -72,18 +72,18 @@ class ResultEntryTest extends TestCase
 
     public function test_get_attributes()
     {
-        $attributes = array(
-                 array('a1val1', 'a1val2'),
-                 array('a2val1', 'a2val2'),
+        $attributes = [
+                 ['a1val1', 'a1val2'],
+                 ['a2val1', 'a2val2'],
                  'count' => 2,
                  'foo' => 'bar'
-        );
-        $expected = array(
-                 array('a1val1', 'a1val2'),
-                 array('a2val1', 'a2val2'),
+        ];
+        $expected = [
+                 ['a1val1', 'a1val2'],
+                 ['a2val1', 'a2val2'],
                  'count' => 2,
                  'foo' => 'bar'
-        );
+        ];
         $result = $this->getResultMock();
         $entry = new ResultEntry('ldap entry', $result);
 
@@ -130,8 +130,8 @@ class ResultEntryTest extends TestCase
                ->expects($this->once())
                ->method('get_values')
                ->with($this->identicalTo($entry), 'userid')
-               ->willReturn(array('ptomulik'));
-        $this->assertSame(array('ptomulik'), $entry->get_values('userid'));
+               ->willReturn(['ptomulik']);
+        $this->assertSame(['ptomulik'], $entry->get_values('userid'));
     }
 
     public function test_next_attribute()
@@ -175,28 +175,28 @@ class ResultEntryTest extends TestCase
 
     public function test_getAttributes()
     {
-        $attributes = array(
-            'uid' => array(
+        $attributes = [
+            'uid' => [
                 0 => 'korowai',
                 'count' => 1
-            ),
-            'firstName' => array(
+            ],
+            'firstName' => [
                 0 => 'Old',
                 'count' => 1
 
-            ),
-            'sn' => array (
+            ],
+            'sn' => [
                 0 => 'Bro',
                 1 => 'Foo',
                 'count' => 2
-            ),
+            ],
             'count' => 3
-        );
-        $expected = array(
-            'uid' => array('korowai'),
-            'firstname' => array('Old'),
-            'sn' => array('Bro', 'Foo')
-        );
+        ];
+        $expected = [
+            'uid' => ['korowai'],
+            'firstname' => ['Old'],
+            'sn' => ['Bro', 'Foo']
+        ];
 
         $result = $this->getResultMock();
         $entry = new ResultEntry('ldap entry', $result);
@@ -239,7 +239,6 @@ class ResultEntryTest extends TestCase
         $this->assertSame($iterator, $iterator2);
         $this->assertEquals('second attribute', $iterator->key());
     }
-
 }
 
 // vim: syntax=php sw=4 ts=4 et:

@@ -1,10 +1,11 @@
 <?php
-/**
- * This file is part of the Korowai package
+
+/*
+ * This file is part of Korowai framework.
  *
- * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @package korowai/rfclib
- * @license Distributed under MIT license.
+ * (c) Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ *
+ * Distributed under MIT license.
  */
 
 declare(strict_types=1);
@@ -28,28 +29,28 @@ class Rfc2253Test extends TestCase
     public function test__characterClasses()
     {
         // character lists for character classes
-        $this->assertSame('A-Za-z',         Rfc2253::ALPHACHARS);
-        $this->assertSame('0-9',            Rfc2253::DIGITCHARS);
-        $this->assertSame('0-9A-Fa-f',      Rfc2253::HEXDIGCHARS);
-        $this->assertSame(',=+<>#;',        Rfc2253::SPECIALCHARS);
-        $this->assertSame('0-9A-Za-z-',     Rfc2253::KEYCHARCHARS);
+        $this->assertSame('A-Za-z', Rfc2253::ALPHACHARS);
+        $this->assertSame('0-9', Rfc2253::DIGITCHARS);
+        $this->assertSame('0-9A-Fa-f', Rfc2253::HEXDIGCHARS);
+        $this->assertSame(',=+<>#;', Rfc2253::SPECIALCHARS);
+        $this->assertSame('0-9A-Za-z-', Rfc2253::KEYCHARCHARS);
 
         // character classes
-        $this->assertSame('[A-Za-z]',       Rfc2253::ALPHA);
-        $this->assertSame('[0-9]',          Rfc2253::DIGIT);
-        $this->assertSame('[0-9A-Fa-f]',    Rfc2253::HEXCHAR);
-        $this->assertSame('[,=+<>#;]',      Rfc2253::SPECIAL);
-        $this->assertSame('[0-9A-Za-z-]',   Rfc2253::KEYCHAR);
-        $this->assertSame('[^,=+<>#;\\\\"]',Rfc2253::STRINGCHAR);
-        $this->assertSame('[^\\\\"]',       Rfc2253::QUOTECHAR);
+        $this->assertSame('[A-Za-z]', Rfc2253::ALPHA);
+        $this->assertSame('[0-9]', Rfc2253::DIGIT);
+        $this->assertSame('[0-9A-Fa-f]', Rfc2253::HEXCHAR);
+        $this->assertSame('[,=+<>#;]', Rfc2253::SPECIAL);
+        $this->assertSame('[0-9A-Za-z-]', Rfc2253::KEYCHAR);
+        $this->assertSame('[^,=+<>#;\\\\"]', Rfc2253::STRINGCHAR);
+        $this->assertSame('[^\\\\"]', Rfc2253::QUOTECHAR);
     }
 
     public function test__simpleProductions()
     {
-        $this->assertSame('(?:[0-9A-Fa-f][0-9A-Fa-f])',                             Rfc2253::HEXPAIR);
-        $this->assertSame('(?:(?:[0-9A-Fa-f][0-9A-Fa-f])+)',                        Rfc2253::HEXSTRING);
-        $this->assertSame('(?:\\\\(?:[,=+<>#;\\\\"]|(?:[0-9A-Fa-f][0-9A-Fa-f])))',  Rfc2253::PAIR);
-        $this->assertSame('(?:[0-9]+(?:\.[0-9]+)*)',                                Rfc2253::OID);
+        $this->assertSame('(?:[0-9A-Fa-f][0-9A-Fa-f])', Rfc2253::HEXPAIR);
+        $this->assertSame('(?:(?:[0-9A-Fa-f][0-9A-Fa-f])+)', Rfc2253::HEXSTRING);
+        $this->assertSame('(?:\\\\(?:[,=+<>#;\\\\"]|(?:[0-9A-Fa-f][0-9A-Fa-f])))', Rfc2253::PAIR);
+        $this->assertSame('(?:[0-9]+(?:\.[0-9]+)*)', Rfc2253::OID);
     }
 
     //

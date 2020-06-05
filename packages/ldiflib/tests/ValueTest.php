@@ -1,10 +1,11 @@
 <?php
-/**
- * This file is part of the Korowai package
+
+/*
+ * This file is part of Korowai framework.
  *
- * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @package korowai/ldiflib
- * @license Distributed under MIT license.
+ * (c) Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ *
+ * Distributed under MIT license.
  */
 
 declare(strict_types=1);
@@ -187,7 +188,7 @@ class ValueTest extends TestCase
         $this->assertSame($expect['authority'] ?? null, $uri->getAuthority());
         $this->assertSame($expect['userinfo'] ?? null, $uri->getUserInfo());
         $this->assertSame($expect['host'] ?? null, $uri->getHost());
-        $this->assertSame($expect['port'] ?? null , $uri->getPort());
+        $this->assertSame($expect['port'] ?? null, $uri->getPort());
         $this->assertSame($expect['path'] ?? null, $uri->getPath());
         $this->assertSame($expect['query'] ?? null, $uri->getQuery());
         $this->assertSame($expect['fragment'] ?? null, $uri->getFragment());

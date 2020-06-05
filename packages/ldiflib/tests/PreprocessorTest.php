@@ -1,10 +1,11 @@
 <?php
-/**
- * This file is part of the Korowai package
+
+/*
+ * This file is part of Korowai framework.
  *
- * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @package korowai/ldiflib
- * @license Distributed under MIT license.
+ * (c) Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ *
+ * Distributed under MIT license.
  */
 
 declare(strict_types=1);
@@ -17,7 +18,6 @@ use Korowai\Lib\Ldif\Input;
 use Korowai\Lib\Ldif\Util\IndexMap;
 
 use Korowai\Testing\Ldiflib\TestCase;
-
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -95,7 +95,7 @@ class PreprocessorTest extends TestCase
         //      00000000001 111111 111222222 22223333 3 33333444444 4444555555
         //      01234567890 123456 789012345 67890123 4 56789012345 6789012345
         $src = "# comment 1\nfirst\n  second\n  third\n\n# two-line\n  comment";
-        $str = Preprocessor::rmRe('/\n /m',$src, $im);
+        $str = Preprocessor::rmRe('/\n /m', $src, $im);
         //                         00000000001 1111111112222222222 3 3333333334444444444
         //                         01234567890 1234567890123456789 0 1234567890123456789
         $this->assertSame("# comment 1\nfirst second third\n\n# two-line comment", $str);

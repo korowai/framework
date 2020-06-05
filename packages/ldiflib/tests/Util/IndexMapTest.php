@@ -1,10 +1,11 @@
 <?php
-/**
- * This file is part of the Korowai package
+
+/*
+ * This file is part of Korowai framework.
  *
- * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @package korowai/ldiflib
- * @license Distributed under MIT license.
+ * (c) Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ *
+ * Distributed under MIT license.
  */
 
 declare(strict_types=1);
@@ -227,7 +228,7 @@ class IndexMapTest extends TestCase
 
     public function indexMapCases()
     {
-        return array_map(function(array $item) {
+        return array_map(function (array $item) {
             return [new IndexMap(...($item[0])), $item[1]];
         }, $this->arrayIndexMapCases());
     }
@@ -256,12 +257,12 @@ class IndexMapTest extends TestCase
         $im->expects($this->once())
            ->method('apply')
            ->with(3)
-           ->willReturnCallback(function(int $i, int &$index = null) {
+           ->willReturnCallback(function (int $i, int &$index = null) {
                $index = 123;
                return 7;
            });
 
-        $this->assertEquals(7, $im(3,$index));
+        $this->assertEquals(7, $im(3, $index));
         $this->assertEquals(123, $index);
     }
 

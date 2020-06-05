@@ -1,10 +1,11 @@
 <?php
-/**
- * This file is part of the Korowai package
+
+/*
+ * This file is part of Korowai framework.
  *
- * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @package korowai/ldiflib
- * @license Distributed under MIT license.
+ * (c) Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ *
+ * Distributed under MIT license.
  */
 
 declare(strict_types=1);
@@ -63,7 +64,6 @@ class NewRdnSpecRuleTest extends TestCase
     public static function parseMatched__cases()
     {
         $safeStringCases = array_map(function ($case) {
-
             $rdn = $case[0];
             $result = $case[1];
             //          0234567
@@ -95,7 +95,6 @@ class NewRdnSpecRuleTest extends TestCase
         }, static::rdnMatch__cases());
 
         $base64StringCases = array_map(function ($case) {
-
             $rdn = $case[0];
             $dnBase64 = base64_encode($rdn);
             $result = $case[1];
@@ -128,7 +127,6 @@ class NewRdnSpecRuleTest extends TestCase
         }, static::rdnMatch__cases());
 
         $invalidBase64StringCases = array_map(function ($case) {
-
             $dnBase64 = $case[0];
             $result = false;
             //          02345678
@@ -165,7 +163,6 @@ class NewRdnSpecRuleTest extends TestCase
         ]);
 
         $base64InvalidUtf8StringCases = array_map(function ($case) {
-
             $dnBase64 = $case[0];
             $result = false;
             //          02345678
@@ -202,7 +199,6 @@ class NewRdnSpecRuleTest extends TestCase
         ]);
 
         $malformedStringCases = array_map(function ($case) {
-
             $sep = $case[0];
             $rdn = $case[1];
             $result = false;
@@ -355,7 +351,6 @@ class NewRdnSpecRuleTest extends TestCase
 
 
         $safeStringCases = array_map(function ($case) {
-
             $rdn = $case[0];
             $result = $case[1];
             //          0234567
@@ -390,7 +385,6 @@ class NewRdnSpecRuleTest extends TestCase
         }, static::rdnMatch__cases());
 
         $base64StringCases = array_map(function ($case) {
-
             $rdn = $case[0];
             $dnBase64 = base64_encode($rdn);
             $result = $case[1];
@@ -426,7 +420,6 @@ class NewRdnSpecRuleTest extends TestCase
         }, static::rdnMatch__cases());
 
         $invalidBase64StringCases = array_map(function ($case) {
-
             $dnBase64 = $case[0];
             $result = false;
             //          02345678
@@ -466,7 +459,6 @@ class NewRdnSpecRuleTest extends TestCase
         ]);
 
         $base64InvalidUtf8StringCases = array_map(function ($case) {
-
             $dnBase64 = $case[0];
             $result = false;
             //          02345678
@@ -506,7 +498,6 @@ class NewRdnSpecRuleTest extends TestCase
         ]);
 
         $malformedStringCases = array_map(function ($case) {
-
             $sep = $case[0];
             $rdn = $case[1];
             $result = false;

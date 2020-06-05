@@ -1,10 +1,11 @@
 <?php
-/**
- * This file is part of the Korowai package
+
+/*
+ * This file is part of Korowai framework.
  *
- * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @package korowai/ldaplib
- * @license Distributed under MIT license.
+ * (c) Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ *
+ * Distributed under MIT license.
  */
 
 declare(strict_types=1);
@@ -16,7 +17,6 @@ use Korowai\Testing\TestCase;
 use Korowai\Lib\Ldap\Adapter\ResultReferralIterator;
 use Korowai\Lib\Ldap\Adapter\ReferralsIterationInterface;
 use Korowai\Lib\Ldap\Adapter\ResultReferralIteratorInterface;
-
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -44,19 +44,27 @@ class ResultReferralIteratorTest extends TestCase
         $reference->expects($this->exactly(2))
               ->method('referrals_next')
               ->with()
-              ->will($this->returnCallback(function () use (&$referrals) { next($referrals); }));
+              ->will($this->returnCallback(function () use (&$referrals) {
+                  next($referrals);
+              }));
         $reference->expects($this->exactly(8))
               ->method('referrals_key')
               ->with()
-              ->will($this->returnCallback(function () use (&$referrals) { return key($referrals); }));
+              ->will($this->returnCallback(function () use (&$referrals) {
+                  return key($referrals);
+              }));
         $reference->expects($this->exactly(4))
               ->method('referrals_current')
               ->with()
-              ->will($this->returnCallback(function () use (&$referrals) { return current($referrals); }));
+              ->will($this->returnCallback(function () use (&$referrals) {
+                  return current($referrals);
+              }));
         $reference->expects($this->exactly(1))
               ->method('referrals_reset')
               ->with()
-              ->will($this->returnCallback(function () use (&$referrals) { return reset($referrals); }));
+              ->will($this->returnCallback(function () use (&$referrals) {
+                  return reset($referrals);
+              }));
 
         $this->assertSame(0, $iterator->key());
         $this->assertSame('A', $iterator->current());

@@ -101,7 +101,7 @@ class ResultEntry extends AbstractResultRecord implements ResultEntryInterface
      * @param  string $dn
      * @param  array $attributes
      */
-    public function __construct(string $dn, array $attributes = array())
+    public function __construct(string $dn, array $attributes = [])
     {
         $this->initResultRecord($dn);
         $this->attributes = $attributes;

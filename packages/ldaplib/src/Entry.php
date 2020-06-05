@@ -29,7 +29,7 @@ class Entry implements EntryInterface
      *
      * @throws \TypeError
      */
-    public function __construct(string $dn, array $attributes = array())
+    public function __construct(string $dn, array $attributes = [])
     {
         $this->setDn($dn);
         $this->validateAttributes($attributes);

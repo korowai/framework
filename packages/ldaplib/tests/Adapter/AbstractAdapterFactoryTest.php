@@ -1,10 +1,11 @@
 <?php
-/**
- * This file is part of the Korowai package
+
+/*
+ * This file is part of Korowai framework.
  *
- * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @package korowai/ldaplib
- * @license Distributed under MIT license.
+ * (c) Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ *
+ * Distributed under MIT license.
  */
 
 declare(strict_types=1);
@@ -22,26 +23,26 @@ class AbstractAdapterFactoryTest extends TestCase
 {
     public static function getDefaultConfig()
     {
-        return array(
+        return [
             'host' => 'localhost',
             'uri'  => 'ldap://localhost',
             'port' => 389,
             'encryption' => 'none',
-            'options' => array()
-        );
+            'options' => []
+        ];
     }
 
-    private function getAbstractAdapterFactoryMock($ctor = true, array $methods = array())
+    private function getAbstractAdapterFactoryMock($ctor = true, array $methods = [])
     {
         $builder = $this->getMockBuilder(AbstractAdapterFactory::class);
 
-        if(!$ctor) {
+        if (!$ctor) {
             $builder->disableOriginalConstructor();
-        } elseif(is_array($ctor)) {
+        } elseif (is_array($ctor)) {
             $builder->setConstructorArgs($ctor);
         }
 
-        if(!in_array('configureNestedOptionsResolver', $methods)) {
+        if (!in_array('configureNestedOptionsResolver', $methods)) {
             $methods[] = 'configureNestedOptionsResolver';
         }
         $builder->setMethods($methods);
@@ -50,8 +51,8 @@ class AbstractAdapterFactoryTest extends TestCase
 
     public function test_configure_CtorWithConfig()
     {
-        $config = array('host' => 'korowai.org');
-        $factory = $this->getAbstractAdapterFactoryMock(false, array('configure'));
+        $config = ['host' => 'korowai.org'];
+        $factory = $this->getAbstractAdapterFactoryMock(false, ['configure']);
         $factory->expects($this->once())
                 ->method('configure')
                 ->with($config);
@@ -66,25 +67,25 @@ class AbstractAdapterFactoryTest extends TestCase
 
         $factory = $this->getAbstractAdapterFactoryMock(
             true,
-            array('configureOptionsResolver')
+            ['configureOptionsResolver']
         );
 
         $factory->expects($this->once())
                 ->method('configureOptionsResolver')
                 ->with($this->isInstanceOf(OptionsResolver::class))
-                ->willReturnCallback(function(OptionsResolver $r) use (&$resolver) {
+                ->willReturnCallback(function (OptionsResolver $r) use (&$resolver) {
                     $resolver = $r;
                 });
 
         $factory->expects($this->once())
                 ->method('configureNestedOptionsResolver')
                 ->with($this->isInstanceOf(OptionsResolver::class))
-                ->willReturnCallback(function(OptionsResolver $r) use (&$nestedResolver) {
+                ->willReturnCallback(function (OptionsResolver $r) use (&$nestedResolver) {
                     $nestedResolver = $r;
                 });
 
-        $factory->configure(array());
-        $expected = array('options' => array());
+        $factory->configure([]);
+        $expected = ['options' => []];
         $this->assertInstanceOf(OptionsResolver::class, $resolver);
         $this->assertInstanceOf(OptionsResolver::class, $nestedResolver);
         $this->assertNotSame($resolver, $nestedResolver);
@@ -95,7 +96,7 @@ class AbstractAdapterFactoryTest extends TestCase
     {
         $factory = $this->getAbstractAdapterFactoryMock();
 
-        $factory->configure(array());
+        $factory->configure([]);
 
         $expected = $this->getDefaultConfig();
         $this->assertEquals($expected, $factory->getConfig());
@@ -105,7 +106,7 @@ class AbstractAdapterFactoryTest extends TestCase
     {
         $factory = $this->getAbstractAdapterFactoryMock();
 
-        $factory->configure(array('host' => 'korowai.org'));
+        $factory->configure(['host' => 'korowai.org']);
 
         $expected = $this->getDefaultConfig();
         $expected['host'] = 'korowai.org';
@@ -117,7 +118,7 @@ class AbstractAdapterFactoryTest extends TestCase
     {
         $factory = $this->getAbstractAdapterFactoryMock();
 
-        $factory->configure(array('host' => 'korowai.org', 'encryption' => 'ssl'));
+        $factory->configure(['host' => 'korowai.org', 'encryption' => 'ssl']);
 
         $expected = $this->getDefaultConfig();
         $expected['host'] = 'korowai.org';
@@ -131,7 +132,7 @@ class AbstractAdapterFactoryTest extends TestCase
     {
         $factory = $this->getAbstractAdapterFactoryMock();
 
-        $factory->configure(array('host' => 'korowai.org', 'encryption' => 'ssl', 'port' => 123));
+        $factory->configure(['host' => 'korowai.org', 'encryption' => 'ssl', 'port' => 123]);
 
         $expected = $this->getDefaultConfig();
         $expected['host'] = 'korowai.org';
@@ -147,11 +148,11 @@ class AbstractAdapterFactoryTest extends TestCase
 
         $factory->expects($this->once())
                 ->method('configureNestedOptionsResolver')
-                ->willReturnCallback(function($resolver) {
+                ->willReturnCallback(function ($resolver) {
                     $resolver->setDefault('protocol_version', 3);
                 });
 
-        $factory->configure(array());
+        $factory->configure([]);
 
         $expected = $this->getDefaultConfig();
         $expected['options']['protocol_version'] = 3;

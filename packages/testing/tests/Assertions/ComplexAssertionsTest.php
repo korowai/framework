@@ -1,10 +1,11 @@
 <?php
-/**
- * This file is part of the Korowai package
+
+/*
+ * This file is part of Korowai framework.
  *
- * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @package korowai/testing
- * @license Distributed under MIT license.
+ * (c) Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ *
+ * Distributed under MIT license.
  */
 
 declare(strict_types=1);
@@ -101,15 +102,19 @@ class ComplexAssertionsTest extends TestCase
 
         $test->expects($this->exactly(3))
              ->method('assertFoo')
-             ->withConsecutive(['F', 'F', 'Lorem ipsum'],
-                               ['O', 'o', 'Lorem ipsum'],
-                               ['O', 'o', 'Lorem ipsum']);
+             ->withConsecutive(
+                 ['F', 'F', 'Lorem ipsum'],
+                 ['O', 'o', 'Lorem ipsum'],
+                 ['O', 'o', 'Lorem ipsum']
+             );
 
         $test->expects($this->exactly(3))
              ->method('assertBar')
-             ->withConsecutive(['B', 'B', 'Lorem ipsum'],
-                               ['A', 'a', 'Lorem ipsum'],
-                               ['R', 'r', 'Lorem ipsum']);
+             ->withConsecutive(
+                 ['B', 'B', 'Lorem ipsum'],
+                 ['A', 'a', 'Lorem ipsum'],
+                 ['R', 'r', 'Lorem ipsum']
+             );
 
         $test->expects($this->never())
              ->method('assertQux');

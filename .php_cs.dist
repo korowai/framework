@@ -12,6 +12,8 @@ $finder = PhpCsFixer\Finder::create()
     ->files()
     ->in(__DIR__ . '/src')
     ->in(__DIR__ . '/packages/*/src')
+    ->in(__DIR__ . '/packages/*/tests')
+    ->in(__DIR__ . '/packages/*/tests-nocov')
     ->in(__DIR__ . '/packages/*/Testing')
     ->in(__DIR__ . '/packages/*/Behat')
     ->name('*.php')
@@ -27,6 +29,7 @@ return PhpCsFixer\Config::create()
             'header' => $header,
             'location' => 'after_open',
         ],
+        'array_syntax' => ['syntax' => 'short'],
     ])
 ;
 // vim: syntax=php sw=4 ts=4 et:

@@ -85,7 +85,7 @@ class ExtLdapContext implements Context
      */
     public function iAmConnectedToUri($uri)
     {
-        $config = array('uri' => $uri);
+        $config = ['uri' => $uri];
         try {
             $this->ldap = Ldap::createWithConfig($config);
         } catch (\Exception $e) {

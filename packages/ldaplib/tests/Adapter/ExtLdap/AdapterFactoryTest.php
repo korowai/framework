@@ -1,10 +1,11 @@
 <?php
-/**
- * This file is part of the Korowai package
+
+/*
+ * This file is part of Korowai framework.
  *
- * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @package korowai/ldaplib
- * @license Distributed under MIT license.
+ * (c) Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ *
+ * Distributed under MIT license.
  */
 
 declare(strict_types=1);
@@ -61,7 +62,7 @@ class AdapterFactoryTest extends TestCase
              ->expects($this->never());
 
         $factory = new AdapterFactory;
-        $factory->configure(array());
+        $factory->configure([]);
 
         $this->expectException(\Korowai\Lib\Ldap\Exception\LdapException::class);
         $this->expectExceptionMessage('Error message');
@@ -84,7 +85,7 @@ class AdapterFactoryTest extends TestCase
              ->expects($this->never());
 
         $factory = new AdapterFactory;
-        $factory->configure(array());
+        $factory->configure([]);
 
         $this->expectException(\Korowai\Lib\Ldap\Exception\LdapException::class);
         $this->expectExceptionMessage('Failed to create LDAP connection');
@@ -101,7 +102,7 @@ class AdapterFactoryTest extends TestCase
         $this->getLdapFunctionMock("ldap_connect")
              ->expects($this->once())
              ->with('ldap://localhost')
-             ->willReturnCallback(function(...$args) {
+             ->willReturnCallback(function (...$args) {
                  return \ldap_connect(...$args);
              });
 
@@ -120,7 +121,7 @@ class AdapterFactoryTest extends TestCase
              ->willReturn("Error message");
 
         $factory = new AdapterFactory;
-        $factory->configure(array());
+        $factory->configure([]);
 
         $this->expectException(\Korowai\Lib\Ldap\Exception\LdapException::class);
         $this->expectExceptionMessage('Error message');
@@ -132,12 +133,11 @@ class AdapterFactoryTest extends TestCase
     public function test_createAdapter()
     {
         $factory = new AdapterFactory;
-        $factory->configure(array());
+        $factory->configure([]);
         $adapter = $factory->createAdapter();
         $this->assertInstanceOf(Adapter::class, $adapter);
         $this->assertTrue($adapter->getLdapLink()->isValid());
     }
-
 }
 
 // vim: syntax=php sw=4 ts=4 et:

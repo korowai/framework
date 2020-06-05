@@ -1,10 +1,11 @@
 <?php
-/**
- * This file is part of the Korowai package
+
+/*
+ * This file is part of Korowai framework.
  *
- * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @package korowai/ldaplib
- * @license Distributed under MIT license.
+ * (c) Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ *
+ * Distributed under MIT license.
  */
 
 declare(strict_types=1);
@@ -44,21 +45,21 @@ class EntryTest extends TestCase
     {
         $entry = new Entry('dc=example,dc=com');
         $this->assertSame('dc=example,dc=com', $entry->getDn());
-        $this->assertSame(array(), $entry->getAttributes());
+        $this->assertSame([], $entry->getAttributes());
     }
 
     public function test__construct__1()
     {
-        $entry = new Entry('dc=example,dc=com', array());
+        $entry = new Entry('dc=example,dc=com', []);
         $this->assertSame('dc=example,dc=com', $entry->getDn());
-        $this->assertSame(array(), $entry->getAttributes());
+        $this->assertSame([], $entry->getAttributes());
     }
 
     public function test__construct__2()
     {
-        $entry = new Entry('dc=example,dc=com', array('userid' => array('ptomulik')));
+        $entry = new Entry('dc=example,dc=com', ['userid' => ['ptomulik']]);
         $this->assertSame('dc=example,dc=com', $entry->getDn());
-        $this->assertSame(array('userid' => array('ptomulik')), $entry->getAttributes());
+        $this->assertSame(['userid' => ['ptomulik']], $entry->getAttributes());
     }
 
     public function test__construct__InvalidAttributes_1()
@@ -132,8 +133,8 @@ class EntryTest extends TestCase
 
     public function test__getAttribute__Existent()
     {
-        $entry = new Entry('dc=example,dc=com', array('userid' => array('ptomulik')));
-        $this->assertSame(array('ptomulik'), $entry->getAttribute('userid'));
+        $entry = new Entry('dc=example,dc=com', ['userid' => ['ptomulik']]);
+        $this->assertSame(['ptomulik'], $entry->getAttribute('userid'));
     }
 
     public function test__hasAttribute__Inexistent()
@@ -144,7 +145,7 @@ class EntryTest extends TestCase
 
     public function test__hasAttribute__Existent()
     {
-        $entry = new Entry('dc=example,dc=com', array( 'userid' => array('ptomulik') ));
+        $entry = new Entry('dc=example,dc=com', [ 'userid' => ['ptomulik'] ]);
         $this->assertTrue($entry->hasAttribute('userid'));
         $this->assertFalse($entry->hasAttribute('userpassword'));
     }
@@ -152,14 +153,14 @@ class EntryTest extends TestCase
     public function test__setAttributes__1()
     {
         $entry = new Entry('dc=example,dc=com');
-        $entry->setAttributes(array('userid' => array('ptomulik'), 'userpassword' => array('secret')));
-        $this->assertSame(array('userid' => array('ptomulik'), 'userpassword' => array('secret')), $entry->getAttributes());
+        $entry->setAttributes(['userid' => ['ptomulik'], 'userpassword' => ['secret']]);
+        $this->assertSame(['userid' => ['ptomulik'], 'userpassword' => ['secret']], $entry->getAttributes());
     }
 
     public function test__setAttributes__2()
     {
-        $initial = array('userid' => array('ptomulik'), 'userpassword' => array('secret'));
-        $extra = array('description' => array('Some text'));
+        $initial = ['userid' => ['ptomulik'], 'userpassword' => ['secret']];
+        $extra = ['description' => ['Some text']];
         $final = $initial + $extra;
         $entry = new Entry('dc=example,dc=com', $initial);
         $entry->setAttributes($extra);
@@ -183,7 +184,7 @@ class EntryTest extends TestCase
         $this->expectException(\TypeError::class);
         $this->expectExceptionMessageMatches('/Argument 1 .+::validateAttribute\(\) .+ int(eger)? given/');
 
-        $entry->setAttributes(array('userid'));
+        $entry->setAttributes(['userid']);
     }
 
     public function test__setAttributes__Invalid_3()
@@ -193,14 +194,14 @@ class EntryTest extends TestCase
         $this->expectException(\TypeError::class);
         $this->expectExceptionMessageMatches('/Argument 2 .+::validateAttribute\(\) .+ string given/');
 
-        $entry->setAttributes(array('userid' => 'ptomulik'));
+        $entry->setAttributes(['userid' => 'ptomulik']);
     }
 
     public function test__setAttribute()
     {
         $entry = new Entry('dc=example,dc=com');
-        $entry->setAttribute('userid', array('ptomulik'));
-        $this->assertSame(array('userid' => array('ptomulik')), $entry->getAttributes());
+        $entry->setAttribute('userid', ['ptomulik']);
+        $this->assertSame(['userid' => ['ptomulik']], $entry->getAttributes());
     }
 
     public function test__setAttribute__Invalid_1()
@@ -210,7 +211,7 @@ class EntryTest extends TestCase
         $this->expectException(\TypeError::class);
         $this->expectExceptionMessageMatches('/Argument 1 .+::setAttribute\(\) .+ int(eger)? given/');
 
-        $entry->setAttribute(123, array('ptomulik'));
+        $entry->setAttribute(123, ['ptomulik']);
     }
 
     public function test__setAttribute__Invalid_2()
@@ -237,12 +238,12 @@ class EntryTest extends TestCase
 
     public function test__setAttribute__Invalid_4()
     {
-        $attrs = array('userid' => array('ptomulik'));
+        $attrs = ['userid' => ['ptomulik']];
         $entry = new Entry('dc=example,dc=com', $attrs);
         try {
             // one attribute (userpassword) is valid, but another (description) is invalid
-            $entry->setAttributes(array('userpassword' => array('secret'), 'descrition' => 'failure'));
-        } catch(\TypeError $e) {
+            $entry->setAttributes(['userpassword' => ['secret'], 'descrition' => 'failure']);
+        } catch (\TypeError $e) {
         }
         // the entry must be left unchanged
         $this->assertSame($attrs, $entry->getAttributes());

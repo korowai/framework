@@ -1,10 +1,11 @@
 <?php
-/**
- * This file is part of the Korowai package
+
+/*
+ * This file is part of Korowai framework.
  *
- * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @package korowai/rfclib
- * @license Distributed under MIT license.
+ * (c) Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ *
+ * Distributed under MIT license.
  */
 
 declare(strict_types=1);
@@ -131,7 +132,7 @@ class Rfc8089Test extends TestCase
     {
         $cases = [];
         $inheritedCases = [];
-        foreach(Rfc3986Test::PATH_ABSOLUTE__cases() as $path) {
+        foreach (Rfc3986Test::PATH_ABSOLUTE__cases() as $path) {
             $inheritedCases[] = static::transformPregTuple($path, [
                 'merge' => [
                     'auth_path' => [$path[0], 0],
@@ -183,7 +184,7 @@ class Rfc8089Test extends TestCase
     {
         $cases = [];
         $inheritedCases = [];
-        foreach(self::AUTH_PATH__cases() as $authPath) {
+        foreach (self::AUTH_PATH__cases() as $authPath) {
             $inheritedCases[] = static::transformPregTuple($authPath, [
                 'prefix' => '//',
                 'merge' => [
@@ -192,7 +193,7 @@ class Rfc8089Test extends TestCase
                 ]
             ]);
         }
-        foreach(self::LOCAL_PATH__cases() as $localPath) {
+        foreach (self::LOCAL_PATH__cases() as $localPath) {
             $inheritedCases[] = static::transformPregTuple($localPath, [
                 'merge' => [
                     'file_hier_part' => [$localPath[0], 0],
@@ -277,7 +278,7 @@ class Rfc8089Test extends TestCase
         $fileScheme = ['file', ['file_scheme' => ['file', 0]]];
 
         $inheritedCases = [];
-        foreach(self::FILE_HIER_PART__cases() as $hierPart) {
+        foreach (self::FILE_HIER_PART__cases() as $hierPart) {
             $inheritedCases[] = static::joinPregTuples([$fileScheme, $hierPart], [
                 'glue' => ':',
                 'merge' => [

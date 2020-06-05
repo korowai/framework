@@ -1,10 +1,11 @@
 <?php
-/**
- * This file is part of the Korowai package
+
+/*
+ * This file is part of Korowai framework.
  *
- * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @package korowai/ldiflib
- * @license Distributed under MIT license.
+ * (c) Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ *
+ * Distributed under MIT license.
  */
 
 declare(strict_types=1);
@@ -16,7 +17,6 @@ use Korowai\Lib\Ldif\AttrValSpecsInterface;
 
 use Korowai\Testing\Ldiflib\TestCase;
 
-
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
@@ -24,7 +24,9 @@ class HasAttrValSpecsTest extends TestCase
 {
     public function getTestObject()
     {
-        return new class implements AttrValSpecsInterface { use HasAttrValSpecs; };
+        return new class implements AttrValSpecsInterface {
+            use HasAttrValSpecs;
+        };
     }
 
     public function test__attrValSpecs()

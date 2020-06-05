@@ -1,10 +1,11 @@
 <?php
-/**
- * This file is part of the Korowai package
+
+/*
+ * This file is part of Korowai framework.
  *
- * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @package korowai/ldaplib
- * @license Distributed under MIT license.
+ * (c) Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ *
+ * Distributed under MIT license.
  */
 
 declare(strict_types=1);
@@ -17,7 +18,6 @@ use Korowai\Lib\Ldap\Adapter\Mock\ResultReferenceIterator;
 use Korowai\Lib\Ldap\Adapter\Mock\ResultReference;
 use Korowai\Lib\Ldap\Adapter\Mock\Result;
 use Korowai\Lib\Ldap\Adapter\ResultReferenceIteratorInterface;
-
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -105,7 +105,7 @@ class ResultReferenceIteratorTest extends TestCase
 
         $result->expects($this->exactly(2))
                ->method('references_current')
-               ->withConsecutive([],[])
+               ->withConsecutive([], [])
                ->will($this->onConsecutiveCalls($reference, false));
 
         $reference->expects($this->once())

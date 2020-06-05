@@ -1,10 +1,11 @@
 <?php
-/**
- * This file is part of the Korowai package
+
+/*
+ * This file is part of Korowai framework.
  *
- * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @package korowai/ldaplib
- * @license Distributed under MIT license.
+ * (c) Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ *
+ * Distributed under MIT license.
  */
 
 declare(strict_types=1);
@@ -20,18 +21,18 @@ use Korowai\Lib\Ldap\Entry;
  */
 class ResultEntryToEntryTest extends TestCase
 {
-    private function getResultEntryToEntryMock($ctor = true, array $methods = array())
+    private function getResultEntryToEntryMock($ctor = true, array $methods = [])
     {
         $builder = $this->getMockBuilder(ResultEntryToEntry::class);
 
-        if(!$ctor) {
+        if (!$ctor) {
             $builder->disableOriginalConstructor();
-        } elseif(is_array($ctor)) {
+        } elseif (is_array($ctor)) {
             $builder->setConstructorArgs($ctor);
         }
 
-        foreach(['getDn', 'getAttributes'] as $method) {
-            if(!in_array($method, $methods)) {
+        foreach (['getDn', 'getAttributes'] as $method) {
+            if (!in_array($method, $methods)) {
                 $methods[] = $method;
             }
         }
@@ -42,11 +43,11 @@ class ResultEntryToEntryTest extends TestCase
     public function test__toEntry()
     {
         $dn = 'uid=jsmith,ou=people,dc=korowai,dc=org';
-        $attributes = array(
-            'uid' => array('jsmith'),
-            'firstName' => array('John'),
-            'sn' => array('Smith')
-        );
+        $attributes = [
+            'uid' => ['jsmith'],
+            'firstName' => ['John'],
+            'sn' => ['Smith']
+        ];
 
         $abstract= $this->getResultEntryToEntryMock();
         $abstract->expects($this->once())

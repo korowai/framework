@@ -1,10 +1,11 @@
 <?php
-/**
- * This file is part of the Korowai package
+
+/*
+ * This file is part of Korowai framework.
  *
- * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @package korowai/contracts
- * @license Distributed under MIT license.
+ * (c) Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ *
+ * Distributed under MIT license.
  */
 
 declare(strict_types=1);
@@ -16,7 +17,6 @@ use Korowai\Lib\Ldif\Rules\DnSpecRuleInterface;
 use Korowai\Lib\Ldif\Rules\SepRuleInterface;
 use Korowai\Lib\Ldif\Rules\ControlRuleInterface;
 use Korowai\Lib\Ldif\Rules\ChangeRecordInitRuleInterface;
-
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

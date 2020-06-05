@@ -1,10 +1,11 @@
 <?php
-/**
- * This file is part of the Korowai package
+
+/*
+ * This file is part of Korowai framework.
  *
- * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @package korowai/compatlib
- * @license Distributed under MIT license.
+ * (c) Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ *
+ * Distributed under MIT license.
  */
 
 declare(strict_types=1);
@@ -242,7 +243,9 @@ class FunctionsTest extends TestCase
 
     public function test__preg_replace_callback()
     {
-        $cb = function (array $matches) : string { return 'bar'; };
+        $cb = function (array $matches) : string {
+            return 'bar';
+        };
 
         $this->assertSame('foo bar', preg_replace_callback('/baz/', $cb, 'foo baz'));
         $this->assertSame('foo bar baz', preg_replace_callback('/baz/', $cb, 'foo baz baz', 1));
@@ -255,7 +258,9 @@ class FunctionsTest extends TestCase
         $this->expectException(PregException::class);
         $this->expectExceptionMessage("preg_replace_callback(): No ending delimiter '*' found");
 
-        $cb = function (array $matches) : string { return 'bar'; };
+        $cb = function (array $matches) : string {
+            return 'bar';
+        };
         try {
             $line = 1 + __line__;
             preg_replace_callback('*', $cb, 'foo');
@@ -271,7 +276,9 @@ class FunctionsTest extends TestCase
         $this->expectException(PregException::class);
         $this->expectExceptionMessage('preg_replace_callback(): Backtrack limit exhaused');
 
-        $cb = function (array $matches) : string { return 'bar'; };
+        $cb = function (array $matches) : string {
+            return 'bar';
+        };
         try {
             $line = 1 + __line__;
             preg_replace_callback('/(?:\D+|<\d+>)*[!?]/', $cb, 'foobar foobar foobar');
@@ -284,7 +291,9 @@ class FunctionsTest extends TestCase
 
     public function test__preg_replace_callback_array()
     {
-        $pac = ['/baz/' => function (array $matches) : string { return 'bar'; }];
+        $pac = ['/baz/' => function (array $matches) : string {
+            return 'bar';
+        }];
 
         $this->assertSame('foo bar', preg_replace_callback_array($pac, 'foo baz'));
         $this->assertSame('foo bar baz', preg_replace_callback_array($pac, 'foo baz baz', 1));
@@ -297,7 +306,9 @@ class FunctionsTest extends TestCase
         $this->expectException(PregException::class);
         $this->expectExceptionMessage("preg_replace_callback_array(): No ending delimiter '*' found");
 
-        $pac = ['*' => function (array $matches) : string { return 'bar'; }];
+        $pac = ['*' => function (array $matches) : string {
+            return 'bar';
+        }];
         try {
             $line = 1 + __line__;
             preg_replace_callback_array($pac, 'foo');
@@ -313,7 +324,9 @@ class FunctionsTest extends TestCase
         $this->expectException(PregException::class);
         $this->expectExceptionMessage('preg_replace_callback_array(): Backtrack limit exhaused');
 
-        $pac = ['/(?:\D+|<\d+>)*[!?]/' => function (array $matches) : string { return 'bar'; }];
+        $pac = ['/(?:\D+|<\d+>)*[!?]/' => function (array $matches) : string {
+            return 'bar';
+        }];
         try {
             $line = 1 + __line__;
             preg_replace_callback_array($pac, 'foobar foobar foobar');

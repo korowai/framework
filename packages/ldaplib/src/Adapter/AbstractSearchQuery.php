@@ -37,7 +37,7 @@ abstract class AbstractSearchQuery implements SearchQueryInterface
      * @param  string $filter
      * @param  array $options
      */
-    public function __construct(string $base_dn, string $filter, array $options = array())
+    public function __construct(string $base_dn, string $filter, array $options = [])
     {
         $this->base_dn = $base_dn;
         $this->filter = $filter;
@@ -52,14 +52,14 @@ abstract class AbstractSearchQuery implements SearchQueryInterface
      */
     public static function getDefaultOptions() : array
     {
-        return array(
+        return [
             'scope' => 'sub',
             'attributes' => '*',
             'attrsOnly' => 0,
             'deref' => 'never',
             'sizeLimit' => 0,
             'timeLimit' => 0,
-        );
+        ];
     }
 
     /**
@@ -130,11 +130,11 @@ abstract class AbstractSearchQuery implements SearchQueryInterface
     {
         $resolver->setDefaults(static::getDefaultOptions());
 
-        $resolver->setAllowedValues('scope', array('base', 'one', 'sub'));
-        $resolver->setAllowedValues('deref', array('always', 'never', 'finding', 'searching'));
+        $resolver->setAllowedValues('scope', ['base', 'one', 'sub']);
+        $resolver->setAllowedValues('deref', ['always', 'never', 'finding', 'searching']);
 
         $resolver->setNormalizer('attributes', function (Options $optins, $value) {
-            return is_array($value) ? $value : array($value);
+            return is_array($value) ? $value : [$value];
         });
     }
 }

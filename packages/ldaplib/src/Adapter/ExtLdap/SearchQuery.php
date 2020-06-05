@@ -35,7 +35,7 @@ class SearchQuery extends AbstractSearchQuery
     /**
      * Constructs SearchQuery
      */
-    public function __construct(LdapLink $link, string $base_dn, string $filter, array $options = array())
+    public function __construct(LdapLink $link, string $base_dn, string $filter, array $options = [])
     {
         $this->link  = $link;
         parent::__construct($base_dn, $filter, $options);
@@ -92,7 +92,7 @@ class SearchQuery extends AbstractSearchQuery
     {
         $options = $this->getOptions();
         $result = call_user_func(
-            array($this->getLink(), $func),
+            [$this->getLink(), $func],
             $this->getBaseDn(),
             $this->getFilter(),
             $options['attributes'],

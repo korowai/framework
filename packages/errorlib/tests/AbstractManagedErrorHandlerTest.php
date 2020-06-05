@@ -1,10 +1,11 @@
 <?php
-/**
- * This file is part of the Korowai package
+
+/*
+ * This file is part of Korowai framework.
  *
- * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @package korowai/errorlib
- * @license Distributed under MIT license.
+ * (c) Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ *
+ * Distributed under MIT license.
  */
 
 declare(strict_types=1);
@@ -38,7 +39,7 @@ class AbstractManagedErrorHandlerTest extends TestCase
     {
         $handler = $this->getMockBuilder(AbstractManagedErrorHandler::class)
                         ->getMockForAbstractClass();
-        $this->assertEquals(E_ALL | E_STRICT,  $handler->getErrorTypes());
+        $this->assertEquals(E_ALL | E_STRICT, $handler->getErrorTypes());
     }
 
     public function test__construct__withArgument()
@@ -46,7 +47,7 @@ class AbstractManagedErrorHandlerTest extends TestCase
         $handler = $this->getMockBuilder(AbstractManagedErrorHandler::class)
                         ->setConstructorArgs([123])
                         ->getMockForAbstractClass();
-        $this->assertEquals(123,  $handler->getErrorTypes());
+        $this->assertEquals(123, $handler->getErrorTypes());
     }
 
     /**

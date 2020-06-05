@@ -1,10 +1,11 @@
 <?php
-/**
- * This file is part of the Korowai package
+
+/*
+ * This file is part of Korowai framework.
  *
- * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @package korowai/ldaplib
- * @license Distributed under MIT license.
+ * (c) Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ *
+ * Distributed under MIT license.
  */
 
 declare(strict_types=1);
@@ -24,7 +25,9 @@ use Korowai\Lib\Ldap\Adapter\SearchQueryInterface;
 use Korowai\Lib\Ldap\Adapter\CompareQueryInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\Adapter;
 
-class SomeClass {}
+class SomeClass
+{
+}
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -35,7 +38,8 @@ class LdapTest extends TestCase
     {
         return $this->getMockBuilder(AdapterFactoryInterface::class)
                     ->setMethods(['configure', 'createAdapter'])
-                    ->getMock();;
+                    ->getMock();
+        ;
     }
 
     private function getAdapterMock()
@@ -103,7 +107,7 @@ class LdapTest extends TestCase
 
     public function test__createWithConfig()
     {
-        $ldap = Ldap::createWithConfig(array('host' => 'korowai.org'));
+        $ldap = Ldap::createWithConfig(['host' => 'korowai.org']);
         $this->assertInstanceOf(Adapter::class, $ldap->getAdapter());
     }
 
@@ -112,7 +116,7 @@ class LdapTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid argument 2 to Korowai\Lib\Ldap\Ldap::createWithConfig: Foobar is not a name of existing class');
 
-        $ldap = Ldap::createWithConfig(array(), 'Foobar');
+        $ldap = Ldap::createWithConfig([], 'Foobar');
     }
 
     public function test__createWithConfig__NotAFactoryClass()
@@ -120,7 +124,7 @@ class LdapTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid argument 2 to Korowai\Lib\Ldap\Ldap::createWithConfig: Korowai\Tests\Lib\Ldap\SomeClass is not an implementation of Korowai\Lib\Ldap\Adapter\AdapterFactoryInterface');
 
-        $ldap = Ldap::createWithConfig(array(), SomeClass::class);
+        $ldap = Ldap::createWithConfig([], SomeClass::class);
     }
 
     public function test__getAdapter()
@@ -398,7 +402,7 @@ class LdapTest extends TestCase
 
         $adapter->expects($this->once())
                 ->method('createSearchQuery')
-                ->with('dc=example,dc=org', 'objectClass=*', array())
+                ->with('dc=example,dc=org', 'objectClass=*', [])
                 ->willReturn($search);
 
         $this->assertEquals($search, $ldap->createSearchQuery('dc=example,dc=org', 'objectClass=*'));
@@ -412,12 +416,12 @@ class LdapTest extends TestCase
 
         $adapter->expects($this->once())
                 ->method('createSearchQuery')
-                ->with('dc=example,dc=org', 'objectClass=*', array('scope' => 'base'))
+                ->with('dc=example,dc=org', 'objectClass=*', ['scope' => 'base'])
                 ->willReturn($search);
 
         $this->assertEquals(
             $search,
-            $ldap->createSearchQuery('dc=example,dc=org', 'objectClass=*', array('scope' => 'base'))
+            $ldap->createSearchQuery('dc=example,dc=org', 'objectClass=*', ['scope' => 'base'])
         );
     }
 

@@ -1,10 +1,11 @@
 <?php
-/**
- * This file is part of the Korowai package
+
+/*
+ * This file is part of Korowai framework.
  *
- * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @package korowai/ldaplib
- * @license Distributed under MIT license.
+ * (c) Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ *
+ * Distributed under MIT license.
  */
 
 declare(strict_types=1);
@@ -16,8 +17,6 @@ use Korowai\Testing\TestCase;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\Binding;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLink;
 use Korowai\Lib\Ldap\Exception\LdapException;
-
-
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -34,10 +33,10 @@ class BindingTest extends TestCase
     public function createLdapLinkMock($valid, $unbind = true)
     {
         $link = $this->createMock(LdapLink::class);
-        if($valid === true || $valid === false) {
+        if ($valid === true || $valid === false) {
             $link->method('isValid')->willReturn($valid);
         }
-        if($unbind === true || $unbind === false) {
+        if ($unbind === true || $unbind === false) {
             $link->method('unbind')->willReturn($unbind);
         }
         return $link;

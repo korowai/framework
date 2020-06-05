@@ -1,10 +1,11 @@
 <?php
-/**
- * This file is part of the Korowai package
+
+/*
+ * This file is part of Korowai framework.
  *
- * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @package korowai/ldaplib
- * @license Distributed under MIT license.
+ * (c) Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ *
+ * Distributed under MIT license.
  */
 
 declare(strict_types=1);
@@ -32,10 +33,10 @@ class EntryManagerTest extends TestCase
     public function createLdapLinkMock($valid, $unbind = true)
     {
         $link = $this->createMock(LdapLink::class);
-        if($valid === true || $valid === false) {
+        if ($valid === true || $valid === false) {
             $link->method('isValid')->willReturn($valid);
         }
-        if($unbind === true || $unbind === false) {
+        if ($unbind === true || $unbind === false) {
             $link->method('unbind')->willReturn($unbind);
         }
         return $link;
@@ -57,7 +58,7 @@ class EntryManagerTest extends TestCase
 
     public function test__add()
     {
-        $attributes = array('attr1' => array('attr1val1'));
+        $attributes = ['attr1' => ['attr1val1']];
         $entry = new Entry('dc=korowai,dc=org', $attributes);
 
         $link = $this->createLdapLinkMock(true);
@@ -72,7 +73,7 @@ class EntryManagerTest extends TestCase
 
     public function test__add__UninitializedLink()
     {
-        $attributes = array('attr1' => array('attr1val1'));
+        $attributes = ['attr1' => ['attr1val1']];
         $entry = new Entry('dc=korowai,dc=org', $attributes);
 
         $link = $this->createLdapLinkMock(false);
@@ -93,7 +94,7 @@ class EntryManagerTest extends TestCase
      */
     public function test__add__Failure()
     {
-        $attributes = array('attr1' => array('attr1val1'));
+        $attributes = ['attr1' => ['attr1val1']];
         $entry = new Entry('dc=korowai,dc=org', $attributes);
 
         $link = $this->createLdapLinkMock(true);
@@ -120,7 +121,7 @@ class EntryManagerTest extends TestCase
 
     public function test__update()
     {
-        $attributes = array('attr1' => array('attr1val1'));
+        $attributes = ['attr1' => ['attr1val1']];
         $entry = new Entry('dc=korowai,dc=org', $attributes);
 
         $link = $this->createLdapLinkMock(true);
@@ -135,7 +136,7 @@ class EntryManagerTest extends TestCase
 
     public function test__update__Invalid()
     {
-        $attributes = array('attr1' => array('attr1val1'));
+        $attributes = ['attr1' => ['attr1val1']];
         $entry = new Entry('dc=korowai,dc=org', $attributes);
 
         $link = $this->createLdapLinkMock(false);
@@ -156,7 +157,7 @@ class EntryManagerTest extends TestCase
      */
     public function test__update__Failure()
     {
-        $attributes = array('attr1' => array('attr1val1'));
+        $attributes = ['attr1' => ['attr1val1']];
         $entry = new Entry('dc=korowai,dc=org', $attributes);
 
         $link = $this->createLdapLinkMock(true);
@@ -192,7 +193,7 @@ class EntryManagerTest extends TestCase
              ->willReturn(true);
 
         $mngr = new EntryManager($link);
-        $this->assertNull($mngr->rename($entry,'cn=korowai'));
+        $this->assertNull($mngr->rename($entry, 'cn=korowai'));
     }
 
     public function test__rename__DeleteOldRdn()
@@ -206,7 +207,7 @@ class EntryManagerTest extends TestCase
              ->willReturn(true);
 
         $mngr = new EntryManager($link);
-        $this->assertNull($mngr->rename($entry,'cn=korowai', true));
+        $this->assertNull($mngr->rename($entry, 'cn=korowai', true));
     }
 
     public function test__rename__LeaveOldRdn()
@@ -220,7 +221,7 @@ class EntryManagerTest extends TestCase
              ->willReturn(true);
 
         $mngr = new EntryManager($link);
-        $this->assertNull($mngr->rename($entry,'cn=korowai', false));
+        $this->assertNull($mngr->rename($entry, 'cn=korowai', false));
     }
 
     public function test__rename__Invalid()
@@ -237,7 +238,7 @@ class EntryManagerTest extends TestCase
         $this->expectExceptionCode(-1);
         $this->expectExceptionMessage('Uninitialized LDAP link');
 
-        $mngr->rename($entry,'cn=korowai', true);
+        $mngr->rename($entry, 'cn=korowai', true);
     }
 
     /**
@@ -266,7 +267,7 @@ class EntryManagerTest extends TestCase
         $this->expectExceptionCode(2);
         $this->expectExceptionMessage('Error message');
 
-        $mngr->rename($entry,'cn=korowai', true);
+        $mngr->rename($entry, 'cn=korowai', true);
     }
 
     public function test__delete()

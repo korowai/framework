@@ -1,10 +1,11 @@
 <?php
-/**
- * This file is part of the Korowai package
+
+/*
+ * This file is part of Korowai framework.
  *
- * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @package korowai/ldaplib
- * @license Distributed under MIT license.
+ * (c) Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ *
+ * Distributed under MIT license.
  */
 
 declare(strict_types=1);
@@ -22,39 +23,39 @@ class AbstractSearchQueryTest extends TestCase
 {
     public static function getDefaultOptions()
     {
-        return array(
+        return [
             'scope' => 'sub',
             'attributes' => '*',
             'attrsOnly' => 0,
             'deref' => 'never',
             'sizeLimit' => 0,
             'timeLimit' => 0
-        );
+        ];
     }
 
     public static function getDefaultOptionsResolved()
     {
-        return array(
+        return [
             'scope' => 'sub',
-            'attributes' => array('*'),
+            'attributes' => ['*'],
             'attrsOnly' => 0,
             'deref' => 'never',
             'sizeLimit' => 0,
             'timeLimit' => 0
-        );
+        ];
     }
 
-    private function getAbstractSearchQueryMock($ctor = true, array $methods = array())
+    private function getAbstractSearchQueryMock($ctor = true, array $methods = [])
     {
         $builder = $this->getMockBuilder(AbstractSearchQuery::class);
 
-        if(!$ctor) {
+        if (!$ctor) {
             $builder->disableOriginalConstructor();
-        } elseif(is_array($ctor)) {
+        } elseif (is_array($ctor)) {
             $builder->setConstructorArgs($ctor);
         }
 
-        if(!in_array('doExecuteQuery', $methods)) {
+        if (!in_array('doExecuteQuery', $methods)) {
             $methods[] = 'doExecuteQuery';
         }
         $builder->setMethods($methods);
@@ -69,19 +70,19 @@ class AbstractSearchQueryTest extends TestCase
 
     public function test__defaultOptions()
     {
-        $query = $this->getAbstractSearchQueryMock(array("dc=korowai,dc=org", "objectClass=*"));
+        $query = $this->getAbstractSearchQueryMock(["dc=korowai,dc=org", "objectClass=*"]);
         $expected = static::getDefaultOptionsResolved();
         $this->assertEquals($expected, $query->getOptions());
     }
 
     public function test__scope()
     {
-        $scopes = array('base', 'one', 'sub');
+        $scopes = ['base', 'one', 'sub'];
 
-        foreach($scopes as $scope) {
+        foreach ($scopes as $scope) {
             $query = $this->getAbstractSearchQueryMock(
-                array("dc=korowai,dc=org", "objectClass=*",
-                array('scope' => $scope))
+                ["dc=korowai,dc=org", "objectClass=*",
+                ['scope' => $scope]]
             );
             $this->assertEquals($scope, $query->getOptions()['scope']);
         }
@@ -92,19 +93,19 @@ class AbstractSearchQueryTest extends TestCase
         $this->expectException(\Symfony\Component\OptionsResolver\Exception\InvalidOptionsException::class);
         $this->expectExceptionMessage('The option "scope" with value "foo" is invalid.');
         $query = $this->getAbstractSearchQueryMock(
-            array("dc=korowai,dc=org", "objectClass=*",
-            array('scope' => 'foo'))
+            ["dc=korowai,dc=org", "objectClass=*",
+            ['scope' => 'foo']]
         );
     }
 
     public function test__deref()
     {
-        $scopes = array('always', 'never', 'finding', 'searching');
+        $scopes = ['always', 'never', 'finding', 'searching'];
 
-        foreach($scopes as $deref) {
+        foreach ($scopes as $deref) {
             $query = $this->getAbstractSearchQueryMock(
-                array("dc=korowai,dc=org", "objectClass=*", 
-                array('deref' => $deref))
+                ["dc=korowai,dc=org", "objectClass=*",
+                ['deref' => $deref]]
             );
             $this->assertEquals($deref, $query->getOptions()['deref']);
         }
@@ -115,41 +116,41 @@ class AbstractSearchQueryTest extends TestCase
         $this->expectException(\Symfony\Component\OptionsResolver\Exception\InvalidOptionsException::class);
         $this->expectExceptionMessage('The option "deref" with value "foo" is invalid.');
         $query = $this->getAbstractSearchQueryMock(
-            array("dc=korowai,dc=org", "objectClass=*",
-            array('deref' => 'foo'))
+            ["dc=korowai,dc=org", "objectClass=*",
+            ['deref' => 'foo']]
         );
     }
 
     public function test__attributes()
     {
         $query = $this->getAbstractSearchQueryMock(
-            array("dc=korowai,dc=org", "objectClass=*",
-            array('attributes' => 'foo'))
+            ["dc=korowai,dc=org", "objectClass=*",
+            ['attributes' => 'foo']]
         );
-        $this->assertEquals(array('foo'), $query->getOptions()['attributes']);
+        $this->assertEquals(['foo'], $query->getOptions()['attributes']);
     }
 
     public function test__getBaseDn()
     {
         $query = $this->getAbstractSearchQueryMock(
-            array("dc=korowai,dc=org", "objectClass=*")
+            ["dc=korowai,dc=org", "objectClass=*"]
         );
 
-        $this->assertEquals("dc=korowai,dc=org",  $query->getBaseDn());
+        $this->assertEquals("dc=korowai,dc=org", $query->getBaseDn());
     }
 
     public function test__getFilter()
     {
         $query = $this->getAbstractSearchQueryMock(
-            array("dc=korowai,dc=org", "objectClass=*")
+            ["dc=korowai,dc=org", "objectClass=*"]
         );
-        $this->assertEquals("objectClass=*",  $query->getFilter());
+        $this->assertEquals("objectClass=*", $query->getFilter());
     }
 
     public function test__getResult()
     {
         $query = $this->getAbstractSearchQueryMock(
-            array("dc=korowai,dc=org", "objectClass=*")
+            ["dc=korowai,dc=org", "objectClass=*"]
         );
         $query->expects($this->once())
               ->method('doExecuteQuery')
@@ -161,7 +162,7 @@ class AbstractSearchQueryTest extends TestCase
     public function test__execute()
     {
         $query = $this->getAbstractSearchQueryMock(
-            array("dc=korowai,dc=org", "objectClass=*")
+            ["dc=korowai,dc=org", "objectClass=*"]
         );
         $query->expects($this->exactly(2))
               ->method('doExecuteQuery')

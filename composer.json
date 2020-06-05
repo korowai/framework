@@ -20,11 +20,11 @@
         "wikimedia/composer-merge-plugin": "^1.4"
     },
     "replace": {
-        "korowai/basiclib" : "self.version",
+        "korowai/basiclib": "self.version",
         "korowai/compatlib": "self.version",
-        "korowai/contextlib" : "self.version",
+        "korowai/contextlib": "self.version",
         "korowai/contracts": "self.version",
-        "korowai/errorlib" : "self.version",
+        "korowai/errorlib": "self.version",
         "korowai/ldaplib": "self.version",
         "korowai/ldiflib": "self.version",
         "korowai/rfclib": "self.version",
@@ -39,9 +39,9 @@
         "psy/psysh": "dev-master"
     },
     "autoload": {
-      "psr-4" : {
+      "psr-4": {
       },
-      "files" : [
+      "files": [
       ],
       "exclude-from-classmap": [
         "src/**/tests/",
@@ -51,7 +51,7 @@
       ]
     },
     "autoload-dev": {
-      "psr-4" : {
+      "psr-4": {
         "Korowai\\Docs\\Behat\\":  "docs/sphinx/Behat/"
       }
     },

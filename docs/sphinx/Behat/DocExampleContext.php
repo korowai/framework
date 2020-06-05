@@ -11,9 +11,8 @@ declare(strict_types=1);
 namespace Korowai\Docs\Behat;
 
 use Behat\Behat\Context\Context;
-use PHPUnit\Framework\Assert;
-
 use Korowai\Lib\Ldap\Behat\ExtLdapContext;
+use PHPUnit\Framework\Assert;
 
 class DocExampleContext implements Context
 {
@@ -117,7 +116,7 @@ class DocExampleContext implements Context
         $proc = proc_open($cmd, $descriptorspec, $pipes, $cwd);
 
         if (!is_resource($proc)) {
-            throw new \RuntimeException("could not execute example: $file");
+            throw new \RuntimeException("could not run command: $cmd");
         }
 
         fclose($pipes[0]);

@@ -35,7 +35,7 @@
     "autoload-dev": {
       "psr-4" : {
         "Korowai\\Tests\\Lib\\Error\\" : "tests/",
-        "Korowai\\Testing\\Lib\\Error\\" : "Testing/"
+        "Korowai\\Testing\\Errorlib\\" : "Testing/"
       }
     }
 }

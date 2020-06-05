@@ -36,7 +36,7 @@
     "autoload-dev": {
       "psr-4" : {
         "Korowai\\Tests\\Lib\\Compat\\" : "tests/",
-        "Korowai\\Testing\\Lib\\Compat\\" : "Testing/"
+        "Korowai\\Testing\\Compatlib\\" : "Testing/"
       }
     }
 }

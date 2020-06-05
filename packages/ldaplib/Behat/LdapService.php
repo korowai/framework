@@ -1,10 +1,11 @@
 <?php
-/**
- * This file is part of the Korowai package
+
+/*
+ * This file is part of Korowai framework.
  *
- * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @package korowai/ldaplib
- * @license Distributed under MIT license.
+ * (c) Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ *
+ * Distributed under MIT license.
  */
 
 declare(strict_types=1);
@@ -57,7 +58,7 @@ class LdapService
 
     public static function getInstance()
     {
-        if(is_null(self::$instance)) {
+        if (is_null(self::$instance)) {
             self::$instance = new self();
         }
         return self::$instance;
@@ -108,7 +109,7 @@ class LdapService
         $ldap = $this->getLdap();
         $deleted = [];
         $result = $ldap->search($filter ?? '(objectclass=*)', $base, \Zend\Ldap\Ldap::SEARCH_SCOPE_ONE, ['dn']);
-        if($result) {
+        if ($result) {
             foreach ($result as $entry) {
                 if ($this->isSafeToDeleteEntry($entry)) {
                     $ldap->delete($entry['dn'], true);

@@ -1,10 +1,11 @@
 <?php
-/**
- * This file is part of the Korowai package
+
+/*
+ * This file is part of Korowai framework.
  *
- * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @package korowai/ldaplib
- * @license Distributed under MIT license.
+ * (c) Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ *
+ * Distributed under MIT license.
  */
 
 declare(strict_types=1);
@@ -27,8 +28,8 @@ trait ResultEntryToEntry
         return new Entry($this->getDn(), $this->getAttributes());
     }
 
-    public abstract function getDn() : string;
-    public abstract function getAttributes() : array;
+    abstract public function getDn() : string;
+    abstract public function getAttributes() : array;
 }
 
 // vim: syntax=php sw=4 ts=4 et:

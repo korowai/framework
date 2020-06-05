@@ -27,6 +27,9 @@ composer.lock
 # phpunit temporary files
 .phpunit.result.cache
 
+# php-cs-fixer temporary files
+/.php_cs.cache
+
 # phpdoc (we only commit phpdoc.xml.dist)
 /phpdoc.xml
 

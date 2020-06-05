@@ -1,10 +1,11 @@
 <?php
-/**
- * This file is part of the Korowai package
+
+/*
+ * This file is part of Korowai framework.
  *
- * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @package korowai/compatlib
- * @license Distributed under MIT license.
+ * (c) Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ *
+ * Distributed under MIT license.
  */
 
 declare(strict_types=1);
@@ -87,7 +88,7 @@ class Preg
         };
         $handler = callerErrorHandler($callback, 1 + $distance);
         $retval = with($handler)(function ($eh) use ($func, $args) {
-                return call_user_func_array($func, $args);
+            return call_user_func_array($func, $args);
         });
         if (($error = preg_last_error()) !== PREG_NO_ERROR) {
             if (!isset($severity)) {

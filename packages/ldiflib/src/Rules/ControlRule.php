@@ -1,10 +1,11 @@
 <?php
-/**
- * This file is part of the Korowai package
+
+/*
+ * This file is part of Korowai framework.
  *
- * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @package korowai/ldiflib
- * @license Distributed under MIT license.
+ * (c) Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ *
+ * Distributed under MIT license.
  */
 
 declare(strict_types=1);
@@ -80,8 +81,8 @@ final class ControlRule extends AbstractRfcRule
         if (Scan::matched('ctl_type', $matches, $ctl_type, $offset)) {
             if (!$this->parseCriticalityIfMatched($state, $matches, $ctl_crit) ||
                 !$this->parseValueSpecIfMatched($state, $matches, $ctl_value)) {
-                    $value = null;
-                    return false;
+                $value = null;
+                return false;
             }
             $value = new Control($ctl_type, $ctl_crit, $ctl_value);
             return true;

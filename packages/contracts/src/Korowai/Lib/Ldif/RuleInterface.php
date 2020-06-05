@@ -1,10 +1,11 @@
 <?php
-/**
- * This file is part of the Korowai package
+
+/*
+ * This file is part of Korowai framework.
  *
- * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @package korowai/contracts
- * @license Distributed under MIT license.
+ * (c) Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ *
+ * Distributed under MIT license.
  */
 
 declare(strict_types=1);
@@ -34,7 +35,7 @@ interface RuleInterface
      * @return bool Returns ``true`` on success of ``false`` on failure.
      */
     public function repeat(ParserStateInterface $state, array &$values = null, int $min = 0, int $max = null) : bool;
-        /**
+    /**
      * Parse string starting at position defined by *$state*.
      *
      * Four cases should be considered:

@@ -65,7 +65,7 @@ class WithContextExecutorTest extends TestCase
             ->method('exitContext')
             ->with(null)
             ->will($this->returnCallback(
-                function (?\Throwable $exception = null) use (&$exit) {
+                function (\Throwable $exception = null) use (&$exit) {
                     $exit[] = 'cm1';
                     return false;
                 }
@@ -87,7 +87,7 @@ class WithContextExecutorTest extends TestCase
             ->method('exitContext')
             ->with(null)
             ->will($this->returnCallback(
-                function (?\Throwable $exception = null) use (&$exit) {
+                function (\Throwable $exception = null) use (&$exit) {
                     $exit[] = 'cm2';
                     return false;
                 }
@@ -140,7 +140,7 @@ class WithContextExecutorTest extends TestCase
             ->method('exitContext')
             ->with($throw)
             ->will($this->returnCallback(
-                function (?\Throwable $exception = null) use (&$exit, &$ex1) {
+                function (\Throwable $exception = null) use (&$exit, &$ex1) {
                     $ex1 = $exception;
                     $exit[] = 'cm1';
                     return false;
@@ -163,7 +163,7 @@ class WithContextExecutorTest extends TestCase
             ->method('exitContext')
             ->with($throw)
             ->will($this->returnCallback(
-                function (?\Throwable $exception = null) use (&$exit, &$ex2) {
+                function (\Throwable $exception = null) use (&$exit, &$ex2) {
                     $ex2 = $exception;
                     $exit[] = 'cm2';
                     return false;
@@ -221,7 +221,7 @@ class WithContextExecutorTest extends TestCase
             ->method('exitContext')
             ->with(null)
             ->will($this->returnCallback(
-                function (?\Throwable $exception = null) use (&$exit, &$ex1) {
+                function (\Throwable $exception = null) use (&$exit, &$ex1) {
                     $ex1 = $exception;
                     $exit[] = 'cm1';
                     return false;
@@ -244,7 +244,7 @@ class WithContextExecutorTest extends TestCase
             ->method('exitContext')
             ->with($throw)
             ->will($this->returnCallback(
-                function (?\Throwable $exception = null) use (&$exit, &$ex2) {
+                function (\Throwable $exception = null) use (&$exit, &$ex2) {
                     $ex2 = $exception;
                     $exit[] = 'cm2';
                     return true;
@@ -303,7 +303,7 @@ class WithContextExecutorTest extends TestCase
             ->method('exitContext')
             ->with($throw)
             ->will($this->returnCallback(
-                function (?\Throwable $exception = null) use (&$exit, &$ex1) {
+                function (\Throwable $exception = null) use (&$exit, &$ex1) {
                     $ex1 = $exception;
                     $exit[] = 'cm1';
                     return false;
@@ -324,7 +324,7 @@ class WithContextExecutorTest extends TestCase
         $cm2->expects($this->never())
             ->method('exitContext')
             ->will($this->returnCallback(
-                function (?\Throwable $exception = null) use (&$exit, &$ex2) {
+                function (\Throwable $exception = null) use (&$exit, &$ex2) {
                     $ex2 = $exception;
                     $exit[] = 'cm2';
                     return false;

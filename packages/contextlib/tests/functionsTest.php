@@ -21,7 +21,7 @@ use Korowai\Lib\Context\TrivialValueWrapper;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class function__with__Test extends TestCase
+class functionsTest extends TestCase
 {
     public function test__withoutArgs()
     {

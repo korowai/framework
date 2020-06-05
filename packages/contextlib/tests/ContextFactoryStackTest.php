@@ -49,7 +49,7 @@ class ContextFactoryStackTest extends TestCase
                 return $this;
             }
 
-            public function exitContext(?\Throwable $exception = null) : bool
+            public function exitContext(\Throwable $exception = null) : bool
             {
                 return false;
             }

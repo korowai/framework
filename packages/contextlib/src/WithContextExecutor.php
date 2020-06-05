@@ -106,7 +106,7 @@ class WithContextExecutor implements ExecutorInterface
      *          An exception or null (if the exception was handled by one of
      *          the context managers).
      */
-    protected function exitContext(int &$i, ?\Throwable $exception = null) : ?\Throwable
+    protected function exitContext(int &$i, \Throwable $exception = null) : ?\Throwable
     {
         for ($i--; $i >= 0; $i--) {
             if ($this->context[$i]->exitContext($exception)) {

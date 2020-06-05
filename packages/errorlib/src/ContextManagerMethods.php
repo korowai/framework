@@ -35,7 +35,7 @@ trait ContextManagerMethods
      *
      * @return bool Always ``false``.
      */
-    public function exitContext(?\Throwable $exception = null) : bool
+    public function exitContext(\Throwable $exception = null) : bool
     {
         restore_error_handler();
         return false;

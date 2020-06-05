@@ -158,7 +158,7 @@ class ResourceContextManager implements ContextManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function exitContext(?\Throwable $exception = null) : bool
+    public function exitContext(\Throwable $exception = null) : bool
     {
         $resource = $this->getResource();
         if (is_resource($resource)) {

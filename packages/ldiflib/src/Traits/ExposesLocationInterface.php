@@ -105,7 +105,7 @@ trait ExposesLocationInterface
      *
      * @return LocationInterface
      */
-    public function getClonedLocation(?int $offset = null) : LocationInterface
+    public function getClonedLocation(int $offset = null) : LocationInterface
     {
         return $this->getLocation()->getClonedLocation($offset);
     }

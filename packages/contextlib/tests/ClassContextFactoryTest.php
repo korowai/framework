@@ -36,7 +36,7 @@ class BaseContextOLESLFOV implements ContextManagerInterface
     {
         return $this;
     }
-    public function exitContext(?\Throwable $exception = null) : bool
+    public function exitContext(\Throwable $exception = null) : bool
     {
         return false;
     }

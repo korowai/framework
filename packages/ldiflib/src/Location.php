@@ -64,7 +64,7 @@ class Location implements LocationInterface
     /**
      * {@inheritdoc}
      */
-    public function getClonedLocation(?int $offset = null) : LocationInterface
+    public function getClonedLocation(int $offset = null) : LocationInterface
     {
         return new self($this->getInput(), $offset ?? $this->getOffset());
     }

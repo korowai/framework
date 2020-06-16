@@ -44,7 +44,7 @@ apt-get install php-ldap php-xml php-mbstring
 After you've just cloned
 
 ```shell
-php bootstrap-dev && php composer install
+php bootstrap-dev && php bin/composer install
 ```
 
 ### Running unit tests

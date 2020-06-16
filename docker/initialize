@@ -24,6 +24,11 @@ class KorowaiDockerInitializer
             return './' . $fname;
         }
 
+        $bin = $this->dir . '/../bin/' . $fname;
+        if (file_exists($bin) && is_executable($bin)) {
+            return '../bin/' . $fname;
+        }
+
         $upper = $this->dir . '/../' . $fname;
         if (file_exists($upper) && is_executable($upper)) {
             return '../' . $fname;

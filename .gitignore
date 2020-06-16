@@ -6,6 +6,7 @@
 /sami
 /tmp
 /tests/cache
+/bin
 *.phar
 
 # Files generated locally

@@ -92,7 +92,7 @@ jobs:
       - run:
           name: Bootstrap project and install composer dependencies
           command: |
-            cat .env.dist | sed -e "s/@UID@/`id -u`/" -e "s/@GID@/`id -g`/" | tee .env &&
+            docker/initialize.circle &&
             docker/compose run --rm --entrypoint=composer php-cli install
 
       - run:
@@ -116,7 +116,7 @@ jobs:
       - run:
           name: Bootstrap project and install composer dependencies
           command: |
-            cat .env.dist | sed -e "s/@UID@/`id -u`/" -e "s/@GID@/`id -g`/" | tee .env &&
+            docker/initialize.circle &&
             docker/compose run --rm --entrypoint=composer php-cli install
 
       - run:

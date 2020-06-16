@@ -9,7 +9,6 @@ ARG KRW_GID=6789
 ARG KRW_HOME=/home/${KRW_USER}
 ARG KRW_CODE=/code
 ARG KRW_DOTENV_FILE=.env.docker
-ARG KRW_BEHAT_PARAMS='{"extensions":{"Behat\\MinkExtension":{"base_url":"http://http-service"}}}'
 
 ENV KRW_USER=$KRW_USER \
     KRW_GROUP=$KRW_GROUP \
@@ -17,8 +16,9 @@ ENV KRW_USER=$KRW_USER \
     KRW_GID=$KRW_GID \
     KRW_HOME=$KRW_HOME \
     KRW_CODE=$KRW_CODE \
-    KRW_DOTENV_FILE=$KRW_DOTENV_FILE \
-    BEHAT_PARAMS=$KRW_BEHAT_PARAMS
+    KRW_DOTENV_FILE=$KRW_DOTENV_FILE
+
+ADD etc/ldap/schema/*.ldif /container/service/slapd/assets/config/bootstrap/schema/
 
 RUN if [ -f /etc/alpine-release ]; then \
       addgroup -g $KRW_GID $KRW_GROUP && \
@@ -27,7 +27,8 @@ RUN if [ -f /etc/alpine-release ]; then \
       groupadd -g $KRW_GID $KRW_GROUP && \
       useradd -m -d $KRW_HOME -g $KRW_GROUP --uid $KRW_UID $KRW_USER; \
     fi; \
-    mkdir -p $KRW_CODE && chown $KRW_USER:$KRW_GROUP $KRW_CODE
+    mkdir -p $KRW_CODE && chown $KRW_USER:$KRW_GROUP $KRW_CODE && \
+    rm -rf /container/service/slapd/assets/config/bootstrap/schema/mmc
 
 VOLUME $KRW_CODE
 

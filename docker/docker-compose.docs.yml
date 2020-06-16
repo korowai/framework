@@ -2,26 +2,26 @@ version: '3.2'
 services:
   sphinx:
     build:
-      context: ../docker/user
+      context: default
       args:
         KRW_IMG: "korowai/sphinx:${KRW_SPHINX_TAG:-latest}"
         KRW_UID: "${KRW_UID:-6789}"
         KRW_GID: "${KRW_GID:-6789}"
     ports:
-      - "8000:8000"
+      - "${KRW_SPHINX_PORT:-8002}:8000"
     volumes:
       - ../:${KRW_CODE:-/code}
     user: "${KRW_UID:-6789}:${KRW_GID:-6789}"
 
   sami:
     build:
-      context: ../docker/user
+      context: default
       args:
         KRW_IMG: "korowai/sami:${KRW_SAMI_TAG:-latest}"
         KRW_UID: "${KRW_UID:-6789}"
         KRW_GID: "${KRW_GID:-6789}"
     ports:
-      - "8001:8001"
+      - "${KRW_SAMI_PORT:-8001}:8001"
     volumes:
       - ../:${KRW_CODE:-/code}
     user: "${KRW_UID:-6789}:${KRW_GID:-6789}"

@@ -1,0 +1,62 @@
+version: '3.2'
+services:
+  git:
+    build:
+      context: docker/user
+      args:
+        KRW_IMG: alpine/git:latest
+        KRW_UID: "${KRW_UID:-6789}"
+        KRW_GID: "${KRW_GID:-6789}"
+    volumes:
+      - .:${KRW_CODE:-/code}
+    user: "${KRW_UID:-6789}:${KRW_GID:-6789}"
+
+  php-cli:
+    build:
+      context: php
+      args:
+        KRW_IMG: "korowai/php:${KRW_PHP_TAG:-cli}"
+        KRW_UID: "${KRW_UID:-6789}"
+        KRW_GID: "${KRW_GID:-6789}"
+    volumes:
+      - ..:${KRW_CODE:-/code}
+    user: "${KRW_UID:-6789}:${KRW_GID:-6789}"
+
+  php-test:
+    build:
+      context: php
+      args:
+        KRW_IMG: "korowai/php:${KRW_PHP_TAG:-cli}"
+        KRW_UID: "${KRW_UID:-6789}"
+        KRW_GID: "${KRW_GID:-6789}"
+    depends_on:
+      - ldap-service
+    volumes:
+      - ..:${KRW_CODE:-/code}
+    user: "${KRW_UID:-6789}:${KRW_GID:-6789}"
+    entrypoint: [ "dockerize", "-wait", "tcp://ldap-service:389", "-timeout", "600s" ]
+
+  http-service:
+    build:
+      context: http
+      args:
+        KRW_IMG: "korowai/php:${KRW_APACHE_TAG:-apache}"
+        KRW_UID: "${KRW_UID:-6789}"
+        KRW_GID: "${KRW_GID:-6789}"
+    environment:
+      - APACHE_DOCUMENT_ROOT=${KRW_CODE:-/code}/public
+    ports:
+      - "${KRW_HTTP_PORT:-8003}:80"
+    volumes:
+      - ..:${KRW_CODE:-/code}
+
+  ldap-service:
+    build:
+      context: ldap
+      args:
+        KRW_IMG: "korowai/openldap:${KRW_OPENLDAP_TAG:-latest}"
+        KRW_UID: "${KRW_UID:-6789}"
+        KRW_GID: "${KRW_GID:-6789}"
+    command: [ --copy-service, --loglevel, debug ]
+    volumes:
+      - ../packages/ldaplib/Resources/ldif/bootstrap.ldif:/container/service/slapd/assets/config/bootstrap/ldif/50-bootstrap.ldif

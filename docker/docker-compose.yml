@@ -2,7 +2,7 @@ version: '3.2'
 services:
   git:
     build:
-      context: docker/user
+      context: default
       args:
         KRW_IMG: alpine/git:latest
         KRW_UID: "${KRW_UID:-6789}"

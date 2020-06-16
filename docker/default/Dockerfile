@@ -9,7 +9,7 @@ ARG KRW_GID=6789
 ARG KRW_HOME=/home/${KRW_USER}
 ARG KRW_CODE=/code
 ARG KRW_DOTENV_FILE=.env.docker
-ARG KRW_BEHAT_PARAMS='{"extensions":{"Behat\\MinkExtension":{"base_url":"http://http-service"}}}'
+ARG KRW_BEHAT_PARAMS=''
 
 ENV KRW_USER=$KRW_USER \
     KRW_GROUP=$KRW_GROUP \

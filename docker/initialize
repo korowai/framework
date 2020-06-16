@@ -35,7 +35,7 @@ class KorowaiDockerInitializer
     {
         $defaults = [
             '@BINARY@'          => $this->findDockerCompose(),
-            '@PROJECT@'         => 'korowai',
+            '@PROJECT@'         => 'korowai-framework',
             '@UID@'             => (string)getmyuid(),
             '@GID@'             => (string)getmygid(),
             '@USER@'            => 'korowai',
@@ -53,7 +53,7 @@ class KorowaiDockerInitializer
             '@SAMI_PORT@'       => '8001',
             '@SPHINX_PORT@'     => '8002',
             '@DOTENV_FILE@'     => '.env.docker',
-            '@BEHAT_PARAMS@'    => '{"extensions":{"Behat\\\\MinkExtension":{"base_url":"http://http-service"}}}',
+            '@BEHAT_PARAMS@'    => '',
             '@TOP_SRCDIR@'      => realpath($this->dir . '/..'),
             '@@'                => '@'
         ];

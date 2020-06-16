@@ -37,6 +37,7 @@ final class RuleDemo
      *
      * @param  string $ruleSet Rule set class name.
      * @param  string $rule Rule name in the rule set class.
+     * @param  string $format Used to generate actual regular expression from rule object.
      *
      * @return RuleDemo
      */
@@ -47,6 +48,9 @@ final class RuleDemo
 
     /**
      * Initializes the object.
+     *
+     * @param  RuleInterface $rule Rule object to be demonstrated.
+     * @param  string $format Used to generate actual regular expression from $rule object.
      */
     public function __construct(RuleInterface $rule, string $format = null)
     {

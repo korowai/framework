@@ -1,23 +1,69 @@
 {
     "name": "korowai/framework",
-    "description": "Framework for Korowai project",
-    "type": "library",
-    "license": "MIT",
-    "minimum-stability": "dev",
-    "prefer-stable": true,
-    "authors": [
-        {
-            "name": "Paweł Tomulik",
-            "email": "ptomulik@meil.pw.edu.pl"
+    "autoload": {
+        "exclude-from-classmap": [
+            "packages/basiclib/Testing/",
+            "packages/basiclib/tests/",
+            "packages/compatlib/Testing/",
+            "packages/compatlib/tests/",
+            "packages/contextlib/Testing/",
+            "packages/contextlib/tests/",
+            "packages/contracts/Testing/",
+            "packages/contracts/tests/",
+            "packages/errorlib/Testing/",
+            "packages/errorlib/tests/",
+            "packages/ldaplib/Behat/",
+            "packages/ldaplib/Resources/",
+            "packages/ldaplib/Testing/",
+            "packages/ldaplib/tests/",
+            "packages/ldiflib/Testing/",
+            "packages/ldiflib/tests/",
+            "packages/rfclib/Testing/",
+            "packages/rfclib/tests-nocov/",
+            "packages/rfclib/tests/",
+            "packages/testing/Testing/",
+            "packages/testing/tests/"
+        ],
+        "files": [
+            "packages/compatlib/src//functions/preg.php",
+            "packages/contextlib/src//functions.php",
+            "packages/errorlib/src//functions.php"
+        ],
+        "psr-4": {
+            "Korowai\\Lib\\": "packages/contracts/src/Korowai/Lib/",
+            "Korowai\\Lib\\Basic\\": "packages/basiclib/src//",
+            "Korowai\\Lib\\Compat\\": "packages/compatlib/src//",
+            "Korowai\\Lib\\Context\\": "packages/contextlib/src//",
+            "Korowai\\Lib\\Error\\": "packages/errorlib/src//",
+            "Korowai\\Lib\\Ldap\\": "packages/ldaplib/src/",
+            "Korowai\\Lib\\Ldif\\": "packages/ldiflib/src/",
+            "Korowai\\Lib\\Rfc\\": "packages/rfclib/src/"
         }
-    ],
-    "suport": {
-      "issues": "https://github.com/korowai/framework/issues",
-      "source": "https://github.com/korowai/framework"
     },
-    "require": {
-        "php": ">=7.2",
-        "wikimedia/composer-merge-plugin": "^1.4"
+    "autoload-dev": {
+        "psr-4": {
+            "Korowai\\Docs\\Behat\\": "docs/sphinx/Behat/",
+            "Korowai\\Lib\\Ldap\\Behat\\": "packages/ldaplib/Behat/",
+            "Korowai\\Testing\\": "packages/testing/Testing/",
+            "Korowai\\Testing\\Basiclib\\": "packages/basiclib/Testing/",
+            "Korowai\\Testing\\Compatlib\\": "packages/compatlib/Testing/",
+            "Korowai\\Testing\\Contextlib\\": "packages/contextlib/Testing/",
+            "Korowai\\Testing\\Contracts\\": "packages/contracts/Testing/",
+            "Korowai\\Testing\\Errorlib\\": "packages/errorlib/Testing/",
+            "Korowai\\Testing\\Ldaplib\\": "packages/ldaplib/Testing/",
+            "Korowai\\Testing\\Ldiflib\\": "packages/ldiflib/Testing/",
+            "Korowai\\Testing\\Rfclib\\": "packages/rfclib/Testing/",
+            "Korowai\\TestsNocov\\Lib\\Rfc\\": "packages/rfclib/tests-nocov/",
+            "Korowai\\Tests\\": "packages/contracts/tests/Korowai/",
+            "Korowai\\Tests\\Lib\\Basic\\": "packages/basiclib/tests/",
+            "Korowai\\Tests\\Lib\\Compat\\": "packages/compatlib/tests/",
+            "Korowai\\Tests\\Lib\\Context\\": "packages/contextlib/tests/",
+            "Korowai\\Tests\\Lib\\Error\\": "packages/errorlib/tests/",
+            "Korowai\\Tests\\Lib\\Ldap\\": "packages/ldaplib/tests/",
+            "Korowai\\Tests\\Lib\\Ldif\\": "packages/ldiflib/tests/",
+            "Korowai\\Tests\\Lib\\Rfc\\": "packages/rfclib/tests/",
+            "Korowai\\Tests\\Testing\\": "packages/testing/tests/"
+        }
     },
     "replace": {
         "korowai/basiclib": "self.version",
@@ -30,43 +76,24 @@
         "korowai/rfclib": "self.version",
         "korowai/testing": "self.version"
     },
+    "description": "Framework for Korowai project",
+    "license": "MIT",
+    "require": {
+        "php": ">=7.2",
+        "ext-ldap": "*",
+        "league/uri": "^6.0",
+        "symfony/options-resolver": ">=4.2"
+    },
     "require-dev": {
-        "phpunit/phpunit": ">=8.4.0",
-        "php-mock/php-mock-phpunit": ">=2.4.0",
-        "phake/phake": "^3.0",
         "behat/behat": "^3.4",
         "friendsofphp/php-cs-fixer": "^2.16",
-        "psy/psysh": "dev-master"
+        "phake/phake": "^3.0",
+        "php-mock/php-mock-phpunit": ">=2.4.0",
+        "phpunit/phpunit": ">=8.4.0",
+        "psy/psysh": "dev-master",
+        "symplify/monorepo-builder-prefixed": "^8.0.1",
+        "zendframework/zend-ldap": "^2.10.0"
     },
-    "autoload": {
-      "psr-4": {
-      },
-      "files": [
-      ],
-      "exclude-from-classmap": [
-        "src/**/tests/",
-        "src/**/tests-nocov/",
-        "src/**/Testing/",
-        "src/**/Behat/"
-      ]
-    },
-    "autoload-dev": {
-      "psr-4": {
-        "Korowai\\Docs\\Behat\\":  "docs/sphinx/Behat/"
-      }
-    },
-    "extra": {
-      "merge-plugin": {
-        "include": [
-          "packages/*/composer.json"
-        ],
-        "recurse": true,
-        "replace": false,
-        "ignore-duplicates": false,
-        "merge-dev": true,
-        "merge-extra": false,
-        "merge-extra-deep": false,
-        "merge-extra-scripts": false
-      }
-    }
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }

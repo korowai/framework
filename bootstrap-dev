@@ -50,7 +50,7 @@ abstract class AbstractInstaller {
   abstract protected function tmpFileNamePrefix();
   abstract protected function runInstallCmd();
 
-  protected function defaultInstallDir() { return './bin'; }
+  protected function defaultInstallDir() { return 'bin'; }
   protected function defaultTmpDir() { return 'tmp'; }
 
   static public function system()
@@ -97,6 +97,13 @@ abstract class AbstractInstaller {
     }
     if(file_exists($this->tmpfile)) {
       unlink($this->tmpfile);
+    }
+
+    if(!file_exists($this->install_dir)) {
+        if(!mkdir($this->install_dir)) {
+            $msg = "Failed to create '" . $this->install_dir . "': " (error_get_last()['message']);
+            throw new BootstrapError($msg);
+        }
     }
   }
 
@@ -284,7 +291,7 @@ try {
   $opts = getopt('', ['no-install']);
 
   if (!isset($opts['no-install'])) {
-    //PhiveInstaller::instance()->install();
+    PhiveInstaller::instance()->install();
     ComposerInstaller::instance()->install();
     DockerComposerInstaller::instance()->install();
   }

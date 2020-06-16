@@ -15,8 +15,9 @@
 /docs/_build/
 /docs/_cache/
 
-# .env file for docker-compose
+# Config
 /.env
+/docker/.env
 
 # composer.lock
 composer.lock

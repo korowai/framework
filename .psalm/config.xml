@@ -8,10 +8,26 @@
     totallyTyped="false"
 >
     <projectFiles>
-        <directory name="packages/*" />
+        <directory name="packages/basiclib" />
+        <directory name="packages/compatlib" />
+        <directory name="packages/contextlib" />
+        <directory name="packages/contracts" />
+        <directory name="packages/errorlib" />
+        <directory name="packages/ldaplib" />
+        <directory name="packages/ldiflib" />
+        <directory name="packages/rfclib" />
+        <directory name="packages/testing" />
         <ignoreFiles>
-            <directory name="tests" />
-            <directory name="tests-nocov" />
+          <directory name="packages/basiclib/tests" />
+          <directory name="packages/compatlib/tests" />
+          <directory name="packages/contextlib/tests" />
+          <directory name="packages/contracts/tests" />
+          <directory name="packages/errorlib/tests" />
+          <directory name="packages/ldaplib/tests" />
+          <directory name="packages/ldiflib/tests" />
+          <directory name="packages/rfclib/tests" />
+          <directory name="packages/rfclib/tests-nocov" />
+          <directory name="packages/testing/tests" />
         </ignoreFiles>
     </projectFiles>
 

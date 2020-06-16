@@ -23,3 +23,25 @@ jobs:
 
       - name: Run friendsofphp/php-cs-fixer
         run: php-cs-fixer fix --diff-format=udiff --dry-run --show-progress=dots --using-cache=no --verbose
+
+  type-checker:
+    name: Type Checker
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 7.4
+          coverage: none
+          tools: composer:v2, psalm:3.11.5
+
+      - name: Update dependencies with composer
+        run: composer update --no-interaction --no-ansi --no-progress
+
+      - name: Run vimeo/psalm on packages
+        run: psalm --config=.psalm/config.xml --no-progress --shepherd --show-info=false --stats

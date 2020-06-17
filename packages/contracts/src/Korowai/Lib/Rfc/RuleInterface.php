@@ -78,7 +78,7 @@ interface RuleInterface
      * rule, without *$errorKey*).
      *
      * @param  string $errorKey
-     * @return array
+     * @return string
      */
     public function getErrorMessage(string $errorKey = '') : string;
 }

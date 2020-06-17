@@ -34,7 +34,7 @@ class AttrValSpecTest extends TestCase
 
         $attrVal = new AttrValSpec('foo', $value);
         $this->assertSame('foo', $attrVal->getAttribute());
-        $this->assertSame($value, $attrVal->getValueObject());
+        $this->assertSame($value, $attrVal->getValueSpec());
     }
 }
 

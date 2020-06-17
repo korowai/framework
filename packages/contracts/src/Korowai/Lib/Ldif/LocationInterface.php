@@ -54,7 +54,7 @@ interface LocationInterface extends SourceLocationInterface
     /**
      * Returns the InputInterface containing the character at location.
      *
-     * @return InputInterface|null
+     * @return InputInterface
      */
     public function getInput() : InputInterface;
 

@@ -13,18 +13,6 @@ declare(strict_types=1);
 namespace Korowai\Lib\Context;
 
 /**
- * Turns $arg into a context manager.
- *
- * @param  mixed $arg
- * @return ContextManagerInterface
- */
-function get_context_manager($arg) : ContextManagerInterface
-{
-    return ContextFactoryStack::getInstance()->getContextManager($arg) ??
-           DefaultContextFactory::getInstance()->getContextManager($arg);
-}
-
-/**
  * Creates an executor object which invokes user function within a context.
  *
  * @access public
@@ -32,7 +20,10 @@ function get_context_manager($arg) : ContextManagerInterface
  */
 function with(... $args) : ExecutorInterface
 {
-    $context = array_map(get_context_manager::class, $args);
+    $context = array_map(function ($arg) : ContextManagerInterface {
+        return ContextFactoryStack::getInstance()->getContextManager($arg) ??
+               DefaultContextFactory::getInstance()->getContextManager($arg);
+    }, $args);
     return new WithContextExecutor($context);
 }
 

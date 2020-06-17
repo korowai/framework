@@ -24,7 +24,7 @@ interface ModSpecRuleInterface extends RuleInterface
     /**
      * Returns the nested ModSpecInitRuleInteface.
      *
-     * @return SepRuleInterface
+     * @return ModSpecInitRuleInterface
      */
     public function getModSpecInitRule() : ModSpecInitRuleInterface;
 

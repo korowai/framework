@@ -35,7 +35,7 @@ class ControlTest extends TestCase
         $ctl = new Control('foo', true, $value);
         $this->assertSame('foo', $ctl->getOid());
         $this->assertSame(true, $ctl->getCriticality());
-        $this->assertSame($value, $ctl->getValueObject());
+        $this->assertSame($value, $ctl->getValueSpec());
     }
 }
 

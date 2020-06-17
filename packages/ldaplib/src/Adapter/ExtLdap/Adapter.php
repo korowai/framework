@@ -25,8 +25,19 @@ use Symfony\Component\OptionsResolver\Options;
  */
 class Adapter implements AdapterInterface
 {
+    /**
+     * @var LdapLink
+     */
     private $link;
+
+    /**
+     * @var Binding
+     */
     private $binding;
+
+    /**
+     * @var EntryManager
+     */
     private $entryManager;
 
     public function __construct(LdapLink $link)

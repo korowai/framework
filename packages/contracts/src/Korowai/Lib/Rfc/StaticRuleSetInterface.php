@@ -84,7 +84,7 @@ interface StaticRuleSetInterface
      *
      * @param  string $errorKey
      * @param  string $ruleName
-     * @return array
+     * @return string
      */
     public static function getErrorMessage(string $errorKey, string $ruleName = null) : string;
 }

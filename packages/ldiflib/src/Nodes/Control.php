@@ -32,7 +32,7 @@ final class Control implements ControlInterface
     /**
      * @var ValueSpecInterface
      */
-    private $valueObject;
+    private $valueSpec;
 
     /**
      * Initializes the object.
@@ -44,11 +44,11 @@ final class Control implements ControlInterface
      * @param  ValueSpecInterface
      *      An object encapsulating the value of the attribute.
      */
-    public function __construct(string $oid, bool $criticality = null, ValueSpecInterface $valueObject = null)
+    public function __construct(string $oid, bool $criticality = null, ValueSpecInterface $valueSpec = null)
     {
         $this->oid = $oid;
         $this->criticality = $criticality;
-        $this->valueObject = $valueObject;
+        $this->valueSpec = $valueSpec;
     }
 
     /**
@@ -70,9 +70,9 @@ final class Control implements ControlInterface
     /**
      * {@inheritdoc}
      */
-    public function getValueObject() : ?ValueSpecInterface
+    public function getValueSpec() : ?ValueSpecInterface
     {
-        return $this->valueObject;
+        return $this->valueSpec;
     }
 }
 

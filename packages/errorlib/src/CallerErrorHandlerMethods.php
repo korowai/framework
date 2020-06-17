@@ -47,9 +47,9 @@ trait CallerErrorHandlerMethods
 
     /**
      * Returns the caller's line number as determined by the constructor.
-     * @return string
+     * @return int
      */
-    public function getCallerLine()
+    public function getCallerLine() : int
     {
         return $this->callerLine;
     }

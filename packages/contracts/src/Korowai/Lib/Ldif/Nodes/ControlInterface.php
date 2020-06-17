@@ -39,7 +39,7 @@ interface ControlInterface extends NodeInterface
     /**
      * Returns an object representing control's value, or null (if not set).
      *
-     * @return ValueInterface|null
+     * @return ValueSpecInterface|null
      */
     public function getValueSpec() : ?ValueSpecInterface;
 }

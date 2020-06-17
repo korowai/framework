@@ -20,7 +20,7 @@ class ClassContextFactory extends AbstractManagedContextFactory
     /**
      * @var array
      */
-    protected $wrappers;
+    protected $registry;
 
 
     /**
@@ -33,6 +33,9 @@ class ClassContextFactory extends AbstractManagedContextFactory
         $this->initialize($wrappers);
     }
 
+    /**
+     * Initializes the object with $wrappers.
+     */
     protected function initialize(array $wrappers)
     {
         $this->registry = [];

@@ -24,7 +24,7 @@ interface ControlRuleInterface extends RuleInterface
     /**
      * Returns the nested ValueSpecRuleInteface.
      *
-     * @return ValueSpecInterface
+     * @return ValueSpecRuleInterface
      */
     public function getValueSpecRule() : ValueSpecRuleInterface;
 }

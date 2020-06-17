@@ -15,6 +15,7 @@ namespace Korowai\Lib\Ldap\Behat;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\PyStringNode;
 use Korowai\Lib\Ldap\Ldap;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\Adapter as ExtLdapAdapter;
 use Korowai\Lib\Ldap\Exception\LdapException;
 
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
@@ -26,6 +27,11 @@ use PHPUnit\Framework\Assert;
 class ExtLdapContext implements Context
 {
     use LdapHelper, CommonHelpers;
+
+    /**
+     * @var Ldap
+     */
+    private $ldap;
 
     /**
      * Initializes context.
@@ -242,7 +248,10 @@ class ExtLdapContext implements Context
     public function iShouldHaveAValidLdapLink()
     {
         Assert::assertInstanceOf(Ldap::class, $this->ldap);
-        Assert::assertTrue($this->ldap->getBinding()->isLinkValid());
+        /** @var ExtLdap\Adapter */
+        $adapter = $this->ldap->getAdapter();
+        Assert::assertInstanceOf(ExtLdapAdapter::class, $adapter);
+        Assert::assertTrue($adapter->getLink()->isValid());
     }
 
     /**

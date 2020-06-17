@@ -18,10 +18,19 @@ namespace Korowai\Lib\Error;
 trait ContextManagerMethods
 {
     /**
+     * Returns an integer used to mask the triggering of the error handler.
+     *
+     * When the handler is activated it usually calls ``set_error_handler($this, $this->getErrorTypes())``
+     *
+     * @return int
+     */
+    abstract public function getErrorTypes() : int;
+
+    /**
      * Sets this error handler object as error handler using PHP function
      * ``set_error_handler()`` and returns ``$this``.
      *
-     * @return AbstractManagedErrorHandler
+     * @return ErrorHandlerInterface
      */
     public function enterContext()
     {

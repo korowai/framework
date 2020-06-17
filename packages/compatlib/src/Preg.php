@@ -21,7 +21,7 @@ use function Korowai\Lib\Error\callerErrorHandler;
 /**
  * Contains methods that help adapting PCRE functions.
  */
-class Preg
+final class Preg
 {
     public static $pregErrorMessages = [
         PREG_NO_ERROR => 'No error',
@@ -34,16 +34,30 @@ class Preg
     ];
 
     /**
-     * Return constant's name for a given PCRE error code (PREG_XXX_ERROR).
+     * Returns an array of PCRE constatns.
+     *
+     * @return array
+     */
+    public static function getPcreConstants() : array
+    {
+        /** @var array[] **/
+        $constants = get_defined_constants(true);
+        return $constants['pcre'] ?? [];
+    }
+
+    /**
+     * Returns constant's name for a given PCRE error code (PREG_XXX_ERROR) or
+     * a string in form "Error $code" if there is no PCRE constatnt for given
+     * $code.
      *
      * @param  int $code
      * @return string
      */
     public static function getPregErrorConst(int $code) : string
     {
-        $constants = get_defined_constants(true)['pcre'];
-        $errors = array_filter($constants, function ($v, $k) {
-            return strpos($k, "ERROR", -5) !== false && is_integer($v);
+        $constants = self::getPcreConstants();
+        $errors = array_filter($constants, function ($val, $key) {
+            return strpos($key, "ERROR", -5) !== false && is_integer($val);
         }, ARRAY_FILTER_USE_BOTH);
         $errors = array_flip($errors);
         return $errors[$code] ?? 'Error '.(string)$code;

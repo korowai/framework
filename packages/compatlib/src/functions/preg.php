@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Compat;
 
+use Korowai\Lib\Compat\Exception\PregException;
+
 // @codingStandardsIgnoreStart
 // phpcs:disable Generic.NamingConventions.CamelCapsFunctionName
 

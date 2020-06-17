@@ -96,7 +96,7 @@ function callerErrorHandler(
  * @param  mixed $distance The distance from our caller to his caller.
  * @param  int $errorTypes Error types handled by the new handler.
  *
- * @return ExceptionErrorHandler
+ * @return CallerExceptionErrorHandler
  */
 function callerExceptionErrorHandler(
     $arg = null,

@@ -64,7 +64,7 @@ class WithContextExecutor implements ExecutorInterface
         // exit all the entered contexts
         $exception = $this->exitContext($i, $exception);
 
-        if (is_a($exception, \Throwable::class)) {
+        if ($exception !== null) {
             throw $exception;
         }
 

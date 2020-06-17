@@ -28,7 +28,7 @@ class Binding implements BindingInterface
     /** @var bool */
     private $bound = false;
 
-    /** @var resource */
+    /** @var LdapLink */
     private $link;
 
     /**
@@ -49,14 +49,6 @@ class Binding implements BindingInterface
     public function getLink()
     {
         return $this->link;
-    }
-
-    /**
-     * Same as getLink()->isValid();
-     */
-    public function isLinkValid()
-    {
-        return $this->link->isValid();
     }
 
     /**

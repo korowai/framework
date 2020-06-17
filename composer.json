@@ -1,5 +1,12 @@
 {
     "name": "korowai/framework",
+    "require": {
+        "php": ">=7.2",
+        "ext-ldap": "*",
+        "ext-mbstring": "*",
+        "league/uri": "^6.0",
+        "symfony/options-resolver": ">=4.2"
+    },
     "autoload": {
         "exclude-from-classmap": [
             "packages/basiclib/Testing/",
@@ -25,16 +32,16 @@
             "packages/testing/tests/"
         ],
         "files": [
-            "packages/compatlib/src//functions/preg.php",
-            "packages/contextlib/src//functions.php",
-            "packages/errorlib/src//functions.php"
+            "packages/compatlib/src/functions/preg.php",
+            "packages/contextlib/src/functions.php",
+            "packages/errorlib/src/functions.php"
         ],
         "psr-4": {
             "Korowai\\Lib\\": "packages/contracts/src/Korowai/Lib/",
-            "Korowai\\Lib\\Basic\\": "packages/basiclib/src//",
-            "Korowai\\Lib\\Compat\\": "packages/compatlib/src//",
-            "Korowai\\Lib\\Context\\": "packages/contextlib/src//",
-            "Korowai\\Lib\\Error\\": "packages/errorlib/src//",
+            "Korowai\\Lib\\Basic\\": "packages/basiclib/src/",
+            "Korowai\\Lib\\Compat\\": "packages/compatlib/src/",
+            "Korowai\\Lib\\Context\\": "packages/contextlib/src/",
+            "Korowai\\Lib\\Error\\": "packages/errorlib/src/",
             "Korowai\\Lib\\Ldap\\": "packages/ldaplib/src/",
             "Korowai\\Lib\\Ldif\\": "packages/ldiflib/src/",
             "Korowai\\Lib\\Rfc\\": "packages/rfclib/src/"
@@ -78,13 +85,6 @@
     },
     "description": "Framework for Korowai project",
     "license": "MIT",
-    "require": {
-        "php": ">=7.2",
-        "ext-ldap": "*",
-        "ext-mbstring": "*",
-        "league/uri": "^6.0",
-        "symfony/options-resolver": ">=4.2"
-    },
     "require-dev": {
         "behat/behat": "^3.4",
         "friendsofphp/php-cs-fixer": "^2.16",

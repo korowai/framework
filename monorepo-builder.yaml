@@ -1,6 +1,32 @@
 parameters:
     package_directories:
         - 'packages'
+
+    section_order:
+        - 'name'
+        - 'type'
+        - 'description'
+        - 'license'
+        - 'keywords'
+        - 'homepage'
+        - 'support'
+        - 'authors'
+        - 'minimum-stability'
+        - 'prefer-stable'
+        - 'bin'
+        - 'require'
+        - 'require-dev'
+        - 'autoload'
+        - 'autoload-dev'
+        - 'repositories'
+        - 'conflict'
+        - 'replace'
+        - 'provide'
+        - 'scripts'
+        - 'suggest'
+        - 'config'
+        - 'extra'
+
     data_to_append:
         require-dev:
             phpunit/phpunit: ">=8.4.0"
@@ -23,3 +49,5 @@ parameters:
         packages/ldiflib: "git@github.com:korowai/ldiflib.git"
         packages/rfclib: "git@github.com:korowai/rfclib.git"
         packages/testing: "git@github.com:korowai/testing.git"
+
+# vim: set ts=4 sw=4 et:

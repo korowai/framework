@@ -11,7 +11,7 @@
             "email": "ptomulik@meil.pw.edu.pl"
         }
     ],
-    "suport": {
+    "support": {
       "issues": "https://github.com/korowai/framework/issues",
       "source": "https://github.com/korowai/framework"
     },
@@ -20,7 +20,7 @@
     },
     "autoload": {
       "psr-4" : {
-        "Korowai\\Lib\\Basic\\" : "src//"
+        "Korowai\\Lib\\Basic\\" : "src/"
       },
       "exclude-from-classmap": [
         "/tests/",

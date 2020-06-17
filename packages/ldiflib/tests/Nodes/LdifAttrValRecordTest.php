@@ -28,7 +28,7 @@ class LdifAttrValRecordTest extends TestCase
 {
     public function tets__extends__AbstractRecord()
     {
-        $this->assertExtendsClass(AbstractRecord::class, AttraValRecord::class);
+        $this->assertExtendsClass(AbstractRecord::class, LdifAttrValRecord::class);
     }
 
     public function test__implements__LdifAttrValRecordInterface()

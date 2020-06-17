@@ -107,8 +107,9 @@ abstract class TestCase extends \Korowai\Testing\TestCase
     /**
      * Gets all defined constants from the tested Rfc class.
      *
-     * @return An array of constants of the tested Rfc class, where the keys
-     *         hold the name and the values the value of the constants.
+     * @return array
+     *      An array of constants of the tested Rfc class, where the keys
+     *      hold the name and the values the value of the constants.
      */
     public static function findRfcConstants() : array
     {

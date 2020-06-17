@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Ldif\Traits;
 
 use Korowai\Lib\Ldif\Traits\HasAttrValSpecs;
-use Korowai\Lib\Ldif\AttrValSpecsInterface;
+use Korowai\Lib\Ldif\Nodes\HasAttrValSpecsInterface;
 
 use Korowai\Testing\Ldiflib\TestCase;
 
@@ -24,7 +24,7 @@ class HasAttrValSpecsTest extends TestCase
 {
     public function getTestObject()
     {
-        return new class implements AttrValSpecsInterface {
+        return new class implements HasAttrValSpecsInterface {
             use HasAttrValSpecs;
         };
     }

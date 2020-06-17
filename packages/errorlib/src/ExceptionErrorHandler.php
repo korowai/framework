@@ -79,7 +79,7 @@ class ExceptionErrorHandler extends AbstractManagedErrorHandler
     /**
      * Returns the $exceptionGenerator provided to constructor.
      *
-     * @return calable
+     * @return callable
      */
     public function getExceptionGenerator() : callable
     {

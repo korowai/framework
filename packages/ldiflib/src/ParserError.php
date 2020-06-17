@@ -28,7 +28,7 @@ class ParserError extends \Exception implements ParserErrorInterface
      * @param SourceLocationInterface $location Error location
      * @param  string $message Error message.
      * @param  int $code User-defined code.
-     * @param Exception $previous
+     * @param \Throwable $previous
      */
     public function __construct(
         SourceLocationInterface $location,

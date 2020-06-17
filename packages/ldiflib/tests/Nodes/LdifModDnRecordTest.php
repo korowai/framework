@@ -28,7 +28,7 @@ class LdifModDnRecordTest extends TestCase
 {
     public function tets__extends__AbstractRecord()
     {
-        $this->assertExtendsClass(AbstractRecord::class, AttraValRecord::class);
+        $this->assertExtendsClass(AbstractRecord::class, LdifModDnRecord::class);
     }
 
     public function test__implements__LdifModDnRecordInterface()

@@ -32,7 +32,7 @@ trait ExposesSnippetInterface
     /**
      * Returns the CouledLocationInterface instance as required by ExposesLocationInterface.
      *
-     * @return CouledLocationInterface|null
+     * @return LocationInterface|null
      */
     public function getLocation() : ?LocationInterface
     {

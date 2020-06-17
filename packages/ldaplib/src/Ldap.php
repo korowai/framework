@@ -70,7 +70,7 @@ class Ldap extends AbstractLdap
     /**
      * Create new Ldap instance
      *
-     * @param Adapter $adapter
+     * @param AdapterInterface $adapter
      */
     public function __construct(AdapterInterface $adapter)
     {

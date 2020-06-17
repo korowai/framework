@@ -27,7 +27,7 @@ class LdifDeleteRecordTest extends TestCase
 {
     public function tets__extends__AbstractChangeRecord()
     {
-        $this->assertExtendsClass(AbstractChangeRecord::class, AttraValRecord::class);
+        $this->assertExtendsClass(AbstractChangeRecord::class, LdifDeleteRecord::class);
     }
 
     public function test__implements__LdifDeleteRecordInterface()

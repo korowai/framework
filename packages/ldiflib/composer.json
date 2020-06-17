@@ -17,6 +17,7 @@
     },
     "require": {
         "php": ">=7.2",
+        "ext-mbstring": "*",
         "korowai/compatlib": "*",
         "korowai/contextlib": "*",
         "korowai/contracts": "*",

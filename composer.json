@@ -81,6 +81,7 @@
     "require": {
         "php": ">=7.2",
         "ext-ldap": "*",
+        "ext-mbstring": "*",
         "league/uri": "^6.0",
         "symfony/options-resolver": ">=4.2"
     },

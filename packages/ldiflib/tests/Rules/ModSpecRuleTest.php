@@ -17,8 +17,8 @@ use Korowai\Lib\Ldif\Rules\AbstractRule;
 use Korowai\Lib\Ldif\RuleInterface;
 use Korowai\Lib\Ldif\Rules\ModSpecInitRule;
 use Korowai\Lib\Ldif\Rules\AttrValSpecRule;
-use Korowai\Lib\Ldif\ModSpecInterface;
-use Korowai\Lib\Ldif\ValueInterface;
+use Korowai\Lib\Ldif\Nodes\ModSpecInterface;
+use Korowai\Lib\Ldif\Nodes\ValueSpecInterface;
 use Korowai\Testing\Ldiflib\TestCase;
 
 /**
@@ -108,7 +108,7 @@ class ModSpecRuleTest extends TestCase
                             self::hasPropertiesIdenticalTo([
                                 'attribute' => 'cn',
                                 'valueObject' => self::hasPropertiesIdenticalTo([
-                                    'type' => ValueInterface::TYPE_SAFE,
+                                    'type' => ValueSpecInterface::TYPE_SAFE,
                                     'spec' => 'foo',
                                     'content' => 'foo'
                                 ])
@@ -140,7 +140,7 @@ class ModSpecRuleTest extends TestCase
                             self::hasPropertiesIdenticalTo([
                                 'attribute' => 'cn',
                                 'valueObject' => self::hasPropertiesIdenticalTo([
-                                    'type' => ValueInterface::TYPE_SAFE,
+                                    'type' => ValueSpecInterface::TYPE_SAFE,
                                     'spec' => 'foo',
                                     'content' => 'foo'
                                 ])
@@ -148,7 +148,7 @@ class ModSpecRuleTest extends TestCase
                             self::hasPropertiesIdenticalTo([
                                 'attribute' => 'cn',
                                 'valueObject' => self::hasPropertiesIdenticalTo([
-                                    'type' => ValueInterface::TYPE_BASE64,
+                                    'type' => ValueSpecInterface::TYPE_BASE64,
                                     'spec' => 'YmFy',
                                     'content' => 'bar'
                                 ])
@@ -226,7 +226,7 @@ class ModSpecRuleTest extends TestCase
                             self::hasPropertiesIdenticalTo([
                                 'attribute' => 'cn',
                                 'valueObject' => self::hasPropertiesIdenticalTo([
-                                    'type' => ValueInterface::TYPE_SAFE,
+                                    'type' => ValueSpecInterface::TYPE_SAFE,
                                     'spec' => 'foo',
                                     'content' => 'foo'
                                 ])
@@ -421,7 +421,7 @@ class ModSpecRuleTest extends TestCase
                             self::hasPropertiesIdenticalTo([
                                 'attribute' => 'cn',
                                 'valueObject' => self::hasPropertiesIdenticalTo([
-                                    'type' => ValueInterface::TYPE_SAFE,
+                                    'type' => ValueSpecInterface::TYPE_SAFE,
                                     'spec' => 'foo',
                                     'content' => 'foo'
                                 ])

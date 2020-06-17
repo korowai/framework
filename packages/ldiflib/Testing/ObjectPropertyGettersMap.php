@@ -26,12 +26,6 @@ class ObjectPropertyGettersMap
      * @var array
      */
     protected static $ldiflibObjectPropertyGettersMap = [
-        \Korowai\Lib\Ldif\AttrVal::class => [
-        ],
-
-        \Korowai\Lib\Ldif\Control::class => [
-        ],
-
         \Korowai\Lib\Ldif\Cursor::class => [
         ],
 
@@ -56,9 +50,6 @@ class ObjectPropertyGettersMap
         ],
 
         \Korowai\Lib\Ldif\Location::class => [
-        ],
-
-        \Korowai\Lib\Ldif\ModSpec::class => [
         ],
 
         \Korowai\Lib\Ldif\Parser::class => [
@@ -86,6 +77,12 @@ class ObjectPropertyGettersMap
         \Korowai\Lib\Ldif\Nodes\AttrValRecord::class => [
         ],
 
+        \Korowai\Lib\Ldif\Nodes\AttrValSpec::class => [
+        ],
+
+        \Korowai\Lib\Ldif\Nodes\Control::class => [
+        ],
+
         \Korowai\Lib\Ldif\Nodes\DeleteRecord::class => [
         ],
 
@@ -93,6 +90,9 @@ class ObjectPropertyGettersMap
         ],
 
         \Korowai\Lib\Ldif\Nodes\ModifyRecord::class => [
+        ],
+
+        \Korowai\Lib\Ldif\Nodes\ModSpec::class => [
         ],
 
         \Korowai\Lib\Ldif\Rules\AbstractDnSpecRule::class => [

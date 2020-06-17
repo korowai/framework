@@ -13,14 +13,14 @@ declare(strict_types=1);
 namespace Korowai\Lib\Ldif\Rules;
 
 use Korowai\Lib\Ldif\ParserStateInterface as State;
+use Korowai\Lib\Ldif\Nodes\AttrValSpec;
 use Korowai\Lib\Ldif\Scan;
-use Korowai\Lib\Ldif\AttrVal;
 use Korowai\Lib\Rfc\Rfc2849;
 
 /**
  * A rule object that implements *value-spec* rule defined in RFC2849.
  *
- * - semantic value: [AttrVal](\.\./AttrVal.html).
+ * - semantic value: [AttrValSpec](\.\./AttrValSpec.html).
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
@@ -95,7 +95,7 @@ final class AttrValSpecRule extends AbstractRfcRule
                 $value = null;
                 return false;
             }
-            $value = new AttrVal($string, $tmp);
+            $value = new AttrValSpec($string, $tmp);
             return true;
         }
 

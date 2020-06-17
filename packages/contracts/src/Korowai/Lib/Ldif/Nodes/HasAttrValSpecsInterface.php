@@ -18,10 +18,10 @@ namespace Korowai\Lib\Ldif\Nodes;
 interface HasAttrValSpecsInterface
 {
     /**
-     * Returns array of [AttrValInterface](AttrValInterface.html) objects that
+     * Returns array of [AttrValSpecInterface](AttrValSpecInterface.html) objects that
      * comprise the record.
      *
-     * @return array an array of [AttrValInterface](AttrValInterface.html) instances.
+     * @return array an array of [AttrValSpecInterface](AttrValSpecInterface.html) instances.
      */
     public function getAttrValSpecs() : array;
 }

@@ -12,8 +12,6 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldif\Traits;
 
-use Korowai\Lib\Ldif\RecordVisitorInterface;
-
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
@@ -38,10 +36,10 @@ trait HasAttrValSpecs
     }
 
     /**
-     * Returns array of [AttrValInterface](AttrValInterface.html) objects that
+     * Returns array of [AttrValSpecInterface](AttrValSpecInterface.html) objects that
      * comprise the record.
      *
-     * @return array an array of [AttrValInterface](AttrValInterface.html) instances.
+     * @return array an array of [AttrValSpecInterface](AttrValSpecInterface.html) instances.
      */
     public function getAttrValSpecs() : array
     {

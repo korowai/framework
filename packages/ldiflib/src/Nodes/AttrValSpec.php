@@ -10,14 +10,14 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Lib\Ldif;
+namespace Korowai\Lib\Ldif\Nodes;
 
 /**
  * Semantic value of the
  * [RFC2849](https://tools.ietf.org/html/rfc2849)
  * *attrval-spec* rule.
  */
-final class AttrVal implements AttrValInterface
+final class AttrValSpec implements AttrValSpecInterface
 {
     /**
      * @var string

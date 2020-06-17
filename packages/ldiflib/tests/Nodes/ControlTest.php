@@ -10,21 +10,21 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Tests\Lib\Ldif;
+namespace Korowai\Tests\Lib\Ldif\Nodes;
 
-use Korowai\Lib\Ldif\AttrVal;
-use Korowai\Lib\Ldif\AttrValInterface;
+use Korowai\Lib\Ldif\Nodes\Control;
+use Korowai\Lib\Ldif\Nodes\ControlInterface;
 use Korowai\Lib\Ldif\ValueInterface;
 use Korowai\Testing\Ldiflib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class AttrValTest extends TestCase
+class ControlTest extends TestCase
 {
-    public function test__implmements__AttrValInterface()
+    public function test__implmements__ControlInterface()
     {
-        $this->assertImplementsInterface(AttrValInterface::class, AttrVal::class);
+        $this->assertImplementsInterface(ControlInterface::class, Control::class);
     }
 
     public function test__construct()
@@ -32,9 +32,10 @@ class AttrValTest extends TestCase
         $value = $this->getMockBuilder(ValueInterface::class)
                       ->getMockForAbstractClass();
 
-        $attrVal = new AttrVal('foo', $value);
-        $this->assertSame('foo', $attrVal->getAttribute());
-        $this->assertSame($value, $attrVal->getValueObject());
+        $ctl = new Control('foo', true, $value);
+        $this->assertSame('foo', $ctl->getOid());
+        $this->assertSame(true, $ctl->getCriticality());
+        $this->assertSame($value, $ctl->getValueObject());
     }
 }
 

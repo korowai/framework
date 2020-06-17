@@ -15,8 +15,8 @@ namespace Korowai\Tests\Lib\Ldif\Rules;
 use Korowai\Lib\Ldif\Rules\AttrValSpecRule;
 use Korowai\Lib\Ldif\Rules\ValueSpecRule;
 use Korowai\Lib\Ldif\Rules\AbstractRfcRule;
-use Korowai\Lib\Ldif\AttrValInterface;
-use Korowai\Lib\Ldif\ValueInterface;
+use Korowai\Lib\Ldif\Nodes\AttrValSpecInterface;
+use Korowai\Lib\Ldif\Nodes\ValueInterface;
 use Korowai\Lib\Rfc\Rfc2849;
 use Korowai\Testing\Ldiflib\TestCase;
 
@@ -160,7 +160,7 @@ class AttrValSpecRuleTest extends TestCase
         $state = $this->getParserStateFromSource(...$source);
 
         if ($expect['init'] ?? null) {
-            $value = $this->getMockBuilder(AttrValInterface::class)->getMockForAbstractClass();
+            $value = $this->getMockBuilder(AttrValSpecInterface::class)->getMockForAbstractClass();
         }
 
         $rule = new AttrValSpecRule();
@@ -467,7 +467,7 @@ class AttrValSpecRuleTest extends TestCase
         $state = $this->getParserStateFromSource(...$source);
 
         if ($expect['init'] ?? null) {
-            $value = $this->getMockBuilder(AttrValInterface::class)->getMockForAbstractClass();
+            $value = $this->getMockBuilder(AttrValSpecInterface::class)->getMockForAbstractClass();
         }
 
         $rule = new AttrValSpecRule;

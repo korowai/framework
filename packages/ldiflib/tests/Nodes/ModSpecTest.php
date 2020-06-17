@@ -10,10 +10,10 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Tests\Lib\Ldif;
+namespace Korowai\Tests\Lib\Ldif\Nodes;
 
-use Korowai\Lib\Ldif\ModSpec;
-use Korowai\Lib\Ldif\ModSpecInterface;
+use Korowai\Lib\Ldif\Nodes\ModSpec;
+use Korowai\Lib\Ldif\Nodes\ModSpecInterface;
 use Korowai\Lib\Ldif\Traits\HasAttrValSpecs;
 use Korowai\Lib\Ldif\Exception\InvalidModTypeException;
 

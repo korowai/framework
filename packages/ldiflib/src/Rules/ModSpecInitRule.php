@@ -13,8 +13,8 @@ declare(strict_types=1);
 namespace Korowai\Lib\Ldif\Rules;
 
 use Korowai\Lib\Ldif\ParserStateInterface as State;
+use Korowai\Lib\Ldif\Nodes\ModSpec;
 use Korowai\Lib\Ldif\Scan;
-use Korowai\Lib\Ldif\ModSpec;
 use Korowai\Lib\Ldif\Exception\InvalidModTypeException;
 use Korowai\Lib\Rfc\Rfc2849;
 

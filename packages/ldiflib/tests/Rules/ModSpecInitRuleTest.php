@@ -14,7 +14,7 @@ namespace Korowai\Tests\Lib\Ldif\Rules;
 
 use Korowai\Lib\Ldif\Rules\ModSpecInitRule;
 use Korowai\Lib\Ldif\Rules\AbstractRfcRule;
-use Korowai\Lib\Ldif\ModSpecInterface;
+use Korowai\Lib\Ldif\Nodes\ModSpecInterface;
 use Korowai\Lib\Rfc\Rfc2849;
 use Korowai\Testing\Ldiflib\TestCase;
 

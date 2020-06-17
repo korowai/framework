@@ -34,8 +34,8 @@ class AddRecord extends AbstractChangeRecord implements AddRecordInterface
      * @param  array $options
      *      An array of key => value pairs. Supported options are:
      *
-     * - ``"attrValSpecs" => AttrValInterface[]`` (optional): an optional
-     *   array of [AttrValInterface](\.\./AttrValInterface.html) objects
+     * - ``"attrValSpecs" => AttrValSpecInterface[]`` (optional): an optional
+     *   array of [AttrValSpecInterface](\.\./AttrValSpecInterface.html) objects
      *   specifying new attribute-value pairs for the entry being
      *   modified.
      * - ``"controls" => ControlInterface[]`` (optional): an optional

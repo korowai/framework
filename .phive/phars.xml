@@ -3,5 +3,5 @@
   <configuration>
     <targetDirectory>./bin</targetDirectory>
   </configuration>
-  <phar name="composer-require-checker" version="^2.1.0" location="../bin/composer-require-checker" copy="true" installed="2.1.0"/>
+  <phar name="composer-require-checker" version="^2.1.0" location="./bin/composer-require-checker" copy="true" installed="2.1.0"/>
 </phive>

@@ -14,6 +14,7 @@ namespace Korowai\Lib\Ldif\Rules;
 
 use Korowai\Lib\Ldif\ParserStateInterface as State;
 use Korowai\Lib\Ldif\Nodes\Control;
+use Korowai\Lib\Ldif\Nodes\ValueSpecInterface;
 use Korowai\Lib\Ldif\Scan;
 use Korowai\Lib\Rfc\Rfc2849;
 
@@ -126,7 +127,7 @@ final class ControlRule extends AbstractRfcRule
      * @param  bool $value
      * @return bool
      */
-    protected function parseValueSpecIfMatched(State $state, array $matches, ValueInterface &$value = null)
+    protected function parseValueSpecIfMatched(State $state, array $matches, ValueSpecInterface &$value = null)
     {
         if (!Scan::matched('value_safe', $matches) &&
             !Scan::matched('value_b64', $matches) &&

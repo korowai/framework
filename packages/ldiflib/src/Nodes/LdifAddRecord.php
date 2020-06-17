@@ -14,15 +14,18 @@ namespace Korowai\Lib\Ldif\Nodes;
 
 use Korowai\Lib\Ldif\SnippetInterface;
 use Korowai\Lib\Ldif\RecordVisitorInterface;
+use Korowai\Lib\Ldif\Traits\HasAttrValSpecs;
 
 /**
  * Represents [RFC2849](https://tools.ietf.org/html/rfc2849)
- * *ldif-change-record* of type *change-delete*.
+ * *ldif-change-record* of type *change-add*.
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class DeleteRecord extends AbstractChangeRecord implements DeleteRecordInterface
+class LdifAddRecord extends AbstractChangeRecord implements LdifAddRecordInterface
 {
+    use HasAttrValSpecs;
+
     /**
      * Initializes the object.
      *
@@ -31,17 +34,21 @@ class DeleteRecord extends AbstractChangeRecord implements DeleteRecordInterface
      * @param  array $options
      *      An array of key => value pairs. Supported options are:
      *
+     * - ``"attrValSpecs" => AttrValSpecInterface[]`` (optional): an optional
+     *   array of [AttrValSpecInterface](\.\./AttrValSpecInterface.html) objects
+     *   specifying new attribute-value pairs for the entry being
+     *   modified.
      * - ``"controls" => ControlInterface[]`` (optional): an optional
      *   array of controls for the operation.
      * - ``"snippet" => SnippetInterface`` (optional): an optional
-     *   instance of [SnippetInterface](\.\./SnippetInterface.html) to be
-     *   attached to this record.
+     *   instance of SnippetInterface to be attached to this record.
      *
      * Unsupported keys are silently ignored.
      */
     public function __construct(string $dn, array $options = [])
     {
         parent::initAbstractChangeRecord($dn, $options);
+        $this->setAttrValSpecs($options['attrValSpecs'] ?? []);
     }
 
     /**
@@ -49,7 +56,7 @@ class DeleteRecord extends AbstractChangeRecord implements DeleteRecordInterface
      */
     public function getChangeType() : string
     {
-        return "delete";
+        return 'add';
     }
 
     /**
@@ -57,7 +64,7 @@ class DeleteRecord extends AbstractChangeRecord implements DeleteRecordInterface
      */
     public function acceptRecordVisitor(RecordVisitorInterface $visitor)
     {
-        return $visitor->visitDeleteRecord($this);
+        return $visitor->visitAddRecord($this);
     }
 }
 

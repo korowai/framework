@@ -12,8 +12,8 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldif\Nodes;
 
-use Korowai\Lib\Ldif\Nodes\AddRecord;
-use Korowai\Lib\Ldif\Nodes\AddRecordInterface;
+use Korowai\Lib\Ldif\Nodes\LdifAddRecord;
+use Korowai\Lib\Ldif\Nodes\LdifAddRecordInterface;
 use Korowai\Lib\Ldif\Nodes\AbstractChangeRecord;
 use Korowai\Lib\Ldif\RecordVisitorInterface;
 use Korowai\Lib\Ldif\SnippetInterface;
@@ -24,21 +24,21 @@ use Korowai\Testing\Ldiflib\TestCase;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class AddRecordTest extends TestCase
+class LdifAddRecordTest extends TestCase
 {
     public function tets__extends__AbstractChangeRecord()
     {
         $this->assertExtendsClass(AbstractChangeRecord::class, AttraValRecord::class);
     }
 
-    public function test__implements__AddRecordInterface()
+    public function test__implements__LdifAddRecordInterface()
     {
-        $this->assertImplementsInterface(AddRecordInterface::class, AddRecord::class);
+        $this->assertImplementsInterface(LdifAddRecordInterface::class, LdifAddRecord::class);
     }
 
     public function test__uses__HasAttrValSpecs()
     {
-        $this->assertUsesTrait(HasAttrValSpecs::class, AddRecord::class);
+        $this->assertUsesTrait(HasAttrValSpecs::class, LdifAddRecord::class);
     }
 
     public static function construct__cases()
@@ -80,13 +80,13 @@ class AddRecordTest extends TestCase
      */
     public function test__construct(array $args, array $expect)
     {
-        $record = new AddRecord(...$args);
+        $record = new LdifAddRecord(...$args);
         $this->assertHasPropertiesSameAs($expect, $record);
     }
 
     public function test__setAttrValSpecs()
     {
-        $record = new AddRecord("dc=example,dc=org");
+        $record = new LdifAddRecord("dc=example,dc=org");
         $this->assertSame($record, $record->setAttrValSpecs(['X']));
         $this->assertSame(['X'], $record->getAttrValSpecs());
     }
@@ -96,7 +96,7 @@ class AddRecordTest extends TestCase
         $visitor = $this->getMockBuilder(RecordVisitorInterface::class)
                         ->getMockForAbstractClass();
 
-        $record = new AddRecord("dc=example,dc=org");
+        $record = new LdifAddRecord("dc=example,dc=org");
 
         $visitor->expects($this->once())
                 ->method('visitAddRecord')

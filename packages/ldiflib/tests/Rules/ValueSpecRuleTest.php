@@ -14,7 +14,7 @@ namespace Korowai\Tests\Lib\Ldif\Rules;
 
 use Korowai\Lib\Ldif\Rules\ValueSpecRule;
 use Korowai\Lib\Ldif\Rules\AbstractRfcRule;
-use Korowai\Lib\Ldif\ValueInterface;
+use Korowai\Lib\Ldif\Nodes\ValueSpecInterface;
 use Korowai\Lib\Rfc\Rfc2849;
 use Korowai\Testing\Ldiflib\TestCase;
 
@@ -67,7 +67,7 @@ class ValueSpecRuleTest extends TestCase
                 'expect' => [
                     'result' => true,
                     'value' => [
-                        'type' => ValueInterface::TYPE_BASE64,
+                        'type' => ValueSpecInterface::TYPE_BASE64,
                         'spec' => 'xbvDs8WCdGEgxYJ5xbxrYQ==',
                         'content' => 'Żółta łyżka',
                     ],
@@ -106,7 +106,7 @@ class ValueSpecRuleTest extends TestCase
                 'expect' => [
                     'result' => true,
                     'value' => [
-                        'type' => ValueInterface::TYPE_SAFE,
+                        'type' => ValueSpecInterface::TYPE_SAFE,
                         'spec' => 'John Smith',
                         'content' => 'John Smith',
                     ],
@@ -129,7 +129,7 @@ class ValueSpecRuleTest extends TestCase
                 'expect' => [
                     'result' => true,
                     'value' => [
-                        'type' => ValueInterface::TYPE_URL,
+                        'type' => ValueSpecInterface::TYPE_URL,
                         'spec' => self::hasPropertiesIdenticalTo([
                             'string' => 'file:///home/jsmith/foo.txt',
                             'scheme' => 'file',
@@ -212,7 +212,7 @@ class ValueSpecRuleTest extends TestCase
         $state = $this->getParserStateFromSource(...$source);
 
         if ($expect['init'] ?? null) {
-            $value = $this->getMockBuilder(ValueInterface::class)->getMockForAbstractClass();
+            $value = $this->getMockBuilder(ValueSpecInterface::class)->getMockForAbstractClass();
         }
 
         $rule = new ValueSpecRule();
@@ -221,7 +221,7 @@ class ValueSpecRuleTest extends TestCase
 
         $this->assertSame($expect['result'], $result);
         if (is_array($expect['value'])) {
-            $this->assertInstanceOf(ValueInterface::class, $value);
+            $this->assertInstanceOf(ValueSpecInterface::class, $value);
             $this->assertHasPropertiesSameAs($expect['value'], $value);
         } else {
             $this->assertSame($expect['value'], $value);
@@ -244,7 +244,7 @@ class ValueSpecRuleTest extends TestCase
                 'expect' => [
                     'result' => true,
                     'value' => [
-                        'type' => ValueInterface::TYPE_BASE64,
+                        'type' => ValueSpecInterface::TYPE_BASE64,
                         'spec' => 'xbvDs8WCdGEgxYJ5xbxrYQ==',
                         'content' => 'Żółta łyżka',
                     ],
@@ -291,7 +291,7 @@ class ValueSpecRuleTest extends TestCase
                 'expect' => [
                     'result' => true,
                     'value' => [
-                        'type' => ValueInterface::TYPE_SAFE,
+                        'type' => ValueSpecInterface::TYPE_SAFE,
                         'spec' => 'John Smith',
                         'content' => 'John Smith',
                     ],
@@ -314,7 +314,7 @@ class ValueSpecRuleTest extends TestCase
                 'expect' => [
                     'result' => true,
                     'value' => [
-                        'type' => ValueInterface::TYPE_URL,
+                        'type' => ValueSpecInterface::TYPE_URL,
                         'spec' => self::hasPropertiesIdenticalTo([
                             'string' => 'file:///home/jsmith/foo.txt',
                             'scheme' => 'file',
@@ -350,7 +350,7 @@ class ValueSpecRuleTest extends TestCase
         $state = $this->getParserStateFromSource(...$source);
 
         if ($expect['init'] ?? null) {
-            $value = $this->getMockBuilder(ValueInterface::class)->getMockForAbstractClass();
+            $value = $this->getMockBuilder(ValueSpecInterface::class)->getMockForAbstractClass();
         }
 
         $rule = new ValueSpecRule;
@@ -360,7 +360,7 @@ class ValueSpecRuleTest extends TestCase
         $this->assertSame($expect['result'], $result);
 
         if (is_array($expect['value'])) {
-            $this->assertInstanceOf(ValueInterface::class, $value);
+            $this->assertInstanceOf(ValueSpecInterface::class, $value);
             $this->assertHasPropertiesSameAs($expect['value'], $value);
         } else {
             $this->assertSame($expect['value'], $value);

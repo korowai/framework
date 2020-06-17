@@ -24,7 +24,8 @@
         "korowai/errorlib": "*",
         "korowai/rfclib": "*",
         "symfony/options-resolver": ">=4.2",
-        "league/uri": "^6.0"
+        "league/uri": "^6.0",
+        "league/uri-interfaces": "^2.1"
     },
     "autoload": {
       "psr-4" : {

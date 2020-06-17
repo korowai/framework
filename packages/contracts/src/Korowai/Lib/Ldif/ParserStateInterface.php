@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldif;
 
+use Korowai\Lib\Ldif\Nodes\VersionSpecInterface;
+
 /**
  * State object returned by LDIF Parser.
  */

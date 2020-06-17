@@ -5,6 +5,7 @@
         "ext-ldap": "*",
         "ext-mbstring": "*",
         "league/uri": "^6.0",
+        "league/uri-interfaces": "^2.1",
         "symfony/options-resolver": ">=4.2"
     },
     "autoload": {

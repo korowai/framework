@@ -15,18 +15,18 @@ namespace Korowai\Tests\Lib\Ldif\Rules;
 use Korowai\Lib\Ldif\Rules\LdifChangeRecordRule;
 use Korowai\Lib\Ldif\Rules\AbstractLdifRecordRule;
 use Korowai\Lib\Ldif\RuleInterface;
-use Korowai\Lib\Ldif\ValueInterface;
 use Korowai\Lib\Ldif\Rules\DnSpecRule;
 use Korowai\Lib\Ldif\Rules\ControlRule;
 use Korowai\Lib\Ldif\Rules\ChangeRecordInitRule;
 use Korowai\Lib\Ldif\Rules\ModSpecRule;
 use Korowai\Lib\Ldif\Rules\SepRule;
 use Korowai\Lib\Ldif\Rules\AttrValSpecRule;
-use Korowai\Lib\Ldif\Nodes\ChangeRecordInterface;
-use Korowai\Lib\Ldif\Nodes\AddRecordInterface;
-use Korowai\Lib\Ldif\Nodes\DeleteRecordInterface;
-use Korowai\Lib\Ldif\Nodes\ModDnRecordInterface;
-use Korowai\Lib\Ldif\Nodes\ModifyRecordInterface;
+use Korowai\Lib\Ldif\Nodes\ValueSpecInterface;
+use Korowai\Lib\Ldif\Nodes\LdifChangeRecordInterface;
+use Korowai\Lib\Ldif\Nodes\LdifAddRecordInterface;
+use Korowai\Lib\Ldif\Nodes\LdifDeleteRecordInterface;
+use Korowai\Lib\Ldif\Nodes\LdifModDnRecordInterface;
+use Korowai\Lib\Ldif\Nodes\LdifModifyRecordInterface;
 use Korowai\Lib\Ldif\Exception\InvalidRuleClassException;
 use Korowai\Testing\Ldiflib\TestCase;
 
@@ -131,7 +131,7 @@ class LdifChangeRecordRuleTest extends TestCase
                 'source' => ["dn: dc=example,dc=org\nchangetype: add", 0],
                 'args' => [true],
                 'expect' => [
-                    'init' => AddRecordInterface::class,
+                    'init' => LdifAddRecordInterface::class,
                     'result' => false,
                     'value' => null,
                     'state' => [
@@ -155,7 +155,7 @@ class LdifChangeRecordRuleTest extends TestCase
                 'expect' => [
                     'init' => null,
                     'result' => true,
-                    'class' => AddRecordInterface::class,
+                    'class' => LdifAddRecordInterface::class,
                     'value' => [
                         'dn' => 'dc=example,dc=org',
                         'changeType' => 'add',
@@ -164,7 +164,7 @@ class LdifChangeRecordRuleTest extends TestCase
                             self::hasPropertiesIdenticalTo([
                                 'attribute' => 'cn',
                                 'valueObject' => self::hasPropertiesIdenticalTo([
-                                    'type' => ValueInterface::TYPE_SAFE,
+                                    'type' => ValueSpecInterface::TYPE_SAFE,
                                     'spec' => 'John',
                                     'content' => 'John',
                                 ])
@@ -193,7 +193,7 @@ class LdifChangeRecordRuleTest extends TestCase
                 'expect' => [
                     'init' => null,
                     'result' => true,
-                    'class' => AddRecordInterface::class,
+                    'class' => LdifAddRecordInterface::class,
                     'value' => [
                         'dn' => 'dc=example,dc=org',
                         'changeType' => 'add',
@@ -208,7 +208,7 @@ class LdifChangeRecordRuleTest extends TestCase
                             self::hasPropertiesIdenticalTo([
                                 'attribute' => 'cn',
                                 'valueObject' => self::hasPropertiesIdenticalTo([
-                                    'type' => ValueInterface::TYPE_SAFE,
+                                    'type' => ValueSpecInterface::TYPE_SAFE,
                                     'spec' => 'John',
                                     'content' => 'John',
                                 ])
@@ -240,7 +240,7 @@ class LdifChangeRecordRuleTest extends TestCase
                 'expect' => [
                     'init' => null,
                     'result' => true,
-                    'class' => AddRecordInterface::class,
+                    'class' => LdifAddRecordInterface::class,
                     'value' => [
                         'dn' => 'dc=example,dc=org',
                         'changeType' => 'add',
@@ -254,7 +254,7 @@ class LdifChangeRecordRuleTest extends TestCase
                                     'oid' => '4.5',
                                 'criticality' => true,
                                 'valueObject' => self::hasPropertiesIdenticalTo([
-                                    'type' => ValueInterface::TYPE_SAFE,
+                                    'type' => ValueSpecInterface::TYPE_SAFE,
                                     'spec' => 'foo',
                                     'content' => 'foo'
                                 ]),
@@ -264,7 +264,7 @@ class LdifChangeRecordRuleTest extends TestCase
                             self::hasPropertiesIdenticalTo([
                                 'attribute' => 'cn',
                                 'valueObject' => self::hasPropertiesIdenticalTo([
-                                    'type' => ValueInterface::TYPE_SAFE,
+                                    'type' => ValueSpecInterface::TYPE_SAFE,
                                     'spec' => 'John',
                                     'content' => 'John',
                                 ])
@@ -272,7 +272,7 @@ class LdifChangeRecordRuleTest extends TestCase
                             self::hasPropertiesIdenticalTo([
                                 'attribute' => 'comment',
                                 'valueObject' => self::hasPropertiesIdenticalTo([
-                                    'type' => ValueInterface::TYPE_SAFE,
+                                    'type' => ValueSpecInterface::TYPE_SAFE,
                                     'spec' => 'Johnny',
                                     'content' => 'Johnny',
                                 ])
@@ -306,7 +306,7 @@ class LdifChangeRecordRuleTest extends TestCase
                 'expect' => [
                     'init' => null,
                     'result' => true,
-                    'class' => DeleteRecordInterface::class,
+                    'class' => LdifDeleteRecordInterface::class,
                     'value' => [
                         'dn' => 'dc=example,dc=org',
                         'changeType' => 'delete',
@@ -334,7 +334,7 @@ class LdifChangeRecordRuleTest extends TestCase
                 'expect' => [
                     'init' => null,
                     'result' => true,
-                    'class' => DeleteRecordInterface::class,
+                    'class' => LdifDeleteRecordInterface::class,
                     'value' => [
                         'dn' => 'dc=example,dc=org',
                         'changeType' => 'delete',
@@ -368,7 +368,7 @@ class LdifChangeRecordRuleTest extends TestCase
                 'expect' => [
                     'init' => null,
                     'result' => true,
-                    'class' => DeleteRecordInterface::class,
+                    'class' => LdifDeleteRecordInterface::class,
                     'value' => [
                         'dn' => 'dc=example,dc=org',
                         'changeType' => 'delete',
@@ -382,7 +382,7 @@ class LdifChangeRecordRuleTest extends TestCase
                                     'oid' => '4.5',
                                 'criticality' => true,
                                 'valueObject' => self::hasPropertiesIdenticalTo([
-                                    'type' => ValueInterface::TYPE_SAFE,
+                                    'type' => ValueSpecInterface::TYPE_SAFE,
                                     'spec' => 'foo',
                                     'content' => 'foo'
                                 ]),
@@ -422,7 +422,7 @@ class LdifChangeRecordRuleTest extends TestCase
                 'expect' => [
                     'init' => null,
                     'result' => true,
-                    'class' => ModifyRecordInterface::class,
+                    'class' => LdifModifyRecordInterface::class,
                     'value' => [
                         'dn' => 'dc=example,dc=org',
                         'changeType' => 'modify',
@@ -451,7 +451,7 @@ class LdifChangeRecordRuleTest extends TestCase
                 'expect' => [
                     'init' => null,
                     'result' => true,
-                    'class' => ModifyRecordInterface::class,
+                    'class' => LdifModifyRecordInterface::class,
                     'value' => [
                         'dn' => 'dc=example,dc=org',
                         'changeType' => 'modify',
@@ -486,7 +486,7 @@ class LdifChangeRecordRuleTest extends TestCase
                 'expect' => [
                     'init' => null,
                     'result' => true,
-                    'class' => ModifyRecordInterface::class,
+                    'class' => LdifModifyRecordInterface::class,
                     'value' => [
                         'dn' => 'dc=example,dc=org',
                         'changeType' => 'modify',
@@ -500,7 +500,7 @@ class LdifChangeRecordRuleTest extends TestCase
                                     'oid' => '4.5',
                                 'criticality' => true,
                                 'valueObject' => self::hasPropertiesIdenticalTo([
-                                    'type' => ValueInterface::TYPE_SAFE,
+                                    'type' => ValueSpecInterface::TYPE_SAFE,
                                     'spec' => 'foo',
                                     'content' => 'foo'
                                 ]),
@@ -540,7 +540,7 @@ class LdifChangeRecordRuleTest extends TestCase
                 'source' => ["dn: dc=example,dc=org\nchangetype: modify\nadd: \n-\n", 0],
                 'args' => [true],
                 'expect' => [
-                    'init' => ModifyRecordInterface::class,
+                    'init' => LdifModifyRecordInterface::class,
                     'result' => false,
                     'value' => null,
                     'state' => [
@@ -562,7 +562,7 @@ class LdifChangeRecordRuleTest extends TestCase
                 'source' => ["dn: dc=example,dc=org\nchangetype: modify\nadd: cn\n\n", 0],
                 'args' => [true],
                 'expect' => [
-                    'init' => ModifyRecordInterface::class,
+                    'init' => LdifModifyRecordInterface::class,
                     'result' => false,
                     'value' => null,
                     'state' => [
@@ -586,7 +586,7 @@ class LdifChangeRecordRuleTest extends TestCase
                 'expect' => [
                     'init' => null,
                     'result' => true,
-                    'class' => ModifyRecordInterface::class,
+                    'class' => LdifModifyRecordInterface::class,
                     'value' => [
                         'dn' => 'dc=example,dc=org',
                         'changeType' => 'modify',
@@ -621,7 +621,7 @@ class LdifChangeRecordRuleTest extends TestCase
                 'expect' => [
                     'init' => null,
                     'result' => true,
-                    'class' => ModifyRecordInterface::class,
+                    'class' => LdifModifyRecordInterface::class,
                     'value' => [
                         'dn' => 'dc=example,dc=org',
                         'changeType' => 'modify',
@@ -661,7 +661,7 @@ class LdifChangeRecordRuleTest extends TestCase
                 'expect' => [
                     'init' => null,
                     'result' => true,
-                    'class' => ModifyRecordInterface::class,
+                    'class' => LdifModifyRecordInterface::class,
                     'value' => [
                         'dn' => 'dc=example,dc=org',
                         'changeType' => 'modify',
@@ -705,7 +705,7 @@ class LdifChangeRecordRuleTest extends TestCase
                 'expect' => [
                     'init' => null,
                     'result' => true,
-                    'class' => ModifyRecordInterface::class,
+                    'class' => LdifModifyRecordInterface::class,
                     'value' => [
                         'dn' => 'dc=example,dc=org',
                         'changeType' => 'modify',
@@ -724,7 +724,7 @@ class LdifChangeRecordRuleTest extends TestCase
                                     self::hasPropertiesIdenticalTo([
                                         'attribute' => 'cn',
                                         'valueObject' => self::hasPropertiesIdenticalTo([
-                                            'type' => ValueInterface::TYPE_SAFE,
+                                            'type' => ValueSpecInterface::TYPE_SAFE,
                                             'spec' => 'John',
                                             'content' => 'John',
                                         ]),
@@ -732,7 +732,7 @@ class LdifChangeRecordRuleTest extends TestCase
                                     self::hasPropertiesIdenticalTo([
                                         'attribute' => 'cn',
                                         'valueObject' => self::hasPropertiesIdenticalTo([
-                                            'type' => ValueInterface::TYPE_SAFE,
+                                            'type' => ValueSpecInterface::TYPE_SAFE,
                                             'spec' => 'Clark',
                                             'content' => 'Clark',
                                         ]),
@@ -766,7 +766,7 @@ class LdifChangeRecordRuleTest extends TestCase
                 'source' => ["dn: dc=example,dc=org\nchangetype: modify\ndelete: \n-\n", 0],
                 'args' => [true],
                 'expect' => [
-                    'init' => ModifyRecordInterface::class,
+                    'init' => LdifModifyRecordInterface::class,
                     'result' => false,
                     'value' => null,
                     'state' => [
@@ -788,7 +788,7 @@ class LdifChangeRecordRuleTest extends TestCase
                 'source' => ["dn: dc=example,dc=org\nchangetype: modify\ndelete: cn\n\n", 0],
                 'args' => [true],
                 'expect' => [
-                    'init' => ModifyRecordInterface::class,
+                    'init' => LdifModifyRecordInterface::class,
                     'result' => false,
                     'value' => null,
                     'state' => [
@@ -812,7 +812,7 @@ class LdifChangeRecordRuleTest extends TestCase
                 'expect' => [
                     'init' => null,
                     'result' => true,
-                    'class' => ModifyRecordInterface::class,
+                    'class' => LdifModifyRecordInterface::class,
                     'value' => [
                         'dn' => 'dc=example,dc=org',
                         'changeType' => 'modify',
@@ -847,7 +847,7 @@ class LdifChangeRecordRuleTest extends TestCase
                 'expect' => [
                     'init' => null,
                     'result' => true,
-                    'class' => ModifyRecordInterface::class,
+                    'class' => LdifModifyRecordInterface::class,
                     'value' => [
                         'dn' => 'dc=example,dc=org',
                         'changeType' => 'modify',
@@ -887,7 +887,7 @@ class LdifChangeRecordRuleTest extends TestCase
                 'expect' => [
                     'init' => null,
                     'result' => true,
-                    'class' => ModifyRecordInterface::class,
+                    'class' => LdifModifyRecordInterface::class,
                     'value' => [
                         'dn' => 'dc=example,dc=org',
                         'changeType' => 'modify',
@@ -931,7 +931,7 @@ class LdifChangeRecordRuleTest extends TestCase
                 'source' => ["dn: dc=example,dc=org\nchangetype: modify\nreplace: \n-\n", 0],
                 'args' => [true],
                 'expect' => [
-                    'init' => ModifyRecordInterface::class,
+                    'init' => LdifModifyRecordInterface::class,
                     'result' => false,
                     'value' => null,
                     'state' => [
@@ -953,7 +953,7 @@ class LdifChangeRecordRuleTest extends TestCase
                 'source' => ["dn: dc=example,dc=org\nchangetype: modify\nreplace: cn\n\n", 0],
                 'args' => [true],
                 'expect' => [
-                    'init' => ModifyRecordInterface::class,
+                    'init' => LdifModifyRecordInterface::class,
                     'result' => false,
                     'value' => null,
                     'state' => [
@@ -977,7 +977,7 @@ class LdifChangeRecordRuleTest extends TestCase
                 'expect' => [
                     'init' => null,
                     'result' => true,
-                    'class' => ModifyRecordInterface::class,
+                    'class' => LdifModifyRecordInterface::class,
                     'value' => [
                         'dn' => 'dc=example,dc=org',
                         'changeType' => 'modify',
@@ -1012,7 +1012,7 @@ class LdifChangeRecordRuleTest extends TestCase
                 'expect' => [
                     'init' => null,
                     'result' => true,
-                    'class' => ModifyRecordInterface::class,
+                    'class' => LdifModifyRecordInterface::class,
                     'value' => [
                         'dn' => 'dc=example,dc=org',
                         'changeType' => 'modify',
@@ -1052,7 +1052,7 @@ class LdifChangeRecordRuleTest extends TestCase
                 'expect' => [
                     'init' => null,
                     'result' => true,
-                    'class' => ModifyRecordInterface::class,
+                    'class' => LdifModifyRecordInterface::class,
                     'value' => [
                         'dn' => 'dc=example,dc=org',
                         'changeType' => 'modify',
@@ -1096,7 +1096,7 @@ class LdifChangeRecordRuleTest extends TestCase
                 'expect' => [
                     'init' => null,
                     'result' => true,
-                    'class' => ModifyRecordInterface::class,
+                    'class' => LdifModifyRecordInterface::class,
                     'value' => [
                         'dn' => 'dc=example,dc=org',
                         'changeType' => 'modify',
@@ -1115,7 +1115,7 @@ class LdifChangeRecordRuleTest extends TestCase
                                     self::hasPropertiesIdenticalTo([
                                         'attribute' => 'cn',
                                         'valueObject' => self::hasPropertiesIdenticalTo([
-                                            'type' => ValueInterface::TYPE_SAFE,
+                                            'type' => ValueSpecInterface::TYPE_SAFE,
                                             'spec' => 'John',
                                             'content' => 'John',
                                         ]),
@@ -1123,7 +1123,7 @@ class LdifChangeRecordRuleTest extends TestCase
                                     self::hasPropertiesIdenticalTo([
                                         'attribute' => 'cn',
                                         'valueObject' => self::hasPropertiesIdenticalTo([
-                                            'type' => ValueInterface::TYPE_SAFE,
+                                            'type' => ValueSpecInterface::TYPE_SAFE,
                                             'spec' => 'Clark',
                                             'content' => 'Clark',
                                         ]),
@@ -1157,7 +1157,7 @@ class LdifChangeRecordRuleTest extends TestCase
                 'source' => ['', 0],
                 'args' => [],
                 'expect' => [
-                    'init' => ChangeRecordInterface::class,
+                    'init' => LdifChangeRecordInterface::class,
                     'result' => false,
                     'value' => null,
                     'state' => [
@@ -1179,7 +1179,7 @@ class LdifChangeRecordRuleTest extends TestCase
                 'source' => ['', 0],
                 'args' => [true],
                 'expect' => [
-                    'init' => ChangeRecordInterface::class,
+                    'init' => LdifChangeRecordInterface::class,
                     'result' => false,
                     'value' => null,
                     'state' => [
@@ -1196,7 +1196,7 @@ class LdifChangeRecordRuleTest extends TestCase
                 'source' => ['foo: ', 0],
                 'args' => [],
                 'expect' => [
-                    'init' => ChangeRecordInterface::class,
+                    'init' => LdifChangeRecordInterface::class,
                     'result' => false,
                     'value' => null,
                     'state' => [
@@ -1218,7 +1218,7 @@ class LdifChangeRecordRuleTest extends TestCase
                 'source' => ['dn: ', 0],
                 'args' => [true],
                 'expect' => [
-                    'init' => ChangeRecordInterface::class,
+                    'init' => LdifChangeRecordInterface::class,
                     'result' => false,
                     'value' => null,
                     'state' => [
@@ -1240,7 +1240,7 @@ class LdifChangeRecordRuleTest extends TestCase
                 'source' => ['dn: foo', 0],
                 'args' => [true],
                 'expect' => [
-                    'init' => ChangeRecordInterface::class,
+                    'init' => LdifChangeRecordInterface::class,
                     'result' => false,
                     'value' => null,
                     'state' => [
@@ -1262,7 +1262,7 @@ class LdifChangeRecordRuleTest extends TestCase
                 'source' => ['dn: dc=example,dc=org', 0],
                 'args' => [true],
                 'expect' => [
-                    'init' => ChangeRecordInterface::class,
+                    'init' => LdifChangeRecordInterface::class,
                     'result' => false,
                     'value' => null,
                     'state' => [
@@ -1284,7 +1284,7 @@ class LdifChangeRecordRuleTest extends TestCase
                 'source' => ["dn: dc=example,dc=org\n", 0],
                 'args' => [true],
                 'expect' => [
-                    'init' => ChangeRecordInterface::class,
+                    'init' => LdifChangeRecordInterface::class,
                     'result' => false,
                     'value' => null,
                     'state' => [
@@ -1306,7 +1306,7 @@ class LdifChangeRecordRuleTest extends TestCase
                 'source' => ["dn: dc=example,dc=org\nfoo: bar", 0],
                 'args' => [true],
                 'expect' => [
-                    'init' => ChangeRecordInterface::class,
+                    'init' => LdifChangeRecordInterface::class,
                     'result' => false,
                     'value' => null,
                     'state' => [
@@ -1328,7 +1328,7 @@ class LdifChangeRecordRuleTest extends TestCase
                 'source' => ["dn: dc=example,dc=org\ncontrol: 1.3.4\ncontrol: 4.5 true: foo\n", 0],
                 'args' => [true],
                 'expect' => [
-                    'init' => ChangeRecordInterface::class,
+                    'init' => LdifChangeRecordInterface::class,
                     'result' => false,
                     'value' => null,
                     'state' => [
@@ -1350,7 +1350,7 @@ class LdifChangeRecordRuleTest extends TestCase
                 'source' => ["dn: dc=example,dc=org\nchangetype: \n", 0],
                 'args' => [true],
                 'expect' => [
-                    'init' => ChangeRecordInterface::class,
+                    'init' => LdifChangeRecordInterface::class,
                     'result' => false,
                     'value' => null,
                     'state' => [
@@ -1372,7 +1372,7 @@ class LdifChangeRecordRuleTest extends TestCase
                 'source' => ["dn: dc=example,dc=org\nchangetype: foo", 0],
                 'args' => [true],
                 'expect' => [
-                    'init' => ChangeRecordInterface::class,
+                    'init' => LdifChangeRecordInterface::class,
                     'result' => false,
                     'value' => null,
                     'state' => [

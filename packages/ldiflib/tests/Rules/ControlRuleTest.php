@@ -16,7 +16,7 @@ use Korowai\Lib\Ldif\Rules\ControlRule;
 use Korowai\Lib\Ldif\Rules\ValueSpecRule;
 use Korowai\Lib\Ldif\Rules\AbstractRfcRule;
 use Korowai\Lib\Ldif\Nodes\ControlInterface;
-use Korowai\Lib\Ldif\ValueInterface;
+use Korowai\Lib\Ldif\Nodes\ValueSpecInterface;
 use Korowai\Lib\Rfc\Rfc2849;
 use Korowai\Testing\Ldiflib\TestCase;
 
@@ -188,7 +188,7 @@ class ControlRuleTest extends TestCase
                         'oid' => '1.22.333',
                         'criticality' => null,
                         'valueObject' => self::hasPropertiesIdenticalTo([
-                            'type' => ValueInterface::TYPE_SAFE,
+                            'type' => ValueSpecInterface::TYPE_SAFE,
                             'spec' => 'FOO',
                             'content' => 'FOO',
                         ]),
@@ -216,7 +216,7 @@ class ControlRuleTest extends TestCase
                         'oid' => '1.22.333',
                         'criticality' => true,
                         'valueObject' => self::hasPropertiesIdenticalTo([
-                            'type' => ValueInterface::TYPE_SAFE,
+                            'type' => ValueSpecInterface::TYPE_SAFE,
                             'spec' => 'FOO',
                             'content' => 'FOO',
                         ]),
@@ -622,7 +622,7 @@ class ControlRuleTest extends TestCase
                         'oid' => '1.22.333',
                         'criticality' => null,
                         'valueObject' => self::hasPropertiesIdenticalTo([
-                            'type' => ValueInterface::TYPE_SAFE,
+                            'type' => ValueSpecInterface::TYPE_SAFE,
                             'spec' => 'FOO',
                             'content' => 'FOO',
                         ])
@@ -646,7 +646,7 @@ class ControlRuleTest extends TestCase
                         'oid' => '1.22.333',
                         'criticality' => true,
                         'valueObject' => self::hasPropertiesIdenticalTo([
-                            'type' => ValueInterface::TYPE_SAFE,
+                            'type' => ValueSpecInterface::TYPE_SAFE,
                             'spec' => 'FOO',
                             'content' => 'FOO',
                         ])
@@ -692,7 +692,7 @@ class ControlRuleTest extends TestCase
                         'oid' => '1.22.333',
                         'criticality' => null,
                         'valueObject' => self::hasPropertiesIdenticalTo([
-                            'type' => ValueInterface::TYPE_BASE64,
+                            'type' => ValueSpecInterface::TYPE_BASE64,
                             'spec' => 'xbvDs8WCdGEgxYHDs2TFug==',
                             'content' => 'Żółta Łódź',
                         ])
@@ -716,7 +716,7 @@ class ControlRuleTest extends TestCase
                         'oid' => '1.22.333',
                         'criticality' => true,
                         'valueObject' => self::hasPropertiesIdenticalTo([
-                            'type' => ValueInterface::TYPE_BASE64,
+                            'type' => ValueSpecInterface::TYPE_BASE64,
                             'spec' => 'xbvDs8WCdGEgxYHDs2TFug==',
                             'content' => 'Żółta Łódź',
                         ])
@@ -784,7 +784,7 @@ class ControlRuleTest extends TestCase
                         'oid' => '1.22.333',
                         'criticality' => null,
                         'valueObject' => self::hasPropertiesIdenticalTo([
-                            'type' => ValueInterface::TYPE_URL,
+                            'type' => ValueSpecInterface::TYPE_URL,
                             'spec' => self::hasPropertiesIdenticalTo([
                                 'string' => 'file:///home/jsmith/foo.txt',
                                 'scheme' => 'file',

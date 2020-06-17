@@ -10,10 +10,10 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Tests\Lib\Ldif;
+namespace Korowai\Tests\Lib\Ldif\Nodes;
 
-use Korowai\Lib\Ldif\VersionSpec;
-use Korowai\Lib\Ldif\VersionSpecInterface;
+use Korowai\Lib\Ldif\Nodes\VersionSpec;
+use Korowai\Lib\Ldif\Nodes\VersionSpecInterface;
 use Korowai\Lib\Ldif\SnippetInterface;
 
 use Korowai\Testing\Ldiflib\TestCase;

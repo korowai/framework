@@ -15,11 +15,11 @@ namespace Korowai\Tests\Lib\Ldif\Rules;
 use Korowai\Lib\Ldif\Rules\LdifAttrValRecordRule;
 use Korowai\Lib\Ldif\Rules\AbstractLdifRecordRule;
 use Korowai\Lib\Ldif\RuleInterface;
-use Korowai\Lib\Ldif\ValueInterface;
 use Korowai\Lib\Ldif\Rules\DnSpecRule;
 use Korowai\Lib\Ldif\Rules\SepRule;
 use Korowai\Lib\Ldif\Rules\AttrValSpecRule;
-use Korowai\Lib\Ldif\Nodes\AttrValRecordInterface;
+use Korowai\Lib\Ldif\Nodes\LdifAttrValRecordInterface;
+use Korowai\Lib\Ldif\Nodes\ValueSpecInterface;
 use Korowai\Lib\Ldif\Exception\InvalidRuleClassException;
 use Korowai\Testing\Ldiflib\TestCase;
 
@@ -199,7 +199,7 @@ class LdifAttrValRecordRuleTest extends TestCase
                             self::hasPropertiesIdenticalTo([
                                 'attribute' => 'dc',
                                 'valueObject' => self::hasPropertiesIdenticalTo([
-                                    'type' => ValueInterface::TYPE_SAFE,
+                                    'type' => ValueSpecInterface::TYPE_SAFE,
                                     'spec' => '',
                                     'content' => ''
                                 ]),
@@ -228,7 +228,7 @@ class LdifAttrValRecordRuleTest extends TestCase
                             self::hasPropertiesIdenticalTo([
                                 'attribute' => 'dc',
                                 'valueObject' => self::hasPropertiesIdenticalTo([
-                                    'type' => ValueInterface::TYPE_SAFE,
+                                    'type' => ValueSpecInterface::TYPE_SAFE,
                                     'spec' => 'example',
                                     'content' => 'example'
                                 ]),
@@ -257,7 +257,7 @@ class LdifAttrValRecordRuleTest extends TestCase
                             self::hasPropertiesIdenticalTo([
                                 'attribute' => 'dc',
                                 'valueObject' => self::hasPropertiesIdenticalTo([
-                                    'type' => ValueInterface::TYPE_SAFE,
+                                    'type' => ValueSpecInterface::TYPE_SAFE,
                                     'spec' => 'example',
                                     'content' => 'example'
                                 ]),
@@ -265,7 +265,7 @@ class LdifAttrValRecordRuleTest extends TestCase
                             self::hasPropertiesIdenticalTo([
                                 'attribute' => 'comment',
                                 'valueObject' => self::hasPropertiesIdenticalTo([
-                                    'type' => ValueInterface::TYPE_BASE64,
+                                    'type' => ValueSpecInterface::TYPE_BASE64,
                                     'spec' => 'xbzDs8WCdGtv',
                                     'content' => 'żółtko'
                                 ]),
@@ -290,7 +290,7 @@ class LdifAttrValRecordRuleTest extends TestCase
         $state = $this->getParserStateFromSource(...$source);
 
         if ($expect['init'] ?? null) {
-            $value = $this->getMockBuilder(AttrValRecordInterface::class)->getMockForAbstractClass();
+            $value = $this->getMockBuilder(LdifAttrValRecordInterface::class)->getMockForAbstractClass();
         }
 
         $rule = new LdifAttrValRecordRule();
@@ -300,7 +300,7 @@ class LdifAttrValRecordRuleTest extends TestCase
         $this->assertSame($expect['result'], $result);
 
         if (is_array($expect['value'])) {
-            $this->assertImplementsInterface(AttrValRecordInterface::class, $value);
+            $this->assertImplementsInterface(LdifAttrValRecordInterface::class, $value);
             $this->assertHasPropertiesSameAs($expect['value'], $value);
         } else {
             $this->assertSame($expect['value'], $value);

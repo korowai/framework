@@ -12,8 +12,8 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldif\Nodes;
 
-use Korowai\Lib\Ldif\Nodes\DeleteRecord;
-use Korowai\Lib\Ldif\Nodes\DeleteRecordInterface;
+use Korowai\Lib\Ldif\Nodes\LdifDeleteRecord;
+use Korowai\Lib\Ldif\Nodes\LdifDeleteRecordInterface;
 use Korowai\Lib\Ldif\Nodes\AbstractChangeRecord;
 use Korowai\Lib\Ldif\RecordVisitorInterface;
 use Korowai\Lib\Ldif\SnippetInterface;
@@ -23,16 +23,16 @@ use Korowai\Testing\Ldiflib\TestCase;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class DeleteRecordTest extends TestCase
+class LdifDeleteRecordTest extends TestCase
 {
     public function tets__extends__AbstractChangeRecord()
     {
         $this->assertExtendsClass(AbstractChangeRecord::class, AttraValRecord::class);
     }
 
-    public function test__implements__DeleteRecordInterface()
+    public function test__implements__LdifDeleteRecordInterface()
     {
-        $this->assertImplementsInterface(DeleteRecordInterface::class, DeleteRecord::class);
+        $this->assertImplementsInterface(LdifDeleteRecordInterface::class, LdifDeleteRecord::class);
     }
 
     public function construct__cases()
@@ -74,7 +74,7 @@ class DeleteRecordTest extends TestCase
      */
     public function test__construct(array $args, array $expect)
     {
-        $record = new DeleteRecord(...$args);
+        $record = new LdifDeleteRecord(...$args);
         $this->assertHasPropertiesSameAs($expect, $record);
     }
 
@@ -83,7 +83,7 @@ class DeleteRecordTest extends TestCase
         $visitor = $this->getMockBuilder(RecordVisitorInterface::class)
                         ->getMockForAbstractClass();
 
-        $record = new DeleteRecord("dc=example,dc=org");
+        $record = new LdifDeleteRecord("dc=example,dc=org");
 
         $visitor->expects($this->once())
                 ->method('visitDeleteRecord')

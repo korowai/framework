@@ -12,9 +12,9 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldif\Nodes;
 
-use Korowai\Lib\Ldif\AttrValSpec;
-use Korowai\Lib\Ldif\AttrValSpecInterface;
-use Korowai\Lib\Ldif\ValueInterface;
+use Korowai\Lib\Ldif\Nodes\AttrValSpec;
+use Korowai\Lib\Ldif\Nodes\AttrValSpecInterface;
+use Korowai\Lib\Ldif\Nodes\ValueSpecInterface;
 use Korowai\Testing\Ldiflib\TestCase;
 
 /**
@@ -29,7 +29,7 @@ class AttrValSpecTest extends TestCase
 
     public function test__construct()
     {
-        $value = $this->getMockBuilder(ValueInterface::class)
+        $value = $this->getMockBuilder(ValueSpecInterface::class)
                       ->getMockForAbstractClass();
 
         $attrVal = new AttrValSpec('foo', $value);

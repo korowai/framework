@@ -71,25 +71,25 @@ class ObjectPropertyGettersMap
         \Korowai\Lib\Ldif\Nodes\AbstractRecord::class => [
         ],
 
-        \Korowai\Lib\Ldif\Nodes\AddRecord::class => [
-        ],
-
-        \Korowai\Lib\Ldif\Nodes\AttrValRecord::class => [
-        ],
-
         \Korowai\Lib\Ldif\Nodes\AttrValSpec::class => [
         ],
 
         \Korowai\Lib\Ldif\Nodes\Control::class => [
         ],
 
-        \Korowai\Lib\Ldif\Nodes\DeleteRecord::class => [
+        \Korowai\Lib\Ldif\Nodes\LdifAddRecord::class => [
         ],
 
-        \Korowai\Lib\Ldif\Nodes\ModDnRecord::class => [
+        \Korowai\Lib\Ldif\Nodes\LdifAttrValRecord::class => [
         ],
 
-        \Korowai\Lib\Ldif\Nodes\ModifyRecord::class => [
+        \Korowai\Lib\Ldif\Nodes\LdifDeleteRecord::class => [
+        ],
+
+        \Korowai\Lib\Ldif\Nodes\LdifModDnRecord::class => [
+        ],
+
+        \Korowai\Lib\Ldif\Nodes\LdifModifyRecord::class => [
         ],
 
         \Korowai\Lib\Ldif\Nodes\ModSpec::class => [

@@ -12,8 +12,8 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldif\Nodes;
 
-use Korowai\Lib\Ldif\Nodes\ModDnRecord;
-use Korowai\Lib\Ldif\Nodes\ModDnRecordInterface;
+use Korowai\Lib\Ldif\Nodes\LdifModDnRecord;
+use Korowai\Lib\Ldif\Nodes\LdifModDnRecordInterface;
 use Korowai\Lib\Ldif\Nodes\AbstractRecord;
 use Korowai\Lib\Ldif\RecordVisitorInterface;
 use Korowai\Lib\Ldif\SnippetInterface;
@@ -24,16 +24,16 @@ use Korowai\Testing\Ldiflib\TestCase;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class ModDnRecordTest extends TestCase
+class LdifModDnRecordTest extends TestCase
 {
     public function tets__extends__AbstractRecord()
     {
         $this->assertExtendsClass(AbstractRecord::class, AttraValRecord::class);
     }
 
-    public function test__implements__ModDnRecordInterface()
+    public function test__implements__LdifModDnRecordInterface()
     {
-        $this->assertImplementsInterface(ModDnRecordInterface::class, ModDnRecord::class);
+        $this->assertImplementsInterface(LdifModDnRecordInterface::class, LdifModDnRecord::class);
     }
 
     public function construct__cases()
@@ -85,7 +85,7 @@ class ModDnRecordTest extends TestCase
      */
     public function test__construct(array $args, array $expect)
     {
-        $record = new ModDnRecord(...$args);
+        $record = new LdifModDnRecord(...$args);
         $this->assertHasPropertiesSameAs($expect, $record);
     }
 
@@ -102,7 +102,7 @@ class ModDnRecordTest extends TestCase
      */
     public function test__setChangeType(string $changeType)
     {
-        $record = new ModDnRecord("dc=example,dc=org", "cn=bar");
+        $record = new LdifModDnRecord("dc=example,dc=org", "cn=bar");
 
         $this->assertSame($record, $record->setChangeType($changeType));
         $this->assertSame($changeType, $record->getChangeType());
@@ -110,9 +110,9 @@ class ModDnRecordTest extends TestCase
 
     public function test__setChangeType__invalidChangeType()
     {
-        $record = new ModDnRecord("dc=example,dc=org", "cn=bar");
+        $record = new LdifModDnRecord("dc=example,dc=org", "cn=bar");
 
-        $message = 'Argument 1 to '.ModDnRecord::class.'::setChangeType() must be one of "moddn" or "modrdn", '.
+        $message = 'Argument 1 to '.LdifModDnRecord::class.'::setChangeType() must be one of "moddn" or "modrdn", '.
                    '"foo" given.';
         $this->expectException(InvalidChangeTypeException::class);
         $this->expectExceptionMessage($message);
@@ -122,7 +122,7 @@ class ModDnRecordTest extends TestCase
 
     public function test__setNewRdn()
     {
-        $record = new ModDnRecord("dc=example,dc=org", "cn=bar");
+        $record = new LdifModDnRecord("dc=example,dc=org", "cn=bar");
 
         $this->assertSame($record, $record->setNewRdn("cn=gez"));
         $this->assertSame("cn=gez", $record->getNewRdn());
@@ -130,7 +130,7 @@ class ModDnRecordTest extends TestCase
 
     public function test__setDeleteOldRdn()
     {
-        $record = new ModDnRecord("dc=example,dc=org", "cn=bar");
+        $record = new LdifModDnRecord("dc=example,dc=org", "cn=bar");
 
         $this->assertSame($record, $record->setDeleteOldRdn(true));
         $this->assertSame(true, $record->getDeleteOldRdn());
@@ -141,7 +141,7 @@ class ModDnRecordTest extends TestCase
 
     public function test__setNewSuperior()
     {
-        $record = new ModDnRecord("dc=example,dc=org", "cn=bar");
+        $record = new LdifModDnRecord("dc=example,dc=org", "cn=bar");
 
         $this->assertSame($record, $record->setNewSuperior("dc=foobar,dc=com"));
         $this->assertSame("dc=foobar,dc=com", $record->getNewSuperior());
@@ -155,7 +155,7 @@ class ModDnRecordTest extends TestCase
         $visitor = $this->getMockBuilder(RecordVisitorInterface::class)
                         ->getMockForAbstractClass();
 
-        $record = new ModDnRecord("dc=example,dc=org", "cn=bar");
+        $record = new LdifModDnRecord("dc=example,dc=org", "cn=bar");
 
         $visitor->expects($this->once())
                 ->method('visitModDnRecord')

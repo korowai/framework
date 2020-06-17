@@ -16,7 +16,7 @@ use Korowai\Lib\Ldif\Rules\AttrValSpecRule;
 use Korowai\Lib\Ldif\Rules\ValueSpecRule;
 use Korowai\Lib\Ldif\Rules\AbstractRfcRule;
 use Korowai\Lib\Ldif\Nodes\AttrValSpecInterface;
-use Korowai\Lib\Ldif\Nodes\ValueInterface;
+use Korowai\Lib\Ldif\Nodes\ValueSpecInterface;
 use Korowai\Lib\Rfc\Rfc2849;
 use Korowai\Testing\Ldiflib\TestCase;
 
@@ -94,7 +94,7 @@ class AttrValSpecRuleTest extends TestCase
                     'value' => [
                         'attribute' => 'attrType;lang-pl',
                         'valueObject' => self::hasPropertiesIdenticalTo([
-                            'type' => ValueInterface::TYPE_SAFE,
+                            'type' => ValueSpecInterface::TYPE_SAFE,
                             'spec' => 'AAA',
                             'content' => 'AAA'
                         ]),
@@ -283,7 +283,7 @@ class AttrValSpecRuleTest extends TestCase
                     'value' => [
                         'attribute' => 'attrType',
                         'valueObject' => self::hasPropertiesIdenticalTo([
-                            'type' => ValueInterface::TYPE_SAFE,
+                            'type' => ValueSpecInterface::TYPE_SAFE,
                             'spec' => 'FOO',
                             'content' => 'FOO',
                         ])
@@ -305,7 +305,7 @@ class AttrValSpecRuleTest extends TestCase
                     'value' => [
                         'attribute' => 'attrType;option-1',
                         'valueObject' => self::hasPropertiesIdenticalTo([
-                            'type' => ValueInterface::TYPE_SAFE,
+                            'type' => ValueSpecInterface::TYPE_SAFE,
                             'spec' => 'FOO',
                             'content' => 'FOO',
                         ])
@@ -348,7 +348,7 @@ class AttrValSpecRuleTest extends TestCase
                     'value' => [
                         'attribute' => 'attrType',
                         'valueObject' => self::hasPropertiesIdenticalTo([
-                            'type' => ValueInterface::TYPE_BASE64,
+                            'type' => ValueSpecInterface::TYPE_BASE64,
                             'spec' => 'xbvDs8WCdGEgxYHDs2TFug==',
                             'content' => 'Żółta Łódź',
                         ])
@@ -412,7 +412,7 @@ class AttrValSpecRuleTest extends TestCase
                     'value' => [
                         'attribute' => 'attrType',
                         'valueObject' => self::hasPropertiesIdenticalTo([
-                            'type' => ValueInterface::TYPE_URL,
+                            'type' => ValueSpecInterface::TYPE_URL,
                             'spec' => self::hasPropertiesIdenticalTo([
                                 'string' => 'file:///home/jsmith/foo.txt',
                                 'scheme' => 'file',

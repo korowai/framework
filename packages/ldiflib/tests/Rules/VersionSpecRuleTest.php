@@ -14,7 +14,7 @@ namespace Korowai\Tests\Lib\Ldif\Rules;
 
 use Korowai\Lib\Ldif\Rules\VersionSpecRule;
 use Korowai\Lib\Ldif\Rules\AbstractRfcRule;
-use Korowai\Lib\Ldif\ValueInterface;
+use Korowai\Lib\Ldif\Nodes\ValueSpecInterface;
 use Korowai\Lib\Rfc\Rfc2849;
 use Korowai\Testing\Ldiflib\TestCase;
 
@@ -164,7 +164,7 @@ class VersionSpecRuleTest extends TestCase
         $state = $this->getParserStateFromSource(...$source);
 
         if ($expect['init'] ?? null) {
-            $value = $this->getMockBuilder(ValueInterface::class)->getMockForAbstractClass();
+            $value = $this->getMockBuilder(ValueSpecInterface::class)->getMockForAbstractClass();
         }
 
         $rule = new VersionSpecRule();
@@ -173,7 +173,7 @@ class VersionSpecRuleTest extends TestCase
 
         $this->assertSame($expect['result'], $result);
         if (is_array($expect['value'])) {
-            $this->assertInstanceOf(ValueInterface::class, $value);
+            $this->assertInstanceOf(ValueSpecInterface::class, $value);
             $this->assertHasPropertiesSameAs($expect['value'], $value);
         } else {
             $this->assertSame($expect['value'], $value);
@@ -349,7 +349,7 @@ class VersionSpecRuleTest extends TestCase
         $state = $this->getParserStateFromSource(...$source);
 
         if ($expect['init'] ?? null) {
-            $value = $this->getMockBuilder(ValueInterface::class)->getMockForAbstractClass();
+            $value = $this->getMockBuilder(ValueSpecInterface::class)->getMockForAbstractClass();
         }
 
         $rule = new VersionSpecRule;
@@ -359,7 +359,7 @@ class VersionSpecRuleTest extends TestCase
         $this->assertSame($expect['result'], $result);
 
         if (is_array($expect['value'])) {
-            $this->assertInstanceOf(ValueInterface::class, $value);
+            $this->assertInstanceOf(ValueSpecInterface::class, $value);
             $this->assertHasPropertiesSameAs($expect['value'], $value);
         } else {
             $this->assertSame($expect['value'], $value);

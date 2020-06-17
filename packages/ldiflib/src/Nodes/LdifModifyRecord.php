@@ -22,7 +22,7 @@ use Korowai\Lib\Ldif\Exception\InvalidChangeTypeException;
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class ModifyRecord extends AbstractChangeRecord implements ModifyRecordInterface
+class LdifModifyRecord extends AbstractChangeRecord implements LdifModifyRecordInterface
 {
     /**
      * @var string

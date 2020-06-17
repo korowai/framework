@@ -202,7 +202,7 @@ class Parser implements ParserInterface
 //        }
 //
 //        $snippet = new Snippet($begin, $cursor->getOffset() - $begin->getOffset());
-//        $record = new AttrValRecord($dn, $attrValSpecs, compact('snippet'));
+//        $record = new LdifAttrValRecord($dn, $attrValSpecs, compact('snippet'));
 //        $state->appendRecord($record);
 //
 //        return true;

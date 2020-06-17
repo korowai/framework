@@ -22,7 +22,7 @@ use Korowai\Lib\Ldif\Traits\HasAttrValSpecs;
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class AttrValRecord extends AbstractRecord implements AttrValRecordInterface
+class LdifAttrValRecord extends AbstractRecord implements LdifAttrValRecordInterface
 {
     use HasAttrValSpecs;
 

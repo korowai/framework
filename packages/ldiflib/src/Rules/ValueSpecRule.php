@@ -13,9 +13,9 @@ declare(strict_types=1);
 namespace Korowai\Lib\Ldif\Rules;
 
 use Korowai\Lib\Ldif\ParserStateInterface as State;
+use Korowai\Lib\Ldif\Nodes\ValueSpecInterface;
+use Korowai\Lib\Ldif\Nodes\ValueSpec;
 use Korowai\Lib\Ldif\Scan;
-use Korowai\Lib\Ldif\ValueInterface;
-use Korowai\Lib\Ldif\Value;
 use Korowai\Lib\Rfc\Rfc2849;
 use League\Uri\Exceptions\SyntaxError as UriSyntaxError;
 
@@ -55,7 +55,7 @@ final class ValueSpecRule extends AbstractRfcRule
     public function parseMatched(State $state, array $matches, &$value = null) : bool
     {
         if (Scan::matched('value_safe', $matches, $string, $offset)) {
-            $value = Value::createSafeString($string);
+            $value = ValueSpec::createSafeString($string);
             return true;
         } elseif (Scan::matched('value_b64', $matches, $string, $offset)) {
             return $this->parseMatchedBase64String($state, $string, $offset, $value);
@@ -74,7 +74,7 @@ final class ValueSpecRule extends AbstractRfcRule
      * @param  State $state
      * @param  string $string
      * @param  int $offset
-     * @param  ValueInterface $value
+     * @param  ValueSpecInterface $value
      *
      * @return bool
      */
@@ -82,14 +82,14 @@ final class ValueSpecRule extends AbstractRfcRule
         State $state,
         string $string,
         int $offset,
-        ValueInterface &$value = null
+        ValueSpecInterface &$value = null
     ) : bool {
         $decoded = Util::base64Decode($state, $string, $offset);
         if (null === $decoded) {
             $value = null;
             return false;
         }
-        $value = Value::createBase64String($string, $decoded);
+        $value = ValueSpec::createBase64String($string, $decoded);
         return true;
     }
 
@@ -105,10 +105,10 @@ final class ValueSpecRule extends AbstractRfcRule
     protected function parseMatchedUriReference(
         State $state,
         array $matches,
-        ValueInterface &$value = null
+        ValueSpecInterface &$value = null
     ) : bool {
         try {
-            $value = Value::createUriFromRfc3986Matches($matches);
+            $value = ValueSpec::createUriFromRfc3986Matches($matches);
         } catch (UriSyntaxError $e) {
             $state->errorHere('syntax error: in URL: '.$e->getMessage());
             $value = null;

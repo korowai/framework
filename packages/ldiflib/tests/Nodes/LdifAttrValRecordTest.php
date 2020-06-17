@@ -12,8 +12,8 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldif\Nodes;
 
-use Korowai\Lib\Ldif\Nodes\AttrValRecord;
-use Korowai\Lib\Ldif\Nodes\AttrValRecordInterface;
+use Korowai\Lib\Ldif\Nodes\LdifAttrValRecord;
+use Korowai\Lib\Ldif\Nodes\LdifAttrValRecordInterface;
 use Korowai\Lib\Ldif\Nodes\AbstractRecord;
 use Korowai\Lib\Ldif\RecordVisitorInterface;
 use Korowai\Lib\Ldif\SnippetInterface;
@@ -24,21 +24,21 @@ use Korowai\Testing\Ldiflib\TestCase;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class AttrValRecordTest extends TestCase
+class LdifAttrValRecordTest extends TestCase
 {
     public function tets__extends__AbstractRecord()
     {
         $this->assertExtendsClass(AbstractRecord::class, AttraValRecord::class);
     }
 
-    public function test__implements__AttrValRecordInterface()
+    public function test__implements__LdifAttrValRecordInterface()
     {
-        $this->assertImplementsInterface(AttrValRecordInterface::class, AttrValRecord::class);
+        $this->assertImplementsInterface(LdifAttrValRecordInterface::class, LdifAttrValRecord::class);
     }
 
     public function test__uses__HasAttrValSpecs()
     {
-        $this->assertUsesTrait(HasAttrValSpecs::class, AttrValRecord::class);
+        $this->assertUsesTrait(HasAttrValSpecs::class, LdifAttrValRecord::class);
     }
 
     public function construct__cases()
@@ -77,13 +77,13 @@ class AttrValRecordTest extends TestCase
      */
     public function test__construct(array $args, array $expect)
     {
-        $record = new AttrValRecord(...$args);
+        $record = new LdifAttrValRecord(...$args);
         $this->assertHasPropertiesSameAs($expect, $record);
     }
 
     public function test__setAttrValSpecs()
     {
-        $record = new AttrValRecord("dc=example,dc=org", []);
+        $record = new LdifAttrValRecord("dc=example,dc=org", []);
 
         $this->assertSame($record, $record->setAttrValSpecs(['X']));
         $this->assertSame(['X'], $record->getAttrValSpecs());
@@ -94,7 +94,7 @@ class AttrValRecordTest extends TestCase
         $visitor = $this->getMockBuilder(RecordVisitorInterface::class)
                         ->getMockForAbstractClass();
 
-        $record = new AttrValRecord("dc=example,dc=org", []);
+        $record = new LdifAttrValRecord("dc=example,dc=org", []);
 
         $visitor->expects($this->once())
                 ->method('visitAttrValRecord')

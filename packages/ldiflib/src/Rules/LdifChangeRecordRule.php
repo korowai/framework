@@ -16,21 +16,21 @@ use Korowai\Lib\Ldif\RuleInterface;
 use Korowai\Lib\Ldif\ParserStateInterface as State;
 use Korowai\Lib\Ldif\LocationInterface;
 use Korowai\Lib\Ldif\Snippet;
-use Korowai\Lib\Ldif\Nodes\AddRecord;
-use Korowai\Lib\Ldif\Nodes\DeleteRecord;
-use Korowai\Lib\Ldif\Nodes\ModDnRecord;
-use Korowai\Lib\Ldif\Nodes\ModifyRecord;
-use Korowai\Lib\Ldif\Nodes\ChangeRecordInterface;
-use Korowai\Lib\Ldif\Nodes\AddRecordInterface;
-use Korowai\Lib\Ldif\Nodes\DeleteRecordInterface;
-use Korowai\Lib\Ldif\Nodes\ModDnRecordInterface;
-use Korowai\Lib\Ldif\Nodes\ModifyRecordInterface;
+use Korowai\Lib\Ldif\Nodes\LdifAddRecord;
+use Korowai\Lib\Ldif\Nodes\LdifDeleteRecord;
+use Korowai\Lib\Ldif\Nodes\LdifModDnRecord;
+use Korowai\Lib\Ldif\Nodes\LdifModifyRecord;
+use Korowai\Lib\Ldif\Nodes\LdifChangeRecordInterface;
+use Korowai\Lib\Ldif\Nodes\LdifAddRecordInterface;
+use Korowai\Lib\Ldif\Nodes\LdifDeleteRecordInterface;
+use Korowai\Lib\Ldif\Nodes\LdifModDnRecordInterface;
+use Korowai\Lib\Ldif\Nodes\LdifModifyRecordInterface;
 use Korowai\Lib\Ldif\Exception\InvalidRuleClassException;
 
 /**
  * A rule object that parses *ldif-change-record* as defined in [RFC2849](https://tools.ietf.org/html/rfc2849).
  *
- * - semantic value: [ChangeRecordInterface](\.\./Nodes/ChangeRecordInterface.html).
+ * - semantic value: [LdifChangeRecordInterface](\.\./Nodes/LdifChangeRecordInterface.html).
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
@@ -153,10 +153,10 @@ final class LdifChangeRecordRule extends AbstractLdifRecordRule
      * Parses the *changerecord* rule of the *ldif-change-record*.
      *
      * @param  State $state
-     * @param  ChangeRecordInterface $record
+     * @param  LdifChangeRecordInterface $record
      * @param  array $vars
      */
-    protected function parseRecord(State $state, ChangeRecordInterface &$record = null, array $vars = []) : bool
+    protected function parseRecord(State $state, LdifChangeRecordInterface &$record = null, array $vars = []) : bool
     {
         static $parsers = [
             'add'    => 'parseAdd',
@@ -184,50 +184,50 @@ final class LdifChangeRecordRule extends AbstractLdifRecordRule
     /**
      * @todo Write documentation
      */
-    protected function parseAdd(State $state, AddRecordInterface &$record = null, array $vars = []) : bool
+    protected function parseAdd(State $state, LdifAddRecordInterface &$record = null, array $vars = []) : bool
     {
         extract($vars);
         if (!$this->getAttrValSpecRule()->repeat($state, $attrValSpecs, 1)) {
             return false;
         }
-        $record = new AddRecord($dn, compact('controls', 'attrValSpecs'));
+        $record = new LdifAddRecord($dn, compact('controls', 'attrValSpecs'));
         return true;
     }
 
     /**
      * @todo Write documentation
      */
-    protected function parseDelete(State $state, DeleteRecordInterface &$record = null, array $vars = []) : bool
+    protected function parseDelete(State $state, LdifDeleteRecordInterface &$record = null, array $vars = []) : bool
     {
         extract($vars);
-        $record = new DeleteRecord($dn, compact('controls'));
+        $record = new LdifDeleteRecord($dn, compact('controls'));
         return true;
     }
 
     /**
      * @todo Write documentation
      */
-    protected function parseModDn(State $state, ModDnRecordInterface &$record = null, array $vars = []) : bool
+    protected function parseModDn(State $state, LdifModDnRecordInterface &$record = null, array $vars = []) : bool
     {
         extract($vars);
 
         throw new \BadMethodCallException('not implemented');
 
         $options = compact('controls', 'changeType', 'deleteOldRdn', 'newSuperior');
-        $record = new ModDnRecord($dn, $newRdn, $options);
+        $record = new LdifModDnRecord($dn, $newRdn, $options);
         return true;
     }
 
     /**
      * @todo Write documentation
      */
-    protected function parseModify(State $state, ModifyRecordInterface &$record = null, array $vars = []) : bool
+    protected function parseModify(State $state, LdifModifyRecordInterface &$record = null, array $vars = []) : bool
     {
         extract($vars);
         if (!$this->getModSpecRule()->repeat($state, $modSpecs)) {
             return false;
         }
-        $record = new ModifyRecord($dn, compact('controls', 'modSpecs'));
+        $record = new LdifModifyRecord($dn, compact('controls', 'modSpecs'));
         return true;
     }
 }

@@ -12,8 +12,8 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldif\Nodes;
 
-use Korowai\Lib\Ldif\Nodes\ModifyRecord;
-use Korowai\Lib\Ldif\Nodes\ModifyRecordInterface;
+use Korowai\Lib\Ldif\Nodes\LdifModifyRecord;
+use Korowai\Lib\Ldif\Nodes\LdifModifyRecordInterface;
 use Korowai\Lib\Ldif\Nodes\AbstractChangeRecord;
 use Korowai\Lib\Ldif\RecordVisitorInterface;
 use Korowai\Lib\Ldif\SnippetInterface;
@@ -24,16 +24,16 @@ use Korowai\Testing\Ldiflib\TestCase;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class ModifyRecordTest extends TestCase
+class LdifModifyRecordTest extends TestCase
 {
     public function tets__extends__AbstractChangeRecord()
     {
         $this->assertExtendsClass(AbstractChangeRecord::class, AttraValRecord::class);
     }
 
-    public function test__implements__ModifyRecordInterface()
+    public function test__implements__LdifModifyRecordInterface()
     {
-        $this->assertImplementsInterface(ModifyRecordInterface::class, ModifyRecord::class);
+        $this->assertImplementsInterface(LdifModifyRecordInterface::class, LdifModifyRecord::class);
     }
 
     public function construct__cases()
@@ -77,19 +77,19 @@ class ModifyRecordTest extends TestCase
      */
     public function test__construct(array $args, array $expect)
     {
-        $record = new ModifyRecord(...$args);
+        $record = new LdifModifyRecord(...$args);
         $this->assertHasPropertiesSameAs($expect, $record);
     }
 
     public function test__getChangeType()
     {
-        $record = new ModifyRecord("dc=example,dc=org");
+        $record = new LdifModifyRecord("dc=example,dc=org");
         $this->assertSame("modify", $record->getChangeType());
     }
 
     public function test__setModSpecs()
     {
-        $record = new ModifyRecord("dc=example,dc=org");
+        $record = new LdifModifyRecord("dc=example,dc=org");
 
         $this->assertSame($record, $record->setModSpecs(['X']));
         $this->assertSame(['X'], $record->getModSpecs());
@@ -100,7 +100,7 @@ class ModifyRecordTest extends TestCase
         $visitor = $this->getMockBuilder(RecordVisitorInterface::class)
                         ->getMockForAbstractClass();
 
-        $record = new ModifyRecord("dc=example,dc=org", ['X']);
+        $record = new LdifModifyRecord("dc=example,dc=org", ['X']);
 
         $visitor->expects($this->once())
                 ->method('visitModifyRecord')

@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Lib\Ldif;
+namespace Korowai\Lib\Ldif\Nodes;
 
 use Korowai\Lib\Rfc\Rfc3986;
 use League\Uri\Uri;
@@ -23,7 +23,7 @@ use function Korowai\Lib\Error\exceptionErrorHandler;
  * Semantic value of RFC2849 ``value-spec`` rule. One of SAFE-STRING,
  * BASE64-STRING or URL.
  */
-final class Value implements ValueInterface
+final class ValueSpec implements ValueSpecInterface
 {
     /**
      * @var int
@@ -41,40 +41,40 @@ final class Value implements ValueInterface
     private $content;
 
     /**
-     * Creates Value from SAFE-STRING.
+     * Creates ValueSpec from SAFE-STRING.
      *
      * @param  string $string
-     * @return ValueInterface
+     * @return ValueSpecInterface
      */
-    public static function createSafeString(string $string) : ValueInterface
+    public static function createSafeString(string $string) : ValueSpecInterface
     {
         return new self(self::TYPE_SAFE, $string);
     }
 
     /**
-     * Creates Value from BASE64-STRING.
+     * Creates ValueSpec from BASE64-STRING.
      *
      * @param  string $b64string
      * @param  string $decoded
-     * @return ValueInterface
+     * @return ValueSpecInterface
      */
-    public static function createBase64String(string $b64string, string $decoded = null) : ValueInterface
+    public static function createBase64String(string $b64string, string $decoded = null) : ValueSpecInterface
     {
         return new self(self::TYPE_BASE64, $b64string, $decoded);
     }
 
     /**
-     * Creates Value from preg matches obtained by parsing an URL. It's
+     * Creates ValueSpec from preg matches obtained by parsing an URL. It's
      * assumed, that matches were obtained from ``preg_match()`` invoked with
      * PREG_OFFSET_CAPTURE flag.
      *
      * @param  array $matches
-     * @return ValueInterface
+     * @return ValueSpecInterface
      * @throws SyntaxError
      *      if the URI is in an invalid state according to RFC3986 or to scheme
      *      specific rules.
      */
-    public static function createUriFromRfc3986Matches(array $matches) : ValueInterface
+    public static function createUriFromRfc3986Matches(array $matches) : ValueSpecInterface
     {
         $matches = Rfc3986::findCapturedValues('URI_REFERENCE', $matches);
 
@@ -106,55 +106,55 @@ final class Value implements ValueInterface
     }
 
     /**
-     * Creates Value form components that represent an URI.
+     * Creates ValueSpec form components that represent an URI.
      *
      * @param  array $components
-     * @return ValueInterface
+     * @return ValueSpecInterface
      */
-    public static function createUriFromComponents(array $components) : ValueInterface
+    public static function createUriFromComponents(array $components) : ValueSpecInterface
     {
         $uri = Uri::createFromComponents($components);
         return static::createUri($uri);
     }
 
     /**
-     * Creates Value from Uri object.
+     * Creates ValueSpec from Uri object.
      *
      * @param  Uri $uri
-     * @return ValueInterface
+     * @return ValueSpecInterface
      */
-    public static function createUri(UriInterface $uri) : ValueInterface
+    public static function createUri(UriInterface $uri) : ValueSpecInterface
     {
         return new self(self::TYPE_URL, $uri);
     }
 
     /**
-     * Initializes the Value object.
+     * Initializes the ValueSpec object.
      *
      * @param  int $type
      * Must be one of
      *
-     * - ``ValueInterface::TYPE_SAFE``,
-     * - ``ValueInterface::TYPE_BASE64``, or
-     * - ``ValueInterface::TYPE_URL``.
+     * - ``ValueSpecInterface::TYPE_SAFE``,
+     * - ``ValueSpecInterface::TYPE_BASE64``, or
+     * - ``ValueSpecInterface::TYPE_URL``.
      *
      * @param  mixed $spec
      * Specifies the value to be encapsulated. Must be consistent with *$type*,
      * as follows:
      *
-     * - must be a string when *$type* is ``ValueInterface::TYPE_SAFE``,
-     * - must be a string when *$type* is ``ValueInterface::TYPE_BASE64``,
+     * - must be a string when *$type* is ``ValueSpecInterface::TYPE_SAFE``,
+     * - must be a string when *$type* is ``ValueSpecInterface::TYPE_BASE64``,
      *   contains the base64-encoded content string,
      * - must be an instance of ``\League\Uri\UriInterface`` when *$type* is
-     *   ``ValueInterface::TYPE_URL``.
+     *   ``ValueSpecInterface::TYPE_URL``.
      *
      * @param  string $content
      *      The value to be returned by getContent(). If set, the following
      *      conventions apply:
      *
-     * - when *$type* is ``ValueInterface::TYPE_SAFE``, it shall be same as *$spec*,
-     * - when *$type* is ``ValueInterface::TYPE_BASE64``, it shall be the decoded *$spec*,
-     * - when *$type* is ``ValueInterface::TYPE_URL``, it shall be the contents
+     * - when *$type* is ``ValueSpecInterface::TYPE_SAFE``, it shall be same as *$spec*,
+     * - when *$type* is ``ValueSpecInterface::TYPE_BASE64``, it shall be the decoded *$spec*,
+     * - when *$type* is ``ValueSpecInterface::TYPE_URL``, it shall be the contents
      *   of the file pointed to by the *$spec* URI.
      */
     private function __construct(int $type, $spec, string $content = null)

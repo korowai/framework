@@ -12,8 +12,8 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldif;
 
-use Korowai\Lib\Ldif\Value;
-use Korowai\Lib\Ldif\ValueInterface;
+use Korowai\Lib\Ldif\Nodes\ValueSpec;
+use Korowai\Lib\Ldif\Nodes\ValueSpecInterface;
 use League\Uri\Contracts\UriInterface;
 use League\Uri\Exceptions\SyntaxError;
 use League\Uri\Uri;
@@ -22,49 +22,49 @@ use Korowai\Testing\Ldiflib\TestCase;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class ValueTest extends TestCase
+class ValueSpecTest extends TestCase
 {
-    public function test__implmements__ValueInterface()
+    public function test__implmements__ValueSpecInterface()
     {
-        $this->assertImplementsInterface(ValueInterface::class, Value::class);
+        $this->assertImplementsInterface(ValueSpecInterface::class, ValueSpec::class);
     }
 
     public function test__construct__isPrivate()
     {
         $this->expectException(\Error::class);
         $this->expectExceptionMessage('private');
-        new Value(0, 'v', 'c');
+        new ValueSpec(0, 'v', 'c');
     }
 
     public function test__safeString()
     {
-        $value = Value::createSafeString('safe string');
-        $this->assertInstanceOf(Value::class, $value);
-        $this->assertSame(Value::TYPE_SAFE, $value->getType());
+        $value = ValueSpec::createSafeString('safe string');
+        $this->assertInstanceOf(ValueSpec::class, $value);
+        $this->assertSame(ValueSpec::TYPE_SAFE, $value->getType());
         $this->assertSame('safe string', $value->getSpec());
         $this->assertSame('safe string', $value->getContent());
     }
 
     public function test__bas64String()
     {
-        $value = Value::createBase64String('YmFzZTY0IHN0cmluZw==');
-        $this->assertInstanceOf(Value::class, $value);
-        $this->assertSame(Value::TYPE_BASE64, $value->getType());
+        $value = ValueSpec::createBase64String('YmFzZTY0IHN0cmluZw==');
+        $this->assertInstanceOf(ValueSpec::class, $value);
+        $this->assertSame(ValueSpec::TYPE_BASE64, $value->getType());
         $this->assertSame('YmFzZTY0IHN0cmluZw==', $value->getSpec());
         $this->assertSame('base64 string', $value->getContent());
 
         //
 
-        $value = Value::createBase64String('YmFzZTY0IHN0cmluZw==', 'already decoded');
-        $this->assertInstanceOf(Value::class, $value);
-        $this->assertSame(Value::TYPE_BASE64, $value->getType());
+        $value = ValueSpec::createBase64String('YmFzZTY0IHN0cmluZw==', 'already decoded');
+        $this->assertInstanceOf(ValueSpec::class, $value);
+        $this->assertSame(ValueSpec::TYPE_BASE64, $value->getType());
         $this->assertSame('YmFzZTY0IHN0cmluZw==', $value->getSpec());
         $this->assertSame('already decoded', $value->getContent());
     }
 
     public function test__base64String__invalid()
     {
-        $value = Value::createBase64String('YmFzZTY0IHN0cmluZ');
+        $value = ValueSpec::createBase64String('YmFzZTY0IHN0cmluZ');
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('failed to decode base64 string');
         $value->getContent();
@@ -73,9 +73,9 @@ class ValueTest extends TestCase
     public function test__uri__fromUri()
     {
         $uri = Uri::createFromString(__file__);
-        $value = Value::createUri($uri);
-        $this->assertInstanceOf(Value::class, $value);
-        $this->assertSame(Value::TYPE_URL, $value->getType());
+        $value = ValueSpec::createUri($uri);
+        $this->assertInstanceOf(ValueSpec::class, $value);
+        $this->assertSame(ValueSpec::TYPE_URL, $value->getType());
         $this->assertSame($uri, $value->getSpec());
         $this->assertSame(file_get_contents(__file__), $value->getContent());
     }
@@ -83,18 +83,18 @@ class ValueTest extends TestCase
     public function test__uri__fromComponents()
     {
         $components = ['path' => __file__];
-        $value = Value::createUriFromComponents($components);
-        $this->assertInstanceOf(Value::class, $value);
-        $this->assertSame(Value::TYPE_URL, $value->getType());
+        $value = ValueSpec::createUriFromComponents($components);
+        $this->assertInstanceOf(ValueSpec::class, $value);
+        $this->assertSame(ValueSpec::TYPE_URL, $value->getType());
         $this->assertInstanceOf(UriInterface::class, $value->getSpec());
         $this->assertSame(file_get_contents(__file__), $value->getContent());
     }
 
     public function test__uri__fromRfc3986Matches()
     {
-        $value = Value::createUriFromRfc3986Matches(['path_absolute' => [ __file__, 123]]);
-        $this->assertInstanceOf(Value::class, $value);
-        $this->assertSame(Value::TYPE_URL, $value->getType());
+        $value = ValueSpec::createUriFromRfc3986Matches(['path_absolute' => [ __file__, 123]]);
+        $this->assertInstanceOf(ValueSpec::class, $value);
+        $this->assertSame(ValueSpec::TYPE_URL, $value->getType());
         $uri = $value->getSpec();
         $this->assertInstanceOf(UriInterface::class, $uri);
         $this->assertSame(__file__, $uri->getPath());
@@ -178,8 +178,8 @@ class ValueTest extends TestCase
      */
     public function test__uri__fromRfc3986Matches__components(array $matches, array $expect)
     {
-        $value = Value::createUriFromRfc3986Matches($matches);
-        $this->assertInstanceOf(Value::class, $value);
+        $value = ValueSpec::createUriFromRfc3986Matches($matches);
+        $this->assertInstanceOf(ValueSpec::class, $value);
 
         $uri = $value->getSpec();
         $this->assertInstanceOf(UriInterface::class, $uri);
@@ -202,21 +202,21 @@ class ValueTest extends TestCase
     {
         $this->expectException(SyntaxError::class);
         $this->expectExceptionMessage('The scheme `##` is invalid');
-        Value::createUriFromComponents(['scheme' => '##']);
+        ValueSpec::createUriFromComponents(['scheme' => '##']);
     }
 
     public function test__uri__withNonIntPortNumber()
     {
         $this->expectException(SyntaxError::class);
         $this->expectExceptionMessage('The port `asdf` is invalid (not an integer)');
-        Value::createUriFromRfc3986Matches(['port' => ['asdf', 0]]);
+        ValueSpec::createUriFromRfc3986Matches(['port' => ['asdf', 0]]);
     }
 
     public function test__uri__Unavailable()
     {
-        $value = Value::createUriFromComponents(['path' => __dir__.'/inexistent.txt']);
-        $this->assertInstanceOf(Value::class, $value);
-        $this->assertSame(Value::TYPE_URL, $value->getType());
+        $value = ValueSpec::createUriFromComponents(['path' => __dir__.'/inexistent.txt']);
+        $this->assertInstanceOf(ValueSpec::class, $value);
+        $this->assertSame(ValueSpec::TYPE_URL, $value->getType());
         $this->assertInstanceOf(UriInterface::class, $value->getSpec());
 
         $this->expectException(\ErrorException::class);
@@ -227,9 +227,9 @@ class ValueTest extends TestCase
     public function test__throwInvalidTypeException()
     {
         $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('internal error: invalid type (5) set to '.Value::class.' object');
+        $this->expectExceptionMessage('internal error: invalid type (5) set to '.ValueSpec::class.' object');
 
-        Value::throwInvalidTypeException(5);
+        ValueSpec::throwInvalidTypeException(5);
     }
 }
 

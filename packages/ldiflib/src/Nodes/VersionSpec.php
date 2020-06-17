@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldif\Nodes;
 
+use Korowai\Lib\Ldif\SnippetInterface;
 use Korowai\Lib\Ldif\Traits\HasSnippet;
 
 /**

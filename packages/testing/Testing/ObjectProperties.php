@@ -33,15 +33,15 @@ final class ObjectProperties extends \ArrayObject implements ObjectPropertiesInt
     public function getArrayForComparison() : array
     {
         $array = $this->getArrayCopy();
-        array_walk_recursive($array, function (&$v, $k) {
-            $v = $this->getValueForComparison($v);
-        });
+        array_walk_recursive($array, [static::class, 'adjustValueForComparison']);
         return $array;
     }
 
-    private function getValueForComparison($value)
+    private function adjustValueForComparison(&$value)
     {
-        return ($value instanceof ObjectPropertiesInterface) ? $value->getArrayForComparison() : $value;
+        if ($value instanceof ObjectPropertiesInterface) {
+            $value = $value->getArrayForComparison();
+        }
     }
 }
 

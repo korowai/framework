@@ -92,7 +92,7 @@ final class LdapLink
      */
     public function add(string $dn, array $entry) : bool
     {
-        // PHP 7.x and earlier may return null
+        // PHP 7.x and earlier may return null instead of false
         return @ldap_add($this->link, $dn, $entry) ?? false;
     }
 
@@ -137,7 +137,7 @@ final class LdapLink
      */
     public function compare(string $dn, string $attribute, string $value) : bool
     {
-        // PHP 7.x and earlier may return null
+        // PHP 7.x and earlier may return null instead of false
         return @ldap_compare($this->link, $dn, $attribute, $value) ?? false;
     }
 
@@ -147,18 +147,19 @@ final class LdapLink
      * @param  string|null $host_or_uri
      * @param  int|null $port
      *
-     * @return LdapLink|null
+     * @return LdapLink|bool
      *
      * @link http://php.net/manual/en/function.ldap-connect.php ldap_connect()
      */
-    public static function connect(string $host_or_uri = null, int $port = null) : ?self
+    public static function connect(string $host_or_uri = null, int $port = null)
     {
         $args = func_get_args();
         if (count($args) === 2 && $args[1] === null) {
             unset($args[1]);
         }
+        // PHP 7.x and earlier may return null instead of false
         $res = @ldap_connect(...$args);
-        return $res ? new LdapLink($res) : null;
+        return $res ? new LdapLink($res) : false;
     }
 
     /**
@@ -173,7 +174,7 @@ final class LdapLink
      */
     public function control_paged_result_response(Result $result, &...$tail) : bool
     {
-        // PHP 7.x and earlier may return null
+        // PHP 7.x and earlier may return null instead of false
         return @ldap_control_paged_result_response($this->link, $result->getResource(), ...$tail) ?? false;
     }
 
@@ -185,27 +186,33 @@ final class LdapLink
      *
      * @link http://php.net/manual/en/function.ldap-control-paged-result.php ldap_control_paged_result()
      */
-    public function control_paged_result($pagesize, ...$tail)
+    public function control_paged_result(int $pagesize, ...$tail) : bool
     {
-        return @ldap_control_paged_result($this->link, $pagesize, ...$tail);
+        // PHP 7.x and earlier may return null instead of false
+        return @ldap_control_paged_result($this->link, $pagesize, ...$tail) ?? false;
     }
 
     /**
      * Count the number of entries in a search
      *
-     * @param Result $result
+     * @param  Result $result
+     *
+     * @return int|bool
      *
      * @link http://php.net/manual/en/function.ldap-count-entries.php ldap_count_entries()
      */
     public function count_entries(Result $result)
     {
-        return @ldap_count_entries($this->link, $result->getResource());
+        // PHP 7.x and earlier may return null instead of false
+        return @ldap_count_entries($this->link, $result->getResource()) ?? false;
     }
 
     /**
      * Count the number of references in a search
      *
      * @param Result $result
+     *
+     * @return int|bool
      *
      * @link http://php.net/manual/en/function.ldap-count-references.php ldap_count_references()
      */
@@ -220,11 +227,14 @@ final class LdapLink
      *
      * @param  string $dn
      *
+     * @return bool
+     *
      * @link http://php.net/manual/en/function.ldap-delete.php ldap_delete()
      */
-    public function delete($dn)
+    public function delete(string $dn) : bool
     {
-        return @ldap_delete($this->link, $dn);
+        // PHP 7.x and earlier may return null instead of false
+        return @ldap_delete($this->link, $dn) ?? false;
     }
 
     /**
@@ -232,11 +242,14 @@ final class LdapLink
      *
      * @param  string $dn
      *
+     * @return string|bool
+     *
      * @link http://php.net/manual/en/function.ldap-dn2ufn.php ldap_dn2ufn()
      */
-    public static function dn2ufn($dn)
+    public static function dn2ufn(string $dn)
     {
-        return @ldap_dn2ufn($dn);
+        // PHP 7.x and earlier may return null instead of false
+        return @ldap_dn2ufn($dn) ?? false;
     }
 
     /**
@@ -244,31 +257,40 @@ final class LdapLink
      *
      * @param  int $errno
      *
+     * @return string|bool
+     *
      * @link http://php.net/manual/en/function.ldap-err2str.php ldap_err2str()
      */
-    public static function err2str($errno)
+    public static function err2str(int $errno)
     {
-        return @ldap_err2str($errno);
+        // PHP 7.x and earlier may return null instead of false
+        return @ldap_err2str($errno) ?? false;
     }
 
     /**
      * Return the LDAP error number of the last LDAP command
      *
+     * @return int|bool
+     *
      * @link http://php.net/manual/en/function.ldap-errno.php ldap_errno()
      */
     public function errno()
     {
-        return @ldap_errno($this->link);
+        // PHP 7.x and earlier may return null instead of false
+        return @ldap_errno($this->link) ?? false;
     }
 
     /**
      * Return the LDAP error message of the last LDAP command
      *
+     * @return string|bool
+     *
      * @link http://php.net/manual/en/function.ldap-error.php ldap_error()
      */
     public function error()
     {
-        return @ldap_error($this->link);
+        // PHP 7.x and earlier may return null instead of false
+        return @ldap_error($this->link) ?? false;
     }
 
     /**
@@ -277,11 +299,14 @@ final class LdapLink
      * @param  string $value
      * @param  mixed $tail remaining arguments passed to ldap_escape()
      *
+     * @return string|bool
+     *
      * @link http://php.net/manual/en/function.ldap-escape.php ldap_escape()
      */
-    public static function escape($value, ...$tail)
+    public static function escape(string $value, ...$tail)
     {
-        return @ldap_escape($value, ...$tail);
+        // PHP 7.x and earlier may return null instead of false
+        return @ldap_escape($value, ...$tail) ?? false;
     }
 
     /**
@@ -290,11 +315,14 @@ final class LdapLink
      * @param  string $dn
      * @param  int with_attrib
      *
+     * @return array|bool
+     *
      * @link http://php.net/manual/en/function.ldap-explode-dn.php ldap_explode_dn()
      */
     public static function explode_dn($dn, $with_attrib)
     {
-        return @ldap_explode_dn($dn, $with_attrib);
+        // PHP 7.x and earlier may return null instead of false
+        return @ldap_explode_dn($dn, $with_attrib) ?? false;
     }
 
     /**
@@ -302,11 +330,14 @@ final class LdapLink
      *
      * @param ResultEntry $result_entry
      *
+     * @return string|bool
+     *
      * @link http://php.net/manual/en/function.ldap-first-attribute.php ldap_first_attribute()
      */
     public function first_attribute(ResultEntry $result_entry)
     {
-        return @ldap_first_attribute($this->link, $result_entry->getResource());
+        // PHP 7.x and earlier may return null instead of false
+        return @ldap_first_attribute($this->link, $result_entry->getResource()) ?? false;
     }
 
     /**
@@ -314,12 +345,15 @@ final class LdapLink
      *
      * @param Result $result
      *
+     * @return ResultEntry|bool
+     *
      * @link http://php.net/manual/en/function.ldap-first-entry.php ldap_first_entry()
      */
     public function first_entry(Result $result)
     {
+        // PHP 7.x and earlier may return null instead of false
         $res = @ldap_first_entry($this->link, $result->getResource());
-        return $res ? new ResultEntry($res, $result) : $res;
+        return $res ? new ResultEntry($res, $result) : false;
     }
 
     /**
@@ -327,12 +361,15 @@ final class LdapLink
      *
      * @param Result $result
      *
+     * @return ResultReference|bool
+     *
      * @link http://php.net/manual/en/function.ldap-first-reference.php ldap_first_reference()
      */
     public function first_reference(Result $result)
     {
+        // PHP 7.x and earlier may return null instead of false
         $res = @ldap_first_reference($this->link, $result->getResource());
-        return $res ? new ResultReference($res, $result) : $res;
+        return $res ? new ResultReference($res, $result) : false;
     }
 
     /**
@@ -340,11 +377,14 @@ final class LdapLink
      *
      * @param Result $result
      *
+     * @return bool
+     *
      * @link http://php.net/manual/en/function.ldap-free-result.php ldap_free_result()
      */
-    public static function free_result(Result $result)
+    public static function free_result(Result $result) : bool
     {
-        return @ldap_free_result($result->getResource());
+        // PHP 7.x and earlier may return null instead of false
+        return @ldap_free_result($result->getResource()) ?? false;
     }
 
     /**
@@ -352,11 +392,14 @@ final class LdapLink
      *
      * @param ResultEntry $result_entry
      *
+     * @return array|bool
+     *
      * @link http://php.net/manual/en/function.ldap-get-attributes.php ldap_get_attributes()
      */
     public function get_attributes(ResultEntry $result_entry)
     {
-        return @ldap_get_attributes($this->link, $result_entry->getResource());
+        // PHP 7.x and earlier may return null instead of false
+        return @ldap_get_attributes($this->link, $result_entry->getResource()) ?? false;
     }
 
     /**
@@ -364,11 +407,14 @@ final class LdapLink
      *
      * @param ResultEntry $result_record
      *
+     * @return string|bool
+     *
      * @link http://php.net/manual/en/function.ldap-get-dn.php ldap_get_dn()
      */
     public function get_dn(ResultRecord $result_record)
     {
-        return @ldap_get_dn($this->link, $result_record->getResource());
+        // PHP 7.x and earlier may return null instead of false
+        return @ldap_get_dn($this->link, $result_record->getResource()) ?? false;
     }
 
     /**
@@ -376,11 +422,14 @@ final class LdapLink
      *
      * @param Result $result
      *
+     * @return array|bool
+     *
      * @link http://php.net/manual/en/function.ldap-get-entries.php ldap_get_entries()
      */
     public function get_entries(Result $result)
     {
-        return @ldap_get_entries($this->link, $result->getResource());
+        // PHP 7.x and earlier may return null instead of false
+        return @ldap_get_entries($this->link, $result->getResource()) ?? false;
     }
 
     /**
@@ -389,34 +438,46 @@ final class LdapLink
      * @param  int $option
      * @param  mixed $retval
      *
+     * @return string|bool
+     *
      * @link http://php.net/manual/en/function.ldap-get-option.php ldap_get_option()
      */
-    public function get_option($option, &$retval)
+    public function get_option(int $option, &$retval)
     {
-        return @ldap_get_option($this->link, $option, $retval);
+        // PHP 7.x and earlier may return null instead of false
+        return @ldap_get_option($this->link, $option, $retval) ?? false;
     }
 
     /**
      * Get all binary values from a result entry
      *
+     * @param  ResultEntry $result_entry
+     * @param  string $attribute
+     *
+     * @return array|bool
+     *
      * @link http://php.net/manual/en/function.ldap-get-values-len.php ldap_get_values_len()
      */
     public function get_values_len(ResultEntry $result_entry, string $attribute)
     {
-        return @ldap_get_values_len($this->link, $result_entry->getResource(), $attribute);
+        // PHP 7.x and earlier may return null instead of false
+        return @ldap_get_values_len($this->link, $result_entry->getResource(), $attribute) ?? false;
     }
 
     /**
      * Get all values from a result entry
      *
-     * @param ResultEntry $result_entry
+     * @param  ResultEntry $result_entry
      * @param  string $attribute
+     *
+     * @return array|bool
      *
      * @link http://php.net/manual/en/function.ldap-get-values.php ldap_get_values()
      */
-    public function get_values(ResultEntry $result_entry, $attribute)
+    public function get_values(ResultEntry $result_entry, string $attribute)
     {
-        return @ldap_get_values($this->link, $result_entry->getResource(), $attribute);
+        // PHP 7.x and earlier may return null instead of false
+        return @ldap_get_values($this->link, $result_entry->getResource(), $attribute) ?? false;
     }
 
     /**
@@ -426,12 +487,15 @@ final class LdapLink
      * @param  string $filter
      * @param  mixed $tail remaining arguments passed to ldap_list()
      *
+     * @return Result|false
+     *
      * @link http://php.net/manual/en/function.ldap-list.php ldap_list()
      */
-    public function list($base_dn, $filter, ...$tail)
+    public function list(string $base_dn, string $filter, ...$tail)
     {
+        // PHP 7.x and earlier may return null instead of false
         $res = @ldap_list($this->link, $base_dn, $filter, ...$tail);
-        return $res ? new Result($res, $this) : $res;
+        return $res ? new Result($res, $this) : false;
     }
 
     /**

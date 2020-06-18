@@ -179,9 +179,7 @@ final class HasPropertiesIdenticalTo extends Constraint implements ObjectPropert
     public function getExpectedPropertiesForComparison() : ObjectPropertiesInterface
     {
         $expect = $this->expected;
-        array_walk_recursive($expect, function (&$e) {
-            $e = $this->adjustExpectedValueForComparison($e);
-        });
+        array_walk_recursive($expect, [static::class, 'adjustExpectedValueForComparison']);
         return new ObjectProperties($expect);
     }
 
@@ -212,26 +210,31 @@ final class HasPropertiesIdenticalTo extends Constraint implements ObjectPropert
         }
     }
 
-    private function adjustActualValueForComparison($value, $expected)
+    private static function adjustActualValueForComparison($value, $expected)
     {
         if ($expected instanceof ObjectPropertiesComparatorInterface && is_object($value)) {
             return $expected->getActualPropertiesForComparison($value);
         } elseif (is_array($expected) && is_array($value)) {
-            array_walk($value, function (&$v, $k) use ($expected) {
-                if (($e = $expected[$k] ?? null) instanceof ObjectPropertiesComparatorInterface && is_object($v)) {
-                    $v = $e->getActualPropertiesForComparison($v);
-                } elseif (is_array($e) && is_array($v)) {
-                    $v = $this->adjustActualValueForComparison($v, $e);
-                }
-            });
+            array_walk($value, [static::class, 'adjustActualArrayValueForComparison'], $expected);
         }
         return $value;
     }
 
-    private function adjustExpectedValueForComparison($expected)
+    private static function adjustActualArrayValueForComparison(&$value, $key, array $expected)
     {
-        return ($expected instanceof ObjectPropertiesComparatorInterface) ?
-            $expected->getExpectedPropertiesForComparison() : $expected;
+        $expectedValue = $expected[$key] ?? null;
+        if ($expectedValue instanceof ObjectPropertiesComparatorInterface && is_object($value)) {
+            $value = $expectedValue->getActualPropertiesForComparison($value);
+        } elseif (is_array($expectedValue) && is_array($value)) {
+            $value = static::adjustActualValueForComparison($value, $expectedValue);
+        }
+    }
+
+    private static function adjustExpectedValueForComparison(&$expected)
+    {
+        if ($expected instanceof ObjectPropertiesComparatorInterface) {
+            $expected = $expected->getExpectedPropertiesForComparison();
+        }
     }
 }
 

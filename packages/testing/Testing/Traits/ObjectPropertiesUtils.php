@@ -61,10 +61,7 @@ trait ObjectPropertiesUtils
             $all = array_merge($all, class_uses($key), [$key => $val]);
         }
 
-        return array_merge(...array_map(function (string $key) {
-            $getters = static::objectPropertyGettersMap();
-            return $getters[$key] ?? [];
-        }, array_keys($all)));
+        return static::getObjectPropertyGettersForClasses($all);
     }
 
     /**
@@ -84,6 +81,18 @@ trait ObjectPropertiesUtils
         } else {
             return $object->{$key};
         }
+    }
+
+    private static function getObjectPropertyGettersForClasses(array $classes) : array
+    {
+        $map = static::objectPropertyGettersMap();
+        $getters = [];
+        foreach (array_keys($classes) as $class) {
+            if (($classGetters = $map[$class] ?? null) !== null) {
+                $getters = array_merge($getters, $classGetters);
+            }
+        }
+        return $getters;
     }
 }
 

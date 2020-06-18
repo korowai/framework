@@ -30,7 +30,7 @@ trait PregUtils
      *
      *      $result[$i] = $keys[$i] ?? $i;
      *
-     * for each ``$i`` from *$positions*.
+     * for each ``$i`` from array_values(*$positions*).
      *
      * @param  array $array
      *      An array to take keys from.
@@ -41,9 +41,13 @@ trait PregUtils
     public static function pregTupleKeysAt(array $array, array $positions) : array
     {
         $keys = array_keys($array);
-        return array_map(function (int $i) use ($keys) {
-            return $keys[$i] ?? $i;
-        }, $positions);
+        $result = [];
+        // NOTE: do not use array_map() with closure, because closures
+        // break process isolation (they are not serializable)
+        foreach ($positions as $position) {
+            $result[] = $keys[$position] ?? $position;
+        }
+        return $result;
     }
 
     /**
@@ -59,13 +63,9 @@ trait PregUtils
     public static function stringsToPregTuples(array $strings, string $key = null, int $offset = 0)
     {
         if ($key === null) {
-            return array_map(function (string $item) {
-                return [$item];
-            }, $strings);
+            return static::stringsToPregTuplesWithoutNamedCapture($strings);
         } else {
-            return array_map(function (string $item) use ($key, $offset) {
-                return [$item, [$key => [$item, $offset]]];
-            }, $strings);
+            return static::stringsToPregTuplesWithNamedCapture($strings, $key, $offset);
         }
     }
 
@@ -312,12 +312,36 @@ trait PregUtils
             throw new \InvalidArgumentException($message);
         }
 
-        $left = array_shift($tuples);
-        $joint = array_reduce($tuples, function (array $carry, array $tuple) use ($options) {
-            return static::joinTwoPregTuples($carry, $tuple, $options);
-        }, $left);
+        // NOTE: do not use array_reduce() with closure because closures
+        // break process isolation (they are not serializable)
+        $joint = array_shift($tuples);
+        foreach ($tuples as $tuple) {
+            $joint = static::joinTwoPregTuples($joint, $tuple, $options);
+        }
 
         return static::transformPregTuple($joint, $options);
+    }
+
+    private static function stringsToPregTuplesWithoutNamedCapture(array $strings)
+    {
+        $result = [];
+        // NOTE: we don't use array_map() with closure break process
+        // isolation (they are not serializable)
+        foreach ($strings as $index => $string) {
+            $result[$index] = [$string];
+        }
+        return $result;
+    }
+
+    private static function stringsToPregTuplesWithNamedCapture(array $strings, string $key, int $offset)
+    {
+        $result = [];
+        // NOTE: we don't use array_map() with closure because closures
+        // break process isolation (they are not serializable)
+        foreach ($strings as $index => $string) {
+            $result[$index] = [$string, [$key => [$string, $offset]]];
+        }
+        return $result;
     }
 }
 

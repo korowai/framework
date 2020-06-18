@@ -19,8 +19,8 @@ use Korowai\Lib\Ldap\Adapter\ResultEntryIteratorInterface;
  */
 abstract class AbstractResultIterator
 {
-    /** @var Result */
-    private $result;
+    use HasResult;
+
     private $pointed;
 
     /**
@@ -31,22 +31,10 @@ abstract class AbstractResultIterator
      *
      * The ``$result`` object is used by ``rewind()`` method.
      */
-    public function __construct(Result $result, $pointed)
+    public function __construct(ExtLdapResultInterface $result, $pointed)
     {
-        $this->result = $result;
+        $this->setResult($result);
         $this->pointed = $pointed;
-    }
-
-    /**
-     * Returns the ``$result`` provided to ``__construct()`` when the object
-     * was created.
-     *
-     * @return Result The result object provided as ``$result`` argument to
-     *         ``__construct()``.
-     */
-    public function getResult()
-    {
-        return $this->result;
     }
 
     /**

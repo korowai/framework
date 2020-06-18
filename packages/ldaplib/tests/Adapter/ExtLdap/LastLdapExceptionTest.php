@@ -20,7 +20,7 @@ use Korowai\Lib\Ldap\Exception\LdapException;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class UnitLastLdapException extends TestCase
+class LastLdapExceptionTest extends TestCase
 {
     use LastLdapException;
     use \phpmock\phpunit\PHPMock;

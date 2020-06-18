@@ -13,7 +13,6 @@ declare(strict_types=1);
 namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
 
 use Korowai\Lib\Ldap\Adapter\ResultEntryToEntry;
-use Korowai\Lib\Ldap\Adapter\ResultEntryInterface;
 use Korowai\Lib\Ldap\Adapter\ResultAttributeIteratorInterface;
 
 /**
@@ -21,22 +20,36 @@ use Korowai\Lib\Ldap\Adapter\ResultAttributeIteratorInterface;
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-final class ResultEntry extends ResultRecord implements ResultEntryInterface
+final class ResultEntry extends ResultRecord implements ExtLdapResultEntryInterface
 {
     use ResultEntryToEntry;
 
     /** @var ResultAttributeIterator */
     private $iterator;
 
+    public static function isLdapResultEntryResource($arg) : bool
+    {
+        // The name "ldap result entry" is documented: http://php.net/manual/en/resource.php
+        return is_resource($arg) && (get_resource_type($arg) === "ldap result entry");
+    }
+
     /**
      * Initializes the ``ResultEntry`` instance
      *
      * @param  resource|null $entry
-     * @param  Result $result
+     * @param  ExtLdapResultInterface $result
      */
-    public function __construct($entry, Result $result)
+    public function __construct($entry, ExtLdapResultInterface $result)
     {
         $this->initResultRecord($entry, $result);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isValid(): bool
+    {
+        return static::isLdapResultEntryResource($this->getResource());
     }
 
     // @codingStandardsIgnoreStart
@@ -45,61 +58,91 @@ final class ResultEntry extends ResultRecord implements ResultEntryInterface
     /**
      * Return first attribute
      *
+     * @return string|bool
+     *
      * @link http://php.net/manual/en/function.ldap-first-attribute.php ldap_first_attribute()
      */
     public function first_attribute()
     {
-        return $this->getResult()->getLdapLink()->first_attribute($this);
+        $ldap = $this->getResult()->getLdapLink();
+        // PHP 7.x and earlier may return null instead of false
+        return @ldap_first_attribute($ldap->getResource(), $this->getResource()) ?? false;
     }
 
     /**
      * Get attributes from a search result entry
      *
+     * @return array|bool
+     *
      * @link http://php.net/manual/en/function.ldap-get-attributes.php ldap_get_attributes()
      */
     public function get_attributes()
     {
-        return $this->getResult()->getLdapLink()->get_attributes($this);
+        $ldap = $this->getResult()->getLdapLink();
+        // PHP 7.x and earlier may return null instead of false
+        return @ldap_get_attributes($ldap->getResource(), $this->getResource()) ?? false;
     }
 
     /**
      * Get all binary values from a result entry
      *
+     * @param  string $attribute
+     *
+     * @return array|bool
+     *
      * @link http://php.net/manual/en/function.ldap-get-values-len.php ldap_get_values_len()
      */
     public function get_values_len(string $attribute)
     {
-        return $this->getResult()->getLdapLink()->get_values_len($this, $attribute);
+        $ldap = $this->getResult()->getLdapLink();
+        // PHP 7.x and earlier may return null instead of false
+        return @ldap_get_values_len($ldap->getResource(), $this->getResource(), $attribute) ?? false;
     }
 
     /**
      * Get all values from a result entry
      *
+     * @param  string $attribute
+     *
+     * @return array|bool
+     *
      * @link http://php.net/manual/en/function.ldap-get-values.php ldap_get_values()
      */
-    public function get_values($attribute)
+    public function get_values(string $attribute)
     {
-        return $this->getResult()->getLdapLink()->get_values($this, $attribute);
+        $ldap = $this->getResult()->getLdapLink();
+        // PHP 7.x and earlier may return null instead of false
+        return @ldap_get_values($ldap->getResource(), $this->getResource(), $attribute) ?? false;
     }
 
     /**
      * Get the next attribute in result
      *
+     * @return string|bool
+     *
      * @link http://php.net/manual/en/function.ldap-next-attribute.php ldap_next_attribute()
      */
     public function next_attribute()
     {
-        return $this->getResult()->getLdapLink()->next_attribute($this);
+        $ldap = $this->getResult()->getLdapLink();
+        // PHP 7.x and earlier may return null instead of false
+        return @ldap_next_attribute($ldap->getResource(), $this->getResource()) ?? false;
     }
 
     /**
      * Get next result entry
      *
+     * @return ResultEntry|bool
+     *
      * @link http://php.net/manual/en/function.ldap-next-entry.php ldap_next_entry()
      */
     public function next_entry()
     {
-        return $this->getResult()->getLdapLink()->next_entry($this);
+        $result = $this->getResult();
+        $ldap = $result->getLdapLink();
+        // PHP 7.x and earlier may return null instead of false
+        $res = @ldap_next_entry($ldap->getResource(), $this->getResource());
+        return $res ? new ResultEntry($res, $result) : false;
     }
 
     // phpcs:enable Generic.NamingConventions.CamelCapsFunctionName

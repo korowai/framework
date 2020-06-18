@@ -16,13 +16,6 @@ use Korowai\Testing\TestCase;
 use Korowai\Testing\ObjectProperties;
 use Korowai\Testing\ObjectPropertiesInterface;
 
-//use Korowai\Testing\Assertions\ClassAssertions;
-//use Korowai\Testing\Assertions\ObjectPropertiesAssertions;
-//use Korowai\Testing\Assertions\PregAssertions;
-//use Korowai\Testing\Assertions\ComplexAssertions;
-//use Korowai\Testing\Traits\ObjectPropertiesUtils;
-//use Korowai\Testing\Traits\PregUtils;
-
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */

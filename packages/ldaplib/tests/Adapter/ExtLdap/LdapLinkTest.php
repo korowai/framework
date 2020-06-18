@@ -15,9 +15,14 @@ namespace Korowai\Tests\Lib\Ldap\Adapter\ExtLdap;
 use Korowai\Testing\TestCase;
 
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLink;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\Result;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\ResultEntry;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\ResultReference;
+
+// because we use process isolation heavily, we can't use native PHP closures
+// (they're not serializable)
+use Korowai\Tests\Lib\Ldap\Adapter\ExtLdap\Closures\LdapGetOptionClosure;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -26,7 +31,7 @@ class LdapLinkTest extends TestCase
 {
     use \phpmock\phpunit\PHPMock;
 
-    public function getLdapFunctionMock(...$args)
+    private function getLdapFunctionMock(...$args)
     {
         return $this->getFunctionMock('\Korowai\Lib\Ldap\Adapter\ExtLdap', ...$args);
     }
@@ -48,6 +53,16 @@ class LdapLinkTest extends TestCase
     private function createLdapResultEntry($result = null, $resource = 'ldap result entry')
     {
         return new ResultEntry($resource, $result);
+    }
+
+    private function createLdapResultReference($result = null, $resource = 'ldap result reference')
+    {
+        return new ResultReference($resource, $result);
+    }
+
+    public function test__implementes__LdapLinkInterface()
+    {
+        $this->assertImplementsInterface(LdapLinkInterface::class, LdapLink::class);
     }
 
     public function test__isLdapLinkResource_Null()
@@ -132,15 +147,24 @@ class LdapLinkTest extends TestCase
                 'return' => true,
                 'expect' => true,
             ],
+
             // #1
             [
-                'args'   => ['dc=acme,dc=com', ['foo', 'bar']],
+                'args'   => ['dc=example,dc=org', ['foo', 'bar'], ['serverctls']],
+                'return' => true,
+                'expect' => true,
+            ],
+
+            // #3
+            [
+                'args'   => ['', []],
                 'return' => false,
                 'expect' => false,
             ],
-            // #2
+
+            // #4
             [
-                'args'   => ['dc=acme,dc=com', ['foo', 'bar']],
+                'args'   => ['', []],
                 'return' => null,  // PHP 7.x: null may be returned (instead of TypeError())
                 'expect' => false,
             ],
@@ -278,15 +302,27 @@ class LdapLinkTest extends TestCase
             ],
             // #1
             [
-                'args'   => ['dc=acme,dc=com', 'attribute', 'value'],
-                'return' => false,
-                'expect' => false
+                'args'   => ['dc=example,dc=org', 'attribute', 'value', ['serverctls']],
+                'return' => true,
+                'expect' => true
             ],
             // #2
             [
                 'args'   => ['', '', ''],
-                'return' => null,
+                'return' => false,
                 'expect' => false
+            ],
+            // #3
+            [
+                'args'   => ['', '', ''],
+                'return' => -1,
+                'expect' => -1
+            ],
+            // #4
+            [
+                'args'   => ['', '', ''],
+                'return' => null,
+                'expect' => -1
             ],
         ];
     }
@@ -386,79 +422,6 @@ class LdapLinkTest extends TestCase
         }
     }
 
-    public static function prov__control_paged_result_response()
-    {
-        return [
-            // #0
-            [
-                'args'   => [],
-                'return' => true,
-                'expect' => true,
-            ],
-            // #1
-            [
-                'args'   => [],
-                'return' => false,
-                'expect' => false,
-            ],
-            // #2
-            [
-                'args'   => [],
-                'return' => null,
-                'expect' => false,
-            ],
-            // #3
-            [
-                'args'   => [&$c3a1],
-                'return' => null,
-                'expect' => false,
-            ],
-            // #4
-            [
-                'args'   => [&$c4a1, &$c4a2],
-                'return' => null,
-                'expect' => false,
-            ],
-        ];
-    }
-
-    /**
-     * @runInSeparateProcess
-     * @dataProvider prov__control_paged_result_response
-     */
-    public function test__control_paged_result_response(array $args, $return, $expect)
-    {
-        $ldap = $this->createLdapLink();
-        $result = $this->createLdapResult($ldap);
-        $ldapArgs = array_map(
-            [$this, 'identicalTo'],
-            array_merge([$ldap->getResource(), $result->getResource()], $args)
-        );
-
-        $this   ->getLdapFunctionMock("ldap_control_paged_result_response")
-                ->expects($this->once())
-                ->with(...$ldapArgs)
-                ->willReturnCallback(function ($ldap, $result, &...$tail) use ($return) {
-                    if (count($tail) > 0) {
-                        $tail[0] = 'cookie';
-                    }
-                    if (count($tail) > 1) {
-                        $tail[1] = 123;
-                    }
-                    return $return;
-                });
-
-        $this->assertSame($expect, $ldap->control_paged_result_response($result, ...$args));
-
-        if (count($args) > 0) {
-            $this->assertSame('cookie', $args[0]);
-        }
-
-        if (count($args) > 1) {
-            $this->assertSame(123, $args[1]);
-        }
-    }
-
     public static function prov__control_paged_result()
     {
         return [
@@ -511,69 +474,6 @@ class LdapLinkTest extends TestCase
 
         $this->assertSame($expect, $ldap->control_paged_result(...$args));
     }
-    public static function prov__count_entries()
-    {
-        return [
-            // #0
-            [
-                'args'   => [],
-                'return' => 123,
-                'expect' => 123,
-            ],
-            // #1
-            [
-                'args'   => [],
-                'return' => false,
-                'expect' => false,
-            ],
-            // #2
-            [
-                'args'   => [],
-                'return' => null,
-                'expect' => false,
-            ],
-        ];
-    }
-
-    /**
-     * @runInSeparateProcess
-     * @dataProvider prov__count_entries
-     */
-    public function test__count_entries(array $args, $return, $expect)
-    {
-        $ldap = $this->createLdapLink();
-        $result = $this->createLdapResult($ldap);
-        $ldapArgs = array_map(
-            [$this, 'identicalTo'],
-            array_merge([$ldap->getResource(), $result->getResource()], $args)
-        );
-
-        $this   ->getLdapFunctionMock("ldap_count_entries")
-                ->expects($this->once())
-                ->with(...$ldapArgs)
-                ->willReturn($return);
-
-        $this->assertSame($expect, $ldap->count_entries($result, ...$args));
-    }
-
-    /**
-     * @runInSeparateProcess
-     */
-    public function test__count_references()
-    {
-        $ldap = $this->createLdapLink();
-        $result = $this->createLdapResult($ldap);
-
-        // FIXME: uncomment, once it's implemented
-//        $this   ->getLdapFunctionMock("ldap_count_references")
-//                ->expects($this->once())
-//                ->with('ldap link', 'ldap result')
-//                ->willReturn(333);
-
-        $this->expectException(\BadMethodCallException::class);
-        $this->expectExceptionMessage('Not implemented');
-        $this->assertSame(333, $ldap->count_references($result));
-    }
 
     public static function prov__delete()
     {
@@ -586,13 +486,19 @@ class LdapLinkTest extends TestCase
             ],
             // #1
             [
-                'args'   => ['dc=acme,dc=com'],
-                'return' => false,
-                'expect' => false,
+                'args'   => ['dc=example,dc=org', ['serverctls']],
+                'return' => true,
+                'expect' => true,
             ],
             // #2
             [
-                'args'   => ['$#$'],
+                'args'   => [''],
+                'return' => false,
+                'expect' => false,
+            ],
+            // #3
+            [
+                'args'   => [''],
                 'return' => null,
                 'expect' => false,
             ],
@@ -867,343 +773,6 @@ class LdapLinkTest extends TestCase
         $this->assertSame($expect, LdapLink::explode_dn(...$args));
     }
 
-    public static function prov__first_attribute()
-    {
-        return [
-            // #0
-            [
-                'args'   => [],
-                'return' => 'first',
-                'expect' => 'first',
-            ],
-            // #1
-            [
-                'args'   => [],
-                'return' => false,
-                'expect' => false,
-            ],
-            // #2
-            [
-                'args'   => [],
-                'return' => null,
-                'expect' => false
-            ],
-        ];
-    }
-
-    /**
-     * @runInSeparateProcess
-     * @dataProvider prov__first_attribute
-     */
-    public function test__first_attribute(array $args, $return, $expect)
-    {
-        $ldap = $this->createLdapLink();
-        $result = $this->createLdapResult($ldap);
-        $entry = $this->createLdapResultEntry($result);
-
-        $ldapArgs = array_map(
-            [$this, 'identicalTo'],
-            array_merge([$ldap->getResource(), $entry->getResource()], $args)
-        );
-
-        $this   ->getLdapFunctionMock("ldap_first_attribute")
-                ->expects($this->once())
-                ->with(...$ldapArgs)
-                ->willReturn($return);
-        $this->assertSame($expect, $ldap->first_attribute($entry, ...$args));
-    }
-
-    public static function prov__first_entry()
-    {
-        return [
-            // #0
-            [
-                'args'   => [],
-                'return' => 'first result entry',
-                'expect' => ['getResource()' => 'first result entry']
-            ],
-            // #1
-            [
-                'args'   => [],
-                'return' => false,
-                'expect' => false,
-            ],
-            // #2
-            [
-                'args'   => [],
-                'return' => null,
-                'expect' => false,
-            ],
-        ];
-    }
-
-    /**
-     * @runInSeparateProcess
-     * @dataProvider prov__first_entry
-     */
-    public function test__first_entry(array $args, $return, $expect)
-    {
-        $ldap = $this->createLdapLink();
-        $result = $this->createLdapResult($ldap);
-
-        $ldapArgs = array_map(
-            [$this, 'identicalTo'],
-            array_merge([$ldap->getResource(), $result->getResource()], $args)
-        );
-
-        $this   ->getLdapFunctionMock("ldap_first_entry")
-                ->expects($this->once())
-                ->with(...$ldapArgs)
-                ->willReturn($return);
-
-        $entry = $ldap->first_entry($result, ...$args);
-        if ($return) {
-            $this->assertInstanceOf(ResultEntry::class, $entry);
-            $this->assertSame($result, $entry->getResult());
-            $this->assertSame($return, $entry->getResource());
-            $this->assertHasPropertiesSameAs($expect, $entry);
-        } else {
-            $this->assertSame($expect, $entry);
-        }
-    }
-
-    public static function prov__first_reference()
-    {
-        return [
-            // #0
-            [
-                'args'   => [],
-                'return' => 'first result reference',
-                'expect' => ['getResource()' => 'first result reference']
-            ],
-            // #1
-            [
-                'args'   => [],
-                'return' => false,
-                'expect' => false,
-            ],
-            // #2
-            [
-                'args'   => [],
-                'return' => null,
-                'expect' => false,
-            ],
-        ];
-    }
-
-    /**
-     * @runInSeparateProcess
-     * @dataProvider prov__first_reference
-     */
-    public function test__first_reference(array $args, $return, $expect)
-    {
-        $ldap = $this->createLdapLink();
-        $result = $this->createLdapResult($ldap);
-
-        $ldapArgs = array_map(
-            [$this, 'identicalTo'],
-            array_merge([$ldap->getResource(), $result->getResource()], $args)
-        );
-
-        $this   ->getLdapFunctionMock("ldap_first_reference")
-                ->expects($this->once())
-                ->with(...$ldapArgs)
-                ->willReturn($return);
-
-        $reference = $ldap->first_reference($result, ...$args);
-        if ($return) {
-            $this->assertInstanceOf(ResultReference::class, $reference);
-            $this->assertSame($result, $reference->getResult());
-            $this->assertSame($return, $reference->getResource());
-            $this->assertHasPropertiesSameAs($expect, $reference);
-        } else {
-            $this->assertSame($expect, $reference);
-        }
-    }
-
-    public static function prov__free_result()
-    {
-        return [
-            // #0
-            [
-                'args'   => [],
-                'return' => true,
-                'expect' => true
-            ],
-            // #1
-            [
-                'args'   => [],
-                'return' => false,
-                'expect' => false,
-            ],
-            // #2
-            [
-                'args'   => [],
-                'return' => null,
-                'expect' => false,
-            ],
-        ];
-    }
-
-    /**
-     * @runInSeparateProcess
-     * @dataProvider prov__free_result
-     */
-    public function test__free_result(array $args, $return, $expect)
-    {
-        $ldap = $this->createLdapLink();
-        $result = $this->createLdapResult($ldap);
-
-        $ldapArgs = array_map([$this, 'identicalTo'], array_merge([$result->getResource()], $args));
-
-        $this   ->getLdapFunctionMock("ldap_free_result")
-                ->expects($this->once())
-                ->with(...$ldapArgs)
-                ->willReturn($return);
-
-        $this->assertSame($expect, LdapLink::free_result($result, ...$args));
-    }
-
-    public static function prov__get_attributes()
-    {
-        return [
-            // #0
-            [
-                'args'   => [],
-                'return' => ['1', '2'],
-                'expect' => ['1', '2']
-            ],
-            // #1
-            [
-                'args'   => [],
-                'return' => false,
-                'expect' => false,
-            ],
-            // #2
-            [
-                'args'   => [],
-                'return' => null,
-                'expect' => false,
-            ],
-        ];
-    }
-
-    /**
-     * @runInSeparateProcess
-     * @dataProvider prov__get_attributes
-     */
-    public function test__get_attributes(array $args, $return, $expect)
-    {
-        $ldap = $this->createLdapLink();
-        $result = $this->createLdapResult($ldap);
-        $entry = $this->createLdapResultEntry($result);
-
-        $ldapArgs = array_map(
-            [$this, 'identicalTo'],
-            array_merge([$ldap->getResource(), $entry->getResource()], $args)
-        );
-
-        $this   ->getLdapFunctionMock("ldap_get_attributes")
-                ->expects($this->once())
-                ->with(...$ldapArgs)
-                ->willReturn($return);
-
-        $this->assertSame($expect, $ldap->get_attributes($entry, ...$args));
-    }
-
-    public static function prov__get_dn()
-    {
-        return [
-            // #0
-            [
-                'args'   => [],
-                'return' => 'dc=example,dc=org',
-                'expect' => 'dc=example,dc=org',
-            ],
-            // #1
-            [
-                'args'   => [],
-                'return' => false,
-                'expect' => false,
-            ],
-            // #2
-            [
-                'args'   => [],
-                'return' => null,
-                'expect' => false,
-            ],
-        ];
-    }
-
-    /**
-     * @runInSeparateProcess
-     * @dataProvider prov__get_dn
-     */
-    public function test__get_dn(array $args, $return, $expect)
-    {
-        $ldap = $this->createLdapLink();
-        $result = $this->createLdapResult($ldap);
-        $entry = $this->createLdapResultEntry($result);
-
-        $ldapArgs = array_map(
-            [$this, 'identicalTo'],
-            array_merge([$ldap->getResource(), $entry->getResource()], $args)
-        );
-
-        $this   ->getLdapFunctionMock("ldap_get_dn")
-                ->expects($this->once())
-                ->with(...$ldapArgs)
-                ->willReturn($return);
-
-        $this->assertSame($expect, $ldap->get_dn($entry, ...$args));
-    }
-
-    public static function prov__get_entries()
-    {
-        return [
-            // #0
-            [
-                'args'   => [],
-                'return' => ['entry 1', 'entry 2'],
-                'expect' => ['entry 1', 'entry 2']
-            ],
-            // #1
-            [
-                'args'   => [],
-                'return' => false,
-                'expect' => false,
-            ],
-            // #2
-            [
-                'args'   => [],
-                'return' => null,
-                'expect' => false,
-            ],
-        ];
-    }
-
-    /**
-     * @runInSeparateProcess
-     * @dataProvider prov__get_entries
-     */
-    public function test__get_entries(array $args, $return, $expect)
-    {
-        $ldap = $this->createLdapLink();
-        $result = $this->createLdapResult($ldap);
-
-        $ldapArgs = array_map(
-            [$this, 'identicalTo'],
-            array_merge([$ldap->getResource(), $result->getResource()], $args)
-        );
-
-        $this   ->getLdapFunctionMock("ldap_get_entries")
-                ->expects($this->once())
-                ->with(...$ldapArgs)
-                ->willReturn($return);
-
-        $this->assertSame($expect, $ldap->get_entries($result, ...$args));
-    }
-
     public static function prov__get_option()
     {
         return [
@@ -1212,28 +781,28 @@ class LdapLinkTest extends TestCase
                 'args'   => [1, &$rv1],
                 'return' => true,
                 'expect' => true,
-                'value'  => 123,
+                'values' => [123],
             ],
             // #1
             [
                 'args'   => [2, &$rv2],
                 'return' => true,
                 'expect' => true,
-                'value'  => 'foo',
+                'values' => ['foo'],
             ],
             // #2
             [
                 'args'   => [2, &$rv3],
                 'return' => false,
                 'expect' => false,
-                'value'  => null,
+                'values' => [null],
             ],
             // #3
             [
                 'args'   => [-1, &$rv4],
                 'return' => null,
                 'expect' => false,
-                'value'  => null,
+                'values' => [null],
             ],
         ];
     }
@@ -1242,7 +811,7 @@ class LdapLinkTest extends TestCase
      * @runInSeparateProcess
      * @dataProvider prov__get_option
      */
-    public function test__get_option(array $args, $return, $expect, $value)
+    public function test__get_option(array $args, $return, $expect, array $values)
     {
         $ldap = $this->createLdapLink();
         $ldapArgs = array_map([$this, 'identicalTo'], array_merge([$ldap->getResource()], $args));
@@ -1250,109 +819,12 @@ class LdapLinkTest extends TestCase
         $this   ->getLdapFunctionMock("ldap_get_option")
                 ->expects($this->once())
                 ->with(...$ldapArgs)
-                ->willReturnCallback(function ($link, int $option, &$retval) use ($value, $return) {
-                    $retval = $value;
-                    return $return;
-                });
+                ->willReturnCallback(new LdapGetOptionClosure($return, $values));
 
         $this->assertSame($expect, $ldap->get_option(...$args));
         if (count($args) > 1) {
-            $this->assertSame($value, $args[1]);
+            $this->assertSame($values[0] ?? null, $args[1]);
         }
-    }
-
-    public static function prov__get_values_len()
-    {
-        return [
-            // #0
-            [
-                'args'   => ['foo'],
-                'return' => [1, 2],
-                'expect' => [1, 2],
-            ],
-            // #1
-            [
-                'args'   => ['bar'],
-                'return' => false,
-                'expect' => false,
-            ],
-            // #2
-            [
-                'args'   => ['#$#$'],
-                'return' => null,
-                'expect' => false
-            ],
-        ];
-    }
-
-    /**
-     * @runInSeparateProcess
-     * @dataProvider prov__get_values_len
-     */
-    public function test__get_values_len(array $args, $return, $expect)
-    {
-        $ldap = $this->createLdapLink();
-        $result = $this->createLdapResult($ldap);
-        $entry = $this->createLdapResultEntry($result);
-
-        $ldapArgs = array_map(
-            [$this, 'identicalTo'],
-            array_merge([$ldap->getResource(), $entry->getResource()], $args)
-        );
-
-        $this   ->getLdapFunctionMock("ldap_get_values_len")
-                ->expects($this->once())
-                ->with(...$ldapArgs)
-                ->willReturn($return);
-
-        $this->assertSame($expect, $ldap->get_values_len($entry, ...$args));
-    }
-
-    public static function prov__get_values()
-    {
-        return [
-            // #0
-            [
-                'args'   => ['foo'],
-                'return' => [1, 2],
-                'expect' => [1, 2],
-            ],
-            // #1
-            [
-                'args'   => ['bar'],
-                'return' => false,
-                'expect' => false,
-            ],
-            // #2
-            [
-                'args'   => ['#$#$'],
-                'return' => null,
-                'expect' => false
-            ],
-        ];
-    }
-
-    /**
-     * @runInSeparateProcess
-     * @dataProvider prov__get_values
-     */
-    public function test__get_values(array $args, $return, $expect)
-    {
-        $ldap = $this->createLdapLink();
-        $result = $this->createLdapResult($ldap);
-        $entry = $this->createLdapResultEntry($result);
-
-        $ldapArgs = array_map(
-            [$this, 'identicalTo'],
-            array_merge([$ldap->getResource(), $entry->getResource()], $args)
-        );
-
-        $this   ->getLdapFunctionMock("ldap_get_values")
-                ->expects($this->once())
-                ->with(...$ldapArgs)
-                ->willReturn($return);
-
-        $this->assertSame($expect, $ldap->get_values($entry, ...$args));
     }
 
     public static function prov__list()
@@ -1397,19 +869,26 @@ class LdapLinkTest extends TestCase
             [
                 'args'   => ['dc=example,dc=org', 'objectclass=*', ['a', 'b'], 1, 123, 456, 0],
                 'return' => 'ldap result 6',
-                'expect' => ['getResource()' => 'ldap result x'],
+                'expect' => ['getResource()' => 'ldap result 6'],
             ],
 
             // #6
             [
-                'args'   => ['dc=acme,dc=com', 'objectclass=*'],
-                'return' => false,
-                'expect' => false,
+                'args'   => ['dc=example,dc=org', 'objectclass=*', ['a', 'b'], 1, 123, 456, 0, ['serverctls']],
+                'return' => 'ldap result 6',
+                'expect' => ['getResource()' => 'ldap result 6'],
             ],
 
             // #7
             [
-                'args'   => ['$$$', 'objectclass=*'],
+                'args'   => ['', ''],
+                'return' => false,
+                'expect' => false,
+            ],
+
+            // #8
+            [
+                'args'   => ['', ''],
                 'return' => null,
                 'expect' => false,
             ],
@@ -1440,399 +919,781 @@ class LdapLinkTest extends TestCase
         }
     }
 
-    /**
-     * @runInSeparateProcess
-     */
-    public function test__list_2()
+    public static function prov__mod_add()
     {
-        $ldap = $this->createLdapLink();
+        return [
+            // #0
+            [
+                'args'   => ['dc=example,dc=org', ['entry']],
+                'return' => true,
+                'expect' => true,
+            ],
 
-        $this   ->getLdapFunctionMock("ldap_list")
-                ->expects($this->once())
-                ->with('ldap link', 'dc=korowai,dc=org', 'objectclass=*')
-                ->willReturn('ldap result');
+            // #1
+            [
+                'args'   => ['dc=example,dc=org', ['entry'], ['serverctls']],
+                'return' => true,
+                'expect' => true,
+            ],
 
-        $this->assertEquals(new Result('ldap result', $ldap), $ldap->list('dc=korowai,dc=org', 'objectclass=*'));
+            // #2
+            [
+                'args'   => ['', ['']],
+                'return' => false,
+                'expect' => false,
+            ],
+
+            // #3
+            [
+                'args'   => ['', []],
+                'return' => null,
+                'expect' => false,
+            ],
+        ];
     }
 
     /**
      * @runInSeparateProcess
+     * @dataProvider prov__mod_add
      */
-    public function test__mod_add()
+    public function test__mod_add(array $args, $return, $expect)
     {
         $ldap = $this->createLdapLink();
+        $ldapArgs = array_map([$this, 'identicalTo'], array_merge([$ldap->getResource()], $args));
 
         $this   ->getLdapFunctionMock("ldap_mod_add")
                 ->expects($this->once())
-                ->with('ldap link', 'dc=korowai,dc=org', ['entry'])
-                ->willReturn('ok');
+                ->with(...$ldapArgs)
+                ->willReturn($return);
 
-        $this->assertSame('ok', $ldap->mod_add('dc=korowai,dc=org', ['entry']));
+        $this->assertSame($expect, $ldap->mod_add(...$args));
+    }
+
+    public static function prov__mod_del()
+    {
+        return [
+            // #0
+            [
+                'args'   => ['dc=example,dc=org', ['entry']],
+                'return' => true,
+                'expect' => true,
+            ],
+
+            // #1
+            [
+                'args'   => ['dc=example,dc=org', ['entry'], ['serverctls']],
+                'return' => true,
+                'expect' => true,
+            ],
+
+            // #2
+            [
+                'args'   => ['', []],
+                'return' => false,
+                'expect' => false,
+            ],
+
+            // #3
+            [
+                'args'   => ['', []],
+                'return' => null,
+                'expect' => false,
+            ],
+        ];
     }
 
     /**
      * @runInSeparateProcess
+     * @dataProvider prov__mod_del
      */
-    public function test__mod_del()
+    public function test__mod_del(array $args, $return, $expect)
     {
         $ldap = $this->createLdapLink();
+        $ldapArgs = array_map([$this, 'identicalTo'], array_merge([$ldap->getResource()], $args));
 
         $this   ->getLdapFunctionMock("ldap_mod_del")
                 ->expects($this->once())
-                ->with('ldap link', 'dc=korowai,dc=org', ['entry'])
-                ->willReturn('ok');
+                ->with(...$ldapArgs)
+                ->willReturn($return);
 
-        $this->assertSame('ok', $ldap->mod_del('dc=korowai,dc=org', ['entry']));
+        $this->assertSame($expect, $ldap->mod_del(...$args));
+    }
+
+    public static function prov__mod_replace()
+    {
+        return [
+            // #0
+            [
+                'args'   => ['dc=example,dc=org', ['entry']],
+                'return' => true,
+                'expect' => true,
+            ],
+
+            // #1
+            [
+                'args'   => ['dc=example,dc=org', ['entry'], ['serverctls']],
+                'return' => true,
+                'expect' => true,
+            ],
+
+            // #2
+            [
+                'args'   => ['', []],
+                'return' => false,
+                'expect' => false,
+            ],
+
+            // #3
+            [
+                'args'   => ['', []],
+                'return' => null,
+                'expect' => false,
+            ],
+        ];
     }
 
     /**
      * @runInSeparateProcess
+     * @dataProvider prov__mod_replace
      */
-    public function test__mod_replace()
+    public function test__mod_replace(array $args, $return, $expect)
     {
         $ldap = $this->createLdapLink();
+        $ldapArgs = array_map([$this, 'identicalTo'], array_merge([$ldap->getResource()], $args));
 
         $this   ->getLdapFunctionMock("ldap_mod_replace")
                 ->expects($this->once())
-                ->with('ldap link', 'dc=korowai,dc=org', ['entry'])
-                ->willReturn('ok');
+                ->with(...$ldapArgs)
+                ->willReturn($return);
 
-        $this->assertSame('ok', $ldap->mod_replace('dc=korowai,dc=org', ['entry']));
+        $this->assertSame($expect, $ldap->mod_replace(...$args));
+    }
+
+    public static function prov__modify_batch()
+    {
+        return [
+            // #0
+            [
+                'args'   => ['dc=example,dc=org', ['entry']],
+                'return' => true,
+                'expect' => true,
+            ],
+
+            // #1
+            [
+                'args'   => ['dc=example,dc=org', ['entry'], ['serverctls']],
+                'return' => true,
+                'expect' => true,
+            ],
+
+            // #2
+            [
+                'args'   => ['', []],
+                'return' => false,
+                'expect' => false,
+            ],
+
+            // #3
+            [
+                'args'   => ['', []],
+                'return' => null,
+                'expect' => false,
+            ],
+        ];
     }
 
     /**
      * @runInSeparateProcess
+     * @dataProvider prov__modify_batch
      */
-    public function test__modify_batch()
+    public function test__modify_batch(array $args, $return, $expect)
     {
         $ldap = $this->createLdapLink();
+        $ldapArgs = array_map([$this, 'identicalTo'], array_merge([$ldap->getResource()], $args));
 
         $this   ->getLdapFunctionMock("ldap_modify_batch")
                 ->expects($this->once())
-                ->with('ldap link', 'dc=korowai,dc=org', ['entry'])
-                ->willReturn('ok');
+                ->with(...$ldapArgs)
+                ->willReturn($return);
 
-        $this->assertSame('ok', $ldap->modify_batch('dc=korowai,dc=org', ['entry']));
+        $this->assertSame($expect, $ldap->modify_batch(...$args));
+    }
+
+    public static function prov__modify()
+    {
+        return [
+            // #0
+            [
+                'args'   => ['dc=example,dc=org', ['entry']],
+                'return' => true,
+                'expect' => true,
+            ],
+
+            // #1
+            [
+                'args'   => ['dc=example,dc=org', ['entry'], ['serverctls']],
+                'return' => true,
+                'expect' => true,
+            ],
+
+            // #2
+            [
+                'args'   => ['', []],
+                'return' => false,
+                'expect' => false,
+            ],
+
+            // #3
+            [
+                'args'   => ['', []],
+                'return' => null,
+                'expect' => false,
+            ],
+        ];
     }
 
     /**
      * @runInSeparateProcess
+     * @dataProvider prov__modify
      */
-    public function test__modify()
+    public function test__modify(array $args, $return, $expect)
     {
         $ldap = $this->createLdapLink();
+        $ldapArgs = array_map([$this, 'identicalTo'], array_merge([$ldap->getResource()], $args));
 
         $this   ->getLdapFunctionMock("ldap_modify")
                 ->expects($this->once())
-                ->with('ldap link', 'dc=korowai,dc=org', ['entry'])
-                ->willReturn('ok');
+                ->with(...$ldapArgs)
+                ->willReturn($return);
 
-        $this->assertSame('ok', $ldap->modify('dc=korowai,dc=org', ['entry']));
+        $this->assertSame($expect, $ldap->modify(...$args));
+    }
+
+    public static function prov__read()
+    {
+        return [
+            // #0
+            [
+                'args'   => ['dc=example,dc=org', 'objectclass=*'],
+                'return' => 'ldap result 1',
+                'expect' => ['getResource()' => 'ldap result 1'],
+            ],
+
+            // #1
+            [
+                'args'   => ['dc=example,dc=org', 'objectclass=*', ['a', 'b']],
+                'return' => 'ldap result 2',
+                'expect' => ['getResource()' => 'ldap result 2'],
+            ],
+
+            // #2
+            [
+                'args'   => ['dc=example,dc=org', 'objectclass=*', ['a', 'b'], 1],
+                'return' => 'ldap result 3',
+                'expect' => ['getResource()' => 'ldap result 3'],
+            ],
+
+            // #3
+            [
+                'args'   => ['dc=example,dc=org', 'objectclass=*', ['a', 'b'], 1, 123],
+                'return' => 'ldap result 4',
+                'expect' => ['getResource()' => 'ldap result 4'],
+            ],
+
+            // #4
+            [
+                'args'   => ['dc=example,dc=org', 'objectclass=*', ['a', 'b'], 1, 123, 456],
+                'return' => 'ldap result 5',
+                'expect' => ['getResource()' => 'ldap result 5'],
+            ],
+
+            // #5
+            [
+                'args'   => ['dc=example,dc=org', 'objectclass=*', ['a', 'b'], 1, 123, 456, 0],
+                'return' => 'ldap result 6',
+                'expect' => ['getResource()' => 'ldap result 6'],
+            ],
+
+            // #6
+            [
+                'args'   => ['dc=example,dc=org', 'objectclass=*', ['a', 'b'], 1, 123, 456, 0, ['serverctls']],
+                'return' => 'ldap result 6',
+                'expect' => ['getResource()' => 'ldap result 6'],
+            ],
+
+            // #7
+            [
+                'args'   => ['', ''],
+                'return' => false,
+                'expect' => false,
+            ],
+
+            // #8
+            [
+                'args'   => ['', ''],
+                'return' => null,
+                'expect' => false,
+            ],
+        ];
     }
 
     /**
      * @runInSeparateProcess
+     * @dataProvider prov__read
      */
-    public function test__next_attribute()
+    public function test__read(array $args, $return, $expect)
     {
         $ldap = $this->createLdapLink();
-        $result = $this->createLdapResult($ldap);
-        $entry = $this->createLdapResultEntry($result);
-
-        $this   ->getLdapFunctionMock("ldap_next_attribute")
-                ->expects($this->once())
-                ->with('ldap link', 'ldap result entry')
-                ->willReturn('next attribute');
-
-        $this->assertSame('next attribute', $ldap->next_attribute($entry));
-    }
-
-    /**
-     * @runInSeparateProcess
-     */
-    public function test__next_entry_1()
-    {
-        $ldap = $this->createLdapLink();
-        $result = $this->createLdapResult($ldap);
-        $entry = $this->createLdapResultEntry($result);
-
-        $this   ->getLdapFunctionMock("ldap_next_entry")
-                ->expects($this->once())
-                ->with('ldap link', 'ldap result entry')
-                ->willReturn(false);
-
-        $this->assertFalse($ldap->next_entry($entry));
-    }
-
-    /**
-     * @runInSeparateProcess
-     */
-    public function test__next_entry_2()
-    {
-        $ldap = $this->createLdapLink();
-        $result = $this->createLdapResult($ldap);
-        $entry = $this->createLdapResultEntry($result);
-
-        $this   ->getLdapFunctionMock("ldap_next_entry")
-                ->expects($this->once())
-                ->with($this->identicalTo($ldap->getResource()), $this->identicalTo($entry->getResource()))
-                ->willReturn('next entry');
-
-        $this->assertEquals(new ResultEntry('next entry', $result), $ldap->next_entry($entry));
-    }
-
-    /**
-     * @runInSeparateProcess
-     */
-    public function test__next_reference_1()
-    {
-        $ldap = $this->createLdapLink();
-        $result = $this->createLdapResult($ldap);
-        $first = new ResultReference('first reference', $result);
-
-        $this   ->getLdapFunctionMock("ldap_next_reference")
-                ->expects($this->once())
-                ->with('ldap link', 'first reference')
-                ->willReturn(false);
-
-        $this->assertFalse($ldap->next_reference($first));
-    }
-
-    /**
-     * @runInSeparateProcess
-     */
-    public function test__next_reference_2()
-    {
-        $ldap = $this->createLdapLink();
-        $result = $this->createLdapResult($ldap);
-        $first = new ResultReference('first reference', $result);
-
-        $this   ->getLdapFunctionMock("ldap_next_reference")
-                ->expects($this->once())
-                ->with('ldap link', 'first reference')
-                ->willReturn('next reference');
-
-
-        $this->assertEquals(new ResultReference('next reference', $result), $ldap->next_reference($first));
-    }
-
-    /**
-     * @runInSeparateProcess
-     */
-    public function test__parse_reference()
-    {
-        $ldap = $this->createLdapLink();
-        $result = $this->createLdapResult($ldap);
-        $ref = new ResultReference('ldap result reference', $result);
-
-        $this   ->getLdapFunctionMock("ldap_parse_reference")
-                ->expects($this->once())
-                ->with('ldap link', 'ldap result reference')
-                ->willReturnCallback(function ($link, $ref, &$referrals) {
-                    $referrals = ['ref 1', 'ref 2'];
-                    return 'ok';
-                });
-
-
-        $this->assertSame('ok', $ldap->parse_reference($ref, $referrals));
-        $this->assertSame(['ref 1', 'ref 2'], $referrals);
-    }
-
-    /**
-     * @runInSeparateProcess
-     */
-    public function test__parse_result()
-    {
-        $ldap = $this->createLdapLink();
-        $result = $this->createLdapResult($ldap);
-
-        $this   ->getLdapFunctionMock("ldap_parse_result")
-                ->expects($this->once())
-                ->with('ldap link', 'ldap result')
-                ->willReturnCallback(function ($link, $result, &$errcode, &...$tail) {
-                    $errcode = 12;
-                    if (count($tail) > 0) {
-                        $tail[0] = 'matcheddn';
-                    }
-                    if (count($tail) > 1) {
-                        $tail[1] = 'errmsg';
-                    }
-                    if (count($tail) > 2) {
-                        $tail[2] = 'referrals';
-                    }
-                    return 'ok';
-                });
-
-        $this->assertSame('ok', $ldap->parse_result($result, $errcode));
-        $this->assertSame(12, $errcode);
-    }
-
-    /**
-     * @runInSeparateProcess
-     */
-    public function test__read_1()
-    {
-        $ldap = $this->createLdapLink();
+        $ldapArgs = array_map([$this, 'identicalTo'], array_merge([$ldap->getResource()], $args));
 
         $this   ->getLdapFunctionMock("ldap_read")
                 ->expects($this->once())
-                ->with('ldap link', 'dc=korowai,dc=org', 'objectclass=*')
-                ->willReturn(false);
+                ->with(...$ldapArgs)
+                ->willReturn($return);
 
-        $this->assertSame(false, $ldap->read('dc=korowai,dc=org', 'objectclass=*'));
+        $result = $ldap->read(...$args);
+        if ($return) {
+            $this->assertInstanceOf(Result::class, $result);
+            $this->assertSame($ldap, $result->getLdapLink());
+            $this->assertHasPropertiesSameAs($expect, $result);
+        } else {
+            $this->assertSame($expect, $result);
+        }
+    }
+
+    public static function prov__rename()
+    {
+        return [
+            // #0
+            [
+                'args'   => ['cn=foo,dc=example,dc=org', 'cn=bar', '', false],
+                'return' => true,
+                'expect' => true,
+            ],
+
+            // #1
+            [
+                'args'   => ['cn=foo,dc=example,dc=org', 'cn=bar', '', false, ['serverctls']],
+                'return' => true,
+                'expect' => true,
+            ],
+
+            // #2
+            [
+                'args'   => ['', '', '', false],
+                'return' => false,
+                'expect' => false,
+            ],
+
+            // #3
+            [
+                'args'   => ['', '', '', false],
+                'return' => null,
+                'expect' => false,
+            ],
+        ];
     }
 
     /**
      * @runInSeparateProcess
+     * @dataProvider prov__rename
      */
-    public function test__read_2()
+    public function test__rename(array $args, $return, $expect)
     {
         $ldap = $this->createLdapLink();
-
-        $this   ->getLdapFunctionMock("ldap_read")
-                ->expects($this->once())
-                ->with('ldap link', 'dc=korowai,dc=org', 'objectclass=*')
-                ->willReturn('ldap result');
-
-        $this->assertEquals(new Result('ldap result', $ldap), $ldap->read('dc=korowai,dc=org', 'objectclass=*'));
-    }
-
-    /**
-     * @runInSeparateProcess
-     */
-    public function test__rename()
-    {
-        $ldap = $this->createLdapLink();
+        $ldapArgs = array_map([$this, 'identicalTo'], array_merge([$ldap->getResource()], $args));
 
         $this   ->getLdapFunctionMock("ldap_rename")
                 ->expects($this->once())
-                ->with('ldap link', 'dc=korowai,dc=org', 'cn=ldap', 'dc=example,dc=org', true)
-                ->willReturn('ok');
+                ->with(...$ldapArgs)
+                ->willReturn($return);
 
-        $this->assertSame('ok', $ldap->rename('dc=korowai,dc=org', 'cn=ldap', 'dc=example,dc=org', true));
+        $this->assertSame($expect, $ldap->rename(...$args));
+    }
+
+    public static function prov__sasl_bind()
+    {
+        return [
+            // #0
+            [
+                'args'   => [],
+                'return' => true,
+                'expect' => true,
+            ],
+
+            // #1
+            [
+                'args'   => ['cn=admin,dc=example,dc=org'],
+                'return' => true,
+                'expect' => true,
+            ],
+
+            // #2
+            [
+                'args'   => ['cn=admin,dc=example,dc=org', '$3cr3t'],
+                'return' => true,
+                'expect' => true,
+            ],
+
+            // #3
+            [
+                'args'   => ['cn=admin,dc=example,dc=org', '$3cr3t', 'mech'],
+                'return' => true,
+                'expect' => true,
+            ],
+
+            // #4
+            [
+                'args'   => ['cn=admin,dc=example,dc=org', '$3cr3t', 'mech', 'realm'],
+                'return' => true,
+                'expect' => true,
+            ],
+
+            // #5
+            [
+                'args'   => ['cn=admin,dc=example,dc=org', '$3cr3t', 'mech', 'realm', 'authc_id'],
+                'return' => true,
+                'expect' => true,
+            ],
+
+            // #6
+            [
+                'args'   => ['cn=admin,dc=example,dc=org', '$3cr3t', 'mech', 'realm', 'authc_id', 'authz_id'],
+                'return' => true,
+                'expect' => true,
+            ],
+
+            // #7
+            [
+                'args'   => ['cn=admin,dc=example,dc=org', '$3cr3t', 'mech', 'realm', 'authc_id', 'authz_id', 'props'],
+                'return' => true,
+                'expect' => true,
+            ],
+
+            // #8
+            [
+                'args'   => ['$$'],
+                'return' => false,
+                'expect' => false,
+            ],
+        ];
     }
 
     /**
      * @runInSeparateProcess
+     * @dataProvider prov__sasl_bind
      */
-    public function test__sasl_bind()
+    public function test__sasl_bind(array $args, $return, $expect)
     {
         $ldap = $this->createLdapLink();
+        $ldapArgs = array_map([$this, 'identicalTo'], array_merge([$ldap->getResource()], $args));
+
         $this   ->getLdapFunctionMock("ldap_sasl_bind")
                 ->expects($this->once())
-                ->with('ldap link', 'dc=korowai,dc=org', '$3cr3t', 'mech', 'realm', 'authc_id', 'authz_id', 'props')
-                ->willReturn('ok');
+                ->with(...$ldapArgs)
+                ->willReturn($return);
 
-        $this->assertSame('ok', $ldap->sasl_bind('dc=korowai,dc=org', '$3cr3t', 'mech', 'realm', 'authc_id', 'authz_id', 'props'));
+        $result = $ldap->sasl_bind(...$args);
+        $this->assertSame($expect, $result);
+    }
+
+    public static function prov__search()
+    {
+        return [
+            // #0
+            [
+                'args'   => ['dc=example,dc=org', 'objectclass=*'],
+                'return' => 'ldap result 1',
+                'expect' => ['getResource()' => 'ldap result 1'],
+            ],
+
+            // #1
+            [
+                'args'   => ['dc=example,dc=org', 'objectclass=*', ['a', 'b']],
+                'return' => 'ldap result 2',
+                'expect' => ['getResource()' => 'ldap result 2'],
+            ],
+
+            // #2
+            [
+                'args'   => ['dc=example,dc=org', 'objectclass=*', ['a', 'b'], 1],
+                'return' => 'ldap result 3',
+                'expect' => ['getResource()' => 'ldap result 3'],
+            ],
+
+            // #3
+            [
+                'args'   => ['dc=example,dc=org', 'objectclass=*', ['a', 'b'], 1, 123],
+                'return' => 'ldap result 4',
+                'expect' => ['getResource()' => 'ldap result 4'],
+            ],
+
+            // #4
+            [
+                'args'   => ['dc=example,dc=org', 'objectclass=*', ['a', 'b'], 1, 123, 456],
+                'return' => 'ldap result 5',
+                'expect' => ['getResource()' => 'ldap result 5'],
+            ],
+
+            // #5
+            [
+                'args'   => ['dc=example,dc=org', 'objectclass=*', ['a', 'b'], 1, 123, 456, 0],
+                'return' => 'ldap result 6',
+                'expect' => ['getResource()' => 'ldap result 6'],
+            ],
+
+            // #6
+            [
+                'args'   => ['dc=example,dc=org', 'objectclass=*', ['a', 'b'], 1, 123, 456, 0, ['serverctls']],
+                'return' => 'ldap result 6',
+                'expect' => ['getResource()' => 'ldap result 6'],
+            ],
+
+            // #7
+            [
+                'args'   => ['', ''],
+                'return' => false,
+                'expect' => false,
+            ],
+
+            // #8
+            [
+                'args'   => ['', ''],
+                'return' => null,
+                'expect' => false,
+            ],
+        ];
     }
 
     /**
      * @runInSeparateProcess
+     * @dataProvider prov__search
      */
-    public function test__search_1()
+    public function test__search(array $args, $return, $expect)
     {
         $ldap = $this->createLdapLink();
+        $ldapArgs = array_map([$this, 'identicalTo'], array_merge([$ldap->getResource()], $args));
 
         $this   ->getLdapFunctionMock("ldap_search")
                 ->expects($this->once())
-                ->with('ldap link', 'dc=korowai,dc=org', 'objectclass=*')
-                ->willReturn(false);
+                ->with(...$ldapArgs)
+                ->willReturn($return);
 
-        $this->assertSame(false, $ldap->search('dc=korowai,dc=org', 'objectclass=*'));
+        $result = $ldap->search(...$args);
+        if ($return) {
+            $this->assertInstanceOf(Result::class, $result);
+            $this->assertSame($ldap, $result->getLdapLink());
+            $this->assertHasPropertiesSameAs($expect, $result);
+        } else {
+            $this->assertSame($expect, $result);
+        }
+    }
+
+    public static function prov__set_option()
+    {
+        return [
+            // #0
+            [
+                'args'   => [1, 'a'],
+                'return' => true,
+                'expect' => true,
+            ],
+
+            // #1
+            [
+                'args'   => [2, ['x']],
+                'return' => false,
+                'expect' => false,
+            ],
+
+            // #2
+            [
+                'args'   => [0, ''],
+                'return' => false,
+                'expect' => false,
+            ],
+
+            // #3
+            [
+                'args'   => [-1, null],
+                'return' => null,
+                'expect' => false,
+            ],
+        ];
     }
 
     /**
      * @runInSeparateProcess
+     * @dataProvider prov__set_option
      */
-    public function test__search_2()
+    public function test__set_option(array $args, $return, $expect)
     {
         $ldap = $this->createLdapLink();
-
-        $this   ->getLdapFunctionMock("ldap_search")
-                ->expects($this->once())
-                ->with('ldap link', 'dc=korowai,dc=org', 'objectclass=*')
-                ->willReturn('ldap result');
-
-        $this->assertEquals(new Result('ldap result', $ldap), $ldap->search('dc=korowai,dc=org', 'objectclass=*'));
-    }
-
-    /**
-     * @runInSeparateProcess
-     */
-    public function test__set_option()
-    {
-        $ldap = $this->createLdapLink();
-
+        $ldapArgs = array_map([$this, 'identicalTo'], array_merge([$ldap->getResource()], $args));
         $this   ->getLdapFunctionMock("ldap_set_option")
                 ->expects($this->once())
-                ->with('ldap link', 12, 'value')
-                ->willReturn('ok');
+                ->with(...$ldapArgs)
+                ->willReturn($return);
 
-        $this->assertSame('ok', $ldap->set_option(12, 'value'));
+        $this->assertSame($expect, $ldap->set_option(...$args));
+    }
+
+    public static function prov__set_rebind_proc()
+    {
+        return [
+            // #0
+            [
+                'args'   => ['foo'],
+                'return' => true,
+                'expect' => true,
+            ],
+
+            // #1
+            [
+                'args'   => [''], // unsetting
+                'return' => true,
+                'expect' => true,
+            ],
+
+            // #2
+            [
+                'args'   => ['inexistent'],
+                'return' => false,
+                'expect' => false,
+            ],
+        ];
     }
 
     /**
      * @runInSeparateProcess
+     * @dataProvider prov__set_rebind_proc
      */
-    public function test__set_rebind_proc()
+    public function test__set_rebind_proc(array $args, $return, $expect)
     {
         $ldap = $this->createLdapLink();
-
-        $proc = function () {
-        };
-
+        $ldapArgs = array_map([$this, 'identicalTo'], array_merge([$ldap->getResource()], $args));
         $this   ->getLdapFunctionMock("ldap_set_rebind_proc")
                 ->expects($this->once())
-                ->with('ldap link', $this->identicalTo($proc))
-                ->willReturn('ok');
+                ->with(...$ldapArgs)
+                ->willReturn($return);
 
-        $this->assertSame('ok', $ldap->set_rebind_proc($proc));
+        $this->assertSame($expect, $ldap->set_rebind_proc(...$args));
+    }
+
+//    public static function prov__sort()
+//    {
+//        return [
+//            // #1
+//            [
+//                'args'   => ['filter'],
+//                'return' => true,
+//                'expect' => true,
+//            ],
+//
+//            // #2
+//            [
+//                'args'   => ['***'],
+//                'return' => false,
+//                'expect' => false,
+//            ],
+//        ];
+//    }
+//
+//    /**
+//     * @runInSeparateProcess
+//     * @dataProvider prov__sort
+//     */
+//    public function test__sort(array $args, $return, $expect)
+//    {
+//        $ldap = $this->createLdapLink();
+//        $result = $this->createLdapResult($ldap);
+//        $ldapArgs = array_map(
+//            [$this, 'identicalTo'],
+//            array_merge([$ldap->getResource(), $result->getResource()], $args)
+//        );
+//        $this   ->getLdapFunctionMock("ldap_sort")
+//                ->expects($this->once())
+//                ->with(...$ldapArgs)
+//                ->willReturn($return);
+//
+//        $this->assertSame($expect, $ldap->sort($result, ...$args));
+//    }
+
+    public static function prov__start_tls()
+    {
+        return [
+            // #1
+            [
+                'args'   => [],
+                'return' => true,
+                'expect' => true,
+            ],
+
+            // #2
+            [
+                'args'   => [],
+                'return' => false,
+                'expect' => false,
+            ],
+
+            // #3
+            [
+                'args'   => [],
+                'return' => null,
+                'expect' => false,
+            ],
+        ];
     }
 
     /**
      * @runInSeparateProcess
+     * @dataProvider prov__start_tls
      */
-    public function test__sort()
+    public function test__start_tls(array $args, $return, $expect)
     {
         $ldap = $this->createLdapLink();
-        $result = $this->createLdapResult($ldap);
-
-        $this   ->getLdapFunctionMock("ldap_sort")
-                ->expects($this->once())
-                ->with('ldap link', 'ldap result', 'sortfilter')
-                ->willReturn('ok');
-
-        $this->assertSame('ok', $ldap->sort($result, 'sortfilter'));
-    }
-
-    /**
-     * @runInSeparateProcess
-     */
-    public function test__start_tls()
-    {
-        $ldap = $this->createLdapLink();
-
+        $ldapArgs = array_map([$this, 'identicalTo'], array_merge([$ldap->getResource()], $args));
         $this   ->getLdapFunctionMock("ldap_start_tls")
                 ->expects($this->once())
-                ->with('ldap link')
-                ->willReturn('ok');
+                ->with(...$ldapArgs)
+                ->willReturn($return);
 
-        $this->assertSame('ok', $ldap->start_tls());
+        $this->assertSame($expect, $ldap->start_tls(...$args));
+    }
+
+    public static function prov__unbind()
+    {
+        return [
+            // #1
+            [
+                'args'   => [],
+                'return' => true,
+                'expect' => true,
+            ],
+
+            // #2
+            [
+                'args'   => [],
+                'return' => false,
+                'expect' => false,
+            ],
+        ];
     }
 
     /**
      * @runInSeparateProcess
+     * @dataProvider prov__unbind
      */
-    public function test__unbind()
+    public function test__unbind(array $args, $return, $expect)
     {
         $ldap = $this->createLdapLink();
-
+        $ldapArgs = array_map([$this, 'identicalTo'], array_merge([$ldap->getResource()], $args));
         $this   ->getLdapFunctionMock("ldap_unbind")
                 ->expects($this->once())
-                ->with('ldap link')
-                ->willReturn('ok');
+                ->with(...$ldapArgs)
+                ->willReturn($return);
 
-        $this->assertSame('ok', $ldap->unbind());
+        $this->assertSame($expect, $ldap->unbind(...$args));
     }
 
     /**

@@ -19,55 +19,8 @@ namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-final class LdapLink implements LdapLinkInterface
+interface LdapLinkInterface extends ResourceWrapperInterface
 {
-    use HasResource;
-
-    /**
-     * Return whether $arg is a valid "ldap link" resource.
-     *
-     * @param  mixed $arg An argument to be examined.
-     * @return bool
-     *
-     * @link http://php.net/manual/en/resource.php
-     */
-    public static function isLdapLinkResource($arg) : bool
-    {
-        // The name "ldap link" is documented: http://php.net/manual/en/resource.php
-        return is_resource($arg) && (get_resource_type($arg) === "ldap link");
-    }
-
-    /**
-     * Constructs LdapLink
-     *
-     * @param  resource $link Should be a resource returned by ldap_connect().
-     * @link http://php.net/manual/en/function.ldap-connect.php ldap_connect()
-     */
-    public function __construct($link)
-    {
-        $this->setResource($link);
-    }
-
-    /**
-     * Destructs LdapLink
-     */
-    public function __destruct()
-    {
-        if ($this->isValid()) {
-            $this->unbind();
-        }
-    }
-
-    /**
-     * Return whether $this->getResource() is a valid "ldap link" resource.
-     *
-     * @return bool
-     */
-    public function isValid() : bool
-    {
-        return static::isLdapLinkResource($this->getResource());
-    }
-
     // @codingStandardsIgnoreStart
     // phpcs:disable Generic.NamingConventions.CamelCapsFunctionName
 
@@ -82,12 +35,7 @@ final class LdapLink implements LdapLinkInterface
      *
      * @link http://php.net/manual/en/function.ldap-add.php ldap_add()
      */
-    public function add(string $dn, array $entry, array $serverctls = []) : bool
-    {
-        $args = func_get_args();
-        // PHP 7.x and earlier may return null instead of false
-        return @ldap_add($this->getResource(), ...$args) ?? false;
-    }
+    public function add(string $dn, array $entry, array $serverctls = []) : bool;
 
     /**
      * Bind to LDAP directory
@@ -99,11 +47,7 @@ final class LdapLink implements LdapLinkInterface
      *
      * @link http://php.net/manual/en/function.ldap-bind.php ldap_bind()
      */
-    public function bind(string $bind_rdn = null, string $bind_password = null) : bool
-    {
-        $args = func_get_args();
-        return @ldap_bind($this->getResource(), ...$args);
-    }
+    public function bind(string $bind_rdn = null, string $bind_password = null) : bool;
 
     /**
      * Same as ldap_close
@@ -112,10 +56,7 @@ final class LdapLink implements LdapLinkInterface
      *
      * @link http://php.net/manual/en/function.ldap-close.php ldap_close()
      */
-    public function close() : bool
-    {
-        return @ldap_close($this->getResource());
-    }
+    public function close() : bool;
 
     /**
      * Compare value of attribute found in entry specified with DN
@@ -129,12 +70,7 @@ final class LdapLink implements LdapLinkInterface
      *
      * @link http://php.net/manual/en/function.ldap-compare.php ldap_compare()
      */
-    public function compare(string $dn, string $attribute, string $value, array $serverctls = [])
-    {
-        $args = func_get_args();
-        // PHP 7.x and earlier may return null instead of -1
-        return @ldap_compare($this->getResource(), ...$args) ?? -1;
-    }
+    public function compare(string $dn, string $attribute, string $value, array $serverctls = []);
 
     /**
      * Connect to an LDAP server
@@ -146,16 +82,7 @@ final class LdapLink implements LdapLinkInterface
      *
      * @link http://php.net/manual/en/function.ldap-connect.php ldap_connect()
      */
-    public static function connect(string $host_or_uri = null, int $port = null)
-    {
-        $args = func_get_args();
-        if (count($args) === 2 && $args[1] === null) {
-            unset($args[1]);
-        }
-        // PHP 7.x and earlier may return null instead of false
-        $res = @ldap_connect(...$args);
-        return $res ? new LdapLink($res) : false;
-    }
+    public static function connect(string $host_or_uri = null, int $port = null);
 
     /**
      * Send LDAP pagination control
@@ -168,12 +95,7 @@ final class LdapLink implements LdapLinkInterface
      *
      * @link http://php.net/manual/en/function.ldap-control-paged-result.php ldap_control_paged_result()
      */
-    public function control_paged_result(int $pagesize, bool $iscritical = false, string $cookie = "") : bool
-    {
-        $args = func_get_args();
-        // PHP 7.x and earlier may return null instead of false
-        return @ldap_control_paged_result($this->getResource(), ...$args) ?? false;
-    }
+    public function control_paged_result(int $pagesize, bool $iscritical = false, string $cookie = "") : bool;
 
     /**
      * Delete an entry from a directory
@@ -185,12 +107,7 @@ final class LdapLink implements LdapLinkInterface
      *
      * @link http://php.net/manual/en/function.ldap-delete.php ldap_delete()
      */
-    public function delete(string $dn, array $serverctls = []) : bool
-    {
-        $args = func_get_args();
-        // PHP 7.x and earlier may return null instead of false
-        return @ldap_delete($this->getResource(), ...$args) ?? false;
-    }
+    public function delete(string $dn, array $serverctls = []) : bool;
 
     /**
      * Convert DN to User Friendly Naming format
@@ -201,11 +118,7 @@ final class LdapLink implements LdapLinkInterface
      *
      * @link http://php.net/manual/en/function.ldap-dn2ufn.php ldap_dn2ufn()
      */
-    public static function dn2ufn(string $dn)
-    {
-        // PHP 7.x and earlier may return null instead of false
-        return @ldap_dn2ufn($dn) ?? false;
-    }
+    public static function dn2ufn(string $dn);
 
     /**
      * Convert LDAP error number into string error message
@@ -216,11 +129,7 @@ final class LdapLink implements LdapLinkInterface
      *
      * @link http://php.net/manual/en/function.ldap-err2str.php ldap_err2str()
      */
-    public static function err2str(int $errno)
-    {
-        // PHP 7.x and earlier may return null instead of false
-        return @ldap_err2str($errno) ?? false;
-    }
+    public static function err2str(int $errno);
 
     /**
      * Return the LDAP error number of the last LDAP command
@@ -229,11 +138,7 @@ final class LdapLink implements LdapLinkInterface
      *
      * @link http://php.net/manual/en/function.ldap-errno.php ldap_errno()
      */
-    public function errno()
-    {
-        // PHP 7.x and earlier may return null instead of false
-        return @ldap_errno($this->getResource()) ?? false;
-    }
+    public function errno();
 
     /**
      * Return the LDAP error message of the last LDAP command
@@ -242,11 +147,7 @@ final class LdapLink implements LdapLinkInterface
      *
      * @link http://php.net/manual/en/function.ldap-error.php ldap_error()
      */
-    public function error()
-    {
-        // PHP 7.x and earlier may return null instead of false
-        return @ldap_error($this->getResource()) ?? false;
-    }
+    public function error();
 
     /**
      * Escape a string for use in an LDAP filter or DN
@@ -259,12 +160,7 @@ final class LdapLink implements LdapLinkInterface
      *
      * @link http://php.net/manual/en/function.ldap-escape.php ldap_escape()
      */
-    public static function escape(string $value, string $ignore = "", int $flags = 0)
-    {
-        $args = func_get_args();
-        // PHP 7.x and earlier may return null instead of false
-        return @ldap_escape(...$args) ?? false;
-    }
+    public static function escape(string $value, string $ignore = "", int $flags = 0);
 
     /**
      * Splits DN into its component parts
@@ -276,11 +172,40 @@ final class LdapLink implements LdapLinkInterface
      *
      * @link http://php.net/manual/en/function.ldap-explode-dn.php ldap_explode_dn()
      */
-    public static function explode_dn($dn, $with_attrib)
-    {
-        // PHP 7.x and earlier may return null instead of false
-        return @ldap_explode_dn($dn, $with_attrib) ?? false;
-    }
+    public static function explode_dn($dn, $with_attrib);
+
+//    /**
+//     * Return first attribute
+//     *
+//     * @param ResultEntry $result_entry
+//     *
+//     * @return string|bool
+//     *
+//     * @link http://php.net/manual/en/function.ldap-first-attribute.php ldap_first_attribute()
+//     */
+//    public function first_attribute(ResultEntry $result_entry);
+
+//    /**
+//     * Get attributes from a search result entry
+//     *
+//     * @param ResultEntry $result_entry
+//     *
+//     * @return array|bool
+//     *
+//     * @link http://php.net/manual/en/function.ldap-get-attributes.php ldap_get_attributes()
+//     */
+//    public function get_attributes(ResultEntry $result_entry);
+
+//    /**
+//     * Get the DN of a result entry
+//     *
+//     * @param ResultEntry $result_record
+//     *
+//     * @return string|bool
+//     *
+//     * @link http://php.net/manual/en/function.ldap-get-dn.php ldap_get_dn()
+//     */
+//    public function get_dn(ResultRecord $result_record);
 
     /**
      * Get the current value for given option
@@ -292,11 +217,31 @@ final class LdapLink implements LdapLinkInterface
      *
      * @link http://php.net/manual/en/function.ldap-get-option.php ldap_get_option()
      */
-    public function get_option(int $option, &$retval)
-    {
-        // PHP 7.x and earlier may return null instead of false
-        return @ldap_get_option($this->getResource(), $option, $retval) ?? false;
-    }
+    public function get_option(int $option, &$retval);
+
+//    /**
+//     * Get all binary values from a result entry
+//     *
+//     * @param  ResultEntry $result_entry
+//     * @param  string $attribute
+//     *
+//     * @return array|bool
+//     *
+//     * @link http://php.net/manual/en/function.ldap-get-values-len.php ldap_get_values_len()
+//     */
+//    public function get_values_len(ResultEntry $result_entry, string $attribute);
+
+//    /**
+//     * Get all values from a result entry
+//     *
+//     * @param  ResultEntry $result_entry
+//     * @param  string $attribute
+//     *
+//     * @return array|bool
+//     *
+//     * @link http://php.net/manual/en/function.ldap-get-values.php ldap_get_values()
+//     */
+//    public function get_values(ResultEntry $result_entry, string $attribute);
 
     /**
      * Single-level search
@@ -323,12 +268,7 @@ final class LdapLink implements LdapLinkInterface
         int $timelimit = -1,
         int $deref = LDAP_DEREF_NEVER,
         array $serverctrls = []
-    ) {
-        $args = func_get_args();
-        // PHP 7.x and earlier may return null instead of false
-        $res = @ldap_list($this->getResource(), ...$args);
-        return $res ? new Result($res, $this) : false;
-    }
+    );
 
     /**
      * Add attribute values to current attributes
@@ -341,12 +281,7 @@ final class LdapLink implements LdapLinkInterface
      *
      * @link http://php.net/manual/en/function.ldap-mod-add.php ldap_mod_add()
      */
-    public function mod_add(string $dn, array $entry, array $serverctls = []) : bool
-    {
-        $args = func_get_args();
-        // PHP 7.x and earlier may return null instead of false
-        return @ldap_mod_add($this->getResource(), ...$args) ?? false;
-    }
+    public function mod_add(string $dn, array $entry, array $serverctls = []) : bool;
 
     /**
      * Delete attribute values from current attributes
@@ -359,12 +294,7 @@ final class LdapLink implements LdapLinkInterface
      *
      * @link http://php.net/manual/en/function.ldap-mod-del.php ldap_mod_del()
      */
-    public function mod_del(string $dn, array $entry, array $serverctls = []) : bool
-    {
-        $args = func_get_args();
-        // PHP 7.x and earlier may return null instead of false
-        return @ldap_mod_del($this->getResource(), ...$args) ?? false;
-    }
+    public function mod_del(string $dn, array $entry, array $serverctls = []) : bool;
 
     /**
      * Replace attribute values with new ones
@@ -377,12 +307,7 @@ final class LdapLink implements LdapLinkInterface
      *
      * @link http://php.net/manual/en/function.ldap-mod-replace.php ldap_mod_replace()
      */
-    public function mod_replace(string $dn, array $entry, array $serverctls = []) : bool
-    {
-        $args = func_get_args();
-        // PHP 7.x and earlier may return null instead of false
-        return @ldap_mod_replace($this->getResource(), ...$args) ?? false;
-    }
+    public function mod_replace(string $dn, array $entry, array $serverctls = []) : bool;
 
     /**
      * Batch and execute modifications on an LDAP entry
@@ -395,12 +320,7 @@ final class LdapLink implements LdapLinkInterface
      *
      * @link http://php.net/manual/en/function.ldap-modify-batch.php ldap_modify_batch()
      */
-    public function modify_batch(string $dn, array $entry, array $serverctls = []) : bool
-    {
-        $args = func_get_args();
-        // PHP 7.x and earlier may return null instead of false
-        return @ldap_modify_batch($this->getResource(), ...$args) ?? false;
-    }
+    public function modify_batch(string $dn, array $entry, array $serverctls = []) : bool;
 
     /**
      * Modify an LDAP entry
@@ -413,12 +333,52 @@ final class LdapLink implements LdapLinkInterface
      *
      * @link http://php.net/manual/en/function.ldap-modify.php ldap_modify()
      */
-    public function modify(string $dn, array $entry, array $serverctls = []) : bool
-    {
-        $args = func_get_args();
-        // PHP 7.x and earlier may return null instead of false
-        return @ldap_modify($this->getResource(), ...$args) ?? false;
-    }
+    public function modify(string $dn, array $entry, array $serverctls = []) : bool;
+
+//    /**
+//     * Get the next attribute in result
+//     *
+//     * @param ResultEntry $result_entry
+//     *
+//     * @return string|bool
+//     *
+//     * @link http://php.net/manual/en/function.ldap-next-attribute.php ldap_next_attribute()
+//     */
+//    public function next_attribute(ResultEntry $result_entry);
+
+//    /**
+//     * Get next result entry
+//     *
+//     * @param ResultEntry $result_entry
+//     *
+//     * @return ResultEntry|bool
+//     *
+//     * @link http://php.net/manual/en/function.ldap-next-entry.php ldap_next_entry()
+//     */
+//    public function next_entry(ResultEntry $result_entry);
+
+//    /**
+//     * Get next reference
+//     *
+//     * @param ResultReference $reference
+//     *
+//     * @return ResultReference|bool
+//     *
+//     * @link http://php.net/manual/en/function.ldap-next-reference.php ldap_next_reference()
+//     */
+//    public function next_reference(ResultReference $reference);
+
+//    /**
+//     * Extract information from reference entry
+//     *
+//     * @param  ResultReference $reference
+//     * @param  array|null &$referrals
+//     *
+//     * @return bool
+//     *
+//     * @link http://php.net/manual/en/function.ldap-parse-reference.php ldap_parse_reference()
+//     */
+//    public function parse_reference(ResultReference $reference, &$referrals) : bool;
 
     /**
      * Read an entry
@@ -445,12 +405,7 @@ final class LdapLink implements LdapLinkInterface
         int $timelimit = -1,
         int $deref = LDAP_DEREF_NEVER,
         array $serverctrls = []
-    ) {
-        $args = func_get_args();
-        // PHP 7.x and earlier may return null instead of false
-        $res = @ldap_read($this->getResource(), ...$args);
-        return $res ? new Result($res, $this) : false;
-    }
+    );
 
     /**
      * Modify the name of an entry
@@ -465,12 +420,7 @@ final class LdapLink implements LdapLinkInterface
      *
      * @link http://php.net/manual/en/function.ldap-rename.php ldap_rename()
      */
-    public function rename(string $dn, string $newrdn, string $newparent, bool $deleteoldrdn, array $serverctls = [])
-    {
-        $args = func_get_args();
-        // PHP 7.x and earlier may return null instead of false
-        return @ldap_rename($this->getResource(), ...$args) ?? false;
-    }
+    public function rename(string $dn, string $newrdn, string $newparent, bool $deleteoldrdn, array $serverctls = []);
 
     /**
      * Bind to LDAP directory using SASL
@@ -495,10 +445,7 @@ final class LdapLink implements LdapLinkInterface
         string $sasl_authc_id = null,
         string $sasl_authz_id = null,
         string $props = null
-    ) : bool {
-        $args = func_get_args();
-        return @ldap_sasl_bind($this->getResource(), ...$args);
-    }
+    ) : bool;
 
     /**
      * Search LDAP tree
@@ -525,12 +472,7 @@ final class LdapLink implements LdapLinkInterface
         int $timelimit = -1,
         int $deref = LDAP_DEREF_NEVER,
         array $serverctrls = []
-    ) {
-        $args = func_get_args();
-        // PHP 7.x and earlier may return null instead of false
-        $res = @ldap_search($this->getResource(), ...$args);
-        return $res ? new Result($res, $this) : false;
-    }
+    );
 
     /**
      * Set the value of the given option
@@ -542,11 +484,7 @@ final class LdapLink implements LdapLinkInterface
      *
      * @link http://php.net/manual/en/function.ldap-set-option.php ldap_set_option()
      */
-    public function set_option(int $option, $newval) : bool
-    {
-        // PHP 7.x and earlier may return null instead of false
-        return @ldap_set_option($this->getResource(), $option, $newval) ?? false;
-    }
+    public function set_option(int $option, $newval) : bool;
 
     /**
      * Set a callback function to do re-binds on referral chasing
@@ -557,10 +495,7 @@ final class LdapLink implements LdapLinkInterface
      *
      * @link http://php.net/manual/en/function.ldap-set-rebind-proc.php ldap_set_rebind_proc()
      */
-    public function set_rebind_proc($callback) : bool
-    {
-        return @ldap_set_rebind_proc($this->getResource(), $callback);
-    }
+    public function set_rebind_proc($callback) : bool;
 
     /**
      * Start TLS
@@ -569,11 +504,7 @@ final class LdapLink implements LdapLinkInterface
      *
      * @link http://php.net/manual/en/function.ldap-start-tls.php ldap_start_tls()
      */
-    public function start_tls() : bool
-    {
-        // PHP 7.x and earlier may return null instead of false
-        return @ldap_start_tls($this->getResource()) ?? false;
-    }
+    public function start_tls() : bool;
 
     /**
      * Unbind from LDAP directory
@@ -582,10 +513,7 @@ final class LdapLink implements LdapLinkInterface
      *
      * @link http://php.net/manual/en/function.ldap-unbind.php ldap_unbind()
      */
-    public function unbind() : bool
-    {
-        return @ldap_unbind($this->getResource());
-    }
+    public function unbind() : bool;
 
     // phpcs:enable Generic.NamingConventions.CamelCapsFunctionName
     // @codingStandardsIgnoreEnd

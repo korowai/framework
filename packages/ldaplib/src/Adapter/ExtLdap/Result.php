@@ -21,12 +21,10 @@ use Korowai\Lib\Ldap\Adapter\ResultReferenceIteratorInterface;
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-final class Result extends AbstractResult
+final class Result extends AbstractResult implements ExtLdapResultInterface
 {
+    use HasResource;
     use HasLdapLink;
-
-    /** @var resource */
-    private $result;
 
     public static function isLdapResultResource($arg) : bool
     {
@@ -42,11 +40,11 @@ final class Result extends AbstractResult
      * ``\ldap_search($link->getResource(), ...)``.
      *
      * @param  resource $result An ldap result resource to be wrapped
-     * @param  LdapLink $link   An ldap link object related to the ``$result``
+     * @param  LdapLinkInterface $link   An ldap link object related to the ``$result``
      */
-    public function __construct($result, LdapLink $link)
+    public function __construct($result, LdapLinkInterface $link)
     {
-        $this->result = $result;
+        $this->setResource($result);
         $this->setLdapLink($link);
     }
 
@@ -62,19 +60,12 @@ final class Result extends AbstractResult
 
     /**
      * Checks whether the Result represents a valid 'ldap result' resource.
+     *
+     * @return bool
      */
     public function isValid() : bool
     {
-        return static::isLdapResultResource($this->result);
-    }
-
-    /**
-     * Returns the ``$result`` provided to ``__construct()`` at construction time
-     * @return resource The ``$result`` provided to ``__construct()`` at construction time
-     */
-    public function getResource()
-    {
-        return $this->result;
+        return static::isLdapResultResource($this->getResource());
     }
 
     // @codingStandardsIgnoreStart
@@ -83,92 +74,145 @@ final class Result extends AbstractResult
     /**
      * Retrieve the LDAP pagination cookie
      *
-     * @link http://php.net/manual/en/function.ldap-control-paged-result-response.php
-     *       ldap_control_paged_result_response()
+     * @param  string|null &$cookie
+     * @param  int|null &$estimated
+     *
+     * @return bool
+     *
+     * @link http://php.net/manual/en/function.ldap-control-paged-result-response.php ldap_control_paged_result_response()
      */
-    public function control_paged_result_response(&...$args)
+    public function control_paged_result_response(&$cookie = null, &$estimated = null) : bool
     {
-        return $this->getLdapLink()->control_paged_result_response($this, ...$args);
+        $ldap = $this->getLdapLink();
+        $args = array_slice([&$cookie, &$estimated], 0, func_num_args());
+        // PHP 7.x and earlier may return null instead of false
+        return @ldap_control_paged_result_response($ldap->getResource(), $this->getResource(), ...$args) ?? false;
     }
 
     /**
      * Count the number of entries in a search
      *
+     * @return int|bool
+     *
      * @link http://php.net/manual/en/function.ldap-count-entries.php ldap_count_entries()
      */
     public function count_entries()
     {
-        return $this->getLdapLink()->count_entries($this);
-    }
-
-    /**
-     * Return first result id
-     *
-     * @link http://php.net/manual/en/function.ldap-first-entry.php ldap_first_entry()
-     */
-    public function first_entry()
-    {
-        return $this->getLdapLink()->first_entry($this);
+        $ldap = $this->getLdapLink();
+        // PHP 7.x and earlier may return null instead of false
+        return @ldap_count_entries($ldap->getResource(), $this->getResource()) ?? false;
     }
 
     /**
      * Count the number of references in a search
      *
+     * @return int|bool
+     *
      * @link http://php.net/manual/en/function.ldap-count-references.php ldap_count_references()
      */
     public function count_references()
     {
-        return $this->getLdapLink()->count_references($this);
+        throw new \BadMethodCallException("Not implemented");
+        // $ldap = $this->getLdapLink();
+        //return @ldap_count_references($ldap->getResource(), $this->getResource());
+    }
+
+    /**
+     * Return first result id
+     *
+     * @return ResultEntry|bool
+     *
+     * @link http://php.net/manual/en/function.ldap-first-entry.php ldap_first_entry()
+     */
+    public function first_entry()
+    {
+        $ldap = $this->getLdapLink();
+        // PHP 7.x and earlier may return null instead of false
+        $res = @ldap_first_entry($ldap->getResource(), $this->getResource());
+        return $res ? new ResultEntry($res, $this) : false;
     }
 
     /**
      * Return first reference
      *
+     * @return ResultReference|bool
+     *
      * @link http://php.net/manual/en/function.ldap-first-reference.php ldap_first_reference()
      */
     public function first_reference()
     {
-        return $this->getLdapLink()->first_reference($this);
+        $ldap = $this->getLdapLink();
+        // PHP 7.x and earlier may return null instead of false
+        $res = @ldap_first_reference($ldap->getResource(), $this->getResource());
+        return $res ? new ResultReference($res, $this) : false;
     }
 
     /**
      * Free result memory
      *
+     * @return bool
+     *
      * @link http://php.net/manual/en/function.ldap-free-result.php ldap_free_result()
      */
-    public function free_result()
+    public function free_result() : bool
     {
-        return LdapLink::free_result($this);
+        // PHP 7.x and earlier may return null instead of false
+        return @ldap_free_result($this->getResource()) ?? false;
     }
 
     /**
      * Get all result entries
      *
+     * @return array|bool
+     *
      * @link http://php.net/manual/en/function.ldap-get-entries.php ldap_get_entries()
      */
     public function get_entries()
     {
-        return $this->getLdapLink()->get_entries($this);
+        $ldap = $this->getLdapLink();
+        // PHP 7.x and earlier may return null instead of false
+        return @ldap_get_entries($ldap->getResource(), $this->getResource()) ?? false;
     }
 
     /**
      * Extract information from result
      *
+     * @param  int|null &$errcode
+     * @param  string|null $matcheddn
+     * @param  string|null $errmsg
+     * @param  array|null $referrals
+     * @param  array|null $serverctls
+     *
+     * @return bool
+     *
      * @link http://php.net/manual/en/function.ldap-parse-result.php ldap_parse_result()
      */
-    public function parse_result(&$errcode, &...$tail)
-    {
-        return $this->getLdapLink()->parse_result($this, $errcode, ...$tail);
+    public function parse_result(
+        &$errcode,
+        &$matcheddn = null,
+        &$errmsg = null,
+        &$referrals = null,
+        &$serverctls = null
+    ) : bool {
+        $ldap = $this->getLdapLink();
+        $args = array_slice([&$errcode, &$matcheddn, &$errmsg, &$referrals, &$serverctls], 0, func_num_args());
+        // PHP 7.x and earlier may return null instead of false
+        return @ldap_parse_result($ldap->getResource(), $this->getResource(), ...$args) ?? false;
     }
 
     /**
      * Sort LDAP result entries on the client side
      *
+     * @param  string $sortfilter
+     *
+     * @return bool
+     *
      * @link http://php.net/manual/en/function.ldap-sort.php ldap_sort()
      */
-    public function sort(string $sortfilter)
+    public function sort(string $sortfilter) : bool
     {
-        return $this->getLdapLink()->sort($this, $sortfilter);
+        $ldap = $this->getLdapLink();
+        return @ldap_sort($ldap->getResource(), $this->getResource(), $sortfilter) ?? false;
     }
 
     // phpcs:enable Generic.NamingConventions.CamelCapsFunctionName

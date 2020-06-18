@@ -115,9 +115,9 @@ trait ObjectPropertiesAssertions
         array $expected,
         callable $getters = null
     ) : HasPropertiesIdenticalTo {
-        $getters = $getters ?? function (object $object) {
-            return static::getObjectPropertyGetters($object);
-        };
+        // NOTE: we don't use closure as closures break process isolation
+        // (closues can't be serialized).
+        $getters = $getters ?? [static::class, 'getObjectPropertyGetters'];
         return new HasPropertiesIdenticalTo($expected, $getters);
     }
 }

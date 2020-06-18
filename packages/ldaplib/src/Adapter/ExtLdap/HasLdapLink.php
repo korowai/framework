@@ -18,24 +18,26 @@ namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
 trait HasLdapLink
 {
     /**
-     * @var LdapLink
+     * @var LdapLinkInterface
      */
     private $ldapLink;
 
     /**
      * Returns the encapsulated LdapLink instance.
      *
-     * @return LdapLink
+     * @return LdapLinkInterface
      */
-    public function getLdapLink() : LdapLink
+    public function getLdapLink() : LdapLinkInterface
     {
         return $this->ldapLink;
     }
 
     /**
-     * Sets the LdapLink instance to this object.
+     * Sets the LdapLinkInterface instance to this object.
+     *
+     * @param LdapLinkInterface $ldapLink
      */
-    protected function setLdapLink(LdapLink $ldapLink)
+    protected function setLdapLink(LdapLinkInterface $ldapLink)
     {
         $this->ldapLink = $ldapLink;
     }

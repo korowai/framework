@@ -67,6 +67,12 @@ class PregUtilsTest extends TestCase
                 'args'   => [["a" => "A", 8 => "B"], [0, 1, 2, 5]],
                 'expect' => ["a", 8, 2, 5],
             ],
+
+            // #7
+            'pregTupleKeysAt(["a" => "A", 8 => "B"], ["x" => 0, "y" => 1, "z" => 2])' => [
+                'args'   => [["a" => "A", 8 => "B"], ["x" => 0, "y" => 1, "z" => 2]],
+                'expect' => ["a", 8, 2],
+            ],
         ];
     }
 

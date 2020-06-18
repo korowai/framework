@@ -21,12 +21,12 @@ use Korowai\Lib\Ldap\Adapter\ResultReferenceIteratorInterface;
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class Result extends AbstractResult
+final class Result extends AbstractResult
 {
+    use HasLdapLink;
+
     /** @var resource */
     private $result;
-    /** @var LdapLink */
-    private $link;
 
     public static function isLdapResultResource($arg) : bool
     {
@@ -42,12 +42,12 @@ class Result extends AbstractResult
      * ``\ldap_search($link->getResource(), ...)``.
      *
      * @param  resource $result An ldap result resource to be wrapped
-     * @param LdapLink $link   An ldap link object related to the ``$result``
+     * @param  LdapLink $link   An ldap link object related to the ``$result``
      */
     public function __construct($result, LdapLink $link)
     {
         $this->result = $result;
-        $this->link = $link;
+        $this->setLdapLink($link);
     }
 
     /**
@@ -66,15 +66,6 @@ class Result extends AbstractResult
     public function isValid() : bool
     {
         return static::isLdapResultResource($this->result);
-    }
-
-    /**
-     * Returns the ``$link`` provided to ``__construct()`` at construction time
-     * @return LdapLink The ``$link`` provided to ``__construct()`` at construction time
-     */
-    public function getLink()
-    {
-        return $this->link;
     }
 
     /**
@@ -97,7 +88,7 @@ class Result extends AbstractResult
      */
     public function control_paged_result_response(&...$args)
     {
-        return $this->link->control_paged_result_response($this, ...$args);
+        return $this->getLdapLink()->control_paged_result_response($this, ...$args);
     }
 
     /**
@@ -107,7 +98,7 @@ class Result extends AbstractResult
      */
     public function count_entries()
     {
-        return $this->link->count_entries($this);
+        return $this->getLdapLink()->count_entries($this);
     }
 
     /**
@@ -117,7 +108,7 @@ class Result extends AbstractResult
      */
     public function first_entry()
     {
-        return $this->link->first_entry($this);
+        return $this->getLdapLink()->first_entry($this);
     }
 
     /**
@@ -127,7 +118,7 @@ class Result extends AbstractResult
      */
     public function count_references()
     {
-        return $this->link->count_references($this);
+        return $this->getLdapLink()->count_references($this);
     }
 
     /**
@@ -137,7 +128,7 @@ class Result extends AbstractResult
      */
     public function first_reference()
     {
-        return $this->link->first_reference($this);
+        return $this->getLdapLink()->first_reference($this);
     }
 
     /**
@@ -157,7 +148,7 @@ class Result extends AbstractResult
      */
     public function get_entries()
     {
-        return $this->link->get_entries($this);
+        return $this->getLdapLink()->get_entries($this);
     }
 
     /**
@@ -167,7 +158,7 @@ class Result extends AbstractResult
      */
     public function parse_result(&$errcode, &...$tail)
     {
-        return $this->link->parse_result($this, $errcode, ...$tail);
+        return $this->getLdapLink()->parse_result($this, $errcode, ...$tail);
     }
 
     /**
@@ -177,7 +168,7 @@ class Result extends AbstractResult
      */
     public function sort(string $sortfilter)
     {
-        return $this->link->sort($this, $sortfilter);
+        return $this->getLdapLink()->sort($this, $sortfilter);
     }
 
     // phpcs:enable Generic.NamingConventions.CamelCapsFunctionName

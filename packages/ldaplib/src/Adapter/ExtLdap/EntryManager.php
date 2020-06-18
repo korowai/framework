@@ -25,25 +25,14 @@ class EntryManager implements EntryManagerInterface
 {
     use EnsureLdapLink;
     use LastLdapException;
-
-    private $link;
+    use HasLdapLink;
 
     /**
      * Constructs EntryManager
      */
     public function __construct(LdapLink $link)
     {
-        $this->link = $link;
-    }
-
-    /**
-     * Returns a link resource
-     *
-     * @return resource
-     */
-    public function getLink()
-    {
-        return $this->link;
+        $this->setLdapLink($link);
     }
 
     /**
@@ -91,7 +80,7 @@ class EntryManager implements EntryManagerInterface
      */
     private function callImplMethod($name, ...$args)
     {
-        static::ensureLdapLink($this->link);
+        static::ensureLdapLink($this->getLdapLink());
         return with(emptyErrorHandler())(function ($eh) use ($name, $args) {
             return call_user_func_array([$this, $name], $args);
         });
@@ -102,8 +91,8 @@ class EntryManager implements EntryManagerInterface
      */
     private function addImpl(EntryInterface $entry)
     {
-        if (!$this->getLink()->add($entry->getDn(), $entry->getAttributes())) {
-            throw static::lastLdapException($this->link);
+        if (!$this->getLdapLink()->add($entry->getDn(), $entry->getAttributes())) {
+            throw static::lastLdapException($this->getLdapLink());
         }
     }
 
@@ -112,8 +101,8 @@ class EntryManager implements EntryManagerInterface
      */
     public function updateImpl(EntryInterface $entry)
     {
-        if (!$this->getLink()->modify($entry->getDn(), $entry->getAttributes())) {
-            throw static::lastLdapException($this->link);
+        if (!$this->getLdapLink()->modify($entry->getDn(), $entry->getAttributes())) {
+            throw static::lastLdapException($this->getLdapLink());
         }
     }
 
@@ -124,8 +113,8 @@ class EntryManager implements EntryManagerInterface
      */
     public function renameImpl(EntryInterface $entry, string $newRdn, bool $deleteOldRdn = true)
     {
-        if (!$this->getLink()->rename($entry->getDn(), $newRdn, null, $deleteOldRdn)) {
-            throw static::lastLdapException($this->link);
+        if (!$this->getLdapLink()->rename($entry->getDn(), $newRdn, null, $deleteOldRdn)) {
+            throw static::lastLdapException($this->getLdapLink());
         }
     }
 
@@ -136,8 +125,8 @@ class EntryManager implements EntryManagerInterface
      */
     public function deleteImpl(EntryInterface $entry)
     {
-        if (!$this->getLink()->delete($entry->getDn())) {
-            throw static::lastLdapException($this->link);
+        if (!$this->getLdapLink()->delete($entry->getDn())) {
+            throw static::lastLdapException($this->getLdapLink());
         }
     }
 }

@@ -67,7 +67,7 @@ class ResultReference extends ResultRecord implements ResultReferenceInterface, 
      */
     public function next_reference()
     {
-        return $this->getResult()->getLink()->next_reference($this);
+        return $this->getResult()->getLdapLink()->next_reference($this);
     }
 
     /**
@@ -77,7 +77,7 @@ class ResultReference extends ResultRecord implements ResultReferenceInterface, 
      */
     public function parse_reference(&$referrals)
     {
-        return $this->getResult()->getLink()->parse_reference($this, $referrals);
+        return $this->getResult()->getLdapLink()->parse_reference($this, $referrals);
     }
 
     // phpcs:enable Generic.NamingConventions.CamelCapsFunctionName
@@ -92,7 +92,7 @@ class ResultReference extends ResultRecord implements ResultReferenceInterface, 
     {
         if (!isset($this->referrals)) {
             if ($this->parse_reference($referrals) === false) {
-                throw static::lastLdapException($this->getResult()->getLink());
+                throw static::lastLdapException($this->getResult()->getLdapLink());
             }
             $this->referrals = $referrals;
         }

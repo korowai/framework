@@ -21,7 +21,7 @@ use Korowai\Lib\Ldap\Adapter\ResultAttributeIteratorInterface;
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class ResultEntry extends ResultRecord implements ResultEntryInterface
+final class ResultEntry extends ResultRecord implements ResultEntryInterface
 {
     use ResultEntryToEntry;
 
@@ -32,7 +32,7 @@ class ResultEntry extends ResultRecord implements ResultEntryInterface
      * Initializes the ``ResultEntry`` instance
      *
      * @param  resource|null $entry
-     * @param Result $result
+     * @param  Result $result
      */
     public function __construct($entry, Result $result)
     {
@@ -49,7 +49,7 @@ class ResultEntry extends ResultRecord implements ResultEntryInterface
      */
     public function first_attribute()
     {
-        return $this->getResult()->getLink()->first_attribute($this);
+        return $this->getResult()->getLdapLink()->first_attribute($this);
     }
 
     /**
@@ -59,7 +59,7 @@ class ResultEntry extends ResultRecord implements ResultEntryInterface
      */
     public function get_attributes()
     {
-        return $this->getResult()->getLink()->get_attributes($this);
+        return $this->getResult()->getLdapLink()->get_attributes($this);
     }
 
     /**
@@ -69,7 +69,7 @@ class ResultEntry extends ResultRecord implements ResultEntryInterface
      */
     public function get_values_len(string $attribute)
     {
-        return $this->getResult()->getLink()->get_values_len($this, $attribute);
+        return $this->getResult()->getLdapLink()->get_values_len($this, $attribute);
     }
 
     /**
@@ -79,7 +79,7 @@ class ResultEntry extends ResultRecord implements ResultEntryInterface
      */
     public function get_values($attribute)
     {
-        return $this->getResult()->getLink()->get_values($this, $attribute);
+        return $this->getResult()->getLdapLink()->get_values($this, $attribute);
     }
 
     /**
@@ -89,7 +89,7 @@ class ResultEntry extends ResultRecord implements ResultEntryInterface
      */
     public function next_attribute()
     {
-        return $this->getResult()->getLink()->next_attribute($this);
+        return $this->getResult()->getLdapLink()->next_attribute($this);
     }
 
     /**
@@ -99,7 +99,7 @@ class ResultEntry extends ResultRecord implements ResultEntryInterface
      */
     public function next_entry()
     {
-        return $this->getResult()->getLink()->next_entry($this);
+        return $this->getResult()->getLdapLink()->next_entry($this);
     }
 
     // phpcs:enable Generic.NamingConventions.CamelCapsFunctionName
@@ -114,6 +114,7 @@ class ResultEntry extends ResultRecord implements ResultEntryInterface
     public function getAttributeIterator() : ResultAttributeIteratorInterface
     {
         if (!isset($this->iterator)) {
+            // FIXME: $first may be false, what then?
             $first = $this->first_attribute();
             $this->iterator = new ResultAttributeIterator($this, $first);
         }

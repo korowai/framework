@@ -24,12 +24,11 @@ use function Korowai\Lib\Error\emptyErrorHandler;
 class Binding implements BindingInterface
 {
     use LastLdapException;
+    use EnsureLdapLink;
+    use HasLdapLink;
 
     /** @var bool */
     private $bound = false;
-
-    /** @var LdapLink */
-    private $link;
 
     /**
      * Initializes the Binding object with LdapLink instance.
@@ -38,33 +37,7 @@ class Binding implements BindingInterface
      */
     public function __construct(LdapLink $link)
     {
-        $this->link = $link;
-    }
-
-    /**
-     * Returns a link resource.
-     *
-     * @return resource
-     */
-    public function getLink()
-    {
-        return $this->link;
-    }
-
-    /**
-     * Ensures that the link is initialised. If not, throws an exception.
-     *
-     * @throws LdapException
-     *
-     * @internal
-     * @return bool Always returns true.
-     */
-    public function ensureLink() : bool
-    {
-        if (!$this->isLinkValid()) {
-            throw new LdapException("Uninitialized LDAP link", -1);
-        }
-        return true;
+        $this->setLdapLink($link);
     }
 
     /**
@@ -75,7 +48,7 @@ class Binding implements BindingInterface
      */
     public function errno()
     {
-        return $this->isLinkValid() ? $this->link->errno() : -1;
+        return $this->getLdapLink()->isValid() ? $this->getLdapLink()->errno() : -1;
     }
 
     /**
@@ -136,7 +109,7 @@ class Binding implements BindingInterface
      */
     private function callImplMethod($name, ...$args)
     {
-        $this->ensureLink();
+        $this->ensureLdapLink($this->getLdapLink());
         return with(emptyErrorHandler())(function ($eh) use ($name, $args) {
             return call_user_func_array([$this, $name], $args);
         });
@@ -148,10 +121,10 @@ class Binding implements BindingInterface
     private function bindImpl(string $dn = null, string $password = null)
     {
         $args = func_get_args();
-        $result = $this->getLink()->bind(...$args);
+        $result = $this->getLdapLink()->bind(...$args);
         if (!$result) {
             $this->bound = false;
-            throw static::lastLdapException($this->link);
+            throw static::lastLdapException($this->getLdapLink());
         }
         $this->bound = true;
         return $result;
@@ -162,8 +135,8 @@ class Binding implements BindingInterface
      */
     private function getOptionImpl(int $option)
     {
-        if (!$this->link->get_option($option, $retval)) {
-            throw static::lastLdapException($this->link);
+        if (!$this->getLdapLink()->get_option($option, $retval)) {
+            throw static::lastLdapException($this->getLdapLink());
         }
         return $retval;
     }
@@ -173,8 +146,8 @@ class Binding implements BindingInterface
      */
     public function setOptionImpl(int $option, $value)
     {
-        if (!$this->link->set_option($option, $value)) {
-            throw static::lastLdapException($this->link);
+        if (!$this->getLdapLink()->set_option($option, $value)) {
+            throw static::lastLdapException($this->getLdapLink());
         }
     }
 
@@ -183,8 +156,8 @@ class Binding implements BindingInterface
      */
     private function unbindImpl()
     {
-        if (!$this->link->unbind()) {
-            throw static::lastLdapException($this->link);
+        if (!$this->getLdapLink()->unbind()) {
+            throw static::lastLdapException($this->getLdapLink());
         }
         $this->bound = false;
     }

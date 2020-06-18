@@ -30,7 +30,7 @@ class ResultRecord implements ResultRecordInterface
      * Initializes the ``ResultRecord`` instance
      *
      * @param  resource|null $record
-     * @param Result $result
+     * @param  Result $result
      */
     protected function initResultRecord($record, Result $result)
     {
@@ -51,7 +51,7 @@ class ResultRecord implements ResultRecordInterface
     /**
      * Return the Result object which contains the entry.
      *
-     * @return resource
+     * @return Result
      */
     public function getResult()
     {
@@ -68,7 +68,7 @@ class ResultRecord implements ResultRecordInterface
      */
     public function get_dn()
     {
-        return $this->result->getLink()->get_dn($this);
+        return $this->result->getLdapLink()->get_dn($this);
     }
 
     // phpcs:enable Generic.NamingConventions.CamelCapsFunctionName

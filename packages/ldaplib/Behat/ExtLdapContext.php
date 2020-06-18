@@ -248,10 +248,10 @@ class ExtLdapContext implements Context
     public function iShouldHaveAValidLdapLink()
     {
         Assert::assertInstanceOf(Ldap::class, $this->ldap);
-        /** @var ExtLdap\Adapter */
+        /** @var ExtLdapAdapter */
         $adapter = $this->ldap->getAdapter();
         Assert::assertInstanceOf(ExtLdapAdapter::class, $adapter);
-        Assert::assertTrue($adapter->getLink()->isValid());
+        Assert::assertTrue($adapter->getLdapLink()->isValid());
     }
 
     /**
@@ -315,7 +315,7 @@ class ExtLdapContext implements Context
      */
     public function iShouldHaveLastResultTrue()
     {
-        Assert::isTrue($this->lastResult());
+        Assert::assertTrue($this->lastResult());
     }
 
     /**
@@ -323,7 +323,7 @@ class ExtLdapContext implements Context
      */
     public function iShouldHaveLastResultFalse()
     {
-        Assert::isFalse($this->lastResult());
+        Assert::assertFalse($this->lastResult());
     }
 }
 

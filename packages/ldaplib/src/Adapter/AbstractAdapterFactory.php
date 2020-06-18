@@ -28,13 +28,11 @@ abstract class AbstractAdapterFactory implements AdapterFactoryInterface
     /**
      * Creates an AbstractAdapterFactory
      *
-     * @param  array $config A config to be passed to configure() (if present).
+     * @param  array $config A config to be passed to configure().
      */
-    public function __construct(array $config = null)
+    public function __construct(array $config = [])
     {
-        if (isset($config)) {
-            $this->configure($config);
-        }
+        $this->configure($config);
     }
 
     /**
@@ -57,9 +55,9 @@ abstract class AbstractAdapterFactory implements AdapterFactoryInterface
      *
      * If configuration is not set yet, null is returned.
      *
-     * @return array|null
+     * @return array
      */
-    public function getConfig()
+    public function getConfig() : array
     {
         return $this->config;
     }

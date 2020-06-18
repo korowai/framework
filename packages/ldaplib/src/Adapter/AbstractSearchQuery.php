@@ -25,7 +25,7 @@ abstract class AbstractSearchQuery implements SearchQueryInterface
     /** @var string */
     protected $filter;
     /** @var ResultInterface */
-    protected $result = null;
+    protected $result;
     /** @var array */
     protected $options;
 

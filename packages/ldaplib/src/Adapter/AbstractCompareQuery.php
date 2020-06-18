@@ -24,7 +24,7 @@ abstract class AbstractCompareQuery implements CompareQueryInterface
     /** @var string */
     protected $value;
     /** @var bool */
-    protected $result = null;
+    protected $result;
 
 
     /**
@@ -93,7 +93,7 @@ abstract class AbstractCompareQuery implements CompareQueryInterface
      *
      * This method should be implemented in subclass.
      *
-     * @return ResultInterface Result of the query.
+     * @return bool Result of the query.
      */
     abstract protected function doExecuteQuery() : bool;
 }

@@ -36,7 +36,7 @@ class AdapterFactory extends AbstractAdapterFactory
      *
      * @throws LdapException
      */
-    public function __construct(array $config = null)
+    public function __construct(array $config = [])
     {
         if (!@extension_loaded('ldap')) {
             throw new LdapException("The LDAP PHP extension is not enabled.", -1);

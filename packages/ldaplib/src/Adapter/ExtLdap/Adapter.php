@@ -25,10 +25,7 @@ use Symfony\Component\OptionsResolver\Options;
  */
 class Adapter implements AdapterInterface
 {
-    /**
-     * @var LdapLink
-     */
-    private $link;
+    use HasLdapLink;
 
     /**
      * @var Binding
@@ -42,16 +39,7 @@ class Adapter implements AdapterInterface
 
     public function __construct(LdapLink $link)
     {
-        $this->link = $link;
-    }
-
-    /**
-     * Returns the ``$link`` provided to ``__construct()`` at creation
-     * @return LdapLink The ``$link`` provided to ``__construct()`` at creation
-     */
-    public function getLdapLink() : LdapLink
-    {
-        return $this->link;
+        $this->setLdapLink($link);
     }
 
     /**
@@ -60,8 +48,7 @@ class Adapter implements AdapterInterface
     public function getBinding() : BindingInterface
     {
         if (!isset($this->binding)) {
-            $link = $this->getLdapLink();
-            $this->binding = new Binding($link);
+            $this->binding = new Binding($this->getLdapLink());
         }
         return $this->binding;
     }
@@ -72,8 +59,7 @@ class Adapter implements AdapterInterface
     public function getEntryManager() : EntryManagerInterface
     {
         if (!isset($this->entryManager)) {
-            $link = $this->getLdapLink();
-            $this->entryManager = new EntryManager($link);
+            $this->entryManager = new EntryManager($this->getLdapLink());
         }
         return $this->entryManager;
     }

@@ -19,7 +19,7 @@ namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class LdapLink
+final class LdapLink
 {
     private $link;
 
@@ -86,11 +86,14 @@ class LdapLink
      * @param  string $dn
      * @param  array  $entry
      *
+     * @return bool Returns ``true`` on success or ``false`` on failure.
+     *
      * @link http://php.net/manual/en/function.ldap-add.php ldap_add()
      */
-    public function add($dn, $entry)
+    public function add(string $dn, array $entry) : bool
     {
-        return @ldap_add($this->link, $dn, $entry);
+        // PHP 7.x and earlier may return null
+        return @ldap_add($this->link, $dn, $entry) ?? false;
     }
 
     /**
@@ -99,9 +102,11 @@ class LdapLink
      * @param  string $bind_rdn
      * @param  string $bind_password
      *
+     * @return bool
+     *
      * @link http://php.net/manual/en/function.ldap-bind.php ldap_bind()
      */
-    public function bind($bind_rdn = null, $bind_password = null)
+    public function bind(string $bind_rdn = null, string $bind_password = null) : bool
     {
         $args = func_get_args();
         return @ldap_bind($this->link, ...$args);
@@ -110,9 +115,11 @@ class LdapLink
     /**
      * Same as ldap_close
      *
+     * @return bool
+     *
      * @link http://php.net/manual/en/function.ldap-close.php ldap_close()
      */
-    public function close()
+    public function close() : bool
     {
         return @ldap_close($this->link);
     }
@@ -124,35 +131,50 @@ class LdapLink
      * @param  string $attribute
      * @param  string $value
      *
+     * @return bool
+     *
      * @link http://php.net/manual/en/function.ldap-compare.php ldap_compare()
      */
-    public function compare($dn, $attribute, $value)
+    public function compare(string $dn, string $attribute, string $value) : bool
     {
-        return @ldap_compare($this->link, $dn, $attribute, $value);
+        // PHP 7.x and earlier may return null
+        return @ldap_compare($this->link, $dn, $attribute, $value) ?? false;
     }
 
     /**
      * Connect to an LDAP server
      *
+     * @param  string|null $host_or_uri
+     * @param  int|null $port
+     *
+     * @return LdapLink|null
+     *
      * @link http://php.net/manual/en/function.ldap-connect.php ldap_connect()
      */
-    public static function connect(...$args)
+    public static function connect(string $host_or_uri = null, int $port = null) : ?self
     {
+        $args = func_get_args();
+        if (count($args) === 2 && $args[1] === null) {
+            unset($args[1]);
+        }
         $res = @ldap_connect(...$args);
-        return $res ? new LdapLink($res) : $res;
+        return $res ? new LdapLink($res) : null;
     }
 
     /**
      * Retrieve the LDAP pagination cookie
      *
-     * @param Result $result
-     * @param $tail
+     * @param  Result $result
+     * @param  $tail
+     *
+     * @return bool
      *
      * @link http://php.net/manual/en/function.ldap-control-paged-result-response.php ldap_control_paged_result_response()
      */
-    public function control_paged_result_response(Result $result, &...$tail)
+    public function control_paged_result_response(Result $result, &...$tail) : bool
     {
-        return @ldap_control_paged_result_response($this->link, $result->getResource(), ...$tail);
+        // PHP 7.x and earlier may return null
+        return @ldap_control_paged_result_response($this->link, $result->getResource(), ...$tail) ?? false;
     }
 
     /**

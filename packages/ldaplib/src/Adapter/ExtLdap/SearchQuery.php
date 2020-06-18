@@ -28,27 +28,15 @@ class SearchQuery extends AbstractSearchQuery
 {
     use EnsureLdapLink;
     use LastLdapException;
-
-    /** @var LdapLink */
-    private $link;
+    use HasLdapLink;
 
     /**
      * Constructs SearchQuery
      */
     public function __construct(LdapLink $link, string $base_dn, string $filter, array $options = [])
     {
-        $this->link  = $link;
+        $this->setLdapLink($link);
         parent::__construct($base_dn, $filter, $options);
-    }
-
-    /**
-     * Returns a link resource
-     *
-     * @return resource
-     */
-    public function getLink()
-    {
-        return $this->link;
     }
 
     protected static function getDerefOption(array $options)
@@ -82,7 +70,7 @@ class SearchQuery extends AbstractSearchQuery
                 throw new \RuntimeException(sprintf('Unsupported search scope "%s"', $options['scope']));
         }
 
-        static::ensureLdapLink($this->getLink());
+        static::ensureLdapLink($this->getLdapLink());
         return with(emptyErrorHandler())(function ($eh) use ($func) {
             return $this->doExecuteQueryImpl($func);
         });
@@ -92,7 +80,7 @@ class SearchQuery extends AbstractSearchQuery
     {
         $options = $this->getOptions();
         $result = call_user_func(
-            [$this->getLink(), $func],
+            [$this->getLdapLink(), $func],
             $this->getBaseDn(),
             $this->getFilter(),
             $options['attributes'],
@@ -102,7 +90,7 @@ class SearchQuery extends AbstractSearchQuery
             static::getDerefOption($options)
         );
         if (false === $result) {
-            throw static::lastLdapException($this->getLink());
+            throw static::lastLdapException($this->getLdapLink());
         }
         return $result;
     }

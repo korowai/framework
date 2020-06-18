@@ -29,12 +29,12 @@ class LdapService
     /**
      * Store the singleton object.
      *
-     * @var LdapService
+     * @var LdapService|null
      */
     private static $instance = null;
 
     /**
-     * @var array
+     * @var array|null
      */
     private $config = null;
 
@@ -65,6 +65,19 @@ class LdapService
     }
 
     /**
+     * Returns current config.
+     *
+     * @return array
+     */
+    public function getConfig(): array
+    {
+        if ($this->config === null) {
+            $this->config = self::$defaultConfig;
+        }
+        return $this->config;
+    }
+
+    /**
      * Returns the underlying Zend Ldap object.
      *
      * @return \Zend\Ldap\Ldap
@@ -72,7 +85,7 @@ class LdapService
     public function getLdap(): \Zend\Ldap\Ldap
     {
         if (is_null($this->ldap)) {
-            $ldap = new \Zend\Ldap\Ldap($this->config);
+            $ldap = new \Zend\Ldap\Ldap($this->getConfig());
             @ldap_set_option($ldap->getResource(), LDAP_OPT_SERVER_CONTROLS, [['oid' => LDAP_CONTROL_MANAGEDSAIT]]);
             $ldap->bind();
             $this->ldap = $ldap;
@@ -90,7 +103,8 @@ class LdapService
      */
     public function deleteAllData()
     {
-        $base = $this->config['baseDn'] ?? 'dc=example,dc=org';
+        $config = $this->getConfig();
+        $base = $config['baseDn'] ?? 'dc=example,dc=org';
         return $this->deleteDescendants($base);
     }
 
@@ -111,7 +125,7 @@ class LdapService
         $result = $ldap->search($filter ?? '(objectclass=*)', $base, \Zend\Ldap\Ldap::SEARCH_SCOPE_ONE, ['dn']);
         if ($result) {
             foreach ($result as $entry) {
-                if ($this->isSafeToDeleteEntry($entry)) {
+                if ($entry !== null && $this->isSafeToDeleteEntry($entry)) {
                     $ldap->delete($entry['dn'], true);
                     $deleted[] = $entry['dn'];
                 }
@@ -140,10 +154,8 @@ class LdapService
      */
     public function isSafeToDeleteDn(string $dn) : bool
     {
-        if (strtolower($dn) == strtolower($this->config['username'])) {
-            return false;
-        }
-        return true;
+        $config = $this->getConfig();
+        return strtolower($dn) !== strtolower($config['username']);
     }
 
     /**

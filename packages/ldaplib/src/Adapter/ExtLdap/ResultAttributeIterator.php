@@ -37,7 +37,7 @@ class ResultAttributeIterator implements ResultAttributeIteratorInterface
     /** @var ResultEntry */
     private $entry;
 
-    /** @var string */
+    /** @var string|null */
     private $attribute;
 
     /**
@@ -47,10 +47,10 @@ class ResultAttributeIterator implements ResultAttributeIteratorInterface
      * ``$entry->first_attribute()`` or ``$entry->next_attribute()`` or
      * it should be null.
      *
-     * @param ResultEntry $entry An ldap entry containing the attributes
+     * @param  ResultEntry $entry An ldap entry containing the attributes
      * @param  string|null $attribute Name of the current attribute pointed to by Iterator
      */
-    public function __construct(ResultEntry $entry, $attribute)
+    public function __construct(ResultEntry $entry, string $attribute = null)
     {
         $this->entry = $entry;
         $this->attribute = is_string($attribute) ? strtolower($attribute) : $attribute;

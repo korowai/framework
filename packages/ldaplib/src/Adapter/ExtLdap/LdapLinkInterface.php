@@ -76,13 +76,13 @@ interface LdapLinkInterface extends ResourceWrapperInterface
      * Connect to an LDAP server
      *
      * @param  string|null $host_or_uri
-     * @param  int|null $port
+     * @param  int $port
      *
      * @return LdapLink|bool
      *
      * @link http://php.net/manual/en/function.ldap-connect.php ldap_connect()
      */
-    public static function connect(string $host_or_uri = null, int $port = null);
+    public static function connect(string $host_or_uri = null, int $port = 389);
 
     /**
      * Send LDAP pagination control

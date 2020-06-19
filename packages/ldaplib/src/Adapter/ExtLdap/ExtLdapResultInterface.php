@@ -55,7 +55,7 @@ interface ExtLdapResultInterface extends ResultInterface, ResourceWrapperInterfa
     public function count_references();
 
     /**
-     * Return first result id
+     * Returns result's first entry
      *
      * @return ResultEntry|bool
      *
@@ -64,7 +64,7 @@ interface ExtLdapResultInterface extends ResultInterface, ResourceWrapperInterfa
     public function first_entry();
 
     /**
-     * Return first reference
+     * Returns result's first reference
      *
      * @return ResultReference|bool
      *

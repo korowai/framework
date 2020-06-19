@@ -62,7 +62,7 @@ class ResultRecord /* implements ResultRecordInterface */
      */
     public function getDn() : string
     {
-        return $this->get_dn();
+        return (string)$this->get_dn();
     }
 }
 

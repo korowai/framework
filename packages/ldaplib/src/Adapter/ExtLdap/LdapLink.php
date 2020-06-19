@@ -49,16 +49,6 @@ final class LdapLink implements LdapLinkInterface
     }
 
     /**
-     * Destructs LdapLink
-     */
-    public function __destruct()
-    {
-        if ($this->isValid()) {
-            $this->unbind();
-        }
-    }
-
-    /**
      * Return whether $this->getResource() is a valid "ldap link" resource.
      *
      * @return bool
@@ -140,18 +130,15 @@ final class LdapLink implements LdapLinkInterface
      * Connect to an LDAP server
      *
      * @param  string|null $host_or_uri
-     * @param  int|null $port
+     * @param  int $port
      *
      * @return LdapLink|bool
      *
      * @link http://php.net/manual/en/function.ldap-connect.php ldap_connect()
      */
-    public static function connect(string $host_or_uri = null, int $port = null)
+    public static function connect(string $host_or_uri = null, int $port = 389)
     {
         $args = func_get_args();
-        if (count($args) === 2 && $args[1] === null) {
-            unset($args[1]);
-        }
         // PHP 7.x and earlier may return null instead of false
         $res = @ldap_connect(...$args);
         return $res ? new LdapLink($res) : false;

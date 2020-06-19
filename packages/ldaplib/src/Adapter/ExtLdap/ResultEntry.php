@@ -58,21 +58,25 @@ final class ResultEntry extends ResultRecord implements ExtLdapResultEntryInterf
     /**
      * Return first attribute
      *
-     * @return string|bool
+     * @return string|false
      *
      * @link http://php.net/manual/en/function.ldap-first-attribute.php ldap_first_attribute()
+     *
+     * @psalm-suppress TypeDoesNotContainType
+     * @psalm-return string|false
      */
     public function first_attribute()
     {
         $ldap = $this->getResult()->getLdapLink();
         // PHP 7.x and earlier may return null instead of false
+        /** @psalm-suppress TypeDoesNotContainType */
         return @ldap_first_attribute($ldap->getResource(), $this->getResource()) ?? false;
     }
 
     /**
      * Get attributes from a search result entry
      *
-     * @return array|bool
+     * @return array|false
      *
      * @link http://php.net/manual/en/function.ldap-get-attributes.php ldap_get_attributes()
      */
@@ -80,6 +84,7 @@ final class ResultEntry extends ResultRecord implements ExtLdapResultEntryInterf
     {
         $ldap = $this->getResult()->getLdapLink();
         // PHP 7.x and earlier may return null instead of false
+        /** @psalm-suppress TypeDoesNotContainType */
         return @ldap_get_attributes($ldap->getResource(), $this->getResource()) ?? false;
     }
 
@@ -88,7 +93,7 @@ final class ResultEntry extends ResultRecord implements ExtLdapResultEntryInterf
      *
      * @param  string $attribute
      *
-     * @return array|bool
+     * @return array|false
      *
      * @link http://php.net/manual/en/function.ldap-get-values-len.php ldap_get_values_len()
      */
@@ -96,6 +101,7 @@ final class ResultEntry extends ResultRecord implements ExtLdapResultEntryInterf
     {
         $ldap = $this->getResult()->getLdapLink();
         // PHP 7.x and earlier may return null instead of false
+        /** @psalm-suppress TypeDoesNotContainType */
         return @ldap_get_values_len($ldap->getResource(), $this->getResource(), $attribute) ?? false;
     }
 
@@ -104,7 +110,7 @@ final class ResultEntry extends ResultRecord implements ExtLdapResultEntryInterf
      *
      * @param  string $attribute
      *
-     * @return array|bool
+     * @return array|false
      *
      * @link http://php.net/manual/en/function.ldap-get-values.php ldap_get_values()
      */
@@ -112,13 +118,14 @@ final class ResultEntry extends ResultRecord implements ExtLdapResultEntryInterf
     {
         $ldap = $this->getResult()->getLdapLink();
         // PHP 7.x and earlier may return null instead of false
+        /** @psalm-suppress TypeDoesNotContainType */
         return @ldap_get_values($ldap->getResource(), $this->getResource(), $attribute) ?? false;
     }
 
     /**
      * Get the next attribute in result
      *
-     * @return string|bool
+     * @return string|false
      *
      * @link http://php.net/manual/en/function.ldap-next-attribute.php ldap_next_attribute()
      */
@@ -126,13 +133,14 @@ final class ResultEntry extends ResultRecord implements ExtLdapResultEntryInterf
     {
         $ldap = $this->getResult()->getLdapLink();
         // PHP 7.x and earlier may return null instead of false
+        /** @psalm-suppress TypeDoesNotContainType */
         return @ldap_next_attribute($ldap->getResource(), $this->getResource()) ?? false;
     }
 
     /**
      * Get next result entry
      *
-     * @return ResultEntry|bool
+     * @return ResultEntry|false
      *
      * @link http://php.net/manual/en/function.ldap-next-entry.php ldap_next_entry()
      */
@@ -157,9 +165,9 @@ final class ResultEntry extends ResultRecord implements ExtLdapResultEntryInterf
     public function getAttributeIterator() : ResultAttributeIteratorInterface
     {
         if (!isset($this->iterator)) {
-            // FIXME: $first may be false, what then?
+            // FIXME: $first may be false, shall we throw an exception then? In what circumstances?
             $first = $this->first_attribute();
-            $this->iterator = new ResultAttributeIterator($this, $first);
+            $this->iterator = new ResultAttributeIterator($this, $first === false ? null : $first);
         }
         return $this->iterator;
     }
@@ -169,13 +177,22 @@ final class ResultEntry extends ResultRecord implements ExtLdapResultEntryInterf
      */
     public function getAttributes() : array
     {
-        $attribs = array_filter($this->get_attributes(), function ($key) {
+        // FIXME: $this->get_attributes() may return false, shall we throw an exception then? In what circumstances?
+        $attributes = $this->get_attributes();
+        if ($attributes === false) {
+        }
+        return static::cleanupAttributes($attributes);
+    }
+
+    private static function cleanupAttributes(array $attributes) : array
+    {
+        $attributes = array_filter($attributes, function ($key) {
             return is_string($key) && ($key != "count");
         }, ARRAY_FILTER_USE_KEY);
-        array_walk($attribs, function (&$value) {
+        array_walk($attributes, function (&$value) {
             unset($value['count']);
         });
-        return array_change_key_case($attribs, CASE_LOWER);
+        return array_change_key_case($attributes, CASE_LOWER);
     }
 }
 

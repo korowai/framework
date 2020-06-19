@@ -49,16 +49,6 @@ final class Result extends AbstractResult implements ExtLdapResultInterface
     }
 
     /**
-     * Destructs Result
-     */
-    public function __destruct()
-    {
-        if ($this->isValid()) {
-            $this->free_result();
-        }
-    }
-
-    /**
      * Checks whether the Result represents a valid 'ldap result' resource.
      *
      * @return bool
@@ -112,13 +102,14 @@ final class Result extends AbstractResult implements ExtLdapResultInterface
      */
     public function count_references()
     {
+        // as for PHP 7.x, ext-ldap does not implement count_references (libldap has it, however).
         throw new \BadMethodCallException("Not implemented");
         // $ldap = $this->getLdapLink();
         //return @ldap_count_references($ldap->getResource(), $this->getResource());
     }
 
     /**
-     * Return first result id
+     * Returns result's first entry
      *
      * @return ResultEntry|bool
      *
@@ -133,7 +124,7 @@ final class Result extends AbstractResult implements ExtLdapResultInterface
     }
 
     /**
-     * Return first reference
+     * Returns result's first reference
      *
      * @return ResultReference|bool
      *

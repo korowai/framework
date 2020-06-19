@@ -24,8 +24,7 @@ use Korowai\Lib\Ldap\Adapter\ResultReferenceInterface;
 use Korowai\Lib\Ldap\Adapter\ReferralsIterationInterface;
 use Korowai\Lib\Ldap\Exception\LdapException;
 
-// because we use process isolation heavily, we can't use native PHP closures
-// (they're not serializable)
+// tests with process isolation can't use native PHP closures (they're not serializable)
 use Korowai\Tests\Lib\Ldap\Adapter\ExtLdap\Closures\LdapParseReferenceClosure;
 
 /**

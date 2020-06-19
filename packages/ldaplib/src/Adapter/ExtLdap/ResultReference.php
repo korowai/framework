@@ -28,7 +28,7 @@ final class ResultReference extends ResultRecord implements ExtLdapResultReferen
 
     /** @var array|null */
     private $referrals;
-    /** @var ResultReferralIterator */
+    /** @var ResultReferralIterator|null */
     private $iterator;
 
     public static function isLdapResultReferenceResource($arg) : bool
@@ -62,10 +62,12 @@ final class ResultReference extends ResultRecord implements ExtLdapResultReferen
      * time, the iterator is set to point to the first attribute of the entry.
      * For subsequent calls, the method just return the iterator without
      * altering its position.
+     *
+     * @return ResultReferralIteratorInterface
      */
     public function getReferralIterator() : ResultReferralIteratorInterface
     {
-        if (!isset($this->iterator)) {
+        if (!isset($jhis->iterator)) {
             $this->iterator = new ResultReferralIterator($this);
         }
         return $this->iterator;

@@ -19,9 +19,14 @@ use Korowai\Lib\Ldap\Exception\LdapException;
  */
 trait LastLdapException
 {
-    protected static function lastLdapException(LdapLink $link)
+    /**
+     * Returns an exception for LDAP error that occured most recently.
+     *
+     * @return LdapException
+     */
+    protected static function lastLdapException(LdapLinkInterface $ldap) : LdapException
     {
-        $errno = $link->errno();
+        $errno = $ldap->errno();
         $errstr = LdapLink::err2str($errno);
         return new LdapException($errstr, $errno);
     }

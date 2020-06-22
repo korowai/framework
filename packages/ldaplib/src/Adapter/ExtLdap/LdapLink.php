@@ -18,6 +18,8 @@ namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
  * The "ldap link" resource handle is returned by ldap_connect().
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ *
+ * @psalm-immutable
  */
 final class LdapLink implements LdapLinkInterface
 {
@@ -30,6 +32,8 @@ final class LdapLink implements LdapLinkInterface
      * @return bool
      *
      * @link http://php.net/manual/en/resource.php
+     *
+     * @psalm-mutation-free
      */
     public static function isLdapLinkResource($arg) : bool
     {
@@ -74,8 +78,10 @@ final class LdapLink implements LdapLinkInterface
      */
     public function add(string $dn, array $entry, array $serverctls = []) : bool
     {
+        /** @psalm-suppress ImpureFunctionCall */
         $args = func_get_args();
         // PHP 7.x and earlier may return null instead of false
+        /** @psalm-suppress TypeDoesNotContainType */
         return @ldap_add($this->getResource(), ...$args) ?? false;
     }
 
@@ -91,6 +97,7 @@ final class LdapLink implements LdapLinkInterface
      */
     public function bind(string $bind_rdn = null, string $bind_password = null) : bool
     {
+        /** @psalm-suppress ImpureFunctionCall */
         $args = func_get_args();
         return @ldap_bind($this->getResource(), ...$args);
     }
@@ -121,8 +128,10 @@ final class LdapLink implements LdapLinkInterface
      */
     public function compare(string $dn, string $attribute, string $value, array $serverctls = [])
     {
+        /** @psalm-suppress ImpureFunctionCall */
         $args = func_get_args();
         // PHP 7.x and earlier may return null instead of -1
+        /** @psalm-suppress TypeDoesNotContainType */
         return @ldap_compare($this->getResource(), ...$args) ?? -1;
     }
 
@@ -132,12 +141,13 @@ final class LdapLink implements LdapLinkInterface
      * @param  string|null $host_or_uri
      * @param  int $port
      *
-     * @return LdapLink|bool
+     * @return LdapLink|false
      *
      * @link http://php.net/manual/en/function.ldap-connect.php ldap_connect()
      */
     public static function connect(string $host_or_uri = null, int $port = 389)
     {
+        /** @psalm-suppress ImpureFunctionCall */
         $args = func_get_args();
         // PHP 7.x and earlier may return null instead of false
         $res = @ldap_connect(...$args);
@@ -157,8 +167,10 @@ final class LdapLink implements LdapLinkInterface
      */
     public function control_paged_result(int $pagesize, bool $iscritical = false, string $cookie = "") : bool
     {
+        /** @psalm-suppress ImpureFunctionCall */
         $args = func_get_args();
         // PHP 7.x and earlier may return null instead of false
+        /** @psalm-suppress TypeDoesNotContainType */
         return @ldap_control_paged_result($this->getResource(), ...$args) ?? false;
     }
 
@@ -174,8 +186,10 @@ final class LdapLink implements LdapLinkInterface
      */
     public function delete(string $dn, array $serverctls = []) : bool
     {
+        /** @psalm-suppress ImpureFunctionCall */
         $args = func_get_args();
         // PHP 7.x and earlier may return null instead of false
+        /** @psalm-suppress TypeDoesNotContainType */
         return @ldap_delete($this->getResource(), ...$args) ?? false;
     }
 
@@ -184,13 +198,14 @@ final class LdapLink implements LdapLinkInterface
      *
      * @param  string $dn
      *
-     * @return string|bool
+     * @return string|false
      *
      * @link http://php.net/manual/en/function.ldap-dn2ufn.php ldap_dn2ufn()
      */
     public static function dn2ufn(string $dn)
     {
         // PHP 7.x and earlier may return null instead of false
+        /** @psalm-suppress TypeDoesNotContainType */
         return @ldap_dn2ufn($dn) ?? false;
     }
 
@@ -199,39 +214,44 @@ final class LdapLink implements LdapLinkInterface
      *
      * @param  int $errno
      *
-     * @return string|bool
+     * @return string|false
      *
      * @link http://php.net/manual/en/function.ldap-err2str.php ldap_err2str()
+     *
+     * @psalm-mutation-free
      */
     public static function err2str(int $errno)
     {
         // PHP 7.x and earlier may return null instead of false
+        /** @psalm-suppress TypeDoesNotContainType */
         return @ldap_err2str($errno) ?? false;
     }
 
     /**
      * Return the LDAP error number of the last LDAP command
      *
-     * @return int|bool
+     * @return int|false
      *
      * @link http://php.net/manual/en/function.ldap-errno.php ldap_errno()
      */
     public function errno()
     {
         // PHP 7.x and earlier may return null instead of false
+        /** @psalm-suppress TypeDoesNotContainType */
         return @ldap_errno($this->getResource()) ?? false;
     }
 
     /**
      * Return the LDAP error message of the last LDAP command
      *
-     * @return string|bool
+     * @return string|false
      *
      * @link http://php.net/manual/en/function.ldap-error.php ldap_error()
      */
     public function error()
     {
         // PHP 7.x and earlier may return null instead of false
+        /** @psalm-suppress TypeDoesNotContainType */
         return @ldap_error($this->getResource()) ?? false;
     }
 
@@ -242,14 +262,16 @@ final class LdapLink implements LdapLinkInterface
      * @param  string $ignore
      * @param  int $flags
      *
-     * @return string|bool
+     * @return string|false
      *
      * @link http://php.net/manual/en/function.ldap-escape.php ldap_escape()
      */
     public static function escape(string $value, string $ignore = "", int $flags = 0)
     {
+        /** @psalm-suppress ImpureFunctionCall */
         $args = func_get_args();
         // PHP 7.x and earlier may return null instead of false
+        /** @psalm-suppress TypeDoesNotContainType */
         return @ldap_escape(...$args) ?? false;
     }
 
@@ -259,13 +281,14 @@ final class LdapLink implements LdapLinkInterface
      * @param  string $dn
      * @param  int with_attrib
      *
-     * @return array|bool
+     * @return array|false
      *
      * @link http://php.net/manual/en/function.ldap-explode-dn.php ldap_explode_dn()
      */
-    public static function explode_dn($dn, $with_attrib)
+    public static function explode_dn(string $dn, int $with_attrib)
     {
         // PHP 7.x and earlier may return null instead of false
+        /** @psalm-suppress TypeDoesNotContainType */
         return @ldap_explode_dn($dn, $with_attrib) ?? false;
     }
 
@@ -275,13 +298,14 @@ final class LdapLink implements LdapLinkInterface
      * @param  int $option
      * @param  mixed $retval
      *
-     * @return string|bool
+     * @return bool
      *
      * @link http://php.net/manual/en/function.ldap-get-option.php ldap_get_option()
      */
-    public function get_option(int $option, &$retval)
+    public function get_option(int $option, &$retval) : bool
     {
         // PHP 7.x and earlier may return null instead of false
+        /** @psalm-suppress TypeDoesNotContainType */
         return @ldap_get_option($this->getResource(), $option, $retval) ?? false;
     }
 
@@ -311,6 +335,7 @@ final class LdapLink implements LdapLinkInterface
         int $deref = LDAP_DEREF_NEVER,
         array $serverctrls = []
     ) {
+        /** @psalm-suppress ImpureFunctionCall */
         $args = func_get_args();
         // PHP 7.x and earlier may return null instead of false
         $res = @ldap_list($this->getResource(), ...$args);
@@ -330,8 +355,10 @@ final class LdapLink implements LdapLinkInterface
      */
     public function mod_add(string $dn, array $entry, array $serverctls = []) : bool
     {
+        /** @psalm-suppress ImpureFunctionCall */
         $args = func_get_args();
         // PHP 7.x and earlier may return null instead of false
+        /** @psalm-suppress TypeDoesNotContainType */
         return @ldap_mod_add($this->getResource(), ...$args) ?? false;
     }
 
@@ -348,8 +375,10 @@ final class LdapLink implements LdapLinkInterface
      */
     public function mod_del(string $dn, array $entry, array $serverctls = []) : bool
     {
+        /** @psalm-suppress ImpureFunctionCall */
         $args = func_get_args();
         // PHP 7.x and earlier may return null instead of false
+        /** @psalm-suppress TypeDoesNotContainType */
         return @ldap_mod_del($this->getResource(), ...$args) ?? false;
     }
 
@@ -366,8 +395,10 @@ final class LdapLink implements LdapLinkInterface
      */
     public function mod_replace(string $dn, array $entry, array $serverctls = []) : bool
     {
+        /** @psalm-suppress ImpureFunctionCall */
         $args = func_get_args();
         // PHP 7.x and earlier may return null instead of false
+        /** @psalm-suppress TypeDoesNotContainType */
         return @ldap_mod_replace($this->getResource(), ...$args) ?? false;
     }
 
@@ -384,8 +415,10 @@ final class LdapLink implements LdapLinkInterface
      */
     public function modify_batch(string $dn, array $entry, array $serverctls = []) : bool
     {
+        /** @psalm-suppress ImpureFunctionCall */
         $args = func_get_args();
         // PHP 7.x and earlier may return null instead of false
+        /** @psalm-suppress TypeDoesNotContainType */
         return @ldap_modify_batch($this->getResource(), ...$args) ?? false;
     }
 
@@ -402,8 +435,10 @@ final class LdapLink implements LdapLinkInterface
      */
     public function modify(string $dn, array $entry, array $serverctls = []) : bool
     {
+        /** @psalm-suppress ImpureFunctionCall */
         $args = func_get_args();
         // PHP 7.x and earlier may return null instead of false
+        /** @psalm-suppress TypeDoesNotContainType */
         return @ldap_modify($this->getResource(), ...$args) ?? false;
     }
 
@@ -433,6 +468,7 @@ final class LdapLink implements LdapLinkInterface
         int $deref = LDAP_DEREF_NEVER,
         array $serverctrls = []
     ) {
+        /** @psalm-suppress ImpureFunctionCall */
         $args = func_get_args();
         // PHP 7.x and earlier may return null instead of false
         $res = @ldap_read($this->getResource(), ...$args);
@@ -454,8 +490,10 @@ final class LdapLink implements LdapLinkInterface
      */
     public function rename(string $dn, string $newrdn, string $newparent, bool $deleteoldrdn, array $serverctls = [])
     {
+        /** @psalm-suppress ImpureFunctionCall */
         $args = func_get_args();
         // PHP 7.x and earlier may return null instead of false
+        /** @psalm-suppress TypeDoesNotContainType */
         return @ldap_rename($this->getResource(), ...$args) ?? false;
     }
 
@@ -483,6 +521,7 @@ final class LdapLink implements LdapLinkInterface
         string $sasl_authz_id = null,
         string $props = null
     ) : bool {
+        /** @psalm-suppress ImpureFunctionCall */
         $args = func_get_args();
         return @ldap_sasl_bind($this->getResource(), ...$args);
     }
@@ -513,6 +552,7 @@ final class LdapLink implements LdapLinkInterface
         int $deref = LDAP_DEREF_NEVER,
         array $serverctrls = []
     ) {
+        /** @psalm-suppress ImpureFunctionCall */
         $args = func_get_args();
         // PHP 7.x and earlier may return null instead of false
         $res = @ldap_search($this->getResource(), ...$args);
@@ -532,6 +572,10 @@ final class LdapLink implements LdapLinkInterface
     public function set_option(int $option, $newval) : bool
     {
         // PHP 7.x and earlier may return null instead of false
+        /**
+         * @psalm-suppress TypeDoesNotContainType
+         * @psalm-suppress ImpureFunctionCall
+         */
         return @ldap_set_option($this->getResource(), $option, $newval) ?? false;
     }
 
@@ -546,6 +590,7 @@ final class LdapLink implements LdapLinkInterface
      */
     public function set_rebind_proc($callback) : bool
     {
+        /** @psalm-suppress InvalidArgument */
         return @ldap_set_rebind_proc($this->getResource(), $callback);
     }
 
@@ -559,6 +604,7 @@ final class LdapLink implements LdapLinkInterface
     public function start_tls() : bool
     {
         // PHP 7.x and earlier may return null instead of false
+        /** @psalm-suppress TypeDoesNotContainType */
         return @ldap_start_tls($this->getResource()) ?? false;
     }
 

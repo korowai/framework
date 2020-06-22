@@ -82,6 +82,9 @@ class EntryManager implements EntryManagerInterface
     {
         static::ensureLdapLink($this->getLdapLink());
         return with(emptyErrorHandler())(function ($eh) use ($name, $args) {
+            // FIXME: emptyErrorHandler() is probably not a good idea, we lose
+            // error information in cases the error is not an LDAP error (but,
+            // for example, a type error, or resource type error).
             return call_user_func_array([$this, $name], $args);
         });
     }

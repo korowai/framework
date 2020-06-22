@@ -14,6 +14,8 @@ namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ *
+ * @psalm-immutable
  */
 trait HasResource
 {
@@ -36,9 +38,12 @@ trait HasResource
      * Sets the ResourceInterface instance to this object.
      *
      * @param resource $resource
+     *
+     * @return void
      */
-    protected function setResource($resource)
+    private function setResource($resource) : void
     {
+        /** @psalm-suppress InaccessibleProperty */
         $this->resource = $resource;
     }
 }

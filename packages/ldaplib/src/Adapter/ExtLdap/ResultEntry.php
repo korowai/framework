@@ -14,6 +14,7 @@ namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
 
 use Korowai\Lib\Ldap\Adapter\ResultEntryToEntry;
 use Korowai\Lib\Ldap\Adapter\ResultAttributeIteratorInterface;
+use function Korowai\Lib\Error\errorHandler;
 
 /**
  * Wrapper for ldap entry result resource.
@@ -178,7 +179,12 @@ final class ResultEntry extends ResultRecord implements ExtLdapResultEntryInterf
     public function getAttributes() : array
     {
         // FIXME: $this->get_attributes() may return false, shall we throw an exception then? In what circumstances?
-        $attributes = $this->get_attributes();
+        $ldap = $this->getResult()->getLdapLink();
+        /*$attributes = $this->get_attributes(); */
+        $errorHandler = errorHandler(new LdapLinkErrorHandler($ldap))
+        $attributes = with($errorHandler)(function ($eh) {
+            return $this->get_attributes();
+        });
         if ($attributes === false) {
         }
         return static::cleanupAttributes($attributes);

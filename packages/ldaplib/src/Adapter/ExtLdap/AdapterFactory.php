@@ -86,6 +86,9 @@ class AdapterFactory extends AbstractAdapterFactory
     {
         static::ensureLdapLink($link);
         with(emptyErrorHandler())(function ($eh) use ($link, $option, $value) {
+            // FIXME: emptyErrorHandler() is probably not a good idea, we lose
+            // error information in cases the error is not an LDAP error (but,
+            // for example, a type error, or resource type error).
             $this->setLdapLinkOptionImpl($link, $option, $value);
         });
     }

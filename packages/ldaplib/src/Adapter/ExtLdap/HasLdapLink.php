@@ -14,6 +14,8 @@ namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ *
+ * @psalm-immutable
  */
 trait HasLdapLink
 {
@@ -35,10 +37,13 @@ trait HasLdapLink
     /**
      * Sets the LdapLinkInterface instance to this object.
      *
-     * @param LdapLinkInterface $ldapLink
+     * @param  LdapLinkInterface $ldapLink
+     *
+     * @return void
      */
-    protected function setLdapLink(LdapLinkInterface $ldapLink)
+    private function setLdapLink(LdapLinkInterface $ldapLink) : void
     {
+        /** @psalm-suppress InaccessibleProperty */
         $this->ldapLink = $ldapLink;
     }
 }

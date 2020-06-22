@@ -18,6 +18,8 @@ namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
  * The "ldap link" resource handle is returned by ldap_connect().
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ *
+ * @psalm-immutable
  */
 interface LdapLinkInterface extends ResourceWrapperInterface
 {
@@ -78,7 +80,7 @@ interface LdapLinkInterface extends ResourceWrapperInterface
      * @param  string|null $host_or_uri
      * @param  int $port
      *
-     * @return LdapLink|bool
+     * @return LdapLink|false
      *
      * @link http://php.net/manual/en/function.ldap-connect.php ldap_connect()
      */
@@ -114,7 +116,7 @@ interface LdapLinkInterface extends ResourceWrapperInterface
      *
      * @param  string $dn
      *
-     * @return string|bool
+     * @return string|false
      *
      * @link http://php.net/manual/en/function.ldap-dn2ufn.php ldap_dn2ufn()
      */
@@ -125,16 +127,18 @@ interface LdapLinkInterface extends ResourceWrapperInterface
      *
      * @param  int $errno
      *
-     * @return string|bool
+     * @return string|false
      *
      * @link http://php.net/manual/en/function.ldap-err2str.php ldap_err2str()
+     *
+     * @psalm-mutation-free
      */
     public static function err2str(int $errno);
 
     /**
      * Return the LDAP error number of the last LDAP command
      *
-     * @return int|bool
+     * @return int|false
      *
      * @link http://php.net/manual/en/function.ldap-errno.php ldap_errno()
      */
@@ -143,7 +147,7 @@ interface LdapLinkInterface extends ResourceWrapperInterface
     /**
      * Return the LDAP error message of the last LDAP command
      *
-     * @return string|bool
+     * @return string|false
      *
      * @link http://php.net/manual/en/function.ldap-error.php ldap_error()
      */
@@ -156,7 +160,7 @@ interface LdapLinkInterface extends ResourceWrapperInterface
      * @param  string $ignore
      * @param  int $flags
      *
-     * @return string|bool
+     * @return string|false
      *
      * @link http://php.net/manual/en/function.ldap-escape.php ldap_escape()
      */
@@ -168,44 +172,11 @@ interface LdapLinkInterface extends ResourceWrapperInterface
      * @param  string $dn
      * @param  int with_attrib
      *
-     * @return array|bool
+     * @return array|false
      *
      * @link http://php.net/manual/en/function.ldap-explode-dn.php ldap_explode_dn()
      */
-    public static function explode_dn($dn, $with_attrib);
-
-//    /**
-//     * Return first attribute
-//     *
-//     * @param ResultEntry $result_entry
-//     *
-//     * @return string|bool
-//     *
-//     * @link http://php.net/manual/en/function.ldap-first-attribute.php ldap_first_attribute()
-//     */
-//    public function first_attribute(ResultEntry $result_entry);
-
-//    /**
-//     * Get attributes from a search result entry
-//     *
-//     * @param ResultEntry $result_entry
-//     *
-//     * @return array|bool
-//     *
-//     * @link http://php.net/manual/en/function.ldap-get-attributes.php ldap_get_attributes()
-//     */
-//    public function get_attributes(ResultEntry $result_entry);
-
-//    /**
-//     * Get the DN of a result entry
-//     *
-//     * @param ResultEntry $result_record
-//     *
-//     * @return string|bool
-//     *
-//     * @link http://php.net/manual/en/function.ldap-get-dn.php ldap_get_dn()
-//     */
-//    public function get_dn(ResultRecord $result_record);
+    public static function explode_dn(string $dn, int $with_attrib);
 
     /**
      * Get the current value for given option
@@ -213,35 +184,11 @@ interface LdapLinkInterface extends ResourceWrapperInterface
      * @param  int $option
      * @param  mixed $retval
      *
-     * @return string|bool
+     * @return bool
      *
      * @link http://php.net/manual/en/function.ldap-get-option.php ldap_get_option()
      */
-    public function get_option(int $option, &$retval);
-
-//    /**
-//     * Get all binary values from a result entry
-//     *
-//     * @param  ResultEntry $result_entry
-//     * @param  string $attribute
-//     *
-//     * @return array|bool
-//     *
-//     * @link http://php.net/manual/en/function.ldap-get-values-len.php ldap_get_values_len()
-//     */
-//    public function get_values_len(ResultEntry $result_entry, string $attribute);
-
-//    /**
-//     * Get all values from a result entry
-//     *
-//     * @param  ResultEntry $result_entry
-//     * @param  string $attribute
-//     *
-//     * @return array|bool
-//     *
-//     * @link http://php.net/manual/en/function.ldap-get-values.php ldap_get_values()
-//     */
-//    public function get_values(ResultEntry $result_entry, string $attribute);
+    public function get_option(int $option, &$retval) : bool;
 
     /**
      * Single-level search
@@ -334,51 +281,6 @@ interface LdapLinkInterface extends ResourceWrapperInterface
      * @link http://php.net/manual/en/function.ldap-modify.php ldap_modify()
      */
     public function modify(string $dn, array $entry, array $serverctls = []) : bool;
-
-//    /**
-//     * Get the next attribute in result
-//     *
-//     * @param ResultEntry $result_entry
-//     *
-//     * @return string|bool
-//     *
-//     * @link http://php.net/manual/en/function.ldap-next-attribute.php ldap_next_attribute()
-//     */
-//    public function next_attribute(ResultEntry $result_entry);
-
-//    /**
-//     * Get next result entry
-//     *
-//     * @param ResultEntry $result_entry
-//     *
-//     * @return ResultEntry|bool
-//     *
-//     * @link http://php.net/manual/en/function.ldap-next-entry.php ldap_next_entry()
-//     */
-//    public function next_entry(ResultEntry $result_entry);
-
-//    /**
-//     * Get next reference
-//     *
-//     * @param ResultReference $reference
-//     *
-//     * @return ResultReference|bool
-//     *
-//     * @link http://php.net/manual/en/function.ldap-next-reference.php ldap_next_reference()
-//     */
-//    public function next_reference(ResultReference $reference);
-
-//    /**
-//     * Extract information from reference entry
-//     *
-//     * @param  ResultReference $reference
-//     * @param  array|null &$referrals
-//     *
-//     * @return bool
-//     *
-//     * @link http://php.net/manual/en/function.ldap-parse-reference.php ldap_parse_reference()
-//     */
-//    public function parse_reference(ResultReference $reference, &$referrals) : bool;
 
     /**
      * Read an entry

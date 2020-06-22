@@ -41,6 +41,9 @@ class CompareQuery extends AbstractCompareQuery
     {
         static::ensureLdapLink($this->getLdapLink());
         return with(emptyErrorHandler())(function ($eh) {
+            // FIXME: emptyErrorHandler() is probably not a good idea, we lose
+            // error information in cases the error is not an LDAP error (but,
+            // for example, a type error, or resource type error).
             return $this->doExecuteQueryImpl();
         });
     }

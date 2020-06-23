@@ -21,6 +21,7 @@ trait HasLdapLink
 {
     /**
      * @var LdapLinkInterface
+     * @psalm-readonly
      */
     private $ldapLink;
 

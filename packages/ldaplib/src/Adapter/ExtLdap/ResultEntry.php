@@ -181,7 +181,7 @@ final class ResultEntry extends ResultRecord implements ExtLdapResultEntryInterf
         // FIXME: $this->get_attributes() may return false, shall we throw an exception then? In what circumstances?
         $ldap = $this->getResult()->getLdapLink();
         /*$attributes = $this->get_attributes(); */
-        $errorHandler = errorHandler(new LdapLinkErrorHandler($ldap))
+        $errorHandler = errorHandler(new LdapLinkErrorHandler($ldap));
         $attributes = with($errorHandler)(function ($eh) {
             return $this->get_attributes();
         });

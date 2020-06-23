@@ -35,7 +35,7 @@ trait HasResource
     }
 
     /**
-     * Sets the ResourceInterface instance to this object.
+     * Sets the resource to this object.
      *
      * @param resource $resource
      *

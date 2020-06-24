@@ -16,6 +16,8 @@ use Korowai\Lib\Ldap\Exception\LdapException;
 use Korowai\Lib\Error\AbstractManagedErrorHandler;
 
 /**
+ * Error handler for errors originating from [LdapLink](LdapLink.html) calls.
+ *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
 final class LdapLinkErrorHandler extends AbstractManagedErrorHandler
@@ -52,8 +54,8 @@ final class LdapLinkErrorHandler extends AbstractManagedErrorHandler
     }
 
     /**
-     * Throws exception appropriate for last error detected, according to
-     * information obtained from [ldap_errno()](https://php.net/ldap_errno)
+     * Throws exception for last error detected, according to information
+     * obtained from [ldap_errno()](https://php.net/ldap_errno)
      * and [error_get_last()](https://php.net/error_get_last).
      *
      * Throws [LdapException](\.\./\.\./Exception/LdapException.html), if
@@ -61,10 +63,11 @@ final class LdapLinkErrorHandler extends AbstractManagedErrorHandler
      * returns a non-zero integer. Otherwise, if
      * [error_get_last()](https://php.net/error_get_last) is not null,
      * throws [\ErrorException](https://php.net/ErrorException). If none of the
-     * above condition is meet, the method just returns void.
+     * above conditions is meet, the method just returns void.
      *
-     * @param  int $code optional error code to be provided to
-     *      [\ErrorException::__construct()](https://www.php.net/manual/en/errorexception.construct.php)
+     * @param  int $code
+     *      Optional error code to be passed as second parameter to
+     *      [\ErrorException::__construct()](https://www.php.net/manual/en/errorexception.construct.php).
      *
      * @return void
      *
@@ -81,11 +84,11 @@ final class LdapLinkErrorHandler extends AbstractManagedErrorHandler
     }
 
     /**
-     * Throws exception appropriate for last LDAP error detected.
-     *
      * Throws [LdapException](\.\./\.\./Exception/LdapException.html) if
-     * *$this->getLdapLink()->errno()* returns a non-zero integer. If errno()
-     * returns zero or null, the method simply returns.
+     * *$this->getLdapLink()->errno()* returns a non-zero integer; returns if
+     * *errno()* returns zero or null.
+     *
+     * The exception is created with *$code* obtained from $this->getLdapLink()->errno()* $message
      *
      * @param int $severity
      * @param string $file
@@ -102,16 +105,39 @@ final class LdapLinkErrorHandler extends AbstractManagedErrorHandler
         if ($errno === 0 || $errno === false) {
             return;
         }
-        if (($errstr = $ldapLink->err2str($errno)) === false) {
-            $errstr = sprintf("error code 0x%x (error message unavailable, err2str() returned false)", $errno);
-        }
+        $errstr = static::ldapErr2Str($ldapLink, $errno);
         /** @psalm-suppress ImpureFunctionCall */
         $args = func_get_args();
         throw new LdapException($errstr, $errno, ...$args);
     }
 
     /**
-     * @psalm-pure
+     * Returns error message for given LDAP error code.
+     *
+     * @param  int $errno
+     *      Error code as returned by *$ldapLink->errno();*
+     *
+     * @return string
+     *      The error message returned by [$ldapLink->err2str()](LdapLinkInterface.html#method_err2str).
+     *      If the *err2str()* returns ``false``, the method returns default
+     *      error message with error code and a notice about *err2str()*
+     *      failure.
+     */
+    private static ldapErr2Str(LdapLinkInterface $ldapLink, int $errno) : string
+    {
+        if (($errstr = $ldapLink->err2str($errno)) === false) {
+            $errstr = sprintf("error code 0x%x (error message unavailable, err2str() returned false)", $errno);
+        }
+        return $errstr;
+    }
+
+    /**
+     * Returns an array of arguments that should be used to create instance of
+     * [\ErrorException](https://www.php.net/ErrorException) for the most recent
+     * PHP error obtained with [error_get_last()](https://php.net/error_get_last).
+     *
+     * @param  int $code
+     * @return array
      */
     private static function lastErrorExceptionArgs(int $code = 0) : array
     {

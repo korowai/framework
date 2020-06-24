@@ -82,7 +82,7 @@ final class LdapLink implements LdapLinkInterface
         $args = func_get_args();
         // PHP 7.x and earlier may return null instead of false
         /** @psalm-suppress TypeDoesNotContainType */
-        return @ldap_add($this->getResource(), ...$args) ?? false;
+        return ldap_add($this->getResource(), ...$args) ?? false;
     }
 
     /**
@@ -95,11 +95,11 @@ final class LdapLink implements LdapLinkInterface
      *
      * @link http://php.net/manual/en/function.ldap-bind.php ldap_bind()
      */
-    public function bind(string $bind_rdn = null, string $bind_password = null) : bool
+    public function bind(string $bind_rdn = '', string $bind_password = '') : bool
     {
         /** @psalm-suppress ImpureFunctionCall */
         $args = func_get_args();
-        return @ldap_bind($this->getResource(), ...$args);
+        return ldap_bind($this->getResource(), ...$args);
     }
 
     /**
@@ -111,7 +111,7 @@ final class LdapLink implements LdapLinkInterface
      */
     public function close() : bool
     {
-        return @ldap_close($this->getResource());
+        return ldap_close($this->getResource());
     }
 
     /**
@@ -132,7 +132,7 @@ final class LdapLink implements LdapLinkInterface
         $args = func_get_args();
         // PHP 7.x and earlier may return null instead of -1
         /** @psalm-suppress TypeDoesNotContainType */
-        return @ldap_compare($this->getResource(), ...$args) ?? -1;
+        return ldap_compare($this->getResource(), ...$args) ?? -1;
     }
 
     /**
@@ -150,28 +150,8 @@ final class LdapLink implements LdapLinkInterface
         /** @psalm-suppress ImpureFunctionCall */
         $args = func_get_args();
         // PHP 7.x and earlier may return null instead of false
-        $res = @ldap_connect(...$args);
+        $res = ldap_connect(...$args);
         return $res ? new LdapLink($res) : false;
-    }
-
-    /**
-     * Send LDAP pagination control
-     *
-     * @param  int $pagesize
-     * @param  bool $iscritical
-     * @param  string $cookie
-     * @param  bool $iscritical
-     * @param  string $cookie
-     *
-     * @link http://php.net/manual/en/function.ldap-control-paged-result.php ldap_control_paged_result()
-     */
-    public function control_paged_result(int $pagesize, bool $iscritical = false, string $cookie = "") : bool
-    {
-        /** @psalm-suppress ImpureFunctionCall */
-        $args = func_get_args();
-        // PHP 7.x and earlier may return null instead of false
-        /** @psalm-suppress TypeDoesNotContainType */
-        return @ldap_control_paged_result($this->getResource(), ...$args) ?? false;
     }
 
     /**
@@ -190,7 +170,7 @@ final class LdapLink implements LdapLinkInterface
         $args = func_get_args();
         // PHP 7.x and earlier may return null instead of false
         /** @psalm-suppress TypeDoesNotContainType */
-        return @ldap_delete($this->getResource(), ...$args) ?? false;
+        return ldap_delete($this->getResource(), ...$args) ?? false;
     }
 
     /**
@@ -206,7 +186,7 @@ final class LdapLink implements LdapLinkInterface
     {
         // PHP 7.x and earlier may return null instead of false
         /** @psalm-suppress TypeDoesNotContainType */
-        return @ldap_dn2ufn($dn) ?? false;
+        return ldap_dn2ufn($dn) ?? false;
     }
 
     /**
@@ -224,7 +204,7 @@ final class LdapLink implements LdapLinkInterface
     {
         // PHP 7.x and earlier may return null instead of false
         /** @psalm-suppress TypeDoesNotContainType */
-        return @ldap_err2str($errno) ?? false;
+        return ldap_err2str($errno) ?? false;
     }
 
     /**
@@ -238,7 +218,7 @@ final class LdapLink implements LdapLinkInterface
     {
         // PHP 7.x and earlier may return null instead of false
         /** @psalm-suppress TypeDoesNotContainType */
-        return @ldap_errno($this->getResource()) ?? false;
+        return ldap_errno($this->getResource()) ?? false;
     }
 
     /**
@@ -252,7 +232,7 @@ final class LdapLink implements LdapLinkInterface
     {
         // PHP 7.x and earlier may return null instead of false
         /** @psalm-suppress TypeDoesNotContainType */
-        return @ldap_error($this->getResource()) ?? false;
+        return ldap_error($this->getResource()) ?? false;
     }
 
     /**
@@ -272,7 +252,7 @@ final class LdapLink implements LdapLinkInterface
         $args = func_get_args();
         // PHP 7.x and earlier may return null instead of false
         /** @psalm-suppress TypeDoesNotContainType */
-        return @ldap_escape(...$args) ?? false;
+        return ldap_escape(...$args) ?? false;
     }
 
     /**
@@ -289,7 +269,7 @@ final class LdapLink implements LdapLinkInterface
     {
         // PHP 7.x and earlier may return null instead of false
         /** @psalm-suppress TypeDoesNotContainType */
-        return @ldap_explode_dn($dn, $with_attrib) ?? false;
+        return ldap_explode_dn($dn, $with_attrib) ?? false;
     }
 
     /**
@@ -306,7 +286,7 @@ final class LdapLink implements LdapLinkInterface
     {
         // PHP 7.x and earlier may return null instead of false
         /** @psalm-suppress TypeDoesNotContainType */
-        return @ldap_get_option($this->getResource(), $option, $retval) ?? false;
+        return ldap_get_option($this->getResource(), $option, $retval) ?? false;
     }
 
     /**
@@ -338,7 +318,7 @@ final class LdapLink implements LdapLinkInterface
         /** @psalm-suppress ImpureFunctionCall */
         $args = func_get_args();
         // PHP 7.x and earlier may return null instead of false
-        $res = @ldap_list($this->getResource(), ...$args);
+        $res = ldap_list($this->getResource(), ...$args);
         return $res ? new Result($res, $this) : false;
     }
 
@@ -359,7 +339,7 @@ final class LdapLink implements LdapLinkInterface
         $args = func_get_args();
         // PHP 7.x and earlier may return null instead of false
         /** @psalm-suppress TypeDoesNotContainType */
-        return @ldap_mod_add($this->getResource(), ...$args) ?? false;
+        return ldap_mod_add($this->getResource(), ...$args) ?? false;
     }
 
     /**
@@ -379,7 +359,7 @@ final class LdapLink implements LdapLinkInterface
         $args = func_get_args();
         // PHP 7.x and earlier may return null instead of false
         /** @psalm-suppress TypeDoesNotContainType */
-        return @ldap_mod_del($this->getResource(), ...$args) ?? false;
+        return ldap_mod_del($this->getResource(), ...$args) ?? false;
     }
 
     /**
@@ -399,7 +379,7 @@ final class LdapLink implements LdapLinkInterface
         $args = func_get_args();
         // PHP 7.x and earlier may return null instead of false
         /** @psalm-suppress TypeDoesNotContainType */
-        return @ldap_mod_replace($this->getResource(), ...$args) ?? false;
+        return ldap_mod_replace($this->getResource(), ...$args) ?? false;
     }
 
     /**
@@ -419,7 +399,7 @@ final class LdapLink implements LdapLinkInterface
         $args = func_get_args();
         // PHP 7.x and earlier may return null instead of false
         /** @psalm-suppress TypeDoesNotContainType */
-        return @ldap_modify_batch($this->getResource(), ...$args) ?? false;
+        return ldap_modify_batch($this->getResource(), ...$args) ?? false;
     }
 
     /**
@@ -439,7 +419,7 @@ final class LdapLink implements LdapLinkInterface
         $args = func_get_args();
         // PHP 7.x and earlier may return null instead of false
         /** @psalm-suppress TypeDoesNotContainType */
-        return @ldap_modify($this->getResource(), ...$args) ?? false;
+        return ldap_modify($this->getResource(), ...$args) ?? false;
     }
 
     /**
@@ -471,7 +451,7 @@ final class LdapLink implements LdapLinkInterface
         /** @psalm-suppress ImpureFunctionCall */
         $args = func_get_args();
         // PHP 7.x and earlier may return null instead of false
-        $res = @ldap_read($this->getResource(), ...$args);
+        $res = ldap_read($this->getResource(), ...$args);
         return $res ? new Result($res, $this) : false;
     }
 
@@ -494,36 +474,36 @@ final class LdapLink implements LdapLinkInterface
         $args = func_get_args();
         // PHP 7.x and earlier may return null instead of false
         /** @psalm-suppress TypeDoesNotContainType */
-        return @ldap_rename($this->getResource(), ...$args) ?? false;
+        return ldap_rename($this->getResource(), ...$args) ?? false;
     }
 
     /**
      * Bind to LDAP directory using SASL
      *
-     * @param  string|null $binddn
-     * @param  string|null $password
-     * @param  string|null $sasl_mech
-     * @param  string|null $sasl_realm
-     * @param  string|null $sasl_authc_id
-     * @param  string|null $sasl_authz_id
-     * @param  string|null $props
+     * @param  string $binddn
+     * @param  string $password
+     * @param  string $sasl_mech
+     * @param  string $sasl_realm
+     * @param  string $sasl_authc_id
+     * @param  string $sasl_authz_id
+     * @param  string $props
      *
      * @return bool
      *
      * @link http://php.net/manual/en/function.ldap-sasl-bind.php ldap_sasl_bind()
      */
     public function sasl_bind(
-        string $binddn = null,
-        string $password = null,
-        string $sasl_mech = null,
-        string $sasl_realm = null,
-        string $sasl_authc_id = null,
-        string $sasl_authz_id = null,
-        string $props = null
+        string $binddn = '',
+        string $password = '',
+        string $sasl_mech = '',
+        string $sasl_realm = '',
+        string $sasl_authc_id = '',
+        string $sasl_authz_id = '',
+        string $props = ''
     ) : bool {
         /** @psalm-suppress ImpureFunctionCall */
         $args = func_get_args();
-        return @ldap_sasl_bind($this->getResource(), ...$args);
+        return ldap_sasl_bind($this->getResource(), ...$args);
     }
 
     /**
@@ -555,7 +535,7 @@ final class LdapLink implements LdapLinkInterface
         /** @psalm-suppress ImpureFunctionCall */
         $args = func_get_args();
         // PHP 7.x and earlier may return null instead of false
-        $res = @ldap_search($this->getResource(), ...$args);
+        $res = ldap_search($this->getResource(), ...$args);
         return $res ? new Result($res, $this) : false;
     }
 
@@ -576,7 +556,7 @@ final class LdapLink implements LdapLinkInterface
          * @psalm-suppress TypeDoesNotContainType
          * @psalm-suppress ImpureFunctionCall
          */
-        return @ldap_set_option($this->getResource(), $option, $newval) ?? false;
+        return ldap_set_option($this->getResource(), $option, $newval) ?? false;
     }
 
     /**
@@ -591,7 +571,7 @@ final class LdapLink implements LdapLinkInterface
     public function set_rebind_proc($callback) : bool
     {
         /** @psalm-suppress InvalidArgument */
-        return @ldap_set_rebind_proc($this->getResource(), $callback);
+        return ldap_set_rebind_proc($this->getResource(), $callback);
     }
 
     /**
@@ -605,7 +585,7 @@ final class LdapLink implements LdapLinkInterface
     {
         // PHP 7.x and earlier may return null instead of false
         /** @psalm-suppress TypeDoesNotContainType */
-        return @ldap_start_tls($this->getResource()) ?? false;
+        return ldap_start_tls($this->getResource()) ?? false;
     }
 
     /**
@@ -617,7 +597,7 @@ final class LdapLink implements LdapLinkInterface
      */
     public function unbind() : bool
     {
-        return @ldap_unbind($this->getResource());
+        return ldap_unbind($this->getResource());
     }
 
     // phpcs:enable Generic.NamingConventions.CamelCapsFunctionName

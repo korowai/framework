@@ -49,7 +49,7 @@ interface LdapLinkInterface extends ResourceWrapperInterface
      *
      * @link http://php.net/manual/en/function.ldap-bind.php ldap_bind()
      */
-    public function bind(string $bind_rdn = null, string $bind_password = null) : bool;
+    public function bind(string $bind_rdn = '', string $bind_password = '') : bool;
 
     /**
      * Same as ldap_close
@@ -85,19 +85,6 @@ interface LdapLinkInterface extends ResourceWrapperInterface
      * @link http://php.net/manual/en/function.ldap-connect.php ldap_connect()
      */
     public static function connect(string $host_or_uri = null, int $port = 389);
-
-    /**
-     * Send LDAP pagination control
-     *
-     * @param  int $pagesize
-     * @param  bool $iscritical
-     * @param  string $cookie
-     * @param  bool $iscritical
-     * @param  string $cookie
-     *
-     * @link http://php.net/manual/en/function.ldap-control-paged-result.php ldap_control_paged_result()
-     */
-    public function control_paged_result(int $pagesize, bool $iscritical = false, string $cookie = "") : bool;
 
     /**
      * Delete an entry from a directory
@@ -327,26 +314,26 @@ interface LdapLinkInterface extends ResourceWrapperInterface
     /**
      * Bind to LDAP directory using SASL
      *
-     * @param  string|null $binddn
-     * @param  string|null $password
-     * @param  string|null $sasl_mech
-     * @param  string|null $sasl_realm
-     * @param  string|null $sasl_authc_id
-     * @param  string|null $sasl_authz_id
-     * @param  string|null $props
+     * @param  string $binddn
+     * @param  string $password
+     * @param  string $sasl_mech
+     * @param  string $sasl_realm
+     * @param  string $sasl_authc_id
+     * @param  string $sasl_authz_id
+     * @param  string $props
      *
      * @return bool
      *
      * @link http://php.net/manual/en/function.ldap-sasl-bind.php ldap_sasl_bind()
      */
     public function sasl_bind(
-        string $binddn = null,
-        string $password = null,
-        string $sasl_mech = null,
-        string $sasl_realm = null,
-        string $sasl_authc_id = null,
-        string $sasl_authz_id = null,
-        string $props = null
+        string $binddn = '',
+        string $password = '',
+        string $sasl_mech = '',
+        string $sasl_realm = '',
+        string $sasl_authc_id = '',
+        string $sasl_authz_id = '',
+        string $props = ''
     ) : bool;
 
     /**

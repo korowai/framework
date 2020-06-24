@@ -36,12 +36,6 @@ final class LdapLinkTest extends TestCase
         return $this->getFunctionMock('\Korowai\Lib\Ldap\Adapter\ExtLdap', ...$args);
     }
 
-    /**
-     * Returns an array of constraints based on $args for ldap function call
-     * expectation.
-     *
-     * @return array
-     */
     private function makeArgsForLdapMock(array $args, LdapLink $ldap = null) : array
     {
         if ($ldap !== null) {
@@ -50,24 +44,75 @@ final class LdapLinkTest extends TestCase
         return array_map([$this, 'identicalTo'], $args);
     }
 
-    /**
-     * Returns new instance of LdapLink.
-     *
-     * @param  mixed $resource
-     *
-     * @return LdapLink
-     */
-    private static function createLdapLink($resource = 'ldap link') : LdapLink
+    private function examineSearchWithMockedBackend(string $func, array $args, $return, $expect) : void
     {
-        return new LdapLink($resource);
+        $ldap = new LdapLink('ldap link');
+        $ldapArgs = $this->makeArgsForLdapMock($args, $ldap);
+
+        $this   ->getLdapFunctionMock("ldap_$func")
+                ->expects($this->once())
+                ->with(...$ldapArgs)
+                ->willReturn($return);
+
+        $result = call_user_func_array([$ldap, $func], $args);
+        if (is_array($expect)) {
+            $this->assertInstanceOf(Result::class, $result);
+            $this->assertSame($ldap, $result->getLdapLink());
+            $this->assertHasPropertiesSameAs($expect, $result);
+        } else {
+            $this->assertSame($expect, $result);
+        }
     }
 
-    /**
-     * Returns data to be provided to: test__list, test__read, and test__search.
-     *
-     * @return array
-     */
-    private static function getProviderDataForSearchFunc() : array
+    private function examineFuncWithMockedBackend(string $func, array $args, $return, $expect) : void
+    {
+        $ldap = new LdapLink('ldap link');
+        $ldapArgs = $this->makeArgsForLdapMock($args, $ldap);
+
+        $this   ->getLdapFunctionMock("ldap_$func")
+                ->expects($this->once())
+                ->with(...$ldapArgs)
+                ->willReturn($return);
+
+        $this->assertSame($expect, call_user_func_array([$ldap, $func], $args));
+    }
+
+    private function examineFuncWithInvalidArgType(
+        string $method,
+        $resource,
+        array $args,
+        string $exception,
+        string $message
+    ) : void {
+        $ldap = new LdapLink($resource);
+
+        $this->expectException($exception);
+        $this->expectExceptionMessageMatches($message);
+
+        $ldap->{$method}(...$args);
+    }
+
+    private function examineFuncWithInvalidLdapLink(string $method, array $args) : void
+    {
+        $qFun = preg_quote("ldap_$method", '/');
+        $message = sprintf('/%s\(\): supplied resource is not a valid ldap link resource/', $qFun);
+
+        $resource = ldap_connect('ldap://example.org');
+        ldap_close($resource);
+
+        $ldap = new LdapLink($resource);
+
+        if (PHP_VERSION_ID >= 80000) {
+            $this->expectException(\TypeError::class);
+            $this->expectExceptionMessageMatches($message);
+        } else {
+            $this->expectWarning();
+            $this->expectWarningMessageMatches($message);
+        }
+        call_user_func_array([$ldap, $method], $args);
+    }
+
+    private static function feedSearchWithMockedBackend() : array
     {
         return [
             // #0
@@ -135,30 +180,7 @@ final class LdapLinkTest extends TestCase
         ];
     }
 
-    /**
-     * Implementation of test__list, test__read, and test__search.
-     */
-    private function performSearchFuncTest(string $func, array $args, $return, $expect) : void
-    {
-        $ldap = $this->createLdapLink();
-        $ldapArgs = $this->makeArgsForLdapMock($args, $ldap);
-
-        $this   ->getLdapFunctionMock("ldap_$func")
-                ->expects($this->once())
-                ->with(...$ldapArgs)
-                ->willReturn($return);
-
-        $result = call_user_func_array([$ldap, $func], $args);
-        if ($return) {
-            $this->assertInstanceOf(Result::class, $result);
-            $this->assertSame($ldap, $result->getLdapLink());
-            $this->assertHasPropertiesSameAs($expect, $result);
-        } else {
-            $this->assertSame($expect, $result);
-        }
-    }
-
-    private static function getProviderDataForModifyFunc()
+    private static function feedModifyWithMockedBackend() : array
     {
         return [
             // #0
@@ -175,14 +197,14 @@ final class LdapLinkTest extends TestCase
                 'expect' => true,
             ],
 
-            // #3
+            // #2
             [
                 'args'   => ['', []],
                 'return' => false,
                 'expect' => false,
             ],
 
-            // #4
+            // #3
             [
                 'args'   => ['', []],
                 'return' => null,
@@ -191,30 +213,124 @@ final class LdapLinkTest extends TestCase
         ];
     }
 
-    private function performModifyFuncTest(string $func, array $args, $return, $expect) : void
+    private static function feedDeleteWithMockedBackend() : array
     {
-        $ldap = $this->createLdapLink();
-        $ldapArgs = $this->makeArgsForLdapMock($args, $ldap);
+        return [
+            // #0
+            [
+                'args'   => ['dc=example,dc=org', ['foo', 'bar']],
+                'return' => true,
+                'expect' => true,
+            ],
 
-        $this   ->getLdapFunctionMock("ldap_$func")
-                ->expects($this->once())
-                ->with(...$ldapArgs)
-                ->willReturn($return);
+            // #1
+            [
+                'args'   => ['', []],
+                'return' => false,
+                'expect' => false,
+            ],
 
-        $this->assertSame($expect, call_user_func_array([$ldap, $func], $args));
+            // #2
+            [
+                'args'   => ['', []],
+                'return' => null,
+                'expect' => false,
+            ],
+        ];
     }
+
+    private static function makeMethodArgTypeErrorMessage(string $method, int $argno, string $type, string $given)
+    {
+        $qMet = preg_quote(LdapLink::class.'::'.$method.'()', '/');
+        if (PHP_VERSION_ID < 80000) {
+            return '/Argument '.$argno.' passed to '.$qMet.' must be of( the)? type '.$type.', '.$given.' given/';
+        } else {
+            return '/'.$qMet.': Argument #'.$argno.' \(\\$\w+\) must be of type '.$type.', '.$given.' given/';
+        }
+    }
+
+    private static function makeFunctionArgTypeErrorMessage(string $function, int $argno, string $type, string $given)
+    {
+        if (PHP_VERSION_ID < 80000) {
+            return '/'.$function.'\(\) expects parameter 1 to be '.$type.', '.$given.' given/';
+        } else {
+            return '/'.$function.'\(\): Argument #'.$argno.' \(\\$\w+\) must be of type '.$type.', '.$given.' given/';
+        }
+    }
+
+    private static function feedFuncWithInvalidArgType(
+        string $method,
+        array $types,
+        $invalidResource = null,
+        array $tail = []
+    ) : array {
+        $values = array_map(function ($t) {
+            $repr = [
+                'array'    => [],
+                'bool'     => false,
+                'callable' => function () {},
+                'int'      => 0,
+                'null'     => null,
+                'string'   => '',
+            ];
+            return $repr[$t];
+        }, $types);
+
+        $values = array_merge($values, $tail);
+
+        $qMet = preg_quote(LdapLink::class.'::'.$method.'()', '/');
+        $data = [];
+
+        if ($invalidResource !== false) {
+            $invalidResourceType = strtolower(gettype($invalidResource));
+            if ($invalidResourceType === 'integer') {
+                $invalidResourceType === 'int';
+            }
+            $data[] = [
+                'resource'   => $invalidResource,
+                'args'       => $values,
+                'exception'  => \TypeError::class,
+                'message'    => static::makeFunctionArgTypeErrorMessage('ldap_'.$method, 1, 'resource', $invalidResourceType),
+                //'message'    => '/ldap_'.$method.'\(\) expects parameter 1 to be resource, '.$invalidResourceType.' given/',
+            ];
+        }
+
+        for ($i = 0; $i < count($types); $i++) {
+            $type = $types[$i];
+            $args = $values;
+            $args[$i] = null;
+            $data[] = [
+                'resource'  => \ldap_connect('ldap://example.org'),
+                'args'      => $args,
+                'exception' => \TypeError::class,
+                'message'   => static::makeMethodArgTypeErrorMessage($method, $i+1, $type, 'null'),//'/Argument '.(string)($i+1).' passed to '.$qMet.' must be of( the)? type '.$type.', null given/',
+            ];
+        }
+
+        return $data;
+    }
+
+    //
+    //
+    //  TESTS
+    //
+    //
 
     public function test__implementes__LdapLinkInterface() : void
     {
         $this->assertImplementsInterface(LdapLinkInterface::class, LdapLink::class);
     }
 
-    public function test__uses__HasResource()
+    public function test__uses__HasResource() : void
     {
         $this->assertUsesTrait(HasResource::class, LdapLink::class);
     }
 
-    public static function prov__isLdapLinkResource()
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // isLdapLinkResource()
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public static function prov__isLdapLinkResource() : array
     {
         $open = \ldap_connect('localhost');
         $close = \ldap_connect('localhost');
@@ -255,7 +371,11 @@ final class LdapLinkTest extends TestCase
         $this->assertSame($expect, LdapLink::isLdapLinkResource(...$args));
     }
 
-    public static function prov__getResource()
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // getResource()
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public static function prov__getResource() : array
     {
         return [
             // #0
@@ -281,7 +401,11 @@ final class LdapLinkTest extends TestCase
         $this->assertSame($expect, $link->getResource());
     }
 
-    public static function prov__isValid()
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // isValid()
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public static function prov__isValid() : array
     {
         return static::prov__isLdapLinkResource();
     }
@@ -295,21 +419,47 @@ final class LdapLinkTest extends TestCase
         $this->assertSame($expect, $link->isValid());
     }
 
-    public static function prov__add()
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // add()
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public static function prov__add__withMockedBackend() : array
     {
-        return static::getProviderDataForModifyFunc();
+        return static::feedModifyWithMockedBackend();
     }
 
     /**
      * @runInSeparateProcess
-     * @dataProvider prov__add
+     * @dataProvider prov__add__withMockedBackend
      */
-    public function test__add(array $args, $return, $expect)
+    public function test__add__withMockedBackend(array $args, $return, $expect) : void
     {
-        static::performModifyFuncTest('add', $args, $return, $expect);
+        static::examineFuncWithMockedBackend('add', $args, $return, $expect);
     }
 
-    public static function prov__bind()
+    public static function prov__add__withInvalidArgType() : array
+    {
+        return static::feedFuncWithInvalidArgType('add', ['string', 'array', 'array']);
+    }
+
+    /**
+     * @dataProvider prov__add__withInvalidArgType
+     */
+    public function test__add__withInvalidArgType($resource, array $args, string $exception, string $message) : void
+    {
+        $this->examineFuncWithInvalidArgType('add', $resource, $args, $exception, $message);
+    }
+
+    public function test__add__withInvalidLdapLink()
+    {
+        $this->examineFuncWithInvalidLdapLink('add', ['', []]);
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // bind()
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public static function prov__bind__withMockedBackend() : array
     {
         return [
             // #0
@@ -348,39 +498,42 @@ final class LdapLinkTest extends TestCase
                 'return' => false,
                 'expect' => false,
             ],
-            // #4
-            [
-                'args'   => [null],
-                'return' => true,
-                'expect' => true,
-            ],
-            // #5
-            [
-                'args'   => [null, null],
-                'return' => true,
-                'expect' => true,
-            ],
         ];
     }
 
     /**
      * @runInSeparateProcess
-     * @dataProvider prov__bind
+     * @dataProvider prov__bind__withMockedBackend
      */
-    public function test__bind(array $args, $return, $expect)
+    public function test__bind__withMockedBackend(array $args, $return, $expect) : void
     {
-        $ldap = $this->createLdapLink();
-        $ldapArgs = $this->makeArgsForLdapMock($args, $ldap);
-
-        $this   ->getLdapFunctionMock("ldap_bind")
-                ->expects($this->once())
-                ->with(...$ldapArgs)
-                ->willReturn($return);
-
-        $this->assertSame($expect, $ldap->bind(...$args));
+        $this->examineFuncWithMockedBackend('bind', $args, $return, $expect);
     }
 
-    public static function prov__close()
+    public static function prov__bind__withInvalidArgType() : array
+    {
+        return static::feedFuncWithInvalidArgType('bind', ['string', 'string']);
+    }
+
+    /**
+     * @dataProvider prov__bind__withInvalidArgType
+     */
+    public function test__bind__withInvalidArgType($resource, array $args, string $exception, string $message) : void
+    {
+        $this->examineFuncWithInvalidArgType('bind', $resource, $args, $exception, $message);
+    }
+
+    public function test__bind__withInvalidLdapLink()
+    {
+        $this->examineFuncWithInvalidLdapLink('bind', ['', '']);
+    }
+
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // close()
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public static function prov__close__withMockedBackend() : array
     {
         return [
             // #0
@@ -400,22 +553,36 @@ final class LdapLinkTest extends TestCase
 
     /**
      * @runInSeparateProcess
-     * @dataProvider prov__close
+     * @dataProvider prov__close__withMockedBackend
      */
-    public function test__close(array $args, $return, $expect)
+    public function test__close__withMockedBackend(array $args, $return, $expect) : void
     {
-        $ldap = $this->createLdapLink();
-        $ldapArgs = $this->makeArgsForLdapMock($args, $ldap);
-
-        $this   ->getLdapFunctionMock("ldap_close")
-                ->expects($this->once())
-                ->with(...$ldapArgs)
-                ->willReturn($return);
-
-        $this->assertSame($expect, $ldap->close(...$args));
+        $this->examineFuncWithMockedBackend('close', $args, $return, $expect);
     }
 
-    public static function prov__compare()
+    public static function prov__close__withInvalidArgType() : array
+    {
+        return static::feedFuncWithInvalidArgType('close', []);
+    }
+
+    /**
+     * @dataProvider prov__close__withInvalidArgType
+     */
+    public function test__close__withInvalidArgType($resource, array $args, string $exception, string $message) : void
+    {
+        $this->examineFuncWithInvalidArgType('close', $resource, $args, $exception, $message);
+    }
+
+    public function test__close__withInvalidLdapLink()
+    {
+        $this->examineFuncWithInvalidLdapLink('close', []);
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // compare()
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public static function prov__compare__withMockedBackend() : array
     {
         return [
             // #0
@@ -453,22 +620,36 @@ final class LdapLinkTest extends TestCase
 
     /**
      * @runInSeparateProcess
-     * @dataProvider prov__compare
+     * @dataProvider prov__compare__withMockedBackend
      */
-    public function test__compare(array $args, $return, $expect)
+    public function test__compare__withMockedBackend(array $args, $return, $expect) : void
     {
-        $ldap = $this->createLdapLink();
-        $ldapArgs = $this->makeArgsForLdapMock($args, $ldap);
-
-        $this   ->getLdapFunctionMock("ldap_compare")
-                ->expects($this->once())
-                ->with(...$ldapArgs)
-                ->willReturn($return);
-
-        $this->assertSame($expect, $ldap->compare(...$args));
+        $this->examineFuncWithMockedBackend('compare', $args, $return, $expect);
     }
 
-    public static function prov__connect()
+    public static function prov__compare__withInvalidArgType() : array
+    {
+        return static::feedFuncWithInvalidArgType('compare', ['string', 'string', 'string', 'array']);
+    }
+
+    /**
+     * @dataProvider prov__compare__withInvalidArgType
+     */
+    public function test__compare__withInvalidArgType($resource, array $args, string $exception, string $message) : void
+    {
+        $this->examineFuncWithInvalidArgType('compare', $resource, $args, $exception, $message);
+    }
+
+    public function test__compare__withInvalidLdapLink()
+    {
+        $this->examineFuncWithInvalidLdapLink('compare', ['', '', '']);
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // connect()
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public static function prov__connect__withMockedBackend() : array
     {
         return [
             // #0
@@ -524,9 +705,9 @@ final class LdapLinkTest extends TestCase
 
     /**
      * @runInSeparateProcess
-     * @dataProvider prov__connect
+     * @dataProvider prov__connect__withMockedBackend
      */
-    public function test__connect(array $args, $return, $expect)
+    public function test__connect__withMockedBackend(array $args, $return, $expect) : void
     {
         $ldapArgs = $this->makeArgsForLdapMock($args);
         if (count($args) === 2 && $args[1] === null) {
@@ -547,74 +728,47 @@ final class LdapLinkTest extends TestCase
         }
     }
 
-    public static function prov__control_paged_result()
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // delete()
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public static function prov__delete__withMockedBackend() : array
     {
-        return [
-            // #0
-            [
-                'args'   => [123],
-                'return' => true,
-                'expect' => true,
-            ],
-            // #1
-            [
-                'args'   => [-1],
-                'return' => false,
-                'expect' => false,
-            ],
-            // #2
-            [
-                'args'   => [-4],
-                'return' => null,
-                'expect' => false,
-            ],
-            // #3
-            [
-                'args'   => [123, true],
-                'return' => true,
-                'expect' => true,
-            ],
-            // #4
-            [
-                'args'   => [123, true, 'cookie'],
-                'return' => true,
-                'expect' => true,
-            ],
-        ];
+        return static::feedDeleteWithMockedBackend();
     }
 
     /**
      * @runInSeparateProcess
-     * @dataProvider prov__control_paged_result
+     * @dataProvider prov__delete__withMockedBackend
      */
-    public function test__control_paged_result(array $args, $return, $expect)
+    public function test__delete__withMockedBackend(array $args, $return, $expect) : void
     {
-        $ldap = $this->createLdapLink();
-        $ldapArgs = $this->makeArgsForLdapMock($args, $ldap);
-
-        $this   ->getLdapFunctionMock("ldap_control_paged_result")
-                ->expects($this->once())
-                ->with(...$ldapArgs)
-                ->willReturn($return);
-
-        $this->assertSame($expect, $ldap->control_paged_result(...$args));
+        static::examineFuncWithMockedBackend('delete', $args, $return, $expect);
     }
 
-    public static function prov__delete()
+    public static function prov__delete__withInvalidArgType() : array
     {
-        return static::getProviderDataForModifyFunc();
+        return static::feedFuncWithInvalidArgType('delete', ['string', 'array']);
     }
 
     /**
-     * @runInSeparateProcess
-     * @dataProvider prov__delete
+     * @dataProvider prov__delete__withInvalidArgType
      */
-    public function test__delete(array $args, $return, $expect)
+    public function test__delete__withInvalidArgType($resource, array $args, string $exception, string $message) : void
     {
-        static::performModifyFuncTest('delete', $args, $return, $expect);
+        static::examineFuncWithInvalidArgType('delete', $resource, $args, $exception, $message);
     }
 
-    public static function prov__dn2ufn()
+    public function test__delete__withInvalidLdapLink()
+    {
+        $this->examineFuncWithInvalidLdapLink('delete', ['']);
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // dn2ufn()
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public static function prov__dn2ufn__withMockedBackend() : array
     {
         return [
             // #0
@@ -640,9 +794,9 @@ final class LdapLinkTest extends TestCase
 
     /**
      * @runInSeparateProcess
-     * @dataProvider prov__dn2ufn
+     * @dataProvider prov__dn2ufn__withMockedBackend
      */
-    public function test__dn2ufn(array $args, $return, $expect)
+    public function test__dn2ufn__withMockedBackend(array $args, $return, $expect) : void
     {
         $ldapArgs = $this->makeArgsForLdapMock($args);
 
@@ -654,7 +808,24 @@ final class LdapLinkTest extends TestCase
         $this->assertSame($expect, LdapLink::dn2ufn(...$args));
     }
 
-    public static function prov__err2str()
+    public static function prov__dn2ufn__withInvalidArgType() : array
+    {
+        return static::feedFuncWithInvalidArgType('dn2ufn', ['string'], false);
+    }
+
+    /**
+     * @dataProvider prov__dn2ufn__withInvalidArgType
+     */
+    public function test__dn2ufn__withInvalidArgType($resource, array $args, string $exception, string $message) : void
+    {
+        static::examineFuncWithInvalidArgType('dn2ufn', $resource, $args, $exception, $message);
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // err2str()
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public static function prov__err2str__withMockedBackend() : array
     {
         return [
             // #0
@@ -680,9 +851,9 @@ final class LdapLinkTest extends TestCase
 
     /**
      * @runInSeparateProcess
-     * @dataProvider prov__err2str
+     * @dataProvider prov__err2str__withMockedBackend
      */
-    public function test__err2str(array $args, $return, $expect)
+    public function test__err2str__withMockedBackend(array $args, $return, $expect) : void
     {
         $ldapArgs = $this->makeArgsForLdapMock($args);
 
@@ -694,7 +865,28 @@ final class LdapLinkTest extends TestCase
         $this->assertSame($expect, LdapLink::err2str(...$args));
     }
 
-    public static function prov__errno()
+    public static function prov__err2str__withInvalidArgType() : array
+    {
+        return static::feedFuncWithInvalidArgType('err2str', ['int'], false);
+    }
+
+    /**
+     * @dataProvider prov__err2str__withInvalidArgType
+     */
+    public function test__err2str__withInvalidArgType(
+        $resource,
+        array $args,
+        string $exception,
+        string $message
+    ) : void {
+        static::examineFuncWithInvalidArgType('err2str', $resource, $args, $exception, $message);
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // errno()
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public static function prov__errno__withMockedBackend() : array
     {
         return [
             // #0
@@ -720,22 +912,36 @@ final class LdapLinkTest extends TestCase
 
     /**
      * @runInSeparateProcess
-     * @dataProvider prov__errno
+     * @dataProvider prov__errno__withMockedBackend
      */
-    public function test__errno(array $args, $return, $expect)
+    public function test__errno__withMockedBackend(array $args, $return, $expect) : void
     {
-        $ldap = $this->createLdapLink();
-        $ldapArgs = $this->makeArgsForLdapMock($args, $ldap);
-
-        $this   ->getLdapFunctionMock("ldap_errno")
-                ->expects($this->once())
-                ->with(...$ldapArgs)
-                ->willReturn($return);
-
-        $this->assertSame($expect, $ldap->errno(...$args));
+        $this->examineFuncWithMockedBackend('errno', $args, $return, $expect);
     }
 
-    public static function prov__error()
+    public static function prov__errno__withInvalidArgType() : array
+    {
+        return static::feedFuncWithInvalidArgType('errno', []);
+    }
+
+    /**
+     * @dataProvider prov__errno__withInvalidArgType
+     */
+    public function test__errno__withInvalidArgType($resource, array $args, string $exception, string $message) : void
+    {
+        static::examineFuncWithInvalidArgType('errno', $resource, $args, $exception, $message);
+    }
+
+    public function test__errno__withInvalidLdapLink()
+    {
+        $this->examineFuncWithInvalidLdapLink('errno', []);
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // error()
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public static function prov__error__withMockedBackend() : array
     {
         return [
             // #0
@@ -761,22 +967,36 @@ final class LdapLinkTest extends TestCase
 
     /**
      * @runInSeparateProcess
-     * @dataProvider prov__error
+     * @dataProvider prov__error__withMockedBackend
      */
-    public function test__error(array $args, $return, $expect)
+    public function test__error__withMockedBackend(array $args, $return, $expect) : void
     {
-        $ldap = $this->createLdapLink();
-        $ldapArgs = $this->makeArgsForLdapMock($args, $ldap);
-
-        $this   ->getLdapFunctionMock("ldap_error")
-                ->expects($this->once())
-                ->with(...$ldapArgs)
-                ->willReturn($return);
-
-        $this->assertSame($expect, $ldap->error(...$args));
+        $this->examineFuncWithMockedBackend('error', $args, $return, $expect);
     }
 
-    public static function prov__escape()
+    public static function prov__error__withInvalidArgType() : array
+    {
+        return static::feedFuncWithInvalidArgType('error', []);
+    }
+
+    /**
+     * @dataProvider prov__error__withInvalidArgType
+     */
+    public function test__error__withInvalidArgType($resource, array $args, string $exception, string $message) : void
+    {
+        static::examineFuncWithInvalidArgType('error', $resource, $args, $exception, $message);
+    }
+
+    public function test__error__withInvalidLdapLink()
+    {
+        $this->examineFuncWithInvalidLdapLink('error', []);
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // escape()
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public static function prov__escape__withMockedBackend() : array
     {
         return [
             // #0
@@ -814,9 +1034,9 @@ final class LdapLinkTest extends TestCase
 
     /**
      * @runInSeparateProcess
-     * @dataProvider prov__escape
+     * @dataProvider prov__escape__withMockedBackend
      */
-    public function test__escape(array $args, $return, $expect)
+    public function test__escape__withMockedBackend(array $args, $return, $expect) : void
     {
         $ldapArgs = $this->makeArgsForLdapMock($args);
         $this   ->getLdapFunctionMock("ldap_escape")
@@ -827,7 +1047,24 @@ final class LdapLinkTest extends TestCase
         $this->assertSame($expect, LdapLink::escape(...$args));
     }
 
-    public static function prov__explode_dn()
+    public static function prov__escape__withInvalidArgType() : array
+    {
+        return static::feedFuncWithInvalidArgType('escape', ['string', 'string', 'int'], false);
+    }
+
+    /**
+     * @dataProvider prov__escape__withInvalidArgType
+     */
+    public function test__escape__withInvalidArgType($resource, array $args, string $exception, string $message) : void
+    {
+        static::examineFuncWithInvalidArgType('escape', $resource, $args, $exception, $message);
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // explode_dn()
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public static function prov__explode_dn__withMockedBackend() : array
     {
         return [
             // #0
@@ -853,9 +1090,9 @@ final class LdapLinkTest extends TestCase
 
     /**
      * @runInSeparateProcess
-     * @dataProvider prov__explode_dn
+     * @dataProvider prov__explode_dn__withMockedBackend
      */
-    public function test__explode_dn(array $args, $return, $expect)
+    public function test__explode_dn__withMockedBackend(array $args, $return, $expect) : void
     {
         $ldapArgs = $this->makeArgsForLdapMock($args);
         $this   ->getLdapFunctionMock("ldap_explode_dn")
@@ -865,7 +1102,24 @@ final class LdapLinkTest extends TestCase
         $this->assertSame($expect, LdapLink::explode_dn(...$args));
     }
 
-    public static function prov__get_option()
+    public static function prov__explode_dn__withInvalidArgType() : array
+    {
+        return static::feedFuncWithInvalidArgType('explode_dn', ['string', 'int'], false);
+    }
+
+    /**
+     * @dataProvider prov__explode_dn__withInvalidArgType
+     */
+    public function test__explode_dn__withInvalidArgType($resource, array $args, string $exception, string $message) : void
+    {
+        static::examineFuncWithInvalidArgType('explode_dn', $resource, $args, $exception, $message);
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // get_option()
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public static function prov__get_option__withMockedBackend() : array
     {
         return [
             // #0
@@ -901,11 +1155,11 @@ final class LdapLinkTest extends TestCase
 
     /**
      * @runInSeparateProcess
-     * @dataProvider prov__get_option
+     * @dataProvider prov__get_option__withMockedBackend
      */
-    public function test__get_option(array $args, $return, $expect, array $values)
+    public function test__get_option__withMockedBackend(array $args, $return, $expect, array $values) : void
     {
-        $ldap = $this->createLdapLink();
+        $ldap = new LdapLink('ldap link');
         $ldapArgs = $this->makeArgsForLdapMock($args, $ldap);
 
         $this   ->getLdapFunctionMock("ldap_get_option")
@@ -919,105 +1173,283 @@ final class LdapLinkTest extends TestCase
         }
     }
 
-    public static function prov__list()
+    public static function prov__get_option__withInvalidArgType() : array
     {
-        return static::getProviderDataForSearchFunc();
+        return static::feedFuncWithInvalidArgType('get_option', ['int'], null, [&$var]);
+    }
+
+    /**
+     * @dataProvider prov__get_option__withInvalidArgType
+     */
+    public function test__get_option__withInvalidArgType($resource, array $args, string $exception, string $message) : void
+    {
+        static::examineFuncWithInvalidArgType('get_option', $resource, $args, $exception, $message);
+    }
+
+    public function test__get_option__withInvalidLdapLink()
+    {
+        $this->examineFuncWithInvalidLdapLink('get_option', [0, &$var]);
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // list()
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public static function prov__list__withMockedBackend() : array
+    {
+        return static::feedSearchWithMockedBackend();
     }
 
     /**
      * @runInSeparateProcess
-     * @dataProvider prov__list
+     * @dataProvider prov__list__withMockedBackend
      */
-    public function test__list(array $args, $return, $expect)
+    public function test__list__withMockedBackend(array $args, $return, $expect) : void
     {
-        $this->performSearchFuncTest('list', $args, $return, $expect);
+        $this->examineSearchWithMockedBackend('list', $args, $return, $expect);
     }
 
-    public static function prov__mod_add()
+    public static function prov__list__withInvalidArgType() : array
     {
-        return static::getProviderDataForModifyFunc();
+        $types  = ['string', 'string', 'array', 'int', 'int', 'int', 'int', 'array'];
+        return static::feedFuncWithInvalidArgType('list', $types, false);
+    }
+
+    /**
+     * @dataProvider prov__list__withInvalidArgType
+     */
+    public function test__list__withInvalidArgType($resource, array $args, string $exception, string $message) : void
+    {
+        $this->examineFuncWithInvalidArgType('list', $resource, $args, $exception, $message);
+    }
+
+    public function test__list__withInvalidLdapLink()
+    {
+        $this->examineFuncWithInvalidLdapLink('list', ['', '']);
+    }
+
+    public static function prov__mod_add__withMockedBackend() : array
+    {
+        return static::feedModifyWithMockedBackend();
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // mod_add()
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * @runInSeparateProcess
+     * @dataProvider prov__mod_add__withMockedBackend
+     */
+    public function test__mod_add__withMockedBackend(array $args, $return, $expect) : void
+    {
+        static::examineFuncWithMockedBackend('mod_add', $args, $return, $expect);
+    }
+
+    public static function prov__mod_add__withInvalidArgType() : array
+    {
+        return static::feedFuncWithInvalidArgType('mod_add', ['string', 'array', 'array']);
+    }
+
+    /**
+     * @dataProvider prov__mod_add__withInvalidArgType
+     */
+    public function test__mod_add__withInvalidArgType($resource, array $args, string $exception, string $message) : void
+    {
+        $this->examineFuncWithInvalidArgType('mod_add', $resource, $args, $exception, $message);
+    }
+
+    public function test__mod_add__withInvalidLdapLink()
+    {
+        $this->examineFuncWithInvalidLdapLink('mod_add', ['', []]);
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // mod_del()
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public static function prov__mod_del__withMockedBackend() : array
+    {
+        return static::feedModifyWithMockedBackend();
     }
 
     /**
      * @runInSeparateProcess
-     * @dataProvider prov__mod_add
+     * @dataProvider prov__mod_del__withMockedBackend
      */
-    public function test__mod_add(array $args, $return, $expect)
+    public function test__mod_del__withMockedBackend(array $args, $return, $expect) : void
     {
-        static::performModifyFuncTest('mod_add', $args, $return, $expect);
+        static::examineFuncWithMockedBackend('mod_del', $args, $return, $expect);
     }
 
-    public static function prov__mod_del()
+    public static function prov__mod_del__withInvalidArgType() : array
     {
-        return static::getProviderDataForModifyFunc();
+        return static::feedFuncWithInvalidArgType('mod_del', ['string', 'array', 'array']);
+    }
+
+    /**
+     * @dataProvider prov__mod_del__withInvalidArgType
+     */
+    public function test__mod_del__withInvalidArgType($resource, array $args, string $exception, string $message) : void
+    {
+        $this->examineFuncWithInvalidArgType('mod_del', $resource, $args, $exception, $message);
+    }
+
+    public function test__mod_del__withInvalidLdapLink()
+    {
+        $this->examineFuncWithInvalidLdapLink('mod_del', ['', []]);
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // mod_replace()
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public static function prov__mod_replace__withMockedBackend() : array
+    {
+        return static::feedModifyWithMockedBackend();
     }
 
     /**
      * @runInSeparateProcess
-     * @dataProvider prov__mod_del
+     * @dataProvider prov__mod_replace__withMockedBackend
      */
-    public function test__mod_del(array $args, $return, $expect)
+    public function test__mod_replace__withMockedBackend(array $args, $return, $expect) : void
     {
-        static::performModifyFuncTest('mod_del', $args, $return, $expect);
+        static::examineFuncWithMockedBackend('mod_replace', $args, $return, $expect);
     }
 
-    public static function prov__mod_replace()
+    public static function prov__mod_replace__withInvalidArgType() : array
     {
-        return static::getProviderDataForModifyFunc();
+        return static::feedFuncWithInvalidArgType('mod_replace', ['string', 'array', 'array']);
+    }
+
+    /**
+     * @dataProvider prov__mod_replace__withInvalidArgType
+     */
+    public function test__mod_replace__withInvalidArgType($resource, array $args, string $exception, string $message) : void
+    {
+        $this->examineFuncWithInvalidArgType('mod_replace', $resource, $args, $exception, $message);
+    }
+
+    public function test__mod_replace__withInvalidLdapLink()
+    {
+        $this->examineFuncWithInvalidLdapLink('mod_replace', ['', []]);
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // modify_batch()
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public static function prov__modify_batch__withMockedBackend() : array
+    {
+        return static::feedModifyWithMockedBackend();
     }
 
     /**
      * @runInSeparateProcess
-     * @dataProvider prov__mod_replace
+     * @dataProvider prov__modify_batch__withMockedBackend
      */
-    public function test__mod_replace(array $args, $return, $expect)
+    public function test__modify_batch__withMockedBackend(array $args, $return, $expect) : void
     {
-        static::performModifyFuncTest('mod_replace', $args, $return, $expect);
+        static::examineFuncWithMockedBackend('modify_batch', $args, $return, $expect);
     }
 
-    public static function prov__modify_batch()
+    public static function prov__modify_batch__withInvalidArgType() : array
     {
-        return static::getProviderDataForModifyFunc();
+        return static::feedFuncWithInvalidArgType('modify_batch', ['string', 'array', 'array']);
+    }
+
+    /**
+     * @dataProvider prov__modify_batch__withInvalidArgType
+     */
+    public function test__modify_batch__withInvalidArgType($resource, array $args, string $exception, string $message) : void
+    {
+        $this->examineFuncWithInvalidArgType('modify_batch', $resource, $args, $exception, $message);
+    }
+
+    public function test__modify_batch__withInvalidLdapLink()
+    {
+        $this->examineFuncWithInvalidLdapLink('modify_batch', ['', []]);
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // modify()
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public static function prov__modify__withMockedBackend() : array
+    {
+        return static::feedModifyWithMockedBackend();
     }
 
     /**
      * @runInSeparateProcess
-     * @dataProvider prov__modify_batch
+     * @dataProvider prov__modify__withMockedBackend
      */
-    public function test__modify_batch(array $args, $return, $expect)
+    public function test__modify__withMockedBackend(array $args, $return, $expect) : void
     {
-        static::performModifyFuncTest('modify_batch', $args, $return, $expect);
+        static::examineFuncWithMockedBackend('modify', $args, $return, $expect);
     }
 
-    public static function prov__modify()
+    public static function prov__modify__withInvalidArgType() : array
     {
-        return static::getProviderDataForModifyFunc();
+        return static::feedFuncWithInvalidArgType('modify', ['string', 'array', 'array']);
+    }
+
+    /**
+     * @dataProvider prov__modify__withInvalidArgType
+     */
+    public function test__modify__withInvalidArgType($resource, array $args, string $exception, string $message) : void
+    {
+        $this->examineFuncWithInvalidArgType('modify', $resource, $args, $exception, $message);
+    }
+
+    public function test__modify__withInvalidLdapLink()
+    {
+        $this->examineFuncWithInvalidLdapLink('modify', ['', []]);
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // read()
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public static function prov__read__withMockedBackend() : array
+    {
+        return static::feedSearchWithMockedBackend();
     }
 
     /**
      * @runInSeparateProcess
-     * @dataProvider prov__modify
+     * @dataProvider prov__read__withMockedBackend
      */
-    public function test__modify(array $args, $return, $expect)
+    public function test__read__withMockedBackend(array $args, $return, $expect) : void
     {
-        static::performModifyFuncTest('modify', $args, $return, $expect);
+        $this->examineSearchWithMockedBackend('read', $args, $return, $expect);
     }
 
-    public static function prov__read()
+    public static function prov__read__withInvalidArgType() : array
     {
-        return static::getProviderDataForSearchFunc();
+        $types  = ['string', 'string', 'array', 'int', 'int', 'int', 'int', 'array'];
+        return static::feedFuncWithInvalidArgType('read', $types, false);
     }
 
     /**
-     * @runInSeparateProcess
-     * @dataProvider prov__read
+     * @dataProvider prov__read__withInvalidArgType
      */
-    public function test__read(array $args, $return, $expect)
+    public function test__read__withInvalidArgType($resource, array $args, string $exception, string $message) : void
     {
-        $this->performSearchFuncTest('read', $args, $return, $expect);
+        $this->examineFuncWithInvalidArgType('read', $resource, $args, $exception, $message);
     }
 
-    public static function prov__rename()
+    public function test__read__withInvalidLdapLink()
+    {
+        $this->examineFuncWithInvalidLdapLink('read', ['', '']);
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // rename()
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public static function prov__rename__withMockedBackend() : array
     {
         return [
             // #0
@@ -1052,22 +1484,37 @@ final class LdapLinkTest extends TestCase
 
     /**
      * @runInSeparateProcess
-     * @dataProvider prov__rename
+     * @dataProvider prov__rename__withMockedBackend
      */
-    public function test__rename(array $args, $return, $expect)
+    public function test__rename__withMockedBackend(array $args, $return, $expect) : void
     {
-        $ldap = $this->createLdapLink();
-        $ldapArgs = $this->makeArgsForLdapMock($args, $ldap);
-
-        $this   ->getLdapFunctionMock("ldap_rename")
-                ->expects($this->once())
-                ->with(...$ldapArgs)
-                ->willReturn($return);
-
-        $this->assertSame($expect, $ldap->rename(...$args));
+        $this->examineFuncWithMockedBackend('rename', $args, $return, $expect);
     }
 
-    public static function prov__sasl_bind()
+    public static function prov__rename__withInvalidArgType() : array
+    {
+        $types  = ['string', 'string', 'string', 'bool', 'array'];
+        return static::feedFuncWithInvalidArgType('rename', $types);
+    }
+
+    /**
+     * @dataProvider prov__rename__withInvalidArgType
+     */
+    public function test__rename__withInvalidArgType($resource, array $args, string $exception, string $message) : void
+    {
+        $this->examineFuncWithInvalidArgType('rename', $resource, $args, $exception, $message);
+    }
+
+    public function test__rename__withInvalidLdapLink()
+    {
+        $this->examineFuncWithInvalidLdapLink('rename', ['', '', '', false]);
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // sasl_bind()
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public static function prov__sasl_bind__withMockedBackend() : array
     {
         return [
             // #0
@@ -1137,37 +1584,74 @@ final class LdapLinkTest extends TestCase
 
     /**
      * @runInSeparateProcess
-     * @dataProvider prov__sasl_bind
+     * @dataProvider prov__sasl_bind__withMockedBackend
      */
-    public function test__sasl_bind(array $args, $return, $expect)
+    public function test__sasl_bind__withMockedBackend(array $args, $return, $expect) : void
     {
-        $ldap = $this->createLdapLink();
-        $ldapArgs = $this->makeArgsForLdapMock($args, $ldap);
-
-        $this   ->getLdapFunctionMock("ldap_sasl_bind")
-                ->expects($this->once())
-                ->with(...$ldapArgs)
-                ->willReturn($return);
-
-        $result = $ldap->sasl_bind(...$args);
-        $this->assertSame($expect, $result);
+        $this->examineFuncWithMockedBackend('sasl_bind', $args, $return, $expect);
     }
 
-    public static function prov__search()
+    public static function prov__sasl_bind__withInvalidArgType() : array
     {
-        return static::getProviderDataForSearchFunc();
+        $types  = ['string', 'string', 'string', 'string', 'string', 'string', 'string'];
+        return static::feedFuncWithInvalidArgType('sasl_bind', $types);
+    }
+
+    /**
+     * @dataProvider prov__sasl_bind__withInvalidArgType
+     */
+    public function test__sasl_bind__withInvalidArgType($resource, array $args, string $exception, string $message) : void
+    {
+        $this->examineFuncWithInvalidArgType('sasl_bind', $resource, $args, $exception, $message);
+    }
+
+    public function test__sasl_bind__withInvalidLdapLink()
+    {
+        $this->examineFuncWithInvalidLdapLink('sasl_bind', ['', '']);
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // search()
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public static function prov__search__withMockedBackend() : array
+    {
+        return static::feedSearchWithMockedBackend();
     }
 
     /**
      * @runInSeparateProcess
-     * @dataProvider prov__search
+     * @dataProvider prov__search__withMockedBackend
      */
-    public function test__search(array $args, $return, $expect)
+    public function test__search__withMockedBackend(array $args, $return, $expect) : void
     {
-        $this->performSearchFuncTest('search', $args, $return, $expect);
+        $this->examineSearchWithMockedBackend('search', $args, $return, $expect);
     }
 
-    public static function prov__set_option()
+    public static function prov__search__withInvalidArgType() : array
+    {
+        $types  = ['string', 'string', 'array', 'int', 'int', 'int', 'int', 'array'];
+        return static::feedFuncWithInvalidArgType('search', $types, false);
+    }
+
+    /**
+     * @dataProvider prov__search__withInvalidArgType
+     */
+    public function test__search__withInvalidArgType($resource, array $args, string $exception, string $message) : void
+    {
+        $this->examineFuncWithInvalidArgType('search', $resource, $args, $exception, $message);
+    }
+
+    public function test__search__withInvalidLdapLink()
+    {
+        $this->examineFuncWithInvalidLdapLink('search', ['', '']);
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // set_option()
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public static function prov__set_option__withMockedBackend() : array
     {
         return [
             // #0
@@ -1202,21 +1686,36 @@ final class LdapLinkTest extends TestCase
 
     /**
      * @runInSeparateProcess
-     * @dataProvider prov__set_option
+     * @dataProvider prov__set_option__withMockedBackend
      */
-    public function test__set_option(array $args, $return, $expect)
+    public function test__set_option__withMockedBackend(array $args, $return, $expect) : void
     {
-        $ldap = $this->createLdapLink();
-        $ldapArgs = $this->makeArgsForLdapMock($args, $ldap);
-        $this   ->getLdapFunctionMock("ldap_set_option")
-                ->expects($this->once())
-                ->with(...$ldapArgs)
-                ->willReturn($return);
-
-        $this->assertSame($expect, $ldap->set_option(...$args));
+        $this->examineFuncWithMockedBackend('set_option', $args, $return, $expect);
     }
 
-    public static function prov__set_rebind_proc()
+    public static function prov__set_option__withInvalidArgType() : array
+    {
+        return static::feedFuncWithInvalidArgType('set_option', ['int'], false, ['x']);
+    }
+
+    /**
+     * @dataProvider prov__set_option__withInvalidArgType
+     */
+    public function test__set_option__withInvalidArgType($resource, array $args, string $exception, string $message) : void
+    {
+        $this->examineFuncWithInvalidArgType('set_option', $resource, $args, $exception, $message);
+    }
+
+    public function test__set_option__withInvalidLdapLink()
+    {
+        $this->examineFuncWithInvalidLdapLink('set_option', [0, '']);
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // set_rebind_proc()
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public static function prov__set_rebind_proc__withMockedBackend() : array
     {
         return [
             // #0
@@ -1244,22 +1743,36 @@ final class LdapLinkTest extends TestCase
 
     /**
      * @runInSeparateProcess
-     * @dataProvider prov__set_rebind_proc
+     * @dataProvider prov__set_rebind_proc__withMockedBackend
      */
-    public function test__set_rebind_proc(array $args, $return, $expect)
+    public function test__set_rebind_proc__withMockedBackend(array $args, $return, $expect) : void
     {
-        $ldap = $this->createLdapLink();
-        $ldapArgs = $this->makeArgsForLdapMock($args, $ldap);
-
-        $this   ->getLdapFunctionMock("ldap_set_rebind_proc")
-                ->expects($this->once())
-                ->with(...$ldapArgs)
-                ->willReturn($return);
-
-        $this->assertSame($expect, $ldap->set_rebind_proc(...$args));
+        $this->examineFuncWithMockedBackend('set_rebind_proc', $args, $return, $expect);
     }
 
-    public static function prov__start_tls()
+    public static function prov__set_rebind_proc__withInvalidArgType() : array
+    {
+        return static::feedFuncWithInvalidArgType('set_rebind_proc', [], null, [function(){}]);
+    }
+
+    /**
+     * @dataProvider prov__set_rebind_proc__withInvalidArgType
+     */
+    public function test__set_rebind_proc__withInvalidArgType($resource, array $args, string $exception, string $message) : void
+    {
+        $this->examineFuncWithInvalidArgType('set_rebind_proc', $resource, $args, $exception, $message);
+    }
+
+    public function test__set_rebind_proc__withInvalidLdapLink()
+    {
+        $this->examineFuncWithInvalidLdapLink('set_rebind_proc', ['']);
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // start_tls()
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public static function prov__start_tls__withMockedBackend() : array
     {
         return [
             // #1
@@ -1287,22 +1800,14 @@ final class LdapLinkTest extends TestCase
 
     /**
      * @runInSeparateProcess
-     * @dataProvider prov__start_tls
+     * @dataProvider prov__start_tls__withMockedBackend
      */
-    public function test__start_tls(array $args, $return, $expect)
+    public function test__start_tls__withMockedBackend(array $args, $return, $expect) : void
     {
-        $ldap = $this->createLdapLink();
-        $ldapArgs = $this->makeArgsForLdapMock($args, $ldap);
-
-        $this   ->getLdapFunctionMock("ldap_start_tls")
-                ->expects($this->once())
-                ->with(...$ldapArgs)
-                ->willReturn($return);
-
-        $this->assertSame($expect, $ldap->start_tls(...$args));
+        $this->examineFuncWithMockedBackend('start_tls', $args, $return, $expect);
     }
 
-    public static function prov__unbind()
+    public static function prov__unbind__withMockedBackend() : array
     {
         return [
             // #1
@@ -1321,31 +1826,70 @@ final class LdapLinkTest extends TestCase
         ];
     }
 
-    /**
-     * @runInSeparateProcess
-     * @dataProvider prov__unbind
-     */
-    public function test__unbind(array $args, $return, $expect)
+    public static function prov__start_tls__withInvalidArgType() : array
     {
-        $ldap = $this->createLdapLink();
-        $ldapArgs = $this->makeArgsForLdapMock($args, $ldap);
-
-        $this   ->getLdapFunctionMock("ldap_unbind")
-                ->expects($this->once())
-                ->with(...$ldapArgs)
-                ->willReturn($return);
-
-        $this->assertSame($expect, $ldap->unbind(...$args));
+        return static::feedFuncWithInvalidArgType('start_tls', []);
     }
 
     /**
+     * @dataProvider prov__start_tls__withInvalidArgType
+     */
+    public function test__start_tls__withInvalidArgType($resource, array $args, string $exception, string $message) : void
+    {
+        $this->examineFuncWithInvalidArgType('start_tls', $resource, $args, $exception, $message);
+    }
+
+    public function test__start_tls__withInvalidLdapLink()
+    {
+        $this->examineFuncWithInvalidLdapLink('start_tls', []);
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // unbind()
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * @runInSeparateProcess
+     * @dataProvider prov__unbind__withMockedBackend
+     */
+    public function test__unbind__withMockedBackend(array $args, $return, $expect) : void
+    {
+        $this->examineFuncWithMockedBackend('unbind', $args, $return, $expect);
+    }
+
+    public static function prov__unbind__withInvalidArgType() : array
+    {
+        return static::feedFuncWithInvalidArgType('unbind', []);
+    }
+
+    /**
+     * @dataProvider prov__unbind__withInvalidArgType
+     */
+    public function test__unbind__withInvalidArgType($resource, array $args, string $exception, string $message) : void
+    {
+        $this->examineFuncWithInvalidArgType('unbind', $resource, $args, $exception, $message);
+    }
+
+    public function test__unbind__withInvalidLdapLink()
+    {
+        $this->examineFuncWithInvalidLdapLink('unbind', []);
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // unset()
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    /**
      * @runInSeparateProcess
      */
-    public function test__unset__doesNotFreeTheResource()
+    public function test__unset__doesNotFreeTheResource() : void
     {
         $ldap = new LdapLink('ldap link');
 
-        $this->getLdapFunctionMock('ldap_free_ldap')
+        $this->getLdapFunctionMock('ldap_unbind')
+             ->expects($this->never());
+
+        $this->getLdapFunctionMock('ldap_close')
              ->expects($this->never());
 
         unset($ldap);

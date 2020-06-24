@@ -301,7 +301,7 @@ final class LdapLink implements LdapLinkInterface
      * @param  int $deref
      * @param  array $serverctrls
      *
-     * @return ExtLdapResultInterface|false
+     * @return LdapResultInterface|false
      *
      * @link http://php.net/manual/en/function.ldap-list.php ldap_list()
      */
@@ -319,7 +319,7 @@ final class LdapLink implements LdapLinkInterface
         $args = func_get_args();
         // PHP 7.x and earlier may return null instead of false
         $res = ldap_list($this->getResource(), ...$args);
-        return $res ? new Result($res, $this) : false;
+        return $res ? new LdapResult($res, $this) : false;
     }
 
     /**
@@ -434,7 +434,7 @@ final class LdapLink implements LdapLinkInterface
      * @param  int $deref
      * @param  array $serverctrls
      *
-     * @return ExtLdapResultInterface|false
+     * @return LdapResultInterface|false
      *
      * @link http://php.net/manual/en/function.ldap-list.php ldap_list()
      */
@@ -452,7 +452,7 @@ final class LdapLink implements LdapLinkInterface
         $args = func_get_args();
         // PHP 7.x and earlier may return null instead of false
         $res = ldap_read($this->getResource(), ...$args);
-        return $res ? new Result($res, $this) : false;
+        return $res ? new LdapResult($res, $this) : false;
     }
 
     /**
@@ -518,7 +518,7 @@ final class LdapLink implements LdapLinkInterface
      * @param  int $deref
      * @param  array $serverctrls
      *
-     * @return ExtLdapResultInterface|false
+     * @return LdapResultInterface|false
      *
      * @link http://php.net/manual/en/function.ldap-list.php ldap_list()
      */
@@ -536,7 +536,7 @@ final class LdapLink implements LdapLinkInterface
         $args = func_get_args();
         // PHP 7.x and earlier may return null instead of false
         $res = ldap_search($this->getResource(), ...$args);
-        return $res ? new Result($res, $this) : false;
+        return $res ? new LdapResult($res, $this) : false;
     }
 
     /**

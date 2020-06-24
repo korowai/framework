@@ -19,22 +19,10 @@ use Korowai\Lib\Ldap\Adapter\ResultInterface;
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-interface ExtLdapResultInterface extends ResultInterface, ResourceWrapperInterface, LdapLinkWrapperInterface
+interface LdapResultInterface extends ResourceWrapperInterface, LdapLinkWrapperInterface
 {
     // @codingStandardsIgnoreStart
     // phpcs:disable Generic.NamingConventions.CamelCapsFunctionName
-
-    /**
-     * Retrieve the LDAP pagination cookie
-     *
-     * @param  string|null &$cookie
-     * @param  int|null &$estimated
-     *
-     * @return bool
-     *
-     * @link http://php.net/manual/en/function.ldap-control-paged-result-response.php ldap_control_paged_result_response()
-     */
-    public function control_paged_result_response(&$cookie = null, &$estimated = null) : bool;
 
     /**
      * Count the number of entries in a search

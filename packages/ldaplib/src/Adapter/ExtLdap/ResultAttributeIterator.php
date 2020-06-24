@@ -18,10 +18,10 @@ use Korowai\Lib\Ldap\Adapter\ResultAttributeIteratorInterface;
  * Iterates through an ldap result entry attributes.
  *
  * Only one instance of ``ResultAttributeIterator`` should be used for a given
- * ``ResultEntry``. The internal state (position) of the iterator is
- * keept and managed by the ``"ldap entry"`` resource (encapsulated by our
- * ``ResultEntry`` object which is provided as ``$entry`` argument to
- * ``ResultAttributeIterator::__construct()``). This is a consequence of how
+ * LdapResultEntry. The internal state (position) of the iterator is
+ * managed by the "ldap entry" resource encapsulated by ``ResultEntry`` object
+ * which is provided as ``$entry`` argument to
+ * ``ResultAttributeIterator::__construct()``. This is a consequence of how
  * PHP ldap extension implements attribute iteration &mdash; the ``berptr``
  * argument to ``libldap`` functions
  * [ldap_first_attribute (3)](https://manpages.debian.org/stretch-backports/libldap2-dev/ldap_first_attribute.3.en.html)
@@ -34,7 +34,7 @@ use Korowai\Lib\Ldap\Adapter\ResultAttributeIteratorInterface;
  */
 class ResultAttributeIterator implements ResultAttributeIteratorInterface
 {
-    /** @var ResultEntry */
+    /** @var LdapResultEntry */
     private $entry;
 
     /** @var string|null */
@@ -47,10 +47,10 @@ class ResultAttributeIterator implements ResultAttributeIteratorInterface
      * ``$entry->first_attribute()`` or ``$entry->next_attribute()`` or
      * it should be null.
      *
-     * @param  ResultEntry $entry An ldap entry containing the attributes
+     * @param  LdapResultEntry $entry An ldap entry containing the attributes
      * @param  string|null $attribute Name of the current attribute pointed to by Iterator
      */
-    public function __construct(ResultEntry $entry, string $attribute = null)
+    public function __construct(LdapResultEntry $entry, string $attribute = null)
     {
         $this->entry = $entry;
         $this->attribute = is_string($attribute) ? strtolower($attribute) : $attribute;

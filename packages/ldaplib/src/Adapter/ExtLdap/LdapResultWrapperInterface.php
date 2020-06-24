@@ -15,14 +15,14 @@ namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-interface ResultWrapperInterface
+interface LdapResultWrapperInterface
 {
     /**
      * Returns the encapsulated Result instance.
      *
-     * @return ExtLdapResultInterface
+     * @return LdapResultInterface
      */
-    public function getResult() : ExtLdapResultInterface;
+    public function getLdapResult() : LdapResultInterface;
 }
 
 // vim: syntax=php sw=4 ts=4 et:

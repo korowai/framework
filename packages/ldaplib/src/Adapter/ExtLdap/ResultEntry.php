@@ -12,150 +12,57 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
 
+use Korowai\Lib\Ldap\Adapter\ResultEntryInterface;
 use Korowai\Lib\Ldap\Adapter\ResultEntryToEntry;
 use Korowai\Lib\Ldap\Adapter\ResultAttributeIteratorInterface;
-use function Korowai\Lib\Error\errorHandler;
+use function Korowai\Lib\Context\with;
 
 /**
  * Wrapper for ldap entry result resource.
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-final class ResultEntry extends ResultRecord implements ExtLdapResultEntryInterface
+final class ResultEntry /*extends ResultRecord*/ implements ResultEntryInterface
 {
-    use ResultEntryToEntry;
+//    use ResultEntryToEntry;
 
     /** @var ResultAttributeIterator */
     private $iterator;
 
-    public static function isLdapResultEntryResource($arg) : bool
+    /** @var LdapResultEntryInterface */
+    private $ldapResultEntry;
+
+    /**
+     * Initializes the object
+     *
+     * @param  LdapEntryInterface $ldapEntry
+     */
+    public function __construct(LdapResultEntryInterface $ldapResultEntry)
     {
-        // The name "ldap result entry" is documented: http://php.net/manual/en/resource.php
-        return is_resource($arg) && (get_resource_type($arg) === "ldap result entry");
+        $this->setLdapResultEntry($ldapResultEntry);
     }
 
     /**
-     * Initializes the ``ResultEntry`` instance
+     * Sets an instance of LdapResultEntryInterface to this object.
      *
-     * @param  resource|null $entry
-     * @param  ExtLdapResultInterface $result
+     * @param  LdapResultEntryInterface $ldapResultEntry
+     * @return void
      */
-    public function __construct($entry, ExtLdapResultInterface $result)
+    private function setLdapResultEntry(LdapResultEntryInterface $ldapResultEntry) : void
     {
-        $this->initResultRecord($entry, $result);
+        $this->ldapResultEntry = $ldapResultEntry;
     }
 
     /**
-     * {@inheritdoc}
+     * Returns the LdapResultEntryInterface instance encapsulated by this
+     * object.
+     *
+     * @return LdapResultEntryInterface
      */
-    public function isValid(): bool
+    public function getLdapResultEntry() : LdapResultEntryInterface
     {
-        return static::isLdapResultEntryResource($this->getResource());
+        return $this->ldapResultEntry;
     }
-
-    // @codingStandardsIgnoreStart
-    // phpcs:disable Generic.NamingConventions.CamelCapsFunctionName
-
-    /**
-     * Return first attribute
-     *
-     * @return string|false
-     *
-     * @link http://php.net/manual/en/function.ldap-first-attribute.php ldap_first_attribute()
-     *
-     * @psalm-suppress TypeDoesNotContainType
-     * @psalm-return string|false
-     */
-    public function first_attribute()
-    {
-        $ldap = $this->getResult()->getLdapLink();
-        // PHP 7.x and earlier may return null instead of false
-        /** @psalm-suppress TypeDoesNotContainType */
-        return @ldap_first_attribute($ldap->getResource(), $this->getResource()) ?? false;
-    }
-
-    /**
-     * Get attributes from a search result entry
-     *
-     * @return array|false
-     *
-     * @link http://php.net/manual/en/function.ldap-get-attributes.php ldap_get_attributes()
-     */
-    public function get_attributes()
-    {
-        $ldap = $this->getResult()->getLdapLink();
-        // PHP 7.x and earlier may return null instead of false
-        /** @psalm-suppress TypeDoesNotContainType */
-        return @ldap_get_attributes($ldap->getResource(), $this->getResource()) ?? false;
-    }
-
-    /**
-     * Get all binary values from a result entry
-     *
-     * @param  string $attribute
-     *
-     * @return array|false
-     *
-     * @link http://php.net/manual/en/function.ldap-get-values-len.php ldap_get_values_len()
-     */
-    public function get_values_len(string $attribute)
-    {
-        $ldap = $this->getResult()->getLdapLink();
-        // PHP 7.x and earlier may return null instead of false
-        /** @psalm-suppress TypeDoesNotContainType */
-        return @ldap_get_values_len($ldap->getResource(), $this->getResource(), $attribute) ?? false;
-    }
-
-    /**
-     * Get all values from a result entry
-     *
-     * @param  string $attribute
-     *
-     * @return array|false
-     *
-     * @link http://php.net/manual/en/function.ldap-get-values.php ldap_get_values()
-     */
-    public function get_values(string $attribute)
-    {
-        $ldap = $this->getResult()->getLdapLink();
-        // PHP 7.x and earlier may return null instead of false
-        /** @psalm-suppress TypeDoesNotContainType */
-        return @ldap_get_values($ldap->getResource(), $this->getResource(), $attribute) ?? false;
-    }
-
-    /**
-     * Get the next attribute in result
-     *
-     * @return string|false
-     *
-     * @link http://php.net/manual/en/function.ldap-next-attribute.php ldap_next_attribute()
-     */
-    public function next_attribute()
-    {
-        $ldap = $this->getResult()->getLdapLink();
-        // PHP 7.x and earlier may return null instead of false
-        /** @psalm-suppress TypeDoesNotContainType */
-        return @ldap_next_attribute($ldap->getResource(), $this->getResource()) ?? false;
-    }
-
-    /**
-     * Get next result entry
-     *
-     * @return ResultEntry|false
-     *
-     * @link http://php.net/manual/en/function.ldap-next-entry.php ldap_next_entry()
-     */
-    public function next_entry()
-    {
-        $result = $this->getResult();
-        $ldap = $result->getLdapLink();
-        // PHP 7.x and earlier may return null instead of false
-        $res = @ldap_next_entry($ldap->getResource(), $this->getResource());
-        return $res ? new ResultEntry($res, $result) : false;
-    }
-
-    // phpcs:enable Generic.NamingConventions.CamelCapsFunctionName
-    // @codingStandardsIgnoreEnd
 
     /**
      * It always returns same instance. When used for the first
@@ -166,9 +73,13 @@ final class ResultEntry extends ResultRecord implements ExtLdapResultEntryInterf
     public function getAttributeIterator() : ResultAttributeIteratorInterface
     {
         if (!isset($this->iterator)) {
-            // FIXME: $first may be false, shall we throw an exception then? In what circumstances?
-            $first = $this->first_attribute();
-            $this->iterator = new ResultAttributeIterator($this, $first === false ? null : $first);
+            $ldapResultEntry = $this->getLdapResultEntry();
+            $ldap = $ldapResultEntry->getLdapResult()->getLdapLink();
+            /** @var string|false */
+            $first = with(new LdapLinkErrorHandler($ldap))(function ($eh) use ($ldapResultEntry) {
+                return $ldapResultEntry->first_attribute();
+            });
+            $this->iterator = new ResultAttributeIterator($ldapResultEntry, $first === false ? null : $first);
         }
         return $this->iterator;
     }
@@ -178,15 +89,12 @@ final class ResultEntry extends ResultRecord implements ExtLdapResultEntryInterf
      */
     public function getAttributes() : array
     {
-        // FIXME: $this->get_attributes() may return false, shall we throw an exception then? In what circumstances?
-        $ldap = $this->getResult()->getLdapLink();
-        /*$attributes = $this->get_attributes(); */
-        $errorHandler = errorHandler(new LdapLinkErrorHandler($ldap));
-        $attributes = with($errorHandler)(function ($eh) {
+        $ldapResultEntry = $this->getLdapResultEntry();
+        $ldap = $ldapResultEntry->getLdapResult()->getLdapLink();
+        /** @var array */
+        $attributes = with(new LdapLinkErrorHandler($ldap))(function ($eh) {
             return $this->get_attributes();
         });
-        if ($attributes === false) {
-        }
         return static::cleanupAttributes($attributes);
     }
 

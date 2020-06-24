@@ -17,9 +17,7 @@ use Korowai\Testing\TestCase;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLink;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\HasResource;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\Result;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\ResultEntry;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\ResultReference;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResult;
 
 // tests with process isolation can't use native PHP closures (they're not serializable)
 use Korowai\Tests\Lib\Ldap\Adapter\ExtLdap\Closures\LdapGetOptionClosure;
@@ -36,7 +34,7 @@ final class LdapLinkTest extends TestCase
         return $this->getFunctionMock('\Korowai\Lib\Ldap\Adapter\ExtLdap', ...$args);
     }
 
-    private function makeArgsForLdapMock(array $args, LdapLink $ldap = null) : array
+    private function makeArgsForBackendMock(array $args, LdapLink $ldap = null) : array
     {
         if ($ldap !== null) {
             return array_map([$this, 'identicalTo'], array_merge([$ldap->getResource()], $args));
@@ -47,7 +45,7 @@ final class LdapLinkTest extends TestCase
     private function examineSearchWithMockedBackend(string $func, array $args, $return, $expect) : void
     {
         $ldap = new LdapLink('ldap link');
-        $ldapArgs = $this->makeArgsForLdapMock($args, $ldap);
+        $ldapArgs = $this->makeArgsForBackendMock($args, $ldap);
 
         $this   ->getLdapFunctionMock("ldap_$func")
                 ->expects($this->once())
@@ -56,7 +54,7 @@ final class LdapLinkTest extends TestCase
 
         $result = call_user_func_array([$ldap, $func], $args);
         if (is_array($expect)) {
-            $this->assertInstanceOf(Result::class, $result);
+            $this->assertInstanceOf(LdapResult::class, $result);
             $this->assertSame($ldap, $result->getLdapLink());
             $this->assertHasPropertiesSameAs($expect, $result);
         } else {
@@ -67,7 +65,7 @@ final class LdapLinkTest extends TestCase
     private function examineFuncWithMockedBackend(string $func, array $args, $return, $expect) : void
     {
         $ldap = new LdapLink('ldap link');
-        $ldapArgs = $this->makeArgsForLdapMock($args, $ldap);
+        $ldapArgs = $this->makeArgsForBackendMock($args, $ldap);
 
         $this   ->getLdapFunctionMock("ldap_$func")
                 ->expects($this->once())
@@ -709,7 +707,7 @@ final class LdapLinkTest extends TestCase
      */
     public function test__connect__withMockedBackend(array $args, $return, $expect) : void
     {
-        $ldapArgs = $this->makeArgsForLdapMock($args);
+        $ldapArgs = $this->makeArgsForBackendMock($args);
         if (count($args) === 2 && $args[1] === null) {
             unset($ldapArgs[1]);
         }
@@ -798,7 +796,7 @@ final class LdapLinkTest extends TestCase
      */
     public function test__dn2ufn__withMockedBackend(array $args, $return, $expect) : void
     {
-        $ldapArgs = $this->makeArgsForLdapMock($args);
+        $ldapArgs = $this->makeArgsForBackendMock($args);
 
         $this   ->getLdapFunctionMock("ldap_dn2ufn")
                 ->expects($this->once())
@@ -855,7 +853,7 @@ final class LdapLinkTest extends TestCase
      */
     public function test__err2str__withMockedBackend(array $args, $return, $expect) : void
     {
-        $ldapArgs = $this->makeArgsForLdapMock($args);
+        $ldapArgs = $this->makeArgsForBackendMock($args);
 
         $this   ->getLdapFunctionMock("ldap_err2str")
                 ->expects($this->once())
@@ -1038,7 +1036,7 @@ final class LdapLinkTest extends TestCase
      */
     public function test__escape__withMockedBackend(array $args, $return, $expect) : void
     {
-        $ldapArgs = $this->makeArgsForLdapMock($args);
+        $ldapArgs = $this->makeArgsForBackendMock($args);
         $this   ->getLdapFunctionMock("ldap_escape")
                 ->expects($this->once())
                 ->with(...$ldapArgs)
@@ -1094,7 +1092,7 @@ final class LdapLinkTest extends TestCase
      */
     public function test__explode_dn__withMockedBackend(array $args, $return, $expect) : void
     {
-        $ldapArgs = $this->makeArgsForLdapMock($args);
+        $ldapArgs = $this->makeArgsForBackendMock($args);
         $this   ->getLdapFunctionMock("ldap_explode_dn")
                 ->expects($this->once())
                 ->with(...$ldapArgs)
@@ -1160,7 +1158,7 @@ final class LdapLinkTest extends TestCase
     public function test__get_option__withMockedBackend(array $args, $return, $expect, array $values) : void
     {
         $ldap = new LdapLink('ldap link');
-        $ldapArgs = $this->makeArgsForLdapMock($args, $ldap);
+        $ldapArgs = $this->makeArgsForBackendMock($args, $ldap);
 
         $this   ->getLdapFunctionMock("ldap_get_option")
                 ->expects($this->once())

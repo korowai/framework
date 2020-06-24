@@ -85,7 +85,7 @@ final class ResultReference extends ResultRecord implements ExtLdapResultReferen
      */
     public function next_reference()
     {
-        $result = $this->getResult();
+        $result = $this->getLdapResult();
         $ldap = $result->getLdapLink();
         // PHP 7.x and earlier may return null instead of false
         $res = @ldap_next_reference($ldap->getResource(), $this->getResource());
@@ -103,7 +103,7 @@ final class ResultReference extends ResultRecord implements ExtLdapResultReferen
      */
     public function parse_reference(&$referrals) : bool
     {
-        $ldap = $this->getResult()->getLdapLink();
+        $ldap = $this->getLdapResult()->getLdapLink();
         // PHP 7.x and earlier may return null instead of false
         return @ldap_parse_reference($ldap->getResource(), $this->getResource(), $referrals) ?? false;
     }
@@ -120,7 +120,7 @@ final class ResultReference extends ResultRecord implements ExtLdapResultReferen
     {
         if (!isset($this->referrals)) {
             if ($this->parse_reference($referrals) === false) {
-                throw static::lastLdapException($this->getResult()->getLdapLink());
+                throw static::lastLdapException($this->getLdapResult()->getLdapLink());
             }
             $this->referrals = $referrals;
         }

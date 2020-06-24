@@ -12,19 +12,24 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
 
-use Korowai\Lib\Ldap\Adapter\ResultReferenceInterface;
-use Korowai\Lib\Ldap\Adapter\ReferralsIterationInterface;
-
 /**
  * Wrapper for ldap reference result resource.
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-interface ExtLdapResultReferenceInterface
-    extends ResultReferenceInterface, ReferralsIterationInterface, ResourceWrapperInterface, ResultWrapperInterface
+interface LdapResultReferenceInterface extends ResourceWrapperInterface, LdapResultWrapperInterface
 {
     // @codingStandardsIgnoreStart
     // phpcs:disable Generic.NamingConventions.CamelCapsFunctionName
+
+    /**
+     * Get the DN of the reference
+     *
+     * @return string|bool
+     *
+     * @link http://php.net/manual/en/function.ldap-get-dn.php ldap_get_dn()
+     */
+    public function get_dn();
 
     /**
      * Get next reference

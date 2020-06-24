@@ -189,7 +189,7 @@ interface LdapLinkInterface extends ResourceWrapperInterface
      * @param  int $deref
      * @param  array $serverctrls
      *
-     * @return ExtLdapResultInterface|false
+     * @return LdapResultInterface|false
      *
      * @link http://php.net/manual/en/function.ldap-list.php ldap_list()
      */
@@ -281,7 +281,7 @@ interface LdapLinkInterface extends ResourceWrapperInterface
      * @param  int $deref
      * @param  array $serverctrls
      *
-     * @return ExtLdapResultInterface|false
+     * @return LdapResultInterface|false
      *
      * @link http://php.net/manual/en/function.ldap-list.php ldap_list()
      */
@@ -348,7 +348,7 @@ interface LdapLinkInterface extends ResourceWrapperInterface
      * @param  int $deref
      * @param  array $serverctrls
      *
-     * @return ExtLdapResultInterface|false
+     * @return LdapResultInterface|false
      *
      * @link http://php.net/manual/en/function.ldap-list.php ldap_list()
      */

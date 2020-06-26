@@ -21,14 +21,10 @@ use Korowai\Lib\Ldap\Exception\LdapException;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class EntryManagerTest extends TestCase
+final class EntryManagerTest extends TestCase
 {
     use \phpmock\phpunit\PHPMock;
-
-    public function getLdapFunctionMock(...$args)
-    {
-        return $this->getFunctionMock('\\Korowai\\Lib\\Ldap\\Adapter\ExtLdap', ...$args);
-    }
+    use GetLdapFunctionMock;
 
     public function createLdapLinkMock($valid, $unbind = true)
     {

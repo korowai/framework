@@ -20,9 +20,53 @@ use Korowai\Lib\Error\AbstractManagedErrorHandler;
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-final class LdapLinkErrorHandler extends AbstractManagedErrorHandler
+final class LdapLinkErrorHandler extends AbstractManagedErrorHandler implements LdapLinkWrapperInterface
 {
     use HasLdapLink;
+
+    /**
+     * Create LdapLinkErrorHandler instance from LdapLinkWrapperInterface.
+     *
+     * @param  LdapLinkWrapperInterface $wrapper
+     * @return self
+     */
+    public static function fromLdapLinkWrapper(LdapLinkWrapperInterface $wrapper) : self
+    {
+        return new self($wrapper->getLdapLink());
+    }
+
+    /**
+     * Create LdapLinkErrorHandler instance from LdapResultWrapperInterface.
+     *
+     * @param  LdapResultWrapperInterface $wrapper
+     * @return self
+     */
+    public static function fromLdapResultWrapper(LdapResultWrapperInterface $wrapper) : self
+    {
+        return self::fromLdapLinkWrapper($wrapper->getLdapResult());
+    }
+
+    /**
+     * Create LdapLinkErrorHandler from LdapResultEntryWrapperInterface.
+     *
+     * @param  LdapResultEntryWrapperInterface $wrapper
+     * @return self
+     */
+    public static function fromLdapResultEntryWrapper(LdapResultEntryWrapperInterface $wrapper) : self
+    {
+        return self::fromLdapResultWrapper($wrapper->getLdapResultEntry());
+    }
+
+    /**
+     * Create LdapLinkErrorHandler from LdapResultReferenceWrapperInterface.
+     *
+     * @param  LdapResultReferenceWrapperInterface $wrapper
+     * @return self
+     */
+    public static function fromLdapResultReferenceWrapper(LdapResultReferenceWrapperInterface $wrapper) : self
+    {
+        return self::fromLdapResultWrapper($wrapper->getLdapResultReference());
+    }
 
     /**
      * Initializes the object.

@@ -15,13 +15,16 @@ namespace Korowai\Tests\Lib\Ldap\Adapter\ExtLdap;
 use Korowai\Testing\TestCase;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkErrorHandler;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkWrapperInterface;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultInterface;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultWrapperInterface;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultEntryInterface;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultEntryWrapperInterface;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultReferenceInterface;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultReferenceWrapperInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\HasLdapLink;
 use Korowai\Lib\Ldap\Exception\LdapException;
 use Korowai\Lib\Error\AbstractManagedErrorHandler;
-
-//
-//// tests with process isolation can't use native PHP closures (they're not serializable)
-//use Korowai\Tests\Lib\Ldap\Adapter\ExtLdap\Closures\LdapGetOptionClosure;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -35,10 +38,19 @@ final class LdapLinkErrorHandlerTest extends TestCase
         $this->assertExtendsClass(AbstractManagedErrorHandler::class, LdapLinkErrorHandler::class);
     }
 
+    public function test__implements__LdapLinkWrapperInterface()
+    {
+        $this->assertImplementsInterface(LdapLinkWrapperInterface::class, LdapLinkErrorHandler::class);
+    }
+
     public function test__uses__HasLdapLink()
     {
         $this->assertUsesTrait(HasLdapLink::class, LdapLinkErrorHandler::class);
     }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // getLdapLink()
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public function test__getLdapLink()
     {
@@ -47,6 +59,129 @@ final class LdapLinkErrorHandlerTest extends TestCase
         $handler = new LdapLinkErrorHandler($ldap);
         $this->assertSame($ldap, $handler->getLdapLink());
     }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // fromLdapLinkWrapper()
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public function test__fromLdapLinkWrapper()
+    {
+        $ldap = $this->getMockBuilder(LdapLinkInterface::class)
+                     ->getMockForAbstractClass();
+        $wrap = $this->getMockBuilder(LdapLinkWrapperInterface::class)
+                     ->setMethods(['getLdapLink'])
+                     ->getMockForAbstractClass();
+
+        $wrap->expects($this->once())
+             ->method('getLdapLink')
+             ->with()
+             ->willReturn($ldap);
+
+        $handler = LdapLinkErrorHandler::fromLdapLinkWrapper($wrap);
+        $this->assertInstanceOf(LdapLinkErrorHandler::class, $handler);
+        $this->assertSame($ldap, $handler->getLdapLink());
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // fromLdapResultWrapper()
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public function test__fromLdapResultWrapper()
+    {
+        $ldap = $this   ->getMockBuilder(LdapLinkInterface::class)
+                        ->getMockForAbstractClass();
+        $result = $this ->getMockBuilder(LdapResultInterface::class)
+                        ->setMethods(['getLdapLink'])
+                        ->getMockForAbstractClass();
+        $wrap = $this   ->getMockBuilder(LdapResultWrapperInterface::class)
+                        ->setMethods(['getLdapResult'])
+                        ->getMockForAbstractClass();
+
+        $result ->expects($this->once())
+                ->method('getLdapLink')
+                ->with()
+                ->willReturn($ldap);
+        $wrap   ->expects($this->once())
+                ->method('getLdapResult')
+                ->with()
+                ->willReturn($result);
+
+        $handler = LdapLinkErrorHandler::fromLdapResultWrapper($wrap);
+        $this->assertInstanceOf(LdapLinkErrorHandler::class, $handler);
+        $this->assertSame($ldap, $handler->getLdapLink());
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // fromLdapResultEntryWrapper()
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public function test__fromLdapResultEntryWrapper()
+    {
+        $ldap = $this   ->getMockBuilder(LdapLinkInterface::class)
+                        ->getMockForAbstractClass();
+        $result = $this ->getMockBuilder(LdapResultInterface::class)
+                        ->setMethods(['getLdapLink'])
+                        ->getMockForAbstractClass();
+        $entry = $this  ->getMockBuilder(LdapResultEntryInterface::class)
+                        ->setMethods(['getLdapResult'])
+                        ->getMockForAbstractClass();
+        $wrap = $this   ->getMockBuilder(LdapResultEntryWrapperInterface::class)
+                        ->setMethods(['getLdapResultEntry'])
+                        ->getMockForAbstractClass();
+
+        $result ->expects($this->once())
+                ->method('getLdapLink')
+                ->with()
+                ->willReturn($ldap);
+        $entry  ->expects($this->once())
+                ->method('getLdapResult')
+                ->with()
+                ->willReturn($result);
+        $wrap   ->expects($this->once())
+                ->method('getLdapResultEntry')
+                ->with()
+                ->willReturn($entry);
+
+        $handler = LdapLinkErrorHandler::fromLdapResultEntryWrapper($wrap);
+        $this->assertInstanceOf(LdapLinkErrorHandler::class, $handler);
+        $this->assertSame($ldap, $handler->getLdapLink());
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // fromLdapResultReferenceWrapper()
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public function test__fromLdapResultReferenceWrapper()
+    {
+        $ldap = $this   ->getMockBuilder(LdapLinkInterface::class)
+                        ->getMockForAbstractClass();
+        $result = $this ->getMockBuilder(LdapResultInterface::class)
+                        ->setMethods(['getLdapLink'])
+                        ->getMockForAbstractClass();
+        $entry = $this  ->getMockBuilder(LdapResultReferenceInterface::class)
+                        ->setMethods(['getLdapResult'])
+                        ->getMockForAbstractClass();
+        $wrap = $this   ->getMockBuilder(LdapResultReferenceWrapperInterface::class)
+                        ->setMethods(['getLdapResultReference'])
+                        ->getMockForAbstractClass();
+
+        $result ->expects($this->once())
+                ->method('getLdapLink')
+                ->with()
+                ->willReturn($ldap);
+        $entry  ->expects($this->once())
+                ->method('getLdapResult')
+                ->with()
+                ->willReturn($result);
+        $wrap   ->expects($this->once())
+                ->method('getLdapResultReference')
+                ->with()
+                ->willReturn($entry);
+
+        $handler = LdapLinkErrorHandler::fromLdapResultReferenceWrapper($wrap);
+        $this->assertInstanceOf(LdapLinkErrorHandler::class, $handler);
+        $this->assertSame($ldap, $handler->getLdapLink());
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // invoke()
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public function test__invoke__withInvalidLdapLink()
     {

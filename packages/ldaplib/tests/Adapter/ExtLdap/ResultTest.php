@@ -13,7 +13,6 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Ldap\Adapter\ExtLdap;
 
 use Korowai\Testing\TestCase;
-use \Phake;
 
 use Korowai\Lib\Ldap\Adapter\ExtLdap\Result;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\ResultEntry;
@@ -26,21 +25,13 @@ use Korowai\Lib\Ldap\Adapter\ExtLdap\HasResource;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\HasLdapLink;
 use Korowai\Lib\Ldap\Adapter\ResultInterface;
 
-// tests with process isolation can't use native PHP closures (they're not serializable)
-use Korowai\Tests\Lib\Ldap\Adapter\ExtLdap\Closures\LdapControlPagedResultResponseClosure;
-use Korowai\Tests\Lib\Ldap\Adapter\ExtLdap\Closures\LdapParseResultClosure;
-
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
 final class ResultTest extends TestCase
 {
     use \phpmock\phpunit\PHPMock;
-
-    private function getLdapFunctionMock(...$args)
-    {
-        return $this->getFunctionMock('\\Korowai\\Lib\\Ldap\\Adapter\ExtLdap', ...$args);
-    }
+    use GetLdapFunctionMock;
 
     private function mockResourceFunctions($arg, $return) : void
     {
@@ -157,26 +148,19 @@ final class ResultTest extends TestCase
 
             // #2
             [
-                'arg'    => 'foo',
-                'return' => null,
-                'expect' => false,
-            ],
-
-            // #3
-            [
                 'arg'    => 'mocked false',
                 'return' => false,
                 'expect' => false,
             ],
 
-            // #4
+            // #3
             [
                 'arg'    => 'mocked unknown',
                 'return' => 'unknown',
                 'expect' => false,
             ],
 
-            // #5
+            // #4
             [
                 'arg'    => 'ldap result',
                 'return' => 'ldap result',

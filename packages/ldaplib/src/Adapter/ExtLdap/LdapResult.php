@@ -22,12 +22,6 @@ final class LdapResult implements LdapResultInterface
     use HasResource;
     use HasLdapLink;
 
-    public static function isLdapResultResource($arg) : bool
-    {
-        // The name "ldap result" is documented: http://php.net/manual/en/resource.php
-        return is_resource($arg) && (get_resource_type($arg) === "ldap result");
-    }
-
     /**
      * Initializes new ``Result`` instance
      *
@@ -45,13 +39,11 @@ final class LdapResult implements LdapResultInterface
     }
 
     /**
-     * Checks whether the Result represents a valid 'ldap result' resource.
-     *
-     * @return bool
+     * {@inheritdoc}
      */
-    public function isValid() : bool
+    public function supportsResourceType(string $type) : bool
     {
-        return static::isLdapResultResource($this->getResource());
+        return $type === 'ldap result';
     }
 
     // @codingStandardsIgnoreStart

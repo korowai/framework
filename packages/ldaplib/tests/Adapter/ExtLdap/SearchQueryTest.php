@@ -25,11 +25,7 @@ use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 class SearchQueryTest extends TestCase
 {
     use \phpmock\phpunit\PHPMock;
-
-    public function getLdapFunctionMock(...$args)
-    {
-        return $this->getFunctionMock('\\Korowai\\Lib\\Ldap\\Adapter\ExtLdap', ...$args);
-    }
+    use GetLdapFunctionMock;
 
     public function test__extends__AbstractSearchQuery()
     {

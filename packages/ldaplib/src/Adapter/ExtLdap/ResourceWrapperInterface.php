@@ -25,12 +25,19 @@ interface ResourceWrapperInterface
     public function getResource();
 
     /**
-     * Checks whether the Result represents a valid resource of particular
-     * type.
+     * Checks whether the wrapped resource is valid.
      *
      * @return bool
      */
     public function isValid() : bool;
+
+    /**
+     * Returns whether the object supports resource of given $type
+     *
+     * @param  string $type
+     * @return bool
+     */
+    public function supportsResourceType(string $type) : bool;
 }
 
 // vim: syntax=php sw=4 ts=4 et:

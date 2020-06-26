@@ -26,22 +26,6 @@ final class LdapLink implements LdapLinkInterface
     use HasResource;
 
     /**
-     * Return whether $arg is a valid "ldap link" resource.
-     *
-     * @param  mixed $arg An argument to be examined.
-     * @return bool
-     *
-     * @link http://php.net/manual/en/resource.php
-     *
-     * @psalm-mutation-free
-     */
-    public static function isLdapLinkResource($arg) : bool
-    {
-        // The name "ldap link" is documented: http://php.net/manual/en/resource.php
-        return is_resource($arg) && (get_resource_type($arg) === "ldap link");
-    }
-
-    /**
      * Constructs LdapLink
      *
      * @param  resource $link Should be a resource returned by ldap_connect().
@@ -53,13 +37,11 @@ final class LdapLink implements LdapLinkInterface
     }
 
     /**
-     * Return whether $this->getResource() is a valid "ldap link" resource.
-     *
-     * @return bool
+     * {@inheritdoc}
      */
-    public function isValid() : bool
+    public function supportsResourceType(string $type) : bool
     {
-        return static::isLdapLinkResource($this->getResource());
+        return $type === 'ldap link';
     }
 
     // @codingStandardsIgnoreStart

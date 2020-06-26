@@ -17,7 +17,7 @@ use Korowai\Lib\Ldap\EntryInterface;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-interface ResultEntryInterface extends ResultRecordInterface
+interface ResultEntryInterface extends ResultRecordInterface, \IteratorAggregate
 {
     /**
      * Returns entry attributes as an array. The keys in array are lower-case.

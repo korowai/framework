@@ -22,13 +22,9 @@ use Korowai\Lib\Ldap\Exception\LdapException;
  */
 class LastLdapExceptionTest extends TestCase
 {
-    use LastLdapException;
     use \phpmock\phpunit\PHPMock;
-
-    public function getLdapFunctionMock(...$args)
-    {
-        return $this->getFunctionMock('\\Korowai\\Lib\\Ldap\\Adapter\ExtLdap', ...$args);
-    }
+    use GetLdapFunctionMock;
+    use LastLdapException;
 
     /**
      * @runInSeparateProcess

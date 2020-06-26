@@ -14,47 +14,64 @@ namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
 
 use Korowai\Lib\Ldap\Adapter\ResultReferenceInterface;
 use Korowai\Lib\Ldap\Adapter\ResultReferralIteratorInterface;
-use Korowai\Lib\Ldap\Adapter\ReferralsIterationInterface;
-use Korowai\Lib\Ldap\Exception\LdapException;
+use function Korowai\Lib\Context\with;
 
 /**
  * Wrapper for ldap reference result resource.
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-final class ResultReference extends ResultRecord implements ExtLdapResultReferenceInterface
+final class ResultReference implements ResultReferenceInterface, LdapResultReferenceWrapperInterface
 {
-    use LastLdapException;
+    use HasLdapResultReference;
 
-    /** @var array|null */
-    private $referrals;
     /** @var ResultReferralIterator|null */
     private $iterator;
-
-    public static function isLdapResultReferenceResource($arg) : bool
-    {
-        // The name "ldap result entry" is documented: http://php.net/manual/en/resource.php
-        return is_resource($arg) && (get_resource_type($arg) === "ldap result entry");
-    }
 
     /**
      * Initializes the ``ResultReference`` instance
      *
-     * @param  resource|null $reference
-     * @param  ExtLdapResultInterface $result
+     * @param  LdapResultReferenceInterface $ldapResultReference
      */
-    public function __construct($reference, ExtLdapResultInterface $result)
+    public function __construct(LdapResultReferenceInterface $ldapResultReference)
     {
-        $this->initResultRecord($reference, $result);
-        $this->referrals = null;
+        $this->setLdapResultReference($ldapResultReference);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function isValid(): bool
+    public function getDn() : string
     {
-        return static::isLdapResultReferenceResource($this->getResource());
+        $reference = $this->getLdapResultReference();
+
+        /** @var string|false */
+        $dn = with(LdapLinkErrorHandler::fromLdapResultWrapper($reference))(function ($eh) use ($reference) {
+            return $reference->get_dn();
+        });
+
+        return (string)$dn;
+    }
+
+    /**
+     * Returns referrals
+     * @return array
+     */
+    public function getReferrals() : array
+    {
+        $reference = $this->getLdapResultReference();
+
+        with(LdapLinkErrorHandler::fromLdapResultWrapper($reference))(
+            function ($eg) use ($reference, &$referrals) {
+                return $reference->parse_reference($referrals);
+            }
+        );
+
+        if (!isset($referrals)) {
+            $referrals = [];
+        }
+
+        return $referrals;
     }
 
     /**
@@ -67,105 +84,21 @@ final class ResultReference extends ResultRecord implements ExtLdapResultReferen
      */
     public function getReferralIterator() : ResultReferralIteratorInterface
     {
-        if (!isset($jhis->iterator)) {
+        if (!isset($this->iterator)) {
             $this->iterator = new ResultReferralIterator($this);
         }
         return $this->iterator;
     }
 
-    // @codingStandardsIgnoreStart
-    // phpcs:disable Generic.NamingConventions.CamelCapsFunctionName
-
     /**
-     * Get next reference
+     * Returns iterator over reference's referrals
      *
-     * @return ResultReference|bool
-     *
-     * @link http://php.net/manual/en/function.ldap-next-reference.php ldap_next_reference()
+     * @return ResultReferralIteratorInterface
      */
-    public function next_reference()
+    public function getIterator() : ResultReferralIteratorInterface
     {
-        $result = $this->getLdapResult();
-        $ldap = $result->getLdapLink();
-        // PHP 7.x and earlier may return null instead of false
-        $res = @ldap_next_reference($ldap->getResource(), $this->getResource());
-        return $res ? new ResultReference($res, $result) : false;
+        return $this->getReferralIterator();
     }
-
-    /**
-     * Extract information from reference entry
-     *
-     * @param  array|null &$referrals
-     *
-     * @return bool
-     *
-     * @link http://php.net/manual/en/function.ldap-parse-reference.php ldap_parse_reference()
-     */
-    public function parse_reference(&$referrals) : bool
-    {
-        $ldap = $this->getLdapResult()->getLdapLink();
-        // PHP 7.x and earlier may return null instead of false
-        return @ldap_parse_reference($ldap->getResource(), $this->getResource(), $referrals) ?? false;
-    }
-
-    // phpcs:enable Generic.NamingConventions.CamelCapsFunctionName
-    // @codingStandardsIgnoreEnd
-
-    /**
-     * Returns referrals
-     * @return array
-     * @throws LdapException thrown when ``parse_reference`` returns ``false``
-     */
-    public function getReferrals() : array
-    {
-        if (!isset($this->referrals)) {
-            if ($this->parse_reference($referrals) === false) {
-                throw static::lastLdapException($this->getLdapResult()->getLdapLink());
-            }
-            $this->referrals = $referrals;
-        }
-        return $this->referrals;
-    }
-
-    // @codingStandardsIgnoreStart
-    // phpcs:disable Generic.NamingConventions.CamelCapsFunctionName
-
-    /**
-     * Returns the result of ``current($this->referrals)``.
-     */
-    public function referrals_current()
-    {
-        return current($this->getReferrals());
-    }
-
-    /**
-     * Returns the result of ``key($this->referrals)``.
-     */
-    public function referrals_key()
-    {
-        return key($this->getReferrals());
-    }
-
-    /**
-     * Returns the result of ``next($this->referrals)``.
-     */
-    public function referrals_next()
-    {
-        $this->getReferrals();
-        return next($this->referrals);
-    }
-
-    /**
-     * Returs the result of ``reset($this->referrals)``.
-     */
-    public function referrals_reset()
-    {
-        $this->getReferrals();
-        return reset($this->referrals);
-    }
-
-    // phpcs:enable Generic.NamingConventions.CamelCapsFunctionName
-    // @codingStandardsIgnoreEnd
 }
 
 // vim: syntax=php sw=4 ts=4 et:

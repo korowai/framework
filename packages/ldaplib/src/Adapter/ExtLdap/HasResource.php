@@ -20,6 +20,14 @@ namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
 trait HasResource
 {
     /**
+     * Returns whether the object supports resource of given $type
+     *
+     * @param  string $type
+     * @return bool
+     */
+    abstract public function supportsResourceType(string $type) : bool;
+
+    /**
      * @var resource
      */
     private $resource;
@@ -32,6 +40,17 @@ trait HasResource
     public function getResource()
     {
         return $this->resource;
+    }
+
+    /**
+     * Checks whether the wrapped resource is valid.
+     *
+     * @return bool
+     */
+    public function isValid() : bool
+    {
+        $res = $this->getResource();
+        return is_resource($res) && ($this->supportsResourceType(get_resource_type($res)));
     }
 
     /**

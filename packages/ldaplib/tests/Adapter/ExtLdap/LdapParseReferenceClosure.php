@@ -10,22 +10,17 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Tests\Lib\Ldap\Adapter\ExtLdap\Closures;
+namespace Korowai\Tests\Lib\Ldap\Adapter\ExtLdap;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-final class LdapParseResultClosure extends AbstractClosure
+final class LdapParseReferenceClosure extends AbstractClosure
 {
-    public function __invoke($ldap, $result, &$errcode, &...$tail)
+    public function __invoke($ldap, $reference, &$referrals)
     {
         $values = $this->getReturnArguments();
-        $errcode = $values[0];
-        for ($i = 0; $i < 3; $i++) {
-            if (count($tail) > $i) {
-                $tail[$i] = $values[$i+1] ?? null;
-            }
-        }
+        $referrals = $values[0] ?? null;
         return $this->getReturnValue();
     }
 }

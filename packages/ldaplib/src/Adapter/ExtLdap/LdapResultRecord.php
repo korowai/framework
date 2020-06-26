@@ -20,19 +20,6 @@ class LdapResultRecord
     use HasLdapResult;
     use HasResource;
 
-    public static function isLdapResultEntryResource($arg) : bool
-    {
-        // The name "ldap result entry" is documented: http://php.net/manual/en/resource.php
-        return is_resource($arg) && (get_resource_type($arg) === "ldap result entry");
-    }
-    /**
-     * {@inheritdoc}
-     */
-    public function isValid(): bool
-    {
-        return static::isLdapResultEntryResource($this->getResource());
-    }
-
     /**
      * Initializes the ``ResultRecord`` instance
      *
@@ -43,6 +30,22 @@ class LdapResultRecord
     {
         $this->setResource($resource);
         $this->setLdapResult($ldapResult);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsResourceType(string $type) : bool
+    {
+        return $type === 'ldap result entry';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getLdapLink() : LdapLinkInterface
+    {
+        return $this->getLdapResult()->getLdapLink();
     }
 
     // @codingStandardsIgnoreStart

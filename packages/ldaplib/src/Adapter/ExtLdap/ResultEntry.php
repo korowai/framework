@@ -22,15 +22,13 @@ use function Korowai\Lib\Context\with;
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-final class ResultEntry /*extends ResultRecord*/ implements ResultEntryInterface
+final class ResultEntry implements ResultEntryInterface, LdapResultEntryWrapperInterface
 {
-//    use ResultEntryToEntry;
+    use HasLdapResultEntry;
+    use ResultEntryToEntry;
 
     /** @var ResultAttributeIterator */
     private $iterator;
-
-    /** @var LdapResultEntryInterface */
-    private $ldapResultEntry;
 
     /**
      * Initializes the object
@@ -43,25 +41,33 @@ final class ResultEntry /*extends ResultRecord*/ implements ResultEntryInterface
     }
 
     /**
-     * Sets an instance of LdapResultEntryInterface to this object.
-     *
-     * @param  LdapResultEntryInterface $ldapResultEntry
-     * @return void
+     * {@inheritdoc}
      */
-    private function setLdapResultEntry(LdapResultEntryInterface $ldapResultEntry) : void
+    public function getDn() : string
     {
-        $this->ldapResultEntry = $ldapResultEntry;
+        $entry = $this->getLdapResultEntry();
+
+        /** @var string|false */
+        $dn = with(LdapLinkErrorHandler::fromLdapResultWrapper($entry))(function ($eh) use ($entry) {
+            return $entry->get_dn();
+        });
+
+        return (string)$dn;
     }
 
     /**
-     * Returns the LdapResultEntryInterface instance encapsulated by this
-     * object.
-     *
-     * @return LdapResultEntryInterface
+     * {@inheritdoc}
      */
-    public function getLdapResultEntry() : LdapResultEntryInterface
+    public function getAttributes() : array
     {
-        return $this->ldapResultEntry;
+        $entry = $this->getLdapResultEntry();
+
+        /** @var array|false */
+        $attributes = with(LdapLinkErrorHandler::fromLdapResultWrapper($entry))(function ($eh) use ($entry) {
+            return $entry->get_attributes();
+        });
+
+        return static::cleanupAttributes($attributes === false ? [] : $attributes);
     }
 
     /**
@@ -73,38 +79,35 @@ final class ResultEntry /*extends ResultRecord*/ implements ResultEntryInterface
     public function getAttributeIterator() : ResultAttributeIteratorInterface
     {
         if (!isset($this->iterator)) {
-            $ldapResultEntry = $this->getLdapResultEntry();
-            $ldap = $ldapResultEntry->getLdapResult()->getLdapLink();
+            $entry = $this->getLdapResultEntry();
+
             /** @var string|false */
-            $first = with(new LdapLinkErrorHandler($ldap))(function ($eh) use ($ldapResultEntry) {
-                return $ldapResultEntry->first_attribute();
+            $first = with(LdapLinkErrorHandler::fromLdapResultWrapper($entry))(function ($eh) use ($entry) {
+                return $entry->first_attribute();
             });
-            $this->iterator = new ResultAttributeIterator($ldapResultEntry, $first === false ? null : $first);
+
+            $this->iterator = new ResultAttributeIterator($entry, $first === false ? null : $first);
         }
         return $this->iterator;
     }
 
     /**
-     * {@inheritdoc}
+     * Returns iterator over entry's attributes.
+     *
+     * @return ResultAttributeIteratorInterface
      */
-    public function getAttributes() : array
+    public function getIterator() : ResultAttributeIteratorInterface
     {
-        $ldapResultEntry = $this->getLdapResultEntry();
-        $ldap = $ldapResultEntry->getLdapResult()->getLdapLink();
-        /** @var array */
-        $attributes = with(new LdapLinkErrorHandler($ldap))(function ($eh) {
-            return $this->get_attributes();
-        });
-        return static::cleanupAttributes($attributes);
+        return $this->getAttributeIterator();
     }
 
     private static function cleanupAttributes(array $attributes) : array
     {
         $attributes = array_filter($attributes, function ($key) {
-            return is_string($key) && ($key != "count");
+            return is_string($key) && ($key !== 'count');
         }, ARRAY_FILTER_USE_KEY);
-        array_walk($attributes, function (&$value) {
-            unset($value['count']);
+        array_walk($attributes, function (&$values) {
+            unset($values['count']);
         });
         return array_change_key_case($attributes, CASE_LOWER);
     }

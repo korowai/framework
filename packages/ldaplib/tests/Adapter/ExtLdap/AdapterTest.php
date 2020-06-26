@@ -27,11 +27,7 @@ use Korowai\Lib\Ldap\Adapter\ExtLdap\CompareQuery;
 class AdapterTest extends TestCase
 {
     use \phpmock\phpunit\PHPMock;
-
-    public function getLdapFunctionMock(...$args)
-    {
-        return $this->getFunctionMock('\\Korowai\\Lib\\Ldap\\Adapter\ExtLdap', ...$args);
-    }
+    use GetLdapFunctionMock;
 
     public function test__getBinding()
     {

@@ -18,7 +18,7 @@ use Korowai\Lib\Ldap\Adapter\ResultAttributeIteratorInterface;
  * Iterates through an ldap result entry attributes.
  *
  * Only one instance of ``ResultAttributeIterator`` should be used for a given
- * LdapResultEntry. The internal state (position) of the iterator is
+ * LdapResultEntryInterface. The internal state (position) of the iterator is
  * managed by the "ldap entry" resource encapsulated by ``ResultEntry`` object
  * which is provided as ``$entry`` argument to
  * ``ResultAttributeIterator::__construct()``. This is a consequence of how
@@ -32,10 +32,9 @@ use Korowai\Lib\Ldap\Adapter\ResultAttributeIteratorInterface;
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class ResultAttributeIterator implements ResultAttributeIteratorInterface
+class ResultAttributeIterator implements ResultAttributeIteratorInterface, LdapResultEntryWrapperInterface
 {
-    /** @var LdapResultEntry */
-    private $entry;
+    use HasLdapResultEntry;
 
     /** @var string|null */
     private $attribute;
@@ -47,22 +46,13 @@ class ResultAttributeIterator implements ResultAttributeIteratorInterface
      * ``$entry->first_attribute()`` or ``$entry->next_attribute()`` or
      * it should be null.
      *
-     * @param  LdapResultEntry $entry An ldap entry containing the attributes
+     * @param  LdapResultEntryInterface $ldapResultEntry An ldap entry containing the attributes
      * @param  string|null $attribute Name of the current attribute pointed to by Iterator
      */
-    public function __construct(LdapResultEntry $entry, string $attribute = null)
+    public function __construct(LdapResultEntryInterface $ldapResultEntry, string $attribute = null)
     {
-        $this->entry = $entry;
+        $this->setLdapResultEntry($ldapResultEntry);
         $this->attribute = is_string($attribute) ? strtolower($attribute) : $attribute;
-    }
-
-    /**
-     * Returns the ``$entry`` provided to ``__construct`` at creation time.
-     * @eturn ResultEntry The ``$entry`` provided to ``__construct`` at creation time.
-     */
-    public function getEntry()
-    {
-        return $this->entry;
     }
 
     /**
@@ -75,7 +65,11 @@ class ResultAttributeIterator implements ResultAttributeIteratorInterface
      */
     public function current()
     {
-        return $this->entry->get_values($this->attribute);
+        $entry = $this->getLdapResultEntry();
+        // FIXME: with(new LdapLinkErrorHandler(...)) ...
+        $values = $entry->get_values($this->attribute);
+        unset($values['count']);
+        return $values;
     }
 
     /**
@@ -97,7 +91,9 @@ class ResultAttributeIterator implements ResultAttributeIteratorInterface
      */
     public function next()
     {
-        $next = $this->entry->next_attribute();
+        $entry = $this->getLdapResultEntry();
+        // FIXME: with(new LdapLinkErrorHandler(...)) ...
+        $next = $entry->next_attribute();
         $this->attribute = is_string($next) ? strtolower($next) : $next;
     }
 
@@ -108,7 +104,9 @@ class ResultAttributeIterator implements ResultAttributeIteratorInterface
      */
     public function rewind()
     {
-        $first = $this->entry->first_attribute();
+        $entry = $this->getLdapResultEntry();
+        // FIXME: with(new LdapLinkErrorHandler(...)) ...
+        $first = $entry->first_attribute();
         $this->attribute = is_string($first) ? strtolower($first) : $first;
     }
 

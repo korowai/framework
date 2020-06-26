@@ -12,28 +12,28 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
 
-use Korowai\Lib\Ldap\Adapter\ResultEntryIteratorInterface;
-
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-abstract class AbstractResultIterator
+abstract class AbstractResultIterator implements LdapResultWrapperInterface
 {
-    use HasResult;
+    use HasLdapResult;
 
     private $pointed;
 
     /**
      * Constructs ResultEntryIterator
      *
-     * @param Result $result        The ldap search result which provides first entry in the entry chain
-     * @param  object|null $pointed  The element currently pointed to by iterator.
+     * @param  LdapResultInterface $ldapResult
+     *      The ldap search result which provides first entry in the entry chain
+     * @param  object|null $pointed
+     *      The element currently pointed to by iterator.
      *
-     * The ``$result`` object is used by ``rewind()`` method.
+     * The ``$ldapResult`` object is used by ``rewind()`` method.
      */
-    public function __construct(ExtLdapResultInterface $result, $pointed)
+    public function __construct(LdapResultInterface $ldapResult, $pointed)
     {
-        $this->setResult($result);
+        $this->setLdapResult($ldapResult);
         $this->pointed = $pointed;
     }
 
@@ -77,7 +77,7 @@ abstract class AbstractResultIterator
     public function rewind()
     {
         $method = $this->getMethodForFirst();
-        $this->pointed = call_user_func([$this->result, $method]);
+        $this->pointed = call_user_func([$this->getLdapResult(), $method]);
     }
 
     /**

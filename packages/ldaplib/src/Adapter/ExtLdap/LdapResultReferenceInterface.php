@@ -17,7 +17,8 @@ namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-interface LdapResultReferenceInterface extends ResourceWrapperInterface, LdapResultWrapperInterface
+interface LdapResultReferenceInterface
+    extends ResourceWrapperInterface, LdapResultWrapperInterface, LdapLinkWrapperInterface
 {
     // @codingStandardsIgnoreStart
     // phpcs:disable Generic.NamingConventions.CamelCapsFunctionName

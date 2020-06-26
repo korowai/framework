@@ -15,13 +15,19 @@ namespace Korowai\Lib\Ldap\Adapter;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-interface ResultReferenceInterface extends ResultRecordInterface
+interface ResultReferenceInterface extends ResultRecordInterface, \IteratorAggregate
 {
     /**
      * Returns referrals
      * @return array An array of referrals
      */
     public function getReferrals() : array;
+
+    /**
+     * Returns iterator over referrals
+     * @return array An array of referrals
+     */
+    public function getReferralIterator() : ResultReferralIteratorInterface;
 }
 
 // vim: syntax=php sw=4 ts=4 et:

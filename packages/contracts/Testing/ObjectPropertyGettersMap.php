@@ -103,6 +103,7 @@ class ObjectPropertyGettersMap
 
         \Korowai\Lib\Ldap\Adapter\ResultReferenceInterface::class => [
             'referrals'                 => 'getReferrals',
+            'referralIterator'          => 'getReferralIterator',
         ],
 
         \Korowai\Lib\Ldap\Adapter\ResultReferenceIteratorInterface::class => [

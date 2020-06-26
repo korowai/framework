@@ -12,26 +12,24 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
 
-use Korowai\Lib\Ldap\Adapter\ResultReferralIterator as BaseIterator;
+use Korowai\Lib\Ldap\Adapter\ResultReferralIteratorInterface;
+use Korowai\Lib\Ldap\Adapter\ResultReferenceInterface;
 
 /**
- * Iterates through referrals of an ldap result reference.
- *
- * Only one instance of ``ResultReferralIterator`` should be used for a given
- * ``ResultReference``.
+ * Iterates through referrals of a result reference entry.
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class ResultReferralIterator extends BaseIterator
+class ResultReferralIterator extends \ArrayIterator implements ResultReferralIteratorInterface
 {
     /**
-     * Initializes the ``ResultReferralIterator``.
+     * Initializes the iterator object
      *
-     * @param ResultReference $reference An ldap reference containing the referrals
+     * @param ResultReferenceInterface $reference An ldap reference containing the referrals
      */
-    public function __construct(ResultReference $reference)
+    public function __construct(ResultReferenceInterface $reference)
     {
-        parent::__construct($reference);
+        parent::__construct($reference->getReferrals());
     }
 }
 

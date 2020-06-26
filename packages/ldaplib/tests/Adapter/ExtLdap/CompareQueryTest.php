@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldap\Adapter\ExtLdap;
 
-use Korowai\Testing\TestCase;
+use Korowai\Testing\Ldaplib\TestCase;
 use Korowai\Lib\Ldap\Adapter\AbstractCompareQuery;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\CompareQuery;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLink;

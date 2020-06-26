@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldap\Adapter\ExtLdap;
 
-use Korowai\Testing\TestCase;
+use Korowai\Testing\Ldaplib\TestCase;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\EnsureLdapLink;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLink;
 use Korowai\Lib\Ldap\Exception\LdapException;

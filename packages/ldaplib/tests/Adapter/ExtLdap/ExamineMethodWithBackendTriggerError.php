@@ -62,8 +62,7 @@ trait ExamineMethodWithBackendTriggerError
         try {
             call_user_func_array([$object, $method], $args);
         } catch (\ErrorException $e) {
-            $this->assertSame(__file__, $e->getFile());
-            $this->assertSame($line, $e->getLine());
+            $this->assertSame(__file__.':'.$line, $e->getFile().':'.$e->getLine());
             $this->assertSame($expect['severity'], $e->getSeverity());
             throw $e;
         }

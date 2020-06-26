@@ -17,7 +17,7 @@ use Korowai\Lib\Ldap\Adapter\ResultReferenceIteratorInterface;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class ResultReferenceIterator extends AbstractResultIterator implements ResultReferenceIteratorInterface
+final class ResultReferenceIterator extends AbstractResultIterator implements ResultReferenceIteratorInterface
 {
     /**
      * Constructs ResultReferenceIterator
@@ -30,9 +30,9 @@ class ResultReferenceIterator extends AbstractResultIterator implements ResultRe
      *
      * The ``$result`` object is used by ``rewind()`` method.
      */
-    public function __construct(Result $result, ?ResultReference $reference)
+    public function __construct(LdapResultInterface $ldapResult, ?ResultReference $reference)
     {
-        parent::__construct($result, $reference);
+        parent::__construct($ldapResult, $reference);
     }
 
     /**

@@ -17,31 +17,34 @@ use Korowai\Lib\Ldap\Adapter\ResultEntryIteratorInterface;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class ResultEntryIterator extends AbstractResultIterator implements ResultEntryIteratorInterface
+final class ResultEntryIterator extends AbstractResultIterator implements ResultEntryIteratorInterface
 {
+    /** @var ResultEntry|null */
+    private $entry;
+
     /**
      * Constructs ResultEntryIterator
      *
-     * @param Result $result            The ldap search result which provides
-     *                                  first entry in the entry chain
-     * @param ResultEntry|null $entry   The current entry in the chain or
-     *                                  ``null`` to create an invalid (past the
-     *                                  end) iterator
+     * @param LdapResultInterface $ldapResult
+     *      The ldap search result which provides first entry in the entry
+     *      chain
+     * @param LdapResultEntryInterface|null $current
+     *      The current entry in the chain or ``null`` to create an invalid
+     *      (past the end) iterator
      *
      * The ``$result`` object is used by ``rewind()`` method.
      */
-    public function __construct(Result $result, ?ResultEntry $entry)
+    public function __construct(LdapResultInterface $ldapResult, ?LdapResultEntryInterface $current)
     {
-        parent::__construct($result, $entry);
+        parent::__construct($ldapResult, $current);
     }
 
     /**
-     * Returns the ``$entry`` provided to ``__construct()`` at creation
-     * @return mixed The ``$entry`` provided to ``__construct()`` at creation
+     * @todo Write documentation.
      */
     public function getEntry()
     {
-        return $this->getPointed();
+        return $this->current();
     }
 
     protected function getMethodForFirst()
@@ -52,6 +55,16 @@ class ResultEntryIterator extends AbstractResultIterator implements ResultEntryI
     protected function getMethodForNext()
     {
         return 'next_entry';
+    }
+
+    protected function wrapElement($unwrapped)
+    {
+        return new ResultEntry($unwrapped);
+    }
+
+    protected function unwrapElement($wrapped)
+    {
+        return $wrapped->getLdapResultEntry();
     }
 }
 

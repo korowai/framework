@@ -15,6 +15,7 @@ namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
 use Korowai\Lib\Ldap\Adapter\AbstractResult;
 use Korowai\Lib\Ldap\Adapter\ResultEntryIteratorInterface;
 use Korowai\Lib\Ldap\Adapter\ResultReferenceIteratorInterface;
+use function Korowai\Lib\Context\with;
 
 /**
  * Wrapper for ldap result resource.
@@ -56,9 +57,11 @@ final class Result extends AbstractResult implements LdapResultWrapperInterface
      */
     public function getResultEntryIterator() : ResultEntryIteratorInterface
     {
-        $result = $this-getLdapResult();
-        // FIXME: with(LdapLinkErrorHandler::...)
-        $first = $result->first_entry();
+        $result = $this->getLdapResult();
+        /** @var LdapResultEntry|false */
+        $first = with(LdapLinkErrorHandler::fromLdapLinkWrapper($result))(function ($eh) use ($result) {
+            return $result->first_entry();
+        });
         return new ResultEntryIterator($result, $first === false ? null : $first);
     }
 
@@ -67,9 +70,11 @@ final class Result extends AbstractResult implements LdapResultWrapperInterface
      */
     public function getResultReferenceIterator() : ResultReferenceIteratorInterface
     {
-        $result = $this-getLdapResult();
-        // FIXME: with(LdapLinkErrorHandler::...)
-        $first = $result->first_reference();
+        $result = $this->getLdapResult();
+        /** @var LdapResultReference|false */
+        $first = with(LdapLinkErrorHandler::fromLdapLinkWrapper($result))(function ($eh) use ($result) {
+            return $result->first_reference();
+        });
         return new ResultReferenceIterator($result, $first === false ? null : $first);
     }
 }

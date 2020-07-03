@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Ldap\Adapter;
 
 use Korowai\Lib\Ldap\Adapter\ResultReferenceInterface;
+use Korowai\Lib\Ldap\Adapter\ResultReferralIteratorInterface;
 
 use Korowai\Testing\Contracts\TestCase;
 
@@ -37,7 +38,8 @@ class ResultReferenceInterfaceTest extends TestCase
     public function test__objectPropertyGettersMap()
     {
         $expect = [
-            'referrals' => 'getReferrals'
+            'referrals' => 'getReferrals',
+            'referralIterator' => 'getReferralIterator',
         ];
         $this->assertObjectPropertyGetters($expect, ResultReferenceInterface::class);
     }
@@ -58,6 +60,24 @@ class ResultReferenceInterfaceTest extends TestCase
         $this->expectException(\TypeError::class);
         $this->expectExceptionMessage('array');
         $dummy->getReferrals();
+    }
+
+    public function test__getReferralIterator()
+    {
+        $dummy = $this->createDummyInstance();
+
+        $dummy->referralIterator = $this->createStub(ResultReferralIteratorInterface::class);
+        $this->assertSame($dummy->referralIterator, $dummy->getReferralIterator());
+    }
+
+    public function test__getReferralIterator__withRetTypeError()
+    {
+        $dummy = $this->createDummyInstance();
+        $dummy->referralIterator = null;
+
+        $this->expectException(\TypeError::class);
+        $this->expectExceptionMessage('ResultReferralIteratorInterface');
+        $dummy->getReferralIterator();
     }
 }
 

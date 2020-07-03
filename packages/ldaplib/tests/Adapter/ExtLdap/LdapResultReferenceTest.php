@@ -20,7 +20,7 @@ use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultReferenceWrapperInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultWrapperInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultRecord;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultItem;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -60,14 +60,14 @@ final class LdapResultReferenceTest extends TestCase
     //
     //
 
-    public function test__extends__LdapResultRecord()
-    {
-        $this->assertExtendsClass(LdapResultRecord::class, LdapResultReference::class);
-    }
-
     public function test__implements__LdapResultReferenceInterface()
     {
         $this->assertImplementsInterface(LdapResultReferenceInterface::class, LdapResultReference::class);
+    }
+
+    public function test__uses__LdapResultItem()
+    {
+        $this->assertUsesTrait(LdapResultItem::class, LdapResultReference::class);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -142,43 +142,6 @@ final class LdapResultReferenceTest extends TestCase
         $result = $this->createLdapResultMock(null, null);
         $reference = new LdapResultReference($arg, $result);
         $this->examineIsValid($reference, $arg, $return, $expect);
-    }
-
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // get_dn()
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    public static function prov__get_dn__withMockedBackend()
-    {
-        return [
-            // #0
-            [
-                'args'   => [],
-                'return' => 'dc=example,dc=org',
-                'expect' => 'dc=example,dc=org',
-            ],
-            // #1
-            [
-                'args'   => [],
-                'return' => false,
-                'expect' => false,
-            ],
-            // #2
-            [
-                'args'   => [],
-                'return' => null,
-                'expect' => false,
-            ],
-        ];
-    }
-
-    /**
-     * @runInSeparateProcess
-     * @dataProvider prov__get_dn__withMockedBackend
-     */
-    public function test__get_dn__withMockedBackend(array $args, $return, $expect)
-    {
-        $this->examineLdapMethod('get_dn', $args, $return, $expect);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////

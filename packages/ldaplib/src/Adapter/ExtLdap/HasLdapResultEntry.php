@@ -33,6 +33,16 @@ trait HasLdapResultEntry
     }
 
     /**
+     * Returns the encapsulated LdapResultEntry instance.
+     *
+     * @return LdapResultEntryInterface
+     */
+    public function getLdapResultItem() : LdapResultEntryInterface
+    {
+        return $this->getLdapResultEntry();
+    }
+
+    /**
      * Sets the LdapResultEntryInterface instance to this object.
      *
      * @param LdapResultEntryInterface $result

@@ -12,26 +12,54 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
 
+use function Korowai\Lib\Context\with;
+
 /**
  * Wrapper for ldap entry result resource.
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-final class LdapResultEntry extends LdapResultRecord implements LdapResultEntryInterface
+final class LdapResultEntry implements LdapResultEntryInterface
 {
-    /**
-     * Initializes the object
-     *
-     * @param  resource $resource
-     * @param  LdapResultInterface $result
-     */
-    public function __construct($resource, LdapResultInterface $result)
-    {
-        $this->initResultRecord($resource, $result);
-    }
+    use LdapResultItem;
 
     // @codingStandardsIgnoreStart
     // phpcs:disable Generic.NamingConventions.CamelCapsFunctionName
+
+    /**
+     * Returns first result entry in the message chain.
+     *
+     * @return LdapResultItemInterface|false
+     */
+    public function first_item()
+    {
+        return $result->getLdapResult()->first_entry();
+    }
+
+    /**
+     * Returns next result entry in the message chain.
+     *
+     * @return LdapResultItemInterface|false
+     */
+    public function next_item()
+    {
+        return $this->next_entry();
+    }
+
+    /**
+     * Get the DN of a result entry
+     *
+     * @return string|bool
+     *
+     * @link http://php.net/manual/en/function.ldap-get-dn.php ldap_get_dn()
+     */
+    public function get_dn()
+    {
+        $ldap = $this->getLdapResult()->getLdapLink();
+
+        // PHP 7.x and earlier may return null instead of false
+        return @ldap_get_dn($ldap->getResource(), $this->getResource()) ?? false;
+    }
 
     /**
      * Return first attribute
@@ -118,7 +146,7 @@ final class LdapResultEntry extends LdapResultRecord implements LdapResultEntryI
     /**
      * Get next result entry
      *
-     * @return LdapResultEntry|false
+     * @return LdapResultEntryInterface|false
      *
      * @link http://php.net/manual/en/function.ldap-next-entry.php ldap_next_entry()
      */

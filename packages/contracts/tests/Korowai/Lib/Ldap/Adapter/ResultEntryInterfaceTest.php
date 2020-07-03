@@ -39,11 +39,30 @@ class ResultEntryInterfaceTest extends TestCase
     public function test__objectPropertyGettersMap()
     {
         $expect = [
+            'dn'                => 'getDn',
             'attributes'        => 'getAttributes',
             'entry'             => 'toEntry',
             'attributeIterator' => 'getAttributeIterator',
         ];
         $this->assertObjectPropertyGetters($expect, ResultEntryInterface::class);
+    }
+
+    public function test__getDn()
+    {
+        $dummy = $this->createDummyInstance();
+
+        $dummy->dn = 'dc=example,dc=org';
+        $this->assertSame($dummy->dn, $dummy->getDn());
+    }
+
+    public function test__getDn__withRetTypeError()
+    {
+        $dummy = $this->createDummyInstance();
+        $dummy->dn = null;
+
+        $this->expectException(\TypeError::class);
+        $this->expectExceptionMessage('string');
+        $dummy->getDn();
     }
 
     public function test__getAttributes()

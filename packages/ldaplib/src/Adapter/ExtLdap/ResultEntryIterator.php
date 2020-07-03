@@ -19,9 +19,6 @@ use Korowai\Lib\Ldap\Adapter\ResultEntryIteratorInterface;
  */
 final class ResultEntryIterator extends AbstractResultIterator implements ResultEntryIteratorInterface
 {
-    /** @var ResultEntry|null */
-    private $entry;
-
     /**
      * Constructs ResultEntryIterator
      *
@@ -39,32 +36,19 @@ final class ResultEntryIterator extends AbstractResultIterator implements Result
         parent::__construct($ldapResult, $current);
     }
 
-    /**
-     * @todo Write documentation.
-     */
-    public function getEntry()
+    protected function first_item()
     {
-        return $this->current();
+        return $this->getLdapResult()->first_entry();
     }
 
-    protected function getMethodForFirst()
+    protected function next_item()
     {
-        return 'first_entry';
+        return $this->getCurent()->next_entry();
     }
 
-    protected function getMethodForNext()
+    protected function wrap(LdapResultEntryInterface $item)
     {
-        return 'next_entry';
-    }
-
-    protected function wrapElement($unwrapped)
-    {
-        return new ResultEntry($unwrapped);
-    }
-
-    protected function unwrapElement($wrapped)
-    {
-        return $wrapped->getLdapResultEntry();
+        return new ResultEntry($item);
     }
 }
 

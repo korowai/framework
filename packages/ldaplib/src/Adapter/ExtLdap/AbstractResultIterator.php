@@ -21,6 +21,9 @@ abstract class AbstractResultIterator implements LdapResultWrapperInterface
 {
     use HasLdapResult;
 
+    /**
+     * @var LdapResultItemWrapper|null
+     */
     private $current;
 
     /**
@@ -33,10 +36,10 @@ abstract class AbstractResultIterator implements LdapResultWrapperInterface
      *
      * The ``$ldapResult`` object is used by ``rewind()`` method.
      */
-    public function __construct(LdapResultInterface $ldapResult, $current)
+    public function __construct(LdapResultInterface $ldapResult, ?LdapResultItemInterface $current)
     {
         $this->setLdapResult($ldapResult);
-        $this->setCurrent($current);
+        $this->setItem($current);
     }
 
     /**
@@ -44,7 +47,8 @@ abstract class AbstractResultIterator implements LdapResultWrapperInterface
      */
     public function key()
     {
-        // FIXME: DN's may be non-unique in result, while keys should be unique)
+        // FIXME: DN's may be non-unique in result, while keys should be unique
+        // FIXME: we do not support DNs on references
         return $this->current->getDn();
     }
 
@@ -61,14 +65,15 @@ abstract class AbstractResultIterator implements LdapResultWrapperInterface
      */
     public function next()
     {
-        if (($current = $this->getCurrent()) === null) {
+        if (($current = $this->getItem()) === null) {
             return null;
         }
         /** @var object|false */
-        $next = with(LdapLinkErrorHandler::fromLdapLinkWrapper($current))(function ($eh) use ($current) {
-            return call_user_func([$current, $this->getMethodForNext()]);
+        $next = with(LdapLinkErrorHandler::fromLdapLinkWrapper($current))(function ($eh) {
+            return $this->next_item();
+            //return call_user_func([$current, $this->getMethodForNext()]);
         });
-        $this->setCurrent($next);
+        $this->setItem($next);
     }
 
     /**
@@ -76,12 +81,13 @@ abstract class AbstractResultIterator implements LdapResultWrapperInterface
      */
     public function rewind()
     {
-        $result = $this->getLdapResult();
+        //$result = $this->getLdapResult();
         /** @var object|false */
-        $first = with(LdapLinkErrorHandler::fromLdapLinkWrapper($result))(function ($eh) use ($result) {
-            return call_user_func([$result, $this->getMethodForFirst()]);
+        $first = with(LdapLinkErrorHandler::fromLdapLinkWrapper($result))(function ($eh) /*use ($result)*/ {
+            return $this->first_item();
+            //return call_user_func([$result, $this->getMethodForFirst()]);
         });
-        $this->setCurrent($first);
+        $this->setItem($first);
     }
 
     /**
@@ -92,20 +98,45 @@ abstract class AbstractResultIterator implements LdapResultWrapperInterface
         return $this->current !== null;
     }
 
-    private function setCurrent($current)
+    /**
+     * @param LdapResultItemInterface $current
+     */
+    private function setItem(LdapResultItemInterface $current)
     {
-        $this->current = $current ? $this->wrapElement($current) : null;
+        $this->current = $current ? $this->wrapItem($current) : null;
     }
 
-    private function getCurrent()
+    /**
+     * @return LdapResultItemInterface
+     */
+    private function getItem() : LdapResultItemInterface
     {
-        return $this->current ? $this->unwrapElement($this->current) : null;
+        return $this->current ? $this->current->getLdapResultItem() : null;
     }
 
-    abstract protected function getMethodForNext();
-    abstract protected function getMethodForFirst();
-    abstract protected function wrapElement($unwrapped);
-    abstract protected function unwrapElement($wrapped);
+    // @codingStandardsIgnoreStart
+    // phpcs:disable Generic.NamingConventions.CamelCapsFunctionName
+
+    /**
+     * Returns first result item of the particular type (entry/reference) in
+     * the result message chain.
+     *
+     * @return LdapResultItemInterface|false
+     */
+    abstract protected function first_item();
+
+    /**
+     * Returns next result item of the particular type (entry/reference) in
+     * the result message chain.
+     *
+     * @return LdapResultItemInterface|false
+     */
+    abstract protected function next_item();
+
+    // phpcs:enable Generic.NamingConventions.CamelCapsFunctionName
+    // @codingStandardsIgnoreEnd
+
+    abstract protected function wrap(LdapResultItemInterface $item);
 }
 
 // vim: syntax=php sw=4 ts=4 et:

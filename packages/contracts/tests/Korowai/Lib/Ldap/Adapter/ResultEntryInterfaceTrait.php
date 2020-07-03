@@ -14,17 +14,24 @@ namespace Korowai\Tests\Lib\Ldap\Adapter;
 
 use Korowai\Lib\Ldap\EntryInterface;
 use Korowai\Lib\Ldap\Adapter\ResultAttributeIteratorInterface;
+use Korowai\Tests\PhpIteratorAggregateTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
 trait ResultEntryInterfaceTrait
 {
-    use ResultRecordInterfaceTrait;
+    use PhpIteratorAggregateTrait;
 
+    public $dn = null;
     public $attributes = null;
     public $entry = null;
     public $attributeIterator = null;
+
+    public function getDn() : string
+    {
+        return $this->dn;
+    }
 
     public function getAttributes() : array
     {

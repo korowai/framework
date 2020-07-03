@@ -43,6 +43,14 @@ final class ResultEntry implements ResultEntryInterface, LdapResultEntryWrapperI
     /**
      * {@inheritdoc}
      */
+    public function getLdapResultItem() : LdapResultEntryInterface
+    {
+        return $this->getLdapResultEntry();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getDn() : string
     {
         $entry = $this->getLdapResultEntry();

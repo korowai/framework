@@ -35,23 +35,19 @@ final class ResultReferenceIterator extends AbstractResultIterator implements Re
         parent::__construct($ldapResult, $reference);
     }
 
-    /**
-     * Returns the ``$reference`` provided to ``__construct()`` at creation.
-     * @return mixed The ``$reference`` provided to ``__construct()`` at creation.
-     */
-    public function getReference()
+    protected function first_item()
     {
-        return $this->getPointed();
+        return $this->getLdapResult()->first_reference();
     }
 
-    public function getMethodForFirst()
+    protected function next_item()
     {
-        return 'first_reference';
+        return $this->getCurent()->next_reference();
     }
 
-    protected function getMethodForNext()
+    protected function wrap(LdapResultReferenceInterface $item)
     {
-        return 'next_reference';
+        return new ResultReference($item);
     }
 }
 

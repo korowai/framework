@@ -15,7 +15,7 @@ namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-interface LdapResultEntryWrapperInterface
+interface LdapResultEntryWrapperInterface extends LdapResultItemWrapperInterface
 {
     /**
      * Returns the encapsulated LdapResultEntryInterface instance.
@@ -23,6 +23,13 @@ interface LdapResultEntryWrapperInterface
      * @return LdapResultEntryInterface
      */
     public function getLdapResultEntry() : LdapResultEntryInterface;
+
+    /**
+     * Returns the encapsulated LdapResultEntryInterface instance.
+     *
+     * @return LdapResultEntryInterface
+     */
+    public function getLdapResultItem() : LdapResultEntryInterface;
 }
 
 // vim: syntax=php sw=4 ts=4 et:

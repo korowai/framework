@@ -41,6 +41,14 @@ final class ResultReference implements ResultReferenceInterface, LdapResultRefer
     /**
      * {@inheritdoc}
      */
+    public function getLdapResultItem() : LdapResultReferenceInterface
+    {
+        return $this->getLdapResultReference();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getDn() : string
     {
         $reference = $this->getLdapResultReference();

@@ -33,6 +33,16 @@ trait HasLdapResultReference
     }
 
     /**
+     * Returns the encapsulated LdapResultReference instance.
+     *
+     * @return LdapResultReferenceInterface
+     */
+    public function getLdapResultItem() : LdapResultReferenceInterface
+    {
+        return $this->getLdapResultReference();
+    }
+
+    /**
      * Sets the LdapResultReferenceInterface instance to this object.
      *
      * @param LdapResultReferenceInterface $result

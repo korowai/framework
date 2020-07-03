@@ -17,25 +17,15 @@ namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-interface LdapResultReferenceInterface
-    extends ResourceWrapperInterface, LdapResultWrapperInterface, LdapLinkWrapperInterface
+interface LdapResultReferenceInterface extends LdapResultItemInterface
 {
     // @codingStandardsIgnoreStart
     // phpcs:disable Generic.NamingConventions.CamelCapsFunctionName
 
     /**
-     * Get the DN of the reference
-     *
-     * @return string|bool
-     *
-     * @link http://php.net/manual/en/function.ldap-get-dn.php ldap_get_dn()
-     */
-    public function get_dn();
-
-    /**
      * Get next reference
      *
-     * @return ResultReference|bool
+     * @return LdapResultReference|bool
      *
      * @link http://php.net/manual/en/function.ldap-next-reference.php ldap_next_reference()
      */
@@ -54,7 +44,6 @@ interface LdapResultReferenceInterface
 
     // phpcs:enable Generic.NamingConventions.CamelCapsFunctionName
     // @codingStandardsIgnoreEnd
-
 }
 
 // vim: syntax=php sw=4 ts=4 et:

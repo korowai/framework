@@ -17,8 +17,7 @@ namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-interface LdapResultEntryInterface
-    extends ResourceWrapperInterface, LdapResultWrapperInterface, LdapLinkWrapperInterface
+interface LdapResultEntryInterface extends LdapResultItemInterface
 {
     // @codingStandardsIgnoreStart
     // phpcs:disable Generic.NamingConventions.CamelCapsFunctionName
@@ -84,7 +83,7 @@ interface LdapResultEntryInterface
     /**
      * Get next result entry
      *
-     * @return ResultEntry|bool
+     * @return LdapResultEntryInterface|bool
      *
      * @link http://php.net/manual/en/function.ldap-next-entry.php ldap_next_entry()
      */

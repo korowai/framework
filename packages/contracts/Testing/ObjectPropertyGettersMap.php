@@ -81,6 +81,7 @@ class ObjectPropertyGettersMap
         ],
 
         \Korowai\Lib\Ldap\Adapter\ResultEntryInterface::class => [
+            'dn'                        => 'getDn',
             'attributes'                => 'getAttributes',
             'entry'                     => 'toEntry',
             'attributeIterator'         => 'getAttributeIterator',
@@ -95,10 +96,6 @@ class ObjectPropertyGettersMap
             'resultEntries'             => 'getResultEntries',
             'resultReferences'          => 'getResultReferences',
             'entries'                   => 'getEntries',
-        ],
-
-        \Korowai\Lib\Ldap\Adapter\ResultRecordInterface::class => [
-            'dn'                        => 'getDn',
         ],
 
         \Korowai\Lib\Ldap\Adapter\ResultReferenceInterface::class => [

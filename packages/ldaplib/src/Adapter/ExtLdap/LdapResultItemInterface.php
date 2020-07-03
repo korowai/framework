@@ -10,19 +10,18 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Tests\Lib\Ldap\Adapter;
+namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
 
 /**
+ * A common interface for either ldap result entry or ldap result reference.
+ *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-trait ResultRecordInterfaceTrait
+interface LdapResultItemInterface extends
+    ResourceWrapperInterface,
+    LdapResultWrapperInterface,
+    LdapLinkWrapperInterface
 {
-    public $dn;
-
-    public function getDn() : string
-    {
-        return $this->dn;
-    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

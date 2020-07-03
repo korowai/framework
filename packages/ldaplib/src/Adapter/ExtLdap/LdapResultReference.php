@@ -17,21 +17,32 @@ namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-final class LdapResultReference extends LdapResultRecord implements LdapResultReferenceInterface
+final class LdapResultReference implements LdapResultReferenceInterface
 {
-    /**
-     * Initializes the object
-     *
-     * @param  resource $resource
-     * @param  LdapResultInterface $result
-     */
-    public function __construct($resource, LdapResultInterface $ldapResult)
-    {
-        $this->initResultRecord($resource, $ldapResult);
-    }
+    use LdapResultItem;
 
     // @codingStandardsIgnoreStart
     // phpcs:disable Generic.NamingConventions.CamelCapsFunctionName
+
+    /**
+     * Returns first result reference in the message chain.
+     *
+     * @return LdapResultItemInterface|false
+     */
+    public function first_item()
+    {
+        return $result->getLdapResult()->first_reference();
+    }
+
+    /**
+     * Returns next result reference in the message chain.
+     *
+     * @return LdapResultItemInterface|false
+     */
+    public function next_item()
+    {
+        return $this->next_reference();
+    }
 
     /**
      * Get next reference

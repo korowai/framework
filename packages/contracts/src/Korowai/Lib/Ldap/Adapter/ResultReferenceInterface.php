@@ -15,7 +15,7 @@ namespace Korowai\Lib\Ldap\Adapter;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-interface ResultReferenceInterface extends ResultRecordInterface, \IteratorAggregate
+interface ResultReferenceInterface extends \IteratorAggregate
 {
     /**
      * Returns referrals

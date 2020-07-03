@@ -8,6 +8,7 @@ patterns:
   - "src/"
   - "packages/"
 exclude_patterns:
+  - ".psalm/"
   - "build/"
   - "docs/"
   - "bin/"
@@ -19,6 +20,7 @@ exclude_patterns:
   - "**/Resources/"
   - "**/vendor/"
   - "packages/ldaplib/src/Adapter/ExtLdap/LdapLink.php"
+  - "packages/ldaplib/src/Adapter/ExtLdap/LdapLinkInterface.php"
   - "packages/rfclib/Testing/RuleSet*.php"
   - "packages/compatlib/src/functions/preg.php"
 plugins:

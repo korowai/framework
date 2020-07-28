@@ -35,6 +35,16 @@ final class ResultReferenceIterator extends AbstractResultIterator implements Re
         parent::__construct($ldapResult, $reference);
     }
 
+    /**
+     * Return the key of the current element, that is DN of the current entry
+     */
+    public function key()
+    {
+        // FIXME: DN's may be non-unique in result, while keys should be unique
+        // FIXME: we do not support DNs on references
+        return $this->current->getDn();
+    }
+
     protected function first_item()
     {
         return $this->getLdapResult()->first_reference();
@@ -45,7 +55,7 @@ final class ResultReferenceIterator extends AbstractResultIterator implements Re
         return $this->getCurent()->next_reference();
     }
 
-    protected function wrap(LdapResultReferenceInterface $item)
+    protected function wrap(LdapResultItemInterface $item)
     {
         return new ResultReference($item);
     }

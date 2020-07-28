@@ -39,23 +39,13 @@ abstract class AbstractResultIterator implements LdapResultWrapperInterface
     public function __construct(LdapResultInterface $ldapResult, ?LdapResultItemInterface $current)
     {
         $this->setLdapResult($ldapResult);
-        $this->setItem($current);
-    }
-
-    /**
-     * Return the key of the current element, that is DN of the current entry
-     */
-    public function key()
-    {
-        // FIXME: DN's may be non-unique in result, while keys should be unique
-        // FIXME: we do not support DNs on references
-        return $this->current->getDn();
+        $this->setCurrentLdapResultItem($current);
     }
 
     /**
      * Returns the current element.
      */
-    public function current()
+    final public function current()
     {
         return $this->current;
     }
@@ -63,53 +53,52 @@ abstract class AbstractResultIterator implements LdapResultWrapperInterface
     /**
      * Move forward to next element
      */
-    public function next()
+    final public function next()
     {
-        if (($current = $this->getItem()) === null) {
+        if (($current = $this->getCurrentLdapResultItem()) === null) {
             return null;
         }
         /** @var object|false */
         $next = with(LdapLinkErrorHandler::fromLdapLinkWrapper($current))(function ($eh) {
             return $this->next_item();
-            //return call_user_func([$current, $this->getMethodForNext()]);
         });
-        $this->setItem($next);
+        $this->setCurrentLdapResultItem($next ? null);
     }
 
     /**
      * Rewind the iterator to the first element
      */
-    public function rewind()
+    final public function rewind()
     {
-        //$result = $this->getLdapResult();
         /** @var object|false */
-        $first = with(LdapLinkErrorHandler::fromLdapLinkWrapper($result))(function ($eh) /*use ($result)*/ {
+        $first = with(LdapLinkErrorHandler::fromLdapLinkWrapper($result))(function ($eh) {
             return $this->first_item();
-            //return call_user_func([$result, $this->getMethodForFirst()]);
         });
-        $this->setItem($first);
+        $this->setCurrentLdapResultItem($first ? null);
     }
 
     /**
      * Checks if current position is valid
+     *
+     * @return bool
      */
-    public function valid()
+    final public function valid() : bool
     {
         return $this->current !== null;
     }
 
     /**
-     * @param LdapResultItemInterface $current
+     * @param LdapResultItemInterface|null $current
      */
-    private function setItem(LdapResultItemInterface $current)
+    final private function setCurrentLdapResultItem(?LdapResultItemInterface $current)
     {
-        $this->current = $current ? $this->wrapItem($current) : null;
+        $this->current = $current ? $this->wrap($current) : null;
     }
 
     /**
-     * @return LdapResultItemInterface
+     * @return LdapResultItemInterface|null
      */
-    private function getItem() : LdapResultItemInterface
+    final private function getCurrentLdapResultItem() : ?LdapResultItemInterface
     {
         return $this->current ? $this->current->getLdapResultItem() : null;
     }

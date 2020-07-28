@@ -36,6 +36,17 @@ final class ResultEntryIterator extends AbstractResultIterator implements Result
         parent::__construct($ldapResult, $current);
     }
 
+    /**
+     * Return the key of the current element, that is DN of the current entry
+     *
+     * @return string
+     */
+    public function key()
+    {
+        // FIXME: DN's may be non-unique in result, while keys should be unique
+        return $this->current()->getDn();
+    }
+
     protected function first_item()
     {
         return $this->getLdapResult()->first_entry();
@@ -46,7 +57,7 @@ final class ResultEntryIterator extends AbstractResultIterator implements Result
         return $this->getCurent()->next_entry();
     }
 
-    protected function wrap(LdapResultEntryInterface $item)
+    protected function wrap(LdapResultItemInterface $item)
     {
         return new ResultEntry($item);
     }

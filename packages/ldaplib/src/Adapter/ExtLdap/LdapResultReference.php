@@ -47,7 +47,7 @@ final class LdapResultReference implements LdapResultReferenceInterface
     /**
      * Get next reference
      *
-     * @return LdapResultReference|bool
+     * @return LdapResultReference|false
      *
      * @link http://php.net/manual/en/function.ldap-next-reference.php ldap_next_reference()
      */

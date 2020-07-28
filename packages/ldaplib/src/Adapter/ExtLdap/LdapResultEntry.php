@@ -49,7 +49,7 @@ final class LdapResultEntry implements LdapResultEntryInterface
     /**
      * Get the DN of a result entry
      *
-     * @return string|bool
+     * @return string|false
      *
      * @link http://php.net/manual/en/function.ldap-get-dn.php ldap_get_dn()
      */

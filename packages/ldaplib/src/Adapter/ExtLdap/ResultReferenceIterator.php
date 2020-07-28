@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
 
 use Korowai\Lib\Ldap\Adapter\ResultReferenceIteratorInterface;
+use Korowai\Lib\Ldap\Adapter\ResultReferenceInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -22,40 +23,42 @@ final class ResultReferenceIterator extends AbstractResultIterator implements Re
     /**
      * Constructs ResultReferenceIterator
      *
-     * @param Result $result                  The ldap search result which provides
-     *                                        first entry in the entry chain
-     * @param ResultReference|null $reference The current reference in the chain or
-     *                                        ``null`` to create an invalid (past the
-     *                                        end) iterator
-     *
-     * The ``$result`` object is used by ``rewind()`` method.
+     * @param LdapResultInterface $ldapResult
+     *      The ldap search result which provides first reference in the chain.
+     * @param LdapResultReferenceInterface|null $reference
+     *      The reference currently pointed to by the iterator (``null`` to
+     *      create an invalid/past the end iterator).
+     * @param int $offset
+     *      The offset of the $reference in the chain.
      */
-    public function __construct(LdapResultInterface $ldapResult, ?ResultReference $reference)
-    {
-        parent::__construct($ldapResult, $reference);
+    public function __construct(
+        LdapResultInterface $ldapResult,
+        LdapResultReferenceInterface $reference = null,
+        int $offset = null
+    ) {
+        parent::__construct($ldapResult, $reference, $offset);
     }
 
     /**
-     * Return the key of the current element, that is DN of the current entry
+     * {@inheritdoc}
      */
-    public function key()
+    protected function first_item() : ?LdapResultReferenceInterface
     {
-        // FIXME: DN's may be non-unique in result, while keys should be unique
-        // FIXME: we do not support DNs on references
-        return $this->current->getDn();
+        return $this->getLdapResult()->first_reference() ?: null;
     }
 
-    protected function first_item()
+    /**
+     * {@inheritdoc}
+     */
+    protected function next_item() : ?LdapResultReferenceInterface
     {
-        return $this->getLdapResult()->first_reference();
+        return $this->getCurent()->next_reference() ?: null;
     }
 
-    protected function next_item()
-    {
-        return $this->getCurent()->next_reference();
-    }
-
-    protected function wrap(LdapResultItemInterface $item)
+    /**
+     * {@inheritdoc}
+     */
+    protected function wrap(LdapResultItemInterface $item) : ResultReferenceInterface
     {
         return new ResultReference($item);
     }

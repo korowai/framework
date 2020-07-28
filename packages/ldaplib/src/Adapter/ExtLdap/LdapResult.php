@@ -23,7 +23,7 @@ final class LdapResult implements LdapResultInterface
     use HasLdapLink;
 
     /**
-     * Initializes new ``Result`` instance
+     * Initializes new LdapResult instance
      *
      * It's assumed, that ``$resource`` was created by ``$link``. For example,
      * ``$resource`` may be a resource returned from
@@ -40,6 +40,9 @@ final class LdapResult implements LdapResultInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @psalm-pure
+     * @psalm-mutation-free
      */
     public function supportsResourceType(string $type) : bool
     {
@@ -52,23 +55,29 @@ final class LdapResult implements LdapResultInterface
     /**
      * Count the number of entries in a search
      *
-     * @return int|bool
+     * @return int|false
      *
      * @link http://php.net/manual/en/function.ldap-count-entries.php ldap_count_entries()
+     *
+     * @psalm-mutation-free
      */
     public function count_entries()
     {
         $ldap = $this->getLdapLink();
         // PHP 7.x and earlier may return null instead of false
-        return ldap_count_entries($ldap->getResource(), $this->getResource()) ?? false;
+        /** @var int|false|null */
+        $count = ldap_count_entries($ldap->getResource(), $this->getResource());
+        return $count ?? false;
     }
 
     /**
      * Count the number of references in a search
      *
-     * @return int|bool
+     * @return int|false
      *
      * @link http://php.net/manual/en/function.ldap-count-references.php ldap_count_references()
+     *
+     * @psalm-mutation-free
      */
     public function count_references()
     {
@@ -81,14 +90,17 @@ final class LdapResult implements LdapResultInterface
     /**
      * Returns result's first entry
      *
-     * @return LdapResultEntry|bool
+     * @return LdapResultEntryInterface|false
      *
      * @link http://php.net/manual/en/function.ldap-first-entry.php ldap_first_entry()
+     *
+     * @psalm-mutation-free
      */
     public function first_entry()
     {
         $ldap = $this->getLdapLink();
         // PHP 7.x and earlier may return null instead of false
+        /** @var resource|false|null */
         $res = ldap_first_entry($ldap->getResource(), $this->getResource());
         return $res ? new LdapResultEntry($res, $this) : false;
     }
@@ -96,14 +108,17 @@ final class LdapResult implements LdapResultInterface
     /**
      * Returns result's first reference
      *
-     * @return LdapResultReference|bool
+     * @return LdapResultReferenceInterface|false
      *
      * @link http://php.net/manual/en/function.ldap-first-reference.php ldap_first_reference()
+     *
+     * @psalm-mutation-free
      */
     public function first_reference()
     {
         $ldap = $this->getLdapLink();
         // PHP 7.x and earlier may return null instead of false
+        /** @var resource|false|null */
         $res = ldap_first_reference($ldap->getResource(), $this->getResource());
         return $res ? new LdapResultReference($res, $this) : false;
     }
@@ -118,21 +133,27 @@ final class LdapResult implements LdapResultInterface
     public function free_result() : bool
     {
         // PHP 7.x and earlier may return null instead of false
-        return ldap_free_result($this->getResource()) ?? false;
+        /** @var bool|null */
+        $ret = ldap_free_result($this->getResource());
+        return (bool)$ret;
     }
 
     /**
      * Get all result entries
      *
-     * @return array|bool
+     * @return array|false
      *
      * @link http://php.net/manual/en/function.ldap-get-entries.php ldap_get_entries()
+     *
+     * @psalm-mutation-free
      */
     public function get_entries()
     {
         $ldap = $this->getLdapLink();
         // PHP 7.x and earlier may return null instead of false
-        return ldap_get_entries($ldap->getResource(), $this->getResource()) ?? false;
+        /** @var array|false|null */
+        $entries = ldap_get_entries($ldap->getResource(), $this->getResource());
+        return $entries ?? false;
     }
 
     /**
@@ -147,6 +168,8 @@ final class LdapResult implements LdapResultInterface
      * @return bool
      *
      * @link http://php.net/manual/en/function.ldap-parse-result.php ldap_parse_result()
+     *
+     * @psalm-mutation-free
      */
     public function parse_result(
         &$errcode,
@@ -158,7 +181,9 @@ final class LdapResult implements LdapResultInterface
         $ldap = $this->getLdapLink();
         $args = array_slice([&$errcode, &$matcheddn, &$errmsg, &$referrals, &$serverctls], 0, func_num_args());
         // PHP 7.x and earlier may return null instead of false
-        return ldap_parse_result($ldap->getResource(), $this->getResource(), ...$args) ?? false;
+        /** @var bool|null */
+        $ret = ldap_parse_result($ldap->getResource(), $this->getResource(), ...$args);
+        return (bool)$ret;
     }
 
     /**
@@ -173,7 +198,10 @@ final class LdapResult implements LdapResultInterface
     public function sort(string $sortfilter) : bool
     {
         $ldap = $this->getLdapLink();
-        return ldap_sort($ldap->getResource(), $this->getResource(), $sortfilter) ?? false;
+        // PHP 7.x and earlier may return null instead of false
+        /** @var bool|null */
+        $ret = ldap_sort($ldap->getResource(), $this->getResource(), $sortfilter);
+        return (bool)$ret;
     }
 
     // phpcs:enable Generic.NamingConventions.CamelCapsFunctionName

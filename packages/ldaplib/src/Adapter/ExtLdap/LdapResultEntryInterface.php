@@ -25,7 +25,7 @@ interface LdapResultEntryInterface extends LdapResultItemInterface
     /**
      * Get the DN of the entry
      *
-     * @return string|bool
+     * @return string|false
      *
      * @link http://php.net/manual/en/function.ldap-get-dn.php ldap_get_dn()
      */
@@ -34,7 +34,7 @@ interface LdapResultEntryInterface extends LdapResultItemInterface
     /**
      * Return first attribute
      *
-     * @return string|bool
+     * @return string|false
      *
      * @link http://php.net/manual/en/function.ldap-first-attribute.php ldap_first_attribute()
      */
@@ -43,7 +43,7 @@ interface LdapResultEntryInterface extends LdapResultItemInterface
     /**
      * Get attributes from a search result entry
      *
-     * @return array|bool
+     * @return array|false
      *
      * @link http://php.net/manual/en/function.ldap-get-attributes.php ldap_get_attributes()
      */
@@ -54,7 +54,7 @@ interface LdapResultEntryInterface extends LdapResultItemInterface
      *
      * @param  string $attribute
      *
-     * @return array|bool
+     * @return array|false
      *
      * @link http://php.net/manual/en/function.ldap-get-values-len.php ldap_get_values_len()
      */
@@ -65,7 +65,7 @@ interface LdapResultEntryInterface extends LdapResultItemInterface
      *
      * @param  string $attribute
      *
-     * @return array|bool
+     * @return array|false
      *
      * @link http://php.net/manual/en/function.ldap-get-values.php ldap_get_values()
      */
@@ -74,7 +74,7 @@ interface LdapResultEntryInterface extends LdapResultItemInterface
     /**
      * Get the next attribute in result
      *
-     * @return string|bool
+     * @return string|false
      *
      * @link http://php.net/manual/en/function.ldap-next-attribute.php ldap_next_attribute()
      */
@@ -83,7 +83,7 @@ interface LdapResultEntryInterface extends LdapResultItemInterface
     /**
      * Get next result entry
      *
-     * @return LdapResultEntryInterface|bool
+     * @return LdapResultEntryInterface|false
      *
      * @link http://php.net/manual/en/function.ldap-next-entry.php ldap_next_entry()
      */

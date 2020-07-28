@@ -27,7 +27,7 @@ interface LdapResultInterface extends ResourceWrapperInterface, LdapLinkWrapperI
     /**
      * Count the number of entries in a search
      *
-     * @return int|bool
+     * @return int|false
      *
      * @link http://php.net/manual/en/function.ldap-count-entries.php ldap_count_entries()
      */
@@ -36,7 +36,7 @@ interface LdapResultInterface extends ResourceWrapperInterface, LdapLinkWrapperI
     /**
      * Count the number of references in a search
      *
-     * @return int|bool
+     * @return int|false
      *
      * @link http://php.net/manual/en/function.ldap-count-references.php ldap_count_references()
      */
@@ -45,7 +45,7 @@ interface LdapResultInterface extends ResourceWrapperInterface, LdapLinkWrapperI
     /**
      * Returns result's first entry
      *
-     * @return ResultEntry|bool
+     * @return LdapResultEntryInterface|false
      *
      * @link http://php.net/manual/en/function.ldap-first-entry.php ldap_first_entry()
      */
@@ -54,7 +54,7 @@ interface LdapResultInterface extends ResourceWrapperInterface, LdapLinkWrapperI
     /**
      * Returns result's first reference
      *
-     * @return ResultReference|bool
+     * @return LdapResultReferenceInterface|false
      *
      * @link http://php.net/manual/en/function.ldap-first-reference.php ldap_first_reference()
      */
@@ -72,7 +72,7 @@ interface LdapResultInterface extends ResourceWrapperInterface, LdapLinkWrapperI
     /**
      * Get all result entries
      *
-     * @return array|bool
+     * @return array|false
      *
      * @link http://php.net/manual/en/function.ldap-get-entries.php ldap_get_entries()
      */

@@ -29,6 +29,7 @@ trait HasResource
 
     /**
      * @var resource
+     * @psalm-readonly
      */
     private $resource;
 
@@ -36,6 +37,8 @@ trait HasResource
      * Returns the encapsulated resource.
      *
      * @return resource
+     *
+     * @psalm-mutation-free
      */
     public function getResource()
     {

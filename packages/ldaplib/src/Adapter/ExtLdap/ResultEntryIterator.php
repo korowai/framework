@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
 
 use Korowai\Lib\Ldap\Adapter\ResultEntryIteratorInterface;
+use Korowai\Lib\Ldap\Adapter\ResultEntryInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -23,41 +24,41 @@ final class ResultEntryIterator extends AbstractResultIterator implements Result
      * Constructs ResultEntryIterator
      *
      * @param LdapResultInterface $ldapResult
-     *      The ldap search result which provides first entry in the entry
-     *      chain
-     * @param LdapResultEntryInterface|null $current
-     *      The current entry in the chain or ``null`` to create an invalid
-     *      (past the end) iterator
-     *
-     * The ``$result`` object is used by ``rewind()`` method.
+     *      The ldap search result which provides first entry in the chain.
+     * @param LdapResultEntryInterface|null $entry
+     *      The entry currently pointed to by the iterator (``null`` to
+     *      create an invalid/past the end iterator).
+     * @param int $offset
+     *      The offset of the $entry in the chain.
      */
-    public function __construct(LdapResultInterface $ldapResult, ?LdapResultEntryInterface $current)
-    {
-        parent::__construct($ldapResult, $current);
+    public function __construct(
+        LdapResultInterface $ldapResult,
+        LdapResultEntryInterface $entry = null,
+        int $offset = null
+    ) {
+        parent::__construct($ldapResult, $entry, $offset);
     }
 
     /**
-     * Return the key of the current element, that is DN of the current entry
-     *
-     * @return string
+     * {@inheritdoc}
      */
-    public function key()
+    protected function first_item() : ?LdapResultEntryInterface
     {
-        // FIXME: DN's may be non-unique in result, while keys should be unique
-        return $this->current()->getDn();
+        return $this->getLdapResult()->first_entry() ?: null;
     }
 
-    protected function first_item()
+    /**
+     * {@inheritdoc}
+     */
+    protected function next_item() : ?LdapResultEntryInterface
     {
-        return $this->getLdapResult()->first_entry();
+        return $this->getCurent()->next_entry() ?: null;
     }
 
-    protected function next_item()
-    {
-        return $this->getCurent()->next_entry();
-    }
-
-    protected function wrap(LdapResultItemInterface $item)
+    /**
+     * {@inheritdoc}
+     */
+    protected function wrap(LdapResultItemInterface $item) : ResultEntryInterface
     {
         return new ResultEntry($item);
     }

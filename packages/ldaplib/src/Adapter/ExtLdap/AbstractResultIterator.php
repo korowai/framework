@@ -22,7 +22,12 @@ abstract class AbstractResultIterator implements LdapResultWrapperInterface
     use HasLdapResult;
 
     /**
-     * @var LdapResultItemWrapper|null
+     * @var int
+     */
+    private $offset;
+
+    /**
+     * @var LdapResultItemWrapperInterface|null
      */
     private $current;
 
@@ -30,16 +35,29 @@ abstract class AbstractResultIterator implements LdapResultWrapperInterface
      * Initializes the iterator
      *
      * @param  LdapResultInterface $ldapResult
-     *      The ldap search result which provides first entry in the entry chain
-     * @param  object|null $current
-     *      The element currently pointed to by iterator.
-     *
-     * The ``$ldapResult`` object is used by ``rewind()`` method.
+     *      The ldap search result which provides first item in the chain.
+     * @param  LdapResultItemInterface|null $current
+     *      The item currently pointed to by iterator (``null`` to create an
+     *      invalid/past the end iterator).
+     * @param  int $offset
+     *      The offset of the $current item in the chain.
      */
-    public function __construct(LdapResultInterface $ldapResult, ?LdapResultItemInterface $current)
-    {
+    public function __construct(
+        LdapResultInterface $ldapResult,
+        LdapResultItemInterface $current = null,
+        int $offset = null
+    ) {
         $this->setLdapResult($ldapResult);
-        $this->setCurrentLdapResultItem($current);
+        $this->setCurrentLdapResultItemAndOffset($current, $offset);
+    }
+
+    /**
+     * Return the key of the current element, that is the offset of the current
+     * item in the chain.
+     */
+    final public function key()
+    {
+        return $this->offset;
     }
 
     /**
@@ -53,28 +71,27 @@ abstract class AbstractResultIterator implements LdapResultWrapperInterface
     /**
      * Move forward to next element
      */
-    final public function next()
+    final public function next() : void
     {
         if (($current = $this->getCurrentLdapResultItem()) === null) {
             return null;
         }
-        /** @var object|false */
         $next = with(LdapLinkErrorHandler::fromLdapLinkWrapper($current))(function ($eh) {
             return $this->next_item();
         });
-        $this->setCurrentLdapResultItem($next ? null);
+        $this->setCurrentLdapResultItemAndOffset($next, $this->offset+1);
     }
 
     /**
      * Rewind the iterator to the first element
      */
-    final public function rewind()
+    final public function rewind() : void
     {
-        /** @var object|false */
+        /** @var LdapResultItemInterface|false */
         $first = with(LdapLinkErrorHandler::fromLdapLinkWrapper($result))(function ($eh) {
             return $this->first_item();
         });
-        $this->setCurrentLdapResultItem($first ? null);
+        $this->setCurrentLdapResultItemAndOffset($first, 0);
     }
 
     /**
@@ -89,10 +106,17 @@ abstract class AbstractResultIterator implements LdapResultWrapperInterface
 
     /**
      * @param LdapResultItemInterface|null $current
+     * @param int $offset
      */
-    final private function setCurrentLdapResultItem(?LdapResultItemInterface $current)
+    final private function setCurrentLdapResultItemAndOffset(?LdapResultItemInterface $current, ?int $offset)
     {
-        $this->current = $current ? $this->wrap($current) : null;
+        if ($current !== null) {
+            $this->current = $this->wrap($current);
+            $this->offset = $offset ?? 0;
+        } else {
+            $this->current = null;
+            $this->offset = -1;
+        }
     }
 
     /**
@@ -110,22 +134,22 @@ abstract class AbstractResultIterator implements LdapResultWrapperInterface
      * Returns first result item of the particular type (entry/reference) in
      * the result message chain.
      *
-     * @return LdapResultItemInterface|false
+     * @return LdapResultItemInterface|null
      */
-    abstract protected function first_item();
+    abstract protected function first_item() : ?LdapResultItemInterface;
 
     /**
      * Returns next result item of the particular type (entry/reference) in
      * the result message chain.
      *
-     * @return LdapResultItemInterface|false
+     * @return LdapResultItemInterface|null
      */
-    abstract protected function next_item();
+    abstract protected function next_item() : ?LdapResultItemInterface;
 
     // phpcs:enable Generic.NamingConventions.CamelCapsFunctionName
     // @codingStandardsIgnoreEnd
 
-    abstract protected function wrap(LdapResultItemInterface $item);
+    abstract protected function wrap(LdapResultItemInterface $item) : LdapResultItemWrapperInterface;
 }
 
 // vim: syntax=php sw=4 ts=4 et:

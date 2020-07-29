@@ -38,6 +38,9 @@ final class LdapLink implements LdapLinkInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @psalm-mutation-free
+     * @psalm-pure
      */
     public function supportsResourceType(string $type) : bool
     {

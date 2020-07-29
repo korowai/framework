@@ -21,6 +21,8 @@ interface LdapResultWrapperInterface
      * Returns the encapsulated LdapResultInterface instance.
      *
      * @return LdapResultInterface
+     *
+     * @psalm-mutation-free
      */
     public function getLdapResult() : LdapResultInterface;
 }

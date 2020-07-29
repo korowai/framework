@@ -14,8 +14,6 @@ namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- *
- * @psalm-immutable
  */
 trait HasResource
 {
@@ -24,11 +22,15 @@ trait HasResource
      *
      * @param  string $type
      * @return bool
+     *
+     * @psalm-mutation-free
+     * @psalm-pure
      */
     abstract public function supportsResourceType(string $type) : bool;
 
     /**
-     * @var resource
+     * @var mixed
+     *
      * @psalm-readonly
      */
     private $resource;
@@ -36,7 +38,7 @@ trait HasResource
     /**
      * Returns the encapsulated resource.
      *
-     * @return resource
+     * @return mixed
      *
      * @psalm-mutation-free
      */
@@ -49,6 +51,8 @@ trait HasResource
      * Checks whether the wrapped resource is valid.
      *
      * @return bool
+     *
+     * @psalm-mutation-free
      */
     public function isValid() : bool
     {

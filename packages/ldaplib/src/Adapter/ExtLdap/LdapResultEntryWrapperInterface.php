@@ -21,6 +21,8 @@ interface LdapResultEntryWrapperInterface extends LdapResultItemWrapperInterface
      * Returns the encapsulated LdapResultEntryInterface instance.
      *
      * @return LdapResultEntryInterface
+     *
+     * @psalm-mutation-free
      */
     public function getLdapResultEntry() : LdapResultEntryInterface;
 
@@ -28,6 +30,8 @@ interface LdapResultEntryWrapperInterface extends LdapResultItemWrapperInterface
      * Returns the encapsulated LdapResultEntryInterface instance.
      *
      * @return LdapResultEntryInterface
+     *
+     * @psalm-mutation-free
      */
     public function getLdapResultItem() : LdapResultEntryInterface;
 }

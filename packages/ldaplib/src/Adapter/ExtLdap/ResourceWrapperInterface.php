@@ -20,7 +20,9 @@ interface ResourceWrapperInterface
     /**
      * Returns the encapsulated resource.
      *
-     * @return resource
+     * @return mixed
+     *
+     * @psalm-mutation-free
      */
     public function getResource();
 
@@ -28,6 +30,8 @@ interface ResourceWrapperInterface
      * Checks whether the wrapped resource is valid.
      *
      * @return bool
+     *
+     * @psalm-mutation-free
      */
     public function isValid() : bool;
 
@@ -36,6 +40,9 @@ interface ResourceWrapperInterface
      *
      * @param  string $type
      * @return bool
+     *
+     * @psalm-mutation-free
+     * @psalm-pure
      */
     public function supportsResourceType(string $type) : bool;
 }

@@ -41,8 +41,8 @@ final class LdapResult implements LdapResultInterface
     /**
      * {@inheritdoc}
      *
-     * @psalm-pure
      * @psalm-mutation-free
+     * @psalm-pure
      */
     public function supportsResourceType(string $type) : bool
     {
@@ -157,17 +157,7 @@ final class LdapResult implements LdapResultInterface
     }
 
     /**
-     * Extract information from result
-     *
-     * @param  int|null &$errcode
-     * @param  string|null $matcheddn
-     * @param  string|null $errmsg
-     * @param  array|null $referrals
-     * @param  array|null $serverctls
-     *
-     * @return bool
-     *
-     * @link http://php.net/manual/en/function.ldap-parse-result.php ldap_parse_result()
+     * {@inheritdoc}
      *
      * @psalm-mutation-free
      */
@@ -179,9 +169,14 @@ final class LdapResult implements LdapResultInterface
         &$serverctls = null
     ) : bool {
         $ldap = $this->getLdapLink();
-        $args = array_slice([&$errcode, &$matcheddn, &$errmsg, &$referrals, &$serverctls], 0, func_num_args());
+        /** @psalm-suppress ImpureFunctionCall */
+        $nargs = func_num_args();
+        $args = array_slice([&$errcode, &$matcheddn, &$errmsg, &$referrals, &$serverctls], 0, $nargs);
         // PHP 7.x and earlier may return null instead of false
-        /** @var bool|null */
+        /**
+         * @psalm-suppress PossiblyNullArgument
+         * @var bool|null
+         */
         $ret = ldap_parse_result($ldap->getResource(), $this->getResource(), ...$args);
         return (bool)$ret;
     }

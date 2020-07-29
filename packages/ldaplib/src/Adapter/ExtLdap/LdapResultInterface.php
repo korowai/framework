@@ -30,6 +30,8 @@ interface LdapResultInterface extends ResourceWrapperInterface, LdapLinkWrapperI
      * @return int|false
      *
      * @link http://php.net/manual/en/function.ldap-count-entries.php ldap_count_entries()
+     *
+     * @psalm-mutation-free
      */
     public function count_entries();
 
@@ -39,6 +41,8 @@ interface LdapResultInterface extends ResourceWrapperInterface, LdapLinkWrapperI
      * @return int|false
      *
      * @link http://php.net/manual/en/function.ldap-count-references.php ldap_count_references()
+     *
+     * @psalm-mutation-free
      */
     public function count_references();
 
@@ -48,6 +52,8 @@ interface LdapResultInterface extends ResourceWrapperInterface, LdapLinkWrapperI
      * @return LdapResultEntryInterface|false
      *
      * @link http://php.net/manual/en/function.ldap-first-entry.php ldap_first_entry()
+     *
+     * @psalm-mutation-free
      */
     public function first_entry();
 
@@ -57,6 +63,8 @@ interface LdapResultInterface extends ResourceWrapperInterface, LdapLinkWrapperI
      * @return LdapResultReferenceInterface|false
      *
      * @link http://php.net/manual/en/function.ldap-first-reference.php ldap_first_reference()
+     *
+     * @psalm-mutation-free
      */
     public function first_reference();
 
@@ -75,21 +83,31 @@ interface LdapResultInterface extends ResourceWrapperInterface, LdapLinkWrapperI
      * @return array|false
      *
      * @link http://php.net/manual/en/function.ldap-get-entries.php ldap_get_entries()
+     *
+     * @psalm-mutation-free
      */
     public function get_entries();
 
     /**
      * Extract information from result
      *
-     * @param  int|null &$errcode
-     * @param  string|null $matcheddn
-     * @param  string|null $errmsg
-     * @param  array|null $referrals
-     * @param  array|null $serverctls
+     * @param  mixed $errcode
+     * @param  mixed $matcheddn
+     * @param  mixed $errmsg
+     * @param  mixed $referrals
+     * @param  mixed $serverctls
+     *
+     * @param-out int $errcode
+     * @param-out string|null $matcheddn
+     * @param-out string $errmsg
+     * @param-out array $referrals
+     * @param-out array $serverctls
      *
      * @return bool
      *
      * @link http://php.net/manual/en/function.ldap-parse-result.php ldap_parse_result()
+     *
+     * @psalm-mutation-free
      */
     public function parse_result(
         &$errcode,

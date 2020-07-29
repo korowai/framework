@@ -24,7 +24,7 @@ use function Korowai\Lib\Context\with;
  */
 final class Result extends AbstractResult implements LdapResultWrapperInterface
 {
-    use HasLdapResult;
+    use LdapResultWrapperTrait;
 
     /**
      * Initializes the object
@@ -38,6 +38,28 @@ final class Result extends AbstractResult implements LdapResultWrapperInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @psalm-mutation-free
+     */
+    public function getResultEntryIterator() : ResultEntryIteratorInterface
+    {
+        return $this->getResultItemIterator('first_entry', ResultEntryIterator::class);
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @psalm-mutation-free
+     */
+    public function getResultReferenceIterator() : ResultReferenceIteratorInterface
+    {
+        return $this->getResultItemIterator('first_reference', ResultReferenceIterator::class);
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @psalm-mutation-free
      */
     public function getResultEntries() : array
     {
@@ -46,6 +68,8 @@ final class Result extends AbstractResult implements LdapResultWrapperInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @psalm-mutation-free
      */
     public function getResultReferences() : array
     {
@@ -53,29 +77,16 @@ final class Result extends AbstractResult implements LdapResultWrapperInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @psalm-mutation-free
      */
-    public function getResultEntryIterator() : ResultEntryIteratorInterface
-    {
-        $result = $this->getLdapResult();
-        /** @var LdapResultEntry|false */
-        $first = with(LdapLinkErrorHandler::fromLdapLinkWrapper($result))(function ($eh) use ($result) {
-            return $result->first_entry();
-        });
-        return new ResultEntryIterator($result, $first === false ? null : $first);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getResultReferenceIterator() : ResultReferenceIteratorInterface
+    private function getResultItemIterator(string $method, string $class)
     {
         $result = $this->getLdapResult();
         /** @var LdapResultReference|false */
-        $first = with(LdapLinkErrorHandler::fromLdapLinkWrapper($result))(function ($eh) use ($result) {
-            return $result->first_reference();
+        $first = with(LdapLinkErrorHandler::fromLdapLinkWrapper($result))(function ($eh) use ($result, $method) {
+            return $result->{$method}();
         });
-        return new ResultReferenceIterator($result, $first === false ? null : $first);
+        return new $class($result, $first === false ? null : $first);
     }
 }
 

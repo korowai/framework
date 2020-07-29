@@ -17,7 +17,7 @@ namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
  *
  * @psalm-immutable
  */
-trait HasLdapLink
+trait LdapLinkWrapperTrait
 {
     /**
      * @var LdapLinkInterface

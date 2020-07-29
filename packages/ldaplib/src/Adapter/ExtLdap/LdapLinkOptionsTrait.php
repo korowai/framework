@@ -19,7 +19,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-trait LdapLinkOptions
+trait LdapLinkOptionsTrait
 {
     private static $ldapLinkOptionDeclarations = [
         'deref'               => ['types' => ['string', 'int'],

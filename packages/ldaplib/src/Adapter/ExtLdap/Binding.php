@@ -23,9 +23,9 @@ use function Korowai\Lib\Error\emptyErrorHandler;
  */
 class Binding implements BindingInterface
 {
-    use LastLdapException;
-    use EnsureLdapLink;
-    use HasLdapLink;
+    use LastLdapExceptionTrait;
+    use EnsureLdapLinkTrait;
+    use LdapLinkWrapperTrait;
 
     /** @var bool */
     private $bound = false;

@@ -39,6 +39,9 @@ final class ResultReferenceIterator extends AbstractResultIterator implements Re
         parent::__construct($ldapResult, $reference, $offset);
     }
 
+    // @codingStandardsIgnoreStart
+    // phpcs:disable Generic.NamingConventions.CamelCapsFunctionName
+
     /**
      * {@inheritdoc}
      */
@@ -50,15 +53,18 @@ final class ResultReferenceIterator extends AbstractResultIterator implements Re
     /**
      * {@inheritdoc}
      */
-    protected function next_item() : ?LdapResultReferenceInterface
+    protected function next_item(LdapResultItemInterface $current) : ?LdapResultEntryInterface
     {
-        return $this->getCurent()->next_reference() ?: null;
+        return $current->next_reference() ?: null;
     }
+
+    // phpcs:enable Generic.NamingConventions.CamelCapsFunctionName
+    // @codingStandardsIgnoreEnd
 
     /**
      * {@inheritdoc}
      */
-    protected function wrap(LdapResultItemInterface $item) : ResultReferenceInterface
+    protected function wrap(LdapResultItemInterface $item) : ResultReference
     {
         return new ResultReference($item);
     }

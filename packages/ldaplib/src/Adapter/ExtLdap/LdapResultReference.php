@@ -19,30 +19,10 @@ namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
  */
 final class LdapResultReference implements LdapResultReferenceInterface
 {
-    use LdapResultItem;
+    use LdapResultItemTrait;
 
     // @codingStandardsIgnoreStart
     // phpcs:disable Generic.NamingConventions.CamelCapsFunctionName
-
-    /**
-     * Returns first result reference in the message chain.
-     *
-     * @return LdapResultItemInterface|false
-     */
-    public function first_item()
-    {
-        return $result->getLdapResult()->first_reference();
-    }
-
-    /**
-     * Returns next result reference in the message chain.
-     *
-     * @return LdapResultItemInterface|false
-     */
-    public function next_item()
-    {
-        return $this->next_reference();
-    }
 
     /**
      * Get next reference

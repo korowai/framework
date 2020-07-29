@@ -15,7 +15,7 @@ namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-trait HasLdapResult
+trait LdapResultWrapperTrait
 {
     /**
      * @var LdapResultInterface

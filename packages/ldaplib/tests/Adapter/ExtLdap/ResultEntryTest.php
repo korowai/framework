@@ -19,7 +19,7 @@ use Korowai\Lib\Ldap\Adapter\ResultEntryInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\ResultAttributeIterator;
 use Korowai\Lib\Ldap\Adapter\ResultEntryToEntry;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultEntryWrapperInterface;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\HasLdapResultEntry;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultEntryWrapperTrait;
 use Korowai\Lib\Ldap\Exception\LdapException;
 
 /**
@@ -77,9 +77,9 @@ final class ResultEntryTest extends TestCase
         $this->assertUsesTrait(ResultEntryToEntry::class, ResultEntry::class);
     }
 
-    public function test__uses__HasLdapResultEntry() : void
+    public function test__uses__LdapResultEntryWrapperTrait() : void
     {
-        $this->assertUsesTrait(HasLdapResultEntry::class, ResultEntry::class);
+        $this->assertUsesTrait(LdapResultEntryWrapperTrait::class, ResultEntry::class);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////

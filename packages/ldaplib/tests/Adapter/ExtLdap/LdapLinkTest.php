@@ -17,7 +17,7 @@ use Korowai\Testing\Ldaplib\TestCase;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLink;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkWrapperInterface;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\HasResource;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\ResourceWrapperTrait;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResult;
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\MockObject\Stub\Stub;
@@ -308,9 +308,9 @@ final class LdapLinkTest extends TestCase
         $this->assertImplementsInterface(LdapLinkInterface::class, LdapLink::class);
     }
 
-    public function test__uses__HasResource() : void
+    public function test__uses__ResourceWrapperTrait() : void
     {
-        $this->assertUsesTrait(HasResource::class, LdapLink::class);
+        $this->assertUsesTrait(ResourceWrapperTrait::class, LdapLink::class);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////

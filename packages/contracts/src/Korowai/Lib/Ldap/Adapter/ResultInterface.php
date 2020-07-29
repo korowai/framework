@@ -21,6 +21,8 @@ interface ResultInterface extends \IteratorAggregate
      * Get iterator over result's entries
      *
      * @return ResultEntryIteratorInterface The iterator
+     *
+     * @psalm-mutation-free
      */
     public function getResultEntryIterator() : ResultEntryIteratorInterface;
 
@@ -28,6 +30,8 @@ interface ResultInterface extends \IteratorAggregate
      * Get iterator over result's references
      *
      * @return ResultReferenceIteratorInterface The iterator
+     *
+     * @psalm-mutation-free
      */
     public function getResultReferenceIterator() : ResultReferenceIteratorInterface;
 
@@ -35,6 +39,8 @@ interface ResultInterface extends \IteratorAggregate
      * Get an array of result entries.
      *
      * @return array
+     *
+     * @psalm-mutation-free
      */
     public function getResultEntries() : array;
 
@@ -49,6 +55,8 @@ interface ResultInterface extends \IteratorAggregate
      * Get an array of Entries from ldap result
      *
      * @return array Entries
+     *
+     * @psalm-mutation-free
      */
     public function getEntries(bool $use_keys = true) : array;
 }

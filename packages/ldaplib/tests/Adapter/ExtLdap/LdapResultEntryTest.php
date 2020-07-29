@@ -20,7 +20,7 @@ use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultEntryWrapperInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultWrapperInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultItem;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultItemTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -69,9 +69,9 @@ final class LdapResultEntryTest extends TestCase
         $this->assertImplementsInterface(LdapResultEntryInterface::class, LdapResultEntry::class);
     }
 
-    public function test__uses__LdapResultItem()
+    public function test__uses__LdapResultItemTrait()
     {
-        $this->assertUsesTrait(LdapResultItem::class, LdapResultEntry::class);
+        $this->assertUsesTrait(LdapResultItemTrait::class, LdapResultEntry::class);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -25,7 +25,7 @@ use Symfony\Component\OptionsResolver\Options;
  */
 class Adapter implements AdapterInterface
 {
-    use HasLdapLink;
+    use LdapLinkWrapperTrait;
 
     /**
      * @var Binding

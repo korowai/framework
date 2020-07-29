@@ -23,7 +23,7 @@ namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
  */
 final class LdapLink implements LdapLinkInterface
 {
-    use HasResource;
+    use ResourceWrapperTrait;
 
     /**
      * Constructs LdapLink

@@ -14,8 +14,10 @@ namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ *
+ * @psalm-immutable
  */
-trait HasResource
+trait ResourceWrapperTrait
 {
     /**
      * Returns whether the object supports resource of given $type

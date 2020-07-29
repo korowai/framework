@@ -13,12 +13,14 @@ declare(strict_types=1);
 namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
 
 /**
+ * Common code for LdapResultEntry and LdapResultReference.
+ *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-trait LdapResultItem
+trait LdapResultItemTrait
 {
-    use HasResource;
-    use HasLdapResult;
+    use ResourceWrapperTrait;
+    use LdapResultWrapperTrait;
 
     /**
      * Initializes the object
@@ -34,6 +36,9 @@ trait LdapResultItem
 
     /**
      * {@inheritdoc}
+     *
+     * @psalm-mutation-free
+     * @psalm-pure
      */
     public function supportsResourceType(string $type) : bool
     {
@@ -42,6 +47,8 @@ trait LdapResultItem
 
     /**
      * {@inheritdoc}
+     *
+     * @psalm-mutation-free
      */
     public function getLdapLink() : LdapLinkInterface
     {

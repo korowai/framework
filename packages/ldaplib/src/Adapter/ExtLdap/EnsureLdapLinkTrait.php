@@ -17,17 +17,19 @@ use Korowai\Lib\Ldap\Exception\LdapException;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-trait EnsureLdapLink
+trait EnsureLdapLinkTrait
 {
     /**
-     * Ensures that the link is initialised. If not, throws an exception.
+     * Ensures that the link is initialized. If not, throws an exception.
      *
-     * @param LdapLink $link
+     * @param  LdapLinkInterface $link
      * @throws LdapException
      *
      * @return bool Always returns true.
+     *
+     * @psalm-pure
      */
-    protected static function ensureLdapLink(LdapLink $link) : bool
+    protected static function ensureLdapLink(LdapLinkInterface $link) : bool
     {
         if (!$link->isValid()) {
             throw new LdapException("Uninitialized LDAP link", -1);

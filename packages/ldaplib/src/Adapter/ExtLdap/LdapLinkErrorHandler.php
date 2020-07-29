@@ -22,7 +22,7 @@ use Korowai\Lib\Error\AbstractManagedErrorHandler;
  */
 final class LdapLinkErrorHandler extends AbstractManagedErrorHandler implements LdapLinkWrapperInterface
 {
-    use HasLdapLink;
+    use LdapLinkWrapperTrait;
 
     /**
      * Create LdapLinkErrorHandler instance from LdapLinkWrapperInterface.

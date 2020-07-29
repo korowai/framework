@@ -21,8 +21,8 @@ use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultWrapperInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultEntry;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultReference;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\HasResource;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\HasLdapLink;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\ResourceWrapperTrait;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkWrapperTrait;
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\MockObject\Stub\Stub;
 
@@ -72,14 +72,14 @@ final class LdapResultTest extends TestCase
         $this->assertImplementsInterface(LdapResultInterface::class, LdapResult::class);
     }
 
-    public function test__uses__HasResource()
+    public function test__uses__ResourceWrapperTrait()
     {
-        $this->assertUsesTrait(HasResource::class, LdapResult::class);
+        $this->assertUsesTrait(ResourceWrapperTrait::class, LdapResult::class);
     }
 
-    public function test__uses__HasLdapLink()
+    public function test__uses__LdapLinkWrapperTrait()
     {
-        $this->assertUsesTrait(HasLdapLink::class, LdapResult::class);
+        $this->assertUsesTrait(LdapLinkWrapperTrait::class, LdapResult::class);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////

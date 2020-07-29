@@ -13,13 +13,13 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Ldap\Adapter\ExtLdap;
 
 use Korowai\Testing\Ldaplib\TestCase;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkOptions;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkOptionsTrait;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 
 class LdapLinkOptions1YQ4YR18
 {
-    use LdapLinkOptions {
+    use LdapLinkOptionsTrait {
         configureLdapLinkOptions as public;
         configureLdapLinkOption as public;
     }
@@ -28,7 +28,7 @@ class LdapLinkOptions1YQ4YR18
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class LdapLinkOptionsTest extends TestCase
+class LdapLinkOptionsTraitTest extends TestCase
 {
     protected function getConfiguredResolver()
     {

@@ -26,9 +26,9 @@ use Symfony\Component\OptionsResolver\Options;
  */
 class SearchQuery extends AbstractSearchQuery
 {
-    use EnsureLdapLink;
-    use LastLdapException;
-    use HasLdapLink;
+    use EnsureLdapLinkTrait;
+    use LastLdapExceptionTrait;
+    use LdapLinkWrapperTrait;
 
     /**
      * Constructs SearchQuery

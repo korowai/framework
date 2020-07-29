@@ -22,7 +22,7 @@ use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultEntryInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultEntryWrapperInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultReferenceInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultReferenceWrapperInterface;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\HasLdapLink;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkWrapperTrait;
 use Korowai\Lib\Ldap\Exception\LdapException;
 use Korowai\Lib\Error\AbstractManagedErrorHandler;
 
@@ -43,9 +43,9 @@ final class LdapLinkErrorHandlerTest extends TestCase
         $this->assertImplementsInterface(LdapLinkWrapperInterface::class, LdapLinkErrorHandler::class);
     }
 
-    public function test__uses__HasLdapLink()
+    public function test__uses__LdapLinkWrapperTrait()
     {
-        $this->assertUsesTrait(HasLdapLink::class, LdapLinkErrorHandler::class);
+        $this->assertUsesTrait(LdapLinkWrapperTrait::class, LdapLinkErrorHandler::class);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////

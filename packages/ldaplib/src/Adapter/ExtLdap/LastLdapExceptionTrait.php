@@ -17,7 +17,7 @@ use Korowai\Lib\Ldap\Exception\LdapException;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-trait LastLdapException
+trait LastLdapExceptionTrait
 {
     /**
      * Returns an exception for LDAP error that occured most recently.

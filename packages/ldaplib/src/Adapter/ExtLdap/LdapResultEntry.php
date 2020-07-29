@@ -21,7 +21,7 @@ use function Korowai\Lib\Context\with;
  */
 final class LdapResultEntry implements LdapResultEntryInterface
 {
-    use LdapResultItem;
+    use LdapResultItemTrait;
 
     // @codingStandardsIgnoreStart
     // phpcs:disable Generic.NamingConventions.CamelCapsFunctionName

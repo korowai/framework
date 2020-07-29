@@ -23,7 +23,7 @@ use function Korowai\Lib\Context\with;
  */
 final class ResultReference implements ResultReferenceInterface, LdapResultReferenceWrapperInterface
 {
-    use HasLdapResultReference;
+    use LdapResultReferenceWrapperTrait;
 
     /** @var ResultReferralIterator|null */
     private $iterator;

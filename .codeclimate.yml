@@ -21,6 +21,8 @@ exclude_patterns:
   - "**/vendor/"
   - "packages/ldaplib/src/Adapter/ExtLdap/LdapLink.php"
   - "packages/ldaplib/src/Adapter/ExtLdap/LdapLinkInterface.php"
+  - "packages/ldaplib/src/Adapter/ExtLdap/LdapResult.php"
+  - "packages/ldaplib/src/Adapter/ExtLdap/LdapResultInterface.php"
   - "packages/rfclib/Testing/RuleSet*.php"
   - "packages/compatlib/src/functions/preg.php"
 plugins:

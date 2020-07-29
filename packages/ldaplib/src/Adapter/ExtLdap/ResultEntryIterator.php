@@ -39,6 +39,9 @@ final class ResultEntryIterator extends AbstractResultIterator implements Result
         parent::__construct($ldapResult, $entry, $offset);
     }
 
+    // @codingStandardsIgnoreStart
+    // phpcs:disable Generic.NamingConventions.CamelCapsFunctionName
+
     /**
      * {@inheritdoc}
      */
@@ -50,15 +53,18 @@ final class ResultEntryIterator extends AbstractResultIterator implements Result
     /**
      * {@inheritdoc}
      */
-    protected function next_item() : ?LdapResultEntryInterface
+    protected function next_item(LdapResultItemInterface $current) : ?LdapResultEntryInterface
     {
-        return $this->getCurent()->next_entry() ?: null;
+        return $current->next_entry() ?: null;
     }
+
+    // phpcs:enable Generic.NamingConventions.CamelCapsFunctionName
+    // @codingStandardsIgnoreEnd
 
     /**
      * {@inheritdoc}
      */
-    protected function wrap(LdapResultItemInterface $item) : ResultEntryInterface
+    protected function wrap(LdapResultItemInterface $item) : ResultEntry
     {
         return new ResultEntry($item);
     }

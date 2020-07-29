@@ -21,8 +21,8 @@ namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
  */
 class ResultRecord implements ResultRecordInterface
 {
-//    use HasResult;
-//    use HasResource;
+//    use ResultWrapperTrait;
+//    use ResourceWrapperTrait;
 //
 //    /**
 //     * Initializes the ``ResultRecord`` instance

@@ -21,9 +21,9 @@ use function Korowai\Lib\Error\emptyErrorHandler;
  */
 class CompareQuery extends AbstractCompareQuery
 {
-    use EnsureLdapLink;
-    use LastLdapException;
-    use HasLdapLink;
+    use EnsureLdapLinkTrait;
+    use LastLdapExceptionTrait;
+    use LdapLinkWrapperTrait;
 
     /**
      * Constructs CompareQuery

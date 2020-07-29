@@ -13,20 +13,21 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Ldap\Adapter\ExtLdap;
 
 use Korowai\Testing\Ldaplib\TestCase;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\EnsureLdapLink;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLink;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\EnsureLdapLinkTrait;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
 use Korowai\Lib\Ldap\Exception\LdapException;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class EnsureLdapLinkTest extends TestCase
+class EnsureLdapLinkTraitTest extends TestCase
 {
-    use EnsureLdapLink;
+    use EnsureLdapLinkTrait;
 
     public function test_ensureLdapLink_Failure()
     {
-        $link = $this->createMock(LdapLink::class);
+        $link = $this->getMockBuilder(LdapLinkInterface::class)
+                     ->getMockForAbstractClass();
         $link->expects($this->once())
            ->method('isValid')
            ->with()
@@ -40,7 +41,8 @@ class EnsureLdapLinkTest extends TestCase
 
     public function test_ensureLdapLink_Success()
     {
-        $link = $this->createMock(LdapLink::class);
+        $link = $this->getMockBuilder(LdapLinkInterface::class)
+                     ->getMockForAbstractClass();
         $link->expects($this->once())
            ->method('isValid')
            ->with()

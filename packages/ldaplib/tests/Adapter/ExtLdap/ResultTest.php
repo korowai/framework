@@ -23,7 +23,7 @@ use Korowai\Lib\Ldap\Adapter\ExtLdap\ResultReference;
 //use Korowai\Lib\Ldap\Adapter\ExtLdap\ResultEntryIterator;
 //use Korowai\Lib\Ldap\Adapter\ExtLdap\ResultReferenceIterator;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultWrapperInterface;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\HasLdapResult;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultWrapperTrait;
 //use Korowai\Lib\Ldap\Adapter\ResultInterface;
 use PHPUnit\Framework\Constraint\Constraint;
 
@@ -147,9 +147,9 @@ final class ResultTest extends TestCase
         $this->assertImplementsInterface(LdapResultWrapperInterface::class, Result::class);
     }
 
-    public function test__uses__HasLdapResult()
+    public function test__uses__LdapResultWrapperTrait()
     {
-        $this->assertUsesTrait(HasLdapResult::class, Result::class);
+        $this->assertUsesTrait(LdapResultWrapperTrait::class, Result::class);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////

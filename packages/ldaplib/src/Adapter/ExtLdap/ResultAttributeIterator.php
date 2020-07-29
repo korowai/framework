@@ -34,7 +34,7 @@ use Korowai\Lib\Ldap\Adapter\ResultAttributeIteratorInterface;
  */
 class ResultAttributeIterator implements ResultAttributeIteratorInterface, LdapResultEntryWrapperInterface
 {
-    use HasLdapResultEntry;
+    use LdapResultEntryWrapperTrait;
 
     /** @var string|null */
     private $attribute;

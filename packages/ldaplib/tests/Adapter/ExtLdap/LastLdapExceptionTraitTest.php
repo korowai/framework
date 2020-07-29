@@ -13,25 +13,26 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Ldap\Adapter\ExtLdap;
 
 use Korowai\Testing\Ldaplib\TestCase;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LastLdapException;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLink;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LastLdapExceptionTrait;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
 use Korowai\Lib\Ldap\Exception\LdapException;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class LastLdapExceptionTest extends TestCase
+class LastLdapExceptionTraitTest extends TestCase
 {
     use \phpmock\phpunit\PHPMock;
     use GetLdapFunctionMock;
-    use LastLdapException;
+    use LastLdapExceptionTrait;
 
     /**
      * @runInSeparateProcess
      */
     public function test_lastLdapException()
     {
-        $link = $this->createMock(LdapLink::class);
+        $link = $this->getMockBuilder(LdapLinkInterface::class)
+                     ->getMockForAbstractClass();
         $link->expects($this->once())
              ->method('errno')
              ->with()

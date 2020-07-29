@@ -19,15 +19,14 @@ namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
  */
 final class LdapResult implements LdapResultInterface
 {
-    use HasResource;
-    use HasLdapLink;
+    use ResourceWrapperTrait;
+    use LdapLinkWrapperTrait;
 
     /**
      * Initializes new LdapResult instance
      *
      * It's assumed, that ``$resource`` was created by ``$link``. For example,
-     * ``$resource`` may be a resource returned from
-     * ``\ldap_search($link->getResource(), ...)``.
+     * ``$resource = \ldap_search($link->getResource(), ...)``.
      *
      * @param  resource $resource An ldap result resource to be wrapped
      * @param  LdapLinkInterface $link   An ldap link object related to the ``$resource``

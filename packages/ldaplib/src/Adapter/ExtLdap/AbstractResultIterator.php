@@ -19,7 +19,7 @@ use function Korowai\Lib\Context\with;
  */
 abstract class AbstractResultIterator implements LdapResultWrapperInterface
 {
-    use HasLdapResult;
+    use LdapResultWrapperTrait;
 
     /**
      * @var int
@@ -74,10 +74,10 @@ abstract class AbstractResultIterator implements LdapResultWrapperInterface
     final public function next() : void
     {
         if (($current = $this->getCurrentLdapResultItem()) === null) {
-            return null;
+            return;
         }
-        $next = with(LdapLinkErrorHandler::fromLdapLinkWrapper($current))(function ($eh) {
-            return $this->next_item();
+        $next = with(LdapLinkErrorHandler::fromLdapLinkWrapper($current))(function ($eh) use ($current) {
+            return $this->next_item($current);
         });
         $this->setCurrentLdapResultItemAndOffset($next, $this->offset+1);
     }
@@ -87,7 +87,7 @@ abstract class AbstractResultIterator implements LdapResultWrapperInterface
      */
     final public function rewind() : void
     {
-        /** @var LdapResultItemInterface|false */
+        $result = $this->getLdapResult();
         $first = with(LdapLinkErrorHandler::fromLdapLinkWrapper($result))(function ($eh) {
             return $this->first_item();
         });
@@ -105,6 +105,14 @@ abstract class AbstractResultIterator implements LdapResultWrapperInterface
     }
 
     /**
+     * @return LdapResultItemInterface|null
+     */
+    final private function getCurrentLdapResultItem() : ?LdapResultItemInterface
+    {
+        return $this->current ? $this->current->getLdapResultItem() : null;
+    }
+
+    /**
      * @param LdapResultItemInterface|null $current
      * @param int $offset
      */
@@ -117,14 +125,6 @@ abstract class AbstractResultIterator implements LdapResultWrapperInterface
             $this->current = null;
             $this->offset = -1;
         }
-    }
-
-    /**
-     * @return LdapResultItemInterface|null
-     */
-    final private function getCurrentLdapResultItem() : ?LdapResultItemInterface
-    {
-        return $this->current ? $this->current->getLdapResultItem() : null;
     }
 
     // @codingStandardsIgnoreStart
@@ -144,7 +144,7 @@ abstract class AbstractResultIterator implements LdapResultWrapperInterface
      *
      * @return LdapResultItemInterface|null
      */
-    abstract protected function next_item() : ?LdapResultItemInterface;
+    abstract protected function next_item(LdapResultItemInterface $current) : ?LdapResultItemInterface;
 
     // phpcs:enable Generic.NamingConventions.CamelCapsFunctionName
     // @codingStandardsIgnoreEnd

@@ -24,7 +24,7 @@ use function Korowai\Lib\Context\with;
  */
 final class ResultEntry implements ResultEntryInterface, LdapResultEntryWrapperInterface
 {
-    use HasLdapResultEntry;
+    use LdapResultEntryWrapperTrait;
     use ResultEntryToEntry;
 
     /** @var ResultAttributeIterator */

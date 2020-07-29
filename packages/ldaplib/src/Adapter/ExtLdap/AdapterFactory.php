@@ -27,9 +27,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class AdapterFactory extends AbstractAdapterFactory
 {
-    use LdapLinkOptions;
-    use EnsureLdapLink;
-    use LastLdapException;
+    use LdapLinkOptionsTrait;
+    use EnsureLdapLinkTrait;
+    use LastLdapExceptionTrait;
 
     /**
      * Creates instance of AdapterFactory

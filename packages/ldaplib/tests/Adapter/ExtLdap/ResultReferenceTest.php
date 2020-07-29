@@ -17,7 +17,7 @@ use Korowai\Testing\Ldaplib\TestCase;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\ResultReference;
 use Korowai\Lib\Ldap\Adapter\ResultReferenceInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultReferenceWrapperInterface;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\HasLdapResultReference;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultReferenceWrapperTrait;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\ResultReferralIterator;
 
 /**
@@ -72,9 +72,9 @@ class ResultReferenceTest extends TestCase
         $this->assertImplementsInterface(LdapResultReferenceWrapperInterface::class, ResultReference::class);
     }
 
-    public function test__uses__HasLdapResultReference() : void
+    public function test__uses__LdapResultReferenceWrapperTrait() : void
     {
-        $this->assertUsesTrait(HasLdapResultReference::class, ResultReference::class);
+        $this->assertUsesTrait(LdapResultReferenceWrapperTrait::class, ResultReference::class);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////

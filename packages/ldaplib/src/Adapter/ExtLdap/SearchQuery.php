@@ -32,8 +32,13 @@ class SearchQuery extends AbstractSearchQuery
 
     /**
      * Constructs SearchQuery
+     *
+     * @param  LdapLinkInterface $link
+     * @param  string $base_dn
+     * @param  string $filter
+     * @param  array $options
      */
-    public function __construct(LdapLink $link, string $base_dn, string $filter, array $options = [])
+    public function __construct(LdapLinkInterface $link, string $base_dn, string $filter, array $options = [])
     {
         $this->setLdapLink($link);
         parent::__construct($base_dn, $filter, $options);

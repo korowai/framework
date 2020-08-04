@@ -27,8 +27,13 @@ class CompareQuery extends AbstractCompareQuery
 
     /**
      * Constructs CompareQuery
+     *
+     * @param  LdapLinkInterface $link
+     * @param  string $dn
+     * @param  string $attribute
+     * @param  string $value
      */
-    public function __construct(LdapLink $link, string $dn, string $attribute, string $value)
+    public function __construct(LdapLinkInterface $link, string $dn, string $attribute, string $value)
     {
         $this->setLdapLink($link);
         parent::__construct($dn, $attribute, $value);

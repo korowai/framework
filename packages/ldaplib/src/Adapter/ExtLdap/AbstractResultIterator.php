@@ -54,6 +54,8 @@ abstract class AbstractResultIterator implements LdapResultWrapperInterface
     /**
      * Return the key of the current element, that is the offset of the current
      * item in the chain.
+     *
+     * @return mixed
      */
     final public function key()
     {
@@ -62,6 +64,8 @@ abstract class AbstractResultIterator implements LdapResultWrapperInterface
 
     /**
      * Returns the current element.
+     *
+     * @return mixed
      */
     final public function current()
     {
@@ -76,7 +80,7 @@ abstract class AbstractResultIterator implements LdapResultWrapperInterface
         if (($current = $this->getCurrentLdapResultItem()) === null) {
             return;
         }
-        $next = with(LdapLinkErrorHandler::fromLdapLinkWrapper($current))(function ($eh) use ($current) {
+        $next = with(LdapLinkErrorHandler::fromLdapLinkWrapper($current))(function () use ($current) {
             return $this->next_item($current);
         });
         $this->setCurrentLdapResultItemAndOffset($next, $this->offset+1);
@@ -88,7 +92,7 @@ abstract class AbstractResultIterator implements LdapResultWrapperInterface
     final public function rewind() : void
     {
         $result = $this->getLdapResult();
-        $first = with(LdapLinkErrorHandler::fromLdapLinkWrapper($result))(function ($eh) {
+        $first = with(LdapLinkErrorHandler::fromLdapLinkWrapper($result))(function () {
             return $this->first_item();
         });
         $this->setCurrentLdapResultItemAndOffset($first, 0);
@@ -114,9 +118,9 @@ abstract class AbstractResultIterator implements LdapResultWrapperInterface
 
     /**
      * @param LdapResultItemInterface|null $current
-     * @param int $offset
+     * @param int|null $offset
      */
-    final private function setCurrentLdapResultItemAndOffset(?LdapResultItemInterface $current, ?int $offset)
+    final private function setCurrentLdapResultItemAndOffset(?LdapResultItemInterface $current, ?int $offset): void
     {
         if ($current !== null) {
             $this->current = $this->wrap($current);

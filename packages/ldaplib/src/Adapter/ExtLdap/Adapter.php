@@ -23,7 +23,7 @@ use Symfony\Component\OptionsResolver\Options;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class Adapter implements AdapterInterface
+final class Adapter implements AdapterInterface
 {
     use LdapLinkWrapperTrait;
 
@@ -37,7 +37,7 @@ class Adapter implements AdapterInterface
      */
     private $entryManager;
 
-    public function __construct(LdapLink $link)
+    public function __construct(LdapLinkInterface $link)
     {
         $this->setLdapLink($link);
     }

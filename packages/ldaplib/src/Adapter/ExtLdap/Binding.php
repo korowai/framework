@@ -33,22 +33,11 @@ class Binding implements BindingInterface
     /**
      * Initializes the Binding object with LdapLink instance.
      *
-     * @param LdapLink $link
+     * @param LdapLinkInterface $link
      */
-    public function __construct(LdapLink $link)
+    public function __construct(LdapLinkInterface $link)
     {
         $this->setLdapLink($link);
-    }
-
-    /**
-     * If the link is valid, returns last error code related to link.
-     * Otherwise, returns -1.
-     *
-     * @return int
-     */
-    public function errno()
-    {
-        return $this->getLdapLink()->isValid() ? $this->getLdapLink()->errno() : -1;
     }
 
     /**

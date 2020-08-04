@@ -29,8 +29,10 @@ class EntryManager implements EntryManagerInterface
 
     /**
      * Constructs EntryManager
+     *
+     * @param LdapLinkInterface $link
      */
-    public function __construct(LdapLink $link)
+    public function __construct(LdapLinkInterface $link)
     {
         $this->setLdapLink($link);
     }
@@ -91,6 +93,7 @@ class EntryManager implements EntryManagerInterface
 
     /**
      * @internal
+     * FIXME: visibility (private?)
      */
     private function addImpl(EntryInterface $entry)
     {
@@ -101,6 +104,7 @@ class EntryManager implements EntryManagerInterface
 
     /**
      * @internal
+     * FIXME: visibility (private?)
      */
     public function updateImpl(EntryInterface $entry)
     {
@@ -113,10 +117,11 @@ class EntryManager implements EntryManagerInterface
      * {@inheritdoc}
      *
      * Invokes ldap_rename()
+     * FIXME: visibility (private?)
      */
     public function renameImpl(EntryInterface $entry, string $newRdn, bool $deleteOldRdn = true)
     {
-        if (!$this->getLdapLink()->rename($entry->getDn(), $newRdn, null, $deleteOldRdn)) {
+        if (!$this->getLdapLink()->rename($entry->getDn(), $newRdn, '', $deleteOldRdn)) {
             throw static::lastLdapException($this->getLdapLink());
         }
     }
@@ -125,6 +130,7 @@ class EntryManager implements EntryManagerInterface
      * {@inheritdoc}
      *
      * Invokes ldap_delete()
+     * FIXME: visibility (private?)
      */
     public function deleteImpl(EntryInterface $entry)
     {

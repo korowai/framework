@@ -15,7 +15,7 @@ namespace Korowai\Tests\Lib\Ldap\Adapter\ExtLdap;
 use Korowai\Testing\Ldaplib\TestCase;
 
 use Korowai\Lib\Ldap\Adapter\ExtLdap\Binding;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLink;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
 use Korowai\Lib\Ldap\Exception\LdapException;
 
 /**
@@ -28,7 +28,7 @@ class BindingTest extends TestCase
 
     public function createLdapLinkMock($valid, $unbind = true)
     {
-        $link = $this->createMock(LdapLink::class);
+        $link = $this->createMock(LdapLinkInterface::class);
         if ($valid === true || $valid === false) {
             $link->method('isValid')->willReturn($valid);
         }
@@ -45,11 +45,11 @@ class BindingTest extends TestCase
         $this->assertTrue(true); // haven't blowed up
     }
 
-    public function test__getLink()
+    public function test__getLdapLink()
     {
         $link= $this->createLdapLinkMock(null);
         $bind = new Binding($link);
-        $this->assertSame($link, $bind->getLink());
+        $this->assertSame($link, $bind->getLdapLink());
     }
 
     public function test__isBound__Unbound()
@@ -57,27 +57,6 @@ class BindingTest extends TestCase
         $link= $this->createLdapLinkMock(null);
         $bind = new Binding($link);
         $this->assertSame(false, $bind->isBound());
-    }
-
-    public function test__errno_1()
-    {
-        $link = $this->createLdapLinkMock(true);
-        $link->expects($this->once())
-             ->method('errno')
-             ->willReturn(2);
-
-        $c = new Binding($link);
-        $this->assertSame(2, $c->errno());
-    }
-
-    public function test__errno_2()
-    {
-        $link = $this->createLdapLinkMock(false);
-        $link->expects($this->never())
-             ->method('errno');
-
-        $c = new Binding($link);
-        $this->assertSame(-1, $c->errno());
     }
 
     public function test__bind__Uninitialized_1()
@@ -245,7 +224,9 @@ class BindingTest extends TestCase
 
     public function test__getOption()
     {
-        $link = $this->createMock(LdapLink::class);
+        $link = $this->getMockBuilder(LdapLinkInterface::class)
+                     ->setMethods(['get_option', 'unbind', 'isValid'])
+                     ->getMockForAbstractClass();
 
         $callback = function ($option, &$retval) {
             $retval = 'option zero';

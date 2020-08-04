@@ -37,7 +37,7 @@ trait LdapResultWrapperTrait
      *
      * @param LdapResultInterface $result
      */
-    protected function setLdapResult(LdapResultInterface $ldapResult)
+    private function setLdapResult(LdapResultInterface $ldapResult)
     {
         $this->ldapResult = $ldapResult;
     }

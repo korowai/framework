@@ -18,9 +18,14 @@ use InvalidArgumentException;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-abstract class AbstractLdapResultItemIterator implements LdapResultWrapperInterface, LdapResultItemIteratorInterface
+abstract class AbstractLdapResultItemIterator implements LdapResultItemIteratorInterface
 {
-    use LdapResultWrapperTrait;
+    /**
+     * @var LdapResultItemInterface|null
+     *
+     * @psalm-readonly
+     */
+    protected $first;
 
     /**
      * @var LdapResultItemInterface|null
@@ -35,20 +40,21 @@ abstract class AbstractLdapResultItemIterator implements LdapResultWrapperInterf
     /**
      * Initializes the iterator
      *
-     * @param  LdapResultInterface $ldapResult
-     *      The ldap search result which provides first item in the chain.
-     * @param  LdapResultItemInterface $current
+     * @param  LdapResultItemInterface|null $first
+     *      The first result item in the list (``null`` to create an
+     *      iterator over empty sequence which is always invalid).
+     * @param  LdapResultItemInterface|null $current
      *      The item currently pointed to by iterator (``null`` to create an
      *      invalid/past the end iterator).
      * @param  int $offset
      *      The offset of the $current item in the chain.
      */
     public function __construct(
-        LdapResultInterface $ldapResult,
+        ?LdapResultItemInterface $first,
         LdapResultItemInterface $current = null,
         int $offset = null
     ) {
-        $this->ldapResult = $ldapResult;
+        $this->first = $first;
         $this->setState($current, $offset);
     }
 
@@ -86,9 +92,7 @@ abstract class AbstractLdapResultItemIterator implements LdapResultWrapperInterf
         if (($current = $this->current) === null || ($offset = $this->offset) === null) {
             return;
         }
-        $next = with(LdapLinkErrorHandler::fromLdapLinkWrapper($current))(function () use ($current) {
-            return $current->next_item();
-        });
+        $next = $current->next_item();
         $this->setState($next, $offset + 1);
     }
 
@@ -97,11 +101,7 @@ abstract class AbstractLdapResultItemIterator implements LdapResultWrapperInterf
      */
     final public function rewind() : void
     {
-        $result = $this->getLdapResult();
-        $first = with(LdapLinkErrorHandler::fromLdapLinkWrapper($result))(function () {
-            return $this->first_item();
-        });
-        $this->setState($first, 0);
+        $this->setState($this->first, 0);
     }
 
     /**
@@ -132,22 +132,6 @@ abstract class AbstractLdapResultItemIterator implements LdapResultWrapperInterf
             $this->offset = $offset ?? 0;
         }
     }
-
-    // @codingStandardsIgnoreStart
-    // phpcs:disable Generic.NamingConventions.CamelCapsFunctionName
-
-    /**
-     * Returns first result item of the particular type (entry/reference) in
-     * the result message chain.
-     *
-     * @return LdapResultItemInterface|false
-     *
-     * @psalm-mutation-free
-     */
-    abstract protected function first_item();
-
-    // phpcs:enable Generic.NamingConventions.CamelCapsFunctionName
-    // @codingStandardsIgnoreEnd
 }
 
 // vim: syntax=php sw=4 ts=4 et:

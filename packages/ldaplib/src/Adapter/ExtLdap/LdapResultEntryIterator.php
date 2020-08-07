@@ -24,20 +24,21 @@ final class LdapResultEntryIterator extends AbstractLdapResultItemIterator imple
     /**
      * Initializes the iterator
      *
-     * @param  LdapResultInterface $ldapResult
-     *      The ldap search result which provides first entry in the chain.
-     * @param  LdapResultEntryInterface $current
-     *      The entry currently pointed to by iterator (``null`` to create an
+     * @param  LdapResultEntryInterface|null $first
+     *      The first result entry in the list (``null`` to create an
+     *      iterator over empty sequence which is always invalid).
+     * @param  LdapResultEntryInterface|null $current
+     *      The item currently pointed to by iterator (``null`` to create an
      *      invalid/past the end iterator).
      * @param  int $offset
-     *      The offset of the $current entry in the chain.
+     *      The offset of the $current item in the chain.
      */
     public function __construct(
-        LdapResultInterface $ldapResult,
+        ?LdapResultEntryInterface $first,
         LdapResultEntryInterface $current = null,
         int $offset = null
     ) {
-        parent::__construct($ldapResult, $current, $offset);
+        parent::__construct($first, $current, $offset);
     }
 
     /**
@@ -51,24 +52,6 @@ final class LdapResultEntryIterator extends AbstractLdapResultItemIterator imple
         /** @var LdapResultEntryInterface|null */
         return $this->current;
     }
-
-    // @codingStandardsIgnoreStart
-    // phpcs:disable Generic.NamingConventions.CamelCapsFunctionName
-
-    /**
-     * Returns first entry from the result.
-     *
-     * @return LdapResultEntryInterface|false
-     *
-     * @psalm-mutation-free
-     */
-    protected function first_item()
-    {
-        return $this->getLdapResult()->first_entry();
-    }
-
-    // phpcs:enable Generic.NamingConventions.CamelCapsFunctionName
-    // @codingStandardsIgnoreEnd
 }
 
 // vim: syntax=php sw=4 ts=4 et:

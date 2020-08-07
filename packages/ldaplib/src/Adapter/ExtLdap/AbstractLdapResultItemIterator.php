@@ -13,30 +13,31 @@ declare(strict_types=1);
 namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
 
 use function Korowai\Lib\Context\with;
+use InvalidArgumentException;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-abstract class AbstractResultIterator implements LdapResultWrapperInterface
+abstract class AbstractLdapResultItemIterator implements LdapResultWrapperInterface, LdapResultItemIteratorInterface
 {
     use LdapResultWrapperTrait;
 
     /**
-     * @var int
+     * @var LdapResultItemInterface|null
      */
-    private $offset;
+    protected $current;
 
     /**
-     * @var LdapResultItemWrapperInterface|null
+     * @var int|null
      */
-    private $current;
+    private $offset;
 
     /**
      * Initializes the iterator
      *
      * @param  LdapResultInterface $ldapResult
      *      The ldap search result which provides first item in the chain.
-     * @param  LdapResultItemInterface|null $current
+     * @param  LdapResultItemInterface $current
      *      The item currently pointed to by iterator (``null`` to create an
      *      invalid/past the end iterator).
      * @param  int $offset
@@ -47,29 +48,34 @@ abstract class AbstractResultIterator implements LdapResultWrapperInterface
         LdapResultItemInterface $current = null,
         int $offset = null
     ) {
-        $this->setLdapResult($ldapResult);
-        $this->setCurrentLdapResultItemAndOffset($current, $offset);
+        $this->ldapResult = $ldapResult;
+        $this->setState($current, $offset);
+    }
+
+    /**
+     * Returns current item.
+     *
+     * @return LdapResultItemInterface|null
+     *
+     * @psalm-mutation-free
+     */
+    public function getCurrent() : ?LdapResultItemInterface
+    {
+        return $this->current;
     }
 
     /**
      * Return the key of the current element, that is the offset of the current
      * item in the chain.
      *
-     * @return mixed
+     * @return int|null
+     *
+     * @psalm-mutation-free
+     * @psalm-suppress ImplementedReturnTypeMismatch
      */
-    final public function key()
+    final public function key() : ?int
     {
         return $this->offset;
-    }
-
-    /**
-     * Returns the current element.
-     *
-     * @return mixed
-     */
-    final public function current()
-    {
-        return $this->current;
     }
 
     /**
@@ -77,13 +83,13 @@ abstract class AbstractResultIterator implements LdapResultWrapperInterface
      */
     final public function next() : void
     {
-        if (($current = $this->getCurrentLdapResultItem()) === null) {
+        if (($current = $this->current) === null || ($offset = $this->offset) === null) {
             return;
         }
         $next = with(LdapLinkErrorHandler::fromLdapLinkWrapper($current))(function () use ($current) {
-            return $this->next_item($current);
+            return $current->next_item();
         });
-        $this->setCurrentLdapResultItemAndOffset($next, $this->offset+1);
+        $this->setState($next, $offset + 1);
     }
 
     /**
@@ -95,39 +101,35 @@ abstract class AbstractResultIterator implements LdapResultWrapperInterface
         $first = with(LdapLinkErrorHandler::fromLdapLinkWrapper($result))(function () {
             return $this->first_item();
         });
-        $this->setCurrentLdapResultItemAndOffset($first, 0);
+        $this->setState($first, 0);
     }
 
     /**
      * Checks if current position is valid
      *
      * @return bool
+     *
+     * @psalm-mutation-free
      */
     final public function valid() : bool
     {
-        return $this->current !== null;
+        return $this->current !== null && $this->offset !== null;
     }
 
     /**
-     * @return LdapResultItemInterface|null
+     * @param mixed $current
+     * @throws InvalidArgumentException
+     *
+     * @psalm-external-mutation-free
      */
-    final private function getCurrentLdapResultItem() : ?LdapResultItemInterface
+    final private function setState($current, ?int $offset) : void
     {
-        return $this->current ? $this->current->getLdapResultItem() : null;
-    }
-
-    /**
-     * @param LdapResultItemInterface|null $current
-     * @param int|null $offset
-     */
-    final private function setCurrentLdapResultItemAndOffset(?LdapResultItemInterface $current, ?int $offset): void
-    {
-        if ($current !== null) {
-            $this->current = $this->wrap($current);
-            $this->offset = $offset ?? 0;
-        } else {
+        if ($current === false || $current === null) {
             $this->current = null;
-            $this->offset = -1;
+            $this->offset = null;
+        } else {
+            $this->current = $current;
+            $this->offset = $offset ?? 0;
         }
     }
 
@@ -138,22 +140,14 @@ abstract class AbstractResultIterator implements LdapResultWrapperInterface
      * Returns first result item of the particular type (entry/reference) in
      * the result message chain.
      *
-     * @return LdapResultItemInterface|null
-     */
-    abstract protected function first_item() : ?LdapResultItemInterface;
-
-    /**
-     * Returns next result item of the particular type (entry/reference) in
-     * the result message chain.
+     * @return LdapResultItemInterface|false
      *
-     * @return LdapResultItemInterface|null
+     * @psalm-mutation-free
      */
-    abstract protected function next_item(LdapResultItemInterface $current) : ?LdapResultItemInterface;
+    abstract protected function first_item();
 
     // phpcs:enable Generic.NamingConventions.CamelCapsFunctionName
     // @codingStandardsIgnoreEnd
-
-    abstract protected function wrap(LdapResultItemInterface $item) : LdapResultItemWrapperInterface;
 }
 
 // vim: syntax=php sw=4 ts=4 et:

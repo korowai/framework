@@ -15,14 +15,14 @@ namespace Korowai\Tests\Lib\Ldap\Adapter\ExtLdap;
 use Korowai\Testing\Ldaplib\TestCase;
 use Korowai\Lib\Ldap\Adapter\AbstractSearchQuery;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\SearchQuery;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLink;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
 use Korowai\Lib\Ldap\Adapter\ResultInterface;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class SearchQueryTest extends TestCase
+final class SearchQueryTest extends TestCase
 {
     use \phpmock\phpunit\PHPMock;
     use GetLdapFunctionMock;
@@ -34,7 +34,8 @@ class SearchQueryTest extends TestCase
 
     public function createLdapLinkMock($valid, $unbind = true)
     {
-        $link = $this->createMock(LdapLink::class);
+        $link = $this->getMockBuilder(LdapLinkInterface::class)
+                     ->getMockForAbstractClass();
         if ($valid === true || $valid === false) {
             $link->method('isValid')->willReturn($valid);
         }
@@ -46,7 +47,8 @@ class SearchQueryTest extends TestCase
 
     public function test__construct()
     {
-        $link = $this->createMock(LdapLink::class);
+        $link = $this->getMockBuilder(LdapLinkInterface::class)
+                     ->getMockForAbstractClass();
         $query = new SearchQuery($link, "dc=korowai,dc=org", "objectClass=*");
         $this->assertTrue(true); // didn't blow up
     }
@@ -62,11 +64,12 @@ class SearchQueryTest extends TestCase
         new SearchQuery($link, "dc=korowai,dc=org", "objectClass=*", ['scope' => 'foo']);
     }
 
-    public function test__getLink()
+    public function test__getLdapLink()
     {
-        $link = $this->createMock(LdapLink::class);
+        $link = $this->getMockBuilder(LdapLinkInterface::class)
+                     ->getMockForAbstractClass();
         $query = new SearchQuery($link, "dc=korowai,dc=org", "objectClass=*");
-        $this->assertSame($link, $query->getLink());
+        $this->assertSame($link, $query->getLdapLink());
     }
 
     public function test__execute__base()
@@ -148,7 +151,7 @@ class SearchQueryTest extends TestCase
 
         $query = $this->getMockBuilder(SearchQuery::class)
                       ->disableOriginalConstructor()
-                      ->setMethods(['getOptions', 'getLink', 'getBaseDn', 'getFilter'])
+                      ->setMethods(['getOptions', 'getLdapLink', 'getBaseDn', 'getFilter'])
                       ->getMock();
 
         $query->expects($this->any())
@@ -164,7 +167,7 @@ class SearchQueryTest extends TestCase
                ->with()
                ->willReturn(['attributes' => ['*'], 'attrsOnly' => 0, 'sizeLimit' => 0, 'timeLimit' => 0]);
         $query->expects($this->any())
-               ->method('getLink')
+               ->method('getLdapLink')
                ->with()
                ->willReturn($link);
 

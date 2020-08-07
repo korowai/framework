@@ -34,7 +34,7 @@ class EntryManager implements EntryManagerInterface
      */
     public function __construct(LdapLinkInterface $link)
     {
-        $this->setLdapLink($link);
+        $this->ldapLink = $link;
     }
 
     /**

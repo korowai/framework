@@ -14,11 +14,15 @@ namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ *
+ * @psalm-immutable
  */
 trait LdapResultEntryWrapperTrait
 {
     /**
      * @var LdapResultEntryInterface
+     *
+     * @psalm-readonly
      */
     private $ldapResultEntry;
 
@@ -26,6 +30,8 @@ trait LdapResultEntryWrapperTrait
      * Returns the encapsulated LdapResultEntry instance.
      *
      * @return LdapResultEntryInterface
+     *
+     * @psalm-mutation-free
      */
     public function getLdapResultEntry() : LdapResultEntryInterface
     {
@@ -36,20 +42,12 @@ trait LdapResultEntryWrapperTrait
      * Returns the encapsulated LdapResultEntry instance.
      *
      * @return LdapResultEntryInterface
+     *
+     * @psalm-mutation-free
      */
     public function getLdapResultItem() : LdapResultEntryInterface
     {
         return $this->getLdapResultEntry();
-    }
-
-    /**
-     * Sets the LdapResultEntryInterface instance to this object.
-     *
-     * @param LdapResultEntryInterface $result
-     */
-    protected function setLdapResultEntry(LdapResultEntryInterface $ldapResultEntry)
-    {
-        $this->ldapResultEntry = $ldapResultEntry;
     }
 }
 

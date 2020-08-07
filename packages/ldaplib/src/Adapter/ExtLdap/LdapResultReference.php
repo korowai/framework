@@ -16,6 +16,8 @@ namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
  * Wrapper for ldap reference result resource.
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ *
+ * @psalm-immutable
  */
 final class LdapResultReference implements LdapResultReferenceInterface
 {
@@ -54,6 +56,18 @@ final class LdapResultReference implements LdapResultReferenceInterface
         $ldap = $this->getLdapResult()->getLdapLink();
         // PHP 7.x and earlier may return null instead of false
         return ldap_parse_reference($ldap->getResource(), $this->getResource(), $referrals) ?? false;
+    }
+
+    /**
+     * Get next result reference
+     *
+     * @return LdapResultReferenceInterface|false
+     *
+     * @link http://php.net/manual/en/function.ldap-next-reference.php ldap_next_reference()
+     */
+    public function next_item()
+    {
+        return $this->next_reference();
     }
 
     // phpcs:enable Generic.NamingConventions.CamelCapsFunctionName

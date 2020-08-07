@@ -18,55 +18,28 @@ use Korowai\Lib\Ldap\Adapter\ResultEntryInterface;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-final class ResultEntryIterator extends AbstractResultIterator implements ResultEntryIteratorInterface
+final class ResultEntryIterator extends AbstractResultItemIterator implements ResultEntryIteratorInterface
 {
     /**
      * Constructs ResultEntryIterator
      *
-     * @param LdapResultInterface $ldapResult
-     *      The ldap search result which provides first entry in the chain.
-     * @param LdapResultEntryInterface|null $entry
-     *      The entry currently pointed to by the iterator (``null`` to
-     *      create an invalid/past the end iterator).
-     * @param int $offset
-     *      The offset of the $entry in the chain.
+     * @param LdapResultEntryIteratorInterface $ldapIterator
      */
-    public function __construct(
-        LdapResultInterface $ldapResult,
-        LdapResultEntryInterface $entry = null,
-        int $offset = null
-    ) {
-        parent::__construct($ldapResult, $entry, $offset);
-    }
-
-    // @codingStandardsIgnoreStart
-    // phpcs:disable Generic.NamingConventions.CamelCapsFunctionName
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function first_item() : ?LdapResultEntryInterface
+    public function __construct(LdapResultEntryIteratorInterface $ldapIterator)
     {
-        return $this->getLdapResult()->first_entry() ?: null;
+        parent::__construct($ldapIterator);
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @psalm-mutation-free
      */
-    protected function next_item(LdapResultItemInterface $current) : ?LdapResultEntryInterface
+    public function current() : ?ResultEntryInterface
     {
-        return $current->next_entry() ?: null;
-    }
-
-    // phpcs:enable Generic.NamingConventions.CamelCapsFunctionName
-    // @codingStandardsIgnoreEnd
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function wrap(LdapResultItemInterface $item) : ResultEntry
-    {
-        return new ResultEntry($item);
+        /** @var LdapResultEntryIteratorInterface $this->ldapIterator */
+        $current = $this->ldapIterator->current();
+        return $current === null ? null : new ResultEntry($current);
     }
 }
 

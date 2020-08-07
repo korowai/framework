@@ -35,31 +35,23 @@ final class ResultReference implements ResultReferenceInterface, LdapResultRefer
      */
     public function __construct(LdapResultReferenceInterface $ldapResultReference)
     {
-        $this->setLdapResultReference($ldapResultReference);
+        $this->ldapResultReference = $ldapResultReference;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getLdapResultItem() : LdapResultReferenceInterface
-    {
-        return $this->getLdapResultReference();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDn() : string
-    {
-        $reference = $this->getLdapResultReference();
-
-        /** @var string|false */
-        $dn = with(LdapLinkErrorHandler::fromLdapResultWrapper($reference))(function ($eh) use ($reference) {
-            return $reference->get_dn();
-        });
-
-        return (string)$dn;
-    }
+//    /**
+//     * {@inheritdoc}
+//     */
+//    public function getDn() : string
+//    {
+//        $reference = $this->getLdapResultReference();
+//
+//        /** @var string|false */
+//        $dn = with(LdapLinkErrorHandler::fromLdapResultWrapper($reference))(function ($eh) use ($reference) {
+//            return $reference->get_dn();
+//        });
+//
+//        return (string)$dn;
+//    }
 
     /**
      * Returns referrals
@@ -93,7 +85,7 @@ final class ResultReference implements ResultReferenceInterface, LdapResultRefer
     public function getReferralIterator() : ResultReferralIteratorInterface
     {
         if (!isset($this->iterator)) {
-            $this->iterator = new ResultReferralIterator($this);
+            $this->iterator = new ResultReferralIterator($this->getReferrals());
         }
         return $this->iterator;
     }

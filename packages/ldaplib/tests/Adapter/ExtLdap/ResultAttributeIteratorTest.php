@@ -15,8 +15,8 @@ namespace Korowai\Tests\Lib\Ldap\Adapter\ExtLdap;
 use Korowai\Testing\Ldaplib\TestCase;
 
 use Korowai\Lib\Ldap\Adapter\ExtLdap\ResultAttributeIterator;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\ResultEntry;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\Result;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultEntryInterface;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultEntryWrapperTrait;
 use Korowai\Lib\Ldap\Adapter\ResultAttributeIteratorInterface;
 
 /**
@@ -29,38 +29,51 @@ class ResultAttributeIteratorTest extends TestCase
         $this->assertImplementsInterface(ResultAttributeIteratorInterface::class, ResultAttributeIterator::class);
     }
 
-    public function test__getEntry()
+    public function test__uses__LdapResultEntryWrapperTrait()
     {
-        $entry = $this->createMock(ResultEntry::class);
+        $this->assertUsesTrait(LdapResultEntryWrapperTrait::class, ResultAttributeIterator::class);
+    }
+
+    public function test__getLdapResultEntry()
+    {
+        $entry = $this->getMockBuilder(LdapResultEntryInterface::class)
+                      ->getMockForAbstractClass();
+
         $iterator = new ResultAttributeIterator($entry, 'attribName');
-        $this->assertSame($entry, $iterator->getEntry());
+
+        $this->assertSame($entry, $iterator->getLdapResultEntry());
     }
 
     public function test__current()
     {
         $values = ['val1', 'val2', 'count' => 2];
-        $entry = $this->createMock(ResultEntry::class);
+        $entry = $this->getMockBuilder(LdapResultEntryInterface::class)
+                      ->getMockForAbstractClass();
+
         $iterator = new ResultAttributeIterator($entry, 'attribName');
         $entry->expects($this->once())
               ->method('get_values')
               ->with('attribname')
               ->willReturn($values);
-        $this->assertSame($values, $iterator->current());
+
+        $this->assertSame(['val1', 'val2'], $iterator->current());
     }
 
     public function test__key()
     {
-        $entry = $this->createMock(ResultEntry::class);
+        $entry = $this->getMockBuilder(LdapResultEntryInterface::class)
+                      ->getMockForAbstractClass();
         $iterator = new ResultAttributeIterator($entry, 'attribName');
         $this->assertEquals('attribname', $iterator->key());
     }
 
     public function test__next()
     {
-        $entry = $this->createMock(ResultEntry::class);
+        $entry = $this->getMockBuilder(LdapResultEntryInterface::class)
+                      ->getMockForAbstractClass();
         $iterator = new ResultAttributeIterator($entry, 'firstAttribute');
 
-        $this->assertSame($entry, $iterator->getEntry());
+        $this->assertSame($entry, $iterator->getLdapResultEntry());
 
         $entry->expects($this->once())
               ->method('next_attribute')
@@ -74,7 +87,8 @@ class ResultAttributeIteratorTest extends TestCase
 
     public function test__rewind()
     {
-        $entry = $this->createMock(ResultEntry::class);
+        $entry = $this->getMockBuilder(LdapResultEntryInterface::class)
+                      ->getMockForAbstractClass();
         $iterator = new ResultAttributeIterator($entry, 'secondAttribute');
 
         $entry->expects($this->once())
@@ -89,7 +103,8 @@ class ResultAttributeIteratorTest extends TestCase
 
     public function test__valid()
     {
-        $entry = $this->createMock(ResultEntry::class);
+        $entry = $this->getMockBuilder(LdapResultEntryInterface::class)
+                      ->getMockForAbstractClass();
         $iterator = new ResultAttributeIterator($entry, 'firstAttribute');
 
         $entry->expects($this->once())

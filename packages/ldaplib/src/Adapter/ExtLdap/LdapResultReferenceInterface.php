@@ -16,6 +16,8 @@ namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
  * Wrapper for ldap reference result resource.
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ *
+ * @psalm-immutable
  */
 interface LdapResultReferenceInterface extends LdapResultItemInterface
 {

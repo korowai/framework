@@ -14,11 +14,15 @@ namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ *
+ * @psalm-immutable
  */
 trait LdapResultReferenceWrapperTrait
 {
     /**
      * @var LdapResultReferenceInterface
+     *
+     * @psalm-readonly
      */
     private $ldapResultReference;
 
@@ -26,6 +30,8 @@ trait LdapResultReferenceWrapperTrait
      * Returns the encapsulated LdapResultReference instance.
      *
      * @return LdapResultReferenceInterface
+     *
+     * @psalm-mutation-free
      */
     public function getLdapResultReference() : LdapResultReferenceInterface
     {
@@ -36,20 +42,12 @@ trait LdapResultReferenceWrapperTrait
      * Returns the encapsulated LdapResultReference instance.
      *
      * @return LdapResultReferenceInterface
+     *
+     * @psalm-mutation-free
      */
     public function getLdapResultItem() : LdapResultReferenceInterface
     {
         return $this->getLdapResultReference();
-    }
-
-    /**
-     * Sets the LdapResultReferenceInterface instance to this object.
-     *
-     * @param LdapResultReferenceInterface $result
-     */
-    protected function setLdapResultReference(LdapResultReferenceInterface $ldapResultReference)
-    {
-        $this->ldapResultReference = $ldapResultReference;
     }
 }
 

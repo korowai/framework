@@ -19,6 +19,8 @@ abstract class AbstractResult implements ResultInterface
 {
     /**
      * {@inheritdoc}
+     *
+     * @psalm-mutation-free
      */
     public function getEntries(bool $use_keys = true) : array
     {
@@ -27,6 +29,8 @@ abstract class AbstractResult implements ResultInterface
 
     /**
      * Makes the ``Result`` object iterable
+     *
+     * @psalm-mutation-free
      */
     public function getIterator()
     {

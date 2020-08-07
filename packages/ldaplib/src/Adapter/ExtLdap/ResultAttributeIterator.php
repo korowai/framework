@@ -51,7 +51,7 @@ class ResultAttributeIterator implements ResultAttributeIteratorInterface, LdapR
      */
     public function __construct(LdapResultEntryInterface $ldapResultEntry, string $attribute = null)
     {
-        $this->setLdapResultEntry($ldapResultEntry);
+        $this->ldapResultEntry = $ldapResultEntry;
         $this->attribute = is_string($attribute) ? strtolower($attribute) : $attribute;
     }
 

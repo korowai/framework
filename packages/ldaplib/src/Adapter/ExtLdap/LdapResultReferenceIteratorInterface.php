@@ -15,26 +15,16 @@ namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-trait LdapResultWrapperTrait
+interface LdapResultReferenceIteratorInterface extends LdapResultItemIteratorInterface
 {
     /**
-     * @var LdapResultInterface
+     * Returns current reference.
      *
-     * @psalm-readonly
-     */
-    private $ldapResult;
-
-    /**
-     * Returns the encapsulated LdapResult instance.
-     *
-     * @return LdapResultInterface
+     * @return LdapResultReferenceInterface|null
      *
      * @psalm-mutation-free
      */
-    public function getLdapResult() : LdapResultInterface
-    {
-        return $this->ldapResult;
-    }
+    public function current() : ?LdapResultReferenceInterface;
 }
 
 // vim: syntax=php sw=4 ts=4 et:

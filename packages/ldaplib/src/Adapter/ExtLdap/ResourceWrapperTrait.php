@@ -61,19 +61,6 @@ trait ResourceWrapperTrait
         $res = $this->getResource();
         return is_resource($res) && ($this->supportsResourceType(get_resource_type($res)));
     }
-
-    /**
-     * Sets the resource to this object.
-     *
-     * @param resource $resource
-     *
-     * @return void
-     */
-    private function setResource($resource) : void
-    {
-        /** @psalm-suppress InaccessibleProperty */
-        $this->resource = $resource;
-    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

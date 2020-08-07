@@ -89,57 +89,6 @@ class ResultReferenceTest extends TestCase
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // getDn()
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    public static function prov__getDn() : array
-    {
-        return [
-            // #0
-            [
-                'return' => 'dc=example,dc=org',
-                'expect' => 'dc=example,dc=org',
-            ],
-            // #1
-            [
-                'return' => false,
-                'expect' => '',
-            ],
-        ];
-    }
-
-    /**
-     * @dataProvider prov__getDn
-     */
-    public function test__getDn($return, $expect) : void
-    {
-        $ldapLink = $this->createLdapLinkMock();
-        $ldapResult = $this->createLdapResultMock($ldapLink);
-        $ldapResultReference = $this->createLdapResultReferenceMock($ldapResult, 'ldap result reference', ['get_dn']);
-        $reference = new ResultReference($ldapResultReference);
-
-        $ldapResultReference->expects($this->once())
-                        ->method('get_dn')
-                        ->with()
-                        ->willReturn($return);
-
-        $this->assertSame($expect, $reference->getDn());
-    }
-
-    public static function prov__getDn__withTriggerError() : array
-    {
-        return static::feedMethodWithBackendTriggerError();
-    }
-
-    /**
-     * @dataProvider prov__getDn__withTriggerError
-     */
-    public function test__getDn__withTriggerError(array $config, array $expect) : void
-    {
-        $this->examineMethodWithTriggerError('getDn', 'get_dn', [], $config, $expect);
-    }
-
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // getReferrals()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

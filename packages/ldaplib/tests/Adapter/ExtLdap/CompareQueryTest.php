@@ -15,7 +15,7 @@ namespace Korowai\Tests\Lib\Ldap\Adapter\ExtLdap;
 use Korowai\Testing\Ldaplib\TestCase;
 use Korowai\Lib\Ldap\Adapter\AbstractCompareQuery;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\CompareQuery;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLink;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -27,7 +27,9 @@ class CompareQueryTest extends TestCase
 
     public function createLdapLinkMock($valid, $unbind = true)
     {
-        $link = $this->createMock(LdapLink::class);
+        $link = $this->getMockBuilder(LdapLinkInterface::class)
+                     ->setMethods(['isValid', 'unbind'])
+                     ->getMockForAbstractClass();
         if ($valid === true || $valid === false) {
             $link->method('isValid')->willReturn($valid);
         }
@@ -44,16 +46,18 @@ class CompareQueryTest extends TestCase
 
     public function test__construct()
     {
-        $link = $this->createMock(LdapLink::class);
+        $link = $this->getMockBuilder(LdapLinkInterface::class)
+                     ->getMockForAbstractClass();
         $query = new CompareQuery($link, "uid=jsmith,ou=people,dc=example,dc=org", "userpassword", "secret");
         $this->assertTrue(true); // didn't blow up
     }
 
-    public function test__getLink()
+    public function test__getLdapLink()
     {
-        $link = $this->createMock(LdapLink::class);
+        $link = $this->getMockBuilder(LdapLinkInterface::class)
+                     ->getMockForAbstractClass();
         $query = new CompareQuery($link, "uid=jsmith,ou=people,dc=example,dc=org", "userpassword", "secret");
-        $this->assertSame($link, $query->getLink());
+        $this->assertSame($link, $query->getLdapLink());
     }
 
     public function test__execute__true()

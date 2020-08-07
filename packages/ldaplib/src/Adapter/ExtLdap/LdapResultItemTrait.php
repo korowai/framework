@@ -16,6 +16,8 @@ namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
  * Common code for LdapResultEntry and LdapResultReference.
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ *
+ * @psalm-immutable
  */
 trait LdapResultItemTrait
 {
@@ -30,8 +32,8 @@ trait LdapResultItemTrait
      */
     public function __construct($resource, LdapResultInterface $ldapResult)
     {
-        $this->setResource($resource);
-        $this->setLdapResult($ldapResult);
+        $this->resource = $resource;
+        $this->ldapResult = $ldapResult;
     }
 
     /**

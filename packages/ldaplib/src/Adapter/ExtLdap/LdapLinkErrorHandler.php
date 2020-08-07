@@ -47,25 +47,14 @@ final class LdapLinkErrorHandler extends AbstractManagedErrorHandler implements 
     }
 
     /**
-     * Create LdapLinkErrorHandler from LdapResultEntryWrapperInterface.
+     * Create LdapLinkErrorHandler from LdapResultItemWrapperInterface.
      *
-     * @param  LdapResultEntryWrapperInterface $wrapper
+     * @param  LdapResultItemWrapperInterface $wrapper
      * @return self
      */
-    public static function fromLdapResultEntryWrapper(LdapResultEntryWrapperInterface $wrapper) : self
+    public static function fromLdapResultItemWrapper(LdapResultItemWrapperInterface $wrapper) : self
     {
-        return self::fromLdapResultWrapper($wrapper->getLdapResultEntry());
-    }
-
-    /**
-     * Create LdapLinkErrorHandler from LdapResultReferenceWrapperInterface.
-     *
-     * @param  LdapResultReferenceWrapperInterface $wrapper
-     * @return self
-     */
-    public static function fromLdapResultReferenceWrapper(LdapResultReferenceWrapperInterface $wrapper) : self
-    {
-        return self::fromLdapResultWrapper($wrapper->getLdapResultReference());
+        return self::fromLdapResultWrapper($wrapper->getLdapResultItem());
     }
 
     /**
@@ -75,7 +64,7 @@ final class LdapLinkErrorHandler extends AbstractManagedErrorHandler implements 
      */
     public function __construct(LdapLinkInterface $ldapLink)
     {
-        $this->setLdapLink($ldapLink);
+        $this->ldapLink = $ldapLink;
     }
 
     /**

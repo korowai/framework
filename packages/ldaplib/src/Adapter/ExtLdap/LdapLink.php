@@ -33,7 +33,7 @@ final class LdapLink implements LdapLinkInterface
      */
     public function __construct($link)
     {
-        $this->setResource($link);
+        $this->resource = $link;
     }
 
     /**

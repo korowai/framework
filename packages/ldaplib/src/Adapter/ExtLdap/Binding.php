@@ -37,7 +37,7 @@ class Binding implements BindingInterface
      */
     public function __construct(LdapLinkInterface $link)
     {
-        $this->setLdapLink($link);
+        $this->ldapLink = $link;
     }
 
     /**

@@ -20,7 +20,7 @@ use Korowai\Lib\Ldap\Adapter\SearchQueryInterface;
 use Korowai\Lib\Ldap\Adapter\CompareQueryInterface;
 use Korowai\Lib\Ldap\Adapter\ResultInterface;
 
-use \InvalidArgumentException;
+use InvalidArgumentException;
 
 /**
  * A facade to ldap component. Creates connection, binds, reads from and writes

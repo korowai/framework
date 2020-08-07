@@ -15,9 +15,7 @@ namespace Korowai\Tests\Lib\Ldap\Adapter\ExtLdap;
 use Korowai\Testing\Ldaplib\TestCase;
 
 use Korowai\Lib\Ldap\Adapter\ExtLdap\ResultReferralIterator;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\ResultReference;
 use Korowai\Lib\Ldap\Adapter\ResultReferralIteratorInterface;
-use Korowai\Lib\Ldap\Adapter\ResultReferralIterator as BaseIterator;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -29,16 +27,15 @@ class ResultReferralIteratorTest extends TestCase
         $this->assertImplementsInterface(ResultReferralIteratorInterface::class, ResultReferralIterator::class);
     }
 
-    public function test__extends__BaseIterator()
+    public function test__extends__ArrayIterator()
     {
-        $this->assertExtendsClass(BaseIterator::class, ResultReferralIterator::class);
+        $this->assertExtendsClass(\ArrayIterator::class, ResultReferralIterator::class);
     }
 
     public function test__construct()
     {
-        $reference = $this->createMock(ResultReference::class);
-        $iterator = new ResultReferralIterator($reference);
-        $this->assertSame($reference, $iterator->getReference());
+        $iterator = new ResultReferralIterator(['foo', 'bar']);
+        $this->assertSame(['foo', 'bar'], $iterator->getArrayCopy());
     }
 }
 

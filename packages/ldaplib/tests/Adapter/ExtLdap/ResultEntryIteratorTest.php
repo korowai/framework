@@ -14,121 +14,125 @@ namespace Korowai\Tests\Lib\Ldap\Adapter\ExtLdap;
 
 use Korowai\Testing\Ldaplib\TestCase;
 
+use Korowai\Lib\Ldap\Adapter\ExtLdap\AbstractResultIterator;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultEntryInterface;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultEntryIteratorInterface;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultItemIteratorInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\ResultEntryIterator;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\ResultEntry;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\Result;
+use Korowai\Lib\Ldap\Adapter\ResultEntryInterface;
 use Korowai\Lib\Ldap\Adapter\ResultEntryIteratorInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class ResultEntryIteratorTest extends TestCase
+final class ResultEntryIteratorTest extends TestCase
 {
+    public function test__extends__AbstractResultIterator()
+    {
+        $this->assertExtendsClass(AbstractResultIterator::class, ResultEntryIterator::class);
+    }
+
     public function test__implements__ResultEntryIteratorInterface()
     {
         $this->assertImplementsInterface(ResultEntryIteratorInterface::class, ResultEntryIterator::class);
     }
 
-    public function test__getResult()
+    public function test__construct() : void
     {
-        $result = $this->createMock(Result::class);
-        $entry = $this->createMock(ResultEntry::class);
-        $iterator = new ResultEntryIterator($result, $entry);
-        $this->assertSame($result, $iterator->getResult());
+        $ldapIterator = $this->getMockBuilder(LdapResultEntryIteratorInterface::class)
+                             ->getMockForAbstractClass();
+
+        $iterator = new ResultEntryIterator($ldapIterator);
+
+        $this->assertSame($ldapIterator, $iterator->getLdapResultItemIterator());
     }
 
-    public function test__getEntry()
+    public function test__construct__withInvalidType() : void
     {
-        $result = $this->createMock(Result::class);
-        $entry = $this->createMock(ResultEntry::class);
-        $iterator = new ResultEntryIterator($result, $entry);
-        $this->assertSame($entry, $iterator->getEntry());
+        $ldapIterator = $this->getMockBuilder(LdapResultItemIteratorInterface::class)
+                             ->getMockForAbstractClass();
+
+        $this->expectException(\TypeError::class);
+        $this->expectExceptionMessage(LdapResultEntryIteratorInterface::class);
+
+        new ResultEntryIterator($ldapIterator);
     }
 
-    public function test__current()
+    public function test__current() : void
     {
-        $result = $this->createMock(Result::class);
-        $entry = $this->createMock(ResultEntry::class);
-        $iterator = new ResultEntryIterator($result, $entry);
-        $this->assertSame($entry, $iterator->current());
+        $ldapEntry = $this->getMockBuilder(LdapResultEntryInterface::class)
+                          ->getMockForAbstractClass();
+        $ldapIterator = $this->getMockBuilder(LdapResultEntryIteratorInterface::class)
+                             ->getMockForAbstractClass();
+
+        $iterator = new ResultEntryIterator($ldapIterator);
+
+        $ldapIterator->expects($this->exactly(2))
+                     ->method('current')
+                     ->withConsecutive([],[])
+                     ->will($this->onConsecutiveCalls($ldapEntry, null));
+
+        $current = $iterator->current();
+        $this->assertInstanceOf(ResultEntryInterface::class, $current);
+        $this->assertSame($ldapEntry, $current->getLdapResultEntry());
+        $this->assertNull($iterator->current());
     }
 
-    public function test__key()
+    public function test__key() : void
     {
-        $result = $this->createMock(Result::class);
-        $entry = $this->createMock(ResultEntry::class);
-        $iterator = new ResultEntryIterator($result, $entry);
+        $ldapIterator = $this->getMockBuilder(LdapResultEntryIteratorInterface::class)
+                             ->getMockForAbstractClass();
 
-        $entry->expects($this->once())
-              ->method('getDn')
-              ->with()
-              ->willReturn('dc=korowai,dc=org');
+        $iterator = new ResultEntryIterator($ldapIterator);
 
-        $this->assertEquals('dc=korowai,dc=org', $iterator->key());
+        $ldapIterator->expects($this->once())
+                     ->method('key')
+                     ->with()
+                     ->willReturn(123);
+
+        $this->assertSame(123, $iterator->key());
     }
 
-    public function test__next()
+    public function test__valid() : void
     {
-        $result = $this->createMock(Result::class);
-        $entry1 = $this->createMock(ResultEntry::class);
-        $entry2 = $this->createMock(ResultEntry::class);
-        $iterator = new ResultEntryIterator($result, $entry1);
+        $ldapIterator = $this->getMockBuilder(LdapResultEntryIteratorInterface::class)
+                             ->getMockForAbstractClass();
 
-        $this->assertSame($entry1, $iterator->getEntry());
+        $iterator = new ResultEntryIterator($ldapIterator);
 
-        $entry1->expects($this->once())
-               ->method('next_entry')
-               ->with()
-               ->willReturn($entry2);
-        $entry2->method('next_entry')
-               ->willReturn(null);
-
-        $iterator->next();
-        $this->assertSame($entry2, $iterator->getEntry());
-        $iterator->next();
-        $this->assertNull($iterator->getEntry());
-    }
-
-    public function test__rewind()
-    {
-        $result = $this->createMock(Result::class);
-        $entry1 = $this->createMock(ResultEntry::class);
-        $entry2 = $this->createMock(ResultEntry::class);
-        $iterator = new ResultEntryIterator($result, $entry2);
-
-        $this->assertSame($entry2, $iterator->getEntry());
-
-        $result->expects($this->once())
-               ->method('first_entry')
-               ->with()
-               ->willReturn($entry1);
-
-        $this->assertSame($entry2, $iterator->getEntry());
-        $iterator->rewind();
-        $this->assertSame($entry1, $iterator->getEntry());
-    }
-
-    public function test__valid()
-    {
-        $result = $this->createMock(Result::class);
-        $entry1 = $this->createMock(ResultEntry::class);
-        $entry2 = $this->createMock(ResultEntry::class);
-        $iterator = new ResultEntryIterator($result, $entry1);
-
-        $this->assertSame($entry1, $iterator->getEntry());
-
-        $entry1->expects($this->once())
-               ->method('next_entry')
-               ->with()
-               ->willReturn($entry2);
-        $entry2->method('next_entry')
-               ->willReturn(null);
+        $ldapIterator->expects($this->exactly(2))
+                     ->method('valid')
+                     ->withConsecutive([], [])
+                     ->will($this->onConsecutiveCalls(true, false));
 
         $this->assertTrue($iterator->valid());
-        $iterator->next();
-        $this->assertTrue($iterator->valid());
-        $iterator->next();
         $this->assertFalse($iterator->valid());
+    }
+
+    public function test__next() : void
+    {
+        $ldapIterator = $this->getMockBuilder(LdapResultEntryIteratorInterface::class)
+                             ->getMockForAbstractClass();
+
+        $iterator = new ResultEntryIterator($ldapIterator);
+
+        $ldapIterator->expects($this->once())
+                     ->method('next');
+
+        $this->assertNull($iterator->next());
+    }
+
+    public function test__rewind() : void
+    {
+        $ldapIterator = $this->getMockBuilder(LdapResultEntryIteratorInterface::class)
+                             ->getMockForAbstractClass();
+
+        $iterator = new ResultEntryIterator($ldapIterator);
+
+        $ldapIterator->expects($this->once())
+                     ->method('rewind');
+
+        $this->assertNull($iterator->rewind());
     }
 }
 

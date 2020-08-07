@@ -14,7 +14,7 @@ namespace Korowai\Tests\Lib\Ldap\Adapter\ExtLdap;
 
 use Korowai\Testing\Ldaplib\TestCase;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\EntryManager;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLink;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
 use Korowai\Lib\Ldap\Entry;
 use Korowai\Lib\Ldap\Exception\LdapException;
 
@@ -28,7 +28,9 @@ final class EntryManagerTest extends TestCase
 
     public function createLdapLinkMock($valid, $unbind = true)
     {
-        $link = $this->createMock(LdapLink::class);
+        $link = $this->getMockBuilder(LdapLinkInterface::class)
+                     ->setMethods(['isValid', 'unbind'])
+                     ->getMockForAbstractClass();
         if ($valid === true || $valid === false) {
             $link->method('isValid')->willReturn($valid);
         }
@@ -40,16 +42,18 @@ final class EntryManagerTest extends TestCase
 
     public function test__construct()
     {
-        $link = $this->createMock(LdapLink::class);
+        $link = $this->getMockBuilder(LdapLinkInterface::class)
+                     ->getMockForAbstractClass();
         $mngr = new EntryManager($link);
         $this->assertTrue(true); // didn't blow up
     }
 
-    public function test__getLink()
+    public function test__getLdapLink()
     {
-        $link = $this->createMock(LdapLink::class);
+        $link = $this->getMockBuilder(LdapLinkInterface::class)
+                     ->getMockForAbstractClass();
         $mngr = new EntryManager($link);
-        $this->assertSame($link, $mngr->getLink());
+        $this->assertSame($link, $mngr->getLdapLink());
     }
 
     public function test__add()

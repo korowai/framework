@@ -37,7 +37,7 @@ final class ResultEntry implements ResultEntryInterface, LdapResultEntryWrapperI
      */
     public function __construct(LdapResultEntryInterface $ldapResultEntry)
     {
-        $this->setLdapResultEntry($ldapResultEntry);
+        $this->ldapResultEntry = $ldapResultEntry;
     }
 
     /**

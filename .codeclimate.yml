@@ -38,6 +38,10 @@ plugins:
             - "(Const VALUE_SAFE ___)"
             - "(Const VALUE_BASE64 ___)"
             - "(Const VALUE_URL ___)"
+            - "(Stmt_Class _ _ _ _ _ LdapResultEntryIterator ___)"
+            - "(Stmt_Class _ _ _ _ _ LdapResultReferenceIterator ___)"
+            - "(Stmt_Class _ _ _ _ _ ResultEntryIterator ___)"
+            - "(Stmt_Class _ _ _ _ _ ResultReferenceIterator ___)"
 
   fixme:
     enabled: true

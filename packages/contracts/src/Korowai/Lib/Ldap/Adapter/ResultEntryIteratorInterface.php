@@ -17,8 +17,16 @@ namespace Korowai\Lib\Ldap\Adapter;
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-interface ResultEntryIteratorInterface extends \Iterator
+interface ResultEntryIteratorInterface extends ResultItemIteratorInterface
 {
+    /**
+     * Returns the current entry or null if the iterator is invalid.
+     *
+     * @return ResultEntryInterface|null
+     *
+     * @psalm-mutation-free
+     */
+    public function current() : ?ResultEntryInterface;
 }
 
 // vim: syntax=php sw=4 ts=4 et:

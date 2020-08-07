@@ -22,15 +22,6 @@ use Korowai\Lib\Ldap\Adapter\ResultReferenceInterface;
  */
 class ResultReferralIterator extends \ArrayIterator implements ResultReferralIteratorInterface
 {
-    /**
-     * Initializes the iterator object
-     *
-     * @param ResultReferenceInterface $reference An ldap reference containing the referrals
-     */
-    public function __construct(ResultReferenceInterface $reference)
-    {
-        parent::__construct($reference->getReferrals());
-    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

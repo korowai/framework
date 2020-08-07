@@ -34,19 +34,6 @@ trait LdapLinkWrapperTrait
     {
         return $this->ldapLink;
     }
-
-    /**
-     * Sets the LdapLinkInterface instance to this object.
-     *
-     * @param  LdapLinkInterface $ldapLink
-     *
-     * @return void
-     */
-    private function setLdapLink(LdapLinkInterface $ldapLink) : void
-    {
-        /** @psalm-suppress InaccessibleProperty */
-        $this->ldapLink = $ldapLink;
-    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

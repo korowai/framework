@@ -14,121 +14,125 @@ namespace Korowai\Tests\Lib\Ldap\Adapter\ExtLdap;
 
 use Korowai\Testing\Ldaplib\TestCase;
 
+use Korowai\Lib\Ldap\Adapter\ExtLdap\AbstractResultIterator;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultReferenceInterface;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultReferenceIteratorInterface;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultItemIteratorInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\ResultReferenceIterator;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\ResultReference;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\Result;
+use Korowai\Lib\Ldap\Adapter\ResultReferenceInterface;
 use Korowai\Lib\Ldap\Adapter\ResultReferenceIteratorInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class ResultReferenceIteratorTest extends TestCase
+final class ResultReferenceIteratorTest extends TestCase
 {
-    public function test__implements__ResultReferenceIteratorInetrface()
+    public function test__extends__AbstractResultIterator()
+    {
+        $this->assertExtendsClass(AbstractResultIterator::class, ResultReferenceIterator::class);
+    }
+
+    public function test__implements__ResultReferenceIteratorInterface()
     {
         $this->assertImplementsInterface(ResultReferenceIteratorInterface::class, ResultReferenceIterator::class);
     }
 
-    public function test__getResult()
+    public function test__construct() : void
     {
-        $result = $this->createMock(Result::class);
-        $ref = $this->createMock(ResultReference::class);
-        $iterator = new ResultReferenceIterator($result, $ref);
-        $this->assertSame($result, $iterator->getResult());
+        $ldapIterator = $this->getMockBuilder(LdapResultReferenceIteratorInterface::class)
+                             ->getMockForAbstractClass();
+
+        $iterator = new ResultReferenceIterator($ldapIterator);
+
+        $this->assertSame($ldapIterator, $iterator->getLdapResultItemIterator());
     }
 
-    public function test__getReference()
+    public function test__construct__withInvalidType() : void
     {
-        $result = $this->createMock(Result::class);
-        $ref = $this->createMock(ResultReference::class);
-        $iterator = new ResultReferenceIterator($result, $ref);
-        $this->assertSame($ref, $iterator->getReference());
+        $ldapIterator = $this->getMockBuilder(LdapResultItemIteratorInterface::class)
+                             ->getMockForAbstractClass();
+
+        $this->expectException(\TypeError::class);
+        $this->expectExceptionMessage(LdapResultReferenceIteratorInterface::class);
+
+        new ResultReferenceIterator($ldapIterator);
     }
 
-    public function test__current()
+    public function test__current() : void
     {
-        $result = $this->createMock(Result::class);
-        $ref = $this->createMock(ResultReference::class);
-        $iterator = new ResultReferenceIterator($result, $ref);
-        $this->assertSame($ref, $iterator->current());
+        $ldapReference = $this->getMockBuilder(LdapResultReferenceInterface::class)
+                          ->getMockForAbstractClass();
+        $ldapIterator = $this->getMockBuilder(LdapResultReferenceIteratorInterface::class)
+                             ->getMockForAbstractClass();
+
+        $iterator = new ResultReferenceIterator($ldapIterator);
+
+        $ldapIterator->expects($this->exactly(2))
+                     ->method('current')
+                     ->withConsecutive([],[])
+                     ->will($this->onConsecutiveCalls($ldapReference, null));
+
+        $current = $iterator->current();
+        $this->assertInstanceOf(ResultReferenceInterface::class, $current);
+        $this->assertSame($ldapReference, $current->getLdapResultReference());
+        $this->assertNull($iterator->current());
     }
 
-    public function test__key()
+    public function test__key() : void
     {
-        $result = $this->createMock(Result::class);
-        $ref = $this->createMock(ResultReference::class);
-        $iterator = new ResultReferenceIterator($result, $ref);
+        $ldapIterator = $this->getMockBuilder(LdapResultReferenceIteratorInterface::class)
+                             ->getMockForAbstractClass();
 
-        $ref->expects($this->once())
-              ->method('getDn')
-              ->with()
-              ->willReturn('dc=korowai,dc=org');
+        $iterator = new ResultReferenceIterator($ldapIterator);
 
-        $this->assertEquals('dc=korowai,dc=org', $iterator->key());
+        $ldapIterator->expects($this->once())
+                     ->method('key')
+                     ->with()
+                     ->willReturn(123);
+
+        $this->assertSame(123, $iterator->key());
     }
 
-    public function test__next()
+    public function test__valid() : void
     {
-        $result = $this->createMock(Result::class);
-        $ref1 = $this->createMock(ResultReference::class);
-        $ref2 = $this->createMock(ResultReference::class);
-        $iterator = new ResultReferenceIterator($result, $ref1);
+        $ldapIterator = $this->getMockBuilder(LdapResultReferenceIteratorInterface::class)
+                             ->getMockForAbstractClass();
 
-        $this->assertSame($ref1, $iterator->getReference());
+        $iterator = new ResultReferenceIterator($ldapIterator);
 
-        $ref1->expects($this->once())
-               ->method('next_reference')
-               ->with()
-               ->willReturn($ref2);
-        $ref2->method('next_reference')
-               ->willReturn(null);
-
-        $iterator->next();
-        $this->assertSame($ref2, $iterator->getReference());
-        $iterator->next();
-        $this->assertNull($iterator->getReference());
-    }
-
-    public function test__rewind()
-    {
-        $result = $this->createMock(Result::class);
-        $ref1 = $this->createMock(ResultReference::class);
-        $ref2 = $this->createMock(ResultReference::class);
-        $iterator = new ResultReferenceIterator($result, $ref2);
-
-        $this->assertSame($ref2, $iterator->getReference());
-
-        $result->expects($this->once())
-               ->method('first_reference')
-               ->with()
-               ->willReturn($ref1);
-
-        $this->assertSame($ref2, $iterator->getReference());
-        $iterator->rewind();
-        $this->assertSame($ref1, $iterator->getReference());
-    }
-
-    public function test__valid()
-    {
-        $result = $this->createMock(Result::class);
-        $ref1 = $this->createMock(ResultReference::class);
-        $ref2 = $this->createMock(ResultReference::class);
-        $iterator = new ResultReferenceIterator($result, $ref1);
-
-        $this->assertSame($ref1, $iterator->getReference());
-
-        $ref1->expects($this->once())
-               ->method('next_reference')
-               ->with()
-               ->willReturn($ref2);
-        $ref2->method('next_reference')
-               ->willReturn(null);
+        $ldapIterator->expects($this->exactly(2))
+                     ->method('valid')
+                     ->withConsecutive([], [])
+                     ->will($this->onConsecutiveCalls(true, false));
 
         $this->assertTrue($iterator->valid());
-        $iterator->next();
-        $this->assertTrue($iterator->valid());
-        $iterator->next();
         $this->assertFalse($iterator->valid());
+    }
+
+    public function test__next() : void
+    {
+        $ldapIterator = $this->getMockBuilder(LdapResultReferenceIteratorInterface::class)
+                             ->getMockForAbstractClass();
+
+        $iterator = new ResultReferenceIterator($ldapIterator);
+
+        $ldapIterator->expects($this->once())
+                     ->method('next');
+
+        $this->assertNull($iterator->next());
+    }
+
+    public function test__rewind() : void
+    {
+        $ldapIterator = $this->getMockBuilder(LdapResultReferenceIteratorInterface::class)
+                             ->getMockForAbstractClass();
+
+        $iterator = new ResultReferenceIterator($ldapIterator);
+
+        $ldapIterator->expects($this->once())
+                     ->method('rewind');
+
+        $this->assertNull($iterator->rewind());
     }
 }
 

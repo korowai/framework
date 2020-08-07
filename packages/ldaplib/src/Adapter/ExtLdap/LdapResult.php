@@ -33,8 +33,8 @@ final class LdapResult implements LdapResultInterface
      */
     public function __construct($resource, LdapLinkInterface $link)
     {
-        $this->setResource($resource);
-        $this->setLdapLink($link);
+        $this->resource = $resource;
+        $this->ldapLink = $link;
     }
 
     /**

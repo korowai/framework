@@ -17,7 +17,7 @@ use Korowai\Lib\Ldap\AbstractAdapter;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\Adapter;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\Binding;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\EntryManager;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLink;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\SearchQuery;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\CompareQuery;
 
@@ -31,7 +31,8 @@ class AdapterTest extends TestCase
 
     public function test__getBinding()
     {
-        $link = $this->createMock(LdapLink::class);
+        $link = $this->getMockBuilder(LdapLinkInterface::class)
+                     ->getMockForAbstractClass();
 
         $adapter = new Adapter($link);
 
@@ -43,7 +44,8 @@ class AdapterTest extends TestCase
 
     public function test__getEntryManager()
     {
-        $link = $this->createMock(LdapLink::class);
+        $link = $this->getMockBuilder(LdapLinkInterface::class)
+                     ->getMockForAbstractClass();
 
         $adapter = new Adapter($link);
 
@@ -55,7 +57,8 @@ class AdapterTest extends TestCase
 
     public function test__createSearchQuery()
     {
-        $link = $this->createMock(LdapLink::class);
+        $link = $this->getMockBuilder(LdapLinkInterface::class)
+                     ->getMockForAbstractClass();
 
         $adapter = new Adapter($link);
 
@@ -69,7 +72,8 @@ class AdapterTest extends TestCase
 
     public function test__createCompareQuery()
     {
-        $link = $this->createMock(LdapLink::class);
+        $link = $this->getMockBuilder(LdapLinkInterface::class)
+                     ->getMockForAbstractClass();
 
         $adapter = new Adapter($link);
 

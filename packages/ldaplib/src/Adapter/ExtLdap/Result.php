@@ -33,7 +33,7 @@ final class Result extends AbstractResult implements LdapResultWrapperInterface
      */
     public function __construct(LdapResultInterface $ldapResult)
     {
-        $this->setLdapResult($ldapResult);
+        $this->ldapResult = $ldapResult;
     }
 
     /**
@@ -43,7 +43,9 @@ final class Result extends AbstractResult implements LdapResultWrapperInterface
      */
     public function getResultEntryIterator() : ResultEntryIteratorInterface
     {
-        return $this->getResultItemIterator('first_entry', ResultEntryIterator::class);
+        $ldapIterator = new LdapResultEntryIterator($this->getLdapResult());
+        $ldapIterator->rewind();
+        return new ResultEntryIterator($ldapIterator);
     }
 
     /**
@@ -53,7 +55,9 @@ final class Result extends AbstractResult implements LdapResultWrapperInterface
      */
     public function getResultReferenceIterator() : ResultReferenceIteratorInterface
     {
-        return $this->getResultItemIterator('first_reference', ResultReferenceIterator::class);
+        $ldapIterator = new LdapResultReferenceIterator($this->getLdapResult());
+        $ldapIterator->rewind();
+        return new ResultReferenceIterator($ldapIterator);
     }
 
     /**
@@ -75,19 +79,19 @@ final class Result extends AbstractResult implements LdapResultWrapperInterface
     {
         return iterator_to_array($this->getResultReferenceIterator(), false);
     }
-
-    /**
-     * @psalm-mutation-free
-     */
-    private function getResultItemIterator(string $method, string $class)
-    {
-        $result = $this->getLdapResult();
-        /** @var LdapResultReference|false */
-        $first = with(LdapLinkErrorHandler::fromLdapLinkWrapper($result))(function ($eh) use ($result, $method) {
-            return $result->{$method}();
-        });
-        return new $class($result, $first === false ? null : $first);
-    }
+//
+//    /**
+//     * @psalm-mutation-free
+//     */
+//    private function getResultItemIterator(string $method, string $class)
+//    {
+//        $result = $this->getLdapResult();
+//        /** @var LdapResultReference|false */
+//        $first = with(LdapLinkErrorHandler::fromLdapLinkWrapper($result))(function ($eh) use ($result, $method) {
+//            return $result->{$method}();
+//        });
+//        return new $class($result, $first === false ? null : $first);
+//    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

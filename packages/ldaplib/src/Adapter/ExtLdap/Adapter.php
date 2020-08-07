@@ -39,7 +39,9 @@ final class Adapter implements AdapterInterface
 
     public function __construct(LdapLinkInterface $link)
     {
-        $this->setLdapLink($link);
+        $this->ldapLink = $link;
+        $this->binding = new Binding($link);
+        $this->entryManager = new EntryManager($link);
     }
 
     /**
@@ -47,9 +49,6 @@ final class Adapter implements AdapterInterface
      */
     public function getBinding() : BindingInterface
     {
-        if (!isset($this->binding)) {
-            $this->binding = new Binding($this->getLdapLink());
-        }
         return $this->binding;
     }
 
@@ -58,9 +57,6 @@ final class Adapter implements AdapterInterface
      */
     public function getEntryManager() : EntryManagerInterface
     {
-        if (!isset($this->entryManager)) {
-            $this->entryManager = new EntryManager($this->getLdapLink());
-        }
         return $this->entryManager;
     }
 

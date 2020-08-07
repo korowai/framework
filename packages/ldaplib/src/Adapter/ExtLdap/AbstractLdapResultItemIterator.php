@@ -25,7 +25,7 @@ abstract class AbstractLdapResultItemIterator implements LdapResultItemIteratorI
      *
      * @psalm-readonly
      */
-    protected $first;
+    private $first;
 
     /**
      * @var LdapResultItemInterface|null
@@ -56,6 +56,18 @@ abstract class AbstractLdapResultItemIterator implements LdapResultItemIteratorI
     ) {
         $this->first = $first;
         $this->setState($current, $offset);
+    }
+
+    /**
+     * Returns first item from the list.
+     *
+     * @return LdapResultItemInterface|null
+     *
+     * @psalm-mutation-free
+     */
+    public function getFirst() : ?LdapResultItemInterface
+    {
+        return $this->first;
     }
 
     /**

@@ -23,8 +23,13 @@ trait AbstractLdapResultItemIteratorTestTrait
     abstract protected function getIteratorItemInterface() : string;
     abstract protected function getIteratorInterface() : string;
     abstract protected function getIteratorClass() : string;
-    abstract protected function getFirstItemMethod() : string;
     abstract protected function createIteratorInstance(...$args);
+
+    final protected function createIteratorItemStub()
+    {
+        return $this->getMockBuilder($this->getIteratorItemInterface())
+                    ->getMockForAbstractClass();
+    }
 
     public function test__implements__IteratorInterface()
     {
@@ -33,107 +38,78 @@ trait AbstractLdapResultItemIteratorTestTrait
 
     public function test__construct()
     {
-        $result = $this->getMockBuilder(LdapResultInterface::class)
-                       ->getMockForAbstractClass();
-        $entry = $this->getMockBuilder($this->getIteratorItemInterface())
-                      ->getMockForAbstractClass();
+        $first = $this->createIteratorItemStub();
+        $current = $this->createIteratorItemStub();
 
-        $iterator = $this->createIteratorInstance($result, $entry, 123);
+        $iterator = $this->createIteratorInstance($first, $current, 123);
 
-        $this->assertSame($result, $iterator->getLdapResult());
-        $this->assertSame($entry, $iterator->current());
+        $this->assertSame($current, $iterator->current());
         $this->assertSame(123, $iterator->key());
     }
 
     public function test__construct__withDefaultArgs()
     {
-        $result = $this->getMockBuilder(LdapResultInterface::class)
-                       ->getMockForAbstractClass();
+        $first = $this->createIteratorItemStub();
 
-        $iterator = $this->createIteratorInstance($result);
+        $iterator = $this->createIteratorInstance($first);
 
-        $this->assertSame($result, $iterator->getLdapResult());
         $this->assertNull($iterator->current());
         $this->assertNull($iterator->key());
     }
 
     public function test__construct__withNullArgs()
     {
-        $result = $this->getMockBuilder(LdapResultInterface::class)
-                       ->getMockForAbstractClass();
+        $first = $this->createIteratorItemStub();
 
-        $iterator = $this->createIteratorInstance($result, null, null);
+        $iterator = $this->createIteratorInstance($first, null, null);
 
-        $this->assertSame($result, $iterator->getLdapResult());
         $this->assertNull($iterator->current());
         $this->assertNull($iterator->key());
     }
 
     public function test__construct__withNullEntryAndNonNullOffset()
     {
-        $result = $this->getMockBuilder(LdapResultInterface::class)
-                       ->getMockForAbstractClass();
+        $first = $this->createIteratorItemStub();
 
-        $iterator = $this->createIteratorInstance($result, null, 123);
+        $iterator = $this->createIteratorInstance($first, null, 123);
 
-        $this->assertSame($result, $iterator->getLdapResult());
         $this->assertNull($iterator->getCurrent());
         $this->assertNull($iterator->key());
     }
 
     public function test__construct__withNonNullEntryAndNullOffset()
     {
-        $result = $this->getMockBuilder(LdapResultInterface::class)
-                       ->getMockForAbstractClass();
-        $entry = $this->getMockBuilder($this->getIteratorItemInterface())
-                     ->getMockForAbstractClass();
+        $first = $this->createIteratorItemStub();
+        $current = $this->createIteratorItemStub();
 
-        $iterator = $this->createIteratorInstance($result, $entry, null);
+        $iterator = $this->createIteratorInstance($first, $current, null);
 
-        $this->assertSame($result, $iterator->getLdapResult());
-        $this->assertSame($entry, $iterator->getCurrent());
+        $this->assertSame($current, $iterator->getCurrent());
         $this->assertSame(0, $iterator->key());
-    }
-
-    public function test__construct__withInvalidItemType()
-    {
-        $result = $this->getMockBuilder(LdapResultInterface::class)
-                       ->getMockForAbstractClass();
-        $item = $this->getMockBuilder(LdapResultItemInterface::class)
-                     ->getMockForAbstractClass();
-
-        $this->expectException(\TypeError::class);
-        $this->expectExceptionMessage($this->getIteratorItemInterface());
-
-        $this->createIteratorInstance($result, $item);
     }
 
     public function test__next()
     {
-        $result = $this->getMockBuilder(LdapResultInterface::class)
-                       ->getMockForAbstractClass();
-        $entry1 = $this->getMockBuilder($this->getIteratorItemInterface())
-                       ->getMockForAbstractClass();
-        $entry2 = $this->getMockBuilder($this->getIteratorItemInterface())
-                       ->getMockForAbstractClass();
+        $item1 = $this->createIteratorItemStub();
+        $item2 = $this->createIteratorItemStub();
 
-        $iterator = $this->createIteratorInstance($result, $entry1, 0);
+        $iterator = $this->createIteratorInstance($item1, $item1, 0);
 
         $this->assertTrue($iterator->valid());
-        $this->assertSame($entry1, $iterator->current());
+        $this->assertSame($item1, $iterator->current());
         $this->assertSame(0, $iterator->key());
 
-        $entry1->expects($this->once())
+        $item1->expects($this->once())
                ->method('next_item')
                ->with()
-               ->willReturn($entry2);
-        $entry2->expects($this->once())
+               ->willReturn($item2);
+        $item2->expects($this->once())
                ->method('next_item')
                ->willReturn(false);
 
         $iterator->next();
         $this->assertTrue($iterator->valid());
-        $this->assertSame($entry2, $iterator->current());
+        $this->assertSame($item2, $iterator->current());
         $this->assertSame(1, $iterator->key());
         $iterator->next();
         $this->assertFalse($iterator->valid());
@@ -147,51 +123,35 @@ trait AbstractLdapResultItemIteratorTestTrait
 
     public function test__rewind()
     {
-        $result = $this->getMockBuilder(LdapResultInterface::class)
-                       ->getMockForAbstractClass();
-        $entry1 = $this->getMockBuilder($this->getIteratorItemInterface())
-                       ->getMockForAbstractClass();
-        $entry2 = $this->getMockBuilder($this->getIteratorItemInterface())
-                       ->getMockForAbstractClass();
+        $item1 = $this->createIteratorItemStub();
+        $item2 = $this->createIteratorItemStub();
 
-        $iterator = $this->createIteratorInstance($result, $entry2, 1);
+        $iterator = $this->createIteratorInstance($item1, $item2, 1);
 
-        $this->assertSame($entry2, $iterator->current());
+        $this->assertSame($item2, $iterator->current());
         $this->assertSame(1, $iterator->key());
         $this->assertTrue($iterator->valid());
 
-        $result->expects($this->once())
-               ->method($this->getFirstItemMethod())
-               ->with()
-               ->willReturn($entry1);
-
         $iterator->rewind();
-        $this->assertSame($entry1, $iterator->current());
+        $this->assertSame($item1, $iterator->current());
         $this->assertSame(0, $iterator->key());
         $this->assertTrue($iterator->valid());
     }
 
     public function test__rewind__fromInvalid()
     {
-        $result = $this->getMockBuilder(LdapResultInterface::class)
-                       ->getMockForAbstractClass();
-        $entry = $this->getMockBuilder($this->getIteratorItemInterface())
-                      ->getMockForAbstractClass();
+        $first = $this->createIteratorItemStub();
+        $current = $this->createIteratorItemStub();
 
-        $iterator = $this->createIteratorInstance($result, null, null);
+        $iterator = $this->createIteratorInstance($first, null, null);
 
         $this->assertNull($iterator->current());
         $this->assertNull($iterator->key());
         $this->assertFalse($iterator->valid());
 
-        $result->expects($this->once())
-               ->method($this->getFirstItemMethod())
-               ->with()
-               ->willReturn($entry);
-
         $iterator->rewind();
 
-        $this->assertSame($entry, $iterator->current());
+        $this->assertSame($current, $iterator->current());
         $this->assertSame(0, $iterator->key());
         $this->assertTrue($iterator->valid());
     }

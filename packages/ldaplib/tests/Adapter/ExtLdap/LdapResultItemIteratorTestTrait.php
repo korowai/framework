@@ -31,6 +31,18 @@ trait LdapResultItemIteratorTestTrait
     {
         $this->assertExtendsClass(AbstractLdapResultItemIterator::class, $this->getIteratorClass());
     }
+
+    public function test__construct__withInvalidItemType()
+    {
+        $first = $this->createIteratorItemStub();
+        $item = $this->getMockBuilder(LdapResultItemInterface::class)
+                     ->getMockForAbstractClass();
+
+        $this->expectException(\TypeError::class);
+        $this->expectExceptionMessage($this->getIteratorItemInterface());
+
+        $this->createIteratorInstance($first, $item);
+    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

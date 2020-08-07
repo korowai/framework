@@ -50,9 +50,9 @@ final class AbstractLdapResultItemIteratorTest extends TestCase
 
     protected function createIteratorInstance(...$args)
     {
-        return $this->getMockBuilder(AbstractLdapResultItemIterator::class)
-                    ->setConstructorArgs($args)
-                    ->getMockForAbstractClass();
+        $iterator = $this->getMockBuilder(AbstractLdapResultItemIterator::class)
+                         ->setConstructorArgs($args)
+                         ->getMockForAbstractClass();
     }
 
 //    public function test__implements__LdapResultWrapperInterface()

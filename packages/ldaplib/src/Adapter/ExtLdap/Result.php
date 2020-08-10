@@ -38,32 +38,26 @@ final class Result extends AbstractResult implements LdapResultWrapperInterface
 
     /**
      * {@inheritdoc}
-     *
-     * @psalm-mutation-free
      */
     public function getResultEntryIterator() : ResultEntryIteratorInterface
     {
-        $ldapIterator = new LdapResultEntryIterator($this->getLdapResult());
-        $ldapIterator->rewind();
-        return new ResultEntryIterator($ldapIterator);
+        return new ResultEntryIterator(
+            $this->getResultItemIterator('first_entry', LdapResultEntryIterator::class)
+        );
     }
 
     /**
      * {@inheritdoc}
-     *
-     * @psalm-mutation-free
      */
     public function getResultReferenceIterator() : ResultReferenceIteratorInterface
     {
-        $ldapIterator = new LdapResultReferenceIterator($this->getLdapResult());
-        $ldapIterator->rewind();
-        return new ResultReferenceIterator($ldapIterator);
+        return new ResultReferenceIterator(
+            $this->getResultItemIterator('first_reference', LdapResultReferenceIterator::class)
+        );
     }
 
     /**
      * {@inheritdoc}
-     *
-     * @psalm-mutation-free
      */
     public function getResultEntries() : array
     {
@@ -72,26 +66,32 @@ final class Result extends AbstractResult implements LdapResultWrapperInterface
 
     /**
      * {@inheritdoc}
-     *
-     * @psalm-mutation-free
      */
     public function getResultReferences() : array
     {
         return iterator_to_array($this->getResultReferenceIterator(), false);
     }
-//
-//    /**
-//     * @psalm-mutation-free
-//     */
-//    private function getResultItemIterator(string $method, string $class)
-//    {
-//        $result = $this->getLdapResult();
-//        /** @var LdapResultReference|false */
-//        $first = with(LdapLinkErrorHandler::fromLdapLinkWrapper($result))(function ($eh) use ($result, $method) {
-//            return $result->{$method}();
-//        });
-//        return new $class($result, $first === false ? null : $first);
-//    }
+
+    /**
+     * @param string $method
+     * @param string $class
+     * @return object
+     *
+     * @psalm-template T
+     * @psalm-param class-string<T> $class
+     * @psalm-return T
+     */
+    private function getResultItemIterator(string $method, string $class) : object
+    {
+        $result = $this->getLdapResult();
+        $first = with(LdapLinkErrorHandler::fromLdapLinkWrapper($result))(
+            /** @return LdapResultItemInterface|false */
+            function () use ($result, $method) {
+                return $result->{$method}();
+            }
+        );
+        return new $class($first ?: null, $first ?: null, 0);
+    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

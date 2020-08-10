@@ -27,7 +27,7 @@ final class ResultEntry implements ResultEntryInterface, LdapResultEntryWrapperI
     use LdapResultEntryWrapperTrait;
     use ResultEntryToEntry;
 
-    /** @var ResultAttributeIterator */
+    /** @var ResultAttributeIteratorInterface|null */
     private $iterator;
 
     /**
@@ -103,10 +103,15 @@ final class ResultEntry implements ResultEntryInterface, LdapResultEntryWrapperI
 
     private static function cleanupAttributes(array $attributes) : array
     {
-        $attributes = array_filter($attributes, function ($key) {
-            return is_string($key) && ($key !== 'count');
-        }, ARRAY_FILTER_USE_KEY);
-        array_walk($attributes, function (&$values) {
+        $attributes = array_filter(
+            $attributes,
+            /** @psalm-param mixed $key */
+            function ($key) {
+                return is_string($key) && ($key !== 'count');
+            },
+            ARRAY_FILTER_USE_KEY
+        );
+        array_walk($attributes, function (array &$values) {
             unset($values['count']);
         });
         return array_change_key_case($attributes, CASE_LOWER);

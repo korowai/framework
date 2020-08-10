@@ -13,19 +13,17 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Ldap\Adapter\ExtLdap;
 
 use Korowai\Testing\Ldaplib\TestCase;
+use PHPUnit\Framework\Constraint\Constraint;
 
 use Korowai\Lib\Ldap\Adapter\ExtLdap\Result;
 use Korowai\Lib\Ldap\Adapter\ResultInterface;
 use Korowai\Lib\Ldap\Adapter\AbstractResult;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\ResultEntry;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\ResultReference;
-//use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
-//use Korowai\Lib\Ldap\Adapter\ExtLdap\ResultEntryIterator;
-//use Korowai\Lib\Ldap\Adapter\ExtLdap\ResultReferenceIterator;
+use Korowai\Lib\Ldap\Adapter\ResultEntryIteratorInterface;
+use Korowai\Lib\Ldap\Adapter\ResultReferenceIteratorInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultWrapperInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultWrapperTrait;
-//use Korowai\Lib\Ldap\Adapter\ResultInterface;
-use PHPUnit\Framework\Constraint\Constraint;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -62,74 +60,6 @@ final class ResultTest extends TestCase
             $expect
         );
     }
-
-//    private function mockResourceFunctions($arg, $return) : void
-//    {
-//        if ($return !== null) {
-//            $this->getLdapFunctionMock('is_resource')
-//                 ->expects($this->any())
-//                 ->with($this->identicalTo($arg))
-//                 ->willReturn((bool)$return);
-//            if ($return) {
-//                $this->getLdapFunctionMock('get_resource_type')
-//                     ->expects($this->any())
-//                     ->with($this->identicalTo($arg))
-//                     ->willReturn(is_string($return) ? $return : 'unknown');
-//            }
-//        }
-//    }
-//
-//    private function createLdapLinkMock($resource = 'ldap link')
-//    {
-//        $builder = $this->getMockBuilder(LdapLinkInterface::class);
-//        if ($resource !== null) {
-//            $builder->setMethods(['getResource']);
-//        }
-//
-//        $mock = $builder->getMockForAbstractClass();
-//
-//        if ($resource !== null) {
-//            $mock->expects($this->any())
-//                 ->method('getResource')
-//                 ->with()
-//                 ->willReturn($resource);
-//        }
-//
-//        return $mock;
-//    }
-//
-//    private function createLdapResult(LdapLinkInterface $link = null, $resource = 'ldap result')
-//    {
-//        return new Result($resource, $link);
-//    }
-//
-//    private function makeArgsForLdapMock(array $args, Result $result = null, LdapLinkInterface $ldap = null) : array
-//    {
-//        $resources = [];
-//        if ($result !== null) {
-//            $resources[] = $result->getResource();
-//        }
-//        if ($ldap !== null) {
-//            $resources[] = $ldap->getResource();
-//        }
-//        return array_map([$this, 'identicalTo'], array_merge($resources, $args));
-//    }
-//
-//    private function examineFuncWithMockedBackend(string $func, array $args, $return, $expect) : void
-//    {
-//        $ldap = $this->createLdapLinkMock();
-//        $result = $this->createLdapResult($ldap);
-//
-//        $ldapArgs = $this->makeArgsForLdapMock($args, $result, $ldap);
-//
-//        $this   ->getLdapFunctionMock("ldap_$func")
-//                ->expects($this->once())
-//                ->with(...$ldapArgs)
-//                ->willReturn($return);
-//
-//        $this->assertSame($expect, call_user_func_array([$result, $func], $args));
-//    }
-//
 
     //
     //
@@ -202,11 +132,11 @@ final class ResultTest extends TestCase
         $result = new Result($ldapResult);
 
         $ldapEntries = array_map(function ($ldapEntry) use ($ldapResult) {
-            return $this->createLdapResultEntryMock($ldapResult, $ldapEntry, ['next_entry']);
+            return $this->createLdapResultEntryMock($ldapResult, $ldapEntry, ['next_item']);
         }, $ldapEntries);
 
         $first = $ldapEntries[0] ?? false;
-        $ldapResult->expects($this->exactly(2))
+        $ldapResult->expects($this->once())
                    ->method('first_entry')
                    ->with()
                    ->willReturn($first);
@@ -215,7 +145,7 @@ final class ResultTest extends TestCase
             $curr = $ldapEntries[$i];
             $next = $ldapEntries[$i+1] ?? false;
             $curr->expects($this->once())
-                 ->method('next_entry')
+                 ->method('next_item')
                  ->with()
                  ->willReturn($next);
         }
@@ -255,22 +185,146 @@ final class ResultTest extends TestCase
     // getResultReferences()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    public static function prov__getResultReferences()
+    {
+        return [
+            // #0
+            [
+                'references' => [],
+            ],
+
+            // #1
+            [
+                'references' => ['first'],
+            ],
+
+            // #2
+            [
+                'references' => ['first', 'second'],
+            ],
+
+            // #3
+            [
+                'references' => ['first', 'second', 'third'],
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider prov__getResultReferences
+     */
+    public function test__getResultReferences(array $ldapReferences = [])
+    {
+        $ldapLink = $this->createLdapLinkMock();
+        $ldapResult = $this->createLdapResultMock($ldapLink, 'ldap result', ['first_reference']);
+        $result = new Result($ldapResult);
+
+        $ldapReferences = array_map(function ($ldapReference) use ($ldapResult) {
+            return $this->createLdapResultReferenceMock($ldapResult, $ldapReference, ['next_item']);
+        }, $ldapReferences);
+
+        $first = $ldapReferences[0] ?? false;
+        $ldapResult->expects($this->once())
+                   ->method('first_reference')
+                   ->with()
+                   ->willReturn($first);
+
+        for ($i = 0; $i < count($ldapReferences); ++$i) {
+            $curr = $ldapReferences[$i];
+            $next = $ldapReferences[$i+1] ?? false;
+            $curr->expects($this->once())
+                 ->method('next_item')
+                 ->with()
+                 ->willReturn($next);
+        }
+
+        $constraints = array_map(function ($ldapReference) {
+            return $this->logicalAnd(
+                $this->isInstanceOf(ResultReference::class),
+                $this->hasPropertiesIdenticalTo(['getLdapResultReference()' => $ldapReference]),
+            );
+        }, $ldapReferences);
+
+        $references = $result->getResultReferences();
+
+        $this->assertCount(count($ldapReferences), $references);
+
+        for ($i = 0; $i < count($references); ++$i) {
+            $reference = $references[$i];
+            $expect = $constraints[$i];
+            $this->assertThat($reference, $expect);
+        }
+    }
+
+    public static function prov__getResultReferences__withTriggerError()
+    {
+        return static::feedMethodWithBackendTriggerError();
+    }
+
+    /**
+     * @dataProvider prov__getResultReferences__withTriggerError
+     */
+    public function test__getResultReferences__withTriggerError(array $config, array $expect)
+    {
+        $this->examineMethodWithTriggerError('getResultReferences', 'first_reference', [], $config, $expect);
+    }
+
+
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // getResultEntryIterator()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public function test__getResultEntryIterator()
+    {
+        $ldapLink = $this->createLdapLinkMock();
+        $ldapResult = $this->createLdapResultMock($ldapLink, 'ldap result', ['first_entry']);
+        $result = new Result($ldapResult);
+
+        $ldapResult->expects($this->once())
+                   ->method('first_entry')
+                   ->with()
+                   ->willReturn(false);
+
+        $iterator = $result->getResultEntryIterator();
+
+        $this->assertInstanceOf(ResultEntryIteratorInterface::class, $iterator);
+        $this->assertNull($iterator->current());
+    }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // getResultReferenceIterator()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public function test__getResultReferenceIterator()
+    {
+        $ldapLink = $this->createLdapLinkMock();
+        $ldapResult = $this->createLdapResultMock($ldapLink, 'ldap result', ['first_reference']);
+        $result = new Result($ldapResult);
+
+        $ldapResult->expects($this->once())
+                   ->method('first_reference')
+                   ->with()
+                   ->willReturn(false);
+
+        $iterator = $result->getResultReferenceIterator();
+
+        $this->assertInstanceOf(ResultReferenceIteratorInterface::class, $iterator);
+        $this->assertNull($iterator->current());
+    }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // getEntries()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public function test__getEntries()
+    {
+        $this->markTestIncomplete('Test not implemented yet');
+    }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // getIteraator()
+    // getIterator()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+    public function test__getIterator()
+    {
+        $this->markTestIncomplete('Test not implemented yet');
+    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

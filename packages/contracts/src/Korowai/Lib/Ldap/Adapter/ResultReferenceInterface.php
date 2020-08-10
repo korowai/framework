@@ -25,7 +25,7 @@ interface ResultReferenceInterface extends \IteratorAggregate
 
     /**
      * Returns iterator over referrals
-     * @return array An array of referrals
+     * @return ResultReferralIteratorInterface
      */
     public function getReferralIterator() : ResultReferralIteratorInterface;
 }

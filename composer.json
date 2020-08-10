@@ -91,7 +91,7 @@
         "friendsofphp/php-cs-fixer": "^2.16",
         "phake/phake": "^3.0",
         "php-mock/php-mock-phpunit": ">=2.4.0",
-        "phpunit/phpunit": ">=8.4.0",
+        "phpunit/phpunit": ">=9.3",
         "psy/psysh": "dev-master",
         "symplify/monorepo-builder-prefixed": "^8.0.1",
         "zendframework/zend-ldap": "^2.10.0"

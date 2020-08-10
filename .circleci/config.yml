@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   build_sami_docs:
     docker:
-      - image: circleci/php:7.3.5-cli
+      - image: circleci/php:7.4-cli
 
     working_directory: /tmp/build_docs
 

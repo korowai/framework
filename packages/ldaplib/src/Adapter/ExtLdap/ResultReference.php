@@ -25,7 +25,7 @@ final class ResultReference implements ResultReferenceInterface, LdapResultRefer
 {
     use LdapResultReferenceWrapperTrait;
 
-    /** @var ResultReferralIterator|null */
+    /** @var ResultReferralIteratorInterface|null */
     private $iterator;
 
     /**
@@ -38,21 +38,6 @@ final class ResultReference implements ResultReferenceInterface, LdapResultRefer
         $this->ldapResultReference = $ldapResultReference;
     }
 
-//    /**
-//     * {@inheritdoc}
-//     */
-//    public function getDn() : string
-//    {
-//        $reference = $this->getLdapResultReference();
-//
-//        /** @var string|false */
-//        $dn = with(LdapLinkErrorHandler::fromLdapResultWrapper($reference))(function ($eh) use ($reference) {
-//            return $reference->get_dn();
-//        });
-//
-//        return (string)$dn;
-//    }
-
     /**
      * Returns referrals
      * @return array
@@ -62,7 +47,7 @@ final class ResultReference implements ResultReferenceInterface, LdapResultRefer
         $reference = $this->getLdapResultReference();
 
         with(LdapLinkErrorHandler::fromLdapResultWrapper($reference))(
-            function ($eg) use ($reference, &$referrals) {
+            function () use ($reference, &$referrals) {
                 return $reference->parse_reference($referrals);
             }
         );

@@ -16,8 +16,6 @@ namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
  * Wrapper for ldap entry result resource.
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- *
- * @psalm-immutable
  */
 interface LdapResultEntryInterface extends LdapResultItemInterface
 {
@@ -30,6 +28,8 @@ interface LdapResultEntryInterface extends LdapResultItemInterface
      * @return string|false
      *
      * @link http://php.net/manual/en/function.ldap-get-dn.php ldap_get_dn()
+     *
+     * @psalm-mutation-free
      */
     public function get_dn();
 
@@ -39,6 +39,8 @@ interface LdapResultEntryInterface extends LdapResultItemInterface
      * @return string|false
      *
      * @link http://php.net/manual/en/function.ldap-first-attribute.php ldap_first_attribute()
+     *
+     * @psalm-mutation-free
      */
     public function first_attribute();
 
@@ -48,6 +50,8 @@ interface LdapResultEntryInterface extends LdapResultItemInterface
      * @return array|false
      *
      * @link http://php.net/manual/en/function.ldap-get-attributes.php ldap_get_attributes()
+     *
+     * @psalm-mutation-free
      */
     public function get_attributes();
 
@@ -59,6 +63,8 @@ interface LdapResultEntryInterface extends LdapResultItemInterface
      * @return array|false
      *
      * @link http://php.net/manual/en/function.ldap-get-values-len.php ldap_get_values_len()
+     *
+     * @psalm-mutation-free
      */
     public function get_values_len(string $attribute);
 
@@ -79,6 +85,8 @@ interface LdapResultEntryInterface extends LdapResultItemInterface
      * @return string|false
      *
      * @link http://php.net/manual/en/function.ldap-next-attribute.php ldap_next_attribute()
+     *
+     * @psalm-mutation-free
      */
     public function next_attribute();
 
@@ -88,6 +96,8 @@ interface LdapResultEntryInterface extends LdapResultItemInterface
      * @return LdapResultEntryInterface|false
      *
      * @link http://php.net/manual/en/function.ldap-next-entry.php ldap_next_entry()
+     *
+     * @psalm-mutation-free
      */
     public function next_entry();
 

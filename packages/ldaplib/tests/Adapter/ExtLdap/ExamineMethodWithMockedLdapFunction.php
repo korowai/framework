@@ -29,15 +29,20 @@ trait ExamineMethodWithMockedLdapFunction
         array $resources,
         array &$args,
         $will,
-        $expect
+        $expect,
+        $function = null
     ) {
         if (!$will instanceof Stub) {
             $will = static::returnValue($will);
         }
 
+        if ($function === null) {
+            $function = "ldap_$method";
+        }
+
         $ldapArgs = static::makeArgsForLdapFunctionMock($resources, $args);
 
-        $this   ->getLdapFunctionMock("ldap_$method")
+        $this   ->getLdapFunctionMock($function)
                 ->expects($this->once())
                 ->with(...$ldapArgs)
                 ->will($will);

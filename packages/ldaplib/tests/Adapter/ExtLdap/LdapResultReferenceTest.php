@@ -35,7 +35,7 @@ final class LdapResultReferenceTest extends TestCase
     use MakeArgsForLdapFunctionMock;
     use ExamineMethodWithMockedLdapFunction;
 
-    private function examineLdapMethod(string $method, array $args, $will, $expect) : void
+    private function examineLdapMethod(string $method, array $args, $will, $expect, $function = null) : void
     {
         $ldap = $this->createLdapLinkMock();
         $result = $this->createLdapResultMock($ldap);
@@ -43,7 +43,7 @@ final class LdapResultReferenceTest extends TestCase
 
         $resources = [$ldap, $entry];
 
-        $actual = $this->examineMethodWithMockedLdapFunction($entry, $method, $resources, $args, $will, $expect);
+        $actual = $this->examineMethodWithMockedLdapFunction($entry, $method, $resources, $args, $will, $expect, $function);
 
         if ($actual instanceof LdapResultReferenceWrapperInterface) {
             $this->assertSame($entry, $actual->getLdapResultReference());
@@ -230,6 +230,19 @@ final class LdapResultReferenceTest extends TestCase
         if (count($args) > 1) {
             $this->assertSame($values[0] ?? null, $args[1]);
         }
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // next_item()
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * @runInSeparateProcess
+     * @dataProvider prov__next_reference__withMockedBackend
+     */
+    public function test__next_item__withMockedBackend(array $args, $return, $expect)
+    {
+        $this->examineLdapMethod('next_item', $args, $return, $expect, 'ldap_next_reference');
     }
 }
 

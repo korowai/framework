@@ -16,8 +16,6 @@ namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
  * Wrapper for ldap reference result resource.
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- *
- * @psalm-immutable
  */
 final class LdapResultReference implements LdapResultReferenceInterface
 {
@@ -32,6 +30,8 @@ final class LdapResultReference implements LdapResultReferenceInterface
      * @return LdapResultReference|false
      *
      * @link http://php.net/manual/en/function.ldap-next-reference.php ldap_next_reference()
+     *
+     * @psalm-mutation-free
      */
     public function next_reference()
     {
@@ -50,11 +50,15 @@ final class LdapResultReference implements LdapResultReferenceInterface
      * @return bool
      *
      * @link http://php.net/manual/en/function.ldap-parse-reference.php ldap_parse_reference()
+     *
+     * @psalm-mutation-free
      */
     public function parse_reference(&$referrals) : bool
     {
         $ldap = $this->getLdapResult()->getLdapLink();
         // PHP 7.x and earlier may return null instead of false
+        /** @psalm-suppress TypeDoesNotContainType
+         *  @psalm-suppress PossiblyNullArgument */
         return ldap_parse_reference($ldap->getResource(), $this->getResource(), $referrals) ?? false;
     }
 
@@ -64,6 +68,8 @@ final class LdapResultReference implements LdapResultReferenceInterface
      * @return LdapResultReferenceInterface|false
      *
      * @link http://php.net/manual/en/function.ldap-next-reference.php ldap_next_reference()
+     *
+     * @psalm-mutation-free
      */
     public function next_item()
     {

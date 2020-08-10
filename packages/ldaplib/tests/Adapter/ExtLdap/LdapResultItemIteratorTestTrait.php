@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Ldap\Adapter\ExtLdap;
 
 use Korowai\Lib\Ldap\Adapter\ExtLdap\AbstractLdapResultItemIterator;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultItemInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -27,12 +28,12 @@ trait LdapResultItemIteratorTestTrait
         return new $class(...$args);
     }
 
-    public function test__extends__AbstractLdapResultItemIterator()
+    public function test__extends__AbstractLdapResultItemIterator() : void
     {
         $this->assertExtendsClass(AbstractLdapResultItemIterator::class, $this->getIteratorClass());
     }
 
-    public function test__construct__withInvalidItemType()
+    public function test__construct__withAbstractItemType() : void
     {
         $first = $this->createIteratorItemStub();
         $item = $this->getMockBuilder(LdapResultItemInterface::class)
@@ -42,6 +43,16 @@ trait LdapResultItemIteratorTestTrait
         $this->expectExceptionMessage($this->getIteratorItemInterface());
 
         $this->createIteratorInstance($first, $item);
+    }
+
+    public function test__current() : void
+    {
+        $item = $this->getMockBuilder($this->getIteratorItemInterface())
+                     ->getMockForAbstractClass();
+
+        $iterator = $this->createIteratorInstance(null, $item);
+
+        $this->assertSame($item, $iterator->current());
     }
 }
 

@@ -16,8 +16,6 @@ namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
  * Wrapper for ldap reference result resource.
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- *
- * @psalm-immutable
  */
 interface LdapResultReferenceInterface extends LdapResultItemInterface
 {
@@ -30,6 +28,8 @@ interface LdapResultReferenceInterface extends LdapResultItemInterface
      * @return LdapResultReference|false
      *
      * @link http://php.net/manual/en/function.ldap-next-reference.php ldap_next_reference()
+     *
+     * @psalm-mutation-free
      */
     public function next_reference();
 
@@ -41,6 +41,8 @@ interface LdapResultReferenceInterface extends LdapResultItemInterface
      * @return bool
      *
      * @link http://php.net/manual/en/function.ldap-parse-reference.php ldap_parse_reference()
+     *
+     * @psalm-mutation-free
      */
     public function parse_reference(&$referrals) : bool;
 

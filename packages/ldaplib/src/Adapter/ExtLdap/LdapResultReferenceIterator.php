@@ -50,7 +50,7 @@ final class LdapResultReferenceIterator extends AbstractLdapResultItemIterator i
     public function current() : ?LdapResultReferenceInterface
     {
         /** @var LdapResultReferenceInterface|null */
-        return $this->current;
+        return $this->getCurrent();
     }
 }
 

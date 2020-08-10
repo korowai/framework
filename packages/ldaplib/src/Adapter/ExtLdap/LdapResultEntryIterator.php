@@ -50,7 +50,7 @@ final class LdapResultEntryIterator extends AbstractLdapResultItemIterator imple
     public function current() : ?LdapResultEntryInterface
     {
         /** @var LdapResultEntryInterface|null */
-        return $this->current;
+        return $this->getCurrent();
     }
 }
 

@@ -35,19 +35,15 @@ final class LdapResultEntryTest extends TestCase
     use MakeArgsForLdapFunctionMock;
     use ExamineMethodWithMockedLdapFunction;
 
-    private function examineLdapMethod(string $method, array $args, $will, $expect, bool $bare = false) : void
+    private function examineLdapMethod(string $method, array $args, $will, $expect, string $function = null) : void
     {
         $ldap = $this->createLdapLinkMock();
         $result = $this->createLdapResultMock($ldap);
         $entry = new LdapResultEntry('ldap result entry', $result);
 
-        if ($bare) {
-            $resources = [$entry];
-        } else {
-            $resources = [$ldap, $entry];
-        }
+        $resources = [$ldap, $entry];
 
-        $actual = $this->examineMethodWithMockedLdapFunction($entry, $method, $resources, $args, $will, $expect);
+        $actual = $this->examineMethodWithMockedLdapFunction($entry, $method, $resources, $args, $will, $expect, $function);
 
         if ($actual instanceof LdapResultEntryWrapperInterface) {
             $this->assertSame($entry, $actual->getLdapResultEntry());
@@ -412,6 +408,19 @@ final class LdapResultEntryTest extends TestCase
     public function test__next_entry__withMockedBackend(array $args, $return, $expect)
     {
         $this->examineLdapMethod('next_entry', $args, $return, $expect);
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // next_item()
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * @runInSeparateProcess
+     * @dataProvider prov__next_entry__withMockedBackend
+     */
+    public function test__next_item__withMockedBackend(array $args, $return, $expect)
+    {
+        $this->examineLdapMethod('next_item', $args, $return, $expect, 'ldap_next_entry');
     }
 }
 

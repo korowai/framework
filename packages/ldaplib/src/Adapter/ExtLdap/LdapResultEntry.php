@@ -18,8 +18,6 @@ use function Korowai\Lib\Context\with;
  * Wrapper for ldap entry result resource.
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- *
- * @psalm-immutable
  */
 final class LdapResultEntry implements LdapResultEntryInterface
 {
@@ -34,6 +32,8 @@ final class LdapResultEntry implements LdapResultEntryInterface
      * @return string|false
      *
      * @link http://php.net/manual/en/function.ldap-get-dn.php ldap_get_dn()
+     *
+     * @psalm-mutation-free
      */
     public function get_dn()
     {
@@ -54,6 +54,7 @@ final class LdapResultEntry implements LdapResultEntryInterface
      *
      * @psalm-suppress TypeDoesNotContainType
      * @psalm-return string|false
+     * @psalm-mutation-free
      */
     public function first_attribute()
     {
@@ -69,6 +70,8 @@ final class LdapResultEntry implements LdapResultEntryInterface
      * @return array|false
      *
      * @link http://php.net/manual/en/function.ldap-get-attributes.php ldap_get_attributes()
+     *
+     * @psalm-mutation-free
      */
     public function get_attributes()
     {
@@ -86,6 +89,8 @@ final class LdapResultEntry implements LdapResultEntryInterface
      * @return array|false
      *
      * @link http://php.net/manual/en/function.ldap-get-values-len.php ldap_get_values_len()
+     *
+     * @psalm-mutation-free
      */
     public function get_values_len(string $attribute)
     {
@@ -103,6 +108,8 @@ final class LdapResultEntry implements LdapResultEntryInterface
      * @return array|false
      *
      * @link http://php.net/manual/en/function.ldap-get-values.php ldap_get_values()
+     *
+     * @psalm-mutation-free
      */
     public function get_values(string $attribute)
     {
@@ -118,6 +125,8 @@ final class LdapResultEntry implements LdapResultEntryInterface
      * @return string|false
      *
      * @link http://php.net/manual/en/function.ldap-next-attribute.php ldap_next_attribute()
+     *
+     * @psalm-mutation-free
      */
     public function next_attribute()
     {
@@ -134,6 +143,8 @@ final class LdapResultEntry implements LdapResultEntryInterface
      * @return LdapResultEntryInterface|false
      *
      * @link http://php.net/manual/en/function.ldap-next-entry.php ldap_next_entry()
+     *
+     * @psalm-mutation-free
      */
     public function next_entry()
     {
@@ -150,6 +161,8 @@ final class LdapResultEntry implements LdapResultEntryInterface
      * @return LdapResultEntryInterface|false
      *
      * @link http://php.net/manual/en/function.ldap-next-entry.php ldap_next_entry()
+     *
+     * @psalm-mutation-free
      */
     public function next_item()
     {

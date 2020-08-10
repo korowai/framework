@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
 
+use Korowai\Lib\Ldap\Exception\LdapException;
 use function Korowai\Lib\Context\with;
 use InvalidArgumentException;
 
@@ -30,7 +31,7 @@ abstract class AbstractLdapResultItemIterator implements LdapResultItemIteratorI
     /**
      * @var LdapResultItemInterface|null
      */
-    protected $current;
+    private $current;
 
     /**
      * @var int|null
@@ -98,13 +99,18 @@ abstract class AbstractLdapResultItemIterator implements LdapResultItemIteratorI
 
     /**
      * Move forward to next element
+     *
+     * @throws LdapException
+     * @throws \ErrorException
      */
     final public function next() : void
     {
         if (($current = $this->current) === null || ($offset = $this->offset) === null) {
             return;
         }
-        $next = $current->next_item();
+        $next = with(LdapLinkErrorHandler::fromLdapLinkWrapper($current))(function () use ($current) {
+            return $current->next_item();
+        });
         $this->setState($next, $offset + 1);
     }
 

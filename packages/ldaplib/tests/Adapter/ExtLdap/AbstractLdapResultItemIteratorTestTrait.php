@@ -14,6 +14,8 @@ namespace Korowai\Tests\Lib\Ldap\Adapter\ExtLdap;
 
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultItemInterface;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
+use Korowai\Lib\Ldap\Exception\LdapException;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -31,61 +33,77 @@ trait AbstractLdapResultItemIteratorTestTrait
                     ->getMockForAbstractClass();
     }
 
-    public function test__implements__IteratorInterface()
+    public function test__implements__IteratorInterface() : void
     {
         $this->assertImplementsInterface($this->getIteratorInterface(), $this->getIteratorClass());
     }
 
-    public function test__construct()
+    public function prov__construct() : array
     {
         $first = $this->createIteratorItemStub();
         $current = $this->createIteratorItemStub();
 
-        $iterator = $this->createIteratorInstance($first, $current, 123);
+        return [
+            // #0
+            [
+                'args' => [$first, $current, 123],
+                'expect' => [
+                    'getFirst()' => $first,
+                    'getCurrent()' => $current,
+                    'key' => 123
+                ]
+            ],
 
-        $this->assertSame($current, $iterator->current());
-        $this->assertSame(123, $iterator->key());
+            // #1
+            [
+                'args' => [$first],
+                'expect' => [
+                    'getFirst()' => $first,
+                    'getCurrent()' => null,
+                    'key' => null
+                ]
+            ],
+
+            // #2
+            [
+                'args' => [null],
+                'expect' => [
+                    'getFirst()' => null,
+                    'getCurrent()' => null,
+                    'key' => null
+                ]
+            ],
+
+            // #3
+            [
+                'args' => [$first, null, 123],
+                'expect' => [
+                    'getFirst()' => $first,
+                    'getCurrent()' => null,
+                    'key' => null
+                ]
+            ],
+
+            // #4
+            [
+                'args' => [$first, $current],
+                'expect' => [
+                    'getFirst()' => $first,
+                    'getCurrent()' => $current,
+                    'key' => 0
+                ]
+            ],
+        ];
     }
 
-    public function test__construct__withDefaultArgs()
+    /**
+     * @dataProvider prov__construct
+     */
+    public function test__construct(array $args, array $expect) : void
     {
-        $first = $this->createIteratorItemStub();
+        $iterator = $this->createIteratorInstance(...$args);
 
-        $iterator = $this->createIteratorInstance($first);
-
-        $this->assertNull($iterator->current());
-        $this->assertNull($iterator->key());
-    }
-
-    public function test__construct__withNullArgs()
-    {
-        $first = $this->createIteratorItemStub();
-
-        $iterator = $this->createIteratorInstance($first, null, null);
-
-        $this->assertNull($iterator->current());
-        $this->assertNull($iterator->key());
-    }
-
-    public function test__construct__withNullEntryAndNonNullOffset()
-    {
-        $first = $this->createIteratorItemStub();
-
-        $iterator = $this->createIteratorInstance($first, null, 123);
-
-        $this->assertNull($iterator->getCurrent());
-        $this->assertNull($iterator->key());
-    }
-
-    public function test__construct__withNonNullEntryAndNullOffset()
-    {
-        $first = $this->createIteratorItemStub();
-        $current = $this->createIteratorItemStub();
-
-        $iterator = $this->createIteratorInstance($first, $current, null);
-
-        $this->assertSame($current, $iterator->getCurrent());
-        $this->assertSame(0, $iterator->key());
+        $this->assertHasPropertiesSameAs($expect, $iterator);
     }
 
     public function test__next()
@@ -96,7 +114,8 @@ trait AbstractLdapResultItemIteratorTestTrait
         $iterator = $this->createIteratorInstance($item1, $item1, 0);
 
         $this->assertTrue($iterator->valid());
-        $this->assertSame($item1, $iterator->current());
+        $this->assertSame($item1, $iterator->getFirst());
+        $this->assertSame($item1, $iterator->getCurrent());
         $this->assertSame(0, $iterator->key());
 
         $item1->expects($this->once())
@@ -109,16 +128,102 @@ trait AbstractLdapResultItemIteratorTestTrait
 
         $iterator->next();
         $this->assertTrue($iterator->valid());
-        $this->assertSame($item2, $iterator->current());
+        $this->assertSame($item2, $iterator->getCurrent());
         $this->assertSame(1, $iterator->key());
         $iterator->next();
         $this->assertFalse($iterator->valid());
-        $this->assertNull($iterator->current());
+        $this->assertNull($iterator->getCurrent());
         $this->assertNull($iterator->key());
         $iterator->next();
         $this->assertFalse($iterator->valid());
-        $this->assertNull($iterator->current());
+        $this->assertNull($iterator->getCurrent());
         $this->assertNull($iterator->key());
+    }
+
+    public function test__next__withTriggerLdapError()
+    {
+        $ldap = $this->getMockBuilder(LdapLinkInterface::class)
+                     ->getMockForAbstractClass();
+        $item = $this->createIteratorItemStub();
+
+        $iterator = $this->createIteratorInstance($item, $item, 0);
+
+        $this->assertTrue($iterator->valid());
+        $this->assertSame($item, $iterator->getFirst());
+        $this->assertSame($item, $iterator->getCurrent());
+        $this->assertSame(0, $iterator->key());
+
+        $item->expects($this->once())
+             ->method('getLdapLink')
+             ->with()
+             ->willReturn($ldap);
+
+        $item->expects($this->once())
+             ->method('next_item')
+             ->with()
+             ->will($this->returnCallback(function () {
+                 trigger_error('an LDAP error', E_USER_ERROR);
+                 return false;
+             }));
+
+        $ldap->expects($this->once())
+             ->method('isValid')
+             ->with()
+             ->willReturn(true);
+
+        $ldap->expects($this->once())
+             ->method('errno')
+             ->with()
+             ->willReturn(1234);
+
+        $this->expectException(LdapException::class);
+        $this->expectExceptionMessage('an LDAP error');
+        $this->expectExceptionCode(1234);
+
+        $iterator->next();
+    }
+
+    public function test__next__withTriggerNonLdapError()
+    {
+        $ldap = $this->getMockBuilder(LdapLinkInterface::class)
+                     ->getMockForAbstractClass();
+        $item = $this->createIteratorItemStub();
+
+        $iterator = $this->createIteratorInstance($item, $item, 0);
+
+        $this->assertTrue($iterator->valid());
+        $this->assertSame($item, $iterator->getFirst());
+        $this->assertSame($item, $iterator->getCurrent());
+        $this->assertSame(0, $iterator->key());
+
+        $item->expects($this->once())
+             ->method('getLdapLink')
+             ->with()
+             ->willReturn($ldap);
+
+        $item->expects($this->once())
+             ->method('next_item')
+             ->with()
+             ->will($this->returnCallback(function () {
+                 trigger_error('non-LDAP error', E_USER_ERROR);
+                 return false;
+             }));
+
+        $ldap->expects($this->once())
+             ->method('isValid')
+             ->with()
+             ->willReturn(true);
+
+        $ldap->expects($this->once())
+             ->method('errno')
+             ->with()
+             ->willReturn(0);
+
+        $this->expectException(\ErrorException::class);
+        $this->expectExceptionMessage('non-LDAP error');
+        $this->expectExceptionCode(0);
+
+        $iterator->next();
     }
 
     public function test__rewind()
@@ -128,12 +233,14 @@ trait AbstractLdapResultItemIteratorTestTrait
 
         $iterator = $this->createIteratorInstance($item1, $item2, 1);
 
-        $this->assertSame($item2, $iterator->current());
-        $this->assertSame(1, $iterator->key());
         $this->assertTrue($iterator->valid());
+        $this->assertSame($item1, $iterator->getFirst());
+        $this->assertSame($item2, $iterator->getCurrent());
+        $this->assertSame(1, $iterator->key());
 
         $iterator->rewind();
-        $this->assertSame($item1, $iterator->current());
+        $this->assertSame($item1, $iterator->getFirst());
+        $this->assertSame($item1, $iterator->getCurrent());
         $this->assertSame(0, $iterator->key());
         $this->assertTrue($iterator->valid());
     }
@@ -141,17 +248,18 @@ trait AbstractLdapResultItemIteratorTestTrait
     public function test__rewind__fromInvalid()
     {
         $first = $this->createIteratorItemStub();
-        $current = $this->createIteratorItemStub();
 
         $iterator = $this->createIteratorInstance($first, null, null);
 
-        $this->assertNull($iterator->current());
-        $this->assertNull($iterator->key());
         $this->assertFalse($iterator->valid());
+        $this->assertSame($first, $iterator->getFirst());
+        $this->assertNull($iterator->getCurrent());
+        $this->assertNull($iterator->key());
 
         $iterator->rewind();
 
-        $this->assertSame($current, $iterator->current());
+        $this->assertSame($first, $iterator->getFirst());
+        $this->assertSame($first, $iterator->getCurrent());
         $this->assertSame(0, $iterator->key());
         $this->assertTrue($iterator->valid());
     }

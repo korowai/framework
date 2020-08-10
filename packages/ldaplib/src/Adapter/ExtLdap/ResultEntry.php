@@ -43,20 +43,12 @@ final class ResultEntry implements ResultEntryInterface, LdapResultEntryWrapperI
     /**
      * {@inheritdoc}
      */
-    public function getLdapResultItem() : LdapResultEntryInterface
-    {
-        return $this->getLdapResultEntry();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDn() : string
     {
         $entry = $this->getLdapResultEntry();
 
         /** @var string|false */
-        $dn = with(LdapLinkErrorHandler::fromLdapResultWrapper($entry))(function ($eh) use ($entry) {
+        $dn = with(LdapLinkErrorHandler::fromLdapResultWrapper($entry))(function () use ($entry) {
             return $entry->get_dn();
         });
 
@@ -71,7 +63,7 @@ final class ResultEntry implements ResultEntryInterface, LdapResultEntryWrapperI
         $entry = $this->getLdapResultEntry();
 
         /** @var array|false */
-        $attributes = with(LdapLinkErrorHandler::fromLdapResultWrapper($entry))(function ($eh) use ($entry) {
+        $attributes = with(LdapLinkErrorHandler::fromLdapResultWrapper($entry))(function () use ($entry) {
             return $entry->get_attributes();
         });
 
@@ -90,7 +82,7 @@ final class ResultEntry implements ResultEntryInterface, LdapResultEntryWrapperI
             $entry = $this->getLdapResultEntry();
 
             /** @var string|false */
-            $first = with(LdapLinkErrorHandler::fromLdapResultWrapper($entry))(function ($eh) use ($entry) {
+            $first = with(LdapLinkErrorHandler::fromLdapResultWrapper($entry))(function () use ($entry) {
                 return $entry->first_attribute();
             });
 

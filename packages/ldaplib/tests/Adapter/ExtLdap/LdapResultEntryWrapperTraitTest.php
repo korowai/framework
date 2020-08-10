@@ -37,6 +37,14 @@ final class LdapResultEntryWrapperTraitTest extends TestCase
         $wrapper = static::createDummyLdapResultEntryWrapper($ldapResultEntry);
         $this->assertSame($ldapResultEntry, $wrapper->getLdapResultEntry());
     }
+
+    public function test__getLdapResultItem() : void
+    {
+        $ldapResultEntry = $this->getMockBuilder(LdapResultEntryInterface::class)
+                         ->getMockForAbstractClass();
+        $wrapper = static::createDummyLdapResultEntryWrapper($ldapResultEntry);
+        $this->assertSame($ldapResultEntry, $wrapper->getLdapResultItem());
+    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

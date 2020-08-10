@@ -24,9 +24,12 @@ final class LdapLinkWrapperTraitTest extends TestCase
 {
     private static function createDummyLdapLinkWrapper(LdapLinkInterface $ldapLink) : LdapLinkWrapperInterface
     {
-        return new class ($ldapLink) implements LdapLinkWrapperInterface {
+        return new class($ldapLink) implements LdapLinkWrapperInterface {
             use LdapLinkWrapperTrait;
-            public function __construct(LdapLinkInterface $ldapLink) { $this->ldapLink = $ldapLink; }
+            public function __construct(LdapLinkInterface $ldapLink)
+            {
+                $this->ldapLink = $ldapLink;
+            }
         };
     }
 

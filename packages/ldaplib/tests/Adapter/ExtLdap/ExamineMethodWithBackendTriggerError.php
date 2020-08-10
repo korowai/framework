@@ -30,7 +30,6 @@ trait ExamineMethodWithBackendTriggerError
         array $config,
         array $expect
     ) : void {
-
         $ldapMock->expects($this->once())
                  ->method('isValid')
                  ->with()

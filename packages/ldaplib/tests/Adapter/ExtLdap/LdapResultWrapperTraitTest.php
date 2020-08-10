@@ -24,9 +24,12 @@ final class LdapResultWrapperTraitTest extends TestCase
 {
     private static function createDummyLdapResultWrapper(LdapResultInterface $ldapResult) : LdapResultWrapperInterface
     {
-        return new class ($ldapResult) implements LdapResultWrapperInterface {
+        return new class($ldapResult) implements LdapResultWrapperInterface {
             use LdapResultWrapperTrait;
-            public function __construct(LdapResultInterface $ldapResult) { $this->ldapResult = $ldapResult; }
+            public function __construct(LdapResultInterface $ldapResult)
+            {
+                $this->ldapResult = $ldapResult;
+            }
         };
     }
 

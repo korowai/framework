@@ -24,9 +24,12 @@ final class LdapResultReferenceWrapperTraitTest extends TestCase
 {
     private static function createDummyLdapResultReferenceWrapper(LdapResultReferenceInterface $ldapResultReference) : LdapResultReferenceWrapperInterface
     {
-        return new class ($ldapResultReference) implements LdapResultReferenceWrapperInterface {
+        return new class($ldapResultReference) implements LdapResultReferenceWrapperInterface {
             use LdapResultReferenceWrapperTrait;
-            public function __construct(LdapResultReferenceInterface $ldapResultReference) { $this->ldapResultReference = $ldapResultReference; }
+            public function __construct(LdapResultReferenceInterface $ldapResultReference)
+            {
+                $this->ldapResultReference = $ldapResultReference;
+            }
         };
     }
 

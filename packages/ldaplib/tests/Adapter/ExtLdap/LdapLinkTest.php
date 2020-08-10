@@ -256,7 +256,8 @@ final class LdapLinkTest extends TestCase
             $repr = [
                 'array'    => [],
                 'bool'     => false,
-                'callable' => function () {},
+                'callable' => function () {
+                },
                 'int'      => 0,
                 'null'     => null,
                 'string'   => '',
@@ -1714,7 +1715,8 @@ final class LdapLinkTest extends TestCase
 
     public static function prov__set_rebind_proc__withInvalidArgType() : array
     {
-        return static::feedFuncWithInvalidArgType('set_rebind_proc', [], null, [function(){}]);
+        return static::feedFuncWithInvalidArgType('set_rebind_proc', [], null, [function () {
+        }]);
     }
 
     /**

@@ -27,10 +27,16 @@ final class ResourceWrapperTraitTest extends TestCase
 
     private static function createDummyResourceWrapper($resource) : ResourceWrapperInterface
     {
-        return new class ($resource) implements ResourceWrapperInterface {
+        return new class($resource) implements ResourceWrapperInterface {
             use ResourceWrapperTrait;
-            public function __construct($resource) { $this->resource = $resource; }
-            public function supportsResourceType(string $type) : bool { return $type === 'foo'; }
+            public function __construct($resource)
+            {
+                $this->resource = $resource;
+            }
+            public function supportsResourceType(string $type) : bool
+            {
+                return $type === 'foo';
+            }
         };
     }
 

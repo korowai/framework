@@ -54,7 +54,7 @@ trait ResultItemIteratorTestTrait
 
         $ldapIterator->expects($this->exactly(2))
                      ->method('current')
-                     ->withConsecutive([],[])
+                     ->withConsecutive([], [])
                      ->will($this->onConsecutiveCalls($ldapItem, null));
 
         $current = $iterator->current();

@@ -21,6 +21,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 trait LdapLinkOptionsTrait
 {
+    /**
+     * @var array
+     */
     private static $ldapLinkOptionDeclarations = [
         'deref'               => ['types' => ['string', 'int'],
                                   'constant' => 'LDAP_OPT_DEREF',
@@ -78,14 +81,13 @@ trait LdapLinkOptionsTrait
 
     /**
      * Returns name of an ext-ldap option constant for a given option name
-     * @return string Name of the ext-ldap constant
+     * @return string|null Name of the ext-ldap constant
      */
-    public function getLdapLinkOptionConstantName($optionName)
+    public function getLdapLinkOptionConstantName(string $optionName) : ?string
     {
-        if (!isset(self::$ldapLinkOptionDeclarations[$optionName]['constant'])) {
+        if (($name = self::$ldapLinkOptionDeclarations[$optionName]['constant'] ?? null) === null) {
             return null;
-        }
-        $name = self::$ldapLinkOptionDeclarations[$optionName]['constant'];
+        };
         return defined($name) ? $name : null;
     }
 
@@ -95,11 +97,12 @@ trait LdapLinkOptionsTrait
      * @throws LdapException
      * @return mixed Value of the ext-ldap constant
      */
-    public function getLdapLinkOptionConstant($name)
+    public function getLdapLinkOptionConstant(string $name)
     {
         $constantName = $this->getLdapLinkOptionConstantName($name);
 
         if (!$constantName) {
+            // FIXME: choose another exception?
             throw new LdapException("Unknown option '$name'", -1);
         }
 
@@ -126,7 +129,7 @@ trait LdapLinkOptionsTrait
     /**
      * Configures symfony's  OptionsResolver to parse LdapLink options
      */
-    protected function configureLdapLinkOptions(OptionsResolver $resolver)
+    protected function configureLdapLinkOptions(OptionsResolver $resolver) : void
     {
         $ldapLinkOptionDeclarations = $this->getLdapLinkOptionDeclarations();
         foreach ($ldapLinkOptionDeclarations as $name => $decl) {
@@ -137,7 +140,7 @@ trait LdapLinkOptionsTrait
     /**
      * Configures symfony's OptionResolver for a single option.
      */
-    protected function configureLdapLinkOption(OptionsResolver $resolver, string $name, $decl)
+    protected function configureLdapLinkOption(OptionsResolver $resolver, string $name, array $decl) : void
     {
         if (array_key_exists('default', $decl)) {
             $resolver->setDefault($name, $decl['default']);
@@ -150,7 +153,12 @@ trait LdapLinkOptionsTrait
         }
     }
 
-    protected function setLdapLinkOptionAllowedValues(OptionsResolver $resolver, string $name, $allowed)
+    /**
+     * @param OptionsResolver $resolver
+     * @param string $name
+     * @param mixed $allowed
+     */
+    protected function setLdapLinkOptionAllowedValues(OptionsResolver $resolver, string $name, $allowed) : void
     {
         if (is_array($allowed)) {
             $this->setLdapLinkOptionAllowedValuesArray($resolver, $name, $allowed);
@@ -160,15 +168,22 @@ trait LdapLinkOptionsTrait
         }
     }
 
-    protected function setLdapLinkOptionAllowedValuesArray(OptionsResolver $resolver, string $name, array $allowed)
-    {
+    protected function setLdapLinkOptionAllowedValuesArray(
+        OptionsResolver $resolver,
+        string $name,
+        array $allowed
+    ) : void {
         $keys = array_keys($allowed);
         if ($keys != range(0, count($allowed)-1)) {
             // Associative array: array keys and values are the resolver's allowed values.
             $resolver->setAllowedValues($name, array_merge($keys, array_values($allowed)));
-            $resolver->setNormalizer($name, function (Options $options, $value) use ($allowed) {
-                return $allowed[$value] ?? $value;
-            });
+            $resolver->setNormalizer($name,
+                /** @psalm-param mixed $value
+                 *  @psalm-return mixed */
+                function (Options $options, $value) use ($allowed) {
+                    return $allowed[$value] ?? $value;
+                }
+            );
         } else {
             $resolver->setAllowedValues($name, $allowed);
         }

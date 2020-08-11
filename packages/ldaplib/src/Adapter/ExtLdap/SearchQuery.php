@@ -24,7 +24,7 @@ use Symfony\Component\OptionsResolver\Options;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class SearchQuery extends AbstractSearchQuery
+final class SearchQuery extends AbstractSearchQuery
 {
     use EnsureLdapLinkTrait;
     use LastLdapExceptionTrait;
@@ -104,9 +104,9 @@ class SearchQuery extends AbstractSearchQuery
     }
 
 
-    protected function configureOptionsResolver(OptionsResolver $resolver)
+    protected function configureOptionsResolver(OptionsResolver $resolver) : void
     {
-        return parent::configureOptionsResolver($resolver);
+        parent::configureOptionsResolver($resolver);
     }
 }
 

@@ -22,7 +22,9 @@ use Symfony\Component\OptionsResolver\Options;
  */
 abstract class AbstractAdapterFactory implements AdapterFactoryInterface
 {
-    /** @var array */
+    /**
+     * @var array
+     */
     private $config;
 
     /**
@@ -32,22 +34,15 @@ abstract class AbstractAdapterFactory implements AdapterFactoryInterface
      */
     public function __construct(array $config = [])
     {
-        $this->configure($config);
+        $this->config = $this->resolveConfig($config);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function configure(array $config)
+    public function configure(array $config) : void
     {
-        $resolver = new OptionsResolver;
-
-        $this->configureOptionsResolver($resolver);
-        $resolver->setDefault('options', function (OptionsResolver $nestedResolver) {
-            return $this->configureNestedOptionsResolver($nestedResolver);
-        });
-
-        $this->config = $resolver->resolve($config);
+        $this->config = $this->resolveConfig($config);
     }
 
     /**
@@ -56,10 +51,30 @@ abstract class AbstractAdapterFactory implements AdapterFactoryInterface
      * If configuration is not set yet, null is returned.
      *
      * @return array
+     *
+     * @psalm-mutation-free
      */
     public function getConfig() : array
     {
         return $this->config;
+    }
+
+    /**
+     * Resolves the $config array.
+     *
+     * @param array $config
+     * @return array Resolved config
+     */
+    protected function resolveConfig(array $config) : array
+    {
+        $resolver = new OptionsResolver;
+
+        $this->configureOptionsResolver($resolver);
+        $resolver->setDefault('options', function (OptionsResolver $nestedResolver) : void {
+            $this->configureNestedOptionsResolver($nestedResolver);
+        });
+
+        return $resolver->resolve($config);
     }
 
     /**
@@ -70,10 +85,8 @@ abstract class AbstractAdapterFactory implements AdapterFactoryInterface
      * options. They should be configured by `configureNestedOptionsResolver()`.
      *
      * @param OptionsResolver $resolver The resolver to be configured
-     *
-     * @internal
      */
-    protected function configureOptionsResolver(OptionsResolver $resolver)
+    protected function configureOptionsResolver(OptionsResolver $resolver) : void
     {
         $resolver->setDefaults([
             'host' => 'localhost',
@@ -99,7 +112,7 @@ abstract class AbstractAdapterFactory implements AdapterFactoryInterface
         $resolver->setAllowedTypes('uri', 'string');
         $resolver->setAllowedValues('encryption', ['none', 'ssl', 'tls']);
 
-        $resolver->setAllowedValues('port', function ($port) {
+        $resolver->setAllowedValues('port', function (int $port) : bool {
             return $port > 0 && $port < 65536;
         });
     }
@@ -114,7 +127,7 @@ abstract class AbstractAdapterFactory implements AdapterFactoryInterface
      *
      * @param OptionsResolver $resolver The resolver to be configured
      */
-    abstract protected function configureNestedOptionsResolver(OptionsResolver $resolver);
+    abstract protected function configureNestedOptionsResolver(OptionsResolver $resolver) : void;
 }
 
 // vim: syntax=php sw=4 ts=4 et:

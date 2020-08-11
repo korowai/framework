@@ -24,7 +24,7 @@ abstract class AbstractSearchQuery implements SearchQueryInterface
     protected $base_dn;
     /** @var string */
     protected $filter;
-    /** @var ResultInterface */
+    /** @var ResultInterface|null */
     protected $result;
     /** @var array */
     protected $options;
@@ -126,16 +126,19 @@ abstract class AbstractSearchQuery implements SearchQueryInterface
     /**
      * @internal
      */
-    protected function configureOptionsResolver(OptionsResolver $resolver)
+    protected function configureOptionsResolver(OptionsResolver $resolver) : void
     {
         $resolver->setDefaults(static::getDefaultOptions());
 
         $resolver->setAllowedValues('scope', ['base', 'one', 'sub']);
         $resolver->setAllowedValues('deref', ['always', 'never', 'finding', 'searching']);
 
-        $resolver->setNormalizer('attributes', function (Options $optins, $value) {
-            return is_array($value) ? $value : [$value];
-        });
+        $resolver->setNormalizer('attributes',
+            /** @psalm-param mixed $value */
+            function (Options $optins, $value) : array {
+                return is_array($value) ? $value : [$value];
+            }
+        );
     }
 }
 

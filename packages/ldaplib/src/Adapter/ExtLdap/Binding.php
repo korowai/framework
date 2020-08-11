@@ -16,12 +16,11 @@ use Korowai\Lib\Ldap\Adapter\BindingInterface;
 use Korowai\Lib\Ldap\Exception\LdapException;
 
 use function Korowai\Lib\Context\with;
-use function Korowai\Lib\Error\emptyErrorHandler;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class Binding implements BindingInterface
+class Binding implements BindingInterface, LdapLinkWrapperInterface
 {
     use LastLdapExceptionTrait;
     use EnsureLdapLinkTrait;
@@ -99,10 +98,7 @@ class Binding implements BindingInterface
     private function callImplMethod($name, ...$args)
     {
         $this->ensureLdapLink($this->getLdapLink());
-        return with(emptyErrorHandler())(function ($eh) use ($name, $args) {
-            // FIXME: emptyErrorHandler() is probably not a good idea, we lose
-            // error information in cases the error is not an LDAP error (but,
-            // for example, a type error, or resource type error).
+        return with(LdapLinkErrorHandler::fromLdapLinkWrapper($this))(function () use ($name, $args) {
             return call_user_func_array([$this, $name], $args);
         });
     }

@@ -23,7 +23,7 @@ abstract class AbstractCompareQuery implements CompareQueryInterface
     protected $attribute;
     /** @var string */
     protected $value;
-    /** @var bool */
+    /** @var bool|null */
     protected $result;
 
 

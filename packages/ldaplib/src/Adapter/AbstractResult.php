@@ -19,8 +19,6 @@ abstract class AbstractResult implements ResultInterface
 {
     /**
      * {@inheritdoc}
-     *
-     * @psalm-mutation-free
      */
     public function getEntries(bool $use_keys = true) : array
     {
@@ -29,12 +27,15 @@ abstract class AbstractResult implements ResultInterface
 
     /**
      * Makes the ``Result`` object iterable
-     *
-     * @psalm-mutation-free
      */
     public function getIterator()
     {
-        foreach ($this->getResultEntryIterator() as $key => $entry) {
+        $iterator = $this->getResultEntryIterator();
+        foreach ($iterator as $key => $entry) {
+            if ($entry === null) {
+                $message = sprintf("Null returned by %s::current() during iteration", get_class($iterator));
+                throw new \UnexpectedValueException($message);
+            }
             yield $key => $entry->toEntry();
         }
     }

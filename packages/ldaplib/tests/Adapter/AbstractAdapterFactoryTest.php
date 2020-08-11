@@ -52,12 +52,15 @@ class AbstractAdapterFactoryTest extends TestCase
     public function test_configure_CtorWithConfig()
     {
         $config = ['host' => 'korowai.org'];
-        $factory = $this->getAbstractAdapterFactoryMock(false, ['configure']);
+        $factory = $this->getAbstractAdapterFactoryMock(false, ['resolveConfig']);
         $factory->expects($this->once())
-                ->method('configure')
-                ->with($config);
+                ->method('resolveConfig')
+                ->with($config)
+                ->willReturn(['url' => 'ldap://korowai.org']);
 
         $factory->__construct($config);
+
+        $this->assertSame(['url' => 'ldap://korowai.org'], $factory->getConfig());
     }
 
     public function test_configure_ConfigureResolvers()

@@ -17,7 +17,7 @@ use Korowai\Lib\Ldap\Adapter\AbstractAdapterFactory;
 use Korowai\Lib\Ldap\Exception\LdapException;
 
 use function Korowai\Lib\Context\with;
-use function Korowai\Lib\Error\emptyErrorHandler;
+//use function Korowai\Lib\Error\emptyErrorHandler;
 use function Korowai\Lib\Error\exceptionErrorHandler;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -25,7 +25,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class AdapterFactory extends AbstractAdapterFactory
+final class AdapterFactory extends AbstractAdapterFactory
 {
     use LdapLinkOptionsTrait;
     use EnsureLdapLinkTrait;
@@ -47,19 +47,26 @@ class AdapterFactory extends AbstractAdapterFactory
     /**
      * {@inheritdoc}
      */
-    protected function configureNestedOptionsResolver(OptionsResolver $resolver)
+    protected function configureNestedOptionsResolver(OptionsResolver $resolver) : void
     {
         $this->configureLdapLinkOptions($resolver);
     }
 
-    private function createLdapLink()
+    private function createLdapLink() : LdapLinkInterface
     {
-        $handler = exceptionErrorHandler(function ($severity, $message, ...$args) {
-            return new LdapException($message, -1, $severity, ...$args);
-        });
-        $link = with($handler)(function ($eh) {
-            return $this->createLdapLinkImpl();
-        });
+        $handler = exceptionErrorHandler(
+            /** @psalm-param mixed ...$args */
+            function (int $severity, string $message, ...$args) {
+                return new LdapException($message, -1, $severity, ...$args);
+            }
+        );
+        $link = with($handler)(
+            /** @psalm-return LdapLinkInterface|false */
+            function () {
+                $config = $this->getConfig();
+                return LdapLink::connect($config['uri']);
+            }
+        );
         if (!$link) {
             // throw this exception in case ldap-ext forgot to trigger_error
             throw new LdapException('Failed to create LDAP connection', -1);
@@ -67,13 +74,7 @@ class AdapterFactory extends AbstractAdapterFactory
         return $link;
     }
 
-    private function createLdapLinkImpl()
-    {
-        $config = $this->getConfig();
-        return LdapLink::connect($config['uri']);
-    }
-
-    private function configureLdapLink(LdapLink $link)
+    private function configureLdapLink(LdapLinkInterface $link) : void
     {
         $config = $this->getConfig();
         foreach ($config['options'] as $name => $value) {
@@ -82,18 +83,25 @@ class AdapterFactory extends AbstractAdapterFactory
         }
     }
 
-    private function setLdapLinkOption(LdapLink $link, int $option, $value)
+    /**
+     * @param LdapLinkInterface $link
+     * @param int $option
+     * @param mixed $value
+     */
+    private function setLdapLinkOption(LdapLinkInterface $link, int $option, $value) : void
     {
         static::ensureLdapLink($link);
-        with(emptyErrorHandler())(function ($eh) use ($link, $option, $value) {
-            // FIXME: emptyErrorHandler() is probably not a good idea, we lose
-            // error information in cases the error is not an LDAP error (but,
-            // for example, a type error, or resource type error).
+        with(new LdapLinkErrorHandler($link))(function () use ($link, $option, $value) {
             $this->setLdapLinkOptionImpl($link, $option, $value);
         });
     }
 
-    private function setLdapLinkOptionImpl(LdapLink $link, int $option, $value)
+    /**
+     * @param LdapLinkInterface $link
+     * @param int $option
+     * @param mixed $value
+     */
+    private function setLdapLinkOptionImpl(LdapLinkInterface $link, int $option, $value) : void
     {
         if (!$link->set_option($option, $value)) {
             throw static::lastLdapException($link);

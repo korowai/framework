@@ -16,6 +16,8 @@ use Korowai\Testing\Ldaplib\TestCase;
 
 use Korowai\Lib\Ldap\Adapter\ExtLdap\Binding;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkWrapperInterface;
+use Korowai\Lib\Ldap\Adapter\BindingInterface;
 use Korowai\Lib\Ldap\Exception\LdapException;
 
 /**
@@ -36,6 +38,22 @@ class BindingTest extends TestCase
             $link->method('unbind')->willReturn($unbind);
         }
         return $link;
+    }
+
+    //
+    //
+    // TESTS
+    //
+    //
+
+    public function test__implements__BindingInterface()
+    {
+        $this->assertImplementsInterface(BindingInterface::class, Binding::class);
+    }
+
+    public function test__implements__LdapLinkWrapperInterface()
+    {
+        $this->assertImplementsInterface(LdapLinkWrapperInterface::class, Binding::class);
     }
 
     public function test__construct()

@@ -14,12 +14,11 @@ namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
 
 use Korowai\Lib\Ldap\Adapter\AbstractCompareQuery;
 use function Korowai\Lib\Context\with;
-use function Korowai\Lib\Error\emptyErrorHandler;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class CompareQuery extends AbstractCompareQuery
+class CompareQuery extends AbstractCompareQuery implements LdapLinkWrapperInterface
 {
     use EnsureLdapLinkTrait;
     use LastLdapExceptionTrait;
@@ -45,10 +44,7 @@ class CompareQuery extends AbstractCompareQuery
     protected function doExecuteQuery() : bool
     {
         static::ensureLdapLink($this->getLdapLink());
-        return with(emptyErrorHandler())(function ($eh) {
-            // FIXME: emptyErrorHandler() is probably not a good idea, we lose
-            // error information in cases the error is not an LDAP error (but,
-            // for example, a type error, or resource type error).
+        return with(LdapLinkErrorHandler::fromLdapLinkWrapper($this))(function () {
             return $this->doExecuteQueryImpl();
         });
     }
@@ -59,7 +55,7 @@ class CompareQuery extends AbstractCompareQuery
         if (-1 === $result) {
             throw static::lastLdapException($this->getLdapLink());
         }
-        return $result;
+        return (bool)$result;
     }
 }
 

@@ -26,8 +26,16 @@ trait LastLdapExceptionTrait
      */
     protected static function lastLdapException(LdapLinkInterface $ldap) : LdapException
     {
-        $errno = $ldap->errno();
-        $errstr = LdapLink::err2str($errno);
+        if (($errno = $ldap->errno()) === false) {
+            $message = sprintf('%s::errno() returned false', get_class($ldap));
+            // FIXME: return \ErrorException, or throw something, or elaborate on error code?
+            return new LdapException($message, -1);
+        }
+        if (($errstr = LdapLink::err2str($errno)) === false) {
+            $message = sprintf('%s::err2str() returned false', get_class($ldap));
+            // FIXME: return \ErrorException, or throw something, or elaborate on error code?
+            return new LdapException($message, -1);
+        }
         return new LdapException($errstr, $errno);
     }
 }

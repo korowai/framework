@@ -16,6 +16,7 @@ use Korowai\Testing\Ldaplib\TestCase;
 use Korowai\Lib\Ldap\Adapter\AbstractCompareQuery;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\CompareQuery;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkWrapperInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -39,9 +40,20 @@ class CompareQueryTest extends TestCase
         return $link;
     }
 
+    //
+    //
+    // TESTS
+    //
+    //
+
     public function test__extends__AbstractCompareQuery()
     {
         $this->assertExtendsClass(AbstractCompareQuery::class, CompareQuery::class);
+    }
+
+    public function test__implements__LdapLinkWrapperInterface()
+    {
+        $this->assertImplementsInterface(LdapLinkWrapperInterface::class, CompareQuery::class);
     }
 
     public function test__construct()

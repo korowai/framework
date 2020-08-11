@@ -25,7 +25,7 @@ interface AdapterFactoryInterface
      * @param  array $config Configuration options used to configure every new
      *                      adapter instance created by createAdapter().
      */
-    public function configure(array $config);
+    public function configure(array $config) : void;
 
     /**
      * Creates and returns an LDAP adapter

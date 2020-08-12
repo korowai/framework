@@ -32,12 +32,12 @@ interface BindingInterface
      * @param  string $dn        The user's DN
      * @param  string $password  The associated password
      */
-    public function bind(string $dn = null, string $password = null);
+    public function bind(string $dn = null, string $password = null) : bool;
 
     /**
      * Unbinds the connection
      */
-    public function unbind();
+    public function unbind() : bool;
 }
 
 // vim: syntax=php sw=4 ts=4 et:

@@ -24,10 +24,11 @@ class EnsureLdapLinkTraitTest extends TestCase
 {
     use EnsureLdapLinkTrait;
 
-    public function test_ensureLdapLink_Failure()
+    public function test__ensureLdapLink__whenIsValidReturnsFalse()
     {
         $link = $this->getMockBuilder(LdapLinkInterface::class)
                      ->getMockForAbstractClass();
+
         $link->expects($this->once())
            ->method('isValid')
            ->with()
@@ -36,18 +37,21 @@ class EnsureLdapLinkTraitTest extends TestCase
         $this->expectException(\Korowai\Lib\Ldap\Exception\LdapException::class);
         $this->expectExceptionMessage('Uninitialized LDAP link');
         $this->expectExceptionCode(-1);
+
         static::ensureLdapLink($link);
     }
 
-    public function test_ensureLdapLink_Success()
+    public function test__ensureLdapLink__whenIsValidReturnsTrue()
     {
         $link = $this->getMockBuilder(LdapLinkInterface::class)
                      ->getMockForAbstractClass();
+
         $link->expects($this->once())
            ->method('isValid')
            ->with()
            ->willReturn(true);
-        $this->assertTrue(static::ensureLdapLink($link));
+
+        static::ensureLdapLink($link);
     }
 }
 

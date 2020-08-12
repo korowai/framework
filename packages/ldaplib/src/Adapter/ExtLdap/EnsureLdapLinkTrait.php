@@ -24,17 +24,12 @@ trait EnsureLdapLinkTrait
      *
      * @param  LdapLinkInterface $link
      * @throws LdapException
-     *
-     * @return bool Always returns true.
-     *
-     * @psalm-pure
      */
-    protected static function ensureLdapLink(LdapLinkInterface $link) : bool
+    protected static function ensureLdapLink(LdapLinkInterface $link) : void
     {
         if (!$link->isValid()) {
             throw new LdapException("Uninitialized LDAP link", -1);
         }
-        return true;
     }
 }
 

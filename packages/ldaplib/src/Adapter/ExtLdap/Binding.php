@@ -13,164 +13,26 @@ declare(strict_types=1);
 namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
 
 use Korowai\Lib\Ldap\Adapter\BindingInterface;
-use Korowai\Lib\Ldap\Exception\LdapException;
-
-use function Korowai\Lib\Context\with;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
 final class Binding implements BindingInterface, LdapLinkWrapperInterface
 {
-    use LastLdapExceptionTrait;
-    use EnsureLdapLinkTrait;
     use LdapLinkWrapperTrait;
-
-    /** @var bool */
-    private $bound;
+    use BindingTrait;
 
     /**
      * Initializes the Binding object with LdapLink instance.
      *
      * @param LdapLinkInterface $link
+     * @param bool $bound
      */
     public function __construct(LdapLinkInterface $link, bool $bound = false)
     {
         $this->ldapLink = $link;
         $this->bound = $bound;
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isBound() : bool
-    {
-        return $this->bound;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function bind(string $dn = null, string $password = null) : bool
-    {
-        $args = func_get_args();
-        $link = $this->getLdapLink();
-        try {
-            with(new LdapLinkErrorHandler($link))(function () use ($link, $args) {
-                $this->bound = $link->bind(...$args);
-            });
-        } catch (LdapException $exception) {
-            $code = $exception->getCode();
-            $message = $exception->getMessage();
-            // There is a special case in ext-ldap's ldap_bind() for DN or
-            // Password containing a null byte. In this case, the function sets
-            // ldap error code 49 (Invalid Credentials) and triggers error with
-            // message "... contains a null byte". The actual call to
-            // OpenLDAP's ldap_bind() is not made, so the state of ldap link
-            // resource remains unaltered. This means, an already bound ldap
-            // link remains bound.
-            if ($code !== 49 || preg_match('/(DN|Password) contains a null byte/', $message) !== 1) {
-                $this->bound = false;
-            }
-            throw $exception;
-        }
-        return $this->bound;
-    }
-
-//    /**
-//     * Get LDAP option's value (as per ldap_get_option())
-//     *
-//     * @param  int $option Option identifier (name)
-//     * @return mixed Option value
-//     * @throws LdapException
-//     */
-//    public function getOption(int $option)
-//    {
-//        return $this->callImplMethod('getOptionImpl', $option);
-//    }
-//
-//    /**
-//     * Set value to LDAP option
-//     *
-//     * @param  int $option Option identifier (name)
-//     * @param  mixed $value New value
-//     * @throws LdapException
-//     */
-//    public function setOption(int $option, $value)
-//    {
-//        return $this->callImplMethod('setOptionImpl', $option, $value);
-//    }
-
-    /**
-     * Unbinds the link
-     *
-     * After unbind the connection is no longer valid (and useful)
-     *
-     * @throws LdapException
-     */
-    public function unbind() : bool
-    {
-        $link = $this->getLdapLink();
-        $result = with(new LdapLinkErrorHandler($link))(function () use ($link) : bool {
-            return $link->unbind();
-        });
-        $this->bound = !$result;
-        return $result;
-    }
-
-//    /**
-//     */
-//    private function callImplMethod(string $name, ...$args)
-//    {
-//        $this->ensureLdapLink($this->getLdapLink());
-//        return with(LdapLinkErrorHandler::fromLdapLinkWrapper($this))(function () use ($name, $args) {
-//            return call_user_func_array([$this, $name], $args);
-//        });
-//    }
-//
-//    /**
-//     */
-//    private function bindImpl(string $dn = null, string $password = null)
-//    {
-//        $args = func_get_args();
-//        $result = $this->getLdapLink()->bind(...$args);
-//        if (!$result) {
-//            $this->bound = false;
-//            throw static::lastLdapException($this->getLdapLink());
-//        }
-//        $this->bound = true;
-//        return $result;
-//    }
-//
-//    /**
-//     */
-//    private function getOptionImpl(int $option)
-//    {
-//        if (!$this->getLdapLink()->get_option($option, $retval)) {
-//            throw static::lastLdapException($this->getLdapLink());
-//        }
-//        return $retval;
-//    }
-//
-//    /**
-//     */
-//    public function setOptionImpl(int $option, $value)
-//    {
-//        if (!$this->getLdapLink()->set_option($option, $value)) {
-//            throw static::lastLdapException($this->getLdapLink());
-//        }
-//    }
-//
-//    /**
-//     */
-//    private function unbindImpl()
-//    {
-//        if (!($result = $this->getLdapLink()->unbind())) {
-//            throw static::lastLdapException($this->getLdapLink());
-//        }
-//        $this->bound = false;
-//        return $result;
-//    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

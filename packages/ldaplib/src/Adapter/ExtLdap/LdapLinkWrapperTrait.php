@@ -29,6 +29,8 @@ trait LdapLinkWrapperTrait
      * Returns the encapsulated LdapLink instance.
      *
      * @return LdapLinkInterface
+     *
+     * @psalm-mutation-free
      */
     public function getLdapLink() : LdapLinkInterface
     {

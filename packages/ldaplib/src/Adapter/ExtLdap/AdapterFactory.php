@@ -17,7 +17,6 @@ use Korowai\Lib\Ldap\Adapter\AbstractAdapterFactory;
 use Korowai\Lib\Ldap\Exception\LdapException;
 
 use function Korowai\Lib\Context\with;
-//use function Korowai\Lib\Error\emptyErrorHandler;
 use function Korowai\Lib\Error\exceptionErrorHandler;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;

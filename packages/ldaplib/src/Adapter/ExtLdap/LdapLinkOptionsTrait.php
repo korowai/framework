@@ -177,7 +177,8 @@ trait LdapLinkOptionsTrait
         if ($keys != range(0, count($allowed)-1)) {
             // Associative array: array keys and values are the resolver's allowed values.
             $resolver->setAllowedValues($name, array_merge($keys, array_values($allowed)));
-            $resolver->setNormalizer($name,
+            $resolver->setNormalizer(
+                $name,
                 /** @psalm-param mixed $value
                  *  @psalm-return mixed */
                 function (Options $options, $value) use ($allowed) {

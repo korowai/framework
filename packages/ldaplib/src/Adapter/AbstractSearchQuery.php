@@ -133,7 +133,8 @@ abstract class AbstractSearchQuery implements SearchQueryInterface
         $resolver->setAllowedValues('scope', ['base', 'one', 'sub']);
         $resolver->setAllowedValues('deref', ['always', 'never', 'finding', 'searching']);
 
-        $resolver->setNormalizer('attributes',
+        $resolver->setNormalizer(
+            'attributes',
             /** @psalm-param mixed $value */
             function (Options $optins, $value) : array {
                 return is_array($value) ? $value : [$value];

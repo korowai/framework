@@ -44,7 +44,7 @@ final class SearchQuery extends AbstractSearchQuery
         parent::__construct($base_dn, $filter, $options);
     }
 
-    protected static function getDerefOption(array $options)
+    protected static function getDerefOption(array $options) : int
     {
         if (isset($options['deref'])) {
             return constant('LDAP_DEREF_' . strtoupper($options['deref']));
@@ -76,7 +76,7 @@ final class SearchQuery extends AbstractSearchQuery
         }
 
         static::ensureLdapLink($this->getLdapLink());
-        return with(emptyErrorHandler())(function ($eh) use ($func) {
+        return with(emptyErrorHandler())(function () use ($func) : LdapResultInterface {
             // FIXME: emptyErrorHandler() is probably not a good idea, we lose
             // error information in cases the error is not an LDAP error (but,
             // for example, a type error, or resource type error).
@@ -84,7 +84,7 @@ final class SearchQuery extends AbstractSearchQuery
         });
     }
 
-    private function doExecuteQueryImpl($func)
+    private function doExecuteQueryImpl(string $func) : LdapResultInterface
     {
         $options = $this->getOptions();
         $result = call_user_func(

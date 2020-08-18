@@ -14,18 +14,13 @@ namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
 
 use Korowai\Lib\Ldap\Adapter\EntryManagerInterface;
 use Korowai\Lib\Ldap\EntryInterface;
-
 use function Korowai\Lib\Context\with;
-use function Korowai\Lib\Error\emptyErrorHandler;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-trait EntryManager
+trait EntryManagerTrait
 {
-    use EnsureLdapLinkTrait;
-    use LastLdapExceptionTrait;
-
     /**
      * Returns the encapsulated LdapLink instance.
      *
@@ -40,9 +35,12 @@ trait EntryManager
      *
      * Invokes ldap_add().
      */
-    public function add(EntryInterface $entry)
+    public function add(EntryInterface $entry) : void
     {
-        return $this->callImplMethod('addImpl', $entry);
+        $link = $this->getLdapLink();
+        with(new LdapLinkErrorHandler($link))(function () use ($link, $entry) : void {
+            $link->add($entry->getDn(), $entry->getAttributes());
+        });
     }
 
     /**
@@ -50,91 +48,38 @@ trait EntryManager
      *
      * Invokes ldap_modify()
      */
-    public function update(EntryInterface $entry)
+    public function update(EntryInterface $entry) : void
     {
-        return $this->callImplMethod('updateImpl', $entry);
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * Invokes ldap_rename()
-     */
-    public function rename(EntryInterface $entry, string $newRdn, bool $deleteOldRdn = true)
-    {
-        return $this->callImplMethod('renameImpl', $entry, $newRdn, $deleteOldRdn);
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * Invokes ldap_delete()
-     */
-    public function delete(EntryInterface $entry)
-    {
-        return $this->callImplMethod('deleteImpl', $entry);
-    }
-
-    /**
-     * @internal
-     */
-    private function callImplMethod($name, ...$args)
-    {
-        static::ensureLdapLink($this->getLdapLink());
-        return with(emptyErrorHandler())(function ($eh) use ($name, $args) {
-            // FIXME: emptyErrorHandler() is probably not a good idea, we lose
-            // error information in cases the error is not an LDAP error (but,
-            // for example, a type error, or resource type error).
-            return call_user_func_array([$this, $name], $args);
+        $link = $this->getLdapLink();
+        with(new LdapLinkErrorHandler($link))(function () use ($link, $entry) : void {
+            $link->modify($entry->getDn(), $entry->getAttributes());
         });
     }
 
     /**
-     * @internal
-     * FIXME: visibility (private?)
-     */
-    private function addImpl(EntryInterface $entry)
-    {
-        if (!$this->getLdapLink()->add($entry->getDn(), $entry->getAttributes())) {
-            throw static::lastLdapException($this->getLdapLink());
-        }
-    }
-
-    /**
-     * @internal
-     * FIXME: visibility (private?)
-     */
-    public function updateImpl(EntryInterface $entry)
-    {
-        if (!$this->getLdapLink()->modify($entry->getDn(), $entry->getAttributes())) {
-            throw static::lastLdapException($this->getLdapLink());
-        }
-    }
-
-    /**
      * {@inheritdoc}
      *
      * Invokes ldap_rename()
-     * FIXME: visibility (private?)
      */
-    public function renameImpl(EntryInterface $entry, string $newRdn, bool $deleteOldRdn = true)
+    public function rename(EntryInterface $entry, string $newRdn, bool $deleteOldRdn = true) : void
     {
-        if (!$this->getLdapLink()->rename($entry->getDn(), $newRdn, '', $deleteOldRdn)) {
-            throw static::lastLdapException($this->getLdapLink());
-        }
+        $link = $this->getLdapLink();
+        with(new LdapLinkErrorHandler($link))(function () use ($link, $entry, $newRdn, $deleteOldRdn) : void {
+            $link->rename($entry->getDn(), $newRdn, '', $deleteOldRdn);
+        });
     }
 
     /**
      * {@inheritdoc}
      *
      * Invokes ldap_delete()
-     * FIXME: visibility (private?)
      */
-    public function deleteImpl(EntryInterface $entry)
+    public function delete(EntryInterface $entry) : void
     {
-        if (!$this->getLdapLink()->delete($entry->getDn())) {
-            throw static::lastLdapException($this->getLdapLink());
-        }
+        $link = $this->getLdapLink();
+        with(new LdapLinkErrorHandler($link))(function () use ($link, $entry) : void {
+            $link->delete($entry->getDn());
+        });
     }
 }
 

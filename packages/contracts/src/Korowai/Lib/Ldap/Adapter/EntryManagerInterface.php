@@ -24,14 +24,14 @@ interface EntryManagerInterface
      *
      * @param EntryInterface $entry
      */
-    public function add(EntryInterface $entry);
+    public function add(EntryInterface $entry) : void;
 
     /**
      * Updates an entry in Ldap server
      *
      * @param EntryInterface $entry
      */
-    public function update(EntryInterface $entry);
+    public function update(EntryInterface $entry) : void;
 
     /**
      * Renames an entry on the Ldap server
@@ -40,14 +40,14 @@ interface EntryManagerInterface
      * @param  string $newRdn
      * @param  bool $deleteOldRdn
      */
-    public function rename(EntryInterface $entry, string $newRdn, bool $deleteOldRdn = true);
+    public function rename(EntryInterface $entry, string $newRdn, bool $deleteOldRdn = true) : void;
 
     /**
      * Removes an entry from the Ldap server
      *
      * @param EntryInterface $entry
      */
-    public function delete(EntryInterface $entry);
+    public function delete(EntryInterface $entry) : void;
 }
 
 // vim: syntax=php sw=4 ts=4 et:

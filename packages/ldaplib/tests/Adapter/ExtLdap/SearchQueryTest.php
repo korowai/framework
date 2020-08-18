@@ -53,7 +53,7 @@ final class SearchQueryTest extends TestCase
         $this->assertTrue(true); // didn't blow up
     }
 
-    public function test__construct__WithInvalidOptions()
+    public function test__construct__withInvalidOptions()
     {
         $link = $this->createLdapLinkMock(true);
         $result = $this->createMock(ResultInterface::class);
@@ -72,7 +72,7 @@ final class SearchQueryTest extends TestCase
         $this->assertSame($link, $query->getLdapLink());
     }
 
-    public function test__execute__base()
+    public function test__execute__withScopeBase()
     {
         $link = $this->createLdapLinkMock(true);
         $result = $this->createMock(ResultInterface::class);
@@ -90,7 +90,7 @@ final class SearchQueryTest extends TestCase
         $this->assertSame($result, $query->getResult());
     }
 
-    public function test__execute__one()
+    public function test__execute__withScopeOne()
     {
         $link = $this->createLdapLinkMock(true);
         $result = $this->createMock(ResultInterface::class);
@@ -108,7 +108,7 @@ final class SearchQueryTest extends TestCase
         $this->assertSame($result, $query->getResult());
     }
 
-    public function test__execute__sub()
+    public function test__execute__withScopeSub()
     {
         $link = $this->createLdapLinkMock(true);
         $result = $this->createMock(ResultInterface::class);
@@ -144,7 +144,7 @@ final class SearchQueryTest extends TestCase
         $this->assertSame($result, $query->getResult());
     }
 
-    public function test__execute__sub_WithoutDeref()
+    public function test__execute__sub__withoutDeref()
     {
         $link = $this->createLdapLinkMock(true);
         $result = $this->createMock(ResultInterface::class);

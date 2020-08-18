@@ -13,321 +13,51 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Ldap\Adapter\ExtLdap;
 
 use Korowai\Testing\Ldaplib\TestCase;
+use Korowai\Lib\Ldap\Adapter\EntryManagerInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\EntryManager;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\EntryManagerTrait;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
-use Korowai\Lib\Ldap\Entry;
-use Korowai\Lib\Ldap\Exception\LdapException;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkWrapperInterface;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkWrapperTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
 final class EntryManagerTest extends TestCase
 {
-    use \phpmock\phpunit\PHPMock;
-    use GetLdapFunctionMock;
+    use EntryManagerTestTrait;
 
-    public function createLdapLinkMock($valid, $unbind = true)
+    public function createEntryManagerInstance(LdapLinkinterface $ldapLink) : EntryManagerInterface
     {
-        $link = $this->getMockBuilder(LdapLinkInterface::class)
-                     ->setMethods(['isValid', 'unbind'])
-                     ->getMockForAbstractClass();
-        if ($valid === true || $valid === false) {
-            $link->method('isValid')->willReturn($valid);
-        }
-        if ($unbind === true || $unbind === false) {
-            $link->method('unbind')->willReturn($unbind);
-        }
-        return $link;
+        return new EntryManager($ldapLink);
+    }
+
+    public function test__implements__EntryManagerInterface()
+    {
+        $this->assertImplementsInterface(EntryManagerInterface::class, EntryManager::class);
+    }
+
+    public function test__implements__LdapLinkWrapperInterface()
+    {
+        $this->assertImplementsInterface(LdapLinkWrapperInterface::class, EntryManager::class);
+    }
+
+    public function test__uses__EntryManagerTrait()
+    {
+        $this->assertUsesTrait(EntryManagerTrait::class, EntryManager::class);
+    }
+
+    public function test__uses__LdapLinkWrapperTrait()
+    {
+        $this->assertUsesTrait(LdapLinkWrapperTrait::class, EntryManager::class);
     }
 
     public function test__construct()
     {
         $link = $this->getMockBuilder(LdapLinkInterface::class)
                      ->getMockForAbstractClass();
-        $mngr = new EntryManager($link);
-        $this->assertTrue(true); // didn't blow up
-    }
-
-    public function test__getLdapLink()
-    {
-        $link = $this->getMockBuilder(LdapLinkInterface::class)
-                     ->getMockForAbstractClass();
-        $mngr = new EntryManager($link);
-        $this->assertSame($link, $mngr->getLdapLink());
-    }
-
-    public function test__add()
-    {
-        $attributes = ['attr1' => ['attr1val1']];
-        $entry = new Entry('dc=korowai,dc=org', $attributes);
-
-        $link = $this->createLdapLinkMock(true);
-        $link->expects($this->once())
-             ->method('add')
-             ->with('dc=korowai,dc=org', $attributes)
-             ->willReturn(true);
-
-        $mngr = new EntryManager($link);
-        $this->assertNull($mngr->add($entry));
-    }
-
-    public function test__add__UninitializedLink()
-    {
-        $attributes = ['attr1' => ['attr1val1']];
-        $entry = new Entry('dc=korowai,dc=org', $attributes);
-
-        $link = $this->createLdapLinkMock(false);
-        $link->expects($this->never())
-             ->method('add');
-
-        $mngr = new EntryManager($link);
-
-        $this->expectException(\Korowai\Lib\Ldap\Exception\LdapException::class);
-        $this->expectExceptionCode(-1);
-        $this->expectExceptionMessage('Uninitialized LDAP link');
-
-        $mngr->add($entry);
-    }
-
-    /**
-     * @runInSeparateProcess
-     */
-    public function test__add__Failure()
-    {
-        $attributes = ['attr1' => ['attr1val1']];
-        $entry = new Entry('dc=korowai,dc=org', $attributes);
-
-        $link = $this->createLdapLinkMock(true);
-        $link->expects($this->once())
-             ->method('add')
-             ->with('dc=korowai,dc=org', $attributes)
-             ->willReturn(false);
-        $link->method('errno')
-             ->willReturn(2);
-
-        $this->getLdapFunctionMock('ldap_err2str')
-             ->expects($this->once())
-             ->with(2)
-             ->willReturn("Error message");
-
-        $mngr = new EntryManager($link);
-
-        $this->expectException(\Korowai\Lib\Ldap\Exception\LdapException::class);
-        $this->expectExceptionCode(2);
-        $this->expectExceptionMessage('Error message');
-
-        $mngr->add($entry);
-    }
-
-    public function test__update()
-    {
-        $attributes = ['attr1' => ['attr1val1']];
-        $entry = new Entry('dc=korowai,dc=org', $attributes);
-
-        $link = $this->createLdapLinkMock(true);
-        $link->expects($this->once())
-             ->method('modify')
-             ->with('dc=korowai,dc=org', $attributes)
-             ->willReturn(true);
-
-        $mngr = new EntryManager($link);
-        $this->assertNull($mngr->update($entry));
-    }
-
-    public function test__update__Invalid()
-    {
-        $attributes = ['attr1' => ['attr1val1']];
-        $entry = new Entry('dc=korowai,dc=org', $attributes);
-
-        $link = $this->createLdapLinkMock(false);
-        $link->expects($this->never())
-             ->method('modify');
-
-        $mngr = new EntryManager($link);
-
-        $this->expectException(\Korowai\Lib\Ldap\Exception\LdapException::class);
-        $this->expectExceptionCode(-1);
-        $this->expectExceptionMessage('Uninitialized LDAP link');
-
-        $mngr->update($entry);
-    }
-
-    /**
-     * @runInSeparateProcess
-     */
-    public function test__update__Failure()
-    {
-        $attributes = ['attr1' => ['attr1val1']];
-        $entry = new Entry('dc=korowai,dc=org', $attributes);
-
-        $link = $this->createLdapLinkMock(true);
-        $link->expects($this->once())
-             ->method('modify')
-             ->with('dc=korowai,dc=org', $attributes)
-             ->willReturn(false);
-        $link->method('errno')
-             ->willReturn(2);
-
-        $this->getLdapFunctionMock('ldap_err2str')
-             ->expects($this->once())
-             ->with(2)
-             ->willReturn("Error message");
-
-        $mngr = new EntryManager($link);
-
-        $this->expectException(\Korowai\Lib\Ldap\Exception\LdapException::class);
-        $this->expectExceptionCode(2);
-        $this->expectExceptionMessage('Error message');
-
-        $mngr->update($entry);
-    }
-
-    public function test__rename__Default()
-    {
-        $entry = new Entry('dc=korowai,dc=org');
-
-        $link = $this->createLdapLinkMock(true);
-        $link->expects($this->once())
-             ->method('rename')
-             ->with('dc=korowai,dc=org', 'cn=korowai', null, true)
-             ->willReturn(true);
-
-        $mngr = new EntryManager($link);
-        $this->assertNull($mngr->rename($entry, 'cn=korowai'));
-    }
-
-    public function test__rename__DeleteOldRdn()
-    {
-        $entry = new Entry('dc=korowai,dc=org');
-
-        $link = $this->createLdapLinkMock(true);
-        $link->expects($this->once())
-             ->method('rename')
-             ->with('dc=korowai,dc=org', 'cn=korowai', null, true)
-             ->willReturn(true);
-
-        $mngr = new EntryManager($link);
-        $this->assertNull($mngr->rename($entry, 'cn=korowai', true));
-    }
-
-    public function test__rename__LeaveOldRdn()
-    {
-        $entry = new Entry('dc=korowai,dc=org');
-
-        $link = $this->createLdapLinkMock(true);
-        $link->expects($this->once())
-             ->method('rename')
-             ->with('dc=korowai,dc=org', 'cn=korowai', null, false)
-             ->willReturn(true);
-
-        $mngr = new EntryManager($link);
-        $this->assertNull($mngr->rename($entry, 'cn=korowai', false));
-    }
-
-    public function test__rename__Invalid()
-    {
-        $entry = new Entry('dc=korowai,dc=org');
-
-        $link = $this->createLdapLinkMock(false);
-        $link->expects($this->never())
-             ->method('rename');
-
-        $mngr = new EntryManager($link);
-
-        $this->expectException(\Korowai\Lib\Ldap\Exception\LdapException::class);
-        $this->expectExceptionCode(-1);
-        $this->expectExceptionMessage('Uninitialized LDAP link');
-
-        $mngr->rename($entry, 'cn=korowai', true);
-    }
-
-    /**
-     * @runInSeparateProcess
-     */
-    public function test__rename__Failure()
-    {
-        $entry = new Entry('dc=korowai,dc=org');
-
-        $link = $this->createLdapLinkMock(true);
-        $link->expects($this->once())
-             ->method('rename')
-             ->with('dc=korowai,dc=org', 'cn=korowai', null, true)
-             ->willReturn(false);
-        $link->method('errno')
-             ->willReturn(2);
-
-        $this->getLdapFunctionMock('ldap_err2str')
-             ->expects($this->once())
-             ->with(2)
-             ->willReturn("Error message");
-
-        $mngr = new EntryManager($link);
-
-        $this->expectException(\Korowai\Lib\Ldap\Exception\LdapException::class);
-        $this->expectExceptionCode(2);
-        $this->expectExceptionMessage('Error message');
-
-        $mngr->rename($entry, 'cn=korowai', true);
-    }
-
-    public function test__delete()
-    {
-        $entry = new Entry('dc=korowai,dc=org');
-
-        $link = $this->createLdapLinkMock(true);
-        $link->expects($this->once())
-             ->method('delete')
-             ->with('dc=korowai,dc=org')
-             ->willReturn(true);
-
-        $mngr = new EntryManager($link);
-        $this->assertNull($mngr->delete($entry));
-    }
-
-    public function test__delete__Invalid()
-    {
-        $entry = new Entry('dc=korowai,dc=org');
-
-        $link = $this->createLdapLinkMock(false);
-        $link->expects($this->never())
-             ->method('delete');
-
-        $mngr = new EntryManager($link);
-
-        $this->expectException(\Korowai\Lib\Ldap\Exception\LdapException::class);
-        $this->expectExceptionCode(-1);
-        $this->expectExceptionMessage('Uninitialized LDAP link');
-
-        $mngr->delete($entry);
-    }
-
-    /**
-     * @runInSeparateProcess
-     */
-    public function test__delete__Failure()
-    {
-        $entry = new Entry('dc=korowai,dc=org');
-
-        $link = $this->createLdapLinkMock(true);
-        $link->expects($this->once())
-             ->method('delete')
-             ->with('dc=korowai,dc=org')
-             ->willReturn(false);
-        $link->method('errno')
-             ->willReturn(2);
-
-        $this->getLdapFunctionMock('ldap_err2str')
-             ->expects($this->once())
-             ->with(2)
-             ->willReturn("Error message");
-
-        $mngr = new EntryManager($link);
-
-        $this->expectException(\Korowai\Lib\Ldap\Exception\LdapException::class);
-        $this->expectExceptionCode(2);
-        $this->expectExceptionMessage('Error message');
-
-        $mngr->delete($entry);
+        $manager = $this->createEntryManagerInstance($link);
+        $this->assertSame($link, $manager->getLdapLink());
     }
 }
 

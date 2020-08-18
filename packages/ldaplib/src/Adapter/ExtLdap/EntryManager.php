@@ -13,17 +13,14 @@ declare(strict_types=1);
 namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
 
 use Korowai\Lib\Ldap\Adapter\EntryManagerInterface;
-use Korowai\Lib\Ldap\EntryInterface;
-
-use function Korowai\Lib\Context\with;
-use function Korowai\Lib\Error\emptyErrorHandler;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-final class EntryManager implements EntryManagerInterface
+final class EntryManager implements EntryManagerInterface, LdapLinkWrapperInterface
 {
     use EntryManagerTrait;
+    use LdapLinkWrapperTrait;
 
     /**
      * Constructs EntryManager

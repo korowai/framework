@@ -16,7 +16,6 @@ use Korowai\Testing\Ldaplib\TestCase;
 use PHPUnit\Framework\Constraint\Constraint;
 
 use Korowai\Lib\Ldap\Adapter\ExtLdap\Result;
-use Korowai\Lib\Ldap\Adapter\ResultInterface;
 use Korowai\Lib\Ldap\Adapter\AbstractResult;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\ResultEntry;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\ResultReference;
@@ -30,8 +29,6 @@ use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultWrapperTrait;
  */
 final class ResultTest extends TestCase
 {
-    use \phpmock\phpunit\PHPMock;
-    use GetLdapFunctionMock;
     use CreateLdapLinkMock;
     use CreateLdapResultMock;
     use CreateLdapResultEntryMock;

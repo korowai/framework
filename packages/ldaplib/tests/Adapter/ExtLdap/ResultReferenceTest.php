@@ -47,10 +47,11 @@ class ResultReferenceTest extends TestCase
         $this->examineMethodWithBackendTriggerError(
             $reference,
             $method,
+            $args,
             $ldapReference,
             $backendMethod,
-            $ldap,
             $args,
+            $ldap,
             $config,
             $expect
         );

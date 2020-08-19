@@ -22,12 +22,15 @@ trait CreateLdapLinkMock
 {
     abstract public function getMockBuilder(string $className): MockBuilder;
 
-    private function createLdapLinkMock($resource = 'ldap link') : LdapLinkInterface
+    private function createLdapLinkMock($resource = 'ldap link', array $methods = []) : LdapLinkInterface
     {
         $builder = $this->getMockBuilder(LdapLinkInterface::class);
-        if ($resource !== null) {
-            $builder->setMethods(['getResource']);
+
+        if ($resource !== null && !in_array('getResource', $methods)) {
+            $methods[] = 'getResource';
         }
+
+        $builder->setMethods($methods);
 
         $mock = $builder->getMockForAbstractClass();
 

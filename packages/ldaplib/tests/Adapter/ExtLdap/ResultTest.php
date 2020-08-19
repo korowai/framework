@@ -49,10 +49,11 @@ final class ResultTest extends TestCase
         $this->examineMethodWithBackendTriggerError(
             $result,
             $method,
+            $args,
             $ldapResult,
             $backendMethod,
-            $ldap,
             $args,
+            $ldap,
             $config,
             $expect
         );

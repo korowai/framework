@@ -87,7 +87,7 @@ final class LdapResultReferenceTest extends TestCase
 
     public function test__getLdapResult()
     {
-        $result = $this->createLdapResultMock(null, null);
+        $result = $this->createLdapResultMock(null);
         $ref = new LdapResultReference('ldap reference', $result);
         $this->assertSame($result, $ref->getLdapResult());
     }
@@ -98,7 +98,7 @@ final class LdapResultReferenceTest extends TestCase
 
     public function test__getLdapLink()
     {
-        $ldap = $this->createLdapLinkMock(null, null);
+        $ldap = $this->createLdapLinkMock(null);
         $result = $this->createLdapResultMock($ldap, null);
         $entry = new LdapResultReference('ldap entry', $result);
         $this->assertSame($ldap, $entry->getLdapLink());

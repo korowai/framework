@@ -16,7 +16,6 @@ use Korowai\Lib\Ldap\Adapter\AbstractSearchQuery;
 use Korowai\Lib\Ldap\Adapter\ResultInterface;
 
 use function Korowai\Lib\Context\with;
-use function Korowai\Lib\Error\emptyErrorHandler;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\Options;
@@ -24,9 +23,8 @@ use Symfony\Component\OptionsResolver\Options;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-final class SearchQuery extends AbstractSearchQuery
+final class SearchQuery extends AbstractSearchQuery implements LdapLinkWrapperInterface
 {
-    use EnsureLdapLinkTrait;
     use LastLdapExceptionTrait;
     use LdapLinkWrapperTrait;
 
@@ -44,7 +42,41 @@ final class SearchQuery extends AbstractSearchQuery
         parent::__construct($base_dn, $filter, $options);
     }
 
-    protected static function getDerefOption(array $options) : int
+    /**
+     * {@inheritdoc}
+     */
+    protected function doExecuteQuery() : ResultInterface
+    {
+        $options = $this->getOptions();
+        $method = static::selectSearchMethod($options);
+        return $this->doExecuteQueryImpl($method, $options);
+    }
+
+    private function doExecuteQueryImpl(string $method, array $options) : ResultInterface
+    {
+        $link = $this->getLdapLink();
+        $ldapResult = with(new LdapLinkErrorHandler($link))(
+            /** @psalm-return LdapResultInterface|false */
+            function () use ($link, $method, $options) {
+                return call_user_func(
+                    [$link, $method],
+                    $this->getBaseDn(),
+                    $this->getFilter(),
+                    $options['attributes'],
+                    $options['attrsOnly'],
+                    $options['sizeLimit'],
+                    $options['timeLimit'],
+                    static::getDerefOption($options)
+                );
+            }
+        );
+        if (false === $ldapResult) {
+            throw static::lastLdapException($link);
+        }
+        return new Result($ldapResult);
+    }
+
+    private static function getDerefOption(array $options) : int
     {
         if (isset($options['deref'])) {
             return constant('LDAP_DEREF_' . strtoupper($options['deref']));
@@ -53,60 +85,20 @@ final class SearchQuery extends AbstractSearchQuery
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function doExecuteQuery() : ResultInterface
+    private static function selectSearchMethod(array $options) : string
     {
-        $options = $this->getOptions();
-        $scope = strtolower(isset($options['scope']) ? $options['scope'] : 'sub');
+        $scope = strtolower($options['scope'] ?? 'sub');
         switch ($scope) {
             case 'base':
-                $func = 'read';
-                break;
+                return 'read';
             case 'one':
-                $func = 'list';
-                break;
+                return 'list';
             case 'sub':
-                $func = 'search';
-                break;
+                return 'search';
             default:
                 // This should be actualy covered by OptionsResolver in AbstractSearchQuery::__construct()
                 throw new \RuntimeException(sprintf('Unsupported search scope "%s"', $options['scope']));
         }
-
-        static::ensureLdapLink($this->getLdapLink());
-        return with(emptyErrorHandler())(function () use ($func) : LdapResultInterface {
-            // FIXME: emptyErrorHandler() is probably not a good idea, we lose
-            // error information in cases the error is not an LDAP error (but,
-            // for example, a type error, or resource type error).
-            return $this->doExecuteQueryImpl($func);
-        });
-    }
-
-    private function doExecuteQueryImpl(string $func) : LdapResultInterface
-    {
-        $options = $this->getOptions();
-        $result = call_user_func(
-            [$this->getLdapLink(), $func],
-            $this->getBaseDn(),
-            $this->getFilter(),
-            $options['attributes'],
-            $options['attrsOnly'],
-            $options['sizeLimit'],
-            $options['timeLimit'],
-            static::getDerefOption($options)
-        );
-        if (false === $result) {
-            throw static::lastLdapException($this->getLdapLink());
-        }
-        return $result;
-    }
-
-
-    protected function configureOptionsResolver(OptionsResolver $resolver) : void
-    {
-        parent::configureOptionsResolver($resolver);
     }
 }
 

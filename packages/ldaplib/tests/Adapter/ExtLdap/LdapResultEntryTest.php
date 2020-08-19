@@ -98,7 +98,7 @@ final class LdapResultEntryTest extends TestCase
 
     public function test__getLdapLink()
     {
-        $ldap = $this->createLdapLinkMock(null, null);
+        $ldap = $this->createLdapLinkMock(null);
         $result = $this->createLdapResultMock($ldap, null);
         $entry = new LdapResultEntry('ldap entry', $result);
         $this->assertSame($ldap, $entry->getLdapLink());

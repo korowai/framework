@@ -21,49 +21,50 @@ use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
 trait ExamineMethodWithBackendTriggerError
 {
     private function examineMethodWithBackendTriggerError(
-        object $object,
-        string $method,
+        object $frontend,
+        string $frontendMethod,
+        array $frontendArgs,
         object $backendMock,
         string $backendMethod,
-        object $ldapMock,
-        array $args,
+        array $backendArgs,
+        LdapLinkInterface $ldapLinkMock,
         array $config,
         array $expect
     ) : void {
-        $ldapMock->expects($this->once())
-                 ->method('isValid')
-                 ->with()
-                 ->willReturn($config['valid']);
+        $ldapLinkMock->expects($this->once())
+                     ->method('isValid')
+                     ->with()
+                     ->willReturn($config['valid']);
 
         if ($config['valid']) {
-            $ldapMock->expects($this->once())
-                     ->method('errno')
-                     ->with()
-                     ->willReturn($config['errno']);
+            $ldapLinkMock->expects($this->once())
+                         ->method('errno')
+                         ->with()
+                         ->willReturn($config['errno']);
         } else {
-            $ldapMock->expects($this->never())
-                     ->method('errno');
+            $ldapLinkMock->expects($this->never())
+                         ->method('errno');
         }
 
         $line = __line__ + 5;
         $backendMock->expects($this->once())
-                 ->method($backendMethod)
-                 ->with(...$args)
-                 ->willReturnCallback(function () use ($config) {
-                     trigger_error($config['message'], $config['severity']);
-                     return $config['return'];
-                 });
+                     ->method($backendMethod)
+                     ->with(...$backendArgs)
+                     ->willReturnCallback(function () use ($config) {
+                        trigger_error($config['message'], $config['severity']);
+                        return $config['return'];
+                     });
 
         $this->expectException($expect['exception']);
         $this->expectExceptionMessage($expect['message']);
         $this->expectExceptionCode($expect['code']);
 
         try {
-            call_user_func_array([$object, $method], $args);
-        } catch (\ErrorException $e) {
-            $this->assertSame(__file__.':'.$line, $e->getFile().':'.$e->getLine());
-            $this->assertSame($expect['severity'], $e->getSeverity());
-            throw $e;
+            call_user_func_array([$frontend, $frontendMethod], $frontendArgs);
+        } catch (\ErrorException $exception) {
+            $this->assertSame(__file__.':'.$line, $exception->getFile().':'.$exception->getLine());
+            $this->assertSame($expect['severity'], $exception->getSeverity());
+            throw $exception;
         }
     }
 

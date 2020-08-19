@@ -118,7 +118,7 @@ final class LdapResultTest extends TestCase
      */
     public function test__supportsResourceType(array $args, $expect) : void
     {
-        $ldap = $this->createLdapLinkMock(null, null);
+        $ldap = $this->createLdapLinkMock(null);
         $result = new LdapResult('foo', $ldap);
 
         $this->examineSupportsResourceType($result, $args, $expect);

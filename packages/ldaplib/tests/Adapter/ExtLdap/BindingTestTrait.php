@@ -24,16 +24,46 @@ use Korowai\Lib\Ldap\Exception\LdapException;
  */
 trait BindingTestTrait
 {
+    use CreateLdapLinkMock;
+    use ExamineMethodWithBackendTriggerError;
+
     abstract public function createBindingInstance(
         LdapLinkInterface $ldapLink,
         bool $bound = false
     ) : BindingInterface;
+
+    private function examineMethodWithTriggerError(
+        string $method,
+        string $backendMethod,
+        array $args,
+        array $config,
+        array $expect
+    ) : void {
+        $ldap = $this->createLdapLinkMock('ldap link', ['isValid', 'errno']);
+        $bind = $this->createBindingInstance($ldap);
+
+        $this->examineMethodWithBackendTriggerError(
+            $bind,
+            $method,
+            $args,
+            $ldap,
+            $backendMethod,
+            $args,
+            $ldap,
+            $config,
+            $expect
+        );
+    }
 
     //
     //
     // TESTS
     //
     //
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // bind()
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public function prov__bind() : array
     {
@@ -58,7 +88,7 @@ trait BindingTestTrait
      */
     public function test__bind(array $args) : void
     {
-        $link = $this->createMock(LdapLinkInterface::class);
+        $link = $this->createLdapLinkMock();
 
         $link->expects($this->once())
              ->method('bind')
@@ -71,39 +101,17 @@ trait BindingTestTrait
         $this->assertTrue($bind->isBound());
     }
 
-    public function test__bind__whenLdapLinkTriggersLdapError() : void
+    public static function prov__bind__withTriggerError() : array
     {
-        $link = $this->createMock(LdapLinkInterface::class);
-        $bind = $this->createBindingInstance($link, true);
+        return static::feedMethodWithBackendTriggerError();
+    }
 
-        $link->expects($this->once())
-             ->method('isValid')
-             ->with()
-             ->willReturn(true);
-
-        $link->expects($this->once())
-             ->method('errno')
-             ->with()
-             ->willReturn(123);
-
-        $link->expects($this->once())
-             ->method('bind')
-             ->with()
-             ->will($this->returnCallback(function () {
-                 trigger_error("An LDAP error");
-                 return false;
-             }));
-
-        $this->expectException(LdapException::class);
-        $this->expectExceptionMessage("An LDAP error");
-        $this->expectExceptionCode(123);
-
-        try {
-            $bind->bind();
-        } catch (\Throwable $throwable) {
-            $this->assertFalse($bind->isBound());
-            throw $throwable;
-        }
+    /**
+     * @dataProvider prov__bind__withTriggerError
+     */
+    public function test__bind__withTriggerError(array $config, array $expect) : void
+    {
+        $this->examineMethodWithTriggerError('bind', 'bind', [], $config, $expect);
     }
 
     public function prov__bind__whenLdapLinkTriggersUnalteringLdapError() : array
@@ -125,7 +133,7 @@ trait BindingTestTrait
      */
     public function test__bind__whenLdapLinkTriggersUnalteringLdapError(int $errno, string $message) : void
     {
-        $link = $this->createMock(LdapLinkInterface::class);
+        $link = $this->createLdapLinkMock();
         $bind = $this->createBindingInstance($link, true);
 
         $link->expects($this->once())
@@ -158,44 +166,13 @@ trait BindingTestTrait
         }
     }
 
-    public function test__bind__whenLdapLinkTriggersNonLdapError() : void
-    {
-        $link = $this->createMock(LdapLinkInterface::class);
-        $bind = $this->createBindingInstance($link, true);
-
-        $link->expects($this->once())
-             ->method('isValid')
-             ->with()
-             ->willReturn(true);
-
-        $link->expects($this->once())
-             ->method('errno')
-             ->with()
-             ->willReturn(0);
-
-        $link->expects($this->once())
-             ->method('bind')
-             ->with()
-             ->will($this->returnCallback(function () {
-                 trigger_error("Non LDAP error");
-                 return false;
-             }));
-
-        $this->expectException(\ErrorException::class);
-        $this->expectExceptionMessage("Non LDAP error");
-        $this->expectExceptionCode(0);
-
-        try {
-            $bind->bind();
-        } catch (\Throwable $throwable) {
-            $this->assertTrue($bind->isBound());
-            throw $throwable;
-        }
-    }
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // unbind()
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public function test__unbind() : void
     {
-        $link = $this->createMock(LdapLinkInterface::class);
+        $link = $this->createLdapLinkMock();
 
         $bind = $this->createBindingInstance($link, true);
 
@@ -208,58 +185,17 @@ trait BindingTestTrait
         $this->assertFalse($bind->isBound());
     }
 
-    public function prov__unbind__whenLdapLinkTriggersError() : array
+    public static function prov__unbind__withTriggerError() : array
     {
-        return [
-            // #0
-            [
-                'class' => LdapException::class,
-                'errno' => 123,
-                'message' => 'An LDAP error',
-            ],
-            // #1
-            [
-                'class' => \ErrorException::class,
-                'errno' => 0,
-                'message' => 'A non-LDAP error',
-            ],
-        ];
+        return static::feedMethodWithBackendTriggerError();
     }
 
     /**
-     * @dataProvider prov__unbind__whenLdapLinkTriggersError
+     * @dataProvider prov__unbind__withTriggerError
      */
-    public function test__unbind__whenLdapLinkTriggersError(string $class, int $errno, string $message) : void
+    public function test__unbind__withTriggerError(array $config, array $expect):  void
     {
-        $link = $this->createMock(LdapLinkInterface::class);
-        $bind = $this->createBindingInstance($link, true);
-
-        $link->expects($this->once())
-             ->method('isValid')
-             ->with()
-             ->willReturn(true);
-        $link->expects($this->once())
-             ->method('errno')
-             ->with()
-             ->willReturn($errno);
-        $link->expects($this->once())
-             ->method('unbind')
-             ->with()
-             ->will($this->returnCallback(function () use ($message) {
-                 trigger_error($message);
-                 return false;
-             }));
-
-        $this->expectException($class);
-        $this->expectExceptionMessage($message);
-        $this->expectExceptionCode($errno);
-
-        try {
-            $bind->unbind();
-        } catch (\Throwable $throwable) {
-            $this->assertTrue($bind->isBound());
-            throw $throwable;
-        }
+        $this->examineMethodWithTriggerError('unbind', 'unbind', [], $config, $expect);
     }
 }
 

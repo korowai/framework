@@ -53,10 +53,10 @@ abstract class AbstractSearchQuery implements SearchQueryInterface
     public static function getDefaultOptions() : array
     {
         return [
-            'scope' => 'sub',
-            'attributes' => '*',
+            'attributes' => ['*'],
             'attrsOnly' => 0,
             'deref' => 'never',
+            'scope' => 'sub',
             'sizeLimit' => 0,
             'timeLimit' => 0,
         ];
@@ -66,7 +66,7 @@ abstract class AbstractSearchQuery implements SearchQueryInterface
      * Returns ``$base_dn`` provided to ``__construct()`` at creation time
      * @return string The ``$base_dn`` value provided to ``__construct()``
      */
-    public function getBaseDn()
+    final public function getBaseDn()
     {
         return $this->base_dn;
     }
@@ -75,7 +75,7 @@ abstract class AbstractSearchQuery implements SearchQueryInterface
      * Returns ``$filter`` provided to ``__construct()`` at creation time
      * @return string The ``$filter`` value provided to ``__construct()``
      */
-    public function getFilter()
+    final public function getFilter()
     {
         return $this->filter;
     }
@@ -88,7 +88,7 @@ abstract class AbstractSearchQuery implements SearchQueryInterface
      *
      * @return array Options used by this query
      */
-    public function getOptions() : array
+    final public function getOptions() : array
     {
         return $this->options;
     }
@@ -96,7 +96,7 @@ abstract class AbstractSearchQuery implements SearchQueryInterface
     /**
      * {@inheritdoc}
      */
-    public function getResult() : ResultInterface
+    final public function getResult() : ResultInterface
     {
         if (!isset($this->result)) {
             return $this->execute();
@@ -107,7 +107,7 @@ abstract class AbstractSearchQuery implements SearchQueryInterface
     /**
      * {@inheritdoc}
      */
-    public function execute() : ResultInterface
+    final public function execute() : ResultInterface
     {
         $this->result = $this->doExecuteQuery();
         return $this->result;
@@ -136,7 +136,7 @@ abstract class AbstractSearchQuery implements SearchQueryInterface
         $resolver->setNormalizer(
             'attributes',
             /** @psalm-param mixed $value */
-            function (Options $optins, $value) : array {
+            function (Options $options, $value) : array {
                 return is_array($value) ? $value : [$value];
             }
         );

@@ -49,10 +49,10 @@ final class SearchQuery extends AbstractSearchQuery implements LdapLinkWrapperIn
     {
         $options = $this->getOptions();
         $method = static::selectSearchMethod($options);
-        return $this->doExecuteQueryImpl($method, $options);
+        return $this->invokeQueryMethod($method, $options);
     }
 
-    private function doExecuteQueryImpl(string $method, array $options) : ResultInterface
+    private function invokeQueryMethod(string $method, array $options) : ResultInterface
     {
         $link = $this->getLdapLink();
         $ldapResult = with(new LdapLinkErrorHandler($link))(

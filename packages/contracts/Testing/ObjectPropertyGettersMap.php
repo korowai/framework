@@ -113,6 +113,14 @@ class ObjectPropertyGettersMap
             'result'                    => 'getResult',
         ],
 
+        \Korowai\Lib\Ldap\ConnectionParametersInterface::class => [
+            'host'                      => 'host',
+            'port'                      => 'port',
+            'encryption'                => 'encryption',
+            'uri'                       => 'uri',
+            'options'                   => 'options',
+        ],
+
         \Korowai\Lib\Ldap\EntryInterface::class => [
             'dn'                        => 'getDn',
             'attributes'                => 'getAttributes',

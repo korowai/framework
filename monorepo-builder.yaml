@@ -40,13 +40,18 @@ parameters:
                 'Korowai\Docs\Behat\':  "docs/sphinx/Behat/"
 
     directories_to_repositories:
+        packages/basiclib-interfaces: "git@github.com:korowai/basiclib-interfaces.git"
         packages/basiclib: "git@github.com:korowai/basiclib.git"
         packages/compatlib: "git@github.com:korowai/compatlib.git"
+        packages/contextlib-interfaces: "git@github.com:korowai/contextlib-interfaces.git"
         packages/contextlib: "git@github.com:korowai/contextlib.git"
         packages/contracts: "git@github.com:korowai/contracts.git"
-        packages/errorlib: "git@github.com:korowai/errorlib.git"
+        packages/errorlib-interfaces: "git@github.com:korowai/errorlib-interfaces.git"
+        packages/ldaplib-interfaces: "git@github.com:korowai/ldaplib-interfaces.git"
         packages/ldaplib: "git@github.com:korowai/ldaplib.git"
+        packages/ldiflib-interfaces: "git@github.com:korowai/ldiflib-interfaces.git"
         packages/ldiflib: "git@github.com:korowai/ldiflib.git"
+        packages/rfclib-interfaces: "git@github.com:korowai/rfclib-interfaces.git"
         packages/rfclib: "git@github.com:korowai/rfclib.git"
         packages/testing: "git@github.com:korowai/testing.git"
 

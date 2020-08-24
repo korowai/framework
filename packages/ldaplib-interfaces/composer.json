@@ -1,0 +1,36 @@
+{
+    "name": "korowai/ldaplib-interfaces",
+    "description": "PHP interfaces for korowai-ldaplib",
+    "type": "library",
+    "license": "MIT",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "authors": [
+        {
+            "name": "Paweł Tomulik",
+            "email": "ptomulik@meil.pw.edu.pl"
+        }
+    ],
+    "support": {
+      "issues": "https://github.com/korowai/framework/issues",
+      "source": "https://github.com/korowai/framework"
+    },
+    "require": {
+        "php": ">=7.4"
+    },
+    "autoload": {
+      "psr-4" : {
+        "Korowai\\Lib\\Ldap\\" : "src/"
+      },
+      "exclude-from-classmap": [
+        "/tests/",
+        "/Testing/"
+      ]
+    },
+    "autoload-dev": {
+      "psr-4" : {
+        "Korowai\\Tests\\Lib\\Ldap\\" : "tests/",
+        "Korowai\\Testing\\LdaplibInterfaces\\": "Testing/"
+      }
+    }
+}

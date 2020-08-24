@@ -10,126 +10,20 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Testing\Contracts;
+namespace Korowai\Testing\LdiflibInterfaces;
 
 /**
- * Defines getters map for properties of interfaces from korowai/contracts
- * package.
- *
+ * @todo Write documentation
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
 final class ObjectPropertyGettersMap
 {
     /**
-     * Object property getters per class for korowai/contracts package.
+     * Object property getters per class for korowai/ldiflib-interfaces package.
      *
      * @var array
      */
     private static $objectPropertyGettersMap = [
-        \Iterator::class => [
-            'current'                   => 'current',
-            'key'                       => 'key',
-            'valid'                     => 'valid',
-        ],
-
-        \IteratorAggregate::class => [
-            'iterator'                  => 'getIterator',
-        ],
-
-        \Korowai\Lib\Basic\SingletonInterface::class => [
-            'instance'                  => 'getInstance',
-        ],
-
-        \Korowai\Lib\Context\ContextFactoryInterface::class => [
-        ],
-
-        \Korowai\Lib\Context\ContextFactoryStackInterface::class => [
-            'top'                       => 'top',
-            'size'                      => 'size',
-        ],
-
-        \Korowai\Lib\Context\ContextManagerInterface::class => [
-        ],
-
-        \Korowai\Lib\Context\ExecutorInterface::class => [
-        ],
-
-        \Korowai\Lib\Error\ErrorHandlerInterface::class => [
-            'errorTypes'                => 'getErrorTypes',
-        ],
-
-        \Korowai\Lib\Ldap\Adapter\AdapterFactoryInterface::class => [
-        ],
-
-        \Korowai\Lib\Ldap\Adapter\AdapterInterface::class => [
-            'binding'                   => 'getBinding',
-            'entryManager'              => 'getEntryManager',
-        ],
-
-        \Korowai\Lib\Ldap\Adapter\BindingInterface::class => [
-            'isBound'                   => 'isBound',
-        ],
-
-        \Korowai\Lib\Ldap\Adapter\CompareQueryInterface::class => [
-            'result'                    => 'getResult',
-        ],
-
-        \Korowai\Lib\Ldap\Adapter\EntryManagerInterface::class => [
-        ],
-
-        \Korowai\Lib\Ldap\Adapter\ResultAttributeIteratorInterface::class => [
-        ],
-
-        \Korowai\Lib\Ldap\Adapter\ResultEntryInterface::class => [
-            'dn'                        => 'getDn',
-            'attributes'                => 'getAttributes',
-            'entry'                     => 'toEntry',
-            'attributeIterator'         => 'getAttributeIterator',
-        ],
-
-        \Korowai\Lib\Ldap\Adapter\ResultEntryIteratorInterface::class => [
-        ],
-
-        \Korowai\Lib\Ldap\Adapter\ResultInterface::class => [
-            'resultEntryIterator'       => 'getResultEntryIterator',
-            'resultReferenceIterator'   => 'getResultReferenceIterator',
-            'resultEntries'             => 'getResultEntries',
-            'resultReferences'          => 'getResultReferences',
-            'entries'                   => 'getEntries',
-        ],
-
-        \Korowai\Lib\Ldap\Adapter\ResultReferenceInterface::class => [
-            'referrals'                 => 'getReferrals',
-            'referralIterator'          => 'getReferralIterator',
-        ],
-
-        \Korowai\Lib\Ldap\Adapter\ResultReferenceIteratorInterface::class => [
-        ],
-
-        \Korowai\Lib\Ldap\Adapter\ResultReferralIteratorInterface::class => [
-        ],
-
-        \Korowai\Lib\Ldap\Adapter\SearchQueryInterface::class => [
-            'result'                    => 'getResult',
-        ],
-
-        \Korowai\Lib\Ldap\ConnectionParametersInterface::class => [
-            'host'                      => 'host',
-            'port'                      => 'port',
-            'encryption'                => 'encryption',
-            'uri'                       => 'uri',
-            'options'                   => 'options',
-        ],
-
-        \Korowai\Lib\Ldap\EntryInterface::class => [
-            'dn'                        => 'getDn',
-            'attributes'                => 'getAttributes',
-        ],
-
-        \Korowai\Lib\Ldap\LdapInterface::class => [
-            'adapter'                   => 'getAdapter',
-        ],
-
         \Korowai\Lib\Ldif\CursorInterface::class => [
         ],
 
@@ -328,29 +222,6 @@ final class ObjectPropertyGettersMap
             'sourceLine'                => 'getSourceLine',
             'sourceLineAndOffset'       => 'getSourceLineAndOffset',
             'sourceLineAndCharOffset'   => 'getSourceLineAndCharOffset',
-        ],
-
-
-        \Korowai\Lib\Rfc\RuleInterface::class => [
-            'toString'                  => '__toString',
-            'regexp'                    => 'regexp',
-            'captures'                  => 'captures',
-            'errorCaptures'             => 'errorCaptures',
-            'valueCaptures'             => 'valueCaptures',
-        ],
-
-        \Korowai\Lib\Rfc\StaticRuleSetInterface::class => [
-            'rules'                     => 'rules',
-        ],
-
-        \Throwable::class               => [
-            'message'                   => 'getMessage',
-            'code'                      => 'getCode',
-            'file'                      => 'getFile',
-            'line'                      => 'getLine',
-            'trace'                     => 'getTrace',
-            'traceAsString'             => 'getTraceAsString',
-            'previous'                  => 'getPrevious',
         ],
     ];
 

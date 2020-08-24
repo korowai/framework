@@ -18,14 +18,14 @@ namespace Korowai\Testing\Rfclib;
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class ObjectPropertyGettersMap
+final class ObjectPropertyGettersMap
 {
     /**
      * Object property getters per class for korowai/rfclib package.
      *
      * @var array
      */
-    protected static $rfclibObjectPropertyGettersMap = [
+    private static $objectPropertyGettersMap = [
         \Korowai\Lib\Rfc\AbstractRuleSet::class => [
             'classCaptures'         => 'getClassCaptures',
             'definedErrors'         => 'getDefinedErrors',
@@ -67,7 +67,7 @@ class ObjectPropertyGettersMap
      */
     public static function getObjectPropertyGettersMap() : array
     {
-        return self::$rfclibObjectPropertyGettersMap;
+        return self::$objectPropertyGettersMap;
     }
 }
 

@@ -1,0 +1,36 @@
+{
+    "name": "korowai/ldiflib-interfaces",
+    "description": "PHP interfaces for korowai-ldiflib",
+    "type": "library",
+    "license": "MIT",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "authors": [
+        {
+            "name": "Paweł Tomulik",
+            "email": "ptomulik@meil.pw.edu.pl"
+        }
+    ],
+    "support": {
+      "issues": "https://github.com/korowai/framework/issues",
+      "source": "https://github.com/korowai/framework"
+    },
+    "require": {
+        "php": ">=7.4"
+    },
+    "autoload": {
+      "psr-4" : {
+        "Korowai\\Lib\\Ldif\\" : "src/"
+      },
+      "exclude-from-classmap": [
+        "/tests/",
+        "/Testing/"
+      ]
+    },
+    "autoload-dev": {
+      "psr-4" : {
+        "Korowai\\Tests\\Lib\\Ldif\\" : "tests/",
+        "Korowai\\Testing\\LdiflibInterfaces\\": "Testing/"
+      }
+    }
+}

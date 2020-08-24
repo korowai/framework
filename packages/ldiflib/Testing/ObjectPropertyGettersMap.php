@@ -18,14 +18,14 @@ namespace Korowai\Testing\Ldiflib;
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class ObjectPropertyGettersMap
+final class ObjectPropertyGettersMap
 {
     /**
      * Object property getters per class for korowai/ldiflib package.
      *
      * @var array
      */
-    protected static $ldiflibObjectPropertyGettersMap = [
+    private static $objectPropertyGettersMap = [
         \Korowai\Lib\Ldif\Cursor::class => [
         ],
 
@@ -268,7 +268,7 @@ class ObjectPropertyGettersMap
      */
     public static function getObjectPropertyGettersMap() : array
     {
-        return self::$ldiflibObjectPropertyGettersMap;
+        return self::$objectPropertyGettersMap;
     }
 }
 

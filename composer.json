@@ -10,22 +10,34 @@
     },
     "autoload": {
         "exclude-from-classmap": [
+            "packages/basiclib-interfaces/Testing/",
+            "packages/basiclib-interfaces/tests/",
             "packages/basiclib/Testing/",
             "packages/basiclib/tests/",
             "packages/compatlib/Testing/",
             "packages/compatlib/tests/",
+            "packages/contextlib-interfaces/Testing/",
+            "packages/contextlib-interfaces/tests/",
             "packages/contextlib/Testing/",
             "packages/contextlib/tests/",
             "packages/contracts/Testing/",
             "packages/contracts/tests/",
+            "packages/errorlib-interfaces/Testing/",
+            "packages/errorlib-interfaces/tests/",
             "packages/errorlib/Testing/",
             "packages/errorlib/tests/",
+            "packages/ldaplib-interfaces/Testing/",
+            "packages/ldaplib-interfaces/tests/",
             "packages/ldaplib/Behat/",
             "packages/ldaplib/Resources/",
             "packages/ldaplib/Testing/",
             "packages/ldaplib/tests/",
+            "packages/ldiflib-interfaces/Testing/",
+            "packages/ldiflib-interfaces/tests/",
             "packages/ldiflib/Testing/",
             "packages/ldiflib/tests/",
+            "packages/rfclib-interfaces/Testing/",
+            "packages/rfclib-interfaces/tests/",
             "packages/rfclib/Testing/",
             "packages/rfclib/tests-nocov/",
             "packages/rfclib/tests/",
@@ -39,13 +51,31 @@
         ],
         "psr-4": {
             "Korowai\\Lib\\": "packages/contracts/src/Korowai/Lib/",
-            "Korowai\\Lib\\Basic\\": "packages/basiclib/src/",
+            "Korowai\\Lib\\Basic\\": [
+                "packages/basiclib-interfaces/src/",
+                "packages/basiclib/src/"
+            ],
             "Korowai\\Lib\\Compat\\": "packages/compatlib/src/",
-            "Korowai\\Lib\\Context\\": "packages/contextlib/src/",
-            "Korowai\\Lib\\Error\\": "packages/errorlib/src/",
-            "Korowai\\Lib\\Ldap\\": "packages/ldaplib/src/",
-            "Korowai\\Lib\\Ldif\\": "packages/ldiflib/src/",
-            "Korowai\\Lib\\Rfc\\": "packages/rfclib/src/"
+            "Korowai\\Lib\\Context\\": [
+                "packages/contextlib-interfaces/src/",
+                "packages/contextlib/src/"
+            ],
+            "Korowai\\Lib\\Error\\": [
+                "packages/errorlib-interfaces/src/",
+                "packages/errorlib/src/"
+            ],
+            "Korowai\\Lib\\Ldap\\": [
+                "packages/ldaplib-interfaces/src/",
+                "packages/ldaplib/src/"
+            ],
+            "Korowai\\Lib\\Ldif\\": [
+                "packages/ldiflib-interfaces/src/",
+                "packages/ldiflib/src/"
+            ],
+            "Korowai\\Lib\\Rfc\\": [
+                "packages/rfclib-interfaces/src/",
+                "packages/rfclib/src/"
+            ]
         }
     },
     "autoload-dev": {
@@ -53,35 +83,65 @@
             "Korowai\\Docs\\Behat\\": "docs/sphinx/Behat/",
             "Korowai\\Lib\\Ldap\\Behat\\": "packages/ldaplib/Behat/",
             "Korowai\\Testing\\": "packages/testing/Testing/",
+            "Korowai\\Testing\\BasiclibInterfaces\\": "packages/basiclib-interfaces/Testing/",
             "Korowai\\Testing\\Basiclib\\": "packages/basiclib/Testing/",
             "Korowai\\Testing\\Compatlib\\": "packages/compatlib/Testing/",
+            "Korowai\\Testing\\ContextlibInterfaces\\": "packages/contextlib-interfaces/Testing/",
             "Korowai\\Testing\\Contextlib\\": "packages/contextlib/Testing/",
             "Korowai\\Testing\\Contracts\\": "packages/contracts/Testing/",
+            "Korowai\\Testing\\ErrorlibInterfaces\\": "packages/errorlib-interfaces/Testing/",
             "Korowai\\Testing\\Errorlib\\": "packages/errorlib/Testing/",
+            "Korowai\\Testing\\LdaplibInterfaces\\": "packages/ldaplib-interfaces/Testing/",
             "Korowai\\Testing\\Ldaplib\\": "packages/ldaplib/Testing/",
+            "Korowai\\Testing\\LdiflibInterfaces\\": "packages/ldiflib-interfaces/Testing/",
             "Korowai\\Testing\\Ldiflib\\": "packages/ldiflib/Testing/",
+            "Korowai\\Testing\\RfclibInterfaces\\": "packages/rfclib-interfaces/Testing/",
             "Korowai\\Testing\\Rfclib\\": "packages/rfclib/Testing/",
             "Korowai\\TestsNocov\\Lib\\Rfc\\": "packages/rfclib/tests-nocov/",
             "Korowai\\Tests\\": "packages/contracts/tests/Korowai/",
-            "Korowai\\Tests\\Lib\\Basic\\": "packages/basiclib/tests/",
+            "Korowai\\Tests\\Lib\\Basic\\": [
+                "packages/basiclib-interfaces/tests/",
+                "packages/basiclib/tests/"
+            ],
             "Korowai\\Tests\\Lib\\Compat\\": "packages/compatlib/tests/",
-            "Korowai\\Tests\\Lib\\Context\\": "packages/contextlib/tests/",
-            "Korowai\\Tests\\Lib\\Error\\": "packages/errorlib/tests/",
-            "Korowai\\Tests\\Lib\\Ldap\\": "packages/ldaplib/tests/",
-            "Korowai\\Tests\\Lib\\Ldif\\": "packages/ldiflib/tests/",
-            "Korowai\\Tests\\Lib\\Rfc\\": "packages/rfclib/tests/",
+            "Korowai\\Tests\\Lib\\Context\\": [
+                "packages/contextlib-interfaces/tests/",
+                "packages/contextlib/tests/"
+            ],
+            "Korowai\\Tests\\Lib\\Error\\": [
+                "packages/errorlib-interfaces/tests/",
+                "packages/errorlib/tests/"
+            ],
+            "Korowai\\Tests\\Lib\\Ldap\\": [
+                "packages/ldaplib-interfaces/tests/",
+                "packages/ldaplib/tests/"
+            ],
+            "Korowai\\Tests\\Lib\\Ldif\\": [
+                "packages/ldiflib-interfaces/tests/",
+                "packages/ldiflib/tests/"
+            ],
+            "Korowai\\Tests\\Lib\\Rfc\\": [
+                "packages/rfclib-interfaces/tests/",
+                "packages/rfclib/tests/"
+            ],
             "Korowai\\Tests\\Testing\\": "packages/testing/tests/"
         }
     },
     "replace": {
         "korowai/basiclib": "self.version",
+        "korowai/basiclib-interfaces": "self.version",
         "korowai/compatlib": "self.version",
         "korowai/contextlib": "self.version",
+        "korowai/contextlib-interfaces": "self.version",
         "korowai/contracts": "self.version",
         "korowai/errorlib": "self.version",
+        "korowai/errorlib-interfaces": "self.version",
         "korowai/ldaplib": "self.version",
+        "korowai/ldaplib-interfaces": "self.version",
         "korowai/ldiflib": "self.version",
+        "korowai/ldiflib-interfaces": "self.version",
         "korowai/rfclib": "self.version",
+        "korowai/rfclib-interfaces": "self.version",
         "korowai/testing": "self.version"
     },
     "description": "Framework for Korowai project",

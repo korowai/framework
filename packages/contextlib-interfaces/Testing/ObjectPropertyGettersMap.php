@@ -10,24 +10,32 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Testing\Ldaplib;
+namespace Korowai\Testing\ContextlibInterfaces;
 
 /**
- * Defines getters map for properties of interfaces from korowai/ldaplib
- * package.
- *
+ * @todo Write documentation
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
 final class ObjectPropertyGettersMap
 {
     /**
-     * Object property getters per class for korowai/ldaplib package.
+     * Object property getters per class for korowai/contextlib-interfaces package.
      *
      * @var array
      */
     private static $objectPropertyGettersMap = [
-        \Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkWrapperInterface::class => [
-            'ldapLink' => 'getLdapLink'
+        \Korowai\Lib\Context\ContextFactoryInterface::class => [
+        ],
+
+        \Korowai\Lib\Context\ContextFactoryStackInterface::class => [
+            'top'                       => 'top',
+            'size'                      => 'size',
+        ],
+
+        \Korowai\Lib\Context\ContextManagerInterface::class => [
+        ],
+
+        \Korowai\Lib\Context\ExecutorInterface::class => [
         ],
     ];
 

@@ -10,24 +10,31 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Testing\Ldaplib;
+namespace Korowai\Testing\RfclibInterfaces;
 
 /**
- * Defines getters map for properties of interfaces from korowai/ldaplib
- * package.
+ * @todo Write documentation.
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
 final class ObjectPropertyGettersMap
 {
     /**
-     * Object property getters per class for korowai/ldaplib package.
+     * Object property getters per class for korowai/rfclib-interfaces package.
      *
      * @var array
      */
     private static $objectPropertyGettersMap = [
-        \Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkWrapperInterface::class => [
-            'ldapLink' => 'getLdapLink'
+        \Korowai\Lib\Rfc\RuleInterface::class => [
+            'toString'                  => '__toString',
+            'regexp'                    => 'regexp',
+            'captures'                  => 'captures',
+            'errorCaptures'             => 'errorCaptures',
+            'valueCaptures'             => 'valueCaptures',
+        ],
+
+        \Korowai\Lib\Rfc\StaticRuleSetInterface::class => [
+            'rules'                     => 'rules',
         ],
     ];
 

@@ -1,0 +1,36 @@
+{
+    "name": "korowai/errorlib-interfaces",
+    "description": "PHP interfaces for korowai-errorlib",
+    "type": "library",
+    "license": "MIT",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "authors": [
+        {
+            "name": "Paweł Tomulik",
+            "email": "ptomulik@meil.pw.edu.pl"
+        }
+    ],
+    "support": {
+      "issues": "https://github.com/korowai/framework/issues",
+      "source": "https://github.com/korowai/framework"
+    },
+    "require": {
+        "php": ">=7.4"
+    },
+    "autoload": {
+      "psr-4" : {
+        "Korowai\\Lib\\Error\\" : "src/"
+      },
+      "exclude-from-classmap": [
+        "/tests/",
+        "/Testing/"
+      ]
+    },
+    "autoload-dev": {
+      "psr-4" : {
+        "Korowai\\Tests\\Lib\\Error\\" : "tests/",
+        "Korowai\\Testing\\ErrorlibInterfaces\\": "Testing/"
+      }
+    }
+}

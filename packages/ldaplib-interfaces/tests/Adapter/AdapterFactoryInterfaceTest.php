@@ -73,7 +73,7 @@ class AdapterFactoryInterfaceTest extends TestCase
         $this->assertSame($dummy->createAdapter, $dummy->createAdapter(''));
     }
 
-    public function test__createAdapter__withTypeError()
+    public function test__createAdapter__withRetTypeError()
     {
         $dummy = $this->createDummyInstance();
         $dummy->createAdapter = null;

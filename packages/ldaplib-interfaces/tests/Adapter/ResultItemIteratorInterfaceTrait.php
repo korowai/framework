@@ -13,18 +13,32 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Ldap\Adapter;
 
 use Korowai\Testing\Dummies\PhpIteratorTrait;
-use Korowai\Lib\Ldap\Adapter\ResultEntryInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-trait ResultEntryIteratorInterfaceTrait
+trait ResultItemIteratorInterfaceTrait
 {
-    use ResultItemIteratorInterfaceTrait;
+    use PhpIteratorTrait;
 
-    public function current() : ?ResultEntryInterface
+    public function key() : ?int
     {
-        return parent::current();
+        return parent::key();
+    }
+
+    public function next() : void
+    {
+        parent::next();
+    }
+
+    public function rewind() : void
+    {
+        parent::rewind();
+    }
+
+    public function valid() : bool
+    {
+        return parent::valid();
     }
 }
 

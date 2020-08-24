@@ -47,20 +47,12 @@ class EntryManagerInterfaceTest extends TestCase
 
         $entry = $this->createStub(EntryInterface::class);
 
-        $dummy->add = false;
-        $this->assertSame($dummy->add, $dummy->add($entry));
-
-        $dummy->add = '';
-        $this->assertSame($dummy->add, $dummy->add($entry));
-
-        $dummy->add = null;
-        $this->assertSame($dummy->add, $dummy->add($entry));
+        $this->assertNull($dummy->add($entry));
     }
 
     public function test__add__withArgTypeError()
     {
         $dummy = $this->createDummyInstance();
-        $dummy->add = null;
 
         $this->expectException(\TypeError::class);
         $this->expectExceptionMessage(EntryInterface::class);
@@ -73,20 +65,12 @@ class EntryManagerInterfaceTest extends TestCase
 
         $entry = $this->createStub(EntryInterface::class);
 
-        $dummy->update = false;
-        $this->assertSame($dummy->update, $dummy->update($entry));
-
-        $dummy->update = '';
-        $this->assertSame($dummy->update, $dummy->update($entry));
-
-        $dummy->update = null;
-        $this->assertSame($dummy->update, $dummy->update($entry));
+        $this->assertNull($dummy->update($entry));
     }
 
     public function test__update__withArgTypeError()
     {
         $dummy = $this->createDummyInstance();
-        $dummy->update = null;
 
         $this->expectException(\TypeError::class);
         $this->expectExceptionMessage(EntryInterface::class);
@@ -99,16 +83,7 @@ class EntryManagerInterfaceTest extends TestCase
 
         $entry = $this->createStub(EntryInterface::class);
 
-        $dummy->rename = false;
-        $this->assertSame($dummy->rename, $dummy->rename($entry, '', false));
-
-        $dummy->rename = '';
-        $this->assertSame($dummy->rename, $dummy->rename($entry, '', false));
-
-        $dummy->rename = null;
-        $this->assertSame($dummy->rename, $dummy->rename($entry, '', false));
-
-        $this->assertSame($dummy->rename, $dummy->rename($entry, ''));
+        $this->assertNull($dummy->rename($entry, '', false));
     }
 
     public function rename__withArgTypeError__cases()
@@ -127,7 +102,6 @@ class EntryManagerInterfaceTest extends TestCase
     public function test__rename__withArgTypeError(array $args, string $message)
     {
         $dummy = $this->createDummyInstance();
-        $dummy->rename = null;
 
         $this->expectException(\TypeError::class);
         $this->expectExceptionMessage($message);
@@ -140,20 +114,12 @@ class EntryManagerInterfaceTest extends TestCase
 
         $entry = $this->createStub(EntryInterface::class);
 
-        $dummy->delete = false;
-        $this->assertSame($dummy->delete, $dummy->delete($entry));
-
-        $dummy->delete = '';
-        $this->assertSame($dummy->delete, $dummy->delete($entry));
-
-        $dummy->delete = null;
-        $this->assertSame($dummy->delete, $dummy->delete($entry));
+        $this->assertNull($dummy->delete($entry));
     }
 
     public function test__delete__withArgTypeError()
     {
         $dummy = $this->createDummyInstance();
-        $dummy->delete = null;
 
         $this->expectException(\TypeError::class);
         $this->expectExceptionMessage(EntryInterface::class);

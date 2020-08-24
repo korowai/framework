@@ -51,7 +51,28 @@ class TestCaseTest extends TestCase
 
     public function test__objectPropertyGettersMap()
     {
-        $this->assertSame([], TestCase::objectPropertyGettersMap());
+        $expect = [
+            \Iterator::class => [
+                'current'                   => 'current',
+                'key'                       => 'key',
+                'valid'                     => 'valid',
+            ],
+
+            \IteratorAggregate::class => [
+                'iterator'                  => 'getIterator'
+            ],
+
+            \Throwable::class => [
+                'message'                   => 'getMessage',
+                'code'                      => 'getCode',
+                'file'                      => 'getFile',
+                'line'                      => 'getLine',
+                'trace'                     => 'getTrace',
+                'traceAsString'             => 'getTraceAsString',
+                'previous'                  => 'getPrevious',
+            ],
+        ];
+        $this->assertSame($expect, TestCase::objectPropertyGettersMap());
     }
 }
 

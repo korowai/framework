@@ -18,7 +18,7 @@ use Korowai\Testing\Dummies\PhpIteratorTrait;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class PhpIteratorTest extends TestCase
+final class PhpIteratorTest extends TestCase
 {
     public static function createDummyInstance()
     {
@@ -35,13 +35,12 @@ class PhpIteratorTest extends TestCase
 
     public function test__objectPropertyGettersMap()
     {
-//        $expect = [
-//            'current'   => 'current',
-//            'key'       => 'key',
-//            'valid'     => 'valid',
-//        ];
-//        $this->assertObjectPropertyGetters($expect, \Iterator::class);
-        $this->markTestIncomplete('test not implemented yet!');
+        $expect = [
+            'current'   => 'current',
+            'key'       => 'key',
+            'valid'     => 'valid',
+        ];
+        $this->assertObjectPropertyGetters($expect, \Iterator::class);
     }
 
     public function test__current()

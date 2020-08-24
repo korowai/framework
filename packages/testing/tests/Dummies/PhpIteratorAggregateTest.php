@@ -35,11 +35,10 @@ class PhpIteratorAggregateTest extends TestCase
 
     public function test__objectPropertyGettersMap()
     {
-//        $expect = [
-//            'iterator'  => 'getIterator',
-//        ];
-//        $this->assertObjectPropertyGetters($expect, \IteratorAggregate::class);
-        $this->markTestIncomplete('test not implemented yet!');
+        $expect = [
+            'iterator'  => 'getIterator',
+        ];
+        $this->assertObjectPropertyGetters($expect, \IteratorAggregate::class);
     }
 
     public function test__getIterator()

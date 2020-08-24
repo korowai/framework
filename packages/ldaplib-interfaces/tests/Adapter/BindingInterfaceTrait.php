@@ -26,12 +26,12 @@ trait BindingInterfaceTrait
         return $this->isBound;
     }
 
-    public function bind(string $dn = null, string $password = null)
+    public function bind(string $dn = null, string $password = null) : bool
     {
         return $this->bind;
     }
 
-    public function unbind()
+    public function unbind() : bool
     {
         return $this->unbind;
     }

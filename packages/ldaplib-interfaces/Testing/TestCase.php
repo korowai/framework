@@ -19,6 +19,8 @@ namespace Korowai\Testing\LdaplibInterfaces;
  */
 abstract class TestCase extends \Korowai\Testing\TestCase
 {
+    use \Korowai\Testing\Assertions\ObjectPropertyGettersAssertions;
+
     /**
      * {@inheritdoc}
      */
@@ -28,18 +30,6 @@ abstract class TestCase extends \Korowai\Testing\TestCase
             parent::objectPropertyGettersMap(),
             ObjectPropertyGettersMap::getObjectPropertyGettersMap()
         );
-    }
-
-    // FIXME: shouldn't it be removed?
-    public static function assertObjectPropertyGetters(array $expect, string $class, string $message = '')
-    {
-        $getters = static::objectPropertyGettersMap();
-        if (empty($message)) {
-            $message = 'Failed asserting that '.static::class.'::objectPropertyGettersMap() '.
-                       'has expected entry for \''.$class.'\'.';
-        }
-        static::assertArrayHasKey($class, $getters, $message);
-        static::assertSame($expect, $getters[$class], $message);
     }
 }
 

@@ -14,6 +14,7 @@ namespace Korowai\Testing;
 
 use Korowai\Testing\Assertions\ClassAssertions;
 use Korowai\Testing\Assertions\ObjectPropertiesAssertions;
+use Korowai\Testing\Assertions\ObjectPropertyGettersAssertions;
 use Korowai\Testing\Assertions\PregAssertions;
 use Korowai\Testing\Traits\ObjectPropertiesUtils;
 use Korowai\Testing\Traits\PregUtils;
@@ -25,6 +26,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
 {
     use ClassAssertions;
     use ObjectPropertiesAssertions;
+    use ObjectPropertyGettersAssertions;
     use PregAssertions;
     use ObjectPropertiesUtils;
     use PregUtils;
@@ -38,7 +40,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
      */
     public static function objectPropertyGettersMap() : array
     {
-        return [];
+        return ObjectPropertyGettersMap::getObjectPropertyGettersMap();
     }
 }
 

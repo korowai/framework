@@ -19,13 +19,10 @@ use Korowai\Lib\Ldap\Adapter\AdapterInterface;
  */
 trait AdapterFactoryInterfaceTrait
 {
-    public $configure = null;
     public $createAdapter = null;
 
     public function configure(array $config) : void
     {
-        // FIXME: a void funcion must not return a value!
-        return $this->configure;
     }
 
     public function createAdapter() : AdapterInterface

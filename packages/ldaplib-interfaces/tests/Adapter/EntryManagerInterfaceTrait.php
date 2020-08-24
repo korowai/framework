@@ -19,29 +19,20 @@ use Korowai\Lib\Ldap\EntryInterface;
  */
 trait EntryManagerInterfaceTrait
 {
-    public $add = null;
-    public $update = null;
-    public $rename = null;
-    public $delete = null;
-
-    public function add(EntryInterface $entry)
+    public function add(EntryInterface $entry) : void
     {
-        return $this->add;
     }
 
-    public function update(EntryInterface $entry)
+    public function update(EntryInterface $entry) : void
     {
-        return $this->update;
     }
 
-    public function rename(EntryInterface $entry, string $newRdn, bool $deleteOldRdn = true)
+    public function rename(EntryInterface $entry, string $newRdn, bool $deleteOldRdn = true) : void
     {
-        return $this->rename;
     }
 
-    public function delete(EntryInterface $entry)
+    public function delete(EntryInterface $entry) : void
     {
-        return $this->delete;
     }
 }
 

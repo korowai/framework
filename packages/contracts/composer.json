@@ -1,7 +1,7 @@
 {
     "name": "korowai/contracts",
     "description": "PHP interfaces defined by korowai-framework",
-    "type": "library",
+    "type": "metapackage",
     "license": "MIT",
     "minimum-stability": "dev",
     "prefer-stable": true,
@@ -16,21 +16,12 @@
       "source": "https://github.com/korowai/framework"
     },
     "require": {
-        "php": ">=7.4"
-    },
-    "autoload": {
-      "psr-4" : {
-        "Korowai\\Lib\\" : "src/Korowai/Lib/"
-      },
-      "exclude-from-classmap": [
-        "/tests/",
-        "/Testing/"
-      ]
-    },
-    "autoload-dev": {
-      "psr-4" : {
-        "Korowai\\Tests\\" : "tests/Korowai/",
-        "Korowai\\Testing\\Contracts\\": "Testing/"
-      }
+        "php": ">=7.4",
+        "korowai/basiclib-interfaces": "*",
+        "korowai/contextlib-interfaces": "*",
+        "korowai/errorlib-interfaces": "*",
+        "korowai/ldaplib-interfaces": "*",
+        "korowai/ldiflib-interfaces": "*",
+        "korowai/rfclib-interfaces": "*"
     }
 }

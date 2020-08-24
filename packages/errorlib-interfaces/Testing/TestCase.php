@@ -29,18 +29,6 @@ abstract class TestCase extends \Korowai\Testing\TestCase
             ObjectPropertyGettersMap::getObjectPropertyGettersMap()
         );
     }
-
-    // FIXME: remove it?
-    public static function assertObjectPropertyGetters(array $expect, string $class, string $message = '')
-    {
-        $getters = static::objectPropertyGettersMap();
-        if (empty($message)) {
-            $message = 'Failed asserting that '.static::class.'::objectPropertyGettersMap() '.
-                       'has expected entry for \''.$class.'\'.';
-        }
-        static::assertArrayHasKey($class, $getters, $message);
-        static::assertSame($expect, $getters[$class], $message);
-    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

@@ -14,14 +14,14 @@ namespace Korowai\Tests\Testing\Assertions;
 
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\ExpectationFailedException;
-use Korowai\Testing\Assertions\PregAssertions;
+use Korowai\Testing\Assertions\PregAssertionsTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class PregAssertionsTest extends TestCase
+class PregAssertionsTraitTest extends TestCase
 {
-    use PregAssertions;
+    use PregAssertionsTrait;
 
     public function hasPregCaptures__success__cases()
     {

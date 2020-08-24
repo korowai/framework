@@ -14,14 +14,14 @@ namespace Korowai\Tests\Testing\Traits;
 
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\ExpectationFailedException;
-use Korowai\Testing\Traits\PregUtils;
+use Korowai\Testing\Traits\PregUtilsTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class PregUtilsTest extends TestCase
+class PregUtilsTraitTest extends TestCase
 {
-    use PregUtils;
+    use PregUtilsTrait;
 
     public static function pregTupleKeysAt__cases()
     {

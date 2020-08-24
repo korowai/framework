@@ -14,7 +14,7 @@ namespace Korowai\Tests\Testing\Assertions;
 
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\ExpectationFailedException;
-use Korowai\Testing\Assertions\ClassAssertions;
+use Korowai\Testing\Assertions\ClassAssertionsTrait;
 
 use Korowai\Testing\Examples\ExampleTrait;
 use Korowai\Testing\Examples\ExampleTraitUsingTrait;
@@ -24,9 +24,9 @@ use Korowai\Testing\Examples\ExampleClassNotUsingTrait;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class ClassAssertionsTest extends TestCase
+class ClassAssertionsTraitTest extends TestCase
 {
-    use ClassAssertions;
+    use ClassAssertionsTrait;
 
     public function test__assertImplementsInterface__success()
     {
@@ -290,8 +290,8 @@ class ClassAssertionsTest extends TestCase
                 ['assertDeclaresMethod', self::class],
                 "",
             ],
-            "('assertDeclaresMethod', ClassAssertions::class)" => [
-                ['assertDeclaresMethod', ClassAssertions::class],
+            "('assertDeclaresMethod', ClassAssertionsTrait::class)" => [
+                ['assertDeclaresMethod', ClassAssertionsTrait::class],
                 "",
             ],
         ];
@@ -308,9 +308,9 @@ class ClassAssertionsTest extends TestCase
                 ['inexistent', $this],
                 "Failed asserting that class ".self::class." declares method inexistent()",
             ],
-            "('inexistent', ClassAssertions::class)" => [
-                ['inexistent', ClassAssertions::class],
-                "Failed asserting that trait ".ClassAssertions::class." declares method inexistent()",
+            "('inexistent', ClassAssertionsTrait::class)" => [
+                ['inexistent', ClassAssertionsTrait::class],
+                "Failed asserting that trait ".ClassAssertionsTrait::class." declares method inexistent()",
             ],
             "(linexistent', \Throwable::class)" => [
                 ['inexistent', \Throwable::class],

@@ -14,7 +14,7 @@ namespace Korowai\Tests\Testing\Traits;
 
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\ExpectationFailedException;
-use Korowai\Testing\Traits\ObjectPropertiesUtils;
+use Korowai\Testing\Traits\ObjectPropertiesUtilsTrait;
 use Korowai\Testing\Assertions\ObjectPropertiesAssertions;
 use Korowai\Testing\Examples\ExampleFooInterface;
 use Korowai\Testing\Examples\ExampleBarInterface;
@@ -26,9 +26,9 @@ use Korowai\Testing\Examples\ExampleQuxTrait;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class ObjectPropertiesUtilsTest extends TestCase
+class ObjectPropertiesUtilsTraitTest extends TestCase
 {
-    use ObjectPropertiesUtils;
+    use ObjectPropertiesUtilsTrait;
 
     private $foo;
 

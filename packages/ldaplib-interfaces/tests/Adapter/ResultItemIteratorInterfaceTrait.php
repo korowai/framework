@@ -19,26 +19,25 @@ use Korowai\Testing\Dummies\PhpIteratorTrait;
  */
 trait ResultItemIteratorInterfaceTrait
 {
-    use PhpIteratorTrait;
+    public $key = null;
+    public $valid = null;
 
     public function key() : ?int
     {
-        return parent::key();
+        return $this->key;
     }
 
     public function next() : void
     {
-        parent::next();
     }
 
     public function rewind() : void
     {
-        parent::rewind();
     }
 
     public function valid() : bool
     {
-        return parent::valid();
+        return $this->valid;
     }
 }
 

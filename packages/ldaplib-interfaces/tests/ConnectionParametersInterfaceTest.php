@@ -46,6 +46,13 @@ class ConnectionParametersInterfaceTest extends TestCase
         $this->assertObjectPropertyGetters($expect, ConnectionParametersInterface::class);
     }
 
+    public function test__constants()
+    {
+        $this->assertSame('none', ConnectionParametersInterface::ENC_NONE);
+        $this->assertSame('ssl', ConnectionParametersInterface::ENC_SSL);
+        $this->assertSame('tls', ConnectionParametersInterface::ENC_TLS);
+    }
+
     public function test__host()
     {
         $dummy = $this->createDummyInstance();

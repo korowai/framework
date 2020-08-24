@@ -64,6 +64,9 @@ final class ObjectPropertyGettersMap
             'entries'                   => 'getEntries',
         ],
 
+        \Korowai\Lib\Ldap\Adapter\ResultItemIteratorInterface::class => [
+        ],
+
         \Korowai\Lib\Ldap\Adapter\ResultReferenceInterface::class => [
             'referrals'                 => 'getReferrals',
             'referralIterator'          => 'getReferralIterator',

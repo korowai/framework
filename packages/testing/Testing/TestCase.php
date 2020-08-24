@@ -12,24 +12,24 @@ declare(strict_types=1);
 
 namespace Korowai\Testing;
 
-use Korowai\Testing\Assertions\ClassAssertions;
-use Korowai\Testing\Assertions\ObjectPropertiesAssertions;
-use Korowai\Testing\Assertions\ObjectPropertyGettersAssertions;
-use Korowai\Testing\Assertions\PregAssertions;
-use Korowai\Testing\Traits\ObjectPropertiesUtils;
-use Korowai\Testing\Traits\PregUtils;
+use Korowai\Testing\Assertions\ClassAssertionsTrait;
+use Korowai\Testing\Assertions\ObjectPropertiesAssertionsTrait;
+use Korowai\Testing\Assertions\ObjectPropertyGettersAssertionsTrait;
+use Korowai\Testing\Assertions\PregAssertionsTrait;
+use Korowai\Testing\Traits\ObjectPropertiesUtilsTrait;
+use Korowai\Testing\Traits\PregUtilsTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
 abstract class TestCase extends \PHPUnit\Framework\TestCase
 {
-    use ClassAssertions;
-    use ObjectPropertiesAssertions;
-    use ObjectPropertyGettersAssertions;
-    use PregAssertions;
-    use ObjectPropertiesUtils;
-    use PregUtils;
+    use ClassAssertionsTrait;
+    use ObjectPropertiesAssertionsTrait;
+    use ObjectPropertyGettersAssertionsTrait;
+    use PregAssertionsTrait;
+    use ObjectPropertiesUtilsTrait;
+    use PregUtilsTrait;
 
     /**
      * Returns a key-value array which maps class names onto arrays of property

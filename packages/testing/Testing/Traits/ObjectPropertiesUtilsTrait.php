@@ -17,7 +17,7 @@ namespace Korowai\Testing\Traits;
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-trait ObjectPropertiesUtils
+trait ObjectPropertiesUtilsTrait
 {
     /**
      * Returns a key-value array which maps class names onto arrays of property

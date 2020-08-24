@@ -17,7 +17,7 @@ namespace Korowai\Testing\Traits;
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-trait PregUtils
+trait PregUtilsTrait
 {
     /**
      * Returns keys of *$array* at given *$positions*.

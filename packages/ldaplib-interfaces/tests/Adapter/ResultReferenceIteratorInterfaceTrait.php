@@ -12,14 +12,21 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldap\Adapter;
 
-use Korowai\Testing\Dummies\PhpIteratorTrait;
+use Korowai\Lib\Ldap\Adapter\ResultReferenceInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
 trait ResultReferenceIteratorInterfaceTrait
 {
-    use PhpIteratorTrait;
+    use ResultItemIteratorInterfaceTrait;
+
+    public $current;
+
+    public function current() : ?ResultReferenceInterface
+    {
+        return $this->current;
+    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

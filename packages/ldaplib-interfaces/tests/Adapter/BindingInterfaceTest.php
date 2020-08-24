@@ -28,13 +28,13 @@ class BindingInterfaceTest extends TestCase
         };
     }
 
-    public function test__dummyImplementation()
+    public function test__dummyImplementation() : void
     {
         $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(BindingInterface::class, $dummy);
     }
 
-    public function test__objectPropertyGettersMap()
+    public function test__objectPropertyGettersMap() : void
     {
         $expect = [
             'isBound'   => 'isBound',
@@ -42,7 +42,7 @@ class BindingInterfaceTest extends TestCase
         $this->assertObjectPropertyGetters($expect, BindingInterface::class);
     }
 
-    public function test__isBound()
+    public function test__isBound() : void
     {
         $dummy = $this->createDummyInstance();
 
@@ -50,7 +50,7 @@ class BindingInterfaceTest extends TestCase
         $this->assertSame($dummy->isBound, $dummy->isBound());
     }
 
-    public function test__isBound__withRetTypeError()
+    public function test__isBound__withRetTypeError() : void
     {
         $dummy = $this->createDummyInstance();
         $dummy->isBound = null;
@@ -60,22 +60,12 @@ class BindingInterfaceTest extends TestCase
         $dummy->isBound();
     }
 
-    public function test__bind()
+    public function test__bind() : void
     {
         $dummy = $this->createDummyInstance();
 
-        $dummy->bind = false;
+        $dummy->bind = true;
         $this->assertSame($dummy->bind, $dummy->bind('', ''));
-
-        $dummy->bind = '';
-        $this->assertSame($dummy->bind, $dummy->bind('', ''));
-
-        $dummy->bind = null;
-        $this->assertSame($dummy->bind, $dummy->bind());
-        $this->assertSame($dummy->bind, $dummy->bind(''));
-        $this->assertSame($dummy->bind, $dummy->bind('', ''));
-        $this->assertSame($dummy->bind, $dummy->bind(null));
-        $this->assertSame($dummy->bind, $dummy->bind(null, null));
     }
 
     public static function bind__withArgTypeError__cases()
@@ -90,7 +80,7 @@ class BindingInterfaceTest extends TestCase
     /**
      * @dataProvider bind__withArgTypeError__cases
      */
-    public function test__bind__withArgTypeError(array $args, string $message)
+    public function test__bind__withArgTypeError(array $args, string $message) : void
     {
         $dummy = $this->createDummyInstance();
         $dummy->bind = null;
@@ -100,18 +90,34 @@ class BindingInterfaceTest extends TestCase
         $dummy->bind(...$args);
     }
 
-    public function test__unbind()
+    public function test__bind__withRetTypeError() : void
+    {
+        $dummy = $this->createDummyInstance();
+        $dummy->bind = null;
+
+        $this->expectException(\TypeError::class);
+        $this->expectExceptionMessage(\bool::class);
+
+        $dummy->bind();
+    }
+
+    public function test__unbind() : void
     {
         $dummy = $this->createDummyInstance();
 
-        $dummy->unbind = false;
+        $dummy->unbind = true;
         $this->assertSame($dummy->unbind, $dummy->unbind());
+    }
 
-        $dummy->unbind = '';
-        $this->assertSame($dummy->unbind, $dummy->unbind());
-
+    public function test__unbind__withRetTypeError() : void
+    {
+        $dummy = $this->createDummyInstance();
         $dummy->unbind = null;
-        $this->assertSame($dummy->unbind, $dummy->unbind());
+
+        $this->expectException(\TypeError::class);
+        $this->expectExceptionMessage(\bool::class);
+
+        $dummy->unbind();
     }
 }
 

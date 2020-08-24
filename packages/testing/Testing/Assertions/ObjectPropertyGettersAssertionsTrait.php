@@ -17,7 +17,7 @@ use PHPUnit\Framework\ExpectationFailedException;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-trait ObjectPropertyGettersAssertions
+trait ObjectPropertyGettersAssertionsTrait
 {
     /**
      * Asserts that an array has a specified key.

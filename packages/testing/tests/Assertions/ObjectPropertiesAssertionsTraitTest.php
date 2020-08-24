@@ -14,14 +14,14 @@ namespace Korowai\Tests\Testing\Assertions;
 
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\ExpectationFailedException;
-use Korowai\Testing\Assertions\ObjectPropertiesAssertions;
+use Korowai\Testing\Assertions\ObjectPropertiesAssertionsTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class ObjectPropertiesAssertionsTest extends TestCase
+class ObjectPropertiesAssertionsTraitTest extends TestCase
 {
-    use ObjectPropertiesAssertions;
+    use ObjectPropertiesAssertionsTrait;
 
     // Required by the trait.
     public static function getObjectPropertyGetters($objectOfClass) : array

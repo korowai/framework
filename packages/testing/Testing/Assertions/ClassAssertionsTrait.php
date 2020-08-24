@@ -23,7 +23,7 @@ use PHPUnit\Framework\ExpectationFailedException;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-trait ClassAssertions
+trait ClassAssertionsTrait
 {
     abstract public static function assertThat($value, Constraint $constraint, string $message = '') : void;
 

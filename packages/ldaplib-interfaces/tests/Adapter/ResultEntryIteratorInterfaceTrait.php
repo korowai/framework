@@ -12,7 +12,6 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldap\Adapter;
 
-use Korowai\Testing\Dummies\PhpIteratorTrait;
 use Korowai\Lib\Ldap\Adapter\ResultEntryInterface;
 
 /**
@@ -22,9 +21,11 @@ trait ResultEntryIteratorInterfaceTrait
 {
     use ResultItemIteratorInterfaceTrait;
 
+    public $current;
+
     public function current() : ?ResultEntryInterface
     {
-        return parent::current();
+        return $this->current;
     }
 }
 

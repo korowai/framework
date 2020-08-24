@@ -13,40 +13,40 @@ declare(strict_types=1);
 namespace Korowai\Tests\Testing;
 
 use Korowai\Testing\TestCase;
-use Korowai\Testing\Assertions\ClassAssertions;
-use Korowai\Testing\Assertions\ObjectPropertiesAssertions;
-use Korowai\Testing\Assertions\PregAssertions;
-use Korowai\Testing\Traits\ObjectPropertiesUtils;
-use Korowai\Testing\Traits\PregUtils;
+use Korowai\Testing\Assertions\ClassAssertionsTrait;
+use Korowai\Testing\Assertions\ObjectPropertiesAssertionsTrait;
+use Korowai\Testing\Assertions\PregAssertionsTrait;
+use Korowai\Testing\Traits\ObjectPropertiesUtilsTrait;
+use Korowai\Testing\Traits\PregUtilsTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
 class TestCaseTest extends TestCase
 {
-    public function test__uses__ClassAssertions()
+    public function test__uses__ClassAssertionsTrait()
     {
-        $this->assertUsesTrait(ClassAssertions::class, TestCase::class);
+        $this->assertUsesTrait(ClassAssertionsTrait::class, TestCase::class);
     }
 
-    public function test__uses__ObjectPropertiesAssertions()
+    public function test__uses__ObjectPropertiesAssertionsTrait()
     {
-        $this->assertUsesTrait(ObjectPropertiesAssertions::class, TestCase::class);
+        $this->assertUsesTrait(ObjectPropertiesAssertionsTrait::class, TestCase::class);
     }
 
-    public function test__uses__PregAssertions()
+    public function test__uses__PregAssertionsTrait()
     {
-        $this->assertUsesTrait(PregAssertions::class, TestCase::class);
+        $this->assertUsesTrait(PregAssertionsTrait::class, TestCase::class);
     }
 
-    public function test__uses__ObjectPropertiesUtils()
+    public function test__uses__ObjectPropertiesUtilsTrait()
     {
-        $this->assertUsesTrait(ObjectPropertiesUtils::class, TestCase::class);
+        $this->assertUsesTrait(ObjectPropertiesUtilsTrait::class, TestCase::class);
     }
 
-    public function test__uses__PregUtils()
+    public function test__uses__PregUtilsTrait()
     {
-        $this->assertUsesTrait(PregUtils::class, TestCase::class);
+        $this->assertUsesTrait(PregUtilsTrait::class, TestCase::class);
     }
 
     public function test__objectPropertyGettersMap()

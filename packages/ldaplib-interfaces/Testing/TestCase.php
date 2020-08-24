@@ -19,8 +19,6 @@ namespace Korowai\Testing\LdaplibInterfaces;
  */
 abstract class TestCase extends \Korowai\Testing\TestCase
 {
-    use \Korowai\Testing\Assertions\ObjectPropertyGettersAssertions;
-
     /**
      * {@inheritdoc}
      */

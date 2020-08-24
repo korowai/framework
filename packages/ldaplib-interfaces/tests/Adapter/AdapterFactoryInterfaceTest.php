@@ -45,14 +45,7 @@ class AdapterFactoryInterfaceTest extends TestCase
     {
         $dummy = $this->createDummyInstance();
 
-        $dummy->configure = '';
-        $this->assertSame($dummy->configure, $dummy->configure([]));
-
-        $dummy->configure = 0;
-        $this->assertSame($dummy->configure, $dummy->configure([]));
-
-        $dummy->configure = null;
-        $this->assertSame($dummy->configure, $dummy->configure([]));
+        $this->assertNull($dummy->configure([]));
     }
 
     public function test__configure__withArgTypeError()

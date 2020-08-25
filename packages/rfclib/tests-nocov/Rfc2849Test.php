@@ -1769,9 +1769,9 @@ class Rfc2849Test extends TestCase
         ];
         $inheritedCases = [];
         foreach (static::ATTRIBUTE_DESCRIPTION__cases() as $attr) {
-            [$_0a] = self::pregTupleKeys($attr, [0]);
+            [$_0a] = self::pregTupleKeysAt($attr, [0]);
             foreach (static::VALUE_SPEC__cases() as $value) {
-                [$_0v] = self::pregTupleKeys($value, [0]);
+                [$_0v] = self::pregTupleKeysAt($value, [0]);
                 $joint = $attr[$_0a].$value[$_0v];
                 $inheritedCases[$joint] = static::joinPregTuples([$attr, $value], [
                     'mergeMain' => [$joint, 0],

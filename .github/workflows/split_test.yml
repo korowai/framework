@@ -27,7 +27,7 @@ jobs:
 ##          - ldiflib-interfaces
 ##          - rfclib
 ##          - rfclib-interfaces
-##          - testing
+          - testing
 
     name: Split Test of ${{ matrix.package_name }}
 

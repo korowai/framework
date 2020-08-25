@@ -104,7 +104,7 @@ class Ldap extends AbstractLdap
     /**
      * {@inheritdoc}
      */
-    public function bind(string $dn = null, string $password = null)
+    public function bind(string $dn = null, string $password = null) : bool
     {
         $args = @func_get_args();
         return $this->getBinding()->bind(...$args);
@@ -113,7 +113,7 @@ class Ldap extends AbstractLdap
     /**
      * {@inheritdoc}
      */
-    public function unbind()
+    public function unbind() : bool
     {
         return $this->getBinding()->unbind();
     }
@@ -129,33 +129,33 @@ class Ldap extends AbstractLdap
     /**
      * {@inheritdoc}
      */
-    public function add(EntryInterface $entry)
+    public function add(EntryInterface $entry) : void
     {
-        return $this->getEntryManager()->add($entry);
+        $this->getEntryManager()->add($entry);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function update(EntryInterface $entry)
+    public function update(EntryInterface $entry) : void
     {
-        return $this->getEntryManager()->update($entry);
+        $this->getEntryManager()->update($entry);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function rename(EntryInterface $entry, string $newRdn, bool $deleteOldRdn = true)
+    public function rename(EntryInterface $entry, string $newRdn, bool $deleteOldRdn = true) : void
     {
-        return $this->getEntryManager()->rename($entry, $newRdn, $deleteOldRdn);
+        $this->getEntryManager()->rename($entry, $newRdn, $deleteOldRdn);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function delete(EntryInterface $entry)
+    public function delete(EntryInterface $entry) : void
     {
-        return $this->getEntryManager()->delete($entry);
+        $this->getEntryManager()->delete($entry);
     }
 
     /**

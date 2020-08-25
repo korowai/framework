@@ -19,7 +19,7 @@ use Korowai\Lib\Ldap\Adapter\ExtLdap\Adapter as ExtLdapAdapter;
 use Korowai\Lib\Ldap\Exception\LdapException;
 
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
-use PHPUnit\Framework\Assert;
+use Korowai\Testing\Ldaplib\TestCase;
 
 /**
  * Defines application features from the specific context.
@@ -192,7 +192,7 @@ class ExtLdapContext implements Context
      */
     public function iShouldBeBound()
     {
-        Assert::assertSame(true, $this->ldap->isBound());
+        TestCase::assertSame(true, $this->ldap->isBound());
     }
 
     /**
@@ -211,7 +211,7 @@ class ExtLdapContext implements Context
             $this->exceptions
         );
         $foundExceptionsStr = '[ ' . implode(', ', $foundExceptions) . ' ]';
-        Assert::assertTrue(count($matchedExceptions) > 0, $expectedException . " not found in " . $foundExceptionsStr);
+        TestCase::assertTrue(count($matchedExceptions) > 0, $expectedException . " not found in " . $foundExceptionsStr);
     }
 
     /**
@@ -219,8 +219,8 @@ class ExtLdapContext implements Context
      */
     public function iShouldSeeLdapExceptionWithCode($arg1)
     {
-        Assert::assertInstanceOf(LdapException::class, $this->lastException());
-        Assert::assertEquals($arg1, $this->lastException()->getCode());
+        TestCase::assertInstanceOf(LdapException::class, $this->lastException());
+        TestCase::assertEquals($arg1, $this->lastException()->getCode());
     }
 
     /**
@@ -228,8 +228,8 @@ class ExtLdapContext implements Context
      */
     public function iShouldSeeInvalidOptionsExceptionWithMessage($arg1)
     {
-        Assert::assertInstanceOf(InvalidOptionsException::class, $this->lastException());
-        Assert::assertEquals($arg1, $this->lastException()->getMessage());
+        TestCase::assertInstanceOf(InvalidOptionsException::class, $this->lastException());
+        TestCase::assertEquals($arg1, $this->lastException()->getMessage());
     }
 
     /**
@@ -239,7 +239,7 @@ class ExtLdapContext implements Context
     {
         $e = $this->lastException();
         $msg = $e === null ? '' : "The last exception's message was: " . $e->getMessage();
-        Assert::assertSame($e, null, $msg);
+        TestCase::assertSame($e, null, $msg);
     }
 
     /**
@@ -247,11 +247,11 @@ class ExtLdapContext implements Context
      */
     public function iShouldHaveAValidLdapLink()
     {
-        Assert::assertInstanceOf(Ldap::class, $this->ldap);
+        TestCase::assertInstanceOf(Ldap::class, $this->ldap);
         /** @var ExtLdapAdapter */
         $adapter = $this->ldap->getAdapter();
-        Assert::assertInstanceOf(ExtLdapAdapter::class, $adapter);
-        Assert::assertTrue($adapter->getLdapLink()->isValid());
+        TestCase::assertInstanceOf(ExtLdapAdapter::class, $adapter);
+        TestCase::assertTrue($adapter->getLdapLink()->isValid());
     }
 
     /**
@@ -259,7 +259,7 @@ class ExtLdapContext implements Context
      */
     public function iShouldHaveNoValidLdapLink()
     {
-        Assert::assertNull($this->ldap);
+        TestCase::assertNull($this->ldap);
     }
 
     /**
@@ -267,7 +267,7 @@ class ExtLdapContext implements Context
      */
     public function iShouldNotBeBound()
     {
-        Assert::assertFalse($this->ldap->isBound());
+        TestCase::assertFalse($this->ldap->isBound());
     }
 
     /**
@@ -277,22 +277,32 @@ class ExtLdapContext implements Context
     {
         $expected_entries = $this->decodeJsonPyStringNode($pystring);
         $actual_entries = array_map(
-            function ($e) {
-                return $e->getAttributes();
+            function ($entry) : array {
+                return [
+                    'dn' => $entry->getDn(),
+                    'attributes' => $entry->getAttributes()
+                ];
             },
             $this->lastResult()->getEntries()
         );
 
+        $comparator = function (array $left, array $right) : int {
+            return strcmp($left['dn'] ?? '', $right['dn'] ?? '');
+        };
+
+        usort($expected_entries, $comparator);
+        usort($actual_entries, $comparator);
+
         # handle passwords
-        foreach ($expected_entries as $dn => $ee) {
-            $expected_password = $ee['userpassword'][0] ?? null;
-            $actual_password = $actual_entries[$dn]['userpassword'][0] ?? null;
+        foreach ($expected_entries as $i => $ee) {
+            $expected_password = $ee['attributes']['userpassword'][0] ?? null;
+            $actual_password = $actual_entries[$i]['attributes']['userpassword'][0] ?? null;
             if (is_string($expected_password) && is_string($actual_password)) {
                 $encrypted = self::encryptForComparison($expected_password, $actual_password);
-                $expected_entries[$dn]['userpassword'][0] = $encrypted;
+                $expected_entries[$i]['attributes']['userpassword'][0] = $encrypted;
             }
         }
-        Assert::assertEquals($expected_entries, $actual_entries);
+        TestCase::assertEquals($expected_entries, $actual_entries);
     }
 
     /**
@@ -307,7 +317,7 @@ class ExtLdapContext implements Context
             },
             iterator_to_array($this->lastResult()->getResultReferenceIterator())
         );
-        Assert::assertEquals($expected_references, $actual_references);
+        TestCase::assertEquals($expected_references, $actual_references);
     }
 
     /**
@@ -315,7 +325,7 @@ class ExtLdapContext implements Context
      */
     public function iShouldHaveLastResultTrue()
     {
-        Assert::assertTrue($this->lastResult());
+        TestCase::assertTrue($this->lastResult());
     }
 
     /**
@@ -323,7 +333,7 @@ class ExtLdapContext implements Context
      */
     public function iShouldHaveLastResultFalse()
     {
-        Assert::assertFalse($this->lastResult());
+        TestCase::assertFalse($this->lastResult());
     }
 }
 

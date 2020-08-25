@@ -45,7 +45,7 @@ Feature: Simple bind
   Scenario Outline: Unsuccessful bind because of connection problems
     Given I am connected using config <config>
     When I bind with binddn <binddn> and password <password>
-    Then I should see ldap exception with message "Can't contact LDAP server"
+    Then I should see ldap exception with message "ldap_bind(): Unable to bind to server: Can't contact LDAP server"
     And I should have a valid ldap link
     And I should not be bound
 
@@ -57,7 +57,7 @@ Feature: Simple bind
   Scenario Outline: Unsuccessful bind because of invalid credentials
     Given I am connected to uri <uri>
     When I bind with binddn <binddn> and password <password>
-    Then I should see ldap exception with message "Invalid credentials"
+    Then I should see ldap exception with message "ldap_bind(): Unable to bind to server: Invalid credentials"
     And I should not be bound
 
     Examples:
@@ -68,7 +68,7 @@ Feature: Simple bind
   Scenario Outline: Unsuccessful bind because of missing password
     Given I am connected to uri <uri>
     When I bind with binddn <binddn>
-    Then I should see ldap exception with message "Server is unwilling to perform"
+    Then I should see ldap exception with message "ldap_bind(): Unable to bind to server: Server is unwilling to perform"
     And I should not be bound
 
     Examples:

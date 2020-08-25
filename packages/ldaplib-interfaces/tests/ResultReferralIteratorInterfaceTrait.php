@@ -10,14 +10,14 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Tests\Lib\Ldap\Adapter;
+namespace Korowai\Tests\Lib\Ldap;
 
 use Korowai\Testing\Dummies\PhpIteratorTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-trait ResultAttributeIteratorInterfaceTrait
+trait ResultReferralIteratorInterfaceTrait
 {
     use PhpIteratorTrait;
 }

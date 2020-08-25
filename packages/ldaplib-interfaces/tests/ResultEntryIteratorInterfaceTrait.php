@@ -10,24 +10,22 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Tests\Lib\Ldap\Adapter;
+namespace Korowai\Tests\Lib\Ldap;
+
+use Korowai\Lib\Ldap\Adapter\ResultEntryInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-trait CompareQueryInterfaceTrait
+trait ResultEntryIteratorInterfaceTrait
 {
-    public $execute = null;
-    public $result = null;
+    use ResultItemIteratorInterfaceTrait;
 
-    public function execute() : bool
-    {
-        return $this->execute;
-    }
+    public $current;
 
-    public function getResult() : bool
+    public function current() : ?ResultEntryInterface
     {
-        return $this->result;
+        return $this->current;
     }
 }
 

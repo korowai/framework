@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Lib\Ldap\Adapter;
+namespace Korowai\Lib\Ldap;
 
 /**
  * Provides access to an LDAP implementation via set of supplementary

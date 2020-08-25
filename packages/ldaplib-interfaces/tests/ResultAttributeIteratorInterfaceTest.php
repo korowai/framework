@@ -10,34 +10,34 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Tests\Lib\Ldap\Adapter;
+namespace Korowai\Tests\Lib\Ldap;
 
-use Korowai\Lib\Ldap\Adapter\ResultReferralIteratorInterface;
+use Korowai\Lib\Ldap\Adapter\ResultAttributeIteratorInterface;
 
 use Korowai\Testing\LdaplibInterfaces\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class ResultReferralIteratorInterfaceTest extends TestCase
+class ResultAttributeIteratorInterfaceTest extends TestCase
 {
     public static function createDummyInstance()
     {
-        return new class implements ResultReferralIteratorInterface {
-            use ResultReferralIteratorInterfaceTrait;
+        return new class implements ResultAttributeIteratorInterface {
+            use ResultAttributeIteratorInterfaceTrait;
         };
     }
 
     public function test__dummyImplementation()
     {
         $dummy = $this->createDummyInstance();
-        $this->assertImplementsInterface(ResultReferralIteratorInterface::class, $dummy);
+        $this->assertImplementsInterface(ResultAttributeIteratorInterface::class, $dummy);
     }
 
     public function test__objectPropertyGettersMap()
     {
         $expect = [];
-        $this->assertObjectPropertyGetters($expect, ResultReferralIteratorInterface::class);
+        $this->assertObjectPropertyGetters($expect, ResultAttributeIteratorInterface::class);
     }
 }
 

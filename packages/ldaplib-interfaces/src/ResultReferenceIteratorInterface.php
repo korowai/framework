@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Lib\Ldap\Adapter;
+namespace Korowai\Lib\Ldap;
 
 /**
  * Iterates through references returned by an ldap search query.

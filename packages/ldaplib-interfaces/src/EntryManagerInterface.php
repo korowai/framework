@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Lib\Ldap\Adapter;
+namespace Korowai\Lib\Ldap;
 
 use Korowai\Lib\Ldap\EntryInterface;
 

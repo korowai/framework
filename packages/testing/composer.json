@@ -24,6 +24,7 @@
     },
     "autoload": {
       "psr-4" : {
+        "Korowai\\Testing\\" : "Testing/"
       },
       "files" : [
       ],
@@ -34,8 +35,7 @@
     },
     "autoload-dev": {
       "psr-4" : {
-        "Korowai\\Tests\\Testing\\" : "tests/",
-        "Korowai\\Testing\\" : "/Testing/"
+        "Korowai\\Tests\\Testing\\" : "tests/"
       }
     }
 }

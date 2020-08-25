@@ -75,7 +75,8 @@
             "Korowai\\Lib\\Rfc\\": [
                 "packages/rfclib-interfaces/src/",
                 "packages/rfclib/src/"
-            ]
+            ],
+            "Korowai\\Testing\\": "packages/testing/Testing/"
         }
     },
     "autoload-dev": {

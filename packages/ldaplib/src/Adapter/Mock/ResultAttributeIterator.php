@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldap\Adapter\Mock;
 
-use Korowai\Lib\Ldap\Adapter\ResultAttributeIteratorInterface;
+use Korowai\Lib\Ldap\ResultAttributeIteratorInterface;
 
 /**
  * Iterates through attributes of a result entry.

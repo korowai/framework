@@ -13,8 +13,8 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Ldap;
 
 use Korowai\Testing\Dummies\PhpIteratorAggregateTrait;
-use Korowai\Lib\Ldap\Adapter\ResultEntryIteratorInterface;
-use Korowai\Lib\Ldap\Adapter\ResultReferenceIteratorInterface;
+use Korowai\Lib\Ldap\ResultEntryIteratorInterface;
+use Korowai\Lib\Ldap\ResultReferenceIteratorInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

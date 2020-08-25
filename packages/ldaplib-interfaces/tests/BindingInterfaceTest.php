@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldap;
 
-use Korowai\Lib\Ldap\Adapter\BindingInterface;
+use Korowai\Lib\Ldap\BindingInterface;
 
 use Korowai\Testing\LdaplibInterfaces\TestCase;
 

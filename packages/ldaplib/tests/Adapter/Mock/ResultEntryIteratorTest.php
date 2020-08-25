@@ -17,7 +17,7 @@ use Korowai\Testing\TestCase;
 //use Korowai\Lib\Ldap\Adapter\Mock\ResultEntryIterator;
 //use Korowai\Lib\Ldap\Adapter\Mock\ResultEntry;
 //use Korowai\Lib\Ldap\Adapter\Mock\Result;
-//use Korowai\Lib\Ldap\Adapter\ResultEntryIteratorInterface;
+//use Korowai\Lib\Ldap\ResultEntryIteratorInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

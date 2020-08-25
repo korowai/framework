@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
 
-use Korowai\Lib\Ldap\Adapter\BindingInterface;
+use Korowai\Lib\Ldap\BindingInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

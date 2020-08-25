@@ -17,8 +17,8 @@ use Korowai\Testing\Ldaplib\TestCase;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultReferenceInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultReferenceIteratorInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\ResultReferenceIterator;
-use Korowai\Lib\Ldap\Adapter\ResultReferenceInterface;
-use Korowai\Lib\Ldap\Adapter\ResultReferenceIteratorInterface;
+use Korowai\Lib\Ldap\ResultReferenceInterface;
+use Korowai\Lib\Ldap\ResultReferenceIteratorInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

@@ -13,7 +13,10 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Ldap;
 
 use Korowai\Lib\Ldap\LdapInterface;
-use Korowai\Lib\Ldap\Adapter\AdapterInterface;
+use Korowai\Lib\Ldap\BindingInterface;
+use Korowai\Lib\Ldap\SearchingInterface;
+use Korowai\Lib\Ldap\ComparingInterface;
+use Korowai\Lib\Ldap\EntryManagerInterface;
 
 use Korowai\Testing\LdaplibInterfaces\TestCase;
 
@@ -29,6 +32,26 @@ class LdapInterfaceTest extends TestCase
         };
     }
 
+    public function test__implements__BindingInterface()
+    {
+        $this->assertImplementsInterface(BindingInterface::class, LdapInterface::class);
+    }
+
+    public function test__implements__SearchingInterface()
+    {
+        $this->assertImplementsInterface(SearchingInterface::class, LdapInterface::class);
+    }
+
+    public function test__implements__ComparingInterface()
+    {
+        $this->assertImplementsInterface(ComparingInterface::class, LdapInterface::class);
+    }
+
+    public function test__implements__EntryManagerInterface()
+    {
+        $this->assertImplementsInterface(EntryManagerInterface::class, LdapInterface::class);
+    }
+
     public function test__dummyImplementation()
     {
         $dummy = $this->createDummyInstance();
@@ -37,28 +60,8 @@ class LdapInterfaceTest extends TestCase
 
     public function test__objectPropertyGettersMap()
     {
-        $expect = [
-            'adapter' => 'getAdapter',
-        ];
+        $expect = [];
         $this->assertObjectPropertyGetters($expect, LdapInterface::class);
-    }
-
-    public function test__getAdapter()
-    {
-        $dummy = $this->createDummyInstance();
-
-        $dummy->adapter = $this->createStub(AdapterInterface::class);
-        $this->assertSame($dummy->adapter, $dummy->getAdapter());
-    }
-
-    public function test__getAdapter__withRetTypeError()
-    {
-        $dummy = $this->createDummyInstance();
-        $dummy->adapter = null;
-
-        $this->expectException(\TypeError::class);
-        $this->expectExceptionMessage(AdapterInterface::class);
-        $dummy->getAdapter();
     }
 }
 

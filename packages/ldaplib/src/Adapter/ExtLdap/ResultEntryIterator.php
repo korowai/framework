@@ -12,8 +12,8 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
 
-use Korowai\Lib\Ldap\Adapter\ResultEntryIteratorInterface;
-use Korowai\Lib\Ldap\Adapter\ResultEntryInterface;
+use Korowai\Lib\Ldap\ResultEntryIteratorInterface;
+use Korowai\Lib\Ldap\ResultEntryInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

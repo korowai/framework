@@ -13,8 +13,8 @@ declare(strict_types=1);
 namespace Korowai\Lib\Ldap\Adapter\Mock;
 
 use Korowai\Lib\Ldap\Adapter\ResultEntryToEntry;
-use Korowai\Lib\Ldap\Adapter\ResultEntryInterface;
-use Korowai\Lib\Ldap\Adapter\ResultAttributeIteratorInterface;
+use Korowai\Lib\Ldap\ResultEntryInterface;
+use Korowai\Lib\Ldap\ResultAttributeIteratorInterface;
 
 /**
  * A single entry in LDAP search result.

@@ -12,8 +12,8 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldap;
 
-use Korowai\Lib\Ldap\Adapter\ResultEntryIteratorInterface;
-use Korowai\Lib\Ldap\Adapter\ResultEntryInterface;
+use Korowai\Lib\Ldap\ResultEntryIteratorInterface;
+use Korowai\Lib\Ldap\ResultEntryInterface;
 
 use Korowai\Testing\LdaplibInterfaces\TestCase;
 

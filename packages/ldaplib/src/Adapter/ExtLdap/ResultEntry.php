@@ -12,9 +12,9 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
 
-use Korowai\Lib\Ldap\Adapter\ResultEntryInterface;
+use Korowai\Lib\Ldap\ResultEntryInterface;
 use Korowai\Lib\Ldap\Adapter\ResultEntryToEntry;
-use Korowai\Lib\Ldap\Adapter\ResultAttributeIteratorInterface;
+use Korowai\Lib\Ldap\ResultAttributeIteratorInterface;
 use function Korowai\Lib\Context\with;
 
 /**

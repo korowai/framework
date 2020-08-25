@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldap;
 
-use Korowai\Lib\Ldap\Adapter\ResultReferenceInterface;
+use Korowai\Lib\Ldap\ResultReferenceInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

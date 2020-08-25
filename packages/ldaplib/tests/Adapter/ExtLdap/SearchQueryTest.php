@@ -19,7 +19,7 @@ use Korowai\Lib\Ldap\Adapter\ExtLdap\SearchQuery;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkWrapperInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkWrapperTrait;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultInterface;
-use Korowai\Lib\Ldap\Adapter\ResultInterface;
+use Korowai\Lib\Ldap\ResultInterface;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 
 /**

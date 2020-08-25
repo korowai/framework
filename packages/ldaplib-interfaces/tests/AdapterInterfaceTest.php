@@ -12,11 +12,11 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldap;
 
-use Korowai\Lib\Ldap\Adapter\AdapterInterface;
-use Korowai\Lib\Ldap\Adapter\BindingInterface;
-use Korowai\Lib\Ldap\Adapter\EntryManagerInterface;
-use Korowai\Lib\Ldap\Adapter\SearchQueryInterface;
-use Korowai\Lib\Ldap\Adapter\CompareQueryInterface;
+use Korowai\Lib\Ldap\AdapterInterface;
+use Korowai\Lib\Ldap\BindingInterface;
+use Korowai\Lib\Ldap\EntryManagerInterface;
+use Korowai\Lib\Ldap\SearchQueryInterface;
+use Korowai\Lib\Ldap\CompareQueryInterface;
 
 use Korowai\Testing\LdaplibInterfaces\TestCase;
 

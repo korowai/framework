@@ -24,62 +24,23 @@ final class ObjectPropertyGettersMap
      * @var array
      */
     private static $objectPropertyGettersMap = [
-        \Korowai\Lib\Ldap\Adapter\AdapterFactoryInterface::class => [
+        \Korowai\Lib\Ldap\AdapterFactoryInterface::class => [
         ],
 
-        \Korowai\Lib\Ldap\Adapter\AdapterInterface::class => [
+        \Korowai\Lib\Ldap\AdapterInterface::class => [
             'binding'                   => 'getBinding',
             'entryManager'              => 'getEntryManager',
         ],
 
-        \Korowai\Lib\Ldap\Adapter\BindingInterface::class => [
+        \Korowai\Lib\Ldap\BindingInterface::class => [
             'isBound'                   => 'isBound',
         ],
 
-        \Korowai\Lib\Ldap\Adapter\CompareQueryInterface::class => [
+        \Korowai\Lib\Ldap\CompareQueryInterface::class => [
             'result'                    => 'getResult',
         ],
 
-        \Korowai\Lib\Ldap\Adapter\EntryManagerInterface::class => [
-        ],
-
-        \Korowai\Lib\Ldap\Adapter\ResultAttributeIteratorInterface::class => [
-        ],
-
-        \Korowai\Lib\Ldap\Adapter\ResultEntryInterface::class => [
-            'dn'                        => 'getDn',
-            'attributes'                => 'getAttributes',
-            'entry'                     => 'toEntry',
-            'attributeIterator'         => 'getAttributeIterator',
-        ],
-
-        \Korowai\Lib\Ldap\Adapter\ResultEntryIteratorInterface::class => [
-        ],
-
-        \Korowai\Lib\Ldap\Adapter\ResultInterface::class => [
-            'resultEntryIterator'       => 'getResultEntryIterator',
-            'resultReferenceIterator'   => 'getResultReferenceIterator',
-            'resultEntries'             => 'getResultEntries',
-            'resultReferences'          => 'getResultReferences',
-            'entries'                   => 'getEntries',
-        ],
-
-        \Korowai\Lib\Ldap\Adapter\ResultItemIteratorInterface::class => [
-        ],
-
-        \Korowai\Lib\Ldap\Adapter\ResultReferenceInterface::class => [
-            'referrals'                 => 'getReferrals',
-            'referralIterator'          => 'getReferralIterator',
-        ],
-
-        \Korowai\Lib\Ldap\Adapter\ResultReferenceIteratorInterface::class => [
-        ],
-
-        \Korowai\Lib\Ldap\Adapter\ResultReferralIteratorInterface::class => [
-        ],
-
-        \Korowai\Lib\Ldap\Adapter\SearchQueryInterface::class => [
-            'result'                    => 'getResult',
+        \Korowai\Lib\Ldap\ComparingInterface::class => [
         ],
 
         \Korowai\Lib\Ldap\EntryInterface::class => [
@@ -87,8 +48,52 @@ final class ObjectPropertyGettersMap
             'attributes'                => 'getAttributes',
         ],
 
+        \Korowai\Lib\Ldap\EntryManagerInterface::class => [
+        ],
+
         \Korowai\Lib\Ldap\LdapInterface::class => [
-            'adapter'                   => 'getAdapter',
+        ],
+
+        \Korowai\Lib\Ldap\ResultAttributeIteratorInterface::class => [
+        ],
+
+        \Korowai\Lib\Ldap\ResultEntryInterface::class => [
+            'dn'                        => 'getDn',
+            'attributes'                => 'getAttributes',
+            'entry'                     => 'toEntry',
+            'attributeIterator'         => 'getAttributeIterator',
+        ],
+
+        \Korowai\Lib\Ldap\ResultEntryIteratorInterface::class => [
+        ],
+
+        \Korowai\Lib\Ldap\ResultInterface::class => [
+            'resultEntryIterator'       => 'getResultEntryIterator',
+            'resultReferenceIterator'   => 'getResultReferenceIterator',
+            'resultEntries'             => 'getResultEntries',
+            'resultReferences'          => 'getResultReferences',
+            'entries'                   => 'getEntries',
+        ],
+
+        \Korowai\Lib\Ldap\ResultItemIteratorInterface::class => [
+        ],
+
+        \Korowai\Lib\Ldap\ResultReferenceInterface::class => [
+            'referrals'                 => 'getReferrals',
+            'referralIterator'          => 'getReferralIterator',
+        ],
+
+        \Korowai\Lib\Ldap\ResultReferenceIteratorInterface::class => [
+        ],
+
+        \Korowai\Lib\Ldap\ResultReferralIteratorInterface::class => [
+        ],
+
+        \Korowai\Lib\Ldap\SearchingInterface::class => [
+        ],
+
+        \Korowai\Lib\Ldap\SearchQueryInterface::class => [
+            'result'                    => 'getResult',
         ],
     ];
 

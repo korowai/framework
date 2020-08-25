@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
 
-use Korowai\Lib\Ldap\Adapter\ResultAttributeIteratorInterface;
+use Korowai\Lib\Ldap\ResultAttributeIteratorInterface;
 
 /**
  * Iterates through an ldap result entry attributes.

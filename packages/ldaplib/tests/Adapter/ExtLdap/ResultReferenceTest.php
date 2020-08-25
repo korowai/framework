@@ -15,7 +15,7 @@ namespace Korowai\Tests\Lib\Ldap\Adapter\ExtLdap;
 use Korowai\Testing\Ldaplib\TestCase;
 
 use Korowai\Lib\Ldap\Adapter\ExtLdap\ResultReference;
-use Korowai\Lib\Ldap\Adapter\ResultReferenceInterface;
+use Korowai\Lib\Ldap\ResultReferenceInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultReferenceWrapperInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultReferenceWrapperTrait;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\ResultReferralIterator;

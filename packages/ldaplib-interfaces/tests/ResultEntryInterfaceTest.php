@@ -12,9 +12,9 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldap;
 
-use Korowai\Lib\Ldap\Adapter\ResultEntryInterface;
+use Korowai\Lib\Ldap\ResultEntryInterface;
 use Korowai\Lib\Ldap\EntryInterface;
-use Korowai\Lib\Ldap\Adapter\ResultAttributeIteratorInterface;
+use Korowai\Lib\Ldap\ResultAttributeIteratorInterface;
 
 use Korowai\Testing\LdaplibInterfaces\TestCase;
 

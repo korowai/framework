@@ -17,19 +17,13 @@ use Korowai\Lib\Ldap\ResultInterface;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-trait SearchQueryInterfaceTrait
+trait SearchingInterfaceTrait
 {
-    public $execute = null;
-    public $result = null;
+    public $search;
 
-    public function execute() : ResultInterface
+    public function search(string $base_dn, string $filter, array $options = []) : ResultInterface
     {
-        return $this->execute;
-    }
-
-    public function getResult() : ResultInterface
-    {
-        return $this->result;
+        return $this->search;
     }
 }
 

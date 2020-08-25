@@ -12,8 +12,8 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldap;
 
-use Korowai\Lib\Ldap\Adapter\SearchQueryInterface;
-use Korowai\Lib\Ldap\Adapter\ResultInterface;
+use Korowai\Lib\Ldap\SearchQueryInterface;
+use Korowai\Lib\Ldap\ResultInterface;
 
 use Korowai\Testing\LdaplibInterfaces\TestCase;
 

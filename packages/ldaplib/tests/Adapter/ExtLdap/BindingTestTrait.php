@@ -16,7 +16,7 @@ use Korowai\Testing\Ldaplib\TestCase;
 
 use Korowai\Lib\Ldap\Adapter\ExtLdap\BindingTrait;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
-use Korowai\Lib\Ldap\Adapter\BindingInterface;
+use Korowai\Lib\Ldap\BindingInterface;
 use Korowai\Lib\Ldap\Exception\LdapException;
 
 /**

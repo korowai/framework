@@ -16,7 +16,7 @@ use Korowai\Testing\TestCase;
 
 //use Korowai\Lib\Ldap\Adapter\Mock\ResultReference;
 //use Korowai\Lib\Ldap\Adapter\Mock\ResultReferralIterator;
-//use Korowai\Lib\Ldap\Adapter\ResultReferenceInterface;
+//use Korowai\Lib\Ldap\ResultReferenceInterface;
 //use Korowai\Lib\Ldap\Adapter\ReferralsIterationInterface;
 
 /**

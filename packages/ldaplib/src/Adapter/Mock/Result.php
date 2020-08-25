@@ -13,9 +13,9 @@ declare(strict_types=1);
 namespace Korowai\Lib\Ldap\Adapter\Mock;
 
 use Korowai\Lib\Ldap\Adapter\AbstractResult;
-use Korowai\Lib\Ldap\Adapter\ResultInterface;
-use Korowai\Lib\Ldap\Adapter\ResultEntryIteratorInterface;
-use Korowai\Lib\Ldap\Adapter\ResultReferenceIteratorInterface;
+use Korowai\Lib\Ldap\ResultInterface;
+use Korowai\Lib\Ldap\ResultEntryIteratorInterface;
+use Korowai\Lib\Ldap\ResultReferenceIteratorInterface;
 
 /**
  * Wrapper for ldap result resource.

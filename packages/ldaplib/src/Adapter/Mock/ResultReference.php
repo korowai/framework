@@ -12,8 +12,8 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldap\Adapter\Mock;
 
-use Korowai\Lib\Ldap\Adapter\ResultReferenceInterface;
-use Korowai\Lib\Ldap\Adapter\ResultReferralIteratorInterface;
+use Korowai\Lib\Ldap\ResultReferenceInterface;
+use Korowai\Lib\Ldap\ResultReferralIteratorInterface;
 use Korowai\Lib\Ldap\Adapter\ReferralsIterationInterface;
 
 /**

@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldap\Adapter\Mock;
 
-use Korowai\Lib\Ldap\Adapter\ResultEntryIteratorInterface;
+use Korowai\Lib\Ldap\ResultEntryIteratorInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

@@ -15,7 +15,7 @@ namespace Korowai\Tests\Lib\Ldap\Adapter\ExtLdap;
 use Korowai\Testing\Ldaplib\TestCase;
 
 use Korowai\Lib\Ldap\Adapter\ExtLdap\ResultReferralIterator;
-use Korowai\Lib\Ldap\Adapter\ResultReferralIteratorInterface;
+use Korowai\Lib\Ldap\ResultReferralIteratorInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

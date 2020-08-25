@@ -15,9 +15,9 @@ namespace Korowai\Tests\Lib\Ldap;
 use Korowai\Testing\TestCase;
 use Korowai\Lib\Ldap\AbstractLdap;
 use Korowai\Lib\Ldap\LdapInterface;
-use Korowai\Lib\Ldap\Adapter\SearchQueryInterface;
-use Korowai\Lib\Ldap\Adapter\CompareQueryInterface;
-use Korowai\Lib\Ldap\Adapter\ResultInterface;
+use Korowai\Lib\Ldap\SearchQueryInterface;
+use Korowai\Lib\Ldap\CompareQueryInterface;
+use Korowai\Lib\Ldap\ResultInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

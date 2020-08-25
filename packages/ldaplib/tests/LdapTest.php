@@ -15,14 +15,14 @@ namespace Korowai\Tests\Lib\Ldap;
 use Korowai\Testing\TestCase;
 use Korowai\Lib\Ldap\Ldap;
 use Korowai\Lib\Ldap\AbstractLdap;
-use Korowai\Lib\Ldap\Adapter\AdapterInterface;
-use Korowai\Lib\Ldap\Adapter\BindingInterface;
-use Korowai\Lib\Ldap\Adapter\AdapterFactoryInterface;
-use Korowai\Lib\Ldap\Adapter\EntryManagerInterface;
+use Korowai\Lib\Ldap\AdapterInterface;
+use Korowai\Lib\Ldap\BindingInterface;
+use Korowai\Lib\Ldap\AdapterFactoryInterface;
+use Korowai\Lib\Ldap\EntryManagerInterface;
 use Korowai\Lib\Ldap\Entry;
 
-use Korowai\Lib\Ldap\Adapter\SearchQueryInterface;
-use Korowai\Lib\Ldap\Adapter\CompareQueryInterface;
+use Korowai\Lib\Ldap\SearchQueryInterface;
+use Korowai\Lib\Ldap\CompareQueryInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\Adapter;
 
 class SomeClass
@@ -122,7 +122,7 @@ class LdapTest extends TestCase
     public function test__createWithConfig__NotAFactoryClass()
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Invalid argument 2 to Korowai\Lib\Ldap\Ldap::createWithConfig: Korowai\Tests\Lib\Ldap\SomeClass is not an implementation of Korowai\Lib\Ldap\Adapter\AdapterFactoryInterface');
+        $this->expectExceptionMessage('Invalid argument 2 to Korowai\Lib\Ldap\Ldap::createWithConfig: Korowai\Tests\Lib\Ldap\SomeClass is not an implementation of Korowai\Lib\Ldap\AdapterFactoryInterface');
 
         $ldap = Ldap::createWithConfig([], SomeClass::class);
     }

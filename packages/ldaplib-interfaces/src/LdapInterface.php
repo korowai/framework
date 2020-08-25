@@ -12,10 +12,6 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldap;
 
-use Korowai\Lib\Ldap\Adapter\BindingInterface;
-use Korowai\Lib\Ldap\Adapter\EntryManagerInterface;
-use Korowai\Lib\Ldap\Adapter\AdapterInterface;
-
 /**
  * LDAP interface
  *
@@ -23,14 +19,10 @@ use Korowai\Lib\Ldap\Adapter\AdapterInterface;
  */
 interface LdapInterface extends
     BindingInterface,
-    EntryManagerInterface,
-    AdapterInterface
+    SearchingInterface,
+    ComparingInterface,
+    EntryManagerInterface
 {
-    /**
-     * Returns adapter
-     * @return AdapterInterface Adapter
-     */
-    public function getAdapter() : AdapterInterface;
 }
 
 // vim: syntax=php sw=4 ts=4 et:

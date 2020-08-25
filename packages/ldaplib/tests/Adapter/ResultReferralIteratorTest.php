@@ -16,7 +16,7 @@ use Korowai\Testing\TestCase;
 
 use Korowai\Lib\Ldap\Adapter\ResultReferralIterator;
 use Korowai\Lib\Ldap\Adapter\ReferralsIterationInterface;
-use Korowai\Lib\Ldap\Adapter\ResultReferralIteratorInterface;
+use Korowai\Lib\Ldap\ResultReferralIteratorInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
 
-use Korowai\Lib\Ldap\Adapter\AdapterInterface;
+use Korowai\Lib\Ldap\AdapterInterface;
 use Korowai\Lib\Ldap\Adapter\AbstractAdapterFactory;
 use Korowai\Lib\Ldap\Exception\LdapException;
 

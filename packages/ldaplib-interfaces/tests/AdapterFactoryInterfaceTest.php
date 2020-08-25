@@ -12,8 +12,8 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldap;
 
-use Korowai\Lib\Ldap\Adapter\AdapterFactoryInterface;
-use Korowai\Lib\Ldap\Adapter\AdapterInterface;
+use Korowai\Lib\Ldap\AdapterFactoryInterface;
+use Korowai\Lib\Ldap\AdapterInterface;
 
 use Korowai\Testing\LdaplibInterfaces\TestCase;
 

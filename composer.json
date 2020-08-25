@@ -76,7 +76,20 @@
                 "packages/rfclib-interfaces/src/",
                 "packages/rfclib/src/"
             ],
-            "Korowai\\Testing\\": "packages/testing/Testing/"
+            "Korowai\\Testing\\": "packages/testing/Testing/",
+            "Korowai\\Testing\\BasiclibInterfaces\\": "packages/basiclib-interfaces/Testing/",
+            "Korowai\\Testing\\Basiclib\\": "packages/basiclib/Testing/",
+            "Korowai\\Testing\\Compatlib\\": "packages/compatlib/Testing/",
+            "Korowai\\Testing\\ContextlibInterfaces\\": "packages/contextlib-interfaces/Testing/",
+            "Korowai\\Testing\\Contextlib\\": "packages/contextlib/Testing/",
+            "Korowai\\Testing\\ErrorlibInterfaces\\": "packages/errorlib-interfaces/Testing/",
+            "Korowai\\Testing\\Errorlib\\": "packages/errorlib/Testing/",
+            "Korowai\\Testing\\LdaplibInterfaces\\": "packages/ldaplib-interfaces/Testing/",
+            "Korowai\\Testing\\Ldaplib\\": "packages/ldaplib/Testing/",
+            "Korowai\\Testing\\LdiflibInterfaces\\": "packages/ldiflib-interfaces/Testing/",
+            "Korowai\\Testing\\Ldiflib\\": "packages/ldiflib/Testing/",
+            "Korowai\\Testing\\RfclibInterfaces\\": "packages/rfclib-interfaces/Testing/",
+            "Korowai\\Testing\\Rfclib\\": "packages/rfclib/Testing/"
         }
     },
     "autoload-dev": {

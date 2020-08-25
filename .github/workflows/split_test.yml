@@ -14,19 +14,19 @@ jobs:
       matrix:
         package_name:
           - basiclib
-##          - basiclib-interfaces
-##          - compatlib
-##          - contextlib
-##          - contextlib-interfaces
+          - basiclib-interfaces
+          - compatlib
+          - contextlib
+          - contextlib-interfaces
 ##          - contracts
-##          - errorlib
-##          - errorlib-interfaces
-##          - ldaplib
-##          - ldaplib-interfaces
-##          - ldiflib
-##          - ldiflib-interfaces
-##          - rfclib
-##          - rfclib-interfaces
+          - errorlib
+          - errorlib-interfaces
+          - ldaplib
+          - ldaplib-interfaces
+          - ldiflib
+          - ldiflib-interfaces
+          - rfclib
+          - rfclib-interfaces
           - testing
 
     name: Split Test of ${{ matrix.package_name }}

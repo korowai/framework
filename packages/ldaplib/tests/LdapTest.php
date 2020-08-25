@@ -300,10 +300,9 @@ class LdapTest extends TestCase
         $entry = new Entry('dc=korowai,dc=org');
         $em->expects($this->once())
            ->method('add')
-           ->with($entry)
-           ->willReturn('ok');
+           ->with($entry);
 
-        $this->assertSame('ok', $ldap->add($entry));
+        $this->assertNull($ldap->add($entry));
     }
 
     public function test__update()
@@ -322,10 +321,9 @@ class LdapTest extends TestCase
         $entry = new Entry('dc=korowai,dc=org');
         $em->expects($this->once())
            ->method('update')
-           ->with($entry)
-           ->willReturn('ok');
+           ->with($entry);
 
-        $this->assertSame('ok', $ldap->update($entry));
+        $this->assertNull($ldap->update($entry));
     }
 
     public function test__rename__WithoutDeleteOldRdn()
@@ -344,10 +342,9 @@ class LdapTest extends TestCase
         $entry = new Entry('dc=korowai,dc=org');
         $em->expects($this->once())
            ->method('rename')
-           ->with($entry, 'cn=korowai', true)
-           ->willReturn('ok');
+           ->with($entry, 'cn=korowai', true);
 
-        $this->assertSame('ok', $ldap->rename($entry, 'cn=korowai'));
+        $this->assertNull($ldap->rename($entry, 'cn=korowai'));
     }
 
     public function test__rename()
@@ -366,10 +363,9 @@ class LdapTest extends TestCase
         $entry = new Entry('dc=korowai,dc=org');
         $em->expects($this->once())
            ->method('rename')
-           ->with($entry, 'cn=korowai', false)
-           ->willReturn('ok');
+           ->with($entry, 'cn=korowai', false);
 
-        $this->assertSame('ok', $ldap->rename($entry, 'cn=korowai', false));
+        $this->assertNull($ldap->rename($entry, 'cn=korowai', false));
     }
 
     public function test__delete()
@@ -388,10 +384,9 @@ class LdapTest extends TestCase
         $entry = new Entry('dc=korowai,dc=org');
         $em->expects($this->once())
            ->method('delete')
-           ->with($entry)
-           ->willReturn('ok');
+           ->with($entry);
 
-        $this->assertSame('ok', $ldap->delete($entry));
+        $this->assertNull($ldap->delete($entry));
     }
 
     public function test__createSearchQuery__DefaultOptions()

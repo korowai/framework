@@ -25,7 +25,7 @@ class AbstractSearchQueryTest extends TestCase
     {
         return [
             'scope' => 'sub',
-            'attributes' => '*',
+            'attributes' => ['*'],
             'attrsOnly' => 0,
             'deref' => 'never',
             'sizeLimit' => 0,

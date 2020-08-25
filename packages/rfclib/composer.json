@@ -26,7 +26,8 @@
     },
     "autoload": {
       "psr-4" : {
-        "Korowai\\Lib\\Rfc\\" : "src/"
+        "Korowai\\Lib\\Rfc\\" : "src/",
+        "Korowai\\Testing\\Rfclib\\" : "Testing/"
       },
       "files" : [
       ],
@@ -39,8 +40,7 @@
     "autoload-dev": {
       "psr-4" : {
         "Korowai\\Tests\\Lib\\Rfc\\" : "tests/",
-        "Korowai\\TestsNocov\\Lib\\Rfc\\" : "tests-nocov/",
-        "Korowai\\Testing\\Rfclib\\" : "Testing/"
+        "Korowai\\TestsNocov\\Lib\\Rfc\\" : "tests-nocov/"
       }
     }
 }

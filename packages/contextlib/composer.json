@@ -26,7 +26,8 @@
     },
     "autoload": {
       "psr-4" : {
-        "Korowai\\Lib\\Context\\" : "src/"
+        "Korowai\\Lib\\Context\\" : "src/",
+        "Korowai\\Testing\\Contextlib\\": "Testing/"
       },
       "files" : [
         "src/functions.php"
@@ -38,8 +39,7 @@
     },
     "autoload-dev": {
       "psr-4" : {
-        "Korowai\\Tests\\Lib\\Context\\" : "tests/",
-        "Korowai\\Testing\\Contextlib\\": "Testing/"
+        "Korowai\\Tests\\Lib\\Context\\" : "tests/"
       }
     }
 }

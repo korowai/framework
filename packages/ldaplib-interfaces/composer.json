@@ -24,7 +24,8 @@
     },
     "autoload": {
       "psr-4" : {
-        "Korowai\\Lib\\Ldap\\" : "src/"
+        "Korowai\\Lib\\Ldap\\" : "src/",
+        "Korowai\\Testing\\LdaplibInterfaces\\": "Testing/"
       },
       "exclude-from-classmap": [
         "/tests/",
@@ -33,8 +34,7 @@
     },
     "autoload-dev": {
       "psr-4" : {
-        "Korowai\\Tests\\Lib\\Ldap\\" : "tests/",
-        "Korowai\\Testing\\LdaplibInterfaces\\": "Testing/"
+        "Korowai\\Tests\\Lib\\Ldap\\" : "tests/"
       }
     }
 }

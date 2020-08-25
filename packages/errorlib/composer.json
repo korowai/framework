@@ -26,7 +26,8 @@
     },
     "autoload": {
       "psr-4" : {
-        "Korowai\\Lib\\Error\\" : "src/"
+        "Korowai\\Lib\\Error\\" : "src/",
+        "Korowai\\Testing\\Errorlib\\" : "Testing/"
       },
       "files" : [
         "src/functions.php"
@@ -38,8 +39,7 @@
     },
     "autoload-dev": {
       "psr-4" : {
-        "Korowai\\Tests\\Lib\\Error\\" : "tests/",
-        "Korowai\\Testing\\Errorlib\\" : "Testing/"
+        "Korowai\\Tests\\Lib\\Error\\" : "tests/"
       }
     }
 }

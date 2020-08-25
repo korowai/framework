@@ -30,7 +30,8 @@
     },
     "autoload": {
       "psr-4" : {
-        "Korowai\\Lib\\Ldap\\" : "src/"
+        "Korowai\\Lib\\Ldap\\" : "src/",
+        "Korowai\\Testing\\Ldaplib\\" : "Testing/"
       },
       "exclude-from-classmap": [
         "/Behat/",
@@ -42,7 +43,6 @@
     "autoload-dev": {
       "psr-4" : {
         "Korowai\\Lib\\Ldap\\Behat\\" : "Behat/",
-        "Korowai\\Testing\\Ldaplib\\" : "Testing/",
         "Korowai\\Tests\\Lib\\Ldap\\" : "tests/"
       }
     }

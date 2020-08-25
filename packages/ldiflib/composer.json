@@ -33,7 +33,8 @@
     },
     "autoload": {
       "psr-4" : {
-        "Korowai\\Lib\\Ldif\\" : "src/"
+        "Korowai\\Lib\\Ldif\\" : "src/",
+        "Korowai\\Testing\\Ldiflib\\" : "Testing/"
       },
       "files" : [
       ],
@@ -44,8 +45,7 @@
     },
     "autoload-dev": {
       "psr-4" : {
-        "Korowai\\Tests\\Lib\\Ldif\\" : "tests/",
-        "Korowai\\Testing\\Ldiflib\\" : "Testing/"
+        "Korowai\\Tests\\Lib\\Ldif\\" : "tests/"
       }
     }
 }

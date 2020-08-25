@@ -27,7 +27,8 @@
     },
     "autoload": {
       "psr-4" : {
-        "Korowai\\Lib\\Compat\\" : "src/"
+        "Korowai\\Lib\\Compat\\" : "src/",
+        "Korowai\\Testing\\Compatlib\\" : "Testing/"
       },
       "files" : [
         "src/functions/preg.php"
@@ -39,8 +40,7 @@
     },
     "autoload-dev": {
       "psr-4" : {
-        "Korowai\\Tests\\Lib\\Compat\\" : "tests/",
-        "Korowai\\Testing\\Compatlib\\" : "Testing/"
+        "Korowai\\Tests\\Lib\\Compat\\" : "tests/"
       }
     }
 }

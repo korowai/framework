@@ -27,7 +27,8 @@ class TestCaseTest extends TestCase
     public function test__objectPropertyGettersMap()
     {
         $expected = array_merge_recursive(
-            \Korowai\Testing\Contracts\ObjectPropertyGettersMap::getObjectPropertyGettersMap(),
+            \Korowai\Testing\ObjectPropertyGettersMap::getObjectPropertyGettersMap(),
+            \Korowai\Testing\LdaplibInterfaces\ObjectPropertyGettersMap::getObjectPropertyGettersMap(),
             \Korowai\Testing\Ldaplib\ObjectPropertyGettersMap::getObjectPropertyGettersMap()
         );
         $this->assertSame($expected, parent::objectPropertyGettersMap());

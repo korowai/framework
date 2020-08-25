@@ -26,8 +26,8 @@ abstract class TestCase extends \Korowai\Testing\TestCase
     {
         return array_merge_recursive(
             parent::objectPropertyGettersMap(),
-            \Korowai\Testing\Contracts\ObjectPropertyGettersMap::getObjectPropertyGettersMap(),
-            \Korowai\Testing\Ldaplib\ObjectPropertyGettersMap::getObjectPropertyGettersMap()
+            \Korowai\Testing\LdaplibInterfaces\ObjectPropertyGettersMap::getObjectPropertyGettersMap(),
+            ObjectPropertyGettersMap::getObjectPropertyGettersMap()
         );
     }
 }

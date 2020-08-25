@@ -17,7 +17,7 @@
     ],
     "require": {
         "php": ">=7.4",
-        "korowai/contracts": "*",
+        "korowai/contextlib-interfaces": "*",
         "korowai/basiclib": "*"
     },
     "autoload": {

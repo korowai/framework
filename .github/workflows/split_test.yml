@@ -1,0 +1,50 @@
+name: Split Test
+
+on:
+  pull_request: null
+  push:
+    branches:
+      - master
+      - ldiflib
+
+jobs:
+  after_split_testing:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        package_name:
+          - basiclib
+##          - basiclib-interfaces
+##          - compatlib
+##          - contextlib
+##          - contextlib-interfaces
+##          - contracts
+##          - errorlib
+##          - errorlib-interfaces
+##          - ldaplib
+##          - ldaplib-interfaces
+##          - ldiflib
+##          - ldiflib-interfaces
+##          - rfclib
+##          - rfclib-interfaces
+##          - testing
+
+    name: Split Test of ${{ matrix.package_name }}
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: shivammathur/setup-php@v1
+        with:
+          php-version: 7.4
+          coverage: none
+      - run: |
+          composer install --no-progress --ansi
+          vendor/bin/monorepo-builder localize-composer-paths --ansi
+
+          cd packages/${{ matrix.package_name }}
+          composer update --no-progress --ansi
+
+      - run: |
+          cd packages/${{ matrix.package_name }}
+          vendor/bin/phpunit
+

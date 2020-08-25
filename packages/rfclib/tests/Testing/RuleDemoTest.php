@@ -30,7 +30,7 @@ class RuleDemoTest extends TestCase
     {
         return array_merge_recursive(
             parent::objectPropertyGettersMap(),
-            \Korowai\Testing\Contracts\ObjectPropertyGettersMap::getObjectPropertyGettersMap(),
+            \Korowai\Testing\RfclibInterfaces\ObjectPropertyGettersMap::getObjectPropertyGettersMap(),
             \Korowai\Testing\Rfclib\ObjectPropertyGettersMap::getObjectPropertyGettersMap()
         );
     }

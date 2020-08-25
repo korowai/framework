@@ -30,7 +30,6 @@ interface EntryInterface
      * Sets the entry's DN.
      *
      * @param  string $dn
-     * @throws \TypeError
      */
     public function setDn(string $dn);
 

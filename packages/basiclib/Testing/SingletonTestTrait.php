@@ -10,27 +10,33 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Tests\Lib\Basic;
+namespace Korowai\Testing\Basiclib;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-trait SingletonTestHelpers
+trait SingletonTestTrait
 {
+    abstract public static function getSingletonClassUnderTest() : string;
+
     protected static function getPrivateErrorRegExp(string $method)
     {
         return '/Call to private (?:method )?' . preg_quote($method) . '/';
     }
 
-    public function check__Singleton__getInstance(string $class)
+    public function test__Singleton__getInstance()
     {
+        $class = static::getSingletonClassUnderTest();
+
         $obj1 = $class::getInstance();
         $obj2 = $class::getInstance();
         $this->assertSame($obj1, $obj2);
     }
 
-    public function check__Singleton__construct(string $class)
+    public function test__Singleton__construct() : void
     {
+        $class = static::getSingletonClassUnderTest();
+
         $regex = self::getPrivateErrorRegExp($class . '::__construct()');
         $this->expectException(\Error::class);
         $this->expectExceptionMessageMatches($regex);
@@ -38,8 +44,10 @@ trait SingletonTestHelpers
         new $class();
     }
 
-    public function check__Singleton__clone(string $class)
+    public function test__Singleton__clone() : void
     {
+        $class = static::getSingletonClassUnderTest();
+
         $obj = $class::getInstance();
 
         $regex = self::getPrivateErrorRegExp(get_class($obj) . '::__clone()');
@@ -50,8 +58,10 @@ trait SingletonTestHelpers
         $obj->__clone();
     }
 
-    public function check__Singleton__wakeup(string $class)
+    public function test__Singleton__wakeup() : void
     {
+        $class = static::getSingletonClassUnderTest();
+
         $obj = $class::getInstance();
 
         $regex = self::getPrivateErrorRegExp(get_class($obj) . '::__wakeup()');

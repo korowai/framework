@@ -24,9 +24,9 @@ use Korowai\Lib\Context\ContextManagerInterface;
  */
 class ContextFactoryStackTest extends TestCase
 {
-    use \Korowai\Tests\Lib\Basic\SingletonTestMethods;
+    use \Korowai\Testing\Basiclib\SingletonTestTrait;
 
-    protected function getClassUnderTest()
+    public static function getSingletonClassUnderTest() : string
     {
         return ContextFactoryStack::class;
     }

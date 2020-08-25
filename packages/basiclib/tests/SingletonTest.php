@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Basic;
 
 use Korowai\Lib\Basic\Singleton;
+use Korowai\Testing\Basiclib\SingletonTestTrait;
 
 use Korowai\Testing\TestCase;
 
@@ -38,9 +39,9 @@ class Singleton76YO7MV5
  */
 class SingletonTest extends TestCase
 {
-    use SingletonTestMethods;
+    use SingletonTestTrait;
 
-    protected function getClassUnderTest()
+    protected function getSingletonClassUnderTest()
     {
         return SingletonC91F82BJ::class;
     }

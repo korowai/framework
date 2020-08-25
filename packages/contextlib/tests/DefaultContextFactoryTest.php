@@ -26,9 +26,9 @@ use Korowai\Lib\Context\TrivialValueWrapper;
 class DefaultContextFactoryTest extends TestCase
 {
     use \phpmock\phpunit\PHPMock;
-    use \Korowai\Tests\Lib\Basic\SingletonTestMethods;
+    use \Korowai\Testing\Basiclib\SingletonTestTrait;
 
-    protected function getClassUnderTest()
+    public static function getSingletonClassUnderTest() : string
     {
         return DefaultContextFactory::class;
     }

@@ -33,7 +33,6 @@ interface EntryInterface
      */
     public function setDn(string $dn);
 
-
     /**
      * Returns the complete array of attributes
      *

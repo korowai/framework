@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldap\Exception;
 
-use Korowai\Testing\TestCase;
+use Korowai\Testing\LdaplibInterfaces\TestCase;
 use Korowai\Lib\Ldap\Exception\LdapException;
 
 /**
@@ -25,7 +25,7 @@ class LdapExceptionTest extends TestCase
         $this->assertExtendsClass(\ErrorException::class, LdapException::class);
     }
 
-    public static function getMessage__cases()
+    public static function prov__getMessages()
     {
         return [
             'default message' => [[], ''],
@@ -34,7 +34,7 @@ class LdapExceptionTest extends TestCase
     }
 
     /**
-     * @dataProvider getMessage__cases
+     * @dataProvider prov__getMessages
      */
     public function test__getMessage(array $args, string $expect)
     {

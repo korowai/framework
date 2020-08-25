@@ -12,20 +12,20 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldap\Exception;
 
-use Korowai\Testing\TestCase;
+use Korowai\Testing\LdaplibInterfaces\TestCase;
 use Korowai\Lib\Ldap\Exception\AttributeException;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class AttributeExceptionTest extends TestCase
+final class AttributeExceptionTest extends TestCase
 {
-    public function test__extendsOutOfRangeException()
+    public function test__extendsOutOfRangeException() : void
     {
         $this->assertExtendsClass(\OutOfRangeException::class, AttributeException::class);
     }
 
-    public static function getMessage__cases()
+    public static function prov__getMessages() : array
     {
         return [
             'default message' => [[], 'No such attribute'],
@@ -34,9 +34,9 @@ class AttributeExceptionTest extends TestCase
     }
 
     /**
-     * @dataProvider getMessage__cases
+     * @dataProvider prov__getMessages
      */
-    public function test__getMessage(array $args, string $expect)
+    public function test__getMessage(array $args, string $expect) : void
     {
         $e = new AttributeException(...$args);
         $this->assertEquals($expect, $e->getMessage());

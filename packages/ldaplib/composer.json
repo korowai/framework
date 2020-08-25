@@ -24,7 +24,9 @@
         "korowai/contextlib": "*"
     },
     "require-dev": {
-        "zendframework/zend-ldap": "^2.10.0"
+        "zendframework/zend-ldap": "^2.10.0",
+        "phpunit/phpunit": ">=9.3",
+        "korowai/testing": "*"
     },
     "autoload": {
       "psr-4" : {

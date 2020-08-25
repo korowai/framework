@@ -18,6 +18,10 @@
     "require": {
         "php": ">=7.4"
     },
+    "require-dev": {
+        "phpunit/phpunit": ">=9.3",
+        "korowai/testing": "*"
+    },
     "autoload": {
       "psr-4" : {
         "Korowai\\Lib\\Ldif\\" : "src/"

@@ -51,6 +51,9 @@ final class ObjectPropertyGettersMap
         \Korowai\Lib\Ldap\EntryManagerInterface::class => [
         ],
 
+        \Korowai\Lib\Ldap\LdapFactoryInterface::class => [
+        ],
+
         \Korowai\Lib\Ldap\LdapInterface::class => [
         ],
 

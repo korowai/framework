@@ -12,6 +12,12 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldap;
 
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkWrapperInterface;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkWrapperTrait;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\BindingTrait;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\EntryManagerTrait;
+
 //use Korowai\Lib\Ldap\AdapterInterface;
 //use Korowai\Lib\Ldap\AdapterFactoryInterface;
 //use Korowai\Lib\Ldap\BindingInterface;
@@ -26,52 +32,58 @@ use InvalidArgumentException;
  * @todo Write documentation
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class Ldap extends AbstractLdap
+final class Ldap implements LdapInterface, LdapLinkWrapperInterface
 {
-    /** @var AdapterInterface */
-    private $adapter;
+    use LdapLinkWrapperTrait;
+    use BindingTrait;
+    use EntryManagerTrait;
 
-    /**
-     * @todo Write documentation
-     *
-     * @param  array $config
-     * @param  string $factoryClass
-     *
-     * @return Ldap
-     * @throws InvalidArgumentException
-     */
-    public static function createWithConfig(array $config = [], string $factoryClass = null)
-    {
-        if (!isset($factoryClass)) {
-            $factoryClass = static::$defaultAdapterFactory;
-        } else {
-            static::checkFactoryClassArg($factoryClass, __METHOD__, 2);
-        }
-        $factory = new $factoryClass();
-        $factory->configure($config);
-        return static::createWithAdapterFactory($factory);
-    }
-
-    /**
-     * Returns new Ldap instance with adapter created by *$factory*.
-     *
-     * @param  AdapterFactoryInterface $factory
-     * @return Ldap
-     */
-    public static function createWithAdapterFactory(AdapterFactoryInterface $factory)
-    {
-        $adapter = $factory->createAdapter();
-        return new static($adapter);
-    }
+//    /** @var AdapterInterface */
+//    private $adapter;
+//
+//    /**
+//     * @todo Write documentation
+//     *
+//     * @param  array $config
+//     * @param  string $factoryClass
+//     *
+//     * @return Ldap
+//     * @throws InvalidArgumentException
+//     */
+//    public static function createWithConfig(array $config = [], string $factoryClass = null)
+//    {
+//        if (!isset($factoryClass)) {
+//            $factoryClass = static::$defaultAdapterFactory;
+//        } else {
+//            static::checkFactoryClassArg($factoryClass, __METHOD__, 2);
+//        }
+//        $factory = new $factoryClass();
+//        $factory->configure($config);
+//        return static::createWithAdapterFactory($factory);
+//    }
+//
+//    /**
+//     * Returns new Ldap instance with adapter created by *$factory*.
+//     *
+//     * @param  AdapterFactoryInterface $factory
+//     * @return Ldap
+//     */
+//    public static function createWithAdapterFactory(AdapterFactoryInterface $factory)
+//    {
+//        $adapter = $factory->createAdapter();
+//        return new static($adapter);
+//    }
 
     /**
      * Create new Ldap instance
      *
      * @param LdapLinkInterface $ldapLink
+     * @param bool $bound
      */
-    public function __construct(LdapLinkInterface $ldapLink)
+    public function __construct(LdapLinkInterface $ldapLink, bool $bound = false)
     {
         $this->ldapLink = $ldapLink;
+        $this->bound = $bound;
     }
 
 //    /**
@@ -131,21 +143,21 @@ class Ldap extends AbstractLdap
 //        $this->getEntryManager()->delete($entry);
 //    }
 //
-//    /**
-//     * {@inheritdoc}
-//     */
-//    public function createSearchQuery(string $base_dn, string $filter, array $options = []) : SearchQueryInterface
-//    {
-//        return $this->getAdapter()->createSearchQuery($base_dn, $filter, $options);
-//    }
-//
-//    /**
-//     * {@inheritdoc}
-//     */
-//    public function createCompareQuery(string $dn, string $attribute, string $value) : CompareQueryInterface
-//    {
-//        return $this->getAdapter()->createCompareQuery($dn, $attribute, $value);
-//    }
+    /**
+     * {@inheritdoc}
+     */
+    public function createSearchQuery(string $base_dn, string $filter, array $options = []) : SearchQueryInterface
+    {
+        return new SearchQuery($this->getLdapLink(), $base_dn, $filter, $options);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function createCompareQuery(string $dn, string $attribute, string $value) : CompareQueryInterface
+    {
+        return new CompareQuery($this->getLdapLink(), $dn, $attribute, $value);
+    }
 
 //    protected static function checkFactoryClassArg($factoryClass, $method, $argno)
 //    {
@@ -159,6 +171,34 @@ class Ldap extends AbstractLdap
 //            throw new InvalidArgumentException($msg);
 //        }
 //    }
+
+    /**
+     * Create search query, execute and return its result
+     *
+     * @param  string $base_dn
+     * @param  string $filter
+     * @param  array $options
+     *
+     * @return ResultInterface Query result
+     */
+    public function search(string $base_dn, string $filter, array $options = []) : ResultInterface
+    {
+        return $this->createSearchQuery($base_dn, $filter, $options)->getResult();
+    }
+
+    /**
+     * Create compare query, execute and return its result
+     *
+     * @param  string $dn
+     * @param  string $attribute
+     * @param  string $value
+     *
+     * @return bool Result of the comparison
+     */
+    public function compare(string $dn, string $attribute, string $value) : bool
+    {
+        return $this->createCompareQuery($dn, $attribute, $value)->getResult();
+    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

@@ -20,8 +20,10 @@
         "ext-ldap": "*",
         "symfony/options-resolver": ">=4.2",
         "korowai/contracts": "*",
+        "korowai/compatlib": "*",
         "korowai/errorlib": "*",
-        "korowai/contextlib": "*"
+        "korowai/contextlib": "*",
+        "korowai/rfclib": "*"
     },
     "require-dev": {
         "zendframework/zend-ldap": "^2.10.0",

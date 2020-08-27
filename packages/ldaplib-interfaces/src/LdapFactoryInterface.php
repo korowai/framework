@@ -24,34 +24,6 @@ interface LdapFactoryInterface
      * @return LdapInterface
      */
     public function createLdapInterface() : LdapInterface;
-
-    /**
-     * Creates and returns new instance of BindingInterface.
-     *
-     * @return BindingInterface
-     */
-    public function createBindingInterface() : BindingInterface;
-
-    /**
-     * Creates and returns new instance of EntryManagerInterface.
-     *
-     * @return EntryManagerInterface
-     */
-    public function createEntryManagerInterface() : EntryManagerInterface;
-
-    /**
-     * Creates and returns new instance of SearchingInterface.
-     *
-     * @return SearchingInterface
-     */
-    public function createSearchingInterface() : SearchingInterface;
-
-    /**
-     * Creates and returns new instance of ComparingInterface.
-     *
-     * @return ComparingInterface
-     */
-    public function createComparingInterface() : ComparingInterface;
 }
 
 // vim: syntax=php sw=4 ts=4 et:

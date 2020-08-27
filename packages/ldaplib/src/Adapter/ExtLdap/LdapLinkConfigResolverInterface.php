@@ -10,22 +10,22 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Lib\Ldap;
+namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
 
 /**
- * Resolves options for LdapFactory.
+ * @todo Write documentation.
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-interface LdapOptionsResolverInterface
+interface LdapLinkConfigResolverInterface
 {
     /**
-     * Resolves $options.
+     * @todo Write documentation
      *
-     * @param array $options
+     * @param  array $config
      * @return array
      */
-    public function resolve(array $options) : array;
+    public function resolve(array $config) : array;
 }
 
 // vim: syntax=php sw=4 ts=4 et:

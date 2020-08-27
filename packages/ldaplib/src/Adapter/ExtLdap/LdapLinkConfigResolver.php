@@ -10,20 +10,20 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Lib\Ldap;
+namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
 
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkOptionsTrait;
+
+use Korowai\Lib\Rfc\Rfc3986;
+use function Korowai\Lib\Compat\preg_match;
 
 /**
  * @todo Write documentation
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-final class LdapOptionsResolver implements LdapOptionsResolverInterface
+final class LdapLinkConfigResolver implements LdapLinkConfigResolverInterface
 {
-    use LdapLinkOptionsTrait;
-
     /**
      * @var OptionsResolver
      */
@@ -61,7 +61,16 @@ final class LdapOptionsResolver implements LdapOptionsResolverInterface
      */
     public function resolve(array $options) : array
     {
-        return $this->resolver->resolve($options);
+        $resolved = $this->resolver->resolve($options);
+        if (($options = $resolved['options'] ?? null) !== null) {
+            $resolved['options'] = static::mapOptionsNamesToIds($options);
+        }
+        return $resolved;
+    }
+
+    private static function mapOptionsNamesToIds(array $options) : array
+    {
+        return array_combine(array_map([LdapLinkOptions::class, 'getOptionId'], array_keys($options)), $options);
     }
 
     /**
@@ -73,7 +82,7 @@ final class LdapOptionsResolver implements LdapOptionsResolverInterface
     {
         $this->configureTopLevelOptionsResolver($resolver);
         $resolver->setDefault('options', function (OptionsResolver $nestedResolver) : void {
-            $this->configureNestedOptionsResolver($nestedResolver);
+            LdapLinkOptions::configureOptionsResolver($nestedResolver);
         });
     }
 
@@ -85,42 +94,27 @@ final class LdapOptionsResolver implements LdapOptionsResolverInterface
     private function configureTopLevelOptionsResolver(OptionsResolver $resolver) : void
     {
         $resolver->setDefaults([
-            'host' => 'localhost',
-            'uri' => null,
-            'encryption' => 'none',
+            'uri' => 'ldap://localhost',
+            'tls' => false,
         ]);
-
-        $resolver->setDefault('port', function (Options $options) {
-            return ('ssl' === $options['encryption']) ? 636 : 389;
-        });
-
-        $resolver->setDefault('uri', function (Options $options) {
-            $port = (
-                'ssl' === $options['encryption'] && $options['port'] !== 636 ||
-                'ssl' !== $options['encryption'] && $options['port'] !== 389
-            ) ? sprintf(':%d', $options['port']) : '';
-            $protocol = ('ssl' === $options['encryption'] ? 'ldaps' : 'ldap');
-            return  $protocol .  '://' . $options['host'] .  $port;
-        });
-
-        $resolver->setAllowedTypes('host', 'string');
-        $resolver->setAllowedTypes('port', 'numeric');
         $resolver->setAllowedTypes('uri', 'string');
-        $resolver->setAllowedValues('encryption', ['none', 'ssl', 'tls']);
+        $resolver->setAllowedTypes('tls', 'bool');
 
-        $resolver->setAllowedValues('port', function (int $port) : bool {
-            return $port > 0 && $port < 65536;
+        $resolver->setAllowedValues('uri', function (string $uri) : bool {
+            if (!preg_match('/^'.Rfc3986::URI.'$/', $uri, $matches, PREG_UNMATCHED_AS_NULL)) {
+                return false;
+            }
+            if (($matches['host'] ?? null) === null) {
+                return false;
+            }
+            if (($port = $matches['port'] ?? null) !== null) {
+                $port = intval($port);
+                if ($port <= 0 || $port > 65535) {
+                    return false;
+                }
+            }
+            return true;
         });
-    }
-
-    /**
-     * Configures OptionsResolver for nested $options['options'].
-     *
-     * @param OptionsResolver $resolver The resolver to be configured
-     */
-    private function configureNestedOptionsResolver(OptionsResolver $resolver) : void
-    {
-        $this->configureLdapLinkOptions($resolver);
     }
 }
 

@@ -14,17 +14,12 @@ namespace Korowai\Lib\Ldap;
 
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkWrapperInterface;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkFactoryInterface;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkConfigResolver;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkConfigResolverInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkWrapperTrait;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\BindingTrait;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\EntryManagerTrait;
-
-//use Korowai\Lib\Ldap\AdapterInterface;
-//use Korowai\Lib\Ldap\AdapterFactoryInterface;
-//use Korowai\Lib\Ldap\BindingInterface;
-//use Korowai\Lib\Ldap\EntryManagerInterface;
-//use Korowai\Lib\Ldap\SearchQueryInterface;
-//use Korowai\Lib\Ldap\CompareQueryInterface;
-//use Korowai\Lib\Ldap\ResultInterface;
 
 use InvalidArgumentException;
 
@@ -38,41 +33,40 @@ final class Ldap implements LdapInterface, LdapLinkWrapperInterface
     use BindingTrait;
     use EntryManagerTrait;
 
-//    /** @var AdapterInterface */
-//    private $adapter;
-//
-//    /**
-//     * @todo Write documentation
-//     *
-//     * @param  array $config
-//     * @param  string $factoryClass
-//     *
-//     * @return Ldap
-//     * @throws InvalidArgumentException
-//     */
-//    public static function createWithConfig(array $config = [], string $factoryClass = null)
-//    {
-//        if (!isset($factoryClass)) {
-//            $factoryClass = static::$defaultAdapterFactory;
-//        } else {
-//            static::checkFactoryClassArg($factoryClass, __METHOD__, 2);
-//        }
-//        $factory = new $factoryClass();
-//        $factory->configure($config);
-//        return static::createWithAdapterFactory($factory);
-//    }
-//
-//    /**
-//     * Returns new Ldap instance with adapter created by *$factory*.
-//     *
-//     * @param  AdapterFactoryInterface $factory
-//     * @return Ldap
-//     */
-//    public static function createWithAdapterFactory(AdapterFactoryInterface $factory)
-//    {
-//        $adapter = $factory->createAdapter();
-//        return new static($adapter);
-//    }
+    /**
+     * Returns new Ldap instance configured with config.
+     *
+     * @param  array $config
+     * @param  LdapLinkConstructor $ldapLinkConstructor
+     * @param  LdapLinkConfigResolverInterface $ldapLinkConfigResolver
+     *
+     * @return Ldap
+     */
+    public static function createWithConfig(
+        array $config,
+        LdapLinkConstructorInterface $ldapLinkConstructor = null,
+        LdapLinkConfigResolverInterface $configResolver = null
+    ) : self {
+        if ($ldapLinkConstructor === null) {
+            $ldapLinkConstructor = new LdapLinkConstructor;
+        }
+        if ($configResolver === null) {
+            $configResolver = new LdapLinkConfigResolver;
+        }
+        $factory = new LdapLinkFactory($ldapLinkConstructor, $configResolver, $config);
+        return self::createWithLdapLinkFactory($factory);
+    }
+
+    /**
+     * Returns new Ldap instance with adapter created by *$factory*.
+     *
+     * @param  LdapLinkFactoryInterface $ldapLinkFactory
+     * @return Ldap
+     */
+    public static function createWithLdapLinkFactory(LdapLinkFactoryInterface $ldapLinkFactory) : self
+    {
+        return new self($ldapLinkFactory->createLdapLink());
+    }
 
     /**
      * Create new Ldap instance
@@ -86,63 +80,6 @@ final class Ldap implements LdapInterface, LdapLinkWrapperInterface
         $this->bound = $bound;
     }
 
-//    /**
-//     * {@inheritdoc}
-//     */
-//    public function bind(string $dn = null, string $password = null) : bool
-//    {
-//        $args = @func_get_args();
-//        return $this->getBinding()->bind(...$args);
-//    }
-//
-//    /**
-//     * {@inheritdoc}
-//     */
-//    public function unbind() : bool
-//    {
-//        return $this->getBinding()->unbind();
-//    }
-//
-//    /**
-//     * {@inheritdoc}
-//     */
-//    public function isBound() : bool
-//    {
-//        return $this->getBinding()->isBound();
-//    }
-//
-//    /**
-//     * {@inheritdoc}
-//     */
-//    public function add(EntryInterface $entry) : void
-//    {
-//        $this->getEntryManager()->add($entry);
-//    }
-//
-//    /**
-//     * {@inheritdoc}
-//     */
-//    public function update(EntryInterface $entry) : void
-//    {
-//        $this->getEntryManager()->update($entry);
-//    }
-//
-//    /**
-//     * {@inheritdoc}
-//     */
-//    public function rename(EntryInterface $entry, string $newRdn, bool $deleteOldRdn = true) : void
-//    {
-//        $this->getEntryManager()->rename($entry, $newRdn, $deleteOldRdn);
-//    }
-//
-//    /**
-//     * {@inheritdoc}
-//     */
-//    public function delete(EntryInterface $entry) : void
-//    {
-//        $this->getEntryManager()->delete($entry);
-//    }
-//
     /**
      * {@inheritdoc}
      */
@@ -158,19 +95,6 @@ final class Ldap implements LdapInterface, LdapLinkWrapperInterface
     {
         return new CompareQuery($this->getLdapLink(), $dn, $attribute, $value);
     }
-
-//    protected static function checkFactoryClassArg($factoryClass, $method, $argno)
-//    {
-//        $msg_pre = "Invalid argument $argno to $method";
-//        if (!class_exists($factoryClass)) {
-//            $msg = $msg_pre . ": $factoryClass is not a name of existing class";
-//            throw new InvalidArgumentException($msg);
-//        }
-//        if (!is_subclass_of($factoryClass, AdapterFactoryInterface::class)) {
-//            $msg = $msg_pre . ": $factoryClass is not an implementation of ". AdapterFactoryInterface::class;
-//            throw new InvalidArgumentException($msg);
-//        }
-//    }
 
     /**
      * Create search query, execute and return its result

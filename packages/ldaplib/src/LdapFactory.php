@@ -72,47 +72,6 @@ final class LdapFactory implements LdapFactoryInterface
         $link = $this->ldapLinkFactory->createLdapLink();
         return new Ldap($link);
     }
-//
-//    /**
-//     * Creates and returns new instance of BindingInterface.
-//     *
-//     * @return BindingInterface
-//     */
-//    public function createBindingInterface() : BindingInterface
-//    {
-//        $link = $this->createLdapLinkInterface();
-//        return new Binding($link);
-//    }
-//
-//    /**
-//     * Creates and returns new instance of EntryManagerInterface.
-//     *
-//     * @return EntryManagerInterface
-//     */
-//    public function createEntryManagerInterface() : EntryManagerInterface
-//    {
-//        $link = $this->createLdapLinkInterface();
-//        return new EntryManager($link);
-//    }
-//
-//    /**
-//     * Creates and returns new instance of SearchingInterface.
-//     *
-//     * @return SearchingInterface
-//     */
-//    public function createSearchingInterface() : SearchingInterface
-//    {
-//    }
-//
-//    /**
-//     * Creates and returns new instance of ComparingInterface.
-//     *
-//     * @return ComparingInterface
-//     */
-//    public function createComparingInterface() : ComparingInterface
-//    {
-//    }
-//
 }
 
 // vim: syntax=php sw=4 ts=4 et:

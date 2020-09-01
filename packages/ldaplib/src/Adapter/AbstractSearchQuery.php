@@ -14,6 +14,8 @@ namespace Korowai\Lib\Ldap\Adapter;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\Options;
+use Korowai\Lib\Ldap\SearchQueryInterface;
+use Korowai\Lib\Ldap\ResultInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

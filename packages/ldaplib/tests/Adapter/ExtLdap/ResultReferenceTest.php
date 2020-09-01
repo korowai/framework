@@ -26,11 +26,11 @@ use Korowai\Lib\Ldap\Adapter\ExtLdap\ResultReferralIterator;
 class ResultReferenceTest extends TestCase
 {
     use \phpmock\phpunit\PHPMock;
-    use GetLdapFunctionMock;
-    use CreateLdapLinkMock;
-    use CreateLdapResultMock;
-    use CreateLdapResultReferenceMock;
-    use ExamineMethodWithBackendTriggerError;
+    use GetLdapFunctionMockTrait;
+    use CreateLdapLinkMockTrait;
+    use CreateLdapResultMockTrait;
+    use CreateLdapResultReferenceMockTrait;
+    use ExamineMethodWithBackendTriggerErrorTrait;
 
     private function examineMethodWithTriggerError(
         string $method,

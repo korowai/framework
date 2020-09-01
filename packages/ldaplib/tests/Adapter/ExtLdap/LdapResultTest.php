@@ -32,11 +32,11 @@ use PHPUnit\Framework\MockObject\Stub\Stub;
 final class LdapResultTest extends TestCase
 {
     use \phpmock\phpunit\PHPMock;
-    use GetLdapFunctionMock;
-    use MakeArgsForLdapFunctionMock;
-    use ExamineMethodWithMockedLdapFunction;
-    use ResourceWrapperTestHelpers;
-    use CreateLdapLinkMock;
+    use GetLdapFunctionMockTrait;
+    use MakeArgsForLdapFunctionMockTrait;
+    use ExamineMethodWithMockedLdapFunctionTrait;
+    use ResourceWrapperTestHelpersTrait;
+    use CreateLdapLinkMockTrait;
 
     private function examineMethodWithMockedBackend(
         string $method,

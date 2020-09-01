@@ -27,10 +27,10 @@ use Korowai\Lib\Ldap\Exception\LdapException;
  */
 final class ResultEntryTest extends TestCase
 {
-    use CreateLdapLinkMock;
-    use CreateLdapResultMock;
-    use CreateLdapResultEntryMock;
-    use ExamineMethodWithBackendTriggerError;
+    use CreateLdapLinkMockTrait;
+    use CreateLdapResultMockTrait;
+    use CreateLdapResultEntryMockTrait;
+    use ExamineMethodWithBackendTriggerErrorTrait;
 
     private function examineMethodWithTriggerError(
         string $method,

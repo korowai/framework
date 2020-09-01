@@ -17,7 +17,7 @@ use Korowai\Lib\Ldap\Adapter\ExtLdap\ResourceWrapperInterface;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-trait ResourceWrapperTestHelpers
+trait ResourceWrapperTestHelpersTrait
 {
     abstract public function getLdapFunctionMock(string $name);
 

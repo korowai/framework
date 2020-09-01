@@ -29,11 +29,11 @@ use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultWrapperTrait;
  */
 final class ResultTest extends TestCase
 {
-    use CreateLdapLinkMock;
-    use CreateLdapResultMock;
-    use CreateLdapResultEntryMock;
-    use CreateLdapResultReferenceMock;
-    use ExamineMethodWithBackendTriggerError;
+    use CreateLdapLinkMockTrait;
+    use CreateLdapResultMockTrait;
+    use CreateLdapResultEntryMockTrait;
+    use CreateLdapResultReferenceMockTrait;
+    use ExamineMethodWithBackendTriggerErrorTrait;
 
     private function examineMethodWithTriggerError(
         string $method,

@@ -12,23 +12,23 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldap\Adapter\ExtLdap;
 
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultReferenceInterface;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultEntryInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultInterface;
 use PHPUnit\Framework\MockObject\MockBuilder;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-trait CreateLdapResultReferenceMock
+trait CreateLdapResultEntryMockTrait
 {
     abstract public function getMockBuilder(string $className): MockBuilder;
 
-    private function createLdapResultReferenceMock(
+    private function createLdapResultEntryMock(
         LdapResultInterface $result = null,
         $resource = 'ldap result entry',
         array $methods = []
-    ) : LdapResultReferenceInterface {
-        $builder = $this->getMockBuilder(LdapResultReferenceInterface::class);
+    ) : LdapResultEntryInterface {
+        $builder = $this->getMockBuilder(LdapResultEntryInterface::class);
 
         if ($result !== null && !in_array('getLdapResult', $methods)) {
             $methods[] = 'getLdapResult';

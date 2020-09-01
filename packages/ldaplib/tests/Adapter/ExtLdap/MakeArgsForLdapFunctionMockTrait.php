@@ -18,7 +18,7 @@ use PHPUnit\Framework\Constraint\IsIdentical;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-trait MakeArgsForLdapFunctionMock
+trait MakeArgsForLdapFunctionMockTrait
 {
     abstract public static function identicalTo($value) : IsIdentical;
 

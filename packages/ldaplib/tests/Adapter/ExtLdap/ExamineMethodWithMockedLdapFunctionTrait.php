@@ -18,7 +18,7 @@ use PHPUnit\Framework\MockObject\Stub\Stub;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-trait ExamineMethodWithMockedLdapFunction
+trait ExamineMethodWithMockedLdapFunctionTrait
 {
     abstract public static function makeArgsForLdapFunctionMock(array $resources, array $args) : array;
     abstract public function getLdapFunctionMock(string $name);

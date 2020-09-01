@@ -24,8 +24,8 @@ use Korowai\Lib\Ldap\Exception\LdapException;
  */
 trait BindingTestTrait
 {
-    use CreateLdapLinkMock;
-    use ExamineMethodWithBackendTriggerError;
+    use CreateLdapLinkMockTrait;
+    use ExamineMethodWithBackendTriggerErrorTrait;
 
     abstract public function createBindingInstance(
         LdapLinkInterface $ldapLink,

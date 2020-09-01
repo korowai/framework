@@ -28,10 +28,10 @@ use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 final class SearchQueryTest extends TestCase
 {
 //    use \phpmock\phpunit\PHPMock;
-//    use GetLdapFunctionMock;
+//    use GetLdapFunctionMockTrait;
 
-    use CreateLdapLinkMock;
-    use ExamineMethodWithBackendTriggerError;
+    use CreateLdapLinkMockTrait;
+    use ExamineMethodWithBackendTriggerErrorTrait;
 
     private function examineMethodWithTriggerError(
         string $method,

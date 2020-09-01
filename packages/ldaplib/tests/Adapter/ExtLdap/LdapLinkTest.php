@@ -28,10 +28,10 @@ use PHPUnit\Framework\MockObject\Stub\Stub;
 final class LdapLinkTest extends TestCase
 {
     use \phpmock\phpunit\PHPMock;
-    use GetLdapFunctionMock;
-    use MakeArgsForLdapFunctionMock;
-    use ExamineMethodWithMockedLdapFunction;
-    use ResourceWrapperTestHelpers;
+    use GetLdapFunctionMockTrait;
+    use MakeArgsForLdapFunctionMockTrait;
+    use ExamineMethodWithMockedLdapFunctionTrait;
+    use ResourceWrapperTestHelpersTrait;
 
     private function examineLdapMethod(string $method, array &$args, $will, $expect) : void
     {

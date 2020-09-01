@@ -28,12 +28,12 @@ use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultItemTrait;
 final class LdapResultReferenceTest extends TestCase
 {
     use \phpmock\phpunit\PHPMock;
-    use GetLdapFunctionMock;
-    use ResourceWrapperTestHelpers;
-    use CreateLdapLinkMock;
-    use CreateLdapResultMock;
-    use MakeArgsForLdapFunctionMock;
-    use ExamineMethodWithMockedLdapFunction;
+    use GetLdapFunctionMockTrait;
+    use ResourceWrapperTestHelpersTrait;
+    use CreateLdapLinkMockTrait;
+    use CreateLdapResultMockTrait;
+    use MakeArgsForLdapFunctionMockTrait;
+    use ExamineMethodWithMockedLdapFunctionTrait;
 
     private function examineLdapMethod(string $method, array $args, $will, $expect, $function = null) : void
     {

@@ -24,7 +24,7 @@ use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkWrapperInterface;
 class CompareQueryTest extends TestCase
 {
     use \phpmock\phpunit\PHPMock;
-    use GetLdapFunctionMock;
+    use GetLdapFunctionMockTrait;
 
     public function createLdapLinkMock($valid, $unbind = true)
     {

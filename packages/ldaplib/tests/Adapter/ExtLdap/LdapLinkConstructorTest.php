@@ -23,8 +23,8 @@ use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLink;
 final class LdapLinkConstructorTest extends TestCase
 {
     use \phpmock\phpunit\PHPMock;
-    use GetLdapFunctionMock;
-    use MakeArgsForLdapFunctionMock;
+    use GetLdapFunctionMockTrait;
+    use MakeArgsForLdapFunctionMockTrait;
 
     //
     //

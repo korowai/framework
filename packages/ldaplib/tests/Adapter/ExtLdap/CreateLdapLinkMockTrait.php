@@ -18,7 +18,7 @@ use PHPUnit\Framework\MockObject\MockBuilder;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-trait CreateLdapLinkMock
+trait CreateLdapLinkMockTrait
 {
     abstract public function getMockBuilder(string $className): MockBuilder;
 

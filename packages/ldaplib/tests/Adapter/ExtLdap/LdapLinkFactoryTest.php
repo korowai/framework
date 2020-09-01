@@ -24,8 +24,8 @@ use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkConfigResolverInterface;
  */
 final class LdapLinkFactoryTest extends TestCase
 {
-    use CreateLdapLinkMock;
-    use ExamineMethodWithBackendTriggerError;
+    use CreateLdapLinkMockTrait;
+    use ExamineMethodWithBackendTriggerErrorTrait;
 
     //
     //

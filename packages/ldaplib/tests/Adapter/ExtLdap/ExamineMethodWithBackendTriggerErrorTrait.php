@@ -18,7 +18,7 @@ use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-trait ExamineMethodWithBackendTriggerError
+trait ExamineMethodWithBackendTriggerErrorTrait
 {
     private function examineMethodWithBackendTriggerError(
         object $frontend,

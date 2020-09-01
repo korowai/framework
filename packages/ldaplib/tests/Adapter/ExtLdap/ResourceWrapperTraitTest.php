@@ -22,8 +22,8 @@ use Korowai\Lib\Ldap\Adapter\ExtLdap\ResourceWrapperInterface;
 final class ResourceWrapperTraitTest extends TestCase
 {
     use \phpmock\phpunit\PHPMock;
-    use GetLdapFunctionMock;
-    use ResourceWrapperTestHelpers;
+    use GetLdapFunctionMockTrait;
+    use ResourceWrapperTestHelpersTrait;
 
     private static function createDummyResourceWrapper($resource) : ResourceWrapperInterface
     {

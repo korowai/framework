@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Tests\Lib\Ldap\Adapter\ExtLdap;
+namespace Korowai\Testing\Ldaplib;
 
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\MockObject\Stub\Stub;
@@ -18,36 +18,31 @@ use PHPUnit\Framework\MockObject\Stub\Stub;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-trait ExamineMethodWithMockedLdapFunctionTrait
+trait ExamineCallWithMockedLdapFunctionTrait
 {
     abstract public static function makeArgsForLdapFunctionMock(array $resources, array $args) : array;
     abstract public function getLdapFunctionMock(string $name);
 
-    private function examineMethodWithMockedLdapFunction(
-        object $object,
-        string $method,
+    private function examineCallWithMockedLdapFunction(
+        callable $function,
         array $resources,
         array &$args,
         $will,
         $expect,
-        $function = null
+        string $ldapFunction
     ) {
         if (!$will instanceof Stub) {
             $will = static::returnValue($will);
         }
 
-        if ($function === null) {
-            $function = "ldap_$method";
-        }
-
         $ldapArgs = static::makeArgsForLdapFunctionMock($resources, $args);
 
-        $this   ->getLdapFunctionMock($function)
+        $this   ->getLdapFunctionMock($ldapFunction)
                 ->expects($this->once())
                 ->with(...$ldapArgs)
                 ->will($will);
 
-        $actual = $object->{$method}(...$args);
+        $actual = $function(...$args);
 
         if ($expect instanceof Constraint) {
             $this->assertThat($actual, $expect);

@@ -13,6 +13,10 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Ldap\Adapter\ExtLdap;
 
 use Korowai\Testing\Ldaplib\TestCase;
+use Korowai\Testing\Ldaplib\CreateLdapLinkMockTrait;
+use Korowai\Testing\Ldaplib\CreateLdapResultMockTrait;
+use Korowai\Testing\Ldaplib\CreateLdapResultReferenceMockTrait;
+use Korowai\Testing\Ldaplib\ExamineCallWithLdapTriggerErrorTrait;
 
 use Korowai\Lib\Ldap\Adapter\ExtLdap\ResultReference;
 use Korowai\Lib\Ldap\ResultReferenceInterface;
@@ -30,7 +34,7 @@ class ResultReferenceTest extends TestCase
     use CreateLdapLinkMockTrait;
     use CreateLdapResultMockTrait;
     use CreateLdapResultReferenceMockTrait;
-    use ExamineMethodWithBackendTriggerErrorTrait;
+    use ExamineCallWithLdapTriggerErrorTrait;
 
     private function examineMethodWithTriggerError(
         string $method,
@@ -44,10 +48,10 @@ class ResultReferenceTest extends TestCase
         $ldapReference = $this->createLdapResultReferenceMock($ldapResult, 'ldap result reference', [$backendMethod]);
         $reference = new ResultReference($ldapReference);
 
-        $this->examineMethodWithBackendTriggerError(
-            $reference,
-            $method,
-            $args,
+        $this->examineCallWithLdapTriggerError(
+            function () use ($reference, $method, $args) : void {
+                $reference->$method(...$args);
+            },
             $ldapReference,
             $backendMethod,
             $args,

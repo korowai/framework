@@ -13,6 +13,9 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Ldap\Adapter\ExtLdap;
 
 use Korowai\Testing\Ldaplib\TestCase;
+use Korowai\Testing\Ldaplib\CreateLdapLinkMockTrait;
+use Korowai\Testing\Ldaplib\ExamineCallWithLdapTriggerErrorTrait;
+
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkFactory;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkFactoryInterface;
@@ -25,7 +28,7 @@ use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkConfigResolverInterface;
 final class LdapLinkFactoryTest extends TestCase
 {
     use CreateLdapLinkMockTrait;
-    use ExamineMethodWithBackendTriggerErrorTrait;
+    use ExamineCallWithLdapTriggerErrorTrait;
 
     //
     //
@@ -230,8 +233,8 @@ final class LdapLinkFactoryTest extends TestCase
 
         $factory = new LdapLinkFactory($constructor, $resolver, []);
 
-        $this->examineMethodWithBackendTriggerError(
-            $factory, 'createLdapLink', [],
+        $this->examineCallWithLdapTriggerError(
+            [$factory, 'createLdapLink'],
             $link, 'start_tls', [],
             $link,
             $config,
@@ -273,8 +276,8 @@ final class LdapLinkFactoryTest extends TestCase
 
         $factory = new LdapLinkFactory($constructor, $resolver, []);
 
-        $this->examineMethodWithBackendTriggerError(
-            $factory, 'createLdapLink', [],
+        $this->examineCallWithLdapTriggerError(
+            [$factory, 'createLdapLink'],
             $link, 'set_option', [LDAP_OPT_PROTOCOL_VERSION, 3],
             $link,
             $config,

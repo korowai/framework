@@ -10,28 +10,28 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Tests\Lib\Ldap\Adapter\ExtLdap;
+namespace Korowai\Testing\Ldaplib;
 
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultEntryInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultInterface;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
 use PHPUnit\Framework\MockObject\MockBuilder;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-trait CreateLdapResultMockTrait
+trait CreateLdapResultEntryMockTrait
 {
     abstract public function getMockBuilder(string $className): MockBuilder;
 
-    private function createLdapResultMock(
-        LdapLinkInterface $ldap = null,
-        $resource = 'ldap result',
+    private function createLdapResultEntryMock(
+        LdapResultInterface $result = null,
+        $resource = 'ldap result entry',
         array $methods = []
-    ) : LdapResultInterface {
-        $builder = $this->getMockBuilder(LdapResultInterface::class);
+    ) : LdapResultEntryInterface {
+        $builder = $this->getMockBuilder(LdapResultEntryInterface::class);
 
-        if ($ldap !== null && !in_array('getLdapLink', $methods)) {
-            $methods[] = 'getLdapLink';
+        if ($result !== null && !in_array('getLdapResult', $methods)) {
+            $methods[] = 'getLdapResult';
         }
 
         if ($resource !== null && !in_array('getResource', $methods)) {
@@ -42,18 +42,17 @@ trait CreateLdapResultMockTrait
 
         $mock = $builder->getMockForAbstractClass();
 
-        if ($ldap !== null) {
+        if ($result !== null) {
             $mock->expects($this->any())
-                   ->method('getLdapLink')
-                   ->with()
-                   ->willReturn($ldap);
+                 ->method('getLdapResult')
+                 ->with()
+                 ->willReturn($result);
         }
-
         if ($resource !== null) {
             $mock->expects($this->any())
-                   ->method('getResource')
-                   ->with()
-                   ->willReturn($resource);
+                 ->method('getResource')
+                 ->with()
+                 ->willReturn($resource);
         }
 
         return $mock;

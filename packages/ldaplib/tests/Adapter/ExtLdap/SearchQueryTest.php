@@ -13,6 +13,9 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Ldap\Adapter\ExtLdap;
 
 use Korowai\Testing\Ldaplib\TestCase;
+use Korowai\Testing\Ldaplib\CreateLdapLinkMockTrait;
+use Korowai\Testing\Ldaplib\ExamineCallWithLdapTriggerErrorTrait;
+
 use Korowai\Lib\Ldap\Adapter\AbstractSearchQuery;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\SearchQuery;
 //use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
@@ -27,11 +30,8 @@ use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
  */
 final class SearchQueryTest extends TestCase
 {
-//    use \phpmock\phpunit\PHPMock;
-//    use GetLdapFunctionMockTrait;
-
     use CreateLdapLinkMockTrait;
-    use ExamineMethodWithBackendTriggerErrorTrait;
+    use ExamineCallWithLdapTriggerErrorTrait;
 
     private function examineMethodWithTriggerError(
         string $method,
@@ -44,10 +44,10 @@ final class SearchQueryTest extends TestCase
         $ldap = $this->createLdapLinkMock('ldap link', ['isValid', 'errno']);
         $query = new SearchQuery($ldap, ...$args);
 
-        $this->examineMethodWithBackendTriggerError(
-            $query,
-            $method,
-            $args,
+        $this->examineCallWithLdapTriggerError(
+            function () use ($query, $method, $args) : void {
+                $query->$method(...$args);
+            },
             $ldap,
             $ldapMethod,
             $ldapArgs,

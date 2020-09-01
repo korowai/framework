@@ -13,6 +13,8 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Ldap\Adapter\ExtLdap;
 
 use Korowai\Testing\Ldaplib\TestCase;
+use Korowai\Testing\Ldaplib\CreateLdapLinkMockTrait;
+use Korowai\Testing\Ldaplib\ExamineCallWithLdapTriggerErrorTrait;
 
 use Korowai\Lib\Ldap\Adapter\ExtLdap\BindingTrait;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
@@ -25,7 +27,7 @@ use Korowai\Lib\Ldap\Exception\LdapException;
 trait BindingTestTrait
 {
     use CreateLdapLinkMockTrait;
-    use ExamineMethodWithBackendTriggerErrorTrait;
+    use ExamineCallWithLdapTriggerErrorTrait;
 
     abstract public function createBindingInstance(
         LdapLinkInterface $ldapLink,
@@ -42,10 +44,10 @@ trait BindingTestTrait
         $ldap = $this->createLdapLinkMock('ldap link', ['isValid', 'errno']);
         $bind = $this->createBindingInstance($ldap);
 
-        $this->examineMethodWithBackendTriggerError(
-            $bind,
-            $method,
-            $args,
+        $this->examineCallWithLdapTriggerError(
+            function () use ($bind, $method, $args) : void {
+                $bind->$method(...$args);
+            },
             $ldap,
             $backendMethod,
             $args,

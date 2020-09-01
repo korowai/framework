@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Ldap\Adapter\ExtLdap;
 
 use Korowai\Testing\Ldaplib\TestCase;
+use Korowai\Testing\Ldaplib\ExamineCallWithMockedLdapFunctionTrait;
 
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLink;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
@@ -30,14 +31,21 @@ final class LdapLinkTest extends TestCase
     use \phpmock\phpunit\PHPMock;
     use GetLdapFunctionMockTrait;
     use MakeArgsForLdapFunctionMockTrait;
-    use ExamineMethodWithMockedLdapFunctionTrait;
+    use ExamineCallWithMockedLdapFunctionTrait;
     use ResourceWrapperTestHelpersTrait;
 
     private function examineLdapMethod(string $method, array &$args, $will, $expect) : void
     {
         $ldap = new LdapLink('ldap link');
 
-        $actual = $this->examineMethodWithMockedLdapFunction($ldap, $method, [$ldap], $args, $will, $expect);
+        $actual = $this->examineCallWithMockedLdapFunction(
+            [$ldap, $method],
+            [$ldap],
+            $args,
+            $will,
+            $expect,
+            "ldap_$method"
+        );
 
         if ($actual instanceof LdapLinkWrapperInterface) {
             $this->assertSame($ldap, $actual->getLdapLink());

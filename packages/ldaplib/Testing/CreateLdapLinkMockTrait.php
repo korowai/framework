@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Tests\Lib\Ldap\Adapter\ExtLdap;
+namespace Korowai\Testing\Ldaplib;
 
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
 use PHPUnit\Framework\MockObject\MockBuilder;
@@ -22,6 +22,12 @@ trait CreateLdapLinkMockTrait
 {
     abstract public function getMockBuilder(string $className): MockBuilder;
 
+    /**
+     * Creates LdapLinkInterface mock.
+     *
+     * @param mixed $resource
+     * @param array $methods Array of method names to be set.
+     */
     private function createLdapLinkMock($resource = 'ldap link', array $methods = []) : LdapLinkInterface
     {
         $builder = $this->getMockBuilder(LdapLinkInterface::class);

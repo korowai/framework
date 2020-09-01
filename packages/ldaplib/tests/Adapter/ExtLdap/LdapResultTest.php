@@ -13,7 +13,8 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Ldap\Adapter\ExtLdap;
 
 use Korowai\Testing\Ldaplib\TestCase;
-use \Phake;
+use Korowai\Testing\Ldaplib\CreateLdapLinkMockTrait;
+use Korowai\Testing\Ldaplib\ExamineCallWithMockedLdapFunctionTrait;
 
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResult;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultInterface;
@@ -34,11 +35,11 @@ final class LdapResultTest extends TestCase
     use \phpmock\phpunit\PHPMock;
     use GetLdapFunctionMockTrait;
     use MakeArgsForLdapFunctionMockTrait;
-    use ExamineMethodWithMockedLdapFunctionTrait;
+    use ExamineCallWithMockedLdapFunctionTrait;
     use ResourceWrapperTestHelpersTrait;
     use CreateLdapLinkMockTrait;
 
-    private function examineMethodWithMockedBackend(
+    private function examineCallWithMockedBackend(
         string $method,
         array &$args,
         $will,
@@ -54,7 +55,14 @@ final class LdapResultTest extends TestCase
             $resources = [$ldap, $result];
         }
 
-        $actual = $this->examineMethodWithMockedLdapFunction($result, $method, $resources, $args, $will, $expect);
+        $actual = $this->examineCallWithMockedLdapFunction(
+            [$result, $method],
+            $resources,
+            $args,
+            $will,
+            $expect,
+            "ldap_$method"
+        );
 
         if ($actual instanceof LdapResultWrapperInterface) {
             $this->assertSame($result, $actual->getLdapResult());
@@ -178,7 +186,7 @@ final class LdapResultTest extends TestCase
      */
     public function test__count_entries__withMockedBackend(array $args, $will, $expect)
     {
-        $this->examineMethodWithMockedBackend('count_entries', $args, $will, $expect);
+        $this->examineCallWithMockedBackend('count_entries', $args, $will, $expect);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -241,7 +249,7 @@ final class LdapResultTest extends TestCase
      */
     public function test__first_entry__withMockedBackend(array $args, $will, $expect)
     {
-        $this->examineMethodWithMockedBackend('first_entry', $args, $will, $expect);
+        $this->examineCallWithMockedBackend('first_entry', $args, $will, $expect);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -281,7 +289,7 @@ final class LdapResultTest extends TestCase
      */
     public function test__first_reference__withMockedBackend(array $args, $will, $expect)
     {
-        $this->examineMethodWithMockedBackend('first_reference', $args, $will, $expect);
+        $this->examineCallWithMockedBackend('first_reference', $args, $will, $expect);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -318,7 +326,7 @@ final class LdapResultTest extends TestCase
      */
     public function test__free_result__withMockedBackend(array $args, $will, $expect)
     {
-        $this->examineMethodWithMockedBackend('free_result', $args, $will, $expect, true);
+        $this->examineCallWithMockedBackend('free_result', $args, $will, $expect, true);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -355,7 +363,7 @@ final class LdapResultTest extends TestCase
      */
     public function test__get_entries__withMockedBackend(array $args, $will, $expect)
     {
-        $this->examineMethodWithMockedBackend('get_entries', $args, $will, $expect);
+        $this->examineCallWithMockedBackend('get_entries', $args, $will, $expect);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -430,7 +438,7 @@ final class LdapResultTest extends TestCase
     public function test__parse_result__withMockedBackend(array $args, $return, $expect, array $values)
     {
         $will = $this->returnCallback(new LdapParseResultClosure($return, $values));
-        $this->examineMethodWithMockedBackend('parse_result', $args, $will, $expect);
+        $this->examineCallWithMockedBackend('parse_result', $args, $will, $expect);
         for ($i = 0; $i < 4; $i++) {
             if (count($args) > $i) {
                 $this->assertSame($values[$i] ?? null, $args[$i]);
@@ -467,7 +475,7 @@ final class LdapResultTest extends TestCase
      */
     public function test__sort__withMockedBackend(array $args, $will, $expect)
     {
-        $this->examineMethodWithMockedBackend('sort', $args, $will, $expect);
+        $this->examineCallWithMockedBackend('sort', $args, $will, $expect);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////

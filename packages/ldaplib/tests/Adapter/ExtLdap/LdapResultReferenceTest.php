@@ -13,6 +13,9 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Ldap\Adapter\ExtLdap;
 
 use Korowai\Testing\Ldaplib\TestCase;
+use Korowai\Testing\Ldaplib\CreateLdapLinkMockTrait;
+use Korowai\Testing\Ldaplib\CreateLdapResultMockTrait;
+use Korowai\Testing\Ldaplib\ExamineCallWithMockedLdapFunctionTrait;
 
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultReference;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultReferenceInterface;
@@ -33,17 +36,26 @@ final class LdapResultReferenceTest extends TestCase
     use CreateLdapLinkMockTrait;
     use CreateLdapResultMockTrait;
     use MakeArgsForLdapFunctionMockTrait;
-    use ExamineMethodWithMockedLdapFunctionTrait;
+    use ExamineCallWithMockedLdapFunctionTrait;
 
-    private function examineLdapMethod(string $method, array $args, $will, $expect, $function = null) : void
+    private function examineLdapMethod(string $method, array $args, $will, $expect, $ldapFunction = null) : void
     {
         $ldap = $this->createLdapLinkMock();
         $result = $this->createLdapResultMock($ldap);
         $entry = new LdapResultReference('ldap result entry', $result);
 
-        $resources = [$ldap, $entry];
+        if ($ldapFunction === null) {
+            $ldapFunction = "ldap_$method";
+        }
 
-        $actual = $this->examineMethodWithMockedLdapFunction($entry, $method, $resources, $args, $will, $expect, $function);
+        $actual = $this->examineCallWithMockedLdapFunction(
+            [$entry, $method],
+            [$ldap, $entry],
+            $args,
+            $will,
+            $expect,
+            $ldapFunction
+        );
 
         if ($actual instanceof LdapResultReferenceWrapperInterface) {
             $this->assertSame($entry, $actual->getLdapResultReference());

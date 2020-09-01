@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Tests\Lib\Ldap\Adapter\ExtLdap;
+namespace Korowai\Testing\Ldaplib;
 
 use Korowai\Lib\Ldap\Exception\LdapException;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
@@ -18,15 +18,13 @@ use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-trait ExamineMethodWithBackendTriggerErrorTrait
+trait ExamineCallWithLdapTriggerErrorTrait
 {
-    private function examineMethodWithBackendTriggerError(
-        object $frontend,
-        string $frontendMethod,
-        array $frontendArgs,
-        object $backendMock,
-        string $backendMethod,
-        array $backendArgs,
+    private function examineCallWithLdapTriggerError(
+        callable $function,
+        object $mock,
+        string $mockMethod,
+        array $mockArgs,
         LdapLinkInterface $ldapLinkMock,
         array $config,
         array $expect
@@ -47,20 +45,20 @@ trait ExamineMethodWithBackendTriggerErrorTrait
         }
 
         $line = __line__ + 5;
-        $backendMock->expects($this->once())
-                     ->method($backendMethod)
-                     ->with(...$backendArgs)
-                     ->willReturnCallback(function () use ($config) {
-                        trigger_error($config['message'], $config['severity']);
-                        return $config['return'];
-                     });
+        $mock->expects($this->once())
+             ->method($mockMethod)
+             ->with(...$mockArgs)
+             ->willReturnCallback(function () use ($config) {
+                trigger_error($config['message'], $config['severity']);
+                return $config['return'];
+             });
 
         $this->expectException($expect['exception']);
         $this->expectExceptionMessage($expect['message']);
         $this->expectExceptionCode($expect['code']);
 
         try {
-            call_user_func_array([$frontend, $frontendMethod], $frontendArgs);
+            call_user_func($function);
         } catch (\ErrorException $exception) {
             $this->assertSame(__file__.':'.$line, $exception->getFile().':'.$exception->getLine());
             $this->assertSame($expect['severity'], $exception->getSeverity());

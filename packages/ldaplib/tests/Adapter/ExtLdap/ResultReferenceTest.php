@@ -17,6 +17,7 @@ use Korowai\Testing\Ldaplib\CreateLdapLinkMockTrait;
 use Korowai\Testing\Ldaplib\CreateLdapResultMockTrait;
 use Korowai\Testing\Ldaplib\CreateLdapResultReferenceMockTrait;
 use Korowai\Testing\Ldaplib\ExamineCallWithLdapTriggerErrorTrait;
+use Korowai\Testing\Ldaplib\GetLdapFunctionMockTrait;
 
 use Korowai\Lib\Ldap\Adapter\ExtLdap\ResultReference;
 use Korowai\Lib\Ldap\ResultReferenceInterface;
@@ -144,7 +145,7 @@ class ResultReferenceTest extends TestCase
 
     public static function prov__getReferrals__withTriggerError() : array
     {
-        return static::feedMethodWithBackendTriggerError();
+        return static::feedCallWithLdapTriggerError();
     }
 
     /**
@@ -212,7 +213,7 @@ class ResultReferenceTest extends TestCase
 
     public static function prov__getReferralIterator__withTriggerError() : array
     {
-        return static::feedMethodWithBackendTriggerError();
+        return static::feedCallWithLdapTriggerError();
     }
 
     /**

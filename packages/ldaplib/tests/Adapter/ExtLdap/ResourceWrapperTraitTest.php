@@ -13,6 +13,8 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Ldap\Adapter\ExtLdap;
 
 use Korowai\Testing\Ldaplib\TestCase;
+use Korowai\Testing\Ldaplib\GetLdapFunctionMockTrait;
+
 use Korowai\Lib\Ldap\Adapter\ExtLdap\ResourceWrapperTrait;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\ResourceWrapperInterface;
 

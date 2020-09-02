@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Tests\Lib\Ldap\Adapter\ExtLdap;
+namespace Korowai\Testing\Ldaplib;
 
 use Korowai\Lib\Ldap\Adapter\ExtLdap\ResourceWrapperInterface;
 

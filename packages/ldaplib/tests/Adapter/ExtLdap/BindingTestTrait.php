@@ -105,7 +105,7 @@ trait BindingTestTrait
 
     public static function prov__bind__withTriggerError() : array
     {
-        return static::feedMethodWithBackendTriggerError();
+        return static::feedCallWithLdapTriggerError();
     }
 
     /**
@@ -189,7 +189,7 @@ trait BindingTestTrait
 
     public static function prov__unbind__withTriggerError() : array
     {
-        return static::feedMethodWithBackendTriggerError();
+        return static::feedCallWithLdapTriggerError();
     }
 
     /**

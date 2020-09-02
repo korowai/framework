@@ -13,6 +13,9 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Ldap\Adapter\ExtLdap;
 
 use Korowai\Testing\Ldaplib\TestCase;
+use Korowai\Testing\Ldaplib\MakeArgsForLdapFunctionMockTrait;
+use Korowai\Testing\Ldaplib\GetLdapFunctionMockTrait;
+
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkConstructor;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkConstructorInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLink;

@@ -174,7 +174,7 @@ final class ResultTest extends TestCase
 
     public static function prov__getResultEntries__withTriggerError()
     {
-        return static::feedMethodWithBackendTriggerError();
+        return static::feedCallWithLdapTriggerError();
     }
 
     /**
@@ -262,7 +262,7 @@ final class ResultTest extends TestCase
 
     public static function prov__getResultReferences__withTriggerError()
     {
-        return static::feedMethodWithBackendTriggerError();
+        return static::feedCallWithLdapTriggerError();
     }
 
     /**

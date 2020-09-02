@@ -149,7 +149,7 @@ final class ResultEntryTest extends TestCase
 
     public static function prov__getDn__withTriggerError() : array
     {
-        return static::feedMethodWithBackendTriggerError();
+        return static::feedCallWithLdapTriggerError();
     }
 
     /**
@@ -235,7 +235,7 @@ final class ResultEntryTest extends TestCase
 
     public static function prov__getAttributes__withTriggerError() : array
     {
-        return static::feedMethodWithBackendTriggerError();
+        return static::feedCallWithLdapTriggerError();
     }
 
     /**
@@ -289,7 +289,7 @@ final class ResultEntryTest extends TestCase
 
     public static function prov__getAttributeIterator__withTriggerError() : array
     {
-        return static::feedMethodWithBackendTriggerError();
+        return static::feedCallWithLdapTriggerError();
     }
 
     /**

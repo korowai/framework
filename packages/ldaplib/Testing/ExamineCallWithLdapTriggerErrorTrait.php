@@ -66,7 +66,7 @@ trait ExamineCallWithLdapTriggerErrorTrait
         }
     }
 
-    public static function feedMethodWithBackendTriggerError() : array
+    public static function feedCallWithLdapTriggerError() : array
     {
         return [
             // #0

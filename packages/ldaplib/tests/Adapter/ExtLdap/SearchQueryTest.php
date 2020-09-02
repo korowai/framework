@@ -200,7 +200,7 @@ final class SearchQueryTest extends TestCase
 
     public static function prov__execute__withTriggerError() : array
     {
-        return static::feedMethodWithBackendTriggerError();
+        return static::feedCallWithLdapTriggerError();
     }
 
     /**
@@ -311,7 +311,7 @@ final class SearchQueryTest extends TestCase
 
     public static function prov__getResult__withTriggerError() : array
     {
-        return static::feedMethodWithBackendTriggerError();
+        return static::feedCallWithLdapTriggerError();
     }
 
     /**

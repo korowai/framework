@@ -201,7 +201,7 @@ final class LdapLinkFactoryTest extends TestCase
 
     public static function prov__createLdapLink__whenStartTlsTriggersError() : array
     {
-        return static::feedMethodWithBackendTriggerError();
+        return static::feedCallWithLdapTriggerError();
     }
 
     /**
@@ -244,7 +244,7 @@ final class LdapLinkFactoryTest extends TestCase
 
     public static function prov__createLdapLink__whenSetOptionTriggersError() : array
     {
-        return static::feedMethodWithBackendTriggerError();
+        return static::feedCallWithLdapTriggerError();
     }
 
     /**

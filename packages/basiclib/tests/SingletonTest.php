@@ -36,8 +36,9 @@ class Singleton76YO7MV5
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers Korowai\Lib\Basic\Singleton
  */
-class SingletonTest extends TestCase
+final class SingletonTest extends TestCase
 {
     use SingletonTestTrait;
 

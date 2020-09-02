@@ -19,8 +19,9 @@ use Korowai\Lib\Context\ContextManagerInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Context\TrivialValueWrapper
  */
-class TrivialValueWrapperTest extends TestCase
+final class TrivialValueWrapperTest extends TestCase
 {
     public function test__implements__ContextManagerInterface()
     {

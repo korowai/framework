@@ -21,16 +21,22 @@ use Korowai\Lib\Context\TrivialValueWrapper;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class functionsTest extends TestCase
+final class functionsTest extends TestCase
 {
-    public function test__withoutArgs()
+    /**
+     * @covers \Korowai\Lib\Context\with
+     */
+    public function test__with__withoutArgs()
     {
         $executor = with();
         $this->assertInstanceOf(WithContextExecutor::class, $executor);
         $this->assertEquals([], $executor->getContext());
     }
 
-    public function test__withArgs()
+    /**
+     * @covers \Korowai\Lib\Context\with
+     */
+    public function test__with__withArgs()
     {
         $executor = with('foo', 'bar');
         $this->assertInstanceOf(WithContextExecutor::class, $executor);

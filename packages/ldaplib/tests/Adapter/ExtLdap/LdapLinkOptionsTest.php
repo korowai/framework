@@ -20,6 +20,7 @@ use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkOptions
  */
 final class LdapLinkOptionsTest extends TestCase
 {

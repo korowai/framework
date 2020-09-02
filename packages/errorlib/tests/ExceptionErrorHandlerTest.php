@@ -22,8 +22,9 @@ use function Korowai\Lib\Context\with;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Error\ExceptionErrorHandler
  */
-class ExceptionErrorHandlerTest extends TestCase
+final class ExceptionErrorHandlerTest extends TestCase
 {
     use \phpmock\phpunit\PHPMock;
 

@@ -20,8 +20,9 @@ use function Korowai\Lib\Context\with;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Error\CallerExceptionErrorHandler
  */
-class CallerExceptionErrorHandlerTest extends TestCase
+final class CallerExceptionErrorHandlerTest extends TestCase
 {
     protected function createHandler(...$args)
     {

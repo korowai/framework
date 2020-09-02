@@ -51,8 +51,9 @@ class ContextJG8MG9JQ extends BaseContextOLESLFOV
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Context\ClassContextFactory
  */
-class ClassContextFactoryTest extends TestCase
+final class ClassContextFactoryTest extends TestCase
 {
     public function test__extends__AbstractManagedContextFactory()
     {

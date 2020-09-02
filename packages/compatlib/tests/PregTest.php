@@ -19,8 +19,9 @@ use Korowai\Lib\Compat\Preg;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers Korowai\Lib\Compat\Preg
  */
-class PregTest extends TestCase
+final class PregTest extends TestCase
 {
     public function test__getPregErrorConst()
     {

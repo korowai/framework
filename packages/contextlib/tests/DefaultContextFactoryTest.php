@@ -22,8 +22,9 @@ use Korowai\Lib\Context\TrivialValueWrapper;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Context\DefaultContextFactory
  */
-class DefaultContextFactoryTest extends TestCase
+final class DefaultContextFactoryTest extends TestCase
 {
     use \phpmock\phpunit\PHPMock;
     use \Korowai\Testing\Basiclib\SingletonTestTrait;

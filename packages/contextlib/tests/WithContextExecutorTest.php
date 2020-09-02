@@ -24,8 +24,9 @@ class ExceptionEB3IB4EL extends \Exception
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Context\WithContextExecutor
  */
-class WithContextExecutorTest extends TestCase
+final class WithContextExecutorTest extends TestCase
 {
     public function test__implements__ExecutorInterface()
     {

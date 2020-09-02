@@ -19,6 +19,7 @@ use Korowai\Lib\Ldap\Exception\AttributeException;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Ldap\Entry
  */
 class EntryTest extends TestCase
 {

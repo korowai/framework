@@ -16,6 +16,7 @@ use Korowai\Testing\Ldaplib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Testing\Ldaplib\TestCase
  */
 class TestCaseTest extends TestCase
 {

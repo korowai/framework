@@ -29,6 +29,7 @@ use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultItemTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultEntry
  */
 final class LdapResultEntryTest extends TestCase
 {

@@ -20,6 +20,7 @@ use Korowai\Lib\Ldap\ResultItemIteratorInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Ldap\Adapter\ExtLdap\AbstractResultItemIterator
  */
 final class AbstractResultItemIteratorTest extends TestCase
 {

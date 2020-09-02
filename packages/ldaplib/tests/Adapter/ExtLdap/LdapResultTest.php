@@ -31,6 +31,7 @@ use PHPUnit\Framework\MockObject\Stub\Stub;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResult
  */
 final class LdapResultTest extends TestCase
 {

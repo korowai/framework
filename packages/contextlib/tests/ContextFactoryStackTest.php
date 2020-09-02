@@ -21,8 +21,9 @@ use Korowai\Lib\Context\ContextManagerInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Context\ContextFactoryStack
  */
-class ContextFactoryStackTest extends TestCase
+final class ContextFactoryStackTest extends TestCase
 {
     use \Korowai\Testing\Basiclib\SingletonTestTrait;
 
@@ -66,13 +67,16 @@ class ContextFactoryStackTest extends TestCase
         $this->assertImplementsInterface(ContextFactoryInterface::class, ContextFactoryStack::class);
     }
 
+    /**
+     * Need to run separate process to deal with a fresh singleton instance.
+     * @runInSeparateProcess
+     */
     public function test__basicStackMethods()
     {
         $f0 = $this->getDummyContextFactory();
         $f1 = $this->getDummyContextFactory();
 
         $stack = ContextFactoryStack::getInstance();
-        $stack->clean();
 
         $this->assertEquals(0, $stack->size());
         $this->assertNull($stack->top());
@@ -93,16 +97,29 @@ class ContextFactoryStackTest extends TestCase
 
         $this->assertSame($f0, $stack->pop());
         $this->assertEquals(0, $stack->size());
+
+        $stack->push($f0);
+        $stack->push($f1);
+        $this->assertEquals(2, $stack->size());
+        $stack->clean();
+        $this->assertEquals(0, $stack->size());
     }
 
+    /**
+     * Need to run separate process to deal with a fresh singleton instance.
+     * @runInSeparateProcess
+     */
     public function test__getContextManager__onEmptyStack()
     {
         $stack = ContextFactoryStack::getInstance();
-        $stack->clean();
 
         $this->assertNull($stack->getContextManager('an argument'));
     }
 
+    /**
+     * Need to run separate process to deal with a fresh singleton instance.
+     * @runInSeparateProcess
+     */
     public function test__getContextManager()
     {
         $cm0 = $this->getDummyContextManager();
@@ -126,7 +143,6 @@ class ContextFactoryStackTest extends TestCase
            ->willReturn(null);
 
         $stack = ContextFactoryStack::getInstance();
-        $stack->clean();
 
         $stack->push($f0);
         $this->assertSame($cm0, $stack->getContextManager('foo'));

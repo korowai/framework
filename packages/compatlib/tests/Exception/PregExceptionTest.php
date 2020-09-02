@@ -18,6 +18,7 @@ use Korowai\Lib\Compat\Exception\PregException;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Compat\Exception\PregException
  */
 class PregExceptionTest extends TestCase
 {

@@ -19,6 +19,7 @@ use Korowai\Lib\Ldap\ResultReferralIteratorInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Ldap\Adapter\ExtLdap\ResultReferralIterator
  */
 class ResultReferralIteratorTest extends TestCase
 {

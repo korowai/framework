@@ -23,6 +23,7 @@ use Korowai\Lib\Ldap\EntryInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Ldap\Adapter\AbstractResult
  */
 class AbstractResultTest extends TestCase
 {

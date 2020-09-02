@@ -19,8 +19,9 @@ use Korowai\Lib\Error\AbstractManagedErrorHandler;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Error\ErrorHandler
  */
-class ErrorHandlerTest extends TestCase
+final class ErrorHandlerTest extends TestCase
 {
     public function test__extends__AbstractManagedErrorHandler()
     {

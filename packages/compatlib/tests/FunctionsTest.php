@@ -30,6 +30,9 @@ use function Korowai\Lib\Compat\preg_split;
  */
 class FunctionsTest extends TestCase
 {
+    /**
+     * @covers \Korowai\Lib\Compat\preg_filter
+     */
     public function test__preg_filter()
     {
         $this->assertSame('foo bar', preg_filter('/baz/', 'bar', 'foo baz'));
@@ -40,6 +43,9 @@ class FunctionsTest extends TestCase
         $this->assertSame(1, $count);
     }
 
+    /**
+     * @covers \Korowai\Lib\Compat\preg_filter
+     */
     public function test__preg_filter__triggeredError()
     {
         $this->expectException(PregException::class);
@@ -55,6 +61,9 @@ class FunctionsTest extends TestCase
         }
     }
 
+    /**
+     * @covers \Korowai\Lib\Compat\preg_filter
+     */
     public function test__preg_filter__returnedError()
     {
         $this->expectException(PregException::class);
@@ -70,12 +79,18 @@ class FunctionsTest extends TestCase
         }
     }
 
+    /**
+     * @covers \Korowai\Lib\Compat\preg_grep
+     */
     public function test__preg_grep()
     {
         $this->assertSame([1 => 'foo baz'], preg_grep('/baz/', ['bar', 'foo baz']));
         $this->assertSame([0 => 'bar'], preg_grep('/baz/', ['bar', 'foo baz'], PREG_GREP_INVERT));
     }
 
+    /**
+     * @covers \Korowai\Lib\Compat\preg_grep
+     */
     public function test__preg_grep__triggeredError()
     {
         $this->expectException(PregException::class);
@@ -91,6 +106,9 @@ class FunctionsTest extends TestCase
         }
     }
 
+    /**
+     * @covers \Korowai\Lib\Compat\preg_grep
+     */
     public function test__preg_grep__returnedError()
     {
         $this->expectException(PregException::class);
@@ -106,6 +124,9 @@ class FunctionsTest extends TestCase
         }
     }
 
+    /**
+     * @covers \Korowai\Lib\Compat\preg_match
+     */
     public function test__preg_match()
     {
         $this->assertSame(1, preg_match('/bar/', 'foo bar baz bar'));
@@ -123,6 +144,9 @@ class FunctionsTest extends TestCase
         $this->assertSame(0, preg_match('/b(a)r/', 'foo bar baz', $matches, PREG_OFFSET_CAPTURE, 5));
     }
 
+    /**
+     * @covers \Korowai\Lib\Compat\preg_match
+     */
     public function test__preg_match__triggeredError()
     {
         $this->expectException(PregException::class);
@@ -138,6 +162,9 @@ class FunctionsTest extends TestCase
         }
     }
 
+    /**
+     * @covers \Korowai\Lib\Compat\preg_match
+     */
     public function test__preg_match__returnedError()
     {
         $this->expectException(PregException::class);
@@ -153,6 +180,9 @@ class FunctionsTest extends TestCase
         }
     }
 
+    /**
+     * @covers \Korowai\Lib\Compat\preg_match_all
+     */
     public function test__preg_match_all()
     {
         $this->assertSame(2, preg_match_all('/bar/', 'foo bar baz bar'));
@@ -172,6 +202,9 @@ class FunctionsTest extends TestCase
         $this->assertSame([[['bar', 12]], [['a',13]]], $matches);
     }
 
+    /**
+     * @covers \Korowai\Lib\Compat\preg_match_all
+     */
     public function test__preg_match_all__triggeredError()
     {
         $this->expectException(PregException::class);
@@ -187,6 +220,9 @@ class FunctionsTest extends TestCase
         }
     }
 
+    /**
+     * @covers \Korowai\Lib\Compat\preg_match_all
+     */
     public function test__preg_match_all__returnedError()
     {
         $this->expectException(PregException::class);
@@ -202,6 +238,9 @@ class FunctionsTest extends TestCase
         }
     }
 
+    /**
+     * @covers \Korowai\Lib\Compat\preg_replace
+     */
     public function test__preg_replace()
     {
         $this->assertSame('foo bar', preg_replace('/baz/', 'bar', 'foo baz'));
@@ -211,6 +250,9 @@ class FunctionsTest extends TestCase
         $this->assertSame(1, $count);
     }
 
+    /**
+     * @covers \Korowai\Lib\Compat\preg_replace
+     */
     public function test__preg_replace__triggeredError()
     {
         $this->expectException(PregException::class);
@@ -226,6 +268,9 @@ class FunctionsTest extends TestCase
         }
     }
 
+    /**
+     * @covers \Korowai\Lib\Compat\preg_replace
+     */
     public function test__preg_replace__returnedError()
     {
         $this->expectException(PregException::class);
@@ -241,6 +286,9 @@ class FunctionsTest extends TestCase
         }
     }
 
+    /**
+     * @covers \Korowai\Lib\Compat\preg_replace_callback
+     */
     public function test__preg_replace_callback()
     {
         $cb = function (array $matches) : string {
@@ -253,6 +301,9 @@ class FunctionsTest extends TestCase
         $this->assertSame(1, $count);
     }
 
+    /**
+     * @covers \Korowai\Lib\Compat\preg_replace_callback
+     */
     public function test__preg_replace_callback__triggeredError()
     {
         $this->expectException(PregException::class);
@@ -271,6 +322,9 @@ class FunctionsTest extends TestCase
         }
     }
 
+    /**
+     * @covers \Korowai\Lib\Compat\preg_replace_callback
+     */
     public function test__preg_replace_callback__returnedError()
     {
         $this->expectException(PregException::class);
@@ -289,6 +343,9 @@ class FunctionsTest extends TestCase
         }
     }
 
+    /**
+     * @covers \Korowai\Lib\Compat\preg_replace_callback_array
+     */
     public function test__preg_replace_callback_array()
     {
         $pac = ['/baz/' => function (array $matches) : string {
@@ -301,6 +358,9 @@ class FunctionsTest extends TestCase
         $this->assertSame(1, $count);
     }
 
+    /**
+     * @covers \Korowai\Lib\Compat\preg_replace_callback_array
+     */
     public function test__preg_replace_callback_array__triggeredError()
     {
         $this->expectException(PregException::class);
@@ -319,6 +379,9 @@ class FunctionsTest extends TestCase
         }
     }
 
+    /**
+     * @covers \Korowai\Lib\Compat\preg_replace_callback_array
+     */
     public function test__preg_replace_callback_array__returnedError()
     {
         $this->expectException(PregException::class);
@@ -337,6 +400,9 @@ class FunctionsTest extends TestCase
         }
     }
 
+    /**
+     * @covers \Korowai\Lib\Compat\preg_split
+     */
     public function test__preg_split()
     {
         $this->assertSame(['foo', 'bar', '', 'baz'], preg_split('/ /', 'foo bar  baz'));
@@ -345,6 +411,9 @@ class FunctionsTest extends TestCase
         $this->assertSame(['foo', 'bar', 'baz'], preg_split('/ /', 'foo bar  baz', -1, PREG_SPLIT_NO_EMPTY));
     }
 
+    /**
+     * @covers \Korowai\Lib\Compat\preg_split
+     */
     public function test__preg_split__triggeredError()
     {
         $this->expectException(PregException::class);
@@ -360,6 +429,9 @@ class FunctionsTest extends TestCase
         }
     }
 
+    /**
+     * @covers \Korowai\Lib\Compat\preg_split
+     */
     public function test__preg_split__returnedError()
     {
         $this->expectException(PregException::class);

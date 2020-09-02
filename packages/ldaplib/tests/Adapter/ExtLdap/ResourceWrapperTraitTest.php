@@ -20,6 +20,7 @@ use Korowai\Lib\Ldap\Adapter\ExtLdap\ResourceWrapperInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Ldap\Adapter\ExtLdap\ResourceWrapperTrait
  */
 final class ResourceWrapperTraitTest extends TestCase
 {

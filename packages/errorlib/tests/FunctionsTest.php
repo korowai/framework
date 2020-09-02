@@ -28,13 +28,19 @@ use function Korowai\Lib\Error\callerExceptionErrorHandler;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class FunctionsTest extends TestCase
+final class FunctionsTest extends TestCase
 {
+    /**
+     * @covers \Korowai\Lib\Error\emptyErrorHandler
+     */
     public function test__emptyErrorHandler()
     {
         $this->assertInstanceof(EmptyErrorHandler::class, emptyErrorHandler());
     }
 
+    /**
+     * @covers \Korowai\Lib\Error\errorHandler
+     */
     public function test__errorHandler__withCallable()
     {
         $func = function () {
@@ -45,6 +51,9 @@ class FunctionsTest extends TestCase
         $this->assertEquals(E_ALL | E_STRICT, $handler->getErrorTypes());
     }
 
+    /**
+     * @covers \Korowai\Lib\Error\errorHandler
+     */
     public function test__errorHandler__withCallableAndErrorTypes()
     {
         $func = function () {
@@ -55,6 +64,9 @@ class FunctionsTest extends TestCase
         $this->assertEquals(E_USER_ERROR, $handler->getErrorTypes());
     }
 
+    /**
+     * @covers \Korowai\Lib\Error\exceptionErrorHandler
+     */
     public function test__exceptionErrorHandler__withoutArgs()
     {
         $handler = exceptionErrorHandler();
@@ -79,6 +91,9 @@ class FunctionsTest extends TestCase
         }
     }
 
+    /**
+     * @covers \Korowai\Lib\Error\exceptionErrorHandler
+     */
     public function test__exceptionErrorHandler__withClass()
     {
         $handler = exceptionErrorHandler(ExceptionA98DB973::class);
@@ -103,6 +118,9 @@ class FunctionsTest extends TestCase
         }
     }
 
+    /**
+     * @covers \Korowai\Lib\Error\exceptionErrorHandler
+     */
     public function test__exceptionErrorHandler__withClassAndErrorTypes()
     {
         $handler = exceptionErrorHandler(ExceptionA98DB973::class, E_USER_NOTICE);
@@ -127,6 +145,9 @@ class FunctionsTest extends TestCase
         }
     }
 
+    /**
+     * @covers \Korowai\Lib\Error\exceptionErrorHandler
+     */
     public function test__exceptionErrorHandler__withCallable()
     {
         $func = function (int $severity, string $message, string $file, int $line) {
@@ -150,6 +171,9 @@ class FunctionsTest extends TestCase
         }
     }
 
+    /**
+     * @covers \Korowai\Lib\Error\exceptionErrorHandler
+     */
     public function test__exceptionErrorHandler__withCallableAndErrorTypes()
     {
         $func = function (int $severity, string $message, string $file, int $line) {
@@ -173,6 +197,9 @@ class FunctionsTest extends TestCase
         }
     }
 
+    /**
+     * @covers \Korowai\Lib\Error\callerErrorHandler
+     */
     public function test__callerErrorHandler__withCallable()
     {
         $func = function () {
@@ -188,6 +215,9 @@ class FunctionsTest extends TestCase
         $this->assertSame($func, $handler->getErrorHandler());
     }
 
+    /**
+     * @covers \Korowai\Lib\Error\callerErrorHandler
+     */
     public function test__callerErrorHandler__withCallableAndDistance()
     {
         $func = function () {
@@ -203,6 +233,9 @@ class FunctionsTest extends TestCase
         $this->assertSame($func, $handler->getErrorHandler());
     }
 
+    /**
+     * @covers \Korowai\Lib\Error\callerErrorHandler
+     */
     public function test__callerErrorHandler__withCallableDistanceAndErrorTypes()
     {
         $func = function () {
@@ -218,6 +251,9 @@ class FunctionsTest extends TestCase
         $this->assertSame($func, $handler->getErrorHandler());
     }
 
+    /**
+     * @covers \Korowai\Lib\Error\callerExceptionErrorHandler
+     */
     public function test__callerExceptionErrorHandler__withCallable()
     {
         $generator = function () {
@@ -233,6 +269,9 @@ class FunctionsTest extends TestCase
         $this->assertEquals(E_ALL | E_STRICT, $handler->getErrorTypes());
     }
 
+    /**
+     * @covers \Korowai\Lib\Error\callerExceptionErrorHandler
+     */
     public function test__callerExceptionErrorHandler__withCallableAndDistance()
     {
         $generator = function () {
@@ -248,6 +287,9 @@ class FunctionsTest extends TestCase
         $this->assertEquals(E_ALL | E_STRICT, $handler->getErrorTypes());
     }
 
+    /**
+     * @covers \Korowai\Lib\Error\callerExceptionErrorHandler
+     */
     public function test__callerExceptionErrorHandler__withCallableAndErrorTypes()
     {
         $generator = function () {
@@ -263,6 +305,9 @@ class FunctionsTest extends TestCase
         $this->assertEquals(123, $handler->getErrorTypes());
     }
 
+    /**
+     * @covers \Korowai\Lib\Error\callerExceptionErrorHandler
+     */
     public function test__callerExceptionErrorHandler__withClass()
     {
         $caller_line = __line__ + 1;
@@ -284,6 +329,9 @@ class FunctionsTest extends TestCase
         $this->assertEquals(456, $exception->getLine());
     }
 
+    /**
+     * @covers \Korowai\Lib\Error\callerExceptionErrorHandler
+     */
     public function test__callerExceptionErrorHandler__withClassAndDistance()
     {
         $caller_line = __line__ + 1;
@@ -305,6 +353,9 @@ class FunctionsTest extends TestCase
         $this->assertEquals(456, $exception->getLine());
     }
 
+    /**
+     * @covers \Korowai\Lib\Error\callerExceptionErrorHandler
+     */
     public function test__callerExceptionErrorHandler__withClassDistanceAndErrorTypes()
     {
         $caller_line = __line__ + 1;
@@ -328,6 +379,9 @@ class FunctionsTest extends TestCase
         }
     }
 
+    /**
+     * @covers \Korowai\Lib\Error\callerExceptionErrorHandler
+     */
     public function test__callerExceptionErrorHandler__withNullAndDistance()
     {
         $caller_line = __line__ + 1;

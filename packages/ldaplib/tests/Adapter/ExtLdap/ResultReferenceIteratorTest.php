@@ -22,6 +22,7 @@ use Korowai\Lib\Ldap\ResultReferenceIteratorInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Ldap\Adapter\ExtLdap\ResultReferenceIterator
  */
 final class ResultReferenceIteratorTest extends TestCase
 {

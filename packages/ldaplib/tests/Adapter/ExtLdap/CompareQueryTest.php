@@ -22,6 +22,7 @@ use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkWrapperInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Ldap\Adapter\ExtLdap\CompareQuery
  */
 class CompareQueryTest extends TestCase
 {

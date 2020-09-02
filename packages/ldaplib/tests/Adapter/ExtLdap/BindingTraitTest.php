@@ -20,6 +20,7 @@ use Korowai\Lib\Ldap\BindingInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Ldap\Adapter\ExtLdap\BindingTrait
  */
 final class BindingTraitTest extends TestCase
 {

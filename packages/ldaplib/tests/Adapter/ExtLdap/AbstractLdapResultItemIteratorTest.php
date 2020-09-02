@@ -24,6 +24,7 @@ use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Ldap\Adapter\ExtLdap\AbstractLdapResultItemIterator
  */
 final class AbstractLdapResultItemIteratorTest extends TestCase
 {

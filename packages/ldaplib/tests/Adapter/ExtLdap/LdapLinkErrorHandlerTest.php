@@ -26,6 +26,7 @@ use Korowai\Lib\Error\AbstractManagedErrorHandler;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkErrorHandler
  */
 final class LdapLinkErrorHandlerTest extends TestCase
 {

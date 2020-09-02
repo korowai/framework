@@ -15,7 +15,7 @@ namespace Korowai\Lib\Context;
 /**
  * A context manager that wraps a PHP resource.
  */
-class ResourceContextManager implements ContextManagerInterface
+final class ResourceContextManager implements ContextManagerInterface
 {
     const DEFAULT_RESOURCE_DESTRUCTORS = [
         'bzip2' => '\\bzclose',
@@ -124,6 +124,7 @@ class ResourceContextManager implements ContextManagerInterface
         'zlib.deflate' => null,
         'zlib.inflate' => null
     ];
+
     /**
      * @var resource
      */
@@ -162,48 +163,42 @@ class ResourceContextManager implements ContextManagerInterface
     {
         $resource = $this->getResource();
         if (is_resource($resource)) {
-            $this->destroyResource($resource);
+            self::destroyResource($resource);
         }
         return false;
     }
 
-    protected function destroyResource($resource)
+    public static function getResourceDestructor($resource)
     {
-        $dtor = $this->getResourceDestructor($resource);
+        $type = get_resource_type($resource);
+        $func = self::DEFAULT_RESOURCE_DESTRUCTORS[$type] ?? null;
+        if (is_string($func) && substr($func, 0, 2) === '->') {
+            $method = substr($func, 2);
+            return self::mkObjectResourceDestructor($method);
+        } elseif ($type === 'stream' && is_null($func)) {
+            return self::getStreamResourceDestructor($resource);
+        } else {
+            return $func;
+        }
+    }
+
+    private static function destroyResource($resource)
+    {
+        $dtor = self::getResourceDestructor($resource);
         if ($dtor === null) {
             return null;
         }
         return call_user_func($dtor, $resource);
     }
 
-    public function getResourceDestructor($resource)
+    private static function mkObjectResourceDestructor(string $method)
     {
-        $type = get_resource_type($resource);
-        $func = self::DEFAULT_RESOURCE_DESTRUCTORS[$type] ?? null;
-        if (is_string($func) && substr($func, 0, 2) === '->') {
-            $method = substr($func, 2);
-            return $this->mkObjectResourceDestructor($resource, $method);
-        } elseif ($type === 'stream' && is_null($func)) {
-            return $this->getStreamResourceDestructor($resource);
-        } else {
-            return $func;
-        }
+        return function (object $resource) use ($method) {
+            return call_user_func([$resource, $method]);
+        };
     }
 
-    protected function mkObjectResourceDestructor($resource, string $method)
-    {
-        if (PHP_VERSION_ID >= 70200) {
-            return function (object $resource) use ($method) {
-                return call_user_func([$resource, $method]);
-            };
-        } else {
-            return function ($resource) use ($method) {
-                return call_user_func([$resource, $method]);
-            };
-        }
-    }
-
-    protected function getStreamResourceDestructor($resource)
+    private static function getStreamResourceDestructor($resource)
     {
         $meta = stream_get_meta_data($resource);
         if ($meta['stream_type'] === 'dir') {

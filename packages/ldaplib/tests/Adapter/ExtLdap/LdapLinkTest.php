@@ -27,6 +27,7 @@ use PHPUnit\Framework\MockObject\Stub\Stub;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLink
  */
 final class LdapLinkTest extends TestCase
 {

@@ -22,8 +22,9 @@ use Korowai\Lib\Context\ContextFactoryStack;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Context\AbstractManagedContextFactory
  */
-class AbstractManagedContextFactoryTest extends TestCase
+final class AbstractManagedContextFactoryTest extends TestCase
 {
     public function test__implements__ContextFactoryInterface()
     {

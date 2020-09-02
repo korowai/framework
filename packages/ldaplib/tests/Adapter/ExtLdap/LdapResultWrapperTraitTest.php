@@ -19,6 +19,7 @@ use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultWrapperInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultWrapperTrait
  */
 final class LdapResultWrapperTraitTest extends TestCase
 {

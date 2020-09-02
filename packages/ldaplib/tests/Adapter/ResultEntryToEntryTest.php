@@ -18,6 +18,7 @@ use Korowai\Lib\Ldap\Entry;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Ldap\Adapter\ResultEntryToEntry
  */
 class ResultEntryToEntryTest extends TestCase
 {

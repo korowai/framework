@@ -31,6 +31,7 @@ use Korowai\Lib\Ldap\Adapter\ExtLdap\EntryManagerTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Ldap\Ldap
  */
 final class LdapTest extends TestCase
 {

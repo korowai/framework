@@ -21,6 +21,7 @@ use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkFactoryInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Ldap\LdapFactory
  */
 final class LdapFactoryTest extends TestCase
 {

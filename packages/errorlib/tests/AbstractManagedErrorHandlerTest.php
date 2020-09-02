@@ -20,8 +20,9 @@ use Korowai\Lib\Context\ContextManagerInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Error\AbstractManagedErrorHandler
  */
-class AbstractManagedErrorHandlerTest extends TestCase
+final class AbstractManagedErrorHandlerTest extends TestCase
 {
     use \phpmock\phpunit\PHPMock;
 

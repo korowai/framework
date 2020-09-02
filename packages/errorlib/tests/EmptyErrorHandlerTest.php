@@ -20,8 +20,9 @@ use Korowai\Lib\Context\ContextManagerInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Error\EmptyErrorHandler
  */
-class EmptyErrorHandlerTest extends TestCase
+final class EmptyErrorHandlerTest extends TestCase
 {
     use \Korowai\Testing\Basiclib\SingletonTestTrait;
 

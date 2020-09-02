@@ -20,6 +20,7 @@ use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultEntryInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultEntryIterator
  */
 final class LdapResultEntryIteratorTest extends TestCase
 {

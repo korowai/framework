@@ -21,6 +21,7 @@ use Korowai\Lib\Ldap\ResultAttributeIteratorInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Ldap\Adapter\ExtLdap\ResultAttributeIterator
  */
 class ResultAttributeIteratorTest extends TestCase
 {

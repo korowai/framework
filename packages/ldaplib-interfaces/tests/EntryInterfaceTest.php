@@ -189,7 +189,7 @@ final class EntryInterfaceTest extends TestCase
         $this->assertSame($dummy->setAttribute, $dummy->setAttribute('', []));
     }
 
-    public function setAttribute__withArgTypeError__cases()
+    public function prov__setAttribute__withArgTypeError()
     {
         return [
             [[null, []], \string::class],
@@ -198,7 +198,7 @@ final class EntryInterfaceTest extends TestCase
     }
 
     /**
-     * @dataProvider setAttribute__withArgTypeError__cases
+     * @dataProvider prov__setAttribute__withArgTypeError
      */
     public function test__setAttribute__withArgTypeError(array $args, string $message)
     {

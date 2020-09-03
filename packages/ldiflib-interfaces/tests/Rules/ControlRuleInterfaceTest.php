@@ -31,7 +31,7 @@ final class ControlRuleInterfaceTest extends TestCase
         };
     }
 
-    public static function extendsInterface__cases()
+    public static function prov__extendsInterface()
     {
         return [
             [RuleInterface::class],
@@ -39,7 +39,7 @@ final class ControlRuleInterfaceTest extends TestCase
     }
 
     /**
-     * @dataProvider extendsInterface__cases
+     * @dataProvider prov__extendsInterface
      */
     public function test__extendsInterface(string $extends)
     {

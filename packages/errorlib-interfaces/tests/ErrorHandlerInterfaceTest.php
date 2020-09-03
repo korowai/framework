@@ -51,7 +51,7 @@ final class ErrorHandlerInterfaceTest extends TestCase
         $this->assertSame($dummy->invoke, $dummy(0, '', '', 0));
     }
 
-    public static function invoke__withArgTypeError__cases()
+    public static function prov__invoke__withArgTypeError()
     {
         return [
             [[null, '', '', 0], \int::class],
@@ -62,7 +62,7 @@ final class ErrorHandlerInterfaceTest extends TestCase
     }
 
     /**
-     * @dataProvider invoke__withArgTypeError__cases
+     * @dataProvider prov__invoke__withArgTypeError
      */
     public function test__invoke__withArgTypeError(array $args, string $message)
     {

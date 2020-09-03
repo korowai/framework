@@ -69,7 +69,7 @@ final class BindingInterfaceTest extends TestCase
         $this->assertSame($dummy->bind, $dummy->bind('', ''));
     }
 
-    public static function bind__withArgTypeError__cases()
+    public static function prov__bind__withArgTypeError()
     {
         return [
             [[0], \string::class],
@@ -79,7 +79,7 @@ final class BindingInterfaceTest extends TestCase
     }
 
     /**
-     * @dataProvider bind__withArgTypeError__cases
+     * @dataProvider prov__bind__withArgTypeError
      */
     public function test__bind__withArgTypeError(array $args, string $message) : void
     {

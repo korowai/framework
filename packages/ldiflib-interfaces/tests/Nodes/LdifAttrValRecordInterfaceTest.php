@@ -32,7 +32,7 @@ final class LdifAttrValRecordInterfaceTest extends TestCase
         };
     }
 
-    public static function extendsInterface__cases()
+    public static function prov__extendsInterface()
     {
         return [
             [HasAttrValSpecsInterface::class],
@@ -42,7 +42,7 @@ final class LdifAttrValRecordInterfaceTest extends TestCase
     }
 
     /**
-     * @dataProvider extendsInterface__cases
+     * @dataProvider prov__extendsInterface
      */
     public function test__extendsInterface(string $extends)
     {

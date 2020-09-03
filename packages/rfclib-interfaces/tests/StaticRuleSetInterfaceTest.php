@@ -182,7 +182,7 @@ final class StaticRuleSetInterfaceTest extends TestCase
         $this->assertSame($dummy::$findCapturedErrors, $dummy::findCapturedErrors('', []));
     }
 
-    public static function findCapturedErrors__withArgTypeError__cases()
+    public static function prov__findCapturedErrors__withArgTypeError()
     {
         return [
             [[null, []], \string::class],
@@ -191,7 +191,7 @@ final class StaticRuleSetInterfaceTest extends TestCase
     }
 
     /**
-     * @dataProvider findCapturedErrors__withArgTypeError__cases
+     * @dataProvider prov__findCapturedErrors__withArgTypeError
      */
     public function test__findCapturedErrors__withArgTypeError(array $args, string $message)
     {
@@ -221,7 +221,7 @@ final class StaticRuleSetInterfaceTest extends TestCase
         $this->assertSame($dummy::$findCapturedValues, $dummy::findCapturedValues('', []));
     }
 
-    public static function findCapturedValues__withArgTypeError__cases()
+    public static function prov__findCapturedValues__withArgTypeError()
     {
         return [
             [[null, []], \string::class],
@@ -230,7 +230,7 @@ final class StaticRuleSetInterfaceTest extends TestCase
     }
 
     /**
-     * @dataProvider findCapturedValues__withArgTypeError__cases
+     * @dataProvider prov__findCapturedValues__withArgTypeError
      */
     public function test__findCapturedValues__withArgTypeError(array $args, string $message)
     {
@@ -262,7 +262,7 @@ final class StaticRuleSetInterfaceTest extends TestCase
         $this->assertSame($dummy::$errorMessage, $dummy::getErrorMessage(''));
     }
 
-    public static function getErrorMessage__withArgTypeError__cases()
+    public static function prov__getErrorMessage__withArgTypeError()
     {
         return [
             [['', []], \string::class],
@@ -272,7 +272,7 @@ final class StaticRuleSetInterfaceTest extends TestCase
     }
 
     /**
-     * @dataProvider getErrorMessage__withArgTypeError__cases
+     * @dataProvider prov__getErrorMessage__withArgTypeError
      */
     public function test__getErrorMessage__withArgTypeError(array $args, string $message)
     {

@@ -18,7 +18,7 @@ namespace Korowai\Lib\Context;
  * The enterContext() method returns the ``$value`` passed as argument to
  * ``__construct()``, while exitContext() returns false.
  */
-class TrivialValueWrapper implements ContextManagerInterface
+final class TrivialValueWrapper implements ContextManagerInterface
 {
     /**
      * @var mixed

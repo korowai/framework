@@ -15,7 +15,7 @@ namespace Korowai\Lib\Context;
 /**
  * Executes user code within a predefined context.
  */
-class WithContextExecutor implements ExecutorInterface
+final class WithContextExecutor implements ExecutorInterface
 {
     /**
      * @var ContextManagerInterface[]

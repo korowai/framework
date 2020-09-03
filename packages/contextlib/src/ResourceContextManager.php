@@ -13,11 +13,12 @@ declare(strict_types=1);
 namespace Korowai\Lib\Context;
 
 /**
- * A context manager that wraps a PHP resource.
+ * A context manager that wraps a PHP resource and releases it at exit.
+ * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
 final class ResourceContextManager implements ContextManagerInterface
 {
-    const DEFAULT_RESOURCE_DESTRUCTORS = [
+    private const DEFAULT_RESOURCE_DESTRUCTORS = [
         'bzip2' => '\\bzclose',
         'cubrid connection' => '\\cubrid_close',
         'persistent cubrid connection' => null,
@@ -127,21 +128,35 @@ final class ResourceContextManager implements ContextManagerInterface
 
     /**
      * @var resource
+     * @psalm-readonly
      */
-    protected $resource;
+    private $resource;
 
     /**
-     * Constructs the context manager.
+     * @var callable|string|null
+     * @psalm-readonly
+     */
+    private $destructor;
+
+    /**
+     * Initializes the context manager.
      *
      * @param  resource $resource The resource to be wrapped;
+     * @param  callable|null $destructor
+     *      Destructor function called from exitContext() to release the
+     *      $resource. If not given or null, a default destructor will be used.
      */
-    public function __construct($resource)
+    public function __construct($resource, ?callable $destructor = null)
     {
         $this->resource = $resource;
+        $this->destructor = $destructor ?? self::getDefaultDestructor($resource);
     }
 
     /**
      * Returns the resource wrapped by this context manager.
+     *
+     * @return mixed
+     * @psalm-mutation-free
      */
     public function getResource()
     {
@@ -149,11 +164,22 @@ final class ResourceContextManager implements ContextManagerInterface
     }
 
     /**
+     * Returns the destructor that is used to release the resource.
+     *
+     * @return callable|string|null
+     * @psalm-mutation-free
+     */
+    public function getDestructor()
+    {
+        return $this->destructor;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function enterContext()
     {
-        return $this->getResource();
+        return $this->resource;
     }
 
     /**
@@ -161,14 +187,19 @@ final class ResourceContextManager implements ContextManagerInterface
      */
     public function exitContext(\Throwable $exception = null) : bool
     {
-        $resource = $this->getResource();
-        if (is_resource($resource)) {
-            self::destroyResource($resource);
+        if ($this->destructor !== null) {
+            call_user_func($this->destructor, $this->resource);
         }
         return false;
     }
 
-    public static function getResourceDestructor($resource)
+    /**
+     * Returns a callable that shall be used to release given $resource.
+     *
+     * @param mixed $resource
+     * @return callable
+     */
+    private static function getDefaultDestructor($resource)
     {
         $type = get_resource_type($resource);
         $func = self::DEFAULT_RESOURCE_DESTRUCTORS[$type] ?? null;
@@ -182,14 +213,12 @@ final class ResourceContextManager implements ContextManagerInterface
         }
     }
 
-    private static function destroyResource($resource)
-    {
-        $dtor = self::getResourceDestructor($resource);
-        if ($dtor === null) {
-            return null;
-        }
-        return call_user_func($dtor, $resource);
-    }
+//    private static function destroyResource($resource) : void
+//    {
+//        if ($this->destructor !== null) {
+//            call_user_func($this->destructor, $resource);
+//        }
+//    }
 
     private static function mkObjectResourceDestructor(string $method)
     {

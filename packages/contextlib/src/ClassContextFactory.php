@@ -15,7 +15,7 @@ namespace Korowai\Lib\Context;
 /**
  * A factory that associates classes with context managers.
  */
-class ClassContextFactory extends AbstractManagedContextFactory
+final class ClassContextFactory extends AbstractManagedContextFactory
 {
     /**
      * @var array

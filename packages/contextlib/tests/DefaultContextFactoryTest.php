@@ -13,6 +13,8 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Context;
 
 use Korowai\Testing\TestCase;
+use Korowai\Testing\Contextlib\GetContextFunctionMockTrait;
+use Korowai\Testing\Contextlib\ExpectFunctionOnceWillReturnTrait;
 
 use Korowai\Lib\Context\DefaultContextFactory;
 use Korowai\Lib\Context\ContextManagerInterface;
@@ -28,6 +30,8 @@ final class DefaultContextFactoryTest extends TestCase
 {
     use \phpmock\phpunit\PHPMock;
     use \Korowai\Testing\Basiclib\SingletonTestTrait;
+    use GetContextFunctionMockTrait;
+    use ExpectFunctionOnceWillReturnTrait;
 
     public static function getSingletonClassUnderTest() : string
     {
@@ -62,18 +66,16 @@ final class DefaultContextFactoryTest extends TestCase
      */
     public function test__getContextManager__withResource()
     {
-        $is_resource = $this->getFunctionMock('Korowai\\Lib\\Context', 'is_resource');
-
-        $is_resource->expects($this->once())
-                    ->with('foo')
-                    ->willReturn(true);
+        $this->expectFunctionOnceWillReturn('is_resource', ['foo'], true);
+        $this->expectFunctionOnceWillReturn('get_resource_type', ['foo'], 'bar');
 
         $factory = DefaultContextFactory::getInstance();
 
         $cm = $factory->getContextManager('foo');
 
         $this->assertInstanceOf(ResourceContextManager::class, $cm);
-        $this->assertEquals('foo', $cm->getResource());
+        $this->assertSame('foo', $cm->getResource());
+        $this->assertNull($cm->getDestructor());
     }
 
     /**

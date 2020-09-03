@@ -13,6 +13,8 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Context;
 
 use Korowai\Testing\TestCase;
+use Korowai\Testing\Contextlib\GetContextFunctionMockTrait;
+use Korowai\Testing\Contextlib\ExpectFunctionOnceWillReturnTrait;
 
 use Korowai\Lib\Context\ResourceContextManager;
 use Korowai\Lib\Context\ContextManagerInterface;
@@ -24,154 +26,25 @@ use Korowai\Lib\Context\ContextManagerInterface;
 final class ResourceContextManagerTest extends TestCase
 {
     use \phpmock\phpunit\PHPMock;
-
-    public function prepareForGetResourceDestructor($resource, $type) : void
-    {
-        $this->getFunctionMock('Korowai\\Lib\\Context', 'get_resource_type')
-             ->expects($this->once())
-             ->with($resource)
-             ->willReturn($type);
-    }
+    use GetContextFunctionMockTrait;
+    use ExpectFunctionOnceWillReturnTrait;
 
     public function test__implements__ContextManagerInterface()
     {
         $this->assertImplementsInterface(ContextManagerInterface::class, ResourceContextManager::class);
     }
 
-    public function test__construct()
+    public function test__construct() : void
     {
-        $manager = new ResourceContextManager('foo');
+        $destructor = function () { };
+        $manager = new ResourceContextManager('foo', $destructor);
         $this->assertSame('foo', $manager->getResource());
+        $this->assertSame($destructor, $manager->getDestructor());
     }
 
-    public function test__enterContext()
+    public static function prov__construct__setsDefaultDestructor() : array
     {
-        $manager = new ResourceContextManager('foo');
-        $this->assertSame('foo', $manager->enterContext());
-    }
-
-    public function test__exitContext__withNonResource()
-    {
-//        $arg = ['foo'];
-//
-//        $cm = $this->getMockBuilder(ResourceContextManager::class)
-//                   ->disableOriginalConstructor()
-//                   ->setMethods(['destroyResource', 'getResource'])
-//                   ->getMock();
-//
-//        $cm->expects($this->once())
-//           ->method('getResource')
-//           ->willReturn($arg);
-//
-//        $cm->expects($this->never())
-//           ->method('destroyResource');
-//
-//        $this->getFunctionMock('Korowai\\Lib\\Context', 'is_resource')
-//             ->expects($this->once())
-//             ->with($arg)
-//             ->willReturn(false);
-//
-//        $this->assertFalse($cm->exitContext(null));
-        $this->markTestIncomplete('Test not implemented yet');
-    }
-
-    /**
-     * @runInSeparateProcess
-     */
-    public function test__exitContext__withResource()
-    {
-//        $arg = ['foo'];
-//
-//        $cm = $this->getMockBuilder(ResourceContextManager::class)
-//                   ->disableOriginalConstructor()
-//                   ->setMethods(['destroyResource', 'getResource'])
-//                   ->getMock();
-//
-//        $cm->expects($this->once())
-//           ->method('getResource')
-//           ->willReturn($arg);
-//
-//        $cm->expects($this->once())
-//           ->method('destroyResource')
-//           ->with($arg);
-//
-//        $this->getFunctionMock('Korowai\\Lib\\Context', 'is_resource')
-//             ->expects($this->once())
-//             ->with($arg)
-//             ->willReturn(true);
-//
-//        $this->assertFalse($cm->exitContext(null));
-        $this->markTestIncomplete('Test not implemented yet');
-    }
-
-    /**
-     * @runInSeprarateProcess
-     */
-    public function test__exitContext__withResource_and_nullResourceDtor()
-    {
-//        $arg = ['foo'];
-//
-//
-//        $cm = $this->getMockBuilder(ResourceContextManager::class)
-//                   ->disableOriginalConstructor()
-//                   ->setMethods(['getResourceDestructor', 'getResource'])
-//                   ->getMock();
-//
-//        $cm->expects($this->once())
-//           ->method('getResource')
-//           ->willReturn($arg);
-//
-//        $cm->expects($this->once())
-//           ->method('getResourceDestructor')
-//           ->with($arg)
-//           ->willReturn(null);
-//
-//        $this->getFunctionMock('Korowai\\Lib\\Context', 'is_resource')
-//             ->expects($this->once())
-//             ->with($arg)
-//             ->willReturn(true);
-//
-//        $this->assertFalse($cm->exitContext(null));
-        $this->markTestIncomplete('Test not implemented yet');
-    }
-
-    /**
-     * @runInSeprarateProcess
-     */
-    public function test__exitContext__withResource_and_NonNullResourceDtor()
-    {
-//        $arg = ['foo'];
-//        $deleted = null;
-//
-//        $cm = $this->getMockBuilder(ResourceContextManager::class)
-//                   ->disableOriginalConstructor()
-//                   ->setMethods(['getResourceDestructor', 'getResource'])
-//                   ->getMock();
-//
-//        $cm->expects($this->once())
-//           ->method('getResource')
-//           ->willReturn($arg);
-//
-//        $cm->expects($this->once())
-//           ->method('getResourceDestructor')
-//           ->with($arg)
-//           ->willReturn(function ($res) use (&$deleted) {
-//               $deleted = $res;
-//           });
-//
-//        $this->getFunctionMock('Korowai\\Lib\\Context', 'is_resource')
-//             ->expects($this->once())
-//             ->with($arg)
-//             ->willReturn(true);
-//
-//        $this->assertFalse($cm->exitContext(null));
-//        $this->assertSame($deleted, $arg);
-        $this->markTestIncomplete('Test not implemented yet');
-    }
-
-    public static function prov__getResourceDestructor() : array
-    {
-        return [
+        $values = [
             ['bzip2', '\\bzclose'],
             ['cubrid connection', '\\cubrid_close'],
             ['persistent cubrid connection', null],
@@ -274,88 +147,116 @@ final class ResourceContextManagerTest extends TestCase
             ['zlib.deflate', null],
             ['zlib.inflate', null],
         ];
+        $keys = array_map(function (array $value) : string {
+            return $value[0];
+        }, $values);
+        return array_combine($keys, $values);
     }
 
     /**
-     * @dataProvider prov__getResourceDestructor
+     * @dataProvider prov__construct__setsDefaultDestructor
      * @runInSeparateProcess
      */
-    public function test__getResourceDestructor(string $type, $expect) : void
+    public function test__construct__setsDefaultDestructor(string $type, ?string $destructor) : void
     {
-        $this->prepareForGetResourceDestructor('foo', $type);
-        $this->assertSame($expect, ResourceContextManager::getResourceDestructor('foo'));
+        $this->expectFunctionOnceWillReturn('get_resource_type', ['foo'], $type);
+        $manager = new ResourceContextManager('foo');
+        $this->assertSame($destructor, $manager->getDestructor());
     }
 
     /**
      * @runInSeprarateProcess
      */
-    public function test__getResourceDestructor__oci8_collection()
+    public function test__construct__setsDefaultDestructor__oci8_collection()
     {
-        $res = new class {
-            public $destroyed = false;
-            public function free()
-            {
-                $this->destroyed = true;
-            }
-        };
+        $resource = $this->getMockBuilder(\StdClass::class)
+                         ->setMethods(['free'])
+                         ->getMock();
+        $resource->expects($this->once())
+                 ->method('free')
+                 ->with();
 
-        $this->prepareForGetResourceDestructor($res, 'oci8 collection');
-        $dtor = ResourceContextManager::getResourceDestructor($res);
+        $this->expectFunctionOnceWillReturn('get_resource_type', [$resource], 'oci8 collection');
 
-        $this->assertIsCallable($dtor);
+        $manager = new ResourceContextManager($resource);
 
-        call_user_func($dtor, $res);
+        $destructor = $manager->getDestructor();
 
-        $this->assertTrue($res->destroyed);
+        call_user_func($destructor, $resource);
     }
 
     /**
      * @runInSeprarateProcess
      */
-    public function test__getResourceDestructor__oci8_lob()
+    public function test__construct__setsDefaultDestructor__oci8_lob()
     {
-        $res = new class {
-            public $destroyed = false;
-            public function free()
-            {
-                $this->destroyed = true;
-            }
-        };
+        $resource = $this->getMockBuilder(\StdClass::class)
+                         ->setMethods(['free'])
+                         ->getMock();
+        $resource->expects($this->once())
+                 ->method('free')
+                 ->with();
 
-        $this->prepareForGetResourceDestructor($res, 'oci8 lob');
-        $dtor = ResourceContextManager::getResourceDestructor($res);
+        $this->expectFunctionOnceWillReturn('get_resource_type', [$resource], 'oci8 lob');
 
-        $this->assertIsCallable($dtor);
+        $manager = new ResourceContextManager($resource);
 
-        call_user_func($dtor, $res);
+        $destructor = $manager->getDestructor();
 
-        $this->assertTrue($res->destroyed);
+        call_user_func($destructor, $resource);
     }
 
     /**
      * @runInSeprarateProcess
      */
-    public function test__getResourceDestructor__dir_stream()
+    public function test__construct__setsDefaultDestructor__dirStream()
     {
-        $this->prepareForGetResourceDestructor('foo', 'stream');
-        $this->getFunctionMock('Korowai\\Lib\\Context', 'stream_get_meta_data')
-             ->expects($this->once())
-             ->with('foo')
-             ->willReturn(['stream_type' => 'dir']);
-        $this->assertEquals('\\closedir', ResourceContextManager::getResourceDestructor('foo'));
+        $this->expectFunctionOnceWillReturn('get_resource_type', ['foo'], 'stream');
+        $this->expectFunctionOnceWillReturn('stream_get_meta_data', ['foo'], ['stream_type' => 'dir']);
+        $manager = new ResourceContextManager('foo');
+        $this->assertEquals('\\closedir', $manager->getDestructor());
     }
 
     /**
      * @runInSeparateProcess
      */
-    public function test__getResourceDestructor__stream()
+    public function test__construct__setsDefaultDestructor__nonDirStream()
     {
-        $this->prepareForGetResourceDestructor('foo', 'stream');
-        $this->getFunctionMock('Korowai\\Lib\\Context', 'stream_get_meta_data')
-             ->expects($this->once())
-             ->with('foo')
-             ->willReturn(['stream_type' => 'baz']);
-        $this->assertEquals('\\fclose', ResourceContextManager::getResourceDestructor('foo'));
+        $this->expectFunctionOnceWillReturn('get_resource_type', ['foo'], 'stream');
+        $this->expectFunctionOnceWillReturn('stream_get_meta_data', ['foo'], ['stream_type' => 'baz']);
+        $manager = new ResourceContextManager('foo');
+        $this->assertEquals('\\fclose', $manager->getDestructor());
+    }
+
+    public function test__enterContext()
+    {
+        $manager = new ResourceContextManager('foo', function () {});
+        $this->assertSame('foo', $manager->enterContext());
+    }
+
+    public function test__exitContext__withNullDestructor()
+    {
+        $this->expectFunctionOnceWillReturn('get_resource_type', ['dba persistent'], 'dba persistent');
+        $manager = new ResourceContextManager('dba persistent');
+        $this->assertNull($manager->getDestructor());
+        $manager->exitContext();
+    }
+
+    /**
+     * @runInSeparateProcess
+     */
+    public function test__exitContext__withCallableDestructor()
+    {
+        $destructor = $this->getMockBuilder(\StdClass::class)
+                           ->setMethods(['__invoke'])
+                           ->getMock();
+        $destructor->expects($this->once())
+                   ->method('__invoke')
+                   ->with('foo');
+
+        $manager = new ResourceContextManager('foo', $destructor);
+
+        $manager->exitContext();
     }
 }
 

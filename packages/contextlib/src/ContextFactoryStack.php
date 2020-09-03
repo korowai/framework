@@ -20,7 +20,7 @@ namespace Korowai\Lib\Context;
  * context manager, starting from the top and walking down. The first factory,
  * which returns non-null, wins.
  */
-class ContextFactoryStack implements ContextFactoryStackInterface, ContextFactoryInterface
+final class ContextFactoryStack implements ContextFactoryStackInterface, ContextFactoryInterface
 {
     use \Korowai\Lib\Basic\Singleton;
 

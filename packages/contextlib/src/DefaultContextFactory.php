@@ -15,7 +15,7 @@ namespace Korowai\Lib\Context;
 /**
  * Default context factory.
  */
-class DefaultContextFactory implements ContextFactoryInterface
+final class DefaultContextFactory implements ContextFactoryInterface
 {
     use \Korowai\Lib\Basic\Singleton;
 

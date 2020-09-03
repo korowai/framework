@@ -23,8 +23,9 @@ use Korowai\Testing\Ldiflib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Ldif\Rules\ModSpecRule
  */
-class ModSpecRuleTest extends TestCase
+final class ModSpecRuleTest extends TestCase
 {
     public function test__extends__AbstractRule()
     {

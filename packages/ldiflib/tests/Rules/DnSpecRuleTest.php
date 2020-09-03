@@ -21,8 +21,9 @@ use Korowai\Testing\Ldiflib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Ldif\Rules\DnSpecRule
  */
-class DnSpecRuleTest extends TestCase
+final class DnSpecRuleTest extends TestCase
 {
     public function test__extendsAbstractNameSpecRule()
     {

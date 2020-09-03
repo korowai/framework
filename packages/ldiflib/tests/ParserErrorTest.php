@@ -21,8 +21,9 @@ use Korowai\Testing\Ldiflib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Ldif\ParserError
  */
-class ParserErrorTest extends TestCase
+final class ParserErrorTest extends TestCase
 {
     public function test__implements__ParserErrorInterface()
     {

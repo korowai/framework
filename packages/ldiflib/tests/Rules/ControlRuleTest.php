@@ -22,8 +22,9 @@ use Korowai\Testing\Ldiflib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Ldif\Rules\ControlRule
  */
-class ControlRuleTest extends TestCase
+final class ControlRuleTest extends TestCase
 {
     public function test__extendsAbstractRfcRule()
     {

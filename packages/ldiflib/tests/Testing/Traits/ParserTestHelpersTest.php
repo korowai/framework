@@ -20,8 +20,9 @@ use Korowai\Lib\Ldif\ParserState;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Testing\Ldiflib\Traits\ParserTestHelpers
  */
-class ParserTestHelpersTest extends TestCase
+final class ParserTestHelpersTest extends TestCase
 {
     use ParserTestHelpers;
 

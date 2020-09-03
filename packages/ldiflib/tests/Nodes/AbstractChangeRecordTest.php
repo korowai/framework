@@ -22,8 +22,9 @@ use Korowai\Testing\Ldiflib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Ldif\Nodes\AbstractChangeRecord
  */
-class AbstractChangeRecordTest extends TestCase
+final class AbstractChangeRecordTest extends TestCase
 {
     public function test__extends__AbstractRecord()
     {

@@ -17,8 +17,9 @@ use Korowai\Lib\Ldif\Exception\InvalidModTypeException;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Ldif\Exception\InvalidModTypeException
  */
-class InvalidModTypeExceptionTest extends TestCase
+final class InvalidModTypeExceptionTest extends TestCase
 {
     public function test__extendsInvalidArgumentException()
     {

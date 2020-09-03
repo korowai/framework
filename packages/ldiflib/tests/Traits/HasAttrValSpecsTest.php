@@ -19,8 +19,9 @@ use Korowai\Testing\Ldiflib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Ldif\Traits\HasAttrValSpecs
  */
-class HasAttrValSpecsTest extends TestCase
+final class HasAttrValSpecsTest extends TestCase
 {
     public function getTestObject()
     {

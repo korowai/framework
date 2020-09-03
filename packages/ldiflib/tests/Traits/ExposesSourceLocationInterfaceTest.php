@@ -19,8 +19,9 @@ use Korowai\Testing\Ldiflib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Ldif\Traits\ExposesSourceLocationInterface
  */
-class ExposesSourceLocationInterfaceTest extends TestCase
+final class ExposesSourceLocationInterfaceTest extends TestCase
 {
     public function getTestObject(SourceLocationInterface $location = null)
     {

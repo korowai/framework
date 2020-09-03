@@ -20,8 +20,9 @@ use Korowai\Testing\Ldiflib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Ldif\Nodes\VersionSpec
  */
-class VersionSpecTest extends TestCase
+final class VersionSpecTest extends TestCase
 {
     public function test__implements__VersionSpecInterface()
     {

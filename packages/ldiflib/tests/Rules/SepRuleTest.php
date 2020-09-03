@@ -19,8 +19,9 @@ use Korowai\Testing\Ldiflib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Ldif\Rules\SepRule
  */
-class SepRuleTest extends TestCase
+final class SepRuleTest extends TestCase
 {
     public function test__extendsAbstractRfcRule()
     {

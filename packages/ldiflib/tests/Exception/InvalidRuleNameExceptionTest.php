@@ -17,8 +17,9 @@ use Korowai\Lib\Ldif\Exception\InvalidRuleNameException;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Ldif\Exception\InvalidRuleNameException
  */
-class InvalidRuleNameExceptionTest extends TestCase
+final class InvalidRuleNameExceptionTest extends TestCase
 {
     public function test__extendsInvalidArgumentException()
     {

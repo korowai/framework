@@ -19,8 +19,9 @@ use Korowai\Testing\Ldiflib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Ldif\Rules\Util
  */
-class UtilTest extends TestCase
+final class UtilTest extends TestCase
 {
     //
     // base64Decode()

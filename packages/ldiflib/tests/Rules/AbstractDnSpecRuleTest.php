@@ -18,8 +18,9 @@ use Korowai\Testing\Ldiflib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Ldif\Rules\AbstractDnSpecRule
  */
-class AbstractDnSpecRuleTest extends TestCase
+final class AbstractDnSpecRuleTest extends TestCase
 {
     public function test__extends__AbstractNameSpecRule()
     {

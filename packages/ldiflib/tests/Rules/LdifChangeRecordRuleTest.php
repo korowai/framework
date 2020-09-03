@@ -32,8 +32,9 @@ use Korowai\Testing\Ldiflib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Ldif\Rules\LdifChangeRecordRule
  */
-class LdifChangeRecordRuleTest extends TestCase
+final class LdifChangeRecordRuleTest extends TestCase
 {
     public function test__extends__AbstractLdifRecordRule()
     {

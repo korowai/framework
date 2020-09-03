@@ -20,8 +20,9 @@ use Korowai\Testing\Ldiflib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Ldif\Rules\AbstractRule
  */
-class AbstractRuleTest extends TestCase
+final class AbstractRuleTest extends TestCase
 {
     public function test__implements__RuleInterface()
     {

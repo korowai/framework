@@ -25,8 +25,9 @@ use Korowai\Testing\Ldiflib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Ldif\Rules\LdifAttrValRecordRule
  */
-class LdifAttrValRecordRuleTest extends TestCase
+final class LdifAttrValRecordRuleTest extends TestCase
 {
     public function test__extends__AbstractLdifRecordRule()
     {

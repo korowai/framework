@@ -20,8 +20,9 @@ use Korowai\Testing\Ldiflib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Ldif\Traits\ExposesSnippetInterface
  */
-class ExposesSnippetInterfaceTest extends TestCase
+final class ExposesSnippetInterfaceTest extends TestCase
 {
     public function getTestObject(SnippetInterface $snippet = null)
     {

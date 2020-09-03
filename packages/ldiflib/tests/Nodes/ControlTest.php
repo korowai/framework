@@ -19,8 +19,9 @@ use Korowai\Testing\Ldiflib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Ldif\Nodes\Control
  */
-class ControlTest extends TestCase
+final class ControlTest extends TestCase
 {
     public function test__implmements__ControlInterface()
     {

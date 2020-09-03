@@ -19,8 +19,9 @@ use Korowai\Testing\Ldiflib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Ldif\Scan
  */
-class ScanTest extends TestCase
+final class ScanTest extends TestCase
 {
     protected function configureLocationMock(LocationInterface $location, array $case)
     {

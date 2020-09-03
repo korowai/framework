@@ -22,8 +22,9 @@ use Korowai\Testing\Ldiflib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Ldif\Rules\AttrValSpecRule
  */
-class AttrValSpecRuleTest extends TestCase
+final class AttrValSpecRuleTest extends TestCase
 {
     public function test__extendsAbstractRfcRule()
     {

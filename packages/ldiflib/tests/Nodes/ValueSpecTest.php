@@ -21,8 +21,9 @@ use Korowai\Testing\Ldiflib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Ldif\Nodes\ValueSpec
  */
-class ValueSpecTest extends TestCase
+final class ValueSpecTest extends TestCase
 {
     public function test__implmements__ValueSpecInterface()
     {

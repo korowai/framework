@@ -21,8 +21,9 @@ use Korowai\Testing\Ldiflib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Ldif\Nodes\AbstractRecord
  */
-class AbstractRecordTest extends TestCase
+final class AbstractRecordTest extends TestCase
 {
     public function test__implements__RecordInterface()
     {

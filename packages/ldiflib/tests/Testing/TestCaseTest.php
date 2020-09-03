@@ -18,8 +18,9 @@ use Korowai\Testing\Ldiflib\Traits\ParserTestHelpers;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Testing\Ldiflib\TestCase
  */
-class TestCaseTest extends TestCase
+final class TestCaseTest extends TestCase
 {
     public function test__extends__TestCase()
     {

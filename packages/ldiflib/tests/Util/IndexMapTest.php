@@ -18,8 +18,9 @@ use Korowai\Lib\Ldif\Util\IndexMapArrayCombineAlgorithm;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Ldif\Util\IndexMap
  */
-class IndexMapTest extends TestCase
+final class IndexMapTest extends TestCase
 {
     public function arrayFromPieces()
     {

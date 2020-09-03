@@ -21,8 +21,9 @@ use Korowai\Testing\Ldiflib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Ldif\Traits\DecoratesSnippetInterface
  */
-class DecoratesSnippetInterfaceTest extends TestCase
+final class DecoratesSnippetInterfaceTest extends TestCase
 {
     public function test__uses__ExposesSnippetInterface()
     {

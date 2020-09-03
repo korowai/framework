@@ -17,8 +17,9 @@ use Korowai\Lib\Ldif\Util\IndexMapArrayCombineAlgorithm as Algorithm;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Ldif\Util\IndexMapArrayCombineAlgorithm
  */
-class IndexMapArrayCombineAlgorithmTest extends TestCase
+final class IndexMapArrayCombineAlgorithmTest extends TestCase
 {
     public function arrayCombineProvider()
     {

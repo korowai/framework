@@ -21,8 +21,9 @@ use Korowai\Testing\Ldiflib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Ldif\Nodes\ModSpec
  */
-class ModSpecTest extends TestCase
+final class ModSpecTest extends TestCase
 {
     public function test__implements__ModSpecInterface()
     {

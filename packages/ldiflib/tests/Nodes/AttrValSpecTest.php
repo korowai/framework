@@ -19,8 +19,9 @@ use Korowai\Testing\Ldiflib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Ldif\Nodes\AttrValSpec
  */
-class AttrValSpecTest extends TestCase
+final class AttrValSpecTest extends TestCase
 {
     public function test__implmements__AttrValSpecInterface()
     {

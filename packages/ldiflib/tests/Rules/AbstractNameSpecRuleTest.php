@@ -19,8 +19,9 @@ use Korowai\Testing\Ldiflib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Ldif\Rules\AbstractNameSpecRule
  */
-class AbstractNameSpecRuleTest extends TestCase
+final class AbstractNameSpecRuleTest extends TestCase
 {
     public function test__extends__AbstractRfcRule()
     {

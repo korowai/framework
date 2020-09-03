@@ -21,8 +21,9 @@ use Korowai\Testing\Ldiflib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Ldif\Preprocessor
  */
-class PreprocessorTest extends TestCase
+final class PreprocessorTest extends TestCase
 {
     public function test__implements__PreprocessorInterface()
     {

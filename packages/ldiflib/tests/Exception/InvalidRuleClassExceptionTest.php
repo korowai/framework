@@ -17,8 +17,9 @@ use Korowai\Lib\Ldif\Exception\InvalidRuleClassException;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Ldif\Exception\InvalidRuleClassException
  */
-class InvalidRuleClassExceptionTest extends TestCase
+final class InvalidRuleClassExceptionTest extends TestCase
 {
     public function test__extendsInvalidArgumentException()
     {

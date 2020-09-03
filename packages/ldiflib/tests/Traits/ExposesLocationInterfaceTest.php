@@ -21,8 +21,9 @@ use Korowai\Testing\Ldiflib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Ldif\Traits\ExposesLocationInterface
  */
-class ExposesLocationInterfaceTest extends TestCase
+final class ExposesLocationInterfaceTest extends TestCase
 {
     public function getTestObject(LocationInterface $location = null)
     {

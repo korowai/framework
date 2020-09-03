@@ -17,8 +17,9 @@ use Korowai\Lib\Ldif\Exception\NoRulesDefinedException;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Ldif\Exception\NoRulesDefinedException
  */
-class NoRulesDefinedExceptionTest extends TestCase
+final class NoRulesDefinedExceptionTest extends TestCase
 {
     public function test__extendsInvalidArgumentException()
     {

@@ -20,8 +20,9 @@ use Korowai\Testing\Ldiflib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Ldif\Rules\VersionSpecRule
  */
-class VersionSpecRuleTest extends TestCase
+final class VersionSpecRuleTest extends TestCase
 {
     public function test__extendsAbstractRfcRule()
     {

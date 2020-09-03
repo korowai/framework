@@ -19,8 +19,9 @@ use Korowai\Testing\Ldiflib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Ldif\Rules\ChangeRecordInitRule
  */
-class ChangeRecordInitRuleTest extends TestCase
+final class ChangeRecordInitRuleTest extends TestCase
 {
     public function test__extendsAbstractRfcRule()
     {

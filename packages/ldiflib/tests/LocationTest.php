@@ -20,8 +20,9 @@ use Korowai\Testing\Ldiflib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Ldif\Location
  */
-class LocationTest extends TestCase
+final class LocationTest extends TestCase
 {
     public function test__implements__LocationInterface()
     {

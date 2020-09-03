@@ -22,8 +22,9 @@ use Korowai\Testing\Ldiflib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Ldif\Nodes\LdifDeleteRecord
  */
-class LdifDeleteRecordTest extends TestCase
+final class LdifDeleteRecordTest extends TestCase
 {
     public function tets__extends__AbstractChangeRecord()
     {

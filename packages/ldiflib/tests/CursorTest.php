@@ -21,8 +21,9 @@ use Korowai\Testing\Ldiflib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Ldif\Cursor
  */
-class CursorTest extends TestCase
+final class CursorTest extends TestCase
 {
     public function test__implements__CursorInterface()
     {

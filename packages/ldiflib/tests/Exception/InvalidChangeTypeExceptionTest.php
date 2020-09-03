@@ -17,8 +17,9 @@ use Korowai\Lib\Ldif\Exception\InvalidChangeTypeException;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Ldif\Exception\InvalidChangeTypeException
  */
-class InvalidChangeTypeExceptionTest extends TestCase
+final class InvalidChangeTypeExceptionTest extends TestCase
 {
     public function test__extendsInvalidArgumentException()
     {

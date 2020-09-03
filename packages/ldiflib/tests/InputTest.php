@@ -20,8 +20,9 @@ use Korowai\Testing\Ldiflib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Ldif\Input
  */
-class InputTest extends TestCase
+final class InputTest extends TestCase
 {
     public function test__implements__InputInterface()
     {

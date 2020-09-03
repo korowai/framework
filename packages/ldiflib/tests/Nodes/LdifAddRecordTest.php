@@ -23,8 +23,9 @@ use Korowai\Testing\Ldiflib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Ldif\Nodes\LdifAddRecord
  */
-class LdifAddRecordTest extends TestCase
+final class LdifAddRecordTest extends TestCase
 {
     public function tets__extends__AbstractChangeRecord()
     {

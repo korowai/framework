@@ -20,8 +20,9 @@ use Korowai\Testing\Ldiflib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Ldif\Traits\DecoratesLocationInterface
  */
-class DecoratesLocationInterfaceTest extends TestCase
+final class DecoratesLocationInterfaceTest extends TestCase
 {
     public function getTestObject()
     {

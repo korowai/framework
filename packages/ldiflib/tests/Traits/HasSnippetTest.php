@@ -20,8 +20,9 @@ use Korowai\Testing\Ldiflib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Ldif\Traits\HasSnippet
  */
-class HasSnippetTest extends TestCase
+final class HasSnippetTest extends TestCase
 {
     public function test__snippet()
     {

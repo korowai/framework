@@ -21,8 +21,9 @@ use Korowai\Testing\Traits\PregUtilsTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Testing\TestCase
  */
-class TestCaseTest extends TestCase
+final class TestCaseTest extends TestCase
 {
     public function test__uses__ClassAssertionsTrait()
     {

@@ -17,8 +17,9 @@ use Korowai\Testing\Dummies\PhpIteratorTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Testing\Dummies\PhpIteratorTrait
  */
-final class PhpIteratorTest extends TestCase
+final class PhpIteratorTraitTest extends TestCase
 {
     public static function createDummyInstance()
     {

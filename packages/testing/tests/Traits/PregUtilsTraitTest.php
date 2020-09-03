@@ -18,8 +18,9 @@ use Korowai\Testing\Traits\PregUtilsTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Testing\Traits\PregUtilsTrait
  */
-class PregUtilsTraitTest extends TestCase
+final class PregUtilsTraitTest extends TestCase
 {
     use PregUtilsTrait;
 

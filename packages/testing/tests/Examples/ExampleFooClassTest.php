@@ -19,8 +19,9 @@ use Korowai\Testing\Examples\ExampleBazTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Testing\Examples\ExampleFooClass
  */
-class ExampleFooClassTest extends TestCase
+final class ExampleFooClassTest extends TestCase
 {
     public function test__implements__ExampleFooInterface()
     {

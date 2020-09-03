@@ -17,8 +17,9 @@ use Korowai\Lib\Rfc\Exception\InvalidRuleSetNameException;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Rfc\Exception\InvalidRuleSetNameException
  */
-class InvalidRuleSetNameExceptionTest extends TestCase
+final class InvalidRuleSetNameExceptionTest extends TestCase
 {
     public function test__extendsInvalidArgumentException()
     {

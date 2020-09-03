@@ -23,8 +23,9 @@ use Korowai\Testing\Examples\ExampleClassNotUsingTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Testing\Assertions\ClassAssertionsTrait
  */
-class ClassAssertionsTraitTest extends TestCase
+final class ClassAssertionsTraitTest extends TestCase
 {
     use ClassAssertionsTrait;
 

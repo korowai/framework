@@ -18,8 +18,9 @@ use Korowai\Testing\Assertions\PregAssertionsTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Testing\Assertions\PregAssertionsTrait
  */
-class PregAssertionsTraitTest extends TestCase
+final class PregAssertionsTraitTest extends TestCase
 {
     use PregAssertionsTrait;
 

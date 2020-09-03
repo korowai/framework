@@ -25,8 +25,9 @@ use Korowai\Testing\Examples\ExampleQuxTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Testing\Traits\ObjectPropertiesUtilsTrait
  */
-class ObjectPropertiesUtilsTraitTest extends TestCase
+final class ObjectPropertiesUtilsTraitTest extends TestCase
 {
     use ObjectPropertiesUtilsTrait;
 

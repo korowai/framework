@@ -19,8 +19,9 @@ use Korowai\Testing\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers Korowai\Lib\Rfc\Traits\DecoratesRuleInterface
  */
-class DecoratesRuleInterfaceTest extends TestCase
+final class DecoratesRuleInterfaceTest extends TestCase
 {
     public function test__uses__ExposesRuleInterface()
     {

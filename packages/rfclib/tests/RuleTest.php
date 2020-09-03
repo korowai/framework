@@ -23,8 +23,9 @@ use Korowai\Testing\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Rfc\Rule
  */
-class RuleTest extends TestCase
+final class RuleTest extends TestCase
 {
     public function test__implements__RuleInterface()
     {

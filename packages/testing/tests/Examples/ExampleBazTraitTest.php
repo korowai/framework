@@ -17,8 +17,9 @@ use Korowai\Testing\Examples\ExampleBazTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Testing\Examples\ExampleBazTrait
  */
-class ExampleBazTraitTest extends TestCase
+final class ExampleBazTraitTest extends TestCase
 {
     public function getTestObject()
     {

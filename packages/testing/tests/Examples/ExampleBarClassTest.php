@@ -22,8 +22,9 @@ use Korowai\Testing\Examples\ExampleQuxTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Testing\Examples\ExampleBarClass
  */
-class ExampleBarClassTest extends TestCase
+final class ExampleBarClassTest extends TestCase
 {
     public function test__implements__ExampleFooInterface()
     {

@@ -17,8 +17,9 @@ use Korowai\Testing\Rfclib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Testing\Rfclib\TestCase
  */
-class TestCaseTest extends TestCase
+final class TestCaseTest extends TestCase
 {
     public const FOO = '(?<foo>foo)';
     public const BAR = '(?<bar>bar)';

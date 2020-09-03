@@ -17,8 +17,9 @@ use Korowai\Testing\Dummies\PhpIteratorAggregateTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Testing\Dummies\PhpIteratorAggregateTrait
  */
-class PhpIteratorAggregateTest extends TestCase
+final class PhpIteratorAggregateTest extends TestCase
 {
     public static function createDummyInstance()
     {

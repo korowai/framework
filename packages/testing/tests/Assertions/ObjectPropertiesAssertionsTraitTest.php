@@ -18,8 +18,9 @@ use Korowai\Testing\Assertions\ObjectPropertiesAssertionsTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Testing\Assertions\ObjectPropertiesAssertionsTrait
  */
-class ObjectPropertiesAssertionsTraitTest extends TestCase
+final class ObjectPropertiesAssertionsTraitTest extends TestCase
 {
     use ObjectPropertiesAssertionsTrait;
 

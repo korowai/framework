@@ -18,8 +18,9 @@ use Korowai\Testing\ObjectPropertiesInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Testing\ObjectProperties
  */
-class ObjectPropertiesTest extends TestCase
+final class ObjectPropertiesTest extends TestCase
 {
     public function test__extends__ArrayObject()
     {

@@ -22,8 +22,9 @@ use Korowai\Testing\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Rfc\AbstractRuleSet
  */
-class AbstractRuleSetTest extends TestCase
+final class AbstractRuleSetTest extends TestCase
 {
     public function test__implements__StaticRuleSetInterface()
     {

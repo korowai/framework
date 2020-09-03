@@ -17,7 +17,7 @@ namespace Korowai\Testing\Examples;
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class ExampleClassUsingTrait
+final class ExampleClassUsingTrait
 {
     use ExampleTrait;
 }

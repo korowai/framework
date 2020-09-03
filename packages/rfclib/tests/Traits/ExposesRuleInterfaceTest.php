@@ -18,8 +18,9 @@ use Korowai\Testing\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Rfc\Traits\ExposesRuleInterface
  */
-class ExposesRuleInterfaceTest extends TestCase
+final class ExposesRuleInterfaceTest extends TestCase
 {
     public function getTestObject(RuleInterface $rule = null)
     {

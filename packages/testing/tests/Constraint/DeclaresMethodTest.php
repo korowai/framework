@@ -19,8 +19,9 @@ use PHPUnit\Framework\ExpectationFailedException;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Testing\Constraint\DeclaresMethod
  */
-class DeclaresMethodTest extends TestCase
+final class DeclaresMethodTest extends TestCase
 {
     public function test__extends__Constraint(): void
     {

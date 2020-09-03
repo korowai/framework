@@ -17,8 +17,9 @@ use Korowai\Testing\Examples\ExampleQuxTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Testing\Examples\ExampleQuxTrait
  */
-class ExampleQuxTraitTest extends TestCase
+final class ExampleQuxTraitTest extends TestCase
 {
     public function getTestObject()
     {

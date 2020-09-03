@@ -19,8 +19,9 @@ use Korowai\Testing\Rfclib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Lib\Rfc\Rfc8089
  */
-class Rfc8089Test extends TestCase
+final class Rfc8089Test extends TestCase
 {
     public static function getRfcClass() : string
     {

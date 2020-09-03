@@ -29,7 +29,7 @@ use Korowai\Lib\Ldap\Adapter\ExtLdap\ResultReferralIterator;
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers Korowai\Lib\Ldap\Adapter\ExtLdap\ResultReference
  */
-class ResultReferenceTest extends TestCase
+final class ResultReferenceTest extends TestCase
 {
     use \phpmock\phpunit\PHPMock;
     use GetLdapFunctionMockTrait;

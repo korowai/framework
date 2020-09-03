@@ -23,7 +23,7 @@ use Korowai\Lib\Ldap\Exception\LdapException;
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Ldap\Adapter\ExtLdap\LastLdapExceptionTrait
  */
-class LastLdapExceptionTraitTest extends TestCase
+final class LastLdapExceptionTraitTest extends TestCase
 {
     use \phpmock\phpunit\PHPMock;
     use GetLdapFunctionMockTrait;

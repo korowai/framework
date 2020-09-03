@@ -20,6 +20,7 @@ use Korowai\Testing\LdaplibInterfaces\TestCase;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Tests\Lib\Ldap\ResultReferenceIteratorInterfaceTrait
+ * @covers \Korowai\Tests\Lib\Ldap\ResultItemIteratorInterfaceTestTrait
  */
 final class ResultReferenceIteratorInterfaceTest extends TestCase
 {

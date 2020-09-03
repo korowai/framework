@@ -20,7 +20,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Ldap\Adapter\AbstractCompareQuery
  */
-class AbstractCompareQueryTest extends TestCase
+final class AbstractCompareQueryTest extends TestCase
 {
     private function getAbstractCompareQueryMock($ctor = true, array $methods = [])
     {

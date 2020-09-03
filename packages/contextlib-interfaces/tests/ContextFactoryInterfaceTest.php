@@ -21,7 +21,7 @@ use Korowai\Testing\ContextlibInterfaces\TestCase;
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Tests\Lib\Context\ContextFactoryInterfaceTrait
  */
-class ContextFactoryInterfaceTest extends TestCase
+final class ContextFactoryInterfaceTest extends TestCase
 {
     public static function createDummyInstance()
     {

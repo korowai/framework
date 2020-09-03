@@ -21,7 +21,7 @@ use Korowai\Lib\Ldap\Exception\LdapException;
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Ldap\Adapter\ExtLdap\EnsureLdapLinkTrait
  */
-class EnsureLdapLinkTraitTest extends TestCase
+final class EnsureLdapLinkTraitTest extends TestCase
 {
     use EnsureLdapLinkTrait;
 

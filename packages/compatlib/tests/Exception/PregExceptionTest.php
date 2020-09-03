@@ -20,7 +20,7 @@ use Korowai\Lib\Compat\Exception\PregException;
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Compat\Exception\PregException
  */
-class PregExceptionTest extends TestCase
+final class PregExceptionTest extends TestCase
 {
     public function test__extends__ErrorException()
     {

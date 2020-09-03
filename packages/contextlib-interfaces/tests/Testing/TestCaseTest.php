@@ -10,13 +10,13 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Tests\Lib\Ldap\Testing;
+namespace Korowai\Tests\Lib\Context\Testing;
 
-use Korowai\Testing\Ldaplib\TestCase;
+use Korowai\Testing\ContextlibInterfaces\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @covers \Korowai\Testing\Ldaplib\TestCase
+ * @covers \Korowai\Testing\ContextlibInterfaces\TestCase
  */
 final class TestCaseTest extends TestCase
 {
@@ -29,8 +29,7 @@ final class TestCaseTest extends TestCase
     {
         $expected = array_merge_recursive(
             \Korowai\Testing\ObjectPropertyGettersMap::getObjectPropertyGettersMap(),
-            \Korowai\Testing\LdaplibInterfaces\ObjectPropertyGettersMap::getObjectPropertyGettersMap(),
-            \Korowai\Testing\Ldaplib\ObjectPropertyGettersMap::getObjectPropertyGettersMap()
+            \Korowai\Testing\ContextlibInterfaces\ObjectPropertyGettersMap::getObjectPropertyGettersMap()
         );
         $this->assertSame($expected, parent::objectPropertyGettersMap());
     }

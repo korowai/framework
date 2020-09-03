@@ -21,7 +21,7 @@ use Korowai\Lib\Ldap\Exception\AttributeException;
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Ldap\Entry
  */
-class EntryTest extends TestCase
+final class EntryTest extends TestCase
 {
     public function test__implements__EntryInterface()
     {

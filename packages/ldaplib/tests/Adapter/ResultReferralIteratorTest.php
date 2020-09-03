@@ -22,7 +22,7 @@ use Korowai\Lib\Ldap\ResultReferralIteratorInterface;
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Ldap\Adapter\ResultReferralIterator
  */
-class ResultReferralIteratorTest extends TestCase
+final class ResultReferralIteratorTest extends TestCase
 {
     public function test__implements__ResultReferralIteratorInterface()
     {

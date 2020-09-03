@@ -28,7 +28,7 @@ use function Korowai\Lib\Compat\preg_split;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class FunctionsTest extends TestCase
+final class FunctionsTest extends TestCase
 {
     /**
      * @covers \Korowai\Lib\Compat\preg_filter

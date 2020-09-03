@@ -18,14 +18,15 @@ use Korowai\Lib\Context\ClassContextFactory;
 use Korowai\Lib\Context\AbstractManagedContextFactory;
 use Korowai\Lib\Context\ContextManagerInterface;
 
-class ClassYVO2VPY5
-{
-};
-class ClassJG8MG9JQ
+final class ClassYVO2VPY5
 {
 };
 
-class BaseContextOLESLFOV implements ContextManagerInterface
+final class ClassJG8MG9JQ
+{
+};
+
+abstract class BaseContextOLESLFOV implements ContextManagerInterface
 {
     public $wrapped;
     public function __construct($wrapped)
@@ -42,10 +43,11 @@ class BaseContextOLESLFOV implements ContextManagerInterface
     }
 }
 
-class ContextYVO2VPY5 extends BaseContextOLESLFOV
+final class ContextYVO2VPY5 extends BaseContextOLESLFOV
 {
 }
-class ContextJG8MG9JQ extends BaseContextOLESLFOV
+
+final class ContextJG8MG9JQ extends BaseContextOLESLFOV
 {
 }
 

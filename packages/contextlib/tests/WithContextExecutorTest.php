@@ -18,7 +18,7 @@ use Korowai\Lib\Context\WithContextExecutor;
 use Korowai\Lib\Context\ExecutorInterface;
 use Korowai\Lib\Context\ContextManagerInterface;
 
-class ExceptionEB3IB4EL extends \Exception
+final class ExceptionEB3IB4EL extends \Exception
 {
 };
 

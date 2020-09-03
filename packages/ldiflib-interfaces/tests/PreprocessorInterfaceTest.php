@@ -18,8 +18,9 @@ use Korowai\Testing\LdiflibInterfaces\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Tests\Lib\Ldif\PreprocessorInterfaceTrait
  */
-class PreprocessorInterfaceTest extends TestCase
+final class PreprocessorInterfaceTest extends TestCase
 {
     public function test__dummyImplementation()
     {

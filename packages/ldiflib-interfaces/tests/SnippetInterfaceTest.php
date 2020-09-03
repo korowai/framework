@@ -19,8 +19,9 @@ use Korowai\Testing\LdiflibInterfaces\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Tests\Lib\Ldif\SnippetInterfaceTrait
  */
-class SnippetInterfaceTest extends TestCase
+final class SnippetInterfaceTest extends TestCase
 {
     public static function extendsInterface__cases()
     {

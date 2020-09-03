@@ -19,8 +19,9 @@ use Korowai\Testing\LdiflibInterfaces\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Tests\Lib\Ldif\Rules\SepRuleInterfaceTrait
  */
-class SepRuleInterfaceTest extends TestCase
+final class SepRuleInterfaceTest extends TestCase
 {
     public static function createDummyInstance()
     {

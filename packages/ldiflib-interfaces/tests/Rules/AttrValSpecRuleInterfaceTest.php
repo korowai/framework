@@ -20,8 +20,9 @@ use Korowai\Testing\LdiflibInterfaces\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Tests\Lib\Ldif\Rules\AttrValSpecRuleInterfaceTrait
  */
-class AttrValSpecRuleInterfaceTest extends TestCase
+final class AttrValSpecRuleInterfaceTest extends TestCase
 {
     public static function createDummyInstance()
     {

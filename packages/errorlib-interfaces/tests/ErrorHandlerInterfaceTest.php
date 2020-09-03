@@ -18,8 +18,9 @@ use Korowai\Testing\ErrorlibInterfaces\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Tests\Lib\Error\ErrorHandlerInterfaceTrait
  */
-class ErrorHandlerInterfaceTest extends TestCase
+final class ErrorHandlerInterfaceTest extends TestCase
 {
     public static function createDummyInstance()
     {

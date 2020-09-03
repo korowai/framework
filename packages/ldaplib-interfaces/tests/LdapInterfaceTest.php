@@ -24,8 +24,9 @@ use Korowai\Testing\LdaplibInterfaces\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Tests\Lib\Ldap\LdapInterfaceTrait
  */
-class LdapInterfaceTest extends TestCase
+final class LdapInterfaceTest extends TestCase
 {
     public static function createDummyInstance()
     {

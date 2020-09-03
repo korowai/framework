@@ -19,8 +19,9 @@ use Korowai\Testing\LdiflibInterfaces\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Tests\Lib\Ldif\LocationInterfaceTrait
  */
-class LocationInterfaceTest extends TestCase
+final class LocationInterfaceTest extends TestCase
 {
     public static function extendsInterface__cases()
     {

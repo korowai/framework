@@ -18,8 +18,9 @@ use Korowai\Testing\LdaplibInterfaces\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Tests\Lib\Ldap\BindingInterfaceTrait
  */
-class BindingInterfaceTest extends TestCase
+final class BindingInterfaceTest extends TestCase
 {
     public static function createDummyInstance()
     {

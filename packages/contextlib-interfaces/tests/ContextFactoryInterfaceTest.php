@@ -19,6 +19,7 @@ use Korowai\Testing\ContextlibInterfaces\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Tests\Lib\Context\ContextFactoryInterfaceTrait
  */
 class ContextFactoryInterfaceTest extends TestCase
 {

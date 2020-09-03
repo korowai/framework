@@ -18,8 +18,9 @@ use Korowai\Testing\RfclibInterfaces\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Tests\Lib\Rfc\StaticRuleSetInterfaceTrait
  */
-class StaticRuleSetInterfaceTest extends TestCase
+final class StaticRuleSetInterfaceTest extends TestCase
 {
     public static function createDummyClass()
     {

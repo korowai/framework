@@ -18,8 +18,9 @@ use Korowai\Testing\BasiclibInterfaces\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Tests\Lib\Basic\SingletonInterfaceTrait
  */
-class SingletonInterfaceTest extends TestCase
+final class SingletonInterfaceTest extends TestCase
 {
     public static function createDummyClass()
     {

@@ -18,8 +18,9 @@ use Korowai\Testing\LdiflibInterfaces\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Tests\Lib\Ldif\RecordVisitorInterfaceTrait
  */
-class RecordVisitorInterfaceTest extends TestCase
+final class RecordVisitorInterfaceTest extends TestCase
 {
     public function test__dummyImplementation()
     {

@@ -17,6 +17,7 @@ use Korowai\Lib\Ldap\ResultItemIteratorInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Tests\Lib\Ldap\ResultItemIteratorInterfaceTrait
  */
 final class ResultItemIteratorInterfaceTest extends TestCase
 {

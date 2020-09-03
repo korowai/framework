@@ -19,8 +19,9 @@ use Korowai\Testing\LdiflibInterfaces\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Tests\Lib\Ldif\RuleInterfaceTrait
  */
-class RuleInterfaceTest extends TestCase
+final class RuleInterfaceTest extends TestCase
 {
     public function test__dummyImplementation()
     {

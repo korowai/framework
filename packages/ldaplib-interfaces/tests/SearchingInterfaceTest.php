@@ -19,8 +19,9 @@ use Korowai\Testing\LdaplibInterfaces\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Tests\Lib\Ldap\SearchingInterfaceTrait
  */
-class SearchingInterfaceTest extends TestCase
+final class SearchingInterfaceTest extends TestCase
 {
     public static function createDummyInstance()
     {

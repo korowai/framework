@@ -20,8 +20,9 @@ use Korowai\Testing\LdiflibInterfaces\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Tests\Lib\Ldif\Nodes\ControlInterfaceTrait
  */
-class ControlInterfaceTest extends TestCase
+final class ControlInterfaceTest extends TestCase
 {
     public static function createDummyInstance()
     {

@@ -19,8 +19,9 @@ use Korowai\Testing\LdiflibInterfaces\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Tests\Lib\Ldif\Nodes\DnSpecInterfaceTrait
  */
-class DnSpecInterfaceTest extends TestCase
+final class DnSpecInterfaceTest extends TestCase
 {
     public static function createDummyInstance()
     {

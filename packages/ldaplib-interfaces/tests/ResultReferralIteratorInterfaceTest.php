@@ -18,8 +18,9 @@ use Korowai\Testing\LdaplibInterfaces\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Tests\Lib\Ldap\ResultReferralIteratorInterfaceTrait
  */
-class ResultReferralIteratorInterfaceTest extends TestCase
+final class ResultReferralIteratorInterfaceTest extends TestCase
 {
     public static function createDummyInstance()
     {

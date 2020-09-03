@@ -19,8 +19,9 @@ use Korowai\Testing\LdiflibInterfaces\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Tests\Lib\Ldif\Nodes\VersionSpecInterfaceTrait
  */
-class VersionSpecInterfaceTest extends TestCase
+final class VersionSpecInterfaceTest extends TestCase
 {
     public static function createDummyInstance()
     {
@@ -29,7 +30,7 @@ class VersionSpecInterfaceTest extends TestCase
         };
     }
 
-    public static function extendsInterface__cases()
+    public static function prov__extendsInterface()
     {
         return [
             [NodeInterface::class],
@@ -37,7 +38,7 @@ class VersionSpecInterfaceTest extends TestCase
     }
 
     /**
-     * @dataProvider extendsInterface__cases
+     * @dataProvider prov__extendsInterface
      */
     public function test__extendsInterface(string $extends)
     {
@@ -61,14 +62,14 @@ class VersionSpecInterfaceTest extends TestCase
     public function test__getVersion()
     {
         $dummy = $this->createDummyInstance();
-        $dummy->version = 0;
-        $this->assertSame($dummy->version, $dummy->getVersion());
+        $dummy->getVersion = 0;
+        $this->assertSame($dummy->getVersion, $dummy->getVersion());
     }
 
-    public function test__getVersion__withNull()
+    public function test__getVersion__withRetTypeError()
     {
         $dummy = $this->createDummyInstance();
-        $dummy->version = null;
+        $dummy->getVersion = null;
 
         $this->expectException(\TypeError::class);
         $this->expectExceptionMessage(\int::class);

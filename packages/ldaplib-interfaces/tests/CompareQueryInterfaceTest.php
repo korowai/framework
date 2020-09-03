@@ -18,8 +18,9 @@ use Korowai\Testing\LdaplibInterfaces\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Tests\Lib\Ldap\CompareQueryInterfaceTrait
  */
-class CompareQueryInterfaceTest extends TestCase
+final class CompareQueryInterfaceTest extends TestCase
 {
     public static function createDummyInstance()
     {

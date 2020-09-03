@@ -18,8 +18,9 @@ use Korowai\Testing\LdiflibInterfaces\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Tests\Lib\Ldif\ParserInterfaceTrait
  */
-class ParserInterfaceTest extends TestCase
+final class ParserInterfaceTest extends TestCase
 {
 //    public static function extendsInterface__cases()
 //    {

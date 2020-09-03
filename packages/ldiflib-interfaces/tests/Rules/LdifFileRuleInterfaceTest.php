@@ -21,8 +21,9 @@ use Korowai\Testing\LdiflibInterfaces\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Tests\Lib\Ldif\Rules\LdifFileRuleInterfaceTrait
  */
-class LdifFileRuleInterfaceTest extends TestCase
+final class LdifFileRuleInterfaceTest extends TestCase
 {
     public static function createDummyInstance()
     {

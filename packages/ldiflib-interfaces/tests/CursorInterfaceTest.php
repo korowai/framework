@@ -19,8 +19,9 @@ use Korowai\Testing\LdiflibInterfaces\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Tests\Lib\Ldif\CursorInterfaceTrait
  */
-class CursorInterfaceTest extends TestCase
+final class CursorInterfaceTest extends TestCase
 {
     public static function createDummyInstance()
     {

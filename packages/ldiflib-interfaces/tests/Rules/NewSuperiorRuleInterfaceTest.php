@@ -19,8 +19,9 @@ use Korowai\Testing\LdiflibInterfaces\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Tests\Lib\Ldif\Rules\NewSuperiorRuleInterfaceTrait
  */
-class NewSuperiorRuleInterfaceTest extends TestCase
+final class NewSuperiorRuleInterfaceTest extends TestCase
 {
     public static function createDummyInstance()
     {

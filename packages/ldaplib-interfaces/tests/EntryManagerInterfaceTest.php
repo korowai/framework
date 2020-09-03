@@ -19,8 +19,9 @@ use Korowai\Testing\LdaplibInterfaces\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Tests\Lib\Ldap\EntryManagerInterfaceTrait
  */
-class EntryManagerInterfaceTest extends TestCase
+final class EntryManagerInterfaceTest extends TestCase
 {
     public static function createDummyInstance()
     {

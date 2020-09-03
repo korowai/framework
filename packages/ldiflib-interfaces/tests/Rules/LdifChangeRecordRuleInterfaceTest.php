@@ -23,8 +23,9 @@ use Korowai\Testing\LdiflibInterfaces\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Tests\Lib\Ldif\Rules\LdifChangeRecordRuleInterfaceTrait
  */
-class LdifChangeRecordRuleInterfaceTest extends TestCase
+final class LdifChangeRecordRuleInterfaceTest extends TestCase
 {
     public static function createDummyInstance()
     {

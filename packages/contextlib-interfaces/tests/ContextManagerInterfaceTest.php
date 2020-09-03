@@ -18,8 +18,9 @@ use Korowai\Testing\ContextlibInterfaces\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Tests\Lib\Context\ContextManagerInterfaceTrait
  */
-class ContextManagerInterfaceTest extends TestCase
+final class ContextManagerInterfaceTest extends TestCase
 {
     public static function createDummyInstance()
     {

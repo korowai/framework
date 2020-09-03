@@ -19,8 +19,9 @@ use Korowai\Testing\LdiflibInterfaces\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ * @covers \Korowai\Tests\Lib\Ldif\Nodes\ValueSpecInterfaceTrait
  */
-class ValueSpecInterfaceTest extends TestCase
+final class ValueSpecInterfaceTest extends TestCase
 {
     public static function createDummyInstance()
     {

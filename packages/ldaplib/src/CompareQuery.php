@@ -10,9 +10,15 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
+namespace Korowai\Lib\Ldap;
 
 use Korowai\Lib\Ldap\Adapter\AbstractCompareQuery;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkErrorHandler;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkWrapperInterface;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkWrapperTrait;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\EnsureLdapLinkTrait;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LastLdapExceptionTrait;
 use function Korowai\Lib\Context\with;
 
 /**

@@ -19,6 +19,17 @@ namespace Korowai\Lib\Ldap;
 interface ComparingInterface
 {
     /**
+     * Creates a compare query.
+     *
+     * @param  string $dn DN of the target entry
+     * @param  string $attribute Target attribute
+     * @param  string $value Value used for comparison
+     *
+     * @return CompareQueryInterface
+     */
+    public function createCompareQuery(string $dn, string $attribute, string $value) : CompareQueryInterface;
+
+    /**
      * Performs LDAP compare query and returns its result
      *
      * @param  string $dn

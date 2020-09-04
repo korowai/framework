@@ -33,17 +33,6 @@ interface LdapInterface extends
      * @return SearchQueryInterface
      */
     public function createSearchQuery(string $base_dn, string $filter, array $options = []) : SearchQueryInterface;
-
-    /**
-     * Creates a compare query.
-     *
-     * @param  string $dn DN of the target entry
-     * @param  string $attribute Target attribute
-     * @param  string $value Value used for comparison
-     *
-     * @return CompareQueryInterface
-     */
-    public function createCompareQuery(string $dn, string $attribute, string $value) : CompareQueryInterface;
 }
 
 // vim: syntax=php sw=4 ts=4 et:

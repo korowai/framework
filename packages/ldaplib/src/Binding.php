@@ -10,9 +10,11 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
+namespace Korowai\Lib\Ldap;
 
-use Korowai\Lib\Ldap\BindingInterface;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkWrapperInterface;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkWrapperTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

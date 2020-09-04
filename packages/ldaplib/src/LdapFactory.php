@@ -15,7 +15,7 @@ namespace Korowai\Lib\Ldap;
 //use Symfony\Component\OptionsResolver\OptionsResolver;
 //use Symfony\Component\OptionsResolver\Options;
 
-//use Korowai\Lib\Ldap\Adapter\ExtLdap\Binding;
+//use Korowai\Lib\Ldap\Binding;
 //use Korowai\Lib\Ldap\Adapter\ExtLdap\EntryManager;
 //use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLink;
 //use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkConfigResolver;

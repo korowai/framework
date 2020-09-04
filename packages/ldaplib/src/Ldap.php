@@ -18,7 +18,7 @@ use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkFactoryInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkConfigResolver;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkConfigResolverInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkWrapperTrait;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\BindingTrait;
+use Korowai\Lib\Ldap\BindingTrait;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\EntryManagerTrait;
 
 use InvalidArgumentException;
@@ -31,6 +31,7 @@ final class Ldap implements LdapInterface, LdapLinkWrapperInterface
 {
     use LdapLinkWrapperTrait;
     use BindingTrait;
+    use ComparingTrait;
     use EntryManagerTrait;
 
     /**
@@ -89,14 +90,6 @@ final class Ldap implements LdapInterface, LdapLinkWrapperInterface
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function createCompareQuery(string $dn, string $attribute, string $value) : CompareQueryInterface
-    {
-        return new CompareQuery($this->getLdapLink(), $dn, $attribute, $value);
-    }
-
-    /**
      * Create search query, execute and return its result
      *
      * @param  string $base_dn
@@ -108,20 +101,6 @@ final class Ldap implements LdapInterface, LdapLinkWrapperInterface
     public function search(string $base_dn, string $filter, array $options = []) : ResultInterface
     {
         return $this->createSearchQuery($base_dn, $filter, $options)->getResult();
-    }
-
-    /**
-     * Create compare query, execute and return its result
-     *
-     * @param  string $dn
-     * @param  string $attribute
-     * @param  string $value
-     *
-     * @return bool Result of the comparison
-     */
-    public function compare(string $dn, string $attribute, string $value) : bool
-    {
-        return $this->createCompareQuery($dn, $attribute, $value)->getResult();
     }
 }
 

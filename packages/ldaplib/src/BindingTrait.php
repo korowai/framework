@@ -10,8 +10,10 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
+namespace Korowai\Lib\Ldap;
 
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkErrorHandler;
 use Korowai\Lib\Ldap\Exception\LdapException;
 
 use function Korowai\Lib\Context\with;

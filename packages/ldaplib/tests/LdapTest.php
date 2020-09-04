@@ -13,12 +13,13 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Ldap;
 
 use Korowai\Testing\Ldaplib\TestCase;
-use Korowai\Tests\Lib\Ldap\Adapter\ExtLdap\BindingTestTrait;
+use Korowai\Tests\Lib\Ldap\BindingTestTrait;
 use Korowai\Tests\Lib\Ldap\Adapter\ExtLdap\EntryManagerTestTrait;
 
 use Korowai\Lib\Ldap\Ldap;
 use Korowai\Lib\Ldap\LdapInterface;
 use Korowai\Lib\Ldap\BindingInterface;
+use Korowai\Lib\Ldap\ComparingInterface;
 use Korowai\Lib\Ldap\EntryManagerInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkConstructorInterface;
@@ -26,7 +27,8 @@ use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkFactoryInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkConfigResolverInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkWrapperInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkWrapperTrait;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\BindingTrait;
+use Korowai\Lib\Ldap\BindingTrait;
+use Korowai\Lib\Ldap\ComparingTrait;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\EntryManagerTrait;
 
 /**
@@ -74,6 +76,11 @@ final class LdapTest extends TestCase
     public function test__uses__BindingTrait() : void
     {
         $this->assertUsesTrait(BindingTrait::class, Ldap::class);
+    }
+
+    public function test__uses__ComparingTrait() : void
+    {
+        $this->assertUsesTrait(ComparingTrait::class, Ldap::class);
     }
 
     public function test__uses__EntryManagerTrait() : void

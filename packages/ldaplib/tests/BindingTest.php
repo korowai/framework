@@ -10,12 +10,12 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Tests\Lib\Ldap\Adapter\ExtLdap;
+namespace Korowai\Tests\Lib\Ldap;
 
 use Korowai\Testing\Ldaplib\TestCase;
 
-use Korowai\Lib\Ldap\Adapter\ExtLdap\Binding;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\BindingTrait;
+use Korowai\Lib\Ldap\Binding;
+use Korowai\Lib\Ldap\BindingTrait;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkWrapperInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkWrapperTrait;
@@ -23,7 +23,7 @@ use Korowai\Lib\Ldap\BindingInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @covers \Korowai\Lib\Ldap\Adapter\ExtLdap\Binding
+ * @covers \Korowai\Lib\Ldap\Binding
  */
 final class BindingTest extends TestCase
 {

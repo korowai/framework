@@ -10,33 +10,33 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Tests\Lib\Ldap\Adapter\ExtLdap;
+namespace Korowai\Tests\Lib\Ldap;
 
 use Korowai\Testing\Ldaplib\TestCase;
 
-use Korowai\Lib\Ldap\Adapter\ExtLdap\BindingTrait;
+use Korowai\Lib\Ldap\ComparingTrait;
+use Korowai\Lib\Ldap\ComparingInterface;
+use Korowai\Lib\Ldap\CompareQueryInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
-use Korowai\Lib\Ldap\BindingInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @covers \Korowai\Lib\Ldap\Adapter\ExtLdap\BindingTrait
+ * @covers \Korowai\Lib\Ldap\ComparingTrait
  */
-final class BindingTraitTest extends TestCase
+final class ComparingTraitTest extends TestCase
 {
-    use BindingTestTrait;
+    use ComparingTestTrait;
 
-    public function createBindingInstance(LdapLinkInterface $ldapLink, bool $bound = false) : BindingInterface
+    public function createComparingInstance(LdapLinkInterface $ldapLink) : ComparingInterface
     {
-        return new class ($ldapLink, $bound) implements BindingInterface {
-            use BindingTrait;
+        return new class ($ldapLink) implements ComparingInterface {
+            use ComparingTrait;
 
             private $ldapLink;
 
-            public function __construct(LdapLinkInterface $ldapLink, bool $bound = false)
+            public function __construct(LdapLinkInterface $ldapLink)
             {
                 $this->ldapLink = $ldapLink;
-                $this->bound = $bound;
             }
 
             public function getLdapLink() : LdapLinkInterface

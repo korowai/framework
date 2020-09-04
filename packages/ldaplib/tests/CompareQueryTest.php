@@ -10,19 +10,19 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Tests\Lib\Ldap\Adapter\ExtLdap;
+namespace Korowai\Tests\Lib\Ldap;
 
 use Korowai\Testing\Ldaplib\TestCase;
 use Korowai\Testing\Ldaplib\GetLdapFunctionMockTrait;
 
 use Korowai\Lib\Ldap\Adapter\AbstractCompareQuery;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\CompareQuery;
+use Korowai\Lib\Ldap\CompareQuery;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkWrapperInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @covers \Korowai\Lib\Ldap\Adapter\ExtLdap\CompareQuery
+ * @covers \Korowai\Lib\Ldap\CompareQuery
  */
 final class CompareQueryTest extends TestCase
 {

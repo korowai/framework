@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Ldap;
 
 use Korowai\Testing\Ldaplib\TestCase;
-use Korowai\Testing\Ldaplib\GetLdapFunctionMockTrait;
+use Korowai\Testing\Ldaplib\ExamineCallWithLdapTriggerErrorTrait;
 
 use Korowai\Lib\Ldap\Adapter\AbstractCompareQuery;
 use Korowai\Lib\Ldap\CompareQuery;
@@ -26,22 +26,8 @@ use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkWrapperInterface;
  */
 final class CompareQueryTest extends TestCase
 {
-    use \phpmock\phpunit\PHPMock;
-    use GetLdapFunctionMockTrait;
-
-    public function createLdapLinkMock($valid, $unbind = true)
-    {
-        $link = $this->getMockBuilder(LdapLinkInterface::class)
-                     ->setMethods(['isValid', 'unbind'])
-                     ->getMockForAbstractClass();
-        if ($valid === true || $valid === false) {
-            $link->method('isValid')->willReturn($valid);
-        }
-        if ($unbind === true || $unbind === false) {
-            $link->method('unbind')->willReturn($unbind);
-        }
-        return $link;
-    }
+//    use CreateLdapLinkMockTrait;
+    use ExamineCallWithLdapTriggerErrorTrait;
 
     //
     //
@@ -49,118 +35,139 @@ final class CompareQueryTest extends TestCase
     //
     //
 
-    public function test__extends__AbstractCompareQuery()
+    public function test__extends__AbstractCompareQuery() : void
     {
         $this->assertExtendsClass(AbstractCompareQuery::class, CompareQuery::class);
     }
 
-    public function test__implements__LdapLinkWrapperInterface()
+    public function test__implements__LdapLinkWrapperInterface() : void
     {
         $this->assertImplementsInterface(LdapLinkWrapperInterface::class, CompareQuery::class);
     }
 
-    public function test__construct()
-    {
-        $link = $this->getMockBuilder(LdapLinkInterface::class)
-                     ->getMockForAbstractClass();
-        $query = new CompareQuery($link, "uid=jsmith,ou=people,dc=example,dc=org", "userpassword", "secret");
-        $this->assertTrue(true); // didn't blow up
-    }
+    //
+    // __construct()
+    //
 
-    public function test__getLdapLink()
+    public function test__construct() : void
     {
         $link = $this->getMockBuilder(LdapLinkInterface::class)
                      ->getMockForAbstractClass();
-        $query = new CompareQuery($link, "uid=jsmith,ou=people,dc=example,dc=org", "userpassword", "secret");
+        $query = new CompareQuery($link, 'dc=example,dc=org', 'attribute', 'value');
         $this->assertSame($link, $query->getLdapLink());
+        $this->assertHasPropertiesSameAs([
+            'getDn()' => "dc=example,dc=org",
+            'getAttribute()' => 'attribute',
+            'getValue()' => 'value'
+        ], $query);
     }
 
-    public function test__execute__true()
+    //
+    // execute()/getResult()
+    //
+
+    public static function prov__query() : array
     {
-        $link = $this->createLdapLinkMock(true);
-        $query = new CompareQuery($link, "uid=jsmith,ou=people,dc=example,dc=org", "userpassword", "secret");
-        $link->expects($this->exactly(2))
-             ->method('compare')
-             ->with("uid=jsmith,ou=people,dc=example,dc=org", "userpassword", "secret")
-             ->willReturn(true);
-        $this->assertTrue($query->execute());
-        $this->assertTrue($query->execute());
-    }
+        $common = [
+            // #0
+            [
+                'args'   => ['dc=example,dc=org', 'attribute', 'matching'],
+                'return' => false,
+                'expect' => false,
+            ],
+            // #1
+            [
+                'args'   => ['dc=example,dc=org', 'attribute', 'non-matching'],
+                'return' => true,
+                'expect' => true,
+            ],
+        ];
 
-    public function test__execute__false()
-    {
-        $link = $this->createLdapLinkMock(true);
-        $query = new CompareQuery($link, "uid=jsmith,ou=people,dc=example,dc=org", "userpassword", "wrongpass");
-        $link->expects($this->exactly(2))
-             ->method('compare')
-             ->with("uid=jsmith,ou=people,dc=example,dc=org", "userpassword", "wrongpass")
-             ->willReturn(false);
-        $this->assertFalse($query->execute());
-        $this->assertFalse($query->execute());
-    }
-
-    public function test__execute__UninitializedLink()
-    {
-        $link = $this->createLdapLinkMock(false);
-        $query = new CompareQuery($link, "uid=jsmith,ou=people,dc=example,dc=org", "userpassword", "secret");
-        $link->expects($this->never())
-             ->method('compare');
-
-        $this->expectException(\Korowai\Lib\Ldap\Exception\LdapException::class);
-        $this->expectExceptionCode(-1);
-        $this->expectExceptionMessage('Uninitialized LDAP link');
-
-        $query->execute();
+        return [
+            [ 'method' => 'execute',   'calls' => 2] +  $common[0],
+            [ 'method' => 'execute',   'calls' => 2] +  $common[1],
+            [ 'method' => 'getResult', 'calls' => 1] +  $common[0],
+            [ 'method' => 'getResult', 'calls' => 1] +  $common[1],
+        ];
     }
 
     /**
-     * @runInSeparateProcess
+     * @dataProvider prov__query
      */
-    public function test__execute__LdapError()
+    public function test__query(string $method, int $calls, array $args, $return, $expect) : void
     {
-        $link = $this->createLdapLinkMock(true);
-        $query = new CompareQuery($link, "uid=jsmith,ou=people,dc=example,dc=org", "userpassword", "secret");
+        $link = $this->getMockBuilder(LdapLinkInterface::class)
+                     ->getMockForAbstractClass();
+        $query = new CompareQuery($link, ...$args);
+        $link->expects($this->exactly($calls))
+             ->method('compare')
+             ->with(...$args)
+             ->willReturn($return);
+        $this->assertSame($expect, $query->$method());
+        $this->assertSame($expect, $query->$method());
+    }
+
+    public function prov__query__withLdapReturningFailure() : array
+    {
+        $common =  [
+            'args'   => ['dc=example,dc=org', 'attribute', 'value'],
+            'return' => -1,
+            'expect' => [
+                'exception' => \ErrorException::class,
+                'message'   => 'LdapLink::compare() returned -1'
+            ],
+        ];
+        return [
+            // # 0
+            ['method' => 'execute'] +  $common,
+            // # 1
+            ['method' => 'getResult'] + $common,
+        ];
+    }
+
+    public static function prov__query__withLdapTriggerError() : array
+    {
+        $common = self::feedCallWithLdapTriggerError();
+        foreach (['execute', 'getResult'] as $method) {
+            foreach ($common as $key => $array) {
+                $cases[] = ['method' => $method] + $array;
+            }
+        }
+        return $cases;
+    }
+
+    /**
+     * @dataProvider prov__query__withLdapTriggerError
+     */
+    public function test__query__withLdapTriggerError(string $method, array $config, array $expect): void
+    {
+        $args = ['dc=example,dc=org', 'attribute', 'value'];
+        $link = $this->getMockBuilder(LdapLinkInterface::class)
+                     ->getMockForAbstractClass();
+        $query = new CompareQuery($link, ...$args);
+        $function = [$query, $method];
+
+        $this->examineCallWithLdapTriggerError($function, $link, 'compare', $args, $link, $config, $expect);
+    }
+
+    /**
+     * @dataProvider prov__query__withLdapReturningFailure
+     */
+    public function test__query__withLdapReturningFailure(string $method, array $args, $return, array $expect) : void
+    {
+        $link = $this->getMockBuilder(LdapLinkInterface::class)
+                     ->getMockForAbstractClass();
+        $query = new CompareQuery($link, ...$args);
+
         $link->expects($this->once())
              ->method('compare')
-             ->with("uid=jsmith,ou=people,dc=example,dc=org", "userpassword", "secret")
-             ->willReturn(-1);
+             ->with(...$args)
+             ->willReturn($return);
 
-        $link->method('errno')
-             ->willReturn(2);
-        $this->getLdapFunctionMock('ldap_err2str')
-             ->expects($this->once())
-             ->with(2)
-             ->willReturn("Error message");
-
-        $this->expectException(\Korowai\Lib\Ldap\Exception\LdapException::class);
-        $this->expectExceptionCode(2);
-        $this->expectExceptionMessage('Error message');
+        $this->expectException($expect['exception']);
+        $this->expectExceptionMessage($expect['message']);
 
         $query->execute();
-    }
-
-    public function test__getResult__true()
-    {
-        $link = $this->createLdapLinkMock(true);
-        $query = new CompareQuery($link, "uid=jsmith,ou=people,dc=example,dc=org", "userpassword", "secret");
-        $link->expects($this->once())
-             ->method('compare')
-             ->with("uid=jsmith,ou=people,dc=example,dc=org", "userpassword", "secret")
-             ->willReturn(true);
-        $this->assertTrue($query->getResult());
-        $this->assertTrue($query->getResult());
-    }
-
-    public function test__getResult__false()
-    {
-        $link = $this->createLdapLinkMock(true);
-        $query = new CompareQuery($link, "uid=jsmith,ou=people,dc=example,dc=org", "userpassword", "secret");
-        $link->expects($this->once())
-             ->method('compare')
-             ->with("uid=jsmith,ou=people,dc=example,dc=org", "userpassword", "secret")
-             ->willReturn(false);
-        $this->assertFalse($query->getResult());
-        $this->assertFalse($query->getResult());
     }
 }
 

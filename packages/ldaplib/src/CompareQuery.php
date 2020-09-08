@@ -17,17 +17,13 @@ use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkErrorHandler;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkWrapperInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkWrapperTrait;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\EnsureLdapLinkTrait;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LastLdapExceptionTrait;
 use function Korowai\Lib\Context\with;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class CompareQuery extends AbstractCompareQuery implements LdapLinkWrapperInterface
+final class CompareQuery extends AbstractCompareQuery implements LdapLinkWrapperInterface
 {
-    use EnsureLdapLinkTrait;
-    use LastLdapExceptionTrait;
     use LdapLinkWrapperTrait;
 
     /**
@@ -49,19 +45,12 @@ class CompareQuery extends AbstractCompareQuery implements LdapLinkWrapperInterf
      */
     protected function doExecuteQuery() : bool
     {
-        static::ensureLdapLink($this->getLdapLink());
-        return with(LdapLinkErrorHandler::fromLdapLinkWrapper($this))(function () {
-            return $this->doExecuteQueryImpl();
+        return with(new LdapLinkErrorHandler($this->ldapLink))(function () : bool {
+            if (($result = $this->ldapLink->compare($this->dn, $this->attribute, $this->value)) === -1) {
+                trigger_error("LdapLink::compare() returned -1");
+            }
+            return $result;
         });
-    }
-
-    private function doExecuteQueryImpl() : bool
-    {
-        $result = $this->getLdapLink()->compare($this->dn, $this->attribute, $this->value);
-        if (-1 === $result) {
-            throw static::lastLdapException($this->getLdapLink());
-        }
-        return (bool)$result;
     }
 }
 

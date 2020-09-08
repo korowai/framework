@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Ldap;
 
 use Korowai\Testing\Ldaplib\TestCase;
+use Korowai\Testing\Ldaplib\ExamineCallWithLdapTriggerErrorTrait;
 
 use Korowai\Lib\Ldap\ComparingTrait;
 use Korowai\Lib\Ldap\ComparingInterface;
@@ -26,6 +27,7 @@ use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
 final class ComparingTraitTest extends TestCase
 {
     use ComparingTestTrait;
+    use ExamineCallWithLdapTriggerErrorTrait;
 
     public function createComparingInstance(LdapLinkInterface $ldapLink) : ComparingInterface
     {

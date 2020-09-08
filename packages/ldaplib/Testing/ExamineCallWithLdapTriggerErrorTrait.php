@@ -20,7 +20,7 @@ use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
  */
 trait ExamineCallWithLdapTriggerErrorTrait
 {
-    private function examineCallWithLdapTriggerError(
+    public function examineCallWithLdapTriggerError(
         callable $function,
         object $mock,
         string $mockMethod,

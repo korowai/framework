@@ -39,6 +39,7 @@ final class LdapTest extends TestCase
 {
     use BindingTestTrait;
     use EntryManagerTestTrait;
+    use ComparingTestTrait;
 
     // required by BindingTestTrait
     public function createBindingInstance(LdapLinkInterface $ldapLink, bool $bound = false) : BindingInterface
@@ -48,6 +49,12 @@ final class LdapTest extends TestCase
 
     // required by EntryManagerTrait
     public function createEntryManagerInstance(LdapLinkinterface $ldapLink) : EntryManagerInterface
+    {
+        return new Ldap(...func_get_args());
+    }
+
+    // required by ComparingTestTrait
+    public function createComparingInstance(LdapLinkinterface $ldapLink) : ComparingInterface
     {
         return new Ldap(...func_get_args());
     }

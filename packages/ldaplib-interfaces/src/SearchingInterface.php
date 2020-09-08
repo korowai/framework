@@ -19,6 +19,17 @@ namespace Korowai\Lib\Ldap;
 interface SearchingInterface
 {
     /**
+     * Creates a search query.
+     *
+     * @param  string $base_dn Base DN where the search will start
+     * @param  string $filter Filter used by ldap search
+     * @param  array $options Additional search options
+     *
+     * @return SearchQueryInterface
+     */
+    public function createSearchQuery(string $base_dn, string $filter, array $options = []) : SearchQueryInterface;
+
+    /**
      * Performs an LDAP search and return its result
      *
      * @param  string $base_dn

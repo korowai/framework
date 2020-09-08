@@ -10,10 +10,15 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
+namespace Korowai\Lib\Ldap;
 
 use Korowai\Lib\Ldap\Adapter\AbstractSearchQuery;
-use Korowai\Lib\Ldap\ResultInterface;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkWrapperInterface;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkWrapperTrait;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkErrorHandler;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LastLdapExceptionTrait;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\Result;
 
 use function Korowai\Lib\Context\with;
 

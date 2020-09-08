@@ -32,6 +32,7 @@ final class Ldap implements LdapInterface, LdapLinkWrapperInterface
     use LdapLinkWrapperTrait;
     use BindingTrait;
     use ComparingTrait;
+    use SearchingTrait;
     use EntryManagerTrait;
 
     /**

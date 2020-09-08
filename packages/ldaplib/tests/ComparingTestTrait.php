@@ -12,9 +12,7 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldap;
 
-use Korowai\Lib\Ldap\ComparingTrait;
 use Korowai\Lib\Ldap\ComparingInterface;
-use Korowai\Lib\Ldap\CompareQueryInterface;
 use Korowai\Lib\Ldap\CompareQuery;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
 

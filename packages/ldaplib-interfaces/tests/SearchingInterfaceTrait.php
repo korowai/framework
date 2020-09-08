@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Ldap;
 
 use Korowai\Lib\Ldap\ResultInterface;
+use Korowai\Lib\Ldap\SearchQueryInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -20,10 +21,16 @@ use Korowai\Lib\Ldap\ResultInterface;
 trait SearchingInterfaceTrait
 {
     public $search;
+    public $createSearchQuery;
 
     public function search(string $base_dn, string $filter, array $options = []) : ResultInterface
     {
         return $this->search;
+    }
+
+    public function createSearchQuery(string $base_dn, string $filter, array $options = []) : SearchQueryInterface
+    {
+        return $this->createSearchQuery;
     }
 }
 

@@ -23,13 +23,6 @@ trait LdapInterfaceTrait
     use SearchingInterfaceTrait;
     use ComparingInterfaceTrait;
     use EntryManagerInterfaceTrait;
-
-    public $createSearchQuery;
-
-    public function createSearchQuery(string $base_dn, string $filter, array $options = []) : SearchQueryInterface
-    {
-        return $this->createSearchQuery;
-    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

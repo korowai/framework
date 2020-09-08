@@ -65,50 +65,6 @@ final class LdapInterfaceTest extends TestCase
         $expect = [];
         $this->assertObjectPropertyGetters($expect, LdapInterface::class);
     }
-
-    public function test__createSearchQuery()
-    {
-        $dummy = $this->createDummyInstance();
-
-        $dummy->createSearchQuery = $this->createStub(SearchQueryInterface::class);
-
-        $this->assertSame($dummy->createSearchQuery, $dummy->createSearchQuery('', ''));
-        $this->assertSame($dummy->createSearchQuery, $dummy->createSearchQuery('', '', []));
-    }
-
-    public static function prov__createSearchQuery__withArgTypeError()
-    {
-        return [
-            [[null, ''], \string::class],
-            [[null, '', []], \string::class],
-            [['', null], \string::class],
-            [['', null, []], \string::class],
-            [['', '', null], 'array'],
-        ];
-    }
-
-    /**
-     * @dataProvider prov__createSearchQuery__withArgTypeError
-     */
-    public function test__createSearchQuery__withArgTypeError(array $args, string $message)
-    {
-        $dummy = $this->createDummyInstance();
-        $dummy->createSearchQuery = $this->createStub(SearchQueryInterface::class);
-
-        $this->expectException(\TypeError::class);
-        $this->expectExceptionMessage($message);
-        $dummy->createSearchQuery(...$args);
-    }
-
-    public function test__createSearchQuery__withRetTypeError()
-    {
-        $dummy = $this->createDummyInstance();
-        $dummy->createSearchQuery = null;
-
-        $this->expectException(\TypeError::class);
-        $this->expectExceptionMessage(SearchQueryInterface::class);
-        $dummy->createSearchQuery('', '', []);
-    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

@@ -49,9 +49,43 @@ trait SearchingTestTrait
             [
                 'args'   => ['dc=example,dc=org', 'objectClass=*'],
                 'expect' => [
-                    'getBaseDn()'  => 'dc=example,dc=org',
-                    'getFilter()'  => 'objectClass=*',
-                    'getOptions()' => [],
+                    'properties' => [
+                        'getBaseDn()'  => 'dc=example,dc=org',
+                        'getFilter()'  => 'objectClass=*',
+                    ],
+                    'options' => [
+                        'attributes' => ['*'],
+                        'attrsOnly' => 0,
+                        'deref' => LDAP_DEREF_NEVER,
+                        'scope' => 'sub',
+                        'sizeLimit' => 0,
+                        'timeLimit' => 0,
+                    ],
+                ],
+            ],
+            // #1
+            [
+                'args'   => ['dc=example,dc=org', 'objectClass=*', [
+                    'attributes' => '*',
+                    'attrsOnly'  => true,
+                    'deref'      => 'always',
+                    'scope'      => 'one',
+                    'sizeLimit'  => 123,
+                    'timeLimit'  => 456,
+                ]],
+                'expect' => [
+                    'properties' => [
+                        'getBaseDn()'  => 'dc=example,dc=org',
+                        'getFilter()'  => 'objectClass=*',
+                    ],
+                    'options' => [
+                        'attributes' => ['*'],
+                        'attrsOnly' => 1,
+                        'deref' => LDAP_DEREF_ALWAYS,
+                        'scope' => 'one',
+                        'sizeLimit' => 123,
+                        'timeLimit' => 456,
+                    ],
                 ],
             ],
         ];
@@ -62,8 +96,7 @@ trait SearchingTestTrait
      */
     public function test__createSearchQuery(array $args, array $expect) : void
     {
-        $link = $this->getMockBuilder(LdapLinkInterface::class)
-                     ->getMockForAbstractClass();
+        $link = $this->createMock(LdapLinkInterface::class);
 
         $searching = $this->createSearchingInstance($link);
 
@@ -71,8 +104,17 @@ trait SearchingTestTrait
 
         $this->assertInstanceOf(SearchQuery::class, $query);
         $this->assertSame($link, $query->getLdapLink());
-        $this->assertHasPropertiesSameAs($expect, $query);
+        $this->assertHasPropertiesSameAs($expect['properties'], $query);
+
+        // FIXME: use self::assertEqualsKsorted() once it's implemented (see GH issue #3).
+        $expectOptions = $expect['options'];
+        $actualOptions = $query->getOptions();
+        ksort($expectOptions);
+        ksort($actualOptions);
+        $this->assertSame($expectOptions, $actualOptions);
     }
+
+    // TODO: start from here!
 
 //    //
 //    // search()
@@ -101,8 +143,7 @@ trait SearchingTestTrait
 //     */
 //    public function test__search(array $args, $return, $expect) : void
 //    {
-//        $link = $this->getMockBuilder(LdapLinkInterface::class)
-//                     ->getMockForAbstractClass();
+//        $link = $this->createMock(LdapLinkInterface::class);
 //        $searching = $this->createSearchingInstance($link);
 //        $link->expects($this->exactly(2))
 //             ->method('search')
@@ -122,8 +163,7 @@ trait SearchingTestTrait
 //     */
 //    public function test__search__withLdapTriggerError(array $config, array $expect): void
 //    {
-//        $link = $this->getMockBuilder(LdapLinkInterface::class)
-//                     ->getMockForAbstractClass();
+//        $link = $this->createMock(LdapLinkInterface::class);
 //        $searching = $this->createSearchingInstance($link);
 //        $args = ['dc=example,dc=org', 'attribute', 'value'];
 //        $function = function () use ($searching, $args) {
@@ -135,8 +175,7 @@ trait SearchingTestTrait
 //
 //    public function test__search__withLdapReturningFailure() : void
 //    {
-//        $link = $this->getMockBuilder(LdapLinkInterface::class)
-//                     ->getMockForAbstractClass();
+//        $link = $this->createMock(LdapLinkInterface::class);
 //        $searching = $this->createSearchingInstance($link);
 //
 //        $args = ['dc=example,dc=org', 'attribute', 'value'];

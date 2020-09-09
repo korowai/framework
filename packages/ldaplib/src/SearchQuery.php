@@ -12,26 +12,35 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldap;
 
-use Korowai\Lib\Ldap\Adapter\AbstractSearchQuery;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkWrapperInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkWrapperTrait;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkErrorHandler;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LastLdapExceptionTrait;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\Result;
 
 use function Korowai\Lib\Context\with;
 
-use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\Options;
-
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-final class SearchQuery extends AbstractSearchQuery implements LdapLinkWrapperInterface
+final class SearchQuery implements SearchQueryInterface, LdapLinkWrapperInterface
 {
-    use LastLdapExceptionTrait;
     use LdapLinkWrapperTrait;
+
+    public const SCOPES_METHODS = [
+        'base' => 'read',
+        'one'  => 'list',
+        'sub'  => 'search',
+    ];
+
+    /** @var string */
+    protected $base_dn;
+    /** @var string */
+    protected $filter;
+    /** @var ResultInterface|null */
+    protected $result;
+    /** @var array */
+    protected $options;
 
     /**
      * Constructs SearchQuery
@@ -44,17 +53,64 @@ final class SearchQuery extends AbstractSearchQuery implements LdapLinkWrapperIn
     public function __construct(LdapLinkInterface $link, string $base_dn, string $filter, array $options = [])
     {
         $this->ldapLink = $link;
-        parent::__construct($base_dn, $filter, $options);
+        $this->base_dn = $base_dn;
+        $this->filter = $filter;
+        // FIXME: use dependency injection?
+        $resolver = new SearchOptionsResolver;
+        $this->options = $resolver->resolve($options);
+    }
+
+    /**
+     * Returns ``$base_dn`` provided to ``__construct()``
+     * @return string The ``$base_dn`` value provided to ``__construct()``
+     */
+    public function getBaseDn()
+    {
+        return $this->base_dn;
+    }
+
+    /**
+     * Returns ``$filter`` provided to ``__construct()``
+     * @return string The ``$filter`` value provided to ``__construct()``
+     */
+    public function getFilter()
+    {
+        return $this->filter;
+    }
+
+    /**
+     * Get the options used by this query.
+     *
+     * The returned array contains ``$options`` provided to ``__construct()``,
+     * but also includes defaults applied internally by this object.
+     *
+     * @return array Options used by this query
+     */
+    public function getOptions() : array
+    {
+        return $this->options;
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function doExecuteQuery() : ResultInterface
+    public function execute() : ResultInterface
     {
         $options = $this->getOptions();
         $method = static::selectSearchMethod($options);
-        return $this->invokeQueryMethod($method, $options);
+        $this->result = $this->invokeQueryMethod($method, $options);
+        return $this->result;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getResult() : ResultInterface
+    {
+        if (!isset($this->result)) {
+            return $this->execute();
+        }
+        return $this->result;
     }
 
     private function invokeQueryMethod(string $method, array $options) : ResultInterface
@@ -63,7 +119,7 @@ final class SearchQuery extends AbstractSearchQuery implements LdapLinkWrapperIn
         $ldapResult = with(new LdapLinkErrorHandler($link))(
             /** @psalm-return LdapResultInterface|false */
             function () use ($link, $method, $options) {
-                return call_user_func(
+                $result = call_user_func(
                     [$link, $method],
                     $this->getBaseDn(),
                     $this->getFilter(),
@@ -71,39 +127,21 @@ final class SearchQuery extends AbstractSearchQuery implements LdapLinkWrapperIn
                     $options['attrsOnly'],
                     $options['sizeLimit'],
                     $options['timeLimit'],
-                    static::getDerefOption($options)
+                    $options['deref']
                 );
+                if ($result === false) {
+                    trigger_error('LdapLinkInterface::'.$method.'() returned false');
+                }
+                return $result;
             }
         );
-        if (false === $ldapResult) {
-            throw static::lastLdapException($link);
-        }
         return new Result($ldapResult);
-    }
-
-    private static function getDerefOption(array $options) : int
-    {
-        if (isset($options['deref'])) {
-            return constant('LDAP_DEREF_' . strtoupper($options['deref']));
-        } else {
-            return LDAP_DEREF_NEVER;
-        }
     }
 
     private static function selectSearchMethod(array $options) : string
     {
         $scope = strtolower($options['scope'] ?? 'sub');
-        switch ($scope) {
-            case 'base':
-                return 'read';
-            case 'one':
-                return 'list';
-            case 'sub':
-                return 'search';
-            default:
-                // This should be actualy covered by OptionsResolver in AbstractSearchQuery::__construct()
-                throw new \RuntimeException(sprintf('Unsupported search scope "%s"', $options['scope']));
-        }
+        return self::SCOPES_METHODS[$scope] ?? 'search';
     }
 }
 

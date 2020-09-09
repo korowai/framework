@@ -10,19 +10,17 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Tests\Lib\Ldap\Adapter\ExtLdap;
+namespace Korowai\Tests\Lib\Ldap;
 
 use Korowai\Testing\Ldaplib\TestCase;
-use Korowai\Testing\Ldaplib\CreateLdapLinkMockTrait;
 use Korowai\Testing\Ldaplib\ExamineCallWithLdapTriggerErrorTrait;
 
 use Korowai\Lib\Ldap\SearchQuery;
-use Korowai\Lib\Ldap\Adapter\AbstractSearchQuery;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkWrapperInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkWrapperTrait;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultInterface;
 use Korowai\Lib\Ldap\ResultInterface;
-use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -30,32 +28,13 @@ use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
  */
 final class SearchQueryTest extends TestCase
 {
-    use CreateLdapLinkMockTrait;
     use ExamineCallWithLdapTriggerErrorTrait;
 
-    private function examineMethodWithTriggerError(
-        string $method,
-        array $args,
-        string $ldapMethod,
-        array $ldapArgs,
-        array $config,
-        array $expect
-    ) : void {
-        $ldap = $this->createLdapLinkMock('ldap link', ['isValid', 'errno']);
-        $query = new SearchQuery($ldap, ...$args);
-
-        $this->examineCallWithLdapTriggerError(
-            function () use ($query, $method, $args) : void {
-                $query->$method(...$args);
-            },
-            $ldap,
-            $ldapMethod,
-            $ldapArgs,
-            $ldap,
-            $config,
-            $expect
-        );
-    }
+    public const SCOPES_METHODS = [
+        'base' => 'read',
+        'one'  => 'list',
+        'sub'  => 'search'
+    ];
 
     //
     //
@@ -63,12 +42,12 @@ final class SearchQueryTest extends TestCase
     //
     //
 
-    public function test__extends__AbstractSearchQuery() : void
+    public function test__implements__LdapLinkWrapperInterface() : void
     {
-        $this->assertExtendsClass(AbstractSearchQuery::class, SearchQuery::class);
+        $this->assertImplementsInterface(LdapLinkWrapperInterface::class, SearchQuery::class);
     }
 
-    public function test__implements__LdapLinkWrapperInterface() : void
+    public function test__implements__SearchQueryInterface() : void
     {
         $this->assertImplementsInterface(LdapLinkWrapperInterface::class, SearchQuery::class);
     }
@@ -78,255 +57,233 @@ final class SearchQueryTest extends TestCase
         $this->assertUsesTrait(LdapLinkWrapperTrait::class, SearchQuery::class);
     }
 
-    public function test__construct() : void
+    public static function prov__construct() : array
     {
-        $link = $this->createLdapLinkMock();
-        $query = new SearchQuery($link, "dc=korowai,dc=org", "objectClass=*");
-        $this->assertSame($link, $query->getLdapLink());
-        $this->assertSame('dc=korowai,dc=org', $query->getBaseDn());
-        $this->assertSame('objectClass=*', $query->getFilter());
-
-        $this->markTestIncomplete('Need to test getOptions() as well');
-    }
-
-    public function test__construct__withInvalidOptions() : void
-    {
-        $link = $this->createLdapLinkMock();
-
-        $this->expectException(InvalidOptionsException::class);
-        $this->expectExceptionMessageMatches('/option "scope" with value "foo"/');
-
-        new SearchQuery($link, "dc=korowai,dc=org", "objectClass=*", ['scope' => 'foo']);
-    }
-
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // execute()
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    public static function prov__execute() : array
-    {
-        return [
+        $cases = [
             // #0
-            '$options = ["scope" => "base"]' => [
-                'args' => [
-                    'dc=korowai,dc=org',
-                    'objectClass=*',
-                    ['scope' => 'base']
-                ],
+            [
+                'args' => ['dc=korowai,dc=org', 'objectClass=*'],
                 'expect' => [
-                    'method' => 'read',
-                    'args' => [
-                        'dc=korowai,dc=org',
-                        'objectClass=*',
-                        ['*'],
-                        0, 0, 0,
-                        LDAP_DEREF_NEVER
-                    ]
-                ]
-            ],
-            // #1
-            '$options = ["scope" => "one"]' => [
-                'args' => [
-                    'dc=korowai,dc=org',
-                    'objectClass=*',
-                    ['scope' => 'one']
+                    'properties' => [
+                        'getBaseDn()' => 'dc=korowai,dc=org',
+                        'getFilter()' => 'objectClass=*',
+                    ],
+                    'options' => SearchOptionsResolverTest::getDefaultOptions(),
                 ],
-                'expect' => [
-                    'method' => 'list',
-                    'args' => [
-                        'dc=korowai,dc=org',
-                        'objectClass=*',
-                        ['*'],
-                        0, 0, 0,
-                        LDAP_DEREF_NEVER
-                    ]
-                ]
-            ],
-            // #2
-            '$options = ["scope" => "sub"]' => [
-                'args' => [
-                    'dc=korowai,dc=org',
-                    'objectClass=*',
-                    ['scope' => 'sub']
-                ],
-                'expect' => [
-                    'method' => 'search',
-                    'args' => [
-                        'dc=korowai,dc=org',
-                        'objectClass=*',
-                        ['*'],
-                        0, 0, 0,
-                        LDAP_DEREF_NEVER
-                    ]
-                ]
-            ],
-            // #2
-            "default options" => [
-                'args' => [
-                    'dc=korowai,dc=org',
-                    'objectClass=*',
-                ],
-                'expect' => [
-                    'method' => 'search',
-                    'args' => [
-                        'dc=korowai,dc=org',
-                        'objectClass=*',
-                        ['*'],
-                        0, 0, 0,
-                        LDAP_DEREF_NEVER
-                    ]
-                ]
             ],
         ];
+
+        foreach(SearchOptionsResolverTest::prov__resolve() as $case) {
+            $cases[] = [
+                'args' => ['', '', $case['options']],
+                'expect' => [
+                    'options' => $case['expect'],
+                ]
+            ];
+        }
+
+        return $cases;
     }
 
     /**
-     * @dataProvider prov__execute
+     * @dataProvider prov__construct
      */
-    public function test__execute(array $args, array $expect) : void
+    public function test__construct(array $args, array $expect) : void
     {
-        $link = $this->createLdapLinkMock();
+        $link = $this->createMock(LdapLinkInterface::class);
+        $query = new SearchQuery($link, ...$args);
+        $this->assertSame($link, $query->getLdapLink());
+
+        if (array_key_exists('properties', $expect)) {
+            $this->assertHasPropertiesSameAs($expect['properties'], $query);
+        }
+
+        if (array_key_exists('options', $expect)) {
+            // FIXME: use assertEqualsKsorted() once it's implemented (see GH issue #3).
+            $expectOptions = $expect['options'];
+            $actualOptions = $query->getOptions();
+            ksort($expectOptions);
+            ksort($actualOptions);
+            $this->assertSame($expectOptions, $actualOptions);
+        }
+    }
+
+    public static function prov__construct__withInvalidOptions() : array
+    {
+        return array_map(function (array $case) : array {
+            return ['args' => ['', '', $case['options']], 'expect' => $case['expect']];
+        }, SearchOptionsResolverTest::prov__resolve__withInvalidOptions());
+    }
+
+    /**
+     * @dataProvider prov__construct__withInvalidOptions
+     */
+    public function test__construct__withInvalidOptions(array $args, array $expect) : void
+    {
+        $link = $this->createMock(LdapLinkInterface::class);
+
+        $this->expectException($expect['exception']);
+        $this->expectExceptionMessageMatches($expect['message']);
+
+        new SearchQuery($link, ...$args);
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // execute()/getResult()
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public static function prov__query() : array
+    {
+        $args = [
+            'dc=korowai,dc=org',
+            'objectClass=*',
+            [
+                'attributes' => ['foo'],
+                'attrsOnly' => true,
+                'sizeLimit' => 123,
+                'timeLimit' => 456,
+                'deref' => 'always'
+            ]
+        ];
+
+        $expectArgs = [
+            'dc=korowai,dc=org',
+            'objectClass=*',
+            ['foo'],
+            1, 123, 456,
+            LDAP_DEREF_ALWAYS
+        ];
+
+        $cases = [];
+        foreach (['execute' => 2, 'getResult' => 1] as $method => $expectCalls) {
+            $cases[] = [
+                'method' => $method,
+                'args'   => $args,
+                'expect' => [
+                    'calls'  => $expectCalls,
+                    'method' => 'search',
+                    'args'   => $expectArgs,
+                ],
+            ];
+            foreach (self::SCOPES_METHODS as $scope => $expectMethod) {
+                $case = [
+                    'method' => $method,
+                    'args' => $args,
+                    'expect' => [
+                        'calls'  => $expectCalls,
+                        'method' => $expectMethod,
+                        'args'   => $expectArgs,
+                    ],
+                ];
+                $case['args'][2]['scope'] = $scope;
+                $cases[] = $case;
+            }
+        }
+
+        return $cases;
+    }
+
+    /**
+     * @dataProvider prov__query
+     */
+    public function test__query(string $method, array $args, array $expect) : void
+    {
+        $link = $this->createMock(LdapLinkInterface::class);
         $ldapResult = $this->createMock(LdapResultInterface::class);
         $query = new SearchQuery($link, ...$args);
-        $link->expects($this->once())
+        $link->expects($this->exactly($expect['calls']))
              ->method($expect['method'])
              ->with(...$expect['args'])
              ->willReturn($ldapResult);
-        $result = $query->execute();
+        $result = $query->$method();
+        $result = $query->$method();
         $this->assertInstanceOf(ResultInterface::class, $result);
         $this->assertSame($ldapResult, $result->getLdapResult());
-        $this->assertSame($result, $query->getResult());
+        if ($method !== 'getResult') {
+            $this->assertSame($result, $query->getResult());
+        }
     }
 
-    public static function prov__execute__withTriggerError() : array
+    public static function prov__query__withTriggerError() : array
     {
-        return static::feedCallWithLdapTriggerError();
+        $args = ['dc=example,dc=org', 'objectClass=*'];
+        $expectArgs = ['dc=example,dc=org', 'objectClass=*', ['*'], 0, 0, 0, LDAP_DEREF_NEVER];
+
+        $cases = [];
+        foreach (['execute', 'getResult'] as $method) {
+            foreach (self::SCOPES_METHODS as $scope => $expectMethod) {
+                foreach (self::feedCallWithLdapTriggerError() as $feedCase) {
+                    $case = [
+                        'method' => $method,
+                        'args'   => $args,
+                        'config' => $feedCase['config'],
+                        'expect' => $feedCase['expect'] + ['method' => $expectMethod, 'args' => $expectArgs],
+                    ];
+                    $case['args'][] = ['scope' => $scope];
+                    $cases[] = $case;
+                }
+            }
+        }
+        return $cases;
     }
 
     /**
-     * @dataProvider prov__execute__withTriggerError
+     * @dataProvider prov__query__withTriggerError
      */
-    public function test__execute__withTriggerError(array $config, array $expect) : void
+    public function test__query__withTriggerError(string $method, array $args, array $config, array $expect) : void
     {
-        $this->examineMethodWithTriggerError(
-            'execute',
-            ['dc=example,dc=org', 'objectClass=*'],
-            'search',
-            ['dc=example,dc=org', 'objectClass=*', ['*'], 0, 0, 0, LDAP_DEREF_NEVER],
+        $link = $this->createMock(LdapLinkInterface::class);
+        $query = new SearchQuery($link, ...$args);
+
+        $this->examineCallWithLdapTriggerError(
+            [$query, $method],
+            $link,
+            $expect['method'],
+            $expect['args'],
+            $link,
             $config,
             $expect
         );
     }
 
-    public function test__execute__sub__withoutDeref()
+    public static function prov__query__withLdapLinkReturningFalse() : array
     {
-        $this->markTestIncomplete('Test not implemented yet!');
-//        $link = $this->createLdapLinkMock(true);
-//        $result = $this->createMock(ResultInterface::class);
-//
-//        $query = $this->getMockBuilder(SearchQuery::class)
-//                      ->disableOriginalConstructor()
-//                      ->setMethods(['getOptions', 'getLdapLink', 'getBaseDn', 'getFilter'])
-//                      ->getMock();
-//
-//        $query->expects($this->any())
-//               ->method('getBaseDn')
-//               ->with()
-//               ->willReturn("dc=korowai,dc=org");
-//        $query->expects($this->any())
-//               ->method('getFilter')
-//               ->with()
-//               ->willReturn("objectClass=*");
-//        $query->expects($this->any())
-//               ->method('getOptions')
-//               ->with()
-//               ->willReturn(['attributes' => ['*'], 'attrsOnly' => 0, 'sizeLimit' => 0, 'timeLimit' => 0]);
-//        $query->expects($this->any())
-//               ->method('getLdapLink')
-//               ->with()
-//               ->willReturn($link);
-//
-//        $link->expects($this->never())
-//             ->method('read');
-//        $link->expects($this->never())
-//             ->method('list');
-//        $link->expects($this->exactly(2))
-//             ->method('search')
-//             ->with("dc=korowai,dc=org", "objectClass=*", ["*"], 0, 0, 0, LDAP_DEREF_NEVER)
-//             ->willReturn($result);
-//
-//        $this->assertSame($result, $query->execute());
-//        $this->assertSame($result, $query->execute());
-//        $this->assertSame($result, $query->getResult());
-    }
+        $args = ['dc=example,dc=org', 'objectClass=*'];
+        $expectArgs = ['dc=example,dc=org', 'objectClass=*', ['*'], 0, 0, 0, LDAP_DEREF_NEVER];
 
-    public function test__execute__withInvalidScope()
-    {
-        $this->markTestIncomplete('Test not implemented yet!');
-//        $link = $this->createLdapLinkMock();
-//
-//        $query = $this->getMockBuilder(SearchQuery::class)
-//                      ->disableOriginalConstructor()
-//                      ->setMethods(['getOptions'])
-//                      ->getMock();
-//
-//        $query->expects($this->once())
-//               ->method('getOptions')
-//               ->with()
-//               ->willReturn(['scope' => 'foo']);
-//
-//        $this->expectException(\RuntimeException::class);
-//        $this->expectExceptionMessage('Unsupported search scope "foo"');
-//
-//        $query->execute();
-    }
-
-
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // getResult()
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    public static function prov__getResult() : array
-    {
-        return static::prov__execute();
+        $cases = [];
+        foreach (['execute', 'getResult'] as $method) {
+            foreach (self::SCOPES_METHODS as $scope => $expectMethod) {
+                $case = [
+                    'method' => $method,
+                    'args'   => $args,
+                    'expect' => ['method' => $expectMethod, 'args' => $expectArgs],
+                ];
+                $case['args'][] = ['scope' => $scope];
+                $cases[] = $case;
+            }
+        }
+        return $cases;
     }
 
     /**
-     * @dataProvider prov__getResult
+     * @dataProvider prov__query__withLdapLinkReturningFalse
      */
-    public function test__getResult(array $args, array $expect) : void
+    public function test__query__withLdapLinkReturningFalse(string $method, array $args, array $expect) : void
     {
-        $link = $this->createLdapLinkMock();
-        $ldapResult = $this->createMock(LdapResultInterface::class);
-        $query = new SearchQuery($link, ...$args);
+        $link = $this->createMock(LdapLinkInterface::class);
+
         $link->expects($this->once())
              ->method($expect['method'])
              ->with(...$expect['args'])
-             ->willReturn($ldapResult);
-        $result = $query->getResult();
-        $this->assertInstanceOf(ResultInterface::class, $result);
-        $this->assertSame($ldapResult, $result->getLdapResult());
-        $this->assertSame($result, $query->getResult());
-    }
+             ->willReturn(false);
 
-    public static function prov__getResult__withTriggerError() : array
-    {
-        return static::feedCallWithLdapTriggerError();
-    }
+        $query = new SearchQuery($link, ...$args);
 
-    /**
-     * @dataProvider prov__getResult__withTriggerError
-     */
-    public function test__getResult__withTriggerError(array $config, array $expect) : void
-    {
-        $this->examineMethodWithTriggerError(
-            'getResult',
-            ['dc=example,dc=org', 'objectClass=*'],
-            'search',
-            ['dc=example,dc=org', 'objectClass=*', ['*'], 0, 0, 0, LDAP_DEREF_NEVER],
-            $config,
-            $expect
-        );
+        $this->expectException(\ErrorException::class);
+        $this->expectExceptionMessage('LdapLinkInterface::'.$expect['method'].'() returned false');
+
+        $query->$method();
     }
 }
 

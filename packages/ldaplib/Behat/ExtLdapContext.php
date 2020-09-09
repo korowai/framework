@@ -275,8 +275,8 @@ class ExtLdapContext implements Context
      */
     public function iShouldHaveLastResultEntries(PyStringNode $pystring)
     {
-        $expected_entries = $this->decodeJsonPyStringNode($pystring);
-        $actual_entries = array_map(
+        $expectedEntries = $this->decodeJsonPyStringNode($pystring);
+        $actualEntries = array_map(
             function ($entry) : array {
                 return [
                     'dn' => $entry->getDn(),
@@ -290,19 +290,19 @@ class ExtLdapContext implements Context
             return strcmp($left['dn'] ?? '', $right['dn'] ?? '');
         };
 
-        usort($expected_entries, $comparator);
-        usort($actual_entries, $comparator);
+        usort($expectedEntries, $comparator);
+        usort($actualEntries, $comparator);
 
         # handle passwords
-        foreach ($expected_entries as $i => $ee) {
-            $expected_password = $ee['attributes']['userpassword'][0] ?? null;
-            $actual_password = $actual_entries[$i]['attributes']['userpassword'][0] ?? null;
-            if (is_string($expected_password) && is_string($actual_password)) {
-                $encrypted = self::encryptForComparison($expected_password, $actual_password);
-                $expected_entries[$i]['attributes']['userpassword'][0] = $encrypted;
+        foreach ($expectedEntries as $i => $ee) {
+            $expectedPassword = $ee['attributes']['userpassword'][0] ?? null;
+            $actualPassword = $actualEntries[$i]['attributes']['userpassword'][0] ?? null;
+            if (is_string($expectedPassword) && is_string($actualPassword)) {
+                $encrypted = self::encryptForComparison($expectedPassword, $actualPassword);
+                $expectedEntries[$i]['attributes']['userpassword'][0] = $encrypted;
             }
         }
-        TestCase::assertEquals($expected_entries, $actual_entries);
+        TestCase::assertEquals($expectedEntries, $actualEntries);
     }
 
     /**
@@ -310,14 +310,14 @@ class ExtLdapContext implements Context
      */
     public function iShouldHaveLastResultReferences(PyStringNode $pystring)
     {
-        $expected_references = $this->decodeJsonPyStringNode($pystring);
-        $actual_references = array_map(
+        $expectedReferences = $this->decodeJsonPyStringNode($pystring);
+        $actualReferences = array_map(
             function ($e) {
                 return $e->getReferrals();
             },
             iterator_to_array($this->lastResult()->getResultReferenceIterator())
         );
-        TestCase::assertEquals($expected_references, $actual_references);
+        TestCase::assertEquals($expectedReferences, $actualReferences);
     }
 
     /**

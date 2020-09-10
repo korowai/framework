@@ -10,11 +10,17 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
+namespace Korowai\Lib\Ldap;
 
 use Korowai\Lib\Ldap\Adapter\AbstractResult;
-use Korowai\Lib\Ldap\ResultEntryIteratorInterface;
-use Korowai\Lib\Ldap\ResultReferenceIteratorInterface;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\ResultEntryIterator;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\ResultReferenceIterator;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultInterface;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultWrapperInterface;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultWrapperTrait;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultEntryIterator;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultReferenceIterator;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkErrorHandler;
 use function Korowai\Lib\Context\with;
 
 /**
@@ -22,7 +28,7 @@ use function Korowai\Lib\Context\with;
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-final class Result extends AbstractResult implements LdapResultWrapperInterface
+final class Result implements ResultInterface, LdapResultWrapperInterface
 {
     use LdapResultWrapperTrait;
 
@@ -91,6 +97,29 @@ final class Result extends AbstractResult implements LdapResultWrapperInterface
             }
         );
         return new $class($first ?: null, $first ?: null, 0);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getEntries(bool $use_keys = true) : array
+    {
+        return iterator_to_array($this, $use_keys);
+    }
+
+    /**
+     * Makes the ``Result`` object iterable
+     */
+    public function getIterator()
+    {
+        $iterator = $this->getResultEntryIterator();
+        foreach ($iterator as $key => $entry) {
+            if ($entry === null) {
+                $message = sprintf("Null returned by %s::current() during iteration", get_class($iterator));
+                throw new \UnexpectedValueException($message);
+            }
+            yield $key => $entry->toEntry();
+        }
     }
 }
 

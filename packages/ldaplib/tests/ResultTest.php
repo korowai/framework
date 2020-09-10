@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Tests\Lib\Ldap\Adapter\ExtLdap;
+namespace Korowai\Tests\Lib\Ldap;
 
 use Korowai\Testing\Ldaplib\TestCase;
 use Korowai\Testing\Ldaplib\CreateLdapLinkMockTrait;
@@ -21,8 +21,8 @@ use Korowai\Testing\Ldaplib\ExamineCallWithLdapTriggerErrorTrait;
 
 use PHPUnit\Framework\Constraint\Constraint;
 
-use Korowai\Lib\Ldap\Adapter\ExtLdap\Result;
-use Korowai\Lib\Ldap\Adapter\AbstractResult;
+use Korowai\Lib\Ldap\Result;
+use Korowai\Lib\Ldap\ResultInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\ResultEntry;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\ResultReference;
 use Korowai\Lib\Ldap\ResultEntryIteratorInterface;
@@ -32,7 +32,7 @@ use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultWrapperTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @covers \Korowai\Lib\Ldap\Adapter\ExtLdap\Result
+ * @covers \Korowai\Lib\Ldap\Result
  */
 final class ResultTest extends TestCase
 {
@@ -72,9 +72,9 @@ final class ResultTest extends TestCase
     //
     //
 
-    public function test__extends__AbstractResult()
+    public function test__implements__ResultInterface()
     {
-        $this->assertExtendsClass(AbstractResult::class, Result::class);
+        $this->assertImplementsInterface(ResultInterface::class, Result::class);
     }
 
     public function test__implements__LdapResultWrapperInterface()

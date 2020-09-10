@@ -34,7 +34,8 @@
     },
     "autoload-dev": {
       "psr-4" : {
-        "Korowai\\Tests\\Lib\\Rfc\\" : "tests/"
+        "Korowai\\Tests\\Lib\\Rfc\\" : "tests/",
+        "Korowai\\Tests\\Testing\\RfclibInterfaces\\" : "tests/Testing/"
       }
     }
 }

@@ -17,6 +17,7 @@ use Korowai\Testing\Ldaplib\CreateLdapLinkMockTrait;
 use Korowai\Testing\Ldaplib\ExamineCallWithMockedLdapFunctionTrait;
 use Korowai\Testing\Ldaplib\MakeArgsForLdapFunctionMockTrait;
 use Korowai\Testing\Ldaplib\GetLdapFunctionMockTrait;
+use Korowai\Testing\Basiclib\ResourceWrapperTestHelpersTrait;
 
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResult;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultInterface;
@@ -24,8 +25,8 @@ use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultWrapperInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultEntry;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultReference;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\ResourceWrapperTrait;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkWrapperTrait;
+use Korowai\Lib\Basic\ResourceWrapperTrait;
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\MockObject\Stub\Stub;
 
@@ -39,8 +40,8 @@ final class LdapResultTest extends TestCase
     use GetLdapFunctionMockTrait;
     use MakeArgsForLdapFunctionMockTrait;
     use ExamineCallWithMockedLdapFunctionTrait;
-    use ResourceWrapperTestHelpersTrait;
     use CreateLdapLinkMockTrait;
+    use ResourceWrapperTestHelpersTrait;
 
     private function examineCallWithMockedBackend(
         string $method,

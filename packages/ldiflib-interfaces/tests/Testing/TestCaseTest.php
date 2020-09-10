@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Tests\Lib\Ldif\Testing;
+namespace Korowai\Tests\Testing\LdiflibInterfaces;
 
 use Korowai\Testing\LdiflibInterfaces\TestCase;
 

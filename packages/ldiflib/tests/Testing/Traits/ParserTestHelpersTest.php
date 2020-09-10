@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Tests\Testing\Lib\Ldif\Traits;
+namespace Korowai\Tests\Testing\Ldiflib\Traits;
 
 use Korowai\Testing\TestCase;
 use Korowai\Testing\Ldiflib\Traits\ParserTestHelpers;

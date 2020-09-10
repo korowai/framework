@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Tests\Lib\Rfc\Testing;
+namespace Korowai\Tests\Testing\RfclibInterfaces;
 
 use Korowai\Testing\RfclibInterfaces\ObjectPropertyGettersMap;
 use Korowai\Testing\RfclibInterfaces\TestCase;

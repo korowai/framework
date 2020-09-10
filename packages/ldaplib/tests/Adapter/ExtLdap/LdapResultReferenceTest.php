@@ -18,6 +18,7 @@ use Korowai\Testing\Ldaplib\CreateLdapResultMockTrait;
 use Korowai\Testing\Ldaplib\ExamineCallWithMockedLdapFunctionTrait;
 use Korowai\Testing\Ldaplib\MakeArgsForLdapFunctionMockTrait;
 use Korowai\Testing\Ldaplib\GetLdapFunctionMockTrait;
+use Korowai\Testing\Basiclib\ResourceWrapperTestHelpersTrait;
 
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultReference;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultReferenceInterface;
@@ -35,11 +36,11 @@ final class LdapResultReferenceTest extends TestCase
 {
     use \phpmock\phpunit\PHPMock;
     use GetLdapFunctionMockTrait;
-    use ResourceWrapperTestHelpersTrait;
     use CreateLdapLinkMockTrait;
     use CreateLdapResultMockTrait;
     use MakeArgsForLdapFunctionMockTrait;
     use ExamineCallWithMockedLdapFunctionTrait;
+    use ResourceWrapperTestHelpersTrait;
 
     private function examineLdapMethod(string $method, array $args, $will, $expect, $ldapFunction = null) : void
     {

@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
 
+use Korowai\Lib\Basic\ResourceWrapperTrait;
+
 /**
  * Common code for LdapResultEntry and LdapResultReference.
  *

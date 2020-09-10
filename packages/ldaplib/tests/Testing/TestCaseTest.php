@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Tests\Lib\Ldap\Testing;
+namespace Korowai\Tests\Testing\Ldaplib;
 
 use Korowai\Testing\Ldaplib\TestCase;
 

@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Tests\Lib\Basic\Testing;
+namespace Korowai\Tests\Testing\BasiclibInterfaces;
 
 use Korowai\Testing\BasiclibInterfaces\TestCase;
 

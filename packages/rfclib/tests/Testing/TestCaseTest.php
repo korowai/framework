@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Tests\Testing\Lib\Rfc;
+namespace Korowai\Tests\Testing\Rfclib;
 
 use Korowai\Testing\TestCase as BaseTestCase;
 use Korowai\Testing\Rfclib\TestCase;

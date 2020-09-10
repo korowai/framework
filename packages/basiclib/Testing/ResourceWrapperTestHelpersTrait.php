@@ -10,16 +10,21 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Tests\Lib\Ldap\Adapter\ExtLdap;
+namespace Korowai\Testing\Basiclib;
 
-use Korowai\Lib\Ldap\Adapter\ExtLdap\ResourceWrapperInterface;
+use Korowai\Lib\Basic\ResourceWrapperInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
 trait ResourceWrapperTestHelpersTrait
 {
-    abstract public function getLdapFunctionMock(string $name);
+    abstract public function getFunctionMock(string $namespace, string $name);
+
+    private function getResourceFunctionMock(string $name)
+    {
+        return $this->getFunctionMock('\Korowai\Lib\Basic', $name);
+    }
 
     /**
      * Mocks is_resource() and get_resource_type() for argument $arg.
@@ -35,12 +40,12 @@ trait ResourceWrapperTestHelpersTrait
     private function mockResourceFunctions($arg, $return, string $namespace = '') : void
     {
         if ($return !== null) {
-            $this->getLdapFunctionMock('is_resource')
+            $this->getResourceFunctionMock('is_resource')
                  ->expects($this->any())
                  ->with($this->identicalTo($arg))
                  ->willReturn((bool)$return);
             if ($return) {
-                $this->getLdapFunctionMock('get_resource_type')
+                $this->getResourceFunctionMock('get_resource_type')
                      ->expects($this->any())
                      ->with($this->identicalTo($arg))
                      ->willReturn((string)$return);

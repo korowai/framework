@@ -19,6 +19,7 @@
         "php": ">=7.4",
         "ext-ldap": "*",
         "symfony/options-resolver": ">=4.2",
+        "korowai/basiclib": "*",
         "korowai/contracts": "*",
         "korowai/compatlib": "*",
         "korowai/errorlib": "*",
@@ -46,7 +47,8 @@
     "autoload-dev": {
       "psr-4" : {
         "Korowai\\Lib\\Ldap\\Behat\\" : "Behat/",
-        "Korowai\\Tests\\Lib\\Ldap\\" : "tests/"
+        "Korowai\\Tests\\Lib\\Ldap\\" : "tests/",
+        "Korowai\\Tests\\Testing\\Ldaplib\\" : "tests/Testing/"
       }
     }
 }

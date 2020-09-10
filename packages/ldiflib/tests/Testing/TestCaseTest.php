@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Tests\Testing\Lib\Ldif;
+namespace Korowai\Tests\Testing\Ldiflib;
 
 use Korowai\Testing\TestCase as BaseTestCase;
 use Korowai\Testing\Ldiflib\TestCase;

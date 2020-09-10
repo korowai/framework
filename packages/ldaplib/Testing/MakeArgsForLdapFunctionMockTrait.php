@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Korowai\Testing\Ldaplib;
 
-use Korowai\Lib\Ldap\Adapter\ExtLdap\ResourceWrapperInterface;
+use Korowai\Lib\Basic\ResourceWrapperInterface;
 use PHPUnit\Framework\Constraint\IsIdentical;
 
 /**

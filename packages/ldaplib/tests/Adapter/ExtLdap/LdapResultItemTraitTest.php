@@ -15,10 +15,10 @@ namespace Korowai\Tests\Lib\Ldap\Adapter\ExtLdap;
 use Korowai\Testing\Ldaplib\TestCase;
 
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultItemTrait;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\ResourceWrapperTrait;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultWrapperTrait;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
+use Korowai\Lib\Basic\ResourceWrapperTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Tests\Lib\Context\Testing;
+namespace Korowai\Tests\Testing\ContextlibInterfaces;
 
 use Korowai\Testing\ContextlibInterfaces\ObjectPropertyGettersMap;
 use Korowai\Testing\ContextlibInterfaces\TestCase;

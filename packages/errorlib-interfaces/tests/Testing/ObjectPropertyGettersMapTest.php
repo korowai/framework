@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Tests\Lib\Error\Testing;
+namespace Korowai\Tests\Testing\ErrorlibInterfaces;
 
 use Korowai\Testing\ErrorlibInterfaces\ObjectPropertyGettersMap;
 use Korowai\Testing\ErrorlibInterfaces\TestCase;

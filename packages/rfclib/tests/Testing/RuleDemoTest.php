@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Tests\Testing\Lib\Rfc;
+namespace Korowai\Tests\Testing\Rfclib;
 
 use Korowai\Testing\Rfclib\RuleDemo;
 use Korowai\Lib\Rfc\Rule;

@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
 
+use Korowai\Lib\Basic\ResourceWrapperInterface;
+
 /**
  * A common interface for either ldap result entry or ldap result reference.
  *

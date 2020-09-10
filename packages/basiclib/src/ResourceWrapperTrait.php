@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
+namespace Korowai\Lib\Basic;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

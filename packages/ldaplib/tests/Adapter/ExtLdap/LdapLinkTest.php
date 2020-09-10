@@ -16,11 +16,12 @@ use Korowai\Testing\Ldaplib\TestCase;
 use Korowai\Testing\Ldaplib\ExamineCallWithMockedLdapFunctionTrait;
 use Korowai\Testing\Ldaplib\MakeArgsForLdapFunctionMockTrait;
 use Korowai\Testing\Ldaplib\GetLdapFunctionMockTrait;
+use Korowai\Testing\Basiclib\ResourceWrapperTestHelpersTrait;
 
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLink;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkWrapperInterface;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\ResourceWrapperTrait;
+use Korowai\Lib\Basic\ResourceWrapperTrait;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResult;
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\MockObject\Stub\Stub;

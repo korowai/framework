@@ -10,22 +10,21 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Tests\Lib\Ldap\Adapter\ExtLdap;
+namespace Korowai\Tests\Lib\Basic;
 
-use Korowai\Testing\Ldaplib\TestCase;
-use Korowai\Testing\Ldaplib\GetLdapFunctionMockTrait;
+use Korowai\Testing\TestCase;
+use Korowai\Testing\Basiclib\ResourceWrapperTestHelpersTrait;
 
-use Korowai\Lib\Ldap\Adapter\ExtLdap\ResourceWrapperTrait;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\ResourceWrapperInterface;
+use Korowai\Lib\Basic\ResourceWrapperTrait;
+use Korowai\Lib\Basic\ResourceWrapperInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @covers \Korowai\Lib\Ldap\Adapter\ExtLdap\ResourceWrapperTrait
+ * @covers \Korowai\Lib\Basic\ResourceWrapperTrait
  */
 final class ResourceWrapperTraitTest extends TestCase
 {
     use \phpmock\phpunit\PHPMock;
-    use GetLdapFunctionMockTrait;
     use ResourceWrapperTestHelpersTrait;
 
     private static function createDummyResourceWrapper($resource) : ResourceWrapperInterface

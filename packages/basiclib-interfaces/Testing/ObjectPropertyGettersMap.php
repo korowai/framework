@@ -27,6 +27,10 @@ final class ObjectPropertyGettersMap
         \Korowai\Lib\Basic\SingletonInterface::class => [
             'instance'                  => 'getInstance',
         ],
+        \Korowai\Lib\Basic\ResourceWrapperInterface::class => [
+            'resource'                  => 'getResource',
+            'isValid'                   => 'isValid',
+        ],
     ];
 
     /**

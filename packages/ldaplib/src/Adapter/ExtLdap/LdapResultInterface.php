@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
 
 use Korowai\Lib\Ldap\ResultInterface;
+use Korowai\Lib\Basic\ResourceWrapperInterface;
 
 /**
  * Wrapper for ldap result resource.

@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Tests\Lib\Ldap\Adapter\ExtLdap;
+namespace Korowai\Tests\Lib\Ldap;
 
 use Korowai\Lib\Ldap\EntryManagerInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;

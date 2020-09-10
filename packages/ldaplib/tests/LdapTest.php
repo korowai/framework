@@ -14,7 +14,7 @@ namespace Korowai\Tests\Lib\Ldap;
 
 use Korowai\Testing\Ldaplib\TestCase;
 use Korowai\Tests\Lib\Ldap\BindingTestTrait;
-use Korowai\Tests\Lib\Ldap\Adapter\ExtLdap\EntryManagerTestTrait;
+use Korowai\Tests\Lib\Ldap\EntryManagerTestTrait;
 
 use Korowai\Lib\Ldap\Ldap;
 use Korowai\Lib\Ldap\LdapInterface;
@@ -31,7 +31,7 @@ use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkWrapperTrait;
 use Korowai\Lib\Ldap\BindingTrait;
 use Korowai\Lib\Ldap\ComparingTrait;
 use Korowai\Lib\Ldap\SearchingTrait;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\EntryManagerTrait;
+use Korowai\Lib\Ldap\EntryManagerTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

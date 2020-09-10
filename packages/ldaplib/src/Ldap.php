@@ -19,7 +19,7 @@ use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkConfigResolver;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkConfigResolverInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkWrapperTrait;
 use Korowai\Lib\Ldap\BindingTrait;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\EntryManagerTrait;
+use Korowai\Lib\Ldap\EntryManagerTrait;
 
 use InvalidArgumentException;
 

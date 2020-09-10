@@ -10,19 +10,19 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Tests\Lib\Ldap\Adapter\ExtLdap;
+namespace Korowai\Tests\Lib\Ldap;
 
 use Korowai\Testing\Ldaplib\TestCase;
 use Korowai\Lib\Ldap\EntryManagerInterface;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\EntryManager;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\EntryManagerTrait;
+use Korowai\Lib\Ldap\EntryManager;
+use Korowai\Lib\Ldap\EntryManagerTrait;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkWrapperInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkWrapperTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @covers \Korowai\Lib\Ldap\Adapter\ExtLdap\EntryManager
+ * @covers \Korowai\Lib\Ldap\EntryManager
  */
 final class EntryManagerTest extends TestCase
 {

@@ -17,6 +17,8 @@ use Korowai\Lib\Ldap\EntryInterface;
 use function Korowai\Lib\Context\with;
 
 /**
+ * Provides implementation of EntryManagerInterface.
+ *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
 trait EntryManagerTrait

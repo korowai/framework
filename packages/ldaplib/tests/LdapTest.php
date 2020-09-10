@@ -20,6 +20,7 @@ use Korowai\Lib\Ldap\Ldap;
 use Korowai\Lib\Ldap\LdapInterface;
 use Korowai\Lib\Ldap\BindingInterface;
 use Korowai\Lib\Ldap\ComparingInterface;
+use Korowai\Lib\Ldap\SearchingInterface;
 use Korowai\Lib\Ldap\EntryManagerInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkConstructorInterface;
@@ -29,6 +30,7 @@ use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkWrapperInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkWrapperTrait;
 use Korowai\Lib\Ldap\BindingTrait;
 use Korowai\Lib\Ldap\ComparingTrait;
+use Korowai\Lib\Ldap\SearchingTrait;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\EntryManagerTrait;
 
 /**
@@ -40,6 +42,7 @@ final class LdapTest extends TestCase
     use BindingTestTrait;
     use EntryManagerTestTrait;
     use ComparingTestTrait;
+    use SearchingTestTrait;
 
     // required by BindingTestTrait
     public function createBindingInstance(LdapLinkInterface $ldapLink, bool $bound = false) : BindingInterface
@@ -55,6 +58,12 @@ final class LdapTest extends TestCase
 
     // required by ComparingTestTrait
     public function createComparingInstance(LdapLinkinterface $ldapLink) : ComparingInterface
+    {
+        return new Ldap(...func_get_args());
+    }
+
+    // required by SearchingTestTrait
+    public function createSearchingInstance(LdapLinkinterface $ldapLink) : SearchingInterface
     {
         return new Ldap(...func_get_args());
     }
@@ -88,6 +97,11 @@ final class LdapTest extends TestCase
     public function test__uses__ComparingTrait() : void
     {
         $this->assertUsesTrait(ComparingTrait::class, Ldap::class);
+    }
+
+    public function test__uses__SearchingTrait() : void
+    {
+        $this->assertUsesTrait(SearchingTrait::class, Ldap::class);
     }
 
     public function test__uses__EntryManagerTrait() : void

@@ -22,9 +22,18 @@ use function Korowai\Lib\Context\with;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-final class CompareQuery extends AbstractCompareQuery implements LdapLinkWrapperInterface
+final class CompareQuery implements CompareQueryInterface, LdapLinkWrapperInterface
 {
     use LdapLinkWrapperTrait;
+
+    /** @var string */
+    protected $dn;
+    /** @var string */
+    protected $attribute;
+    /** @var string */
+    protected $value;
+    /** @var bool|null */
+    protected $result;
 
     /**
      * Constructs CompareQuery
@@ -37,7 +46,56 @@ final class CompareQuery extends AbstractCompareQuery implements LdapLinkWrapper
     public function __construct(LdapLinkInterface $link, string $dn, string $attribute, string $value)
     {
         $this->ldapLink = $link;
-        parent::__construct($dn, $attribute, $value);
+        $this->dn = $dn;
+        $this->attribute = $attribute;
+        $this->value = $value;
+    }
+
+    /**
+     * Returns ``$dn`` provided to ``__construct()`` at creation time
+     * @return string
+     */
+    public function getDn() : string
+    {
+        return $this->dn;
+    }
+
+    /**
+     * Returns ``$attribute`` provided to ``__construct()`` at creation time
+     * @return string
+     */
+    public function getAttribute() : string
+    {
+        return $this->attribute;
+    }
+
+    /**
+     * Returns ``$value`` provided to ``__construct()`` at creation time.
+     * @return string
+     */
+    public function getValue() : string
+    {
+        return $this->value;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getResult() : bool
+    {
+        if (!isset($this->result)) {
+            return $this->execute();
+        }
+        return $this->result;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function execute() : bool
+    {
+        $this->result = $this->doExecuteQuery();
+        return $this->result;
     }
 
     /**

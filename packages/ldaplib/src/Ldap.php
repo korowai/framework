@@ -81,28 +81,6 @@ final class Ldap implements LdapInterface, LdapLinkWrapperInterface
         $this->ldapLink = $ldapLink;
         $this->bound = $bound;
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function createSearchQuery(string $base_dn, string $filter, array $options = []) : SearchQueryInterface
-    {
-        return new SearchQuery($this->getLdapLink(), $base_dn, $filter, $options);
-    }
-
-    /**
-     * Create search query, execute and return its result
-     *
-     * @param  string $base_dn
-     * @param  string $filter
-     * @param  array $options
-     *
-     * @return ResultInterface Query result
-     */
-    public function search(string $base_dn, string $filter, array $options = []) : ResultInterface
-    {
-        return $this->createSearchQuery($base_dn, $filter, $options)->getResult();
-    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

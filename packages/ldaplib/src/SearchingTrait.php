@@ -15,6 +15,8 @@ namespace Korowai\Lib\Ldap;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
 
 /**
+ * Provides implementation of SearchingInterface.
+ *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
 trait SearchingTrait

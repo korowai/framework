@@ -15,8 +15,8 @@ namespace Korowai\Tests\Lib\Ldap;
 use Korowai\Testing\Ldaplib\TestCase;
 use Korowai\Testing\Ldaplib\ExamineCallWithLdapTriggerErrorTrait;
 
-use Korowai\Lib\Ldap\Adapter\AbstractCompareQuery;
 use Korowai\Lib\Ldap\CompareQuery;
+use Korowai\Lib\Ldap\CompareQueryInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkWrapperInterface;
 
@@ -35,9 +35,9 @@ final class CompareQueryTest extends TestCase
     //
     //
 
-    public function test__extends__AbstractCompareQuery() : void
+    public function test__implements__CompareQueryInterface() : void
     {
-        $this->assertExtendsClass(AbstractCompareQuery::class, CompareQuery::class);
+        $this->assertImplementsInterface(CompareQueryInterface::class, CompareQuery::class);
     }
 
     public function test__implements__LdapLinkWrapperInterface() : void

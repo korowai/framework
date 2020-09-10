@@ -19,6 +19,8 @@ use Korowai\Lib\Ldap\Exception\LdapException;
 use function Korowai\Lib\Context\with;
 
 /**
+ * Provides implementation of BindingInterface.
+ *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
 trait BindingTrait
@@ -64,7 +66,7 @@ trait BindingTrait
             // OpenLDAP's ldap_bind() is not made, so the state of ldap link
             // resource remains unaltered. This means, an already bound ldap
             // link remains bound.
-            if ($code !== 49 || preg_match('/(DN|Password) contains a null byte/', $message) !== 1) {
+            if ($code !== 49 || preg_match('/(DN|Password) contains a null byte/', $message) === 0) {
                 $this->bound = false;
             }
             throw $exception;

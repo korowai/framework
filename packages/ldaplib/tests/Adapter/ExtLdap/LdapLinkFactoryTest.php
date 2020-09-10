@@ -217,7 +217,7 @@ final class LdapLinkFactoryTest extends TestCase
                             ->setMethods(['resolve'])
                             ->getMockForAbstractClass();
 
-        $link = $this->createLdapLinkMock('ldap link', ['isValid', 'errno', 'start_tls', 'set_option']);
+        $link = $this->createLdapLinkMock();
 
         $resolver->expects($this->once())
                  ->method('resolve')
@@ -260,7 +260,7 @@ final class LdapLinkFactoryTest extends TestCase
                             ->setMethods(['resolve'])
                             ->getMockForAbstractClass();
 
-        $link = $this->createLdapLinkMock('ldap link', ['isValid', 'errno', 'start_tls', 'set_option']);
+        $link = $this->createLdapLinkMock();
 
         $link->expects($this->never())
              ->method('start_tls');

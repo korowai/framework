@@ -42,19 +42,25 @@ final class LdapResultReferenceTest extends TestCase
     use ExamineCallWithMockedLdapFunctionTrait;
     use ResourceWrapperTestHelpersTrait;
 
+    private function createLdapResultReferenceAndMocks(int $mocksLevel = 2, $resource = null) : array
+    {
+        $link = $mocksLevel >= 2 ?$this->createLdapLinkMock() : null;
+        $result = $this->createLdapResultMock($link);
+        $reference = new LdapResultReference($resource, $result);
+        return array_slice([$reference, $result, $link], 0, max(2, 1 + $mocksLevel));
+    }
+
     private function examineLdapMethod(string $method, array $args, $will, $expect, $ldapFunction = null) : void
     {
-        $ldap = $this->createLdapLinkMock();
-        $result = $this->createLdapResultMock($ldap);
-        $entry = new LdapResultReference('ldap result entry', $result);
+        [$reference, $result, $link] = $this->createLdapResultReferenceAndMocks();
 
         if ($ldapFunction === null) {
             $ldapFunction = "ldap_$method";
         }
 
         $actual = $this->examineCallWithMockedLdapFunction(
-            [$entry, $method],
-            [$ldap, $entry],
+            [$reference, $method],
+            [$link, $reference],
             $args,
             $will,
             $expect,
@@ -62,7 +68,7 @@ final class LdapResultReferenceTest extends TestCase
         );
 
         if ($actual instanceof LdapResultReferenceWrapperInterface) {
-            $this->assertSame($entry, $actual->getLdapResultReference());
+            $this->assertSame($reference, $actual->getLdapResultReference());
         }
 
         if ($actual instanceof LdapResultWrapperInterface) {
@@ -92,9 +98,8 @@ final class LdapResultReferenceTest extends TestCase
 
     public function test__getResource()
     {
-        $result = $this->createLdapResultMock();
-        $ref = new LdapResultReference('ldap reference', $result);
-        $this->assertSame('ldap reference', $ref->getResource());
+        [$reference, $result] = $this->createLdapResultReferenceAndMocks(1, 'ldap reference');
+        $this->assertSame('ldap reference', $reference->getResource());
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -103,9 +108,8 @@ final class LdapResultReferenceTest extends TestCase
 
     public function test__getLdapResult()
     {
-        $result = $this->createLdapResultMock(null);
-        $ref = new LdapResultReference('ldap reference', $result);
-        $this->assertSame($result, $ref->getLdapResult());
+        [$reference, $result] = $this->createLdapResultReferenceAndMocks(1);
+        $this->assertSame($result, $reference->getLdapResult());
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -114,10 +118,8 @@ final class LdapResultReferenceTest extends TestCase
 
     public function test__getLdapLink()
     {
-        $ldap = $this->createLdapLinkMock(null);
-        $result = $this->createLdapResultMock($ldap, null);
-        $entry = new LdapResultReference('ldap entry', $result);
-        $this->assertSame($ldap, $entry->getLdapLink());
+        [$reference, $result, $link] = $this->createLdapResultReferenceAndMocks();
+        $this->assertSame($link, $reference->getLdapLink());
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -135,8 +137,7 @@ final class LdapResultReferenceTest extends TestCase
      */
     public function test__supportsResourceType(array $args, $expect)
     {
-        $result = $this->createLdapResultMock(null, null);
-        $reference = new LdapResultReference('foo', $result);
+        [$reference, $result] = $this->createLdapResultReferenceAndMocks(1);
         $this->examineSupportsResourceType($reference, $args, $expect);
     }
 
@@ -155,8 +156,7 @@ final class LdapResultReferenceTest extends TestCase
      */
     public function test__isValid($arg, $return, $expect)
     {
-        $result = $this->createLdapResultMock(null, null);
-        $reference = new LdapResultReference($arg, $result);
+        [$reference, $result] = $this->createLdapResultReferenceAndMocks(1, $arg);
         $this->examineIsValid($reference, $arg, $return, $expect);
     }
 

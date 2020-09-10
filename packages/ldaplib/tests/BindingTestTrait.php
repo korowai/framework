@@ -33,24 +33,24 @@ trait BindingTestTrait
         bool $bound = false
     ) : BindingInterface;
 
-    private function examineMethodWithTriggerError(
+    private function examineBindingMethodWithTriggerError(
         string $method,
         string $backendMethod,
         array $args,
         array $config,
         array $expect
     ) : void {
-        $ldap = $this->createLdapLinkMock('ldap link', ['isValid', 'errno']);
-        $bind = $this->createBindingInstance($ldap);
+        $link = $this->createLdapLinkMock();
+        $bind = $this->createBindingInstance($link);
 
         $this->examineCallWithLdapTriggerError(
             function () use ($bind, $method, $args) : void {
                 $bind->$method(...$args);
             },
-            $ldap,
+            $link,
             $backendMethod,
             $args,
-            $ldap,
+            $link,
             $config,
             $expect
         );
@@ -112,7 +112,7 @@ trait BindingTestTrait
      */
     public function test__bind__withTriggerError(array $config, array $expect) : void
     {
-        $this->examineMethodWithTriggerError('bind', 'bind', [], $config, $expect);
+        $this->examineBindingMethodWithTriggerError('bind', 'bind', [], $config, $expect);
     }
 
     public function prov__bind__whenLdapLinkTriggersUnalteringLdapError() : array
@@ -196,7 +196,7 @@ trait BindingTestTrait
      */
     public function test__unbind__withTriggerError(array $config, array $expect):  void
     {
-        $this->examineMethodWithTriggerError('unbind', 'unbind', [], $config, $expect);
+        $this->examineBindingMethodWithTriggerError('unbind', 'unbind', [], $config, $expect);
     }
 }
 

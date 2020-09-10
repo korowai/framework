@@ -38,6 +38,15 @@ final class ResultReferenceTest extends TestCase
     use CreateLdapResultReferenceMockTrait;
     use ExamineCallWithLdapTriggerErrorTrait;
 
+    private function createResultReferenceAndMocks(int $mocksDepth = 3) : array
+    {
+        $link            = $mocksDepth >= 3 ? $this->createLdapLinkMock() : null;
+        $ldapResult      = $mocksDepth >= 2 ? $this->createLdapResultMock($link) : null;
+        $ldapReference   = $this->createLdapResultReferenceMock($ldapResult);
+        $resultReference = new ResultReference($ldapReference);
+        return array_slice([$resultReference, $ldapReference, $ldapResult, $link], 0, max(2, 1+ $mocksDepth));
+    }
+
     private function examineMethodWithTriggerError(
         string $method,
         string $backendMethod,
@@ -45,10 +54,7 @@ final class ResultReferenceTest extends TestCase
         array $config,
         array $expect
     ) : void {
-        $ldap = $this->createLdapLinkMock('ldap link', ['isValid', 'errno']);
-        $ldapResult = $this->createLdapResultMock($ldap);
-        $ldapReference = $this->createLdapResultReferenceMock($ldapResult, 'ldap result reference', [$backendMethod]);
-        $reference = new ResultReference($ldapReference);
+        [$reference, $ldapReference, $ldapResult, $link] = $this->createResultReferenceAndMocks();
 
         $this->examineCallWithLdapTriggerError(
             function () use ($reference, $method, $args) : void {
@@ -57,7 +63,7 @@ final class ResultReferenceTest extends TestCase
             $ldapReference,
             $backendMethod,
             $args,
-            $ldap,
+            $link,
             $config,
             $expect
         );
@@ -90,8 +96,7 @@ final class ResultReferenceTest extends TestCase
 
     public function test_getLdapResultReference() : void
     {
-        $ldapReference = $this->createLdapResultReferenceMock(null, null);
-        $reference = new ResultReference($ldapReference);
+        [$reference, $ldapReference] = $this->createResultReferenceAndMocks(1);
         $this->assertSame($ldapReference, $reference->getLdapResultReference());
     }
 
@@ -128,18 +133,15 @@ final class ResultReferenceTest extends TestCase
      */
     public function test__getReferrals($return, $output, $expect) : void
     {
-        $ldapLink = $this->createLdapLinkMock();
-        $ldapResult = $this->createLdapResultMock($ldapLink);
-        $ldapResultReference = $this->createLdapResultReferenceMock($ldapResult, 'ldap result entry', ['parse_reference']);
-        $reference = new ResultReference($ldapResultReference);
+        [$reference, $ldapReference] = $this->createResultReferenceAndMocks(1);
 
-        $ldapResultReference->expects($this->once())
-                            ->method('parse_reference')
-                            ->with()
-                            ->will($this->returnCallback(function (&$referrals) use ($return, $output) {
-                                $referrals = $output;
-                                return $return;
-                            }));
+        $ldapReference->expects($this->once())
+                      ->method('parse_reference')
+                      ->with()
+                      ->will($this->returnCallback(function (&$referrals) use ($return, $output) {
+                        $referrals = $output;
+                        return $return;
+                      }));
 
         $this->assertSame($expect, $reference->getReferrals());
     }
@@ -190,18 +192,15 @@ final class ResultReferenceTest extends TestCase
      */
     public function test__getReferralIterator($return, $output, $expect)
     {
-        $ldapLink = $this->createLdapLinkMock();
-        $ldapResult = $this->createLdapResultMock($ldapLink);
-        $ldapResultReference = $this->createLdapResultReferenceMock($ldapResult, 'ldap result entry', ['parse_reference']);
-        $reference = new ResultReference($ldapResultReference);
+        [$reference, $ldapReference] = $this->createResultReferenceAndMocks(1);
 
-        $ldapResultReference->expects($this->once())
-                            ->method('parse_reference')
-                            ->with()
-                            ->will($this->returnCallback(function (&$referrals) use ($return, $output) {
-                                $referrals = $output;
-                                return $return;
-                            }));
+        $ldapReference->expects($this->once())
+                      ->method('parse_reference')
+                      ->with()
+                      ->will($this->returnCallback(function (&$referrals) use ($return, $output) {
+                        $referrals = $output;
+                        return $return;
+                      }));
 
         $iterator = $reference->getReferralIterator();
         $this->assertInstanceOf(ResultReferralIterator::class, $iterator);

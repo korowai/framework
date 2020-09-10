@@ -37,26 +37,32 @@ final class ResultEntryTest extends TestCase
     use CreateLdapResultEntryMockTrait;
     use ExamineCallWithLdapTriggerErrorTrait;
 
-    private function examineMethodWithTriggerError(
+    private function createResultEntryAndMocks(int $mocksDepth = 3) : array
+    {
+        $link        = $mocksDepth >= 3 ? $this->createLdapLinkMock() : null;
+        $ldapResult  = $mocksDepth >= 2 ? $this->createLdapResultMock($link) : null;
+        $ldapEntry   = $this->createLdapResultEntryMock($ldapResult);
+        $resultEntry = new ResultEntry($ldapEntry);
+        return array_slice([$resultEntry, $ldapEntry, $ldapResult, $link], 0, max(2, 1+ $mocksDepth));
+    }
+
+    private function examineResultEntryMethodWithTriggerError(
         string $method,
         string $backendMethod,
         array $args,
         array $config,
         array $expect
     ) : void {
-        $ldap = $this->createLdapLinkMock('ldap link', ['isValid', 'errno']);
-        $ldapResult = $this->createLdapResultMock($ldap);
-        $ldapEntry = $this->createLdapResultEntryMock($ldapResult, 'ldap result entry', [$backendMethod]);
-        $entry = new ResultEntry($ldapEntry);
+        [$resultEntry, $ldapEntry, $ldapResult, $link] = $this->createResultEntryAndMocks();
 
         $this->examineCallWithLdapTriggerError(
-            function () use ($entry, $method, $args) : void {
-                $entry->$method(...$args);
+            function () use ($resultEntry, $method, $args) : void {
+                $resultEntry->$method(...$args);
             },
             $ldapEntry,
             $backendMethod,
             $args,
-            $ldap,
+            $link,
             $config,
             $expect
         );
@@ -89,9 +95,8 @@ final class ResultEntryTest extends TestCase
 
     public function test_getLdapResultEntry() : void
     {
-        $ldapEntry = $this->createLdapResultEntryMock(null, null);
-        $entry = new ResultEntry($ldapEntry);
-        $this->assertSame($ldapEntry, $entry->getLdapResultEntry());
+        [$resultEntry, $ldapEntry] = $this->createResultEntryAndMocks(1);
+        $this->assertSame($ldapEntry, $resultEntry->getLdapResultEntry());
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -100,9 +105,8 @@ final class ResultEntryTest extends TestCase
 
     public function test_getLdapResultItem() : void
     {
-        $ldapEntry = $this->createLdapResultEntryMock(null, null);
-        $entry = new ResultEntry($ldapEntry);
-        $this->assertSame($ldapEntry, $entry->getLdapResultItem());
+        [$resultEntry, $ldapEntry] = $this->createResultEntryAndMocks(1);
+        $this->assertSame($ldapEntry, $resultEntry->getLdapResultItem());
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -130,17 +134,14 @@ final class ResultEntryTest extends TestCase
      */
     public function test__getDn($return, $expect) : void
     {
-        $ldapLink = $this->createLdapLinkMock();
-        $ldapResult = $this->createLdapResultMock($ldapLink);
-        $ldapEntry = $this->createLdapResultEntryMock($ldapResult, 'ldap result entry', ['get_dn']);
-        $entry = new ResultEntry($ldapEntry);
+        [$resultEntry, $ldapEntry] = $this->createResultEntryAndMocks(1);
 
         $ldapEntry->expects($this->once())
                   ->method('get_dn')
                   ->with()
                   ->willReturn($return);
 
-        $this->assertSame($expect, $entry->getDn());
+        $this->assertSame($expect, $resultEntry->getDn());
     }
 
     public static function prov__getDn__withTriggerError() : array
@@ -153,7 +154,7 @@ final class ResultEntryTest extends TestCase
      */
     public function test__getDn__withTriggerError(array $config, array $expect) : void
     {
-        $this->examineMethodWithTriggerError('getDn', 'get_dn', [], $config, $expect);
+        $this->examineResultEntryMethodWithTriggerError('getDn', 'get_dn', [], $config, $expect);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -216,17 +217,14 @@ final class ResultEntryTest extends TestCase
      */
     public function test__getAttributes($return, $expect) : void
     {
-        $ldapLink = $this->createLdapLinkMock();
-        $ldapResult = $this->createLdapResultMock($ldapLink);
-        $ldapEntry = $this->createLdapResultEntryMock($ldapResult, 'ldap result entry', ['get_attributes']);
-        $entry = new ResultEntry($ldapEntry);
+        [$resultEntry, $ldapEntry] = $this->createResultEntryAndMocks(1);
 
         $ldapEntry->expects($this->once())
                   ->method('get_attributes')
                   ->with()
                   ->willReturn($return);
 
-        $this->assertSame($expect, $entry->getAttributes());
+        $this->assertSame($expect, $resultEntry->getAttributes());
     }
 
     public static function prov__getAttributes__withTriggerError() : array
@@ -239,7 +237,7 @@ final class ResultEntryTest extends TestCase
      */
     public function test__getAttributes__withTriggerError(array $config, array $expect) : void
     {
-        $this->examineMethodWithTriggerError('getAttributes', 'get_attributes', [], $config, $expect);
+        $this->examineResultEntryMethodWithTriggerError('getAttributes', 'get_attributes', [], $config, $expect);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -248,10 +246,7 @@ final class ResultEntryTest extends TestCase
 
     public function test__getAttributeIterator() : void
     {
-        $ldapLink = $this->createLdapLinkMock();
-        $ldapResult = $this->createLdapResultMock($ldapLink, 'ldap result', ['next_attribute']);
-        $ldapEntry = $this->createLdapResultEntryMock($ldapResult, 'ldap result entry', ['first_attribute']);
-        $entry = new ResultEntry($ldapEntry);
+        [$resultEntry, $ldapEntry] = $this->createResultEntryAndMocks(1);
 
         $ldapEntry->expects($this->exactly(2))
                   ->method('get_values')
@@ -268,7 +263,7 @@ final class ResultEntryTest extends TestCase
                   ->with()
                   ->willReturn('SecondAttribute');
 
-        $iterator = $entry->getAttributeIterator();
+        $iterator = $resultEntry->getAttributeIterator();
         $this->assertInstanceOf(ResultAttributeIterator::class, $iterator);
 
         $this->assertSame($ldapEntry, $iterator->getLdapResultEntry());
@@ -278,7 +273,7 @@ final class ResultEntryTest extends TestCase
         $iterator->next();
 
         // single iterator instance per ResultEntry (dictated by ext-ldap implementation)
-        $this->assertSame($iterator, $entry->getAttributeIterator());
+        $this->assertSame($iterator, $resultEntry->getAttributeIterator());
         $this->assertEquals('secondattribute', $iterator->key());
         $this->assertEquals(['SECOND'], $iterator->current());
     }
@@ -293,7 +288,13 @@ final class ResultEntryTest extends TestCase
      */
     public function test__getAttributeIterator__withTriggerError(array $config, array $expect) : void
     {
-        $this->examineMethodWithTriggerError('getAttributeIterator', 'first_attribute', [], $config, $expect);
+        $this->examineResultEntryMethodWithTriggerError(
+            'getAttributeIterator',
+            'first_attribute',
+            [],
+            $config,
+            $expect
+        );
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -302,17 +303,14 @@ final class ResultEntryTest extends TestCase
 
     public function test__getIterator() : void
     {
-        $ldapLink = $this->createLdapLinkMock();
-        $ldapResult = $this->createLdapResultMock($ldapLink, 'ldap result', ['next_attribute']);
-        $ldapEntry = $this->createLdapResultEntryMock($ldapResult, 'ldap result entry', ['first_attribute']);
-        $entry = new ResultEntry($ldapEntry);
+        [$resultEntry, $ldapEntry] = $this->createResultEntryAndMocks(1);
 
         $ldapEntry->expects($this->once())
                   ->method('first_attribute')
                   ->with()
                   ->willReturn('first attribute');
 
-        $this->assertSame($entry->getIterator(), $entry->getAttributeIterator());
+        $this->assertSame($resultEntry->getIterator(), $resultEntry->getAttributeIterator());
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -334,10 +332,7 @@ final class ResultEntryTest extends TestCase
             'sn' => ['Smith']
         ];
 
-        $ldapLink = $this->createLdapLinkMock();
-        $ldapResult = $this->createLdapResultMock($ldapLink, 'ldap result', ['next_attribute']);
-        $ldapEntry = $this->createLdapResultEntryMock($ldapResult, 'ldap result entry', ['first_attribute']);
-        $resultEntry = new ResultEntry($ldapEntry);
+        [$resultEntry, $ldapEntry] = $this->createResultEntryAndMocks(1);
 
         $ldapEntry->expects($this->once())
                   ->method('get_dn')

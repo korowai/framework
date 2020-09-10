@@ -28,7 +28,7 @@ trait CreateLdapLinkMockTrait
      * @param mixed $resource
      * @param array $methods Array of method names to be set.
      */
-    private function createLdapLinkMock($resource = 'ldap link', array $methods = []) : LdapLinkInterface
+    private function createLdapLinkMock($resource = null, array $methods = []) : LdapLinkInterface
     {
         $builder = $this->getMockBuilder(LdapLinkInterface::class);
 

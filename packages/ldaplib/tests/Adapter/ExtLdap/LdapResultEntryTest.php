@@ -42,11 +42,17 @@ final class LdapResultEntryTest extends TestCase
     use ExamineCallWithMockedLdapFunctionTrait;
     use ResourceWrapperTestHelpersTrait;
 
+    private function createLdapResultEntryAndMocks(int $mocksLevel = 2, $resource = null) : array
+    {
+        $link = $mocksLevel >= 2 ?$this->createLdapLinkMock() : null;
+        $result = $this->createLdapResultMock($link);
+        $entry = new LdapResultEntry($resource, $result);
+        return array_slice([$entry, $result, $link], 0, max(2, 1 + $mocksLevel));
+    }
+
     private function examineLdapMethod(string $method, array $args, $will, $expect, string $ldapFunction = null) : void
     {
-        $ldap = $this->createLdapLinkMock();
-        $result = $this->createLdapResultMock($ldap);
-        $entry = new LdapResultEntry('ldap result entry', $result);
+        [$entry, $result, $link] = $this->createLdapResultEntryAndMocks();
 
         if ($ldapFunction === null) {
             $ldapFunction = "ldap_$method";
@@ -54,7 +60,7 @@ final class LdapResultEntryTest extends TestCase
 
         $actual = $this->examineCallWithMockedLdapFunction(
             [$entry, $method],
-            [$ldap, $entry],
+            [$link, $entry],
             $args,
             $will,
             $expect,
@@ -92,8 +98,7 @@ final class LdapResultEntryTest extends TestCase
 
     public function test__getResource()
     {
-        $result = $this->createLdapResultMock(null, null);
-        $entry = new LdapResultEntry('ldap entry', $result);
+        [$entry, $result] = $this->createLdapResultEntryAndMocks(1, 'ldap entry');
         $this->assertSame('ldap entry', $entry->getResource());
     }
 
@@ -103,8 +108,7 @@ final class LdapResultEntryTest extends TestCase
 
     public function test__getLdapResult()
     {
-        $result = $this->createLdapResultMock(null, null);
-        $entry = new LdapResultEntry('ldap entry', $result);
+        [$entry, $result] = $this->createLdapResultEntryAndMocks(1);
         $this->assertSame($result, $entry->getLdapResult());
     }
 
@@ -114,10 +118,8 @@ final class LdapResultEntryTest extends TestCase
 
     public function test__getLdapLink()
     {
-        $ldap = $this->createLdapLinkMock(null);
-        $result = $this->createLdapResultMock($ldap, null);
-        $entry = new LdapResultEntry('ldap entry', $result);
-        $this->assertSame($ldap, $entry->getLdapLink());
+        [$entry, $result, $link] = $this->createLdapResultEntryAndMocks();
+        $this->assertSame($link, $entry->getLdapLink());
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -134,8 +136,7 @@ final class LdapResultEntryTest extends TestCase
      */
     public function test__supportsResourceType(array $args, $expect) : void
     {
-        $result = $this->createLdapResultMock(null, null);
-        $entry = new LdapResultEntry('foo', $result);
+        [$entry, $result] = $this->createLdapResultEntryAndMocks(1);
 
         $this->examineSupportsResourceType($entry, $args, $expect);
     }
@@ -155,8 +156,7 @@ final class LdapResultEntryTest extends TestCase
      */
     public function test__isValid($arg, $return, $expect)
     {
-        $result = $this->createLdapResultMock(null, null);
-        $entry = new LdapResultEntry($arg, $result);
+        [$entry, $_] = $this->createLdapResultEntryAndMocks(1, $arg);
         $this->examineIsValid($entry, $arg, $return, $expect);
     }
 

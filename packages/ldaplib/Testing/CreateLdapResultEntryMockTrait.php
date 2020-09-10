@@ -25,7 +25,7 @@ trait CreateLdapResultEntryMockTrait
 
     private function createLdapResultEntryMock(
         LdapResultInterface $result = null,
-        $resource = 'ldap result entry',
+        $resource = null,
         array $methods = []
     ) : LdapResultEntryInterface {
         $builder = $this->getMockBuilder(LdapResultEntryInterface::class);

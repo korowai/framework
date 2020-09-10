@@ -24,13 +24,13 @@ trait CreateLdapResultMockTrait
     abstract public function getMockBuilder(string $className): MockBuilder;
 
     private function createLdapResultMock(
-        LdapLinkInterface $ldap = null,
-        $resource = 'ldap result',
+        LdapLinkInterface $link = null,
+        $resource = null,
         array $methods = []
     ) : LdapResultInterface {
         $builder = $this->getMockBuilder(LdapResultInterface::class);
 
-        if ($ldap !== null && !in_array('getLdapLink', $methods)) {
+        if ($link !== null && !in_array('getLdapLink', $methods)) {
             $methods[] = 'getLdapLink';
         }
 
@@ -42,11 +42,11 @@ trait CreateLdapResultMockTrait
 
         $mock = $builder->getMockForAbstractClass();
 
-        if ($ldap !== null) {
+        if ($link !== null) {
             $mock->expects($this->any())
                    ->method('getLdapLink')
                    ->with()
-                   ->willReturn($ldap);
+                   ->willReturn($link);
         }
 
         if ($resource !== null) {

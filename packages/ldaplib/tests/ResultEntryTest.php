@@ -20,8 +20,8 @@ use Korowai\Testing\Ldaplib\ExamineCallWithLdapTriggerErrorTrait;
 
 use Korowai\Lib\Ldap\ResultEntry;
 use Korowai\Lib\Ldap\ResultEntryInterface;
+use Korowai\Lib\Ldap\Entry;
 use Korowai\Lib\Ldap\ResultAttributeIterator;
-use Korowai\Lib\Ldap\Adapter\ResultEntryToEntry;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultEntryWrapperInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultEntryWrapperTrait;
 use Korowai\Lib\Ldap\Exception\LdapException;
@@ -76,11 +76,6 @@ final class ResultEntryTest extends TestCase
     public function test__implements__LdapResultEntryWrapperInterface() : void
     {
         $this->assertImplementsInterface(LdapResultEntryWrapperInterface::class, ResultEntry::class);
-    }
-
-    public function test__uses__ResultEntryToEntry() : void
-    {
-        $this->assertUsesTrait(ResultEntryToEntry::class, ResultEntry::class);
     }
 
     public function test__uses__LdapResultEntryWrapperTrait() : void
@@ -318,6 +313,46 @@ final class ResultEntryTest extends TestCase
                   ->willReturn('first attribute');
 
         $this->assertSame($entry->getIterator(), $entry->getAttributeIterator());
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // toEntry()
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public function test__toEntry()
+    {
+        $ldapDn = 'uid=jsmith,ou=people,dc=korowai,dc=org';
+        $ldapAttributes = [
+            'count' => 3,
+            'uid' => ['count' => 1, 'jsmith'],
+            'firstName' => ['count' => 1, 'John'],
+            'sn' => ['count' => 1, 'Smith']
+        ];
+        $expectAttributes = [
+            'uid' => ['jsmith'],
+            'firstname' => ['John'],
+            'sn' => ['Smith']
+        ];
+
+        $ldapLink = $this->createLdapLinkMock();
+        $ldapResult = $this->createLdapResultMock($ldapLink, 'ldap result', ['next_attribute']);
+        $ldapEntry = $this->createLdapResultEntryMock($ldapResult, 'ldap result entry', ['first_attribute']);
+        $resultEntry = new ResultEntry($ldapEntry);
+
+        $ldapEntry->expects($this->once())
+                  ->method('get_dn')
+                  ->with()
+                  ->willReturn($ldapDn);
+        $ldapEntry->expects($this->once())
+                  ->method('get_attributes')
+                  ->with()
+                  ->willReturn($ldapAttributes);
+
+        $entry = $resultEntry->toEntry();
+
+        $this->assertInstanceOf(Entry::class, $entry);
+        $this->assertEquals($ldapDn, $entry->getDn());
+        $this->assertSame($expectAttributes, $entry->getAttributes());
     }
 }
 

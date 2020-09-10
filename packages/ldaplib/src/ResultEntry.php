@@ -16,7 +16,6 @@ use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultEntryInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultEntryWrapperInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultEntryWrapperTrait;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkErrorHandler;
-use Korowai\Lib\Ldap\Adapter\ResultEntryToEntry;
 use function Korowai\Lib\Context\with;
 
 /**
@@ -27,7 +26,6 @@ use function Korowai\Lib\Context\with;
 final class ResultEntry implements ResultEntryInterface, LdapResultEntryWrapperInterface
 {
     use LdapResultEntryWrapperTrait;
-    use ResultEntryToEntry;
 
     /** @var ResultAttributeIteratorInterface|null */
     private $iterator;
@@ -101,6 +99,14 @@ final class ResultEntry implements ResultEntryInterface, LdapResultEntryWrapperI
     public function getIterator() : ResultAttributeIteratorInterface
     {
         return $this->getAttributeIterator();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function toEntry() : EntryInterface
+    {
+        return new Entry($this->getDn(), $this->getAttributes());
     }
 
     private static function cleanupAttributes(array $attributes) : array

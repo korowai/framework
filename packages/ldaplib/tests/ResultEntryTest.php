@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Tests\Lib\Ldap\Adapter\ExtLdap;
+namespace Korowai\Tests\Lib\Ldap;
 
 use Korowai\Testing\Ldaplib\TestCase;
 use Korowai\Testing\Ldaplib\CreateLdapLinkMockTrait;
@@ -18,9 +18,9 @@ use Korowai\Testing\Ldaplib\CreateLdapResultMockTrait;
 use Korowai\Testing\Ldaplib\CreateLdapResultEntryMockTrait;
 use Korowai\Testing\Ldaplib\ExamineCallWithLdapTriggerErrorTrait;
 
-use Korowai\Lib\Ldap\Adapter\ExtLdap\ResultEntry;
+use Korowai\Lib\Ldap\ResultEntry;
 use Korowai\Lib\Ldap\ResultEntryInterface;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\ResultAttributeIterator;
+use Korowai\Lib\Ldap\ResultAttributeIterator;
 use Korowai\Lib\Ldap\Adapter\ResultEntryToEntry;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultEntryWrapperInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultEntryWrapperTrait;
@@ -28,7 +28,7 @@ use Korowai\Lib\Ldap\Exception\LdapException;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @covers \Korowai\Lib\Ldap\Adapter\ExtLdap\ResultEntry
+ * @covers \Korowai\Lib\Ldap\ResultEntry
  */
 final class ResultEntryTest extends TestCase
 {

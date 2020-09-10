@@ -10,19 +10,19 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Tests\Lib\Ldap\Adapter\ExtLdap;
+namespace Korowai\Tests\Lib\Ldap;
 
 use Korowai\Testing\Ldaplib\TestCase;
 
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultReferenceInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultReferenceIteratorInterface;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\ResultReferenceIterator;
+use Korowai\Lib\Ldap\ResultReferenceIterator;
 use Korowai\Lib\Ldap\ResultReferenceInterface;
 use Korowai\Lib\Ldap\ResultReferenceIteratorInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @covers \Korowai\Lib\Ldap\Adapter\ExtLdap\ResultReferenceIterator
+ * @covers \Korowai\Lib\Ldap\ResultReferenceIterator
  */
 final class ResultReferenceIteratorTest extends TestCase
 {

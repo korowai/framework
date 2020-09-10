@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Tests\Lib\Ldap\Adapter\ExtLdap;
+namespace Korowai\Tests\Lib\Ldap;
 
 use Korowai\Testing\Ldaplib\TestCase;
 use Korowai\Testing\Ldaplib\CreateLdapLinkMockTrait;
@@ -19,15 +19,15 @@ use Korowai\Testing\Ldaplib\CreateLdapResultReferenceMockTrait;
 use Korowai\Testing\Ldaplib\ExamineCallWithLdapTriggerErrorTrait;
 use Korowai\Testing\Ldaplib\GetLdapFunctionMockTrait;
 
-use Korowai\Lib\Ldap\Adapter\ExtLdap\ResultReference;
+use Korowai\Lib\Ldap\ResultReference;
 use Korowai\Lib\Ldap\ResultReferenceInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultReferenceWrapperInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultReferenceWrapperTrait;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\ResultReferralIterator;
+use Korowai\Lib\Ldap\ResultReferralIterator;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @covers Korowai\Lib\Ldap\Adapter\ExtLdap\ResultReference
+ * @covers Korowai\Lib\Ldap\ResultReference
  */
 final class ResultReferenceTest extends TestCase
 {

@@ -10,17 +10,17 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Tests\Lib\Ldap\Adapter\ExtLdap;
+namespace Korowai\Tests\Lib\Ldap;
 
 use Korowai\Testing\Ldaplib\TestCase;
 
-use Korowai\Lib\Ldap\Adapter\ExtLdap\AbstractResultItemIterator;
+use Korowai\Lib\Ldap\AbstractResultItemIterator;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultItemIteratorInterface;
 use Korowai\Lib\Ldap\ResultItemIteratorInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @covers \Korowai\Lib\Ldap\Adapter\ExtLdap\AbstractResultItemIterator
+ * @covers \Korowai\Lib\Ldap\AbstractResultItemIterator
  */
 final class AbstractResultItemIteratorTest extends TestCase
 {

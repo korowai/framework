@@ -13,8 +13,8 @@ declare(strict_types=1);
 namespace Korowai\Lib\Ldap;
 
 use Korowai\Lib\Ldap\Adapter\AbstractResult;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\ResultEntryIterator;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\ResultReferenceIterator;
+use Korowai\Lib\Ldap\ResultEntryIterator;
+use Korowai\Lib\Ldap\ResultReferenceIterator;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultWrapperInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultWrapperTrait;

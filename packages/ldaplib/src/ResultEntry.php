@@ -10,11 +10,13 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
+namespace Korowai\Lib\Ldap;
 
-use Korowai\Lib\Ldap\ResultEntryInterface;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultEntryInterface;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultEntryWrapperInterface;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultEntryWrapperTrait;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkErrorHandler;
 use Korowai\Lib\Ldap\Adapter\ResultEntryToEntry;
-use Korowai\Lib\Ldap\ResultAttributeIteratorInterface;
 use function Korowai\Lib\Context\with;
 
 /**

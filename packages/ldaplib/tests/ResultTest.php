@@ -23,8 +23,8 @@ use PHPUnit\Framework\Constraint\Constraint;
 
 use Korowai\Lib\Ldap\Result;
 use Korowai\Lib\Ldap\ResultInterface;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\ResultEntry;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\ResultReference;
+use Korowai\Lib\Ldap\ResultEntry;
+use Korowai\Lib\Ldap\ResultReference;
 use Korowai\Lib\Ldap\ResultEntryIteratorInterface;
 use Korowai\Lib\Ldap\ResultReferenceIteratorInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultWrapperInterface;

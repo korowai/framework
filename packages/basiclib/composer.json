@@ -16,12 +16,12 @@
       "source": "https://github.com/korowai/framework"
     },
     "require": {
-        "php": ">=7.4"
+        "php": ">=7.4",
+        "korowai/basiclib-interfaces": "*"
     },
     "require-dev": {
         "phpunit/phpunit": ">=9.3",
         "php-mock/php-mock-phpunit": ">=2.4.0",
-        "korowai/basiclib-interfaces": "*",
         "korowai/testing": "*"
     },
     "autoload": {

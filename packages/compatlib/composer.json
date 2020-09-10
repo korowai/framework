@@ -17,7 +17,6 @@
     ],
     "require": {
         "php": ">=7.4",
-        "korowai/contracts": "*",
         "korowai/contextlib": "*",
         "korowai/errorlib": "*"
     },

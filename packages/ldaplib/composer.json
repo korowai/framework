@@ -20,10 +20,10 @@
         "ext-ldap": "*",
         "symfony/options-resolver": ">=4.2",
         "korowai/basiclib": "*",
-        "korowai/contracts": "*",
         "korowai/compatlib": "*",
-        "korowai/errorlib": "*",
         "korowai/contextlib": "*",
+        "korowai/errorlib": "*",
+        "korowai/ldaplib-interfaces": "*",
         "korowai/rfclib": "*"
     },
     "require-dev": {

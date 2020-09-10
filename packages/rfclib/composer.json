@@ -17,8 +17,8 @@
     },
     "require": {
         "php": ">=7.4",
-        "korowai/contracts": "*",
-        "korowai/compatlib": "*"
+        "korowai/compatlib": "*",
+        "korowai/rfclib-interfaces": "*"
     },
     "require-dev": {
         "phpunit/phpunit": ">=9.3",

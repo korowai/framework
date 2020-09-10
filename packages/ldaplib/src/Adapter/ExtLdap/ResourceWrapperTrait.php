@@ -58,8 +58,7 @@ trait ResourceWrapperTrait
      */
     public function isValid() : bool
     {
-        $res = $this->getResource();
-        return is_resource($res) && ($this->supportsResourceType(get_resource_type($res)));
+        return is_resource($this->resource) && ($this->supportsResourceType(get_resource_type($this->resource)));
     }
 }
 

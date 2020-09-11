@@ -23,11 +23,25 @@ use function Korowai\Lib\Error\exceptionErrorHandler;
 final class LdapLinkFactory implements LdapLinkFactoryInterface
 {
     /**
+     * @var string
+     *
+     * @psalm-readonly
+     */
+    private $uri;
+
+    /**
+     * @var bool
+     *
+     * @psalm-readonly
+     */
+    private $tls;
+
+    /**
      * @var array
      *
      * @psalm-readonly
      */
-    private $config;
+    private $options;
 
     /**
      * @var LdapLinkConstructorInterface
@@ -47,16 +61,20 @@ final class LdapLinkFactory implements LdapLinkFactoryInterface
      * Creates an LdapLinkFactory
      *
      * @param  LdapLinkConstructorInterface $ldapLinkConstructor
-     * @param  LdapLinkConfigResolverInterface $configResolver
+     * @param  string $uri
+     * @param  bool $tls
+     * @param  array $options
      */
     public function __construct(
         LdapLinkConstructorInterface $ldapLinkConstructor,
-        LdapLinkConfigResolverInterface $configResolver,
-        array $config = []
+        string $uri,
+        bool $tls = false,
+        array $options = []
     ) {
         $this->ldapLinkConstructor = $ldapLinkConstructor;
-        $this->configResolver = $configResolver;
-        $this->config = $this->configResolver->resolve($config);
+        $this->uri = $uri;
+        $this->tls = $tls;
+        $this->options = $options;
     }
 
     /**
@@ -72,19 +90,31 @@ final class LdapLinkFactory implements LdapLinkFactoryInterface
     }
 
     /**
-     * Returns resolver object used to validate and resolve options set to this object.
+     * Returns the $uri argument as provided to __construct().
      *
-     * @return LdapLinkConfigResolverInterface
+     * @return string
      *
      * @psalm-mutation-free
      */
-    public function getConfigResolver() : LdapLinkConfigResolverInterface
+    public function getUri() : string
     {
-        return $this->configResolver;
+        return $this->uri;
     }
 
     /**
-     * Return configuration array previously set with configure().
+     * Returns the $tls argument as provided to __construct().
+     *
+     * @return bool
+     *
+     * @psalm-mutation-free
+     */
+    public function getTls() : bool
+    {
+        return $this->tls;
+    }
+
+    /**
+     * Returns the $options as provided to __construct().
      *
      * If configuration is not set yet, null is returned.
      *
@@ -92,9 +122,9 @@ final class LdapLinkFactory implements LdapLinkFactoryInterface
      *
      * @psalm-mutation-free
      */
-    public function getConfig() : array
+    public function getOptions() : array
     {
-        return $this->config;
+        return $this->options;
     }
 
     /**
@@ -102,13 +132,12 @@ final class LdapLinkFactory implements LdapLinkFactoryInterface
      */
     public function createLdapLink() : LdapLinkInterface
     {
-        // FIXME: check if uri key exists and throw an error
-        $link = $this->ldapLinkConstructor->connect($this->config['uri']);
-        if ($this->config['tls'] ?? false) {
+        $link = $this->ldapLinkConstructor->connect($this->uri);
+        if ($this->tls) {
             $this->startTlsOnLdapLink($link);
         }
-        if (($options = $this->config['options'] ?? null) !== null) {
-            $this->setOptionsToLdapLink($link, $options);
+        if ($this->options) {
+            $this->setOptionsToLdapLink($link, $this->options);
         }
         return $link;
     }

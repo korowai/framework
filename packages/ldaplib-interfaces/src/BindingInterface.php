@@ -37,7 +37,7 @@ interface BindingInterface
     /**
      * Unbinds the connection
      */
-    public function unbind() : bool;
+    public function unbind() : void;
 }
 
 // vim: syntax=php sw=4 ts=4 et:

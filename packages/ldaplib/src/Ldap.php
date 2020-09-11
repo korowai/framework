@@ -14,7 +14,10 @@ namespace Korowai\Lib\Ldap;
 
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkWrapperInterface;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkFactory;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkFactoryInterface;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkConstructor;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkConstructorInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkConfigResolver;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkConfigResolverInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkWrapperTrait;
@@ -34,41 +37,6 @@ final class Ldap implements LdapInterface, LdapLinkWrapperInterface
     use ComparingTrait;
     use SearchingTrait;
     use EntryManagerTrait;
-
-    /**
-     * Returns new Ldap instance configured with config.
-     *
-     * @param  array $config
-     * @param  LdapLinkConstructor $ldapLinkConstructor
-     * @param  LdapLinkConfigResolverInterface $ldapLinkConfigResolver
-     *
-     * @return Ldap
-     */
-    public static function createWithConfig(
-        array $config,
-        LdapLinkConstructorInterface $ldapLinkConstructor = null,
-        LdapLinkConfigResolverInterface $configResolver = null
-    ) : self {
-        if ($ldapLinkConstructor === null) {
-            $ldapLinkConstructor = new LdapLinkConstructor;
-        }
-        if ($configResolver === null) {
-            $configResolver = new LdapLinkConfigResolver;
-        }
-        $factory = new LdapLinkFactory($ldapLinkConstructor, $configResolver, $config);
-        return self::createWithLdapLinkFactory($factory);
-    }
-
-    /**
-     * Returns new Ldap instance with adapter created by *$factory*.
-     *
-     * @param  LdapLinkFactoryInterface $ldapLinkFactory
-     * @return Ldap
-     */
-    public static function createWithLdapLinkFactory(LdapLinkFactoryInterface $ldapLinkFactory) : self
-    {
-        return new self($ldapLinkFactory->createLdapLink());
-    }
 
     /**
      * Create new Ldap instance

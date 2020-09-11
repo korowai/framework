@@ -171,19 +171,32 @@ trait BindingTestTrait
     // unbind()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public function test__unbind() : void
+    public static function prov__unbind() : array
+    {
+        return [
+            ['bound' => true,  'return' => true,  'expect' => ['isBound' => false]],
+            ['bound' => true,  'return' => false, 'expect' => ['isBound' => true ]],
+            ['bound' => false, 'return' => false, 'expect' => ['isBound' => false]],
+            ['bound' => false, 'return' => true,  'expect' => ['isBound' => false]],
+        ];
+    }
+
+    /**
+     * @dataProvider prov__unbind
+     */
+    public function test__unbind(bool $bound, bool $return, array $expect) : void
     {
         $link = $this->createLdapLinkMock();
 
-        $bind = $this->createBindingInstance($link, true);
+        $bind = $this->createBindingInstance($link, $bound);
 
         $link->expects($this->once())
              ->method('unbind')
              ->with()
-             ->willReturn(true);
+             ->willReturn($return);
 
         $bind->unbind();
-        $this->assertFalse($bind->isBound());
+        $this->assertSame($expect['isBound'], $bind->isBound());
     }
 
     public static function prov__unbind__withTriggerError() : array

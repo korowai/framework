@@ -25,6 +25,7 @@ use Korowai\Lib\Ldap\EntryManagerInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkConstructorInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkFactoryInterface;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkConfigResolver;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkConfigResolverInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkWrapperInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkWrapperTrait;
@@ -153,34 +154,98 @@ final class LdapTest extends TestCase
         $this->assertHasPropertiesSameAs($expect, $bind);
     }
 
-    //
-    // createWitLdapLinkFactory()
-    //
-
-    public function test__createWithLdapLinkFactory() : void
-    {
-        $link = $this->createMock(LdapLinkInterface::class);
-        $factory = $this->getMockBuilder(LdapLinkFactoryInterface::class)
-                        ->setMethods(['createLdapLink'])
-                        ->getMock();
-        $factory->expects($this->once())
-                ->method('createLdapLink')
-                ->with()
-                ->willReturn($link);
-
-        $ldap = Ldap::createWithLdapLinkFactory($factory);
-        $this->assertSame($link, $ldap->getLdapLink());
-        $this->assertFalse($ldap->isBound());
-    }
-
-    //
-    // createWithConfig()
-    //
-
-    public function test__createWithConfig() : void
-    {
-        $this->markTestIncomplete('Test not implemented yet!');
-    }
+//    //
+//    // createWitLdapLinkFactory()
+//    //
+//
+//    public function test__createWithLdapLinkFactory() : void
+//    {
+//        $link    = $this->createMock(LdapLinkInterface::class);
+//        $factory = $this->createMock(LdapLinkFactoryInterface::class);
+//        $factory->expects($this->once())
+//                ->method('createLdapLink')
+//                ->with()
+//                ->willReturn($link);
+//
+//        $ldap = Ldap::createWithLdapLinkFactory($factory);
+//        $this->assertSame($link, $ldap->getLdapLink());
+//        $this->assertFalse($ldap->isBound());
+//    }
+//
+//    //
+//    // createWithConfig()
+//    //
+//
+//    public static function prov__createWithConfig() : array
+//    {
+//        return [
+//            // #0
+//            ['mock', 'mock'],
+//
+//            // #1
+//            ['mock'],
+//
+//            // #2
+//            [],
+//
+//            // #3
+//            ['mock', null],
+//
+//            // #4
+//            [null, 'mock'],
+//
+//            // #5
+//            [null, null],
+//        ];
+//    }
+//
+//    /**
+//     * @dataProvider prov__createWithConfig
+//     */
+//    public function test__createWithConfig($param0 = false, $param1 = false) : void
+//    {
+//        $config =  ['uri' => 'ldap://example.org'];
+//
+//        if ($param0 === 'mock') {
+//            $resolved = ['uri' => 'ldap://example.org', 'tls' => false];
+//        } else {
+//            $resolved = (new LdapLinkConfigResolver)->resolve($config);
+//        }
+//
+//        $args = [$config];
+//
+//        if ($param0 === 'mock') {
+//            $resolver    = $this->createMock(LdapLinkConfigResolverInterface::class);
+//            $resolver   ->expects($this->once())
+//                        ->method('resolve')
+//                        ->with($config)
+//                        ->willReturn($resolved);
+//            $args[] = $resolver;
+//        } elseif ($param0 === null) {
+//            $args[] = null;
+//        }
+//
+//        if ($param1 === 'mock') {
+//            $link        = $this->createMock(LdapLinkInterface::class);
+//            $constructor = $this->createMock(LdapLinkConstructorInterface::class);
+//            $constructor->expects($this->once())
+//                        ->method('connect')
+//                        ->with($resolved['uri'])
+//                        ->willReturn($link);
+//            $args[] = $constructor;
+//        } elseif ($param1 === null) {
+//            $args[] = null;
+//        }
+//
+//        $ldap = Ldap::createWithConfig(...$args);
+//
+//        if (isset($link)) {
+//            $this->assertSame($link, $ldap->getLdapLink());
+//        } else {
+//            $this->assertInstanceOf(LdapLinkInterface::class, $ldap->getLdapLink());
+//        }
+//        $this->assertFalse($ldap->isBound());
+//    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

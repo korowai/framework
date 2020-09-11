@@ -81,14 +81,16 @@ trait BindingTrait
      *
      * @throws LdapException
      */
-    public function unbind() : bool
+    public function unbind() : void
     {
         $link = $this->getLdapLink();
         $result = with(new LdapLinkErrorHandler($link))(function () use ($link) : bool {
             return $link->unbind();
         });
-        $this->bound = !$result;
-        return $result;
+        // the state can only change to false and only when unbind is successful
+        if ($result) {
+            $this->bound = false;
+        }
     }
 }
 

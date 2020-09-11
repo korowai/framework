@@ -106,19 +106,7 @@ final class BindingInterfaceTest extends TestCase
     {
         $dummy = $this->createDummyInstance();
 
-        $dummy->unbind = true;
-        $this->assertSame($dummy->unbind, $dummy->unbind());
-    }
-
-    public function test__unbind__withRetTypeError() : void
-    {
-        $dummy = $this->createDummyInstance();
-        $dummy->unbind = null;
-
-        $this->expectException(\TypeError::class);
-        $this->expectExceptionMessage(\bool::class);
-
-        $dummy->unbind();
+        $this->assertNull($dummy->unbind());
     }
 }
 

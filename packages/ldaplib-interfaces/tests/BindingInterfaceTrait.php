@@ -19,7 +19,6 @@ trait BindingInterfaceTrait
 {
     public $isBound = null;
     public $bind = null;
-    public $unbind = null;
 
     public function isBound() : bool
     {
@@ -31,9 +30,8 @@ trait BindingInterfaceTrait
         return $this->bind;
     }
 
-    public function unbind() : bool
+    public function unbind() : void
     {
-        return $this->unbind;
     }
 }
 

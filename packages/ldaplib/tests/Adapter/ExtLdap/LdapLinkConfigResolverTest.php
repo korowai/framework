@@ -150,6 +150,7 @@ final class LdapLinkConfigResolverTest extends TestCase
         $resolved = $resolver->resolve($config);
 
         foreach ([&$resolved, &$expect] as &$options) {
+            // FIXME: replace with assertEqualsKsorted() once it's implemented
             ksort($options);
             if (is_array($options['options'] ?? null)) {
                 ksort($options['options']);

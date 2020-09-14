@@ -72,4 +72,4 @@ final class LdapResultItemTraitTest extends TestCase
     }
 }
 
-// vim: syntax=php sw=4 ts=4 et tw=120:
+// vim: syntax=php sw=4 ts=4 et tw=119:

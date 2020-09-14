@@ -13,10 +13,9 @@ declare(strict_types=1);
 namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
 
 use function Korowai\Lib\Context\with;
-use function Korowai\Lib\Error\exceptionErrorHandler;
 
 /**
- * Creates and returns new instances of LdapLink.
+ * Produces LdapLink instances.
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
@@ -51,13 +50,6 @@ final class LdapLinkFactory implements LdapLinkFactoryInterface
     private $constructor;
 
     /**
-     * @var LdapLinkConfigResolverInterface
-     *
-     * @psalm-readonly
-     */
-    private $configResolver;
-
-    /**
      * Creates an LdapLinkFactory using configuration array.
      *
      * @param  LdapLinkConstructorInterface $constructor
@@ -77,9 +69,15 @@ final class LdapLinkFactory implements LdapLinkFactoryInterface
      * Creates an LdapLinkFactory
      *
      * @param  LdapLinkConstructorInterface $constructor
+     *      An object used to create initial LdapLink.
      * @param  string $uri
+     *      The URI to connect the LdapLink to.
      * @param  bool $tls
+     *      If set to true, start_tls() will be called on each newly created LdapLink.
      * @param  array $options
+     *      An array of options to be set to each newly created LdapLink. It must be an array of key => value pairs
+     *      with integers as keys. Each key must be a valid LDAP option identifier. $options are not validated by the
+     *      constructor, though.
      */
     public function __construct(
         LdapLinkConstructorInterface $constructor,
@@ -175,4 +173,4 @@ final class LdapLinkFactory implements LdapLinkFactoryInterface
     }
 }
 
-// vim: syntax=php sw=4 ts=4 tw=120 et:
+// vim: syntax=php sw=4 ts=4 et tw=119:

@@ -31,7 +31,7 @@ final class ModSpecInterfaceTest extends TestCase
         };
     }
 
-    public static function prov__extendsInterface()
+    public static function prov__extendsInterface() : array
     {
         return [
             [HasAttrValSpecsInterface::class],
@@ -42,18 +42,18 @@ final class ModSpecInterfaceTest extends TestCase
     /**
      * @dataProvider prov__extendsInterface
      */
-    public function test__extendsInterface(string $extends)
+    public function test__extendsInterface(string $extends) : void
     {
         $this->assertImplementsInterface($extends, ModSpecInterface::class);
     }
 
-    public function test__dummyImplementation()
+    public function test__dummyImplementation() : void
     {
         $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(ModSpecInterface::class, $dummy);
     }
 
-    public function test__objectPropertyGettersMap()
+    public function test__objectPropertyGettersMap() : void
     {
         $expect = [
             'modType'   => 'getModType',
@@ -62,14 +62,14 @@ final class ModSpecInterfaceTest extends TestCase
         $this->assertObjectPropertyGetters($expect, ModSpecInterface::class);
     }
 
-    public function test__getModType()
+    public function test__getModType() : void
     {
         $dummy = $this->createDummyInstance();
         $dummy->modType = '';
         $this->assertSame($dummy->modType, $dummy->getModType());
     }
 
-    public function test__getModType__withNull()
+    public function test__getModType__withNull() : void
     {
         $dummy = $this->createDummyInstance();
         $dummy->modType = null;
@@ -79,14 +79,14 @@ final class ModSpecInterfaceTest extends TestCase
         $dummy->getModType();
     }
 
-    public function test__getAttribute()
+    public function test__getAttribute() : void
     {
         $dummy = $this->createDummyInstance();
         $dummy->attribute = '';
         $this->assertSame($dummy->attribute, $dummy->getAttribute());
     }
 
-    public function test__getAttribute__withNull()
+    public function test__getAttribute__withNull() : void
     {
         $dummy = $this->createDummyInstance();
         $dummy->attribute = null;

@@ -23,7 +23,7 @@ use Korowai\Testing\LdiflibInterfaces\TestCase;
  */
 final class ParserErrorInterfaceTest extends TestCase
 {
-    public static function prov__extendsInterface()
+    public static function prov__extendsInterface() : array
     {
         return [
             [SourceLocationInterface::class],
@@ -34,12 +34,12 @@ final class ParserErrorInterfaceTest extends TestCase
     /**
      * @dataProvider prov__extendsInterface
      */
-    public function test__extendsInterface(string $extends)
+    public function test__extendsInterface(string $extends) : void
     {
         $this->assertImplementsInterface($extends, ParserErrorInterface::class);
     }
 
-    public function test__dummyImplementation()
+    public function test__dummyImplementation() : void
     {
         $dummy = new class extends \Exception implements ParserErrorInterface {
             use ParserErrorInterfaceTrait;
@@ -47,7 +47,7 @@ final class ParserErrorInterfaceTest extends TestCase
         $this->assertImplementsInterface(ParserErrorInterface::class, $dummy);
     }
 
-    public function test__objectPropertyGettersMap()
+    public function test__objectPropertyGettersMap() : void
     {
         $expect = [
             'multilineMessage'      => 'getMultilineMessage',

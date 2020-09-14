@@ -31,7 +31,7 @@ final class LdifModifyRecordInterfaceTest extends TestCase
         };
     }
 
-    public static function prov__extendsInterface()
+    public static function prov__extendsInterface() : array
     {
         return [
             [LdifChangeRecordInterface::class],
@@ -42,18 +42,18 @@ final class LdifModifyRecordInterfaceTest extends TestCase
     /**
      * @dataProvider prov__extendsInterface
      */
-    public function test__extendsInterface(string $extends)
+    public function test__extendsInterface(string $extends) : void
     {
         $this->assertImplementsInterface($extends, LdifModifyRecordInterface::class);
     }
 
-    public function test__dummyImplementation()
+    public function test__dummyImplementation() : void
     {
         $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(LdifModifyRecordInterface::class, $dummy);
     }
 
-    public function test__objectPropertyGettersMap()
+    public function test__objectPropertyGettersMap() : void
     {
         $expect = [
             'modSpecs'      => 'getModSpecs'
@@ -61,14 +61,14 @@ final class LdifModifyRecordInterfaceTest extends TestCase
         $this->assertObjectPropertyGetters($expect, LdifModifyRecordInterface::class);
     }
 
-    public function test__getModSpecs()
+    public function test__getModSpecs() : void
     {
         $dummy = $this->createDummyInstance();
         $dummy->modSpecs = [];
         $this->assertSame($dummy->modSpecs, $dummy->getModSpecs());
     }
 
-    public function test__getModSpecs__withNull()
+    public function test__getModSpecs__withNull() : void
     {
         $dummy = $this->createDummyInstance();
         $dummy->modSpecs = null;

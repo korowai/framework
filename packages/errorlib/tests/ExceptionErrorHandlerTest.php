@@ -34,19 +34,19 @@ final class ExceptionErrorHandlerTest extends TestCase
         return new ExceptionErrorHandler($generator, ...$tail);
     }
 
-    public function test__extends__AbstractManagedErrorHandler()
+    public function test__extends__AbstractManagedErrorHandler() : void
     {
         $this->assertExtendsClass(AbstractManagedErrorHandler::class, ExceptionErrorHandler::class);
     }
 
-    public function test__makeExceptionGenerator__withCallable()
+    public function test__makeExceptionGenerator__withCallable() : void
     {
         $func = function () {
         };
         $this->assertSame($func, ExceptionErrorHandler::makeExceptionGenerator($func));
     }
 
-    public function test__makeExceptionGenerator__withClass()
+    public function test__makeExceptionGenerator__withClass() : void
     {
         $generator = ExceptionErrorHandler::makeExceptionGenerator(ExceptionA98DB973::class);
         $this->assertIsCallable($generator);
@@ -60,7 +60,7 @@ final class ExceptionErrorHandlerTest extends TestCase
         $this->assertEquals(456, $exception->getLine());
     }
 
-    public function test__makeExceptionGenerator__withNull()
+    public function test__makeExceptionGenerator__withNull() : void
     {
         $generator = ExceptionErrorHandler::makeExceptionGenerator(null);
         $this->assertIsCallable($generator);
@@ -74,7 +74,7 @@ final class ExceptionErrorHandlerTest extends TestCase
         $this->assertEquals(456, $exception->getLine());
     }
 
-    public function test__makeExceptionGenerator__withWrongArgType()
+    public function test__makeExceptionGenerator__withWrongArgType() : void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessageMatches(
@@ -86,7 +86,7 @@ final class ExceptionErrorHandlerTest extends TestCase
         ExceptionErrorHandler::makeExceptionGenerator(123);
     }
 
-    public function test__makeExceptionGenerator__withNonClassString()
+    public function test__makeExceptionGenerator__withNonClassString() : void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessageMatches(
@@ -98,7 +98,7 @@ final class ExceptionErrorHandlerTest extends TestCase
         ExceptionErrorHandler::makeExceptionGenerator('inexistent class');
     }
 
-    public function test__construct__withoutErrorTypes()
+    public function test__construct__withoutErrorTypes() : void
     {
         $func = function () {
         };
@@ -107,7 +107,7 @@ final class ExceptionErrorHandlerTest extends TestCase
         $this->assertEquals(E_ALL | E_STRICT, $handler->getErrorTypes());
     }
 
-    public function test__construct__withErrorTypes()
+    public function test__construct__withErrorTypes() : void
     {
         $func = function () {
         };
@@ -117,7 +117,7 @@ final class ExceptionErrorHandlerTest extends TestCase
         $this->assertEquals(123, $handler->getErrorTypes());
     }
 
-    public function test__invoke__whenSeverityIsRelevant()
+    public function test__invoke__whenSeverityIsRelevant() : void
     {
         $handler = $this->createHandler(ExceptionA98DB973::class);
 
@@ -127,7 +127,7 @@ final class ExceptionErrorHandlerTest extends TestCase
         call_user_func_array($handler, [E_USER_ERROR, 'foo', 'bar.php', 456]);
     }
 
-    public function test__invoke__whenSeverityIsIrrelevant()
+    public function test__invoke__whenSeverityIsIrrelevant() : void
     {
         // The __invoke() itself doesn't filter errors against $errorTypes. It
         // throws its exceptions unconditionally. It's PHP's job to filter
@@ -147,7 +147,7 @@ final class ExceptionErrorHandlerTest extends TestCase
         $this->assertFalse(call_user_func_array($handler, [E_USER_NOTICE, 'foo', 'bar.php', 456]));
     }
 
-    public function test__trigger__whenSeverityIsRelevant()
+    public function test__trigger__whenSeverityIsRelevant() : void
     {
         $handler = $this->createHandler(ExceptionA98DB973::class, E_ALL | E_STRICT);
 
@@ -168,7 +168,7 @@ final class ExceptionErrorHandlerTest extends TestCase
         }
     }
 
-    public function test__trigger__whenSeverityIsIrrelevant()
+    public function test__trigger__whenSeverityIsIrrelevant() : void
     {
         $handler = $this->createHandler(ExceptionA98DB973::class, E_USER_ERROR);
 

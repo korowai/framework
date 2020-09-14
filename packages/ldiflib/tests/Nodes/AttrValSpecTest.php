@@ -23,12 +23,12 @@ use Korowai\Testing\Ldiflib\TestCase;
  */
 final class AttrValSpecTest extends TestCase
 {
-    public function test__implmements__AttrValSpecInterface()
+    public function test__implmements__AttrValSpecInterface() : void
     {
         $this->assertImplementsInterface(AttrValSpecInterface::class, AttrValSpec::class);
     }
 
-    public function test__construct()
+    public function test__construct() : void
     {
         $value = $this->getMockBuilder(ValueSpecInterface::class)
                       ->getMockForAbstractClass();

@@ -20,12 +20,12 @@ use Korowai\Testing\BasiclibInterfaces\TestCase;
  */
 final class TestCaseTest extends TestCase
 {
-    public function test__extends__TestCase()
+    public function test__extends__TestCase() : void
     {
         $this->assertExtendsClass(\Korowai\Testing\TestCase::class, parent::class);
     }
 
-    public function test__objectPropertyGettersMap()
+    public function test__objectPropertyGettersMap() : void
     {
         $expected = array_merge_recursive(
             \Korowai\Testing\ObjectPropertyGettersMap::getObjectPropertyGettersMap(),

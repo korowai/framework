@@ -21,7 +21,7 @@ use Korowai\Lib\Ldif\Exception\InvalidChangeTypeException;
  */
 final class InvalidChangeTypeExceptionTest extends TestCase
 {
-    public function test__extendsInvalidArgumentException()
+    public function test__extendsInvalidArgumentException() : void
     {
         $this->assertExtendsClass(\InvalidArgumentException::class, InvalidChangeTypeException::class);
     }
@@ -37,7 +37,7 @@ final class InvalidChangeTypeExceptionTest extends TestCase
     /**
      * @dataProvider getMessage__cases
      */
-    public function test__getMessage(array $args, string $expect)
+    public function test__getMessage(array $args, string $expect) : void
     {
         $e = new InvalidChangeTypeException(...$args);
         $this->assertEquals($expect, $e->getMessage());

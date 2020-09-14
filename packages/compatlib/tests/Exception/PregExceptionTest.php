@@ -22,7 +22,7 @@ use Korowai\Lib\Compat\Exception\PregException;
  */
 final class PregExceptionTest extends TestCase
 {
-    public function test__extends__ErrorException()
+    public function test__extends__ErrorException() : void
     {
         $this->assertExtendsClass(\ErrorException::class, PregException::class);
     }

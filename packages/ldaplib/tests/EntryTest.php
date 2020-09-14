@@ -23,18 +23,18 @@ use Korowai\Lib\Ldap\Exception\AttributeException;
  */
 final class EntryTest extends TestCase
 {
-    public function test__implements__EntryInterface()
+    public function test__implements__EntryInterface() : void
     {
         $this->assertImplementsInterface(EntryInterface::class, Entry::class);
     }
 
-    public function test__construct__NoDn()
+    public function test__construct__NoDn() : void
     {
         $this->expectException(\TypeError::class);
         new Entry();
     }
 
-    public function test__construct__InvalidDn()
+    public function test__construct__InvalidDn() : void
     {
         $this->expectException(\TypeError::class);
         $this->expectExceptionMessageMatches('/Argument 1 .+::__construct\(\) .+ int(eger)? given/');
@@ -42,28 +42,28 @@ final class EntryTest extends TestCase
         new Entry(123);
     }
 
-    public function test__construct__DefaultAttributes()
+    public function test__construct__DefaultAttributes() : void
     {
         $entry = new Entry('dc=example,dc=com');
         $this->assertSame('dc=example,dc=com', $entry->getDn());
         $this->assertSame([], $entry->getAttributes());
     }
 
-    public function test__construct__1()
+    public function test__construct__1() : void
     {
         $entry = new Entry('dc=example,dc=com', []);
         $this->assertSame('dc=example,dc=com', $entry->getDn());
         $this->assertSame([], $entry->getAttributes());
     }
 
-    public function test__construct__2()
+    public function test__construct__2() : void
     {
         $entry = new Entry('dc=example,dc=com', ['userid' => ['ptomulik']]);
         $this->assertSame('dc=example,dc=com', $entry->getDn());
         $this->assertSame(['userid' => ['ptomulik']], $entry->getAttributes());
     }
 
-    public function test__construct__InvalidAttributes_1()
+    public function test__construct__InvalidAttributes_1() : void
     {
         $this->expectException(\TypeError::class);
         $this->expectExceptionMessageMatches('/Argument 2 .+::__construct\(\) .+ string given/');
@@ -71,7 +71,7 @@ final class EntryTest extends TestCase
         new Entry('dc=example,dc=com', 'foo');
     }
 
-    public function test__construct__InvalidAttributes_2()
+    public function test__construct__InvalidAttributes_2() : void
     {
         $this->expectException(\TypeError::class);
         $this->expectExceptionMessageMatches('/Argument 1 .+::validateAttribute\(\) .+ int(eger)? given/');
@@ -79,7 +79,7 @@ final class EntryTest extends TestCase
         new Entry('dc=example,dc=com', ['foo']);
     }
 
-    public function test__construct__InvalidAttributes_3()
+    public function test__construct__InvalidAttributes_3() : void
     {
         $this->expectException(\TypeError::class);
         $this->expectExceptionMessageMatches('/Argument 2 .+::validateAttribute\(\) .+ string given/');
@@ -87,7 +87,7 @@ final class EntryTest extends TestCase
         new Entry('dc=example,dc=com', ['foo' => 'bar']);
     }
 
-    public function test__setDn()
+    public function test__setDn() : void
     {
         $entry = new Entry('dc=example,dc=com');
         $this->assertSame('dc=example,dc=com', $entry->getDn());
@@ -95,7 +95,7 @@ final class EntryTest extends TestCase
         $this->assertSame('dc=korowai,dc=org', $entry->getDn());
     }
 
-    public function test__setDn__InvalidDn()
+    public function test__setDn__InvalidDn() : void
     {
         $entry = new Entry('dc=example,dc=com');
 
@@ -105,14 +105,14 @@ final class EntryTest extends TestCase
         $entry->setDn(123);
     }
 
-    public function test__validateDn__Valid()
+    public function test__validateDn__Valid() : void
     {
         $entry = new Entry('dc=example,dc=com');
         $entry->validateDn('dc=korowai,dc=org');
         $this->assertSame('dc=example,dc=com', $entry->getDn());
     }
 
-    public function test__validateDn__Invalid()
+    public function test__validateDn__Invalid() : void
     {
         $entry = new Entry('dc=example,dc=com');
 
@@ -122,7 +122,7 @@ final class EntryTest extends TestCase
         $entry->validateDn(123);
     }
 
-    public function test__getAttribute__Inexistent()
+    public function test__getAttribute__Inexistent() : void
     {
         $entry = new Entry('dc=example,dc=com');
 
@@ -132,33 +132,33 @@ final class EntryTest extends TestCase
         $entry->getAttribute('userid');
     }
 
-    public function test__getAttribute__Existent()
+    public function test__getAttribute__Existent() : void
     {
         $entry = new Entry('dc=example,dc=com', ['userid' => ['ptomulik']]);
         $this->assertSame(['ptomulik'], $entry->getAttribute('userid'));
     }
 
-    public function test__hasAttribute__Inexistent()
+    public function test__hasAttribute__Inexistent() : void
     {
         $entry = new Entry('dc=example,dc=com');
         $this->assertFalse($entry->hasAttribute('userid'));
     }
 
-    public function test__hasAttribute__Existent()
+    public function test__hasAttribute__Existent() : void
     {
         $entry = new Entry('dc=example,dc=com', [ 'userid' => ['ptomulik'] ]);
         $this->assertTrue($entry->hasAttribute('userid'));
         $this->assertFalse($entry->hasAttribute('userpassword'));
     }
 
-    public function test__setAttributes__1()
+    public function test__setAttributes__1() : void
     {
         $entry = new Entry('dc=example,dc=com');
         $entry->setAttributes(['userid' => ['ptomulik'], 'userpassword' => ['secret']]);
         $this->assertSame(['userid' => ['ptomulik'], 'userpassword' => ['secret']], $entry->getAttributes());
     }
 
-    public function test__setAttributes__2()
+    public function test__setAttributes__2() : void
     {
         $initial = ['userid' => ['ptomulik'], 'userpassword' => ['secret']];
         $extra = ['description' => ['Some text']];
@@ -168,7 +168,7 @@ final class EntryTest extends TestCase
         $this->assertSame($final, $entry->getAttributes());
     }
 
-    public function test__setAttributes__Invalid_1()
+    public function test__setAttributes__Invalid_1() : void
     {
         $entry = new Entry('dc=example,dc=com');
 
@@ -178,7 +178,7 @@ final class EntryTest extends TestCase
         $entry->setAttributes('userid');
     }
 
-    public function test__setAttributes__Invalid_2()
+    public function test__setAttributes__Invalid_2() : void
     {
         $entry = new Entry('dc=example,dc=com');
 
@@ -188,7 +188,7 @@ final class EntryTest extends TestCase
         $entry->setAttributes(['userid']);
     }
 
-    public function test__setAttributes__Invalid_3()
+    public function test__setAttributes__Invalid_3() : void
     {
         $entry = new Entry('dc=example,dc=com');
 
@@ -198,14 +198,14 @@ final class EntryTest extends TestCase
         $entry->setAttributes(['userid' => 'ptomulik']);
     }
 
-    public function test__setAttribute()
+    public function test__setAttribute() : void
     {
         $entry = new Entry('dc=example,dc=com');
         $entry->setAttribute('userid', ['ptomulik']);
         $this->assertSame(['userid' => ['ptomulik']], $entry->getAttributes());
     }
 
-    public function test__setAttribute__Invalid_1()
+    public function test__setAttribute__Invalid_1() : void
     {
         $entry = new Entry('dc=example,dc=com');
 
@@ -215,7 +215,7 @@ final class EntryTest extends TestCase
         $entry->setAttribute(123, ['ptomulik']);
     }
 
-    public function test__setAttribute__Invalid_2()
+    public function test__setAttribute__Invalid_2() : void
     {
         $entry = new Entry('dc=example,dc=com');
 
@@ -227,7 +227,7 @@ final class EntryTest extends TestCase
 
     /**
      */
-    public function test__setAttribute__Invalid_3()
+    public function test__setAttribute__Invalid_3() : void
     {
         $entry = new Entry('dc=example,dc=com');
 
@@ -237,7 +237,7 @@ final class EntryTest extends TestCase
         $entry->setAttribute('userid', 'ptomulik');
     }
 
-    public function test__setAttribute__Invalid_4()
+    public function test__setAttribute__Invalid_4() : void
     {
         $attrs = ['userid' => ['ptomulik']];
         $entry = new Entry('dc=example,dc=com', $attrs);

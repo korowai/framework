@@ -24,12 +24,12 @@ use Korowai\Testing\Ldiflib\TestCase;
  */
 final class VersionSpecTest extends TestCase
 {
-    public function test__implements__VersionSpecInterface()
+    public function test__implements__VersionSpecInterface() : void
     {
         $this->assertImplementsInterface(VersionSpecInterface::class, VersionSpec::class);
     }
 
-    public function test__construct()
+    public function test__construct() : void
     {
         $snippet = $this->getMockBuilder(SnippetInterface::class)
                         ->getMockForAbstractClass();
@@ -40,7 +40,7 @@ final class VersionSpecTest extends TestCase
         $this->assertSame(123, $record->getVersion());
     }
 
-    public function test__setVersion()
+    public function test__setVersion() : void
     {
         $snippet = $this->getMockBuilder(SnippetInterface::class)
                         ->getMockForAbstractClass();

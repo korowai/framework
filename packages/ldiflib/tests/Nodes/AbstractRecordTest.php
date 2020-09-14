@@ -25,17 +25,17 @@ use Korowai\Testing\Ldiflib\TestCase;
  */
 final class AbstractRecordTest extends TestCase
 {
-    public function test__implements__RecordInterface()
+    public function test__implements__RecordInterface() : void
     {
         $this->assertImplementsInterface(RecordInterface::class, AbstractRecord::class);
     }
 
-    public function test__uses__HasSnippet()
+    public function test__uses__HasSnippet() : void
     {
         $this->assertUsesTrait(HasSnippet::class, AbstractRecord::class);
     }
 
-    public function test__initAbstractRecord()
+    public function test__initAbstractRecord() : void
     {
         $snippet = $this->getMockBuilder(SnippetInterface::class)
                         ->getMockForAbstractClass();
@@ -51,7 +51,7 @@ final class AbstractRecordTest extends TestCase
         $this->assertNull($record->getSnippet());
     }
 
-    public function test__setDn()
+    public function test__setDn() : void
     {
         $record = $this->getMockBuilder(AbstractRecord::class)
                        ->getMockForAbstractClass();
@@ -60,7 +60,7 @@ final class AbstractRecordTest extends TestCase
         $this->assertSame("dc=example,dc=org", $record->getDn());
     }
 
-    public function test__setSnippet()
+    public function test__setSnippet() : void
     {
         $snippet = $this->getMockBuilder(SnippetInterface::class)
                         ->getMockForAbstractClass();

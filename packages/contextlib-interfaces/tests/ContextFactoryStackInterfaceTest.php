@@ -30,13 +30,13 @@ final class ContextFactoryStackInterfaceTest extends TestCase
         };
     }
 
-    public function test__dummyImplementation()
+    public function test__dummyImplementation() : void
     {
         $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(ContextFactoryStackInterface::class, $dummy);
     }
 
-    public function test__objectPropertyGettersMap()
+    public function test__objectPropertyGettersMap() : void
     {
         $expect = [
             'top'       => 'top',
@@ -45,14 +45,14 @@ final class ContextFactoryStackInterfaceTest extends TestCase
         $this->assertObjectPropertyGetters($expect, ContextFactoryStackInterface::class);
     }
 
-    public function test__clean()
+    public function test__clean() : void
     {
         $dummy = $this->createDummyInstance();
 
         $this->assertNull($dummy->clean());
     }
 
-    public function test__top()
+    public function test__top() : void
     {
         $dummy = $this->createDummyInstance();
 
@@ -63,7 +63,7 @@ final class ContextFactoryStackInterfaceTest extends TestCase
         $this->assertSame($dummy->top, $dummy->top());
     }
 
-    public function test__top__withTypeError()
+    public function test__top__withTypeError() : void
     {
         $dummy = $this->createDummyInstance();
         $dummy->top = '';
@@ -73,7 +73,7 @@ final class ContextFactoryStackInterfaceTest extends TestCase
         $dummy->top();
     }
 
-    public function test__push()
+    public function test__push() : void
     {
         $dummy = $this->createDummyInstance();
 
@@ -81,7 +81,7 @@ final class ContextFactoryStackInterfaceTest extends TestCase
         $this->assertNull($dummy->push($push));
     }
 
-    public function test__push__withNull()
+    public function test__push__withNull() : void
     {
         $dummy = $this->createDummyInstance();
 
@@ -90,7 +90,7 @@ final class ContextFactoryStackInterfaceTest extends TestCase
         $dummy->push(null);
     }
 
-    public function test__pop()
+    public function test__pop() : void
     {
         $dummy = $this->createDummyInstance();
 
@@ -101,7 +101,7 @@ final class ContextFactoryStackInterfaceTest extends TestCase
         $this->assertSame($dummy->pop, $dummy->pop());
     }
 
-    public function test__pop__withTypeError()
+    public function test__pop__withTypeError() : void
     {
         $dummy = $this->createDummyInstance();
         $dummy->pop = '';
@@ -111,7 +111,7 @@ final class ContextFactoryStackInterfaceTest extends TestCase
         $dummy->pop();
     }
 
-    public function test__size()
+    public function test__size() : void
     {
         $dummy = $this->createDummyInstance();
 
@@ -119,7 +119,7 @@ final class ContextFactoryStackInterfaceTest extends TestCase
         $this->assertSame($dummy->size, $dummy->size(''));
     }
 
-    public function test__size__withNull()
+    public function test__size__withNull() : void
     {
         $dummy = $this->createDummyInstance();
         $dummy->size = null;

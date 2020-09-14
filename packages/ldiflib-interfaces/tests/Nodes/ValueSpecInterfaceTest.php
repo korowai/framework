@@ -30,7 +30,7 @@ final class ValueSpecInterfaceTest extends TestCase
         };
     }
 
-    public static function prov__extendsInterface()
+    public static function prov__extendsInterface() : array
     {
         return [
             [NodeInterface::class]
@@ -40,18 +40,18 @@ final class ValueSpecInterfaceTest extends TestCase
     /**
      * @dataProvider prov__extendsInterface
      */
-    public function test__extendsInterface(string $extends)
+    public function test__extendsInterface(string $extends) : void
     {
         $this->assertImplementsInterface($extends, ValueSpecInterface::class);
     }
 
-    public function test__dummyImplementation()
+    public function test__dummyImplementation() : void
     {
         $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(ValueSpecInterface::class, $dummy);
     }
 
-    public function test__objectPropertyGettersMap()
+    public function test__objectPropertyGettersMap() : void
     {
         $expect = [
             'type'  => 'getType',
@@ -61,14 +61,14 @@ final class ValueSpecInterfaceTest extends TestCase
         $this->assertObjectPropertyGetters($expect, ValueSpecInterface::class);
     }
 
-    public function test__getType()
+    public function test__getType() : void
     {
         $dummy = $this->createDummyInstance();
         $dummy->type = 0;
         $this->assertSame($dummy->type, $dummy->getType());
     }
 
-    public function test__getType__withNull()
+    public function test__getType__withNull() : void
     {
         $dummy = $this->createDummyInstance();
         $dummy->type = null;
@@ -78,21 +78,21 @@ final class ValueSpecInterfaceTest extends TestCase
         $dummy->getType();
     }
 
-    public function test__getSpec()
+    public function test__getSpec() : void
     {
         $dummy = $this->createDummyInstance();
         $dummy->spec = '';
         $this->assertSame($dummy->spec, $dummy->getSpec());
     }
 
-    public function test__getContent()
+    public function test__getContent() : void
     {
         $dummy = $this->createDummyInstance();
         $dummy->content = '';
         $this->assertSame($dummy->content, $dummy->getContent());
     }
 
-    public function test__getContent__withNull()
+    public function test__getContent__withNull() : void
     {
         $dummy = $this->createDummyInstance();
         $dummy->content = null;

@@ -22,12 +22,12 @@ use Korowai\Testing\Ldiflib\TestCase;
  */
 final class AbstractDnSpecRuleTest extends TestCase
 {
-    public function test__extends__AbstractNameSpecRule()
+    public function test__extends__AbstractNameSpecRule() : void
     {
         $this->assertExtendsClass(AbstractNameSpecRule::class, AbstractDnSpecRule::class);
     }
 
-    public function test__prefix()
+    public function test__prefix() : void
     {
         $rule = $this->getMockBuilder(AbstractDnSpecRule::class)
                      ->disableOriginalConstructor()

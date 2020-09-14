@@ -32,7 +32,7 @@ final class LdifModifyRecordTest extends TestCase
         $this->assertExtendsClass(AbstractChangeRecord::class, LdifModifyRecord::class);
     }
 
-    public function test__implements__LdifModifyRecordInterface()
+    public function test__implements__LdifModifyRecordInterface() : void
     {
         $this->assertImplementsInterface(LdifModifyRecordInterface::class, LdifModifyRecord::class);
     }
@@ -76,19 +76,19 @@ final class LdifModifyRecordTest extends TestCase
     /**
      * @dataProvider construct__cases
      */
-    public function test__construct(array $args, array $expect)
+    public function test__construct(array $args, array $expect) : void
     {
         $record = new LdifModifyRecord(...$args);
         $this->assertHasPropertiesSameAs($expect, $record);
     }
 
-    public function test__getChangeType()
+    public function test__getChangeType() : void
     {
         $record = new LdifModifyRecord("dc=example,dc=org");
         $this->assertSame("modify", $record->getChangeType());
     }
 
-    public function test__setModSpecs()
+    public function test__setModSpecs() : void
     {
         $record = new LdifModifyRecord("dc=example,dc=org");
 
@@ -96,7 +96,7 @@ final class LdifModifyRecordTest extends TestCase
         $this->assertSame(['X'], $record->getModSpecs());
     }
 
-    public function test__acceptRecordVisitor()
+    public function test__acceptRecordVisitor() : void
     {
         $visitor = $this->getMockBuilder(RecordVisitorInterface::class)
                         ->getMockForAbstractClass();

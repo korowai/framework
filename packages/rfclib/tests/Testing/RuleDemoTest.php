@@ -60,7 +60,7 @@ final class RuleDemoTest extends TestCase
     /**
      * @dataProvider construct__cases
      */
-    public function test__construct(array $args, array $expect)
+    public function test__construct(array $args, array $expect) : void
     {
         $demo = new RuleDemo(...$args);
         $this->assertInstanceOf(RuleInterface::class, $demo->getRule());
@@ -97,7 +97,7 @@ final class RuleDemoTest extends TestCase
     /**
      * @dataProvider create__cases
      */
-    public function test__create(array $args, array $expect)
+    public function test__create(array $args, array $expect) : void
     {
         $demo = RuleDemo::create(...$args);
         $this->assertInstanceOf(RuleInterface::class, $demo->getRule());
@@ -105,7 +105,7 @@ final class RuleDemoTest extends TestCase
         $this->assertHasPropertiesSameAs($expect, $demo);
     }
 
-    public function test__setRule()
+    public function test__setRule() : void
     {
         $demo = RuleDemo::create(Rfc2849::class, 'DN_SPEC');
         $rule = new Rule(Rfc2849::class, 'VALUE_SPEC');
@@ -114,7 +114,7 @@ final class RuleDemoTest extends TestCase
         $this->assertSame($rule, $demo->getRule());
     }
 
-    public function test__setFormat()
+    public function test__setFormat() : void
     {
         $demo = RuleDemo::create(Rfc2849::class, 'DN_SPEC');
 
@@ -122,7 +122,7 @@ final class RuleDemoTest extends TestCase
         $this->assertSame('/^%s$/', $demo->getFormat());
     }
 
-    public function test__getRegex()
+    public function test__getRegex() : void
     {
         $rule = new Rule(Rfc2849::class, 'DIGIT');
         $demo = new RuleDemo($rule);
@@ -132,12 +132,12 @@ final class RuleDemoTest extends TestCase
         $this->assertSame('/^'.(string)$rule.'$/', $demo->regex());
     }
 
-    public function test__quote()
+    public function test__quote() : void
     {
         $this->assertSame('"foo\\nbar\\tgez\\"qux"', RuleDemo::quote("foo\nbar\tgez\"qux"));
     }
 
-    public function test__filterCaptures()
+    public function test__filterCaptures() : void
     {
         $this->assertSame(
             [
@@ -210,7 +210,7 @@ final class RuleDemoTest extends TestCase
     /**
      * @dataProvider matchAndGetReport__cases
      */
-    public function test__matchAndGetReport(RuleDemo $demo, array $args, array $expect)
+    public function test__matchAndGetReport(RuleDemo $demo, array $args, array $expect) : void
     {
         $report = $demo->matchAndGetReport(...$args);
         $subject = $args[0];
@@ -226,7 +226,7 @@ final class RuleDemoTest extends TestCase
     /**
      * @dataProvider matchAndGetReport__cases
      */
-    public function test__matchAndReport(RuleDemo $demo, array $args, array $expect)
+    public function test__matchAndReport(RuleDemo $demo, array $args, array $expect) : void
     {
         $subject = $args[0];
         $qsubject = $demo->quote($subject);

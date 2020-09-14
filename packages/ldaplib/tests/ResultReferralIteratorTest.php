@@ -23,17 +23,17 @@ use Korowai\Lib\Ldap\ResultReferralIteratorInterface;
  */
 final class ResultReferralIteratorTest extends TestCase
 {
-    public function test__implements__ResultReferralIteratorInterface()
+    public function test__implements__ResultReferralIteratorInterface() : void
     {
         $this->assertImplementsInterface(ResultReferralIteratorInterface::class, ResultReferralIterator::class);
     }
 
-    public function test__extends__ArrayIterator()
+    public function test__extends__ArrayIterator() : void
     {
         $this->assertExtendsClass(\ArrayIterator::class, ResultReferralIterator::class);
     }
 
-    public function test__construct()
+    public function test__construct() : void
     {
         $iterator = new ResultReferralIterator(['foo', 'bar']);
         $this->assertSame(['foo', 'bar'], $iterator->getArrayCopy());

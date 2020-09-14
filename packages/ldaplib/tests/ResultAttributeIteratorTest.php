@@ -25,17 +25,17 @@ use Korowai\Lib\Ldap\ResultAttributeIteratorInterface;
  */
 final class ResultAttributeIteratorTest extends TestCase
 {
-    public function test__implements__ResultAttributeIteratorInterface()
+    public function test__implements__ResultAttributeIteratorInterface() : void
     {
         $this->assertImplementsInterface(ResultAttributeIteratorInterface::class, ResultAttributeIterator::class);
     }
 
-    public function test__uses__LdapResultEntryWrapperTrait()
+    public function test__uses__LdapResultEntryWrapperTrait() : void
     {
         $this->assertUsesTrait(LdapResultEntryWrapperTrait::class, ResultAttributeIterator::class);
     }
 
-    public function test__getLdapResultEntry()
+    public function test__getLdapResultEntry() : void
     {
         $entry = $this->getMockBuilder(LdapResultEntryInterface::class)
                       ->getMockForAbstractClass();
@@ -45,7 +45,7 @@ final class ResultAttributeIteratorTest extends TestCase
         $this->assertSame($entry, $iterator->getLdapResultEntry());
     }
 
-    public function test__current()
+    public function test__current() : void
     {
         $values = ['val1', 'val2', 'count' => 2];
         $entry = $this->getMockBuilder(LdapResultEntryInterface::class)
@@ -60,7 +60,7 @@ final class ResultAttributeIteratorTest extends TestCase
         $this->assertSame(['val1', 'val2'], $iterator->current());
     }
 
-    public function test__key()
+    public function test__key() : void
     {
         $entry = $this->getMockBuilder(LdapResultEntryInterface::class)
                       ->getMockForAbstractClass();
@@ -68,7 +68,7 @@ final class ResultAttributeIteratorTest extends TestCase
         $this->assertEquals('attribname', $iterator->key());
     }
 
-    public function test__next()
+    public function test__next() : void
     {
         $entry = $this->getMockBuilder(LdapResultEntryInterface::class)
                       ->getMockForAbstractClass();
@@ -86,7 +86,7 @@ final class ResultAttributeIteratorTest extends TestCase
         $this->assertEquals('secondattribute', $iterator->key());
     }
 
-    public function test__rewind()
+    public function test__rewind() : void
     {
         $entry = $this->getMockBuilder(LdapResultEntryInterface::class)
                       ->getMockForAbstractClass();
@@ -102,7 +102,7 @@ final class ResultAttributeIteratorTest extends TestCase
         $this->assertEquals('firstattribute', $iterator->key());
     }
 
-    public function test__valid()
+    public function test__valid() : void
     {
         $entry = $this->getMockBuilder(LdapResultEntryInterface::class)
                       ->getMockForAbstractClass();

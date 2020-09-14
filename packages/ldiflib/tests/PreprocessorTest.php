@@ -25,7 +25,7 @@ use Korowai\Testing\Ldiflib\TestCase;
  */
 final class PreprocessorTest extends TestCase
 {
-    public function test__implements__PreprocessorInterface()
+    public function test__implements__PreprocessorInterface() : void
     {
         $this->assertImplementsInterface(PreprocessorInterface::class, Preprocessor::class);
     }
@@ -79,7 +79,7 @@ final class PreprocessorTest extends TestCase
     /**
      * @dataProvider rmReCases
      */
-    public function test__rmRe($re, $src, $expect, $expectIm)
+    public function test__rmRe($re, $src, $expect, $expectIm) : void
     {
         $im = new IndexMap([]);
         $this->assertSame($expect, Preprocessor::rmRe($re, $src, $im));
@@ -87,7 +87,7 @@ final class PreprocessorTest extends TestCase
         $this->assertSame($expectIm->getIncrement(), $im->getIncrement());
     }
 
-    public function test__rmRe__twice()
+    public function test__rmRe__twice() : void
     {
         //
         // Double application of Preprocessor::rmRe with same IndexMap instance.
@@ -120,7 +120,7 @@ final class PreprocessorTest extends TestCase
     /**
      * @dataProvider rmLnContCases
      */
-    public function test__rmLnCont(string $src, string $expect, array $expectIm)
+    public function test__rmLnCont(string $src, string $expect, array $expectIm) : void
     {
         $im = new IndexMap([]);
         $this->assertSame($expect, Preprocessor::rmLnCont($src, $im));
@@ -147,7 +147,7 @@ final class PreprocessorTest extends TestCase
     /**
      * @dataProvider rmCommentsCases
      */
-    public function test__rmComments(string $src, string $expect, array $expectIm)
+    public function test__rmComments(string $src, string $expect, array $expectIm) : void
     {
         $im = new IndexMap([]);
         $this->assertSame($expect, Preprocessor::rmComments($src, $im));
@@ -241,7 +241,7 @@ final class PreprocessorTest extends TestCase
     /**
      * @dataProvider preprocessCases
      */
-    public function test__preprocess(Preprocessor $pp, array $args, array $expect)
+    public function test__preprocess(Preprocessor $pp, array $args, array $expect) : void
     {
         [$expString, $expIm, $expFile] = $expect;
 

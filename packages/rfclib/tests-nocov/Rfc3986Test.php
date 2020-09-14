@@ -30,7 +30,7 @@ final class Rfc3986Test extends TestCase
     //
     // ALPHA
     //
-    public function test__ALPHA()
+    public function test__ALPHA() : void
     {
         $this->assertSame(Rfc5234::ALPHACHARS, Rfc3986::ALPHACHARS);
         $this->assertSame(Rfc5234::ALPHA, Rfc3986::ALPHA);
@@ -39,7 +39,7 @@ final class Rfc3986Test extends TestCase
     //
     // DIGIT
     //
-    public function test__DIGIT()
+    public function test__DIGIT() : void
     {
         $this->assertSame(Rfc5234::DIGITCHARS, Rfc3986::DIGITCHARS);
         $this->assertSame(Rfc5234::DIGIT, Rfc3986::DIGIT);
@@ -49,7 +49,7 @@ final class Rfc3986Test extends TestCase
     //
     // HEXDIG
     //
-    public function test__HEXDIG()
+    public function test__HEXDIG() : void
     {
         $this->assertSame('0-9A-Fa-f', Rfc3986::HEXDIGCHARS);
         $this->assertSame('[0-9A-Fa-f]', Rfc3986::HEXDIG);
@@ -59,7 +59,7 @@ final class Rfc3986Test extends TestCase
     //
     // SUB_DELIMS
     //
-    public function test__SUB_DELIMS()
+    public function test__SUB_DELIMS() : void
     {
         $this->assertSame('!\$&\'\(\)\*\+,;=', Rfc3986::SUB_DELIM_CHARS);
         $this->assertSame('[!\$&\'\(\)\*\+,;=]', Rfc3986::SUB_DELIMS);
@@ -69,7 +69,7 @@ final class Rfc3986Test extends TestCase
     // GEN_DELIMS
     //
 
-    public function test__GEN_DELIMS()
+    public function test__GEN_DELIMS() : void
     {
         $this->assertSame(':\/\?#\[\]@', Rfc3986::GEN_DELIM_CHARS);
         $this->assertSame('[:\/\?#\[\]@]', Rfc3986::GEN_DELIMS);
@@ -79,7 +79,7 @@ final class Rfc3986Test extends TestCase
     // RESERVED
     //
 
-    public function test__RESERVED()
+    public function test__RESERVED() : void
     {
         $this->assertSame(':\/\?#\[\]@!\$&\'\(\)\*\+,;=', Rfc3986::RESERVEDCHARS);
         $this->assertSame('[:\/\?#\[\]@!\$&\'\(\)\*\+,;=]', Rfc3986::RESERVED);
@@ -88,7 +88,7 @@ final class Rfc3986Test extends TestCase
     //
     // UNRESERVED
     //
-    public function test__UNRESERVED()
+    public function test__UNRESERVED() : void
     {
         $this->assertSame('A-Za-z0-9\._~-', Rfc3986::UNRESERVEDCHARS);
         $this->assertSame('[A-Za-z0-9\._~-]', Rfc3986::UNRESERVED);
@@ -97,7 +97,7 @@ final class Rfc3986Test extends TestCase
     //
     // PCT_ENCODED
     //
-    public function test__PCT_ENCODED()
+    public function test__PCT_ENCODED() : void
     {
         $this->assertSame('(?:%[0-9A-Fa-f][0-9A-Fa-f])', Rfc3986::PCT_ENCODED);
     }
@@ -105,7 +105,7 @@ final class Rfc3986Test extends TestCase
     //
     // PCHAR
     //
-    public function test__PCHAR()
+    public function test__PCHAR() : void
     {
         $this->assertSame(':@!\$&\'\(\)\*\+,;=A-Za-z0-9\._~-', Rfc3986::PCHARCHARS);
         $this->assertSame('(?:[:@!\$&\'\(\)\*\+,;=A-Za-z0-9\._~-]|(?:%[0-9A-Fa-f][0-9A-Fa-f]))', Rfc3986::PCHAR);
@@ -132,7 +132,7 @@ final class Rfc3986Test extends TestCase
     /**
      * @dataProvider SEGMENT_NZ_NC__cases
      */
-    public function test__SEGMENT_NZ_NC__matches(string $string, array $pieces = [])
+    public function test__SEGMENT_NZ_NC__matches(string $string, array $pieces = []) : void
     {
         $this->assertRfcMatches($string, 'SEGMENT_NZ_NC', $pieces);
     }
@@ -140,7 +140,7 @@ final class Rfc3986Test extends TestCase
     /**
      * @dataProvider non__SEGMENT_NZ_NC__cases
      */
-    public function test__SEGMENT_NZ_NC__notMatches(string $string)
+    public function test__SEGMENT_NZ_NC__notMatches(string $string) : void
     {
         $this->assertRfcNotMatches($string, 'SEGMENT_NZ_NC');
     }
@@ -167,7 +167,7 @@ final class Rfc3986Test extends TestCase
     /**
      * @dataProvider SEGMENT_NZ__cases
      */
-    public function test__SEGMENT_NZ__matches(string $string, array $pieces = [])
+    public function test__SEGMENT_NZ__matches(string $string, array $pieces = []) : void
     {
         $this->assertRfcMatches($string, 'SEGMENT_NZ', $pieces);
     }
@@ -175,7 +175,7 @@ final class Rfc3986Test extends TestCase
     /**
      * @dataProvider non__SEGMENT_NZ__cases
      */
-    public function test__SEGMENT_NZ__notMatches(string $string)
+    public function test__SEGMENT_NZ__notMatches(string $string) : void
     {
         $this->assertRfcNotMatches($string, 'SEGMENT_NZ');
     }
@@ -203,7 +203,7 @@ final class Rfc3986Test extends TestCase
     /**
      * @dataProvider SEGMENT__cases
      */
-    public function test__SEGMENT__matches(string $string, array $pieces = [])
+    public function test__SEGMENT__matches(string $string, array $pieces = []) : void
     {
         $this->assertRfcMatches($string, 'SEGMENT', $pieces);
     }
@@ -211,7 +211,7 @@ final class Rfc3986Test extends TestCase
     /**
      * @dataProvider non__SEGMENT__cases
      */
-    public function test__SEGMENT__notMatches(string $string)
+    public function test__SEGMENT__notMatches(string $string) : void
     {
         $this->assertRfcNotMatches($string, 'SEGMENT');
     }
@@ -239,7 +239,7 @@ final class Rfc3986Test extends TestCase
     /**
      * @dataProvider PATH_EMPTY__cases
      */
-    public function test__PATH_EMPTY__matches(string $string, array $pieces = [])
+    public function test__PATH_EMPTY__matches(string $string, array $pieces = []) : void
     {
         $this->assertArrayHasKey('path_empty', $pieces);
         $this->assertRfcMatches($string, 'PATH_EMPTY', $pieces);
@@ -248,7 +248,7 @@ final class Rfc3986Test extends TestCase
     /**
      * @dataProvider non__PATH_EMPTY__cases
      */
-    public function test__PATH_EMPTY__notMatches(string $string)
+    public function test__PATH_EMPTY__notMatches(string $string) : void
     {
         $this->assertRfcNotMatches($string, 'PATH_EMPTY');
     }
@@ -280,7 +280,7 @@ final class Rfc3986Test extends TestCase
     /**
      * @dataProvider PATH_NOSCHEME__cases
      */
-    public function test__PATH_NOSCHEME__matches(string $string, array $pieces = [])
+    public function test__PATH_NOSCHEME__matches(string $string, array $pieces = []) : void
     {
         $this->assertArrayHasKey('path_noscheme', $pieces);
         $this->assertRfcMatches($string, 'PATH_NOSCHEME', $pieces);
@@ -289,7 +289,7 @@ final class Rfc3986Test extends TestCase
     /**
      * @dataProvider non__PATH_NOSCHEME__cases
      */
-    public function test__PATH_NOSCHEME__notMatches(string $string)
+    public function test__PATH_NOSCHEME__notMatches(string $string) : void
     {
         $this->assertRfcNotMatches($string, 'PATH_NOSCHEME');
     }
@@ -323,7 +323,7 @@ final class Rfc3986Test extends TestCase
     /**
      * @dataProvider PATH_ROOTLESS__cases
      */
-    public function test__PATH_ROOTLESS__matches(string $string, array $pieces = [])
+    public function test__PATH_ROOTLESS__matches(string $string, array $pieces = []) : void
     {
         $this->assertArrayHasKey('path_rootless', $pieces);
         $this->assertRfcMatches($string, 'PATH_ROOTLESS', $pieces);
@@ -332,7 +332,7 @@ final class Rfc3986Test extends TestCase
     /**
      * @dataProvider non__PATH_ROOTLESS__cases
      */
-    public function test__PATH_ROOTLESS__notMatches(string $string)
+    public function test__PATH_ROOTLESS__notMatches(string $string) : void
     {
         $this->assertRfcNotMatches($string, 'PATH_ROOTLESS');
     }
@@ -364,7 +364,7 @@ final class Rfc3986Test extends TestCase
     /**
      * @dataProvider PATH_ABSOLUTE__cases
      */
-    public function test__PATH_ABSOLUTE__matches(string $string, array $pieces = [])
+    public function test__PATH_ABSOLUTE__matches(string $string, array $pieces = []) : void
     {
         $this->assertArrayHasKey('path_absolute', $pieces);
         $this->assertRfcMatches($string, 'PATH_ABSOLUTE', $pieces);
@@ -373,7 +373,7 @@ final class Rfc3986Test extends TestCase
     /**
      * @dataProvider non__PATH_ABSOLUTE__cases
      */
-    public function test__PATH_ABSOLUTE__notMatches(string $string)
+    public function test__PATH_ABSOLUTE__notMatches(string $string) : void
     {
         $this->assertRfcNotMatches($string, 'PATH_ABSOLUTE');
     }
@@ -406,7 +406,7 @@ final class Rfc3986Test extends TestCase
     /**
      * @dataProvider PATH_ABEMPTY__cases
      */
-    public function test__PATH_ABEMPTY__matches(string $string, array $pieces = [])
+    public function test__PATH_ABEMPTY__matches(string $string, array $pieces = []) : void
     {
         $this->assertArrayHasKey('path_abempty', $pieces);
         $this->assertRfcMatches($string, 'PATH_ABEMPTY', $pieces);
@@ -415,7 +415,7 @@ final class Rfc3986Test extends TestCase
     /**
      * @dataProvider non__PATH_ABEMPTY__cases
      */
-    public function test__PATH_ABEMPTY__notMatches(string $string)
+    public function test__PATH_ABEMPTY__notMatches(string $string) : void
     {
         $this->assertRfcNotMatches($string, 'PATH_ABEMPTY');
     }
@@ -448,7 +448,7 @@ final class Rfc3986Test extends TestCase
     /**
      * @dataProvider REG_NAME__cases
      */
-    public function test__REG_NAME__matches(string $string, array $pieces = [])
+    public function test__REG_NAME__matches(string $string, array $pieces = []) : void
     {
         $this->assertRfcMatches($string, 'REG_NAME', $pieces);
     }
@@ -456,7 +456,7 @@ final class Rfc3986Test extends TestCase
     /**
      * @dataProvider non__REG_NAME__cases
      */
-    public function test__REG_NAME__notMatches(string $string)
+    public function test__REG_NAME__notMatches(string $string) : void
     {
         $this->assertRfcNotMatches($string, 'REG_NAME');
     }
@@ -481,7 +481,7 @@ final class Rfc3986Test extends TestCase
     /**
      * @dataProvider DEC_OCTET__cases
      */
-    public function test__DEC_OCTET__matches(string $string, array $pieces = [])
+    public function test__DEC_OCTET__matches(string $string, array $pieces = []) : void
     {
         $this->assertRfcMatches($string, 'DEC_OCTET', $pieces);
     }
@@ -489,7 +489,7 @@ final class Rfc3986Test extends TestCase
     /**
      * @dataProvider non__DEC_OCTET__cases
      */
-    public function test__DEC_OCTET__notMatches(string $string)
+    public function test__DEC_OCTET__notMatches(string $string) : void
     {
         $this->assertRfcNotMatches($string, 'DEC_OCTET');
     }
@@ -526,7 +526,7 @@ final class Rfc3986Test extends TestCase
     /**
      * @dataProvider IPV4ADDRESS__cases
      */
-    public function test__IPV4ADDRESS__matches(string $string, array $pieces = [])
+    public function test__IPV4ADDRESS__matches(string $string, array $pieces = []) : void
     {
         $this->assertArrayHasKey('ipv4address', $pieces);
         $this->assertRfcMatches($string, 'IPV4ADDRESS', $pieces);
@@ -535,7 +535,7 @@ final class Rfc3986Test extends TestCase
     /**
      * @dataProvider non__IPV4ADDRESS__cases
      */
-    public function test__IPV4ADDRESS__notMatches(string $string)
+    public function test__IPV4ADDRESS__notMatches(string $string) : void
     {
         $this->assertRfcNotMatches($string, 'IPV4ADDRESS');
     }
@@ -571,7 +571,7 @@ final class Rfc3986Test extends TestCase
     /**
      * @dataProvider H16__cases
      */
-    public function test__H16__matches(string $string, array $pieces = [])
+    public function test__H16__matches(string $string, array $pieces = []) : void
     {
         $this->assertRfcMatches($string, 'H16', $pieces);
     }
@@ -579,7 +579,7 @@ final class Rfc3986Test extends TestCase
     /**
      * @dataProvider non__H16__cases
      */
-    public function test__H16__notMatches(string $string)
+    public function test__H16__notMatches(string $string) : void
     {
         $this->assertRfcNotMatches($string, 'H16');
     }
@@ -610,7 +610,7 @@ final class Rfc3986Test extends TestCase
     /**
      * @dataProvider LS32__cases
      */
-    public function test__LS32__matches(string $string, array $pieces = [])
+    public function test__LS32__matches(string $string, array $pieces = []) : void
     {
         $this->assertArrayHasKey('ls32', $pieces);
         $this->assertRfcMatches($string, 'LS32', $pieces);
@@ -619,7 +619,7 @@ final class Rfc3986Test extends TestCase
     /**
      * @dataProvider non__LS32__cases
      */
-    public function test__LS32__notMatches(string $string)
+    public function test__LS32__notMatches(string $string) : void
     {
         $this->assertRfcNotMatches($string, 'LS32');
     }
@@ -1236,7 +1236,7 @@ final class Rfc3986Test extends TestCase
      * @dataProvider IPV6ADDRESS__cases
      * @dataProvider extra__IPV6ADDRESS__cases
      */
-    public function test__IPV6ADDRESS__matches(string $string, array $pieces = [])
+    public function test__IPV6ADDRESS__matches(string $string, array $pieces = []) : void
     {
         $this->assertArrayHasKey('ipv6address', $pieces);
         $this->assertRfcMatches($string, 'IPV6ADDRESS', $pieces);
@@ -1245,7 +1245,7 @@ final class Rfc3986Test extends TestCase
     /**
      * @dataProvider non__IPV6ADDRESS__cases
      */
-    public function test__IPV6ADDRESS__notMatches(string $string)
+    public function test__IPV6ADDRESS__notMatches(string $string) : void
     {
         $this->assertRfcNotMatches($string, 'IPV6ADDRESS');
     }
@@ -1277,7 +1277,7 @@ final class Rfc3986Test extends TestCase
     /**
      * @dataProvider IPVFUTURE__cases
      */
-    public function test__IPVFUTURE__matches(string $string, array $pieces = [])
+    public function test__IPVFUTURE__matches(string $string, array $pieces = []) : void
     {
         $this->assertArrayHasKey('ipvfuture', $pieces);
         $this->assertRfcMatches($string, 'IPVFUTURE', $pieces);
@@ -1286,7 +1286,7 @@ final class Rfc3986Test extends TestCase
     /**
      * @dataProvider non__IPVFUTURE__cases
      */
-    public function test__IPVFUTURE__notMatches(string $string)
+    public function test__IPVFUTURE__notMatches(string $string) : void
     {
         $this->assertRfcNotMatches($string, 'IPVFUTURE');
     }
@@ -1348,7 +1348,7 @@ final class Rfc3986Test extends TestCase
     /**
      * @dataProvider IP_LITERAL__cases
      */
-    public function test__IP_LITERAL__matches(string $string, array $pieces = [])
+    public function test__IP_LITERAL__matches(string $string, array $pieces = []) : void
     {
         $this->assertArrayHasKey('ip_literal', $pieces);
         $this->assertRfcMatches($string, 'IP_LITERAL', $pieces);
@@ -1357,7 +1357,7 @@ final class Rfc3986Test extends TestCase
     /**
      * @dataProvider non__IP_LITERAL__cases
      */
-    public function test__IP_LITERAL__notMatches(string $string)
+    public function test__IP_LITERAL__notMatches(string $string) : void
     {
         $this->assertRfcNotMatches($string, 'IP_LITERAL');
     }
@@ -1381,7 +1381,7 @@ final class Rfc3986Test extends TestCase
     /**
      * @dataProvider PORT__cases
      */
-    public function test__PORT__matches(string $string, array $pieces = [])
+    public function test__PORT__matches(string $string, array $pieces = []) : void
     {
         $this->assertArrayHasKey('port', $pieces);
         $this->assertRfcMatches($string, 'PORT', $pieces);
@@ -1390,7 +1390,7 @@ final class Rfc3986Test extends TestCase
     /**
      * @dataProvider non__PORT__cases
      */
-    public function test__PORT__notMatches(string $string)
+    public function test__PORT__notMatches(string $string) : void
     {
         $this->assertRfcNotMatches($string, 'PORT');
     }
@@ -1467,7 +1467,7 @@ final class Rfc3986Test extends TestCase
     /**
      * @dataProvider HOST__cases
      */
-    public function test__HOST__matches(string $string, array $pieces = [])
+    public function test__HOST__matches(string $string, array $pieces = []) : void
     {
         $this->assertArrayHasKey('host', $pieces);
         $this->assertRfcMatches($string, 'HOST', $pieces);
@@ -1476,7 +1476,7 @@ final class Rfc3986Test extends TestCase
     /**
      * @dataProvider non__HOST__cases
      */
-    public function test__HOST__notMatches(string $string)
+    public function test__HOST__notMatches(string $string) : void
     {
         $this->assertRfcNotMatches($string, 'HOST');
     }
@@ -1503,7 +1503,7 @@ final class Rfc3986Test extends TestCase
     /**
      * @dataProvider USERINFO__cases
      */
-    public function test__USERINFO__matches(string $string, array $pieces = [])
+    public function test__USERINFO__matches(string $string, array $pieces = []) : void
     {
         $this->assertArrayHasKey('userinfo', $pieces);
         $this->assertRfcMatches($string, 'USERINFO', $pieces);
@@ -1512,7 +1512,7 @@ final class Rfc3986Test extends TestCase
     /**
      * @dataProvider non__USERINFO__cases
      */
-    public function test__USERINFO__notMatches(string $string)
+    public function test__USERINFO__notMatches(string $string) : void
     {
         $this->assertRfcNotMatches($string, 'USERINFO');
     }
@@ -1580,7 +1580,7 @@ final class Rfc3986Test extends TestCase
     /**
      * @dataProvider AUTHORITY__cases
      */
-    public function test__AUTHORITY__matches(string $string, array $pieces = [])
+    public function test__AUTHORITY__matches(string $string, array $pieces = []) : void
     {
         $this->assertArrayHasKey('authority', $pieces);
         $this->assertArrayHasKey('userinfo', $pieces);
@@ -1592,7 +1592,7 @@ final class Rfc3986Test extends TestCase
     /**
      * @dataProvider non__AUTHORITY__cases
      */
-    public function test__AUTHORITY__notMatches(string $string)
+    public function test__AUTHORITY__notMatches(string $string) : void
     {
         $this->assertRfcNotMatches($string, 'AUTHORITY');
     }
@@ -1616,7 +1616,7 @@ final class Rfc3986Test extends TestCase
     /**
      * @dataProvider SCHEME__cases
      */
-    public function test__SCHEME__matches(string $string, array $pieces = [])
+    public function test__SCHEME__matches(string $string, array $pieces = []) : void
     {
         $this->assertArrayHasKey('scheme', $pieces);
         $this->assertRfcMatches($string, 'SCHEME', $pieces);
@@ -1625,7 +1625,7 @@ final class Rfc3986Test extends TestCase
     /**
      * @dataProvider non__SCHEME__cases
      */
-    public function test__SCHEME__notMatches(string $string)
+    public function test__SCHEME__notMatches(string $string) : void
     {
         $this->assertRfcNotMatches($string, 'SCHEME');
     }
@@ -1676,7 +1676,7 @@ final class Rfc3986Test extends TestCase
     /**
      * @dataProvider RELATIVE_PART__cases
      */
-    public function test__RELATIVE_PART__matches(string $string, array $pieces = [])
+    public function test__RELATIVE_PART__matches(string $string, array $pieces = []) : void
     {
         $this->assertArrayHasKey('relative_part', $pieces);
         $this->assertRfcMatches($string, 'RELATIVE_PART', $pieces);
@@ -1685,7 +1685,7 @@ final class Rfc3986Test extends TestCase
     /**
      * @dataProvider non__RELATIVE_PART__cases
      */
-    public function test__RELATIVE_PART__notMatches(string $string)
+    public function test__RELATIVE_PART__notMatches(string $string) : void
     {
         $this->assertRfcNotMatches($string, 'RELATIVE_PART');
     }
@@ -1756,7 +1756,7 @@ final class Rfc3986Test extends TestCase
     /**
      * @dataProvider HIER_PART__cases
      */
-    public function test__HIER_PART__matches(string $string, array $pieces = [])
+    public function test__HIER_PART__matches(string $string, array $pieces = []) : void
     {
         $this->assertArrayHasKey('hier_part', $pieces);
         $this->assertArrayHasKey('authority', $pieces);
@@ -1770,7 +1770,7 @@ final class Rfc3986Test extends TestCase
     /**
      * @dataProvider non__HIER_PART__cases
      */
-    public function test__HIER_PART__notMatches(string $string)
+    public function test__HIER_PART__notMatches(string $string) : void
     {
         $this->assertRfcNotMatches($string, 'HIER_PART');
     }
@@ -1796,7 +1796,7 @@ final class Rfc3986Test extends TestCase
     /**
      * @dataProvider FRAGMENT__cases
      */
-    public function test__FRAGMENT__matches(string $string, array $pieces = [])
+    public function test__FRAGMENT__matches(string $string, array $pieces = []) : void
     {
         $this->assertArrayHasKey('fragment', $pieces);
         $this->assertRfcMatches($string, 'FRAGMENT', $pieces);
@@ -1805,7 +1805,7 @@ final class Rfc3986Test extends TestCase
     /**
      * @dataProvider non__FRAGMENT__cases
      */
-    public function test__FRAGMENT__notMatches(string $string)
+    public function test__FRAGMENT__notMatches(string $string) : void
     {
         $this->assertRfcNotMatches($string, 'FRAGMENT');
     }
@@ -1831,7 +1831,7 @@ final class Rfc3986Test extends TestCase
     /**
      * @dataProvider QUERY__cases
      */
-    public function test__QUERY__matches(string $string, array $pieces = [])
+    public function test__QUERY__matches(string $string, array $pieces = []) : void
     {
         $this->assertArrayHasKey('query', $pieces);
         $this->assertRfcMatches($string, 'QUERY', $pieces);
@@ -1840,7 +1840,7 @@ final class Rfc3986Test extends TestCase
     /**
      * @dataProvider non__QUERY__cases
      */
-    public function test__QUERY__notMatches(string $string)
+    public function test__QUERY__notMatches(string $string) : void
     {
         $this->assertRfcNotMatches($string, 'QUERY');
     }
@@ -1904,7 +1904,7 @@ final class Rfc3986Test extends TestCase
     /**
      * @dataProvider RELATIVE_REF__cases
      */
-    public function test__RELATIVE_REF__matches(string $string, array $pieces = [])
+    public function test__RELATIVE_REF__matches(string $string, array $pieces = []) : void
     {
         $this->assertArrayHasKey('relative_ref', $pieces);
         $this->assertArrayHasKey('relative_part', $pieces);
@@ -1916,7 +1916,7 @@ final class Rfc3986Test extends TestCase
     /**
      * @dataProvider non__RELATIVE_REF__cases
      */
-    public function test__RELATIVE_REF__notMatches(string $string)
+    public function test__RELATIVE_REF__notMatches(string $string) : void
     {
         $this->assertRfcNotMatches($string, 'RELATIVE_REF');
     }
@@ -1967,7 +1967,7 @@ final class Rfc3986Test extends TestCase
     /**
      * @dataProvider ABSOLUTE_URI__cases
      */
-    public function test__ABSOLUTE_URI__matches(string $string, array $pieces = [])
+    public function test__ABSOLUTE_URI__matches(string $string, array $pieces = []) : void
     {
         $this->assertArrayHasKey('absolute_uri', $pieces);
         $this->assertArrayHasKey('scheme', $pieces);
@@ -1979,7 +1979,7 @@ final class Rfc3986Test extends TestCase
     /**
      * @dataProvider non__ABSOLUTE_URI__cases
      */
-    public function test__ABSOLUTE_URI__notMatches(string $string)
+    public function test__ABSOLUTE_URI__notMatches(string $string) : void
     {
         $this->assertRfcNotMatches($string, 'ABSOLUTE_URI');
     }
@@ -2027,7 +2027,7 @@ final class Rfc3986Test extends TestCase
     /**
      * @dataProvider URI__cases
      */
-    public function test__URI__matches(string $string, array $pieces = [])
+    public function test__URI__matches(string $string, array $pieces = []) : void
     {
         $this->assertArrayHasKey('uri', $pieces);
         $this->assertArrayHasKey('scheme', $pieces);
@@ -2040,7 +2040,7 @@ final class Rfc3986Test extends TestCase
     /**
      * @dataProvider non__URI__cases
      */
-    public function test__URI__notMatches(string $string)
+    public function test__URI__notMatches(string $string) : void
     {
         $this->assertRfcNotMatches($string, 'URI');
     }
@@ -2086,7 +2086,7 @@ final class Rfc3986Test extends TestCase
     /**
      * @dataProvider URI_REFERENCE__cases
      */
-    public function test__URI_REFERENCE__matches(string $string, array $pieces = [])
+    public function test__URI_REFERENCE__matches(string $string, array $pieces = []) : void
     {
         $this->assertArrayHasKey('uri_reference', $pieces);
         $this->assertArrayHasKey('uri', $pieces);
@@ -2097,7 +2097,7 @@ final class Rfc3986Test extends TestCase
     /**
      * @dataProvider non__URI_REFERENCE__cases
      */
-    public function test__URI_REFERENCE__notMatches(string $string)
+    public function test__URI_REFERENCE__notMatches(string $string) : void
     {
         $this->assertRfcNotMatches($string, 'URI_REFERENCE');
     }

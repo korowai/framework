@@ -29,13 +29,13 @@ final class StaticRuleSetInterfaceTest extends TestCase
         });
     }
 
-    public function test__dummyImplementation()
+    public function test__dummyImplementation() : void
     {
         $dummy = $this->createDummyClass();
         $this->assertImplementsInterface(StaticRuleSetInterface::class, $dummy);
     }
 
-    public function test__objectPropertyGettersMap()
+    public function test__objectPropertyGettersMap() : void
     {
         $expect = [
             'rules' => 'rules',
@@ -43,7 +43,7 @@ final class StaticRuleSetInterfaceTest extends TestCase
         $this->assertObjectPropertyGetters($expect, StaticRuleSetInterface::class);
     }
 
-    public function test__rules()
+    public function test__rules() : void
     {
         $dummy = $this->createDummyClass();
 
@@ -51,7 +51,7 @@ final class StaticRuleSetInterfaceTest extends TestCase
         $this->assertSame($dummy::$rules, $dummy::rules());
     }
 
-    public function test__rules__withRetTypeError()
+    public function test__rules__withRetTypeError() : void
     {
         $dummy = $this->createDummyClass();
         $dummy::$rules = null;
@@ -61,7 +61,7 @@ final class StaticRuleSetInterfaceTest extends TestCase
         $dummy::rules();
     }
 
-    public function test__regexp()
+    public function test__regexp() : void
     {
         $dummy = $this->createDummyClass();
 
@@ -69,7 +69,7 @@ final class StaticRuleSetInterfaceTest extends TestCase
         $this->assertSame($dummy::$regexp, $dummy::regexp(''));
     }
 
-    public function test__regexp__withArgTypeError()
+    public function test__regexp__withArgTypeError() : void
     {
         $dummy = $this->createDummyClass();
         $dummy::$regexp = '';
@@ -79,7 +79,7 @@ final class StaticRuleSetInterfaceTest extends TestCase
         $dummy::regexp(null);
     }
 
-    public function test__regexp__withRetTypeError()
+    public function test__regexp__withRetTypeError() : void
     {
         $dummy = $this->createDummyClass();
         $dummy::$regexp = null;
@@ -89,7 +89,7 @@ final class StaticRuleSetInterfaceTest extends TestCase
         $dummy::regexp('');
     }
 
-    public function test__captures()
+    public function test__captures() : void
     {
         $dummy = $this->createDummyClass();
 
@@ -97,7 +97,7 @@ final class StaticRuleSetInterfaceTest extends TestCase
         $this->assertSame($dummy::$captures, $dummy::captures(''));
     }
 
-    public function test__captures__withArgTypeError()
+    public function test__captures__withArgTypeError() : void
     {
         $dummy = $this->createDummyClass();
         $dummy::$captures = [];
@@ -107,7 +107,7 @@ final class StaticRuleSetInterfaceTest extends TestCase
         $dummy::captures(null);
     }
 
-    public function test__captures__withRetTypeError()
+    public function test__captures__withRetTypeError() : void
     {
         $dummy = $this->createDummyClass();
         $dummy::$captures = null;
@@ -117,7 +117,7 @@ final class StaticRuleSetInterfaceTest extends TestCase
         $dummy::captures('');
     }
 
-    public function test__errorCaptures()
+    public function test__errorCaptures() : void
     {
         $dummy = $this->createDummyClass();
 
@@ -125,7 +125,7 @@ final class StaticRuleSetInterfaceTest extends TestCase
         $this->assertSame($dummy::$errorCaptures, $dummy::errorCaptures(''));
     }
 
-    public function test__errorCaptures__withArgTypeError()
+    public function test__errorCaptures__withArgTypeError() : void
     {
         $dummy = $this->createDummyClass();
         $dummy::$errorCaptures = [];
@@ -135,7 +135,7 @@ final class StaticRuleSetInterfaceTest extends TestCase
         $dummy::errorCaptures(null);
     }
 
-    public function test__errorCaptures__withRetTypeError()
+    public function test__errorCaptures__withRetTypeError() : void
     {
         $dummy = $this->createDummyClass();
         $dummy::$errorCaptures = null;
@@ -145,7 +145,7 @@ final class StaticRuleSetInterfaceTest extends TestCase
         $dummy::errorCaptures('');
     }
 
-    public function test__valueCaptures()
+    public function test__valueCaptures() : void
     {
         $dummy = $this->createDummyClass();
 
@@ -153,7 +153,7 @@ final class StaticRuleSetInterfaceTest extends TestCase
         $this->assertSame($dummy::$valueCaptures, $dummy::valueCaptures(''));
     }
 
-    public function test__valueCaptures__withArgTypeError()
+    public function test__valueCaptures__withArgTypeError() : void
     {
         $dummy = $this->createDummyClass();
         $dummy::$valueCaptures = [];
@@ -163,7 +163,7 @@ final class StaticRuleSetInterfaceTest extends TestCase
         $dummy::valueCaptures(null);
     }
 
-    public function test__valueCaptures__withRetTypeError()
+    public function test__valueCaptures__withRetTypeError() : void
     {
         $dummy = $this->createDummyClass();
         $dummy::$valueCaptures = null;
@@ -174,7 +174,7 @@ final class StaticRuleSetInterfaceTest extends TestCase
     }
 
 
-    public function test__findCapturedErrors()
+    public function test__findCapturedErrors() : void
     {
         $dummy = $this->createDummyClass();
 
@@ -182,7 +182,7 @@ final class StaticRuleSetInterfaceTest extends TestCase
         $this->assertSame($dummy::$findCapturedErrors, $dummy::findCapturedErrors('', []));
     }
 
-    public static function prov__findCapturedErrors__withArgTypeError()
+    public static function prov__findCapturedErrors__withArgTypeError() : array
     {
         return [
             [[null, []], \string::class],
@@ -193,7 +193,7 @@ final class StaticRuleSetInterfaceTest extends TestCase
     /**
      * @dataProvider prov__findCapturedErrors__withArgTypeError
      */
-    public function test__findCapturedErrors__withArgTypeError(array $args, string $message)
+    public function test__findCapturedErrors__withArgTypeError(array $args, string $message) : void
     {
         $dummy = $this->createDummyClass();
         $dummy::$findCapturedErrors = [];
@@ -203,7 +203,7 @@ final class StaticRuleSetInterfaceTest extends TestCase
         $dummy::findCapturedErrors(...$args);
     }
 
-    public function test__findCapturedErrors__withRetTypeError()
+    public function test__findCapturedErrors__withRetTypeError() : void
     {
         $dummy = $this->createDummyClass();
         $dummy::$findCapturedErrors = null;
@@ -213,7 +213,7 @@ final class StaticRuleSetInterfaceTest extends TestCase
         $dummy::findCapturedErrors('', []);
     }
 
-    public function test__findCapturedValues()
+    public function test__findCapturedValues() : void
     {
         $dummy = $this->createDummyClass();
 
@@ -221,7 +221,7 @@ final class StaticRuleSetInterfaceTest extends TestCase
         $this->assertSame($dummy::$findCapturedValues, $dummy::findCapturedValues('', []));
     }
 
-    public static function prov__findCapturedValues__withArgTypeError()
+    public static function prov__findCapturedValues__withArgTypeError() : array
     {
         return [
             [[null, []], \string::class],
@@ -232,7 +232,7 @@ final class StaticRuleSetInterfaceTest extends TestCase
     /**
      * @dataProvider prov__findCapturedValues__withArgTypeError
      */
-    public function test__findCapturedValues__withArgTypeError(array $args, string $message)
+    public function test__findCapturedValues__withArgTypeError(array $args, string $message) : void
     {
         $dummy = $this->createDummyClass();
         $dummy::$findCapturedValues = [];
@@ -242,7 +242,7 @@ final class StaticRuleSetInterfaceTest extends TestCase
         $dummy::findCapturedValues(...$args);
     }
 
-    public function test__findCapturedValues__withRetTypeError()
+    public function test__findCapturedValues__withRetTypeError() : void
     {
         $dummy = $this->createDummyClass();
         $dummy::$findCapturedValues = null;
@@ -252,7 +252,7 @@ final class StaticRuleSetInterfaceTest extends TestCase
         $dummy::findCapturedValues('', []);
     }
 
-    public function test__getErrorMessage()
+    public function test__getErrorMessage() : void
     {
         $dummy = $this->createDummyClass();
 
@@ -262,7 +262,7 @@ final class StaticRuleSetInterfaceTest extends TestCase
         $this->assertSame($dummy::$errorMessage, $dummy::getErrorMessage(''));
     }
 
-    public static function prov__getErrorMessage__withArgTypeError()
+    public static function prov__getErrorMessage__withArgTypeError() : array
     {
         return [
             [['', []], \string::class],
@@ -274,7 +274,7 @@ final class StaticRuleSetInterfaceTest extends TestCase
     /**
      * @dataProvider prov__getErrorMessage__withArgTypeError
      */
-    public function test__getErrorMessage__withArgTypeError(array $args, string $message)
+    public function test__getErrorMessage__withArgTypeError(array $args, string $message) : void
     {
         $dummy = $this->createDummyClass();
         $dummy::$errorMessage = '';
@@ -284,7 +284,7 @@ final class StaticRuleSetInterfaceTest extends TestCase
         $dummy::getErrorMessage(...$args);
     }
 
-    public function test__getErrorMessage__withRetTypeError()
+    public function test__getErrorMessage__withRetTypeError() : void
     {
         $dummy = $this->createDummyClass();
         $dummy::$errorMessage = null;

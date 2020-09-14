@@ -24,12 +24,12 @@ use Korowai\Testing\Ldiflib\TestCase;
  */
 final class LocationTest extends TestCase
 {
-    public function test__implements__LocationInterface()
+    public function test__implements__LocationInterface() : void
     {
         $this->assertImplementsInterface(LocationInterface::class, Location::class);
     }
 
-    public function test__construct()
+    public function test__construct() : void
     {
         $input = $this->getMockBuilder(InputInterface::class)
                       ->getMockForAbstractClass();
@@ -39,7 +39,7 @@ final class LocationTest extends TestCase
         $this->assertSame(12, $location->getOffset());
     }
 
-    public function test__isValid()
+    public function test__isValid() : void
     {
         $input = $this->getMockBuilder(InputInterface::class)
                       ->getMock();
@@ -65,7 +65,7 @@ final class LocationTest extends TestCase
         $this->assertFalse($location->isValid());
     }
 
-    public function test__getClonedLocation()
+    public function test__getClonedLocation() : void
     {
         $input = $this->getMockBuilder(InputInterface::class)
                       ->getMockForAbstractClass();
@@ -93,7 +93,7 @@ final class LocationTest extends TestCase
         $this->assertSame(321, $clone3->getOffset());
     }
 
-    public function test__getString()
+    public function test__getString() : void
     {
         $input = $this->getMockBuilder(InputInterface::class)
                       ->getMockForAbstractClass();
@@ -135,7 +135,7 @@ final class LocationTest extends TestCase
     /**
      * @dataProvider charOffsetCases
      */
-    public function test__getCharOffset(string $string, array $cases)
+    public function test__getCharOffset(string $string, array $cases) : void
     {
         $input = $this->getMockBuilder(InputInterface::class)
                       ->getMockForAbstractClass();
@@ -150,7 +150,7 @@ final class LocationTest extends TestCase
         }
     }
 
-    public function test__getSourceFileName()
+    public function test__getSourceFileName() : void
     {
         $input = $this->getMockBuilder(InputInterface::class)
                       ->getMockForAbstractClass();
@@ -163,7 +163,7 @@ final class LocationTest extends TestCase
         $this->assertSame('foo.ldif', $location->getSourceFileName());
     }
 
-    public function test__getSourceString()
+    public function test__getSourceString() : void
     {
         $input = $this->getMockBuilder(InputInterface::class)
                       ->getMockForAbstractClass();
@@ -176,7 +176,7 @@ final class LocationTest extends TestCase
         $this->assertSame('A', $location->getSourceString());
     }
 
-    public function test__getSourceOffset()
+    public function test__getSourceOffset() : void
     {
         $input = $this->getMockBuilder(InputInterface::class)
                       ->getMockForAbstractClass();
@@ -189,7 +189,7 @@ final class LocationTest extends TestCase
         $this->assertSame(4, $location->getSourceOffset());
     }
 
-    public function test__getSourceCharOffset()
+    public function test__getSourceCharOffset() : void
     {
         $input = $this->getMockBuilder(InputInterface::class)
                       ->getMockForAbstractClass();
@@ -202,7 +202,7 @@ final class LocationTest extends TestCase
         $this->assertSame(2, $location->getSourceCharOffset('U'));
     }
 
-    public function test__getSourceLineIndex()
+    public function test__getSourceLineIndex() : void
     {
         $input = $this->getMockBuilder(InputInterface::class)
                       ->getMockForAbstractClass();
@@ -215,7 +215,7 @@ final class LocationTest extends TestCase
         $this->assertSame(1, $location->getSourceLineIndex());
     }
 
-    public function test__getSourceLine()
+    public function test__getSourceLine() : void
     {
         $input = $this->getMockBuilder(InputInterface::class)
                       ->getMockForAbstractClass();
@@ -232,7 +232,7 @@ final class LocationTest extends TestCase
         $this->assertSame('A', $location->getSourceLine());
     }
 
-    public function test__getSourceLineAndOffset()
+    public function test__getSourceLineAndOffset() : void
     {
         $input = $this->getMockBuilder(InputInterface::class)
                       ->getMockForAbstractClass();
@@ -245,7 +245,7 @@ final class LocationTest extends TestCase
         $this->assertSame(['A',1], $location->getSourceLineAndOffset());
     }
 
-    public function test__getSourceLineAndCharOffset()
+    public function test__getSourceLineAndCharOffset() : void
     {
         $input = $this->getMockBuilder(InputInterface::class)
                       ->getMockForAbstractClass();

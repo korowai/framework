@@ -34,33 +34,33 @@ final class LdapInterfaceTest extends TestCase
         };
     }
 
-    public function test__implements__BindingInterface()
+    public function test__implements__BindingInterface() : void
     {
         $this->assertImplementsInterface(BindingInterface::class, LdapInterface::class);
     }
 
-    public function test__implements__SearchingInterface()
+    public function test__implements__SearchingInterface() : void
     {
         $this->assertImplementsInterface(SearchingInterface::class, LdapInterface::class);
     }
 
-    public function test__implements__ComparingInterface()
+    public function test__implements__ComparingInterface() : void
     {
         $this->assertImplementsInterface(ComparingInterface::class, LdapInterface::class);
     }
 
-    public function test__implements__EntryManagerInterface()
+    public function test__implements__EntryManagerInterface() : void
     {
         $this->assertImplementsInterface(EntryManagerInterface::class, LdapInterface::class);
     }
 
-    public function test__dummyImplementation()
+    public function test__dummyImplementation() : void
     {
         $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(LdapInterface::class, $dummy);
     }
 
-    public function test__objectPropertyGettersMap()
+    public function test__objectPropertyGettersMap() : void
     {
         $expect = [];
         $this->assertObjectPropertyGetters($expect, LdapInterface::class);

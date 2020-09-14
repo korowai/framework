@@ -85,7 +85,7 @@ final class PregAssertionsTraitTest extends TestCase
     /**
      * @dataProvider hasPregCaptures__success__cases
      */
-    public function test__hasPregCaptures__success(array $expected, $other)
+    public function test__hasPregCaptures__success(array $expected, $other) : void
     {
         $constraint = $this->hasPregCaptures($expected);
         $this->assertTrue($constraint->matches($other));
@@ -94,7 +94,7 @@ final class PregAssertionsTraitTest extends TestCase
     /**
      * @dataProvider hasPregCaptures__success__cases
      */
-    public function test__assertHasPregCaptures__success(array $expected, $other)
+    public function test__assertHasPregCaptures__success(array $expected, $other) : void
     {
         $this->assertHasPregCaptures($expected, $other);
     }
@@ -102,7 +102,7 @@ final class PregAssertionsTraitTest extends TestCase
     /**
      * @dataProvider hasPregCaptures__success__cases
      */
-    public function test__assertNotHasPregCapture__failing(array $expected, $other)
+    public function test__assertNotHasPregCapture__failing(array $expected, $other) : void
     {
         $this->expectException(ExpectationFailedException::class);
         $this->expectExceptionMessageMatches('/^Failed asserting that array does not have expected PCRE capture groups.$/sD');
@@ -144,7 +144,7 @@ final class PregAssertionsTraitTest extends TestCase
      * @dataProvider hasPregCaptures__failing__cases
      * @dataProvider hasPregCaptures__nonArray__cases
      */
-    public function test__hasPregCaptures__failing(array $expected, $other, string $regexp)
+    public function test__hasPregCaptures__failing(array $expected, $other, string $regexp) : void
     {
         $constraint = $this->hasPregCaptures($expected);
         $this->assertFalse($constraint->matches($other));
@@ -161,7 +161,7 @@ final class PregAssertionsTraitTest extends TestCase
     /**
      * @dataProvider hasPregCaptures__failing__cases
      */
-    public function test__assertHasPregCaptures__failing(array $expected, $other, string $regexp)
+    public function test__assertHasPregCaptures__failing(array $expected, $other, string $regexp) : void
     {
         $this->expectException(ExpectationFailedException::class);
         $this->expectExceptionMessageMatches('/^Failed asserting that '.$regexp.'.$/sD');
@@ -171,7 +171,7 @@ final class PregAssertionsTraitTest extends TestCase
     /**
      * @dataProvider hasPregCaptures__failing__cases
      */
-    public function test__assertNotHasPregCapture__success(array $expected, $other, string $regexp)
+    public function test__assertNotHasPregCapture__success(array $expected, $other, string $regexp) : void
     {
         $this->assertNotHasPregCaptures($expected, $other);
     }

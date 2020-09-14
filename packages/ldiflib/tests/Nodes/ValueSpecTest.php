@@ -25,19 +25,19 @@ use Korowai\Testing\Ldiflib\TestCase;
  */
 final class ValueSpecTest extends TestCase
 {
-    public function test__implmements__ValueSpecInterface()
+    public function test__implmements__ValueSpecInterface() : void
     {
         $this->assertImplementsInterface(ValueSpecInterface::class, ValueSpec::class);
     }
 
-    public function test__construct__isPrivate()
+    public function test__construct__isPrivate() : void
     {
         $this->expectException(\Error::class);
         $this->expectExceptionMessage('private');
         new ValueSpec(0, 'v', 'c');
     }
 
-    public function test__safeString()
+    public function test__safeString() : void
     {
         $value = ValueSpec::createSafeString('safe string');
         $this->assertInstanceOf(ValueSpec::class, $value);
@@ -46,7 +46,7 @@ final class ValueSpecTest extends TestCase
         $this->assertSame('safe string', $value->getContent());
     }
 
-    public function test__bas64String()
+    public function test__bas64String() : void
     {
         $value = ValueSpec::createBase64String('YmFzZTY0IHN0cmluZw==');
         $this->assertInstanceOf(ValueSpec::class, $value);
@@ -63,7 +63,7 @@ final class ValueSpecTest extends TestCase
         $this->assertSame('already decoded', $value->getContent());
     }
 
-    public function test__base64String__invalid()
+    public function test__base64String__invalid() : void
     {
         $value = ValueSpec::createBase64String('YmFzZTY0IHN0cmluZ');
         $this->expectException(\RuntimeException::class);
@@ -71,7 +71,7 @@ final class ValueSpecTest extends TestCase
         $value->getContent();
     }
 
-    public function test__uri__fromUri()
+    public function test__uri__fromUri() : void
     {
         $uri = Uri::createFromString(__file__);
         $value = ValueSpec::createUri($uri);
@@ -81,7 +81,7 @@ final class ValueSpecTest extends TestCase
         $this->assertSame(file_get_contents(__file__), $value->getContent());
     }
 
-    public function test__uri__fromComponents()
+    public function test__uri__fromComponents() : void
     {
         $components = ['path' => __file__];
         $value = ValueSpec::createUriFromComponents($components);
@@ -91,7 +91,7 @@ final class ValueSpecTest extends TestCase
         $this->assertSame(file_get_contents(__file__), $value->getContent());
     }
 
-    public function test__uri__fromRfc3986Matches()
+    public function test__uri__fromRfc3986Matches() : void
     {
         $value = ValueSpec::createUriFromRfc3986Matches(['path_absolute' => [ __file__, 123]]);
         $this->assertInstanceOf(ValueSpec::class, $value);
@@ -177,7 +177,7 @@ final class ValueSpecTest extends TestCase
     /**
      * @dataProvider uriFromRfc3986Matches__cases
      */
-    public function test__uri__fromRfc3986Matches__components(array $matches, array $expect)
+    public function test__uri__fromRfc3986Matches__components(array $matches, array $expect) : void
     {
         $value = ValueSpec::createUriFromRfc3986Matches($matches);
         $this->assertInstanceOf(ValueSpec::class, $value);
@@ -199,21 +199,21 @@ final class ValueSpecTest extends TestCase
         }
     }
 
-    public function test__uri__withSyntaxErrorInScheme()
+    public function test__uri__withSyntaxErrorInScheme() : void
     {
         $this->expectException(SyntaxError::class);
         $this->expectExceptionMessage('The scheme `##` is invalid');
         ValueSpec::createUriFromComponents(['scheme' => '##']);
     }
 
-    public function test__uri__withNonIntPortNumber()
+    public function test__uri__withNonIntPortNumber() : void
     {
         $this->expectException(SyntaxError::class);
         $this->expectExceptionMessage('The port `asdf` is invalid (not an integer)');
         ValueSpec::createUriFromRfc3986Matches(['port' => ['asdf', 0]]);
     }
 
-    public function test__uri__Unavailable()
+    public function test__uri__Unavailable() : void
     {
         $value = ValueSpec::createUriFromComponents(['path' => __dir__.'/inexistent.txt']);
         $this->assertInstanceOf(ValueSpec::class, $value);
@@ -225,7 +225,7 @@ final class ValueSpecTest extends TestCase
         $value->getContent();
     }
 
-    public function test__throwInvalidTypeException()
+    public function test__throwInvalidTypeException() : void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('internal error: invalid type (5) set to '.ValueSpec::class.' object');

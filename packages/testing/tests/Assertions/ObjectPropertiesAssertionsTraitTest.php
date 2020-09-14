@@ -42,7 +42,7 @@ final class ObjectPropertiesAssertionsTraitTest extends TestCase
     /**
      * @dataProvider staticMethodsThatMustAppear
      */
-    public function test__staticMethodExists(string $name)
+    public function test__staticMethodExists(string $name) : void
     {
         $classAndMethod = [self::class, $name];
         self::assertTrue(method_exists(...$classAndMethod));
@@ -426,7 +426,7 @@ final class ObjectPropertiesAssertionsTraitTest extends TestCase
         self::assertFalse(self::hasPropertiesIdenticalTo($expected, $getters)->matches($object));
     }
 
-    public function test__hasPropertiesIdenticalTo__withNonObject()
+    public function test__hasPropertiesIdenticalTo__withNonObject() : void
     {
         $matcher = self::hasPropertiesIdenticalTo(['a' => 'A']);
         self::assertFalse($matcher->matches(123));
@@ -439,7 +439,7 @@ final class ObjectPropertiesAssertionsTraitTest extends TestCase
         }
     }
 
-    public function test__hasPropertiesIdenticalTo__withInvalidArray()
+    public function test__hasPropertiesIdenticalTo__withInvalidArray() : void
     {
         self::expectException(\PHPUnit\Framework\Exception::class);
         self::expectExceptionMessage('The array of expected properties contains 3 invalid key(s)');
@@ -447,7 +447,7 @@ final class ObjectPropertiesAssertionsTraitTest extends TestCase
         self::hasPropertiesIdenticalTo(['a' => 'A', 0 => 'B', 2 => 'C', 7 => 'D', 'e' => 'E']);
     }
 
-    public function test__hasPropertiesIdenticalTo__withInvalidGetter()
+    public function test__hasPropertiesIdenticalTo__withInvalidGetter() : void
     {
         $object = new class {
             protected $a;
@@ -459,7 +459,7 @@ final class ObjectPropertiesAssertionsTraitTest extends TestCase
         self::hasPropertiesIdenticalTo(['xxx()' => 'A'])->matches($object);
     }
 
-    public function test__hasPropertiesIdenticalTo__withInvalidGetterOption()
+    public function test__hasPropertiesIdenticalTo__withInvalidGetterOption() : void
     {
         $object = new class {
             protected $a;

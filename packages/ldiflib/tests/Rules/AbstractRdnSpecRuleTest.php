@@ -22,7 +22,7 @@ use Korowai\Testing\Ldiflib\TestCase;
  */
 final class AbstractRdnSpecRuleTest extends TestCase
 {
-    public function test__extends__AbstractNameSpecRule()
+    public function test__extends__AbstractNameSpecRule() : void
     {
         $this->assertExtendsClass(AbstractNameSpecRule::class, AbstractRdnSpecRule::class);
     }

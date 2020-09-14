@@ -37,7 +37,7 @@ final class ParserTest extends TestCase
 //        return ['content', 'changes', 'mixed', 'detect'];
 //    }
 //
-    public function test__implements__ParserInterface()
+    public function test__implements__ParserInterface() : void
     {
         $this->assertImplementsInterface(ParserInterface::class, Parser::class);
     }

@@ -31,13 +31,13 @@ final class ResultEntryInterfaceTest extends TestCase
         };
     }
 
-    public function test__dummyImplementation()
+    public function test__dummyImplementation() : void
     {
         $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(ResultEntryInterface::class, $dummy);
     }
 
-    public function test__objectPropertyGettersMap()
+    public function test__objectPropertyGettersMap() : void
     {
         $expect = [
             'dn'                => 'getDn',
@@ -48,7 +48,7 @@ final class ResultEntryInterfaceTest extends TestCase
         $this->assertObjectPropertyGetters($expect, ResultEntryInterface::class);
     }
 
-    public function test__getDn()
+    public function test__getDn() : void
     {
         $dummy = $this->createDummyInstance();
 
@@ -56,7 +56,7 @@ final class ResultEntryInterfaceTest extends TestCase
         $this->assertSame($dummy->dn, $dummy->getDn());
     }
 
-    public function test__getDn__withRetTypeError()
+    public function test__getDn__withRetTypeError() : void
     {
         $dummy = $this->createDummyInstance();
         $dummy->dn = null;
@@ -66,7 +66,7 @@ final class ResultEntryInterfaceTest extends TestCase
         $dummy->getDn();
     }
 
-    public function test__getAttributes()
+    public function test__getAttributes() : void
     {
         $dummy = $this->createDummyInstance();
 
@@ -74,7 +74,7 @@ final class ResultEntryInterfaceTest extends TestCase
         $this->assertSame($dummy->attributes, $dummy->getAttributes());
     }
 
-    public function test__getAttributes__withRetTypeError()
+    public function test__getAttributes__withRetTypeError() : void
     {
         $dummy = $this->createDummyInstance();
         $dummy->yyy = null;
@@ -84,7 +84,7 @@ final class ResultEntryInterfaceTest extends TestCase
         $dummy->getAttributes();
     }
 
-    public function test__toEntry()
+    public function test__toEntry() : void
     {
         $dummy = $this->createDummyInstance();
 
@@ -92,7 +92,7 @@ final class ResultEntryInterfaceTest extends TestCase
         $this->assertSame($dummy->entry, $dummy->toEntry());
     }
 
-    public function test__toEntry__withRetTypeError()
+    public function test__toEntry__withRetTypeError() : void
     {
         $dummy = $this->createDummyInstance();
         $dummy->entry = null;
@@ -102,7 +102,7 @@ final class ResultEntryInterfaceTest extends TestCase
         $dummy->toEntry();
     }
 
-    public function test__getAttributeIterator()
+    public function test__getAttributeIterator() : void
     {
         $dummy = $this->createDummyInstance();
 
@@ -110,7 +110,7 @@ final class ResultEntryInterfaceTest extends TestCase
         $this->assertSame($dummy->attributeIterator, $dummy->getAttributeIterator());
     }
 
-    public function test__getAttributeIterator__withRetTypeError()
+    public function test__getAttributeIterator__withRetTypeError() : void
     {
         $dummy = $this->createDummyInstance();
         $dummy->attributeIterator = null;

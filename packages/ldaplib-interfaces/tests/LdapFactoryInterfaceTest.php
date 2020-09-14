@@ -30,19 +30,19 @@ final class LdapFactoryInterfaceTest extends TestCase
         };
     }
 
-    public function test__dummyImplementation()
+    public function test__dummyImplementation() : void
     {
         $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(LdapFactoryInterface::class, $dummy);
     }
 
-    public function test__objectPropertyGettersMap()
+    public function test__objectPropertyGettersMap() : void
     {
         $expect = [];
         $this->assertObjectPropertyGetters($expect, LdapFactoryInterface::class);
     }
 
-    public function test__createLdapInterface()
+    public function test__createLdapInterface() : void
     {
         $dummy = $this->createDummyInstance();
 
@@ -50,7 +50,7 @@ final class LdapFactoryInterfaceTest extends TestCase
         $this->assertSame($dummy->createLdapInterface, $dummy->createLdapInterface());
     }
 
-    public function test__createLdapInterface__withRetTypeError()
+    public function test__createLdapInterface__withRetTypeError() : void
     {
         $dummy = $this->createDummyInstance();
         $dummy->createLdapInterface = null;

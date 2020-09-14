@@ -28,7 +28,7 @@ use Korowai\Testing\Ldiflib\TestCase;
  */
 final class ParserStateTest extends TestCase
 {
-    public function test__implements__ParserStateInterface()
+    public function test__implements__ParserStateInterface() : void
     {
         $this->assertImplementsInterface(ParserStateInterface::class, ParserState::class);
     }
@@ -53,7 +53,7 @@ final class ParserStateTest extends TestCase
     /**
      * @dataProvider constructCases
      */
-    public function test__construct(...$args)
+    public function test__construct(...$args) : void
     {
         $state = new ParserState(...$args);
 
@@ -86,7 +86,7 @@ final class ParserStateTest extends TestCase
         return new ParserState($cursor, array_slice($args, 1));
     }
 
-    public function test__cursor()
+    public function test__cursor() : void
     {
         $state = $this->createParserState();
         $cursor = $this->getMockBuilder(CursorInterface::class)->getMock();
@@ -95,7 +95,7 @@ final class ParserStateTest extends TestCase
         $this->assertSame($cursor, $state->getCursor());
     }
 
-    public function test__errors()
+    public function test__errors() : void
     {
         $state = $this->createParserState();
 
@@ -107,7 +107,7 @@ final class ParserStateTest extends TestCase
         $this->assertFalse($state->isOk());
     }
 
-    public function test__records()
+    public function test__records() : void
     {
         $state = $this->createParserState();
 
@@ -117,7 +117,7 @@ final class ParserStateTest extends TestCase
         $this->assertSame(['R'], $state->getRecords());
     }
 
-    public function test__appendError()
+    public function test__appendError() : void
     {
         $state = $this->createParserState();
         // Due to a bug in phpunit we can't mock interfaces that extend \Throwable.
@@ -128,7 +128,7 @@ final class ParserStateTest extends TestCase
         $this->assertSame([$error], $state->getErrors());
     }
 
-    public function test__versionSpec()
+    public function test__versionSpec() : void
     {
         $state = $this->createParserState();
         $version = $this->getMockBuilder(VersionSpecInterface::class)->getMock();
@@ -151,7 +151,7 @@ final class ParserStateTest extends TestCase
     /**
      * @dataProvider errorHere__cases
      */
-    public function test__errorHere(string $message, ...$tail)
+    public function test__errorHere(string $message, ...$tail) : void
     {
         $state = $this->createParserState();
 
@@ -199,7 +199,7 @@ final class ParserStateTest extends TestCase
     /**
      * @dataProvider errorAt__cases
      */
-    public function test__errorAt(int $offset, string $message, ...$tail)
+    public function test__errorAt(int $offset, string $message, ...$tail) : void
     {
         $state = $this->createParserState();
 
@@ -234,7 +234,7 @@ final class ParserStateTest extends TestCase
         }
     }
 
-    public function test__appendRecord()
+    public function test__appendRecord() : void
     {
         $state = $this->createParserState();
         $record = $this->getMockBuilder(RecordInterface::class)->getMock();

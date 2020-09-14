@@ -24,7 +24,7 @@ use Korowai\Testing\Ldiflib\TestCase;
  */
 final class AbstractRuleTest extends TestCase
 {
-    public function test__implements__RuleInterface()
+    public function test__implements__RuleInterface() : void
     {
         $this->assertImplementsInterface(RuleInterface::class, AbstractRule::class);
     }
@@ -211,7 +211,7 @@ final class AbstractRuleTest extends TestCase
     /**
      * @dataProvider repeat__cases
      */
-    public function test__repeat(RuleInterface $rule, array $source, array $args, array $expect)
+    public function test__repeat(RuleInterface $rule, array $source, array $args, array $expect) : void
     {
         $state = $this->getParserStateFromSource(...$source);
         $result = $rule->repeat($state, $value, ...$args);

@@ -26,18 +26,18 @@ use Korowai\Lib\Context\ContextFactoryStack;
  */
 final class AbstractManagedContextFactoryTest extends TestCase
 {
-    public function test__implements__ContextFactoryInterface()
+    public function test__implements__ContextFactoryInterface() : void
     {
         $this->assertImplementsInterface(ContextFactoryInterface::class, AbstractManagedContextFactory::class);
     }
 
-    public function test__implements__ContextManagerInterface()
+    public function test__implements__ContextManagerInterface() : void
     {
         $interfaces = class_implements(AbstractManagedContextFactory::class);
         $this->assertContains(ContextManagerInterface::class, $interfaces);
     }
 
-    public function test__enterContext_and_exitContext()
+    public function test__enterContext_and_exitContext() : void
     {
         $factory = $this->getMockBuilder(AbstractManagedContextFactory::class)
                         ->getMockForAbstractClass();

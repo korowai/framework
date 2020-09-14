@@ -33,7 +33,7 @@ final class FunctionsTest extends TestCase
     /**
      * @covers \Korowai\Lib\Error\emptyErrorHandler
      */
-    public function test__emptyErrorHandler()
+    public function test__emptyErrorHandler() : void
     {
         $this->assertInstanceof(EmptyErrorHandler::class, emptyErrorHandler());
     }
@@ -41,7 +41,7 @@ final class FunctionsTest extends TestCase
     /**
      * @covers \Korowai\Lib\Error\errorHandler
      */
-    public function test__errorHandler__withCallable()
+    public function test__errorHandler__withCallable() : void
     {
         $func = function () {
         };
@@ -54,7 +54,7 @@ final class FunctionsTest extends TestCase
     /**
      * @covers \Korowai\Lib\Error\errorHandler
      */
-    public function test__errorHandler__withCallableAndErrorTypes()
+    public function test__errorHandler__withCallableAndErrorTypes() : void
     {
         $func = function () {
         };
@@ -67,7 +67,7 @@ final class FunctionsTest extends TestCase
     /**
      * @covers \Korowai\Lib\Error\exceptionErrorHandler
      */
-    public function test__exceptionErrorHandler__withoutArgs()
+    public function test__exceptionErrorHandler__withoutArgs() : void
     {
         $handler = exceptionErrorHandler();
         $this->assertInstanceof(ExceptionErrorHandler::class, $handler);
@@ -94,7 +94,7 @@ final class FunctionsTest extends TestCase
     /**
      * @covers \Korowai\Lib\Error\exceptionErrorHandler
      */
-    public function test__exceptionErrorHandler__withClass()
+    public function test__exceptionErrorHandler__withClass() : void
     {
         $handler = exceptionErrorHandler(ExceptionA98DB973::class);
         $this->assertInstanceof(ExceptionErrorHandler::class, $handler);
@@ -121,7 +121,7 @@ final class FunctionsTest extends TestCase
     /**
      * @covers \Korowai\Lib\Error\exceptionErrorHandler
      */
-    public function test__exceptionErrorHandler__withClassAndErrorTypes()
+    public function test__exceptionErrorHandler__withClassAndErrorTypes() : void
     {
         $handler = exceptionErrorHandler(ExceptionA98DB973::class, E_USER_NOTICE);
         $this->assertInstanceof(ExceptionErrorHandler::class, $handler);
@@ -148,7 +148,7 @@ final class FunctionsTest extends TestCase
     /**
      * @covers \Korowai\Lib\Error\exceptionErrorHandler
      */
-    public function test__exceptionErrorHandler__withCallable()
+    public function test__exceptionErrorHandler__withCallable() : void
     {
         $func = function (int $severity, string $message, string $file, int $line) {
             return new ExceptionA98DB973($message, 0, $severity, $file, $line);
@@ -174,7 +174,7 @@ final class FunctionsTest extends TestCase
     /**
      * @covers \Korowai\Lib\Error\exceptionErrorHandler
      */
-    public function test__exceptionErrorHandler__withCallableAndErrorTypes()
+    public function test__exceptionErrorHandler__withCallableAndErrorTypes() : void
     {
         $func = function (int $severity, string $message, string $file, int $line) {
             return new ExceptionA98DB973($message, 0, $severity, $file, $line);
@@ -200,7 +200,7 @@ final class FunctionsTest extends TestCase
     /**
      * @covers \Korowai\Lib\Error\callerErrorHandler
      */
-    public function test__callerErrorHandler__withCallable()
+    public function test__callerErrorHandler__withCallable() : void
     {
         $func = function () {
         };
@@ -218,7 +218,7 @@ final class FunctionsTest extends TestCase
     /**
      * @covers \Korowai\Lib\Error\callerErrorHandler
      */
-    public function test__callerErrorHandler__withCallableAndDistance()
+    public function test__callerErrorHandler__withCallableAndDistance() : void
     {
         $func = function () {
         };
@@ -236,7 +236,7 @@ final class FunctionsTest extends TestCase
     /**
      * @covers \Korowai\Lib\Error\callerErrorHandler
      */
-    public function test__callerErrorHandler__withCallableDistanceAndErrorTypes()
+    public function test__callerErrorHandler__withCallableDistanceAndErrorTypes() : void
     {
         $func = function () {
         };
@@ -254,7 +254,7 @@ final class FunctionsTest extends TestCase
     /**
      * @covers \Korowai\Lib\Error\callerExceptionErrorHandler
      */
-    public function test__callerExceptionErrorHandler__withCallable()
+    public function test__callerExceptionErrorHandler__withCallable() : void
     {
         $generator = function () {
         };
@@ -272,7 +272,7 @@ final class FunctionsTest extends TestCase
     /**
      * @covers \Korowai\Lib\Error\callerExceptionErrorHandler
      */
-    public function test__callerExceptionErrorHandler__withCallableAndDistance()
+    public function test__callerExceptionErrorHandler__withCallableAndDistance() : void
     {
         $generator = function () {
         };
@@ -290,7 +290,7 @@ final class FunctionsTest extends TestCase
     /**
      * @covers \Korowai\Lib\Error\callerExceptionErrorHandler
      */
-    public function test__callerExceptionErrorHandler__withCallableAndErrorTypes()
+    public function test__callerExceptionErrorHandler__withCallableAndErrorTypes() : void
     {
         $generator = function () {
         };
@@ -308,7 +308,7 @@ final class FunctionsTest extends TestCase
     /**
      * @covers \Korowai\Lib\Error\callerExceptionErrorHandler
      */
-    public function test__callerExceptionErrorHandler__withClass()
+    public function test__callerExceptionErrorHandler__withClass() : void
     {
         $caller_line = __line__ + 1;
         $handler = callerExceptionErrorHandler(ExceptionA98DB973::class);
@@ -332,7 +332,7 @@ final class FunctionsTest extends TestCase
     /**
      * @covers \Korowai\Lib\Error\callerExceptionErrorHandler
      */
-    public function test__callerExceptionErrorHandler__withClassAndDistance()
+    public function test__callerExceptionErrorHandler__withClassAndDistance() : void
     {
         $caller_line = __line__ + 1;
         $handler = callerExceptionErrorHandler(ExceptionA98DB973::class, 0);
@@ -356,7 +356,7 @@ final class FunctionsTest extends TestCase
     /**
      * @covers \Korowai\Lib\Error\callerExceptionErrorHandler
      */
-    public function test__callerExceptionErrorHandler__withClassDistanceAndErrorTypes()
+    public function test__callerExceptionErrorHandler__withClassDistanceAndErrorTypes() : void
     {
         $caller_line = __line__ + 1;
         $handler = callerExceptionErrorHandler(\ErrorException::class, 0, E_USER_NOTICE);
@@ -382,7 +382,7 @@ final class FunctionsTest extends TestCase
     /**
      * @covers \Korowai\Lib\Error\callerExceptionErrorHandler
      */
-    public function test__callerExceptionErrorHandler__withNullAndDistance()
+    public function test__callerExceptionErrorHandler__withNullAndDistance() : void
     {
         $caller_line = __line__ + 1;
         $handler = callerExceptionErrorHandler(null, 0);

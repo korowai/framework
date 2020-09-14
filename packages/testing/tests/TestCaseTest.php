@@ -25,32 +25,32 @@ use Korowai\Testing\Traits\PregUtilsTrait;
  */
 final class TestCaseTest extends TestCase
 {
-    public function test__uses__ClassAssertionsTrait()
+    public function test__uses__ClassAssertionsTrait() : void
     {
         $this->assertUsesTrait(ClassAssertionsTrait::class, TestCase::class);
     }
 
-    public function test__uses__ObjectPropertiesAssertionsTrait()
+    public function test__uses__ObjectPropertiesAssertionsTrait() : void
     {
         $this->assertUsesTrait(ObjectPropertiesAssertionsTrait::class, TestCase::class);
     }
 
-    public function test__uses__PregAssertionsTrait()
+    public function test__uses__PregAssertionsTrait() : void
     {
         $this->assertUsesTrait(PregAssertionsTrait::class, TestCase::class);
     }
 
-    public function test__uses__ObjectPropertiesUtilsTrait()
+    public function test__uses__ObjectPropertiesUtilsTrait() : void
     {
         $this->assertUsesTrait(ObjectPropertiesUtilsTrait::class, TestCase::class);
     }
 
-    public function test__uses__PregUtilsTrait()
+    public function test__uses__PregUtilsTrait() : void
     {
         $this->assertUsesTrait(PregUtilsTrait::class, TestCase::class);
     }
 
-    public function test__objectPropertyGettersMap()
+    public function test__objectPropertyGettersMap() : void
     {
         $expect = [
             \Iterator::class => [

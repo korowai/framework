@@ -29,19 +29,19 @@ final class ExecutorInterfaceTest extends TestCase
         };
     }
 
-    public function test__dummyImplementation()
+    public function test__dummyImplementation() : void
     {
         $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(ExecutorInterface::class, $dummy);
     }
 
-    public function test__objectPropertyGettersMap()
+    public function test__objectPropertyGettersMap() : void
     {
         $expect = [];
         $this->assertObjectPropertyGetters($expect, ExecutorInterface::class);
     }
 
-    public function test__invoke()
+    public function test__invoke() : void
     {
         $dummy = $this->createDummyInstance();
 
@@ -50,7 +50,7 @@ final class ExecutorInterfaceTest extends TestCase
         }));
     }
 
-    public function test__invoke__withTypeError()
+    public function test__invoke__withTypeError() : void
     {
         $dummy = $this->createDummyInstance();
 

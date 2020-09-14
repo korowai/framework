@@ -31,12 +31,12 @@ final class DecoratesSourceLocationInterfaceTest extends TestCase
         };
     }
 
-    public function test__uses__ExposesSourceLocationInterface()
+    public function test__uses__ExposesSourceLocationInterface() : void
     {
         $this->assertUsesTrait(ExposesSourceLocationInterface::class, DecoratesSourceLocationInterface::class);
     }
 
-    public function test__sourceLocation()
+    public function test__sourceLocation() : void
     {
         $location = $this->getMockBuilder(SourceLocationInterface::class)
                          ->getMockForAbstractClass();

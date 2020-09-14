@@ -26,7 +26,7 @@ use Korowai\Testing\Ldiflib\TestCase;
  */
 final class AbstractLdifRecordRuleTest extends TestCase
 {
-    public function test__extends__AbstractRule()
+    public function test__extends__AbstractRule() : void
     {
         $this->assertExtendsClass(AbstractRule::class, AbstractLdifRecordRule::class);
     }
@@ -61,7 +61,7 @@ final class AbstractLdifRecordRuleTest extends TestCase
     /**
      * @dataProvider construct__cases
      */
-    public function test__construct(array $args, array $expect)
+    public function test__construct(array $args, array $expect) : void
     {
         $rule = $this->getMockBuilder(AbstractLdifRecordRule::class)
                      ->setConstructorArgs($args)
@@ -72,7 +72,7 @@ final class AbstractLdifRecordRuleTest extends TestCase
         $this->assertHasPropertiesSameAs($expect, $rule);
     }
 
-    public function test__setDnSpecRule()
+    public function test__setDnSpecRule() : void
     {
         $rule = $this->getMockBuilder(AbstractLdifRecordRule::class)
                      ->getMockForAbstractClass();
@@ -82,7 +82,7 @@ final class AbstractLdifRecordRuleTest extends TestCase
         $this->assertSame($dnSpecRule, $rule->getDnSpecRule());
     }
 
-    public function test__setSepRule()
+    public function test__setSepRule() : void
     {
         $rule = $this->getMockBuilder(AbstractLdifRecordRule::class)
                      ->getMockForAbstractClass();
@@ -92,7 +92,7 @@ final class AbstractLdifRecordRuleTest extends TestCase
         $this->assertSame($sepRule, $rule->getSepRule());
     }
 
-    public function test__setAttrValSpecRule()
+    public function test__setAttrValSpecRule() : void
     {
         $rule = $this->getMockBuilder(AbstractLdifRecordRule::class)
                      ->getMockForAbstractClass();

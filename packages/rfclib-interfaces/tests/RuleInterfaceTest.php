@@ -29,13 +29,13 @@ final class RuleInterfaceTest extends TestCase
         };
     }
 
-    public function test__dummyImplementation()
+    public function test__dummyImplementation() : void
     {
         $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(RuleInterface::class, $dummy);
     }
 
-    public function test__objectPropertyGettersMap()
+    public function test__objectPropertyGettersMap() : void
     {
         $expect = [
             'toString'      => '__toString',
@@ -47,7 +47,7 @@ final class RuleInterfaceTest extends TestCase
         $this->assertObjectPropertyGetters($expect, RuleInterface::class);
     }
 
-    public function test__toString()
+    public function test__toString() : void
     {
         $dummy = $this->createDummyInstance();
 
@@ -55,7 +55,7 @@ final class RuleInterfaceTest extends TestCase
         $this->assertSame($dummy->toString, $dummy->__toString());
     }
 
-    public function test__toString__withRetTypeError()
+    public function test__toString__withRetTypeError() : void
     {
         $dummy = $this->createDummyInstance();
         $dummy->toString = null;
@@ -65,7 +65,7 @@ final class RuleInterfaceTest extends TestCase
         $dummy->__toString();
     }
 
-    public function test__regexp()
+    public function test__regexp() : void
     {
         $dummy = $this->createDummyInstance();
 
@@ -73,7 +73,7 @@ final class RuleInterfaceTest extends TestCase
         $this->assertSame($dummy->regexp, $dummy->regexp());
     }
 
-    public function test__regexp__withRetTypeError()
+    public function test__regexp__withRetTypeError() : void
     {
         $dummy = $this->createDummyInstance();
         $dummy->regexp = null;
@@ -83,7 +83,7 @@ final class RuleInterfaceTest extends TestCase
         $dummy->regexp();
     }
 
-    public function test__captures()
+    public function test__captures() : void
     {
         $dummy = $this->createDummyInstance();
 
@@ -91,7 +91,7 @@ final class RuleInterfaceTest extends TestCase
         $this->assertSame($dummy->captures, $dummy->captures());
     }
 
-    public function test__captures__withRetTypeError()
+    public function test__captures__withRetTypeError() : void
     {
         $dummy = $this->createDummyInstance();
         $dummy->captures = null;
@@ -101,7 +101,7 @@ final class RuleInterfaceTest extends TestCase
         $dummy->captures();
     }
 
-    public function test__errorCaptures()
+    public function test__errorCaptures() : void
     {
         $dummy = $this->createDummyInstance();
 
@@ -109,7 +109,7 @@ final class RuleInterfaceTest extends TestCase
         $this->assertSame($dummy->errorCaptures, $dummy->errorCaptures());
     }
 
-    public function test__errorCaptures__withRetTypeError()
+    public function test__errorCaptures__withRetTypeError() : void
     {
         $dummy = $this->createDummyInstance();
         $dummy->errorCaptures = null;
@@ -119,7 +119,7 @@ final class RuleInterfaceTest extends TestCase
         $dummy->errorCaptures();
     }
 
-    public function test__valueCaptures()
+    public function test__valueCaptures() : void
     {
         $dummy = $this->createDummyInstance();
 
@@ -127,7 +127,7 @@ final class RuleInterfaceTest extends TestCase
         $this->assertSame($dummy->valueCaptures, $dummy->valueCaptures());
     }
 
-    public function test__valueCaptures__withRetTypeError()
+    public function test__valueCaptures__withRetTypeError() : void
     {
         $dummy = $this->createDummyInstance();
         $dummy->valueCaptures = null;
@@ -137,7 +137,7 @@ final class RuleInterfaceTest extends TestCase
         $dummy->valueCaptures();
     }
 
-    public function test__findCapturedErrors()
+    public function test__findCapturedErrors() : void
     {
         $dummy = $this->createDummyInstance();
 
@@ -145,7 +145,7 @@ final class RuleInterfaceTest extends TestCase
         $this->assertSame($dummy->findCapturedErrors, $dummy->findCapturedErrors([]));
     }
 
-    public function test__findCapturedErrors__withArgTypeError()
+    public function test__findCapturedErrors__withArgTypeError() : void
     {
         $dummy = $this->createDummyInstance();
         $dummy->findCapturedErrors = [];
@@ -155,7 +155,7 @@ final class RuleInterfaceTest extends TestCase
         $dummy->findCapturedErrors(null);
     }
 
-    public function test__findCapturedErrors__withRetTypeError()
+    public function test__findCapturedErrors__withRetTypeError() : void
     {
         $dummy = $this->createDummyInstance();
         $dummy->findCapturedErrors = null;
@@ -165,7 +165,7 @@ final class RuleInterfaceTest extends TestCase
         $dummy->findCapturedErrors([]);
     }
 
-    public function test__findCapturedValues__withArgTypeError()
+    public function test__findCapturedValues__withArgTypeError() : void
     {
         $dummy = $this->createDummyInstance();
         $dummy->findCapturedValues = [];
@@ -175,7 +175,7 @@ final class RuleInterfaceTest extends TestCase
         $dummy->findCapturedValues(null);
     }
 
-    public function test__findCapturedValues__withRetTypeError()
+    public function test__findCapturedValues__withRetTypeError() : void
     {
         $dummy = $this->createDummyInstance();
         $dummy->findCapturedValues = null;
@@ -185,7 +185,7 @@ final class RuleInterfaceTest extends TestCase
         $dummy->findCapturedValues([]);
     }
 
-    public function test__getErrorMessage()
+    public function test__getErrorMessage() : void
     {
         $dummy = $this->createDummyInstance();
 
@@ -194,7 +194,7 @@ final class RuleInterfaceTest extends TestCase
         $this->assertSame($dummy->errorMessage, $dummy->getErrorMessage(''));
     }
 
-    public function test__getErrorMessage__withArgTypeError()
+    public function test__getErrorMessage__withArgTypeError() : void
     {
         $dummy = $this->createDummyInstance();
         $dummy->errorMessage = '';
@@ -204,7 +204,7 @@ final class RuleInterfaceTest extends TestCase
         $dummy->getErrorMessage(null);
     }
 
-    public function test__getErrorMessage__withRetTypeError()
+    public function test__getErrorMessage__withRetTypeError() : void
     {
         $dummy = $this->createDummyInstance();
         $dummy->errorMessage = null;

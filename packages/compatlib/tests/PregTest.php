@@ -23,7 +23,7 @@ use Korowai\Lib\Compat\Preg;
  */
 final class PregTest extends TestCase
 {
-    public function test__getPregErrorConst()
+    public function test__getPregErrorConst() : void
     {
         $this->assertSame('PREG_NO_ERROR', Preg::getPregErrorConst(PREG_NO_ERROR));
         $this->assertSame('PREG_INTERNAL_ERROR', Preg::getPregErrorConst(PREG_INTERNAL_ERROR));
@@ -35,7 +35,7 @@ final class PregTest extends TestCase
         $this->assertSame('Error 23456', Preg::getPregErrorConst(23456));
     }
 
-    public function test__getPregErrorMessage()
+    public function test__getPregErrorMessage() : void
     {
         $this->assertSame('No error', Preg::getPregErrorMessage(PREG_NO_ERROR));
         $this->assertSame('Internal error', Preg::getPregErrorMessage(PREG_INTERNAL_ERROR));
@@ -46,13 +46,13 @@ final class PregTest extends TestCase
         $this->assertSame('Failed due to limited JIT stack space', Preg::getPregErrorMessage(PREG_JIT_STACKLIMIT_ERROR));
     }
 
-    public function test__callPregFunc()
+    public function test__callPregFunc() : void
     {
         $this->assertSame(1, Preg::callPregFunc('\preg_match', ['/bar/', 'foo bar baz']));
         $this->assertSame(0, Preg::callPregFunc('\preg_match', ['/bob/', 'foo bar baz']));
     }
 
-    public function test__callPregFunc__triggeredError()
+    public function test__callPregFunc__triggeredError() : void
     {
         $this->expectException(PregException::class);
         $this->expectExceptionMessage("preg_match(): No ending delimiter '*' found");
@@ -68,7 +68,7 @@ final class PregTest extends TestCase
         }
     }
 
-    public function test__callPregFunc__returnedError()
+    public function test__callPregFunc__returnedError() : void
     {
         $this->expectException(PregException::class);
         $this->expectExceptionMessage('preg_match(): Backtrack limit exhaused');

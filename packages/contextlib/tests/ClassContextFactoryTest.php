@@ -57,18 +57,18 @@ final class ContextJG8MG9JQ extends BaseContextOLESLFOV
  */
 final class ClassContextFactoryTest extends TestCase
 {
-    public function test__extends__AbstractManagedContextFactory()
+    public function test__extends__AbstractManagedContextFactory() : void
     {
         $this->assertExtendsClass(AbstractManagedContextFactory::class, ClassContextFactory::class);
     }
 
-    public function test__construct__withoutArgs()
+    public function test__construct__withoutArgs() : void
     {
         $factory = new ClassContextFactory();
         $this->assertEquals([], $factory->getRegistry());
     }
 
-    public function test__construct__withSomeWrappers()
+    public function test__construct__withSomeWrappers() : void
     {
         $wrappers = [
             ClassYVO2VPY5::class => ContextYVO2VPY5::class,
@@ -95,7 +95,7 @@ final class ClassContextFactoryTest extends TestCase
         $this->assertSame($obj2, $ctx2->wrapped);
     }
 
-    public function test__register()
+    public function test__register() : void
     {
         $factory = new ClassContextFactory();
         $factory->register(ClassYVO2VPY5::class, ContextYVO2VPY5::class);
@@ -120,7 +120,7 @@ final class ClassContextFactoryTest extends TestCase
         $this->assertSame($obj2, $ctx2->wrapped);
     }
 
-    public function test__register__withContextManagerNotAClass()
+    public function test__register__withContextManagerNotAClass() : void
     {
         $factory = new ClassContextFactory();
 
@@ -132,7 +132,7 @@ final class ClassContextFactoryTest extends TestCase
         $factory->register(ClassJG8MG9JQ::class, 'In-Ex-Is-Tent');
     }
 
-    public function test__register__withContextManagerNotAString()
+    public function test__register__withContextManagerNotAString() : void
     {
         $factory = new ClassContextFactory();
 
@@ -145,7 +145,7 @@ final class ClassContextFactoryTest extends TestCase
         $factory->register(ClassJG8MG9JQ::class, 123);
     }
 
-    public function test__remove()
+    public function test__remove() : void
     {
         $wrappers = [
             ClassYVO2VPY5::class => ContextYVO2VPY5::class,
@@ -176,7 +176,7 @@ final class ClassContextFactoryTest extends TestCase
         $this->assertEquals(0, count($registry));
     }
 
-    public function test__getContextManager()
+    public function test__getContextManager() : void
     {
         $wrappers = [
             ClassYVO2VPY5::class => ContextYVO2VPY5::class,
@@ -199,7 +199,7 @@ final class ClassContextFactoryTest extends TestCase
         $this->assertSame($obj2, $ctx2->wrapped);
     }
 
-    public function test__getContextManager__withNonObject()
+    public function test__getContextManager__withNonObject() : void
     {
         $wrappers = [
             ClassYVO2VPY5::class => ContextYVO2VPY5::class,
@@ -213,7 +213,7 @@ final class ClassContextFactoryTest extends TestCase
         $this->assertNull($factory->getContextManager('foo'));
     }
 
-    public function test__getContextManager__withUnregisteredObject()
+    public function test__getContextManager__withUnregisteredObject() : void
     {
         $wrappers = [
             ClassYVO2VPY5::class => ContextYVO2VPY5::class,

@@ -24,12 +24,12 @@ use Korowai\Testing\Ldiflib\TestCase;
  */
 final class InputTest extends TestCase
 {
-    public function test__implements__InputInterface()
+    public function test__implements__InputInterface() : void
     {
         $this->assertImplementsInterface(InputInterface::class, Input::class);
     }
 
-    public function test__construct()
+    public function test__construct() : void
     {
         $im = $this->createMock(IndexMap::class);
         $input = new Input("source string", "the string", $im);
@@ -40,7 +40,7 @@ final class InputTest extends TestCase
         $this->assertSame('-', $input->getSourceFileName());
     }
 
-    public function test__construct__withSourceFileName()
+    public function test__construct__withSourceFileName() : void
     {
         $im = $this->createMock(IndexMap::class);
         $input = new Input("source string", "the string", $im, 'foo.ldif');
@@ -51,7 +51,7 @@ final class InputTest extends TestCase
         $this->assertSame('foo.ldif', $input->getSourceFileName());
     }
 
-    public function test__init()
+    public function test__init() : void
     {
         $im1 = $this->createMock(IndexMap::class);
         $input = new Input("", "", $im1);
@@ -65,7 +65,7 @@ final class InputTest extends TestCase
         $this->assertSame('foo.ldif', $input->getSourceFileName());
     }
 
-    public function test__toString()
+    public function test__toString() : void
     {
         $im = $this->createMock(IndexMap::class);
         $input = new Input("source string", "the string", $im, 'foo.ldif');
@@ -73,7 +73,7 @@ final class InputTest extends TestCase
         $this->assertSame("the string", (string)$input);
     }
 
-    public function test__getSourceOffset()
+    public function test__getSourceOffset() : void
     {
         $im = $this->createMock(IndexMap::class);
         $im->expects($this->once())
@@ -126,7 +126,7 @@ final class InputTest extends TestCase
     /**
      * @dataProvider sourceCharOffsetCases
      */
-    public function test__getSourceCharOffset(Input $input, array $cases)
+    public function test__getSourceCharOffset(Input $input, array $cases) : void
     {
         foreach ($cases as $case) {
             [$args, $expect] = $case;
@@ -170,7 +170,7 @@ final class InputTest extends TestCase
     /**
      * @dataProvider sourceLinesCases
      */
-    public function test__sourceLines(Input $input, array $expLines, array $expLinesMap)
+    public function test__sourceLines(Input $input, array $expLines, array $expLinesMap) : void
     {
         $this->assertSame($expLines, $input->getSourceLines());
         $this->assertSame(count($expLines), $input->getSourceLinesCount());
@@ -208,7 +208,7 @@ final class InputTest extends TestCase
     /**
      * @dataProvider sourceLineCases
      */
-    public function test__getSourceLine(Input $input, array $cases)
+    public function test__getSourceLine(Input $input, array $cases) : void
     {
         foreach ($cases as $i => $expect) {
             $this->assertSame($expect, $input->getSourceLine($i));
@@ -241,7 +241,7 @@ final class InputTest extends TestCase
     /**
      * @dataProvider sourceLineIndexCases
      */
-    public function test__getSourceLineIndex(Input $input, array $cases)
+    public function test__getSourceLineIndex(Input $input, array $cases) : void
     {
         foreach ($cases as $i => $j) {
             $this->assertSame($j, $input->getSourceLineIndex($i));
@@ -305,7 +305,7 @@ final class InputTest extends TestCase
     /**
      * @dataProvider sourceLineAndOffsetCases
      */
-    public function test__getSourceLineAndOffset(Input $input, array $cases)
+    public function test__getSourceLineAndOffset(Input $input, array $cases) : void
     {
         foreach ($cases as $i => $expect) {
             [$expLine, $expOffset] = $expect;
@@ -315,7 +315,7 @@ final class InputTest extends TestCase
         }
     }
 
-    public function test__getSourceLineAndOffset__withEmptyMap()
+    public function test__getSourceLineAndOffset__withEmptyMap() : void
     {
         $input = new class("", "", new IndexMap([])) extends Input {
             public function getSourceLinesMap() : IndexMap
@@ -386,7 +386,7 @@ final class InputTest extends TestCase
     /**
      * @dataProvider sourceLineAndCharOffsetCases
      */
-    public function test__getSourceLineAndCharOffset(Input $input, array $cases)
+    public function test__getSourceLineAndCharOffset(Input $input, array $cases) : void
     {
         foreach ($cases as $i => $expect) {
             [$expLine, $expOffset] = $expect;
@@ -396,7 +396,7 @@ final class InputTest extends TestCase
         }
     }
 
-    public function test__sourceFileName()
+    public function test__sourceFileName() : void
     {
         $im = new IndexMap([]);
         $input = new Input('', '', $im);

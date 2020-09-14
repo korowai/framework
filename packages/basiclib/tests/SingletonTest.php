@@ -47,7 +47,7 @@ final class SingletonTest extends TestCase
         return SingletonC91F82BJ::class;
     }
 
-    public function test__initializeSingleton()
+    public function test__initializeSingleton() : void
     {
         $obj = Singleton76YO7MV5::getInstance();
         $this->assertEquals('initialized', $obj->value);

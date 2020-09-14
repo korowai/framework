@@ -28,13 +28,13 @@ final class PhpIteratorTraitTest extends TestCase
         };
     }
 
-    public function test__dummyImplementation()
+    public function test__dummyImplementation() : void
     {
         $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(\Iterator::class, $dummy);
     }
 
-    public function test__objectPropertyGettersMap()
+    public function test__objectPropertyGettersMap() : void
     {
         $expect = [
             'current'   => 'current',
@@ -44,7 +44,7 @@ final class PhpIteratorTraitTest extends TestCase
         $this->assertObjectPropertyGetters($expect, \Iterator::class);
     }
 
-    public function test__current()
+    public function test__current() : void
     {
         $dummy = $this->createDummyInstance();
 
@@ -58,7 +58,7 @@ final class PhpIteratorTraitTest extends TestCase
         $this->assertSame($dummy->current, $dummy->current());
     }
 
-    public function test__key()
+    public function test__key() : void
     {
         $dummy = $this->createDummyInstance();
 
@@ -72,7 +72,7 @@ final class PhpIteratorTraitTest extends TestCase
         $this->assertSame($dummy->key, $dummy->key());
     }
 
-    public function test__next()
+    public function test__next() : void
     {
         $dummy = $this->createDummyInstance();
 
@@ -86,7 +86,7 @@ final class PhpIteratorTraitTest extends TestCase
         $this->assertSame($dummy->next, $dummy->next());
     }
 
-    public function test__rewind()
+    public function test__rewind() : void
     {
         $dummy = $this->createDummyInstance();
 
@@ -100,7 +100,7 @@ final class PhpIteratorTraitTest extends TestCase
         $this->assertSame($dummy->rewind, $dummy->rewind());
     }
 
-    public function test__valid()
+    public function test__valid() : void
     {
         $dummy = $this->createDummyInstance();
 

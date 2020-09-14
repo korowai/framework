@@ -25,12 +25,12 @@ use Korowai\Testing\Ldiflib\TestCase;
  */
 final class ModSpecTest extends TestCase
 {
-    public function test__implements__ModSpecInterface()
+    public function test__implements__ModSpecInterface() : void
     {
         $this->assertImplementsInterface(ModSpecInterface::class, ModSpec::class);
     }
 
-    public function test__uses__HasAttrValSpecs()
+    public function test__uses__HasAttrValSpecs() : void
     {
         $this->assertUsesTrait(HasAttrValSpecs::class, ModSpec::class);
     }
@@ -78,7 +78,7 @@ final class ModSpecTest extends TestCase
     /**
      * @dataProvider construct__cases
      */
-    public function test__construct(array $args, array $expect)
+    public function test__construct(array $args, array $expect) : void
     {
         $record = new ModSpec(...$args);
         $this->assertHasPropertiesSameAs($expect, $record);
@@ -96,7 +96,7 @@ final class ModSpecTest extends TestCase
     /**
      * @dataProvider modType__cases
      */
-    public function test__setModType(string $modType)
+    public function test__setModType(string $modType) : void
     {
         $record = new ModSpec("add", "cn");
 
@@ -104,7 +104,7 @@ final class ModSpecTest extends TestCase
         $this->assertSame($modType, $record->getModType());
     }
 
-    public function test__setModType__withInvalidArg()
+    public function test__setModType__withInvalidArg() : void
     {
         $record = new ModSpec("add", "cn");
 
@@ -116,7 +116,7 @@ final class ModSpecTest extends TestCase
     }
 
 
-    public function test__setAttribute()
+    public function test__setAttribute() : void
     {
         $record = new ModSpec("add", "cn");
 

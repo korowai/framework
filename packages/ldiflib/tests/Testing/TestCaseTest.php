@@ -22,17 +22,17 @@ use Korowai\Testing\Ldiflib\Traits\ParserTestHelpers;
  */
 final class TestCaseTest extends TestCase
 {
-    public function test__extends__TestCase()
+    public function test__extends__TestCase() : void
     {
         $this->assertExtendsClass(BaseTestCase::class, parent::class);
     }
 
-    public function test__uses__ParserTestHelpers()
+    public function test__uses__ParserTestHelpers() : void
     {
         $this->assertUsesTrait(ParserTestHelpers::class, parent::class);
     }
 
-    public function test__objectPropertyGettersMap()
+    public function test__objectPropertyGettersMap() : void
     {
         $expected = array_merge_recursive(
             \Korowai\Testing\ObjectPropertyGettersMap::getObjectPropertyGettersMap(),

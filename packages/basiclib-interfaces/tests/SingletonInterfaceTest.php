@@ -29,13 +29,13 @@ final class SingletonInterfaceTest extends TestCase
         });
     }
 
-    public function test__dummyImplementation()
+    public function test__dummyImplementation() : void
     {
         $dummy = $this->createDummyClass();
         $this->assertImplementsInterface(SingletonInterface::class, $dummy);
     }
 
-    public function test__objectPropertyGettersMap()
+    public function test__objectPropertyGettersMap() : void
     {
         $expect = [
             'instance' => 'getInstance'
@@ -43,7 +43,7 @@ final class SingletonInterfaceTest extends TestCase
         $this->assertObjectPropertyGetters($expect, SingletonInterface::class);
     }
 
-    public function test__getInstance()
+    public function test__getInstance() : void
     {
         $dummy = $this->createDummyClass();
         $dummy::$instance = 'instance';

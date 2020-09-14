@@ -82,12 +82,12 @@ final class LdapResultReferenceTest extends TestCase
     //
     //
 
-    public function test__implements__LdapResultReferenceInterface()
+    public function test__implements__LdapResultReferenceInterface() : void
     {
         $this->assertImplementsInterface(LdapResultReferenceInterface::class, LdapResultReference::class);
     }
 
-    public function test__uses__LdapResultItemTrait()
+    public function test__uses__LdapResultItemTrait() : void
     {
         $this->assertUsesTrait(LdapResultItemTrait::class, LdapResultReference::class);
     }
@@ -96,7 +96,7 @@ final class LdapResultReferenceTest extends TestCase
     // getResource()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public function test__getResource()
+    public function test__getResource() : void
     {
         [$reference, $result] = $this->createLdapResultReferenceAndMocks(1, 'ldap reference');
         $this->assertSame('ldap reference', $reference->getResource());
@@ -106,7 +106,7 @@ final class LdapResultReferenceTest extends TestCase
     // getLdapResult()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public function test__getLdapResult()
+    public function test__getLdapResult() : void
     {
         [$reference, $result] = $this->createLdapResultReferenceAndMocks(1);
         $this->assertSame($result, $reference->getLdapResult());
@@ -116,7 +116,7 @@ final class LdapResultReferenceTest extends TestCase
     // getLdapLink()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public function test__getLdapLink()
+    public function test__getLdapLink() : void
     {
         [$reference, $result, $link] = $this->createLdapResultReferenceAndMocks();
         $this->assertSame($link, $reference->getLdapLink());
@@ -126,7 +126,7 @@ final class LdapResultReferenceTest extends TestCase
     // supportsResourceType()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__supportsResourceType()
+    public static function prov__supportsResourceType() : array
     {
         return static::feedSupportsResourceType('ldap result entry');
     }
@@ -135,7 +135,7 @@ final class LdapResultReferenceTest extends TestCase
      * @runInSeparateProcess
      * @dataProvider prov__supportsResourceType
      */
-    public function test__supportsResourceType(array $args, $expect)
+    public function test__supportsResourceType(array $args, $expect) : void
     {
         [$reference, $result] = $this->createLdapResultReferenceAndMocks(1);
         $this->examineSupportsResourceType($reference, $args, $expect);
@@ -145,7 +145,7 @@ final class LdapResultReferenceTest extends TestCase
     // isValid()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__isValid()
+    public static function prov__isValid() : array
     {
         return static::feedIsValid('ldap result entry');
     }
@@ -154,7 +154,7 @@ final class LdapResultReferenceTest extends TestCase
      * @runInSeparateProcess
      * @dataProvider prov__isValid
      */
-    public function test__isValid($arg, $return, $expect)
+    public function test__isValid($arg, $return, $expect) : void
     {
         [$reference, $result] = $this->createLdapResultReferenceAndMocks(1, $arg);
         $this->examineIsValid($reference, $arg, $return, $expect);
@@ -164,7 +164,7 @@ final class LdapResultReferenceTest extends TestCase
     // next_reference()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__next_reference__withMockedBackend()
+    public static function prov__next_reference__withMockedBackend() : array
     {
         return [
             // #0
@@ -197,7 +197,7 @@ final class LdapResultReferenceTest extends TestCase
      * @runInSeparateProcess
      * @dataProvider prov__next_reference__withMockedBackend
      */
-    public function test__next_reference__withMockedBackend(array $args, $return, $expect)
+    public function test__next_reference__withMockedBackend(array $args, $return, $expect) : void
     {
         $this->examineLdapMethod('next_reference', $args, $return, $expect);
     }
@@ -206,7 +206,7 @@ final class LdapResultReferenceTest extends TestCase
     // parse_reference()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public function prov__parse_reference__withMockedBackend()
+    public function prov__parse_reference__withMockedBackend() : array
     {
         return [
             // #0
@@ -240,7 +240,7 @@ final class LdapResultReferenceTest extends TestCase
      * @runInSeparateProcess
      * @dataProvider prov__parse_reference__withMockedBackend
      */
-    public function test__parse_reference__withMockedBackend(array $args, $return, $expect, array $values)
+    public function test__parse_reference__withMockedBackend(array $args, $return, $expect, array $values) : void
     {
         $this->examineLdapMethod('parse_reference', $args, $return, $expect);
         if (count($args) > 1) {
@@ -256,7 +256,7 @@ final class LdapResultReferenceTest extends TestCase
      * @runInSeparateProcess
      * @dataProvider prov__next_reference__withMockedBackend
      */
-    public function test__next_item__withMockedBackend(array $args, $return, $expect)
+    public function test__next_item__withMockedBackend(array $args, $return, $expect) : void
     {
         $this->examineLdapMethod('next_item', $args, $return, $expect, 'ldap_next_reference');
     }

@@ -99,7 +99,7 @@ final class LdapLinkOptionsTest extends TestCase
         $this->assertSame($expect, LdapLinkOptions::getConstantName($name));
     }
 
-    public function test__getConstantName__intexistent()
+    public function test__getConstantName__intexistent() : void
     {
         $this->assertNull(LdapLinkOptions::getConstantName('inexistent'));
     }
@@ -114,19 +114,19 @@ final class LdapLinkOptionsTest extends TestCase
     /**
      * @dataProvider prov__getOptionId
      */
-    public function test__getOptionId(string $arg, $expect)
+    public function test__getOptionId(string $arg, $expect) : void
     {
         $this->assertSame($expect, LdapLinkOptions::getOptionId($arg));
     }
 
-    public function test__getOptionId__intexistent()
+    public function test__getOptionId__intexistent() : void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage("Unknown option 'inexistent'");
         LdapLinkOptions::getOptionId('inexistent');
     }
 
-    public function test__getDeclarations()
+    public function test__getDeclarations() : void
     {
         $options =  LdapLinkOptions::getDeclarations();
 
@@ -190,7 +190,7 @@ final class LdapLinkOptionsTest extends TestCase
         }
     }
 
-    public function test__configureOptionsResolver()
+    public function test__configureOptionsResolver() : void
     {
         LdapLinkOptions::configureOptionsResolver($resolver = new OptionsResolver);
 
@@ -241,13 +241,13 @@ final class LdapLinkOptionsTest extends TestCase
         }
     }
 
-    public function test__configureOptionsResolver__defaults()
+    public function test__configureOptionsResolver__defaults() : void
     {
         LdapLinkOptions::configureOptionsResolver($resolver = new OptionsResolver);
         $this->assertSame(['protocol_version' => 3], $resolver->resolve([]));
     }
 
-    public function test__configureOption__withNonArrayValues()
+    public function test__configureOption__withNonArrayValues() : void
     {
         $decl = [
             'types' => 'string',
@@ -264,7 +264,7 @@ final class LdapLinkOptionsTest extends TestCase
         $resolver->resolve(['foo' => 'barmatic']);
     }
 
-    public function test__option__deref()
+    public function test__option__deref() : void
     {
         LdapLinkOptions::configureOptionsResolver($resolver = new OptionsResolver);
 
@@ -284,7 +284,7 @@ final class LdapLinkOptionsTest extends TestCase
         $this->assertEquals(LDAP_DEREF_ALWAYS, $resolver->resolve(['deref' => 'always'])['deref']);
     }
 
-    public function test__option__tls_crlcheck()
+    public function test__option__tls_crlcheck() : void
     {
         LdapLinkOptions::configureOptionsResolver($resolver = new OptionsResolver);
 
@@ -303,7 +303,7 @@ final class LdapLinkOptionsTest extends TestCase
         }
     }
 
-    public function test__option__tls_require_cert()
+    public function test__option__tls_require_cert() : void
     {
         LdapLinkOptions::configureOptionsResolver($resolver = new OptionsResolver);
 

@@ -27,12 +27,12 @@ final class Rfc3986Test extends TestCase
         return Rfc3986::class;
     }
 
-    public function test__extends__AbstractRuleSet()
+    public function test__extends__AbstractRuleSet() : void
     {
         $this->assertExtendsClass(AbstractRuleSet::class, $this->getRfcClass());
     }
 
-    public function test__getClassRuleNames()
+    public function test__getClassRuleNames() : void
     {
         $class = self::getRfcClass();
         $this->assertSame(array_keys(self::findRfcConstants()), $class::getClassRuleNames());

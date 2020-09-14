@@ -40,12 +40,12 @@ final class ExposesSnippetInterfaceTest extends TestCase
         return $obj;
     }
 
-    public function test__uses__ExposesLocationInterface()
+    public function test__uses__ExposesLocationInterface() : void
     {
         $this->assertUsesTrait(ExposesLocationInterface::class, ExposesSnippetInterface::class);
     }
 
-    public function test__getLocation()
+    public function test__getLocation() : void
     {
         $snippet = $this->getMockBuilder(SnippetInterface::class)
                       ->getMockForAbstractClass();
@@ -53,7 +53,7 @@ final class ExposesSnippetInterfaceTest extends TestCase
         $this->assertSame($snippet, $obj->getLocation());
     }
 
-    public function test__getLength()
+    public function test__getLength() : void
     {
         $snippet = $this->getMockBuilder(SnippetInterface::class)
                       ->getMockForAbstractClass();
@@ -66,7 +66,7 @@ final class ExposesSnippetInterfaceTest extends TestCase
         $this->assertSame(17, $obj->getLength());
     }
 
-    public function test__getEndOffset()
+    public function test__getEndOffset() : void
     {
         $snippet = $this->getMockBuilder(SnippetInterface::class)
                       ->getMockForAbstractClass();
@@ -79,7 +79,7 @@ final class ExposesSnippetInterfaceTest extends TestCase
         $this->assertSame(17, $obj->getEndOffset());
     }
 
-    public function test__getSourceLength()
+    public function test__getSourceLength() : void
     {
         $snippet = $this->getMockBuilder(SnippetInterface::class)
                       ->getMockForAbstractClass();
@@ -92,7 +92,7 @@ final class ExposesSnippetInterfaceTest extends TestCase
         $this->assertSame(17, $obj->getSourceLength());
     }
 
-    public function test__getSourceEndOffset()
+    public function test__getSourceEndOffset() : void
     {
         $snippet = $this->getMockBuilder(SnippetInterface::class)
                       ->getMockForAbstractClass();
@@ -110,7 +110,7 @@ final class ExposesSnippetInterfaceTest extends TestCase
         return [[], ['U']];
     }
 
-    public function test__getSourceCharLength(...$enc)
+    public function test__getSourceCharLength(...$enc) : void
     {
         $snippet = $this->getMockBuilder(SnippetInterface::class)
                       ->getMockForAbstractClass();
@@ -123,7 +123,7 @@ final class ExposesSnippetInterfaceTest extends TestCase
         $this->assertSame(17, $obj->getSourceCharLength(...$enc));
     }
 
-    public function test__getSourceCharEndOffset(...$enc)
+    public function test__getSourceCharEndOffset(...$enc) : void
     {
         $snippet = $this->getMockBuilder(SnippetInterface::class)
                       ->getMockForAbstractClass();

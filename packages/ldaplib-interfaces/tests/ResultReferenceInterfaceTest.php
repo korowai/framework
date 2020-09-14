@@ -30,13 +30,13 @@ final class ResultReferenceInterfaceTest extends TestCase
         };
     }
 
-    public function test__dummyImplementation()
+    public function test__dummyImplementation() : void
     {
         $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(ResultReferenceInterface::class, $dummy);
     }
 
-    public function test__objectPropertyGettersMap()
+    public function test__objectPropertyGettersMap() : void
     {
         $expect = [
             'referrals' => 'getReferrals',
@@ -45,7 +45,7 @@ final class ResultReferenceInterfaceTest extends TestCase
         $this->assertObjectPropertyGetters($expect, ResultReferenceInterface::class);
     }
 
-    public function test__getReferrals()
+    public function test__getReferrals() : void
     {
         $dummy = $this->createDummyInstance();
 
@@ -53,7 +53,7 @@ final class ResultReferenceInterfaceTest extends TestCase
         $this->assertSame($dummy->referrals, $dummy->getReferrals());
     }
 
-    public function test__getReferrals__withRetTypeError()
+    public function test__getReferrals__withRetTypeError() : void
     {
         $dummy = $this->createDummyInstance();
         $dummy->referrals = null;
@@ -63,7 +63,7 @@ final class ResultReferenceInterfaceTest extends TestCase
         $dummy->getReferrals();
     }
 
-    public function test__getReferralIterator()
+    public function test__getReferralIterator() : void
     {
         $dummy = $this->createDummyInstance();
 
@@ -71,7 +71,7 @@ final class ResultReferenceInterfaceTest extends TestCase
         $this->assertSame($dummy->referralIterator, $dummy->getReferralIterator());
     }
 
-    public function test__getReferralIterator__withRetTypeError()
+    public function test__getReferralIterator__withRetTypeError() : void
     {
         $dummy = $this->createDummyInstance();
         $dummy->referralIterator = null;

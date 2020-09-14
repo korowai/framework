@@ -75,12 +75,12 @@ final class ResultReferenceTest extends TestCase
     //
     //
 
-    public function test__implements__ResultReferenceInterface()
+    public function test__implements__ResultReferenceInterface() : void
     {
         $this->assertImplementsInterface(ResultReferenceInterface::class, ResultReference::class);
     }
 
-    public function test__implements__LdapResultReferenceWraperInterface()
+    public function test__implements__LdapResultReferenceWraperInterface() : void
     {
         $this->assertImplementsInterface(LdapResultReferenceWrapperInterface::class, ResultReference::class);
     }
@@ -190,7 +190,7 @@ final class ResultReferenceTest extends TestCase
     /**
      * @dataProvider prov__getReferralIterator
      */
-    public function test__getReferralIterator($return, $output, $expect)
+    public function test__getReferralIterator($return, $output, $expect) : void
     {
         [$reference, $ldapReference] = $this->createResultReferenceAndMocks(1);
 

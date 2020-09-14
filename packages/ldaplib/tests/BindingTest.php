@@ -51,12 +51,12 @@ final class BindingTest extends TestCase
         $this->assertImplementsInterface(LdapLinkWrapperInterface::class, Binding::class);
     }
 
-    public function test__uses__BindingTrait()
+    public function test__uses__BindingTrait() : void
     {
         $this->assertUsesTrait(BindingTrait::class, Binding::class);
     }
 
-    public function test__uses__LdapLinkWrapperTrait()
+    public function test__uses__LdapLinkWrapperTrait() : void
     {
         $this->assertUsesTrait(LdapLinkWrapperTrait::class, Binding::class);
     }

@@ -21,7 +21,7 @@ use Korowai\Lib\Ldif\Exception\InvalidModTypeException;
  */
 final class InvalidModTypeExceptionTest extends TestCase
 {
-    public function test__extendsInvalidArgumentException()
+    public function test__extendsInvalidArgumentException() : void
     {
         $this->assertExtendsClass(\InvalidArgumentException::class, InvalidModTypeException::class);
     }
@@ -37,7 +37,7 @@ final class InvalidModTypeExceptionTest extends TestCase
     /**
      * @dataProvider getMessage__cases
      */
-    public function test__getMessage(array $args, string $expect)
+    public function test__getMessage(array $args, string $expect) : void
     {
         $e = new InvalidModTypeException(...$args);
         $this->assertEquals($expect, $e->getMessage());

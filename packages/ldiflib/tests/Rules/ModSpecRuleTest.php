@@ -27,7 +27,7 @@ use Korowai\Testing\Ldiflib\TestCase;
  */
 final class ModSpecRuleTest extends TestCase
 {
-    public function test__extends__AbstractRule()
+    public function test__extends__AbstractRule() : void
     {
         $this->assertExtendsClass(AbstractRule::class, ModSpecRule::class);
     }
@@ -59,7 +59,7 @@ final class ModSpecRuleTest extends TestCase
     /**
      * @dataProvider construct__cases
      */
-    public function test__construct(array $args, array $expect)
+    public function test__construct(array $args, array $expect) : void
     {
         $rule = new ModSpecRule(...$args);
         $this->assertHasPropertiesSameAs($expect, $rule);
@@ -452,7 +452,7 @@ final class ModSpecRuleTest extends TestCase
     /**
      * @dataProvider parse__cases
      */
-    public function test__parse(array $source, array $args, array $expect)
+    public function test__parse(array $source, array $args, array $expect) : void
     {
         $state = $this->getParserStateFromSource(...$source);
 

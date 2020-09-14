@@ -38,7 +38,7 @@ final class ExposesRuleInterfaceTest extends TestCase
         return $obj;
     }
 
-    public function test____toString()
+    public function test____toString() : void
     {
         $rule = $this->getMockBuilder(RuleInterface::class)
                          ->getMockForAbstractClass();
@@ -51,7 +51,7 @@ final class ExposesRuleInterfaceTest extends TestCase
         $this->assertSame('foo', $obj->__toString());
     }
 
-    public function test__regexp()
+    public function test__regexp() : void
     {
         $rule = $this->getMockBuilder(RuleInterface::class)
                          ->getMockForAbstractClass();
@@ -64,7 +64,7 @@ final class ExposesRuleInterfaceTest extends TestCase
         $this->assertSame('/^foo$/', $obj->regexp());
     }
 
-    public function test__captures()
+    public function test__captures() : void
     {
         $rule = $this->getMockBuilder(RuleInterface::class)
                          ->getMockForAbstractClass();
@@ -77,7 +77,7 @@ final class ExposesRuleInterfaceTest extends TestCase
         $this->assertSame(['v', 'e'], $obj->captures());
     }
 
-    public function test__errorCaptures()
+    public function test__errorCaptures() : void
     {
         $rule = $this->getMockBuilder(RuleInterface::class)
                          ->getMockForAbstractClass();
@@ -90,7 +90,7 @@ final class ExposesRuleInterfaceTest extends TestCase
         $this->assertSame(['e'], $obj->errorCaptures());
     }
 
-    public function test__valueCaptures()
+    public function test__valueCaptures() : void
     {
         $rule = $this->getMockBuilder(RuleInterface::class)
                          ->getMockForAbstractClass();
@@ -103,7 +103,7 @@ final class ExposesRuleInterfaceTest extends TestCase
         $this->assertSame(['v'], $obj->valueCaptures());
     }
 
-    public function test__findCapturedErrors()
+    public function test__findCapturedErrors() : void
     {
         $rule = $this->getMockBuilder(RuleInterface::class)
                          ->getMockForAbstractClass();
@@ -116,7 +116,7 @@ final class ExposesRuleInterfaceTest extends TestCase
         $this->assertSame(['e1', 'e2'], $obj->findCapturedErrors(['v1', 'e1', 'v2', 'e2']));
     }
 
-    public function test__findCapturedValues()
+    public function test__findCapturedValues() : void
     {
         $rule = $this->getMockBuilder(RuleInterface::class)
                          ->getMockForAbstractClass();
@@ -129,7 +129,7 @@ final class ExposesRuleInterfaceTest extends TestCase
         $this->assertSame(['v1', 'v2'], $obj->findCapturedValues(['v1', 'e1', 'v2', 'e2']));
     }
 
-    public function test__getErrorMessage()
+    public function test__getErrorMessage() : void
     {
         $rule = $this->getMockBuilder(RuleInterface::class)
                          ->getMockForAbstractClass();

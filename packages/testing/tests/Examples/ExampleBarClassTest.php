@@ -26,27 +26,27 @@ use Korowai\Testing\Examples\ExampleQuxTrait;
  */
 final class ExampleBarClassTest extends TestCase
 {
-    public function test__implements__ExampleFooInterface()
+    public function test__implements__ExampleFooInterface() : void
     {
         $this->assertImplementsInterface(ExampleFooInterface::class, ExampleBarClass::class);
     }
 
-    public function test__implements__ExampleBarInterface()
+    public function test__implements__ExampleBarInterface() : void
     {
         $this->assertImplementsInterface(ExampleBarInterface::class, ExampleBarClass::class);
     }
 
-    public function test__extends__ExampleFooClass()
+    public function test__extends__ExampleFooClass() : void
     {
         $this->assertExtendsClass(ExampleFooClass::class, ExampleBarClass::class);
     }
 
-    public function test__uses__ExampleQuxTrait()
+    public function test__uses__ExampleQuxTrait() : void
     {
         $this->assertUsesTrait(ExampleQuxTrait::class, ExampleBarClass::class);
     }
 
-    public function test__construct()
+    public function test__construct() : void
     {
         $object = new ExampleBarClass(['foo' => 'FOO', 'bar' => 'BAR', 'baz' => 'BAZ', 'qux' => 'QUX']);
         $this->assertSame('FOO', $object->getFoo());
@@ -55,7 +55,7 @@ final class ExampleBarClassTest extends TestCase
         $this->assertSame('QUX', $object->getQux());
     }
 
-    public function test__setFoo()
+    public function test__setFoo() : void
     {
         $object = new ExampleBarClass();
         $this->assertNull($object->getFoo());
@@ -63,7 +63,7 @@ final class ExampleBarClassTest extends TestCase
         $this->assertSame('FOO', $object->getFoo());
     }
 
-    public function test__setBar()
+    public function test__setBar() : void
     {
         $object = new ExampleBarClass();
         $this->assertNull($object->getBar());
@@ -71,7 +71,7 @@ final class ExampleBarClassTest extends TestCase
         $this->assertSame('BAR', $object->getBar());
     }
 
-    public function test__setBaz()
+    public function test__setBaz() : void
     {
         $object = new ExampleBarClass();
         $this->assertNull($object->getBaz());
@@ -79,7 +79,7 @@ final class ExampleBarClassTest extends TestCase
         $this->assertSame('BAZ', $object->getBaz());
     }
 
-    public function test__setQux()
+    public function test__setQux() : void
     {
         $object = new ExampleBarClass();
         $this->assertNull($object->getQux());

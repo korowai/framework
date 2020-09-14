@@ -22,7 +22,7 @@ use Korowai\Testing\LdiflibInterfaces\TestCase;
  */
 final class ParserStateInterfaceTest extends TestCase
 {
-    public function test__dummyImplementation()
+    public function test__dummyImplementation() : void
     {
         $dummy = new class implements ParserStateInterface {
             use ParserStateInterfaceTrait;
@@ -30,7 +30,7 @@ final class ParserStateInterfaceTest extends TestCase
         $this->assertImplementsInterface(ParserStateInterface::class, $dummy);
     }
 
-    public function test__objectPropertyGettersMap()
+    public function test__objectPropertyGettersMap() : void
     {
         $expect = [
             'cursor'    => 'getCursor',

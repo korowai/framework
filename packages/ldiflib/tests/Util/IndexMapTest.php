@@ -35,7 +35,7 @@ final class IndexMapTest extends TestCase
     /**
      * @dataProvider arrayFromPieces
      */
-    public function test__arrayFromPieces($pieces, $expect)
+    public function test__arrayFromPieces($pieces, $expect) : void
     {
         $array = IndexMap::arrayFromPieces($pieces);
         $this->assertSame($expect, $array);
@@ -119,7 +119,7 @@ final class IndexMapTest extends TestCase
     /**
      * @dataProvider arrayIndexMapCases
      */
-    public function test__arrayApply(array $args, array $cases)
+    public function test__arrayApply(array $args, array $cases) : void
     {
         $im = $args[0];
         $inc = $args[1] ?? 1;
@@ -159,7 +159,7 @@ final class IndexMapTest extends TestCase
     /**
      * @dataProvider arraySearchCases
      */
-    public function test__arraySearch($im, $cases)
+    public function test__arraySearch($im, $cases) : void
     {
         foreach ($cases as $i => $j) {
             $this->assertSame($j, IndexMap::arraySearch($im, $i));
@@ -179,7 +179,7 @@ final class IndexMapTest extends TestCase
     /**
      * @dataProvider arraySearchFailingCases
      */
-    public function test__arraySearch__exception($im, $i)
+    public function test__arraySearch__exception($im, $i) : void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('internal error: arraySearch() failed');
@@ -190,7 +190,7 @@ final class IndexMapTest extends TestCase
     /**
      * @dataProvider arrayFromPieces
      */
-    public function test__createFromPieces($pieces, $expect)
+    public function test__createFromPieces($pieces, $expect) : void
     {
         $im = IndexMap::createFromPieces($pieces);
         $this->assertInstanceOf(IndexMap::class, $im);
@@ -198,21 +198,21 @@ final class IndexMapTest extends TestCase
         $this->assertSame(1, $im->getIncrement());
     }
 
-    public function test__construct()
+    public function test__construct() : void
     {
         $im = new IndexMap([[0,1]]);
         $this->assertSame([[0,1]], $im->getArray());
         $this->assertSame(1, $im->getIncrement());
     }
 
-    public function test__construct__withIncrement()
+    public function test__construct__withIncrement() : void
     {
         $im = new IndexMap([[0,1]], 0);
         $this->assertSame([[0,1]], $im->getArray());
         $this->assertEquals(0, $im->getIncrement());
     }
 
-    public function test__arrayCombineAlgorithm()
+    public function test__arrayCombineAlgorithm() : void
     {
         $im = new IndexMap([]);
         $alg1 = $im->getArrayCombineAlgorithm();
@@ -237,7 +237,7 @@ final class IndexMapTest extends TestCase
     /**
      * @dataProvider indexMapCases
      */
-    public function test__apply(IndexMap $im, array $cases)
+    public function test__apply(IndexMap $im, array $cases) : void
     {
         foreach ($cases as $i => $case) {
             $expect = $case[0];
@@ -248,7 +248,7 @@ final class IndexMapTest extends TestCase
     }
 
 
-    public function test__invoke()
+    public function test__invoke() : void
     {
         // apply() is already tested, so we only check that it's properly used
         $im = $this->getMockBuilder(IndexMap::class)
@@ -267,7 +267,7 @@ final class IndexMapTest extends TestCase
         $this->assertEquals(123, $index);
     }
 
-    public function test__combineWithArray()
+    public function test__combineWithArray() : void
     {
         // The IndexMapArrayCombineAlgorithm is already tested, so only check
         // that it's properly used.
@@ -285,7 +285,7 @@ final class IndexMapTest extends TestCase
         $this->assertSame(['A', 'B'], $im->getArray());
     }
 
-    public function test__combineWith()
+    public function test__combineWith() : void
     {
         // combineWithArray() is already tested, so we only check that
         // combineWith() calls the combineWithArray() correctly.

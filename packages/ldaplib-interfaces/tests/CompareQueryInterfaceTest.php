@@ -29,13 +29,13 @@ final class CompareQueryInterfaceTest extends TestCase
         };
     }
 
-    public function test__dummyImplementation()
+    public function test__dummyImplementation() : void
     {
         $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(CompareQueryInterface::class, $dummy);
     }
 
-    public function test__objectPropertyGettersMap()
+    public function test__objectPropertyGettersMap() : void
     {
         $expect = [
             'result'    => 'getResult'
@@ -43,7 +43,7 @@ final class CompareQueryInterfaceTest extends TestCase
         $this->assertObjectPropertyGetters($expect, CompareQueryInterface::class);
     }
 
-    public function test__execute()
+    public function test__execute() : void
     {
         $dummy = $this->createDummyInstance();
 
@@ -51,7 +51,7 @@ final class CompareQueryInterfaceTest extends TestCase
         $this->assertSame($dummy->execute, $dummy->execute());
     }
 
-    public function test__execute__withRetTypeError()
+    public function test__execute__withRetTypeError() : void
     {
         $dummy = $this->createDummyInstance();
         $dummy->execute = null;
@@ -61,7 +61,7 @@ final class CompareQueryInterfaceTest extends TestCase
         $dummy->execute();
     }
 
-    public function test__getResult()
+    public function test__getResult() : void
     {
         $dummy = $this->createDummyInstance();
 
@@ -69,7 +69,7 @@ final class CompareQueryInterfaceTest extends TestCase
         $this->assertSame($dummy->result, $dummy->getResult());
     }
 
-    public function test__getResult__withRetTypeError()
+    public function test__getResult__withRetTypeError() : void
     {
         $dummy = $this->createDummyInstance();
         $dummy->result = null;

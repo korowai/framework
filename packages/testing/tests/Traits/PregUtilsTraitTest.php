@@ -80,7 +80,7 @@ final class PregUtilsTraitTest extends TestCase
     /**
      * @dataProvider pregTupleKeysAt__cases
      */
-    public function test__pregTupleKeysAt(array $args, array $expect)
+    public function test__pregTupleKeysAt(array $args, array $expect) : void
     {
         $this->assertSame($expect, static::pregTupleKeysAt(...$args));
     }
@@ -111,7 +111,7 @@ final class PregUtilsTraitTest extends TestCase
     /**
      * @dataProvider stringsToPregTuples__cases
      */
-    public function test__stringsToPregTuples(array $args, array $expect)
+    public function test__stringsToPregTuples(array $args, array $expect) : void
     {
         $this->assertSame($expect, static::stringsToPregTuples(...$args));
     }
@@ -154,7 +154,7 @@ final class PregUtilsTraitTest extends TestCase
     /**
      * @dataProvider shiftPregCaptures__cases
      */
-    public function test__shiftPregCaptures(array $args, array $expect)
+    public function test__shiftPregCaptures(array $args, array $expect) : void
     {
         $this->assertSame($expect, self::shiftPregCaptures(...$args));
     }
@@ -215,7 +215,7 @@ final class PregUtilsTraitTest extends TestCase
     /**
      * @dataProvider prefixPregCaptures__cases
      */
-    public function test__prefixPregCaptures(array $args, array $expect)
+    public function test__prefixPregCaptures(array $args, array $expect) : void
     {
         $this->assertSame($expect, self::prefixPregCaptures(...$args));
     }
@@ -519,7 +519,7 @@ final class PregUtilsTraitTest extends TestCase
     /**
      * @dataProvider mergePregCaptures__cases
      */
-    public function test__mergePregCaptures(array $args, array $expect)
+    public function test__mergePregCaptures(array $args, array $expect) : void
     {
         $this->assertSame($expect, self::mergePregCaptures(...$args));
     }
@@ -582,7 +582,7 @@ final class PregUtilsTraitTest extends TestCase
     /**
      * @dataProvider prefixPregTuple__cases
      */
-    public function test__prefixPregTuple(array $args, array $expect)
+    public function test__prefixPregTuple(array $args, array $expect) : void
     {
         $this->assertSame($expect, self::prefixPregTuple(...$args));
     }
@@ -650,7 +650,7 @@ final class PregUtilsTraitTest extends TestCase
     /**
      * @dataProvider suffixPregTuple__cases
      */
-    public function test__suffixPregTuple(array $args, array $expect)
+    public function test__suffixPregTuple(array $args, array $expect) : void
     {
         $this->assertSame($expect, self::suffixPregTuple(...$args));
     }
@@ -723,7 +723,7 @@ final class PregUtilsTraitTest extends TestCase
     /**
      * @dataProvider transformPregTuple__cases
      */
-    public function test__transformPregTuple(array $args, array $expect)
+    public function test__transformPregTuple(array $args, array $expect) : void
     {
         $this->assertSame($expect, self::transformPregTuple(...$args));
     }
@@ -784,7 +784,7 @@ final class PregUtilsTraitTest extends TestCase
     /**
      * @dataProvider joinTwoPregTuples__cases
      */
-    public function test__joinTwoPregTuples(array $args, array $expect)
+    public function test__joinTwoPregTuples(array $args, array $expect) : void
     {
         $this->assertSame($expect, static::joinTwoPregTuples(...$args));
     }
@@ -885,12 +885,12 @@ final class PregUtilsTraitTest extends TestCase
     /**
      * @dataProvider joinPregTuples__cases
      */
-    public function test__joinPregTuples(array $args, array $expect)
+    public function test__joinPregTuples(array $args, array $expect) : void
     {
         $this->assertSame($expect, self::joinPregTuples(...$args));
     }
 
-    public function test__joinPregTuples__exception()
+    public function test__joinPregTuples__exception() : void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('$tuples array passed to '.self::class.'::joinPregTuples() can not be empty');

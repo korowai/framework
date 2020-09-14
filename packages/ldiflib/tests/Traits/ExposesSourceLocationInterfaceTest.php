@@ -39,7 +39,7 @@ final class ExposesSourceLocationInterfaceTest extends TestCase
         return $obj;
     }
 
-    public function test__getSourceFileName()
+    public function test__getSourceFileName() : void
     {
         $location = $this->getMockBuilder(SourceLocationInterface::class)
                          ->getMockForAbstractClass();
@@ -52,7 +52,7 @@ final class ExposesSourceLocationInterfaceTest extends TestCase
         $this->assertSame('foo.ldif', $obj->getSourceFileName());
     }
 
-    public function test__getSourceString()
+    public function test__getSourceString() : void
     {
         $location = $this->getMockBuilder(SourceLocationInterface::class)
                          ->getMockForAbstractClass();
@@ -65,7 +65,7 @@ final class ExposesSourceLocationInterfaceTest extends TestCase
         $this->assertSame('A', $obj->getSourceString());
     }
 
-    public function test__getSourceOffset()
+    public function test__getSourceOffset() : void
     {
         $location = $this->getMockBuilder(SourceLocationInterface::class)
                          ->getMockForAbstractClass();
@@ -78,7 +78,7 @@ final class ExposesSourceLocationInterfaceTest extends TestCase
         $this->assertSame(123, $obj->getSourceOffset());
     }
 
-    public function test__getSourceCharOffset()
+    public function test__getSourceCharOffset() : void
     {
         $location = $this->getMockBuilder(SourceLocationInterface::class)
                          ->getMockForAbstractClass();
@@ -92,7 +92,7 @@ final class ExposesSourceLocationInterfaceTest extends TestCase
         $this->assertSame(321, $obj->getSourceCharOffset('U'));
     }
 
-    public function test__getSourceLineIndex()
+    public function test__getSourceLineIndex() : void
     {
         $location = $this->getMockBuilder(SourceLocationInterface::class)
                          ->getMockForAbstractClass();
@@ -105,7 +105,7 @@ final class ExposesSourceLocationInterfaceTest extends TestCase
         $this->assertSame(123, $obj->getSourceLineIndex());
     }
 
-    public function test__getSourceLine()
+    public function test__getSourceLine() : void
     {
         $location = $this->getMockBuilder(SourceLocationInterface::class)
                          ->getMockForAbstractClass();
@@ -118,7 +118,7 @@ final class ExposesSourceLocationInterfaceTest extends TestCase
         $this->assertSame('A', $obj->getSourceLine());
     }
 
-    public function test__getSourceLineAndOffset()
+    public function test__getSourceLineAndOffset() : void
     {
         $location = $this->getMockBuilder(SourceLocationInterface::class)
                          ->getMockForAbstractClass();
@@ -131,7 +131,7 @@ final class ExposesSourceLocationInterfaceTest extends TestCase
         $this->assertSame([1,2], $obj->getSourceLineAndOffset());
     }
 
-    public function test__getSourceLineAndCharOffset()
+    public function test__getSourceLineAndCharOffset() : void
     {
         $location = $this->getMockBuilder(SourceLocationInterface::class)
                          ->getMockForAbstractClass();

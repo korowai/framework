@@ -32,7 +32,7 @@ final class LdifFileRuleInterfaceTest extends TestCase
         };
     }
 
-    public static function prov__extendsInterface()
+    public static function prov__extendsInterface() : array
     {
         return [
             [RuleInterface::class],
@@ -42,18 +42,18 @@ final class LdifFileRuleInterfaceTest extends TestCase
     /**
      * @dataProvider prov__extendsInterface
      */
-    public function test__extendsInterface(string $extends)
+    public function test__extendsInterface(string $extends) : void
     {
         $this->assertImplementsInterface($extends, LdifFileRuleInterface::class);
     }
 
-    public function test__dummyImplementation()
+    public function test__dummyImplementation() : void
     {
         $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(LdifFileRuleInterface::class, $dummy);
     }
 
-    public function test__objectPropertyGettersMap()
+    public function test__objectPropertyGettersMap() : void
     {
         $expect = [
             'ldifContentRule'   => 'getLdifContentRule',
@@ -62,14 +62,14 @@ final class LdifFileRuleInterfaceTest extends TestCase
         $this->assertObjectPropertyGetters($expect, LdifFileRuleInterface::class);
     }
 
-    public function test__getLdifContentRule()
+    public function test__getLdifContentRule() : void
     {
         $dummy = $this->createDummyInstance();
         $dummy->ldifContentRule = $this->createStub(LdifContentRuleInterface::class);
         $this->assertSame($dummy->ldifContentRule, $dummy->getLdifContentRule());
     }
 
-    public function test__getLdifContentRule__withNull()
+    public function test__getLdifContentRule__withNull() : void
     {
         $dummy = $this->createDummyInstance();
         $dummy->valueSpecRule = null;
@@ -79,14 +79,14 @@ final class LdifFileRuleInterfaceTest extends TestCase
         $dummy->getLdifContentRule();
     }
 
-    public function test__getLdifChangesRule()
+    public function test__getLdifChangesRule() : void
     {
         $dummy = $this->createDummyInstance();
         $dummy->ldifChangesRule = $this->createStub(LdifChangesRuleInterface::class);
         $this->assertSame($dummy->ldifChangesRule, $dummy->getLdifChangesRule());
     }
 
-    public function test__getLdifChangesRule__withNull()
+    public function test__getLdifChangesRule__withNull() : void
     {
         $dummy = $this->createDummyInstance();
         $dummy->valueSpecRule = null;

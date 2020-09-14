@@ -28,13 +28,13 @@ final class ResourceWrapperInterfaceTest extends TestCase
         };
     }
 
-    public function test__dummyImplementation()
+    public function test__dummyImplementation() : void
     {
         $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(ResourceWrapperInterface::class, $dummy);
     }
 
-    public function test__objectPropertyGettersMap()
+    public function test__objectPropertyGettersMap() : void
     {
         $expect = [
             'resource'          => 'getResource',
@@ -51,7 +51,7 @@ final class ResourceWrapperInterfaceTest extends TestCase
     /**
      * @dataProvider prov__getResource
      */
-    public function test__getResource($resource)
+    public function test__getResource($resource) : void
     {
         $dummy = $this->createDummyInstance();
 
@@ -59,7 +59,7 @@ final class ResourceWrapperInterfaceTest extends TestCase
         $this->assertSame($dummy->getResource, $dummy->getResource());
     }
 
-    public function test__isValid()
+    public function test__isValid() : void
     {
         $dummy = $this->createDummyInstance();
 
@@ -67,7 +67,7 @@ final class ResourceWrapperInterfaceTest extends TestCase
         $this->assertSame($dummy->isValid, $dummy->isValid());
     }
 
-    public function test__isValid__withRetTypeError()
+    public function test__isValid__withRetTypeError() : void
     {
         $dummy = $this->createDummyInstance();
         $dummy->isValid = null;
@@ -77,7 +77,7 @@ final class ResourceWrapperInterfaceTest extends TestCase
         $dummy->isValid();
     }
 
-    public function test__supportsResourceType()
+    public function test__supportsResourceType() : void
     {
         $dummy = $this->createDummyInstance();
 
@@ -85,7 +85,7 @@ final class ResourceWrapperInterfaceTest extends TestCase
         $this->assertSame($dummy->supportsResourceType, $dummy->supportsResourceType(''));
     }
 
-    public function test__supportsResourceType__withRetTypeError()
+    public function test__supportsResourceType__withRetTypeError() : void
     {
         $dummy = $this->createDummyInstance();
         $dummy->supportsResourceType = null;
@@ -95,7 +95,7 @@ final class ResourceWrapperInterfaceTest extends TestCase
         $dummy->supportsResourceType('');
     }
 
-    public function test__supportsResourceType__withArgTypeError()
+    public function test__supportsResourceType__withArgTypeError() : void
     {
         $dummy = $this->createDummyInstance();
         $dummy->supportsResourceType = true;

@@ -30,7 +30,7 @@ final class HasAttrValSpecsTest extends TestCase
         };
     }
 
-    public function test__attrValSpecs()
+    public function test__attrValSpecs() : void
     {
         $object = $this->getTestObject();
         $this->assertSame($object, $object->setAttrValSpecs(['A']));

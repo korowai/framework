@@ -26,7 +26,7 @@ final class functionsTest extends TestCase
     /**
      * @covers \Korowai\Lib\Context\with
      */
-    public function test__with__withoutArgs()
+    public function test__with__withoutArgs() : void
     {
         $executor = with();
         $this->assertInstanceOf(WithContextExecutor::class, $executor);
@@ -36,7 +36,7 @@ final class functionsTest extends TestCase
     /**
      * @covers \Korowai\Lib\Context\with
      */
-    public function test__with__withArgs()
+    public function test__with__withArgs() : void
     {
         $executor = with('foo', 'bar');
         $this->assertInstanceOf(WithContextExecutor::class, $executor);

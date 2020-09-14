@@ -31,7 +31,7 @@ final class LdifDeleteRecordTest extends TestCase
         $this->assertExtendsClass(AbstractChangeRecord::class, LdifDeleteRecord::class);
     }
 
-    public function test__implements__LdifDeleteRecordInterface()
+    public function test__implements__LdifDeleteRecordInterface() : void
     {
         $this->assertImplementsInterface(LdifDeleteRecordInterface::class, LdifDeleteRecord::class);
     }
@@ -73,13 +73,13 @@ final class LdifDeleteRecordTest extends TestCase
     /**
      * @dataProvider construct__cases
      */
-    public function test__construct(array $args, array $expect)
+    public function test__construct(array $args, array $expect) : void
     {
         $record = new LdifDeleteRecord(...$args);
         $this->assertHasPropertiesSameAs($expect, $record);
     }
 
-    public function test__acceptRecordVisitor()
+    public function test__acceptRecordVisitor() : void
     {
         $visitor = $this->getMockBuilder(RecordVisitorInterface::class)
                         ->getMockForAbstractClass();

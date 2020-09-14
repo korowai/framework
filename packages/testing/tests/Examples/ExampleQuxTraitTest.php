@@ -28,7 +28,7 @@ final class ExampleQuxTraitTest extends TestCase
         };
     }
 
-    public function test__setQux()
+    public function test__setQux() : void
     {
         $object = $this->getTestObject();
         $this->assertNull($object->getQux());

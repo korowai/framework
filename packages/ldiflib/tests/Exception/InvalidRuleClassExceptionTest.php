@@ -21,7 +21,7 @@ use Korowai\Lib\Ldif\Exception\InvalidRuleClassException;
  */
 final class InvalidRuleClassExceptionTest extends TestCase
 {
-    public function test__extendsInvalidArgumentException()
+    public function test__extendsInvalidArgumentException() : void
     {
         $this->assertExtendsClass(\InvalidArgumentException::class, InvalidRuleClassException::class);
     }
@@ -37,7 +37,7 @@ final class InvalidRuleClassExceptionTest extends TestCase
     /**
      * @dataProvider getMessage__cases
      */
-    public function test__getMessage(array $args, string $expect)
+    public function test__getMessage(array $args, string $expect) : void
     {
         $e = new InvalidRuleClassException(...$args);
         $this->assertEquals($expect, $e->getMessage());

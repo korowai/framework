@@ -23,26 +23,26 @@ use Korowai\Lib\Context\ContextManagerInterface;
  */
 final class TrivialValueWrapperTest extends TestCase
 {
-    public function test__implements__ContextManagerInterface()
+    public function test__implements__ContextManagerInterface() : void
     {
         $this->assertImplementsInterface(ContextManagerInterface::class, TrivialValueWrapper::class);
     }
 
-    public function test__construct()
+    public function test__construct() : void
     {
         $value = ['foo'];
         $cm = new TrivialValueWrapper($value);
         $this->assertSame($value, $cm->getValue());
     }
 
-    public function test__enterContext()
+    public function test__enterContext() : void
     {
         $value = ['foo'];
         $cm = new TrivialValueWrapper($value);
         $this->assertSame($value, $cm->enterContext());
     }
 
-    public function test__exitContext()
+    public function test__exitContext() : void
     {
         $value = ['foo'];
         $cm = new TrivialValueWrapper($value);

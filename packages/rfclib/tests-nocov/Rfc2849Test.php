@@ -54,7 +54,7 @@ final class Rfc2849Test extends TestCase
     /**
      * @dataProvider characterClasses__cases
      */
-    public function test__characterClasses(string $actual, string $expect)
+    public function test__characterClasses(string $actual, string $expect) : void
     {
         $this->assertSame($expect, $actual);
     }
@@ -87,7 +87,7 @@ final class Rfc2849Test extends TestCase
     /**
      * @dataProvider simpleProductions__cases
      */
-    public function test__simpleProductions(string $actual, string $expect)
+    public function test__simpleProductions(string $actual, string $expect) : void
     {
         $this->assertSame($expect, $actual);
     }
@@ -113,7 +113,7 @@ final class Rfc2849Test extends TestCase
     /**
      * @dataProvider VERSION_NUMBER__cases
      */
-    public function test__VERSION_NUMBER__matches(string $string, array $pieces)
+    public function test__VERSION_NUMBER__matches(string $string, array $pieces) : void
     {
         $this->assertRfcMatches($string, 'VERSION_NUMBER', $pieces);
     }
@@ -121,7 +121,7 @@ final class Rfc2849Test extends TestCase
     /**
      * @dataProvider non__VERSION_NUMBER__cases
      */
-    public function test__VERSION_NUMBER__notMatches(string $string)
+    public function test__VERSION_NUMBER__notMatches(string $string) : void
     {
         $this->assertRfcNotMatches($string, 'VERSION_NUMBER');
     }
@@ -185,7 +185,7 @@ final class Rfc2849Test extends TestCase
     /**
      * @dataProvider VERSION_SPEC__cases
      */
-    public function test__VERSION_SPEC__matches(string $string, array $pieces, array $options = ['suffix' => '/D'])
+    public function test__VERSION_SPEC__matches(string $string, array $pieces, array $options = ['suffix' => '/D']) : void
     {
         $this->assertRfcMatches($string, 'VERSION_SPEC', $pieces, $options);
     }
@@ -193,7 +193,7 @@ final class Rfc2849Test extends TestCase
     /**
      * @dataProvider non__VERSION_SPEC__cases
      */
-    public function test__VERSION_SPEC__notMatches(string $string)
+    public function test__VERSION_SPEC__notMatches(string $string) : void
     {
         $this->assertRfcNotMatches($string, 'VERSION_SPEC');
     }
@@ -217,7 +217,7 @@ final class Rfc2849Test extends TestCase
     /**
      * @dataProvider BASE64_STRING__cases
      */
-    public function test__BASE64_STRING__matches(string $string, array $pieces = [])
+    public function test__BASE64_STRING__matches(string $string, array $pieces = []) : void
     {
         $this->assertRfcMatches($string, 'BASE64_STRING', $pieces);
     }
@@ -225,7 +225,7 @@ final class Rfc2849Test extends TestCase
     /**
      * @dataProvider non__BASE64_STRING__cases
      */
-    public function test__BASE64_STRING__notMatches(string $string)
+    public function test__BASE64_STRING__notMatches(string $string) : void
     {
         $this->assertRfcNotMatches($string, 'BASE64_STRING');
     }
@@ -249,7 +249,7 @@ final class Rfc2849Test extends TestCase
     /**
      * @dataProvider SAFE_STRING__cases
      */
-    public function test__SAFE_STRING__matches(string $string, array $pieces = [])
+    public function test__SAFE_STRING__matches(string $string, array $pieces = []) : void
     {
         $this->assertRfcMatches($string, 'SAFE_STRING', $pieces);
     }
@@ -257,7 +257,7 @@ final class Rfc2849Test extends TestCase
     /**
      * @dataProvider non__SAFE_STRING__cases
      */
-    public function test__SAFE_STRING__notMatches(string $string)
+    public function test__SAFE_STRING__notMatches(string $string) : void
     {
         $this->assertRfcNotMatches($string, 'SAFE_STRING');
     }
@@ -279,7 +279,7 @@ final class Rfc2849Test extends TestCase
     /**
      * @dataProvider LDAP_OID__cases
      */
-    public function test__LDAP_OID__matches(string $string, array $pieces = [])
+    public function test__LDAP_OID__matches(string $string, array $pieces = []) : void
     {
         $this->assertRfcMatches($string, 'LDAP_OID', $pieces);
     }
@@ -287,7 +287,7 @@ final class Rfc2849Test extends TestCase
     /**
      * @dataProvider non__LDAP_OID__cases
      */
-    public function test__LDAP_OID__notMatches(string $string)
+    public function test__LDAP_OID__notMatches(string $string) : void
     {
         $this->assertRfcNotMatches($string, 'LDAP_OID');
     }
@@ -311,7 +311,7 @@ final class Rfc2849Test extends TestCase
     /**
      * @dataProvider OPTION__cases
      */
-    public function test__OPTION__matches(string $string, array $pieces = [])
+    public function test__OPTION__matches(string $string, array $pieces = []) : void
     {
         $this->assertRfcMatches($string, 'OPTION', $pieces);
     }
@@ -319,7 +319,7 @@ final class Rfc2849Test extends TestCase
     /**
      * @dataProvider non__OPTION__cases
      */
-    public function test__OPTION__notMatches(string $string)
+    public function test__OPTION__notMatches(string $string) : void
     {
         $this->assertRfcNotMatches($string, 'OPTION');
     }
@@ -343,7 +343,7 @@ final class Rfc2849Test extends TestCase
     /**
      * @dataProvider OPTIONS__cases
      */
-    public function test__OPTIONS__matches(string $string, array $pieces = [])
+    public function test__OPTIONS__matches(string $string, array $pieces = []) : void
     {
         $this->assertRfcMatches($string, 'OPTIONS', $pieces);
     }
@@ -351,7 +351,7 @@ final class Rfc2849Test extends TestCase
     /**
      * @dataProvider non__OPTIONS__cases
      */
-    public function test__OPTIONS__notMatches(string $string)
+    public function test__OPTIONS__notMatches(string $string) : void
     {
         $this->assertRfcNotMatches($string, 'OPTIONS');
     }
@@ -378,7 +378,7 @@ final class Rfc2849Test extends TestCase
     /**
      * @dataProvider ATTRIBUTE_TYPE__cases
      */
-    public function test__ATTRIBUTE_TYPE__matches(string $string, array $pieces = [])
+    public function test__ATTRIBUTE_TYPE__matches(string $string, array $pieces = []) : void
     {
         $this->assertRfcMatches($string, 'ATTRIBUTE_TYPE', $pieces);
     }
@@ -386,7 +386,7 @@ final class Rfc2849Test extends TestCase
     /**
      * @dataProvider non__ATTRIBUTE_TYPE__cases
      */
-    public function test__ATTRIBUTE_TYPE__notMatches(string $string)
+    public function test__ATTRIBUTE_TYPE__notMatches(string $string) : void
     {
         $this->assertRfcNotMatches($string, 'ATTRIBUTE_TYPE');
     }
@@ -417,7 +417,7 @@ final class Rfc2849Test extends TestCase
     /**
      * @dataProvider ATTRIBUTE_DESCRIPTION__cases
      */
-    public function test__ATTRIBUTE_DESCRIPTION__matches(string $string, array $pieces = [])
+    public function test__ATTRIBUTE_DESCRIPTION__matches(string $string, array $pieces = []) : void
     {
         $this->assertRfcMatches($string, 'ATTRIBUTE_DESCRIPTION', $pieces);
     }
@@ -425,7 +425,7 @@ final class Rfc2849Test extends TestCase
     /**
      * @dataProvider non__ATTRIBUTE_DESCRIPTION__cases
      */
-    public function test__ATTRIBUTE_DESCRIPTION__notMatches(string $string)
+    public function test__ATTRIBUTE_DESCRIPTION__notMatches(string $string) : void
     {
         $this->assertRfcNotMatches($string, 'ATTRIBUTE_DESCRIPTION');
     }
@@ -447,7 +447,7 @@ final class Rfc2849Test extends TestCase
     /**
      * @dataProvider DISTINGUISHED_NAME__cases
      */
-    public function test__DISTINGUISHED_NAME__matches(string $string, array $pieces = [])
+    public function test__DISTINGUISHED_NAME__matches(string $string, array $pieces = []) : void
     {
         $this->assertRfcMatches($string, 'DISTINGUISHED_NAME', $pieces);
     }
@@ -455,7 +455,7 @@ final class Rfc2849Test extends TestCase
     /**
      * @dataProvider non__DISTINGUISHED_NAME__cases
      */
-    public function test__DISTINGUISHED_NAME__notMatches(string $string)
+    public function test__DISTINGUISHED_NAME__notMatches(string $string) : void
     {
         $this->assertRfcNotMatches($string, 'DISTINGUISHED_NAME');
     }
@@ -477,7 +477,7 @@ final class Rfc2849Test extends TestCase
     /**
      * @dataProvider BASE64_DISTINGUISHED_NAME__cases
      */
-    public function test__BASE64_DISTINGUISHED_NAME__matches(string $string, array $pieces = [])
+    public function test__BASE64_DISTINGUISHED_NAME__matches(string $string, array $pieces = []) : void
     {
         $this->assertRfcMatches($string, 'BASE64_DISTINGUISHED_NAME', $pieces);
     }
@@ -485,7 +485,7 @@ final class Rfc2849Test extends TestCase
     /**
      * @dataProvider non__BASE64_DISTINGUISHED_NAME__cases
      */
-    public function test__BASE64_DISTINGUISHED_NAME__notMatches(string $string)
+    public function test__BASE64_DISTINGUISHED_NAME__notMatches(string $string) : void
     {
         $this->assertRfcNotMatches($string, 'BASE64_DISTINGUISHED_NAME');
     }
@@ -618,7 +618,7 @@ final class Rfc2849Test extends TestCase
     /**
      * @dataProvider DN_SPEC__cases
      */
-    public function test__DN_SPEC__matches(string $string, array $pieces, array $options = ['suffix' => '/D'])
+    public function test__DN_SPEC__matches(string $string, array $pieces, array $options = ['suffix' => '/D']) : void
     {
         $this->assertRfcMatches($string, 'DN_SPEC', $pieces, $options);
     }
@@ -626,7 +626,7 @@ final class Rfc2849Test extends TestCase
     /**
      * @dataProvider non__DN_SPEC__cases
      */
-    public function test__DN_SPEC__notMatches(string $string)
+    public function test__DN_SPEC__notMatches(string $string) : void
     {
         $this->assertRfcNotMatches($string, 'DN_SPEC');
     }
@@ -788,7 +788,7 @@ final class Rfc2849Test extends TestCase
     /**
      * @dataProvider URL__cases
      */
-    public function test__URL__matches(string $string, array $pieces)
+    public function test__URL__matches(string $string, array $pieces) : void
     {
         $this->assertRfcMatches($string, 'URL', $pieces);
     }
@@ -796,7 +796,7 @@ final class Rfc2849Test extends TestCase
     /**
      * @dataProvider non__URL__cases
      */
-    public function test__URL__notMatches(string $string)
+    public function test__URL__notMatches(string $string) : void
     {
         $this->assertRfcNotMatches($string, 'URL');
     }
@@ -1072,7 +1072,7 @@ final class Rfc2849Test extends TestCase
     /**
      * @dataProvider VALUE_SPEC__cases
      */
-    public function test__VALUE_SPEC__matches(string $string, array $pieces, array $options = ['suffix' => '/D'])
+    public function test__VALUE_SPEC__matches(string $string, array $pieces, array $options = ['suffix' => '/D']) : void
     {
         $this->assertRfcMatches($string, 'VALUE_SPEC', $pieces, $options);
     }
@@ -1080,7 +1080,7 @@ final class Rfc2849Test extends TestCase
     /**
      * @dataProvider non__VALUE_SPEC__cases
      */
-    public function test__VALUE_SPEC__notMatches(string $string)
+    public function test__VALUE_SPEC__notMatches(string $string) : void
     {
         $this->assertRfcNotMatches($string, 'VALUE_SPEC');
     }
@@ -1462,7 +1462,7 @@ final class Rfc2849Test extends TestCase
     /**
      * @dataProvider CONTROL__cases
      */
-    public function test__CONTROL__matches(string $string, array $pieces, array $options = ['suffix' => '/D'])
+    public function test__CONTROL__matches(string $string, array $pieces, array $options = ['suffix' => '/D']) : void
     {
         $this->assertRfcMatches($string, 'CONTROL', $pieces, $options);
     }
@@ -1470,7 +1470,7 @@ final class Rfc2849Test extends TestCase
     /**
      * @dataProvider non__CONTROL__cases
      */
-    public function test__CONTROL__notMatches(string $string)
+    public function test__CONTROL__notMatches(string $string) : void
     {
         $this->assertRfcNotMatches($string, 'CONTROL');
     }
@@ -1791,7 +1791,7 @@ final class Rfc2849Test extends TestCase
     /**
      * @dataProvider ATTRVAL_SPEC__cases
      */
-    public function test__ATTRVAL_SPEC__matches(string $string, array $pieces, array $options = ['suffix' => '/D'])
+    public function test__ATTRVAL_SPEC__matches(string $string, array $pieces, array $options = ['suffix' => '/D']) : void
     {
         $this->assertRfcMatches($string, 'ATTRVAL_SPEC', $pieces, $options);
     }
@@ -1799,7 +1799,7 @@ final class Rfc2849Test extends TestCase
     /**
      * @dataProvider non__ATTRVAL_SPEC__cases
      */
-    public function test__ATTRVAL_SPEC__notMatches(string $string)
+    public function test__ATTRVAL_SPEC__notMatches(string $string) : void
     {
         $this->assertRfcNotMatches($string, 'ATTRVAL_SPEC');
     }
@@ -1994,7 +1994,7 @@ final class Rfc2849Test extends TestCase
     /**
      * @dataProvider MOD_SPEC_INIT__cases
      */
-    public function test__MOD_SPEC_INIT__matches(string $string, array $pieces, array $options = ['suffix' => '/D'])
+    public function test__MOD_SPEC_INIT__matches(string $string, array $pieces, array $options = ['suffix' => '/D']) : void
     {
         $this->assertRfcMatches($string, 'MOD_SPEC_INIT', $pieces, $options);
     }
@@ -2002,7 +2002,7 @@ final class Rfc2849Test extends TestCase
     /**
      * @dataProvider non__MOD_SPEC_INIT__cases
      */
-    public function test__MOD_SPEC_INIT__notMatches(string $string)
+    public function test__MOD_SPEC_INIT__notMatches(string $string) : void
     {
         $this->assertRfcNotMatches($string, 'MOD_SPEC_INIT');
     }
@@ -2184,7 +2184,7 @@ final class Rfc2849Test extends TestCase
     /**
      * @dataProvider CHANGERECORD_INIT__cases
      */
-    public function test__CHANGERECORD_INIT__matches(string $string, array $pieces, array $options = ['suffix' => '/D'])
+    public function test__CHANGERECORD_INIT__matches(string $string, array $pieces, array $options = ['suffix' => '/D']) : void
     {
         $this->assertRfcMatches($string, 'CHANGERECORD_INIT', $pieces, $options);
     }
@@ -2192,7 +2192,7 @@ final class Rfc2849Test extends TestCase
     /**
      * @dataProvider non__CHANGERECORD_INIT__cases
      */
-    public function test__CHANGERECORD_INIT__notMatches(string $string)
+    public function test__CHANGERECORD_INIT__notMatches(string $string) : void
     {
         $this->assertRfcNotMatches($string, 'CHANGERECORD_INIT');
     }
@@ -2280,7 +2280,7 @@ final class Rfc2849Test extends TestCase
     /**
      * @dataProvider NEWRDN_SPEC__cases
      */
-    public function test__NEWRDN_SPEC__matches(string $string, array $pieces, array $options = ['suffix' => '/D'])
+    public function test__NEWRDN_SPEC__matches(string $string, array $pieces, array $options = ['suffix' => '/D']) : void
     {
         $this->assertRfcMatches($string, 'NEWRDN_SPEC', $pieces, $options);
     }
@@ -2288,7 +2288,7 @@ final class Rfc2849Test extends TestCase
     /**
      * @dataProvider non__NEWRDN_SPEC__cases
      */
-    public function test__NEWRDN_SPEC__notMatches(string $string)
+    public function test__NEWRDN_SPEC__notMatches(string $string) : void
     {
         $this->assertRfcNotMatches($string, 'NEWRDN_SPEC');
     }
@@ -2410,7 +2410,7 @@ final class Rfc2849Test extends TestCase
     /**
      * @dataProvider NEWSUPERIOR_SPEC__cases
      */
-    public function test__NEWSUPERIOR_SPEC__matches(string $string, array $pieces, array $options = ['suffix' => '/D'])
+    public function test__NEWSUPERIOR_SPEC__matches(string $string, array $pieces, array $options = ['suffix' => '/D']) : void
     {
         $this->assertRfcMatches($string, 'NEWSUPERIOR_SPEC', $pieces, $options);
     }
@@ -2418,7 +2418,7 @@ final class Rfc2849Test extends TestCase
     /**
      * @dataProvider non__NEWSUPERIOR_SPEC__cases
      */
-    public function test__NEWSUPERIOR_SPEC__notMatches(string $string)
+    public function test__NEWSUPERIOR_SPEC__notMatches(string $string) : void
     {
         $this->assertRfcNotMatches($string, 'NEWSUPERIOR_SPEC');
     }

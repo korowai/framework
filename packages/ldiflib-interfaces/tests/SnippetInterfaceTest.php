@@ -23,7 +23,7 @@ use Korowai\Testing\LdiflibInterfaces\TestCase;
  */
 final class SnippetInterfaceTest extends TestCase
 {
-    public static function prov__extendsInterface()
+    public static function prov__extendsInterface() : array
     {
         return [
             [LocationInterface::class],
@@ -33,12 +33,12 @@ final class SnippetInterfaceTest extends TestCase
     /**
      * @dataProvider prov__extendsInterface
      */
-    public function test__extendsInterface(string $extends)
+    public function test__extendsInterface(string $extends) : void
     {
         $this->assertImplementsInterface($extends, SnippetInterface::class);
     }
 
-    public function test__dummyImplementation()
+    public function test__dummyImplementation() : void
     {
         $dummy = new class implements SnippetInterface {
             use SnippetInterfaceTrait;
@@ -46,7 +46,7 @@ final class SnippetInterfaceTest extends TestCase
         $this->assertImplementsInterface(SnippetInterface::class, $dummy);
     }
 
-    public function test__objectPropertyGettersMap()
+    public function test__objectPropertyGettersMap() : void
     {
         $expect = [
             'length'                => 'getLength',

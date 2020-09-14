@@ -28,17 +28,17 @@ final class Rfc8089Test extends TestCase
         return Rfc8089::class;
     }
 
-    public function test__extends__AbstractRuleSet()
+    public function test__extends__AbstractRuleSet() : void
     {
         $this->assertExtendsClass(AbstractRuleSet::class, $this->getRfcClass());
     }
 
-    public function test__extends__Rfc3986()
+    public function test__extends__Rfc3986() : void
     {
         $this->assertExtendsClass(Rfc3986::class, $this->getRfcClass());
     }
 
-    public function test__getClassRuleNames()
+    public function test__getClassRuleNames() : void
     {
         $class = self::getRfcClass();
         $this->assertSame(array_keys(self::findRfcConstants()), $class::getClassRuleNames());

@@ -26,12 +26,12 @@ use Korowai\Testing\Ldiflib\TestCase;
  */
 final class AbstractChangeRecordTest extends TestCase
 {
-    public function test__extends__AbstractRecord()
+    public function test__extends__AbstractRecord() : void
     {
         $this->assertExtendsClass(AbstractRecord::class, AbstractChangeRecord::class);
     }
 
-    public function test__initAbstractChangeRecord()
+    public function test__initAbstractChangeRecord() : void
     {
         $snippet = $this->getMockBuilder(SnippetInterface::class)
                         ->getMockForAbstractClass();
@@ -45,7 +45,7 @@ final class AbstractChangeRecordTest extends TestCase
         $this->assertSame($snippet, $record->getSnippet());
     }
 
-    public function test__setControls()
+    public function test__setControls() : void
     {
         $record = $this->getMockBuilder(AbstractChangeRecord::class)
                        ->getMockForAbstractClass();

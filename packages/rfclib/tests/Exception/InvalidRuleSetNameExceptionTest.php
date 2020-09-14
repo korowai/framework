@@ -21,7 +21,7 @@ use Korowai\Lib\Rfc\Exception\InvalidRuleSetNameException;
  */
 final class InvalidRuleSetNameExceptionTest extends TestCase
 {
-    public function test__extendsInvalidArgumentException()
+    public function test__extendsInvalidArgumentException() : void
     {
         $this->assertExtendsClass(\InvalidArgumentException::class, InvalidRuleSetNameException::class);
     }
@@ -37,7 +37,7 @@ final class InvalidRuleSetNameExceptionTest extends TestCase
     /**
      * @dataProvider getMessage__cases
      */
-    public function test__getMessage(array $args, string $expect)
+    public function test__getMessage(array $args, string $expect) : void
     {
         $e = new InvalidRuleSetNameException(...$args);
         $this->assertEquals($expect, $e->getMessage());

@@ -33,7 +33,7 @@ final class LdifChangesRuleInterfaceTest extends TestCase
         };
     }
 
-    public static function prov__extendsInterface()
+    public static function prov__extendsInterface() : array
     {
         return [
             [RuleInterface::class],
@@ -43,18 +43,18 @@ final class LdifChangesRuleInterfaceTest extends TestCase
     /**
      * @dataProvider prov__extendsInterface
      */
-    public function test__extendsInterface(string $extends)
+    public function test__extendsInterface(string $extends) : void
     {
         $this->assertImplementsInterface($extends, LdifChangesRuleInterface::class);
     }
 
-    public function test__dummyImplementation()
+    public function test__dummyImplementation() : void
     {
         $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(LdifChangesRuleInterface::class, $dummy);
     }
 
-    public function test__objectPropertyGettersMap()
+    public function test__objectPropertyGettersMap() : void
     {
         $expect = [
             'versionSpecRule'           => 'getVersionSpecRule',
@@ -64,14 +64,14 @@ final class LdifChangesRuleInterfaceTest extends TestCase
         $this->assertObjectPropertyGetters($expect, LdifChangesRuleInterface::class);
     }
 
-    public function test__getVersionSpecRule()
+    public function test__getVersionSpecRule() : void
     {
         $dummy = $this->createDummyInstance();
         $dummy->versionSpecRule = $this->createStub(VersionSpecRuleInterface::class);
         $this->assertSame($dummy->versionSpecRule, $dummy->getVersionSpecRule());
     }
 
-    public function test__getVersionSpecRule__withNull()
+    public function test__getVersionSpecRule__withNull() : void
     {
         $dummy = $this->createDummyInstance();
         $this->expectException(\TypeError::class);
@@ -81,14 +81,14 @@ final class LdifChangesRuleInterfaceTest extends TestCase
         $dummy->getVersionSpecRule();
     }
 
-    public function test__getSepRule()
+    public function test__getSepRule() : void
     {
         $dummy = $this->createDummyInstance();
         $dummy->sepRule = $this->createStub(SepRuleInterface::class);
         $this->assertSame($dummy->sepRule, $dummy->getSepRule());
     }
 
-    public function test__getSepRule__withNull()
+    public function test__getSepRule__withNull() : void
     {
         $dummy = $this->createDummyInstance();
         $this->expectException(\TypeError::class);
@@ -98,14 +98,14 @@ final class LdifChangesRuleInterfaceTest extends TestCase
         $dummy->getSepRule();
     }
 
-    public function test__getLdifChangeRecordRule()
+    public function test__getLdifChangeRecordRule() : void
     {
         $dummy = $this->createDummyInstance();
         $dummy->ldifChangeRecordRule = $this->createStub(LdifChangeRecordRuleInterface::class);
         $this->assertSame($dummy->ldifChangeRecordRule, $dummy->getLdifChangeRecordRule());
     }
 
-    public function test__getLdifChangeRecordRule__withNull()
+    public function test__getLdifChangeRecordRule__withNull() : void
     {
         $dummy = $this->createDummyInstance();
         $this->expectException(\TypeError::class);

@@ -25,27 +25,27 @@ use Korowai\Testing\Ldiflib\TestCase;
  */
 final class ParserErrorTest extends TestCase
 {
-    public function test__implements__ParserErrorInterface()
+    public function test__implements__ParserErrorInterface() : void
     {
         $this->assertImplementsInterface(ParserErrorInterface::class, ParserError::class);
     }
 
-    public function test__implements__Throwable()
+    public function test__implements__Throwable() : void
     {
         $this->assertImplementsInterface(\Throwable::class, ParserError::class);
     }
 
-    public function test__extends__Exception()
+    public function test__extends__Exception() : void
     {
         $this->assertExtendsClass(\Exception::class, ParserError::class);
     }
 
-    public function test__uses__DecoratesSourceLocationInterface()
+    public function test__uses__DecoratesSourceLocationInterface() : void
     {
         $this->assertUsesTrait(DecoratesSourceLocationInterface::class, ParserError::class);
     }
 
-    public function test__construct()
+    public function test__construct() : void
     {
         $location = $this->getMockBuilder(SourceLocationInterface::class)
                          ->getMockForAbstractClass();
@@ -63,7 +63,7 @@ final class ParserErrorTest extends TestCase
         $this->assertSame($previous, $error->getPrevious());
     }
 
-    public function test__getSourceLocationString()
+    public function test__getSourceLocationString() : void
     {
         $location = $this->getMockBuilder(SourceLocationInterface::class)
                          ->getMockForAbstractClass();
@@ -81,7 +81,7 @@ final class ParserErrorTest extends TestCase
         $this->assertSame('foo.ldif:3:10', $error->getSourceLocationString());
     }
 
-    public function test__getSourceLocationString__withLineAndChar()
+    public function test__getSourceLocationString__withLineAndChar() : void
     {
         $location = $this->getMockBuilder(SourceLocationInterface::class)
                          ->getMockForAbstractClass();
@@ -97,7 +97,7 @@ final class ParserErrorTest extends TestCase
         $this->assertSame('foo.ldif:2:5', $error->getSourceLocationString([1,4]));
     }
 
-    public function test__getSourceLocationIndicator()
+    public function test__getSourceLocationIndicator() : void
     {
         $location = $this->getMockBuilder(SourceLocationInterface::class)
                          ->getMockForAbstractClass();
@@ -112,7 +112,7 @@ final class ParserErrorTest extends TestCase
         $this->assertSame('   ^', $error->getSourceLocationIndicator());
     }
 
-    public function test__getSourceLocationIndicator__withLineAndChar()
+    public function test__getSourceLocationIndicator__withLineAndChar() : void
     {
         $location = $this->getMockBuilder(SourceLocationInterface::class)
                          ->getMockForAbstractClass();
@@ -125,7 +125,7 @@ final class ParserErrorTest extends TestCase
         $this->assertSame('   ^', $error->getSourceLocationIndicator([0,3]));
     }
 
-    public function test__getMultilineMessageLines()
+    public function test__getMultilineMessageLines() : void
     {
         $location = $this->getMockBuilder(SourceLocationInterface::class)
                          ->getMockForAbstractClass();
@@ -152,7 +152,7 @@ final class ParserErrorTest extends TestCase
         $this->assertSame('foo.ldif:1:5:    ^', $lines[2]);
     }
 
-    public function test__getMultilineMessage()
+    public function test__getMultilineMessage() : void
     {
         $location = $this->getMockBuilder(SourceLocationInterface::class)
                          ->getMockForAbstractClass();
@@ -178,7 +178,7 @@ final class ParserErrorTest extends TestCase
         $this->assertSame($expected, $error->getMultilineMessage());
     }
 
-    public function test__toString()
+    public function test__toString() : void
     {
         $location = $this->getMockBuilder(SourceLocationInterface::class)
                          ->getMockForAbstractClass();

@@ -24,7 +24,7 @@ use Korowai\Testing\Ldiflib\TestCase;
  */
 final class HasSnippetTest extends TestCase
 {
-    public function test__snippet()
+    public function test__snippet() : void
     {
         $snippet = $this->getMockBuilder(SnippetInterface::class)
                         ->getMockForAbstractClass();

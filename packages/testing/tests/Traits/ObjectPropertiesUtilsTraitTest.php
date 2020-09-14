@@ -120,12 +120,12 @@ final class ObjectPropertiesUtilsTraitTest extends TestCase
     /**
      * @dataProvider getObjectPropertyGetters__cases
      */
-    public function test__getObjectPropertyGetters($argument, array $getters)
+    public function test__getObjectPropertyGetters($argument, array $getters) : void
     {
         $this->assertSame($getters, self::getObjectPropertyGetters($argument));
     }
 
-    public function test__getObjectPropertyGetters__withInvalidArgumentType()
+    public function test__getObjectPropertyGetters__withInvalidArgumentType() : void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -135,7 +135,7 @@ final class ObjectPropertiesUtilsTraitTest extends TestCase
         self::getObjectPropertyGetters([]);
     }
 
-    public function test__getObjectPropertyGetters__withNonClassString()
+    public function test__getObjectPropertyGetters__withNonClassString() : void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -173,7 +173,7 @@ final class ObjectPropertiesUtilsTraitTest extends TestCase
     /**
      * @dataProvider getObjectProperty__cases
      */
-    public function test__getObjectProperty(object $object, array $expect)
+    public function test__getObjectProperty(object $object, array $expect) : void
     {
         foreach ($expect as $key => $value) {
             $this->assertSame($value, self::getObjectProperty($object, $key));

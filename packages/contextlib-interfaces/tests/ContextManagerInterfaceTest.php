@@ -29,19 +29,19 @@ final class ContextManagerInterfaceTest extends TestCase
         };
     }
 
-    public function test__dummyImplementation()
+    public function test__dummyImplementation() : void
     {
         $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(ContextManagerInterface::class, $dummy);
     }
 
-    public function test__objectPropertyGettersMap()
+    public function test__objectPropertyGettersMap() : void
     {
         $expect = [];
         $this->assertObjectPropertyGetters($expect, ContextManagerInterface::class);
     }
 
-    public function test__enterContext()
+    public function test__enterContext() : void
     {
         $dummy = $this->createDummyInstance();
 
@@ -49,7 +49,7 @@ final class ContextManagerInterfaceTest extends TestCase
         $this->assertSame($dummy->enterContext, $dummy->enterContext());
     }
 
-    public function test__exitContext()
+    public function test__exitContext() : void
     {
         $dummy = $this->createDummyInstance();
 
@@ -59,7 +59,7 @@ final class ContextManagerInterfaceTest extends TestCase
         $this->assertSame($dummy->exitContext, $dummy->exitContext());
     }
 
-    public function test__exitContext__withArgTypeError()
+    public function test__exitContext__withArgTypeError() : void
     {
         $dummy = $this->createDummyInstance();
 
@@ -68,7 +68,7 @@ final class ContextManagerInterfaceTest extends TestCase
         $dummy->exitContext('');
     }
 
-    public function test__exitContext__withRetTypeError()
+    public function test__exitContext__withRetTypeError() : void
     {
         $dummy = $this->createDummyInstance();
         $dummy->exitContext = '';

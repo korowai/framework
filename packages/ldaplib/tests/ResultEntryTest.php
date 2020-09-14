@@ -317,7 +317,7 @@ final class ResultEntryTest extends TestCase
     // toEntry()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public function test__toEntry()
+    public function test__toEntry() : void
     {
         $ldapDn = 'uid=jsmith,ou=people,dc=korowai,dc=org';
         $ldapAttributes = [

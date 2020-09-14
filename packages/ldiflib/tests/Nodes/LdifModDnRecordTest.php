@@ -32,7 +32,7 @@ final class LdifModDnRecordTest extends TestCase
         $this->assertExtendsClass(AbstractRecord::class, LdifModDnRecord::class);
     }
 
-    public function test__implements__LdifModDnRecordInterface()
+    public function test__implements__LdifModDnRecordInterface() : void
     {
         $this->assertImplementsInterface(LdifModDnRecordInterface::class, LdifModDnRecord::class);
     }
@@ -84,7 +84,7 @@ final class LdifModDnRecordTest extends TestCase
     /**
      * @dataProvider construct__cases
      */
-    public function test__construct(array $args, array $expect)
+    public function test__construct(array $args, array $expect) : void
     {
         $record = new LdifModDnRecord(...$args);
         $this->assertHasPropertiesSameAs($expect, $record);
@@ -101,7 +101,7 @@ final class LdifModDnRecordTest extends TestCase
     /**
      * @dataProvider setChangeType__cases
      */
-    public function test__setChangeType(string $changeType)
+    public function test__setChangeType(string $changeType) : void
     {
         $record = new LdifModDnRecord("dc=example,dc=org", "cn=bar");
 
@@ -109,7 +109,7 @@ final class LdifModDnRecordTest extends TestCase
         $this->assertSame($changeType, $record->getChangeType());
     }
 
-    public function test__setChangeType__invalidChangeType()
+    public function test__setChangeType__invalidChangeType() : void
     {
         $record = new LdifModDnRecord("dc=example,dc=org", "cn=bar");
 
@@ -121,7 +121,7 @@ final class LdifModDnRecordTest extends TestCase
         $record->setChangeType("foo");
     }
 
-    public function test__setNewRdn()
+    public function test__setNewRdn() : void
     {
         $record = new LdifModDnRecord("dc=example,dc=org", "cn=bar");
 
@@ -129,7 +129,7 @@ final class LdifModDnRecordTest extends TestCase
         $this->assertSame("cn=gez", $record->getNewRdn());
     }
 
-    public function test__setDeleteOldRdn()
+    public function test__setDeleteOldRdn() : void
     {
         $record = new LdifModDnRecord("dc=example,dc=org", "cn=bar");
 
@@ -140,7 +140,7 @@ final class LdifModDnRecordTest extends TestCase
         $this->assertSame(false, $record->getDeleteOldRdn());
     }
 
-    public function test__setNewSuperior()
+    public function test__setNewSuperior() : void
     {
         $record = new LdifModDnRecord("dc=example,dc=org", "cn=bar");
 
@@ -151,7 +151,7 @@ final class LdifModDnRecordTest extends TestCase
         $this->assertSame(null, $record->getNewSuperior());
     }
 
-    public function test__acceptRecordVisitor()
+    public function test__acceptRecordVisitor() : void
     {
         $visitor = $this->getMockBuilder(RecordVisitorInterface::class)
                         ->getMockForAbstractClass();

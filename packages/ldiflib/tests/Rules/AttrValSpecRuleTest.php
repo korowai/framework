@@ -26,7 +26,7 @@ use Korowai\Testing\Ldiflib\TestCase;
  */
 final class AttrValSpecRuleTest extends TestCase
 {
-    public function test__extendsAbstractRfcRule()
+    public function test__extendsAbstractRfcRule() : void
     {
         $this->assertExtendsClass(AbstractRfcRule::class, AttrValSpecRule::class);
     }
@@ -50,7 +50,7 @@ final class AttrValSpecRuleTest extends TestCase
     /**
      * @dataProvider construct__cases
      */
-    public function test__construct(array $args, array $expect)
+    public function test__construct(array $args, array $expect) : void
     {
         $rule = new AttrValSpecRule(...$args);
 
@@ -68,7 +68,7 @@ final class AttrValSpecRuleTest extends TestCase
         }
     }
 
-    public function test__valueSpecRule()
+    public function test__valueSpecRule() : void
     {
         $rule = new AttrValSpecRule;
         $vsRule = new ValueSpecRule;
@@ -156,7 +156,7 @@ final class AttrValSpecRuleTest extends TestCase
     /**
      * @dataProvider parseMatched__cases
      */
-    public function test__parseMatched(array $source, array $matches, array $expect)
+    public function test__parseMatched(array $source, array $matches, array $expect) : void
     {
         $state = $this->getParserStateFromSource(...$source);
 
@@ -463,7 +463,7 @@ final class AttrValSpecRuleTest extends TestCase
     /**
      * @dataProvider parse__cases
      */
-    public function test__parse(array $source, array $args, array $expect)
+    public function test__parse(array $source, array $args, array $expect) : void
     {
         $state = $this->getParserStateFromSource(...$source);
 

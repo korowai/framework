@@ -22,7 +22,7 @@ use Korowai\Testing\LdiflibInterfaces\TestCase;
  */
 final class RecordInterfaceTest extends TestCase
 {
-    public function test__dummyImplementation()
+    public function test__dummyImplementation() : void
     {
         $dummy = new class implements RecordInterface {
             use RecordInterfaceTrait;
@@ -30,7 +30,7 @@ final class RecordInterfaceTest extends TestCase
         $this->assertImplementsInterface(RecordInterface::class, $dummy);
     }
 
-    public function test__objectPropertyGettersMap()
+    public function test__objectPropertyGettersMap() : void
     {
         $expect = [
             'dn'        => 'getDn',

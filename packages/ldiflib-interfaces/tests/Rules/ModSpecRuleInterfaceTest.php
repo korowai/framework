@@ -33,7 +33,7 @@ final class ModSpecRuleInterfaceTest extends TestCase
         };
     }
 
-    public static function prov__extendsInterface()
+    public static function prov__extendsInterface() : array
     {
         return [
             [RuleInterface::class],
@@ -43,18 +43,18 @@ final class ModSpecRuleInterfaceTest extends TestCase
     /**
      * @dataProvider prov__extendsInterface
      */
-    public function test__extendsInterface(string $extends)
+    public function test__extendsInterface(string $extends) : void
     {
         $this->assertImplementsInterface($extends, ModSpecRuleInterface::class);
     }
 
-    public function test__dummyImplementation()
+    public function test__dummyImplementation() : void
     {
         $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(ModSpecRuleInterface::class, $dummy);
     }
 
-    public function test__objectPropertyGettersMap()
+    public function test__objectPropertyGettersMap() : void
     {
         $expect = [
             'modSpecInitRule'           => 'getModSpecInitRule',
@@ -64,14 +64,14 @@ final class ModSpecRuleInterfaceTest extends TestCase
         $this->assertObjectPropertyGetters($expect, ModSpecRuleInterface::class);
     }
 
-    public function test__getModSpecInitRule()
+    public function test__getModSpecInitRule() : void
     {
         $dummy = $this->createDummyInstance();
         $dummy->modSpecInitRule = $this->createStub(ModSpecInitRuleInterface::class);
         $this->assertSame($dummy->modSpecInitRule, $dummy->getModSpecInitRule());
     }
 
-    public function test__getModSpecInitRule__withNull()
+    public function test__getModSpecInitRule__withNull() : void
     {
         $dummy = $this->createDummyInstance();
         $this->expectException(\TypeError::class);
@@ -81,14 +81,14 @@ final class ModSpecRuleInterfaceTest extends TestCase
         $dummy->getModSpecInitRule();
     }
 
-    public function test__getSepRule()
+    public function test__getSepRule() : void
     {
         $dummy = $this->createDummyInstance();
         $dummy->sepRule = $this->createStub(SepRuleInterface::class);
         $this->assertSame($dummy->sepRule, $dummy->getSepRule());
     }
 
-    public function test__getSepRule__withNull()
+    public function test__getSepRule__withNull() : void
     {
         $dummy = $this->createDummyInstance();
         $this->expectException(\TypeError::class);
@@ -98,14 +98,14 @@ final class ModSpecRuleInterfaceTest extends TestCase
         $dummy->getSepRule();
     }
 
-    public function test__getAttrValSpecRule()
+    public function test__getAttrValSpecRule() : void
     {
         $dummy = $this->createDummyInstance();
         $dummy->attrValSpecRule = $this->createStub(AttrValSpecRuleInterface::class);
         $this->assertSame($dummy->attrValSpecRule, $dummy->getAttrValSpecRule());
     }
 
-    public function test__getAttrValSpecRule__withNull()
+    public function test__getAttrValSpecRule__withNull() : void
     {
         $dummy = $this->createDummyInstance();
         $this->expectException(\TypeError::class);

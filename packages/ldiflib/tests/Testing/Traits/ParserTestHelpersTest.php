@@ -54,7 +54,7 @@ final class ParserTestHelpersTest extends TestCase
     /**
      * @dataProvider getInputFromSource__cases
      */
-    public function test__getInputFromSource(array $args, array $expectations)
+    public function test__getInputFromSource(array $args, array $expectations) : void
     {
         $input = $this->getInputFromSource(...$args);
         $this->assertInstanceOf(Input::class, $input);
@@ -99,7 +99,7 @@ final class ParserTestHelpersTest extends TestCase
     /**
      * @dataProvider getCursorFromSource__cases
      */
-    public function test__getCursorFromSource(array $args, array $expectations)
+    public function test__getCursorFromSource(array $args, array $expectations) : void
     {
         $cursor = $this->getCursorFromSource(...$args);
         $this->assertInstanceOf(Cursor::class, $cursor);
@@ -148,7 +148,7 @@ final class ParserTestHelpersTest extends TestCase
     /**
      * @dataProvider getParserStateFromSource__cases
      */
-    public function test__getParserStateFromSource(array $args, array $expectations)
+    public function test__getParserStateFromSource(array $args, array $expectations) : void
     {
         $state = $this->getParserStateFromSource(...$args);
         $this->assertInstanceOf(ParserState::class, $state);

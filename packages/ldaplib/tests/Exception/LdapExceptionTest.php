@@ -21,12 +21,12 @@ use Korowai\Lib\Ldap\Exception\LdapException;
  */
 final class LdapExceptionTest extends TestCase
 {
-    public function test__extendsErrorException()
+    public function test__extendsErrorException() : void
     {
         $this->assertExtendsClass(\ErrorException::class, LdapException::class);
     }
 
-    public static function prov__getMessages()
+    public static function prov__getMessages() : array
     {
         return [
             'default message' => [[], ''],
@@ -37,7 +37,7 @@ final class LdapExceptionTest extends TestCase
     /**
      * @dataProvider prov__getMessages
      */
-    public function test__getMessage(array $args, string $expect)
+    public function test__getMessage(array $args, string $expect) : void
     {
         $e = new LdapException(...$args);
         $this->assertEquals($expect, $e->getMessage());

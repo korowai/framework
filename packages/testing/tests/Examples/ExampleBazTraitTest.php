@@ -28,7 +28,7 @@ final class ExampleBazTraitTest extends TestCase
         };
     }
 
-    public function test__setBaz()
+    public function test__setBaz() : void
     {
         $object = $this->getTestObject();
         $this->assertNull($object->getBaz());

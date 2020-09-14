@@ -23,12 +23,12 @@ use Korowai\Lib\Error\AbstractManagedErrorHandler;
  */
 final class ErrorHandlerTest extends TestCase
 {
-    public function test__extends__AbstractManagedErrorHandler()
+    public function test__extends__AbstractManagedErrorHandler() : void
     {
         $this->assertExtendsClass(AbstractManagedErrorHandler::class, ErrorHandler::class);
     }
 
-    public function test__construct__withoutErrorTypes()
+    public function test__construct__withoutErrorTypes() : void
     {
         $func = function () {
         };
@@ -37,7 +37,7 @@ final class ErrorHandlerTest extends TestCase
         $this->assertEquals(E_ALL | E_STRICT, $handler->getErrorTypes());
     }
 
-    public function test__construct__withErrorTypes()
+    public function test__construct__withErrorTypes() : void
     {
         $func = function () {
         };
@@ -47,7 +47,7 @@ final class ErrorHandlerTest extends TestCase
         $this->assertEquals(123, $handler->getErrorTypes());
     }
 
-    public function test__invoke()
+    public function test__invoke() : void
     {
         $called = 0;
         $args = [];

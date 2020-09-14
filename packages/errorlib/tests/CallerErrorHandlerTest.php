@@ -65,12 +65,12 @@ final class CallerErrorHandlerTest extends TestCase
         };
     }
 
-    public function test__extends__CustomErrorHandler()
+    public function test__extends__CustomErrorHandler() : void
     {
         $this->assertExtendsClass(ErrorHandler::class, CallerErrorHandler::class);
     }
 
-    public function test__construct__withoutDistance()
+    public function test__construct__withoutDistance() : void
     {
         $func = function () {
         };
@@ -82,7 +82,7 @@ final class CallerErrorHandlerTest extends TestCase
         $this->assertEquals(E_ALL | E_STRICT, $handler->getErrorTypes());
     }
 
-    public function test__construct__withoutErrorTypes()
+    public function test__construct__withoutErrorTypes() : void
     {
         $func = function () {
         };
@@ -94,7 +94,7 @@ final class CallerErrorHandlerTest extends TestCase
         $this->assertEquals(E_ALL | E_STRICT, $handler->getErrorTypes());
     }
 
-    public function test__construct__withDistance__1()
+    public function test__construct__withDistance__1() : void
     {
         $func = function () {
         };
@@ -106,7 +106,7 @@ final class CallerErrorHandlerTest extends TestCase
         $this->assertEquals(E_ALL | E_STRICT, $handler->getErrorTypes());
     }
 
-    public function test__construct__withErrorTypes()
+    public function test__construct__withErrorTypes() : void
     {
         $func = function () {
         };
@@ -118,7 +118,7 @@ final class CallerErrorHandlerTest extends TestCase
         $this->assertEquals(456, $handler->getErrorTypes());
     }
 
-    public function test__construct__fromOneLevelRecursion()
+    public function test__construct__fromOneLevelRecursion() : void
     {
         $func = function () {
         };
@@ -130,7 +130,7 @@ final class CallerErrorHandlerTest extends TestCase
         $this->assertEquals(456, $handler->getErrorTypes());
     }
 
-    public function test__construct__fromTwoLevelsRecursion()
+    public function test__construct__fromTwoLevelsRecursion() : void
     {
         $func = function () {
         };
@@ -142,7 +142,7 @@ final class CallerErrorHandlerTest extends TestCase
         $this->assertEquals(456, $handler->getErrorTypes());
     }
 
-    public function test__invoke__direct()
+    public function test__invoke__direct() : void
     {
         $fcn = $this->handlerCallback1($args);
 
@@ -154,7 +154,7 @@ final class CallerErrorHandlerTest extends TestCase
         $this->assertEquals([E_USER_ERROR, 'test error message', __file__, $caller_line], $args);
     }
 
-    public function test__invoke__fromOneLevelRecursion()
+    public function test__invoke__fromOneLevelRecursion() : void
     {
         $fcn = $this->handlerCallback1($args);
 
@@ -165,7 +165,7 @@ final class CallerErrorHandlerTest extends TestCase
         $this->assertEquals([E_USER_ERROR, 'test error message', __file__, $caller_line], $args);
     }
 
-    public function test__invoke__fromTwoLevelsRecursion()
+    public function test__invoke__fromTwoLevelsRecursion() : void
     {
         $fcn = $this->handlerCallback1($args);
 
@@ -176,7 +176,7 @@ final class CallerErrorHandlerTest extends TestCase
         $this->assertEquals([E_USER_ERROR, 'test error message', __file__, $caller_line], $args);
     }
 
-    public function test__invoke__fromDifferentPlaceThanCreated()
+    public function test__invoke__fromDifferentPlaceThanCreated() : void
     {
         $fcn = $this->handlerCallback1($args);
 
@@ -188,7 +188,7 @@ final class CallerErrorHandlerTest extends TestCase
         $this->assertEquals([E_USER_ERROR, 'test error message', __file__, $caller_line], $args);
     }
 
-    public function test__trigger__fromOneLevelRecursion()
+    public function test__trigger__fromOneLevelRecursion() : void
     {
         $fcn = $this->handlerCallback1($args);
 
@@ -199,7 +199,7 @@ final class CallerErrorHandlerTest extends TestCase
         $this->assertEquals([E_USER_ERROR, 'test error message', __file__, $caller_line], $args);
     }
 
-    public function test__trigger__fromTwoLevelsRecursion()
+    public function test__trigger__fromTwoLevelsRecursion() : void
     {
         $fcn = $this->handlerCallback1($args);
 
@@ -210,7 +210,7 @@ final class CallerErrorHandlerTest extends TestCase
         $this->assertEquals([E_USER_ERROR, 'test error message', __file__, $caller_line], $args);
     }
 
-    public function test__trigger__fromDifferentPlaceThanCreated()
+    public function test__trigger__fromDifferentPlaceThanCreated() : void
     {
         $fcn = $this->handlerCallback1($args);
 

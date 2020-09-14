@@ -82,12 +82,12 @@ final class LdapResultEntryTest extends TestCase
     //
     //
 
-    public function test__implements__LdapResultEntryInterface()
+    public function test__implements__LdapResultEntryInterface() : void
     {
         $this->assertImplementsInterface(LdapResultEntryInterface::class, LdapResultEntry::class);
     }
 
-    public function test__uses__LdapResultItemTrait()
+    public function test__uses__LdapResultItemTrait() : void
     {
         $this->assertUsesTrait(LdapResultItemTrait::class, LdapResultEntry::class);
     }
@@ -96,7 +96,7 @@ final class LdapResultEntryTest extends TestCase
     // getResource()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public function test__getResource()
+    public function test__getResource() : void
     {
         [$entry, $result] = $this->createLdapResultEntryAndMocks(1, 'ldap entry');
         $this->assertSame('ldap entry', $entry->getResource());
@@ -106,7 +106,7 @@ final class LdapResultEntryTest extends TestCase
     // getLdapResult()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public function test__getLdapResult()
+    public function test__getLdapResult() : void
     {
         [$entry, $result] = $this->createLdapResultEntryAndMocks(1);
         $this->assertSame($result, $entry->getLdapResult());
@@ -116,7 +116,7 @@ final class LdapResultEntryTest extends TestCase
     // getLdapLink()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public function test__getLdapLink()
+    public function test__getLdapLink() : void
     {
         [$entry, $result, $link] = $this->createLdapResultEntryAndMocks();
         $this->assertSame($link, $entry->getLdapLink());
@@ -126,7 +126,7 @@ final class LdapResultEntryTest extends TestCase
     // supportsResourceType()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__supportsResourceType()
+    public static function prov__supportsResourceType() : array
     {
         return static::feedSupportsResourceType('ldap result entry');
     }
@@ -145,7 +145,7 @@ final class LdapResultEntryTest extends TestCase
     // isValid()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__isValid()
+    public static function prov__isValid() : array
     {
         return static::feedIsValid('ldap result entry');
     }
@@ -154,7 +154,7 @@ final class LdapResultEntryTest extends TestCase
      * @runInSeparateProcess
      * @dataProvider prov__isValid
      */
-    public function test__isValid($arg, $return, $expect)
+    public function test__isValid($arg, $return, $expect) : void
     {
         [$entry, $_] = $this->createLdapResultEntryAndMocks(1, $arg);
         $this->examineIsValid($entry, $arg, $return, $expect);
@@ -164,7 +164,7 @@ final class LdapResultEntryTest extends TestCase
     // get_dn()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__get_dn__withMockedBackend()
+    public static function prov__get_dn__withMockedBackend() : array
     {
         return [
             // #0
@@ -192,7 +192,7 @@ final class LdapResultEntryTest extends TestCase
      * @runInSeparateProcess
      * @dataProvider prov__get_dn__withMockedBackend
      */
-    public function test__get_dn__withMockedBackend(array $args, $return, $expect)
+    public function test__get_dn__withMockedBackend(array $args, $return, $expect) : void
     {
         $this->examineLdapMethod('get_dn', $args, $return, $expect);
     }
@@ -201,7 +201,7 @@ final class LdapResultEntryTest extends TestCase
     // first_attribute()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__first_attribute__withMockedBackend()
+    public static function prov__first_attribute__withMockedBackend() : array
     {
         return [
             // #0
@@ -229,7 +229,7 @@ final class LdapResultEntryTest extends TestCase
      * @runInSeparateProcess
      * @dataProvider prov__first_attribute__withMockedBackend
      */
-    public function test__first_attribute__withMockedBackend(array $args, $return, $expect)
+    public function test__first_attribute__withMockedBackend(array $args, $return, $expect) : void
     {
         $this->examineLdapMethod('first_attribute', $args, $return, $expect);
     }
@@ -238,7 +238,7 @@ final class LdapResultEntryTest extends TestCase
     // get_attributes()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__get_attributes__withMockedBackend()
+    public static function prov__get_attributes__withMockedBackend() : array
     {
         return [
             // #0
@@ -266,7 +266,7 @@ final class LdapResultEntryTest extends TestCase
      * @runInSeparateProcess
      * @dataProvider prov__get_attributes__withMockedBackend
      */
-    public function test__get_attributes__withMockedBackend(array $args, $return, $expect)
+    public function test__get_attributes__withMockedBackend(array $args, $return, $expect) : void
     {
         $this->examineLdapMethod('get_attributes', $args, $return, $expect);
     }
@@ -275,7 +275,7 @@ final class LdapResultEntryTest extends TestCase
     // get_values_len()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__get_values_len__withMockedBackend()
+    public static function prov__get_values_len__withMockedBackend() : array
     {
         return [
             // #0
@@ -303,7 +303,7 @@ final class LdapResultEntryTest extends TestCase
      * @runInSeparateProcess
      * @dataProvider prov__get_values_len__withMockedBackend
      */
-    public function test__get_values_len__withMockedBackend(array $args, $return, $expect)
+    public function test__get_values_len__withMockedBackend(array $args, $return, $expect) : void
     {
         $this->examineLdapMethod('get_values_len', $args, $return, $expect);
     }
@@ -312,7 +312,7 @@ final class LdapResultEntryTest extends TestCase
     // get_values()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__get_values__withMockedBackend()
+    public static function prov__get_values__withMockedBackend() : array
     {
         return [
             // #0
@@ -340,7 +340,7 @@ final class LdapResultEntryTest extends TestCase
      * @runInSeparateProcess
      * @dataProvider prov__get_values__withMockedBackend
      */
-    public function test__get_values__withMockedBackend(array $args, $return, $expect)
+    public function test__get_values__withMockedBackend(array $args, $return, $expect) : void
     {
         $this->examineLdapMethod('get_values', $args, $return, $expect);
     }
@@ -349,7 +349,7 @@ final class LdapResultEntryTest extends TestCase
     // next_attribute()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__next_attribute__withMockedBackend()
+    public static function prov__next_attribute__withMockedBackend() : array
     {
         return [
             // #0
@@ -379,7 +379,7 @@ final class LdapResultEntryTest extends TestCase
      * @runInSeparateProcess
      * @dataProvider prov__next_attribute__withMockedBackend
      */
-    public function test__next_attribute__withMockedBackend(array $args, $return, $expect)
+    public function test__next_attribute__withMockedBackend(array $args, $return, $expect) : void
     {
         $this->examineLdapMethod('next_attribute', $args, $return, $expect);
     }
@@ -388,7 +388,7 @@ final class LdapResultEntryTest extends TestCase
     // next_entry()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__next_entry__withMockedBackend()
+    public static function prov__next_entry__withMockedBackend() : array
     {
         return [
             // #0
@@ -421,7 +421,7 @@ final class LdapResultEntryTest extends TestCase
      * @runInSeparateProcess
      * @dataProvider prov__next_entry__withMockedBackend
      */
-    public function test__next_entry__withMockedBackend(array $args, $return, $expect)
+    public function test__next_entry__withMockedBackend(array $args, $return, $expect) : void
     {
         $this->examineLdapMethod('next_entry', $args, $return, $expect);
     }
@@ -434,7 +434,7 @@ final class LdapResultEntryTest extends TestCase
      * @runInSeparateProcess
      * @dataProvider prov__next_entry__withMockedBackend
      */
-    public function test__next_item__withMockedBackend(array $args, $return, $expect)
+    public function test__next_item__withMockedBackend(array $args, $return, $expect) : void
     {
         $this->examineLdapMethod('next_item', $args, $return, $expect, 'ldap_next_entry');
     }

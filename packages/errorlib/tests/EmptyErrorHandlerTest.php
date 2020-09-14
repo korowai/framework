@@ -31,22 +31,22 @@ final class EmptyErrorHandlerTest extends TestCase
         return EmptyErrorHandler::class;
     }
 
-    public function test__implements__ErrorHandlerInterface()
+    public function test__implements__ErrorHandlerInterface() : void
     {
         $this->assertImplementsInterface(ErrorHandlerInterface::class, EmptyErrorHandler::class);
     }
 
-    public function test__implements__ContextManagerInterface()
+    public function test__implements__ContextManagerInterface() : void
     {
         $this->assertImplementsInterface(ContextManagerInterface::class, EmptyErrorHandler::class);
     }
 
-    public function test__getErrorTypes()
+    public function test__getErrorTypes() : void
     {
         $this->assertEquals(E_ALL | E_STRICT, EmptyErrorHandler::getInstance()->getErrorTypes());
     }
 
-    public function test__invoke()
+    public function test__invoke() : void
     {
         $this->assertTrue((EmptyErrorHandler::getInstance())(0, '', 'foo.php', 123));
     }

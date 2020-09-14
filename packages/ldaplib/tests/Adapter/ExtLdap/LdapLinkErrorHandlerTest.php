@@ -32,17 +32,17 @@ final class LdapLinkErrorHandlerTest extends TestCase
 {
     use \phpmock\phpunit\PHPMock;
 
-    public function test__extends__AbstractManagedErrorHandler()
+    public function test__extends__AbstractManagedErrorHandler() : void
     {
         $this->assertExtendsClass(AbstractManagedErrorHandler::class, LdapLinkErrorHandler::class);
     }
 
-    public function test__implements__LdapLinkWrapperInterface()
+    public function test__implements__LdapLinkWrapperInterface() : void
     {
         $this->assertImplementsInterface(LdapLinkWrapperInterface::class, LdapLinkErrorHandler::class);
     }
 
-    public function test__uses__LdapLinkWrapperTrait()
+    public function test__uses__LdapLinkWrapperTrait() : void
     {
         $this->assertUsesTrait(LdapLinkWrapperTrait::class, LdapLinkErrorHandler::class);
     }
@@ -51,7 +51,7 @@ final class LdapLinkErrorHandlerTest extends TestCase
     // getLdapLink()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public function test__getLdapLink()
+    public function test__getLdapLink() : void
     {
         $ldap = $this->getMockBuilder(LdapLinkInterface::class)
                      ->getMockForAbstractClass();
@@ -62,7 +62,7 @@ final class LdapLinkErrorHandlerTest extends TestCase
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // fromLdapLinkWrapper()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public function test__fromLdapLinkWrapper()
+    public function test__fromLdapLinkWrapper() : void
     {
         $ldap = $this->getMockBuilder(LdapLinkInterface::class)
                      ->getMockForAbstractClass();
@@ -83,7 +83,7 @@ final class LdapLinkErrorHandlerTest extends TestCase
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // fromLdapResultWrapper()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public function test__fromLdapResultWrapper()
+    public function test__fromLdapResultWrapper() : void
     {
         $ldap = $this   ->getMockBuilder(LdapLinkInterface::class)
                         ->getMockForAbstractClass();
@@ -111,7 +111,7 @@ final class LdapLinkErrorHandlerTest extends TestCase
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // fromLdapResultItemWrapper()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public function test__fromLdapResultItemWrapper()
+    public function test__fromLdapResultItemWrapper() : void
     {
         $ldap = $this   ->getMockBuilder(LdapLinkInterface::class)
                         ->getMockForAbstractClass();
@@ -147,7 +147,7 @@ final class LdapLinkErrorHandlerTest extends TestCase
     // invoke()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public function test__invoke__withInvalidLdapLink()
+    public function test__invoke__withInvalidLdapLink() : void
     {
         $ldap = $this->getMockBuilder(LdapLinkInterface::class)
                      ->setMethods(['isValid'])
@@ -174,7 +174,7 @@ final class LdapLinkErrorHandlerTest extends TestCase
         }
     }
 
-    public function test__invoke__withNonLdapError()
+    public function test__invoke__withNonLdapError() : void
     {
         $ldap = $this->getMockBuilder(LdapLinkInterface::class)
                      ->setMethods(['isValid', 'errno'])
@@ -206,7 +206,7 @@ final class LdapLinkErrorHandlerTest extends TestCase
         }
     }
 
-    public function test__invoke__withLdapError()
+    public function test__invoke__withLdapError() : void
     {
         $ldap = $this->getMockBuilder(LdapLinkInterface::class)
                      ->setMethods(['isValid', 'errno'])

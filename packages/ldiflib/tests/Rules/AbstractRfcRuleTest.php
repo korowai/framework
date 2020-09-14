@@ -25,17 +25,17 @@ use Korowai\Testing\Ldiflib\TestCase;
  */
 final class AbstractRfcRuleTest extends TestCase
 {
-    public function test__extends__AbstractRule()
+    public function test__extends__AbstractRule() : void
     {
         $this->assertExtendsClass(AbstractRule::class, AbstractRfcRule::class);
     }
 
-    public function test__implements__RfcRuleInterface()
+    public function test__implements__RfcRuleInterface() : void
     {
         $this->assertImplementsInterface(\Korowai\Lib\Rfc\RuleInterface::class, AbstractRfcRule::class);
     }
 
-    public function test__uses__DecoratesRfcRuleInterface()
+    public function test__uses__DecoratesRfcRuleInterface() : void
     {
         $this->assertUsesTrait(\Korowai\Lib\Rfc\Traits\DecoratesRuleInterface::class, AbstractRfcRule::class);
     }
@@ -61,7 +61,7 @@ final class AbstractRfcRuleTest extends TestCase
     /**
      * @dataProvider construct__cases
      */
-    public function test__construct(array $args, array $expect)
+    public function test__construct(array $args, array $expect) : void
     {
         $rule = $this->getMockBuilder(AbstractRfcRule::class)
                      ->setConstructorArgs($args)
@@ -274,7 +274,7 @@ final class AbstractRfcRuleTest extends TestCase
     /**
      * @dataProvider match__cases
      */
-    public function test__match(array $source, array $args, array $trying, array $expect)
+    public function test__match(array $source, array $args, array $trying, array $expect) : void
     {
         $state = $this->getParserStateFromSource(...$source);
 
@@ -300,7 +300,7 @@ final class AbstractRfcRuleTest extends TestCase
     /**
      * @dataProvider match__cases
      */
-    public function test__parse(array $source, array $args, array $trying, array $expect)
+    public function test__parse(array $source, array $args, array $trying, array $expect) : void
     {
         $state = $this->getParserStateFromSource(...$source);
 

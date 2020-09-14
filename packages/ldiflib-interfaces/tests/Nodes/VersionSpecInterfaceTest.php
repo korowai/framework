@@ -30,7 +30,7 @@ final class VersionSpecInterfaceTest extends TestCase
         };
     }
 
-    public static function prov__extendsInterface()
+    public static function prov__extendsInterface() : array
     {
         return [
             [NodeInterface::class],
@@ -40,18 +40,18 @@ final class VersionSpecInterfaceTest extends TestCase
     /**
      * @dataProvider prov__extendsInterface
      */
-    public function test__extendsInterface(string $extends)
+    public function test__extendsInterface(string $extends) : void
     {
         $this->assertImplementsInterface($extends, VersionSpecInterface::class);
     }
 
-    public function test__dummyImplementation()
+    public function test__dummyImplementation() : void
     {
         $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(VersionSpecInterface::class, $dummy);
     }
 
-    public function test__objectPropertyGettersMap()
+    public function test__objectPropertyGettersMap() : void
     {
         $expect = [
             'version'   => 'getVersion'
@@ -59,14 +59,14 @@ final class VersionSpecInterfaceTest extends TestCase
         $this->assertObjectPropertyGetters($expect, VersionSpecInterface::class);
     }
 
-    public function test__getVersion()
+    public function test__getVersion() : void
     {
         $dummy = $this->createDummyInstance();
         $dummy->getVersion = 0;
         $this->assertSame($dummy->getVersion, $dummy->getVersion());
     }
 
-    public function test__getVersion__withRetTypeError()
+    public function test__getVersion__withRetTypeError() : void
     {
         $dummy = $this->createDummyInstance();
         $dummy->getVersion = null;

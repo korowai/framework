@@ -36,7 +36,7 @@ use Korowai\Testing\Ldiflib\TestCase;
  */
 final class LdifChangeRecordRuleTest extends TestCase
 {
-    public function test__extends__AbstractLdifRecordRule()
+    public function test__extends__AbstractLdifRecordRule() : void
     {
         $this->assertExtendsClass(AbstractLdifRecordRule::class, LdifChangeRecordRule::class);
     }
@@ -80,7 +80,7 @@ final class LdifChangeRecordRuleTest extends TestCase
     /**
      * @dataProvider construct__cases
      */
-    public function test__construct(array $args, array $expect)
+    public function test__construct(array $args, array $expect) : void
     {
         $rule = new LdifChangeRecordRule(...$args);
         $this->assertInstanceOf(DnSpecRule::class, $rule->getDnSpecRule());
@@ -92,7 +92,7 @@ final class LdifChangeRecordRuleTest extends TestCase
         $this->assertHasPropertiesSameAs($expect, $rule);
     }
 
-    public function test__setControlRule()
+    public function test__setControlRule() : void
     {
         $rule = new LdifChangeRecordRule;
         $controlRule = new ControlRule;
@@ -101,7 +101,7 @@ final class LdifChangeRecordRuleTest extends TestCase
         $this->assertSame($controlRule, $rule->getControlRule());
     }
 
-    public function test__setChangeRecordInitRule()
+    public function test__setChangeRecordInitRule() : void
     {
         $rule = new LdifChangeRecordRule;
         $changeRecordInitRule = new ChangeRecordInitRule;
@@ -110,7 +110,7 @@ final class LdifChangeRecordRuleTest extends TestCase
         $this->assertSame($changeRecordInitRule, $rule->getChangeRecordInitRule());
     }
 
-    public function test__setModSpecRule()
+    public function test__setModSpecRule() : void
     {
         $rule = new LdifChangeRecordRule;
         $modSpecRule = new ModSpecRule;
@@ -1402,7 +1402,7 @@ final class LdifChangeRecordRuleTest extends TestCase
     /**
      * @dataProvider parse__cases
      */
-    public function test__parse(array $source, array $args, array $expect)
+    public function test__parse(array $source, array $args, array $expect) : void
     {
         $state = $this->getParserStateFromSource(...$source);
 

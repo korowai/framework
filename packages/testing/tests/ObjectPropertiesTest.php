@@ -22,17 +22,17 @@ use Korowai\Testing\ObjectPropertiesInterface;
  */
 final class ObjectPropertiesTest extends TestCase
 {
-    public function test__extends__ArrayObject()
+    public function test__extends__ArrayObject() : void
     {
         $this->assertExtendsClass(\ArrayObject::class, ObjectProperties::class);
     }
 
-    public function test__implements__ObjectPropertiesInterface()
+    public function test__implements__ObjectPropertiesInterface() : void
     {
         $this->assertImplementsInterface(ObjectPropertiesInterface::class, ObjectProperties::class);
     }
 
-    public function test__construct()
+    public function test__construct() : void
     {
         $properties = ['foo' => 'FOO', 'bar' => 'BAR'];
         $op = new ObjectProperties($properties);
@@ -110,7 +110,7 @@ final class ObjectPropertiesTest extends TestCase
     /**
      * @dataProvider getArrayForComparison__cases
      */
-    public function test__getArrayForComparison(array $properties, array $expect)
+    public function test__getArrayForComparison(array $properties, array $expect) : void
     {
         $op = new ObjectProperties($properties);
         $this->assertSame($expect, $op->getArrayForComparison());

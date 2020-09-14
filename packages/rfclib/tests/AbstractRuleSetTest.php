@@ -26,12 +26,12 @@ use Korowai\Testing\TestCase;
  */
 final class AbstractRuleSetTest extends TestCase
 {
-    public function test__implements__StaticRuleSetInterface()
+    public function test__implements__StaticRuleSetInterface() : void
     {
         $this->assertImplementsInterface(StaticRuleSetInterface::class, AbstractRuleSet::class);
     }
 
-    public function test__uses__RulesFromConstants()
+    public function test__uses__RulesFromConstants() : void
     {
         $this->assertUsesTrait(RulesFromConstants::class, AbstractRuleSet::class);
     }
@@ -58,7 +58,7 @@ final class AbstractRuleSetTest extends TestCase
         }
     }
 
-    public function test__classCaptures()
+    public function test__classCaptures() : void
     {
         foreach (static::classesUnderTest() as $class) {
             $class::unsetClassCaptures();
@@ -70,7 +70,7 @@ final class AbstractRuleSetTest extends TestCase
     /**
      * @dataProvider class__cases
      */
-    public function test__rules(string $class)
+    public function test__rules(string $class) : void
     {
         $ruleNames = $class::getClassRuleNames();
         $expectedRuleValues = array_map(function ($ruleName) use ($class) {
@@ -86,7 +86,7 @@ final class AbstractRuleSetTest extends TestCase
     /**
      * @dataProvider classRulename__cases
      */
-    public function test__regexp(string $class, string $ruleName)
+    public function test__regexp(string $class, string $ruleName) : void
     {
         $expected = constant($class.'::'.$ruleName);
         $actual = $class::regexp($ruleName);
@@ -97,7 +97,7 @@ final class AbstractRuleSetTest extends TestCase
     /**
      * @dataProvider classRulename__cases
      */
-    public function test__captures(string $class, string $ruleName)
+    public function test__captures(string $class, string $ruleName) : void
     {
         $expected = $class::expectedCaptures($ruleName);
         $actual = $class::captures($ruleName);
@@ -108,7 +108,7 @@ final class AbstractRuleSetTest extends TestCase
     /**
      * @dataProvider classRulename__cases
      */
-    public function test__errorCaptures(string $class, string $ruleName)
+    public function test__errorCaptures(string $class, string $ruleName) : void
     {
         $expected = $class::expectedErrorCaptures($ruleName);
         $actual = $class::errorCaptures($ruleName);
@@ -119,7 +119,7 @@ final class AbstractRuleSetTest extends TestCase
     /**
      * @dataProvider classRulename__cases
      */
-    public function test__valueCaptures(string $class, string $ruleName)
+    public function test__valueCaptures(string $class, string $ruleName) : void
     {
         $expected = $class::expectedValueCaptures($ruleName);
         $actual = $class::valueCaptures($ruleName);
@@ -144,7 +144,7 @@ final class AbstractRuleSetTest extends TestCase
     /**
      * @dataProvider filterMatches__cases
      */
-    public function test__filterMatches($matches, $expected)
+    public function test__filterMatches($matches, $expected) : void
     {
         $message = 'Failed asserting that '.
             AbstractRuleSet::class.'::filterMatches('.
@@ -182,7 +182,7 @@ final class AbstractRuleSetTest extends TestCase
     /**
      * @dataProvider findCapturedErrors__cases
      */
-    public function test__findCapturedErrors($class, $ruleName, $matches)
+    public function test__findCapturedErrors($class, $ruleName, $matches) : void
     {
         $matches = $class::filterMatches($matches);
         $expected = array_intersect_key($matches, $class::errorCaptures($ruleName));
@@ -224,7 +224,7 @@ final class AbstractRuleSetTest extends TestCase
     /**
      * @dataProvider findCapturedValues__cases
      */
-    public function test__findCapturedValues($class, $ruleName, $matches)
+    public function test__findCapturedValues($class, $ruleName, $matches) : void
     {
         $matches = $class::filterMatches($matches);
         $expected = array_intersect_key($matches, $class::valueCaptures($ruleName));
@@ -277,7 +277,7 @@ final class AbstractRuleSetTest extends TestCase
     /**
      * @dataProvider classDefinedErrors__cases
      */
-    public function test__getDefinedErrors(string $class, array $expected)
+    public function test__getDefinedErrors(string $class, array $expected) : void
     {
         $message = 'Failed asserting that '.$class.'::getDefinedErrors() is correct';
         $this->assertSame($expected, $class::getDefinedErrors(), $message);
@@ -308,7 +308,7 @@ final class AbstractRuleSetTest extends TestCase
     /**
      * @dataProvider getErrorMessage__cases
      */
-    public function test__getErrorMessage(string $class, array $args, string $expected)
+    public function test__getErrorMessage(string $class, array $args, string $expected) : void
     {
         $actual = $class::getErrorMessage(...$args);
 

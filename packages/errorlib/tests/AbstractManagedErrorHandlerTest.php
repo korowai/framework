@@ -26,24 +26,24 @@ final class AbstractManagedErrorHandlerTest extends TestCase
 {
     use \phpmock\phpunit\PHPMock;
 
-    public function test__implements__ErrorHandlerInterface()
+    public function test__implements__ErrorHandlerInterface() : void
     {
         $this->assertImplementsInterface(ErrorHandlerInterface::class, AbstractManagedErrorHandler::class);
     }
 
-    public function test__implements__ContextManagerInterface()
+    public function test__implements__ContextManagerInterface() : void
     {
         $this->assertImplementsInterface(ContextManagerInterface::class, AbstractManagedErrorHandler::class);
     }
 
-    public function test__construct__withoutArguments()
+    public function test__construct__withoutArguments() : void
     {
         $handler = $this->getMockBuilder(AbstractManagedErrorHandler::class)
                         ->getMockForAbstractClass();
         $this->assertEquals(E_ALL | E_STRICT, $handler->getErrorTypes());
     }
 
-    public function test__construct__withArgument()
+    public function test__construct__withArgument() : void
     {
         $handler = $this->getMockBuilder(AbstractManagedErrorHandler::class)
                         ->setConstructorArgs([123])
@@ -54,7 +54,7 @@ final class AbstractManagedErrorHandlerTest extends TestCase
     /**
      * @runInSeparateProcess
      */
-    public function test__enterContextt()
+    public function test__enterContextt() : void
     {
         $handler = $this->getMockBuilder(AbstractManagedErrorHandler::class)
                         ->setConstructorArgs([123])
@@ -69,7 +69,7 @@ final class AbstractManagedErrorHandlerTest extends TestCase
     /**
      * @runInSeparateProcess
      */
-    public function test__exitContextt()
+    public function test__exitContextt() : void
     {
         $handler = $this->getMockBuilder(AbstractManagedErrorHandler::class)
                         ->setConstructorArgs([123])

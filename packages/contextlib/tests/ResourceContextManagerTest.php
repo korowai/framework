@@ -29,7 +29,7 @@ final class ResourceContextManagerTest extends TestCase
     use GetContextFunctionMockTrait;
     use ExpectFunctionOnceWillReturnTrait;
 
-    public function test__implements__ContextManagerInterface()
+    public function test__implements__ContextManagerInterface() : void
     {
         $this->assertImplementsInterface(ContextManagerInterface::class, ResourceContextManager::class);
     }
@@ -167,7 +167,7 @@ final class ResourceContextManagerTest extends TestCase
     /**
      * @runInSeprarateProcess
      */
-    public function test__construct__setsDefaultDestructor__oci8_collection()
+    public function test__construct__setsDefaultDestructor__oci8_collection() : void
     {
         $resource = $this->getMockBuilder(\StdClass::class)
                          ->setMethods(['free'])
@@ -188,7 +188,7 @@ final class ResourceContextManagerTest extends TestCase
     /**
      * @runInSeprarateProcess
      */
-    public function test__construct__setsDefaultDestructor__oci8_lob()
+    public function test__construct__setsDefaultDestructor__oci8_lob() : void
     {
         $resource = $this->getMockBuilder(\StdClass::class)
                          ->setMethods(['free'])
@@ -209,7 +209,7 @@ final class ResourceContextManagerTest extends TestCase
     /**
      * @runInSeprarateProcess
      */
-    public function test__construct__setsDefaultDestructor__dirStream()
+    public function test__construct__setsDefaultDestructor__dirStream() : void
     {
         $this->expectFunctionOnceWillReturn('get_resource_type', ['foo'], 'stream');
         $this->expectFunctionOnceWillReturn('stream_get_meta_data', ['foo'], ['stream_type' => 'dir']);
@@ -220,7 +220,7 @@ final class ResourceContextManagerTest extends TestCase
     /**
      * @runInSeparateProcess
      */
-    public function test__construct__setsDefaultDestructor__nonDirStream()
+    public function test__construct__setsDefaultDestructor__nonDirStream() : void
     {
         $this->expectFunctionOnceWillReturn('get_resource_type', ['foo'], 'stream');
         $this->expectFunctionOnceWillReturn('stream_get_meta_data', ['foo'], ['stream_type' => 'baz']);
@@ -228,13 +228,13 @@ final class ResourceContextManagerTest extends TestCase
         $this->assertEquals('\\fclose', $manager->getDestructor());
     }
 
-    public function test__enterContext()
+    public function test__enterContext() : void
     {
         $manager = new ResourceContextManager('foo', function () {});
         $this->assertSame('foo', $manager->enterContext());
     }
 
-    public function test__exitContext__withNullDestructor()
+    public function test__exitContext__withNullDestructor() : void
     {
         $this->expectFunctionOnceWillReturn('get_resource_type', ['dba persistent'], 'dba persistent');
         $manager = new ResourceContextManager('dba persistent');
@@ -245,7 +245,7 @@ final class ResourceContextManagerTest extends TestCase
     /**
      * @runInSeparateProcess
      */
-    public function test__exitContext__withCallableDestructor()
+    public function test__exitContext__withCallableDestructor() : void
     {
         $destructor = $this->getMockBuilder(\StdClass::class)
                            ->setMethods(['__invoke'])

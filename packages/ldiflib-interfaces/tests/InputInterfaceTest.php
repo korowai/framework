@@ -22,7 +22,7 @@ use Korowai\Testing\LdiflibInterfaces\TestCase;
  */
 final class InputInterfaceTest extends TestCase
 {
-    public function test__dummyImplementation()
+    public function test__dummyImplementation() : void
     {
         $dummy = new class implements InputInterface {
             use InputInterfaceTrait;
@@ -30,7 +30,7 @@ final class InputInterfaceTest extends TestCase
         $this->assertImplementsInterface(InputInterface::class, $dummy);
     }
 
-    public function test__objectPropertyGettersMap()
+    public function test__objectPropertyGettersMap() : void
     {
         $expect = [
             'sourceString'      => 'getSourceString',

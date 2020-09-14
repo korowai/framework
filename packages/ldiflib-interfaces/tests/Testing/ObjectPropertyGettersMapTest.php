@@ -21,7 +21,7 @@ use Korowai\Testing\LdiflibInterfaces\TestCase;
  */
 final class ObjectPropertyGettersMapTest extends TestCase
 {
-    public function test__getObjectPropertyGettersMap()
+    public function test__getObjectPropertyGettersMap() : void
     {
         $this->assertIsArray(ObjectPropertyGettersMap::getObjectPropertyGettersMap());
     }

@@ -46,7 +46,7 @@ final class IndexMapArrayCombineAlgorithmTest extends TestCase
     /**
      * @dataProvider arrayCombineProvider
      */
-    public function test__invoke(array $expected, array $old, array $new)
+    public function test__invoke(array $expected, array $old, array $new) : void
     {
         $combine = new Algorithm;
         $this->assertSame($expected, $combine($old, $new));
@@ -105,7 +105,7 @@ final class IndexMapArrayCombineAlgorithmTest extends TestCase
     /**
      * @dataProvider internalErrorCases
      */
-    public function test__invoke__internalError($combine, $old, $new)
+    public function test__invoke__internalError($combine, $old, $new) : void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('internal error');

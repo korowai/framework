@@ -57,12 +57,12 @@ final class ContextFactoryStackTest extends TestCase
         };
     }
 
-    public function test__implements__ContextFactoryStackInterface()
+    public function test__implements__ContextFactoryStackInterface() : void
     {
         $this->assertImplementsInterface(ContextFactoryStackInterface::class, ContextFactoryStack::class);
     }
 
-    public function test__implements__ContextFactoryInterface()
+    public function test__implements__ContextFactoryInterface() : void
     {
         $this->assertImplementsInterface(ContextFactoryInterface::class, ContextFactoryStack::class);
     }
@@ -71,7 +71,7 @@ final class ContextFactoryStackTest extends TestCase
      * Need to run separate process to deal with a fresh singleton instance.
      * @runInSeparateProcess
      */
-    public function test__basicStackMethods()
+    public function test__basicStackMethods() : void
     {
         $f0 = $this->getDummyContextFactory();
         $f1 = $this->getDummyContextFactory();
@@ -109,7 +109,7 @@ final class ContextFactoryStackTest extends TestCase
      * Need to run separate process to deal with a fresh singleton instance.
      * @runInSeparateProcess
      */
-    public function test__getContextManager__onEmptyStack()
+    public function test__getContextManager__onEmptyStack() : void
     {
         $stack = ContextFactoryStack::getInstance();
 
@@ -120,7 +120,7 @@ final class ContextFactoryStackTest extends TestCase
      * Need to run separate process to deal with a fresh singleton instance.
      * @runInSeparateProcess
      */
-    public function test__getContextManager()
+    public function test__getContextManager() : void
     {
         $cm0 = $this->getDummyContextManager();
         $cm1 = $this->getDummyContextManager();

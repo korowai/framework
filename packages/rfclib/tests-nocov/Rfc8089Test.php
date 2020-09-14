@@ -64,7 +64,7 @@ final class Rfc8089Test extends TestCase
     /**
      * @dataProvider FILE_AUTH__cases
      */
-    public function test__FILE_AUTH__matches(string $string, array $pieces)
+    public function test__FILE_AUTH__matches(string $string, array $pieces) : void
     {
         $this->assertArrayHasKey('file_auth', $pieces);
         $this->assertArrayHasKey('host', $pieces);
@@ -74,7 +74,7 @@ final class Rfc8089Test extends TestCase
     /**
      * @dataProvider non__FILE_AUTH__cases
      */
-    public function test__FILE_AUTH__notMatches(string $string)
+    public function test__FILE_AUTH__notMatches(string $string) : void
     {
         $this->assertRfcNotMatches($string, 'FILE_AUTH');
     }
@@ -110,7 +110,7 @@ final class Rfc8089Test extends TestCase
     /**
      * @dataProvider LOCAL_PATH__cases
      */
-    public function test__LOCAL_PATH__matches(string $string, array $pieces)
+    public function test__LOCAL_PATH__matches(string $string, array $pieces) : void
     {
         $this->assertArrayHasKey('local_path', $pieces);
         $this->assertArrayHasKey('path_absolute', $pieces);
@@ -120,7 +120,7 @@ final class Rfc8089Test extends TestCase
     /**
      * @dataProvider non__LOCAL_PATH__cases
      */
-    public function test__LOCAL_PATH__notMatches(string $string)
+    public function test__LOCAL_PATH__notMatches(string $string) : void
     {
         $this->assertRfcNotMatches($string, 'LOCAL_PATH');
     }
@@ -161,7 +161,7 @@ final class Rfc8089Test extends TestCase
     /**
      * @dataProvider AUTH_PATH__cases
      */
-    public function test__AUTH_PATH__matches(string $string, array $pieces)
+    public function test__AUTH_PATH__matches(string $string, array $pieces) : void
     {
         $this->assertArrayHasKey('auth_path', $pieces);
         $this->assertArrayHasKey('file_auth', $pieces);
@@ -172,7 +172,7 @@ final class Rfc8089Test extends TestCase
     /**
      * @dataProvider non__AUTH_PATH__cases
      */
-    public function test__AUTH_PATH__notMatches(string $string)
+    public function test__AUTH_PATH__notMatches(string $string) : void
     {
         $this->assertRfcNotMatches($string, 'AUTH_PATH');
     }
@@ -214,7 +214,7 @@ final class Rfc8089Test extends TestCase
     /**
      * @dataProvider FILE_HIER_PART__cases
      */
-    public function test__FILE_HIER_PART__matches(string $string, array $pieces)
+    public function test__FILE_HIER_PART__matches(string $string, array $pieces) : void
     {
         $this->assertArrayHasKey('file_hier_part', $pieces);
         $this->assertArrayHasKey('auth_path', $pieces);
@@ -225,7 +225,7 @@ final class Rfc8089Test extends TestCase
     /**
      * @dataProvider non__FILE_HIER_PART__cases
      */
-    public function test__FILE_HIER_PART__notMatches(string $string)
+    public function test__FILE_HIER_PART__notMatches(string $string) : void
     {
         $this->assertRfcNotMatches($string, 'FILE_HIER_PART');
     }
@@ -234,7 +234,7 @@ final class Rfc8089Test extends TestCase
     // FILE_SCHEME
     //
 
-    public function test__FILE_SCHEME()
+    public function test__FILE_SCHEME() : void
     {
         $this->assertSame('(?<file_scheme>file)', Rfc8089::FILE_SCHEME);
     }
@@ -299,7 +299,7 @@ final class Rfc8089Test extends TestCase
     /**
      * @dataProvider FILE_URI__cases
      */
-    public function test__FILE_URI__matches(string $string, array $pieces)
+    public function test__FILE_URI__matches(string $string, array $pieces) : void
     {
         $this->assertArrayHasKey('file_uri', $pieces);
         $this->assertArrayHasKey('file_scheme', $pieces);
@@ -310,7 +310,7 @@ final class Rfc8089Test extends TestCase
     /**
      * @dataProvider non__FILE_URI__cases
      */
-    public function test__FILE_URI__notMatches(string $string)
+    public function test__FILE_URI__notMatches(string $string) : void
     {
         $this->assertRfcNotMatches($string, 'FILE_URI');
     }

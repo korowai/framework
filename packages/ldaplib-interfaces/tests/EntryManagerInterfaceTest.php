@@ -30,19 +30,19 @@ final class EntryManagerInterfaceTest extends TestCase
         };
     }
 
-    public function test__dummyImplementation()
+    public function test__dummyImplementation() : void
     {
         $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(EntryManagerInterface::class, $dummy);
     }
 
-    public function test__objectPropertyGettersMap()
+    public function test__objectPropertyGettersMap() : void
     {
         $expect = [];
         $this->assertObjectPropertyGetters($expect, EntryManagerInterface::class);
     }
 
-    public function test__add()
+    public function test__add() : void
     {
         $dummy = $this->createDummyInstance();
 
@@ -51,7 +51,7 @@ final class EntryManagerInterfaceTest extends TestCase
         $this->assertNull($dummy->add($entry));
     }
 
-    public function test__add__withArgTypeError()
+    public function test__add__withArgTypeError() : void
     {
         $dummy = $this->createDummyInstance();
 
@@ -60,7 +60,7 @@ final class EntryManagerInterfaceTest extends TestCase
         $dummy->add(null);
     }
 
-    public function test__update()
+    public function test__update() : void
     {
         $dummy = $this->createDummyInstance();
 
@@ -69,7 +69,7 @@ final class EntryManagerInterfaceTest extends TestCase
         $this->assertNull($dummy->update($entry));
     }
 
-    public function test__update__withArgTypeError()
+    public function test__update__withArgTypeError() : void
     {
         $dummy = $this->createDummyInstance();
 
@@ -78,7 +78,7 @@ final class EntryManagerInterfaceTest extends TestCase
         $dummy->update(null);
     }
 
-    public function test__rename()
+    public function test__rename() : void
     {
         $dummy = $this->createDummyInstance();
 
@@ -87,7 +87,7 @@ final class EntryManagerInterfaceTest extends TestCase
         $this->assertNull($dummy->rename($entry, '', false));
     }
 
-    public function prov__rename__withArgTypeError()
+    public function prov__rename__withArgTypeError() : array
     {
         $entry = $this->createStub(EntryInterface::class);
         return [
@@ -100,7 +100,7 @@ final class EntryManagerInterfaceTest extends TestCase
     /**
      * @dataProvider prov__rename__withArgTypeError
      */
-    public function test__rename__withArgTypeError(array $args, string $message)
+    public function test__rename__withArgTypeError(array $args, string $message) : void
     {
         $dummy = $this->createDummyInstance();
 
@@ -109,7 +109,7 @@ final class EntryManagerInterfaceTest extends TestCase
         $dummy->rename(...$args);
     }
 
-    public function test__delete()
+    public function test__delete() : void
     {
         $dummy = $this->createDummyInstance();
 
@@ -118,7 +118,7 @@ final class EntryManagerInterfaceTest extends TestCase
         $this->assertNull($dummy->delete($entry));
     }
 
-    public function test__delete__withArgTypeError()
+    public function test__delete__withArgTypeError() : void
     {
         $dummy = $this->createDummyInstance();
 

@@ -21,7 +21,7 @@ use Korowai\Lib\Ldif\Exception\NoRulesDefinedException;
  */
 final class NoRulesDefinedExceptionTest extends TestCase
 {
-    public function test__extendsInvalidArgumentException()
+    public function test__extendsInvalidArgumentException() : void
     {
         $this->assertExtendsClass(\RuntimeException::class, NoRulesDefinedException::class);
     }
@@ -37,7 +37,7 @@ final class NoRulesDefinedExceptionTest extends TestCase
     /**
      * @dataProvider getMessage__cases
      */
-    public function test__getMessage(array $args, string $expect)
+    public function test__getMessage(array $args, string $expect) : void
     {
         $e = new NoRulesDefinedException(...$args);
         $this->assertEquals($expect, $e->getMessage());

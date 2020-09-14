@@ -425,7 +425,7 @@ final class LdapLinkTest extends TestCase
         $this->examineMethodWithInvalidArgType('add', $resource, $args, $exception, $message);
     }
 
-    public function test__add__withInvalidLdapLink()
+    public function test__add__withInvalidLdapLink() : void
     {
         $this->examineMethodWithInvalidLdapLink('add', ['', []]);
     }
@@ -498,7 +498,7 @@ final class LdapLinkTest extends TestCase
         $this->examineMethodWithInvalidArgType('bind', $resource, $args, $exception, $message);
     }
 
-    public function test__bind__withInvalidLdapLink()
+    public function test__bind__withInvalidLdapLink() : void
     {
         $this->examineMethodWithInvalidLdapLink('bind', ['', '']);
     }
@@ -548,7 +548,7 @@ final class LdapLinkTest extends TestCase
         $this->examineMethodWithInvalidArgType('close', $resource, $args, $exception, $message);
     }
 
-    public function test__close__withInvalidLdapLink()
+    public function test__close__withInvalidLdapLink() : void
     {
         $this->examineMethodWithInvalidLdapLink('close', []);
     }
@@ -615,7 +615,7 @@ final class LdapLinkTest extends TestCase
         $this->examineMethodWithInvalidArgType('compare', $resource, $args, $exception, $message);
     }
 
-    public function test__compare__withInvalidLdapLink()
+    public function test__compare__withInvalidLdapLink() : void
     {
         $this->examineMethodWithInvalidLdapLink('compare', ['', '', '']);
     }
@@ -734,7 +734,7 @@ final class LdapLinkTest extends TestCase
         static::examineMethodWithInvalidArgType('delete', $resource, $args, $exception, $message);
     }
 
-    public function test__delete__withInvalidLdapLink()
+    public function test__delete__withInvalidLdapLink() : void
     {
         $this->examineMethodWithInvalidLdapLink('delete', ['']);
     }
@@ -907,7 +907,7 @@ final class LdapLinkTest extends TestCase
         static::examineMethodWithInvalidArgType('errno', $resource, $args, $exception, $message);
     }
 
-    public function test__errno__withInvalidLdapLink()
+    public function test__errno__withInvalidLdapLink() : void
     {
         $this->examineMethodWithInvalidLdapLink('errno', []);
     }
@@ -962,7 +962,7 @@ final class LdapLinkTest extends TestCase
         static::examineMethodWithInvalidArgType('error', $resource, $args, $exception, $message);
     }
 
-    public function test__error__withInvalidLdapLink()
+    public function test__error__withInvalidLdapLink() : void
     {
         $this->examineMethodWithInvalidLdapLink('error', []);
     }
@@ -1161,7 +1161,7 @@ final class LdapLinkTest extends TestCase
         static::examineMethodWithInvalidArgType('get_option', $resource, $args, $exception, $message);
     }
 
-    public function test__get_option__withInvalidLdapLink()
+    public function test__get_option__withInvalidLdapLink() : void
     {
         $this->examineMethodWithInvalidLdapLink('get_option', [0, &$var]);
     }
@@ -1198,7 +1198,7 @@ final class LdapLinkTest extends TestCase
         $this->examineMethodWithInvalidArgType('list', $resource, $args, $exception, $message);
     }
 
-    public function test__list__withInvalidLdapLink()
+    public function test__list__withInvalidLdapLink() : void
     {
         $this->examineMethodWithInvalidLdapLink('list', ['', '']);
     }
@@ -1234,7 +1234,7 @@ final class LdapLinkTest extends TestCase
         $this->examineMethodWithInvalidArgType('mod_add', $resource, $args, $exception, $message);
     }
 
-    public function test__mod_add__withInvalidLdapLink()
+    public function test__mod_add__withInvalidLdapLink() : void
     {
         $this->examineMethodWithInvalidLdapLink('mod_add', ['', []]);
     }
@@ -1270,7 +1270,7 @@ final class LdapLinkTest extends TestCase
         $this->examineMethodWithInvalidArgType('mod_del', $resource, $args, $exception, $message);
     }
 
-    public function test__mod_del__withInvalidLdapLink()
+    public function test__mod_del__withInvalidLdapLink() : void
     {
         $this->examineMethodWithInvalidLdapLink('mod_del', ['', []]);
     }
@@ -1306,7 +1306,7 @@ final class LdapLinkTest extends TestCase
         $this->examineMethodWithInvalidArgType('mod_replace', $resource, $args, $exception, $message);
     }
 
-    public function test__mod_replace__withInvalidLdapLink()
+    public function test__mod_replace__withInvalidLdapLink() : void
     {
         $this->examineMethodWithInvalidLdapLink('mod_replace', ['', []]);
     }
@@ -1342,7 +1342,7 @@ final class LdapLinkTest extends TestCase
         $this->examineMethodWithInvalidArgType('modify_batch', $resource, $args, $exception, $message);
     }
 
-    public function test__modify_batch__withInvalidLdapLink()
+    public function test__modify_batch__withInvalidLdapLink() : void
     {
         $this->examineMethodWithInvalidLdapLink('modify_batch', ['', []]);
     }
@@ -1378,7 +1378,7 @@ final class LdapLinkTest extends TestCase
         $this->examineMethodWithInvalidArgType('modify', $resource, $args, $exception, $message);
     }
 
-    public function test__modify__withInvalidLdapLink()
+    public function test__modify__withInvalidLdapLink() : void
     {
         $this->examineMethodWithInvalidLdapLink('modify', ['', []]);
     }
@@ -1415,7 +1415,7 @@ final class LdapLinkTest extends TestCase
         $this->examineMethodWithInvalidArgType('read', $resource, $args, $exception, $message);
     }
 
-    public function test__read__withInvalidLdapLink()
+    public function test__read__withInvalidLdapLink() : void
     {
         $this->examineMethodWithInvalidLdapLink('read', ['', '']);
     }
@@ -1480,7 +1480,7 @@ final class LdapLinkTest extends TestCase
         $this->examineMethodWithInvalidArgType('rename', $resource, $args, $exception, $message);
     }
 
-    public function test__rename__withInvalidLdapLink()
+    public function test__rename__withInvalidLdapLink() : void
     {
         $this->examineMethodWithInvalidLdapLink('rename', ['', '', '', false]);
     }
@@ -1580,7 +1580,7 @@ final class LdapLinkTest extends TestCase
         $this->examineMethodWithInvalidArgType('sasl_bind', $resource, $args, $exception, $message);
     }
 
-    public function test__sasl_bind__withInvalidLdapLink()
+    public function test__sasl_bind__withInvalidLdapLink() : void
     {
         $this->examineMethodWithInvalidLdapLink('sasl_bind', ['', '']);
     }
@@ -1617,7 +1617,7 @@ final class LdapLinkTest extends TestCase
         $this->examineMethodWithInvalidArgType('search', $resource, $args, $exception, $message);
     }
 
-    public function test__search__withInvalidLdapLink()
+    public function test__search__withInvalidLdapLink() : void
     {
         $this->examineMethodWithInvalidLdapLink('search', ['', '']);
     }
@@ -1681,7 +1681,7 @@ final class LdapLinkTest extends TestCase
         $this->examineMethodWithInvalidArgType('set_option', $resource, $args, $exception, $message);
     }
 
-    public function test__set_option__withInvalidLdapLink()
+    public function test__set_option__withInvalidLdapLink() : void
     {
         $this->examineMethodWithInvalidLdapLink('set_option', [0, '']);
     }
@@ -1739,7 +1739,7 @@ final class LdapLinkTest extends TestCase
         $this->examineMethodWithInvalidArgType('set_rebind_proc', $resource, $args, $exception, $message);
     }
 
-    public function test__set_rebind_proc__withInvalidLdapLink()
+    public function test__set_rebind_proc__withInvalidLdapLink() : void
     {
         $this->examineMethodWithInvalidLdapLink('set_rebind_proc', ['']);
     }
@@ -1815,7 +1815,7 @@ final class LdapLinkTest extends TestCase
         $this->examineMethodWithInvalidArgType('start_tls', $resource, $args, $exception, $message);
     }
 
-    public function test__start_tls__withInvalidLdapLink()
+    public function test__start_tls__withInvalidLdapLink() : void
     {
         $this->examineMethodWithInvalidLdapLink('start_tls', []);
     }
@@ -1846,7 +1846,7 @@ final class LdapLinkTest extends TestCase
         $this->examineMethodWithInvalidArgType('unbind', $resource, $args, $exception, $message);
     }
 
-    public function test__unbind__withInvalidLdapLink()
+    public function test__unbind__withInvalidLdapLink() : void
     {
         $this->examineMethodWithInvalidLdapLink('unbind', []);
     }

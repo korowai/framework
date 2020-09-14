@@ -28,17 +28,17 @@ use Korowai\Testing\Ldiflib\TestCase;
  */
 final class SnippetTest extends TestCase
 {
-    public function test__implements__SnippetInterface()
+    public function test__implements__SnippetInterface() : void
     {
         $this->assertImplementsInterface(SnippetInterface::class, Snippet::class);
     }
 
-    public function test__uses__DecoratesLocationInterface()
+    public function test__uses__DecoratesLocationInterface() : void
     {
         $this->assertUsesTrait(DecoratesLocationInterface::class, Snippet::class);
     }
 
-    public function test__createFromLocations()
+    public function test__createFromLocations() : void
     {
         $input = $this->getMockBuilder(InputInterface::class)
                       ->getMockForAbstractClass();
@@ -72,7 +72,7 @@ final class SnippetTest extends TestCase
         $this->assertSame(10, $snippet->getLength());
     }
 
-    public function test__createFromLocations__withInconsistentLocations()
+    public function test__createFromLocations__withInconsistentLocations() : void
     {
         $input1 = $this->getMockBuilder(InputInterface::class)
                        ->getMockForAbstractClass();
@@ -102,7 +102,7 @@ final class SnippetTest extends TestCase
         Snippet::createFromLocations($begin, $end);
     }
 
-    public function test__createFromLocationAndState()
+    public function test__createFromLocationAndState() : void
     {
         $input = $this->getMockBuilder(InputInterface::class)
                       ->getMockForAbstractClass();
@@ -143,7 +143,7 @@ final class SnippetTest extends TestCase
         $this->assertSame(10, $snippet->getLength());
     }
 
-    public function test__createFromLocationAndState__withInconsistentLocations()
+    public function test__createFromLocationAndState__withInconsistentLocations() : void
     {
         $input1 = $this->getMockBuilder(InputInterface::class)
                        ->getMockForAbstractClass();
@@ -181,7 +181,7 @@ final class SnippetTest extends TestCase
         Snippet::createFromLocationAndState($begin, $state);
     }
 
-    public function test__construct()
+    public function test__construct() : void
     {
         $location = $this->getMockBuilder(LocationInterface::class)
                          ->getMockForAbstractClass();
@@ -191,7 +191,7 @@ final class SnippetTest extends TestCase
         $this->assertSame(12, $snippet->getLength());
     }
 
-    public function test__init()
+    public function test__init() : void
     {
         $location1 = $this->getMockBuilder(LocationInterface::class)
                           ->getMockForAbstractClass();
@@ -206,7 +206,7 @@ final class SnippetTest extends TestCase
         $this->assertSame(24, $snippet->getLength());
     }
 
-    public function test__setLength()
+    public function test__setLength() : void
     {
         $location = $this->getMockBuilder(LocationInterface::class)
                          ->getMockForAbstractClass();
@@ -218,7 +218,7 @@ final class SnippetTest extends TestCase
         $this->assertSame(24, $snippet->getLength());
     }
 
-    public function test__getEndOffset()
+    public function test__getEndOffset() : void
     {
         $location = $this->getMockBuilder(LocationInterface::class)
                          ->getMockForAbstractClass();
@@ -232,7 +232,7 @@ final class SnippetTest extends TestCase
         $this->assertSame(12 + 7, $snippet->getEndOffset());
     }
 
-    public function test__getSourceLength()
+    public function test__getSourceLength() : void
     {
         $input = $this->getMockBuilder(InputInterface::class)
                       ->getMockForAbstractClass();
@@ -265,7 +265,7 @@ final class SnippetTest extends TestCase
         $this->assertSame(7 - 2, $snippet->getSourceLength());
     }
 
-    public function test__getSourceEndOffset()
+    public function test__getSourceEndOffset() : void
     {
         $input = $this->getMockBuilder(InputInterface::class)
                       ->getMockForAbstractClass();
@@ -301,7 +301,7 @@ final class SnippetTest extends TestCase
     /**
      * @dataProvider encodingCases
      */
-    public function test__getSourceCharLength(...$enc)
+    public function test__getSourceCharLength(...$enc) : void
     {
         $input = $this->getMockBuilder(InputInterface::class)
                       ->getMockForAbstractClass();
@@ -336,7 +336,7 @@ final class SnippetTest extends TestCase
     /**
      * @dataProvider encodingCases
      */
-    public function test__getSourceCharEndOffset(...$enc)
+    public function test__getSourceCharEndOffset(...$enc) : void
     {
         $input = $this->getMockBuilder(InputInterface::class)
                       ->getMockForAbstractClass();

@@ -25,17 +25,17 @@ use Korowai\Testing\Ldiflib\TestCase;
  */
 final class CursorTest extends TestCase
 {
-    public function test__implements__CursorInterface()
+    public function test__implements__CursorInterface() : void
     {
         $this->assertImplementsInterface(CursorInterface::class, Cursor::class);
     }
 
-    public function test__extends__Location()
+    public function test__extends__Location() : void
     {
         $this->assertExtendsClass(Location::class, Cursor::class);
     }
 
-    public function test__getClonedLocation()
+    public function test__getClonedLocation() : void
     {
         $input = $this->createMock(Input::class);
 
@@ -60,7 +60,7 @@ final class CursorTest extends TestCase
         $this->assertSame(321, $clone3->getOffset());
     }
 
-    public function test__moveBy()
+    public function test__moveBy() : void
     {
         $input = $this->createMock(Input::class);
         $cursor = new Cursor($input, 0);
@@ -77,7 +77,7 @@ final class CursorTest extends TestCase
         $this->assertSame(3, $cursor->getOffset());
     }
 
-    public function test__moveTo()
+    public function test__moveTo() : void
     {
         $input = $this->createMock(Input::class);
         $cursor = new Cursor($input, 0);

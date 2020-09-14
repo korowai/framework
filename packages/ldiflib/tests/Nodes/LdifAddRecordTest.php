@@ -32,12 +32,12 @@ final class LdifAddRecordTest extends TestCase
         $this->assertExtendsClass(AbstractChangeRecord::class, LdifAddRecord::class);
     }
 
-    public function test__implements__LdifAddRecordInterface()
+    public function test__implements__LdifAddRecordInterface() : void
     {
         $this->assertImplementsInterface(LdifAddRecordInterface::class, LdifAddRecord::class);
     }
 
-    public function test__uses__HasAttrValSpecs()
+    public function test__uses__HasAttrValSpecs() : void
     {
         $this->assertUsesTrait(HasAttrValSpecs::class, LdifAddRecord::class);
     }
@@ -79,20 +79,20 @@ final class LdifAddRecordTest extends TestCase
     /**
      * @dataProvider construct__cases
      */
-    public function test__construct(array $args, array $expect)
+    public function test__construct(array $args, array $expect) : void
     {
         $record = new LdifAddRecord(...$args);
         $this->assertHasPropertiesSameAs($expect, $record);
     }
 
-    public function test__setAttrValSpecs()
+    public function test__setAttrValSpecs() : void
     {
         $record = new LdifAddRecord("dc=example,dc=org");
         $this->assertSame($record, $record->setAttrValSpecs(['X']));
         $this->assertSame(['X'], $record->getAttrValSpecs());
     }
 
-    public function test__acceptRecordVisitor()
+    public function test__acceptRecordVisitor() : void
     {
         $visitor = $this->getMockBuilder(RecordVisitorInterface::class)
                         ->getMockForAbstractClass();

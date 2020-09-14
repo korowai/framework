@@ -30,19 +30,19 @@ final class ContextFactoryInterfaceTest extends TestCase
         };
     }
 
-    public function test__dummyImplementation()
+    public function test__dummyImplementation() : void
     {
         $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(ContextFactoryInterface::class, $dummy);
     }
 
-    public function test__objectPropertyGettersMap()
+    public function test__objectPropertyGettersMap() : void
     {
         $expect = [];
         $this->assertObjectPropertyGetters($expect, ContextFactoryInterface::class);
     }
 
-    public function test__getContextManager()
+    public function test__getContextManager() : void
     {
         $dummy = $this->createDummyInstance();
 
@@ -53,7 +53,7 @@ final class ContextFactoryInterfaceTest extends TestCase
         $this->assertSame($dummy->contextManager, $dummy->getContextManager(''));
     }
 
-    public function test__getContextManager__withTypeError()
+    public function test__getContextManager__withTypeError() : void
     {
         $dummy = $this->createDummyInstance();
         $dummy->contextManager = '';

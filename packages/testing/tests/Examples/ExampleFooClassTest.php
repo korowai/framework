@@ -23,24 +23,24 @@ use Korowai\Testing\Examples\ExampleBazTrait;
  */
 final class ExampleFooClassTest extends TestCase
 {
-    public function test__implements__ExampleFooInterface()
+    public function test__implements__ExampleFooInterface() : void
     {
         $this->assertImplementsInterface(ExampleFooInterface::class, ExampleFooClass::class);
     }
 
-    public function test__uses__ExampleBazTrait()
+    public function test__uses__ExampleBazTrait() : void
     {
         $this->assertUsesTrait(ExampleBazTrait::class, ExampleFooClass::class);
     }
 
-    public function test__construct()
+    public function test__construct() : void
     {
         $object = new ExampleFooClass(['foo' => 'FOO', 'baz' => 'BAZ']);
         $this->assertSame('FOO', $object->getFoo());
         $this->assertSame('BAZ', $object->getBaz());
     }
 
-    public function test__setFoo()
+    public function test__setFoo() : void
     {
         $object = new ExampleFooClass();
         $this->assertNull($object->getFoo());
@@ -48,7 +48,7 @@ final class ExampleFooClassTest extends TestCase
         $this->assertSame('FOO', $object->getFoo());
     }
 
-    public function test__setBaz()
+    public function test__setBaz() : void
     {
         $object = new ExampleFooClass();
         $this->assertNull($object->getBaz());

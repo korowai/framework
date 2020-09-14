@@ -29,12 +29,12 @@ final class TestCaseTest extends TestCase
         return self::class;
     }
 
-    public function test__extends__TestCase()
+    public function test__extends__TestCase() : void
     {
         $this->assertExtendsClass(BaseTestCase::class, parent::class);
     }
 
-    public function test__objectPropertyGettersMap()
+    public function test__objectPropertyGettersMap() : void
     {
         $expected = array_merge_recursive(
             \Korowai\Testing\ObjectPropertyGettersMap::getObjectPropertyGettersMap(),
@@ -44,31 +44,31 @@ final class TestCaseTest extends TestCase
         $this->assertSame($expected, parent::objectPropertyGettersMap());
     }
 
-    public function test__getRfcFqdnConstName()
+    public function test__getRfcFqdnConstName() : void
     {
         $this->assertSame(self::class.'::FOO', static::getRfcFqdnConstName('FOO'));
         $this->assertSame(self::class.'::BAR', static::getRfcFqdnConstName('BAR'));
     }
 
-    public function test__getRfcRegexp()
+    public function test__getRfcRegexp() : void
     {
         $this->assertSame('/^(?<foo>foo)$/D', static::getRfcRegexp(self::class.'::FOO'));
         $this->assertSame('/^(?<bar>bar)$/D', static::getRfcRegexp(self::class.'::BAR'));
     }
 
-    public function test__assertRfcMatches()
+    public function test__assertRfcMatches() : void
     {
         $this->assertRfcMatches('foo', 'FOO', ['foo' => ['foo',0], 'bar' => false]);
         $this->assertRfcMatches('bar', 'BAR', ['foo' => false, 'bar' => ['bar', 0]]);
     }
 
-    public function test__assertRfcNotMatches()
+    public function test__assertRfcNotMatches() : void
     {
         $this->assertRfcNotMatches('bar', 'FOO');
         $this->assertRfcNotMatches('foo', 'BAR');
     }
 
-    public function test__findRfcConstants()
+    public function test__findRfcConstants() : void
     {
         $constants = self::findRfcConstants();
         $this->assertArrayHasKey('FOO', $constants);
@@ -77,7 +77,7 @@ final class TestCaseTest extends TestCase
         $this->assertSame($constants['BAR'], self::BAR);
     }
 
-    public function test__findRfcCaptures()
+    public function test__findRfcCaptures() : void
     {
         $this->assertSame(['FOO' => ['foo' => 'foo']], static::findRfcCaptures(['FOO']));
         $this->assertSame(['BAR' => ['bar' => 'bar']], static::findRfcCaptures(['BAR']));

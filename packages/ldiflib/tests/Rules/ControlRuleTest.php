@@ -26,7 +26,7 @@ use Korowai\Testing\Ldiflib\TestCase;
  */
 final class ControlRuleTest extends TestCase
 {
-    public function test__extendsAbstractRfcRule()
+    public function test__extendsAbstractRfcRule() : void
     {
         $this->assertExtendsClass(AbstractRfcRule::class, ControlRule::class);
     }
@@ -54,7 +54,7 @@ final class ControlRuleTest extends TestCase
     /**
      * @dataProvider construct__cases
      */
-    public function test__construct(array $args, array $expect)
+    public function test__construct(array $args, array $expect) : void
     {
         $rule = new ControlRule(...$args);
         $expect = array_merge([
@@ -67,7 +67,7 @@ final class ControlRuleTest extends TestCase
         $this->assertHasPropertiesSameAs($expect, $rule);
     }
 
-    public function test__valueSpecRule()
+    public function test__valueSpecRule() : void
     {
         $rule = new ControlRule;
         $vsRule = new ValueSpecRule;
@@ -282,7 +282,7 @@ final class ControlRuleTest extends TestCase
     /**
      * @dataProvider parseMatched__cases
      */
-    public function test__parseMatched(array $source, array $matches, array $expect)
+    public function test__parseMatched(array $source, array $matches, array $expect) : void
     {
         $state = $this->getParserStateFromSource(...$source);
 
@@ -836,7 +836,7 @@ final class ControlRuleTest extends TestCase
     /**
      * @dataProvider parse__cases
      */
-    public function test__parse(array $source, array $args, array $expect)
+    public function test__parse(array $source, array $args, array $expect) : void
     {
         $state = $this->getParserStateFromSource(...$source);
 

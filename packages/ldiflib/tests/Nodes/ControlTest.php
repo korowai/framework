@@ -23,12 +23,12 @@ use Korowai\Testing\Ldiflib\TestCase;
  */
 final class ControlTest extends TestCase
 {
-    public function test__implmements__ControlInterface()
+    public function test__implmements__ControlInterface() : void
     {
         $this->assertImplementsInterface(ControlInterface::class, Control::class);
     }
 
-    public function test__construct()
+    public function test__construct() : void
     {
         $value = $this->getMockBuilder(ValueSpecInterface::class)
                       ->getMockForAbstractClass();

@@ -33,27 +33,27 @@ final class EntryManagerTest extends TestCase
         return new EntryManager($ldapLink);
     }
 
-    public function test__implements__EntryManagerInterface()
+    public function test__implements__EntryManagerInterface() : void
     {
         $this->assertImplementsInterface(EntryManagerInterface::class, EntryManager::class);
     }
 
-    public function test__implements__LdapLinkWrapperInterface()
+    public function test__implements__LdapLinkWrapperInterface() : void
     {
         $this->assertImplementsInterface(LdapLinkWrapperInterface::class, EntryManager::class);
     }
 
-    public function test__uses__EntryManagerTrait()
+    public function test__uses__EntryManagerTrait() : void
     {
         $this->assertUsesTrait(EntryManagerTrait::class, EntryManager::class);
     }
 
-    public function test__uses__LdapLinkWrapperTrait()
+    public function test__uses__LdapLinkWrapperTrait() : void
     {
         $this->assertUsesTrait(LdapLinkWrapperTrait::class, EntryManager::class);
     }
 
-    public function test__construct()
+    public function test__construct() : void
     {
         $link = $this->getMockBuilder(LdapLinkInterface::class)
                      ->getMockForAbstractClass();

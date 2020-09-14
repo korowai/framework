@@ -26,7 +26,7 @@ final class Rfc5234Test extends TestCase
         return Rfc5234::class;
     }
 
-    public function test__constValues()
+    public function test__constValues() : void
     {
         // character lists for character classes
         $this->assertSame('A-Za-z', Rfc5234::ALPHACHARS);

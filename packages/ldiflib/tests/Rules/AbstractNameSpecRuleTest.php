@@ -23,7 +23,7 @@ use Korowai\Testing\Ldiflib\TestCase;
  */
 final class AbstractNameSpecRuleTest extends TestCase
 {
-    public function test__extends__AbstractRfcRule()
+    public function test__extends__AbstractRfcRule() : void
     {
         $this->assertExtendsClass(AbstractRfcRule::class, AbstractNameSpecRule::class);
     }
@@ -36,7 +36,7 @@ final class AbstractNameSpecRuleTest extends TestCase
     /**
      * @dataProvider construct__cases
      */
-    public function test__construct(array $args, array $expect)
+    public function test__construct(array $args, array $expect) : void
     {
         $rule = $this->getMockBuilder(AbstractNameSpecRule::class)
                      ->setConstructorArgs($args)
@@ -285,7 +285,7 @@ final class AbstractNameSpecRuleTest extends TestCase
     /**
      * @dataProvider parseMatched__cases
      */
-    public function test__parseMatched(array $source, array $matches, array $expect)
+    public function test__parseMatched(array $source, array $matches, array $expect) : void
     {
         $state = $this->getParserStateFromSource(...$source);
 

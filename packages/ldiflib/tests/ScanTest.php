@@ -79,7 +79,7 @@ final class ScanTest extends TestCase
     /**
      * @dataProvider matchAt__cases
      */
-    public function test__matchAt(array $case, array $expected)
+    public function test__matchAt(array $case, array $expected) : void
     {
         $location = $this->createLocationMock($case);
         $this->configureLocationMock($location, $case);
@@ -102,7 +102,7 @@ final class ScanTest extends TestCase
     /**
      * @dataProvider matchAhead__cases
      */
-    public function test__matchAhead(array $case, array $expected, int $expMoveTo = null)
+    public function test__matchAhead(array $case, array $expected, int $expMoveTo = null) : void
     {
         $cursor = $this->createCursorMock($case, $expMoveTo);
         $args = array_merge([$case[0], $cursor], count($case) > 2 ? [$case[2]] : []);
@@ -112,7 +112,7 @@ final class ScanTest extends TestCase
     /**
      * @dataProvider matchAt__cases
      */
-    public function test__matchString(array $case, array $expected)
+    public function test__matchString(array $case, array $expected) : void
     {
         $this->assertSame($expected, Scan::matchString(...$case));
     }
@@ -186,7 +186,7 @@ final class ScanTest extends TestCase
     /**
      * @dataProvider matched__cases
      */
-    public function test__matched($key, array $matches, array $expect)
+    public function test__matched($key, array $matches, array $expect) : void
     {
         $this->assertSame($expect['result'], Scan::matched($key, $matches, $string, $offset));
         $this->assertSame($expect['string'], $string);

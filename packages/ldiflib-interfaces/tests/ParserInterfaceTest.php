@@ -37,7 +37,7 @@ final class ParserInterfaceTest extends TestCase
 //        $this->assertImplementsInterface($extends, ParserInterface::class);
 //    }
 //
-    public function test__dummyImplementation()
+    public function test__dummyImplementation() : void
     {
         $dummy = new class implements ParserInterface {
             use ParserInterfaceTrait;
@@ -45,7 +45,7 @@ final class ParserInterfaceTest extends TestCase
         $this->assertImplementsInterface(ParserInterface::class, $dummy);
     }
 
-    public function test__objectPropertyGettersMap()
+    public function test__objectPropertyGettersMap() : void
     {
         $expect = [];
         $this->assertObjectPropertyGetters($expect, ParserInterface::class);

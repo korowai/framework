@@ -22,7 +22,7 @@ use Korowai\Testing\LdiflibInterfaces\TestCase;
  */
 final class SourceLocationInterfaceTest extends TestCase
 {
-    public function test__dummyImplementation()
+    public function test__dummyImplementation() : void
     {
         $dummy = new class implements SourceLocationInterface {
             use SourceLocationInterfaceTrait;
@@ -30,7 +30,7 @@ final class SourceLocationInterfaceTest extends TestCase
         $this->assertImplementsInterface(SourceLocationInterface::class, $dummy);
     }
 
-    public function test__objectPropertyGettersMap()
+    public function test__objectPropertyGettersMap() : void
     {
         $expect = [
             'fileName'                  => 'getSourceFileName',

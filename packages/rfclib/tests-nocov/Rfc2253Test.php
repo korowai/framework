@@ -27,7 +27,7 @@ final class Rfc2253Test extends TestCase
         return Rfc2253::class;
     }
 
-    public function test__characterClasses()
+    public function test__characterClasses() : void
     {
         // character lists for character classes
         $this->assertSame('A-Za-z', Rfc2253::ALPHACHARS);
@@ -46,7 +46,7 @@ final class Rfc2253Test extends TestCase
         $this->assertSame('[^\\\\"]', Rfc2253::QUOTECHAR);
     }
 
-    public function test__simpleProductions()
+    public function test__simpleProductions() : void
     {
         $this->assertSame('(?:[0-9A-Fa-f][0-9A-Fa-f])', Rfc2253::HEXPAIR);
         $this->assertSame('(?:(?:[0-9A-Fa-f][0-9A-Fa-f])+)', Rfc2253::HEXSTRING);
@@ -73,7 +73,7 @@ final class Rfc2253Test extends TestCase
     /**
      * @dataProvider OID__cases
      */
-    public function test__OID__matches(string $string, array $pieces = [])
+    public function test__OID__matches(string $string, array $pieces = []) : void
     {
         $this->assertRfcMatches($string, 'OID', $pieces);
     }
@@ -81,7 +81,7 @@ final class Rfc2253Test extends TestCase
     /**
      * @dataProvider non__OID__cases
      */
-    public function test__OID__notMatches(string $string)
+    public function test__OID__notMatches(string $string) : void
     {
         $this->assertRfcNotMatches($string, 'OID');
     }
@@ -119,7 +119,7 @@ final class Rfc2253Test extends TestCase
     /**
      * @dataProvider STRING__cases
      */
-    public function test__STRING__matches(string $string, array $pieces = [])
+    public function test__STRING__matches(string $string, array $pieces = []) : void
     {
         $this->assertRfcMatches($string, 'STRING', $pieces);
     }
@@ -127,7 +127,7 @@ final class Rfc2253Test extends TestCase
     /**
      * @dataProvider non__STRING__cases
      */
-    public function test__STRING__notMatches(string $string)
+    public function test__STRING__notMatches(string $string) : void
     {
         $this->assertRfcNotMatches($string, 'STRING');
     }
@@ -141,7 +141,7 @@ final class Rfc2253Test extends TestCase
         return self::STRING__cases();
     }
 
-    public function test__ATTRIBUTE_VALUE()
+    public function test__ATTRIBUTE_VALUE() : void
     {
         $this->assertSame(Rfc2253::STRING, Rfc2253::ATTRIBUTE_VALUE);
     }
@@ -176,7 +176,7 @@ final class Rfc2253Test extends TestCase
     /**
      * @dataProvider ATTRIBUTE_TYPE__cases
      */
-    public function test__ATTRIBUTE_TYPE__matches(string $string, array $pieces =[])
+    public function test__ATTRIBUTE_TYPE__matches(string $string, array $pieces =[]) : void
     {
         $this->assertRfcMatches($string, 'ATTRIBUTE_TYPE', $pieces);
     }
@@ -184,7 +184,7 @@ final class Rfc2253Test extends TestCase
     /**
      * @dataProvider non__ATTRIBUTE_TYPE__cases
      */
-    public function test__ATTRIBUTE_TYPE__notMatches(string $string)
+    public function test__ATTRIBUTE_TYPE__notMatches(string $string) : void
     {
         $this->assertRfcNotMatches($string, 'ATTRIBUTE_TYPE');
     }
@@ -228,7 +228,7 @@ final class Rfc2253Test extends TestCase
     /**
      * @dataProvider ATTRIBUTE_TYPE_AND_VALUE__cases
      */
-    public function test__ATTRIBUTE_TYPE_AND_VALUE__matches(string $string, array $pieces =[])
+    public function test__ATTRIBUTE_TYPE_AND_VALUE__matches(string $string, array $pieces =[]) : void
     {
         $this->assertRfcMatches($string, 'ATTRIBUTE_TYPE_AND_VALUE', $pieces);
     }
@@ -236,7 +236,7 @@ final class Rfc2253Test extends TestCase
     /**
      * @dataProvider non__ATTRIBUTE_TYPE_AND_VALUE__cases
      */
-    public function test__ATTRIBUTE_TYPE_AND_VALUE__notMatches(string $string)
+    public function test__ATTRIBUTE_TYPE_AND_VALUE__notMatches(string $string) : void
     {
         $this->assertRfcNotMatches($string, 'ATTRIBUTE_TYPE_AND_VALUE');
     }
@@ -282,7 +282,7 @@ final class Rfc2253Test extends TestCase
     /**
      * @dataProvider NAME_COMPONENT__cases
      */
-    public function test__NAME_COMPONENT__matches(string $string, array $pieces =[])
+    public function test__NAME_COMPONENT__matches(string $string, array $pieces =[]) : void
     {
         $this->assertRfcMatches($string, 'NAME_COMPONENT', $pieces);
     }
@@ -290,7 +290,7 @@ final class Rfc2253Test extends TestCase
     /**
      * @dataProvider non__NAME_COMPONENT__cases
      */
-    public function test__NAME_COMPONENT__notMatches(string $string)
+    public function test__NAME_COMPONENT__notMatches(string $string) : void
     {
         $this->assertRfcNotMatches($string, 'NAME_COMPONENT');
     }
@@ -344,7 +344,7 @@ final class Rfc2253Test extends TestCase
     /**
      * @dataProvider NAME__cases
      */
-    public function test__NAME__matches(string $string, array $pieces =[])
+    public function test__NAME__matches(string $string, array $pieces =[]) : void
     {
         $this->assertRfcMatches($string, 'NAME', $pieces);
     }
@@ -352,7 +352,7 @@ final class Rfc2253Test extends TestCase
     /**
      * @dataProvider non__NAME__cases
      */
-    public function test__NAME__notMatches(string $string)
+    public function test__NAME__notMatches(string $string) : void
     {
         $this->assertRfcNotMatches($string, 'NAME');
     }
@@ -362,7 +362,7 @@ final class Rfc2253Test extends TestCase
     // DISTINGUISHED_NAME
     //
 
-    public function test__DISTINGUISHED_NAME()
+    public function test__DISTINGUISHED_NAME() : void
     {
         $this->assertSame('(?<dn>'.Rfc2253::NAME.'?)', Rfc2253::DISTINGUISHED_NAME);
     }

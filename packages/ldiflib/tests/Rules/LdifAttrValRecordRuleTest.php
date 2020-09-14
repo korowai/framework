@@ -29,7 +29,7 @@ use Korowai\Testing\Ldiflib\TestCase;
  */
 final class LdifAttrValRecordRuleTest extends TestCase
 {
-    public function test__extends__AbstractLdifRecordRule()
+    public function test__extends__AbstractLdifRecordRule() : void
     {
         $this->assertExtendsClass(AbstractLdifRecordRule::class, LdifAttrValRecordRule::class);
     }
@@ -64,7 +64,7 @@ final class LdifAttrValRecordRuleTest extends TestCase
     /**
      * @dataProvider construct__cases
      */
-    public function test__construct(array $args, array $expect)
+    public function test__construct(array $args, array $expect) : void
     {
         $rule = new LdifAttrValRecordRule(...$args);
         $this->assertInstanceOf(DnSpecRule::class, $rule->getDnSpecRule());
@@ -286,7 +286,7 @@ final class LdifAttrValRecordRuleTest extends TestCase
     /**
      * @dataProvider parse__cases
      */
-    public function test__parse(array $source, array $args, array $expect)
+    public function test__parse(array $source, array $args, array $expect) : void
     {
         $state = $this->getParserStateFromSource(...$source);
 

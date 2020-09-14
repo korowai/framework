@@ -25,17 +25,17 @@ use Korowai\Testing\Ldiflib\TestCase;
  */
 final class DecoratesSnippetInterfaceTest extends TestCase
 {
-    public function test__uses__ExposesSnippetInterface()
+    public function test__uses__ExposesSnippetInterface() : void
     {
         $this->assertUsesTrait(ExposesSnippetInterface::class, DecoratesSnippetInterface::class);
     }
 
-    public function test__uses__HasSnippet()
+    public function test__uses__HasSnippet() : void
     {
         $this->assertUsesTrait(HasSnippet::class, DecoratesSnippetInterface::class);
     }
 
-    public function test__snippet()
+    public function test__snippet() : void
     {
         $snippet = $this->getMockBuilder(SnippetInterface::class)
                         ->getMockForAbstractClass();

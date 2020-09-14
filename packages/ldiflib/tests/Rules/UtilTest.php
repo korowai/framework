@@ -123,7 +123,7 @@ final class UtilTest extends TestCase
     /**
      * @dataProvider base64Decode__cases
      */
-    public function test__base64Decode(array $source, array $expect, string $string, int $offset)
+    public function test__base64Decode(array $source, array $expect, string $string, int $offset) : void
     {
         $state = $this->getParserStateFromSource(...$source);
         $result = Util::base64Decode($state, $string, $offset);
@@ -199,7 +199,7 @@ final class UtilTest extends TestCase
     /**
      * @dataProvider utf8Check__cases
      */
-    public function test__utf8Check(array $source, array $expect, string $string, int $offset)
+    public function test__utf8Check(array $source, array $expect, string $string, int $offset) : void
     {
         $state = $this->getParserStateFromSource(...$source);
         $result = Util::utf8Check($state, $string, $offset);
@@ -271,7 +271,7 @@ final class UtilTest extends TestCase
     /**
      * @dataProvider dnCheck__cases
      */
-    public function test__dnCheck(array $source, string $string, int $offset, array $expect)
+    public function test__dnCheck(array $source, string $string, int $offset, array $expect) : void
     {
         $state = $this->getParserStateFromSource(...$source);
         $result = Util::dnCheck($state, $string, $offset);
@@ -340,7 +340,7 @@ final class UtilTest extends TestCase
     /**
      * @dataProvider rdnCheck__cases
      */
-    public function test__rdnCheck(array $source, string $string, int $offset, array $expect)
+    public function test__rdnCheck(array $source, string $string, int $offset, array $expect) : void
     {
         $state = $this->getParserStateFromSource(...$source);
         $result = Util::rdnCheck($state, $string, $offset);

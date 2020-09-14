@@ -28,18 +28,18 @@ final class ExceptionEB3IB4EL extends \Exception
  */
 final class WithContextExecutorTest extends TestCase
 {
-    public function test__implements__ExecutorInterface()
+    public function test__implements__ExecutorInterface() : void
     {
         $this->assertImplementsInterface(ExecutorInterface::class, WithContextExecutor::class);
     }
 
-    public function test__construct()
+    public function test__construct() : void
     {
         $executor = new WithContextExecutor(['foo', 'bar']);
         $this->assertEquals(['foo', 'bar'], $executor->getContext());
     }
 
-    public function test__invoke()
+    public function test__invoke() : void
     {
         $in1 = ['foo'];
         $in2 = ['bar'];
@@ -112,7 +112,7 @@ final class WithContextExecutorTest extends TestCase
         $this->assertEquals(['cm2', 'cm1'], $exit);
     }
 
-    public function test__invoke__withException_01()
+    public function test__invoke__withException_01() : void
     {
         $in1 = ['foo'];
         $in2 = ['bar'];
@@ -193,7 +193,7 @@ final class WithContextExecutorTest extends TestCase
         $this->assertEquals(['cm2', 'cm1'], $exit);
     }
 
-    public function test__invoke__withException__02()
+    public function test__invoke__withException__02() : void
     {
         $in1 = ['foo'];
         $in2 = ['bar'];
@@ -275,7 +275,7 @@ final class WithContextExecutorTest extends TestCase
         $this->assertEquals(['cm2', 'cm1'], $exit);
     }
 
-    public function test__invoke__whenEnterContextThrows()
+    public function test__invoke__whenEnterContextThrows() : void
     {
         $in1 = ['foo'];
         $in2 = ['bar'];

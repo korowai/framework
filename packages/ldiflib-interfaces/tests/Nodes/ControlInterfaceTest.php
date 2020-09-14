@@ -31,7 +31,7 @@ final class ControlInterfaceTest extends TestCase
         };
     }
 
-    public static function prov__extendsInterface()
+    public static function prov__extendsInterface() : array
     {
         return [
             [NodeInterface::class]
@@ -41,18 +41,18 @@ final class ControlInterfaceTest extends TestCase
     /**
      * @dataProvider prov__extendsInterface
      */
-    public function test__extendsInterface(string $extends)
+    public function test__extendsInterface(string $extends) : void
     {
         $this->assertImplementsInterface($extends, ControlInterface::class);
     }
 
-    public function test__dummyImplementation()
+    public function test__dummyImplementation() : void
     {
         $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(ControlInterface::class, $dummy);
     }
 
-    public function test__objectPropertyGettersMap()
+    public function test__objectPropertyGettersMap() : void
     {
         $expect = [
             'oid'           => 'getOid',
@@ -62,14 +62,14 @@ final class ControlInterfaceTest extends TestCase
         $this->assertObjectPropertyGetters($expect, ControlInterface::class);
     }
 
-    public function test__getOid()
+    public function test__getOid() : void
     {
         $dummy = $this->createDummyInstance();
         $dummy->oid = '';
         $this->assertSame($dummy->oid, $dummy->getOid());
     }
 
-    public function test__getOid__withNull()
+    public function test__getOid__withNull() : void
     {
         $dummy = $this->createDummyInstance();
         $dummy->oid = null;
@@ -79,7 +79,7 @@ final class ControlInterfaceTest extends TestCase
         $dummy->getOid();
     }
 
-    public function test__getCriticality()
+    public function test__getCriticality() : void
     {
         $dummy = $this->createDummyInstance();
         $dummy->criticality = false;
@@ -89,7 +89,7 @@ final class ControlInterfaceTest extends TestCase
         $this->assertSame($dummy->criticality, $dummy->getCriticality());
     }
 
-    public function test__getCriticality__withTypeError()
+    public function test__getCriticality__withTypeError() : void
     {
         $dummy = $this->createDummyInstance();
         $dummy->criticality = '';
@@ -99,14 +99,14 @@ final class ControlInterfaceTest extends TestCase
         $dummy->getCriticality();
     }
 
-    public function test__getValueSpec()
+    public function test__getValueSpec() : void
     {
         $dummy = $this->createDummyInstance();
         $dummy->valueSpec = $this->createStub(ValueSpecInterface::class);
         $this->assertSame($dummy->valueSpec, $dummy->getValueSpec());
     }
 
-    public function test__getValueSpec__withTypeError()
+    public function test__getValueSpec__withTypeError() : void
     {
         $dummy = $this->createDummyInstance();
         $dummy->valueSpec = '';

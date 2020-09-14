@@ -78,17 +78,17 @@ final class ResultTest extends TestCase
     //
     //
 
-    public function test__implements__ResultInterface()
+    public function test__implements__ResultInterface() : void
     {
         $this->assertImplementsInterface(ResultInterface::class, Result::class);
     }
 
-    public function test__implements__LdapResultWrapperInterface()
+    public function test__implements__LdapResultWrapperInterface() : void
     {
         $this->assertImplementsInterface(LdapResultWrapperInterface::class, Result::class);
     }
 
-    public function test__uses__LdapResultWrapperTrait()
+    public function test__uses__LdapResultWrapperTrait() : void
     {
         $this->assertUsesTrait(LdapResultWrapperTrait::class, Result::class);
     }
@@ -97,7 +97,7 @@ final class ResultTest extends TestCase
     // getLdapResult()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public function test__getLdapResult()
+    public function test__getLdapResult() : void
     {
         [$result, $ldapResult] = $this->createResultAndMocks(1);
         $this->assertSame($ldapResult, $result->getLdapResult());
@@ -107,7 +107,7 @@ final class ResultTest extends TestCase
     // getResultEntries()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__getResultEntries()
+    public static function prov__getResultEntries() : array
     {
         return [
             // #0
@@ -135,7 +135,7 @@ final class ResultTest extends TestCase
     /**
      * @dataProvider prov__getResultEntries
      */
-    public function test__getResultEntries(array $ldapEntries = [])
+    public function test__getResultEntries(array $ldapEntries = []) : void
     {
         [$result, $ldapResult] = $this->createResultAndMocks(1);
 
@@ -176,7 +176,7 @@ final class ResultTest extends TestCase
         }
     }
 
-    public static function prov__getResultEntries__withTriggerError()
+    public static function prov__getResultEntries__withTriggerError() : array
     {
         return static::feedCallWithLdapTriggerError();
     }
@@ -184,7 +184,7 @@ final class ResultTest extends TestCase
     /**
      * @dataProvider prov__getResultEntries__withTriggerError
      */
-    public function test__getResultEntries__withTriggerError(array $config, array $expect)
+    public function test__getResultEntries__withTriggerError(array $config, array $expect) : void
     {
         $this->examineResultMethodWithTriggerError('getResultEntries', 'first_entry', [], $config, $expect);
     }
@@ -193,7 +193,7 @@ final class ResultTest extends TestCase
     // getResultReferences()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__getResultReferences()
+    public static function prov__getResultReferences() : array
     {
         return [
             // #0
@@ -221,7 +221,7 @@ final class ResultTest extends TestCase
     /**
      * @dataProvider prov__getResultReferences
      */
-    public function test__getResultReferences(array $ldapReferences = [])
+    public function test__getResultReferences(array $ldapReferences = []) : void
     {
         [$result, $ldapResult] = $this->createResultAndMocks(1);
 
@@ -262,7 +262,7 @@ final class ResultTest extends TestCase
         }
     }
 
-    public static function prov__getResultReferences__withTriggerError()
+    public static function prov__getResultReferences__withTriggerError() : array
     {
         return static::feedCallWithLdapTriggerError();
     }
@@ -270,7 +270,7 @@ final class ResultTest extends TestCase
     /**
      * @dataProvider prov__getResultReferences__withTriggerError
      */
-    public function test__getResultReferences__withTriggerError(array $config, array $expect)
+    public function test__getResultReferences__withTriggerError(array $config, array $expect) : void
     {
         $this->examineResultMethodWithTriggerError('getResultReferences', 'first_reference', [], $config, $expect);
     }
@@ -279,7 +279,7 @@ final class ResultTest extends TestCase
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // getResultEntryIterator()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public function test__getResultEntryIterator()
+    public function test__getResultEntryIterator() : void
     {
         [$result, $ldapResult] = $this->createResultAndMocks(1);
 
@@ -297,7 +297,7 @@ final class ResultTest extends TestCase
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // getResultReferenceIterator()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public function test__getResultReferenceIterator()
+    public function test__getResultReferenceIterator() : void
     {
         [$result, $ldapResult] = $this->createResultAndMocks(1);
 
@@ -315,7 +315,7 @@ final class ResultTest extends TestCase
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // getEntries()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public function test__getEntries()
+    public function test__getEntries() : void
     {
         $this->markTestIncomplete('Test not implemented yet');
     }
@@ -323,7 +323,7 @@ final class ResultTest extends TestCase
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // getIterator()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public function test__getIterator()
+    public function test__getIterator() : void
     {
         $this->markTestIncomplete('Test not implemented yet');
     }

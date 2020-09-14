@@ -23,12 +23,12 @@ use Korowai\Testing\TestCase;
  */
 final class DecoratesRuleInterfaceTest extends TestCase
 {
-    public function test__uses__ExposesRuleInterface()
+    public function test__uses__ExposesRuleInterface() : void
     {
         $this->assertUsesTrait(ExposesRuleInterface::class, DecoratesRuleInterface::class);
     }
 
-    public function test__rfcRule()
+    public function test__rfcRule() : void
     {
         $rule = $this->getMockBuilder(RuleInterface::class)
                      ->getMockForAbstractClass();

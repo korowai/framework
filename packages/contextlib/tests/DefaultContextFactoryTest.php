@@ -38,7 +38,7 @@ final class DefaultContextFactoryTest extends TestCase
         return DefaultContextFactory::class;
     }
 
-    public function test__implements__ContextFactoryInterface()
+    public function test__implements__ContextFactoryInterface() : void
     {
         $this->assertImplementsInterface(ContextFactoryInterface::class, DefaultContextFactory::class);
     }
@@ -46,7 +46,7 @@ final class DefaultContextFactoryTest extends TestCase
     /**
      * @runInSeparateProcess
      */
-    public function test__getContextManager__withContextManager()
+    public function test__getContextManager__withContextManager() : void
     {
         $factory = DefaultContextFactory::getInstance();
 
@@ -64,7 +64,7 @@ final class DefaultContextFactoryTest extends TestCase
     /**
      * @runInSeparateProcess
      */
-    public function test__getContextManager__withResource()
+    public function test__getContextManager__withResource() : void
     {
         $this->expectFunctionOnceWillReturn('is_resource', ['foo'], true);
         $this->expectFunctionOnceWillReturn('get_resource_type', ['foo'], 'bar');
@@ -81,7 +81,7 @@ final class DefaultContextFactoryTest extends TestCase
     /**
      * @runInSeparateProcess
      */
-    public function test__getContextManager__withValue()
+    public function test__getContextManager__withValue() : void
     {
         $factory = DefaultContextFactory::getInstance();
 

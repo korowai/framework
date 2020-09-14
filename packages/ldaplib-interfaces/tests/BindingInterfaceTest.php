@@ -69,7 +69,7 @@ final class BindingInterfaceTest extends TestCase
         $this->assertSame($dummy->bind, $dummy->bind('', ''));
     }
 
-    public static function prov__bind__withArgTypeError()
+    public static function prov__bind__withArgTypeError() : array
     {
         return [
             [[0], \string::class],

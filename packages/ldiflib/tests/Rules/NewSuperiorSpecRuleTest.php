@@ -25,7 +25,7 @@ use Korowai\Testing\Ldiflib\TestCase;
  */
 final class NewSuperiorSpecRuleTest extends TestCase
 {
-    public function test__extends__AbstractDnSpecRule()
+    public function test__extends__AbstractDnSpecRule() : void
     {
         $this->assertExtendsClass(AbstractDnSpecRule::class, NewSuperiorSpecRule::class);
     }
@@ -48,7 +48,7 @@ final class NewSuperiorSpecRuleTest extends TestCase
     /**
      * @dataProvider construct__cases
      */
-    public function test__construct(array $args, array $expect)
+    public function test__construct(array $args, array $expect) : void
     {
         $rule = new NewSuperiorSpecRule(...$args);
         $this->assertHasPropertiesSameAs($expect, $rule);
@@ -289,7 +289,7 @@ final class NewSuperiorSpecRuleTest extends TestCase
     /**
      * @dataProvider parseMatched__cases
      */
-    public function test__parseMatched(array $source, array $matches, array $expect)
+    public function test__parseMatched(array $source, array $matches, array $expect) : void
     {
         $state = $this->getParserStateFromSource(...$source);
 
@@ -554,7 +554,7 @@ final class NewSuperiorSpecRuleTest extends TestCase
     /**
      * @dataProvider parse__cases
      */
-    public function test__parse(array $source, array $args, array $expect)
+    public function test__parse(array $source, array $args, array $expect) : void
     {
         $state = $this->getParserStateFromSource(...$source);
 

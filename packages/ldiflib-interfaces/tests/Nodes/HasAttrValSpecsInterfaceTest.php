@@ -29,13 +29,13 @@ final class HasAttrValSpecsInterfaceTest extends TestCase
         };
     }
 
-    public function test__dummyImplementation()
+    public function test__dummyImplementation() : void
     {
         $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(HasAttrValSpecsInterface::class, $dummy);
     }
 
-    public function test__objectPropertyGettersMap()
+    public function test__objectPropertyGettersMap() : void
     {
         $expect = [
             'attrValSpecs'  => 'getAttrValSpecs'
@@ -43,14 +43,14 @@ final class HasAttrValSpecsInterfaceTest extends TestCase
         $this->assertObjectPropertyGetters($expect, HasAttrValSpecsInterface::class);
     }
 
-    public function test__getAttrValSpecs()
+    public function test__getAttrValSpecs() : void
     {
         $dummy = $this->createDummyInstance();
         $dummy->attrValSpecs = [];
         $this->assertSame($dummy->attrValSpecs, $dummy->getAttrValSpecs());
     }
 
-    public function test__getAttrValSpecs__withNull()
+    public function test__getAttrValSpecs__withNull() : void
     {
         $dummy = $this->createDummyInstance();
         $dummy->attrValSpecs = null;

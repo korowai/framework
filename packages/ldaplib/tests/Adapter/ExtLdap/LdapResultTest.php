@@ -79,17 +79,17 @@ final class LdapResultTest extends TestCase
     //
     //
 
-    public function test__implements__LdapResultInterface()
+    public function test__implements__LdapResultInterface() : void
     {
         $this->assertImplementsInterface(LdapResultInterface::class, LdapResult::class);
     }
 
-    public function test__uses__ResourceWrapperTrait()
+    public function test__uses__ResourceWrapperTrait() : void
     {
         $this->assertUsesTrait(ResourceWrapperTrait::class, LdapResult::class);
     }
 
-    public function test__uses__LdapLinkWrapperTrait()
+    public function test__uses__LdapLinkWrapperTrait() : void
     {
         $this->assertUsesTrait(LdapLinkWrapperTrait::class, LdapResult::class);
     }
@@ -98,7 +98,7 @@ final class LdapResultTest extends TestCase
     // getResource()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public function test__getResource()
+    public function test__getResource() : void
     {
         $ldap = $this->createLdapLinkMock(null);
         $result = new LdapResult('ldap result', $ldap);
@@ -109,7 +109,7 @@ final class LdapResultTest extends TestCase
     // getLdapLink()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public function test__getLdapLink()
+    public function test__getLdapLink() : void
     {
         $ldap = $this->createLdapLinkMock(null);
         $result = new LdapResult('ldap result', $ldap);
@@ -120,7 +120,7 @@ final class LdapResultTest extends TestCase
     // supportsResourceType()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__supportsResourceType()
+    public static function prov__supportsResourceType() : array
     {
         return static::feedSupportsResourceType('ldap result');
     }
@@ -140,7 +140,7 @@ final class LdapResultTest extends TestCase
     // isValid()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__isValid()
+    public static function prov__isValid() : array
     {
         return static::feedIsValid('ldap result');
     }
@@ -149,7 +149,7 @@ final class LdapResultTest extends TestCase
      * @runInSeparateProcess
      * @dataProvider prov__isValid
      */
-    public function test__isValid($arg, $return, $expect)
+    public function test__isValid($arg, $return, $expect) : void
     {
         $ldap = $this->createLdapLinkMock();
         $result = new LdapResult($arg, $ldap);
@@ -160,7 +160,7 @@ final class LdapResultTest extends TestCase
     // count_entries()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__count_entries__withMockedBackend()
+    public static function prov__count_entries__withMockedBackend() : array
     {
         return [
             // #0
@@ -188,7 +188,7 @@ final class LdapResultTest extends TestCase
      * @runInSeparateProcess
      * @dataProvider prov__count_entries__withMockedBackend
      */
-    public function test__count_entries__withMockedBackend(array $args, $will, $expect)
+    public function test__count_entries__withMockedBackend(array $args, $will, $expect) : void
     {
         $this->examineCallWithMockedBackend('count_entries', $args, $will, $expect);
     }
@@ -200,7 +200,7 @@ final class LdapResultTest extends TestCase
     /**
      * @runInSeparateProcess
      */
-    public function test__count_references()
+    public function test__count_references() : void
     {
         $ldap = $this->createLdapLinkMock();
         $result = new LdapResult('ldap result', $ldap);
@@ -220,7 +220,7 @@ final class LdapResultTest extends TestCase
     // first_entry()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__first_entry__withMockedBackend()
+    public static function prov__first_entry__withMockedBackend() : array
     {
         return [
             // #0
@@ -251,7 +251,7 @@ final class LdapResultTest extends TestCase
      * @runInSeparateProcess
      * @dataProvider prov__first_entry__withMockedBackend
      */
-    public function test__first_entry__withMockedBackend(array $args, $will, $expect)
+    public function test__first_entry__withMockedBackend(array $args, $will, $expect) : void
     {
         $this->examineCallWithMockedBackend('first_entry', $args, $will, $expect);
     }
@@ -260,7 +260,7 @@ final class LdapResultTest extends TestCase
     // first_reference()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__first_reference__withMockedBackend()
+    public static function prov__first_reference__withMockedBackend() : array
     {
         return [
             // #0
@@ -291,7 +291,7 @@ final class LdapResultTest extends TestCase
      * @runInSeparateProcess
      * @dataProvider prov__first_reference__withMockedBackend
      */
-    public function test__first_reference__withMockedBackend(array $args, $will, $expect)
+    public function test__first_reference__withMockedBackend(array $args, $will, $expect) : void
     {
         $this->examineCallWithMockedBackend('first_reference', $args, $will, $expect);
     }
@@ -300,7 +300,7 @@ final class LdapResultTest extends TestCase
     // free_result()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__free_result__withMockedBackend()
+    public static function prov__free_result__withMockedBackend() : array
     {
         return [
             // #0
@@ -328,7 +328,7 @@ final class LdapResultTest extends TestCase
      * @runInSeparateProcess
      * @dataProvider prov__free_result__withMockedBackend
      */
-    public function test__free_result__withMockedBackend(array $args, $will, $expect)
+    public function test__free_result__withMockedBackend(array $args, $will, $expect) : void
     {
         $this->examineCallWithMockedBackend('free_result', $args, $will, $expect, true);
     }
@@ -337,7 +337,7 @@ final class LdapResultTest extends TestCase
     // get_entries()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__get_entries__withMockedBackend()
+    public static function prov__get_entries__withMockedBackend() : array
     {
         return [
             // #0
@@ -365,7 +365,7 @@ final class LdapResultTest extends TestCase
      * @runInSeparateProcess
      * @dataProvider prov__get_entries__withMockedBackend
      */
-    public function test__get_entries__withMockedBackend(array $args, $will, $expect)
+    public function test__get_entries__withMockedBackend(array $args, $will, $expect) : void
     {
         $this->examineCallWithMockedBackend('get_entries', $args, $will, $expect);
     }
@@ -374,7 +374,7 @@ final class LdapResultTest extends TestCase
     // parse_result()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public function prov__parse_result__withMockedBackend()
+    public function prov__parse_result__withMockedBackend() : array
     {
         return [
             // #0
@@ -439,7 +439,7 @@ final class LdapResultTest extends TestCase
      * @runInSeparateProcess
      * @dataProvider prov__parse_result__withMockedBackend
      */
-    public function test__parse_result__withMockedBackend(array $args, $return, $expect, array $values)
+    public function test__parse_result__withMockedBackend(array $args, $return, $expect, array $values) : void
     {
         $will = $this->returnCallback(new LdapParseResultClosure($return, $values));
         $this->examineCallWithMockedBackend('parse_result', $args, $will, $expect);
@@ -454,7 +454,7 @@ final class LdapResultTest extends TestCase
     // sort()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__sort__withMockedBackend()
+    public static function prov__sort__withMockedBackend() : array
     {
         return [
             // #1
@@ -477,7 +477,7 @@ final class LdapResultTest extends TestCase
      * @runInSeparateProcess
      * @dataProvider prov__sort__withMockedBackend
      */
-    public function test__sort__withMockedBackend(array $args, $will, $expect)
+    public function test__sort__withMockedBackend(array $args, $will, $expect) : void
     {
         $this->examineCallWithMockedBackend('sort', $args, $will, $expect);
     }
@@ -489,7 +489,7 @@ final class LdapResultTest extends TestCase
     /**
      * @runInSeparateProcess
      */
-    public function test__unset__doesNotFreeTheResource()
+    public function test__unset__doesNotFreeTheResource() : void
     {
         $ldap = $this->createLdapLinkMock(null);
         $result = new LdapResult('ldap result', $ldap);

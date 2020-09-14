@@ -22,7 +22,7 @@ use Korowai\Testing\LdiflibInterfaces\TestCase;
  */
 final class NodeVisitorInterfaceTest extends TestCase
 {
-    public function test__dummyImplementation()
+    public function test__dummyImplementation() : void
     {
         $dummy = new class implements NodeVisitorInterface {
             use NodeVisitorInterfaceTrait;
@@ -30,7 +30,7 @@ final class NodeVisitorInterfaceTest extends TestCase
         $this->assertImplementsInterface(NodeVisitorInterface::class, $dummy);
     }
 
-    public function test__objectPropertyGettersMap()
+    public function test__objectPropertyGettersMap() : void
     {
         $expect = [];
         $this->assertObjectPropertyGetters($expect, NodeVisitorInterface::class);

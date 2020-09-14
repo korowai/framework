@@ -57,12 +57,12 @@ final class CallerExceptionErrorHandlerTest extends TestCase
         });
     }
 
-    public function test__extends__ExceptionErrorHandler()
+    public function test__extends__ExceptionErrorHandler() : void
     {
         $this->assertExtendsClass(ExceptionErrorHandler::class, CallerExceptionErrorHandler::class);
     }
 
-    public function test__construct__withoutDistance()
+    public function test__construct__withoutDistance() : void
     {
         $generator = function () {
         };
@@ -74,7 +74,7 @@ final class CallerExceptionErrorHandlerTest extends TestCase
         $this->assertEquals(E_ALL | E_STRICT, $handler->getErrorTypes());
     }
 
-    public function test__construct__withoutErrorTypes()
+    public function test__construct__withoutErrorTypes() : void
     {
         $generator = function () {
         };
@@ -86,7 +86,7 @@ final class CallerExceptionErrorHandlerTest extends TestCase
         $this->assertEquals(E_ALL | E_STRICT, $handler->getErrorTypes());
     }
 
-    public function test__construct__withDistance__1()
+    public function test__construct__withDistance__1() : void
     {
         $generator = function () {
         };
@@ -98,7 +98,7 @@ final class CallerExceptionErrorHandlerTest extends TestCase
         $this->assertEquals(E_ALL | E_STRICT, $handler->getErrorTypes());
     }
 
-    public function test__construct__withErrorTypes()
+    public function test__construct__withErrorTypes() : void
     {
         $generator = function () {
         };
@@ -110,7 +110,7 @@ final class CallerExceptionErrorHandlerTest extends TestCase
         $this->assertEquals(456, $handler->getErrorTypes());
     }
 
-    public function test__construct__fromOneLevelRecursion()
+    public function test__construct__fromOneLevelRecursion() : void
     {
         $generator = function () {
         };
@@ -122,7 +122,7 @@ final class CallerExceptionErrorHandlerTest extends TestCase
         $this->assertEquals(456, $handler->getErrorTypes());
     }
 
-    public function test__construct__fromTwoLevelsRecursion()
+    public function test__construct__fromTwoLevelsRecursion() : void
     {
         $generator = function () {
         };
@@ -134,7 +134,7 @@ final class CallerExceptionErrorHandlerTest extends TestCase
         $this->assertEquals(456, $handler->getErrorTypes());
     }
 
-    public function test__invoke__direct()
+    public function test__invoke__direct() : void
     {
         $generator = ExceptionErrorHandler::makeExceptionGenerator(ExceptionA98DB973::class);
 
@@ -155,7 +155,7 @@ final class CallerExceptionErrorHandlerTest extends TestCase
         }
     }
 
-    public function test__invoke__fromOneLevelRecursion()
+    public function test__invoke__fromOneLevelRecursion() : void
     {
         $generator = ExceptionErrorHandler::makeExceptionGenerator(ExceptionA98DB973::class);
 
@@ -174,7 +174,7 @@ final class CallerExceptionErrorHandlerTest extends TestCase
         }
     }
 
-    public function test__invoke__fromTwoLevelsRecursion()
+    public function test__invoke__fromTwoLevelsRecursion() : void
     {
         $generator = ExceptionErrorHandler::makeExceptionGenerator(ExceptionA98DB973::class);
 
@@ -193,7 +193,7 @@ final class CallerExceptionErrorHandlerTest extends TestCase
         }
     }
 
-    public function test__invoke__fromDifferentPlaceThanCreated()
+    public function test__invoke__fromDifferentPlaceThanCreated() : void
     {
         $generator = ExceptionErrorHandler::makeExceptionGenerator(ExceptionA98DB973::class);
         $caller_line = __line__ + 1;
@@ -213,7 +213,7 @@ final class CallerExceptionErrorHandlerTest extends TestCase
         }
     }
 
-    public function test__trigger__fromOneLevelRecursion()
+    public function test__trigger__fromOneLevelRecursion() : void
     {
         $generator = ExceptionErrorHandler::makeExceptionGenerator(ExceptionA98DB973::class);
 
@@ -232,7 +232,7 @@ final class CallerExceptionErrorHandlerTest extends TestCase
         }
     }
 
-    public function test__trigger__fromTwoLevelsRecursion()
+    public function test__trigger__fromTwoLevelsRecursion() : void
     {
         $generator = ExceptionErrorHandler::makeExceptionGenerator(ExceptionA98DB973::class);
 
@@ -251,7 +251,7 @@ final class CallerExceptionErrorHandlerTest extends TestCase
         }
     }
 
-    public function test__trigger__fromDifferentPlaceThanCreated()
+    public function test__trigger__fromDifferentPlaceThanCreated() : void
     {
         $generator = ExceptionErrorHandler::makeExceptionGenerator(ExceptionA98DB973::class);
         $caller_line = __line__ + 1;

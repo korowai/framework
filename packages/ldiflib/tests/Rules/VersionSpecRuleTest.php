@@ -24,7 +24,7 @@ use Korowai\Testing\Ldiflib\TestCase;
  */
 final class VersionSpecRuleTest extends TestCase
 {
-    public function test__extendsAbstractRfcRule()
+    public function test__extendsAbstractRfcRule() : void
     {
         $this->assertExtendsClass(AbstractRfcRule::class, VersionSpecRule::class);
     }
@@ -42,7 +42,7 @@ final class VersionSpecRuleTest extends TestCase
     /**
      * @dataProvider construct__cases
      */
-    public function test__construct(array $args, array $expect)
+    public function test__construct(array $args, array $expect) : void
     {
         $rule = new VersionSpecRule(...$args);
         $expect = array_merge([
@@ -160,7 +160,7 @@ final class VersionSpecRuleTest extends TestCase
     /**
      * @dataProvider parseMatched__cases
      */
-    public function test__parseMatched(array $source, array $matches, array $expect)
+    public function test__parseMatched(array $source, array $matches, array $expect) : void
     {
         $state = $this->getParserStateFromSource(...$source);
 
@@ -345,7 +345,7 @@ final class VersionSpecRuleTest extends TestCase
     /**
      * @dataProvider parse__cases
      */
-    public function test__parse(array $source, array $args, array $expect)
+    public function test__parse(array $source, array $args, array $expect) : void
     {
         $state = $this->getParserStateFromSource(...$source);
 

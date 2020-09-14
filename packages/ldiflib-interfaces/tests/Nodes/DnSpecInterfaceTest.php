@@ -30,7 +30,7 @@ final class DnSpecInterfaceTest extends TestCase
         };
     }
 
-    public static function prov__extendsInterface()
+    public static function prov__extendsInterface() : array
     {
         return [
             [NodeInterface::class]
@@ -40,18 +40,18 @@ final class DnSpecInterfaceTest extends TestCase
     /**
      * @dataProvider prov__extendsInterface
      */
-    public function test__extendsInterface(string $extends)
+    public function test__extendsInterface(string $extends) : void
     {
         $this->assertImplementsInterface($extends, DnSpecInterface::class);
     }
 
-    public function test__dummyImplementation()
+    public function test__dummyImplementation() : void
     {
         $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(DnSpecInterface::class, $dummy);
     }
 
-    public function test__objectPropertyGettersMap()
+    public function test__objectPropertyGettersMap() : void
     {
         $expect = [
             'dn' => 'getDn'
@@ -59,14 +59,14 @@ final class DnSpecInterfaceTest extends TestCase
         $this->assertObjectPropertyGetters($expect, DnSpecInterface::class);
     }
 
-    public function test__getdn()
+    public function test__getdn() : void
     {
         $dummy = $this->createDummyInstance();
         $dummy->dn = '';
         $this->assertSame($dummy->dn, $dummy->getdn());
     }
 
-    public function test__getdn__withNull()
+    public function test__getdn__withNull() : void
     {
         $dummy = $this->createDummyInstance();
         $dummy->dn = null;

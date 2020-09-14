@@ -41,6 +41,35 @@ final class LdapLinkFactoryTest extends TestCase
     }
 
     //
+    // createWithConfig()
+    //
+    public function test__createWithConfig() : void
+    {
+        $constructor = $this->createMock(LdapLinkConstructorInterface::class);
+        $resolver = $this->createMock(LdapLinkConfigResolverInterface::class);
+
+        $config = [];
+        $resolved = [
+            'uri'     => 'URI',
+            'tls'     => false,
+            'options' => [0 => 1]
+        ];
+        $resolver->expects($this->once())
+                 ->method('resolve')
+                 ->with($config)
+                 ->willReturn($resolved);
+
+        $factory = LdapLinkFactory::createWithConfig($constructor, $resolver, $config);
+
+        $this->assertSame($constructor, $factory->getLdapLinkConstructor());
+        $this->assertHasPropertiesSameAs([
+            'getUri()'     => $resolved['uri'],
+            'getTls()'     => $resolved['tls'],
+            'getOptions()' => $resolved['options'],
+        ], $factory);
+    }
+
+    //
     // __construct()
     //
 
@@ -49,48 +78,48 @@ final class LdapLinkFactoryTest extends TestCase
         return [
             // #0
             [
-                'args' => ['ldap://example.org'],
+                'args'   => ['ldap://example.org'],
                 'expect' => [
                     'properties' => [
-                        'getUri()'                  => 'ldap://example.org',
-                        'getTls()'                  => false,
-                        'getOptions()'              => [],
+                        'getUri()'     => 'ldap://example.org',
+                        'getTls()'     => false,
+                        'getOptions()' => [],
                     ],
                 ],
             ],
 
             // #1
             [
-                'args' => ['ldap://example.org', false],
+                'args'   => ['ldap://example.org', false],
                 'expect' => [
                     'properties'  => [
-                        'getUri()'                  => 'ldap://example.org',
-                        'getTls()'                  => false,
-                        'getOptions()'              => [],
+                        'getUri()'     => 'ldap://example.org',
+                        'getTls()'     => false,
+                        'getOptions()' => [],
                     ],
                 ],
             ],
 
             // #2
             [
-                'args' => ['ldap://example.org', true],
+                'args'   => ['ldap://example.org', true],
                 'expect' => [
                     'properties'  => [
-                        'getUri()'                  => 'ldap://example.org',
-                        'getTls()'                  => true,
-                        'getOptions()'              => [],
+                        'getUri()'     => 'ldap://example.org',
+                        'getTls()'     => true,
+                        'getOptions()' => [],
                     ],
                 ],
             ],
 
             // #3
             [
-                'args' => ['ldap://example.org', true, ['foo' => 'bar']],
+                'args'   => ['ldap://example.org', true, ['foo' => 'bar']],
                 'expect' => [
                     'properties'  => [
-                        'getUri()'                  => 'ldap://example.org',
-                        'getTls()'                  => true,
-                        'getOptions()'              => ['foo' => 'bar'],
+                        'getUri()'     => 'ldap://example.org',
+                        'getTls()'     => true,
+                        'getOptions()' => ['foo' => 'bar'],
                     ],
                 ],
             ],
@@ -121,9 +150,9 @@ final class LdapLinkFactoryTest extends TestCase
                 'args' => ['ldap://example.org'],
                 'expect' => [
                     'properties' => [
-                        'getUri()'                  => 'ldap://example.org',
-                        'getTls()'                  => false,
-                        'getOptions()'              => [],
+                        'getUri()'     => 'ldap://example.org',
+                        'getTls()'     => false,
+                        'getOptions()' => [],
                     ],
                 ],
             ],
@@ -133,9 +162,9 @@ final class LdapLinkFactoryTest extends TestCase
                 'args' => ['ldap://example.org', false],
                 'expect' => [
                     'properties'  => [
-                        'getUri()'                  => 'ldap://example.org',
-                        'getTls()'                  => false,
-                        'getOptions()'              => [],
+                        'getUri()'     => 'ldap://example.org',
+                        'getTls()'     => false,
+                        'getOptions()' => [],
                     ],
                 ],
             ],
@@ -145,9 +174,9 @@ final class LdapLinkFactoryTest extends TestCase
                 'args' => ['ldap://example.org', true],
                 'expect' => [
                     'properties'  => [
-                        'getUri()'                  => 'ldap://example.org',
-                        'getTls()'                  => true,
-                        'getOptions()'              => [],
+                        'getUri()'     => 'ldap://example.org',
+                        'getTls()'     => true,
+                        'getOptions()' => [],
                     ],
                 ],
             ],
@@ -157,9 +186,9 @@ final class LdapLinkFactoryTest extends TestCase
                 'args' => ['ldap://example.org', true, [123 => 'foo']],
                 'expect' => [
                     'properties'  => [
-                        'getUri()'                  => 'ldap://example.org',
-                        'getTls()'                  => true,
-                        'getOptions()'              => ['foo' => 'bar'],
+                        'getUri()'     => 'ldap://example.org',
+                        'getTls()'     => true,
+                        'getOptions()' => ['foo' => 'bar'],
                     ],
                 ],
             ],
@@ -169,9 +198,9 @@ final class LdapLinkFactoryTest extends TestCase
                 'args' => ['ldap://example.org', true, [2 => 'two', 1 => 'one']],
                 'expect' => [
                     'properties'  => [
-                        'getUri()'                  => 'ldap://example.org',
-                        'getTls()'                  => true,
-                        'getOptions()'              => ['foo' => 'bar'],
+                        'getUri()'     => 'ldap://example.org',
+                        'getTls()'     => true,
+                        'getOptions()' => ['foo' => 'bar'],
                     ],
                 ],
             ],

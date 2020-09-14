@@ -48,7 +48,7 @@ final class LdapLinkFactory implements LdapLinkFactoryInterface
      *
      * @psalm-readonly
      */
-    private $ldapLinkConstructor;
+    private $constructor;
 
     /**
      * @var LdapLinkConfigResolverInterface
@@ -58,20 +58,36 @@ final class LdapLinkFactory implements LdapLinkFactoryInterface
     private $configResolver;
 
     /**
+     * Creates an LdapLinkFactory using configuration array.
+     *
+     * @param  LdapLinkConstructorInterface $constructor
+     * @param  LdapLinkConfigResolverInterfce $resolver
+     * @param  array $config
+     */
+    public static function createWithConfig(
+        LdapLinkConstructorInterface $constructor,
+        LdapLinkConfigResolverInterface $resolver,
+        array $config
+    ) {
+        $config = $resolver->resolve($config);
+        return new self($constructor, $config['uri'], $config['tls'], $config['options']);
+    }
+
+    /**
      * Creates an LdapLinkFactory
      *
-     * @param  LdapLinkConstructorInterface $ldapLinkConstructor
+     * @param  LdapLinkConstructorInterface $constructor
      * @param  string $uri
      * @param  bool $tls
      * @param  array $options
      */
     public function __construct(
-        LdapLinkConstructorInterface $ldapLinkConstructor,
+        LdapLinkConstructorInterface $constructor,
         string $uri,
         bool $tls = false,
         array $options = []
     ) {
-        $this->ldapLinkConstructor = $ldapLinkConstructor;
+        $this->constructor = $constructor;
         $this->uri = $uri;
         $this->tls = $tls;
         $this->options = $options;
@@ -86,7 +102,7 @@ final class LdapLinkFactory implements LdapLinkFactoryInterface
      */
     public function getLdapLinkConstructor() : LdapLinkConstructorInterface
     {
-        return $this->ldapLinkConstructor;
+        return $this->constructor;
     }
 
     /**
@@ -132,7 +148,7 @@ final class LdapLinkFactory implements LdapLinkFactoryInterface
      */
     public function createLdapLink() : LdapLinkInterface
     {
-        $link = $this->ldapLinkConstructor->connect($this->uri);
+        $link = $this->constructor->connect($this->uri);
         if ($this->tls) {
             $this->startTlsOnLdapLink($link);
         }
@@ -159,4 +175,4 @@ final class LdapLinkFactory implements LdapLinkFactoryInterface
     }
 }
 
-// vim: syntax=php sw=4 ts=4 et:
+// vim: syntax=php sw=4 ts=4 tw=120 et:

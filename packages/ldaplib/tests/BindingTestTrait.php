@@ -17,6 +17,7 @@ use Korowai\Testing\Ldaplib\ExamineCallWithLdapTriggerErrorTrait;
 
 use Korowai\Lib\Ldap\BindingTrait;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkErrorHandler;
 use Korowai\Lib\Ldap\BindingInterface;
 use Korowai\Lib\Ldap\Exception\LdapException;
 
@@ -146,6 +147,11 @@ trait BindingTestTrait
              ->method('errno')
              ->with()
              ->willReturn($errno);
+
+        $link->expects($this->once())
+             ->method('getErrorHandler')
+             ->with()
+             ->willReturn($errorHandler = new LdapLinkErrorHandler($link));
 
         $link->expects($this->once())
              ->method('bind')

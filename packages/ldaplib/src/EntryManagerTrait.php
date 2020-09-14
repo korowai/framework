@@ -13,7 +13,6 @@ declare(strict_types=1);
 namespace Korowai\Lib\Ldap;
 
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkErrorHandler;
 
 use function Korowai\Lib\Context\with;
 
@@ -41,7 +40,7 @@ trait EntryManagerTrait
     public function add(EntryInterface $entry) : void
     {
         $link = $this->getLdapLink();
-        with(new LdapLinkErrorHandler($link))(function () use ($link, $entry) : void {
+        with($link->getErrorHandler())(function () use ($link, $entry) : void {
             $link->add($entry->getDn(), $entry->getAttributes());
         });
     }
@@ -54,7 +53,7 @@ trait EntryManagerTrait
     public function update(EntryInterface $entry) : void
     {
         $link = $this->getLdapLink();
-        with(new LdapLinkErrorHandler($link))(function () use ($link, $entry) : void {
+        with($link->getErrorHandler())(function () use ($link, $entry) : void {
             $link->modify($entry->getDn(), $entry->getAttributes());
         });
     }
@@ -67,7 +66,7 @@ trait EntryManagerTrait
     public function rename(EntryInterface $entry, string $newRdn, bool $deleteOldRdn = true) : void
     {
         $link = $this->getLdapLink();
-        with(new LdapLinkErrorHandler($link))(function () use ($link, $entry, $newRdn, $deleteOldRdn) : void {
+        with($link->getErrorHandler())(function () use ($link, $entry, $newRdn, $deleteOldRdn) : void {
             $link->rename($entry->getDn(), $newRdn, '', $deleteOldRdn);
         });
     }
@@ -80,7 +79,7 @@ trait EntryManagerTrait
     public function delete(EntryInterface $entry) : void
     {
         $link = $this->getLdapLink();
-        with(new LdapLinkErrorHandler($link))(function () use ($link, $entry) : void {
+        with($link->getErrorHandler())(function () use ($link, $entry) : void {
             $link->delete($entry->getDn());
         });
     }

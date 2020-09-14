@@ -13,7 +13,6 @@ declare(strict_types=1);
 namespace Korowai\Lib\Ldap;
 
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkErrorHandler;
 use Korowai\Lib\Ldap\Exception\LdapException;
 
 use function Korowai\Lib\Context\with;
@@ -53,7 +52,7 @@ trait BindingTrait
         $args = func_get_args();
         $link = $this->getLdapLink();
         try {
-            with(new LdapLinkErrorHandler($link))(function () use ($link, $args) {
+            with($link->getErrorHandler())(function () use ($link, $args) {
                 $this->bound = $link->bind(...$args);
             });
         } catch (LdapException $exception) {
@@ -84,7 +83,7 @@ trait BindingTrait
     public function unbind() : void
     {
         $link = $this->getLdapLink();
-        $result = with(new LdapLinkErrorHandler($link))(function () use ($link) : bool {
+        $result = with($link->getErrorHandler())(function () use ($link) : bool {
             return $link->unbind();
         });
         // the state can only change to false and only when unbind is successful

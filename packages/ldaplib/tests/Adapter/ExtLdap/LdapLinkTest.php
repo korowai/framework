@@ -21,6 +21,7 @@ use Korowai\Testing\Basiclib\ResourceWrapperTestHelpersTrait;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLink;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkWrapperInterface;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkErrorHandler;
 use Korowai\Lib\Basic\ResourceWrapperTrait;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResult;
 use PHPUnit\Framework\Constraint\Constraint;
@@ -327,33 +328,40 @@ final class LdapLinkTest extends TestCase
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // getResource()
+    // __construct()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__getResource() : array
+    public static function prov__construct() : array
     {
         return [
             // #0
             [
                 'args'   => [null],
-                'expect' => null,
+                'expect' => [
+                    'resource' => null,
+                ]
             ],
 
             // #1
             [
                 'args'   => ['ldap link'],
-                'expect' => 'ldap link',
+                'expect' => [
+                    'resource' => 'ldap link',
+                ]
             ],
         ];
     }
 
     /**
-     * @dataProvider prov__getResource
+     * @dataProvider prov__construct
      */
-    public function test__getResource(array $args, $expect) : void
+    public function test__construct(array $args, $expect) : void
     {
         $link = new LdapLink(...$args);
-        $this->assertSame($expect, $link->getResource());
+        $this->assertSame($expect['resource'], $link->getResource());
+        $handler = $link->getErrorHandler();
+        $this->assertInstanceOf(LdapLinkErrorHandler::class, $handler);
+        $this->assertSame($handler, $link->getErrorHandler()); // always returns same instance
     }
 
 

@@ -14,7 +14,6 @@ namespace Korowai\Lib\Ldap;
 
 use Korowai\Lib\Ldap\Adapter\AbstractCompareQuery;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkErrorHandler;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkWrapperInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkWrapperTrait;
 use function Korowai\Lib\Context\with;
@@ -103,7 +102,7 @@ final class CompareQuery implements CompareQueryInterface, LdapLinkWrapperInterf
      */
     protected function doExecuteQuery() : bool
     {
-        return with(new LdapLinkErrorHandler($this->ldapLink))(function () : bool {
+        return with($this->ldapLink->getErrorHandler())(function () : bool {
             if (($result = $this->ldapLink->compare($this->dn, $this->attribute, $this->value)) === -1) {
                 trigger_error("LdapLink::compare() returned -1");
             }

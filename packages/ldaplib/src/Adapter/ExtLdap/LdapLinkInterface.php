@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
 
 use Korowai\Lib\Basic\ResourceWrapperInterface;
+use Korowai\Lib\Error\ErrorHandlerInterface;
 
 /**
  * Wrapper class for "ldap link" resource.
@@ -408,6 +409,11 @@ interface LdapLinkInterface extends ResourceWrapperInterface
 
     // phpcs:enable Generic.NamingConventions.CamelCapsFunctionName
     // @codingStandardsIgnoreEnd
+
+    /**
+     * Returns error handler attached to this instance.
+     */
+    public function getErrorHandler() : ErrorHandlerInterface;
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

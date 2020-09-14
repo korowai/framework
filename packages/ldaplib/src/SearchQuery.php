@@ -15,7 +15,6 @@ namespace Korowai\Lib\Ldap;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkWrapperInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkWrapperTrait;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkErrorHandler;
 use Korowai\Lib\Ldap\Result;
 
 use function Korowai\Lib\Context\with;
@@ -116,7 +115,7 @@ final class SearchQuery implements SearchQueryInterface, LdapLinkWrapperInterfac
     private function invokeQueryMethod(string $method, array $options) : ResultInterface
     {
         $link = $this->getLdapLink();
-        $ldapResult = with(new LdapLinkErrorHandler($link))(
+        $ldapResult = with($link->getErrorHandler())(
             /** @psalm-return LdapResultInterface|false */
             function () use ($link, $method, $options) {
                 $result = call_user_func(

@@ -19,6 +19,7 @@ use Korowai\Lib\Ldap\CompareQuery;
 use Korowai\Lib\Ldap\CompareQueryInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkWrapperInterface;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkErrorHandler;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -163,6 +164,11 @@ final class CompareQueryTest extends TestCase
              ->method('compare')
              ->with(...$args)
              ->willReturn($return);
+
+        $link->expects($this->once())
+             ->method('getErrorHandler')
+             ->with()
+             ->willReturn(new LdapLinkErrorHandler($link));
 
         $this->expectException($expect['exception']);
         $this->expectExceptionMessage($expect['message']);

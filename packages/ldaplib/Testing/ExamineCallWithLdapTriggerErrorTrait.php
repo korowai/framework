@@ -14,6 +14,7 @@ namespace Korowai\Testing\Ldaplib;
 
 use Korowai\Lib\Ldap\Exception\LdapException;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkErrorHandler;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -29,6 +30,11 @@ trait ExamineCallWithLdapTriggerErrorTrait
         array $config,
         array $expect
     ) : void {
+        $ldapLinkMock->expects($this->any())
+                     ->method('getErrorHandler')
+                     ->with()
+                     ->willReturn(new LdapLinkErrorHandler($ldapLinkMock));
+
         $ldapLinkMock->expects($this->once())
                      ->method('isValid')
                      ->with()

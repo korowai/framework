@@ -158,14 +158,14 @@ final class LdapLinkFactory implements LdapLinkFactoryInterface
 
     private function startTlsOnLdapLink(LdapLinkInterface $link) : void
     {
-        with(new LdapLinkErrorHandler($link))(function () use ($link) : void {
+        with($link->getErrorHandler())(function () use ($link) : void {
             $link->start_tls();
         });
     }
 
     private function setOptionsToLdapLink(LdapLinkInterface $link, array $options) : void
     {
-        with(new LdapLinkErrorHandler($link))(function () use ($link, $options) : void {
+        with($link->getErrorHandler())(function () use ($link, $options) : void {
             foreach ($options as $id => $value) {
                 $link->set_option($id, $value);
             }

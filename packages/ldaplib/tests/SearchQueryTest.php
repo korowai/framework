@@ -19,6 +19,7 @@ use Korowai\Lib\Ldap\SearchQuery;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkWrapperInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkWrapperTrait;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkErrorHandler;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultInterface;
 use Korowai\Lib\Ldap\ResultInterface;
 
@@ -277,6 +278,11 @@ final class SearchQueryTest extends TestCase
              ->method($expect['method'])
              ->with(...$expect['args'])
              ->willReturn(false);
+
+        $link->expects($this->once())
+             ->method('getErrorHandler')
+             ->with()
+             ->willReturn($errorHandler = new LdapLinkErrorHandler($link));
 
         $query = new SearchQuery($link, ...$args);
 

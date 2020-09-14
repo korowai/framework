@@ -48,4 +48,4 @@ interface ResultItemIteratorInterface extends \Iterator
     public function valid() : bool;
 }
 
-// vim: syntax=php sw=4 ts=4 et:
+// vim: syntax=php sw=4 ts=4 et tw=120:

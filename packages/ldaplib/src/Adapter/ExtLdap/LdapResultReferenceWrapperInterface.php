@@ -36,4 +36,4 @@ interface LdapResultReferenceWrapperInterface extends LdapResultItemWrapperInter
     public function getLdapResultItem() : LdapResultReferenceInterface;
 }
 
-// vim: syntax=php sw=4 ts=4 et:
+// vim: syntax=php sw=4 ts=4 et tw=120:

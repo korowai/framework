@@ -29,4 +29,4 @@ interface DnSpecInterface extends NodeInterface
     public function getDn(): string;
 }
 
-// vim: syntax=php sw=4 ts=4 et:
+// vim: syntax=php sw=4 ts=4 et tw=120:

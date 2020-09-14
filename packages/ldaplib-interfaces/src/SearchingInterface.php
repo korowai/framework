@@ -41,4 +41,4 @@ interface SearchingInterface
     public function search(string $base_dn, string $filter, array $options = []) : ResultInterface;
 }
 
-// vim: syntax=php sw=4 ts=4 et:
+// vim: syntax=php sw=4 ts=4 et tw=120:

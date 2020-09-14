@@ -356,4 +356,4 @@ final class WithContextExecutorTest extends TestCase
     }
 }
 
-// vim: syntax=php sw=4 ts=4 et:
+// vim: syntax=php sw=4 ts=4 et tw=120:

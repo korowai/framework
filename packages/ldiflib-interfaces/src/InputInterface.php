@@ -132,4 +132,4 @@ interface InputInterface
     public function getSourceLineAndCharOffset(int $i, string $encoding = null) : array;
 }
 
-// vim: syntax=php sw=4 ts=4 et:
+// vim: syntax=php sw=4 ts=4 et tw=120:

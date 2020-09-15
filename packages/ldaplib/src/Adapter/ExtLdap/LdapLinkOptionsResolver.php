@@ -70,7 +70,7 @@ final class LdapLinkOptionsResolver implements LdapLinkOptionsResolverInterface
      */
     private static function mapOptionsNamesToIds(array $options) : array
     {
-        $ids = array_map([LdapLinkOptionsDeclarations::class, 'getOptionId'], array_keys($options));
+        $ids = array_map([LdapLinkOptionsDeclaration::class, 'getOptionId'], array_keys($options));
         return array_combine($ids, $options);
     }
 
@@ -81,7 +81,7 @@ final class LdapLinkOptionsResolver implements LdapLinkOptionsResolverInterface
      */
     private function configureOptionsResolver(OptionsResolver $resolver) : void
     {
-        LdapLinkOptionsDeclarations::configureOptionsResolver($resolver);
+        LdapLinkOptionsDeclaration::configureOptionsResolver($resolver);
     }
 }
 

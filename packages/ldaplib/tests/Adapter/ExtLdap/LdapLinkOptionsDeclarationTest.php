@@ -13,16 +13,16 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Ldap\Adapter\ExtLdap;
 
 use Korowai\Testing\Ldaplib\TestCase;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkOptionsDeclarations;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkOptionsDeclaration;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @covers \Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkOptionsDeclarations
+ * @covers \Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkOptionsDeclaration
  */
-final class LdapLinkOptionsDeclarationsTest extends TestCase
+final class LdapLinkOptionsDeclarationTest extends TestCase
 {
     //
     //
@@ -96,12 +96,12 @@ final class LdapLinkOptionsDeclarationsTest extends TestCase
      */
     public function test__getConstantName(string $name, $expect) : void
     {
-        $this->assertSame($expect, LdapLinkOptionsDeclarations::getConstantName($name));
+        $this->assertSame($expect, LdapLinkOptionsDeclaration::getConstantName($name));
     }
 
     public function test__getConstantName__intexistent() : void
     {
-        $this->assertNull(LdapLinkOptionsDeclarations::getConstantName('inexistent'));
+        $this->assertNull(LdapLinkOptionsDeclaration::getConstantName('inexistent'));
     }
 
     public static function prov__getOptionId() : array
@@ -116,19 +116,19 @@ final class LdapLinkOptionsDeclarationsTest extends TestCase
      */
     public function test__getOptionId(string $arg, $expect) : void
     {
-        $this->assertSame($expect, LdapLinkOptionsDeclarations::getOptionId($arg));
+        $this->assertSame($expect, LdapLinkOptionsDeclaration::getOptionId($arg));
     }
 
     public function test__getOptionId__intexistent() : void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage("Unknown option 'inexistent'");
-        LdapLinkOptionsDeclarations::getOptionId('inexistent');
+        LdapLinkOptionsDeclaration::getOptionId('inexistent');
     }
 
     public function test__getDeclarations() : void
     {
-        $options =  LdapLinkOptionsDeclarations::getDeclarations();
+        $options =  LdapLinkOptionsDeclaration::getDeclarations();
 
         $v1 = ['never' => LDAP_DEREF_NEVER,
                'searching' => LDAP_DEREF_SEARCHING,
@@ -192,7 +192,7 @@ final class LdapLinkOptionsDeclarationsTest extends TestCase
 
     public function test__configureOptionsResolver() : void
     {
-        LdapLinkOptionsDeclarations::configureOptionsResolver($resolver = new OptionsResolver);
+        LdapLinkOptionsDeclaration::configureOptionsResolver($resolver = new OptionsResolver);
 
         $this->assertTrue($resolver->isDefined('deref'));
         $this->assertTrue($resolver->isDefined('sizelimit'));
@@ -243,7 +243,7 @@ final class LdapLinkOptionsDeclarationsTest extends TestCase
 
     public function test__configureOptionsResolver__defaults() : void
     {
-        LdapLinkOptionsDeclarations::configureOptionsResolver($resolver = new OptionsResolver);
+        LdapLinkOptionsDeclaration::configureOptionsResolver($resolver = new OptionsResolver);
         $this->assertSame(['protocol_version' => 3], $resolver->resolve([]));
     }
 
@@ -256,7 +256,7 @@ final class LdapLinkOptionsDeclarationsTest extends TestCase
             }
         ];
         $resolver = new OptionsResolver;
-        LdapLinkOptionsDeclarations::configureOption($resolver, 'foo', $decl);
+        LdapLinkOptionsDeclaration::configureOption($resolver, 'foo', $decl);
 
         $this->assertEquals(['foo' => 'foomatic'], $resolver->resolve(['foo' => 'foomatic']));
 
@@ -266,7 +266,7 @@ final class LdapLinkOptionsDeclarationsTest extends TestCase
 
     public function test__option__deref() : void
     {
-        LdapLinkOptionsDeclarations::configureOptionsResolver($resolver = new OptionsResolver);
+        LdapLinkOptionsDeclaration::configureOptionsResolver($resolver = new OptionsResolver);
 
         $this->assertNull(($resolver->resolve([]))['deref'] ?? null);
 
@@ -286,7 +286,7 @@ final class LdapLinkOptionsDeclarationsTest extends TestCase
 
     public function test__option__tls_crlcheck() : void
     {
-        LdapLinkOptionsDeclarations::configureOptionsResolver($resolver = new OptionsResolver);
+        LdapLinkOptionsDeclaration::configureOptionsResolver($resolver = new OptionsResolver);
 
         $this->assertNull(($resolver->resolve([]))['tls_crlcheck'] ?? null);
 
@@ -305,7 +305,7 @@ final class LdapLinkOptionsDeclarationsTest extends TestCase
 
     public function test__option__tls_require_cert() : void
     {
-        LdapLinkOptionsDeclarations::configureOptionsResolver($resolver = new OptionsResolver);
+        LdapLinkOptionsDeclaration::configureOptionsResolver($resolver = new OptionsResolver);
 
         $this->assertNull(($resolver->resolve([]))['tls_require_cert'] ?? null);
 

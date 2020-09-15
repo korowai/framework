@@ -22,37 +22,8 @@ use function Korowai\Lib\Compat\preg_match;
  * @todo Write documentation
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-final class LdapLinkConfigResolver implements LdapLinkConfigResolverInterface
+final class LdapLinkConfigDeclaration
 {
-    /**
-     * @var OptionsResolver
-     */
-    private $resolver;
-
-    /**
-     * Initializes the object.
-     *
-     * @param OptionsResolver|null $resolver
-     */
-    public function __construct(OptionsResolver $resolver = null)
-    {
-        if ($resolver === null) {
-            $resolver = new OptionsResolver;
-        }
-        $this->configureOptionsResolver($resolver);
-        $this->resolver = $resolver;
-    }
-
-    /**
-     * Returns the encapsulated OptionsResolver instance.
-     *
-     * @return OptionsResolver
-     */
-    public function getOptionsResolver() : OptionsResolver
-    {
-        return $this->resolver;
-    }
-
     /**
      * Resolves $options.
      *

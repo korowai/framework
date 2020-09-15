@@ -24,6 +24,7 @@ use Korowai\Lib\Ldap\BindingInterface;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Ldap\Binding
+ * @covers \Korowai\Tests\Lib\Ldap\BindingTestTrait
  */
 final class BindingTest extends TestCase
 {

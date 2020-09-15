@@ -30,17 +30,27 @@ final class LdapLinkConfigResolver implements LdapLinkConfigResolverInterface
     private $resolver;
 
     /**
+     * @var LdapLinkOptionsMapperInterface
+     */
+    private $mapper;
+
+    /**
      * Initializes the object.
      *
      * @param OptionsResolver|null $resolver
+     * @param LdapLinkOptionsMapperInterface|null $mapper
      */
-    public function __construct(OptionsResolver $resolver = null)
+    public function __construct(OptionsResolver $resolver = null, LdapLinkOptionsMapperInterface $mapper = null)
     {
         if ($resolver === null) {
             $resolver = new OptionsResolver;
         }
+        if ($mapper === null) {
+            $mapper = new LdapLinkOptionsMapper;
+        }
         $this->configureOptionsResolver($resolver);
         $this->resolver = $resolver;
+        $this->mapper = $mapper;
     }
 
     /**
@@ -54,6 +64,16 @@ final class LdapLinkConfigResolver implements LdapLinkConfigResolverInterface
     }
 
     /**
+     * Returns the encapsulated LdapLinkOptionsMapperInterface.
+     *
+     * @return LdapLinkOptionsMapperInterface
+     */
+    public function getNestedOptionsMapper() : LdapLinkOptionsMapperInterface
+    {
+        return $this->mapper;
+    }
+
+    /**
      * Resolves $options.
      *
      * @param array $options
@@ -63,15 +83,9 @@ final class LdapLinkConfigResolver implements LdapLinkConfigResolverInterface
     {
         $resolved = $this->resolver->resolve($options);
         if (($options = $resolved['options'] ?? null) !== null) {
-            $resolved['options'] = static::mapOptionsNamesToIds($options);
+            $resolved['options'] = $this->mapper->map($options);
         }
         return $resolved;
-    }
-
-    private static function mapOptionsNamesToIds(array $options) : array
-    {
-        $ids = array_map([LdapLinkOptionsDeclaration::class, 'getOptionId'], array_keys($options));
-        return array_combine($ids, $options);
     }
 
     /**

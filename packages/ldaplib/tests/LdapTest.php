@@ -13,8 +13,6 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Ldap;
 
 use Korowai\Testing\Ldaplib\TestCase;
-use Korowai\Tests\Lib\Ldap\BindingTestTrait;
-use Korowai\Tests\Lib\Ldap\EntryManagerTestTrait;
 
 use Korowai\Lib\Ldap\Ldap;
 use Korowai\Lib\Ldap\LdapInterface;
@@ -37,6 +35,10 @@ use Korowai\Lib\Ldap\EntryManagerTrait;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Ldap\Ldap
+ * @covers \Korowai\Tests\Lib\Ldap\BindingTestTrait
+ * @covers \Korowai\Tests\Lib\Ldap\EntryManagerTestTrait
+ * @covers \Korowai\Tests\Lib\Ldap\ComparingTestTrait
+ * @covers \Korowai\Tests\Lib\Ldap\SearchingTestTrait
  */
 final class LdapTest extends TestCase
 {

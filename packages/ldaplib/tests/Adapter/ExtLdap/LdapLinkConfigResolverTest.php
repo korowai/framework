@@ -15,6 +15,8 @@ namespace Korowai\Tests\Lib\Ldap\Adapter\ExtLdap;
 use Korowai\Testing\Ldaplib\TestCase;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkConfigResolver;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkConfigResolverInterface;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkOptionsMapper;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkOptionsMapperInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 
@@ -51,18 +53,55 @@ final class LdapLinkConfigResolverTest extends TestCase
     // __construct()
     //
 
-    public function test__construct__withDefaultResolver() : void
+    public function prov__construct() : array
     {
-        $ldapOptionsResolver = new LdapLinkConfigResolver();
-        $optionsResolver= $ldapOptionsResolver->getOptionsResolver();
-        $this->assertInstanceOf(OptionsResolver::class, $optionsResolver);
+        $resolver = new OptionsResolver;
+        $mapper = $this->createMock(LdapLinkOptionsMapperInterface::class);
+        return [
+            // #0
+            [
+                'args'   => [],
+                'expect' => [
+                    'resolver' => self::isInstanceOf(OptionsResolver::class),
+                    'mapper'   => self::isInstanceOf(LdapLinkOptionsMapper::class),
+                ],
+            ],
+
+            // #1
+            [
+                'args'   => [$resolver],
+                'expect' => [
+                    'resolver' => self::identicalTo($resolver),
+                    'mapper'   => self::isInstanceOf(LdapLinkOptionsMapper::class),
+                ],
+            ],
+            // #0
+            [
+                'args'   => [$resolver, $mapper],
+                'expect' => [
+                    'resolver' => self::identicalTo($resolver),
+                    'mapper'   => self::identicalTo($mapper),
+                ],
+            ],
+            // #0
+            [
+                'args'   => [null, $mapper],
+                'expect' => [
+                    'resolver' => self::isInstanceOf(OptionsResolver::class),
+                    'mapper'   => self::identicalTo($mapper),
+                ],
+            ],
+        ];
     }
 
-    public function test__construct__withCustomResolver() : void
+    /**
+     * @dataProvider prov__construct
+     */
+    public function test__construct(array $args, array $expect) : void
     {
-        $optionsResolver = new OptionsResolver;
-        $ldapOptionsResolver = new LdapLinkConfigResolver($optionsResolver);
-        $this->assertSame($optionsResolver, $ldapOptionsResolver->getOptionsResolver());
+        $resolver= new LdapLinkConfigResolver(...$args);
+        $this->assertThat($resolver->getOptionsResolver(), $expect['resolver']);
+        $this->assertThat($resolver->getNestedOptionsMapper(), $expect['mapper']);
     }
 
     //
@@ -207,6 +246,36 @@ final class LdapLinkConfigResolverTest extends TestCase
         $this->expectException($expect['exception']);
         $this->expectExceptionMessage($expect['message']);
         $resolver->resolve($config);
+    }
+
+    public function test__resolve__withMockedOptionsMapper() : void
+    {
+        $mapper = $this->createMock(LdapLinkOptionsMapperInterface::class);
+
+        $options = ['protocol_version' => 3];
+        $mappedOptions = [123 => 456];
+
+        $resolver = new LdapLinkConfigResolver(null, $mapper);
+
+        $mapper->expects($this->once())
+               ->method('map')
+               ->with($options)
+               ->willReturn($mappedOptions);
+
+        $config = [ 'uri' => 'ldap:///', 'tls' => true, 'options' => $options ];
+        $expect = [ 'uri' => 'ldap:///', 'tls' => true, 'options' => $mappedOptions ];
+
+        $resolved = $resolver->resolve($config);
+
+        foreach ([&$resolved, &$expect] as &$array) {
+            // FIXME: replace with assertEqualsKsorted() once it's implemented
+            ksort($array);
+            if (is_array($array['options'] ?? null)) {
+                ksort($array['options']);
+            }
+        }
+
+        $this->assertSame($expect, $resolved);
     }
 }
 

@@ -23,6 +23,7 @@ use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Ldap\ComparingTrait
+ * @covers \Korowai\Tests\Lib\Ldap\ComparingTestTrait
  */
 final class ComparingTraitTest extends TestCase
 {

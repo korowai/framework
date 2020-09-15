@@ -24,6 +24,7 @@ use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkWrapperTrait;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Ldap\EntryManager
+ * @covers \Korowai\Tests\Lib\Ldap\EntryManagerTestTrait
  */
 final class EntryManagerTest extends TestCase
 {

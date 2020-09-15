@@ -55,6 +55,9 @@ trait BindingTestTrait
             $config,
             $expect
         );
+        // @codeCoverageIgnoreStart
+        return; // unreachable
+        // @codeCoverageIgnoreEnd
     }
 
     //
@@ -67,7 +70,7 @@ trait BindingTestTrait
     // bind()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public function prov__bind() : array
+    public static function prov__bind() : array
     {
         return [
             // #0
@@ -105,7 +108,9 @@ trait BindingTestTrait
 
     public static function prov__bind__withTriggerError() : array
     {
+        // @codeCoverageIgnoreStart
         return static::feedCallWithLdapTriggerError();
+        // @codeCoverageIgnoreEnd
     }
 
     /**
@@ -114,10 +119,14 @@ trait BindingTestTrait
     public function test__bind__withTriggerError(array $config, array $expect) : void
     {
         $this->examineBindingMethodWithTriggerError('bind', 'bind', [], $config, $expect);
+        // @codeCoverageIgnoreStart
+        return;
+        // @codeCoverageIgnoreEnd
     }
 
-    public function prov__bind__whenLdapLinkTriggersUnalteringLdapError() : array
+    public static function prov__bind__whenLdapLinkTriggersUnalteringLdapError() : array
     {
+        // @codeCoverageIgnoreStart
         return [
             // #0
             [
@@ -128,6 +137,7 @@ trait BindingTestTrait
                 49, 'Password contains a null byte',
             ],
         ];
+        // @codeCoverageIgnoreEnd
     }
 
     /**
@@ -158,7 +168,9 @@ trait BindingTestTrait
              ->with()
              ->will($this->returnCallback(function () use ($message) {
                  trigger_error($message);
+                 // @codeCoverageIgnoreStart
                  return false;
+                 // @codeCoverageIgnoreEnd
              }));
 
         $this->expectException(LdapException::class);
@@ -171,6 +183,9 @@ trait BindingTestTrait
             $this->assertTrue($bind->isBound());
             throw $throwable;
         }
+        // @codeCoverageIgnoreStart
+        return;
+        // @codeCoverageIgnoreEnd
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -207,7 +222,9 @@ trait BindingTestTrait
 
     public static function prov__unbind__withTriggerError() : array
     {
+        // @codeCoverageIgnoreStart
         return static::feedCallWithLdapTriggerError();
+        // @codeCoverageIgnoreEnd
     }
 
     /**
@@ -216,6 +233,9 @@ trait BindingTestTrait
     public function test__unbind__withTriggerError(array $config, array $expect):  void
     {
         $this->examineBindingMethodWithTriggerError('unbind', 'unbind', [], $config, $expect);
+        // @codeCoverageIgnoreStart
+        return;
+        // @codeCoverageIgnoreEnd
     }
 }
 

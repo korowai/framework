@@ -13,19 +13,19 @@ declare(strict_types=1);
 namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
 
 /**
- * Resolves LDAP options for LdapLinkInterface::set_option().
+ * Maps LDAP options provided by user to options for suitable for LdapLinkInterface::set_option().
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-interface LdapLinkOptionsResolverInterface
+interface LdapLinkOptionsMapperInterface
 {
     /**
-     * Resolves LDAP options.
+     * Maps LDAP options provided by user to options for suitable for LdapLinkInterface::set_option().
      *
      * @param  array $options
      * @return array
      */
-    public function resolve(array $options) : array;
+    public function map(array $options) : array;
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

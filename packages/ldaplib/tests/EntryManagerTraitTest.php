@@ -22,11 +22,12 @@ use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkWrapperInterface;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Ldap\EntryManagerTrait
+ * @covers \Korowai\Tests\Lib\Ldap\EntryManagerTestTrait
  */
 final class EntryManagerTraitTest extends TestCase
 {
-    use ExamineCallWithLdapTriggerErrorTrait;
     use EntryManagerTestTrait;
+    use ExamineCallWithLdapTriggerErrorTrait;
 
     public function createEntryManagerInstance(LdapLinkinterface $ldapLink) : EntryManagerInterface
     {

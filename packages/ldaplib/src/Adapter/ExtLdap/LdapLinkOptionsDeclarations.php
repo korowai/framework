@@ -18,7 +18,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-final class LdapLinkOptions
+final class LdapLinkOptionsDeclarations
 {
     /**
      * @var array

@@ -15,6 +15,7 @@ namespace Korowai\Tests\Lib\Ldap;
 use Korowai\Lib\Ldap\ComparingInterface;
 use Korowai\Lib\Ldap\CompareQuery;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkErrorHandler;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -126,6 +127,12 @@ trait ComparingTestTrait
         $comparator = $this->createComparingInstance($link);
 
         $args = ['dc=example,dc=org', 'attribute', 'value'];
+
+        $link->expects($this->once())
+             ->method('getErrorHandler')
+             ->with()
+             ->willReturn(new LdapLinkErrorHandler($link));
+
         $link->expects($this->once())
              ->method('compare')
              ->with(...$args)

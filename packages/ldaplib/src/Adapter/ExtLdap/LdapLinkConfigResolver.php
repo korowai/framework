@@ -70,7 +70,8 @@ final class LdapLinkConfigResolver implements LdapLinkConfigResolverInterface
 
     private static function mapOptionsNamesToIds(array $options) : array
     {
-        return array_combine(array_map([LdapLinkOptions::class, 'getOptionId'], array_keys($options)), $options);
+        $ids = array_map([LdapLinkOptionsDeclarations::class, 'getOptionId'], array_keys($options));
+        return array_combine($ids, $options);
     }
 
     /**
@@ -82,7 +83,7 @@ final class LdapLinkConfigResolver implements LdapLinkConfigResolverInterface
     {
         $this->configureTopLevelOptionsResolver($resolver);
         $resolver->setDefault('options', function (OptionsResolver $nestedResolver) : void {
-            LdapLinkOptions::configureOptionsResolver($nestedResolver);
+            LdapLinkOptionsDeclarations::configureOptionsResolver($nestedResolver);
         });
     }
 

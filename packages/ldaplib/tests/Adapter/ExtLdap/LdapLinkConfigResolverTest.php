@@ -51,7 +51,7 @@ final class LdapLinkConfigResolverTest extends TestCase
     // __construct()
     //
 
-    public function test__construct__withoutCustomResolver() : void
+    public function test__construct__withDefaultResolver() : void
     {
         $ldapOptionsResolver = new LdapLinkConfigResolver();
         $optionsResolver= $ldapOptionsResolver->getOptionsResolver();

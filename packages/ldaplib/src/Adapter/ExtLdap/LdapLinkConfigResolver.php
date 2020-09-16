@@ -30,27 +30,23 @@ final class LdapLinkConfigResolver implements LdapLinkConfigResolverInterface
     private $resolver;
 
     /**
-     * @var LdapLinkOptionsMapperInterface
+     * @var LdapLinkOptionsSpecificationInterface
      */
-    private $mapper;
+    private $optionsSpecificaton;
 
     /**
      * Initializes the object.
      *
-     * @param OptionsResolver|null $resolver
-     * @param LdapLinkOptionsMapperInterface|null $mapper
+     * @param LdapLinkOptionsSpecificationInterface|null $optionsSpecificaton
      */
-    public function __construct(OptionsResolver $resolver = null, LdapLinkOptionsMapperInterface $mapper = null)
+    public function __construct(LdapLinkOptionsSpecificationInterface $optionsSpecificaton = null)
     {
-        if ($resolver === null) {
-            $resolver = new OptionsResolver;
+        if ($optionsSpecificaton === null) {
+            $optionsSpecificaton = new LdapLinkOptionsSpecification;
         }
-        if ($mapper === null) {
-            $mapper = new LdapLinkOptionsMapper;
-        }
-        $this->configureOptionsResolver($resolver);
+        $this->configureOptionsResolver($resolver = new OptionsResolver, $optionsSpecificaton);
         $this->resolver = $resolver;
-        $this->mapper = $mapper;
+        $this->optionsSpecificaton = $optionsSpecificaton;
     }
 
     /**
@@ -64,26 +60,28 @@ final class LdapLinkConfigResolver implements LdapLinkConfigResolverInterface
     }
 
     /**
-     * Returns the encapsulated LdapLinkOptionsMapperInterface.
+     * Returns the encapsulated LdapLinkOptionsSpecificationInterface.
      *
-     * @return LdapLinkOptionsMapperInterface
+     * @return LdapLinkOptionsSpecificationInterface
+     *
+     * @psalm-mutation-free
      */
-    public function getNestedOptionsMapper() : LdapLinkOptionsMapperInterface
+    public function getOptionsSpecification() : LdapLinkOptionsSpecificationInterface
     {
-        return $this->mapper;
+        return $this->optionsSpecificaton;
     }
 
     /**
-     * Resolves $options.
+     * Resolves $config.
      *
-     * @param array $options
+     * @param array $config
      * @return array
      */
-    public function resolve(array $options) : array
+    public function resolve(array $config) : array
     {
-        $resolved = $this->resolver->resolve($options);
+        $resolved = $this->resolver->resolve($config);
         if (($options = $resolved['options'] ?? null) !== null) {
-            $resolved['options'] = $this->mapper->map($options);
+            $resolved['options'] = $this->optionsSpecificaton->getOptionsMapper()->mapOptions($options);
         }
         return $resolved;
     }
@@ -93,11 +91,13 @@ final class LdapLinkConfigResolver implements LdapLinkConfigResolverInterface
      *
      * @param OptionsResolver $resolver The resolver to be configured
      */
-    private function configureOptionsResolver(OptionsResolver $resolver) : void
-    {
+    private function configureOptionsResolver(
+        OptionsResolver $resolver,
+        LdapLinkOptionsSpecificationInterface $optionsSpecificaton
+    ) : void {
         $this->configureTopLevelOptionsResolver($resolver);
-        $resolver->setDefault('options', function (OptionsResolver $nestedResolver) : void {
-            LdapLinkOptionsDeclaration::configureOptionsResolver($nestedResolver);
+        $resolver->setDefault('options', function (OptionsResolver $nestedResolver) use ($optionsSpecificaton) : void {
+            $optionsSpecificaton->configureOptionsResolver($nestedResolver);
         });
     }
 

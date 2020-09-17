@@ -49,21 +49,23 @@ final class LdapLinkFactory implements LdapLinkFactoryInterface
      */
     private $constructor;
 
-    /**
-     * Creates an LdapLinkFactory using configuration array.
-     *
-     * @param  LdapLinkConstructorInterface $constructor
-     * @param  LdapLinkConfigResolverInterface $resolver
-     * @param  array $config
-     */
-    public static function createWithConfig(
-        LdapLinkConstructorInterface $constructor,
-        LdapLinkConfigResolverInterface $resolver,
-        array $config
-    ) {
-        $config = $resolver->resolve($config);
-        return new self($constructor, $config['uri'], $config['tls'], $config['options']);
-    }
+//    /**
+//     * Creates an LdapLinkFactory using configuration array.
+//     *
+//     * @param  LdapLinkConstructorInterface $constructor
+//     * @param  LdapLinkConfigResolverInterface $resolver
+//     * @param  array $config
+//     *
+//     * @return LdapLinkFactoryInterface
+//     */
+//    public static function createWithConfig(
+//        LdapLinkConstructorInterface $constructor,
+//        LdapLinkConfigResolverInterface $resolver,
+//        array $config
+//    ) : LdapLinkfactoryInterface {
+//        $config = $resolver->resolve($config);
+//        return new self($constructor, $config['uri'], $config['tls'], $config['options']);
+//    }
 
     /**
      * Initializes the object.

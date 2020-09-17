@@ -40,35 +40,35 @@ final class LdapLinkFactoryTest extends TestCase
         $this->assertImplementsInterface(LdapLinkFactoryInterface::class, LdapLinkFactory::class);
     }
 
-    //
-    // createWithConfig()
-    //
-    public function test__createWithConfig() : void
-    {
-        $constructor = $this->createMock(LdapLinkConstructorInterface::class);
-        $resolver = $this->createMock(LdapLinkConfigResolverInterface::class);
-
-        $config = [];
-        $resolved = [
-            'uri'     => 'URI',
-            'tls'     => false,
-            'options' => [0 => 1]
-        ];
-        $resolver->expects($this->once())
-                 ->method('resolve')
-                 ->with($config)
-                 ->willReturn($resolved);
-
-        $factory = LdapLinkFactory::createWithConfig($constructor, $resolver, $config);
-
-        $this->assertSame($constructor, $factory->getLdapLinkConstructor());
-        $this->assertHasPropertiesSameAs([
-            'getUri()'     => $resolved['uri'],
-            'getTls()'     => $resolved['tls'],
-            'getOptions()' => $resolved['options'],
-        ], $factory);
-    }
-
+//    //
+//    // createWithConfig()
+//    //
+//    public function test__createWithConfig() : void
+//    {
+//        $constructor = $this->createMock(LdapLinkConstructorInterface::class);
+//        $resolver = $this->createMock(LdapLinkConfigResolverInterface::class);
+//
+//        $config = [];
+//        $resolved = [
+//            'uri'     => 'URI',
+//            'tls'     => false,
+//            'options' => [0 => 1]
+//        ];
+//        $resolver->expects($this->once())
+//                 ->method('resolve')
+//                 ->with($config)
+//                 ->willReturn($resolved);
+//
+//        $factory = LdapLinkFactory::createWithConfig($constructor, $resolver, $config);
+//
+//        $this->assertSame($constructor, $factory->getLdapLinkConstructor());
+//        $this->assertHasPropertiesSameAs([
+//            'getUri()'     => $resolved['uri'],
+//            'getTls()'     => $resolved['tls'],
+//            'getOptions()' => $resolved['options'],
+//        ], $factory);
+//    }
+//
     //
     // __construct()
     //

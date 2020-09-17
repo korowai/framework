@@ -75,13 +75,9 @@ final class LdapLinkConfigResolver implements LdapLinkConfigResolverInterface
 
     /**
      * {@inheritdoc}
-     *
-     * @psalm-mutation-free
-     * @psalm-pure
      */
     public function resolve(array $config) : array
     {
-        /** @psalm-suppress ImpureMethodCall */
         $resolved = $this->resolver->resolve($config);
         if (($options = $resolved['options'] ?? null) !== null) {
             $resolved['options'] = $this->optionsSpecificaton->getOptionsMapper()->mapOptions($options);

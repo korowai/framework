@@ -24,7 +24,7 @@ use Korowai\Lib\Ldap\Exception\ErrorException;
 trait ComparingTestTrait
 {
     abstract public function createComparingInstance(LdapLinkInterface $ldapLink) : ComparingInterface;
-    abstract public function examineCallWithLdapTriggerError(
+    abstract public function examineWithLdapTriggerError(
         callable $function,
         object $mock,
         string $mockMethod,
@@ -33,7 +33,7 @@ trait ComparingTestTrait
         array $config,
         array $expect
     ) : void;
-    abstract public static function feedCallWithLdapTriggerError() : array;
+    abstract public static function feedWithLdapTriggerError() : array;
 
     //
     //
@@ -102,7 +102,7 @@ trait ComparingTestTrait
 
     public static function prov__compare__withLdapTriggerError() : array
     {
-        return self::feedCallWithLdapTriggerError();
+        return self::feedWithLdapTriggerError();
     }
 
     /**
@@ -118,7 +118,7 @@ trait ComparingTestTrait
             return $comparator->compare(...$args);
         };
 
-        $this->examineCallWithLdapTriggerError($function, $link, 'compare', $args, $link, $config, $expect);
+        $this->examineWithLdapTriggerError($function, $link, 'compare', $args, $link, $config, $expect);
     }
 
     public function test__compare__withLdapReturningFailure() : void

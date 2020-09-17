@@ -23,7 +23,7 @@ use Korowai\Lib\Ldap\Exception\LdapException;
 trait EntryManagerTestTrait
 {
     abstract public function createEntryManagerInstance(LdapLinkinterface $ldapLink) : EntryManagerInterface;
-    abstract public function examineCallWithLdapTriggerError(
+    abstract public function examineWithLdapTriggerError(
         callable $function,
         object $mock,
         string $mockMethod,
@@ -32,7 +32,7 @@ trait EntryManagerTestTrait
         array $config,
         array $expect
     ) : void;
-    abstract public static function feedCallWithLdapTriggerError() : array;
+    abstract public static function feedWithLdapTriggerError() : array;
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // add()
@@ -62,11 +62,11 @@ trait EntryManagerTestTrait
 
     public static function prov__add__withLdapTriggerError() : array
     {
-        return feedCallWithLdapTriggerError();
+        return feedWithLdapTriggerError();
     }
 
     /**
-     * @dataProvider feedCallWithLdapTriggerError
+     * @dataProvider feedWithLdapTriggerError
      */
     public function test__add__withLdapTriggerError(array $config, array $expect) : void
     {
@@ -84,7 +84,7 @@ trait EntryManagerTestTrait
 
         $manager = $this->createEntryManagerInstance($link);
 
-        $this->examineCallWithLdapTriggerError(
+        $this->examineWithLdapTriggerError(
             function () use ($manager, $entry) {
                 return $manager->add($entry);
             },
@@ -125,11 +125,11 @@ trait EntryManagerTestTrait
 
     public static function prov__update__withLdapTriggerError() : array
     {
-        return feedCallWithLdapTriggerError();
+        return feedWithLdapTriggerError();
     }
 
     /**
-     * @dataProvider feedCallWithLdapTriggerError
+     * @dataProvider feedWithLdapTriggerError
      */
     public function test__update__withLdapTriggerError(array $config, array $expect) : void
     {
@@ -147,7 +147,7 @@ trait EntryManagerTestTrait
 
         $manager = $this->createEntryManagerInstance($link);
 
-        $this->examineCallWithLdapTriggerError(
+        $this->examineWithLdapTriggerError(
             function () use ($manager, $entry) {
                 return $manager->update($entry);
             },
@@ -226,11 +226,11 @@ trait EntryManagerTestTrait
 
     public static function prov__rename__withLdapTriggerError() : array
     {
-        return feedCallWithLdapTriggerError();
+        return feedWithLdapTriggerError();
     }
 
     /**
-     * @dataProvider feedCallWithLdapTriggerError
+     * @dataProvider feedWithLdapTriggerError
      */
     public function test__rename__withLdapTriggerError(array $config, array $expect) : void
     {
@@ -246,7 +246,7 @@ trait EntryManagerTestTrait
 
         $manager = $this->createEntryManagerInstance($link);
 
-        $this->examineCallWithLdapTriggerError(
+        $this->examineWithLdapTriggerError(
             function () use ($manager, $entry) {
                 return $manager->rename($entry, 'cn=korowai', true);
             },
@@ -285,11 +285,11 @@ trait EntryManagerTestTrait
 
     public static function prov__delete__withLdapTriggerError() : array
     {
-        return feedCallWithLdapTriggerError();
+        return feedWithLdapTriggerError();
     }
 
     /**
-     * @dataProvider feedCallWithLdapTriggerError
+     * @dataProvider feedWithLdapTriggerError
      */
     public function test__delete__withLdapTriggerError(array $config, array $expect) : void
     {
@@ -305,7 +305,7 @@ trait EntryManagerTestTrait
 
         $manager = $this->createEntryManagerInstance($link);
 
-        $this->examineCallWithLdapTriggerError(
+        $this->examineWithLdapTriggerError(
             function () use ($manager, $entry) {
                 return $manager->delete($entry);
             },

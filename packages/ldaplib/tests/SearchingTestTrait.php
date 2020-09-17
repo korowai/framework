@@ -22,7 +22,7 @@ use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
 trait SearchingTestTrait
 {
     abstract public function createSearchingInstance(LdapLinkInterface $ldapLink) : SearchingInterface;
-    abstract public function examineCallWithLdapTriggerError(
+    abstract public function examineWithLdapTriggerError(
         callable $function,
         object $mock,
         string $mockMethod,
@@ -31,7 +31,7 @@ trait SearchingTestTrait
         array $config,
         array $expect
     ) : void;
-    abstract public static function feedCallWithLdapTriggerError() : array;
+    abstract public static function feedWithLdapTriggerError() : array;
 
     //
     //
@@ -155,7 +155,7 @@ trait SearchingTestTrait
 //
 //    public static function prov__search__withLdapTriggerError() : array
 //    {
-//        return self::feedCallWithLdapTriggerError();
+//        return self::feedWithLdapTriggerError();
 //    }
 //
 //    /**
@@ -170,7 +170,7 @@ trait SearchingTestTrait
 //            return $searching->search(...$args);
 //        };
 //
-//        $this->examineCallWithLdapTriggerError($function, $link, 'search', $args, $link, $config, $expect);
+//        $this->examineWithLdapTriggerError($function, $link, 'search', $args, $link, $config, $expect);
 //    }
 //
 //    public function test__search__withLdapReturningFailure() : void

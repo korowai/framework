@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Ldap\Adapter\ExtLdap;
 
 use Korowai\Testing\Ldaplib\TestCase;
-use Korowai\Testing\Ldaplib\ExamineCallWithLdapTriggerErrorTrait;
+use Korowai\Testing\Ldaplib\ExamineWithLdapTriggerErrorTrait;
 
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkConfigResolverInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkConstructorInterface;
@@ -28,7 +28,7 @@ use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
  */
 final class LdapLinkFactoryTest extends TestCase
 {
-    use ExamineCallWithLdapTriggerErrorTrait;
+    use ExamineWithLdapTriggerErrorTrait;
 
     //
     //
@@ -129,7 +129,7 @@ final class LdapLinkFactoryTest extends TestCase
 
     public static function prov__createLdapLink__whenStartTlsTriggersError() : array
     {
-        return static::feedCallWithLdapTriggerError();
+        return static::feedWithLdapTriggerError();
     }
 
     /**
@@ -166,7 +166,7 @@ final class LdapLinkFactoryTest extends TestCase
 
         $factory = new LdapLinkFactory($constructor);
 
-        $this->examineCallWithLdapTriggerError(
+        $this->examineWithLdapTriggerError(
             function () use ($factory, $config) : LdapLinkInterface {
                 return $factory->createLdapLink($config);
             },
@@ -179,7 +179,7 @@ final class LdapLinkFactoryTest extends TestCase
 
     public static function prov__createLdapLink__whenSetOptionTriggersError() : array
     {
-        return static::feedCallWithLdapTriggerError();
+        return static::feedWithLdapTriggerError();
     }
 
     /**
@@ -216,7 +216,7 @@ final class LdapLinkFactoryTest extends TestCase
 
         $factory = new LdapLinkFactory($constructor);
 
-        $this->examineCallWithLdapTriggerError(
+        $this->examineWithLdapTriggerError(
             function () use ($factory, $config) {
                 return $factory->createLdapLink($config);
             },

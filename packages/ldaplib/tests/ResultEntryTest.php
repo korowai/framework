@@ -16,7 +16,7 @@ use Korowai\Testing\Ldaplib\TestCase;
 use Korowai\Testing\Ldaplib\CreateLdapLinkMockTrait;
 use Korowai\Testing\Ldaplib\CreateLdapResultMockTrait;
 use Korowai\Testing\Ldaplib\CreateLdapResultEntryMockTrait;
-use Korowai\Testing\Ldaplib\ExamineCallWithLdapTriggerErrorTrait;
+use Korowai\Testing\Ldaplib\ExamineWithLdapTriggerErrorTrait;
 
 use Korowai\Lib\Ldap\ResultEntry;
 use Korowai\Lib\Ldap\ResultEntryInterface;
@@ -35,7 +35,7 @@ final class ResultEntryTest extends TestCase
     use CreateLdapLinkMockTrait;
     use CreateLdapResultMockTrait;
     use CreateLdapResultEntryMockTrait;
-    use ExamineCallWithLdapTriggerErrorTrait;
+    use ExamineWithLdapTriggerErrorTrait;
 
     private function createResultEntryAndMocks(int $mocksDepth = 3) : array
     {
@@ -55,7 +55,7 @@ final class ResultEntryTest extends TestCase
     ) : void {
         [$resultEntry, $ldapEntry, $ldapResult, $link] = $this->createResultEntryAndMocks();
 
-        $this->examineCallWithLdapTriggerError(
+        $this->examineWithLdapTriggerError(
             function () use ($resultEntry, $method, $args) : void {
                 $resultEntry->$method(...$args);
             },
@@ -146,7 +146,7 @@ final class ResultEntryTest extends TestCase
 
     public static function prov__getDn__withTriggerError() : array
     {
-        return static::feedCallWithLdapTriggerError();
+        return static::feedWithLdapTriggerError();
     }
 
     /**
@@ -229,7 +229,7 @@ final class ResultEntryTest extends TestCase
 
     public static function prov__getAttributes__withTriggerError() : array
     {
-        return static::feedCallWithLdapTriggerError();
+        return static::feedWithLdapTriggerError();
     }
 
     /**
@@ -280,7 +280,7 @@ final class ResultEntryTest extends TestCase
 
     public static function prov__getAttributeIterator__withTriggerError() : array
     {
-        return static::feedCallWithLdapTriggerError();
+        return static::feedWithLdapTriggerError();
     }
 
     /**

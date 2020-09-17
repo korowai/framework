@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Ldap;
 
 use Korowai\Testing\Ldaplib\TestCase;
-use Korowai\Testing\Ldaplib\ExamineCallWithLdapTriggerErrorTrait;
+use Korowai\Testing\Ldaplib\ExamineWithLdapTriggerErrorTrait;
 
 use Korowai\Lib\Ldap\CompareQuery;
 use Korowai\Lib\Ldap\CompareQueryInterface;
@@ -29,7 +29,7 @@ use Korowai\Lib\Ldap\Exception\ErrorException;
 final class CompareQueryTest extends TestCase
 {
 //    use CreateLdapLinkMockTrait;
-    use ExamineCallWithLdapTriggerErrorTrait;
+    use ExamineWithLdapTriggerErrorTrait;
 
     //
     //
@@ -129,7 +129,7 @@ final class CompareQueryTest extends TestCase
 
     public static function prov__query__withLdapTriggerError() : array
     {
-        $common = self::feedCallWithLdapTriggerError();
+        $common = self::feedWithLdapTriggerError();
         foreach (['execute', 'getResult'] as $method) {
             foreach ($common as $key => $array) {
                 $cases[] = ['method' => $method] + $array;
@@ -149,7 +149,7 @@ final class CompareQueryTest extends TestCase
         $query = new CompareQuery($link, ...$args);
         $function = [$query, $method];
 
-        $this->examineCallWithLdapTriggerError($function, $link, 'compare', $args, $link, $config, $expect);
+        $this->examineWithLdapTriggerError($function, $link, 'compare', $args, $link, $config, $expect);
     }
 
     /**

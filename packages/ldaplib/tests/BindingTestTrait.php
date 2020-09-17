@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Ldap;
 
 use Korowai\Testing\Ldaplib\CreateLdapLinkMockTrait;
-use Korowai\Testing\Ldaplib\ExamineCallWithLdapTriggerErrorTrait;
+use Korowai\Testing\Ldaplib\ExamineWithLdapTriggerErrorTrait;
 
 use Korowai\Lib\Ldap\BindingTrait;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
@@ -27,7 +27,7 @@ use Korowai\Lib\Ldap\Exception\LdapException;
 trait BindingTestTrait
 {
     use CreateLdapLinkMockTrait;
-    use ExamineCallWithLdapTriggerErrorTrait;
+    use ExamineWithLdapTriggerErrorTrait;
 
     abstract public function createBindingInstance(
         LdapLinkInterface $ldapLink,
@@ -44,7 +44,7 @@ trait BindingTestTrait
         $link = $this->createLdapLinkMock();
         $bind = $this->createBindingInstance($link);
 
-        $this->examineCallWithLdapTriggerError(
+        $this->examineWithLdapTriggerError(
             function () use ($bind, $method, $args) : void {
                 $bind->$method(...$args);
             },
@@ -109,7 +109,7 @@ trait BindingTestTrait
     public static function prov__bind__withTriggerError() : array
     {
         // @codeCoverageIgnoreStart
-        return static::feedCallWithLdapTriggerError();
+        return static::feedWithLdapTriggerError();
         // @codeCoverageIgnoreEnd
     }
 
@@ -223,7 +223,7 @@ trait BindingTestTrait
     public static function prov__unbind__withTriggerError() : array
     {
         // @codeCoverageIgnoreStart
-        return static::feedCallWithLdapTriggerError();
+        return static::feedWithLdapTriggerError();
         // @codeCoverageIgnoreEnd
     }
 

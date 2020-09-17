@@ -20,9 +20,9 @@ use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkErrorHandler;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-trait ExamineCallWithLdapTriggerErrorTrait
+trait ExamineWithLdapTriggerErrorTrait
 {
-    public function examineCallWithLdapTriggerError(
+    public function examineWithLdapTriggerError(
         callable $function,
         object $mock,
         string $mockMethod,
@@ -73,7 +73,7 @@ trait ExamineCallWithLdapTriggerErrorTrait
         }
     }
 
-    public static function feedCallWithLdapTriggerError() : array
+    public static function feedWithLdapTriggerError() : array
     {
         return [
             // #0

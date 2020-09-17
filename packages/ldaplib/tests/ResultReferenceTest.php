@@ -16,7 +16,7 @@ use Korowai\Testing\Ldaplib\TestCase;
 use Korowai\Testing\Ldaplib\CreateLdapLinkMockTrait;
 use Korowai\Testing\Ldaplib\CreateLdapResultMockTrait;
 use Korowai\Testing\Ldaplib\CreateLdapResultReferenceMockTrait;
-use Korowai\Testing\Ldaplib\ExamineCallWithLdapTriggerErrorTrait;
+use Korowai\Testing\Ldaplib\ExamineWithLdapTriggerErrorTrait;
 use Korowai\Testing\Ldaplib\GetLdapFunctionMockTrait;
 
 use Korowai\Lib\Ldap\ResultReference;
@@ -36,7 +36,7 @@ final class ResultReferenceTest extends TestCase
     use CreateLdapLinkMockTrait;
     use CreateLdapResultMockTrait;
     use CreateLdapResultReferenceMockTrait;
-    use ExamineCallWithLdapTriggerErrorTrait;
+    use ExamineWithLdapTriggerErrorTrait;
 
     private function createResultReferenceAndMocks(int $mocksDepth = 3) : array
     {
@@ -56,7 +56,7 @@ final class ResultReferenceTest extends TestCase
     ) : void {
         [$reference, $ldapReference, $ldapResult, $link] = $this->createResultReferenceAndMocks();
 
-        $this->examineCallWithLdapTriggerError(
+        $this->examineWithLdapTriggerError(
             function () use ($reference, $method, $args) : void {
                 $reference->$method(...$args);
             },
@@ -148,7 +148,7 @@ final class ResultReferenceTest extends TestCase
 
     public static function prov__getReferrals__withTriggerError() : array
     {
-        return static::feedCallWithLdapTriggerError();
+        return static::feedWithLdapTriggerError();
     }
 
     /**
@@ -213,7 +213,7 @@ final class ResultReferenceTest extends TestCase
 
     public static function prov__getReferralIterator__withTriggerError() : array
     {
-        return static::feedCallWithLdapTriggerError();
+        return static::feedWithLdapTriggerError();
     }
 
     /**

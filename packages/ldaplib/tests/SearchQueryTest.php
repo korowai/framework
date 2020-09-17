@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Ldap;
 
 use Korowai\Testing\Ldaplib\TestCase;
-use Korowai\Testing\Ldaplib\ExamineCallWithLdapTriggerErrorTrait;
+use Korowai\Testing\Ldaplib\ExamineWithLdapTriggerErrorTrait;
 
 use Korowai\Lib\Ldap\SearchQuery;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
@@ -30,7 +30,7 @@ use Korowai\Lib\Ldap\Exception\ErrorException;
  */
 final class SearchQueryTest extends TestCase
 {
-    use ExamineCallWithLdapTriggerErrorTrait;
+    use ExamineWithLdapTriggerErrorTrait;
 
     public const SCOPES_METHODS = [
         'base' => 'read',
@@ -214,7 +214,7 @@ final class SearchQueryTest extends TestCase
         $cases = [];
         foreach (['execute', 'getResult'] as $method) {
             foreach (self::SCOPES_METHODS as $scope => $expectMethod) {
-                foreach (self::feedCallWithLdapTriggerError() as $feedCase) {
+                foreach (self::feedWithLdapTriggerError() as $feedCase) {
                     $case = [
                         'method' => $method,
                         'args'   => $args,
@@ -237,7 +237,7 @@ final class SearchQueryTest extends TestCase
         $link = $this->createMock(LdapLinkInterface::class);
         $query = new SearchQuery($link, ...$args);
 
-        $this->examineCallWithLdapTriggerError(
+        $this->examineWithLdapTriggerError(
             [$query, $method],
             $link,
             $expect['method'],

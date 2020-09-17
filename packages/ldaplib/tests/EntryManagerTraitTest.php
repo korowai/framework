@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Ldap;
 
 use Korowai\Testing\Ldaplib\TestCase;
-use Korowai\Testing\Ldaplib\ExamineCallWithLdapTriggerErrorTrait;
+use Korowai\Testing\Ldaplib\ExamineWithLdapTriggerErrorTrait;
 use Korowai\Lib\Ldap\EntryManagerInterface;
 use Korowai\Lib\Ldap\EntryManagerTrait;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
@@ -27,7 +27,7 @@ use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkWrapperInterface;
 final class EntryManagerTraitTest extends TestCase
 {
     use EntryManagerTestTrait;
-    use ExamineCallWithLdapTriggerErrorTrait;
+    use ExamineWithLdapTriggerErrorTrait;
 
     public function createEntryManagerInstance(LdapLinkinterface $ldapLink) : EntryManagerInterface
     {

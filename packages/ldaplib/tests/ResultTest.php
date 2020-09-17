@@ -17,7 +17,7 @@ use Korowai\Testing\Ldaplib\CreateLdapLinkMockTrait;
 use Korowai\Testing\Ldaplib\CreateLdapResultMockTrait;
 use Korowai\Testing\Ldaplib\CreateLdapResultEntryMockTrait;
 use Korowai\Testing\Ldaplib\CreateLdapResultReferenceMockTrait;
-use Korowai\Testing\Ldaplib\ExamineCallWithLdapTriggerErrorTrait;
+use Korowai\Testing\Ldaplib\ExamineWithLdapTriggerErrorTrait;
 
 use PHPUnit\Framework\Constraint\Constraint;
 
@@ -40,7 +40,7 @@ final class ResultTest extends TestCase
     use CreateLdapResultMockTrait;
     use CreateLdapResultEntryMockTrait;
     use CreateLdapResultReferenceMockTrait;
-    use ExamineCallWithLdapTriggerErrorTrait;
+    use ExamineWithLdapTriggerErrorTrait;
 
     private function createResultAndMocks(int $mocksDepth = 2) : array
     {
@@ -59,7 +59,7 @@ final class ResultTest extends TestCase
     ) : void {
         [$result, $ldapResult, $link] = $this->createResultAndMocks();
 
-        $this->examineCallWithLdapTriggerError(
+        $this->examineWithLdapTriggerError(
             function () use ($result, $method, $args) : void {
                 $result->$method(...$args);
             },
@@ -178,7 +178,7 @@ final class ResultTest extends TestCase
 
     public static function prov__getResultEntries__withTriggerError() : array
     {
-        return static::feedCallWithLdapTriggerError();
+        return static::feedWithLdapTriggerError();
     }
 
     /**
@@ -264,7 +264,7 @@ final class ResultTest extends TestCase
 
     public static function prov__getResultReferences__withTriggerError() : array
     {
-        return static::feedCallWithLdapTriggerError();
+        return static::feedWithLdapTriggerError();
     }
 
     /**

@@ -13,7 +13,9 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Ldap\Adapter\ExtLdap;
 
 use Korowai\Testing\Ldaplib\TestCase;
-use Korowai\Testing\Ldaplib\ExamineWithLdapTriggerErrorTrait;
+use Korowai\Testing\Ldaplib\ExamineLdapLinkErrorHandlerTrait;
+use Korowai\Testing\Ldaplib\LdapTriggerErrorTestFixture;
+use Korowai\Testing\Ldaplib\LdapTriggerErrorTestSubject;
 
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkConfigResolverInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkConstructorInterface;
@@ -28,7 +30,7 @@ use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
  */
 final class LdapLinkFactoryTest extends TestCase
 {
-    use ExamineWithLdapTriggerErrorTrait;
+    use ExamineLdapLinkErrorHandlerTrait;
 
     //
     //
@@ -129,13 +131,13 @@ final class LdapLinkFactoryTest extends TestCase
 
     public static function prov__createLdapLink__whenStartTlsTriggersError() : array
     {
-        return static::feedWithLdapTriggerError();
+        return static::feedLdapLinkErrorHandler();
     }
 
     /**
      * @dataProvider prov__createLdapLink__whenStartTlsTriggersError
      */
-    public function test__createLdapLink__whenStartTlsTriggersError(array $case, array $expect) : void
+    public function test__createLdapLink__whenStartTlsTriggersError(LdapTriggerErrorTestFixture $fixture) : void
     {
         $constructor = $this->createMock(LdapLinkConstructorInterface::class);
         $link        = $this->createMock(LdapLinkInterface::class);
@@ -165,27 +167,23 @@ final class LdapLinkFactoryTest extends TestCase
              ->method('set_option');
 
         $factory = new LdapLinkFactory($constructor);
+        $function = function () use ($factory, $config) : LdapLinkInterface {
+            return $factory->createLdapLink($config);
+        };
+        $subject = new LdapTriggerErrorTestSubject($link, 'start_tls', []);
 
-        $this->examineWithLdapTriggerError(
-            function () use ($factory, $config) : LdapLinkInterface {
-                return $factory->createLdapLink($config);
-            },
-            $link, 'start_tls', [],
-            $link,
-            $case,
-            $expect
-        );
+        $this->examineLdapLinkErrorHandler($function, $subject, $link, $fixture);
     }
 
     public static function prov__createLdapLink__whenSetOptionTriggersError() : array
     {
-        return static::feedWithLdapTriggerError();
+        return static::feedLdapLinkErrorHandler();
     }
 
     /**
      * @dataProvider prov__createLdapLink__whenSetOptionTriggersError
      */
-    public function test__createLdapLink__whenSetOptionTriggersError(array $case, array $expect) : void
+    public function test__createLdapLink__whenSetOptionTriggersError(LdapTriggerErrorTestFixture $fixture) : void
     {
         $constructor = $this->createMock(LdapLinkConstructorInterface::class);
         $link        = $this->createMock(LdapLinkInterface::class);
@@ -216,15 +214,13 @@ final class LdapLinkFactoryTest extends TestCase
 
         $factory = new LdapLinkFactory($constructor);
 
-        $this->examineWithLdapTriggerError(
-            function () use ($factory, $config) {
-                return $factory->createLdapLink($config);
-            },
-            $link, 'set_option', [17, 3],
-            $link,
-            $case,
-            $expect
-        );
+        $function = function () use ($factory, $config) : LdapLinkInterface {
+            return $factory->createLdapLink($config);
+        };
+
+        $subject = new LdapTriggerErrorTestSubject($link, 'set_option', [17, 3]);
+
+        $this->examineLdapLinkErrorHandler($function, $subject, $link, $fixture);
     }
 }
 

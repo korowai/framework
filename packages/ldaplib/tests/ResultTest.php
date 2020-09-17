@@ -14,10 +14,12 @@ namespace Korowai\Tests\Lib\Ldap;
 
 use Korowai\Testing\Ldaplib\TestCase;
 use Korowai\Testing\Ldaplib\CreateLdapLinkMockTrait;
-use Korowai\Testing\Ldaplib\CreateLdapResultMockTrait;
 use Korowai\Testing\Ldaplib\CreateLdapResultEntryMockTrait;
+use Korowai\Testing\Ldaplib\CreateLdapResultMockTrait;
 use Korowai\Testing\Ldaplib\CreateLdapResultReferenceMockTrait;
-use Korowai\Testing\Ldaplib\ExamineWithLdapTriggerErrorTrait;
+use Korowai\Testing\Ldaplib\ExamineLdapLinkErrorHandlerTrait;
+use Korowai\Testing\Ldaplib\LdapTriggerErrorTestFixture;
+use Korowai\Testing\Ldaplib\LdapTriggerErrorTestSubject;
 
 use PHPUnit\Framework\Constraint\Constraint;
 
@@ -40,7 +42,7 @@ final class ResultTest extends TestCase
     use CreateLdapResultMockTrait;
     use CreateLdapResultEntryMockTrait;
     use CreateLdapResultReferenceMockTrait;
-    use ExamineWithLdapTriggerErrorTrait;
+    use ExamineLdapLinkErrorHandlerTrait;
 
     private function createResultAndMocks(int $mocksDepth = 2) : array
     {
@@ -54,22 +56,16 @@ final class ResultTest extends TestCase
         string $method,
         string $backendMethod,
         array $args,
-        array $config,
-        array $expect
+        LdapTriggerErrorTestFixture $fixture
     ) : void {
         [$result, $ldapResult, $link] = $this->createResultAndMocks();
 
-        $this->examineWithLdapTriggerError(
-            function () use ($result, $method, $args) : void {
-                $result->$method(...$args);
-            },
-            $ldapResult,
-            $backendMethod,
-            $args,
-            $link,
-            $config,
-            $expect
-        );
+        $function = function () use ($result, $method, $args) : void {
+            $result->$method(...$args);
+        };
+
+        $subject = new LdapTriggerErrorTestSubject($ldapResult, $backendMethod, $args);
+        $this->examineLdapLinkErrorHandler($function, $subject, $link, $fixture);
     }
 
     //
@@ -178,15 +174,15 @@ final class ResultTest extends TestCase
 
     public static function prov__getResultEntries__withTriggerError() : array
     {
-        return static::feedWithLdapTriggerError();
+        return static::feedLdapLinkErrorHandler();
     }
 
     /**
      * @dataProvider prov__getResultEntries__withTriggerError
      */
-    public function test__getResultEntries__withTriggerError(array $config, array $expect) : void
+    public function test__getResultEntries__withTriggerError(LdapTriggerErrorTestFixture $fixture) : void
     {
-        $this->examineResultMethodWithTriggerError('getResultEntries', 'first_entry', [], $config, $expect);
+        $this->examineResultMethodWithTriggerError('getResultEntries', 'first_entry', [], $fixture);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -264,15 +260,15 @@ final class ResultTest extends TestCase
 
     public static function prov__getResultReferences__withTriggerError() : array
     {
-        return static::feedWithLdapTriggerError();
+        return static::feedLdapLinkErrorHandler();
     }
 
     /**
      * @dataProvider prov__getResultReferences__withTriggerError
      */
-    public function test__getResultReferences__withTriggerError(array $config, array $expect) : void
+    public function test__getResultReferences__withTriggerError(LdapTriggerErrorTestFixture $fixture) : void
     {
-        $this->examineResultMethodWithTriggerError('getResultReferences', 'first_reference', [], $config, $expect);
+        $this->examineResultMethodWithTriggerError('getResultReferences', 'first_reference', [], $fixture);
     }
 
 

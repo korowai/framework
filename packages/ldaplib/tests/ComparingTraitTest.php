@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Ldap;
 
 use Korowai\Testing\Ldaplib\TestCase;
-use Korowai\Testing\Ldaplib\ExamineWithLdapTriggerErrorTrait;
+use Korowai\Testing\Ldaplib\ExamineLdapLinkErrorHandlerTrait;
 
 use Korowai\Lib\Ldap\ComparingTrait;
 use Korowai\Lib\Ldap\ComparingInterface;
@@ -24,12 +24,14 @@ use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Ldap\ComparingTrait
  * @covers \Korowai\Tests\Lib\Ldap\ComparingTestTrait
+ * @covers \Korowai\Testing\LdapLib\ExamineLdapLinkErrorHandlerTrait
  */
 final class ComparingTraitTest extends TestCase
 {
     use ComparingTestTrait;
-    use ExamineWithLdapTriggerErrorTrait;
+    use ExamineLdapLinkErrorHandlerTrait;
 
+    // required by ComparingTestTrait
     public function createComparingInstance(LdapLinkInterface $ldapLink) : ComparingInterface
     {
         return new class ($ldapLink) implements ComparingInterface {

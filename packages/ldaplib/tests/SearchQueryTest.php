@@ -13,7 +13,9 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Ldap;
 
 use Korowai\Testing\Ldaplib\TestCase;
-use Korowai\Testing\Ldaplib\ExamineWithLdapTriggerErrorTrait;
+use Korowai\Testing\Ldaplib\ExamineLdapLinkErrorHandlerTrait;
+use Korowai\Testing\Ldaplib\LdapTriggerErrorTestFixture;
+use Korowai\Testing\Ldaplib\LdapTriggerErrorTestSubject;
 
 use Korowai\Lib\Ldap\SearchQuery;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
@@ -27,10 +29,11 @@ use Korowai\Lib\Ldap\Exception\ErrorException;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Ldap\SearchQuery
+ * @covers \Korowai\Testing\Ldaplib\ExamineLdapLinkErrorHandlerTrait
  */
 final class SearchQueryTest extends TestCase
 {
-    use ExamineWithLdapTriggerErrorTrait;
+    use ExamineLdapLinkErrorHandlerTrait;
 
     public const SCOPES_METHODS = [
         'base' => 'read',
@@ -214,15 +217,14 @@ final class SearchQueryTest extends TestCase
         $cases = [];
         foreach (['execute', 'getResult'] as $method) {
             foreach (self::SCOPES_METHODS as $scope => $expectMethod) {
-                foreach (self::feedWithLdapTriggerError() as $feedCase) {
+                foreach (self::feedLdapLinkErrorHandler() as $fixture) {
                     $case = [
                         'method' => $method,
                         'args'   => $args,
-                        'config' => $feedCase['config'],
-                        'expect' => $feedCase['expect'] + ['method' => $expectMethod, 'args' => $expectArgs],
+                        'expect' => ['method' => $expectMethod, 'args' => $expectArgs],
                     ];
                     $case['args'][] = ['scope' => $scope];
-                    $cases[] = $case;
+                    $cases[] = array_merge($case, $fixture);
                 }
             }
         }
@@ -232,20 +234,17 @@ final class SearchQueryTest extends TestCase
     /**
      * @dataProvider prov__query__withTriggerError
      */
-    public function test__query__withTriggerError(string $method, array $args, array $config, array $expect) : void
-    {
+    public function test__query__withTriggerError(
+        string $method,
+        array $args,
+        array $expect,
+        LdapTriggerErrorTestFixture $fixture
+    ) : void {
         $link = $this->createMock(LdapLinkInterface::class);
         $query = new SearchQuery($link, ...$args);
 
-        $this->examineWithLdapTriggerError(
-            [$query, $method],
-            $link,
-            $expect['method'],
-            $expect['args'],
-            $link,
-            $config,
-            $expect
-        );
+        $subject = new LdapTriggerErrorTestSubject($link, $expect['method'], $expect['args']);
+        $this->examineLdapLinkErrorHandler([$query, $method], $subject, $link, $fixture);
     }
 
     public static function prov__query__withLdapLinkReturningFalse() : array

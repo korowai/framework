@@ -16,8 +16,10 @@ use Korowai\Testing\Ldaplib\TestCase;
 use Korowai\Testing\Ldaplib\CreateLdapLinkMockTrait;
 use Korowai\Testing\Ldaplib\CreateLdapResultMockTrait;
 use Korowai\Testing\Ldaplib\CreateLdapResultReferenceMockTrait;
-use Korowai\Testing\Ldaplib\ExamineWithLdapTriggerErrorTrait;
+use Korowai\Testing\Ldaplib\ExamineLdapLinkErrorHandlerTrait;
 use Korowai\Testing\Ldaplib\GetLdapFunctionMockTrait;
+use Korowai\Testing\Ldaplib\LdapTriggerErrorTestFixture;
+use Korowai\Testing\Ldaplib\LdapTriggerErrorTestSubject;
 
 use Korowai\Lib\Ldap\ResultReference;
 use Korowai\Lib\Ldap\ResultReferenceInterface;
@@ -36,7 +38,7 @@ final class ResultReferenceTest extends TestCase
     use CreateLdapLinkMockTrait;
     use CreateLdapResultMockTrait;
     use CreateLdapResultReferenceMockTrait;
-    use ExamineWithLdapTriggerErrorTrait;
+    use ExamineLdapLinkErrorHandlerTrait;
 
     private function createResultReferenceAndMocks(int $mocksDepth = 3) : array
     {
@@ -51,22 +53,16 @@ final class ResultReferenceTest extends TestCase
         string $method,
         string $backendMethod,
         array $args,
-        array $config,
-        array $expect
+        LdapTriggerErrorTestFixture $fixture
     ) : void {
         [$reference, $ldapReference, $ldapResult, $link] = $this->createResultReferenceAndMocks();
 
-        $this->examineWithLdapTriggerError(
-            function () use ($reference, $method, $args) : void {
-                $reference->$method(...$args);
-            },
-            $ldapReference,
-            $backendMethod,
-            $args,
-            $link,
-            $config,
-            $expect
-        );
+        $function = function () use ($reference, $method, $args) : void {
+            $reference->$method(...$args);
+        };
+
+        $subject = new LdapTriggerErrorTestSubject($ldapReference, $backendMethod, $args);
+        $this->examineLdapLinkErrorHandler($function, $subject, $link, $fixture);
     }
 
     //
@@ -148,15 +144,15 @@ final class ResultReferenceTest extends TestCase
 
     public static function prov__getReferrals__withTriggerError() : array
     {
-        return static::feedWithLdapTriggerError();
+        return static::feedLdapLinkErrorHandler();
     }
 
     /**
      * @dataProvider prov__getReferrals__withTriggerError
      */
-    public function test__getReferrals__withTriggerError(array $config, array $expect) : void
+    public function test__getReferrals__withTriggerError(LdapTriggerErrorTestFixture $fixture) : void
     {
-        $this->examineMethodWithTriggerError('getReferrals', 'parse_reference', [&$referrals], $config, $expect);
+        $this->examineMethodWithTriggerError('getReferrals', 'parse_reference', [&$referrals], $fixture);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -213,15 +209,15 @@ final class ResultReferenceTest extends TestCase
 
     public static function prov__getReferralIterator__withTriggerError() : array
     {
-        return static::feedWithLdapTriggerError();
+        return static::feedLdapLinkErrorHandler();
     }
 
     /**
      * @dataProvider prov__getReferralIterator__withTriggerError
      */
-    public function test__getReferralIterator__withTriggerError(array $config, array $expect) : void
+    public function test__getReferralIterator__withTriggerError(LdapTriggerErrorTestFixture $fixture) : void
     {
-        $this->examineMethodWithTriggerError('getReferralIterator', 'parse_reference', [&$referrals], $config, $expect);
+        $this->examineMethodWithTriggerError('getReferralIterator', 'parse_reference', [&$referrals], $fixture);
     }
 }
 

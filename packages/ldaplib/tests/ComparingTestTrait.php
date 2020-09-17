@@ -12,6 +12,9 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldap;
 
+use PHPUnit\Framework\MockObject\MockObject;
+use Korowai\Testing\Ldaplib\LdapTriggerErrorTestFixture;
+use Korowai\Testing\Ldaplib\LdapTriggerErrorTestSubject;
 use Korowai\Lib\Ldap\ComparingInterface;
 use Korowai\Lib\Ldap\CompareQuery;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
@@ -24,16 +27,17 @@ use Korowai\Lib\Ldap\Exception\ErrorException;
 trait ComparingTestTrait
 {
     abstract public function createComparingInstance(LdapLinkInterface $ldapLink) : ComparingInterface;
-    abstract public function examineWithLdapTriggerError(
+
+    abstract public function examineLdapLinkErrorHandler(
         callable $function,
-        object $mock,
-        string $mockMethod,
-        array $mockArgs,
-        LdapLinkInterface $ldapLinkMock,
-        array $config,
-        array $expect
+        LdapTriggerErrorTestSubject $subject,
+        MockObject $link,
+        LdapTriggerErrorTestFixture $fixture
     ) : void;
-    abstract public static function feedWithLdapTriggerError() : array;
+
+    abstract public static function feedLdapLinkErrorHandler() : array;
+
+    abstract protected function createMock(string $class);
 
     //
     //
@@ -46,8 +50,7 @@ trait ComparingTestTrait
     //
     public function test__createCompareQuery() : void
     {
-        $link = $this->getMockBuilder(LdapLinkInterface::class)
-                     ->getMockForAbstractClass();
+        $link = $this->createMock(LdapLinkInterface::class);
 
         $comparator = $this->createComparingInstance($link);
 
@@ -89,8 +92,7 @@ trait ComparingTestTrait
      */
     public function test__compare(array $args, $return, $expect) : void
     {
-        $link = $this->getMockBuilder(LdapLinkInterface::class)
-                     ->getMockForAbstractClass();
+        $link = $this->createMock(LdapLinkInterface::class);
         $comparator = $this->createComparingInstance($link);
         $link->expects($this->exactly(2))
              ->method('compare')
@@ -102,29 +104,28 @@ trait ComparingTestTrait
 
     public static function prov__compare__withLdapTriggerError() : array
     {
-        return self::feedWithLdapTriggerError();
+        return self::feedLdapLinkErrorHandler();
     }
 
     /**
      * @dataProvider prov__compare__withLdapTriggerError
      */
-    public function test__compare__withLdapTriggerError(array $config, array $expect): void
+    public function test__compare__withLdapTriggerError(LdapTriggerErrorTestFixture $fixture): void
     {
-        $link = $this->getMockBuilder(LdapLinkInterface::class)
-                     ->getMockForAbstractClass();
+        $link = $this->createMock(LdapLinkInterface::class);
         $comparator = $this->createComparingInstance($link);
         $args = ['dc=example,dc=org', 'attribute', 'value'];
         $function = function () use ($comparator, $args) {
             return $comparator->compare(...$args);
         };
+        $subject = new LdapTriggerErrorTestSubject($link, 'compare', $args);
 
-        $this->examineWithLdapTriggerError($function, $link, 'compare', $args, $link, $config, $expect);
+        $this->examineLdapLinkErrorHandler($function, $subject, $link, $fixture);
     }
 
     public function test__compare__withLdapReturningFailure() : void
     {
-        $link = $this->getMockBuilder(LdapLinkInterface::class)
-                     ->getMockForAbstractClass();
+        $link = $this->createMock(LdapLinkInterface::class);
         $comparator = $this->createComparingInstance($link);
 
         $args = ['dc=example,dc=org', 'attribute', 'value'];
@@ -140,7 +141,7 @@ trait ComparingTestTrait
              ->willReturn(-1);
 
         $this->expectException(ErrorException::class);
-        $this->expectExceptionMessage('LdapLink::compare() returned -1');
+        $this->expectExceptionMessage('LdapLinkInterface::compare() returned -1');
 
         $comparator->compare(...$args);
     }

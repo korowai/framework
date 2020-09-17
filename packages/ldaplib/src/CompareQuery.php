@@ -104,7 +104,7 @@ final class CompareQuery implements CompareQueryInterface, LdapLinkWrapperInterf
     {
         return with($this->ldapLink->getErrorHandler())(function () : bool {
             if (($result = $this->ldapLink->compare($this->dn, $this->attribute, $this->value)) === -1) {
-                trigger_error("LdapLink::compare() returned -1");
+                trigger_error("LdapLinkInterface::compare() returned -1");
             }
             return $result;
         });

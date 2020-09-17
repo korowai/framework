@@ -12,10 +12,13 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldap;
 
+use Korowai\Testing\Ldaplib\LdapTriggerErrorTestFixture;
+use Korowai\Testing\Ldaplib\LdapTriggerErrorTestSubject;
 use Korowai\Lib\Ldap\EntryManagerInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
 use Korowai\Lib\Ldap\EntryInterface;
 use Korowai\Lib\Ldap\Exception\LdapException;
+use PHPUnit\Framework\MockObject\MockObject;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -23,16 +26,17 @@ use Korowai\Lib\Ldap\Exception\LdapException;
 trait EntryManagerTestTrait
 {
     abstract public function createEntryManagerInstance(LdapLinkinterface $ldapLink) : EntryManagerInterface;
-    abstract public function examineWithLdapTriggerError(
+
+    abstract public function examineLdapLinkErrorHandler(
         callable $function,
-        object $mock,
-        string $mockMethod,
-        array $mockArgs,
-        LdapLinkInterface $ldapLinkMock,
-        array $config,
-        array $expect
+        LdapTriggerErrorTestSubject $subject,
+        MockObject $link,
+        LdapTriggerErrorTestFixture $fixture
     ) : void;
-    abstract public static function feedWithLdapTriggerError() : array;
+
+    abstract public static function feedLdapLinkErrorHandler() : array;
+
+    abstract protected function createMock(string $class);
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // add()
@@ -62,13 +66,13 @@ trait EntryManagerTestTrait
 
     public static function prov__add__withLdapTriggerError() : array
     {
-        return feedWithLdapTriggerError();
+        return self::feedLdapLinkErrorHandler();
     }
 
     /**
-     * @dataProvider feedWithLdapTriggerError
+     * @dataProvider prov__add__withLdapTriggerError
      */
-    public function test__add__withLdapTriggerError(array $config, array $expect) : void
+    public function test__add__withLdapTriggerError(LdapTriggerErrorTestFixture $fixture) : void
     {
         $entry = $this->createMock(EntryInterface::class);
         $entry->expects($this->once())
@@ -84,24 +88,18 @@ trait EntryManagerTestTrait
 
         $manager = $this->createEntryManagerInstance($link);
 
-        $this->examineWithLdapTriggerError(
-            function () use ($manager, $entry) {
-                return $manager->add($entry);
-            },
-            $link,
-            'add',
-            ['dc=korowai,dc=org', ['A']],
-            $link,
-            $config,
-            $expect
-        );
+        $subject = new LdapTriggerErrorTestSubject($link, 'add', ['dc=korowai,dc=org', ['A']]);
+        $function  = function () use ($manager, $entry) {
+            return $manager->add($entry);
+        };
+        $this->examineLdapLinkErrorHandler($function, $subject, $link, $fixture);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // update()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public function test__update()
+    public function test__update() : void
     {
         $entry = $this->createMock(EntryInterface::class);
         $entry->expects($this->once())
@@ -125,13 +123,13 @@ trait EntryManagerTestTrait
 
     public static function prov__update__withLdapTriggerError() : array
     {
-        return feedWithLdapTriggerError();
+        return self::feedLdapLinkErrorHandler();
     }
 
     /**
-     * @dataProvider feedWithLdapTriggerError
+     * @dataProvider prov__update__withLdapTriggerError
      */
-    public function test__update__withLdapTriggerError(array $config, array $expect) : void
+    public function test__update__withLdapTriggerError(LdapTriggerErrorTestFixture $fixture) : void
     {
         $entry = $this->createMock(EntryInterface::class);
         $entry->expects($this->once())
@@ -147,17 +145,11 @@ trait EntryManagerTestTrait
 
         $manager = $this->createEntryManagerInstance($link);
 
-        $this->examineWithLdapTriggerError(
-            function () use ($manager, $entry) {
-                return $manager->update($entry);
-            },
-            $link,
-            'modify',
-            ['dc=korowai,dc=org', ['A']],
-            $link,
-            $config,
-            $expect
-        );
+        $function  = function () use ($manager, $entry) {
+            return $manager->update($entry);
+        };
+        $subject = new LdapTriggerErrorTestSubject($link, 'modify', ['dc=korowai,dc=org', ['A']]);
+        $this->examineLdapLinkErrorHandler($function, $subject, $link, $fixture);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -226,13 +218,13 @@ trait EntryManagerTestTrait
 
     public static function prov__rename__withLdapTriggerError() : array
     {
-        return feedWithLdapTriggerError();
+        return self::feedLdapLinkErrorHandler();
     }
 
     /**
-     * @dataProvider feedWithLdapTriggerError
+     * @dataProvider prov__rename__withLdapTriggerError
      */
-    public function test__rename__withLdapTriggerError(array $config, array $expect) : void
+    public function test__rename__withLdapTriggerError(LdapTriggerErrorTestFixture $fixture) : void
     {
         $entry = $this->createMock(EntryInterface::class);
         $entry->expects($this->once())
@@ -246,17 +238,12 @@ trait EntryManagerTestTrait
 
         $manager = $this->createEntryManagerInstance($link);
 
-        $this->examineWithLdapTriggerError(
-            function () use ($manager, $entry) {
-                return $manager->rename($entry, 'cn=korowai', true);
-            },
-            $link,
-            'rename',
-            ['dc=korowai,dc=org', 'cn=korowai', '', true],
-            $link,
-            $config,
-            $expect
-        );
+        $function = function () use ($manager, $entry) {
+            return $manager->rename($entry, 'cn=korowai', true);
+        };
+
+        $subject = new LdapTriggerErrorTestSubject($link, 'rename', ['dc=korowai,dc=org', 'cn=korowai', '', true]);
+        $this->examineLdapLinkErrorHandler($function, $subject, $link, $fixture);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -285,13 +272,13 @@ trait EntryManagerTestTrait
 
     public static function prov__delete__withLdapTriggerError() : array
     {
-        return feedWithLdapTriggerError();
+        return self::feedLdapLinkErrorHandler();
     }
 
     /**
-     * @dataProvider feedWithLdapTriggerError
+     * @dataProvider prov__delete__withLdapTriggerError
      */
-    public function test__delete__withLdapTriggerError(array $config, array $expect) : void
+    public function test__delete__withLdapTriggerError(LdapTriggerErrorTestFixture $fixture) : void
     {
         $entry = $this->createMock(EntryInterface::class);
         $entry->expects($this->once())
@@ -305,17 +292,11 @@ trait EntryManagerTestTrait
 
         $manager = $this->createEntryManagerInstance($link);
 
-        $this->examineWithLdapTriggerError(
-            function () use ($manager, $entry) {
-                return $manager->delete($entry);
-            },
-            $link,
-            'delete',
-            ['dc=korowai,dc=org'],
-            $link,
-            $config,
-            $expect
-        );
+        $function = function () use ($manager, $entry) {
+            return $manager->delete($entry);
+        };
+        $subject = new LdapTriggerErrorTestSubject($link, 'delete', ['dc=korowai,dc=org']);
+        $this->examineLdapLinkErrorHandler($function, $subject, $link, $fixture);
     }
 }
 

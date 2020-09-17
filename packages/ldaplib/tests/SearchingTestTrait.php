@@ -12,9 +12,17 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldap;
 
-use Korowai\Lib\Ldap\SearchingInterface;
-use Korowai\Lib\Ldap\SearchQuery;
+use PHPUnit\Framework\MockObject\MockObject;
+use Korowai\Testing\Ldaplib\LdapTriggerErrorTestFixture;
+use Korowai\Testing\Ldaplib\LdapTriggerErrorTestSubject;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkErrorHandler;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultInterface;
+use Korowai\Lib\Ldap\Exception\ErrorException;
+use Korowai\Lib\Ldap\Result;
+use Korowai\Lib\Ldap\ResultInterface;
+use Korowai\Lib\Ldap\SearchQuery;
+use Korowai\Lib\Ldap\SearchingInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -22,16 +30,17 @@ use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
 trait SearchingTestTrait
 {
     abstract public function createSearchingInstance(LdapLinkInterface $ldapLink) : SearchingInterface;
-    abstract public function examineWithLdapTriggerError(
+
+    abstract public function examineLdapLinkErrorHandler(
         callable $function,
-        object $mock,
-        string $mockMethod,
-        array $mockArgs,
-        LdapLinkInterface $ldapLinkMock,
-        array $config,
-        array $expect
+        LdapTriggerErrorTestSubject $subject,
+        MockObject $link,
+        LdapTriggerErrorTestFixture $fixture
     ) : void;
-    abstract public static function feedWithLdapTriggerError() : array;
+
+    abstract public static function feedLdapLinkErrorHandler() : array;
+
+    abstract public function createMock(string $name);
 
     //
     //
@@ -114,81 +123,113 @@ trait SearchingTestTrait
         $this->assertSame($expectOptions, $actualOptions);
     }
 
-    // TODO: start from here!
+    //
+    // search()
+    //
 
-//    //
-//    // search()
-//    //
-//
-//    public static function prov__search() : array
-//    {
-//        return [
-//            // #0
-//            [
-//                'args'   => ['dc=example,dc=org', 'attribute', 'matching'],
-//                'return' => false,
-//                'expect' => false,
-//            ],
-//            // #1
-//            [
-//                'args'   => ['dc=example,dc=org', 'attribute', 'non-matching'],
-//                'return' => true,
-//                'expect' => true,
-//            ],
-//        ];
-//    }
-//
-//    /**
-//     * @dataProvider prov__search
-//     */
-//    public function test__search(array $args, $return, $expect) : void
-//    {
-//        $link = $this->createMock(LdapLinkInterface::class);
-//        $searching = $this->createSearchingInstance($link);
-//        $link->expects($this->exactly(2))
-//             ->method('search')
-//             ->with(...$args)
-//             ->willReturn($return);
-//        $this->assertSame($expect, $searching->search(...$args));
-//        $this->assertSame($expect, $searching->search(...$args));
-//    }
-//
-//    public static function prov__search__withLdapTriggerError() : array
-//    {
-//        return self::feedWithLdapTriggerError();
-//    }
-//
-//    /**
-//     * @dataProvider prov__search__withLdapTriggerError
-//     */
-//    public function test__search__withLdapTriggerError(array $config, array $expect): void
-//    {
-//        $link = $this->createMock(LdapLinkInterface::class);
-//        $searching = $this->createSearchingInstance($link);
-//        $args = ['dc=example,dc=org', 'attribute', 'value'];
-//        $function = function () use ($searching, $args) {
-//            return $searching->search(...$args);
-//        };
-//
-//        $this->examineWithLdapTriggerError($function, $link, 'search', $args, $link, $config, $expect);
-//    }
-//
-//    public function test__search__withLdapReturningFailure() : void
-//    {
-//        $link = $this->createMock(LdapLinkInterface::class);
-//        $searching = $this->createSearchingInstance($link);
-//
-//        $args = ['dc=example,dc=org', 'attribute', 'value'];
-//        $link->expects($this->once())
-//             ->method('search')
-//             ->with(...$args)
-//             ->willReturn(-1);
-//
-//        $this->expectException(\ErrorException::class);
-//        $this->expectExceptionMessage('LdapLink::search() returned -1');
-//
-//        $searching->search(...$args);
-//    }
+    public static function prov__search() : array
+    {
+        $args = [
+            'dc=korowai,dc=org',
+            'objectClass=*',
+            [
+                'attributes' => ['foo'],
+                'attrsOnly' => true,
+                'sizeLimit' => 123,
+                'timeLimit' => 456,
+                'deref' => 'always'
+            ]
+        ];
+
+        $expectArgs = [
+            'dc=korowai,dc=org',
+            'objectClass=*',
+            ['foo'],
+            1, 123, 456,
+            LDAP_DEREF_ALWAYS
+        ];
+
+        $cases[] = [
+            'args'   => $args,
+            'expect' => [
+                'method' => 'search',
+                'args'   => $expectArgs,
+            ],
+        ];
+        foreach (SearchQueryTest::SCOPES_METHODS as $scope => $expectMethod) {
+            $case = [
+                'args' => $args,
+                'expect' => [
+                    'method' => $expectMethod,
+                    'args'   => $expectArgs,
+                ],
+            ];
+            $case['args'][2]['scope'] = $scope;
+            $cases[] = $case;
+        }
+
+        return $cases;
+    }
+
+    /**
+     * @dataProvider prov__search
+     */
+    public function test__search(array $args, array $expect) : void
+    {
+        $link       = $this->createMock(LdapLinkInterface::class);
+        $ldapResult = $this->createMock(LdapResultInterface::class);
+        $link->expects($this->exactly(1))
+             ->method($expect['method'])
+             ->with(...$expect['args'])
+             ->willReturn($ldapResult);
+
+        $searching = $this->createSearchingInstance($link);
+        $result = $searching->search(...$args);
+
+        $this->assertInstanceOf(Result::class, $result);
+        $this->assertSame($ldapResult, $result->getLdapResult());
+    }
+
+    public static function prov__search__withLdapTriggerError() : array
+    {
+        return self::feedLdapLinkErrorHandler();
+    }
+
+    /**
+     * @dataProvider prov__search__withLdapTriggerError
+     */
+    public function test__search__withLdapTriggerError(LdapTriggerErrorTestFixture $fixture) : void
+    {
+        $link = $this->createMock(LdapLinkInterface::class);
+        $searching = $this->createSearchingInstance($link);
+        $function = function () use ($searching) {
+            return $searching->search('', '', []);
+        };
+        $subject = new LdapTriggerErrorTestSubject($link, 'search', ['', '', ['*'], 0, 0, 0, LDAP_DEREF_NEVER]);
+
+        $this->examineLdapLinkErrorHandler($function, $subject, $link, $fixture);
+    }
+
+    public function test__search__withLdapReturningFalse() : void
+    {
+        $link = $this->createMock(LdapLinkInterface::class);
+        $searching = $this->createSearchingInstance($link);
+
+        $link->expects($this->once())
+             ->method('search')
+             ->with('', '', ['*'], 0, 0, 0, LDAP_DEREF_NEVER)
+             ->willReturn(false);
+
+        $link->expects($this->once())
+             ->method('getErrorHandler')
+             ->with()
+             ->willReturn(new LdapLinkErrorHandler($link));
+
+        $this->expectException(ErrorException::class);
+        $this->expectExceptionMessage('LdapLinkInterface::search() returned false');
+
+        $searching->search('', '', []);
+    }
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Ldap;
 
 use Korowai\Testing\Ldaplib\TestCase;
+use Korowai\Testing\Ldaplib\ExamineLdapLinkErrorHandlerTrait;
 
 use Korowai\Lib\Ldap\Binding;
 use Korowai\Lib\Ldap\BindingTrait;
@@ -25,11 +26,14 @@ use Korowai\Lib\Ldap\BindingInterface;
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Ldap\Binding
  * @covers \Korowai\Tests\Lib\Ldap\BindingTestTrait
+ * @covers \Korowai\Testing\Ldaplib\ExamineLdapLinkErrorHandlerTrait
  */
 final class BindingTest extends TestCase
 {
     use BindingTestTrait;
+    use ExamineLdapLinkErrorHandlerTrait;
 
+    // required by BindingTestTrait
     public function createBindingInstance(LdapLinkInterface $ldapLink, bool $bound = false) : BindingInterface
     {
         $args = func_get_args();

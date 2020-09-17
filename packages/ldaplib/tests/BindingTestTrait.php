@@ -12,8 +12,9 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldap;
 
-use Korowai\Testing\Ldaplib\CreateLdapLinkMockTrait;
-use Korowai\Testing\Ldaplib\ExamineWithLdapTriggerErrorTrait;
+use PHPUnit\Framework\MockObject\MockObject;
+use Korowai\Testing\Ldaplib\LdapTriggerErrorTestFixture;
+use Korowai\Testing\Ldaplib\LdapTriggerErrorTestSubject;
 
 use Korowai\Lib\Ldap\BindingTrait;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
@@ -26,35 +27,37 @@ use Korowai\Lib\Ldap\Exception\LdapException;
  */
 trait BindingTestTrait
 {
-    use CreateLdapLinkMockTrait;
-    use ExamineWithLdapTriggerErrorTrait;
-
     abstract public function createBindingInstance(
         LdapLinkInterface $ldapLink,
         bool $bound = false
     ) : BindingInterface;
 
+    abstract public function examineLdapLinkErrorHandler(
+        callable $function,
+        LdapTriggerErrorTestSubject $subject,
+        MockObject $link,
+        LdapTriggerErrorTestFixture $fixture
+    ) : void;
+
+    abstract public static function feedLdapLinkErrorHandler() : array;
+
+    abstract protected function createMock(string $class);
+
     private function examineBindingMethodWithTriggerError(
         string $method,
-        string $backendMethod,
         array $args,
-        array $config,
-        array $expect
+        LdapTriggerErrorTestFixture $fixture
     ) : void {
-        $link = $this->createLdapLinkMock();
+        $link = $this->createMock(LdapLinkInterface::class);
         $bind = $this->createBindingInstance($link);
 
-        $this->examineWithLdapTriggerError(
-            function () use ($bind, $method, $args) : void {
-                $bind->$method(...$args);
-            },
-            $link,
-            $backendMethod,
-            $args,
-            $link,
-            $config,
-            $expect
-        );
+        $function = function () use ($bind, $method, $args) : void {
+            $bind->$method(...$args);
+        };
+
+        $subject = new LdapTriggerErrorTestSubject($link, $method, $args);
+
+        $this->examineLdapLinkErrorHandler($function, $subject, $link, $fixture);
         // @codeCoverageIgnoreStart
         return; // unreachable
         // @codeCoverageIgnoreEnd
@@ -93,7 +96,7 @@ trait BindingTestTrait
      */
     public function test__bind(array $args) : void
     {
-        $link = $this->createLdapLinkMock();
+        $link = $this->createMock(LdapLinkInterface::class);
 
         $link->expects($this->once())
              ->method('bind')
@@ -109,16 +112,16 @@ trait BindingTestTrait
     public static function prov__bind__withTriggerError() : array
     {
         // @codeCoverageIgnoreStart
-        return static::feedWithLdapTriggerError();
+        return static::feedLdapLinkErrorHandler();
         // @codeCoverageIgnoreEnd
     }
 
     /**
      * @dataProvider prov__bind__withTriggerError
      */
-    public function test__bind__withTriggerError(array $config, array $expect) : void
+    public function test__bind__withTriggerError(LdapTriggerErrorTestFixture $fixture) : void
     {
-        $this->examineBindingMethodWithTriggerError('bind', 'bind', [], $config, $expect);
+        $this->examineBindingMethodWithTriggerError('bind', [], $fixture);
         // @codeCoverageIgnoreStart
         return;
         // @codeCoverageIgnoreEnd
@@ -145,7 +148,7 @@ trait BindingTestTrait
      */
     public function test__bind__whenLdapLinkTriggersUnalteringLdapError(int $errno, string $message) : void
     {
-        $link = $this->createLdapLinkMock();
+        $link = $this->createMock(LdapLinkInterface::class);
         $bind = $this->createBindingInstance($link, true);
 
         $link->expects($this->once())
@@ -207,7 +210,7 @@ trait BindingTestTrait
      */
     public function test__unbind(bool $bound, bool $return, array $expect) : void
     {
-        $link = $this->createLdapLinkMock();
+        $link = $this->createMock(LdapLinkInterface::class);
 
         $bind = $this->createBindingInstance($link, $bound);
 
@@ -223,16 +226,16 @@ trait BindingTestTrait
     public static function prov__unbind__withTriggerError() : array
     {
         // @codeCoverageIgnoreStart
-        return static::feedWithLdapTriggerError();
+        return static::feedLdapLinkErrorHandler();
         // @codeCoverageIgnoreEnd
     }
 
     /**
      * @dataProvider prov__unbind__withTriggerError
      */
-    public function test__unbind__withTriggerError(array $config, array $expect):  void
+    public function test__unbind__withTriggerError(LdapTriggerErrorTestFixture $fixture):  void
     {
-        $this->examineBindingMethodWithTriggerError('unbind', 'unbind', [], $config, $expect);
+        $this->examineBindingMethodWithTriggerError('unbind', [], $fixture);
         // @codeCoverageIgnoreStart
         return;
         // @codeCoverageIgnoreEnd

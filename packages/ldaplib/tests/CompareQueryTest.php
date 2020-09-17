@@ -13,7 +13,9 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Ldap;
 
 use Korowai\Testing\Ldaplib\TestCase;
-use Korowai\Testing\Ldaplib\ExamineWithLdapTriggerErrorTrait;
+use Korowai\Testing\Ldaplib\ExamineLdapLinkErrorHandlerTrait;
+use Korowai\Testing\Ldaplib\LdapTriggerErrorTestFixture;
+use Korowai\Testing\Ldaplib\LdapTriggerErrorTestSubject;
 
 use Korowai\Lib\Ldap\CompareQuery;
 use Korowai\Lib\Ldap\CompareQueryInterface;
@@ -29,7 +31,7 @@ use Korowai\Lib\Ldap\Exception\ErrorException;
 final class CompareQueryTest extends TestCase
 {
 //    use CreateLdapLinkMockTrait;
-    use ExamineWithLdapTriggerErrorTrait;
+    use ExamineLdapLinkErrorHandlerTrait;
 
     //
     //
@@ -116,7 +118,7 @@ final class CompareQueryTest extends TestCase
             'return' => -1,
             'expect' => [
                 'exception' => ErrorException::class,
-                'message'   => 'LdapLink::compare() returned -1'
+                'message'   => 'LdapLinkInterface::compare() returned -1'
             ],
         ];
         return [
@@ -129,7 +131,7 @@ final class CompareQueryTest extends TestCase
 
     public static function prov__query__withLdapTriggerError() : array
     {
-        $common = self::feedWithLdapTriggerError();
+        $common = self::feedLdapLinkErrorHandler();
         foreach (['execute', 'getResult'] as $method) {
             foreach ($common as $key => $array) {
                 $cases[] = ['method' => $method] + $array;
@@ -141,7 +143,7 @@ final class CompareQueryTest extends TestCase
     /**
      * @dataProvider prov__query__withLdapTriggerError
      */
-    public function test__query__withLdapTriggerError(string $method, array $config, array $expect): void
+    public function test__query__withLdapTriggerError(string $method, LdapTriggerErrorTestFixture $fixture): void
     {
         $args = ['dc=example,dc=org', 'attribute', 'value'];
         $link = $this->getMockBuilder(LdapLinkInterface::class)
@@ -149,7 +151,8 @@ final class CompareQueryTest extends TestCase
         $query = new CompareQuery($link, ...$args);
         $function = [$query, $method];
 
-        $this->examineWithLdapTriggerError($function, $link, 'compare', $args, $link, $config, $expect);
+        $subject = new LdapTriggerErrorTestSubject($link, 'compare', $args);
+        $this->examineLdapLinkErrorHandler($function, $subject, $link, $fixture);
     }
 
     /**

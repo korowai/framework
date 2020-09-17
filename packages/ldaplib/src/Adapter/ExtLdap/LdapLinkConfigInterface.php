@@ -38,7 +38,7 @@ interface LdapLinkConfigInterface
     public function tls() : bool;
 
     /**
-     * Returns an array of options that should be set sith LdapLinkInterface::set_option().
+     * Returns an array of options that should be set with LdapLinkInterface::set_option().
      *
      * @return array
      *

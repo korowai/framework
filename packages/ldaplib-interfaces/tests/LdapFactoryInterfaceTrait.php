@@ -21,7 +21,7 @@ trait LdapFactoryInterfaceTrait
 {
     public $createLdapInterface = null;
 
-    public function createLdapInterface() : LdapInterface
+    public function createLdapInterface(array $config) : LdapInterface
     {
         return $this->createLdapInterface;
     }

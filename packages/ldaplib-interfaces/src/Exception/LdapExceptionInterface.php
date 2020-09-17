@@ -13,9 +13,11 @@ declare(strict_types=1);
 namespace Korowai\Lib\Ldap\Exception;
 
 /**
+ * LDAP exception interface.
+ *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class LdapException extends \ErrorException implements LdapExceptionInterface
+interface LdapExceptionInterface extends ErrorExceptionInterface
 {
 }
 

@@ -12,19 +12,9 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldap;
 
-//use Symfony\Component\OptionsResolver\OptionsResolver;
-//use Symfony\Component\OptionsResolver\Options;
-
-//use Korowai\Lib\Ldap\Binding;
-//use Korowai\Lib\Ldap\EntryManager;
-//use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLink;
-//use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkConfigResolver;
-//use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkConfigResolverInterface;
-//use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkErrorHandler;
-//use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
-//use function Korowai\Lib\Context\with;
-
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkFactoryInterface;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkConfigResolverInterface;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkConfig;
 
 /**
  * Abstract base class for Adapter factories.
@@ -41,13 +31,23 @@ final class LdapFactory implements LdapFactoryInterface
     private $ldapLinkFactory;
 
     /**
+     * @var LdapLinkConfigResolverInterface
+     *
+     * @psalm-readonly
+     */
+    private $ldapLinkConfigResolver;
+
+    /**
      * Creates an LdapFactory
      *
      * @param  LdapLinkFactoryInterface $ldapLinkFactory
      */
-    public function __construct(LdapLinkFactoryInterface $ldapLinkFactory)
-    {
+    public function __construct(
+        LdapLinkFactoryInterface $ldapLinkFactory,
+        LdapLinkConfigResolverInterface $ldapLinkConfigResolver
+    ) {
         $this->ldapLinkFactory = $ldapLinkFactory;
+        $this->ldapLinkConfigResolver = $ldapLinkConfigResolver;
     }
 
     /**
@@ -63,13 +63,24 @@ final class LdapFactory implements LdapFactoryInterface
     }
 
     /**
-     * Creates and returns new instance of LdapInterface.
+     * Returns the encapsulated LdapLinkConfigResolverInterface.
      *
-     * @return LdapInterface
+     * @return LdapLinkConfigResolverInterface
+     *
+     * @psalm-mutation-free
      */
-    public function createLdapInterface() : LdapInterface
+    public function getLdapLinkConfigResolver() : LdapLinkConfigResolverInterface
     {
-        $link = $this->ldapLinkFactory->createLdapLink();
+        return $this->ldapLinkConfigResolver;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function createLdapInterface(array $config) : LdapInterface
+    {
+        $config = LdapLinkConfig::fromArray($this->ldapLinkConfigResolver, $config);
+        $link = $this->ldapLinkFactory->createLdapLink($config);
         return new Ldap($link);
     }
 }

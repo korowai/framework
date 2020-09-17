@@ -313,7 +313,7 @@ final class ClassAssertionsTraitTest extends TestCase
                 ['inexistent', ClassAssertionsTrait::class],
                 "Failed asserting that trait ".ClassAssertionsTrait::class." declares method inexistent()",
             ],
-            "(linexistent', \Throwable::class)" => [
+            "(inexistent', \Throwable::class)" => [
                 ['inexistent', \Throwable::class],
                 "Failed asserting that interface ".\Throwable::class." declares method inexistent()",
             ],

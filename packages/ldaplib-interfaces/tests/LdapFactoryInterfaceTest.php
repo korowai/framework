@@ -47,7 +47,7 @@ final class LdapFactoryInterfaceTest extends TestCase
         $dummy = $this->createDummyInstance();
 
         $dummy->createLdapInterface = $this->createMock(LdapInterface::class);
-        $this->assertSame($dummy->createLdapInterface, $dummy->createLdapInterface());
+        $this->assertSame($dummy->createLdapInterface, $dummy->createLdapInterface([]));
     }
 
     public function test__createLdapInterface__withRetTypeError() : void
@@ -57,7 +57,17 @@ final class LdapFactoryInterfaceTest extends TestCase
 
         $this->expectException(\TypeError::class);
         $this->expectExceptionMessage(LdapInterface::class);
-        $dummy->createLdapInterface();
+        $dummy->createLdapInterface([]);
+    }
+
+    public function test__createLdapInterface__withArgTypeError() : void
+    {
+        $dummy = $this->createDummyInstance();
+        $dummy->createLdapInterface = $this->createMock(LdapInterface::class);
+
+        $this->expectException(\TypeError::class);
+        $this->expectExceptionMessage('array');
+        $dummy->createLdapInterface(null);
     }
 }
 

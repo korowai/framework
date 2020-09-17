@@ -15,8 +15,9 @@ namespace Korowai\Lib\Ldap\Exception;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-class LdapException extends \ErrorException implements LdapExceptionInterface
+interface ErrorExceptionInterface extends \Throwable
 {
+    public function getSeverity();
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

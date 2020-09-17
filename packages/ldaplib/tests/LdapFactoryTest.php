@@ -18,6 +18,8 @@ use Korowai\Lib\Ldap\LdapFactory;
 use Korowai\Lib\Ldap\LdapFactoryInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkFactoryInterface;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkConfigInterface;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkConfigResolverInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -43,8 +45,10 @@ final class LdapFactoryTest extends TestCase
     public function test__construct() : void
     {
         $linkFactory = $this->createMock(LdapLinkFactoryInterface::class);
-        $factory = new LdapFactory($linkFactory);
+        $resolver = $this->createMock(LdapLinkConfigResolverInterface::class);
+        $factory = new LdapFactory($linkFactory, $resolver);
         $this->assertSame($linkFactory, $factory->getLdapLinkFactory());
+        $this->assertSame($resolver, $factory->getLdapLinkConfigResolver());
     }
 
     //
@@ -54,17 +58,33 @@ final class LdapFactoryTest extends TestCase
     public function test__createLdapInterface() : void
     {
         $link        = $this->createMock(LdapLinkInterface::class);
-        $linkFactory = $this->getMockBuilder(LdapLinkFactoryInterface::class)
-                            ->setMethods(['createLdapLink'])
-                            ->getMockForAbstractClass();
+        $linkFactory = $this->createMock(LdapLinkFactoryInterface::class);
+        $resolver    = $this->createMock(LdapLinkConfigResolverInterface::class);
+        $config      = ['foo' => 'bar'];
+        $resolved    = ['uri' => 'ldap:///', 'tls' => true, 'options' => []];
+
         $linkFactory->expects($this->once())
                     ->method('createLdapLink')
-                    ->with()
+                    ->with(
+                        $this->logicalAnd(
+                            $this->isInstanceOf(LdapLinkConfigInterface::class),
+                            $this->hasPropertiesIdenticalTo([
+                                'uri()'     => $resolved['uri'],
+                                'tls()'     => $resolved['tls'],
+                                'options()' => $resolved['options'],
+                            ])
+                        )
+                    )
                     ->willReturn($link);
 
-        $factory = new LdapFactory($linkFactory);
+        $resolver->expects($this->once())
+                 ->method('resolve')
+                 ->with($config)
+                 ->willReturn($resolved);
 
-        $ldap = $factory->createLdapInterface();
+        $factory = new LdapFactory($linkFactory, $resolver);
+
+        $ldap = $factory->createLdapInterface($config);
         $this->assertInstanceOf(Ldap::class, $ldap);
         $this->assertSame($link, $ldap->getLdapLink());
     }

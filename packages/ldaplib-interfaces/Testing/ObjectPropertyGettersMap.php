@@ -51,6 +51,13 @@ final class ObjectPropertyGettersMap
         \Korowai\Lib\Ldap\EntryManagerInterface::class => [
         ],
 
+        \Korowai\Lib\Ldap\Exception\ErrorExceptionInterface::class => [
+            'severity'                  => 'getSeverity',
+        ],
+
+        \Korowai\Lib\Ldap\Exception\LdapExceptionInterface::class => [
+        ],
+
         \Korowai\Lib\Ldap\LdapFactoryInterface::class => [
         ],
 

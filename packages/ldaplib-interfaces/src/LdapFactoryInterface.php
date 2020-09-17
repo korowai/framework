@@ -21,9 +21,11 @@ interface LdapFactoryInterface
     /**
      * Creates and returns new instance of LdapInterface.
      *
+     * @param array $config
+     *
      * @return LdapInterface
      */
-    public function createLdapInterface() : LdapInterface;
+    public function createLdapInterface(array $config) : LdapInterface;
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

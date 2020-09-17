@@ -26,7 +26,7 @@ interface LdapLinkFactoryInterface
      * @throws \ErrorException
      * @throws \Korowai\Lib\Ldap\Exception\LdapException
      */
-    public function createLdapLink() : LdapLinkInterface;
+    public function createLdapLink(LdapLinkConfigInterface $config) : LdapLinkInterface;
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

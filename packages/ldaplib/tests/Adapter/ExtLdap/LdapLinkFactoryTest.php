@@ -15,11 +15,12 @@ namespace Korowai\Tests\Lib\Ldap\Adapter\ExtLdap;
 use Korowai\Testing\Ldaplib\TestCase;
 use Korowai\Testing\Ldaplib\ExamineCallWithLdapTriggerErrorTrait;
 
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkFactory;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkFactoryInterface;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkConstructorInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkConfigResolverInterface;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkConstructorInterface;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkConfigInterface;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkFactory;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkFactoryInterface;
+use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -40,102 +41,16 @@ final class LdapLinkFactoryTest extends TestCase
         $this->assertImplementsInterface(LdapLinkFactoryInterface::class, LdapLinkFactory::class);
     }
 
-//    //
-//    // createWithConfig()
-//    //
-//    public function test__createWithConfig() : void
-//    {
-//        $constructor = $this->createMock(LdapLinkConstructorInterface::class);
-//        $resolver = $this->createMock(LdapLinkConfigResolverInterface::class);
-//
-//        $config = [];
-//        $resolved = [
-//            'uri'     => 'URI',
-//            'tls'     => false,
-//            'options' => [0 => 1]
-//        ];
-//        $resolver->expects($this->once())
-//                 ->method('resolve')
-//                 ->with($config)
-//                 ->willReturn($resolved);
-//
-//        $factory = LdapLinkFactory::createWithConfig($constructor, $resolver, $config);
-//
-//        $this->assertSame($constructor, $factory->getLdapLinkConstructor());
-//        $this->assertHasPropertiesSameAs([
-//            'getUri()'     => $resolved['uri'],
-//            'getTls()'     => $resolved['tls'],
-//            'getOptions()' => $resolved['options'],
-//        ], $factory);
-//    }
-//
     //
     // __construct()
     //
 
-    public static function prov__construct() : array
-    {
-        return [
-            // #0
-            [
-                'args'   => ['ldap://example.org'],
-                'expect' => [
-                    'properties' => [
-                        'getUri()'     => 'ldap://example.org',
-                        'getTls()'     => false,
-                        'getOptions()' => [],
-                    ],
-                ],
-            ],
-
-            // #1
-            [
-                'args'   => ['ldap://example.org', false],
-                'expect' => [
-                    'properties'  => [
-                        'getUri()'     => 'ldap://example.org',
-                        'getTls()'     => false,
-                        'getOptions()' => [],
-                    ],
-                ],
-            ],
-
-            // #2
-            [
-                'args'   => ['ldap://example.org', true],
-                'expect' => [
-                    'properties'  => [
-                        'getUri()'     => 'ldap://example.org',
-                        'getTls()'     => true,
-                        'getOptions()' => [],
-                    ],
-                ],
-            ],
-
-            // #3
-            [
-                'args'   => ['ldap://example.org', true, ['foo' => 'bar']],
-                'expect' => [
-                    'properties'  => [
-                        'getUri()'     => 'ldap://example.org',
-                        'getTls()'     => true,
-                        'getOptions()' => ['foo' => 'bar'],
-                    ],
-                ],
-            ],
-        ];
-    }
-
-    /**
-     * @dataProvider prov__construct
-     */
-    public function test__construct(array $args, array $expect) : void
+    public function test__construct() : void
     {
         $constructor = $this->createMock(LdapLinkConstructorInterface::class);
-        $factory = new LdapLinkFactory($constructor, ...$args);
+        $factory = new LdapLinkFactory($constructor);
 
         $this->assertSame($constructor, $factory->getLdapLinkConstructor());
-        $this->assertHasPropertiesSameAs($expect['properties'], $factory);
     }
 
     //
@@ -147,61 +62,19 @@ final class LdapLinkFactoryTest extends TestCase
         return [
             // #0
             [
-                'args' => ['ldap://example.org'],
-                'expect' => [
-                    'properties' => [
-                        'getUri()'     => 'ldap://example.org',
-                        'getTls()'     => false,
-                        'getOptions()' => [],
-                    ],
+                'params' => [
+                    'uri'     => 'ldap:///',
+                    'tls'     => false,
+                    'options' => []
                 ],
             ],
 
             // #1
             [
-                'args' => ['ldap://example.org', false],
-                'expect' => [
-                    'properties'  => [
-                        'getUri()'     => 'ldap://example.org',
-                        'getTls()'     => false,
-                        'getOptions()' => [],
-                    ],
-                ],
-            ],
-
-            // #2
-            [
-                'args' => ['ldap://example.org', true],
-                'expect' => [
-                    'properties'  => [
-                        'getUri()'     => 'ldap://example.org',
-                        'getTls()'     => true,
-                        'getOptions()' => [],
-                    ],
-                ],
-            ],
-
-            // #3
-            [
-                'args' => ['ldap://example.org', true, [123 => 'foo']],
-                'expect' => [
-                    'properties'  => [
-                        'getUri()'     => 'ldap://example.org',
-                        'getTls()'     => true,
-                        'getOptions()' => ['foo' => 'bar'],
-                    ],
-                ],
-            ],
-
-            // #4
-            [
-                'args' => ['ldap://example.org', true, [2 => 'two', 1 => 'one']],
-                'expect' => [
-                    'properties'  => [
-                        'getUri()'     => 'ldap://example.org',
-                        'getTls()'     => true,
-                        'getOptions()' => ['foo' => 'bar'],
-                    ],
+                'params' => [
+                    'uri'     => 'ldap:///',
+                    'tls'     => true,
+                    'options' => [17 => 3],
                 ],
             ],
         ];
@@ -210,17 +83,25 @@ final class LdapLinkFactoryTest extends TestCase
     /**
      * @dataProvider prov__createLdapLink
      */
-    public function test__createLdapLink(array $args, array $expect) : void
+    public function test__createLdapLink(array $params) : void
     {
         $constructor = $this->createMock(LdapLinkConstructorInterface::class);
-        $link = $this       ->createMock(LdapLinkInterface::class);
+        $link        = $this->createMock(LdapLinkInterface::class);
+        $config      = $this->createMock(LdapLinkConfigInterface::class);
 
         $constructor->expects($this->once())
                     ->method('connect')
-                    ->with($args[0])
+                    ->with($params['uri'])
                     ->willReturn($link);
 
-        if (($tls = ($args[1] ?? false)) === true) {
+        foreach (['uri', 'tls', 'options'] as $key) {
+            $config->expects($this->once())
+                   ->method($key)
+                   ->with()
+                   ->willReturn($params[$key]);
+        }
+
+        if ($params['tls']) {
             $link->expects($this->once())
                  ->method('start_tls')
                  ->with();
@@ -229,7 +110,7 @@ final class LdapLinkFactoryTest extends TestCase
                  ->method('start_tls');
         }
 
-        if (($options = ($args[2] ?? null)) !== null && !empty($options)) {
+        if (!empty($options = $params['options'])) {
             $count = count($options);
             // convert [ 1 => 'ONE', 2 => 'TWO' ] to [[1, 'ONE'], [2, 'TWO']]
             $options = array_map(null, array_keys($options), $options);
@@ -241,9 +122,9 @@ final class LdapLinkFactoryTest extends TestCase
                  ->method('set_option');
         }
 
-        $factory = new LdapLinkFactory($constructor, ...$args);
+        $factory = new LdapLinkFactory($constructor);
 
-        $this->assertSame($link, $factory->createLdapLink());
+        $this->assertSame($link, $factory->createLdapLink($config));
     }
 
     public static function prov__createLdapLink__whenStartTlsTriggersError() : array
@@ -254,26 +135,44 @@ final class LdapLinkFactoryTest extends TestCase
     /**
      * @dataProvider prov__createLdapLink__whenStartTlsTriggersError
      */
-    public function test__createLdapLink__whenStartTlsTriggersError(array $config, array $expect) : void
+    public function test__createLdapLink__whenStartTlsTriggersError(array $case, array $expect) : void
     {
         $constructor = $this->createMock(LdapLinkConstructorInterface::class);
         $link        = $this->createMock(LdapLinkInterface::class);
+        $config      = $this->createMock(LdapLinkConfigInterface::class);
 
         $constructor->expects($this->once())
                     ->method('connect')
                     ->with('ldap:///')
                     ->willReturn($link);
 
+        $config->expects($this->once())
+               ->method('uri')
+               ->with()
+               ->willReturn('ldap:///');
+
+        $config->expects($this->once())
+               ->method('tls')
+               ->with()
+               ->willReturn(true);
+
+        $config->expects($this->any())
+               ->method('options')
+               ->with()
+               ->willReturn([]);
+
         $link->expects($this->never())
              ->method('set_option');
 
-        $factory = new LdapLinkFactory($constructor, 'ldap:///', true);
+        $factory = new LdapLinkFactory($constructor);
 
         $this->examineCallWithLdapTriggerError(
-            [$factory, 'createLdapLink'],
+            function () use ($factory, $config) : LdapLinkInterface {
+                return $factory->createLdapLink($config);
+            },
             $link, 'start_tls', [],
             $link,
-            $config,
+            $case,
             $expect
         );
     }
@@ -286,28 +185,44 @@ final class LdapLinkFactoryTest extends TestCase
     /**
      * @dataProvider prov__createLdapLink__whenSetOptionTriggersError
      */
-    public function test__createLdapLink__whenSetOptionTriggersError(array $config, array $expect) : void
+    public function test__createLdapLink__whenSetOptionTriggersError(array $case, array $expect) : void
     {
-        $constructor = $this->getMockBuilder(LdapLinkConstructorInterface::class)
-                            ->setMethods(['connect'])
-                            ->getMockForAbstractClass();
+        $constructor = $this->createMock(LdapLinkConstructorInterface::class);
         $link        = $this->createMock(LdapLinkInterface::class);
-
-        $link->expects($this->never())
-             ->method('start_tls');
+        $config      = $this->createMock(LdapLinkConfigInterface::class);
 
         $constructor->expects($this->once())
                     ->method('connect')
                     ->with('ldap:///')
                     ->willReturn($link);
 
-        $factory = new LdapLinkFactory($constructor, 'ldap:///', false, [17 => 3]);
+        $config->expects($this->once())
+               ->method('uri')
+               ->with()
+               ->willReturn('ldap:///');
+
+        $config->expects($this->once())
+               ->method('tls')
+               ->with()
+               ->willReturn(false);
+
+        $config->expects($this->any())
+               ->method('options')
+               ->with()
+               ->willReturn([17 => 3]);
+
+        $link->expects($this->never())
+             ->method('start_tls');
+
+        $factory = new LdapLinkFactory($constructor);
 
         $this->examineCallWithLdapTriggerError(
-            [$factory, 'createLdapLink'],
+            function () use ($factory, $config) {
+                return $factory->createLdapLink($config);
+            },
             $link, 'set_option', [17, 3],
             $link,
-            $config,
+            $case,
             $expect
         );
     }

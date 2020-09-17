@@ -55,6 +55,9 @@ final class ObjectPropertyGettersMap
             'severity'                  => 'getSeverity',
         ],
 
+        \Korowai\Lib\Ldap\Exception\ExceptionInterface::class => [
+        ],
+
         \Korowai\Lib\Ldap\Exception\LdapExceptionInterface::class => [
         ],
 

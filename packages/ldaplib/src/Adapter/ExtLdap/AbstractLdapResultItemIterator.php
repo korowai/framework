@@ -100,8 +100,7 @@ abstract class AbstractLdapResultItemIterator implements LdapResultItemIteratorI
     /**
      * Move forward to next element
      *
-     * @throws LdapException
-     * @throws \ErrorException
+     * @throws \Korowai\Lib\Ldap\Exception\ExceptionInterface
      */
     final public function next() : void
     {

@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
 
+use Korowai\Lib\Ldap\Exception\ErrorException;
+
 use function Korowai\Lib\Context\with;
 use function Korowai\Lib\Error\exceptionErrorHandler;
 
@@ -29,7 +31,7 @@ final class LdapLinkConstructor implements LdapLinkConstructorInterface
     {
         /** @psalm-suppress ImpureFunctionCall */
         $args = func_get_args();
-        return with(exceptionErrorHandler())(function () use ($args) : LdapLinkInterface {
+        return with(exceptionErrorHandler(ErrorException::class))(function () use ($args) : LdapLinkInterface {
             if(($link = LdapLink::connect(...$args)) === false) {
                 trigger_error('LdapLink::connect() returned false', E_USER_ERROR);
             }

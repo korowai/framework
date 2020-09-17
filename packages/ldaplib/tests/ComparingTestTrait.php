@@ -16,6 +16,7 @@ use Korowai\Lib\Ldap\ComparingInterface;
 use Korowai\Lib\Ldap\CompareQuery;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkErrorHandler;
+use Korowai\Lib\Ldap\Exception\ErrorException;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -138,7 +139,7 @@ trait ComparingTestTrait
              ->with(...$args)
              ->willReturn(-1);
 
-        $this->expectException(\ErrorException::class);
+        $this->expectException(ErrorException::class);
         $this->expectExceptionMessage('LdapLink::compare() returned -1');
 
         $comparator->compare(...$args);

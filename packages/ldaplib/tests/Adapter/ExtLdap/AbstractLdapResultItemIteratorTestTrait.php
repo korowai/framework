@@ -16,6 +16,7 @@ use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultItemInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
 use Korowai\Lib\Ldap\Exception\LdapException;
+use Korowai\Lib\Ldap\Exception\ErrorException;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -219,7 +220,7 @@ trait AbstractLdapResultItemIteratorTestTrait
              ->with()
              ->willReturn(0);
 
-        $this->expectException(\ErrorException::class);
+        $this->expectException(ErrorException::class);
         $this->expectExceptionMessage('non-LDAP error');
         $this->expectExceptionCode(0);
 

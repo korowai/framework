@@ -19,6 +19,7 @@ use Korowai\Testing\Ldaplib\GetLdapFunctionMockTrait;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkConstructor;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkConstructorInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLink;
+use Korowai\Lib\Ldap\Exception\ErrorException;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -147,7 +148,7 @@ final class LdapLinkConstructorTest extends TestCase
 
         $constructor = new LdapLinkConstructor;
 
-        $this->expectException(\ErrorException::class);
+        $this->expectException(ErrorException::class);
         $this->expectExceptionMessage('LdapLink::connect() returned false');
 
         $link = $constructor->connect(...$args);
@@ -169,7 +170,7 @@ final class LdapLinkConstructorTest extends TestCase
 
         $constructor = new LdapLinkConstructor;
 
-        $this->expectException(\ErrorException::class);
+        $this->expectException(ErrorException::class);
         $this->expectExceptionMessage('error message');
 
         $link = $constructor->connect("#$%");

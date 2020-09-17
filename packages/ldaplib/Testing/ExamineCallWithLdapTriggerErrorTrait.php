@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Korowai\Testing\Ldaplib;
 
 use Korowai\Lib\Ldap\Exception\LdapException;
+use Korowai\Lib\Ldap\Exception\ErrorException;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkErrorHandler;
 
@@ -65,7 +66,7 @@ trait ExamineCallWithLdapTriggerErrorTrait
 
         try {
             call_user_func($function);
-        } catch (\ErrorException $exception) {
+        } catch (ErrorException $exception) {
             $this->assertSame(__file__.':'.$line, $exception->getFile().':'.$exception->getLine());
             $this->assertSame($expect['severity'], $exception->getSeverity());
             throw $exception;
@@ -101,7 +102,7 @@ trait ExamineCallWithLdapTriggerErrorTrait
                     'severity' => E_USER_WARNING,
                 ],
                 'expect' => [
-                    'exception' => \ErrorException::class,
+                    'exception' => ErrorException::class,
                     'message' => 'error message',
                     'code' => 0,
                     'severity' => E_USER_WARNING,
@@ -117,7 +118,7 @@ trait ExamineCallWithLdapTriggerErrorTrait
                     'severity' => E_USER_WARNING,
                 ],
                 'expect' => [
-                    'exception' => \ErrorException::class,
+                    'exception' => ErrorException::class,
                     'message' => 'error message',
                     'code' => 0,
                     'severity' => E_USER_WARNING,
@@ -133,7 +134,7 @@ trait ExamineCallWithLdapTriggerErrorTrait
                     'severity' => E_USER_WARNING,
                 ],
                 'expect' => [
-                    'exception' => \ErrorException::class,
+                    'exception' => ErrorException::class,
                     'message' => 'error message',
                     'code' => 0,
                     'severity' => E_USER_WARNING,

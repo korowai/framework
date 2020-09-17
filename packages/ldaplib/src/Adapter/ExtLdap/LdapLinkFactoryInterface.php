@@ -23,8 +23,7 @@ interface LdapLinkFactoryInterface
      * Creates and returns new instance of LdapLinkInterface.
      *
      * @return LdapLinkInterface
-     * @throws \ErrorException
-     * @throws \Korowai\Lib\Ldap\Exception\LdapException
+     * @throws \Korowai\Lib\Ldap\Exception\ExceptionInterface
      */
     public function createLdapLink(LdapLinkConfigInterface $config) : LdapLinkInterface;
 }

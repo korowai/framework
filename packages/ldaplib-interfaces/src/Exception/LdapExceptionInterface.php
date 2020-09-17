@@ -17,7 +17,7 @@ namespace Korowai\Lib\Ldap\Exception;
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-interface LdapExceptionInterface extends ErrorExceptionInterface
+interface LdapExceptionInterface extends ExceptionInterface
 {
 }
 

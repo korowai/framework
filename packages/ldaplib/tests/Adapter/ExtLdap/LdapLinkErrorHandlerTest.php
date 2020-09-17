@@ -22,6 +22,7 @@ use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultItemInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultItemWrapperInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkWrapperTrait;
 use Korowai\Lib\Ldap\Exception\LdapException;
+use Korowai\Lib\Ldap\Exception\ErrorException;
 use Korowai\Lib\Error\AbstractManagedErrorHandler;
 
 /**
@@ -160,13 +161,13 @@ final class LdapLinkErrorHandlerTest extends TestCase
 
         $handler = new LdapLinkErrorHandler($ldap);
 
-        $this->expectException(\ErrorException::class);
+        $this->expectException(ErrorException::class);
         $this->expectExceptionMessage("error message");
         $this->expectExceptionCode(0);
 
         try {
             $handler(123, "error message", "foo.php", 321);
-        } catch (\ErrorException $exception) {
+        } catch (ErrorException $exception) {
             $this->assertSame(123, $exception->getSeverity());
             $this->assertSame("foo.php", $exception->getFile());
             $this->assertSame(321, $exception->getLine());
@@ -192,13 +193,13 @@ final class LdapLinkErrorHandlerTest extends TestCase
 
         $handler = new LdapLinkErrorHandler($ldap);
 
-        $this->expectException(\ErrorException::class);
+        $this->expectException(ErrorException::class);
         $this->expectExceptionMessage("error message");
         $this->expectExceptionCode(0);
 
         try {
             $handler(123, "error message", "foo.php", 321);
-        } catch (\ErrorException $exception) {
+        } catch (ErrorException $exception) {
             $this->assertSame(123, $exception->getSeverity());
             $this->assertSame("foo.php", $exception->getFile());
             $this->assertSame(321, $exception->getLine());

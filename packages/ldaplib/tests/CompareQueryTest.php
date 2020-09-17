@@ -20,6 +20,7 @@ use Korowai\Lib\Ldap\CompareQueryInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkWrapperInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkErrorHandler;
+use Korowai\Lib\Ldap\Exception\ErrorException;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -114,7 +115,7 @@ final class CompareQueryTest extends TestCase
             'args'   => ['dc=example,dc=org', 'attribute', 'value'],
             'return' => -1,
             'expect' => [
-                'exception' => \ErrorException::class,
+                'exception' => ErrorException::class,
                 'message'   => 'LdapLink::compare() returned -1'
             ],
         ];

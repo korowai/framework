@@ -22,6 +22,7 @@ use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkWrapperTrait;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkErrorHandler;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultInterface;
 use Korowai\Lib\Ldap\ResultInterface;
+use Korowai\Lib\Ldap\Exception\ErrorException;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -286,7 +287,7 @@ final class SearchQueryTest extends TestCase
 
         $query = new SearchQuery($link, ...$args);
 
-        $this->expectException(\ErrorException::class);
+        $this->expectException(ErrorException::class);
         $this->expectExceptionMessage('LdapLinkInterface::'.$expect['method'].'() returned false');
 
         $query->$method();

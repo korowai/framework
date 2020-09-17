@@ -13,13 +13,12 @@ declare(strict_types=1);
 namespace Korowai\Lib\Ldap\Exception;
 
 /**
- * An exception resulted form converting PHP.
+ * LDAP exception interface.
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-interface ErrorExceptionInterface extends ExceptionInterface
+interface ExceptionInterface extends \Throwable
 {
-    public function getSeverity();
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

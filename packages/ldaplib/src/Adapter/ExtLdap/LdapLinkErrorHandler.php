@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
 
+use Korowai\Lib\Ldap\Exception\ErrorException;
 use Korowai\Lib\Ldap\Exception\LdapException;
 use Korowai\Lib\Error\AbstractManagedErrorHandler;
 
@@ -76,14 +77,14 @@ final class LdapLinkErrorHandler extends AbstractManagedErrorHandler implements 
      * @param  int $line
      *
      * @throws LdapException
-     * @throws \ErrorException
+     * @throws ErrorException
      *
      * @return never-return
      */
     public function __invoke(int $severity, string $message, string $file, int $line) : bool
     {
         $this->throwLastLdapErrorIfSet($severity, $message, $file, $line);
-        throw new \ErrorException($message, 0, $severity, $file, $line);
+        throw new ErrorException($message, 0, $severity, $file, $line);
     }
 
     /**

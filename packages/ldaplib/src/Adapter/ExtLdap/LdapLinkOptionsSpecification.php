@@ -123,11 +123,8 @@ final class LdapLinkOptionsSpecification implements LdapLinkOptionsSpecification
      *
      * @param LdapLinkOptionsMapperInterface $mapper
      */
-    public function __construct(LdapLinkOptionsMapperInterface $mapper = null)
+    public function __construct(LdapLinkOptionsMapperInterface $mapper)
     {
-        if ($mapper === null) {
-            $mapper = new LdapLinkOptionsMapper;
-        }
         $this->mapper = $mapper;
         $this->options = self::getSupportedOptions($mapper);
     }
@@ -199,18 +196,33 @@ final class LdapLinkOptionsSpecification implements LdapLinkOptionsSpecification
         }
 
         if (array_key_exists('validator', $spec)) {
-            self::addAllowedValues($resolver, $name, function ($value) use ($spec) : bool {
-                return call_user_func($spec['validator'], $value);
-            }, false);
+            self::addAllowedValues(
+                $resolver,
+                $name,
+                /**
+                 * @psalm-param mixed $value
+                 */
+                function ($value) use ($spec) : bool {
+                    return call_user_func($spec['validator'], $value);
+                },
+                false
+            );
         }
     }
 
     private static function configureNormalizer(OptionsResolver $resolver, string $name, array $spec) : void
     {
         if (array_key_exists('normalizer', $spec)) {
-            $resolver->setNormalizer($name, function (Options $options, $value) use ($spec) {
-                return call_user_func($spec['normalizer'], $options, $value);
-            });
+            $resolver->setNormalizer(
+                $name,
+                /**
+                 * @psalm-param mixed $value
+                 * @psalm-return mixed
+                 */
+                function (Options $options, $value) use ($spec) {
+                    return call_user_func($spec['normalizer'], $options, $value);
+                }
+            );
         }
     }
 
@@ -265,20 +277,28 @@ final class LdapLinkOptionsSpecification implements LdapLinkOptionsSpecification
         return array_intersect_key(self::OPTIONS, $mapper->getMappings());
     }
 
+    /**
+     * Validates the tls_protocol_min option.
+     *
+     * @param mixed $value
+     * @return bool
+     */
     public static function checkTlsProtocolMin($value) : bool
     {
         $versions = self::OPTIONS['tls_protocol_min']['predefined'];
         return is_int($value) || array_key_exists($value, $versions);
     }
 
+    /**
+     * Normalizes value of tls_protocol_min option.
+     *
+     * @param Options $options
+     * @param mixed $value
+     */
     public static function normalizeTlsProtocolMin(Options $options, $value) : int
     {
         $versions = self::OPTIONS['tls_protocol_min']['predefined'];
-        if (is_int($value)) {
-            return $value;
-        }
-        $version = $versions[$value];
-        return is_string($version) ? constant($version) : $version;
+        return is_int($value) ? $value : constant($versions[$value]);
     }
 }
 

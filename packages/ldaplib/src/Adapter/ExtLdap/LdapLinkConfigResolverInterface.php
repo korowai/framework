@@ -13,14 +13,14 @@ declare(strict_types=1);
 namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
 
 /**
- * @todo Write documentation.
+ * Resolves configuration options for LdapLinkFactory.
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
 interface LdapLinkConfigResolverInterface
 {
     /**
-     * @todo Write documentation
+     * Resolves the $config.
      *
      * @param  array $config
      * @return array

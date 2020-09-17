@@ -55,39 +55,13 @@ final class LdapLinkConfigResolverTest extends TestCase
     // __construct()
     //
 
-    public function prov__construct() : array
+    public function test__construct() : void
     {
-        $resolver = new OptionsResolver;
         $specs = $this->createMock(LdapLinkOptionsSpecificationInterface::class);
-        return [
-            // #0
-            [
-                'args'   => [],
-                'expect' => [
-                    'resolver' => self::isInstanceOf(OptionsResolver::class),
-                    'declarator'   => self::isInstanceOf(LdapLinkOptionsSpecification::class),
-                ],
-            ],
+        $resolver= new LdapLinkConfigResolver($specs);
 
-            // #1
-            [
-                'args'   => [$specs],
-                'expect' => [
-                    'resolver' => self::isInstanceOf(OptionsResolver::class),
-                    'declarator'   => self::identicalTo($specs),
-                ],
-            ],
-        ];
-    }
-
-    /**
-     * @dataProvider prov__construct
-     */
-    public function test__construct(array $args, array $expect) : void
-    {
-        $resolver= new LdapLinkConfigResolver(...$args);
-        $this->assertThat($resolver->getOptionsResolver(), $expect['resolver']);
-        $this->assertThat($resolver->getOptionsSpecification(), $expect['declarator']);
+        $this->assertInstanceOf(OptionsResolver::class, $resolver->getOptionsResolver());
+        $this->assertSame($specs, $resolver->getOptionsSpecification());
     }
 
     //
@@ -170,12 +144,14 @@ final class LdapLinkConfigResolverTest extends TestCase
      */
     public function test__resolve(array $config, array $expect) : void
     {
-        $resolver = new LdapLinkConfigResolver;
+        $mapper = new LdapLinkOptionsMapper;
+        $specs = new LdapLinkOptionsSpecification($mapper);
+        $resolver = new LdapLinkConfigResolver($specs);
 
         $resolved = $resolver->resolve($config);
 
         foreach ([&$resolved, &$expect] as &$options) {
-            // FIXME: replace with assertEqualsKsorted() once it's implemented
+            // FIXME: replace with self::assertEqualsKsorted() once it's implemented (see GH issue #3)
             ksort($options);
             if (is_array($options['options'] ?? null)) {
                 ksort($options['options']);
@@ -227,7 +203,9 @@ final class LdapLinkConfigResolverTest extends TestCase
      */
     public function test__resolve__withInvalidConfig(array $config, array $expect) : void
     {
-        $resolver = new LdapLinkConfigResolver;
+        $mapper = new LdapLinkOptionsMapper;
+        $specs = new LdapLinkOptionsSpecification($mapper);
+        $resolver = new LdapLinkConfigResolver($specs);
 
         $this->expectException($expect['exception']);
         $this->expectExceptionMessage($expect['message']);

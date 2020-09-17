@@ -13,15 +13,16 @@ declare(strict_types=1);
 namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
 
 /**
- * Provides mappings of user-friendly LDAP option names onto integer identifiers suitable for ldap_set_option().
+ * Maps user-friendly option names onto integer identifiers suitable for ldap_set_option().
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
 final class LdapLinkOptionsMapper implements LdapLinkOptionsMapperInterface
 {
     /**
-     * Predefined mappings for all LdapLink options; some of them may be unavailable depending on PHP version and the
-     * version of LDAP API used by ext-ldap.
+     * Predefined mappings for all the options. The array maps user-friendly options names onto their corresponding PHP
+     * constant names. Some of the constants may be undefined depending on PHP version and the version of LDAP API used
+     * by ext-ldap, so the array will be the subject of further filtering.
      */
     public const MAPPINGS = [
         'deref'              => 'LDAP_OPT_DEREF',
@@ -65,7 +66,8 @@ final class LdapLinkOptionsMapper implements LdapLinkOptionsMapperInterface
 
     /**
      * @var array
-     * @psalm-read-only
+     *
+     * @psalm-readonly
      */
     private $mappings;
 
@@ -106,7 +108,7 @@ final class LdapLinkOptionsMapper implements LdapLinkOptionsMapperInterface
     }
 
     /**
-     * Returns default options mappings.
+     * Returns self::MAPPING after appropriate filtering.
      *
      * @return array
      *

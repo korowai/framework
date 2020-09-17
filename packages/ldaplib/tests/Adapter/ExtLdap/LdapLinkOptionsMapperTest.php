@@ -22,7 +22,7 @@ use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkOptionsMapperInterface;
  */
 final class LdapLinkOptionsMapperTest extends TestCase
 {
-    public const MAPPINGS = [
+    public const EXPECTED_MAPPINGS = [
         'deref'              => 'LDAP_OPT_DEREF',
         'sizelimit'          => 'LDAP_OPT_SIZELIMIT',
         'timelimit'          => 'LDAP_OPT_TIMELIMIT',
@@ -62,9 +62,14 @@ final class LdapLinkOptionsMapperTest extends TestCase
         'keepalive_interval' => 'LDAP_OPT_X_KEEPALIVE_INTERVAL',
     ];
 
-    private static function getDefaultMappings() : array
+    /**
+     * Returns what we expect from LdapLinkOptionsMapper::getMappings().
+     *
+     * @return array
+     */
+    public static function getExpectedMappings() : array
     {
-        $defined = array_filter(self::MAPPINGS, 'defined');
+        $defined = array_filter(self::EXPECTED_MAPPINGS, 'defined');
         return array_map('constant', $defined);
     }
 
@@ -85,8 +90,14 @@ final class LdapLinkOptionsMapperTest extends TestCase
     public function test__getMappings() : void
     {
         $mapper = new LdapLinkOptionsMapper;
-        $expect = self::getDefaultMappings();
-        $this->assertSame($expect, $mapper->getMappings());
+        $expect = self::getExpectedMappings();
+        $mappings = $mapper->getMappings();
+
+        // FIXME: replace with self::assertEqualsKsorted() once it's implemented (see GH issue #3)
+        ksort($expect);
+        ksort($mappings);
+
+        $this->assertSame($expect, $mappings);
     }
 
     //
@@ -95,7 +106,8 @@ final class LdapLinkOptionsMapperTest extends TestCase
 
     public function test__mapOptions() : void
     {
-        $mappings = self::getDefaultMappings();
+        $mappings = self::getExpectedMappings();
+
         $names = array_keys($mappings);
         $options = array_combine($names, $names);
         $expect  = array_flip($mappings);

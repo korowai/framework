@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Korowai\Lib\Ldap\Adapter\ExtLdap;
 
 /**
- * Provides mappings of user-friendly LDAP option names onto integer identifiers suitable for ldap_set_option().
+ * Maps user-friendly option names onto integer identifiers suitable for ldap_set_option().
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
@@ -21,7 +21,7 @@ interface LdapLinkOptionsMapperInterface
 {
     /**
      * Returns a key => value array that maps user-friendly option names (strings) onto corresponding identifiers
-     * (integers) that are suitable to be passed as first argument to ldap_set_option().
+     * (integers) that can be passed as first argument to ldap_set_option().
      *
      * The returned array is limited to the options supported by the current PHP version.
      *

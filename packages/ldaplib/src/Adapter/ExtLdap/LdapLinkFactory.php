@@ -53,7 +53,7 @@ final class LdapLinkFactory implements LdapLinkFactoryInterface
      * Creates an LdapLinkFactory using configuration array.
      *
      * @param  LdapLinkConstructorInterface $constructor
-     * @param  LdapLinkConfigResolverInterfce $resolver
+     * @param  LdapLinkConfigResolverInterface $resolver
      * @param  array $config
      */
     public static function createWithConfig(
@@ -66,7 +66,7 @@ final class LdapLinkFactory implements LdapLinkFactoryInterface
     }
 
     /**
-     * Creates an LdapLinkFactory
+     * Initializes the object.
      *
      * @param  LdapLinkConstructorInterface $constructor
      *      An object used to create initial LdapLink.

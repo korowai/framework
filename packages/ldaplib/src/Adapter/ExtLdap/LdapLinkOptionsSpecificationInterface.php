@@ -32,6 +32,8 @@ interface LdapLinkOptionsSpecificationInterface
 
     /**
      * Configures symfony's  OptionsResolver to parse LdapLink options
+     *
+     * @param OptionsResolver $resolver
      */
     public function configureOptionsResolver(OptionsResolver $resolver) : void;
 }

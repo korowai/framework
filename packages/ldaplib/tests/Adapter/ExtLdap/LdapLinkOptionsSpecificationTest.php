@@ -44,43 +44,20 @@ final class LdapLinkOptionsSpecificationTest extends TestCase
     // __construct()
     //
 
-    public function prov__construct() : array
+    public function test__construct() : void
     {
         $mapper = $this->createMock(LdapLinkOptionsMapperInterface::class);
-        $mapper->expects($this->any())
+        $mapper->expects($this->once())
                ->method('getMappings')
                ->with()
-               ->willReturn(['timelimit' => null]);
+               ->willReturn(['sizelimit' => null]);
+        $mapper->expects($this->never())
+               ->method('mapOptions');
 
-        return [
-            // #0
-            [
-                'args' => [],
-                'expect' => [
-                    'mapper'  => self::isInstanceOf(LdapLinkOptionsMapper::class),
-                    'options' => self::isType('array'),
-                ],
-            ],
 
-            // #1
-            [
-                'args' => [$mapper],
-                'expect' => [
-                    'mapper'  => self::identicalTo($mapper),
-                    'options' => self::identicalTo(['timelimit' => ['types' => 'int']]),
-                ],
-            ],
-        ];
-    }
-
-    /**
-     * @dataProvider prov__construct
-     */
-    public function test__construct(array $args, array $expect) : void
-    {
-        $specs = new LdapLinkOptionsSpecification(...$args);
-        $this->assertThat($specs->getOptionsMapper(), $expect['mapper']);
-        $this->assertThat($specs->getOptions(), $expect['options']);
+        $specs = new LdapLinkOptionsSpecification($mapper);
+        $this->assertSame($mapper, $specs->getOptionsMapper());
+        $this->assertSame(['sizelimit' => ['types' => 'int']], $specs->getOptions());
     }
 
     public static function prov__configureOptionsResolver__thenResolve() : array
@@ -455,12 +432,12 @@ final class LdapLinkOptionsSpecificationTest extends TestCase
      */
     public function test__configureOptionsResolver__thenResolve(array $options, array $expect) : void
     {
-        $specs = new LdapLinkOptionsSpecification;
+        $specs = new LdapLinkOptionsSpecification(new LdapLinkOptionsMapper);
         $specs->configureOptionsResolver($resolver = new OptionsResolver);
 
         $resolved = $resolver->resolve($options);
 
-        // FIXME: replace with assertEqualsKsorted() when it's available
+        // FIXME: replace with self::assertEqualsKsorted() once it's implemented (see GH issue #3)
         ksort($resolved);
         ksort($expect);
 

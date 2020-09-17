@@ -19,7 +19,8 @@ use Korowai\Lib\Rfc\Rfc3986;
 use function Korowai\Lib\Compat\preg_match;
 
 /**
- * @todo Write documentation
+ * Resolves configuration options for LdapLinkFactory.
+ *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
 final class LdapLinkConfigResolver implements LdapLinkConfigResolverInterface
@@ -31,19 +32,18 @@ final class LdapLinkConfigResolver implements LdapLinkConfigResolverInterface
 
     /**
      * @var LdapLinkOptionsSpecificationInterface
+     *
+     * @psalm-readonly
      */
     private $optionsSpecificaton;
 
     /**
      * Initializes the object.
      *
-     * @param LdapLinkOptionsSpecificationInterface|null $optionsSpecificaton
+     * @param LdapLinkOptionsSpecificationInterface $optionsSpecificaton
      */
-    public function __construct(LdapLinkOptionsSpecificationInterface $optionsSpecificaton = null)
+    public function __construct(LdapLinkOptionsSpecificationInterface $optionsSpecificaton)
     {
-        if ($optionsSpecificaton === null) {
-            $optionsSpecificaton = new LdapLinkOptionsSpecification;
-        }
         $this->configureOptionsResolver($resolver = new OptionsResolver, $optionsSpecificaton);
         $this->resolver = $resolver;
         $this->optionsSpecificaton = $optionsSpecificaton;
@@ -53,6 +53,8 @@ final class LdapLinkConfigResolver implements LdapLinkConfigResolverInterface
      * Returns the encapsulated OptionsResolver instance.
      *
      * @return OptionsResolver
+     *
+     * @psalm-mutation-free
      */
     public function getOptionsResolver() : OptionsResolver
     {
@@ -72,13 +74,14 @@ final class LdapLinkConfigResolver implements LdapLinkConfigResolverInterface
     }
 
     /**
-     * Resolves $config.
+     * {@inheritdoc}
      *
-     * @param array $config
-     * @return array
+     * @psalm-mutation-free
+     * @psalm-pure
      */
     public function resolve(array $config) : array
     {
+        /** @psalm-suppress ImpureMethodCall */
         $resolved = $this->resolver->resolve($config);
         if (($options = $resolved['options'] ?? null) !== null) {
             $resolved['options'] = $this->optionsSpecificaton->getOptionsMapper()->mapOptions($options);
@@ -90,6 +93,7 @@ final class LdapLinkConfigResolver implements LdapLinkConfigResolverInterface
      * Configures OptionsResolver.
      *
      * @param OptionsResolver $resolver The resolver to be configured
+     * @param LdapLinkOptionsSpecificationInterface $optionsSpecificaton Specification of the nested options
      */
     private function configureOptionsResolver(
         OptionsResolver $resolver,

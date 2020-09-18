@@ -64,7 +64,7 @@ final class ResultTest extends TestCase
             $result->$method(...$args);
         };
 
-        $subject = new LdapTriggerErrorTestSubject($ldapResult, $backendMethod, $args);
+        $subject = new LdapTriggerErrorTestSubject($ldapResult, $backendMethod);
         $this->examineLdapLinkErrorHandler($function, $subject, $link, $fixture);
     }
 

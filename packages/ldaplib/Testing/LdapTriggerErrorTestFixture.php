@@ -41,65 +41,57 @@ final class LdapTriggerErrorTestFixture
     {
         return [
             // #0
-            [
-                new self([
-                    'valid' => true,
-                    'errno' => 123,
-                    'return' => false,
-                    'message' => 'error message',
-                    'severity' => E_USER_WARNING,
-                ], [
-                    'exception' => LdapException::class,
-                    'message' => 'error message',
-                    'code' => 123,
-                    'severity' => E_USER_WARNING,
-                ]),
-            ],
+            new self([
+                'valid' => true,
+                'errno' => 123,
+                'return' => false,
+                'message' => 'error message',
+                'severity' => E_USER_WARNING,
+            ], [
+                'exception' => LdapException::class,
+                'message' => 'error message',
+                'code' => 123,
+                'severity' => E_USER_WARNING,
+            ]),
             // #1
-            [
-                new self([
-                    'valid' => true,
-                    'errno' => 0,
-                    'return' => null,
-                    'message' => 'error message',
-                    'severity' => E_USER_WARNING,
-                ], [
-                    'exception' => ErrorException::class,
-                    'message' => 'error message',
-                    'code' => 0,
-                    'severity' => E_USER_WARNING,
-                ]),
-            ],
+            new self([
+                'valid' => true,
+                'errno' => 0,
+                'return' => null,
+                'message' => 'error message',
+                'severity' => E_USER_WARNING,
+            ], [
+                'exception' => ErrorException::class,
+                'message' => 'error message',
+                'code' => 0,
+                'severity' => E_USER_WARNING,
+            ]),
             // #2
-            [
-                new self([
-                    'valid' => true,
-                    'errno' => false,
-                    'return' => null,
-                    'message' => 'error message',
-                    'severity' => E_USER_WARNING,
-                ], [
-                    'exception' => ErrorException::class,
-                    'message' => 'error message',
-                    'code' => 0,
-                    'severity' => E_USER_WARNING,
-                ]),
-            ],
+            new self([
+                'valid' => true,
+                'errno' => false,
+                'return' => null,
+                'message' => 'error message',
+                'severity' => E_USER_WARNING,
+            ], [
+                'exception' => ErrorException::class,
+                'message' => 'error message',
+                'code' => 0,
+                'severity' => E_USER_WARNING,
+            ]),
             // #3
-            [
-                new self([
-                    'valid' => false,
-                    'errno' => null,
-                    'return' => false,
-                    'message' => 'error message',
-                    'severity' => E_USER_WARNING,
-                ], [
-                    'exception' => ErrorException::class,
-                    'message' => 'error message',
-                    'code' => 0,
-                    'severity' => E_USER_WARNING,
-                ]),
-            ],
+            new self([
+                'valid' => false,
+                'errno' => null,
+                'return' => false,
+                'message' => 'error message',
+                'severity' => E_USER_WARNING,
+            ], [
+                'exception' => ErrorException::class,
+                'message' => 'error message',
+                'code' => 0,
+                'severity' => E_USER_WARNING,
+            ]),
         ];
     }
 

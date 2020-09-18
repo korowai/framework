@@ -39,33 +39,35 @@ final class LdapTriggerErrorTestSubject
      *
      * @psalm-readonly
      */
-    private $args;
+    private $with;
 
     /**
+     * Initializes the object
+     *
      * @param MockObject $mock
      * @param string $method
-     * @param array $args
+     * @param array $with
      */
-    public function __construct(MockObject $mock, string $method, array $args)
+    public function __construct(MockObject $mock, string $method, array $with = [])
     {
         $this->mock = $mock;
         $this->method = $method;
-        $this->args = $args;
+        $this->with = $with;
     }
 
-    public function getMock() : MockObject
+    public function mock() : MockObject
     {
         return $this->mock;
     }
 
-    public function getMethod() : string
+    public function method() : string
     {
         return $this->method;
     }
 
-    public function getArgs() : array
+    public function with() : array
     {
-        return $this->args;
+        return $this->with;
     }
 }
 

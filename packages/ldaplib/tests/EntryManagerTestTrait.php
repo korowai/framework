@@ -47,11 +47,9 @@ trait EntryManagerTestTrait
         $entry = $this->createMock(EntryInterface::class);
         $entry->expects($this->once())
               ->method('getDn')
-              ->with()
               ->willReturn('dc=korowai,dc=org');
         $entry->expects($this->once())
               ->method('getAttributes')
-              ->with()
               ->willReturn(['A']);
 
         $link = $this->createMock(LdapLinkInterface::class);
@@ -77,18 +75,16 @@ trait EntryManagerTestTrait
         $entry = $this->createMock(EntryInterface::class);
         $entry->expects($this->once())
               ->method('getDn')
-              ->with()
-              ->willReturn('dc=korowai,dc=org');
+              ->willReturn('');
         $entry->expects($this->once())
               ->method('getAttributes')
-              ->with()
-              ->willReturn(['A']);
+              ->willReturn([]);
 
         $link = $this->createMock(LdapLinkInterface::class);
 
         $manager = $this->createEntryManagerInstance($link);
 
-        $subject = new LdapTriggerErrorTestSubject($link, 'add', ['dc=korowai,dc=org', ['A']]);
+        $subject = new LdapTriggerErrorTestSubject($link, 'add');
         $function  = function () use ($manager, $entry) {
             return $manager->add($entry);
         };
@@ -104,11 +100,9 @@ trait EntryManagerTestTrait
         $entry = $this->createMock(EntryInterface::class);
         $entry->expects($this->once())
               ->method('getDn')
-              ->with()
               ->willReturn('dc=korowai,dc=org');
         $entry->expects($this->once())
               ->method('getAttributes')
-              ->with()
               ->willReturn(['A']);
 
         $link = $this->createMock(LdapLinkInterface::class);
@@ -134,12 +128,10 @@ trait EntryManagerTestTrait
         $entry = $this->createMock(EntryInterface::class);
         $entry->expects($this->once())
               ->method('getDn')
-              ->with()
-              ->willReturn('dc=korowai,dc=org');
+              ->willReturn('');
         $entry->expects($this->once())
               ->method('getAttributes')
-              ->with()
-              ->willReturn(['A']);
+              ->willReturn([]);
 
         $link = $this->createMock(LdapLinkInterface::class);
 
@@ -148,7 +140,7 @@ trait EntryManagerTestTrait
         $function  = function () use ($manager, $entry) {
             return $manager->update($entry);
         };
-        $subject = new LdapTriggerErrorTestSubject($link, 'modify', ['dc=korowai,dc=org', ['A']]);
+        $subject = new LdapTriggerErrorTestSubject($link, 'modify');
         $this->examineLdapLinkErrorHandler($function, $subject, $link, $fixture);
     }
 
@@ -161,7 +153,6 @@ trait EntryManagerTestTrait
         $entry = $this->createMock(EntryInterface::class);
         $entry->expects($this->once())
               ->method('getDn')
-              ->with()
               ->willReturn('dc=korowai,dc=org');
         $entry->expects($this->never())
               ->method('getAttributes');
@@ -181,7 +172,6 @@ trait EntryManagerTestTrait
         $entry = $this->createMock(EntryInterface::class);
         $entry->expects($this->once())
               ->method('getDn')
-              ->with()
               ->willReturn('dc=korowai,dc=org');
         $entry->expects($this->never())
               ->method('getAttributes');
@@ -201,7 +191,6 @@ trait EntryManagerTestTrait
         $entry = $this->createMock(EntryInterface::class);
         $entry->expects($this->once())
               ->method('getDn')
-              ->with()
               ->willReturn('dc=korowai,dc=org');
         $entry->expects($this->never())
               ->method('getAttributes');
@@ -229,8 +218,7 @@ trait EntryManagerTestTrait
         $entry = $this->createMock(EntryInterface::class);
         $entry->expects($this->once())
               ->method('getDn')
-              ->with()
-              ->willReturn('dc=korowai,dc=org');
+              ->willReturn('');
         $entry->expects($this->never())
               ->method('getAttributes');
 
@@ -239,10 +227,10 @@ trait EntryManagerTestTrait
         $manager = $this->createEntryManagerInstance($link);
 
         $function = function () use ($manager, $entry) {
-            return $manager->rename($entry, 'cn=korowai', true);
+            return $manager->rename($entry, '', false);
         };
 
-        $subject = new LdapTriggerErrorTestSubject($link, 'rename', ['dc=korowai,dc=org', 'cn=korowai', '', true]);
+        $subject = new LdapTriggerErrorTestSubject($link, 'rename');
         $this->examineLdapLinkErrorHandler($function, $subject, $link, $fixture);
     }
 
@@ -255,7 +243,6 @@ trait EntryManagerTestTrait
         $entry = $this->createMock(EntryInterface::class);
         $entry->expects($this->once())
               ->method('getDn')
-              ->with()
               ->willReturn('dc=korowai,dc=org');
         $entry->expects($this->never())
               ->method('getAttributes');
@@ -283,8 +270,7 @@ trait EntryManagerTestTrait
         $entry = $this->createMock(EntryInterface::class);
         $entry->expects($this->once())
               ->method('getDn')
-              ->with()
-              ->willReturn('dc=korowai,dc=org');
+              ->willReturn('');
         $entry->expects($this->never())
               ->method('getAttributes');
 
@@ -295,7 +281,7 @@ trait EntryManagerTestTrait
         $function = function () use ($manager, $entry) {
             return $manager->delete($entry);
         };
-        $subject = new LdapTriggerErrorTestSubject($link, 'delete', ['dc=korowai,dc=org']);
+        $subject = new LdapTriggerErrorTestSubject($link, 'delete');
         $this->examineLdapLinkErrorHandler($function, $subject, $link, $fixture);
     }
 }

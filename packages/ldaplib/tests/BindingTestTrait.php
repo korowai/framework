@@ -55,7 +55,7 @@ trait BindingTestTrait
             $bind->$method(...$args);
         };
 
-        $subject = new LdapTriggerErrorTestSubject($link, $method, $args);
+        $subject = new LdapTriggerErrorTestSubject($link, $method);
 
         $this->examineLdapLinkErrorHandler($function, $subject, $link, $fixture);
         // @codeCoverageIgnoreStart

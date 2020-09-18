@@ -114,11 +114,10 @@ trait ComparingTestTrait
     {
         $link = $this->createMock(LdapLinkInterface::class);
         $comparator = $this->createComparingInstance($link);
-        $args = ['dc=example,dc=org', 'attribute', 'value'];
-        $function = function () use ($comparator, $args) {
-            return $comparator->compare(...$args);
+        $function = function () use ($comparator) {
+            return $comparator->compare('', '', '');
         };
-        $subject = new LdapTriggerErrorTestSubject($link, 'compare', $args);
+        $subject = new LdapTriggerErrorTestSubject($link, 'compare');
 
         $this->examineLdapLinkErrorHandler($function, $subject, $link, $fixture);
     }
@@ -128,8 +127,6 @@ trait ComparingTestTrait
         $link = $this->createMock(LdapLinkInterface::class);
         $comparator = $this->createComparingInstance($link);
 
-        $args = ['dc=example,dc=org', 'attribute', 'value'];
-
         $link->expects($this->once())
              ->method('getErrorHandler')
              ->with()
@@ -137,13 +134,12 @@ trait ComparingTestTrait
 
         $link->expects($this->once())
              ->method('compare')
-             ->with(...$args)
              ->willReturn(-1);
 
         $this->expectException(ErrorException::class);
         $this->expectExceptionMessage('LdapLinkInterface::compare() returned -1');
 
-        $comparator->compare(...$args);
+        $comparator->compare('', '', '');
     }
 }
 

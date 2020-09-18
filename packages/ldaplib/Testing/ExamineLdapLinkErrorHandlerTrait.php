@@ -32,6 +32,14 @@ trait ExamineLdapLinkErrorHandlerTrait
     abstract public function expectExceptionCode($code) : void;
     abstract public static function assertSame($expected, $actual, string $message = '') : void;
 
+    /**
+     * Tests that when $function gets invoked appropriate exception is thrown.
+     *
+     * @param  calable $function
+     * @param  LdapTriggerErrorTestSubject $subject
+     * @param  MockObject $link
+     * @param  LdapTriggerErrorTestFixture $fixture
+     */
     public function examineLdapLinkErrorHandler(
         callable $function,
         LdapTriggerErrorTestSubject $subject,
@@ -45,27 +53,24 @@ trait ExamineLdapLinkErrorHandlerTrait
             throw new \InvalidArgumentException($message);
         }
 
-        $mock   = $subject->getMock();
-        $method = $subject->getMethod();
-        $args   = $subject->getArgs();
+        $mock   = $subject->mock();
+        $method = $subject->method();
+        $with   = $subject->with();
 
         $params = $fixture->getParams();
         $expect = $fixture->getExpect();
 
         $link->expects($this->any())
              ->method('getErrorHandler')
-             ->with()
              ->willReturn(new LdapLinkErrorHandler($link));
 
         $link->expects($this->once())
              ->method('isValid')
-             ->with()
              ->willReturn($params['valid']);
 
         if ($params['valid']) {
             $link->expects($this->once())
                  ->method('errno')
-                 ->with()
                  ->willReturn($params['errno']);
         } else {
             $link->expects($this->never())
@@ -75,7 +80,7 @@ trait ExamineLdapLinkErrorHandlerTrait
         $line = __line__ + 5;
         $mock->expects($this->once())
              ->method($method)
-             ->with(...$args)
+             ->with(...$with)
              ->willReturnCallback(function () use ($params) {
                 trigger_error($params['message'], $params['severity']);
                 return $params['return'];
@@ -94,9 +99,17 @@ trait ExamineLdapLinkErrorHandlerTrait
         }
     }
 
+    /**
+     * Returns an array of instances of LdapTriggerErrorTestFixture.
+     *
+     * @return LdapTriggerErrorTestFixture[]
+     * @psalm-return list<LdapTriggerErrorTestFixture>
+     */
     public static function feedLdapLinkErrorHandler() : array
     {
-        return LdapTriggerErrorTestFixture::getFixtures();
+        return array_map(function (LdapTriggerErrorTestFixture $fixture) : array {
+            return [ $fixture ];
+        }, LdapTriggerErrorTestFixture::getFixtures());
     }
 }
 

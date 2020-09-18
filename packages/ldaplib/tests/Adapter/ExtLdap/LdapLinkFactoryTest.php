@@ -170,7 +170,7 @@ final class LdapLinkFactoryTest extends TestCase
         $function = function () use ($factory, $config) : LdapLinkInterface {
             return $factory->createLdapLink($config);
         };
-        $subject = new LdapTriggerErrorTestSubject($link, 'start_tls', []);
+        $subject = new LdapTriggerErrorTestSubject($link, 'start_tls');
 
         $this->examineLdapLinkErrorHandler($function, $subject, $link, $fixture);
     }
@@ -218,7 +218,7 @@ final class LdapLinkFactoryTest extends TestCase
             return $factory->createLdapLink($config);
         };
 
-        $subject = new LdapTriggerErrorTestSubject($link, 'set_option', [17, 3]);
+        $subject = new LdapTriggerErrorTestSubject($link, 'set_option');
 
         $this->examineLdapLinkErrorHandler($function, $subject, $link, $fixture);
     }

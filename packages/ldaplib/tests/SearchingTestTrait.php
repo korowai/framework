@@ -205,7 +205,7 @@ trait SearchingTestTrait
         $function = function () use ($searching) {
             return $searching->search('', '', []);
         };
-        $subject = new LdapTriggerErrorTestSubject($link, 'search', ['', '', ['*'], 0, 0, 0, LDAP_DEREF_NEVER]);
+        $subject = new LdapTriggerErrorTestSubject($link, 'search');
 
         $this->examineLdapLinkErrorHandler($function, $subject, $link, $fixture);
     }

@@ -212,7 +212,6 @@ final class SearchQueryTest extends TestCase
     public static function prov__query__withTriggerError() : array
     {
         $args = ['dc=example,dc=org', 'objectClass=*'];
-        $expectArgs = ['dc=example,dc=org', 'objectClass=*', ['*'], 0, 0, 0, LDAP_DEREF_NEVER];
 
         $cases = [];
         foreach (['execute', 'getResult'] as $method) {
@@ -221,7 +220,7 @@ final class SearchQueryTest extends TestCase
                     $case = [
                         'method' => $method,
                         'args'   => $args,
-                        'expect' => ['method' => $expectMethod, 'args' => $expectArgs],
+                        'expect' => ['method' => $expectMethod],
                     ];
                     $case['args'][] = ['scope' => $scope];
                     $cases[] = array_merge($case, $fixture);
@@ -243,14 +242,13 @@ final class SearchQueryTest extends TestCase
         $link = $this->createMock(LdapLinkInterface::class);
         $query = new SearchQuery($link, ...$args);
 
-        $subject = new LdapTriggerErrorTestSubject($link, $expect['method'], $expect['args']);
+        $subject = new LdapTriggerErrorTestSubject($link, $expect['method']);
         $this->examineLdapLinkErrorHandler([$query, $method], $subject, $link, $fixture);
     }
 
     public static function prov__query__withLdapLinkReturningFalse() : array
     {
         $args = ['dc=example,dc=org', 'objectClass=*'];
-        $expectArgs = ['dc=example,dc=org', 'objectClass=*', ['*'], 0, 0, 0, LDAP_DEREF_NEVER];
 
         $cases = [];
         foreach (['execute', 'getResult'] as $method) {
@@ -258,7 +256,7 @@ final class SearchQueryTest extends TestCase
                 $case = [
                     'method' => $method,
                     'args'   => $args,
-                    'expect' => ['method' => $expectMethod, 'args' => $expectArgs],
+                    'expect' => ['method' => $expectMethod],
                 ];
                 $case['args'][] = ['scope' => $scope];
                 $cases[] = $case;
@@ -276,12 +274,10 @@ final class SearchQueryTest extends TestCase
 
         $link->expects($this->once())
              ->method($expect['method'])
-             ->with(...$expect['args'])
              ->willReturn(false);
 
         $link->expects($this->once())
              ->method('getErrorHandler')
-             ->with()
              ->willReturn($errorHandler = new LdapLinkErrorHandler($link));
 
         $query = new SearchQuery($link, ...$args);

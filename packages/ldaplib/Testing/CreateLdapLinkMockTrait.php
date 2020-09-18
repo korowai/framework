@@ -14,6 +14,7 @@ namespace Korowai\Testing\Ldaplib;
 
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
 use PHPUnit\Framework\MockObject\MockBuilder;
+use PHPUnit\Framework\MockObject\Rule\AnyInvokedCount;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -21,6 +22,7 @@ use PHPUnit\Framework\MockObject\MockBuilder;
 trait CreateLdapLinkMockTrait
 {
     abstract public function getMockBuilder(string $className): MockBuilder;
+    abstract public static function any() : AnyInvokedCount;
 
     /**
      * Creates LdapLinkInterface mock.

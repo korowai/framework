@@ -15,12 +15,14 @@ namespace Korowai\Testing\Ldaplib;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultEntryInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultInterface;
 use PHPUnit\Framework\MockObject\MockBuilder;
+use PHPUnit\Framework\MockObject\Rule\AnyInvokedCount;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
 trait CreateLdapResultEntryMockTrait
 {
+    abstract public static function any() : AnyInvokedCount;
     abstract public function getMockBuilder(string $className): MockBuilder;
 
     private function createLdapResultEntryMock(

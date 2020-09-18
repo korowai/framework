@@ -13,6 +13,8 @@ declare(strict_types=1);
 namespace Korowai\Testing\Ldaplib;
 
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Rule\AnyInvokedCount;
+use PHPUnit\Framework\MockObject\Rule\InvokedCount;
 use Korowai\Lib\Ldap\Exception\ExceptionInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkErrorHandler;
@@ -22,6 +24,14 @@ use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkErrorHandler;
  */
 trait ExamineLdapLinkErrorHandlerTrait
 {
+    abstract public static function any() : AnyInvokedCount;
+    abstract public static function once() : InvokedCount;
+    abstract public static function never() : InvokedCount;
+    abstract public function expectException(string $exception) : void;
+    abstract public function expectExceptionMessage(string $message) : void;
+    abstract public function expectExceptionCode($code) : void;
+    abstract public static function assertSame($expected, $actual, string $message = '') : void;
+
     public function examineLdapLinkErrorHandler(
         callable $function,
         LdapTriggerErrorTestSubject $subject,

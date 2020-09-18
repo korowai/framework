@@ -23,6 +23,22 @@ use Korowai\Lib\Context\ContextManagerInterface;
 abstract class AbstractManagedErrorHandler extends AbstractErrorHandler implements ContextManagerInterface
 {
     use ContextManagerMethods;
+
+    // see: https://github.com/vimeo/psalm/issues/4210
+
+    /**
+     * Actual error handler function.
+     *
+     * @param  int $severity Level of the error raised.
+     * @param  string $message Error message.
+     * @param  string $file File name the the error was raised in.
+     * @param  int $line Line number the error was raised at.
+     *
+     *
+     * @return bool If it returns ``false``, then the normal error handler
+     *              continues.
+     */
+    abstract public function __invoke(int $severity, string $message, string $file, int $line) : bool;
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

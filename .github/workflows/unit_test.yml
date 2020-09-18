@@ -1,4 +1,4 @@
-name: Split Test
+name: Unit Testing
 
 on:
   pull_request: null
@@ -8,6 +8,20 @@ on:
       - ldiflib
 
 jobs:
+  framework_testing:
+    runs-on: ubuntu-latest
+    name: Unit Test of korowai/framework
+    steps:
+      - uses: actions/checkout@v2
+      - uses: shivammathur/setup-php@v1
+        with:
+          php-version: 7.4
+          coverage: none
+      - run: |
+          composer install --no-progress --ansi
+      - run: |
+          vendor/bin/phpunit
+
   after_split_testing:
     runs-on: ubuntu-latest
     strategy:
@@ -30,7 +44,7 @@ jobs:
           - rfclib-interfaces
           - testing
 
-    name: Split Test of ${{ matrix.package_name }}
+    name: Unit Test of ${{ matrix.package_name }}
 
     steps:
       - uses: actions/checkout@v2

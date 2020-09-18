@@ -32,7 +32,7 @@ final class LdapLinkConstructor implements LdapLinkConstructorInterface
         /** @psalm-suppress ImpureFunctionCall */
         $args = func_get_args();
         return with(exceptionErrorHandler(ErrorException::class))(function () use ($args) : LdapLinkInterface {
-            if(($link = LdapLink::connect(...$args)) === false) {
+            if (($link = LdapLink::connect(...$args)) === false) {
                 trigger_error('LdapLink::connect() returned false', E_USER_ERROR);
             }
             return $link;

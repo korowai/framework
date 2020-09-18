@@ -34,7 +34,7 @@ final class SearchingTraitTest extends TestCase
     // required by SearchingTestTrait
     public function createSearchingInstance(LdapLinkInterface $ldapLink) : SearchingInterface
     {
-        return new class ($ldapLink) implements SearchingInterface {
+        return new class($ldapLink) implements SearchingInterface {
             use SearchingTrait;
 
             private $ldapLink;

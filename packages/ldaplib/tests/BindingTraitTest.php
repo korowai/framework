@@ -32,7 +32,7 @@ final class BindingTraitTest extends TestCase
     // required by BindingTestTrait
     public function createBindingInstance(LdapLinkInterface $ldapLink, bool $bound = false) : BindingInterface
     {
-        return new class ($ldapLink, $bound) implements BindingInterface {
+        return new class($ldapLink, $bound) implements BindingInterface {
             use BindingTrait;
 
             private $ldapLink;

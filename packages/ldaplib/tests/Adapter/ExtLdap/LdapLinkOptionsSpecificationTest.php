@@ -19,7 +19,6 @@ use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkOptionsMapper;
 use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkOptionsMapperInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkOptionsSpecification
@@ -396,7 +395,7 @@ final class LdapLinkOptionsSpecificationTest extends TestCase
 
         ];
 
-        foreach($specs as $name => $spec) {
+        foreach ($specs as $name => $spec) {
             if (array_key_exists('aliases', $spec)) {
                 foreach ($spec['aliases'] as $alias => $value) {
                     $cases[] = [

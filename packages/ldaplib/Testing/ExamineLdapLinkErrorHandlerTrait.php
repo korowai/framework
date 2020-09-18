@@ -46,7 +46,6 @@ trait ExamineLdapLinkErrorHandlerTrait
         MockObject $link,
         LdapTriggerErrorTestFixture $fixture
     ) : void {
-
         if (!$link instanceof LdapLinkInterface) {
             $message = 'Argument 3 to '.__class__.'::examineLdapLinkErrorHandler() '.
                        'must be an instance of'.LdapLinkInterface::class;
@@ -82,8 +81,8 @@ trait ExamineLdapLinkErrorHandlerTrait
              ->method($method)
              ->with(...$with)
              ->willReturnCallback(function () use ($params) {
-                trigger_error($params['message'], $params['severity']);
-                return $params['return'];
+                 trigger_error($params['message'], $params['severity']);
+                 return $params['return'];
              });
 
         $this->expectException($expect['exception']);

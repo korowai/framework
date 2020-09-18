@@ -34,7 +34,7 @@ final class ComparingTraitTest extends TestCase
     // required by ComparingTestTrait
     public function createComparingInstance(LdapLinkInterface $ldapLink) : ComparingInterface
     {
-        return new class ($ldapLink) implements ComparingInterface {
+        return new class($ldapLink) implements ComparingInterface {
             use ComparingTrait;
 
             private $ldapLink;

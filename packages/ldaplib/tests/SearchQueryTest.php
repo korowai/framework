@@ -78,7 +78,7 @@ final class SearchQueryTest extends TestCase
             ],
         ];
 
-        foreach(SearchOptionsResolverTest::prov__resolve() as $case) {
+        foreach (SearchOptionsResolverTest::prov__resolve() as $case) {
             $cases[] = [
                 'args' => ['', '', $case['options']],
                 'expect' => [

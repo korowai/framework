@@ -33,7 +33,7 @@ final class EntryManagerTraitTest extends TestCase
     // required by EntryManagerTestTrait
     public function createEntryManagerInstance(LdapLinkinterface $ldapLink) : EntryManagerInterface
     {
-        return new class ($ldapLink) implements EntryManagerInterface, LdapLinkWrapperInterface {
+        return new class($ldapLink) implements EntryManagerInterface, LdapLinkWrapperInterface {
             use EntryManagerTrait;
 
             public function __construct(LdapLinkInterface $ldapLink)

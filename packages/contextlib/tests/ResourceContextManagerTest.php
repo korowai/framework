@@ -36,7 +36,8 @@ final class ResourceContextManagerTest extends TestCase
 
     public function test__construct() : void
     {
-        $destructor = function () { };
+        $destructor = function () {
+        };
         $manager = new ResourceContextManager('foo', $destructor);
         $this->assertSame('foo', $manager->getResource());
         $this->assertSame($destructor, $manager->getDestructor());
@@ -228,7 +229,8 @@ final class ResourceContextManagerTest extends TestCase
 
     public function test__enterContext() : void
     {
-        $manager = new ResourceContextManager('foo', function () {});
+        $manager = new ResourceContextManager('foo', function () {
+        });
         $this->assertSame('foo', $manager->enterContext());
     }
 

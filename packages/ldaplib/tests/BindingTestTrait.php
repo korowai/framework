@@ -153,22 +153,18 @@ trait BindingTestTrait
 
         $link->expects($this->once())
              ->method('isValid')
-             ->with()
              ->willReturn(true);
 
         $link->expects($this->once())
              ->method('errno')
-             ->with()
              ->willReturn($errno);
 
         $link->expects($this->once())
              ->method('getErrorHandler')
-             ->with()
              ->willReturn($errorHandler = new LdapLinkErrorHandler($link));
 
         $link->expects($this->once())
              ->method('bind')
-             ->with()
              ->will($this->returnCallback(function () use ($message) {
                  trigger_error($message);
                  // @codeCoverageIgnoreStart
@@ -216,7 +212,6 @@ trait BindingTestTrait
 
         $link->expects($this->once())
              ->method('unbind')
-             ->with()
              ->willReturn($return);
 
         $bind->unbind();

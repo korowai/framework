@@ -69,11 +69,9 @@ final class ParserErrorTest extends TestCase
                          ->getMockForAbstractClass();
         $location->expects($this->once())
                  ->method('getSourceLineAndCharOffset')
-                 ->with()
                  ->willReturn([2,9]);
         $location->expects($this->once())
                  ->method('getSourceFileName')
-                 ->with()
                  ->willReturn('foo.ldif');
 
         $error = new ParserError($location, '');
@@ -89,7 +87,6 @@ final class ParserErrorTest extends TestCase
                  ->method('getSourceLineAndCharOffset');
         $location->expects($this->once())
                  ->method('getSourceFileName')
-                 ->with()
                  ->willReturn('foo.ldif');
 
         $error = new ParserError($location, 'invalid syntax');
@@ -103,7 +100,6 @@ final class ParserErrorTest extends TestCase
                          ->getMockForAbstractClass();
         $location->expects($this->once())
                  ->method('getSourceLineAndCharOffset')
-                 ->with()
                  ->willReturn([0,3]);
 
         $error = new ParserError($location, '');
@@ -131,11 +127,9 @@ final class ParserErrorTest extends TestCase
                          ->getMockForAbstractClass();
         $location->expects($this->once())
                  ->method('getSourceFileName')
-                 ->with()
                  ->willReturn('foo.ldif');
         $location->expects($this->once())
                  ->method('getSourceLineAndCharOffset')
-                 ->with()
                  ->willReturn([0,4]);
         $location->expects($this->once())
                  ->method('getSourceLine')
@@ -158,11 +152,9 @@ final class ParserErrorTest extends TestCase
                          ->getMockForAbstractClass();
         $location->expects($this->once())
                  ->method('getSourceFileName')
-                 ->with()
                  ->willReturn('foo.ldif');
         $location->expects($this->once())
                  ->method('getSourceLineAndCharOffset')
-                 ->with()
                  ->willReturn([0,4]);
         $location->expects($this->once())
                  ->method('getSourceLine')
@@ -184,11 +176,9 @@ final class ParserErrorTest extends TestCase
                          ->getMockForAbstractClass();
         $location->expects($this->once())
                  ->method('getSourceFileName')
-                 ->with()
                  ->willReturn('foo.ldif');
         $location->expects($this->once())
                  ->method('getSourceLineAndCharOffset')
-                 ->with()
                  ->willReturn([0,4]);
 
         $error = new ParserError($location, 'invalid DN syntax');

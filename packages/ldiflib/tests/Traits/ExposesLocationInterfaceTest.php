@@ -60,7 +60,6 @@ final class ExposesLocationInterfaceTest extends TestCase
                          ->getMockForAbstractClass();
         $location->expects($this->once())
                  ->method('getString')
-                 ->with()
                  ->willReturn('A');
         $obj = $this->getTestObject($location);
 
@@ -73,7 +72,6 @@ final class ExposesLocationInterfaceTest extends TestCase
                          ->getMockForAbstractClass();
         $location->expects($this->once())
                  ->method('getOffset')
-                 ->with()
                  ->willReturn(123);
         $obj = $this->getTestObject($location);
 
@@ -86,7 +84,6 @@ final class ExposesLocationInterfaceTest extends TestCase
                          ->getMockForAbstractClass();
         $location->expects($this->once())
                  ->method('isValid')
-                 ->with()
                  ->willReturn(true);
         $obj = $this->getTestObject($location);
 
@@ -115,7 +112,6 @@ final class ExposesLocationInterfaceTest extends TestCase
                          ->getMockForAbstractClass();
         $location->expects($this->once())
                  ->method('getInput')
-                 ->with()
                  ->willReturn($input);
         $obj = $this->getTestObject($location);
 

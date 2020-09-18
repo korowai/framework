@@ -49,7 +49,6 @@ final class LdapLinkOptionsSpecificationTest extends TestCase
         $mapper = $this->createMock(LdapLinkOptionsMapperInterface::class);
         $mapper->expects($this->once())
                ->method('getMappings')
-               ->with()
                ->willReturn(['sizelimit' => null]);
         $mapper->expects($this->never())
                ->method('mapOptions');

@@ -76,7 +76,7 @@ final class AbstractManagedErrorHandlerTest extends TestCase
                         ->getMockForAbstractClass();
 
         $restore_error_handler = $this->getFunctionMock('Korowai\Lib\Error', 'restore_error_handler');
-        $restore_error_handler->expects($this->once())->with();
+        $restore_error_handler->expects($this->once());
 
         $this->assertFalse($handler->exitContext(null));
     }

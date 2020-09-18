@@ -135,7 +135,6 @@ final class ResultEntryTest extends TestCase
 
         $ldapEntry->expects($this->once())
                   ->method('get_dn')
-                  ->with()
                   ->willReturn($return);
 
         $this->assertSame($expect, $resultEntry->getDn());
@@ -218,7 +217,6 @@ final class ResultEntryTest extends TestCase
 
         $ldapEntry->expects($this->once())
                   ->method('get_attributes')
-                  ->with()
                   ->willReturn($return);
 
         $this->assertSame($expect, $resultEntry->getAttributes());
@@ -252,12 +250,10 @@ final class ResultEntryTest extends TestCase
 
         $ldapEntry->expects($this->once())
                   ->method('first_attribute')
-                  ->with()
                   ->willReturn('FirstAttribute');
 
         $ldapEntry->expects($this->once())
                   ->method('next_attribute')
-                  ->with()
                   ->willReturn('SecondAttribute');
 
         $iterator = $resultEntry->getAttributeIterator();
@@ -298,7 +294,6 @@ final class ResultEntryTest extends TestCase
 
         $ldapEntry->expects($this->once())
                   ->method('first_attribute')
-                  ->with()
                   ->willReturn('first attribute');
 
         $this->assertSame($resultEntry->getIterator(), $resultEntry->getAttributeIterator());
@@ -327,11 +322,9 @@ final class ResultEntryTest extends TestCase
 
         $ldapEntry->expects($this->once())
                   ->method('get_dn')
-                  ->with()
                   ->willReturn($ldapDn);
         $ldapEntry->expects($this->once())
                   ->method('get_attributes')
-                  ->with()
                   ->willReturn($ldapAttributes);
 
         $entry = $resultEntry->toEntry();

@@ -300,7 +300,6 @@ final class AbstractNameSpecRuleTest extends TestCase
 
         $rule->expects($this->any())
              ->method('prefix')
-             ->with()
              ->willReturn('dn');
 
         $result = $rule->parseMatched($state, $matches, $dn);

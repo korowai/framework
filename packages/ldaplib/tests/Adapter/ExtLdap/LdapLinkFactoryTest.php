@@ -99,14 +99,12 @@ final class LdapLinkFactoryTest extends TestCase
         foreach (['uri', 'tls', 'options'] as $key) {
             $config->expects($this->once())
                    ->method($key)
-                   ->with()
                    ->willReturn($params[$key]);
         }
 
         if ($params['tls']) {
             $link->expects($this->once())
-                 ->method('start_tls')
-                 ->with();
+                 ->method('start_tls');
         } else {
             $link->expects($this->never())
                  ->method('start_tls');
@@ -150,17 +148,14 @@ final class LdapLinkFactoryTest extends TestCase
 
         $config->expects($this->once())
                ->method('uri')
-               ->with()
                ->willReturn('ldap:///');
 
         $config->expects($this->once())
                ->method('tls')
-               ->with()
                ->willReturn(true);
 
         $config->expects($this->any())
                ->method('options')
-               ->with()
                ->willReturn([]);
 
         $link->expects($this->never())
@@ -196,17 +191,14 @@ final class LdapLinkFactoryTest extends TestCase
 
         $config->expects($this->once())
                ->method('uri')
-               ->with()
                ->willReturn('ldap:///');
 
         $config->expects($this->once())
                ->method('tls')
-               ->with()
                ->willReturn(false);
 
         $config->expects($this->any())
                ->method('options')
-               ->with()
                ->willReturn([17 => 3]);
 
         $link->expects($this->never())

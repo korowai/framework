@@ -160,7 +160,6 @@ final class ParserStateTest extends TestCase
         $cursor = $state->getCursor();
         $cursor->expects($this->once())
                ->method('getClonedLocation')
-               ->with()
                ->willReturn($location);
         $cursor->expects($this->never())
                ->method('moveTo');
@@ -208,7 +207,6 @@ final class ParserStateTest extends TestCase
         $cursor = $state->getCursor();
         $cursor->expects($this->once())
                ->method('getClonedLocation')
-               ->with()
                ->willReturn($location);
         $cursor->expects($this->never())
                ->method('moveTo');

@@ -46,7 +46,6 @@ final class LocationTest extends TestCase
 
         $input->expects($this->any())
               ->method('getString')
-              ->with()
               ->willReturn('FOO');
 
         $location = new Location($input, -1);
@@ -99,7 +98,6 @@ final class LocationTest extends TestCase
                       ->getMockForAbstractClass();
         $input->expects($this->once())
               ->method('getString')
-              ->with()
               ->willReturn('A');
 
         $location = new Location($input, 0);
@@ -141,7 +139,6 @@ final class LocationTest extends TestCase
                       ->getMockForAbstractClass();
         $input->expects($this->any())
               ->method('getString')
-              ->with()
               ->willReturn($string);
 
         foreach ($cases as $i => $j) {
@@ -156,7 +153,6 @@ final class LocationTest extends TestCase
                       ->getMockForAbstractClass();
         $input->expects($this->once())
               ->method('getSourceFileName')
-              ->with()
               ->willReturn('foo.ldif');
 
         $location = new Location($input, 0);
@@ -169,7 +165,6 @@ final class LocationTest extends TestCase
                       ->getMockForAbstractClass();
         $input->expects($this->once())
               ->method('getSourceString')
-              ->with()
               ->willReturn('A');
 
         $location = new Location($input, 0);

@@ -129,7 +129,6 @@ trait ComparingTestTrait
 
         $link->expects($this->once())
              ->method('getErrorHandler')
-             ->with()
              ->willReturn(new LdapLinkErrorHandler($link));
 
         $link->expects($this->once())

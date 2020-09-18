@@ -73,7 +73,6 @@ final class LdapLinkErrorHandlerTest extends TestCase
 
         $wrap->expects($this->once())
              ->method('getLdapLink')
-             ->with()
              ->willReturn($ldap);
 
         $handler = LdapLinkErrorHandler::fromLdapLinkWrapper($wrap);
@@ -97,11 +96,9 @@ final class LdapLinkErrorHandlerTest extends TestCase
 
         $result ->expects($this->once())
                 ->method('getLdapLink')
-                ->with()
                 ->willReturn($ldap);
         $wrap   ->expects($this->once())
                 ->method('getLdapResult')
-                ->with()
                 ->willReturn($result);
 
         $handler = LdapLinkErrorHandler::fromLdapResultWrapper($wrap);
@@ -128,15 +125,12 @@ final class LdapLinkErrorHandlerTest extends TestCase
 
         $result ->expects($this->once())
                 ->method('getLdapLink')
-                ->with()
                 ->willReturn($ldap);
         $item   ->expects($this->once())
                 ->method('getLdapResult')
-                ->with()
                 ->willReturn($result);
         $wrap   ->expects($this->once())
                 ->method('getLdapResultItem')
-                ->with()
                 ->willReturn($item);
 
         $handler = LdapLinkErrorHandler::fromLdapResultItemWrapper($wrap);
@@ -156,7 +150,6 @@ final class LdapLinkErrorHandlerTest extends TestCase
 
         $ldap->expects($this->once())
              ->method('isValid')
-             ->with()
              ->willReturn(false);
 
         $handler = new LdapLinkErrorHandler($ldap);
@@ -183,12 +176,10 @@ final class LdapLinkErrorHandlerTest extends TestCase
 
         $ldap->expects($this->once())
              ->method('isValid')
-             ->with()
              ->willReturn(true);
 
         $ldap->expects($this->once())
              ->method('errno')
-             ->with()
              ->willReturn(0);
 
         $handler = new LdapLinkErrorHandler($ldap);
@@ -215,12 +206,10 @@ final class LdapLinkErrorHandlerTest extends TestCase
 
         $ldap->expects($this->once())
              ->method('isValid')
-             ->with()
              ->willReturn(true);
 
         $ldap->expects($this->once())
              ->method('errno')
-             ->with()
              ->willReturn(456);
 
         $handler = new LdapLinkErrorHandler($ldap);

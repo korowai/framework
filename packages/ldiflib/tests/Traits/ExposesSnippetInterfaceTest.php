@@ -59,7 +59,6 @@ final class ExposesSnippetInterfaceTest extends TestCase
                       ->getMockForAbstractClass();
         $snippet->expects($this->once())
               ->method('getLength')
-              ->with()
               ->willReturn(17);
         $obj = $this->getTestObject($snippet);
 
@@ -72,7 +71,6 @@ final class ExposesSnippetInterfaceTest extends TestCase
                       ->getMockForAbstractClass();
         $snippet->expects($this->once())
               ->method('getEndOffset')
-              ->with()
               ->willReturn(17);
         $obj = $this->getTestObject($snippet);
 
@@ -85,7 +83,6 @@ final class ExposesSnippetInterfaceTest extends TestCase
                       ->getMockForAbstractClass();
         $snippet->expects($this->once())
               ->method('getSourceLength')
-              ->with()
               ->willReturn(17);
         $obj = $this->getTestObject($snippet);
 
@@ -98,7 +95,6 @@ final class ExposesSnippetInterfaceTest extends TestCase
                       ->getMockForAbstractClass();
         $snippet->expects($this->once())
               ->method('getSourceEndOffset')
-              ->with()
               ->willReturn(17);
         $obj = $this->getTestObject($snippet);
 

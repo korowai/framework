@@ -47,7 +47,6 @@ trait AbstractResultItemIteratorTestTrait
 
         $ldapIterator->expects($this->once())
                      ->method('key')
-                     ->with()
                      ->willReturn(123);
 
         $this->assertSame(123, $iterator->key());

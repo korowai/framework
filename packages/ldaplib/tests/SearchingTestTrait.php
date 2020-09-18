@@ -222,7 +222,6 @@ trait SearchingTestTrait
 
         $link->expects($this->once())
              ->method('getErrorHandler')
-             ->with()
              ->willReturn(new LdapLinkErrorHandler($link));
 
         $this->expectException(ErrorException::class);

@@ -65,7 +65,6 @@ final class LdapResultItemTraitTest extends TestCase
 
         $result ->expects($this->once())
                 ->method('getLdapLink')
-                ->with()
                 ->willReturn($ldap);
 
         $this->assertSame($ldap, $trait->getLdapLink());

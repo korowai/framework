@@ -142,7 +142,6 @@ final class ResultTest extends TestCase
         $first = $ldapEntries[0] ?? false;
         $ldapResult->expects($this->once())
                    ->method('first_entry')
-                   ->with()
                    ->willReturn($first);
 
         for ($i = 0; $i < count($ldapEntries); ++$i) {
@@ -150,7 +149,6 @@ final class ResultTest extends TestCase
             $next = $ldapEntries[$i+1] ?? false;
             $curr->expects($this->once())
                  ->method('next_item')
-                 ->with()
                  ->willReturn($next);
         }
 
@@ -228,7 +226,6 @@ final class ResultTest extends TestCase
         $first = $ldapReferences[0] ?? false;
         $ldapResult->expects($this->once())
                    ->method('first_reference')
-                   ->with()
                    ->willReturn($first);
 
         for ($i = 0; $i < count($ldapReferences); ++$i) {
@@ -236,7 +233,6 @@ final class ResultTest extends TestCase
             $next = $ldapReferences[$i+1] ?? false;
             $curr->expects($this->once())
                  ->method('next_item')
-                 ->with()
                  ->willReturn($next);
         }
 
@@ -281,7 +277,6 @@ final class ResultTest extends TestCase
 
         $ldapResult->expects($this->once())
                    ->method('first_entry')
-                   ->with()
                    ->willReturn(false);
 
         $iterator = $result->getResultEntryIterator();
@@ -299,7 +294,6 @@ final class ResultTest extends TestCase
 
         $ldapResult->expects($this->once())
                    ->method('first_reference')
-                   ->with()
                    ->willReturn(false);
 
         $iterator = $result->getResultReferenceIterator();

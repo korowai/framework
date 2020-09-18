@@ -55,7 +55,6 @@ final class WithContextExecutorTest extends TestCase
                     ->getMock();
         $cm1->expects($this->once())
             ->method('enterContext')
-            ->with()
             ->will($this->returnCallback(
                 function () use ($in1, &$enter) {
                     $enter[] = 'cm1';
@@ -77,7 +76,6 @@ final class WithContextExecutorTest extends TestCase
                     ->getMock();
         $cm2->expects($this->once())
             ->method('enterContext')
-            ->with()
             ->will($this->returnCallback(
                 function () use ($in2, &$enter) {
                     $enter[] = 'cm2';
@@ -130,7 +128,6 @@ final class WithContextExecutorTest extends TestCase
                     ->getMock();
         $cm1->expects($this->once())
             ->method('enterContext')
-            ->with()
             ->will($this->returnCallback(
                 function () use ($in1, &$enter) {
                     $enter[] = 'cm1';
@@ -153,7 +150,6 @@ final class WithContextExecutorTest extends TestCase
                     ->getMock();
         $cm2->expects($this->once())
             ->method('enterContext')
-            ->with()
             ->will($this->returnCallback(
                 function () use ($in2, &$enter) {
                     $enter[] = 'cm2';
@@ -211,7 +207,6 @@ final class WithContextExecutorTest extends TestCase
                     ->getMock();
         $cm1->expects($this->once())
             ->method('enterContext')
-            ->with()
             ->will($this->returnCallback(
                 function () use ($in1, &$enter) {
                     $enter[] = 'cm1';
@@ -234,7 +229,6 @@ final class WithContextExecutorTest extends TestCase
                     ->getMock();
         $cm2->expects($this->once())
             ->method('enterContext')
-            ->with()
             ->will($this->returnCallback(
                 function () use ($in2, &$enter) {
                     $enter[] = 'cm2';
@@ -293,7 +287,6 @@ final class WithContextExecutorTest extends TestCase
                     ->getMock();
         $cm1->expects($this->once())
             ->method('enterContext')
-            ->with()
             ->will($this->returnCallback(
                 function () use ($in1, &$enter) {
                     $enter[] = 'cm1';
@@ -316,7 +309,6 @@ final class WithContextExecutorTest extends TestCase
                     ->getMock();
         $cm2->expects($this->once())
             ->method('enterContext')
-            ->with()
             ->will($this->returnCallback(
                 function () use ($throw) {
                     throw $throw;

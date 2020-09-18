@@ -45,7 +45,6 @@ final class ExposesSourceLocationInterfaceTest extends TestCase
                          ->getMockForAbstractClass();
         $location->expects($this->once())
                  ->method('getSourceFileName')
-                 ->with()
                  ->willReturn('foo.ldif');
         $obj = $this->getTestObject($location);
 
@@ -58,7 +57,6 @@ final class ExposesSourceLocationInterfaceTest extends TestCase
                          ->getMockForAbstractClass();
         $location->expects($this->once())
                  ->method('getSourceString')
-                 ->with()
                  ->willReturn('A');
         $obj = $this->getTestObject($location);
 
@@ -71,7 +69,6 @@ final class ExposesSourceLocationInterfaceTest extends TestCase
                          ->getMockForAbstractClass();
         $location->expects($this->once())
                  ->method('getSourceOffset')
-                 ->with()
                  ->willReturn(123);
         $obj = $this->getTestObject($location);
 
@@ -98,7 +95,6 @@ final class ExposesSourceLocationInterfaceTest extends TestCase
                          ->getMockForAbstractClass();
         $location->expects($this->once())
                  ->method('getSourceLineIndex')
-                 ->with()
                  ->willReturn(123);
         $obj = $this->getTestObject($location);
 
@@ -111,7 +107,6 @@ final class ExposesSourceLocationInterfaceTest extends TestCase
                          ->getMockForAbstractClass();
         $location->expects($this->once())
                  ->method('getSourceLine')
-                 ->with()
                  ->willReturn('A');
         $obj = $this->getTestObject($location);
 
@@ -124,7 +119,6 @@ final class ExposesSourceLocationInterfaceTest extends TestCase
                          ->getMockForAbstractClass();
         $location->expects($this->once())
                  ->method('getSourceLineAndOffset')
-                 ->with()
                  ->willReturn([1,2]);
         $obj = $this->getTestObject($location);
 
@@ -137,7 +131,6 @@ final class ExposesSourceLocationInterfaceTest extends TestCase
                          ->getMockForAbstractClass();
         $location->expects($this->once())
                  ->method('getSourceLineAndCharOffset')
-                 ->with()
                  ->willReturn([1,2]);
         $obj = $this->getTestObject($location);
 

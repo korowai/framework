@@ -27,11 +27,9 @@ final class ScanTest extends TestCase
     {
         $location->expects($this->once())
                  ->method('getString')
-                 ->with()
                  ->willReturn($case[1]);
         $location->expects($this->once())
                  ->method('getOffset')
-                 ->with()
                  ->willReturn($case[3] ?? 0);
     }
 

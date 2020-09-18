@@ -47,14 +47,12 @@ trait CreateLdapResultMockTrait
         if ($link !== null) {
             $mock->expects($this->any())
                    ->method('getLdapLink')
-                   ->with()
                    ->willReturn($link);
         }
 
         if ($resource !== null) {
             $mock->expects($this->any())
                    ->method('getResource')
-                   ->with()
                    ->willReturn($resource);
         }
 

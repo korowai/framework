@@ -44,7 +44,6 @@ final class ExposesRuleInterfaceTest extends TestCase
                          ->getMockForAbstractClass();
         $rule->expects($this->once())
              ->method('__toString')
-             ->with()
              ->willReturn('foo');
         $obj = $this->getTestObject($rule);
 
@@ -57,7 +56,6 @@ final class ExposesRuleInterfaceTest extends TestCase
                          ->getMockForAbstractClass();
         $rule->expects($this->once())
              ->method('regexp')
-             ->with()
              ->willReturn('/^foo$/');
         $obj = $this->getTestObject($rule);
 
@@ -70,7 +68,6 @@ final class ExposesRuleInterfaceTest extends TestCase
                          ->getMockForAbstractClass();
         $rule->expects($this->once())
              ->method('captures')
-             ->with()
              ->willReturn(['v', 'e']);
         $obj = $this->getTestObject($rule);
 
@@ -83,7 +80,6 @@ final class ExposesRuleInterfaceTest extends TestCase
                          ->getMockForAbstractClass();
         $rule->expects($this->once())
              ->method('errorCaptures')
-             ->with()
              ->willReturn(['e']);
         $obj = $this->getTestObject($rule);
 
@@ -96,7 +92,6 @@ final class ExposesRuleInterfaceTest extends TestCase
                          ->getMockForAbstractClass();
         $rule->expects($this->once())
              ->method('valueCaptures')
-             ->with()
              ->willReturn(['v']);
         $obj = $this->getTestObject($rule);
 

@@ -78,7 +78,6 @@ final class ResultAttributeIteratorTest extends TestCase
 
         $entry->expects($this->once())
               ->method('next_attribute')
-              ->with()
               ->willReturn('secondAttribute');
 
         $this->assertEquals('firstattribute', $iterator->key());
@@ -94,7 +93,6 @@ final class ResultAttributeIteratorTest extends TestCase
 
         $entry->expects($this->once())
               ->method('first_attribute')
-              ->with()
               ->willReturn('firstAttribute');
 
         $this->assertEquals('secondattribute', $iterator->key());
@@ -110,7 +108,6 @@ final class ResultAttributeIteratorTest extends TestCase
 
         $entry->expects($this->once())
               ->method('next_attribute')
-              ->with()
               ->willReturn(null);
 
         $this->assertTrue($iterator->valid());

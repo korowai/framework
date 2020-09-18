@@ -173,8 +173,7 @@ final class ResourceContextManagerTest extends TestCase
                          ->setMethods(['free'])
                          ->getMock();
         $resource->expects($this->once())
-                 ->method('free')
-                 ->with();
+                 ->method('free');
 
         $this->expectFunctionOnceWillReturn('get_resource_type', [$resource], 'oci8 collection');
 
@@ -194,8 +193,7 @@ final class ResourceContextManagerTest extends TestCase
                          ->setMethods(['free'])
                          ->getMock();
         $resource->expects($this->once())
-                 ->method('free')
-                 ->with();
+                 ->method('free');
 
         $this->expectFunctionOnceWillReturn('get_resource_type', [$resource], 'oci8 lob');
 

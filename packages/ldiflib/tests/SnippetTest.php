@@ -51,19 +51,15 @@ final class SnippetTest extends TestCase
 
         $begin->expects($this->once())
               ->method('getInput')
-              ->with()
               ->willReturn($input);
         $begin->expects($this->any())
               ->method('getOffset')
-              ->with()
               ->willReturn(12);
         $end->expects($this->once())
             ->method('getInput')
-            ->with()
             ->willReturn($input);
         $end->expects($this->any())
              ->method('getOffset')
-             ->with()
              ->willReturn(22);
 
         $snippet = Snippet::createFromLocations($begin, $end);
@@ -86,11 +82,9 @@ final class SnippetTest extends TestCase
                     ->getMockForAbstractClass();
         $begin->expects($this->once())
               ->method('getInput')
-              ->with()
               ->willReturn($input1);
         $end->expects($this->once())
             ->method('getInput')
-            ->with()
             ->willReturn($input2);
 
         $this->expectException(\InvalidArgumentException::class);
@@ -118,23 +112,18 @@ final class SnippetTest extends TestCase
 
         $begin->expects($this->once())
               ->method('getInput')
-              ->with()
               ->willReturn($input);
         $begin->expects($this->any())
               ->method('getOffset')
-              ->with()
               ->willReturn(12);
         $cursor->expects($this->once())
                ->method('getInput')
-               ->with()
                ->willReturn($input);
         $cursor->expects($this->any())
                ->method('getOffset')
-               ->with()
                ->willReturn(22);
         $state->expects($this->once())
               ->method('getCursor')
-              ->with()
               ->willReturn($cursor);
 
         $snippet = Snippet::createFromLocationAndState($begin, $state);
@@ -161,15 +150,12 @@ final class SnippetTest extends TestCase
 
         $begin->expects($this->once())
               ->method('getInput')
-              ->with()
               ->willReturn($input1);
         $cursor->expects($this->once())
                ->method('getInput')
-               ->with()
                ->willReturn($input2);
         $state->expects($this->once())
               ->method('getCursor')
-              ->with()
               ->willReturn($cursor);
 
         $this->expectException(\InvalidArgumentException::class);
@@ -226,7 +212,6 @@ final class SnippetTest extends TestCase
 
         $location->expects($this->once())
                  ->method('getOffset')
-                 ->with()
                  ->willReturn(7);
 
         $this->assertSame(12 + 7, $snippet->getEndOffset());
@@ -241,17 +226,14 @@ final class SnippetTest extends TestCase
 
         $location->expects($this->once())
                  ->method('getInput')
-                 ->with()
                  ->willReturn($input);
 
         // begin: 4 (2)
         $location->expects($this->once())
                  ->method('getOffset')
-                 ->with()
                  ->willReturn(4);
         $location->expects($this->once())
                  ->method('getSourceOffset')
-                 ->with()
                  ->willReturn(2);
 
         // end: 10 (7)
@@ -273,13 +255,11 @@ final class SnippetTest extends TestCase
                          ->getMockForAbstractClass();
         $location->expects($this->once())
                  ->method('getInput')
-                 ->with()
                  ->willReturn($input);
 
         // begin: 4
         $location->expects($this->once())
                  ->method('getOffset')
-                 ->with()
                  ->willReturn(4);
 
         // end: 10 (7)
@@ -309,13 +289,11 @@ final class SnippetTest extends TestCase
                          ->getMockForAbstractClass();
         $location->expects($this->once())
                  ->method('getInput')
-                 ->with()
                  ->willReturn($input);
 
         // begin: 4 (3)
         $location->expects($this->once())
                  ->method('getOffset')
-                 ->with()
                  ->willReturn(4);
         $location->expects($this->once())
                  ->method('getSourceCharOffset')
@@ -344,13 +322,11 @@ final class SnippetTest extends TestCase
                          ->getMockForAbstractClass();
         $location->expects($this->once())
                  ->method('getInput')
-                 ->with()
                  ->willReturn($input);
 
         // begin: 4
         $location->expects($this->once())
                  ->method('getOffset')
-                 ->with()
                  ->willReturn(4);
 
         // end: 10 (9)

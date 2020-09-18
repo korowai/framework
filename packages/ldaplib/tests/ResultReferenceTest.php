@@ -133,7 +133,6 @@ final class ResultReferenceTest extends TestCase
 
         $ldapReference->expects($this->once())
                       ->method('parse_reference')
-                      ->with()
                       ->will($this->returnCallback(function (&$referrals) use ($return, $output) {
                         $referrals = $output;
                         return $return;
@@ -192,7 +191,6 @@ final class ResultReferenceTest extends TestCase
 
         $ldapReference->expects($this->once())
                       ->method('parse_reference')
-                      ->with()
                       ->will($this->returnCallback(function (&$referrals) use ($return, $output) {
                         $referrals = $output;
                         return $return;

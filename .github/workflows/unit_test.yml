@@ -44,7 +44,7 @@ jobs:
           - rfclib-interfaces
           - testing
 
-    name: Unit Test of ${{ matrix.package_name }}
+    name: Unit Test of korowai/${{ matrix.package_name }}
 
     steps:
       - uses: actions/checkout@v2

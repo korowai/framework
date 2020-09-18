@@ -97,9 +97,9 @@ final class SearchOptionsResolver
         $resolver->setAllowedValues(
             'deref',
             array_merge(
-            array_keys(self::DEREF_OPTIONS),
-            array_values(self::DEREF_OPTIONS)
-        )
+                array_keys(self::DEREF_OPTIONS),
+                array_values(self::DEREF_OPTIONS)
+            )
         );
         $resolver->setAllowedValues('scope', ['base', 'one', 'sub']);
         $resolver->setAllowedTypes('sizeLimit', ['int']);

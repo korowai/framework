@@ -283,7 +283,7 @@ final class LdapLinkOptionsSpecification implements LdapLinkOptionsSpecification
      * @param mixed $value
      * @return bool
      */
-    public static function checkTlsProtocolMin($value) : bool
+    private static function checkTlsProtocolMin($value) : bool
     {
         $versions = self::OPTIONS['tls_protocol_min']['predefined'];
         return is_int($value) || array_key_exists($value, $versions);
@@ -295,7 +295,7 @@ final class LdapLinkOptionsSpecification implements LdapLinkOptionsSpecification
      * @param Options $options
      * @param mixed $value
      */
-    public static function normalizeTlsProtocolMin(Options $options, $value) : int
+    private static function normalizeTlsProtocolMin(Options $options, $value) : int
     {
         $versions = self::OPTIONS['tls_protocol_min']['predefined'];
         return is_int($value) ? $value : constant($versions[$value]);

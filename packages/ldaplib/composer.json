@@ -26,10 +26,15 @@
         "korowai/ldaplib-interfaces": "*",
         "korowai/rfclib": "*"
     },
+    "provide": {
+        "korowai/ldaplib-implementation": "*"
+    },
     "require-dev": {
         "zendframework/zend-ldap": "^2.10.0",
         "phpunit/phpunit": ">=9.3",
         "php-mock/php-mock-phpunit": ">=2.4.0",
+        "php-di/php-di": ">=6.2.2",
+        "psr/container": "1.0",
         "korowai/testing": "*"
     },
     "autoload": {

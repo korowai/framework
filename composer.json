@@ -177,8 +177,10 @@
         "behat/behat": "^3.4",
         "friendsofphp/php-cs-fixer": "^2.16",
         "phake/phake": "^3.0",
+        "php-di/php-di": ">=6.2.2",
         "php-mock/php-mock-phpunit": ">=2.4.0",
         "phpunit/phpunit": ">=9.3",
+        "psr/container": "1.0",
         "psy/psysh": "dev-master",
         "symplify/monorepo-builder-prefixed": "^8.0.1",
         "zendframework/zend-ldap": "^2.10.0"

@@ -54,6 +54,11 @@ final class ConfigFilesTest extends TestCase
         $fileLocator = new \Symfony\Component\Config\FileLocator($configDir);
         $fileLoader = new \Symfony\Component\DependencyInjection\Loader\PhpFileLoader($container, $fileLocator);
         $fileLoader->load('container.config.php');
+
+        // patch some defininitions (required for examineConfiguredContainer()).
+        $container->getAlias(LdapFactoryInterface::class)->setPublic(true);
+        $container->getAlias(LdapLinkFactoryInterface::class)->setPublic(true);
+
         $container->compile();
 
         $this->examineConfiguredContainer($container);

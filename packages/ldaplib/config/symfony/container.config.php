@@ -34,10 +34,8 @@ return function (ContainerConfigurator $configurator) : void {
     // public services
     //
 
-    $services->alias(LdapFactoryInterface::class, LdapFactory::class)
-             ->public();
-    $services->alias(LdapLinkFactoryInterface::class, LdapLinkFactory::class)
-             ->public();
+    $services->alias(LdapFactoryInterface::class, LdapFactory::class);
+    $services->alias(LdapLinkFactoryInterface::class, LdapLinkFactory::class);
 
     //
     // dependencies

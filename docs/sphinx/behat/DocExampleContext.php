@@ -93,7 +93,7 @@ class DocExampleContext implements Context
             '/\r/',
             '/^(PHPUnit )(?:\$version|\d+(?:\.\w+)*)( by Sebastian Bergmann and contributors\.)$/m',
             '/^(Time: )(?:(?:\d+)(?::\d+)?(?:\.\d+)?(?: \w+)?)(, Memory: )(?:\d+(?:\.\d+)?(?: \d+)?( \w+)?)$/m',
-            '/^(\/code\/packages\/testing\/Testing(?:\/\w+)+\.php):\d+$/m',
+            '/^(\/code\/packages\/testing\/testing(?:\/\w+)+\.php):\d+$/m',
         ];
         static $replaces = [
             '',

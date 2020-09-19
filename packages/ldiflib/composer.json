@@ -34,19 +34,19 @@
     "autoload": {
       "psr-4" : {
         "Korowai\\Lib\\Ldif\\" : "src/",
-        "Korowai\\Testing\\Ldiflib\\" : "Testing/"
+        "Korowai\\Testing\\Ldiflib\\" : "testing/"
       },
       "files" : [
       ],
       "exclude-from-classmap": [
         "/tests/",
-        "/Testing/"
+        "/testing/"
       ]
     },
     "autoload-dev": {
       "psr-4" : {
         "Korowai\\Tests\\Lib\\Ldif\\" : "tests/",
-        "Korowai\\Tests\\Testing\\Ldiflib\\" : "tests/Testing/"
+        "Korowai\\Tests\\Testing\\Ldiflib\\" : "tests/testing/"
       }
     }
 }

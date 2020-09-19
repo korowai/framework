@@ -28,20 +28,20 @@
     "autoload": {
       "psr-4" : {
         "Korowai\\Lib\\Context\\" : "src/",
-        "Korowai\\Testing\\Contextlib\\": "Testing/"
+        "Korowai\\Testing\\Contextlib\\": "testing/"
       },
       "files" : [
         "src/functions.php"
       ],
       "exclude-from-classmap": [
         "/tests/",
-        "/Testing/"
+        "/testing/"
       ]
     },
     "autoload-dev": {
       "psr-4" : {
         "Korowai\\Tests\\Lib\\Context\\" : "tests/",
-        "Korowai\\Tests\\Testing\\Contextlib\\" : "tests/Testing/"
+        "Korowai\\Tests\\Testing\\Contextlib\\" : "tests/testing/"
       }
     }
 }

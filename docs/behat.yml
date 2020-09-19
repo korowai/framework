@@ -2,10 +2,10 @@
 
 default:
   autoload:
-    - "%paths.base%/sphinx/Behat"
+    - "%paths.base%/sphinx/behat"
   suites:
     docs:
       paths:
-        - "%paths.base%/sphinx/Behat"
+        - "%paths.base%/sphinx/behat"
       contexts:
         - "Korowai\\Docs\\Behat\\DocExampleContext"

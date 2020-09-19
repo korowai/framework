@@ -2,10 +2,10 @@
 
 default:
   autoload:
-    - "%paths.base%/packages/ldaplib/Behat"
+    - "%paths.base%/packages/ldaplib/behat"
   suites:
     ldap:
       paths:
-        - "%paths.base%/packages/ldaplib/Behat"
+        - "%paths.base%/packages/ldaplib/behat"
       contexts:
         - "Korowai\\Lib\\Ldap\\Behat\\ExtLdapContext"

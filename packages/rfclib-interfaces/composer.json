@@ -25,17 +25,17 @@
     "autoload": {
       "psr-4" : {
         "Korowai\\Lib\\Rfc\\" : "src/",
-        "Korowai\\Testing\\RfclibInterfaces\\": "Testing/"
+        "Korowai\\Testing\\RfclibInterfaces\\": "testing/"
       },
       "exclude-from-classmap": [
         "/tests/",
-        "/Testing/"
+        "/testing/"
       ]
     },
     "autoload-dev": {
       "psr-4" : {
         "Korowai\\Tests\\Lib\\Rfc\\" : "tests/",
-        "Korowai\\Tests\\Testing\\RfclibInterfaces\\" : "tests/Testing/"
+        "Korowai\\Tests\\Testing\\RfclibInterfaces\\" : "tests/testing/"
       }
     }
 }

@@ -16,14 +16,14 @@ exclude_patterns:
   - "**/tests/"
   - "**/tests-nocov/"
   - "**/Tests/"
-  - "**/Behat/"
-  - "**/Resources/"
+  - "**/behat/"
+  - "**/resources/"
   - "**/vendor/"
   - "packages/ldaplib/src/Adapter/ExtLdap/LdapLink.php"
   - "packages/ldaplib/src/Adapter/ExtLdap/LdapLinkInterface.php"
   - "packages/ldaplib/src/Adapter/ExtLdap/LdapResult.php"
   - "packages/ldaplib/src/Adapter/ExtLdap/LdapResultInterface.php"
-  - "packages/rfclib/Testing/RuleSet*.php"
+  - "packages/rfclib/testing/RuleSet*.php"
   - "packages/compatlib/src/functions/preg.php"
 plugins:
   phpcodesniffer:

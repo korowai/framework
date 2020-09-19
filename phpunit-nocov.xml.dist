@@ -24,8 +24,8 @@
             <exclude>
                 <directory suffix="Test.php">./packages/*/tests</directory>
                 <directory suffix="Test.php">./packages/*/tests-nocov</directory>
-                <directory>./packages/*/Behat</directory>
-                <directory>./packages/*/Resources</directory>
+                <directory>./packages/*/behat</directory>
+                <directory>./packages/*/resources</directory>
                 <directory>./packages/*/vendor</directory>
             </exclude>
         </whitelist>

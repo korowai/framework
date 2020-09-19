@@ -9,7 +9,7 @@ There was 1 failure:
 1) AssertUsesTraitTest::testAssertUsesTraitFailure
 Failed asserting that RuntimeException uses trait ExampleTrait.
 
-/code/packages/testing/Testing/Assertions/ClassAssertions.php:138
+/code/packages/testing/testing/Assertions/ClassAssertions.php:138
 /code/docs/sphinx/examples/testing/AssertUsesTraitTest.php:19
 
 FAILURES!

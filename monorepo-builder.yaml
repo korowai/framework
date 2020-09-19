@@ -37,7 +37,7 @@ parameters:
             psy/psysh: "dev-master"
         autoload-dev:
             psr-4:
-                'Korowai\Docs\Behat\':  "docs/sphinx/Behat/"
+                'Korowai\Docs\Behat\':  "docs/sphinx/behat/"
 
     directories_to_repositories:
         packages/basiclib-interfaces: "git@github.com:korowai/basiclib-interfaces.git"

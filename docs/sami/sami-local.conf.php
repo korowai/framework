@@ -14,8 +14,8 @@ $iterator = Finder::create()
   ->exclude("Tests")
   ->exclude("tests")
   ->exclude("tests-nocov")
-  ->exclude("Resources")
-  ->exclude("Behat")
+  ->exclude("resources")
+  ->exclude("behat")
   ->exclude("vendor")
   ->in($srcdirs);
 

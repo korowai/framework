@@ -25,17 +25,17 @@
     "autoload": {
       "psr-4" : {
         "Korowai\\Lib\\Ldif\\" : "src/",
-        "Korowai\\Testing\\LdiflibInterfaces\\": "Testing/"
+        "Korowai\\Testing\\LdiflibInterfaces\\": "testing/"
       },
       "exclude-from-classmap": [
         "/tests/",
-        "/Testing/"
+        "/testing/"
       ]
     },
     "autoload-dev": {
       "psr-4" : {
         "Korowai\\Tests\\Lib\\Ldif\\" : "tests/",
-        "Korowai\\Tests\\Testing\\LdiflibInterfaces\\" : "tests/Testing/"
+        "Korowai\\Tests\\Testing\\LdiflibInterfaces\\" : "tests/testing/"
       }
     }
 }

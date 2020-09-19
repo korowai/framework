@@ -27,21 +27,21 @@
     "autoload": {
       "psr-4" : {
         "Korowai\\Lib\\Rfc\\" : "src/",
-        "Korowai\\Testing\\Rfclib\\" : "Testing/"
+        "Korowai\\Testing\\Rfclib\\" : "testing/"
       },
       "files" : [
       ],
       "exclude-from-classmap": [
         "/tests/",
         "/tests-nocov/",
-        "/Testing/"
+        "/testing/"
       ]
     },
     "autoload-dev": {
       "psr-4" : {
         "Korowai\\Tests\\Lib\\Rfc\\" : "tests/",
         "Korowai\\TestsNocov\\Lib\\Rfc\\" : "tests-nocov/",
-        "Korowai\\Tests\\Testing\\Rfclib\\" : "tests/Testing/"
+        "Korowai\\Tests\\Testing\\Rfclib\\" : "tests/testing/"
       }
     }
 }

@@ -13,7 +13,7 @@
       <ignore>
         <path>*/tests/*</path>
         <path>*/tests-nocov/*</path>
-        <path>*/Behat/*</path>
+        <path>*/behat/*</path>
       </ignore>
       <visibility>public</visibility>
       <visibility>private</visibility>
@@ -35,7 +35,7 @@
   </transformations>
   <files>
     <directory>src</directory>
-    <ignore>*/Tests/*</ignore>
-    <ignore>*/Behat/*</ignore>
+    <ignore>*/tests/*</ignore>
+    <ignore>*/behat/*</ignore>
   </files>-->
 </phpdocumentor>

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of Korowai framework.
  *
@@ -8,18 +9,6 @@
  */
 
 declare(strict_types=1);
-
-//
-// Configuration file for php-di/php-di.
-//
-// Usage:
-//
-// $containerBuilder = new DI\ContainerBuilder
-// /* ... */
-// $containerBuilder->addDefinitions('config/php-di/definitions.php');
-// /* ... */
-// $container = $builder->build();
-//
 
 use Psr\Container\ContainerInterface;
 
@@ -73,5 +62,3 @@ return [
         return new LdapLinkOptionsSpecification($container->get(LdapLinkOptionsMapperInterface::class));
     },
 ];
-
-

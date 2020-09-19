@@ -59,4 +59,4 @@ services:
         KRW_GID: "${KRW_GID:-6789}"
     command: [ --copy-service, --loglevel, debug ]
     volumes:
-      - ../packages/ldaplib/Resources/ldif/bootstrap.ldif:/container/service/slapd/assets/config/bootstrap/ldif/50-bootstrap.ldif
+      - ../packages/ldaplib/resources/ldif/bootstrap.ldif:/container/service/slapd/assets/config/bootstrap/ldif/50-bootstrap.ldif

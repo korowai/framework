@@ -27,17 +27,17 @@
     "autoload": {
       "psr-4" : {
         "Korowai\\Lib\\Basic\\" : "src/",
-        "Korowai\\Testing\\Basiclib\\" : "Testing/"
+        "Korowai\\Testing\\Basiclib\\" : "testing/"
       },
       "exclude-from-classmap": [
         "/tests/",
-        "/Testing/"
+        "/testing/"
       ]
     },
     "autoload-dev": {
       "psr-4" : {
         "Korowai\\Tests\\Lib\\Basic\\" : "tests/",
-        "Korowai\\Tests\\Testing\\Basiclib\\" : "tests/Testing/"
+        "Korowai\\Tests\\Testing\\Basiclib\\" : "tests/testing/"
       }
     }
 }

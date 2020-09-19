@@ -34,26 +34,31 @@
         "phpunit/phpunit": ">=9.3",
         "php-mock/php-mock-phpunit": ">=2.4.0",
         "php-di/php-di": ">=6.2.2",
+        "symfony/dependency-injection": ">=5.1.5",
         "psr/container": "1.0",
         "korowai/testing": "*"
     },
     "autoload": {
       "psr-4" : {
         "Korowai\\Lib\\Ldap\\" : "src/",
-        "Korowai\\Testing\\Ldaplib\\" : "Testing/"
+        "Korowai\\Testing\\Ldaplib\\" : "testing/"
       },
+      "files": [
+        "config/functions.php"
+      ],
       "exclude-from-classmap": [
-        "/Behat/",
-        "/Resources/",
-        "/Testing/",
+        "/behat/",
+        "/testing/",
+        "/config/",
+        "/resources/",
         "/tests/"
       ]
     },
     "autoload-dev": {
       "psr-4" : {
-        "Korowai\\Lib\\Ldap\\Behat\\" : "Behat/",
+        "Korowai\\Lib\\Ldap\\Behat\\" : "behat/",
         "Korowai\\Tests\\Lib\\Ldap\\" : "tests/",
-        "Korowai\\Tests\\Testing\\Ldaplib\\" : "tests/Testing/"
+        "Korowai\\Tests\\Testing\\Ldaplib\\" : "tests/testing/"
       }
     }
 }

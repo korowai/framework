@@ -24,13 +24,13 @@
     },
     "autoload": {
       "psr-4" : {
-        "Korowai\\Testing\\" : "Testing/"
+        "Korowai\\Testing\\" : "testing/"
       },
       "files" : [
       ],
       "exclude-from-classmap": [
         "/tests/",
-        "/Testing/"
+        "/testing/"
       ]
     },
     "autoload-dev": {

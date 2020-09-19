@@ -25,17 +25,17 @@
     "autoload": {
       "psr-4" : {
         "Korowai\\Lib\\Context\\" : "src/",
-        "Korowai\\Testing\\ContextlibInterfaces\\": "Testing/"
+        "Korowai\\Testing\\ContextlibInterfaces\\": "testing/"
       },
       "exclude-from-classmap": [
         "/tests/",
-        "/Testing/"
+        "/testing/"
       ]
     },
     "autoload-dev": {
       "psr-4" : {
         "Korowai\\Tests\\Lib\\Context\\" : "tests/",
-        "Korowai\\Tests\\Testing\\ContextlibInterfaces\\" : "tests/Testing/"
+        "Korowai\\Tests\\Testing\\ContextlibInterfaces\\" : "tests/testing/"
       }
     }
 }

@@ -21,7 +21,7 @@ Failed asserting that array has expected PCRE capture groups.
 +    'city' => 'London'
  )
 
-/code/packages/testing/Testing/Constraint/HasPregCaptures.php:96
+/code/packages/testing/testing/Constraint/HasPregCaptures.php:96
 /code/docs/sphinx/examples/testing/hasPregCapturesTest.php:31
 
 FAILURES!

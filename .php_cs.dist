@@ -15,7 +15,8 @@ $finder = PhpCsFixer\Finder::create()
     ->in(__DIR__ . '/packages/*/tests')
     ->in(__DIR__ . '/packages/*/tests-nocov')
     ->in(__DIR__ . '/packages/*/Testing')
-    ->in(__DIR__ . '/packages/*/Behat')
+    ->in(__DIR__ . '/packages/*/behat')
+    ->in(__DIR__ . '/packages/*/config')
     ->name('*.php')
 ;
 

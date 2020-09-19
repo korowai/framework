@@ -25,17 +25,17 @@
     "autoload": {
       "psr-4" : {
         "Korowai\\Lib\\Error\\" : "src/",
-        "Korowai\\Testing\\ErrorlibInterfaces\\": "Testing/"
+        "Korowai\\Testing\\ErrorlibInterfaces\\": "testing/"
       },
       "exclude-from-classmap": [
         "/tests/",
-        "/Testing/"
+        "/testing/"
       ]
     },
     "autoload-dev": {
       "psr-4" : {
         "Korowai\\Tests\\Lib\\Error\\" : "tests/",
-        "Korowai\\Tests\\Testing\\ErrorlibInterfaces\\" : "tests/Testing/"
+        "Korowai\\Tests\\Testing\\ErrorlibInterfaces\\" : "tests/testing/"
       }
     }
 }

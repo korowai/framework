@@ -59,7 +59,7 @@ class ExtLdapContext implements Context
     {
         $db = LdapService::getInstance();
         $db->deleteAllData();
-        $db->addFromLdifFile(__DIR__.'/../Resources/ldif/bootstrap.ldif');
+        $db->addFromLdifFile(__DIR__.'/../resources/ldif/bootstrap.ldif');
     }
 
     public function decodeJsonPyStringNode(PyStringNode $pystring)

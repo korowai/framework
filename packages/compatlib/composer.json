@@ -27,20 +27,20 @@
     "autoload": {
       "psr-4" : {
         "Korowai\\Lib\\Compat\\" : "src/",
-        "Korowai\\Testing\\Compatlib\\" : "Testing/"
+        "Korowai\\Testing\\Compatlib\\" : "testing/"
       },
       "files" : [
         "src/functions/preg.php"
       ],
       "exclude-from-classmap": [
         "/tests/",
-        "/Testing/"
+        "/testing/"
       ]
     },
     "autoload-dev": {
       "psr-4" : {
         "Korowai\\Tests\\Lib\\Compat\\" : "tests/",
-        "Korowai\\Tests\\Testing\\Compatlib\\" : "tests/Testing/"
+        "Korowai\\Tests\\Testing\\Compatlib\\" : "tests/testing/"
       }
     }
 }

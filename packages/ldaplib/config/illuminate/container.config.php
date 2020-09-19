@@ -10,78 +10,58 @@
 
 declare(strict_types=1);
 
-use Psr\Container\ContainerInterface;
+namespace Korowai\Lib\Ldap;
 
-use Korowai\Lib\Ldap\LdapFactory;
-use Korowai\Lib\Ldap\LdapFactoryInterface;
-use Korowai\Lib\Ldap\Core\LdapLinkConfigResolver;
-use Korowai\Lib\Ldap\Core\LdapLinkConfigResolverInterface;
-use Korowai\Lib\Ldap\Core\LdapLinkConstructor;
-use Korowai\Lib\Ldap\Core\LdapLinkConstructorInterface;
-use Korowai\Lib\Ldap\Core\LdapLinkFactory;
-use Korowai\Lib\Ldap\Core\LdapLinkFactoryInterface;
-use Korowai\Lib\Ldap\Core\LdapLinkOptionsMapper;
-use Korowai\Lib\Ldap\Core\LdapLinkOptionsMapperInterface;
-use Korowai\Lib\Ldap\Core\LdapLinkOptionsSpecification;
-use Korowai\Lib\Ldap\Core\LdapLinkOptionsSpecificationInterface;
+use Psr\Container\ContainerInterface;
 use Illuminate\Container\Container;
 
 return function (Container $container) : void {
-    //
-    // public services
-    //
-
     $container->bind(LdapFactoryInterface::class, LdapFactory::class);
-    $container->bind(LdapLinkFactoryInterface::class, LdapLinkFactory::class);
-
-    //
-    // dependencies
-    //
-
-    $container->bind(LdapLinkConfigResolverInterface::class, LdapLinkConfigResolver::class);
-    $container->bind(LdapLinkConstructorInterface::class, LdapLinkConstructor::class);
-    $container->bind(LdapLinkOptionsMapperInterface::class, LdapLinkOptionsMapper::class);
-    $container->bind(LdapLinkOptionsSpecificationInterface::class, LdapLinkOptionsSpecification::class);
+    $container->bind(Core\LdapLinkFactoryInterface::class, Core\LdapLinkFactory::class);
+    $container->bind(Core\LdapLinkConfigResolverInterface::class, Core\LdapLinkConfigResolver::class);
+    $container->bind(Core\LdapLinkConstructorInterface::class, Core\LdapLinkConstructor::class);
+    $container->bind(Core\LdapLinkOptionsMapperInterface::class, Core\LdapLinkOptionsMapper::class);
+    $container->bind(Core\LdapLinkOptionsSpecificationInterface::class, Core\LdapLinkOptionsSpecification::class);
 
     $container->singleton(LdapFactory::class, function (ContainerInterface $container) : LdapFactory {
         return new LdapFactory(
-            $container->get(LdapLinkFactoryInterface::class),
-            $container->get(LdapLinkConfigResolverInterface::class),
+            $container->get(Core\LdapLinkFactoryInterface::class),
+            $container->get(Core\LdapLinkConfigResolverInterface::class),
         );
     });
 
     $container->singleton(
-        LdapLinkConfigResolver::class,
-        function (ContainerInterface $container) : LdapLinkConfigResolver {
-            return new LdapLinkConfigResolver($container->get(LdapLinkOptionsSpecificationInterface::class));
+        Core\LdapLinkConfigResolver::class,
+        function (ContainerInterface $container) : Core\LdapLinkConfigResolver {
+            return new Core\LdapLinkConfigResolver($container->get(Core\LdapLinkOptionsSpecificationInterface::class));
         }
     );
 
     $container->singleton(
-        LdapLinkConstructor::class,
-        function (ContainerInterface $container) : LdapLinkConstructor {
-            return new LdapLinkConstructor();
+        Core\LdapLinkConstructor::class,
+        function (ContainerInterface $container) : Core\LdapLinkConstructor {
+            return new Core\LdapLinkConstructor();
         }
     );
 
     $container->singleton(
-        LdapLinkFactory::class,
-        function (ContainerInterface $container) : LdapLinkFactory {
-            return new LdapLinkFactory($container->get(LdapLinkConstructorInterface::class));
+        Core\LdapLinkFactory::class,
+        function (ContainerInterface $container) : Core\LdapLinkFactory {
+            return new Core\LdapLinkFactory($container->get(Core\LdapLinkConstructorInterface::class));
         }
     );
 
     $container->singleton(
-        LdapLinkOptionsMapper::class,
-        function (ContainerInterface $container) : LdapLinkOptionsMapper {
-            return new LdapLinkOptionsMapper();
+        Core\LdapLinkOptionsMapper::class,
+        function (ContainerInterface $container) : Core\LdapLinkOptionsMapper {
+            return new Core\LdapLinkOptionsMapper();
         }
     );
 
     $container->singleton(
-        LdapLinkOptionsSpecification::class,
-        function (ContainerInterface $container) : LdapLinkOptionsSpecification {
-            return new LdapLinkOptionsSpecification($container->get(LdapLinkOptionsMapperInterface::class));
+        Core\LdapLinkOptionsSpecification::class,
+        function (ContainerInterface $container) : Core\LdapLinkOptionsSpecification {
+            return new Core\LdapLinkOptionsSpecification($container->get(Core\LdapLinkOptionsMapperInterface::class));
         }
     );
 };

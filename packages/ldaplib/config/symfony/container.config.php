@@ -10,61 +10,41 @@
 
 declare(strict_types=1);
 
-use Psr\Container\ContainerInterface;
+namespace Korowai\Lib\Ldap;
 
-use Korowai\Lib\Ldap\LdapFactory;
-use Korowai\Lib\Ldap\LdapFactoryInterface;
-use Korowai\Lib\Ldap\Core\LdapLinkConfigResolver;
-use Korowai\Lib\Ldap\Core\LdapLinkConfigResolverInterface;
-use Korowai\Lib\Ldap\Core\LdapLinkConstructor;
-use Korowai\Lib\Ldap\Core\LdapLinkConstructorInterface;
-use Korowai\Lib\Ldap\Core\LdapLinkFactory;
-use Korowai\Lib\Ldap\Core\LdapLinkFactoryInterface;
-use Korowai\Lib\Ldap\Core\LdapLinkOptionsMapper;
-use Korowai\Lib\Ldap\Core\LdapLinkOptionsMapperInterface;
-use Korowai\Lib\Ldap\Core\LdapLinkOptionsSpecification;
-use Korowai\Lib\Ldap\Core\LdapLinkOptionsSpecificationInterface;
+use Psr\Container\ContainerInterface;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 
 return function (ContainerConfigurator $configurator) : void {
     $services = $configurator->services();
 
-    //
-    // public services
-    //
-
     $services->alias(LdapFactoryInterface::class, LdapFactory::class);
-    $services->alias(LdapLinkFactoryInterface::class, LdapLinkFactory::class);
-
-    //
-    // dependencies
-    //
-
-    $services->alias(LdapLinkConfigResolverInterface::class, LdapLinkConfigResolver::class);
-    $services->alias(LdapLinkConstructorInterface::class, LdapLinkConstructor::class);
-    $services->alias(LdapLinkOptionsMapperInterface::class, LdapLinkOptionsMapper::class);
-    $services->alias(LdapLinkOptionsSpecificationInterface::class, LdapLinkOptionsSpecification::class);
+    $services->alias(Core\LdapLinkFactoryInterface::class, Core\LdapLinkFactory::class);
+    $services->alias(Core\LdapLinkConfigResolverInterface::class, Core\LdapLinkConfigResolver::class);
+    $services->alias(Core\LdapLinkConstructorInterface::class, Core\LdapLinkConstructor::class);
+    $services->alias(Core\LdapLinkOptionsMapperInterface::class, Core\LdapLinkOptionsMapper::class);
+    $services->alias(Core\LdapLinkOptionsSpecificationInterface::class, Core\LdapLinkOptionsSpecification::class);
 
     $services->set(LdapFactory::class)
              ->args([
-                 service(LdapLinkFactoryInterface::class),
-                 service(LdapLinkConfigResolverInterface::class)
+                 service(Core\LdapLinkFactoryInterface::class),
+                 service(Core\LdapLinkConfigResolverInterface::class)
              ]);
 
-    $services->set(LdapLinkConstructor::class);
-    $services->set(LdapLinkConfigResolver::class)
+    $services->set(Core\LdapLinkConstructor::class);
+    $services->set(Core\LdapLinkConfigResolver::class)
              ->args([
-                 service(LdapLinkOptionsSpecificationInterface::class)
+                 service(Core\LdapLinkOptionsSpecificationInterface::class)
              ]);
-    $services->set(LdapLinkFactory::class)
+    $services->set(Core\LdapLinkFactory::class)
              ->args([
-                 service(LdapLinkConstructorInterface::class)
+                 service(Core\LdapLinkConstructorInterface::class)
              ]);
-    $services->set(LdapLinkOptionsMapper::class);
+    $services->set(Core\LdapLinkOptionsMapper::class);
 
-    $services->set(LdapLinkOptionsSpecification::class)
+    $services->set(Core\LdapLinkOptionsSpecification::class)
              ->args([
-                 service(LdapLinkOptionsMapperInterface::class)
+                 service(Core\LdapLinkOptionsMapperInterface::class)
              ]);
 };

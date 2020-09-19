@@ -14,16 +14,16 @@ use Psr\Container\ContainerInterface;
 
 use Korowai\Lib\Ldap\LdapFactory;
 use Korowai\Lib\Ldap\LdapFactoryInterface;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkConfigResolver;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkConfigResolverInterface;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkConstructor;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkConstructorInterface;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkFactory;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkFactoryInterface;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkOptionsMapper;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkOptionsMapperInterface;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkOptionsSpecification;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkOptionsSpecificationInterface;
+use Korowai\Lib\Ldap\Core\LdapLinkConfigResolver;
+use Korowai\Lib\Ldap\Core\LdapLinkConfigResolverInterface;
+use Korowai\Lib\Ldap\Core\LdapLinkConstructor;
+use Korowai\Lib\Ldap\Core\LdapLinkConstructorInterface;
+use Korowai\Lib\Ldap\Core\LdapLinkFactory;
+use Korowai\Lib\Ldap\Core\LdapLinkFactoryInterface;
+use Korowai\Lib\Ldap\Core\LdapLinkOptionsMapper;
+use Korowai\Lib\Ldap\Core\LdapLinkOptionsMapperInterface;
+use Korowai\Lib\Ldap\Core\LdapLinkOptionsSpecification;
+use Korowai\Lib\Ldap\Core\LdapLinkOptionsSpecificationInterface;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 

@@ -16,8 +16,8 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\Rule\AnyInvokedCount;
 use PHPUnit\Framework\MockObject\Rule\InvokedCount;
 use Korowai\Lib\Ldap\Exception\ExceptionInterface;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkErrorHandler;
+use Korowai\Lib\Ldap\Core\LdapLinkInterface;
+use Korowai\Lib\Ldap\Core\LdapLinkErrorHandler;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

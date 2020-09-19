@@ -15,11 +15,11 @@ namespace Korowai\Tests\Lib\Ldap;
 use Korowai\Testing\Ldaplib\TestCase;
 use Korowai\Lib\Ldap\LdapFactory;
 use Korowai\Lib\Ldap\LdapFactoryInterface;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkFactoryInterface;
+use Korowai\Lib\Ldap\Core\LdapLinkFactoryInterface;
 use Psr\Container\ContainerInterface;
 
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkOptionsMapper;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkOptionsMapperInterface;
+use Korowai\Lib\Ldap\Core\LdapLinkOptionsMapper;
+use Korowai\Lib\Ldap\Core\LdapLinkOptionsMapperInterface;
 use function Korowai\Lib\Ldap\config_path;
 
 /**

@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldap;
 
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultItemIteratorInterface;
+use Korowai\Lib\Ldap\Core\LdapResultItemIteratorInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

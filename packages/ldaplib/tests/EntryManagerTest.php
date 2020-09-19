@@ -17,9 +17,9 @@ use Korowai\Testing\Ldaplib\ExamineLdapLinkErrorHandlerTrait;
 use Korowai\Lib\Ldap\EntryManagerInterface;
 use Korowai\Lib\Ldap\EntryManager;
 use Korowai\Lib\Ldap\EntryManagerTrait;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkWrapperInterface;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkWrapperTrait;
+use Korowai\Lib\Ldap\Core\LdapLinkInterface;
+use Korowai\Lib\Ldap\Core\LdapLinkWrapperInterface;
+use Korowai\Lib\Ldap\Core\LdapLinkWrapperTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

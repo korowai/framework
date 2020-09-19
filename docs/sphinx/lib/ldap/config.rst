@@ -15,7 +15,7 @@ The ``$config`` array is internally passed to an
 :ref:`adapter factory <lib.ldap.adapterfactory>` to create the
 supporting adapter object. Some settings are "standard" and shall be accepted
 by any adapter type. Other options may be specific to a particular adapter type
-(such as the default :class:`ExtLdap\\Adapter <Korowai\\Lib\\Ldap\\Adapter\\ExtLdap\\Adapter>`,
+(such as the default :class:`ExtLdap\\Adapter <Korowai\\Lib\\Ldap\\Core\\Adapter>`,
 where the adapter-specific options are stored in ``$config['options']``).
 
 Common LDAP settings
@@ -58,12 +58,12 @@ LDAP options specific to ExtLdap adapter
 ----------------------------------------
 
 The ``$config['options']`` specific to
-:class:`ExtLdap\\Adapter <Korowai\\Lib\\Ldap\\Adapter\\ExtLdap\\Adapter>`
+:class:`ExtLdap\\Adapter <Korowai\\Lib\\Ldap\\Core\\Adapter>`
 are listed below. For more details see PHP function
 :phpfunction:`ldap_get_option() <ldap_get_option>` and OpenLDAP function
 `ldap_get_option(3)`_.
 
-.. list-table:: Configuration options for :class:`ExtLdap\\Adapter <Korowai\\Lib\\Ldap\\Adapter\\ExtLdap\\Adapter>`
+.. list-table:: Configuration options for :class:`ExtLdap\\Adapter <Korowai\\Lib\\Ldap\\Core\\Adapter>`
    :header-rows: 1
    :widths: 2 1 5
 

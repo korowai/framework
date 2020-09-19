@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Korowai\Testing\Ldaplib;
 
 use PHPUnit\Framework\MockObject\MockObject;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
+use Korowai\Lib\Ldap\Core\LdapLinkInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

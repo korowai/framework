@@ -15,7 +15,7 @@ namespace Korowai\Lib\Ldap\Behat;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\PyStringNode;
 use Korowai\Lib\Ldap\Ldap;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\Adapter as ExtLdapAdapter;
+use Korowai\Lib\Ldap\Core\Adapter as ExtLdapAdapter;
 use Korowai\Lib\Ldap\Exception\LdapException;
 
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;

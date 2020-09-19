@@ -12,9 +12,9 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldap;
 
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkFactoryInterface;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkConfigResolverInterface;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkConfig;
+use Korowai\Lib\Ldap\Core\LdapLinkFactoryInterface;
+use Korowai\Lib\Ldap\Core\LdapLinkConfigResolverInterface;
+use Korowai\Lib\Ldap\Core\LdapLinkConfig;
 
 /**
  * Abstract base class for Adapter factories.

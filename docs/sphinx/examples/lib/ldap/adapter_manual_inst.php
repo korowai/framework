@@ -1,8 +1,8 @@
 <?php
 /* [code] */
 use Korowai\Lib\Ldap\Ldap;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLink;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\Adapter;
+use Korowai\Lib\Ldap\Core\LdapLink;
+use Korowai\Lib\Ldap\Core\Adapter;
 
 $link = LdapLink::connect('ldap://ldap-service');
 $link->set_option(LDAP_OPT_PROTOCOL_VERSION, 3);

@@ -26,7 +26,7 @@ final class ObjectPropertyGettersMap
      * @var array
      */
     private static $objectPropertyGettersMap = [
-        \Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkWrapperInterface::class => [
+        \Korowai\Lib\Ldap\Core\LdapLinkWrapperInterface::class => [
             'ldapLink' => 'getLdapLink'
         ],
     ];

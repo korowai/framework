@@ -15,7 +15,7 @@ namespace Korowai\Tests\Lib\Ldap;
 use Korowai\Testing\Ldaplib\LdapTriggerErrorTestFixture;
 use Korowai\Testing\Ldaplib\LdapTriggerErrorTestSubject;
 use Korowai\Lib\Ldap\EntryManagerInterface;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
+use Korowai\Lib\Ldap\Core\LdapLinkInterface;
 use Korowai\Lib\Ldap\EntryInterface;
 use Korowai\Lib\Ldap\Exception\LdapException;
 use PHPUnit\Framework\MockObject\MockObject;

@@ -17,8 +17,8 @@ use Korowai\Testing\Ldaplib\LdapTriggerErrorTestFixture;
 use Korowai\Testing\Ldaplib\LdapTriggerErrorTestSubject;
 
 use Korowai\Lib\Ldap\BindingTrait;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkErrorHandler;
+use Korowai\Lib\Ldap\Core\LdapLinkInterface;
+use Korowai\Lib\Ldap\Core\LdapLinkErrorHandler;
 use Korowai\Lib\Ldap\BindingInterface;
 use Korowai\Lib\Ldap\Exception\LdapException;
 

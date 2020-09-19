@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldap;
 
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
+use Korowai\Lib\Ldap\Core\LdapLinkInterface;
 use Korowai\Lib\Ldap\Exception\LdapException;
 
 use function Korowai\Lib\Context\with;

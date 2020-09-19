@@ -1,7 +1,7 @@
 <?php
 /* [code] */
 use Korowai\Lib\Ldap\Ldap;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\AdapterFactory;
+use Korowai\Lib\Ldap\Core\AdapterFactory;
 
 $config = ['uri' => 'ldap://ldap-service'];
 $factory = new AdapterFactory($config);

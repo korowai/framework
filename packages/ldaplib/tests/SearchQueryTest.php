@@ -18,11 +18,11 @@ use Korowai\Testing\Ldaplib\LdapTriggerErrorTestFixture;
 use Korowai\Testing\Ldaplib\LdapTriggerErrorTestSubject;
 
 use Korowai\Lib\Ldap\SearchQuery;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkWrapperInterface;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkWrapperTrait;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkErrorHandler;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultInterface;
+use Korowai\Lib\Ldap\Core\LdapLinkInterface;
+use Korowai\Lib\Ldap\Core\LdapLinkWrapperInterface;
+use Korowai\Lib\Ldap\Core\LdapLinkWrapperTrait;
+use Korowai\Lib\Ldap\Core\LdapLinkErrorHandler;
+use Korowai\Lib\Ldap\Core\LdapResultInterface;
 use Korowai\Lib\Ldap\ResultInterface;
 use Korowai\Lib\Ldap\Exception\ErrorException;
 

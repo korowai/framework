@@ -23,8 +23,8 @@ use Korowai\Testing\Ldaplib\LdapTriggerErrorTestSubject;
 
 use Korowai\Lib\Ldap\ResultReference;
 use Korowai\Lib\Ldap\ResultReferenceInterface;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultReferenceWrapperInterface;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultReferenceWrapperTrait;
+use Korowai\Lib\Ldap\Core\LdapResultReferenceWrapperInterface;
+use Korowai\Lib\Ldap\Core\LdapResultReferenceWrapperTrait;
 use Korowai\Lib\Ldap\ResultReferralIterator;
 
 /**

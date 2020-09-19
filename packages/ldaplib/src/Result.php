@@ -15,12 +15,12 @@ namespace Korowai\Lib\Ldap;
 use Korowai\Lib\Ldap\Adapter\AbstractResult;
 use Korowai\Lib\Ldap\ResultEntryIterator;
 use Korowai\Lib\Ldap\ResultReferenceIterator;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultInterface;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultWrapperInterface;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultWrapperTrait;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultEntryIterator;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultReferenceIterator;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkErrorHandler;
+use Korowai\Lib\Ldap\Core\LdapResultInterface;
+use Korowai\Lib\Ldap\Core\LdapResultWrapperInterface;
+use Korowai\Lib\Ldap\Core\LdapResultWrapperTrait;
+use Korowai\Lib\Ldap\Core\LdapResultEntryIterator;
+use Korowai\Lib\Ldap\Core\LdapResultReferenceIterator;
+use Korowai\Lib\Ldap\Core\LdapLinkErrorHandler;
 use function Korowai\Lib\Context\with;
 
 /**

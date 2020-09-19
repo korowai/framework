@@ -18,7 +18,7 @@ use Korowai\Testing\Ldaplib\ExamineLdapLinkErrorHandlerTrait;
 use Korowai\Lib\Ldap\SearchingTrait;
 use Korowai\Lib\Ldap\SearchingInterface;
 use Korowai\Lib\Ldap\SearchQueryInterface;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
+use Korowai\Lib\Ldap\Core\LdapLinkInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

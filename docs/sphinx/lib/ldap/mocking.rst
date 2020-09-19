@@ -12,7 +12,7 @@ The code under test may depend on :ref:`ldap library's <lib.ldap>`
 interfaces, such as :class:`Korowai\\Lib\\Ldap\\Adapter\\SearchQueryInterface`.
 A common practice for unit-testing is to not depend on real services, so we
 can't just use actual implementations, such as
-:class:`ExtLdap\\SearchQuery <Korowai\\Lib\\Ldap\\Adapter\\ExtLdap\\SearchQuery>`,
+:class:`ExtLdap\\SearchQuery <Korowai\\Lib\\Ldap\\Core\\SearchQuery>`,
 which operate on real LDAP databases.
 
 Mocking is a technique of replacing actual object with fake ones called mocks

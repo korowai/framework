@@ -12,8 +12,8 @@ declare(strict_types=1);
 
 namespace Korowai\Testing\Ldaplib;
 
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultReferenceInterface;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultInterface;
+use Korowai\Lib\Ldap\Core\LdapResultReferenceInterface;
+use Korowai\Lib\Ldap\Core\LdapResultInterface;
 use PHPUnit\Framework\MockObject\MockBuilder;
 use PHPUnit\Framework\MockObject\Rule\AnyInvokedCount;
 

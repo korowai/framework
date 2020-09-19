@@ -29,8 +29,8 @@ use Korowai\Lib\Ldap\ResultEntry;
 use Korowai\Lib\Ldap\ResultReference;
 use Korowai\Lib\Ldap\ResultEntryIteratorInterface;
 use Korowai\Lib\Ldap\ResultReferenceIteratorInterface;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultWrapperInterface;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultWrapperTrait;
+use Korowai\Lib\Ldap\Core\LdapResultWrapperInterface;
+use Korowai\Lib\Ldap\Core\LdapResultWrapperTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

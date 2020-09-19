@@ -12,9 +12,9 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldap;
 
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkWrapperInterface;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkWrapperTrait;
+use Korowai\Lib\Ldap\Core\LdapLinkInterface;
+use Korowai\Lib\Ldap\Core\LdapLinkWrapperInterface;
+use Korowai\Lib\Ldap\Core\LdapLinkWrapperTrait;
 use Korowai\Lib\Ldap\Result;
 
 use function Korowai\Lib\Context\with;

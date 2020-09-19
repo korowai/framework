@@ -15,8 +15,8 @@ namespace Korowai\Tests\Lib\Ldap;
 use Korowai\Testing\Ldaplib\TestCase;
 
 use Korowai\Lib\Ldap\ResultAttributeIterator;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultEntryInterface;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultEntryWrapperTrait;
+use Korowai\Lib\Ldap\Core\LdapResultEntryInterface;
+use Korowai\Lib\Ldap\Core\LdapResultEntryWrapperTrait;
 use Korowai\Lib\Ldap\ResultAttributeIteratorInterface;
 
 /**

@@ -12,10 +12,10 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldap;
 
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultReferenceInterface;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultReferenceWrapperInterface;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultReferenceWrapperTrait;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkErrorHandler;
+use Korowai\Lib\Ldap\Core\LdapResultReferenceInterface;
+use Korowai\Lib\Ldap\Core\LdapResultReferenceWrapperInterface;
+use Korowai\Lib\Ldap\Core\LdapResultReferenceWrapperTrait;
+use Korowai\Lib\Ldap\Core\LdapLinkErrorHandler;
 use function Korowai\Lib\Context\with;
 
 /**

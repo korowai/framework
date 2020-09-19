@@ -25,8 +25,8 @@ use Korowai\Lib\Ldap\ResultEntry;
 use Korowai\Lib\Ldap\ResultEntryInterface;
 use Korowai\Lib\Ldap\Entry;
 use Korowai\Lib\Ldap\ResultAttributeIterator;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultEntryWrapperInterface;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultEntryWrapperTrait;
+use Korowai\Lib\Ldap\Core\LdapResultEntryWrapperInterface;
+use Korowai\Lib\Ldap\Core\LdapResultEntryWrapperTrait;
 use Korowai\Lib\Ldap\Exception\LdapException;
 
 /**

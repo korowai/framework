@@ -21,7 +21,7 @@ trait GetLdapFunctionMockTrait
 
     private function getLdapFunctionMock(string $name)
     {
-        return $this->getFunctionMock('\Korowai\Lib\Ldap\Adapter\ExtLdap', $name);
+        return $this->getFunctionMock('\Korowai\Lib\Ldap\Core', $name);
     }
 }
 

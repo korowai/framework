@@ -16,10 +16,10 @@ use Korowai\Testing\Ldaplib\TestCase;
 use Korowai\Lib\Ldap\Ldap;
 use Korowai\Lib\Ldap\LdapFactory;
 use Korowai\Lib\Ldap\LdapFactoryInterface;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkInterface;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkFactoryInterface;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkConfigInterface;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapLinkConfigResolverInterface;
+use Korowai\Lib\Ldap\Core\LdapLinkInterface;
+use Korowai\Lib\Ldap\Core\LdapLinkFactoryInterface;
+use Korowai\Lib\Ldap\Core\LdapLinkConfigInterface;
+use Korowai\Lib\Ldap\Core\LdapLinkConfigResolverInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

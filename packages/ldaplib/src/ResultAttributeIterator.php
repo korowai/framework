@@ -12,9 +12,9 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldap;
 
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultEntryInterface;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultEntryWrapperInterface;
-use Korowai\Lib\Ldap\Adapter\ExtLdap\LdapResultEntryWrapperTrait;
+use Korowai\Lib\Ldap\Core\LdapResultEntryInterface;
+use Korowai\Lib\Ldap\Core\LdapResultEntryWrapperInterface;
+use Korowai\Lib\Ldap\Core\LdapResultEntryWrapperTrait;
 
 /**
  * Iterates through an ldap result entry attributes.

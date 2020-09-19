@@ -38,8 +38,9 @@ final class ConfigFilesTest extends TestCase
 
     public function test__php_di_container_config() : void
     {
+        $configFile = config_path('php-di/container.config.php');
         $containerBuilder = new \DI\ContainerBuilder;
-        $containerBuilder->addDefinitions(config_path('php-di/container.config.php'));
+        $containerBuilder->addDefinitions($configFile);
         $container = $containerBuilder->build();
 
         $this->examineConfiguredContainer($container);
@@ -54,6 +55,17 @@ final class ConfigFilesTest extends TestCase
         $fileLoader = new \Symfony\Component\DependencyInjection\Loader\PhpFileLoader($container, $fileLocator);
         $fileLoader->load('container.config.php');
         $container->compile();
+
+        $this->examineConfiguredContainer($container);
+    }
+
+    public function test__illuminate_container_config() : void
+    {
+        $configFile = config_path('illuminate/container.config.php');
+
+        $container = new \Illuminate\Container\Container;
+        $configure = require $configFile;
+        $configure($container);
 
         $this->examineConfiguredContainer($container);
     }

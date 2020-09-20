@@ -1,0 +1,15 @@
+.. index::
+   single: Rfc5234
+   single: Rfc; Rfc5234
+
+.. _rfclib.rfc5234:
+
+Rfc5234
+=======
+
+The class :class:`Korowai\\Lib\\Rfc\\Rfc5234` core grammar rules as defined in
+RFC5234_. See API docs of :class:`Korowai\\Lib\\Rfc\\Rfc5234`.
+
+.. _RFC5234: https://tools.ietf.org/html/rfc5234
+
+.. <!--- vim: set syntax=rst spell: -->

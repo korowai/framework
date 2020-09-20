@@ -1,0 +1,16 @@
+.. index::
+   single: Rfc8089
+   single: Rfc; Rfc8089
+
+.. _rfclib.rfc8089:
+
+Rfc8089
+=======
+
+The class :class:`Korowai\\Lib\\Rfc\\Rfc8089` provides rules for parsing
+URIs according to file URI scheme, as defined in RFC8089_. See API docs of
+:class:`Korowai\\Lib\\Rfc\\Rfc8089`.
+
+.. _RFC8089: https://tools.ietf.org/html/rfc8089
+
+.. <!--- vim: set syntax=rst spell: -->

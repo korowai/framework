@@ -1,0 +1,1954 @@
+.. index::
+   single: Rfc2849
+   single: Rfc; Rfc2849
+
+.. _rfclib.rfc2849:
+
+Rfc2849
+=======
+
+The class :class:`Korowai\\Lib\\Rfc\\Rfc2849` provides regular expressions that
+help parsing LDIF files according to RFC2849_ syntax. Not all RFC2849_
+productions are available as regular expressions. High-level productions, such
+as the ``ldif-file`` or ``changerecord`` need to be implemented as PHP
+algorithms, using PCRE_ and
+:ref:`entry-level patterns<rfclib.rfc2849.entry-level-rules>` provided by the
+:class:`Korowai\\Lib\\Rfc\\Rfc2849` class.
+
+
+.. _rfclib.rfc2849.syntax:
+
+The syntax
+----------
+
+Few top-level rules (commented as *N/A* below) are not defined in the
+:class:`Korowai\\Lib\\Rfc\\Rfc2849` class, however they're listed here to give
+the full context. The correspondence between RFC2849_ productions and
+expressions defined in :class:`Korowai\\Lib\\Rfc\\Rfc2849` class is NOT
+one-to-one. We use few modifications to facilitate assembly of more complex
+regular expressions and to enable precise error reporting. In addition, the
+regular expressions provided by the class rules define named capture groups for
+capturing semantic values and erroneous substrings.
+
+
+
+
+.. _rfclib.rfc2849.top-level-rules:
+
+Top-level rules
+---------------
+
+The LDIF syntax starts with these top-level rules:
+
+.. code:: abnf
+
+   ldif-file                = ldif-content / ldif-changes                 ; N/A
+
+   ldif-content             = version-spec 1*(1*SEP ldif-attrval-record)  ; N/A
+
+   ldif-changes             = version-spec 1*(1*SEP ldif-change-record)   ; N/A
+
+   ldif-attrval-record      = dn-spec SEP 1*attrval-spec                  ; N/A
+
+   ldif-change-record       = dn-spec SEP *control changerecord           ; N/A
+
+   changerecord             = "changetype:" FILL                          ; N/A
+                              (change-add / change-delete /
+                               change-modify / change-moddn)
+
+   change-add               = "add"                SEP 1*attrval-spec     ; N/A
+
+   change-delete            = "delete"             SEP                    ; N/A
+
+   change-moddn             = ("modrdn" / "moddn") SEP
+                               "newrdn:" (    FILL rdn /
+                                          ":" FILL base64-rdn) SEP
+                               "deleteoldrdn:" FILL ("0" / "1")  SEP
+                               0*1("newsuperior:"
+                               (    FILL distinguishedName /
+                                ":" FILL base64-distinguishedName) SEP)
+
+   change-modify            = "modify"             SEP *mod-spec          ; N/A
+
+   mod-spec                 = ("add:" / "delete:" / "replace:")           ; N/A
+                              FILL AttributeDescription SEP
+                              *attrval-spec
+                              "-" SEP
+
+These rules have no corresponding regular expressions in the
+:class:`Korowai\\Lib\\Rfc\\Rfc2849` class. They are rather assumed to be
+implemented in a higher-level language (PHP), not via bare regular
+expressions.
+
+.. seealso::
+
+  :ref:`rfclib.rfc2849.ldif-content` |o|
+  :ref:`rfclib.rfc2849.ldif-changes` |o|
+  :ref:`rfclib.rfc2849.version-spec` |o|
+  :ref:`rfclib.rfc2849.sep` |o|
+  :ref:`rfclib.rfc2849.ldif-attrval-record` |o|
+  :ref:`rfclib.rfc2849.ldif-change-record` |o|
+  :ref:`rfclib.rfc2849.dn-spec` |o|
+  :ref:`rfclib.rfc2849.attrval-spec` |o|
+  :ref:`rfclib.rfc2849.control` |o|
+  :ref:`rfclib.rfc2849.changerecord`
+
+------------------------------------------------------------------------------
+
+.. _rfclib.rfc2849.ldif-file:
+
+ldif-file
+"""""""""
+
+The rule specifies whole file syntax.
+
+.. code:: abnf
+
+   ldif-file                = ldif-content / ldif-changes                 ; N/A
+
+There is no corresponding pattern in the :class:`Korowai\\Lib\\Rfc\\Rfc2849`
+class.
+
+.. seealso::
+
+   :ref:`rfclib.rfc2849.ldif-content` |o|
+   :ref:`rfclib.rfc2849.ldif-changes`
+
+------------------------------------------------------------------------------
+
+.. _rfclib.rfc2849.ldif-content:
+
+ldif-content
+""""""""""""
+
+The rule specifies whole file syntax for the file containing list of records to
+be added to an LDAP database.
+
+.. code:: abnf
+
+   ldif-content             = version-spec 1*(1*SEP ldif-attrval-record)  ; N/A
+
+There is no corresponding pattern in the :class:`Korowai\\Lib\\Rfc\\Rfc2849`
+class.
+
+.. seealso::
+
+   :ref:`rfclib.rfc2849.version-spec` |o|
+   :ref:`rfclib.rfc2849.sep` |o|
+   :ref:`rfclib.rfc2849.ldif-attrval-record`
+
+------------------------------------------------------------------------------
+
+.. _rfclib.rfc2849.ldif-changes:
+
+ldif-changes
+""""""""""""
+
+The rule specifies whole file syntax for the file containing list of
+modifications to be applied to to an LDAP database.
+
+.. code:: abnf
+
+   ldif-changes             = version-spec 1*(1*SEP ldif-change-record)   ; N/A
+
+There is no corresponding pattern in the :class:`Korowai\\Lib\\Rfc\\Rfc2849`
+class.
+
+.. seealso::
+
+   :ref:`rfclib.rfc2849.version-spec` |o|
+   :ref:`rfclib.rfc2849.sep` |o|
+   :ref:`rfclib.rfc2849.ldif-change-record`
+
+------------------------------------------------------------------------------
+
+.. _rfclib.rfc2849.ldif-attrval-record:
+
+ldif-attrval-record
+"""""""""""""""""""
+
+The rule specifies syntax of single record of the
+:ref:`rfclib.rfc2849.ldif-content` file.
+
+.. code:: abnf
+
+   ldif-attrval-record      = dn-spec SEP 1*attrval-spec                  ; N/A
+
+There is no corresponding pattern in the :class:`Korowai\\Lib\\Rfc\\Rfc2849`
+class.
+
+.. seealso::
+
+   :ref:`rfclib.rfc2849.dn-spec` |o|
+   :ref:`rfclib.rfc2849.sep` |o|
+   :ref:`rfclib.rfc2849.attrval-spec`
+
+------------------------------------------------------------------------------
+
+.. _rfclib.rfc2849.ldif-change-record:
+
+ldif-change-record
+""""""""""""""""""
+
+The rule specifies syntax of single record of the
+:ref:`rfclib.rfc2849.ldif-changes` file.
+
+.. code:: abnf
+
+   ldif-change-record       = dn-spec SEP *control changerecord           ; N/A
+
+There is no corresponding pattern in the :class:`Korowai\\Lib\\Rfc\\Rfc2849`
+class.
+
+.. seealso::
+
+   :ref:`rfclib.rfc2849.dn-spec` |o|
+   :ref:`rfclib.rfc2849.sep` |o|
+   :ref:`rfclib.rfc2849.control` |o|
+   :ref:`rfclib.rfc2849.changerecord`
+
+------------------------------------------------------------------------------
+
+.. _rfclib.rfc2849.changerecord:
+
+changerecord
+""""""""""""
+
+The ``changerecord`` is defined in RFC2849_ as
+
+.. code:: abnf
+
+   changerecord             = "changetype:" FILL                          ; N/A
+                              (change-add / change-delete /
+                               change-modify / change-moddn)
+
+There is no corresponding pattern in the :class:`Korowai\\Lib\\Rfc\\Rfc2849`
+class. The initial line of any string matching the ``changerecord`` rule may be
+matched with the :ref:`rfclib.rfc2849.changerecord-init` rule defined later:
+
+.. code:: abnf
+
+   changerecord-init        = "changetype:" FILL
+                              ("add" / "delete" / "modify" /
+                               "modrdn" / "moddn")
+                              SEP
+
+.. seealso::
+
+   :ref:`rfclib.rfc2849.fill` |o|
+   :ref:`rfclib.rfc2849.change-add` |o|
+   :ref:`rfclib.rfc2849.change-delete` |o|
+   :ref:`rfclib.rfc2849.change-modify` |o|
+   :ref:`rfclib.rfc2849.change-moddn` |o|
+   :ref:`rfclib.rfc2849.changerecord-init` |o|
+   :ref:`rfclib.rfc2849.sep`
+
+------------------------------------------------------------------------------
+
+.. _rfclib.rfc2849.change-add:
+
+change-add
+""""""""""
+
+The ``change-add`` rule is defined in RFC2849_ as
+
+.. code:: abnf
+
+   change-add               = "add"                SEP 1*attrval-spec ; N/A
+
+There is no corresponding pattern in the :class:`Korowai\\Lib\\Rfc\\Rfc2849`
+class.
+
+.. seealso::
+
+   :ref:`rfclib.rfc2849.sep` |o|
+   :ref:`rfclib.rfc2849.attrval-spec`
+
+------------------------------------------------------------------------------
+
+.. _rfclib.rfc2849.change-delete:
+
+change-delete
+"""""""""""""
+
+The ``change-delete`` rule is defined in RFC2849_ as
+
+.. code:: abnf
+
+   change-delete            = "delete"             SEP
+
+There is no corresponding pattern defined in the
+:class:`Korowai\\Lib\\Rfc\\Rfc2849` class.
+
+.. seealso::
+
+   :ref:`rfclib.rfc2849.sep`
+
+------------------------------------------------------------------------------
+
+.. _rfclib.rfc2849.change-modify:
+
+change-modify
+"""""""""""""
+
+The ``change-modify`` rule is defined in RFC2849_ as
+
+.. code:: abnf
+
+   change-modify            = "modify"             SEP *mod-spec
+
+There is no corresponding pattern defined in the
+:class:`Korowai\\Lib\\Rfc\\Rfc2849` class.
+
+.. seealso::
+
+   :ref:`rfclib.rfc2849.sep` |o|
+   :ref:`rfclib.rfc2849.mod-spec`
+
+------------------------------------------------------------------------------
+
+.. _rfclib.rfc2849.change-moddn:
+
+change-moddn
+""""""""""""
+
+The ``change-moddn`` rule is defined in RFC2849_ as
+
+.. code:: abnf
+
+   change-moddn             = ("modrdn" / "moddn") SEP
+                               "newrdn:" (    FILL rdn /
+                                          ":" FILL base64-rdn) SEP
+                               "deleteoldrdn:" FILL ("0" / "1")  SEP
+                               0*1("newsuperior:"
+                               (    FILL distinguishedName /
+                                ":" FILL base64-distinguishedName) SEP)
+
+There is no corresponding pattern defined in the
+:class:`Korowai\\Lib\\Rfc\\Rfc2849` class. There are, however, following custom
+rules that help with matching substrings of the whole ``change-moddn``.
+
+.. code:: abnf
+
+   newrdn-spec              = "newrdn" dn-value-spec SEP
+                            ;
+                            ; "newrdn: (    FILL rdn /
+                            ;           ":" FILL base64-rdn) SEP
+
+   newsuperior-spec         = "newsuperior" dn-value-spec SEP
+                            ;
+                            ; "newsuperior:"
+                            ; (    FILL distinguishedName /
+                            ;  ":" FILL base64-distinguishedName) SEP
+
+.. seealso::
+
+   :ref:`rfclib.rfc2849.sep` |o|
+   :ref:`rfclib.rfc2849.fill` |o|
+   :ref:`rfclib.rfc2849.rdn` |o|
+   :ref:`rfclib.rfc2849.base64-rdn` |o|
+   :ref:`rfclib.rfc2849.distinguishedName` |o|
+   :ref:`rfclib.rfc2849.base64-distinguishedName` |o|
+   :ref:`rfclib.rfc2849.newrdn-spec` |o|
+   :ref:`rfclib.rfc2849.newsuperior-spec` |o|
+   :ref:`rfclib.rfc2849.dn-value-spec`
+
+------------------------------------------------------------------------------
+
+.. _rfclib.rfc2849.mod-spec:
+
+mod-spec
+""""""""
+
+The ``mod-spec`` rule is defined in RFC2849_ as
+
+.. code:: abnf
+
+   mod-spec                 = ("add:" / "delete:" / "replace:")
+                               FILL AttributeDescription SEP
+                               *attrval-spec
+                               "-" SEP
+
+
+There is no corresponding pattern defined in the
+:class:`Korowai\\Lib\\Rfc\\Rfc2849` class. The initial line, however, may be
+matched with custom rule :ref:`rfclib.rfc2849.mod-spec-init` defined later as
+
+.. code:: abnf
+
+   mod-spec-init            = ("add:" / "delete:" / "replace:")
+                               FILL AttributeDescription SEP
+
+.. seealso::
+
+   :ref:`rfclib.rfc2849.sep` |o|
+   :ref:`rfclib.rfc2849.mod-spec-init`
+
+------------------------------------------------------------------------------
+
+
+.. _rfclib.rfc2849.entry-level-rules:
+
+Entry-level rules
+-----------------
+
+The following rules are meant to be referred directly when implementing higher
+layers of an LDIF parser. For a minimal parser, it should be enough to use only
+these patterns (plus the :ref:`rfclib.rfc2849.sep` pattern).
+
+.. _rfclib.rfc2849.version-spec:
+
+version-spec
+""""""""""""
+
+The ``version-spec`` rule
+
+.. code:: abnf
+
+   version-spec             = "version:" FILL version-number
+
+is implemented in the :class:`Korowai\\Lib\\Rfc\\Rfc2849` class as
+
+.. literalinclude:: ../../../../packages/rfclib/src/Rfc2849.php
+   :linenos:
+   :dedent: 4
+   :start-at: const VERSION_SPEC =
+   :end-before: [/VERSION_SPEC]
+
+The ``VERSION_SPEC`` pattern accepts any string that starts with ``"version:"``
+and spans to the nearest :ref:`rfclib.rfc2849.eol` (exclusive).
+
+**Capture groups**:
+
+.. list-table:: VERSION_SPEC: capture groups
+   :widths: 1 3
+
+   * - ``version_number``
+     - The whole substring between ``"version:"`` and nearest
+       :ref:`rfclib.rfc2849.eol`, when the whole substring matches
+       :ref:`version-number <rfclib.rfc2849.version-number>` rule.
+   * - ``version_error``
+     - The erroneous part of the substring between ``"version:"`` and nearest
+       :ref:`rfclib.rfc2849.eol` (the part that fails to match
+       :ref:`rfclib.rfc2849.version-number` rule), when the whole substring
+       fails to match the :ref:`rfclib.rfc2849.version-number`.
+
+**Example**:
+
+.. literalinclude:: ../../examples/rfclib/rfc2849/version_spec.php
+   :linenos:
+   :start-after: [code]
+   :end-before: [/code]
+   :caption: Rfc2849::VERSION_SPEC
+   :name: rfclib.rfc2849.version-spec.example
+
+.. literalinclude:: ../../examples/rfclib/rfc2849/version_spec.stdout
+   :linenos:
+   :language: none
+
+.. seealso::
+
+   :ref:`rfclib.rfc2849.fill` |o|
+   :ref:`rfclib.rfc2849.version-number` |o|
+   :ref:`rfclib.rfc2849.eol` |o|
+   :ref:`rfclib.rfc2849.noteol`
+
+------------------------------------------------------------------------------
+
+.. _rfclib.rfc2849.dn-spec:
+
+dn-spec
+"""""""
+
+The ``dn-spec`` rule from RFC2849_
+
+.. code:: abnf
+
+   dn-spec                  = "dn:" (FILL distinguishedName /
+                                     ":" FILL base64-distinguishedName)
+
+is refactored to an equivalent form, more suitable for implementation
+
+.. code:: abnf
+
+   dn-spec                  = "dn" dn-value-spec
+
+   dn-value-spec            = ":" ( value-safe / value-base64 )
+
+   value-safe               = FILL SAFE-STRING
+
+   value-base64             = ":" FILL BASE64-STRING
+
+
+and is implemented in the :class:`Korowai\\Lib\\Rfc\\Rfc2849` class as
+
+.. literalinclude:: ../../../../packages/rfclib/src/Rfc2849.php
+   :linenos:
+   :dedent: 4
+   :start-at: const DN_SPEC =
+   :end-before: [/DN_SPEC]
+
+
+The refactoring was made based on the fact that
+
+.. code:: abnf
+
+   distinguishedName        = SAFE-STRING
+
+   base64-distinguishedName = BASE64-UTF8-STRING
+
+   BASE64-UTF8-STRING       = BASE64-STRING
+
+The ``DN_SPEC`` pattern accepts any string that starts with ``"dn:"``
+and spans to the nearest :ref:`rfclib.rfc2849.eol` (exclusive).
+
+**Capture groups**:
+
+.. list-table:: DN_SPEC: capture groups
+   :widths: 1 3
+
+   * - ``value_safe``
+     - Substring containing the DN value. It's the whole substring between
+       ``"dn:"`` and nearest :ref:`rfclib.rfc2849.eol`, if the whole substring
+       is a :ref:`rfclib.rfc2849.safe-string`.
+   * - ``value_b64``
+     - Substring containing the DN value. It's the whole substring between
+       ``"dn::"`` and nearest :ref:`rfclib.rfc2849.eol`, if the whole
+       substring is a :ref:`rfclib.rfc2849.base64-string`.
+   * - ``value_safe_error``
+     - The erroneus part of whole substring between ``"dn:"`` and the nearest
+       :ref:`rfclib.rfc2849.eol`, if the value was declared
+       :ref:`rfclib.rfc2849.value-safe`, but the substring failed to match
+       :ref:`rfclib.rfc2849.safe-string`.
+   * - ``value_b64_error``
+     - The erroneus part of whole substring between ``"dn::"`` and the nearest
+       :ref:`rfclib.rfc2849.eol`, if the value was declared
+       :ref:`rfclib.rfc2849.value-base64`, but the substring failed to match
+       :ref:`rfclib.rfc2849.base64-string`.
+
+**Example**:
+
+.. literalinclude:: ../../examples/rfclib/rfc2849/dn_spec.php
+   :linenos:
+   :start-after: [code]
+   :end-before: [/code]
+   :caption: Rfc2849::DN_SPEC
+   :name: rfclib.rfc2849.dn-spec.example
+
+.. literalinclude:: ../../examples/rfclib/rfc2849/dn_spec.stdout
+   :linenos:
+   :language: none
+
+.. seealso::
+
+   :ref:`rfclib.rfc2849.fill` |o|
+   :ref:`rfclib.rfc2849.distinguishedname` |o|
+   :ref:`rfclib.rfc2849.base64-distinguishedname` |o|
+   :ref:`rfclib.rfc2849.dn-value-spec` |o|
+   :ref:`rfclib.rfc2849.value-safe` |o|
+   :ref:`rfclib.rfc2849.value-base64` |o|
+   :ref:`rfclib.rfc2849.safe-string` |o|
+   :ref:`rfclib.rfc2849.base64-string` |o|
+   :ref:`rfclib.rfc2849.base64-utf8-string`
+
+------------------------------------------------------------------------------
+
+.. _rfclib.rfc2849.control:
+
+control
+"""""""
+
+The ``control`` rule from RFC2849_
+
+.. code:: abnf
+
+   control                  = "control:" FILL ldap-oid        ; controlType
+                              0*1(1*SPACE ("true" / "false")) ; criticality
+                              0*1(value-spec)                 ; controlValue
+                              SEP
+
+is implemented in the :class:`Korowai\\Lib\\Rfc\\Rfc2849` class as
+
+.. literalinclude:: ../../../../packages/rfclib/src/Rfc2849.php
+   :linenos:
+   :dedent: 4
+   :start-at: const CONTROL =
+   :end-before: [/CONTROL]
+
+The ``CONTROL`` pattern matches any string that starts with ``"control:"`` and
+ends with :ref:`rfclib.rfc2849.eol` (inclusive).
+
+**Capture groups**:
+
+.. list-table:: CONTROL: capture groups
+   :widths: 1 3
+
+   * - ``ctl_type``
+     - Only set, if the matched substring has no errors; contains OID of
+       the control.
+   * - ``ctl_crit``
+     - Only set, if the matched substring has no errors and defines criticality
+       as ``"true"`` or ``"false"``. Contains the criticality substring (either
+       ``"true"`` or ``"false"``).
+   * - ``value_safe``
+     - Inherited from :ref:`rfclib.rfc2849.value-spec`.
+   * - ``value_b64``
+     - Inherited from :ref:`rfclib.rfc2849.value-spec`.
+   * - ``value_url``
+     - Inherited from :ref:`rfclib.rfc2849.value-spec`.
+   * - ``ctl_type_error``
+     - Only set, if the control type is missing or is not a properly formed
+       OID. Contains the erroneus part of the string.
+   * - ``ctl_crit_error``
+     - Only set, if the control criticality is invalid (other than ``"true"``
+       and ``"false"``). Contains the erroneus substring.
+   * - ``value_safe_error``
+     - Inherited from :ref:`rfclib.rfc2849.value-spec`.
+   * - ``value_b64_error``
+     - Inherited from :ref:`rfclib.rfc2849.value-spec`.
+   * - ``value_url_error``
+     - Inherited from :ref:`rfclib.rfc2849.value-spec`.
+
+**Example**:
+
+.. literalinclude:: ../../examples/rfclib/rfc2849/control.php
+   :linenos:
+   :start-after: [code]
+   :end-before: [/code]
+   :caption: Rfc2849::CONTROL
+   :name: rfclib.rfc2849.control.example
+
+.. literalinclude:: ../../examples/rfclib/rfc2849/control.stdout
+   :linenos:
+   :language: none
+
+.. seealso::
+
+    :ref:`rfclib.rfc2849.fill` |o|
+    :ref:`rfclib.rfc2849.ldap-oid` |o|
+    :ref:`rfclib.rfc2849.space` |o|
+    :ref:`rfclib.rfc2849.value-spec` |o|
+    :ref:`rfclib.rfc2849.sep` |o|
+    :ref:`rfclib.rfc2849.eol` |o|
+    :ref:`rfclib.rfc2849.noteol`
+
+------------------------------------------------------------------------------
+
+.. _rfclib.rfc2849.attrval-spec:
+
+attrval-spec
+""""""""""""
+
+The ``attrval-spec`` rule from RFC2849_
+
+.. code:: abnf
+
+   attrval-spec             = AttributeDescription value-spec SEP
+
+is implemented in the :class:`Korowai\\Lib\\Rfc\\Rfc2849` class as
+
+.. literalinclude:: ../../../../packages/rfclib/src/Rfc2849.php
+   :linenos:
+   :dedent: 4
+   :start-at: const ATTRVAL_SPEC =
+   :end-before: [/ATTRVAL_SPEC]
+
+The ``ATTRVAL_SPEC`` pattern matches any string that starts with valid
+:ref:`rfclib.rfc2849.attributedescription` and ends with
+:ref:`rfclib.rfc2849.eol` (inclusive).
+
+**Capture groups**:
+
+.. list-table:: ATTRVAL_SPEC: capture groups
+   :widths: 1 3
+
+   * - ``attr_desc``
+     - Always set, if just the rule matches. Contains the attribute description
+       (attribute type with options).
+   * - ``value_safe``
+     - Inherited from :ref:`rfclib.rfc2849.value-spec`.
+   * - ``value_b64``
+     - Inherited from :ref:`rfclib.rfc2849.value-spec`.
+   * - ``value_url``
+     - Inherited from :ref:`rfclib.rfc2849.value-spec`.
+   * - ``value_safe_error``
+     - Inherited from :ref:`rfclib.rfc2849.value-spec`.
+   * - ``value_b64_error``
+     - Inherited from :ref:`rfclib.rfc2849.value-spec`.
+   * - ``value_url_error``
+     - Inherited from :ref:`rfclib.rfc2849.value-spec`.
+
+It also may return a lot of captured groups inherited from
+:ref:`rfclib.rfc2849.url`.
+
+**Example**:
+
+.. literalinclude:: ../../examples/rfclib/rfc2849/attrval_spec.php
+   :linenos:
+   :start-after: [code]
+   :end-before: [/code]
+   :caption: Rfc2849::ATTRVAL_SPEC
+   :name: rfclib.rfc2849.attrval-spec.example
+
+.. literalinclude:: ../../examples/rfclib/rfc2849/attrval_spec.stdout
+   :linenos:
+   :language: none
+
+.. seealso::
+
+    :ref:`rfclib.rfc2849.attributedescription` |o|
+    :ref:`rfclib.rfc2849.value-spec` |o|
+    :ref:`rfclib.rfc2849.sep` |o|
+    :ref:`rfclib.rfc2849.eol` |o|
+    :ref:`rfclib.rfc2849.noteol`
+
+-----------------------------------------------------------------------------
+
+.. _rfclib.rfc2849.changerecord-init:
+
+changerecord-init
+"""""""""""""""""
+
+The custom ``changerecord-init`` rule
+
+.. code:: abnf
+
+   changerecord-init        = "changetype:" FILL
+                              ("add" / "delete" / "modify" /
+                               "modrdn" / "moddn")
+                              SEP
+
+is implemented in the :class:`Korowai\\Lib\\Rfc\\Rfc2849` class as
+
+.. literalinclude:: ../../../../packages/rfclib/src/Rfc2849.php
+   :linenos:
+   :dedent: 4
+   :start-at: const CHANGERECORD_INIT =
+   :end-before: [/CHANGERECORD_INIT]
+
+The ``CHANGERECOED_INIT`` pattern matches any string that starts with
+``"changetype:"`` and ends with :ref:`rfclib.rfc2849.eol` (inclusive).
+
+**Capture groups**:
+
+.. list-table:: CHANGERECORD_INIT: capture groups
+   :widths: 1 3
+
+   * - ``chg_type``
+     - The whole substring between ``"changetype:"`` and the nearest
+       :ref:`rfclib.rfc2849.eol`, if the substring matches one of the
+       ``"add"``, ``"delete"``, ``"modify"``, ``"moddn"``, or ``"modrdn"``.
+   * - ``chg_type_error``
+     - The whole substring between ``"changetype:"`` and the nearest
+       :ref:`rfclib.rfc2849.eol`, if the substring does not match any of the
+       ``"add"``, ``"delete"``, ``"modify"``, ``"moddn"``, nor ``"modrdn"``.
+
+**Example**:
+
+.. literalinclude:: ../../examples/rfclib/rfc2849/changerecord_init.php
+   :linenos:
+   :start-after: [code]
+   :end-before: [/code]
+   :caption: Rfc2849::CHANGERECORD_INIT
+   :name: rfclib.rfc2849.changerecord-init.example
+
+.. literalinclude:: ../../examples/rfclib/rfc2849/changerecord_init.stdout
+   :linenos:
+   :language: none
+
+.. seealso::
+
+    :ref:`rfclib.rfc2849.fill` |o|
+    :ref:`rfclib.rfc2849.sep` |o|
+    :ref:`rfclib.rfc2849.eol` |o|
+    :ref:`rfclib.rfc2849.noteol`
+
+
+-----------------------------------------------------------------------------
+
+.. _rfclib.rfc2849.mod-spec-init:
+
+mod-spec-init
+"""""""""""""
+
+The custom ``mod-spec-init`` rule
+
+.. code:: abnf
+
+   mod-spec-init            = ("add:" / "delete:" / "replace:")
+                               FILL AttributeDescription SEP
+
+is implemented in the :class:`Korowai\\Lib\\Rfc\\Rfc2849` class as
+
+.. literalinclude:: ../../../../packages/rfclib/src/Rfc2849.php
+   :linenos:
+   :dedent: 4
+   :start-at: const MOD_SPEC_INIT =
+   :end-before: [/MOD_SPEC_INIT]
+
+The ``MOD_SPEC_INIT`` pattern matches any string that starts with
+one of ``"add:"``, ``"delete:"``, or ``"repalce:"`` keywords and ends with
+:ref:`rfclib.rfc2849.eol` (inclusive).
+
+**Capture groups**:
+
+.. list-table:: CHANGERECORD_INIT: capture groups
+   :widths: 1 3
+
+   * - ``mod_type``
+     - Always set, if only the pattern matches. Contains the keyword specifying
+       modification type, which is one of ``"add"``, ``"delete"``, or
+       ``"replace"``.
+   * - ``attr_desc``
+     - Only set if the whole substring between the initial keyword and
+       the nearest :ref:`rfclib.rfc2849.eol` matches the
+       :ref:`rfclib.rfc2849.attributedescription` rule. Contains the attribute
+       description (attribute type and options).
+   * - ``attr_type_error``
+     - Only set if there is an error in the substring between the initial
+       keyword and the nearest :ref:`rfclib.rfc2849.eol` (error in the
+       specification of :ref:`rfclib.rfc2849.attributetype`) . Contains the
+       erroneous part of the substring.
+   * - ``attr_opts_error``
+     - Only set if there is an error in the substring between the initial
+       keyword and the nearest :ref:`rfclib.rfc2849.eol` (error in the
+       specification of :ref:`rfclib.rfc2849.options`). Contains the erroneous
+       part of the substring.
+
+**Example**:
+
+.. literalinclude:: ../../examples/rfclib/rfc2849/mod_spec_init.php
+   :linenos:
+   :start-after: [code]
+   :end-before: [/code]
+   :caption: Rfc2849::MOD_SPEC_INIT
+   :name: rfclib.rfc2849.mod-spec-init.example
+
+.. literalinclude:: ../../examples/rfclib/rfc2849/mod_spec_init.stdout
+   :linenos:
+   :language: none
+
+.. seealso::
+
+    :ref:`rfclib.rfc2849.fill` |o|
+    :ref:`rfclib.rfc2849.attributedescription` |o|
+    :ref:`rfclib.rfc2849.attributetype` |o|
+    :ref:`rfclib.rfc2849.options` |o|
+    :ref:`rfclib.rfc2849.sep` |o|
+    :ref:`rfclib.rfc2849.eol` |o|
+    :ref:`rfclib.rfc2849.noteol`
+
+-----------------------------------------------------------------------------
+
+.. _rfclib.rfc2849.newrdn-spec:
+
+newrdn-spec
+"""""""""""
+
+The custom ``newrdn-spec`` rule
+
+.. code:: abnf
+
+   newrdn-spec              = "newrdn" dn-value-spec SEP
+
+
+is implemented in the :class:`Korowai\\Lib\\Rfc\\Rfc2849` class as
+
+.. literalinclude:: ../../../../packages/rfclib/src/Rfc2849.php
+   :linenos:
+   :dedent: 4
+   :start-at: const NEWRDN_SPEC =
+   :end-before: [/NEWRDN_SPEC]
+
+The ``NEWRDN_SPEC`` pattern matches any string that starts with
+``"newrdn:"`` and ends with :ref:`rfclib.rfc2849.eol` (inclusive).
+
+**Capture groups**:
+
+.. list-table:: NEWRDN_SPEC: capture groups
+   :widths: 1 3
+
+   * - ``value_safe``
+     - Substring containing the RDN value. It's the whole substring between
+       ``"newrdn:"`` and nearest :ref:`rfclib.rfc2849.eol`, if the whole
+       substring is a :ref:`rfclib.rfc2849.safe-string`.
+   * - ``value_b64``
+     - Substring containing the RDN value. It's the whole substring between
+       ``"newrdn::"`` and nearest :ref:`rfclib.rfc2849.eol`, if the whole
+       substring is a :ref:`rfclib.rfc2849.base64-string`.
+   * - ``value_safe_error``
+     - The erroneus part of whole substring between ``"newrdn:"`` and the
+       nearest :ref:`rfclib.rfc2849.eol`, if the value was declared
+       :ref:`rfclib.rfc2849.value-safe`, but the substring failed to match
+       :ref:`rfclib.rfc2849.safe-string`.
+   * - ``value_b64_error``
+     - The erroneus part of whole substring between ``"newrdn::"`` and the
+       nearest :ref:`rfclib.rfc2849.eol`, if the value was declared
+       :ref:`rfclib.rfc2849.value-base64`, but the substring failed to match
+       :ref:`rfclib.rfc2849.base64-string`.
+
+
+**Example**:
+
+.. literalinclude:: ../../examples/rfclib/rfc2849/newrdn_spec.php
+   :linenos:
+   :start-after: [code]
+   :end-before: [/code]
+   :caption: Rfc2849::NEWRDN_SPEC
+   :name: rfclib.rfc2849.newrdn-spec.example
+
+.. literalinclude:: ../../examples/rfclib/rfc2849/newrdn_spec.stdout
+   :linenos:
+   :language: none
+
+.. seealso::
+
+    :ref:`rfclib.rfc2849.dn-value-spec` |o|
+    :ref:`rfclib.rfc2849.fill` |o|
+    :ref:`rfclib.rfc2849.sep` |o|
+    :ref:`rfclib.rfc2849.eol`
+
+-----------------------------------------------------------------------------
+
+.. _rfclib.rfc2849.newsuperior-spec:
+
+newsuperior-spec
+""""""""""""""""
+
+The custom ``newsuperior-spec`` rule
+
+.. code:: abnf
+
+   newsuperior-spec              = "newsuperior" dn-value-spec SEP
+
+
+is implemented in the :class:`Korowai\\Lib\\Rfc\\Rfc2849` class as
+
+.. literalinclude:: ../../../../packages/rfclib/src/Rfc2849.php
+   :linenos:
+   :dedent: 4
+   :start-at: const NEWSUPERIOR_SPEC =
+   :end-before: [/NEWSUPERIOR_SPEC]
+
+The ``NEWSUPERIOR_SPEC`` pattern matches any string that starts with
+``"newsuperior:"`` and ends with :ref:`rfclib.rfc2849.eol` (inclusive).
+
+**Capture groups**:
+
+.. list-table:: NEWSUPERIOR_SPEC: capture groups
+   :widths: 1 3
+
+   * - ``value_safe``
+     - Substring containing the DN value. It's the whole substring between
+       ``"newsuperior:"`` and nearest :ref:`rfclib.rfc2849.eol`, if the whole
+       substring is a :ref:`rfclib.rfc2849.safe-string`.
+   * - ``value_b64``
+     - Substring containing the DN value. It's the whole substring between
+       ``"newsuperior::"`` and nearest :ref:`rfclib.rfc2849.eol`, if the whole
+       substring is a :ref:`rfclib.rfc2849.base64-string`.
+   * - ``value_safe_error``
+     - The erroneus part of whole substring between ``"newsuperior:"`` and the
+       nearest :ref:`rfclib.rfc2849.eol`, if the value was declared
+       :ref:`rfclib.rfc2849.value-safe`, but the substring failed to match
+       :ref:`rfclib.rfc2849.safe-string`.
+   * - ``value_b64_error``
+     - The erroneus part of whole substring between ``"newsuperio::"`` and the
+       nearest :ref:`rfclib.rfc2849.eol`, if the value was declared
+       :ref:`rfclib.rfc2849.value-base64`, but the substring failed to match
+       :ref:`rfclib.rfc2849.base64-string`.
+
+**Example**:
+
+.. literalinclude:: ../../examples/rfclib/rfc2849/newsuperior_spec.php
+   :linenos:
+   :start-after: [code]
+   :end-before: [/code]
+   :caption: Rfc2849::NEWSUPERIOR_SPEC
+   :name: rfclib.rfc2849.newsuperior-spec.example
+
+.. literalinclude:: ../../examples/rfclib/rfc2849/newsuperior_spec.stdout
+   :linenos:
+   :language: none
+
+.. seealso::
+
+    :ref:`rfclib.rfc2849.dn-value-spec` |o|
+    :ref:`rfclib.rfc2849.fill` |o|
+    :ref:`rfclib.rfc2849.sep` |o|
+    :ref:`rfclib.rfc2849.eol`
+
+------------------------------------------------------------------------------
+
+
+.. _rfclib.rfc2849.lower-level-rules:
+
+Lower-level rules
+-----------------
+
+These rules are use to construct the :ref:`rfclib.rfc2849.entry-level-rules`.
+They don't have to be referred directly by a higher-level parser.
+
+.. _rfclib.rfc2849.dn-value-spec:
+
+dn-value-spec
+"""""""""""""
+
+The custom ``dn-value-spec`` rule
+
+.. code:: abnf
+
+   dn-value-spec            = ":" ( value-safe / value-base64)
+
+is implemented in the :class:`Korowai\\Lib\\Rfc\\Rfc2849` class as
+
+.. literalinclude:: ../../../../packages/rfclib/src/Rfc2849.php
+   :linenos:
+   :dedent: 4
+   :start-at: const DN_VALUE_SPEC =
+   :end-before: [/DN_VALUE_SPEC]
+
+
+.. seealso::
+
+    :ref:`rfclib.rfc2849.value-safe` |o|
+    :ref:`rfclib.rfc2849.value-base64`
+
+
+------------------------------------------------------------------------------
+
+.. _rfclib.rfc2849.value-spec:
+
+value-spec
+""""""""""
+
+The ``value-spec`` rule from RFC2849_
+
+.. code:: abnf
+
+   value-spec               = ":" (    FILL 0*1(SAFE-STRING) /
+                                   ":" FILL (BASE64-STRING) /
+                                   "<" FILL url)
+
+is implemented in the :class:`Korowai\\Lib\\Rfc\\Rfc2849` class as
+
+.. literalinclude:: ../../../../packages/rfclib/src/Rfc2849.php
+   :linenos:
+   :dedent: 4
+   :start-at: const VALUE_SPEC =
+   :end-before: [/VALUE_SPEC]
+
+The ``VALUE_SPEC`` pattern matches any string that starts with
+``":"`` and ends with :ref:`rfclib.rfc2849.eol` (exclusive).
+
+**Capture groups**:
+
+.. list-table:: VALUE_SPEC: capture groups
+   :widths: 1 3
+
+   * - ``value_safe``
+     - Only set if the matched string specifies
+       :ref:`rfclib.rfc2849.value-safe` using single colon ``":"`` notation
+       and there is no error in the substring between the initial ``":"`` and
+       the nearest :ref:`rfclib.rfc2849.eol` (the whole substring matches
+       :ref:`rfclib.rfc2849.safe-string` rule). Contains the whole substring.
+   * - ``value_b64``
+     - Only set if the matched string specifies
+       :ref:`rfclib.rfc2849.value-base64` using double colon ``"::"`` notation
+       and there is no error in the substring between the initial ``"::"`` and
+       the nearest :ref:`rfclib.rfc2849.eol` (the whole substring matches
+       :ref:`rfclib.rfc2849.base64-string` rule). Contains the whole substring.
+   * - ``value_url``
+     - Only set if the matched string specifies :ref:`rfclib.rfc2849.url`
+       using colon-less-than ``":<"`` notation and there is no error in the
+       substring between the initial ``":<"`` and the nearest
+       :ref:`rfclib.rfc2849.eol` (the whole substring matches
+       :ref:`rfclib.rfc2849.url` rule). Contains the whole substring.
+   * - ``value_safe_error``
+     - Only set if there is an error after the initial ``":"`` (single colon).
+       Contains the part of substring between the initial ``":"`` and the
+       nearest :ref:`rfclib.rfc2849.eol` that failed to match the
+       :ref:`rfclib.rfc2849.safe-string`.
+   * - ``value_b64_error``
+     - Only set if there is an error after the initial ``"::"`` (double colon).
+       Contains the part of substring between the initial ``"::"`` and the
+       nearest :ref:`rfclib.rfc2849.eol` which failed to match the
+       :ref:`rfclib.rfc2849.base64-string`.
+   * - ``value_url_error``
+     - Only set if there is an error after the initial ``":<"`` (colon-less-than).
+       Contains the part of substring between the initial ``":<"`` and the
+       nearest :ref:`rfclib.rfc2849.eol` which failed to match the
+       :ref:`rfclib.rfc2849.url`.
+
+It also may return a lot of captured groups inherited from
+:ref:`rfclib.rfc2849.url`.
+
+**Example**:
+
+.. literalinclude:: ../../examples/rfclib/rfc2849/value_spec.php
+   :linenos:
+   :start-after: [code]
+   :end-before: [/code]
+   :caption: Rfc2849::VALUE_SPEC
+   :name: rfclib.rfc2849.value-spec.example
+
+.. literalinclude:: ../../examples/rfclib/rfc2849/value_spec.stdout
+   :linenos:
+   :language: none
+
+.. seealso::
+
+    :ref:`rfclib.rfc2849.fill` |o|
+    :ref:`rfclib.rfc2849.value-safe` |o|
+    :ref:`rfclib.rfc2849.value-base64` |o|
+    :ref:`rfclib.rfc2849.value-url` |o|
+    :ref:`rfclib.rfc2849.safe-string` |o|
+    :ref:`rfclib.rfc2849.base64-string` |o|
+    :ref:`rfclib.rfc2849.url` |o|
+    :ref:`rfclib.rfc2849.eol`
+
+------------------------------------------------------------------------------
+
+.. _rfclib.rfc2849.value-safe:
+
+value-safe
+""""""""""
+
+The custom ``value-safe`` rule
+
+.. code:: abnf
+
+   value-safe               = FILL SAFE-STRING
+
+is implemented in the :class:`Korowai\\Lib\\Rfc\\Rfc2849` class as
+
+.. literalinclude:: ../../../../packages/rfclib/src/Rfc2849.php
+   :linenos:
+   :dedent: 4
+   :start-at: const VALUE_SAFE =
+   :end-before: [/VALUE_SAFE]
+
+The ``VALUE_SAFE`` pattern matches any string that starts with
+character other than ``":"``/``"<"`` and ends with :ref:`rfclib.rfc2849.eol`
+(exclusive).
+
+**Capture groups**:
+
+.. list-table:: VALUE_SAFE: capture groups
+   :widths: 1 3
+
+   * - ``value_safe``
+     - Only set if the there is no error in the substring between the initial
+       before the nearest :ref:`rfclib.rfc2849.eol` (the whole substring
+       matches :ref:`rfclib.rfc2849.safe-string` rule). Contains the whole
+       substring.
+   * - ``value_safe_error``
+     - Only set if there is an error before the nearest
+       :ref:`rfclib.rfc2849.eol`. Contains the part of substring that failed
+       to match the :ref:`rfclib.rfc2849.safe-string`.
+
+.. seealso::
+
+    :ref:`rfclib.rfc2849.fill` |o|
+    :ref:`rfclib.rfc2849.safe-string` |o|
+    :ref:`rfclib.rfc2849.eol` |o|
+    :ref:`rfclib.rfc2849.noteol`
+
+------------------------------------------------------------------------------
+
+.. _rfclib.rfc2849.value-base64:
+
+value-base64
+""""""""""""
+
+The custom ``value-base64`` rule
+
+.. code:: abnf
+
+   value-base64             = ":" FILL BASE64-STRING
+
+is implemented in the :class:`Korowai\\Lib\\Rfc\\Rfc2849` class as
+
+.. literalinclude:: ../../../../packages/rfclib/src/Rfc2849.php
+   :linenos:
+   :dedent: 4
+   :start-at: const VALUE_BASE64 =
+   :end-before: [/VALUE_BASE64]
+
+The ``VALUE_BASE64`` pattern matches any string that starts with ``":"`` and
+ends with :ref:`rfclib.rfc2849.eol` (exclusive).
+
+**Capture groups**:
+
+.. list-table:: VALUE_BASE64: capture groups
+   :widths: 1 3
+
+   * - ``value_b64``
+     - Only set if there is no error in the substring between the initial
+       ``":"`` and the nearest :ref:`rfclib.rfc2849.eol` (the whole substring
+       matches :ref:`rfclib.rfc2849.base64-string` rule). Contains the whole
+       substring.
+   * - ``value_b64_error``
+     - Only set if there is an error after the initial ``":"`` (colon).
+       Contains the part of substring between the initial ``":"`` and the
+       nearest :ref:`rfclib.rfc2849.eol` which failed to match the
+       :ref:`rfclib.rfc2849.base64-string`.
+
+.. seealso::
+
+    :ref:`rfclib.rfc2849.fill` |o|
+    :ref:`rfclib.rfc2849.base64-string` |o|
+    :ref:`rfclib.rfc2849.eol` |o|
+    :ref:`rfclib.rfc2849.noteol`
+
+------------------------------------------------------------------------------
+
+.. _rfclib.rfc2849.value-url:
+
+value-url
+"""""""""
+
+The custom ``value-url`` rule
+
+.. code:: abnf
+
+   value-url                = "<" FILL url
+
+is implemented in the :class:`Korowai\\Lib\\Rfc\\Rfc2849` class as
+
+.. literalinclude:: ../../../../packages/rfclib/src/Rfc2849.php
+   :linenos:
+   :dedent: 4
+   :start-at: const VALUE_URL =
+   :end-before: [/VALUE_URL]
+
+The ``VALUE_BASE64`` pattern matches any string that starts with ``"<"`` and
+ends with :ref:`rfclib.rfc2849.eol` (exclusive).
+
+**Capture groups**:
+
+.. list-table:: VALUE_URL: capture groups
+   :widths: 1 3
+
+   * - ``value_url``
+     - Only set if there is no error in the substring between the initial
+       ``"<"`` and the nearest :ref:`rfclib.rfc2849.eol` (the whole substring
+       matches :ref:`rfclib.rfc2849.url` rule). Contains the whole substring.
+   * - ``value_url_error``
+     - Only set if there is an error after the initial ``"<"`` (less-than).
+       Contains the part of substring between the initial ``"<"`` and the
+       nearest :ref:`rfclib.rfc2849.eol` which failed to match the
+       :ref:`rfclib.rfc2849.url`.
+
+.. seealso::
+
+    :ref:`rfclib.rfc2849.fill` |o|
+    :ref:`rfclib.rfc2849.url` |o|
+    :ref:`rfclib.rfc2849.eol` |o|
+    :ref:`rfclib.rfc2849.noteol`
+
+------------------------------------------------------------------------------
+
+.. _rfclib.rfc2849.url:
+
+url
+"""
+
+.. code:: abnf
+
+   url                      = <a Uniform Resource Locator,
+                               as defined in RFC3986>
+
+
+
+.. seealso::
+
+   RFC3986_ specification |o|
+   :ref:`rfclib.rfc3986` class
+
+------------------------------------------------------------------------------
+
+.. _rfclib.rfc2849.ldap-oid:
+
+ldap-oid
+""""""""
+
+The ``ldap-oid`` rule from RFC2849_
+
+.. code:: abnf
+
+   ldap-oid                 = 1*DIGIT 0*("." 1*DIGIT)
+                              ; An LDAPOID, as defined in RFC2253
+
+is implemented in the :class:`Korowai\\Lib\\Rfc\\Rfc2849` class as
+
+.. literalinclude:: ../../../../packages/rfclib/src/Rfc2849.php
+   :linenos:
+   :dedent: 4
+   :start-at: const LDAP_OID =
+   :end-before: [/LDAP_OID]
+
+.. seealso::
+
+   RFC2253_ specification |o|
+   :ref:`rfclib.rfc2253` class
+
+------------------------------------------------------------------------------
+
+.. _rfclib.rfc2849.attributedescription:
+
+AttributeDescription
+""""""""""""""""""""
+
+The ``AttributeDescription`` rule from RFC2849_
+
+.. code:: abnf
+
+   AttributeDescription     = AttributeType [";" options]
+                              ; Definition taken from RFC2251
+
+is implemented in the :class:`Korowai\\Lib\\Rfc\\Rfc2849` class as
+
+.. literalinclude:: ../../../../packages/rfclib/src/Rfc2849.php
+   :linenos:
+   :dedent: 4
+   :start-at: const ATTRIBUTE_DESCRIPTION =
+   :end-before: [/ATTRIBUTE_DESCRIPTION]
+
+
+.. seealso::
+
+    RFC2251_ |o|
+    :ref:`rfclib.rfc2849.attributetype` |o|
+    :ref:`rfclib.rfc2849.options`
+
+------------------------------------------------------------------------------
+
+.. _rfclib.rfc2849.attributetype:
+
+AttributeType
+"""""""""""""
+
+The ``AttributeType`` rule from RFC2849_
+
+.. code:: abnf
+
+   AttributeType            = ldap-oid / (ALPHA *(attr-type-chars))
+
+is implemented in the :class:`Korowai\\Lib\\Rfc\\Rfc2849` class as
+
+.. literalinclude:: ../../../../packages/rfclib/src/Rfc2849.php
+   :linenos:
+   :dedent: 4
+   :start-at: const ATTRIBUTE_TYPE =
+   :end-before: [/ATTRIBUTE_TYPE]
+
+.. seealso::
+
+    :ref:`rfclib.rfc2849.ldap-oid` |o|
+    :ref:`rfclib.rfc2849.alpha` |o|
+    :ref:`rfclib.rfc2849.attr-type-chars`
+
+------------------------------------------------------------------------------
+
+.. _rfclib.rfc2849.options:
+
+options
+"""""""
+
+The ``options`` rule from RFC2849_
+
+.. code:: abnf
+
+   options                  = option / (option ";" options)
+
+is implemented in the :class:`Korowai\\Lib\\Rfc\\Rfc2849` class as
+
+.. literalinclude:: ../../../../packages/rfclib/src/Rfc2849.php
+   :linenos:
+   :dedent: 4
+   :start-at: const OPTIONS =
+   :end-before: [/OPTIONS]
+
+.. seealso::
+
+    :ref:`rfclib.rfc2849.option`
+
+------------------------------------------------------------------------------
+
+.. _rfclib.rfc2849.option:
+
+option
+""""""
+
+The ``option`` rule from RFC2849_
+
+.. code:: abnf
+
+   option                   = 1*opt-char
+
+is implemented in the :class:`Korowai\\Lib\\Rfc\\Rfc2849` class as
+
+.. literalinclude:: ../../../../packages/rfclib/src/Rfc2849.php
+   :linenos:
+   :dedent: 4
+   :start-at: const OPTION =
+   :end-before: [/OPTION]
+
+.. seealso::
+
+    :ref:`rfclib.rfc2849.opt-char`
+
+.. _rfclib.rfc2849.version-number:
+
+version-number
+""""""""""""""
+
+The ``version-number`` rule from RFC2849_
+
+.. code:: abnf
+
+   version-number           = 1*DIGIT
+                              ; version-number MUST be "1" for the
+                              ; LDIF format described in RFC2849
+
+is implemented in the :class:`Korowai\\Lib\\Rfc\\Rfc2849` class as
+
+.. literalinclude:: ../../../../packages/rfclib/src/Rfc2849.php
+   :linenos:
+   :dedent: 4
+   :start-at: const VERSION_NUMBER =
+   :end-before: [/VERSION_NUMBER]
+
+.. note::
+
+   The condition *version-number MUST be "1"*, is not enforced by the pattern.
+   The pattern only ensures, that the matched string contains non-negative
+   decimal number.
+
+.. seealso::
+
+   :ref:`rfclib.rfc2849.digit`
+
+------------------------------------------------------------------------------
+
+.. _rfclib.rfc2849.distinguishedname:
+
+distinguishedName
+"""""""""""""""""
+
+The ``distinguishedName`` rule from RFC2849_
+
+.. code:: abnf
+
+   distinguishedName        = SAFE-STRING
+                              ; a distinguished name, as defined in RFC2253
+
+is implemented in the :class:`Korowai\\Lib\\Rfc\\Rfc2849` class as
+
+.. literalinclude:: ../../../../packages/rfclib/src/Rfc2849.php
+   :linenos:
+   :dedent: 4
+   :start-at: const DISTINGUISHED_NAME =
+   :end-before: [/DISTINGUISHED_NAME]
+
+------------------------------------------------------------------------------
+
+.. _rfclib.rfc2849.base64-distinguishedname:
+
+base64-distinguishedName
+""""""""""""""""""""""""
+
+The ``base64-distinguishedName`` rule from RFC2849_
+
+.. code:: abnf
+
+   base64-distinguishedName = BASE64-UTF8-STRING
+                              ; a distinguished name, as defined in RFC2253
+
+is implemented in the :class:`Korowai\\Lib\\Rfc\\Rfc2849` class as
+
+.. literalinclude:: ../../../../packages/rfclib/src/Rfc2849.php
+   :linenos:
+   :dedent: 4
+   :start-at: const BASE64_UTF8_STRING =
+   :end-before: [/BASE64_UTF8_STRING]
+
+------------------------------------------------------------------------------
+
+.. _rfclib.rfc2849.rdn:
+
+rdn
+"""
+
+The ``rdn`` rule from RFC2849_
+
+.. code:: abnf
+
+   rdn                      = SAFE-STRING
+                              ; a relative distinguished name, defined as
+                              ; <name-component> in RFC2253
+
+is implemented in the :class:`Korowai\\Lib\\Rfc\\Rfc2849` class as
+
+.. literalinclude:: ../../../../packages/rfclib/src/Rfc2849.php
+   :linenos:
+   :dedent: 4
+   :start-at: const RDN =
+   :end-before: [/RDN]
+
+------------------------------------------------------------------------------
+
+.. _rfclib.rfc2849.base64-rdn:
+
+base64-rdn
+""""""""""
+
+The ``base64-rdn`` rule from RFC2849_
+
+.. code:: abnf
+
+   base64-rdn               = BASE64-UTF8-STRING
+                              ; an rdn which has been base64 encoded
+
+is implemented in the :class:`Korowai\\Lib\\Rfc\\Rfc2849` class as
+
+.. literalinclude:: ../../../../packages/rfclib/src/Rfc2849.php
+   :linenos:
+   :dedent: 4
+   :start-at: const BASE64_RDN =
+   :end-before: [/BASE64_RDN]
+
+------------------------------------------------------------------------------
+
+.. _rfclib.rfc2849.sep:
+
+SEP
+"""
+
+The ``SEP`` rule from RFC2849_
+
+.. code:: abnf
+
+   SEP                      = (CR LF / LF)
+
+is implemented in the :class:`Korowai\\Lib\\Rfc\\Rfc2849` class as
+
+.. literalinclude:: ../../../../packages/rfclib/src/Rfc2849.php
+   :linenos:
+   :dedent: 4
+   :start-at: const SEP =
+   :end-at: const SEP =
+
+.. seealso::
+
+   :ref:`rfclib.rfc2849.cr` |o|
+   :ref:`rfclib.rfc2849.lf`
+
+------------------------------------------------------------------------------
+
+.. _rfclib.rfc2849.eol:
+
+EOL
+"""
+
+The custom ``EOL`` rule
+
+.. code:: abnf
+
+   EOL                      = (SEP / $) ; "$" denotes end of string (file)
+
+is implemented in the :class:`Korowai\\Lib\\Rfc\\Rfc2849` class as
+
+.. literalinclude:: ../../../../packages/rfclib/src/Rfc2849.php
+   :linenos:
+   :dedent: 4
+   :start-at: const EOL =
+   :end-at: const EOL =
+
+The difference between ``EOL`` and :ref:`rfclib.rfc2849.sep` is, that ``EOL``
+matches also end of string (end of last line, not ended with (CR LF/LF)),
+whereas :ref:`rfclib.rfc2849.sep` matches only real line-feed characters.
+
+.. seealso::
+
+   :ref:`rfclib.rfc2849.sep`
+
+------------------------------------------------------------------------------
+
+.. _rfclib.rfc2849.noteol:
+
+NOTEOL
+""""""
+
+``NOTEOL`` is an inverse of :ref:`rfclib.rfc2849.eol`. It matches any real
+character except :ref:`rfclib.rfc2849.lf` and :ref:`rfclib.rfc2849.cr`
+when followed by :ref:`rfclib.rfc2849.lf`.
+
+.. literalinclude:: ../../../../packages/rfclib/src/Rfc2849.php
+   :linenos:
+   :dedent: 4
+   :start-at: const NOTEOL =
+   :end-at: const NOTEOL =
+
+.. seealso::
+
+   :ref:`rfclib.rfc2849.eol` |o|
+   :ref:`rfclib.rfc2849.cr` |o|
+   :ref:`rfclib.rfc2849.lf`
+
+------------------------------------------------------------------------------
+
+.. _rfclib.rfc2849.fill:
+
+FILL
+""""
+
+The ``FILL`` rule from RFC2849_
+
+.. code:: abnf
+
+   FILL                     = *SPACE
+
+is implemented in the :class:`Korowai\\Lib\\Rfc\\Rfc2849` class as
+
+.. literalinclude:: ../../../../packages/rfclib/src/Rfc2849.php
+   :linenos:
+   :dedent: 4
+   :start-at: const FILL =
+   :end-at: const FILL =
+
+.. seealso::
+
+   :ref:`rfclib.rfc2849.space`
+
+------------------------------------------------------------------------------
+
+.. _rfclib.rfc2849.safe-string:
+
+SAFE-STRING
+"""""""""""
+
+The ``SAFE-STRING`` rule from RFC2849_
+
+.. code:: abnf
+
+   SAFE-STRING              = [SAFE-INIT-CHAR *SAFE-CHAR]
+
+is implemented in the :class:`Korowai\\Lib\\Rfc\\Rfc2849` class as
+
+.. literalinclude:: ../../../../packages/rfclib/src/Rfc2849.php
+   :linenos:
+   :dedent: 4
+   :start-at: const SAFE_STRING =
+   :end-at: const SAFE_STRING =
+
+.. seealso::
+
+   :ref:`rfclib.rfc2849.safe-init-char` |o|
+   :ref:`rfclib.rfc2849.safe-char`
+
+------------------------------------------------------------------------------
+
+.. _rfclib.rfc2849.base64-utf8-string:
+
+BASE64-UTF8-STRING
+""""""""""""""""""
+
+The ``BASE64-UTF-STRING`` rule from RFC2849_
+
+.. code:: abnf
+
+   BASE64-UTF8-STRING       = BASE64-STRING
+                              ; MUST be the base64 encoding of a
+                              ; UTF8-STRING
+
+is implemented in the :class:`Korowai\\Lib\\Rfc\\Rfc2849` class as
+
+.. literalinclude:: ../../../../packages/rfclib/src/Rfc2849.php
+   :linenos:
+   :dedent: 4
+   :start-at: const BASE64_UTF8_STRING =
+   :end-at: const BASE64_UTF8_STRING =
+
+.. seealso::
+
+   :ref:`rfclib.rfc2849.base64-string`
+
+------------------------------------------------------------------------------
+
+.. _rfclib.rfc2849.base64-string:
+
+BASE64-STRING
+"""""""""""""
+
+The ``BASE64-STRING`` rule from RFC2849_
+
+.. code:: abnf
+
+   BASE64-STRING            = [*(BASE64-CHAR)]
+
+
+is implemented in the :class:`Korowai\\Lib\\Rfc\\Rfc2849` class as
+
+.. literalinclude:: ../../../../packages/rfclib/src/Rfc2849.php
+   :linenos:
+   :dedent: 4
+   :start-at: const BASE64_STRING =
+   :end-at: const BASE64_STRING =
+
+
+.. seealso::
+
+   :ref:`rfclib.rfc2849.base64-char`
+
+------------------------------------------------------------------------------
+
+.. _rfclib.rfc2849.chars:
+
+Character classes
+-----------------
+
+.. _rfclib.rfc2849.alpha:
+
+ALPHA
+"""""
+
+The ``ALPHA`` rule of RFC2849_
+
+.. code:: abnf
+
+   ALPHA                    = %x41-5A / %x61-7A
+                              ; A-Z / a-z
+
+is same as for RFC5234_, and is implemented in the
+:class:`Korowai\\Lib\\Rfc\\Rfc2849` class as
+
+.. literalinclude:: ../../../../packages/rfclib/src/Rfc2849.php
+   :linenos:
+   :dedent: 4
+   :start-at: const ALPHA =
+   :end-at: const ALPHA =
+
+------------------------------------------------------------------------------
+
+.. _rfclib.rfc2849.digit:
+
+DIGIT
+"""""
+
+The ``DIGIT`` rule of RFC2849_
+
+.. code:: abnf
+
+   DIGIT                    = %x30-39
+                              ; 0-9
+
+is same as for RFC5234_, and is implemented in the
+:class:`Korowai\\Lib\\Rfc\\Rfc2849` class as
+
+.. literalinclude:: ../../../../packages/rfclib/src/Rfc2849.php
+   :linenos:
+   :dedent: 4
+   :start-at: const DIGIT =
+   :end-at: const DIGIT =
+
+------------------------------------------------------------------------------
+
+.. _rfclib.rfc2849.cr:
+
+CR
+""
+
+The ``CR`` rule of RFC2849_
+
+.. code:: abnf
+
+   CR                       = %x0D
+                              ; ASCII CR, carriage return
+
+is same as for RFC5234_, and is implemented in the
+:class:`Korowai\\Lib\\Rfc\\Rfc2849` class as
+
+.. literalinclude:: ../../../../packages/rfclib/src/Rfc2849.php
+   :linenos:
+   :dedent: 4
+   :start-at: const CR =
+   :end-at: const CR =
+
+------------------------------------------------------------------------------
+
+.. _rfclib.rfc2849.lf:
+
+LF
+""
+
+The ``LF`` rule of RFC2849_
+
+.. code:: abnf
+
+   LF                       = %x0A
+                              ; ASCII LF, line feed
+
+is same as for RFC5234_, and is implemented in the
+:class:`Korowai\\Lib\\Rfc\\Rfc2849` class as
+
+.. literalinclude:: ../../../../packages/rfclib/src/Rfc2849.php
+   :linenos:
+   :dedent: 4
+   :start-at: const LF =
+   :end-at: const LF =
+
+------------------------------------------------------------------------------
+
+.. _rfclib.rfc2849.space:
+
+SPACE
+"""""
+
+The ``SPACE`` rule of RFC2849_
+
+.. code:: abnf
+
+   SP                       = %x20
+                              ; ASCII SP, line feed
+
+is same as ``SP`` for RFC5234_, and is implemented in the
+:class:`Korowai\\Lib\\Rfc\\Rfc2849` class as
+
+.. literalinclude:: ../../../../packages/rfclib/src/Rfc2849.php
+   :linenos:
+   :dedent: 4
+   :start-at: const SPACE =
+   :end-at: const SPACE =
+
+------------------------------------------------------------------------------
+
+.. _rfclib.rfc2849.attr-type-chars:
+
+attr-type-chars
+"""""""""""""""
+
+The ``attr-type-chars`` rule of RFC2849_
+
+.. code:: abnf
+
+   attr-type-chars          = ALPHA / DIGIT / "-"
+
+is implemented in the :class:`Korowai\\Lib\\Rfc\\Rfc2849` class as
+
+.. literalinclude:: ../../../../packages/rfclib/src/Rfc2849.php
+   :linenos:
+   :dedent: 4
+   :start-at: const ATTR_TYPE_CHARS =
+   :end-at: const ATTR_TYPE_CHARS =
+
+------------------------------------------------------------------------------
+
+.. _rfclib.rfc2849.base64-char:
+
+BASE64-CHAR
+"""""""""""
+
+The ``BASE64-CHAR`` rule of RFC2849_
+
+.. code:: abnf
+
+   BASE64-CHAR              = %x2B / %x2F / %x30-39 / %x3D / %x41-5A /
+                              %x61-7A
+                              ; +, /, 0-9, =, A-Z, and a-z
+
+is implemented in the :class:`Korowai\\Lib\\Rfc\\Rfc2849` class as
+
+.. literalinclude:: ../../../../packages/rfclib/src/Rfc2849.php
+   :linenos:
+   :dedent: 4
+   :start-at: const BASE64_CHAR =
+   :end-at: const BASE64_CHAR =
+
+------------------------------------------------------------------------------
+
+.. _rfclib.rfc2849.opt-char:
+
+opt-char
+""""""""
+
+The ``opt-char`` rule of RFC2849_
+
+.. code:: abnf
+
+   opt-char                 = attr-type-chars
+
+is implemented in the :class:`Korowai\\Lib\\Rfc\\Rfc2849` class as
+
+.. literalinclude:: ../../../../packages/rfclib/src/Rfc2849.php
+   :linenos:
+   :dedent: 4
+   :start-at: const OPT_CHAR =
+   :end-at: const OPT_CHAR =
+
+------------------------------------------------------------------------------
+
+.. _rfclib.rfc2849.safe-char:
+
+SAFE-CHAR
+"""""""""
+
+The ``SAFE-CHAR`` rule of RFC2849_
+
+.. code:: abnf
+
+   SAFE-CHAR                = %x01-09 / %x0B-0C / %x0E-7F
+                              ; any value <= 127 decimal except NUL, LF,
+                              ; and CR
+
+is implemented in the :class:`Korowai\\Lib\\Rfc\\Rfc2849` class as
+
+.. literalinclude:: ../../../../packages/rfclib/src/Rfc2849.php
+   :linenos:
+   :dedent: 4
+   :start-at: const SAFE_CHAR =
+   :end-at: const SAFE_CHAR =
+
+------------------------------------------------------------------------------
+
+.. _rfclib.rfc2849.safe-init-char:
+
+SAFE-INIT-CHAR
+""""""""""""""
+
+The ``SAFE-INIT-CHAR`` rule of RFC2849_
+
+.. code:: abnf
+
+   SAFE-INIT-CHAR           = %x01-09 / %x0B-0C / %x0E-1F /
+                              %x21-39 / %x3B / %x3D-7F
+                              ; any value <= 127 except NUL, LF, CR,
+                              ; SPACE, colon (":", ASCII 58 decimal)
+                              ; and less-than ("<" , ASCII 60 decimal)
+
+
+is implemented in the :class:`Korowai\\Lib\\Rfc\\Rfc2849` class as
+
+.. literalinclude:: ../../../../packages/rfclib/src/Rfc2849.php
+   :linenos:
+   :dedent: 4
+   :start-at: const SAFE_INIT_CHAR =
+   :end-at: const SAFE_INIT_CHAR =
+
+
+
+
+
+.. _RFC2251: https://tools.ietf.org/html/rfc2251
+.. _RFC2253: https://tools.ietf.org/html/rfc2253
+.. _RFC2849: https://tools.ietf.org/html/rfc2849
+.. _RFC3986: https://tools.ietf.org/html/rfc3986
+.. _RFC5234: https://tools.ietf.org/html/rfc5234
+.. _PCRE: https://www.php.net/manual/en/book.pcre.php
+
+.. |--| unicode:: U+2013 .. en dash
+.. |---| unicode:: U+2014 .. em dash
+.. |o| unicode:: U+25E6 .. white bullet
+.. |*| unicode:: U+25E6 .. white bullet
+
+.. <!--- vim: set syntax=rst spell: -->

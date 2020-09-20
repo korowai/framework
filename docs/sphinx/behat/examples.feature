@@ -9,15 +9,15 @@ Feature: Examples
     And I should see exit code <exit_code>
 
     Examples:
-      | example_file                       | stdout_file                           | stderr_file                           | exit_code |
-      | "lib/ldap/ldap_intro.php"          | "lib/ldap/ldap_intro.stdout"          | "lib/ldap/ldap_intro.stderr"          | 0         |
-      | "lib/ldap/adapter_manual_inst.php" | "lib/ldap/adapter_manual_inst.stdout" | "lib/ldap/adapter_manual_inst.stderr" | 0         |
-      | "lib/ldap/adapter_factory_1.php"   | "lib/ldap/adapter_factory_1.stdout"   | "lib/ldap/adapter_factory_1.stderr"   | 0         |
-      | "lib/ldap/adapter_factory_2.php"   | "lib/ldap/adapter_factory_2.stdout"   | "lib/ldap/adapter_factory_2.stderr"   | 0         |
-      | "lib/ldap/attribute_exception.php" | "lib/ldap/attribute_exception.stdout" | "lib/ldap/attribute_exception.stderr" | 1         |
-      | "lib/ldap/ldap_exception_1.php"    | "lib/ldap/ldap_exception_1.stdout"    | "lib/ldap/ldap_exception_1.stderr"    | 1         |
-      | "lib/ldap/ldap_exception_2.php"    | "lib/ldap/ldap_exception_2.stdout"    | "lib/ldap/ldap_exception_2.stderr"    | 2         |
-      | "lib/ldap/mock_searchquery.php"    | "lib/ldap/mock_searchquery.stdout"    | "lib/ldap/mock_searchquery.stderr"    | 0         |
+      | example_file                      | stdout_file                          | stderr_file                          | exit_code |
+      | "ldaplib/ldap_intro.php"          | "ldaplib/ldap_intro.stdout"          | "ldaplib/ldap_intro.stderr"          | 0         |
+      | "ldaplib/adapter_manual_inst.php" | "ldaplib/adapter_manual_inst.stdout" | "ldaplib/adapter_manual_inst.stderr" | 0         |
+      | "ldaplib/adapter_factory_1.php"   | "ldaplib/adapter_factory_1.stdout"   | "ldaplib/adapter_factory_1.stderr"   | 0         |
+      | "ldaplib/adapter_factory_2.php"   | "ldaplib/adapter_factory_2.stdout"   | "ldaplib/adapter_factory_2.stderr"   | 0         |
+      | "ldaplib/attribute_exception.php" | "ldaplib/attribute_exception.stdout" | "ldaplib/attribute_exception.stderr" | 1         |
+      | "ldaplib/ldap_exception_1.php"    | "ldaplib/ldap_exception_1.stdout"    | "ldaplib/ldap_exception_1.stderr"    | 1         |
+      | "ldaplib/ldap_exception_2.php"    | "ldaplib/ldap_exception_2.stdout"    | "ldaplib/ldap_exception_2.stderr"    | 2         |
+      | "ldaplib/mock_searchquery.php"    | "ldaplib/mock_searchquery.stdout"    | "ldaplib/mock_searchquery.stderr"    | 0         |
 
   Scenario Outline: Examples for korowai/basiclib
     Given I executed doc example <example_file>
@@ -26,9 +26,9 @@ Feature: Examples
     And I should see exit code <exit_code>
 
     Examples:
-      | example_file                              | stdout_file                                  | stderr_file                                  | exit_code |
-      | "lib/basic/trivial_singleton.php"         | "lib/basic/trivial_singleton.stdout"         | "lib/basic/trivial_singleton.stderr"         | 0         |
-      | "lib/basic/count_singleton.php"           | "lib/basic/count_singleton.stdout"           | "lib/basic/count_singleton.stderr"           | 0         |
+      | example_file                             | stdout_file                                 | stderr_file                                 | exit_code |
+      | "basiclib/trivial_singleton.php"         | "basiclib/trivial_singleton.stdout"         | "basiclib/trivial_singleton.stderr"         | 0         |
+      | "basiclib/count_singleton.php"           | "basiclib/count_singleton.stdout"           | "basiclib/count_singleton.stderr"           | 0         |
 
   Scenario Outline: Examples for korowai/contextlib
     Given I executed doc example <example_file>
@@ -37,15 +37,15 @@ Feature: Examples
     And I should see exit code <exit_code>
 
     Examples:
-      | example_file                              | stdout_file                                  | stderr_file                                  | exit_code |
-      | "lib/context/basic_with_usage.php"        | "lib/context/basic_with_usage.stdout"        | "lib/context/basic_with_usage.stderr"        | 0         |
-      | "lib/context/trivial_value_wrapper.php"   | "lib/context/trivial_value_wrapper.stdout"   | "lib/context/trivial_value_wrapper.stderr"   | 0         |
-      | "lib/context/default_context_manager.php" | "lib/context/default_context_manager.stdout" | "lib/context/default_context_manager.stderr" | 0         |
-      | "lib/context/my_value_wrapper.php"        | "lib/context/my_value_wrapper.stdout"        | "lib/context/my_value_wrapper.stderr"        | 0         |
-      | "lib/context/my_context_factory.php"      | "lib/context/my_context_factory.stdout"      | "lib/context/my_context_factory.stderr"      | 0         |
-      | "lib/context/multiple_args.php"           | "lib/context/multiple_args.stdout"           | "lib/context/multiple_args.stderr"           | 0         |
-      | "lib/context/exception_handling.php"      | "lib/context/exception_handling.stdout"      | "lib/context/exception_handling.stderr"      | 1         |
-      | "lib/context/exit_true.php"               | "lib/context/exit_true.stdout"               | "lib/context/exit_true.stderr"               | 0         |
+      | example_file                             | stdout_file                                 | stderr_file                                 | exit_code |
+      | "contextlib/basic_with_usage.php"        | "contextlib/basic_with_usage.stdout"        | "contextlib/basic_with_usage.stderr"        | 0         |
+      | "contextlib/trivial_value_wrapper.php"   | "contextlib/trivial_value_wrapper.stdout"   | "contextlib/trivial_value_wrapper.stderr"   | 0         |
+      | "contextlib/default_context_manager.php" | "contextlib/default_context_manager.stdout" | "contextlib/default_context_manager.stderr" | 0         |
+      | "contextlib/my_value_wrapper.php"        | "contextlib/my_value_wrapper.stdout"        | "contextlib/my_value_wrapper.stderr"        | 0         |
+      | "contextlib/my_context_factory.php"      | "contextlib/my_context_factory.stdout"      | "contextlib/my_context_factory.stderr"      | 0         |
+      | "contextlib/multiple_args.php"           | "contextlib/multiple_args.stdout"           | "contextlib/multiple_args.stderr"           | 0         |
+      | "contextlib/exception_handling.php"      | "contextlib/exception_handling.stdout"      | "contextlib/exception_handling.stderr"      | 1         |
+      | "contextlib/exit_true.php"               | "contextlib/exit_true.stdout"               | "contextlib/exit_true.stderr"               | 0         |
 
   Scenario Outline: Examples for korowai/errorlib
     Given I executed doc example <example_file>
@@ -54,12 +54,12 @@ Feature: Examples
     And I should see exit code <exit_code>
 
     Examples:
-      | example_file                              | stdout_file                                   | stderr_file                                   | exit_code |
-      | "lib/error/basic_example.php"             | "lib/error/basic_example.stdout"              | "lib/error/basic_example.stderr"              | 0         |
-      | "lib/error/custom_error_handler.php"      | "lib/error/custom_error_handler.stdout"       | "lib/error/custom_error_handler.stderr"       | 0         |
-      | "lib/error/simple_exception_thrower.php"  | "lib/error/simple_exception_thrower.stdout"   | "lib/error/simple_exception_thrower.stderr"   | 1         |
-      | "lib/error/caller_error_handler.php"      | "lib/error/caller_error_handler.stdout"       | "lib/error/caller_error_handler.stderr"       | 0         |
-      | "lib/error/caller_error_thrower.php"      | "lib/error/caller_error_thrower.stdout"       | "lib/error/caller_error_thrower.stderr"       | 1         |
+      | example_file                             | stdout_file                                  | stderr_file                                  | exit_code |
+      | "errorlib/basic_example.php"             | "errorlib/basic_example.stdout"              | "errorlib/basic_example.stderr"              | 0         |
+      | "errorlib/custom_error_handler.php"      | "errorlib/custom_error_handler.stdout"       | "errorlib/custom_error_handler.stderr"       | 0         |
+      | "errorlib/simple_exception_thrower.php"  | "errorlib/simple_exception_thrower.stdout"   | "errorlib/simple_exception_thrower.stderr"   | 1         |
+      | "errorlib/caller_error_handler.php"      | "errorlib/caller_error_handler.stdout"       | "errorlib/caller_error_handler.stderr"       | 0         |
+      | "errorlib/caller_error_thrower.php"      | "errorlib/caller_error_thrower.stdout"       | "errorlib/caller_error_thrower.stderr"       | 1         |
 
   Scenario Outline: Examples for korowai/rfclib
     Given I executed doc example <example_file>
@@ -68,17 +68,17 @@ Feature: Examples
     And I should see exit code <exit_code>
 
     Examples:
-      | example_file                              | stdout_file                                   | stderr_file                                   | exit_code |
-      | "lib/rfc/rfc_rules.php"                   | "lib/rfc/rfc_rules.stdout"                    | "lib/rfc/rfc_rules.stderr"                    | 0         |
-      | "lib/rfc/rfc2849/version_spec.php"        | "lib/rfc/rfc2849/version_spec.stdout"         | "lib/rfc/rfc2849/version_spec.stderr"         | 0         |
-      | "lib/rfc/rfc2849/dn_spec.php"             | "lib/rfc/rfc2849/dn_spec.stdout"              | "lib/rfc/rfc2849/dn_spec.stderr"              | 0         |
-      | "lib/rfc/rfc2849/changerecord_init.php"   | "lib/rfc/rfc2849/changerecord_init.stdout"    | "lib/rfc/rfc2849/changerecord_init.stderr"    | 0         |
-      | "lib/rfc/rfc2849/mod_spec_init.php"       | "lib/rfc/rfc2849/mod_spec_init.stdout"        | "lib/rfc/rfc2849/mod_spec_init.stderr"        | 0         |
-      | "lib/rfc/rfc2849/control.php"             | "lib/rfc/rfc2849/control.stdout"              | "lib/rfc/rfc2849/control.stderr"              | 0         |
-      | "lib/rfc/rfc2849/newrdn_spec.php"         | "lib/rfc/rfc2849/newrdn_spec.stdout"          | "lib/rfc/rfc2849/newrdn_spec.stderr"          | 0         |
-      | "lib/rfc/rfc2849/newsuperior_spec.php"    | "lib/rfc/rfc2849/newsuperior_spec.stdout"     | "lib/rfc/rfc2849/newsuperior_spec.stderr"     | 0         |
-      | "lib/rfc/rfc2849/attrval_spec.php"        | "lib/rfc/rfc2849/attrval_spec.stdout"         | "lib/rfc/rfc2849/attrval_spec.stderr"         | 0         |
-      | "lib/rfc/rfc2849/value_spec.php"          | "lib/rfc/rfc2849/value_spec.stdout"           | "lib/rfc/rfc2849/value_spec.stderr"           | 0         |
+      | example_file                             | stdout_file                                  | stderr_file                                  | exit_code |
+      | "rfclib/rfc_rules.php"                   | "rfclib/rfc_rules.stdout"                    | "rfclib/rfc_rules.stderr"                    | 0         |
+      | "rfclib/rfc2849/version_spec.php"        | "rfclib/rfc2849/version_spec.stdout"         | "rfclib/rfc2849/version_spec.stderr"         | 0         |
+      | "rfclib/rfc2849/dn_spec.php"             | "rfclib/rfc2849/dn_spec.stdout"              | "rfclib/rfc2849/dn_spec.stderr"              | 0         |
+      | "rfclib/rfc2849/changerecord_init.php"   | "rfclib/rfc2849/changerecord_init.stdout"    | "rfclib/rfc2849/changerecord_init.stderr"    | 0         |
+      | "rfclib/rfc2849/mod_spec_init.php"       | "rfclib/rfc2849/mod_spec_init.stdout"        | "rfclib/rfc2849/mod_spec_init.stderr"        | 0         |
+      | "rfclib/rfc2849/control.php"             | "rfclib/rfc2849/control.stdout"              | "rfclib/rfc2849/control.stderr"              | 0         |
+      | "rfclib/rfc2849/newrdn_spec.php"         | "rfclib/rfc2849/newrdn_spec.stdout"          | "rfclib/rfc2849/newrdn_spec.stderr"          | 0         |
+      | "rfclib/rfc2849/newsuperior_spec.php"    | "rfclib/rfc2849/newsuperior_spec.stdout"     | "rfclib/rfc2849/newsuperior_spec.stderr"     | 0         |
+      | "rfclib/rfc2849/attrval_spec.php"        | "rfclib/rfc2849/attrval_spec.stdout"         | "rfclib/rfc2849/attrval_spec.stderr"         | 0         |
+      | "rfclib/rfc2849/value_spec.php"          | "rfclib/rfc2849/value_spec.stdout"           | "rfclib/rfc2849/value_spec.stderr"           | 0         |
 
   Scenario Outline: Examples for korowai/testing
     Given I tested <example_file> with PHPUnit

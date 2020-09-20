@@ -20,7 +20,12 @@
         "korowai/basiclib": "*"
     },
     "require-dev": {
-        "phpunit/phpunit": ">=9.3"
+        "phpunit/phpunit": ">=9.3",
+        "psr/container": "1.0",
+        "illuminate/container": ">=8.5.0",
+        "php-di/php-di": ">=6.2.2",
+        "symfony/config": ">=5.1.5",
+        "symfony/dependency-injection": ">=5.1.5"
     },
     "autoload": {
       "psr-4" : {

@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Lib\Ldap;
+namespace Korowai\Ldaplib;
 
 /**
  * Returns a path to a config provided by korowai/ldaplib

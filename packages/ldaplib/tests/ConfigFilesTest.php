@@ -20,7 +20,8 @@ use Psr\Container\ContainerInterface;
 
 use Korowai\Lib\Ldap\Core\LdapLinkOptionsMapper;
 use Korowai\Lib\Ldap\Core\LdapLinkOptionsMapperInterface;
-use function Korowai\Lib\Ldap\config_path;
+
+use function Korowai\Ldaplib\config_path;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -28,51 +29,43 @@ use function Korowai\Lib\Ldap\config_path;
  */
 final class ConfigFilesTest extends TestCase
 {
-    private function examineConfiguredContainer(ContainerInterface $container) : void
-    {
-        $ldapFactory = $container->get(LdapFactoryInterface::class);
-        $this->assertInstanceOf(LdapFactory::class, $ldapFactory);
-        $this->assertSame($ldapFactory, $container->get(LdapFactoryInterface::class));
-        $this->assertSame($ldapFactory->getLdapLinkFactory(), $container->get(LdapLinkFactoryInterface::class));
-    }
+    use \Korowai\Testing\Ldaplib\ExamineLdaplibContainerTrait;
 
     public function test__php_di_container_config() : void
     {
-        $configFile = config_path('php-di/container.config.php');
+        $configFile = config_path('php-di/services.php');
         $containerBuilder = new \DI\ContainerBuilder;
         $containerBuilder->addDefinitions($configFile);
         $container = $containerBuilder->build();
 
-        $this->examineConfiguredContainer($container);
+        $this->examineLdaplibContainer($container);
     }
 
     public function test__symfony_container_config() : void
     {
-        $configDir = config_path('symfony');
-
         $container = new \Symfony\Component\DependencyInjection\ContainerBuilder;
-        $fileLocator = new \Symfony\Component\Config\FileLocator($configDir);
+        $fileLocator = new \Symfony\Component\Config\FileLocator;
         $fileLoader = new \Symfony\Component\DependencyInjection\Loader\PhpFileLoader($container, $fileLocator);
-        $fileLoader->load('container.config.php');
+        $fileLoader->load(config_path('symfony/services.php'));
 
-        // patch some defininitions (required for examineConfiguredContainer()).
+        // patch some defininitions (required for examineLdaplibContainer()).
         $container->getAlias(LdapFactoryInterface::class)->setPublic(true);
         $container->getAlias(LdapLinkFactoryInterface::class)->setPublic(true);
 
         $container->compile();
 
-        $this->examineConfiguredContainer($container);
+        $this->examineLdaplibContainer($container);
     }
 
     public function test__illuminate_container_config() : void
     {
-        $configFile = config_path('illuminate/container.config.php');
+        $configFile = config_path('illuminate/services.php');
 
         $container = new \Illuminate\Container\Container;
         $configure = require $configFile;
         $configure($container);
 
-        $this->examineConfiguredContainer($container);
+        $this->examineLdaplibContainer($container);
     }
 }
 

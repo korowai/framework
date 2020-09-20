@@ -14,11 +14,11 @@ namespace Korowai\Tests\Lib\Ldap;
 
 use Korowai\Testing\Ldaplib\TestCase;
 
-use function Korowai\Lib\Ldap\config_path;
+use function Korowai\Ldaplib\config_path;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @covers \Korowai\Lib\Ldap\config_path
+ * @covers \Korowai\Ldaplib\config_path
  */
 final class ConfigFunctionsTest extends TestCase
 {

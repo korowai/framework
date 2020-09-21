@@ -34,7 +34,7 @@
     },
     "autoload-dev": {
       "psr-4" : {
-        "Korowai\\Tests\\Lib\\Ldap\\" : "tests/",
+        "Korowai\\Tests\\Lib\\Ldap\\" : "tests/src/",
         "Korowai\\Tests\\Testing\\LdaplibInterfaces\\" : "tests/testing/"
       }
     }

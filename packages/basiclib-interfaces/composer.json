@@ -34,7 +34,7 @@
     },
     "autoload-dev": {
       "psr-4" : {
-        "Korowai\\Tests\\Lib\\Basic\\" : "tests/",
+        "Korowai\\Tests\\Lib\\Basic\\" : "tests/src/",
         "Korowai\\Tests\\Testing\\BasiclibInterfaces\\" : "tests/testing/"
       }
     }

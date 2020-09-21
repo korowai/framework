@@ -20,8 +20,6 @@
             "packages/contextlib-interfaces/tests/",
             "packages/contextlib/testing/",
             "packages/contextlib/tests/",
-            "packages/contracts/testing/",
-            "packages/contracts/tests/",
             "packages/errorlib-interfaces/testing/",
             "packages/errorlib-interfaces/tests/",
             "packages/errorlib/testing/",
@@ -53,7 +51,6 @@
             "packages/testing/config/functions.php"
         ],
         "psr-4": {
-            "Korowai\\Lib\\": "packages/contracts/src/Korowai/Lib/",
             "Korowai\\Lib\\Basic\\": [
                 "packages/basiclib-interfaces/src/",
                 "packages/basiclib/src/"
@@ -100,53 +97,35 @@
             "Korowai\\Docs\\Behat\\": [
                 "docs/sphinx/behat/"
             ],
-            "Korowai\\Lib\\Ldap\\Behat\\": [
-                "packages/ldaplib/behat/"
-            ],
-            "Korowai\\Testing\\": "packages/testing/testing/",
-            "Korowai\\Testing\\BasiclibInterfaces\\": "packages/basiclib-interfaces/testing/",
-            "Korowai\\Testing\\Basiclib\\": "packages/basiclib/testing/",
-            "Korowai\\Testing\\Compatlib\\": "packages/compatlib/testing/",
-            "Korowai\\Testing\\ContextlibInterfaces\\": "packages/contextlib-interfaces/testing/",
-            "Korowai\\Testing\\Contextlib\\": "packages/contextlib/testing/",
-            "Korowai\\Testing\\Contracts\\": "packages/contracts/testing/",
-            "Korowai\\Testing\\ErrorlibInterfaces\\": "packages/errorlib-interfaces/testing/",
-            "Korowai\\Testing\\Errorlib\\": "packages/errorlib/testing/",
-            "Korowai\\Testing\\LdaplibInterfaces\\": "packages/ldaplib-interfaces/testing/",
-            "Korowai\\Testing\\Ldaplib\\": "packages/ldaplib/testing/",
-            "Korowai\\Testing\\LdiflibInterfaces\\": "packages/ldiflib-interfaces/testing/",
-            "Korowai\\Testing\\Ldiflib\\": "packages/ldiflib/testing/",
-            "Korowai\\Testing\\RfclibInterfaces\\": "packages/rfclib-interfaces/testing/",
-            "Korowai\\Testing\\Rfclib\\": "packages/rfclib/testing/",
+            "Korowai\\Lib\\Ldap\\Behat\\": "packages/ldaplib/behat/",
             "Korowai\\TestsNocov\\Lib\\Rfc\\": "packages/rfclib/tests-nocov/",
-            "Korowai\\Tests\\": "packages/contracts/tests/Korowai/",
             "Korowai\\Tests\\Ldaplib\\": "packages/ldaplib/tests/ldaplib/",
             "Korowai\\Tests\\Lib\\Basic\\": [
-                "packages/basiclib-interfaces/tests/",
-                "packages/basiclib/tests/"
+                "packages/basiclib-interfaces/tests/src/",
+                "packages/basiclib/tests/src/"
             ],
-            "Korowai\\Tests\\Lib\\Compat\\": "packages/compatlib/tests/",
+            "Korowai\\Tests\\Lib\\Compat\\": "packages/compatlib/tests/src/",
             "Korowai\\Tests\\Lib\\Context\\": [
-                "packages/contextlib-interfaces/tests/",
-                "packages/contextlib/tests/"
+                "packages/contextlib-interfaces/tests/src/",
+                "packages/contextlib/tests/src/"
             ],
             "Korowai\\Tests\\Lib\\Error\\": [
-                "packages/errorlib-interfaces/tests/",
-                "packages/errorlib/tests/"
+                "packages/errorlib-interfaces/tests/src/",
+                "packages/errorlib/tests/src/"
             ],
             "Korowai\\Tests\\Lib\\Ldap\\": [
-                "packages/ldaplib-interfaces/tests/",
-                "packages/ldaplib/tests/"
+                "packages/ldaplib-interfaces/tests/src/",
+                "packages/ldaplib/tests/src/"
             ],
             "Korowai\\Tests\\Lib\\Ldif\\": [
-                "packages/ldiflib-interfaces/tests/",
-                "packages/ldiflib/tests/"
+                "packages/ldiflib-interfaces/tests/src/",
+                "packages/ldiflib/tests/src/"
             ],
             "Korowai\\Tests\\Lib\\Rfc\\": [
-                "packages/rfclib-interfaces/tests/",
-                "packages/rfclib/tests/"
+                "packages/rfclib-interfaces/tests/src/",
+                "packages/rfclib/tests/src/"
             ],
-            "Korowai\\Tests\\Testing\\": "packages/testing/tests/",
+            "Korowai\\Tests\\Testing\\": "packages/testing/tests/testing/",
             "Korowai\\Tests\\Testing\\BasiclibInterfaces\\": "packages/basiclib-interfaces/tests/testing/",
             "Korowai\\Tests\\Testing\\Basiclib\\": "packages/basiclib/tests/testing/",
             "Korowai\\Tests\\Testing\\Compatlib\\": "packages/compatlib/tests/testing/",

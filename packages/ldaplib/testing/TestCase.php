@@ -19,17 +19,6 @@ namespace Korowai\Testing\Ldaplib;
  */
 abstract class TestCase extends \Korowai\Testing\TestCase
 {
-    /**
-     * {@inheritdoc}
-     */
-    public static function objectPropertyGettersMap() : array
-    {
-        return array_merge_recursive(
-            parent::objectPropertyGettersMap(),
-            \Korowai\Testing\LdaplibInterfaces\ObjectPropertyGettersMap::getObjectPropertyGettersMap(),
-            ObjectPropertyGettersMap::getObjectPropertyGettersMap()
-        );
-    }
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

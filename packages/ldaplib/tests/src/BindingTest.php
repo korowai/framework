@@ -74,24 +74,24 @@ final class BindingTest extends TestCase
             [
                 'args' => [$link],
                 'expect' => [
-                    'ldapLink' => $link,
-                    'isBound' => false
+                    'getLdapLink()' => $link,
+                    'isBound()' => false
                 ],
             ],
             // #1
             [
                 'args' => [$link, false],
                 'expect' => [
-                    'ldapLink' => $link,
-                    'isBound' => false
+                    'getLdapLink()' => $link,
+                    'isBound()' => false
                 ],
             ],
             // #2
             [
                 'args' => [$link, true],
                 'expect' => [
-                    'ldapLink' => $link,
-                    'isBound' => true
+                    'getLdapLink()' => $link,
+                    'isBound()' => true
                 ],
             ],
         ];

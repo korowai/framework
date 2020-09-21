@@ -74,7 +74,7 @@ static function ($container) : void {
         'testing',
     ];
 
-    $packagesDirBase  = __dir__.'/packages/';
+    $packagesDirBase  = 'packages/';
     $packagesDirs  = \preg_replace('/^/', $packagesDirBase,  $packages);
 
     $defaultSplitRepositoryBase = 'file://'.__dir__.'/build/monorepo-split/repositories/korowai';

@@ -172,7 +172,7 @@
         "psy/psysh": "dev-master",
         "symfony/config": ">=5.1.5",
         "symfony/dependency-injection": ">=5.1.5",
-        "symplify/monorepo-builder-prefixed": "^8.0.1",
+        "symplify/monorepo-builder": "^8.0.1",
         "zendframework/zend-ldap": "^2.10.0"
     },
     "minimum-stability": "dev",

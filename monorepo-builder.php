@@ -44,7 +44,7 @@ static function ($container) : void {
 
     $parameters->set(Option::DATA_TO_APPEND, [
         'require-dev' => [
-            'symplify/monorepo-builder-prefixed' => '^8.0.1',
+            'symplify/monorepo-builder' => '^8.0.1',
             'phpunit/phpunit' => '>=9.3',
             'php-mock/php-mock-phpunit' => '>=2.4.0',
             'phake/phake' => '^3.0',

@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Testing\Ldaplib;
+namespace Korowai\Testing\Ldaplib\Container;
 
 use Korowai\Lib\Ldap\LdapFactory;
 use Korowai\Lib\Ldap\LdapFactoryInterface;
@@ -20,17 +20,25 @@ use Psr\Container\ContainerInterface;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-trait ExamineLdaplibContainerTrait
+trait ExamineConfiguredContainerTrait
 {
     abstract static public function assertInstanceOf(string $class, $value, string $message = '');
     abstract static public function assertSame($expected, $value, string $message = '');
 
-    public static function examineLdaplibContainer(ContainerInterface $container) : void
+    public function examineConfiguredContainer(ContainerInterface $container, $config) : void
     {
         $ldapFactory = $container->get(LdapFactoryInterface::class);
-        self::assertInstanceOf(LdapFactory::class, $ldapFactory);
-        self::assertSame($ldapFactory, $container->get(LdapFactoryInterface::class));
-        self::assertSame($ldapFactory->getLdapLinkFactory(), $container->get(LdapLinkFactoryInterface::class));
+        $this->assertInstanceOf(LdapFactory::class, $ldapFactory);
+        $this->assertSame($ldapFactory, $container->get(LdapFactoryInterface::class));
+        $this->assertSame($ldapFactory->getLdapLinkFactory(), $container->get(LdapLinkFactoryInterface::class));
+    }
+
+    public function getServicesVisibility() : array
+    {
+        return [
+            LdapFactoryInterface::class => true,
+            LdapLinkFactoryInterface::class => true,
+        ];
     }
 }
 

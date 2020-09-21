@@ -59,7 +59,8 @@
       "psr-4" : {
         "Korowai\\Lib\\Ldap\\Behat\\" : "behat/",
         "Korowai\\Tests\\Lib\\Ldap\\" : "tests/",
-        "Korowai\\Tests\\Testing\\Ldaplib\\" : "tests/testing/"
+        "Korowai\\Tests\\Testing\\Ldaplib\\" : "tests/testing/",
+        "Korowai\\Tests\\Ldaplib\\" : "tests/ldaplib/"
       }
     }
 }

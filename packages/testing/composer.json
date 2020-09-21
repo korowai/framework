@@ -31,7 +31,8 @@
       "psr-4" : {
         "Korowai\\Testing\\" : "testing/"
       },
-      "files" : [
+      "files": [
+        "config/functions.php"
       ],
       "exclude-from-classmap": [
         "/tests/",

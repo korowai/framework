@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Korowai\Testing\Traits;
 
 /**
- * Example trait for testing purposes.
+ * Provides methods manipulation of captures returned by preg_match().
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */

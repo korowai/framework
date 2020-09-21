@@ -49,7 +49,8 @@
             "packages/compatlib/src/functions/preg.php",
             "packages/contextlib/src/functions.php",
             "packages/errorlib/src/functions.php",
-            "packages/ldaplib/config/functions.php"
+            "packages/ldaplib/config/functions.php",
+            "packages/testing/config/functions.php"
         ],
         "psr-4": {
             "Korowai\\Lib\\": "packages/contracts/src/Korowai/Lib/",
@@ -119,6 +120,7 @@
             "Korowai\\Testing\\Rfclib\\": "packages/rfclib/testing/",
             "Korowai\\TestsNocov\\Lib\\Rfc\\": "packages/rfclib/tests-nocov/",
             "Korowai\\Tests\\": "packages/contracts/tests/Korowai/",
+            "Korowai\\Tests\\Ldaplib\\": "packages/ldaplib/tests/ldaplib/",
             "Korowai\\Tests\\Lib\\Basic\\": [
                 "packages/basiclib-interfaces/tests/",
                 "packages/basiclib/tests/"

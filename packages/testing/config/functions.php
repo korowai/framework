@@ -10,10 +10,10 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Ldaplib;
+namespace Korowai\Testing;
 
 /**
- * Returns a path to a config provided by korowai/ldaplib
+ * Returns a path to a config provided by korowai/testing
  *
  * @param string $filename
  * @return string

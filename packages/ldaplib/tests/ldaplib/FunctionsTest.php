@@ -10,9 +10,10 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Tests\Lib\Ldap;
+namespace Korowai\Tests\LdapLib;
 
 use Korowai\Testing\Ldaplib\TestCase;
+use Korowai\Testing\Traits\FeedConfigPathTrait;
 
 use function Korowai\Ldaplib\config_path;
 
@@ -20,17 +21,12 @@ use function Korowai\Ldaplib\config_path;
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Ldaplib\config_path
  */
-final class ConfigFunctionsTest extends TestCase
+final class FunctionsTest extends TestCase
 {
+    use FeedConfigPathTrait;
     public static function prov__config_path() : array
     {
-        $configPath = realpath(__dir__ . '/../config');
-        return [
-            [[], $configPath],
-            [[''], $configPath],
-            [['foo.php'], $configPath.'/foo.php'],
-            [['/foo.php'], $configPath.'/foo.php'],
-        ];
+        return self::feedConfigPath(realpath(__dir__.'/../../config'));
     }
 
     /**

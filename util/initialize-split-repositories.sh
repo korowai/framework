@@ -8,6 +8,12 @@ top="$here/..";
 abstop="`readlink -f $top`";
 repobase="build/monorepo-split/repositories/korowai";
 
+if [ "`pwd`" != "$abstop" ]; then
+  repobasedoc="${abstop}/${repobase}";
+else
+  repobasedoc="./${repobase}";
+fi
+
 usage() {
   cat >&2 <<!
 
@@ -21,7 +27,7 @@ DESCRIPTION:
   from "packages/*" subdirectories. If repo-base is missing, then the following
   default is used:
 
-    $repobase
+    $repobasedoc
 
   The created repositories may be next used as a target for the
 

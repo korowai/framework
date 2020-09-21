@@ -9,18 +9,13 @@ if which readlink >/dev/null; then
   top=`readlink -f "$top"`
 fi
 
-repobase="${top}/build/monorepo-split/repositories";
-
 usage() {
   cat >&2 <<!
 
 usage:
-        $0 [-f] [-d] [-a] [-v]
+        $0 [-f] [-d] [-a] [-v] [base-repo-dir]
 
-Initialize bare git repositories under
-
-  $repobase
-
+Initialize bare git repositories under base-repo-dir
 for split packages to be created with monorepo-builder.
 
 options:
@@ -31,6 +26,10 @@ options:
   -v    verbose mode
   -h    print help and exit
 
+parameters:
+
+  base-repo-dir   base directory under which package repositories will be
+                  created (default: $repobase)
 !
 }
 
@@ -50,6 +49,7 @@ force=false;
 dry=false;
 ansii=false;
 verbose=false;
+repobase="${top}/build/monorepo-split/repositories";
 
 while getopts "fdavh" option; do
   case $option in
@@ -76,6 +76,11 @@ while getopts "fdavh" option; do
       ;;
   esac
 done
+
+arg1="${@:$OPTIND:1}";
+if [ ! -z "$arg1" ]; then
+  repobase="$arg1";
+fi
 
 if $ansii; then
   red='';

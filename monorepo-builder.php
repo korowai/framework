@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use Symplify\MonorepoBuilder\ValueObject\Option;
+
 return
 /**
  * @psalm-param \Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator $container
@@ -9,11 +11,11 @@ return
 static function ($container) : void {
     $parameters = $container->parameters();
 
-    $parameters->set('package_directories', [
+    $parameters->set(Option::PACKAGE_DIRECTORIES, [
         __DIR__.'/packages',
     ]);
 
-    $parameters->set('section_order', [
+    $parameters->set(Option::SECTION_ORDER, [
         'name',
         'type',
         'description',
@@ -40,9 +42,9 @@ static function ($container) : void {
     ]);
 
 
-    $parameters->set('data_to_append', [
+    $parameters->set(Option::DATA_TO_APPEND, [
         'require-dev' => [
-            'symplify/monorepo-builder' => '^8.0.1',
+            'symplify/monorepo-builder-prefixed' => '^8.0.1',
             'phpunit/phpunit' => '>=9.3',
             'php-mock/php-mock-phpunit' => '>=2.4.0',
             'phake/phake' => '^3.0',
@@ -79,10 +81,10 @@ static function ($container) : void {
 
     $defaultSplitRepositoryBase = 'file://'.__dir__.'/build/monorepo-split/repositories/korowai';
     $parameters->set('default_split_repository_base', $defaultSplitRepositoryBase);
-    $splitRepositoryBase = '%env(default:default_split_repository_base:KRW_MONOREPO_SPLIT_REPO_BASE)%/';
+    $splitRepositoryBase = '%env(default:default_split_repository_base:MONOREPO_SPLIT_REPO_BASE)%/';
 
     $packageRepos = \preg_replace('/^(.+)$/', $splitRepositoryBase.'\1.git', $packages);
     $directoriesToRepositories = array_combine($packagesDirs, $packageRepos);
 
-    $parameters->set('directories_to_repositories', $directoriesToRepositories);
+    $parameters->set(Option::DIRECTORIES_TO_REPOSITORIES, $directoriesToRepositories);
 };

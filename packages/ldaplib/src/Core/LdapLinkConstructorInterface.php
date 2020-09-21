@@ -27,7 +27,7 @@ interface LdapLinkConstructorInterface
      * @param  int $port
      *
      * @return LdapLinkInterface
-     * @throws \Korowai\Lib\Ldap\Exception\ExceptionInterface
+     * @throws \Korowai\Lib\Ldap\ExceptionInterface
      */
     public function connect(string $host_or_uri = null, int $port = 389) : LdapLinkInterface;
 }

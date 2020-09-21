@@ -12,8 +12,8 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldap;
 
-use Korowai\Lib\Ldap\Exception\ExceptionInterface;
-use Korowai\Lib\Ldap\Exception\LdapExceptionInterface;
+use Korowai\Lib\Ldap\ExceptionInterface;
+use Korowai\Lib\Ldap\ErrorExceptionInterface;
 
 use Korowai\Testing\LdaplibInterfaces\TestCase;
 
@@ -21,29 +21,31 @@ use Korowai\Testing\LdaplibInterfaces\TestCase;
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @coversNothing
  */
-final class LdapExceptionInterfaceTest extends TestCase
+final class ErrorExceptionInterfaceTest extends TestCase
 {
     public static function createDummyInstance()
     {
-        return new class extends \Exception implements LdapExceptionInterface {
+        return new class extends \ErrorException implements ErrorExceptionInterface {
         };
     }
 
     public function test__implements__ExceptionInterface() : void
     {
-        $this->assertImplementsInterface(ExceptionInterface::class, LdapExceptionInterface::class);
+        $this->assertImplementsInterface(ExceptionInterface::class, ErrorExceptionInterface::class);
     }
 
     public function test__dummyImplementation() : void
     {
         $dummy = $this->createDummyInstance();
-        $this->assertImplementsInterface(LdapExceptionInterface::class, $dummy);
+        $this->assertImplementsInterface(ErrorExceptionInterface::class, $dummy);
     }
 
     public function test__objectPropertyGettersMap() : void
     {
-        $expect = [];
-        $this->assertObjectPropertyGetters($expect, LdapExceptionInterface::class);
+        $expect = [
+            'severity' => 'getSeverity',
+        ];
+        $this->assertObjectPropertyGetters($expect, ErrorExceptionInterface::class);
     }
 }
 

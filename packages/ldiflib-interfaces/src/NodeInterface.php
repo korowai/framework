@@ -19,12 +19,13 @@ namespace Korowai\Lib\Ldif;
  */
 interface NodeInterface
 {
-    /**
-     * Returns this node's snippet.
-     *
-     * @return SnippetInterface|null
-     */
-    public function getSnippet() : ?SnippetInterface;
+// FIXME: this is only temporarily commented out
+//    /**
+//     * Returns this node's snippet.
+//     *
+//     * @return SnippetInterface|null
+//     */
+//    public function getSnippet() : ?SnippetInterface;
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

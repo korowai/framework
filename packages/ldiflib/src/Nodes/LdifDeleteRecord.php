@@ -57,7 +57,7 @@ class LdifDeleteRecord extends AbstractChangeRecord implements LdifDeleteRecordI
      */
     public function acceptRecordVisitor(RecordVisitorInterface $visitor)
     {
-        return $visitor->visitDeleteRecord($this);
+        return $visitor->visitLdifDeleteRecord($this);
     }
 }
 

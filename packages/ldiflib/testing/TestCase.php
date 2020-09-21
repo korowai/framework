@@ -22,20 +22,6 @@ use Korowai\Testing\Ldiflib\Traits\ParserTestHelpers;
 abstract class TestCase extends \Korowai\Testing\TestCase
 {
     use ParserTestHelpers;
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function objectPropertyGettersMap() : array
-    {
-        return array_merge_recursive(
-            parent::objectPropertyGettersMap(),
-            \Korowai\Testing\RfclibInterfaces\ObjectPropertyGettersMap::getObjectPropertyGettersMap(),
-            \Korowai\Testing\LdiflibInterfaces\ObjectPropertyGettersMap::getObjectPropertyGettersMap(),
-            \Korowai\Testing\Rfclib\ObjectPropertyGettersMap::getObjectPropertyGettersMap(),
-            \Korowai\Testing\Ldiflib\ObjectPropertyGettersMap::getObjectPropertyGettersMap()
-        );
-    }
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

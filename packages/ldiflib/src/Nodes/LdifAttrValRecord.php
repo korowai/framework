@@ -44,7 +44,7 @@ class LdifAttrValRecord extends AbstractRecord implements LdifAttrValRecordInter
      */
     public function acceptRecordVisitor(RecordVisitorInterface $visitor)
     {
-        return $visitor->visitAttrValRecord($this);
+        return $visitor->visitLdifAttrValRecord($this);
     }
 }
 

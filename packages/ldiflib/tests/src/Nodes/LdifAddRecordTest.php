@@ -50,11 +50,11 @@ final class LdifAddRecordTest extends TestCase
                     'dc=example,dc=org',
                 ],
                 'expect' => [
-                    'dn' => 'dc=example,dc=org',
-                    'changeType' => 'add',
-                    'attrValSpecs' => [],
-                    'controls' => [],
-                    'snippet' => null,
+                    'getDn()' => 'dc=example,dc=org',
+                    'getChangeType()' => 'add',
+                    'getAttrValSpecs()' => [],
+                    'getControls()' => [],
+                    'getSnippet()' => null,
                 ]
             ],
             '__construct("dc=example,dc=org", ["attrValSpecs" => ["X"], "controls" => ["Y"]]' => [
@@ -66,11 +66,11 @@ final class LdifAddRecordTest extends TestCase
                     ],
                 ],
                 'expect' => [
-                    'dn' => 'dc=example,dc=org',
-                    'changeType' => 'add',
-                    'attrValSpecs' => ['X'],
-                    'controls' => ['Y'],
-                    'snippet' => null
+                    'getDn()' => 'dc=example,dc=org',
+                    'getChangeType()' => 'add',
+                    'getAttrValSpecs()' => ['X'],
+                    'getControls()' => ['Y'],
+                    'getSnippet()' => null
                 ]
             ]
         ];
@@ -100,7 +100,7 @@ final class LdifAddRecordTest extends TestCase
         $record = new LdifAddRecord("dc=example,dc=org");
 
         $visitor->expects($this->once())
-                ->method('visitAddRecord')
+                ->method('visitLdifAddRecord')
                 ->with($record)
                 ->will($this->returnValue('ok'));
 

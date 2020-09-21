@@ -50,9 +50,9 @@ final class AbstractLdifRecordRuleTest extends TestCase
                     'attrValSpecRule' => $attrValSpecRule,
                 ]],
                 'expect' => [
-                    'dnSpecRule' => $dnSpecRule,
-                    'sepRule' => $sepRule,
-                    'attrValSpecRule' => $attrValSpecRule,
+                    'getDnSpecRule()' => $dnSpecRule,
+                    'getSepRule()' => $sepRule,
+                    'getAttrValSpecRule()' => $attrValSpecRule,
                 ]
             ],
         ];

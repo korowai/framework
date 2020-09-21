@@ -67,24 +67,24 @@ final class AbstractNameSpecRuleTest extends TestCase
             $source = ['ł dn: '.$dn, strlen('ł dn: '.$dn)];
             $errors = $result ? [] : [
                 self::hasPropertiesIdenticalTo([
-                    'sourceOffset' => strlen('ł dn: '),
-                    'sourceCharOffset' => mb_strlen('ł dn: '),
-                    'message' => 'syntax error: invalid DN syntax: "'.$dn.'"',
+                    'getSourceOffset()' => strlen('ł dn: '),
+                    'getSourceCharOffset()' => mb_strlen('ł dn: '),
+                    'getMessage()' => 'syntax error: invalid DN syntax: "'.$dn.'"',
                 ])
             ];
             $matches = [[$dn, strlen('ł dn: ')], 'value_safe' => [$dn, strlen('ł dn: ')]];
             $cursor = self::hasPropertiesIdenticalTo([
-                'offset' => 3 + strlen('dn: ') + strlen($dn),
-                'sourceOffset' => 3 + strlen('dn: ') + strlen($dn),
-                'sourceCharOffset' => 2 + mb_strlen('dn: ') + mb_strlen($dn),
+                'getOffset()' => 3 + strlen('dn: ') + strlen($dn),
+                'getSourceOffset()' => 3 + strlen('dn: ') + strlen($dn),
+                'getSourceCharOffset()' => 2 + mb_strlen('dn: ') + mb_strlen($dn),
             ]);
             $expect = [
                 'result' => $result,
                 'dn' => $result ? $dn : null,
                 'state' => [
-                    'cursor' => $cursor,
-                    'errors' => $errors,
-                    'records' => [],
+                    'getCursor()' => $cursor,
+                    'getErrors()' => $errors,
+                    'getRecords()' => [],
                 ],
             ];
 
@@ -99,24 +99,24 @@ final class AbstractNameSpecRuleTest extends TestCase
             $source = ['ł dn:: '.$dnBase64, 3 + strlen('dn:: ') + strlen($dnBase64)];
             $errors = $result ? [] : [
                 self::hasPropertiesIdenticalTo([
-                    'sourceOffset' => 3 + strlen('dn:: '),
-                    'sourceCharOffset' => 2 + mb_strlen('dn:: '),
-                    'message' => 'syntax error: invalid DN syntax: "'.$dn.'"',
+                    'getSourceOffset()' => 3 + strlen('dn:: '),
+                    'getSourceCharOffset()' => 2 + mb_strlen('dn:: '),
+                    'getMessage()' => 'syntax error: invalid DN syntax: "'.$dn.'"',
                 ]),
             ];
             $matches = [[$dnBase64, 3 + strlen('dn:: ')], 'value_b64' => [$dnBase64, 3 + strlen('dn:: ')]];
             $cursor = self::hasPropertiesIdenticalTo([
-                'offset' => 3 + strlen('dn:: ') + strlen($dnBase64),
-                'sourceOffset' => 3 + strlen('dn:: ') + strlen($dnBase64),
-                'sourceCharOffset' => 2 + mb_strlen('dn:: ') + mb_strlen($dnBase64),
+                'getOffset()' => 3 + strlen('dn:: ') + strlen($dnBase64),
+                'getSourceOffset()' => 3 + strlen('dn:: ') + strlen($dnBase64),
+                'getSourceCharOffset()' => 2 + mb_strlen('dn:: ') + mb_strlen($dnBase64),
             ]);
             $expect = [
                 'result' => $result,
                 'dn' => $result ? $dn : null,
                 'state' => [
-                    'cursor' => $cursor,
-                    'errors' => $errors,
-                    'records' => [],
+                    'getCursor()' => $cursor,
+                    'getErrors()' => $errors,
+                    'getRecords()' => [],
                 ],
             ];
 
@@ -130,15 +130,15 @@ final class AbstractNameSpecRuleTest extends TestCase
             $source = ['ł dn:: '.$dnBase64, 3 + strlen('dn:: ') + $case['offset']];
             $errors = $result ? [] : [
                 self::hasPropertiesIdenticalTo([
-                    'sourceOffset' => 3 + strlen('dn:: '),
-                    'sourceCharOffset' => 2 + mb_strlen('dn:: '),
-                    'message' => 'syntax error: invalid BASE64 string',
+                    'getSourceOffset()' => 3 + strlen('dn:: '),
+                    'getSourceCharOffset()' => 2 + mb_strlen('dn:: '),
+                    'getMessage()' => 'syntax error: invalid BASE64 string',
                 ]),
             ];
             $cursor = self::hasPropertiesIdenticalTo([
-                'offset' => 3 + strlen('dn:: ') + $case['offset'],
-                'sourceOffset' => 3 + strlen('dn:: ') + $case['offset'],
-                'sourceCharOffset' => 2 + mb_strlen('dn:: ') + $case['offset'],
+                'getOffset()' => 3 + strlen('dn:: ') + $case['offset'],
+                'getSourceOffset()' => 3 + strlen('dn:: ') + $case['offset'],
+                'getSourceCharOffset()' => 2 + mb_strlen('dn:: ') + $case['offset'],
             ]);
             $matches = [[$dnBase64, 3 + strlen('dn:: ')], 'value_b64' => [$dnBase64, 3 + strlen('dn:: ')]];
             $expect = [
@@ -146,9 +146,9 @@ final class AbstractNameSpecRuleTest extends TestCase
                 'init' => 'preset string',
                 'dn' => null,
                 'state' => [
-                    'cursor' => $cursor,
-                    'errors' => $errors,
-                    'records' => [],
+                    'getCursor()' => $cursor,
+                    'getErrors()' => $errors,
+                    'getRecords()' => [],
                 ],
             ];
 
@@ -166,15 +166,15 @@ final class AbstractNameSpecRuleTest extends TestCase
             $source = ['ł dn:: '.$dnBase64, 3 + strlen('dn:: ') + $case['offset']];
             $errors = $result ? [] : [
                 self::hasPropertiesIdenticalTo([
-                    'sourceOffset' => 3 + strlen('dn:: '),
-                    'sourceCharOffset' => 2 + mb_strlen('dn:: '),
-                    'message' => 'syntax error: the string is not a valid UTF8',
+                    'getSourceOffset()' => 3 + strlen('dn:: '),
+                    'getSourceCharOffset()' => 2 + mb_strlen('dn:: '),
+                    'getMessage()' => 'syntax error: the string is not a valid UTF8',
                 ]),
             ];
             $cursor = self::hasPropertiesIdenticalTo([
-                'offset' => 3 + strlen('dn:: ') + $case['offset'],
-                'sourceOffset' => 3 + strlen('dn:: ') + $case['offset'],
-                'sourceCharOffset' => 2 + mb_strlen('dn:: ') + $case['charOffset'],
+                'getOffset()' => 3 + strlen('dn:: ') + $case['offset'],
+                'getSourceOffset()' => 3 + strlen('dn:: ') + $case['offset'],
+                'getSourceCharOffset()' => 2 + mb_strlen('dn:: ') + $case['charOffset'],
             ]);
             $matches = [[$dnBase64, 3 + strlen('dn:: ')], 'value_b64' => [$dnBase64, 3 + strlen('dn:: ')]];
             $expect = [
@@ -182,9 +182,9 @@ final class AbstractNameSpecRuleTest extends TestCase
                 'init' => 'preset string',
                 'dn' => $result ? $case['dn'] : null,
                 'state' => [
-                    'cursor' => $cursor,
-                    'errors' => $errors,
-                    'records' => [],
+                    'getCursor()' => $cursor,
+                    'getErrors()' => $errors,
+                    'getRecords()' => [],
                 ],
             ];
 
@@ -207,15 +207,15 @@ final class AbstractNameSpecRuleTest extends TestCase
             $dnOffset = strlen('dn:'.$sep) + $case[2];
             $errors = $result ? [] : [
                 self::hasPropertiesIdenticalTo([
-                    'sourceOffset' => $dnOffset,
-                    'sourceCharOffset' => $dnOffset,
-                    'message' => 'syntax error: '.$message,
+                    'getSourceOffset()' => $dnOffset,
+                    'getSourceCharOffset()' => $dnOffset,
+                    'getMessage()' => 'syntax error: '.$message,
                 ]),
             ];
             $cursor = self::hasPropertiesIdenticalTo([
-                'offset' => strlen($source[0]),
-                'sourceOffset' => strlen($source[0]),
-                'sourceCharOffset' => mb_strlen($source[0]),
+                'getOffset()' => strlen($source[0]),
+                'getSourceOffset()' => strlen($source[0]),
+                'getSourceCharOffset()' => mb_strlen($source[0]),
             ]);
 
             $dnKey = $type === 'BASE64' ? 'value_b64' : 'value_safe';
@@ -226,9 +226,9 @@ final class AbstractNameSpecRuleTest extends TestCase
                 'init' => 'preset string',
                 'dn' => null,
                 'state' => [
-                    'cursor' => $cursor,
-                    'errors' => $errors,
-                    'records' => [],
+                    'getCursor()' => $cursor,
+                    'getErrors()' => $errors,
+                    'getRecords()' => [],
                 ],
             ];
 
@@ -250,19 +250,19 @@ final class AbstractNameSpecRuleTest extends TestCase
                     'init'   => 'preset string',
                     'dn'     => null,
                     'state'  => [
-                        'cursor' => self::hasPropertiesIdenticalTo([
-                            'offset' => 6,
-                            'sourceOffset' => 6,
-                            'sourceCharOffset' => 6,
+                        'getCursor()' => self::hasPropertiesIdenticalTo([
+                            'getOffset()' => 6,
+                            'getSourceOffset()' => 6,
+                            'getSourceCharOffset()' => 6,
                         ]),
-                        'errors' => [
+                        'getErrors()' => [
                             self::hasPropertiesIdenticalTo([
-                                'sourceOffset' => 6,
-                                'sourceCharOffset' => 6,
-                                'message' => 'internal error: missing or invalid capture groups "value_safe" and "value_b64"'
+                                'getSourceOffset()' => 6,
+                                'getSourceCharOffset()' => 6,
+                                'getMessage()' => 'internal error: missing or invalid capture groups "value_safe" and "value_b64"'
                             ]),
                         ],
-                        'records' => [],
+                        'getRecords()' => [],
                     ]
                 ]
             ];

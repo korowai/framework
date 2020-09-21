@@ -47,13 +47,13 @@ final class LdifModDnRecordTest extends TestCase
                     'cn=bar',
                 ],
                 'expect' => [
-                    'dn' => 'dc=example,dc=org',
-                    'newRdn' => 'cn=bar',
-                    'changeType' => 'modrdn',
-                    'deleteOldRdn' => false,
-                    'newSuperior' => null,
-                    'controls' => [],
-                    'snippet' => null,
+                    'getDn()' => 'dc=example,dc=org',
+                    'getNewRdn()' => 'cn=bar',
+                    'getChangeType()' => 'modrdn',
+                    'getDeleteOldRdn()' => false,
+                    'getNewSuperior()' => null,
+                    'getControls()' => [],
+                    'getSnippet()' => null,
                 ]
             ],
             '__construct("dc=example,dc=org", "cn=bar", [...])' => [
@@ -69,13 +69,13 @@ final class LdifModDnRecordTest extends TestCase
                     ],
                 ],
                 'expect' => [
-                    'dn' => 'dc=example,dc=org',
-                    'newRdn' => 'cn=bar',
-                    'changeType' => 'moddn',
-                    'deleteOldRdn' => true,
-                    'newSuperior' => 'dc=foobar,dc=com',
-                    'controls' => ['Y'],
-                    'snippet' => $snippet,
+                    'getDn()' => 'dc=example,dc=org',
+                    'getNewRdn()' => 'cn=bar',
+                    'getChangeType()' => 'moddn',
+                    'getDeleteOldRdn()' => true,
+                    'getNewSuperior()' => 'dc=foobar,dc=com',
+                    'getControls()' => ['Y'],
+                    'getSnippet()' => $snippet,
                 ]
             ]
         ];
@@ -159,7 +159,7 @@ final class LdifModDnRecordTest extends TestCase
         $record = new LdifModDnRecord("dc=example,dc=org", "cn=bar");
 
         $visitor->expects($this->once())
-                ->method('visitModDnRecord')
+                ->method('visitLdifModDnRecord')
                 ->with($record)
                 ->will($this->returnValue('ok'));
 

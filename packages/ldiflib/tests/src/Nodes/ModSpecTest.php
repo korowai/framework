@@ -44,8 +44,8 @@ final class ModSpecTest extends TestCase
                     'cn'
                 ],
                 'expect' => [
-                    'modType' => 'delete',
-                    'attribute' => 'cn',
+                    'getModType()' => 'delete',
+                    'getAttribute()' => 'cn',
                 ]
             ],
             'ModSpec("add", "cn", [])' => [
@@ -55,9 +55,9 @@ final class ModSpecTest extends TestCase
                     [ 'attrVal0' ]
                 ],
                 'expect' => [
-                    'modType' => 'add',
-                    'attribute' => 'cn',
-                    'attrValSpecs' => [ 'attrVal0' ]
+                    'getModType()' => 'add',
+                    'getAttribute()' => 'cn',
+                    'getAttrValSpecs()' => [ 'attrVal0' ]
                 ]
             ],
             'ModSpec("replace", "cn", [])' => [
@@ -67,9 +67,9 @@ final class ModSpecTest extends TestCase
                     [ 'attrVal0' ]
                 ],
                 'expect' => [
-                    'modType' => 'replace',
-                    'attribute' => 'cn',
-                    'attrValSpecs' => [ 'attrVal0' ]
+                    'getModType()' => 'replace',
+                    'getAttribute()' => 'cn',
+                    'getAttrValSpecs()' => [ 'attrVal0' ]
                 ]
             ],
         ];

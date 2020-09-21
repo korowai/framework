@@ -46,10 +46,10 @@ final class LdifDeleteRecordTest extends TestCase
                     'dc=example,dc=org',
                 ],
                 'expect' => [
-                    'dn' => 'dc=example,dc=org',
-                    'changeType' => 'delete',
-                    'controls' => [],
-                    'snippet' => null,
+                    'getDn()' => 'dc=example,dc=org',
+                    'getChangeType()' => 'delete',
+                    'getControls()' => [],
+                    'getSnippet()' => null,
                 ]
             ],
             '__construct("dc=example,dc=org", ["controls" => ["Y"], "snippet" => $snippet]' => [
@@ -61,10 +61,10 @@ final class LdifDeleteRecordTest extends TestCase
                     ],
                 ],
                 'expect' => [
-                    'dn' => 'dc=example,dc=org',
-                    'changeType' => 'delete',
-                    'controls' => ['Y'],
-                    'snippet' => $snippet
+                    'getDn()' => 'dc=example,dc=org',
+                    'getChangeType()' => 'delete',
+                    'getControls()' => ['Y'],
+                    'getSnippet()' => $snippet
                 ]
             ]
         ];
@@ -87,7 +87,7 @@ final class LdifDeleteRecordTest extends TestCase
         $record = new LdifDeleteRecord("dc=example,dc=org");
 
         $visitor->expects($this->once())
-                ->method('visitDeleteRecord')
+                ->method('visitLdifDeleteRecord')
                 ->with($record)
                 ->will($this->returnValue('ok'));
 

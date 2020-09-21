@@ -31,18 +31,6 @@ final class TestCaseTest extends TestCase
     {
         $this->assertUsesTrait(ParserTestHelpers::class, parent::class);
     }
-
-    public function test__objectPropertyGettersMap() : void
-    {
-        $expected = array_merge_recursive(
-            \Korowai\Testing\ObjectPropertyGettersMap::getObjectPropertyGettersMap(),
-            \Korowai\Testing\RfclibInterfaces\ObjectPropertyGettersMap::getObjectPropertyGettersMap(),
-            \Korowai\Testing\LdiflibInterfaces\ObjectPropertyGettersMap::getObjectPropertyGettersMap(),
-            \Korowai\Testing\Rfclib\ObjectPropertyGettersMap::getObjectPropertyGettersMap(),
-            \Korowai\Testing\Ldiflib\ObjectPropertyGettersMap::getObjectPropertyGettersMap(),
-        );
-        $this->assertSame($expected, parent::objectPropertyGettersMap());
-    }
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

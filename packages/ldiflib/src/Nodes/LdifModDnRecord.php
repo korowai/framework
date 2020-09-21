@@ -168,7 +168,7 @@ class LdifModDnRecord extends AbstractChangeRecord implements LdifModDnRecordInt
      */
     public function acceptRecordVisitor(RecordVisitorInterface $visitor)
     {
-        return $visitor->visitModDnRecord($this);
+        return $visitor->visitLdifModDnRecord($this);
     }
 }
 

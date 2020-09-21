@@ -46,11 +46,11 @@ final class LdifModifyRecordTest extends TestCase
                     'dc=example,dc=org',
                 ],
                 'expect' => [
-                    'dn' => 'dc=example,dc=org',
-                    'changeType' => 'modify',
-                    'modSpecs' => [],
-                    'controls' => [],
-                    'snippet' => null,
+                    'getDn()' => 'dc=example,dc=org',
+                    'getChangeType()' => 'modify',
+                    'getModSpecs()' => [],
+                    'getControls()' => [],
+                    'getSnippet()' => null,
                 ]
             ],
             '__construct("dc=example,dc=org", ["modSpecs" => ["X"], "controls" => ["Y"], "snippet" => $snippet]' => [
@@ -63,11 +63,11 @@ final class LdifModifyRecordTest extends TestCase
                     ],
                 ],
                 'expect' => [
-                    'dn' => 'dc=example,dc=org',
-                    'changeType' => 'modify',
-                    'modSpecs' => ['X'],
-                    'controls' => ['Y'],
-                    'snippet' => $snippet,
+                    'getDn()' => 'dc=example,dc=org',
+                    'getChangeType()' => 'modify',
+                    'getModSpecs()' => ['X'],
+                    'getControls()' => ['Y'],
+                    'getSnippet()' => $snippet,
                 ]
             ]
         ];
@@ -104,7 +104,7 @@ final class LdifModifyRecordTest extends TestCase
         $record = new LdifModifyRecord("dc=example,dc=org", ['X']);
 
         $visitor->expects($this->once())
-                ->method('visitModifyRecord')
+                ->method('visitLdifModifyRecord')
                 ->with($record)
                 ->will($this->returnValue('ok'));
 

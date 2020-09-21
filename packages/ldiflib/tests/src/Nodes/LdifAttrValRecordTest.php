@@ -53,9 +53,9 @@ final class LdifAttrValRecordTest extends TestCase
                     ['X']
                 ],
                 'expect' => [
-                    'dn' => 'dc=example,dc=org',
-                    'attrValSpecs' => ['X'],
-                    'snippet' => null,
+                    'getDn()' => 'dc=example,dc=org',
+                    'getAttrValSpecs()' => ['X'],
+                    'getSnippet()' => null,
                 ]
             ],
             '__construct("dc=example,dc=org", ["X"], ["snippet" => $snippet])' => [
@@ -65,9 +65,9 @@ final class LdifAttrValRecordTest extends TestCase
                     [ "snippet" => $snippet ],
                 ],
                 'expect' => [
-                    'dn' => 'dc=example,dc=org',
-                    'attrValSpecs' => ['X'],
-                    'snippet' => $snippet
+                    'getDn()' => 'dc=example,dc=org',
+                    'getAttrValSpecs()' => ['X'],
+                    'getSnippet()' => $snippet
                 ]
             ]
         ];
@@ -98,7 +98,7 @@ final class LdifAttrValRecordTest extends TestCase
         $record = new LdifAttrValRecord("dc=example,dc=org", []);
 
         $visitor->expects($this->once())
-                ->method('visitAttrValRecord')
+                ->method('visitLdifAttrValRecord')
                 ->with($record)
                 ->will($this->returnValue('ok'));
 

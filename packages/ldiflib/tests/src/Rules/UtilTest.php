@@ -37,11 +37,11 @@ final class UtilTest extends TestCase
                     'result' => '',
                     'string' => '',
                     'state' => [
-                        'cursor' => self::hasPropertiesIdenticalTo([
-                            'offset' => 0,
+                        'getCursor()' => self::hasPropertiesIdenticalTo([
+                            'getOffset()' => 0,
                         ]),
-                        'records' => [],
-                        'errors' => []
+                        'getRecords()' => [],
+                        'getErrors()' => []
                     ]
                 ],
                 '', 0
@@ -54,11 +54,11 @@ final class UtilTest extends TestCase
                 [
                     'result' => 'cn=John Smith,dc=example,dc=org',
                     'state' => [
-                        'cursor' => self::hasPropertiesIdenticalTo([
-                            'offset' => 47,
+                        'getCursor()' => self::hasPropertiesIdenticalTo([
+                            'getOffset()' => 47,
                         ]),
-                        'records' => [],
-                        'errors' => []
+                        'getRecords()' => [],
+                        'getErrors()' => []
                     ]
                 ],
                 'Y249Sm9obiBTbWl0aCxkYz1leGFtcGxlLGRjPW9yZw==', 3
@@ -71,11 +71,11 @@ final class UtilTest extends TestCase
                 [
                     'result' => 'tłuszcz',
                     'state' => [
-                        'cursor' => self::hasPropertiesIdenticalTo([
-                            'offset' => 15,
+                        'getCursor()' => self::hasPropertiesIdenticalTo([
+                            'getOffset()' => 15,
                         ]),
-                        'records' => [],
-                        'errors' => []
+                        'getRecords()' => [],
+                        'getErrors()' => []
                     ]
                 ],
                 'dMWCdXN6Y3o=', 3
@@ -87,11 +87,11 @@ final class UtilTest extends TestCase
                 [
                     'result' => "foo\x80",
                     'state' => [
-                        'cursor' => self::hasPropertiesIdenticalTo([
-                            'offset' => 11,
+                        'getCursor()' => self::hasPropertiesIdenticalTo([
+                            'getOffset()' => 11,
                         ]),
-                        'records' => [],
-                        'errors' => []
+                        'getRecords()' => [],
+                        'getErrors()' => []
                     ]
                 ],
                 'Zm9vgA==', 3
@@ -103,14 +103,14 @@ final class UtilTest extends TestCase
                 [
                     'result' => null,
                     'state' => [
-                        'cursor' => self::hasPropertiesIdenticalTo([
-                            'offset' => 10,
+                        'getCursor()' => self::hasPropertiesIdenticalTo([
+                            'getOffset()' => 10,
                         ]),
-                        'records' => [],
-                        'errors' => [
+                        'getRecords()' => [],
+                        'getErrors()' => [
                             self::hasPropertiesIdenticalTo([
-                                'sourceOffset' => 3,
-                                'message' => 'syntax error: invalid BASE64 string',
+                                'getSourceOffset()' => 3,
+                                'getMessage()' => 'syntax error: invalid BASE64 string',
                             ]),
                         ]
                     ]
@@ -144,11 +144,11 @@ final class UtilTest extends TestCase
                 [
                     'result' => true,
                     'state' => [
-                        'cursor' => self::hasPropertiesIdenticalTo([
-                            'offset' => 0,
+                        'getCursor()' => self::hasPropertiesIdenticalTo([
+                            'getOffset()' => 0,
                         ]),
-                        'records' => [],
-                        'errors' => []
+                        'getRecords()' => [],
+                        'getErrors()' => []
                     ]
                 ],
                 '', 0
@@ -162,11 +162,11 @@ final class UtilTest extends TestCase
                     'result' => true,
                     'string' => 'cn=John Smith,dc=example,dc=org',
                     'state' => [
-                        'cursor' => self::hasPropertiesIdenticalTo([
-                            'offset' => 13,
+                        'getCursor()' => self::hasPropertiesIdenticalTo([
+                            'getOffset()' => 13,
                         ]),
-                        'records' => [],
-                        'errors' => []
+                        'getRecords()' => [],
+                        'getErrors()' => []
                     ]
                 ],
                 "zażółć\ntę", 3
@@ -179,14 +179,14 @@ final class UtilTest extends TestCase
                 [
                     'result' => false,
                     'state' => [
-                        'cursor' => self::hasPropertiesIdenticalTo([
-                            'offset' => 6,
+                        'getCursor()' => self::hasPropertiesIdenticalTo([
+                            'getOffset()' => 6,
                         ]),
-                        'records' => [],
-                        'errors' => [
+                        'getRecords()' => [],
+                        'getErrors()' => [
                             self::hasPropertiesIdenticalTo([
-                                'message' => 'syntax error: the string is not a valid UTF8',
-                                'sourceOffset' => 3,
+                                'getMessage()' => 'syntax error: the string is not a valid UTF8',
+                                'getSourceOffset()' => 3,
                             ]),
                         ]
                     ]
@@ -246,21 +246,21 @@ final class UtilTest extends TestCase
             $end = $offset + strlen($string);
             $errors = $result ? []: [
                 self::hasPropertiesIdenticalTo([
-                    'sourceOffset' => $offset,
-                    'message' => 'syntax error: invalid DN syntax: "'.$string.'"'
+                    'getSourceOffset()' => $offset,
+                    'getMessage()' => 'syntax error: invalid DN syntax: "'.$string.'"'
                 ]),
             ];
             $inheritedCases[] = [
                 'source' => [$string, $end],
                 'string' => $string,
-                'offset' => $offset,
+                'getOffset()' => $offset,
                 'expect' => [
                     'result' => $result,
                     'state' => [
-                        'cursor' => self::hasPropertiesIdenticalTo([
-                            'offset' => $end,
+                        'getCursor()' => self::hasPropertiesIdenticalTo([
+                            'getOffset()' => $end,
                         ]),
-                        'errors' => $errors,
+                        'getErrors()' => $errors,
                     ]
                 ]
             ];
@@ -315,21 +315,21 @@ final class UtilTest extends TestCase
             $end = $offset + strlen($string);
             $errors = $result ? []: [
                 self::hasPropertiesIdenticalTo([
-                    'sourceOffset' => $offset,
-                    'message' => 'syntax error: invalid RDN syntax: "'.$string.'"'
+                    'getSourceOffset()' => $offset,
+                    'getMessage()' => 'syntax error: invalid RDN syntax: "'.$string.'"'
                 ]),
             ];
             $inheritedCases[] = [
                 'source' => [$string, $end],
                 'string' => $string,
-                'offset' => $offset,
+                'getOffset()' => $offset,
                 'expect' => [
                     'result' => $result,
                     'state' => [
-                        'cursor' => self::hasPropertiesIdenticalTo([
-                            'offset' => $end,
+                        'getCursor()' => self::hasPropertiesIdenticalTo([
+                            'getOffset()' => $end,
                         ]),
-                        'errors' => $errors,
+                        'getErrors()' => $errors,
                     ]
                 ]
             ];

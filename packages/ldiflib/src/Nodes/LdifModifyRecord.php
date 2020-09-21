@@ -89,7 +89,7 @@ class LdifModifyRecord extends AbstractChangeRecord implements LdifModifyRecordI
      */
     public function acceptRecordVisitor(RecordVisitorInterface $visitor)
     {
-        return $visitor->visitModifyRecord($this);
+        return $visitor->visitLdifModifyRecord($this);
     }
 }
 

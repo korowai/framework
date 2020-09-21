@@ -46,12 +46,12 @@ final class AbstractRfcRuleTest extends TestCase
     public static function construct__cases()
     {
         return [
-            '__construct(RuleSet1::clas, "ASSIGNMENT_INT")' => [
+            '__construct(RuleSet1::class, "ASSIGNMENT_INT")' => [
                 'args' => [RuleSet1::class, "ASSIGNMENT_INT"],
                 'expect' => [
-                    'rfcRule' => self::hasPropertiesIdenticalTo([
-                        'ruleSetClass' => RuleSet1::class,
-                        'name' => 'ASSIGNMENT_INT',
+                    'getRfcRule()' => self::hasPropertiesIdenticalTo([
+                        'ruleSetClass()' => RuleSet1::class,
+                        'name()' => 'ASSIGNMENT_INT',
                     ])
                 ]
             ],
@@ -85,14 +85,14 @@ final class AbstractRfcRuleTest extends TestCase
                 'expect'    => [
                     'result' => false,
                     'state' => [
-                        'cursor' => self::hasPropertiesIdenticalTo([
-                            'offset' => 0,
+                        'getCursor()' => self::hasPropertiesIdenticalTo([
+                            'getOffset()' => 0,
                         ]),
-                        'records' => [],
-                        'errors'  => [
+                        'getRecords()' => [],
+                        'getErrors()'  => [
                             self::hasPropertiesIdenticalTo([
-                                'message' => 'syntax error: missing "var_name =" in integer assignment',
-                                'sourceOffset' => 0
+                                'getMessage()' => 'syntax error: missing "var_name =" in integer assignment',
+                                'getSourceOffset()' => 0
                             ]),
                         ],
                     ],
@@ -107,11 +107,11 @@ final class AbstractRfcRuleTest extends TestCase
                 'expect'    => [
                     'result' => false,
                     'state' => [
-                        'cursor' => self::hasPropertiesIdenticalTo([
-                            'offset' => 0,
+                        'getCursor()' => self::hasPropertiesIdenticalTo([
+                            'getOffset()' => 0,
                         ]),
-                        'records' => [],
-                        'errors'  => [],
+                        'getRecords()' => [],
+                        'getErrors()'  => [],
                     ],
                     'matches' => [],
                 ]
@@ -124,14 +124,14 @@ final class AbstractRfcRuleTest extends TestCase
                 'expect'    => [
                     'result' => false,
                     'state' => [
-                        'cursor' => self::hasPropertiesIdenticalTo([
-                            'offset' => 0,
+                        'getCursor()' => self::hasPropertiesIdenticalTo([
+                            'getOffset()' => 0,
                         ]),
-                        'records' => [],
-                        'errors'  => [
+                        'getRecords()' => [],
+                        'getErrors()'  => [
                             self::hasPropertiesIdenticalTo([
-                                'message' => 'syntax error: missing "var_name =" in integer assignment',
-                                'sourceOffset' => 0
+                                'getMessage()' => 'syntax error: missing "var_name =" in integer assignment',
+                                'getSourceOffset()' => 0
                             ]),
                         ],
                     ],
@@ -151,11 +151,11 @@ final class AbstractRfcRuleTest extends TestCase
                 'expect'    => [
                     'result' => false,
                     'state' => [
-                        'cursor' => self::hasPropertiesIdenticalTo([
-                            'offset' => 0,
+                        'getCursor()' => self::hasPropertiesIdenticalTo([
+                            'getOffset()' => 0,
                         ]),
-                        'records' => [],
-                        'errors'  => [],
+                        'getRecords()' => [],
+                        'getErrors()'  => [],
                     ],
                     'matches' => [
                         false,
@@ -173,14 +173,14 @@ final class AbstractRfcRuleTest extends TestCase
                 'expect'    => [
                     'result' => false,
                     'state' => [
-                        'cursor' => self::hasPropertiesIdenticalTo([
-                            'offset' => 6,
+                        'getCursor()' => self::hasPropertiesIdenticalTo([
+                            'getOffset()' => 6,
                         ]),
-                        'records' => [],
-                        'errors'  => [
+                        'getRecords()' => [],
+                        'getErrors()'  => [
                             self::hasPropertiesIdenticalTo([
-                                'sourceOffset' => 6,
-                                'message' => 'syntax error: malformed integer value'
+                                'getSourceOffset()' => 6,
+                                'getMessage()' => 'syntax error: malformed integer value'
                             ]),
                         ],
                     ],
@@ -200,14 +200,14 @@ final class AbstractRfcRuleTest extends TestCase
                 'expect'    => [
                     'result' => false,
                     'state' => [
-                        'cursor' => self::hasPropertiesIdenticalTo([
-                            'offset' => 9,
+                        'getCursor()' => self::hasPropertiesIdenticalTo([
+                            'getOffset()' => 9,
                         ]),
-                        'records' => [],
-                        'errors'  => [
+                        'getRecords()' => [],
+                        'getErrors()'  => [
                             self::hasPropertiesIdenticalTo([
-                                'sourceOffset' => 6,
-                                'message' => 'syntax error: malformed integer value'
+                                'getSourceOffset()' => 6,
+                                'getMessage()' => 'syntax error: malformed integer value'
                             ]),
                         ],
                     ],
@@ -227,14 +227,14 @@ final class AbstractRfcRuleTest extends TestCase
                 'expect'    => [
                     'result' => false,
                     'state' => [
-                        'cursor' => self::hasPropertiesIdenticalTo([
-                            'offset' => 9,
+                        'getCursor()' => self::hasPropertiesIdenticalTo([
+                            'getOffset()' => 9,
                         ]),
-                        'records' => [],
-                        'errors'  => [
+                        'getRecords()' => [],
+                        'getErrors()'  => [
                             self::hasPropertiesIdenticalTo([
-                                'sourceOffset' => 9,
-                                'message' => 'syntax error: malformed integer value'
+                                'getSourceOffset()' => 9,
+                                'getMessage()' => 'syntax error: malformed integer value'
                             ])
                         ],
                     ],
@@ -254,11 +254,11 @@ final class AbstractRfcRuleTest extends TestCase
                 'expect'    => [
                     'result' => true,
                     'state' => [
-                        'cursor' => self::hasPropertiesIdenticalTo([
-                            'offset' => 10,
+                        'getCursor()' => self::hasPropertiesIdenticalTo([
+                            'getOffset()' => 10,
                         ]),
-                        'records' => [],
-                        'errors'  => [],
+                        'getRecords()' => [],
+                        'getErrors()'  => [],
                     ],
                     'matches' => [
                         ['var = 123;', 0],

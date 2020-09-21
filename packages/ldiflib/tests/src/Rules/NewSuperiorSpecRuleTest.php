@@ -36,9 +36,9 @@ final class NewSuperiorSpecRuleTest extends TestCase
             '__construct()' => [
                 'args'   => [],
                 'expect' => [
-                    'rfcRule' => self::hasPropertiesIdenticalTo([
-                        'ruleSetClass' => Rfc2849::class,
-                        'name' => 'NEWSUPERIOR_SPEC',
+                    'getRfcRule()' => self::hasPropertiesIdenticalTo([
+                        'ruleSetClass()' => Rfc2849::class,
+                        'name()' => 'NEWSUPERIOR_SPEC',
                     ])
                 ]
             ],
@@ -71,24 +71,24 @@ final class NewSuperiorSpecRuleTest extends TestCase
             $source = ['ł newsuperior: '.$dn, 3 + strlen('newsuperior: ') + strlen($dn)];
             $errors = $result ? [] : [
                 self::hasPropertiesIdenticalTo([
-                    'sourceOffset' => 3 + strlen('newsuperior: '),
-                    'sourceCharOffset' => 2 + mb_strlen('newsuperior: '),
-                    'message' => 'syntax error: invalid DN syntax: "'.$dn.'"',
+                    'getSourceOffset()' => 3 + strlen('newsuperior: '),
+                    'getSourceCharOffset()' => 2 + mb_strlen('newsuperior: '),
+                    'getMessage()' => 'syntax error: invalid DN syntax: "'.$dn.'"',
                 ])
             ];
             $matches = [[$dn, 3 + strlen('newsuperior: ')], 'value_safe' => [$dn, 3 + strlen('newsuperior: ')]];
             $cursor = self::hasPropertiesIdenticalTo([
-                'offset' => 3 + strlen('newsuperior: ') + strlen($dn),
-                'sourceOffset' => 3 + strlen('newsuperior: ') + strlen($dn),
-                'sourceCharOffset' => 2 + mb_strlen('newsuperior: ') + mb_strlen($dn),
+                'getOffset()' => 3 + strlen('newsuperior: ') + strlen($dn),
+                'getSourceOffset()' => 3 + strlen('newsuperior: ') + strlen($dn),
+                'getSourceCharOffset()' => 2 + mb_strlen('newsuperior: ') + mb_strlen($dn),
             ]);
             $expect = [
                 'result' => $result,
-                'dn' => $result ? $dn : null,
+                'getDn()' => $result ? $dn : null,
                 'state' => [
-                    'cursor' => $cursor,
-                    'errors' => $errors,
-                    'records' => [],
+                    'getCursor()' => $cursor,
+                    'getErrors()' => $errors,
+                    'getRecords()' => [],
                 ],
             ];
 
@@ -103,24 +103,24 @@ final class NewSuperiorSpecRuleTest extends TestCase
             $source = ['ł newsuperior:: '.$dnBase64, 3 + strlen('newsuperior:: ') + strlen($dnBase64)];
             $errors = $result ? [] : [
                 self::hasPropertiesIdenticalTo([
-                    'sourceOffset' => 3 + strlen('newsuperior:: '),
-                    'sourceCharOffset' => 2 + strlen('newsuperior:: '),
-                    'message' => 'syntax error: invalid DN syntax: "'.$dn.'"',
+                    'getSourceOffset()' => 3 + strlen('newsuperior:: '),
+                    'getSourceCharOffset()' => 2 + strlen('newsuperior:: '),
+                    'getMessage()' => 'syntax error: invalid DN syntax: "'.$dn.'"',
                 ]),
             ];
             $matches = [[$dnBase64, 3 + strlen('newsuperior:: ')], 'value_b64' => [$dnBase64, 3 + strlen('newsuperior:: ')]];
             $cursor = self::hasPropertiesIdenticalTo([
-                'offset' => 3 + strlen('newsuperior:: ') + strlen($dnBase64),
-                'sourceOffset' => 3 + strlen('newsuperior:: ') + strlen($dnBase64),
-                'sourceCharOffset' => 2 + strlen('newsuperior:: ') + mb_strlen($dnBase64),
+                'getOffset()' => 3 + strlen('newsuperior:: ') + strlen($dnBase64),
+                'getSourceOffset()' => 3 + strlen('newsuperior:: ') + strlen($dnBase64),
+                'getSourceCharOffset()' => 2 + strlen('newsuperior:: ') + mb_strlen($dnBase64),
             ]);
             $expect = [
                 'result' => $result,
-                'dn' => $result ? $dn : null,
+                'getDn()' => $result ? $dn : null,
                 'state' => [
-                    'cursor' => $cursor,
-                    'errors' => $errors,
-                    'records' => [],
+                    'getCursor()' => $cursor,
+                    'getErrors()' => $errors,
+                    'getRecords()' => [],
                 ],
             ];
 
@@ -131,28 +131,28 @@ final class NewSuperiorSpecRuleTest extends TestCase
             $dnBase64 = $case[0];
             $result = false;
             //          023
-            $source = ['ł newsuperior:: '.$dnBase64, 3 + strlen('newsuperior:: ') + $case['offset']];
+            $source = ['ł newsuperior:: '.$dnBase64, 3 + strlen('newsuperior:: ') + $case['getOffset()']];
             $errors = $result ? [] : [
                 self::hasPropertiesIdenticalTo([
-                    'sourceOffset' => 3 + strlen('newsuperior:: '),
-                    'sourceCharOffset' => 2 + strlen('newsuperior:: '),
-                    'message' => 'syntax error: invalid BASE64 string',
+                    'getSourceOffset()' => 3 + strlen('newsuperior:: '),
+                    'getSourceCharOffset()' => 2 + strlen('newsuperior:: '),
+                    'getMessage()' => 'syntax error: invalid BASE64 string',
                 ]),
             ];
             $cursor = self::hasPropertiesIdenticalTo([
-                'offset' => 3 + strlen('newsuperior:: ') + $case['offset'],
-                'sourceOffset' => 3 + strlen('newsuperior:: ') + $case['offset'],
-                'sourceCharOffset' => 2 + strlen('newsuperior:: ') + $case['offset'],
+                'getOffset()' => 3 + strlen('newsuperior:: ') + $case['getOffset()'],
+                'getSourceOffset()' => 3 + strlen('newsuperior:: ') + $case['getOffset()'],
+                'getSourceCharOffset()' => 2 + strlen('newsuperior:: ') + $case['getOffset()'],
             ]);
             $matches = [[$dnBase64, 3 + strlen('newsuperior:: ')], 'value_b64' => [$dnBase64, 3 + strlen('newsuperior:: ')]];
             $expect = [
                 'result' => $result,
                 'init' => 'preset string',
-                'dn' => null,
+                'getDn()' => null,
                 'state' => [
-                    'cursor' => $cursor,
-                    'errors' => $errors,
-                    'records' => [],
+                    'getCursor()' => $cursor,
+                    'getErrors()' => $errors,
+                    'getRecords()' => [],
                 ],
             ];
 
@@ -160,35 +160,35 @@ final class NewSuperiorSpecRuleTest extends TestCase
         }, [
         //    0000000 00
         //    0123456 78
-            ["Zm9vgA=\n", 'offset' => 7, 'charOffset' => 7],
+            ["Zm9vgA=\n", 'getOffset()' => 7, 'charOffset' => 7],
         ]);
 
         $base64InvalidUtf8StringCases = array_map(function ($case) {
             $dnBase64 = $case[0];
             $result = false;
             //          02345678
-            $source = ['ł newsuperior:: '.$dnBase64, 3 + strlen('newsuperior:: ') + $case['offset']];
+            $source = ['ł newsuperior:: '.$dnBase64, 3 + strlen('newsuperior:: ') + $case['getOffset()']];
             $errors = $result ? [] : [
                 self::hasPropertiesIdenticalTo([
-                    'sourceOffset' => 3 + strlen('newsuperior:: '),
-                    'sourceCharOffset' => 2 + strlen('newsuperior:: '),
-                    'message' => 'syntax error: the string is not a valid UTF8',
+                    'getSourceOffset()' => 3 + strlen('newsuperior:: '),
+                    'getSourceCharOffset()' => 2 + strlen('newsuperior:: '),
+                    'getMessage()' => 'syntax error: the string is not a valid UTF8',
                 ]),
             ];
             $cursor = self::hasPropertiesIdenticalTo([
-                'offset' => 3 + strlen('newsuperior:: ') + $case['offset'],
-                'sourceOffset' => 3 + strlen('newsuperior:: ') + $case['offset'],
-                'sourceCharOffset' => 2 + strlen('newsuperior:: ') + $case['charOffset'],
+                'getOffset()' => 3 + strlen('newsuperior:: ') + $case['getOffset()'],
+                'getSourceOffset()' => 3 + strlen('newsuperior:: ') + $case['getOffset()'],
+                'getSourceCharOffset()' => 2 + strlen('newsuperior:: ') + $case['charOffset'],
             ]);
             $matches = [[$dnBase64, 3 + strlen('newsuperior:: ')], 'value_b64' => [$dnBase64, 3 + strlen('newsuperior:: ')]];
             $expect = [
                 'result' => $result,
                 'init' => 'preset string',
-                'dn' => $result ? $case['dn'] : null,
+                'getDn()' => $result ? $case['getDn()'] : null,
                 'state' => [
-                    'cursor' => $cursor,
-                    'errors' => $errors,
-                    'records' => [],
+                    'getCursor()' => $cursor,
+                    'getErrors()' => $errors,
+                    'getRecords()' => [],
                 ],
             ];
 
@@ -196,7 +196,7 @@ final class NewSuperiorSpecRuleTest extends TestCase
         }, [
         //    000000000
         //    012345678
-            ["YXNkgGZm", 'offset' => 8, 'charOffset' => 8, 'dn' => "asd\x80ff"],
+            ["YXNkgGZm", 'getOffset()' => 8, 'charOffset' => 8, 'getDn()' => "asd\x80ff"],
         ]);
 
         $malformedStringCases = array_map(function ($case) {
@@ -211,15 +211,15 @@ final class NewSuperiorSpecRuleTest extends TestCase
             $dnOffset = strlen('newsuperior:'.$sep) + $case[2];
             $errors = $result ? [] : [
                 self::hasPropertiesIdenticalTo([
-                    'sourceOffset' => $dnOffset,
-                    'sourceCharOffset' => $dnOffset,
-                    'message' => 'syntax error: '.$message,
+                    'getSourceOffset()' => $dnOffset,
+                    'getSourceCharOffset()' => $dnOffset,
+                    'getMessage()' => 'syntax error: '.$message,
                 ]),
             ];
             $cursor = self::hasPropertiesIdenticalTo([
-                'offset' => strlen($source[0]),
-                'sourceOffset' => strlen($source[0]),
-                'sourceCharOffset' => mb_strlen($source[0]),
+                'getOffset()' => strlen($source[0]),
+                'getSourceOffset()' => strlen($source[0]),
+                'getSourceCharOffset()' => mb_strlen($source[0]),
             ]);
 
             $dnKey = $type === 'BASE64' ? 'value_b64' : 'value_safe';
@@ -228,11 +228,11 @@ final class NewSuperiorSpecRuleTest extends TestCase
             $expect = [
                 'result' => $result,
                 'init' => 'preset string',
-                'dn' => null,
+                'getDn()' => null,
                 'state' => [
-                    'cursor' => $cursor,
-                    'errors' => $errors,
-                    'records' => [],
+                    'getCursor()' => $cursor,
+                    'getErrors()' => $errors,
+                    'getRecords()' => [],
                 ],
             ];
 
@@ -252,21 +252,21 @@ final class NewSuperiorSpecRuleTest extends TestCase
                 'expect'   => [
                     'result' => false,
                     'init'   => 'preset string',
-                    'dn'     => null,
+                    'getDn()'     => null,
                     'state'  => [
-                        'cursor' => self::hasPropertiesIdenticalTo([
-                            'offset' => 6,
-                            'sourceOffset' => 6,
-                            'sourceCharOffset' => 6,
+                        'getCursor()' => self::hasPropertiesIdenticalTo([
+                            'getOffset()' => 6,
+                            'getSourceOffset()' => 6,
+                            'getSourceCharOffset()' => 6,
                         ]),
-                        'errors' => [
+                        'getErrors()' => [
                             self::hasPropertiesIdenticalTo([
-                                'sourceOffset' => 6,
-                                'sourceCharOffset' => 6,
-                                'message' => 'internal error: missing or invalid capture groups "value_safe" and "value_b64"'
+                                'getSourceOffset()' => 6,
+                                'getSourceCharOffset()' => 6,
+                                'getMessage()' => 'internal error: missing or invalid capture groups "value_safe" and "value_b64"'
                             ]),
                         ],
-                        'records' => [],
+                        'getRecords()' => [],
                     ]
                 ]
             ];
@@ -302,7 +302,7 @@ final class NewSuperiorSpecRuleTest extends TestCase
         $result = $rule->parseMatched($state, $matches, $dn);
 
         $this->assertSame($expect['result'], $result);
-        $this->assertSame($expect['dn'], $dn);
+        $this->assertSame($expect['getDn()'], $dn);
         $this->assertHasPropertiesSameAs($expect['state'], $state);
     }
 
@@ -317,9 +317,9 @@ final class NewSuperiorSpecRuleTest extends TestCase
             $optional = $args[0] ?? false;
             $errors = $optional ? [] : [
                 self::hasPropertiesIdenticalTo([
-                    'sourceOffset' => $case['offset'],
-                    'sourceCharOffset' => $case['charOffset'],
-                    'message' => 'syntax error: expected "newsuperior:" (RFC2849)',
+                    'getSourceOffset()' => $case['getOffset()'],
+                    'getSourceCharOffset()' => $case['charOffset'],
+                    'getMessage()' => 'syntax error: expected "newsuperior:" (RFC2849)',
                 ]),
             ];
             return [
@@ -328,26 +328,26 @@ final class NewSuperiorSpecRuleTest extends TestCase
                 'expect' => [
                     'result' => false,
                     'init' => 'preset string',
-                    'dn' => null,
+                    'getDn()' => null,
                     'state' => [
-                        'cursor' => self::hasPropertiesIdenticalTo([
-                            'offset' => $case['offset'],
-                            'sourceOffset' => $case['offset'],
-                            'sourceCharOffset' => $case['charOffset']
+                        'getCursor()' => self::hasPropertiesIdenticalTo([
+                            'getOffset()' => $case['getOffset()'],
+                            'getSourceOffset()' => $case['getOffset()'],
+                            'getSourceCharOffset()' => $case['charOffset']
                         ]),
-                        'errors' => $errors,
-                        'records' => [],
+                        'getErrors()' => $errors,
+                        'getRecords()' => [],
                     ],
                 ]
             ];
         }, [
-            [["ł ", 3],         'offset' => 3, 'charOffset' => 2],
-            [["ł ", 3],         'offset' => 3, 'charOffset' => 2, 'args' => [false]],
-            [["ł ", 3],         'offset' => 3, 'charOffset' => 2, 'args' => [true]],
-            [["ł x", 3],        'offset' => 3, 'charOffset' => 2],
-            [["ł dns:", 3],     'offset' => 3, 'charOffset' => 2],
-            [["ł dn :", 3],     'offset' => 3, 'charOffset' => 2],
-            [["ł dn\n:", 3],    'offset' => 3, 'charOffset' => 2],
+            [["ł ", 3],         'getOffset()' => 3, 'charOffset' => 2],
+            [["ł ", 3],         'getOffset()' => 3, 'charOffset' => 2, 'args' => [false]],
+            [["ł ", 3],         'getOffset()' => 3, 'charOffset' => 2, 'args' => [true]],
+            [["ł x", 3],        'getOffset()' => 3, 'charOffset' => 2],
+            [["ł dns:", 3],     'getOffset()' => 3, 'charOffset' => 2],
+            [["ł dn :", 3],     'getOffset()' => 3, 'charOffset' => 2],
+            [["ł dn\n:", 3],    'getOffset()' => 3, 'charOffset' => 2],
         ]);
 
 
@@ -358,23 +358,23 @@ final class NewSuperiorSpecRuleTest extends TestCase
             $source = ['ł newsuperior: '.$dn, 3];
             $errors = $result ? [] : [
                 self::hasPropertiesIdenticalTo([
-                    'sourceOffset' => 3 + strlen('newsuperior: '),
-                    'sourceCharOffset' => 2 + mb_strlen('newsuperior: '),
-                    'message' => 'syntax error: invalid DN syntax: "'.$dn.'"',
+                    'getSourceOffset()' => 3 + strlen('newsuperior: '),
+                    'getSourceCharOffset()' => 2 + mb_strlen('newsuperior: '),
+                    'getMessage()' => 'syntax error: invalid DN syntax: "'.$dn.'"',
                 ]),
             ];
             $cursor = self::hasPropertiesIdenticalTo([
-                'offset' => 3 + strlen('newsuperior: ') + strlen($dn),
-                'sourceOffset' => 3 + strlen('newsuperior: ') + strlen($dn),
-                'sourceCharOffset' => 2 + mb_strlen('newsuperior: ') + mb_strlen($dn),
+                'getOffset()' => 3 + strlen('newsuperior: ') + strlen($dn),
+                'getSourceOffset()' => 3 + strlen('newsuperior: ') + strlen($dn),
+                'getSourceCharOffset()' => 2 + mb_strlen('newsuperior: ') + mb_strlen($dn),
             ]);
             $expect = [
                 'result' => $result,
-                'dn' => $result ? $dn : null,
+                'getDn()' => $result ? $dn : null,
                 'state' => [
-                    'cursor' => $cursor,
-                    'errors' => $errors,
-                    'records' => [],
+                    'getCursor()' => $cursor,
+                    'getErrors()' => $errors,
+                    'getRecords()' => [],
                 ],
             ];
 
@@ -393,23 +393,23 @@ final class NewSuperiorSpecRuleTest extends TestCase
             $source = ['ł newsuperior:: '.$dnBase64, 3];
             $errors = $result ? [] : [
                 self::hasPropertiesIdenticalTo([
-                    'sourceOffset' => 3 + strlen('newsuperior:: '),
-                    'sourceCharOffset' => 2 + mb_strlen('newsuperior:: '),
-                    'message' => 'syntax error: invalid DN syntax: "'.$dn.'"',
+                    'getSourceOffset()' => 3 + strlen('newsuperior:: '),
+                    'getSourceCharOffset()' => 2 + mb_strlen('newsuperior:: '),
+                    'getMessage()' => 'syntax error: invalid DN syntax: "'.$dn.'"',
                 ]),
             ];
             $cursor = self::hasPropertiesIdenticalTo([
-                'offset' => 3 + strlen('newsuperior:: ') + strlen($dnBase64),
-                'sourceOffset' => 3 + strlen('newsuperior:: ') + strlen($dnBase64),
-                'sourceCharOffset' => 2 + mb_strlen('newsuperior:: ') + mb_strlen($dnBase64),
+                'getOffset()' => 3 + strlen('newsuperior:: ') + strlen($dnBase64),
+                'getSourceOffset()' => 3 + strlen('newsuperior:: ') + strlen($dnBase64),
+                'getSourceCharOffset()' => 2 + mb_strlen('newsuperior:: ') + mb_strlen($dnBase64),
             ]);
             $expect = [
                 'result' => $result,
-                'dn' => $result ? $dn : null,
+                'getDn()' => $result ? $dn : null,
                 'state' => [
-                    'cursor' => $cursor,
-                    'errors' => $errors,
-                    'records' => [],
+                    'getCursor()' => $cursor,
+                    'getErrors()' => $errors,
+                    'getRecords()' => [],
                 ],
             ];
 
@@ -427,24 +427,24 @@ final class NewSuperiorSpecRuleTest extends TestCase
             $source = ['ł newsuperior:: '.$dnBase64, 3];
             $errors = $result ? [] : [
                 self::hasPropertiesIdenticalTo([
-                    'sourceOffset' => 3 + strlen('newsuperior:: '),
-                    'sourceCharOffset' => 2 + mb_strlen('newsuperior:: '),
-                    'message' => 'syntax error: invalid BASE64 string',
+                    'getSourceOffset()' => 3 + strlen('newsuperior:: '),
+                    'getSourceCharOffset()' => 2 + mb_strlen('newsuperior:: '),
+                    'getMessage()' => 'syntax error: invalid BASE64 string',
                 ]),
             ];
             $cursor = self::hasPropertiesIdenticalTo([
-                'offset' => 3 + strlen('newsuperior:: ') + $case['offset'],
-                'sourceOffset' => 3 + strlen('newsuperior:: ') + $case['offset'],
-                'sourceCharOffset' => 2 + mb_strlen('newsuperior:: ') + $case['offset'],
+                'getOffset()' => 3 + strlen('newsuperior:: ') + $case['getOffset()'],
+                'getSourceOffset()' => 3 + strlen('newsuperior:: ') + $case['getOffset()'],
+                'getSourceCharOffset()' => 2 + mb_strlen('newsuperior:: ') + $case['getOffset()'],
             ]);
             $expect = [
                 'result' => $result,
                 'init' => 'preset string',
-                'dn' => null,
+                'getDn()' => null,
                 'state' => [
-                    'cursor' => $cursor,
-                    'errors' => $errors,
-                    'records' => [],
+                    'getCursor()' => $cursor,
+                    'getErrors()' => $errors,
+                    'getRecords()' => [],
                 ],
             ];
 
@@ -456,7 +456,7 @@ final class NewSuperiorSpecRuleTest extends TestCase
         }, [
         //    0000000 00
         //    0123456 78
-            ["Zm9vgA=\n", 'offset' => 8, 'charOffset' => 8],
+            ["Zm9vgA=\n", 'getOffset()' => 8, 'charOffset' => 8],
         ]);
 
         $base64InvalidUtf8StringCases = array_map(function ($case) {
@@ -466,24 +466,24 @@ final class NewSuperiorSpecRuleTest extends TestCase
             $source = ['ł newsuperior:: '.$dnBase64, 3];
             $errors = $result ? [] : [
                 self::hasPropertiesIdenticalTo([
-                    'sourceOffset' => 3 + strlen('newsuperior:: '),
-                    'sourceCharOffset' => 2 + mb_strlen('newsuperior:: '),
-                    'message' => 'syntax error: the string is not a valid UTF8',
+                    'getSourceOffset()' => 3 + strlen('newsuperior:: '),
+                    'getSourceCharOffset()' => 2 + mb_strlen('newsuperior:: '),
+                    'getMessage()' => 'syntax error: the string is not a valid UTF8',
                 ])
             ];
             $cursor = self::hasPropertiesIdenticalTo([
-                'offset' => 3 + strlen('newsuperior:: ') + $case['offset'],
-                'sourceOffset' => 3 + strlen('newsuperior:: ') + $case['offset'],
-                'sourceCharOffset' => 2 + mb_strlen('newsuperior:: ') + $case['charOffset'],
+                'getOffset()' => 3 + strlen('newsuperior:: ') + $case['getOffset()'],
+                'getSourceOffset()' => 3 + strlen('newsuperior:: ') + $case['getOffset()'],
+                'getSourceCharOffset()' => 2 + mb_strlen('newsuperior:: ') + $case['charOffset'],
             ]);
             $expect = [
                 'result' => $result,
                 'init' => 'preset string',
-                'dn' => null,
+                'getDn()' => null,
                 'state' => [
-                    'cursor' => $cursor,
-                    'errors' => $errors,
-                    'records' => [],
+                    'getCursor()' => $cursor,
+                    'getErrors()' => $errors,
+                    'getRecords()' => [],
                 ],
             ];
 
@@ -495,7 +495,7 @@ final class NewSuperiorSpecRuleTest extends TestCase
         }, [
         //    00000000 00
         //    01234567 89
-            ["YXNkgGZm\n", 'offset' => 9, 'charOffset' => 9, 'dn' => "asd\x80ff"],
+            ["YXNkgGZm\n", 'getOffset()' => 9, 'charOffset' => 9, 'getDn()' => "asd\x80ff"],
         ]);
 
         $malformedStringCases = array_map(function ($case) {
@@ -508,24 +508,24 @@ final class NewSuperiorSpecRuleTest extends TestCase
             $message = 'malformed '.$type.'-STRING (RFC2849)';
             $errors = $result ? [] : [
                 self::hasPropertiesIdenticalTo([
-                    'sourceOffset' => strlen('newsuperior:'.$sep) + $case[2],
-                    'sourceCharOffset' => mb_strlen('newsuperior:'.$sep) + $case[2],
-                    'message' => 'syntax error: '.$message,
+                    'getSourceOffset()' => strlen('newsuperior:'.$sep) + $case[2],
+                    'getSourceCharOffset()' => mb_strlen('newsuperior:'.$sep) + $case[2],
+                    'getMessage()' => 'syntax error: '.$message,
                 ]),
             ];
             $cursor = self::hasPropertiesIdenticalTo([
-                'offset' => strlen($source[0]),
-                'sourceOffset' => strlen($source[0]),
-                'sourceCharOffset' => mb_strlen($source[0]),
+                'getOffset()' => strlen($source[0]),
+                'getSourceOffset()' => strlen($source[0]),
+                'getSourceCharOffset()' => mb_strlen($source[0]),
             ]);
             $expect = [
                 'result' => $result,
                 'init' => 'preset string',
-                'dn' => null,
+                'getDn()' => null,
                 'state' => [
-                    'cursor' => $cursor,
-                    'errors' => $errors,
-                    'records' => [],
+                    'getCursor()' => $cursor,
+                    'getErrors()' => $errors,
+                    'getRecords()' => [],
                 ],
             ];
 
@@ -567,7 +567,7 @@ final class NewSuperiorSpecRuleTest extends TestCase
         $result = $rule->parse($state, $dn, ...$args);
 
         $this->assertSame($expect['result'], $result);
-        $this->assertSame($expect['dn'], $dn);
+        $this->assertSame($expect['getDn()'], $dn);
         $this->assertHasPropertiesSameAs($expect['state'], $state);
     }
 }

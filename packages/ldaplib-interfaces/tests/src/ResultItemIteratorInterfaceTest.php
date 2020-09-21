@@ -43,12 +43,6 @@ final class ResultItemIteratorInterfaceTest extends TestCase
         $this->assertImplementsInterface(ResultItemIteratorInterface::class, $dummy);
     }
 
-    public function test__objectPropertyGettersMap() : void
-    {
-        $expect = [];
-        $this->assertObjectPropertyGetters($expect, ResultItemIteratorInterface::class);
-    }
-
     public function test__current() : void
     {
         $dummy = $this->createDummyInstance();

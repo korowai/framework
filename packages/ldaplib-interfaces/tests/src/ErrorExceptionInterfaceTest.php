@@ -39,14 +39,6 @@ final class ErrorExceptionInterfaceTest extends TestCase
         $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(ErrorExceptionInterface::class, $dummy);
     }
-
-    public function test__objectPropertyGettersMap() : void
-    {
-        $expect = [
-            'severity' => 'getSeverity',
-        ];
-        $this->assertObjectPropertyGetters($expect, ErrorExceptionInterface::class);
-    }
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

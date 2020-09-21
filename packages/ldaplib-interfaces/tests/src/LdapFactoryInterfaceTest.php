@@ -36,12 +36,6 @@ final class LdapFactoryInterfaceTest extends TestCase
         $this->assertImplementsInterface(LdapFactoryInterface::class, $dummy);
     }
 
-    public function test__objectPropertyGettersMap() : void
-    {
-        $expect = [];
-        $this->assertObjectPropertyGetters($expect, LdapFactoryInterface::class);
-    }
-
     public function test__createLdapInterface() : void
     {
         $dummy = $this->createDummyInstance();

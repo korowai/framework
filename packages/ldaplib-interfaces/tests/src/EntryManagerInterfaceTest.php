@@ -36,12 +36,6 @@ final class EntryManagerInterfaceTest extends TestCase
         $this->assertImplementsInterface(EntryManagerInterface::class, $dummy);
     }
 
-    public function test__objectPropertyGettersMap() : void
-    {
-        $expect = [];
-        $this->assertObjectPropertyGetters($expect, EntryManagerInterface::class);
-    }
-
     public function test__add() : void
     {
         $dummy = $this->createDummyInstance();

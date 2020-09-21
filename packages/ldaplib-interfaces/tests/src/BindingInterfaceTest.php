@@ -35,14 +35,6 @@ final class BindingInterfaceTest extends TestCase
         $this->assertImplementsInterface(BindingInterface::class, $dummy);
     }
 
-    public function test__objectPropertyGettersMap() : void
-    {
-        $expect = [
-            'isBound'   => 'isBound',
-        ];
-        $this->assertObjectPropertyGetters($expect, BindingInterface::class);
-    }
-
     public function test__isBound() : void
     {
         $dummy = $this->createDummyInstance();

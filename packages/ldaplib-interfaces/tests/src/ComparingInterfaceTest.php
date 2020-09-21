@@ -36,12 +36,6 @@ final class ComparingInterfaceTest extends TestCase
         $this->assertImplementsInterface(ComparingInterface::class, $dummy);
     }
 
-    public function test__objectPropertyGettersMap() : void
-    {
-        $expect = [];
-        $this->assertObjectPropertyGetters($expect, ComparingInterface::class);
-    }
-
     //
     // createCompareQuery()
     //

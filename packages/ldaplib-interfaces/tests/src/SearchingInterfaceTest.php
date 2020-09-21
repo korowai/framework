@@ -37,12 +37,6 @@ final class SearchingInterfaceTest extends TestCase
         $this->assertImplementsInterface(SearchingInterface::class, $dummy);
     }
 
-    public function test__objectPropertyGettersMap() : void
-    {
-        $expect = [];
-        $this->assertObjectPropertyGetters($expect, SearchingInterface::class);
-    }
-
     public function test__search() : void
     {
         $dummy = $this->createDummyInstance();

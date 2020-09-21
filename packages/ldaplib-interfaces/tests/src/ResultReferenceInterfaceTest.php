@@ -36,15 +36,6 @@ final class ResultReferenceInterfaceTest extends TestCase
         $this->assertImplementsInterface(ResultReferenceInterface::class, $dummy);
     }
 
-    public function test__objectPropertyGettersMap() : void
-    {
-        $expect = [
-            'referrals' => 'getReferrals',
-            'referralIterator' => 'getReferralIterator',
-        ];
-        $this->assertObjectPropertyGetters($expect, ResultReferenceInterface::class);
-    }
-
     public function test__getReferrals() : void
     {
         $dummy = $this->createDummyInstance();

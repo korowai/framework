@@ -39,12 +39,6 @@ final class LdapExceptionInterfaceTest extends TestCase
         $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(LdapExceptionInterface::class, $dummy);
     }
-
-    public function test__objectPropertyGettersMap() : void
-    {
-        $expect = [];
-        $this->assertObjectPropertyGetters($expect, LdapExceptionInterface::class);
-    }
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

@@ -36,14 +36,6 @@ final class SearchQueryInterfaceTest extends TestCase
         $this->assertImplementsInterface(SearchQueryInterface::class, $dummy);
     }
 
-    public function test__objectPropertyGettersMap() : void
-    {
-        $expect = [
-            'result'    => 'getResult'
-        ];
-        $this->assertObjectPropertyGetters($expect, SearchQueryInterface::class);
-    }
-
     public function test__execute() : void
     {
         $dummy = $this->createDummyInstance();

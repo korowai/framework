@@ -34,10 +34,10 @@ final class ContainerIntegrationTestTraitTest extends TestCase
                 ->method('setConfig')
                 ->with($this->anything())
                 ->will($this->returnCallback(
-                        function (string $config) use ($factory) : ContainerFactoryInterface {
-                            $factory->config = $config;
-                            return $factory;
-                        }
+                    function (string $config) use ($factory) : ContainerFactoryInterface {
+                        $factory->config = $config;
+                        return $factory;
+                    }
                 ));
 
         $factory->expects($this->once())

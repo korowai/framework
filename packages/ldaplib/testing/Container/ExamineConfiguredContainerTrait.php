@@ -22,8 +22,8 @@ use Psr\Container\ContainerInterface;
  */
 trait ExamineConfiguredContainerTrait
 {
-    abstract static public function assertInstanceOf(string $class, $value, string $message = '');
-    abstract static public function assertSame($expected, $value, string $message = '');
+    abstract public static function assertInstanceOf(string $class, $value, string $message = '');
+    abstract public static function assertSame($expected, $value, string $message = '');
 
     public function examineConfiguredContainer(ContainerInterface $container, $config) : void
     {

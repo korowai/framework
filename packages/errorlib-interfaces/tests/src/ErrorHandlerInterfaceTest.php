@@ -35,14 +35,6 @@ final class ErrorHandlerInterfaceTest extends TestCase
         $this->assertImplementsInterface(ErrorHandlerInterface::class, $dummy);
     }
 
-    public function test__objectPropertyGettersMap() : void
-    {
-        $expect = [
-            'errorTypes'    => 'getErrorTypes',
-        ];
-        $this->assertObjectPropertyGetters($expect, ErrorHandlerInterface::class);
-    }
-
     public function test__invoke() : void
     {
         $dummy = $this->createDummyInstance();

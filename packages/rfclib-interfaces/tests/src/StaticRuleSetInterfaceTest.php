@@ -35,14 +35,6 @@ final class StaticRuleSetInterfaceTest extends TestCase
         $this->assertImplementsInterface(StaticRuleSetInterface::class, $dummy);
     }
 
-    public function test__objectPropertyGettersMap() : void
-    {
-        $expect = [
-            'rules' => 'rules',
-        ];
-        $this->assertObjectPropertyGetters($expect, StaticRuleSetInterface::class);
-    }
-
     public function test__rules() : void
     {
         $dummy = $this->createDummyClass();

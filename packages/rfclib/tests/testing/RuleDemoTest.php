@@ -24,18 +24,6 @@ use Korowai\Testing\TestCase;
  */
 final class RuleDemoTest extends TestCase
 {
-    /**
-     * {@inheritdoc}
-     */
-    public static function objectPropertyGettersMap() : array
-    {
-        return array_merge_recursive(
-            parent::objectPropertyGettersMap(),
-            \Korowai\Testing\RfclibInterfaces\ObjectPropertyGettersMap::getObjectPropertyGettersMap(),
-            \Korowai\Testing\Rfclib\ObjectPropertyGettersMap::getObjectPropertyGettersMap()
-        );
-    }
-
     public static function construct__cases()
     {
         $rule = new Rule(Rfc2849::class, 'DN_SPEC');
@@ -43,15 +31,15 @@ final class RuleDemoTest extends TestCase
             '__construct($rule)' => [
                 [$rule],
                 [
-                    'rule' => $rule,
-                    'format' => '/\G%s/D'
+                    'getRule()' => $rule,
+                    'getFormat()' => '/\G%s/D'
                 ]
             ],
             '__construct($rule, "/^%s$/")' => [
                 [$rule, "/^%s$/"],
                 [
-                    'rule' => $rule,
-                    'format' => '/^%s$/'
+                    'getRule()' => $rule,
+                    'getFormat()' => '/^%s$/'
                 ]
             ],
         ];
@@ -74,21 +62,21 @@ final class RuleDemoTest extends TestCase
             'create(Rfc2849::class, "DN_SPEC")' => [
                 [Rfc2849::class, "DN_SPEC"],
                 [
-                    'rule' => self::hasPropertiesIdenticalTo([
-                        'ruleSetClass' => Rfc2849::class,
-                        'name' => 'DN_SPEC'
+                    'getRule()' => self::hasPropertiesIdenticalTo([
+                        'ruleSetClass()' => Rfc2849::class,
+                        'name()' => 'DN_SPEC'
                     ]),
-                    'format' => '/\G%s/D'
+                    'getFormat()' => '/\G%s/D'
                 ]
             ],
             'create(Rfc2849::class, "DN_SPEC", "/^%s$/")' => [
                 [Rfc2849::class, "DN_SPEC", "/^%s$/"],
                 [
-                    'rule' => self::hasPropertiesIdenticalTo([
-                        'ruleSetClass' => Rfc2849::class,
-                        'name' => 'DN_SPEC'
+                    'getRule()' => self::hasPropertiesIdenticalTo([
+                        'ruleSetClass()' => Rfc2849::class,
+                        'name()' => 'DN_SPEC'
                     ]),
-                    'format' => '/^%s$/'
+                    'getFormat()' => '/^%s$/'
                 ]
             ],
         ];

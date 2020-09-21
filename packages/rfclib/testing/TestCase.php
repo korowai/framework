@@ -27,18 +27,6 @@ abstract class TestCase extends \Korowai\Testing\TestCase
     abstract public static function getRfcClass() : string;
 
     /**
-     * {@inheritdoc}
-     */
-    public static function objectPropertyGettersMap() : array
-    {
-        return array_merge_recursive(
-            parent::objectPropertyGettersMap(),
-            \Korowai\Testing\RfclibInterfaces\ObjectPropertyGettersMap::getObjectPropertyGettersMap(),
-            \Korowai\Testing\Rfclib\ObjectPropertyGettersMap::getObjectPropertyGettersMap()
-        );
-    }
-
-    /**
      * Returns the fully qualified name of RFC constant being tested.
      *
      * @return string

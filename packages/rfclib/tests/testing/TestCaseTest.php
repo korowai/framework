@@ -34,16 +34,6 @@ final class TestCaseTest extends TestCase
         $this->assertExtendsClass(BaseTestCase::class, parent::class);
     }
 
-    public function test__objectPropertyGettersMap() : void
-    {
-        $expected = array_merge_recursive(
-            \Korowai\Testing\ObjectPropertyGettersMap::getObjectPropertyGettersMap(),
-            \Korowai\Testing\RfclibInterfaces\ObjectPropertyGettersMap::getObjectPropertyGettersMap(),
-            \Korowai\Testing\Rfclib\ObjectPropertyGettersMap::getObjectPropertyGettersMap()
-        );
-        $this->assertSame($expected, parent::objectPropertyGettersMap());
-    }
-
     public function test__getRfcFqdnConstName() : void
     {
         $this->assertSame(self::class.'::FOO', static::getRfcFqdnConstName('FOO'));

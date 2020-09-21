@@ -35,18 +35,6 @@ final class RuleInterfaceTest extends TestCase
         $this->assertImplementsInterface(RuleInterface::class, $dummy);
     }
 
-    public function test__objectPropertyGettersMap() : void
-    {
-        $expect = [
-            'toString'      => '__toString',
-            'regexp'        => 'regexp',
-            'captures'      => 'captures',
-            'errorCaptures' => 'errorCaptures',
-            'valueCaptures' => 'valueCaptures',
-        ];
-        $this->assertObjectPropertyGetters($expect, RuleInterface::class);
-    }
-
     public function test__toString() : void
     {
         $dummy = $this->createDummyInstance();

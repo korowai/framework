@@ -29,21 +29,6 @@ final class SourceLocationInterfaceTest extends TestCase
         };
         $this->assertImplementsInterface(SourceLocationInterface::class, $dummy);
     }
-
-    public function test__objectPropertyGettersMap() : void
-    {
-        $expect = [
-            'fileName'                  => 'getSourceFileName',
-            'sourceString'              => 'getSourceString',
-            'sourceOffset'              => 'getSourceOffset',
-            'sourceCharOffset'          => 'getSourceCharOffset',
-            'sourceLineIndex'           => 'getSourceLineIndex',
-            'sourceLine'                => 'getSourceLine',
-            'sourceLineAndOffset'       => 'getSourceLineAndOffset',
-            'sourceLineAndCharOffset'   => 'getSourceLineAndCharOffset',
-        ];
-        $this->assertObjectPropertyGetters($expect, SourceLocationInterface::class);
-    }
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

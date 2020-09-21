@@ -51,14 +51,6 @@ final class DnSpecInterfaceTest extends TestCase
         $this->assertImplementsInterface(DnSpecInterface::class, $dummy);
     }
 
-    public function test__objectPropertyGettersMap() : void
-    {
-        $expect = [
-            'dn' => 'getDn'
-        ];
-        $this->assertObjectPropertyGetters($expect, DnSpecInterface::class);
-    }
-
     public function test__getdn() : void
     {
         $dummy = $this->createDummyInstance();

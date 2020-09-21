@@ -29,12 +29,6 @@ final class NodeVisitorInterfaceTest extends TestCase
         };
         $this->assertImplementsInterface(NodeVisitorInterface::class, $dummy);
     }
-
-    public function test__objectPropertyGettersMap() : void
-    {
-        $expect = [];
-        $this->assertObjectPropertyGetters($expect, NodeVisitorInterface::class);
-    }
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

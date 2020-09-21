@@ -53,15 +53,6 @@ final class ModSpecInterfaceTest extends TestCase
         $this->assertImplementsInterface(ModSpecInterface::class, $dummy);
     }
 
-    public function test__objectPropertyGettersMap() : void
-    {
-        $expect = [
-            'modType'   => 'getModType',
-            'attribute' => 'getAttribute'
-        ];
-        $this->assertObjectPropertyGetters($expect, ModSpecInterface::class);
-    }
-
     public function test__getModType() : void
     {
         $dummy = $this->createDummyInstance();

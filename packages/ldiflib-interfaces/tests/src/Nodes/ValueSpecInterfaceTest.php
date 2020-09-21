@@ -51,16 +51,6 @@ final class ValueSpecInterfaceTest extends TestCase
         $this->assertImplementsInterface(ValueSpecInterface::class, $dummy);
     }
 
-    public function test__objectPropertyGettersMap() : void
-    {
-        $expect = [
-            'type'  => 'getType',
-            'spec'  => 'getSpec',
-            'content' => 'getContent',
-        ];
-        $this->assertObjectPropertyGetters($expect, ValueSpecInterface::class);
-    }
-
     public function test__getType() : void
     {
         $dummy = $this->createDummyInstance();

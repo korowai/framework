@@ -50,12 +50,6 @@ final class NewSuperiorRuleInterfaceTest extends TestCase
         $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(NewSuperiorRuleInterface::class, $dummy);
     }
-
-    public function test__objectPropertyGettersMap() : void
-    {
-        $expect = [];
-        $this->assertObjectPropertyGetters($expect, NewSuperiorRuleInterface::class);
-    }
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

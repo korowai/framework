@@ -29,19 +29,6 @@ final class InputInterfaceTest extends TestCase
         };
         $this->assertImplementsInterface(InputInterface::class, $dummy);
     }
-
-    public function test__objectPropertyGettersMap() : void
-    {
-        $expect = [
-            'sourceString'      => 'getSourceString',
-            'string'            => 'getString',
-            'fileName'          => 'getSourceFileName',
-            'toString'          => '__toString',
-            'sourceLines'       => 'getSourceLines',
-            'sourceLinesCount'  => 'getSourceLinesCount',
-        ];
-        $this->assertObjectPropertyGetters($expect, InputInterface::class);
-    }
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

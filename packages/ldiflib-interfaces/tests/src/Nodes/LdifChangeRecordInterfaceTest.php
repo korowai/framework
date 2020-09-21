@@ -51,15 +51,6 @@ final class LdifChangeRecordInterfaceTest extends TestCase
         $this->assertImplementsInterface(LdifChangeRecordInterface::class, $dummy);
     }
 
-    public function test__objectPropertyGettersMap() : void
-    {
-        $expect = [
-            'changeType'    => 'getChangeType',
-            'controls'      => 'getControls',
-        ];
-        $this->assertObjectPropertyGetters($expect, LdifChangeRecordInterface::class);
-    }
-
     public function test__getChangeType() : void
     {
         $dummy = $this->createDummyInstance();

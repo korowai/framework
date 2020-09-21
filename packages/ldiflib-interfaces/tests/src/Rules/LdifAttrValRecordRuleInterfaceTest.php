@@ -54,16 +54,6 @@ final class LdifAttrValRecordRuleInterfaceTest extends TestCase
         $this->assertImplementsInterface(LdifAttrValRecordRuleInterface::class, $dummy);
     }
 
-    public function test__objectPropertyGettersMap() : void
-    {
-        $expect = [
-            'dnSpecRule'                => 'getDnSpecRule',
-            'sepRule'                   => 'getSepRule',
-            'attrValSpecRule'           => 'getAttrValSpecRule'
-        ];
-        $this->assertObjectPropertyGetters($expect, LdifAttrValRecordRuleInterface::class);
-    }
-
     public function test__getDnSpecRule() : void
     {
         $dummy = $this->createDummyInstance();

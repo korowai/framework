@@ -29,14 +29,6 @@ final class RecordInterfaceTest extends TestCase
         };
         $this->assertImplementsInterface(RecordInterface::class, $dummy);
     }
-
-    public function test__objectPropertyGettersMap() : void
-    {
-        $expect = [
-            'dn'        => 'getDn',
-        ];
-        $this->assertObjectPropertyGetters($expect, RecordInterface::class);
-    }
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

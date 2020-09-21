@@ -52,12 +52,6 @@ final class LdifDeleteRecordInterfaceTest extends TestCase
         $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(LdifDeleteRecordInterface::class, $dummy);
     }
-
-    public function test__objectPropertyGettersMap() : void
-    {
-        $expect = [];
-        $this->assertObjectPropertyGetters($expect, LdifDeleteRecordInterface::class);
-    }
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

@@ -52,12 +52,6 @@ final class ControlRuleInterfaceTest extends TestCase
         $this->assertImplementsInterface(ControlRuleInterface::class, $dummy);
     }
 
-    public function test__objectPropertyGettersMap() : void
-    {
-        $expect = [];
-        $this->assertObjectPropertyGetters($expect, ControlRuleInterface::class);
-    }
-
     public function test__getValueSpecRule() : void
     {
         $dummy = $this->createDummyInstance();

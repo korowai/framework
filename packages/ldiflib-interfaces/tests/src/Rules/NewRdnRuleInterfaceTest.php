@@ -50,12 +50,6 @@ final class NewRdnRuleInterfaceTest extends TestCase
         $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(NewRdnRuleInterface::class, $dummy);
     }
-
-    public function test__objectPropertyGettersMap() : void
-    {
-        $expect = [];
-        $this->assertObjectPropertyGetters($expect, NewRdnRuleInterface::class);
-    }
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

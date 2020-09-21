@@ -52,15 +52,6 @@ final class AttrValSpecInterfaceTest extends TestCase
         $this->assertImplementsInterface(AttrValSpecInterface::class, $dummy);
     }
 
-    public function test__objectPropertyGettersMap() : void
-    {
-        $expect = [
-            'attribute' => 'getAttribute',
-            'valueSpec' => 'getValueSpec'
-        ];
-        $this->assertObjectPropertyGetters($expect, AttrValSpecInterface::class);
-    }
-
     public function test__getAttribute() : void
     {
         $dummy = $this->createDummyInstance();

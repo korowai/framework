@@ -50,12 +50,6 @@ final class ModSpecInitRuleInterfaceTest extends TestCase
         $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(ModSpecInitRuleInterface::class, $dummy);
     }
-
-    public function test__objectPropertyGettersMap() : void
-    {
-        $expect = [];
-        $this->assertObjectPropertyGetters($expect, ModSpecInitRuleInterface::class);
-    }
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

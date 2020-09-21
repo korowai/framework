@@ -29,14 +29,6 @@ final class NodeInterfaceTest extends TestCase
         };
         $this->assertImplementsInterface(NodeInterface::class, $dummy);
     }
-
-    public function test__objectPropertyGettersMap() : void
-    {
-        $expect = [
-            'snippet'       => 'getSnippet',
-        ];
-        $this->assertObjectPropertyGetters($expect, NodeInterface::class);
-    }
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

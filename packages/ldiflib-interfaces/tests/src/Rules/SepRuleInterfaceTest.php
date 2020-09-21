@@ -50,12 +50,6 @@ final class SepRuleInterfaceTest extends TestCase
         $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(SepRuleInterface::class, $dummy);
     }
-
-    public function test__objectPropertyGettersMap() : void
-    {
-        $expect = [];
-        $this->assertObjectPropertyGetters($expect, SepRuleInterface::class);
-    }
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

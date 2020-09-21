@@ -45,19 +45,6 @@ final class LocationInterfaceTest extends TestCase
         };
         $this->assertImplementsInterface(LocationInterface::class, $dummy);
     }
-
-    public function test__objectPropertyGettersMap() : void
-    {
-        $expect = [
-            'string'            => 'getString',
-            'offset'            => 'getOffset',
-            'isValid'           => 'isValid',
-            'charOffset'        => 'getCharOffset',
-            'input'             => 'getInput',
-            'clonedLocation'    => 'getClonedLocation',
-        ];
-        $this->assertObjectPropertyGetters($expect, LocationInterface::class);
-    }
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

@@ -53,16 +53,6 @@ final class LdifModDnRecordInterfaceTest extends TestCase
         $this->assertImplementsInterface(LdifModDnRecordInterface::class, $dummy);
     }
 
-    public function test__objectPropertyGettersMap() : void
-    {
-        $expect = [
-            'newRdn'        => 'getNewRdn',
-            'deleteOldRdn'  => 'getDeleteOldRdn',
-            'newSuperior'   => 'getNewSuperior',
-        ];
-        $this->assertObjectPropertyGetters($expect, LdifModDnRecordInterface::class);
-    }
-
     public function test__getNewRdn() : void
     {
         $dummy = $this->createDummyInstance();

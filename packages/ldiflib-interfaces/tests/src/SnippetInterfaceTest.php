@@ -45,19 +45,6 @@ final class SnippetInterfaceTest extends TestCase
         };
         $this->assertImplementsInterface(SnippetInterface::class, $dummy);
     }
-
-    public function test__objectPropertyGettersMap() : void
-    {
-        $expect = [
-            'length'                => 'getLength',
-            'endOffset'             => 'getEndOffset',
-            'sourceLength'          => 'getSourceLength',
-            'sourceEndOffset'       => 'getSourceEndOffset',
-            'sourceCharLength'      => 'getSourceCharLength',
-            'sourceCharEndOffset'   => 'getSourceCharEndOffset',
-        ];
-        $this->assertObjectPropertyGetters($expect, SnippetInterface::class);
-    }
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

@@ -30,12 +30,6 @@ final class RuleInterfaceTest extends TestCase
         };
         $this->assertImplementsInterface(RuleInterface::class, $dummy);
     }
-
-    public function test__objectPropertyGettersMap() : void
-    {
-        $expect = [];
-        $this->assertObjectPropertyGetters($expect, RuleInterface::class);
-    }
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

@@ -54,16 +54,6 @@ final class LdifContentRuleInterfaceTest extends TestCase
         $this->assertImplementsInterface(LdifContentRuleInterface::class, $dummy);
     }
 
-    public function test__objectPropertyGettersMap() : void
-    {
-        $expect = [
-            'versionSpecRule'           => 'getVersionSpecRule',
-            'sepRule'                   => 'getSepRule',
-            'ldifAttrValRecordRule'     => 'getLdifAttrValRecordRule',
-        ];
-        $this->assertObjectPropertyGetters($expect, LdifContentRuleInterface::class);
-    }
-
     public function test__getVersionSpecRule() : void
     {
         $dummy = $this->createDummyInstance();

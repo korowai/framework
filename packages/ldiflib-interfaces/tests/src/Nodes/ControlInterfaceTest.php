@@ -52,16 +52,6 @@ final class ControlInterfaceTest extends TestCase
         $this->assertImplementsInterface(ControlInterface::class, $dummy);
     }
 
-    public function test__objectPropertyGettersMap() : void
-    {
-        $expect = [
-            'oid'           => 'getOid',
-            'criticality'   => 'getCriticality',
-            'valueSpec'     => 'getValueSpec'
-        ];
-        $this->assertObjectPropertyGetters($expect, ControlInterface::class);
-    }
-
     public function test__getOid() : void
     {
         $dummy = $this->createDummyInstance();

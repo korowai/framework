@@ -50,12 +50,6 @@ final class CursorInterfaceTest extends TestCase
         $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(CursorInterface::class, $dummy);
     }
-
-    public function test__objectPropertyGettersMap() : void
-    {
-        $expect = [];
-        $this->assertObjectPropertyGetters($expect, CursorInterface::class);
-    }
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

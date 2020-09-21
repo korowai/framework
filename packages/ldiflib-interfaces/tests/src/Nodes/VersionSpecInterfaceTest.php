@@ -51,14 +51,6 @@ final class VersionSpecInterfaceTest extends TestCase
         $this->assertImplementsInterface(VersionSpecInterface::class, $dummy);
     }
 
-    public function test__objectPropertyGettersMap() : void
-    {
-        $expect = [
-            'version'   => 'getVersion'
-        ];
-        $this->assertObjectPropertyGetters($expect, VersionSpecInterface::class);
-    }
-
     public function test__getVersion() : void
     {
         $dummy = $this->createDummyInstance();

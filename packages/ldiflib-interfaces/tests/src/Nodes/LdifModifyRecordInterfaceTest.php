@@ -53,14 +53,6 @@ final class LdifModifyRecordInterfaceTest extends TestCase
         $this->assertImplementsInterface(LdifModifyRecordInterface::class, $dummy);
     }
 
-    public function test__objectPropertyGettersMap() : void
-    {
-        $expect = [
-            'modSpecs'      => 'getModSpecs'
-        ];
-        $this->assertObjectPropertyGetters($expect, LdifModifyRecordInterface::class);
-    }
-
     public function test__getModSpecs() : void
     {
         $dummy = $this->createDummyInstance();

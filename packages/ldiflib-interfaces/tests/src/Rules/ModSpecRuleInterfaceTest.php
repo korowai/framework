@@ -54,16 +54,6 @@ final class ModSpecRuleInterfaceTest extends TestCase
         $this->assertImplementsInterface(ModSpecRuleInterface::class, $dummy);
     }
 
-    public function test__objectPropertyGettersMap() : void
-    {
-        $expect = [
-            'modSpecInitRule'           => 'getModSpecInitRule',
-            'sepRule'                   => 'getSepRule',
-            'attrValSpecRule'           => 'getAttrValSpecRule',
-        ];
-        $this->assertObjectPropertyGetters($expect, ModSpecRuleInterface::class);
-    }
-
     public function test__getModSpecInitRule() : void
     {
         $dummy = $this->createDummyInstance();

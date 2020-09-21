@@ -20,7 +20,7 @@ use Korowai\Lib\Ldap\BindingTrait;
 use Korowai\Lib\Ldap\Core\LdapLinkInterface;
 use Korowai\Lib\Ldap\Core\LdapLinkErrorHandler;
 use Korowai\Lib\Ldap\BindingInterface;
-use Korowai\Lib\Ldap\Exception\LdapException;
+use Korowai\Lib\Ldap\LdapException;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

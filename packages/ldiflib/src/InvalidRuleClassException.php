@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Lib\Ldif\Exception;
+namespace Korowai\Lib\Ldif;
 
 /**
  * An exception thrown when a caller was expected to provide rule object of

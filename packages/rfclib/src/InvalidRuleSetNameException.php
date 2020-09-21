@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Lib\Rfc\Exception;
+namespace Korowai\Lib\Rfc;
 
 /**
  * An exception thrown when a caller was expected to provide class name of a

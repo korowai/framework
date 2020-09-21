@@ -15,7 +15,7 @@ namespace Korowai\Tests\Lib\Ldif\Nodes;
 use Korowai\Lib\Ldif\Nodes\ModSpec;
 use Korowai\Lib\Ldif\Nodes\ModSpecInterface;
 use Korowai\Lib\Ldif\Traits\HasAttrValSpecs;
-use Korowai\Lib\Ldif\Exception\InvalidModTypeException;
+use Korowai\Lib\Ldif\InvalidModTypeException;
 
 use Korowai\Testing\Ldiflib\TestCase;
 

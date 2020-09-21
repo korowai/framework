@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Korowai\Lib\Ldap\Behat;
 
 use Korowai\Lib\Ldap\Ldap;
-use Korowai\Lib\Ldap\Exception\LdapException;
+use Korowai\Lib\Ldap\LdapException;
 
 trait LdapHelper
 {

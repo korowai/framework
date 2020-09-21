@@ -17,7 +17,7 @@ use Korowai\Testing\Ldaplib\LdapTriggerErrorTestSubject;
 use Korowai\Lib\Ldap\EntryManagerInterface;
 use Korowai\Lib\Ldap\Core\LdapLinkInterface;
 use Korowai\Lib\Ldap\EntryInterface;
-use Korowai\Lib\Ldap\Exception\LdapException;
+use Korowai\Lib\Ldap\LdapException;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**

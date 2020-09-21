@@ -19,7 +19,7 @@ use Korowai\Testing\Ldaplib\GetLdapFunctionMockTrait;
 use Korowai\Lib\Ldap\Core\LdapLinkConstructor;
 use Korowai\Lib\Ldap\Core\LdapLinkConstructorInterface;
 use Korowai\Lib\Ldap\Core\LdapLink;
-use Korowai\Lib\Ldap\Exception\ErrorException;
+use Korowai\Lib\Ldap\ErrorException;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

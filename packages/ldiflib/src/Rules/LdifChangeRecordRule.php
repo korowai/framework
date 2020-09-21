@@ -25,7 +25,7 @@ use Korowai\Lib\Ldif\Nodes\LdifAddRecordInterface;
 use Korowai\Lib\Ldif\Nodes\LdifDeleteRecordInterface;
 use Korowai\Lib\Ldif\Nodes\LdifModDnRecordInterface;
 use Korowai\Lib\Ldif\Nodes\LdifModifyRecordInterface;
-use Korowai\Lib\Ldif\Exception\InvalidRuleClassException;
+use Korowai\Lib\Ldif\InvalidRuleClassException;
 
 /**
  * A rule object that parses *ldif-change-record* as defined in [RFC2849](https://tools.ietf.org/html/rfc2849).

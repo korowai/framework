@@ -30,7 +30,7 @@ final class ObjectPropertyGettersMap
             'classCaptures'         => 'getClassCaptures',
             'definedErrors'         => 'getDefinedErrors',
         ],
-        \Korowai\Lib\Rfc\Exception\InvalidRuleSetNameException::class => [
+        \Korowai\Lib\Rfc\InvalidRuleSetNameException::class => [
         ],
         \Korowai\Lib\Rfc\Rfc2253::class => [
         ],

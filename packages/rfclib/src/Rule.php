@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Rfc;
 
-use Korowai\Lib\Rfc\Exception\InvalidRuleSetNameException;
+use Korowai\Lib\Rfc\InvalidRuleSetNameException;
 
 /**
  * Single rule in the set of rules.

@@ -24,7 +24,7 @@ use Korowai\Lib\Ldap\Core\LdapLinkWrapperTrait;
 use Korowai\Lib\Ldap\Core\LdapLinkErrorHandler;
 use Korowai\Lib\Ldap\Core\LdapResultInterface;
 use Korowai\Lib\Ldap\ResultInterface;
-use Korowai\Lib\Ldap\Exception\ErrorException;
+use Korowai\Lib\Ldap\ErrorException;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

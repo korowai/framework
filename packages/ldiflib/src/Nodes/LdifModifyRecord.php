@@ -14,7 +14,7 @@ namespace Korowai\Lib\Ldif\Nodes;
 
 use Korowai\Lib\Ldif\SnippetInterface;
 use Korowai\Lib\Ldif\RecordVisitorInterface;
-use Korowai\Lib\Ldif\Exception\InvalidChangeTypeException;
+use Korowai\Lib\Ldif\InvalidChangeTypeException;
 
 /**
  * Represents [RFC2849](https://tools.ietf.org/html/rfc2849)

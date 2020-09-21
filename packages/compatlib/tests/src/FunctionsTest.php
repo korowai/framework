@@ -14,7 +14,7 @@ namespace Korowai\Tests\Lib\Compat;
 
 use Korowai\Testing\TestCase;
 
-use Korowai\Lib\Compat\Exception\PregException;
+use Korowai\Lib\Compat\PregException;
 
 use function Korowai\Lib\Compat\preg_filter;
 use function Korowai\Lib\Compat\preg_grep;

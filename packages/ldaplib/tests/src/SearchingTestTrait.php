@@ -18,7 +18,7 @@ use Korowai\Testing\Ldaplib\LdapTriggerErrorTestSubject;
 use Korowai\Lib\Ldap\Core\LdapLinkErrorHandler;
 use Korowai\Lib\Ldap\Core\LdapLinkInterface;
 use Korowai\Lib\Ldap\Core\LdapResultInterface;
-use Korowai\Lib\Ldap\Exception\ErrorException;
+use Korowai\Lib\Ldap\ErrorException;
 use Korowai\Lib\Ldap\Result;
 use Korowai\Lib\Ldap\ResultInterface;
 use Korowai\Lib\Ldap\SearchQuery;

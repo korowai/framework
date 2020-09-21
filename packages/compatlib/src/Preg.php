@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Compat;
 
-use Korowai\Lib\Compat\Exception\PregException;
+use Korowai\Lib\Compat\PregException;
 use Korowai\Lib\Error\callerExceptionErrorHandler;
 use function Korowai\Lib\Context\with;
 use function Korowai\Lib\Error\callerExceptionErrorHandler;

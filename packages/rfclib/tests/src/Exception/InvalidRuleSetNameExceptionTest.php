@@ -10,14 +10,14 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Tests\Lib\Rfc\Exception;
+namespace Korowai\Tests\Lib\Rfc;
 
 use Korowai\Testing\TestCase;
-use Korowai\Lib\Rfc\Exception\InvalidRuleSetNameException;
+use Korowai\Lib\Rfc\InvalidRuleSetNameException;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @covers \Korowai\Lib\Rfc\Exception\InvalidRuleSetNameException
+ * @covers \Korowai\Lib\Rfc\InvalidRuleSetNameException
  */
 final class InvalidRuleSetNameExceptionTest extends TestCase
 {

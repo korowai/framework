@@ -19,7 +19,7 @@ use Korowai\Lib\Ldap\ComparingInterface;
 use Korowai\Lib\Ldap\CompareQuery;
 use Korowai\Lib\Ldap\Core\LdapLinkInterface;
 use Korowai\Lib\Ldap\Core\LdapLinkErrorHandler;
-use Korowai\Lib\Ldap\Exception\ErrorException;
+use Korowai\Lib\Ldap\ErrorException;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

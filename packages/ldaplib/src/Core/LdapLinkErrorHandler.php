@@ -12,8 +12,8 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldap\Core;
 
-use Korowai\Lib\Ldap\Exception\ErrorException;
-use Korowai\Lib\Ldap\Exception\LdapException;
+use Korowai\Lib\Ldap\ErrorException;
+use Korowai\Lib\Ldap\LdapException;
 use Korowai\Lib\Error\AbstractManagedErrorHandler;
 
 /**

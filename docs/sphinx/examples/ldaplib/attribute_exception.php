@@ -2,7 +2,7 @@
 /* [code] */
 /* [use] */
 use Korowai\Lib\Ldap\Ldap;
-use Korowai\Lib\Ldap\Exception\AttributeException;
+use Korowai\Lib\Ldap\AttributeException;
 /* [/use] */
 
 $ldap = Ldap::createWithConfig(['uri' => 'ldap://ldap-service']);

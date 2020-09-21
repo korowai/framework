@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Lib\Ldap\Exception;
+namespace Korowai\Lib\Ldap;
 
 /**
  * LDAP exception interface.

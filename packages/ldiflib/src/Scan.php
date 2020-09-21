@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldif;
 
-use Korowai\Lib\Compat\Exception\PregException;
+use Korowai\Lib\Compat\PregException;
 use function Korowai\Lib\Compat\preg_match;
 
 class Scan

@@ -15,7 +15,7 @@ namespace Korowai\Lib\Ldif\Rules;
 use Korowai\Lib\Ldif\ParserStateInterface as State;
 use Korowai\Lib\Ldif\Scan;
 use Korowai\Lib\Ldif\ChangeRecord;
-use Korowai\Lib\Ldif\Exception\InvalidModTypeException;
+use Korowai\Lib\Ldif\InvalidModTypeException;
 use Korowai\Lib\Rfc\Rfc2849;
 
 /**

@@ -10,14 +10,14 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Tests\Lib\Ldif\Exception;
+namespace Korowai\Tests\Lib\Ldif;
 
 use Korowai\Testing\TestCase;
-use Korowai\Lib\Ldif\Exception\NoRulesDefinedException;
+use Korowai\Lib\Ldif\NoRulesDefinedException;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @covers \Korowai\Lib\Ldif\Exception\NoRulesDefinedException
+ * @covers \Korowai\Lib\Ldif\NoRulesDefinedException
  */
 final class NoRulesDefinedExceptionTest extends TestCase
 {

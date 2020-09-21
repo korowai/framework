@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Tests\Lib\Ldap\Exception;
+namespace Korowai\Tests\Lib\Ldap;
 
 use Korowai\Lib\Ldap\Exception\ExceptionInterface;
 use Korowai\Lib\Ldap\Exception\LdapExceptionInterface;

@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Korowai\Lib\Ldif\Nodes;
 
 use Korowai\Lib\Ldif\Traits\HasAttrValSpecs;
-use Korowai\Lib\Ldif\Exception\InvalidModTypeException;
+use Korowai\Lib\Ldif\InvalidModTypeException;
 
 /**
  * Represents [RFC2849](https://tools.ietf.org/html/rfc2849)

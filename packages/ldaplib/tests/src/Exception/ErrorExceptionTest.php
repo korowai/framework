@@ -10,15 +10,15 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Tests\Lib\Ldap\Exception;
+namespace Korowai\Tests\Lib\Ldap;
 
 use Korowai\Testing\LdaplibInterfaces\TestCase;
-use Korowai\Lib\Ldap\Exception\ErrorException;
+use Korowai\Lib\Ldap\ErrorException;
 use Korowai\Lib\Ldap\Exception\ErrorExceptionInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @covers \Korowai\Lib\Ldap\Exception\ErrorException
+ * @covers \Korowai\Lib\Ldap\ErrorException
  */
 final class ErrorExceptionTest extends TestCase
 {

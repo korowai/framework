@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldap;
 
-use Korowai\Lib\Ldap\Exception\AttributeException;
+use Korowai\Lib\Ldap\AttributeException;
 
 /**
  * Represents single ldap entry with DN and attributes

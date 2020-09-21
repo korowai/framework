@@ -29,19 +29,19 @@ final class ObjectPropertyGettersMap
         \Korowai\Lib\Ldif\Cursor::class => [
         ],
 
-        \Korowai\Lib\Ldif\Exception\InvalidChangeTypeException::class => [
+        \Korowai\Lib\Ldif\InvalidChangeTypeException::class => [
         ],
 
-        \Korowai\Lib\Ldif\Exception\InvalidModTypeException::class => [
+        \Korowai\Lib\Ldif\InvalidModTypeException::class => [
         ],
 
         \Korowai\Lib\Ldif\Exception\InvalidRuleclassException::class => [
         ],
 
-        \Korowai\Lib\Ldif\Exception\InvalidRuleNameException::class => [
+        \Korowai\Lib\Ldif\InvalidRuleNameException::class => [
         ],
 
-        \Korowai\Lib\Ldif\Exception\NoRulesDefinedException::class => [
+        \Korowai\Lib\Ldif\NoRulesDefinedException::class => [
         ],
 
         \Korowai\Lib\Ldif\Input::class => [

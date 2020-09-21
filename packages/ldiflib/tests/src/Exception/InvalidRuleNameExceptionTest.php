@@ -10,14 +10,14 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Tests\Lib\Ldif\Exception;
+namespace Korowai\Tests\Lib\Ldif;
 
 use Korowai\Testing\TestCase;
-use Korowai\Lib\Ldif\Exception\InvalidRuleNameException;
+use Korowai\Lib\Ldif\InvalidRuleNameException;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @covers \Korowai\Lib\Ldif\Exception\InvalidRuleNameException
+ * @covers \Korowai\Lib\Ldif\InvalidRuleNameException
  */
 final class InvalidRuleNameExceptionTest extends TestCase
 {

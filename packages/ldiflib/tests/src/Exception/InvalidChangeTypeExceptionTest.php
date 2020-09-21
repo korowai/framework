@@ -10,14 +10,14 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Tests\Lib\Ldif\Exception;
+namespace Korowai\Tests\Lib\Ldif;
 
 use Korowai\Testing\TestCase;
-use Korowai\Lib\Ldif\Exception\InvalidChangeTypeException;
+use Korowai\Lib\Ldif\InvalidChangeTypeException;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @covers \Korowai\Lib\Ldif\Exception\InvalidChangeTypeException
+ * @covers \Korowai\Lib\Ldif\InvalidChangeTypeException
  */
 final class InvalidChangeTypeExceptionTest extends TestCase
 {

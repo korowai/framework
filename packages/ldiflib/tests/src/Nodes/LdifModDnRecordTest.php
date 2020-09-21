@@ -17,7 +17,7 @@ use Korowai\Lib\Ldif\Nodes\LdifModDnRecordInterface;
 use Korowai\Lib\Ldif\Nodes\AbstractRecord;
 use Korowai\Lib\Ldif\RecordVisitorInterface;
 use Korowai\Lib\Ldif\SnippetInterface;
-use Korowai\Lib\Ldif\Exception\InvalidChangeTypeException;
+use Korowai\Lib\Ldif\InvalidChangeTypeException;
 
 use Korowai\Testing\Ldiflib\TestCase;
 

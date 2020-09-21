@@ -10,14 +10,14 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Tests\Lib\Ldif\Exception;
+namespace Korowai\Tests\Lib\Ldif;
 
 use Korowai\Testing\TestCase;
-use Korowai\Lib\Ldif\Exception\InvalidModTypeException;
+use Korowai\Lib\Ldif\InvalidModTypeException;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @covers \Korowai\Lib\Ldif\Exception\InvalidModTypeException
+ * @covers \Korowai\Lib\Ldif\InvalidModTypeException
  */
 final class InvalidModTypeExceptionTest extends TestCase
 {

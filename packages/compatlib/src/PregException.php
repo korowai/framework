@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Lib\Compat\Exception;
+namespace Korowai\Lib\Compat;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

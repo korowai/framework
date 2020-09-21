@@ -15,7 +15,7 @@ namespace Korowai\Tests\Lib\Ldap;
 use Korowai\Testing\TestCase;
 use Korowai\Lib\Ldap\Entry;
 use Korowai\Lib\Ldap\EntryInterface;
-use Korowai\Lib\Ldap\Exception\AttributeException;
+use Korowai\Lib\Ldap\AttributeException;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -126,7 +126,7 @@ final class EntryTest extends TestCase
     {
         $entry = new Entry('dc=example,dc=com');
 
-        $this->expectException(\Korowai\Lib\Ldap\Exception\AttributeException::class);
+        $this->expectException(\Korowai\Lib\Ldap\AttributeException::class);
         $this->expectExceptionMessage("Entry 'dc=example,dc=com' has no attribute 'userid'");
 
         $entry->getAttribute('userid');

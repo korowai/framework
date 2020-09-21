@@ -15,8 +15,8 @@ namespace Korowai\Tests\Lib\Ldap\Core;
 use Korowai\Lib\Ldap\Core\LdapResultInterface;
 use Korowai\Lib\Ldap\Core\LdapResultItemInterface;
 use Korowai\Lib\Ldap\Core\LdapLinkInterface;
-use Korowai\Lib\Ldap\Exception\LdapException;
-use Korowai\Lib\Ldap\Exception\ErrorException;
+use Korowai\Lib\Ldap\LdapException;
+use Korowai\Lib\Ldap\ErrorException;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

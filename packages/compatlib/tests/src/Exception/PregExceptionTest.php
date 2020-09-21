@@ -14,11 +14,11 @@ namespace Korowai\Tests\Lib\Compat;
 
 use Korowai\Testing\TestCase;
 
-use Korowai\Lib\Compat\Exception\PregException;
+use Korowai\Lib\Compat\PregException;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @covers \Korowai\Lib\Compat\Exception\PregException
+ * @covers \Korowai\Lib\Compat\PregException
  */
 final class PregExceptionTest extends TestCase
 {

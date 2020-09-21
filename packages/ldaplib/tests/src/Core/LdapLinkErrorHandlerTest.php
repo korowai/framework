@@ -21,8 +21,8 @@ use Korowai\Lib\Ldap\Core\LdapResultWrapperInterface;
 use Korowai\Lib\Ldap\Core\LdapResultItemInterface;
 use Korowai\Lib\Ldap\Core\LdapResultItemWrapperInterface;
 use Korowai\Lib\Ldap\Core\LdapLinkWrapperTrait;
-use Korowai\Lib\Ldap\Exception\LdapException;
-use Korowai\Lib\Ldap\Exception\ErrorException;
+use Korowai\Lib\Ldap\LdapException;
+use Korowai\Lib\Ldap\ErrorException;
 use Korowai\Lib\Error\AbstractManagedErrorHandler;
 
 /**

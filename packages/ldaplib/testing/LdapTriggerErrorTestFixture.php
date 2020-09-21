@@ -12,8 +12,8 @@ declare(strict_types=1);
 
 namespace Korowai\Testing\Ldaplib;
 
-use Korowai\Lib\Ldap\Exception\LdapException;
-use Korowai\Lib\Ldap\Exception\ErrorException;
+use Korowai\Lib\Ldap\LdapException;
+use Korowai\Lib\Ldap\ErrorException;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

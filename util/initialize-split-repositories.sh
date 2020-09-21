@@ -5,20 +5,31 @@ set -e
 here="`dirname $0`";
 
 top="$here/..";
-if which readlink >/dev/null; then
-  top=`readlink -f "$top"`
-fi
+abstop="`readlink -f $top`";
+repobase="build/monorepo-split/repositories/korowai";
 
 usage() {
   cat >&2 <<!
 
-usage:
-        $0 [-f] [-d] [-a] [-v] [base-repo-dir]
+USAGE:
 
-Initialize bare git repositories under base-repo-dir
-for split packages to be created with monorepo-builder.
+  $0 [-f] [-d] [-a] [-v] [repo-base]
 
-options:
+DESCRIPTION:
+
+  Initialize bare git repositories under repo-base directory for packages split
+  from "packages/*" subdirectories. If repo-base is missing, then the following
+  default is used:
+
+    $repobase
+
+  The created repositories may be next used as a target for the
+
+    monorepo-builder split
+
+  command.
+
+OPTIONS:
 
   -f    force reinitialization (deletes existing repositories)
   -d    dry run, print commands that would be executed instead or running them
@@ -26,10 +37,11 @@ options:
   -v    verbose mode
   -h    print help and exit
 
-parameters:
+PARAMETERS:
 
-  base-repo-dir   base directory under which package repositories will be
-                  created (default: $repobase)
+  repo-base
+        base directory under which package repositories will be created
+
 !
 }
 
@@ -49,7 +61,6 @@ force=false;
 dry=false;
 ansii=false;
 verbose=false;
-repobase="${top}/build/monorepo-split/repositories";
 
 while getopts "fdavh" option; do
   case $option in
@@ -94,11 +105,13 @@ else
   reset='\033[0m';
 fi
 
-pushd $top > /dev/null
+if $verbose; then echo "pushd $abstop"; fi
+pushd $abstop > /dev/null
 
 for dir in packages/*; do
   if [ -d "$dir"  ] && [ -f "$dir/composer.json" ]; then
-    package=`jq -r '.name' "$dir/composer.json"`;
+    #package=`jq -r '.name' "$dir/composer.json"`;
+    package=`basename "$dir"`;
     repodir="${repobase}/${package}.git";
 
     if [ -e "$repodir" ]; then
@@ -132,3 +145,4 @@ git init --bare "$repodir" > /dev/null;
 done
 
 popd > /dev/null
+if $verbose; then echo "popd"; fi

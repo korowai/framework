@@ -17,17 +17,8 @@ namespace Korowai\Testing;
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-interface ObjectPropertiesInterface
+interface ObjectPropertiesInterface extends \ArrayAccess
 {
-    /**
-     * Returns array of values suitable for comparisons performed by
-     * constraints. All values that are instances of
-     * [ObjectPropertiesInterface](ObjectPropertiesInterface.html)
-     * get converted to arrays recursively.
-     *
-     * @return array
-     */
-    public function getArrayForComparison() : array;
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

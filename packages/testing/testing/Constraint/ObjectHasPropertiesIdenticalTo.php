@@ -14,9 +14,13 @@ namespace Korowai\Testing\Constraint;
 
 use Korowai\Testing\ObjectProperties;
 use Korowai\Testing\ObjectPropertiesInterface;
+use Korowai\Testing\Exporter;
 use PHPUnit\Framework\Constraint\Constraint;
+use PHPUnit\Framework\Constraint\Operator;
+use PHPUnit\Framework\Constraint\LogicalNot;
 use PHPUnit\Framework\ExpectationFailedException;
 use SebastianBergmann\Comparator\ComparisonFailure;
+use SebastianBergmann\Exporter\Exporter as BaseExporter;
 
 /**
  * Constraint that accepts objects having properties identical to expected
@@ -43,6 +47,11 @@ final class ObjectHasPropertiesIdenticalTo extends Constraint implements ObjectP
      * @var array
      */
     private $expected;
+
+    /**
+     * @var Exporter
+     */
+    private $exporter;
 
     /**
      * Initializes the constraint.
@@ -72,6 +81,29 @@ final class ObjectHasPropertiesIdenticalTo extends Constraint implements ObjectP
     }
 
     /**
+     * Returns a custom string representation of the constraint object when it
+     * appears in context of an $operator expression.
+     *
+     * The purpose of this method is to provide meaningful descriptive string
+     * in context of operators such as LogicalNot. Native PHPUnit constraints
+     * are supported out of the box by LogicalNot, but externally developed
+     * ones had no way to provide correct strings in this context.
+     *
+     * The method shall return empty string, when it does not handle
+     * customization by itself.
+     *
+     * @param Operator $operator the $operator of the expression
+     * @param mixed    $role     role of $this constraint in the $operator expression
+     */
+    public function toStringInContext(Operator $operator, $role) : string
+    {
+        if ($operator instanceof LogicalNot) {
+            return 'does not have required properties with prescribed values';
+        }
+        return '';
+    }
+
+    /**
      * Evaluates the constraint for parameter $other
      *
      * If $returnResult is set to false (the default), an exception is thrown
@@ -96,13 +128,13 @@ final class ObjectHasPropertiesIdenticalTo extends Constraint implements ObjectP
             $f = null;
 
             if (is_object($other)) {
-                $actual = $this->getActualPropertiesForComparison($other);
-                $expect = $this->getExpectedPropertiesForComparison();
+                $actual = $this->getActualProperties($other, true);
+                $expect = $this->getExpectedProperties(true);
                 $f = new ComparisonFailure(
                     $this->expected,
                     $other,
-                    $this->exporter()->export($expect->getArrayForComparison()),
-                    $this->exporter()->export($actual->getArrayForComparison())
+                    $this->exporter()->export($expect/*->getArrayForComparison()*/),
+                    $this->exporter()->export($actual/*->getArrayForComparison()*/)
                 );
             }
 
@@ -123,9 +155,17 @@ final class ObjectHasPropertiesIdenticalTo extends Constraint implements ObjectP
         if (!is_object($other)) {
             return false;
         }
-        $actual = $this->getActualPropertiesForComparison($other);
-        $expect = $this->getExpectedPropertiesForComparison();
-        return ($expect->getArrayForComparison() === $actual->getArrayForComparison());
+        $actual = $this->getActualProperties($other, false);
+        $expect = $this->getExpectedProperties(false);
+        return $expect === $actual;
+    }
+
+    protected function exporter() : BaseExporter
+    {
+        if ($this->exporter === null) {
+            $this->exporter = new Exporter;
+        }
+        return $this->exporter;
     }
 
     /**
@@ -136,77 +176,124 @@ final class ObjectHasPropertiesIdenticalTo extends Constraint implements ObjectP
      *
      * @param  mixed $other evaluated value or object
      */
-    public function failureDescription($other) : string
+    protected function failureDescription($other) : string
     {
-        if (is_object($other)) {
-            $what = 'object '.get_class($other);
-        } else {
-            $what = $this->exporter()->export($other);
+        return $this->short($other).' '.$this->toString();
+    }
+
+    /**
+     * Returns the description of the failure when this constraint appears in
+     * context of an $operator expression.
+     *
+     * The purpose of this method is to provide meaningful failue description
+     * in context of operators such as LogicalNot. Native PHPUnit constraints
+     * are supported out of the box by LogicalNot, but externally developed
+     * ones had no way to provide correct messages in this context.
+     *
+     * The method shall return empty string, when it does not handle
+     * customization by itself.
+     *
+     * @param Operator $operator the $operator of the expression
+     * @param mixed    $role     role of $this constraint in the $operator expression
+     * @param mixed    $other    evaluated value or object
+     */
+    protected function failureDescriptionInContext(Operator $operator, $role, $other): string
+    {
+        $string = $this->toStringInContext($operator, $role);
+
+        if ($string === '') {
+            return '';
         }
-        return $what.' '.$this->toString();
+
+        return $this->short($other) . ' ' . $string;
     }
 
     /**
-     * {@inheritdoc}
+     * Returns short representation of $subject for failureDescription().
+     *
+     * @return string
      */
-    public function getExpectedPropertiesForComparison() : ObjectPropertiesInterface
+    private function short($subject) : string
     {
-        $expect = $this->expected;
-        array_walk_recursive($expect, [static::class, 'adjustExpectedValueForComparison']);
-        return new ObjectProperties($expect);
+        if (is_object($subject)) {
+            return 'object '.get_class($subject);
+        } else {
+            return $this->exporter()->export($subject);
+        }
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getActualPropertiesForComparison(object $object) : ObjectPropertiesInterface
+    public function getActualProperties(object $object, bool $wrap)
     {
         $actual = [];
         foreach (array_keys($this->expected) as $key) {
-            $this->updateActual($actual, $object, $key);
+            $this->updateActual($actual, $object, $key, $wrap);
         }
-        return new ObjectProperties($actual);
+        return $wrap ? new ObjectProperties($actual) : $actual;
     }
 
-    private function updateActual(array &$actual, object $object, string $key) : void
+    /**
+     * {@inheritdoc}
+     */
+    public function getExpectedProperties(bool $wrap)
+    {
+        $expect = $this->expected;
+        array_walk_recursive($expect, [static::class, 'adjustExpectedValue'], $wrap);
+        return $wrap ? new ObjectProperties($expect) : $expect;
+    }
+
+    private function updateActual(array &$actual, object $object, string $key, bool $wrap) : void
     {
         $getter = (substr($key, -2) === '()') ? substr($key, 0, -2) : null;
-        $expected = $this->expected[$key];
+        $expect = $this->expected[$key];
         if ($getter !== null) {
             if (!is_callable([$object, $getter])) {
                 throw new \PHPUnit\Framework\Exception('$object->'.$getter.'() is not callable');
             }
-            $actual[$key] = $this->adjustActualValueForComparison(call_user_func([$object, $getter]), $expected);
+            $actual[$key] = $this->adjustActualValue(call_user_func([$object, $getter]), $expect, $wrap);
         } elseif (property_exists($object, $key)) {
-            $actual[$key] = $this->adjustActualValueForComparison($object->{$key}, $expected);
+            $actual[$key] = $this->adjustActualValue($object->{$key}, $expect, $wrap);
         }
     }
 
-    private static function adjustActualValueForComparison($value, $expected)
+    private static function adjustActualValue($value, $expect, bool $wrap)
     {
-        if ($expected instanceof ObjectPropertiesComparatorInterface && is_object($value)) {
-            return $expected->getActualPropertiesForComparison($value);
-        } elseif (is_array($expected) && is_array($value)) {
-            array_walk($value, [static::class, 'adjustActualArrayValueForComparison'], $expected);
+        if ($expect instanceof ObjectPropertiesComparatorInterface) {
+            if (is_object($value)) {
+                return $expect->getActualProperties($value, $wrap);
+            } elseif (is_array($value) && !$wrap) {
+                //  prevents the following false positive:
+                //
+                //  - expecting a property to be set to an object with prescribed properties, and
+                //  - the property has assigned an associative array with keys/values same as
+                //    the keys/values of $expect.
+                return self::uniqueObject();
+            }
+        } elseif (is_array($expect) && is_array($value)) {
+            foreach ($value as $vKey => &$vValue) {
+                $vValue = self::adjustActualValue($vValue, $expect[$vKey], $wrap);
+            }
         }
         return $value;
     }
 
-    private static function adjustActualArrayValueForComparison(&$value, $key, array $expected)
+    private static function adjustExpectedValue(&$expect, $key, bool $wrap)
     {
-        $expectedValue = $expected[$key] ?? null;
-        if ($expectedValue instanceof ObjectPropertiesComparatorInterface && is_object($value)) {
-            $value = $expectedValue->getActualPropertiesForComparison($value);
-        } elseif (is_array($expectedValue) && is_array($value)) {
-            $value = static::adjustActualValueForComparison($value, $expectedValue);
+        if ($expect instanceof ObjectPropertiesComparatorInterface) {
+            $expect = $expect->getExpectedProperties($wrap);
         }
     }
 
-    private static function adjustExpectedValueForComparison(&$expected)
+    /**
+     * Returns an unique object that is not identical to anything else in the world.
+     *
+     * @return object
+     */
+    private static function uniqueObject() : object
     {
-        if ($expected instanceof ObjectPropertiesComparatorInterface) {
-            $expected = $expected->getExpectedPropertiesForComparison();
-        }
+        return new class {};
     }
 }
 

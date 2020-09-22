@@ -20,25 +20,29 @@ use Korowai\Testing\ObjectPropertiesInterface;
 interface ObjectPropertiesComparatorInterface
 {
     /**
-     * Returns actual *$object* properties to be used for comparison. The
-     * purpose is to choose and adjust *$object* properties that should be used
-     * by implementation for comparison. The returned object contains only
-     * properties that are expected by this constraint. The method may also
-     * apply its own transformations to particular properties.
+     * Returns actual *$object* properties in a form suitable for direct comparison or for representation. The returned
+     * object contains only properties that are expected by this constraint.
      *
      * @param  object $object
+     * @param  bool $represenation
      *
-     * @return ObjectPropertiesInterface
+     * @return array|ObjectPropertiesInterface
+     *      If *$representation* is false, returns an array suitable for comparison, if *$representation* is true,
+     *      returns an instance of ObjectPropertiesInterface suitable for representation with exporter.
      */
-    public function getActualPropertiesForComparison(object $object) : ObjectPropertiesInterface;
+    public function getActualProperties(object $object, bool $representation);
 
     /**
      * Returns array of expected properties to be used for comparison. The
      * method may also apply its own transformations to particular properties.
      *
-     * @return ObjectPropertiesInterface
+     * @param  bool $represenation
+     *
+     * @return array|ObjectPropertiesInterface
+     *      If *$representation* is false, returns an array suitable for comparison, if *$representation* is true,
+     *      returns an instance of ObjectPropertiesInterface suitable for representation with exporter.
      */
-    public function getExpectedPropertiesForComparison() : ObjectPropertiesInterface;
+    public function getExpectedProperties(bool $representation);
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

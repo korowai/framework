@@ -79,10 +79,8 @@ static function ($container) : void {
     ]);
 
     $packagesComposerJsonFiles = glob('packages/*/composer.json');
-    $packages = \preg_replace('/^packages\/([^\/]+)\/composer.json$/', '\1', $packagesComposerJsonFiles);
-
-    $packagesDirBase  = 'packages/';
-    $packagesDirs  = \preg_replace('/^/', $packagesDirBase,  $packages);
+    $packagesDirs  = \array_map('dirname', $packagesComposerJsonFiles);
+    $packages = \array_map('basename', $packagesDirs);
 
     $defaultSplitRepositoryBase = 'file://'.__dir__.'/build/monorepo-split/repositories/korowai';
     $parameters->set('default_split_repository_base', $defaultSplitRepositoryBase);

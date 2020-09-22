@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Korowai\Testing\Assertions;
 
-use Korowai\Testing\Constraint\HasPropertiesIdenticalTo;
+use Korowai\Testing\Constraint\ObjectHasPropertiesIdenticalTo;
 use PHPUnit\Framework\Constraint\LogicalNot;
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\ExpectationFailedException;
@@ -44,8 +44,8 @@ trait ObjectPropertiesAssertionsTrait
      * @throws ExpectationFailedException
      * @throws \PHPUnit\Framework\Exception when a non-string keys are found in *$expected*
      */
-    public static function assertHasPropertiesSameAs(array $expected, object $object, string $message = '') : void {
-        static::assertThat($object, static::hasPropertiesIdenticalTo($expected), $message);
+    public static function assertObjectHasPropertiesSameAs(array $expected, object $object, string $message = '') : void {
+        static::assertThat($object, static::objectHasPropertiesIdenticalTo($expected), $message);
     }
 
     /**
@@ -63,7 +63,7 @@ trait ObjectPropertiesAssertionsTrait
      * @throws \PHPUnit\Framework\Exception when a non-string keys are found in *$expected*
      */
     public static function assertNotHasPropertiesSameAs(array $expected, object $object, string $message = '') : void {
-        static::assertThat($object, new LogicalNot(static::hasPropertiesIdenticalTo($expected)), $message);
+        static::assertThat($object, new LogicalNot(static::objectHasPropertiesIdenticalTo($expected)), $message);
     }
 
     /**
@@ -72,11 +72,11 @@ trait ObjectPropertiesAssertionsTrait
      * @param  array $expected
      *      An array of key => value pairs with expected values of attributes.
      *
-     * @return HasPropertiesIdenticalTo
+     * @return ObjectHasPropertiesIdenticalTo
      * @throws \PHPUnit\Framework\Exception when non-string keys are found in *$expected*
      */
-    public static function hasPropertiesIdenticalTo(array $expected) : HasPropertiesIdenticalTo {
-        return new HasPropertiesIdenticalTo($expected);
+    public static function objectHasPropertiesIdenticalTo(array $expected) : ObjectHasPropertiesIdenticalTo {
+        return new ObjectHasPropertiesIdenticalTo($expected);
     }
 }
 

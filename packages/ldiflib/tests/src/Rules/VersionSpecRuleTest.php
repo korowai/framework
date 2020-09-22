@@ -46,12 +46,12 @@ final class VersionSpecRuleTest extends TestCase
     {
         $rule = new VersionSpecRule(...$args);
         $expect = array_merge([
-            'getRfcRule()' => self::hasPropertiesIdenticalTo([
+            'getRfcRule()' => self::objectHasPropertiesIdenticalTo([
                 'ruleSetClass()' => Rfc2849::class,
                 'name()' => 'VERSION_SPEC',
             ])
         ], $expect);
-        $this->assertHasPropertiesSameAs($expect, $rule);
+        $this->assertObjectHasPropertiesSameAs($expect, $rule);
     }
 
     //
@@ -70,7 +70,7 @@ final class VersionSpecRuleTest extends TestCase
                     'result' => true,
                     'value' => 1,
                     'state' => [
-                        'getCursor()' => self::hasPropertiesIdenticalTo([
+                        'getCursor()' => self::objectHasPropertiesIdenticalTo([
                             'getOffset()' => 10,
                             'getSourceOffset()' => 10,
                             'getSourceCharOffset()' => 10
@@ -91,14 +91,14 @@ final class VersionSpecRuleTest extends TestCase
                     'init' => 123456,
                     'value' => null,
                     'state' => [
-                        'getCursor()' => self::hasPropertiesIdenticalTo([
+                        'getCursor()' => self::objectHasPropertiesIdenticalTo([
                             'getOffset()' => 13,
                             'getSourceOffset()' => 13,
                             'getSourceCharOffset()' => 13
                         ]),
                         'getRecords()' => [],
                         'getErrors()' => [
-                            self::hasPropertiesIdenticalTo([
+                            self::objectHasPropertiesIdenticalTo([
                                 'getMessage()' => 'internal error: missing or invalid capture group "version_number"',
                                 'getSourceOffset()' => 13
                             ]),
@@ -117,12 +117,12 @@ final class VersionSpecRuleTest extends TestCase
                     'init' => 123456,
                     'value' => null,
                     'state' => [
-                        'getCursor()' => self::hasPropertiesIdenticalTo([
+                        'getCursor()' => self::objectHasPropertiesIdenticalTo([
                             'getOffset()' => 16,
                         ]),
                         'getRecords()' => [],
                         'getErrors()' => [
-                            self::hasPropertiesIdenticalTo([
+                            self::objectHasPropertiesIdenticalTo([
                                 'getMessage()' => 'internal error: missing or invalid capture group "version_number"',
                                 'getSourceOffset()' => 16
                             ]),
@@ -141,12 +141,12 @@ final class VersionSpecRuleTest extends TestCase
                     'init' => 123456,
                     'value' => null,
                     'state' => [
-                        'getCursor()' => self::hasPropertiesIdenticalTo([
+                        'getCursor()' => self::objectHasPropertiesIdenticalTo([
                             'getOffset()' => 11,
                         ]),
                         'getRecords()' => [],
                         'getErrors()' => [
-                            self::hasPropertiesIdenticalTo([
+                            self::objectHasPropertiesIdenticalTo([
                                 'getMessage()' => "syntax error: unsupported version number: 23",
                                 'getSourceOffset()' => 9,
                             ])
@@ -175,11 +175,11 @@ final class VersionSpecRuleTest extends TestCase
         $this->assertSame($expect['result'], $result);
         if (is_array($expect['value'])) {
             $this->assertInstanceOf(ValueSpecInterface::class, $value);
-            $this->assertHasPropertiesSameAs($expect['value'], $value);
+            $this->assertObjectHasPropertiesSameAs($expect['value'], $value);
         } else {
             $this->assertSame($expect['value'], $value);
         }
-        $this->assertHasPropertiesSameAs($expect['state'], $state);
+        $this->assertObjectHasPropertiesSameAs($expect['state'], $state);
     }
 
     //
@@ -198,12 +198,12 @@ final class VersionSpecRuleTest extends TestCase
                     'init' => 123456,
                     'value' => null,
                     'state' => [
-                        'getCursor()' => self::hasPropertiesIdenticalTo([
+                        'getCursor()' => self::objectHasPropertiesIdenticalTo([
                             'getOffset()' => 0,
                         ]),
                         'getRecords()' => [],
                         'getErrors()' => [
-                            self::hasPropertiesIdenticalTo([
+                            self::objectHasPropertiesIdenticalTo([
                                 'getMessage()' => 'syntax error: expected "version:" (RFC2849)',
                                 'getSourceOffset()' => 0,
                             ]),
@@ -220,7 +220,7 @@ final class VersionSpecRuleTest extends TestCase
                     'init' => 123456,
                     'value' => null,
                     'state' => [
-                        'getCursor()' => self::hasPropertiesIdenticalTo([
+                        'getCursor()' => self::objectHasPropertiesIdenticalTo([
                             'getOffset()' => 0,
                         ]),
                         'getRecords()' => [],
@@ -236,7 +236,7 @@ final class VersionSpecRuleTest extends TestCase
                     'result' => true,
                     'value' => 1,
                     'state' => [
-                        'getCursor()' => self::hasPropertiesIdenticalTo([
+                        'getCursor()' => self::objectHasPropertiesIdenticalTo([
                             'getOffset()' => 10,
                         ]),
                         'getRecords()' => [],
@@ -256,7 +256,7 @@ final class VersionSpecRuleTest extends TestCase
                     'result' => true,
                     'value' => 1,
                     'state' => [
-                        'getCursor()' => self::hasPropertiesIdenticalTo([
+                        'getCursor()' => self::objectHasPropertiesIdenticalTo([
                             'getOffset()' => 10,
                             'getSourceOffset()' => 21,
                             'getSourceCharOffset()' => 20
@@ -277,12 +277,12 @@ final class VersionSpecRuleTest extends TestCase
                     'init' => 123456,
                     'value' => null,
                     'state' => [
-                        'getCursor()' => self::hasPropertiesIdenticalTo([
+                        'getCursor()' => self::objectHasPropertiesIdenticalTo([
                             'getOffset()' => 13,
                         ]),
                         'getRecords()' => [],
                         'getErrors()' => [
-                            self::hasPropertiesIdenticalTo([
+                            self::objectHasPropertiesIdenticalTo([
                                 'getMessage()' => 'syntax error: expected valid version number (RFC2849)',
                                 'getSourceOffset()' => 12
                             ]),
@@ -301,12 +301,12 @@ final class VersionSpecRuleTest extends TestCase
                     'init' => 123456,
                     'value' => null,
                     'state' => [
-                        'getCursor()' => self::hasPropertiesIdenticalTo([
+                        'getCursor()' => self::objectHasPropertiesIdenticalTo([
                             'getOffset()' => 16,
                         ]),
                         'getRecords()' => [],
                         'getErrors()' => [
-                            self::hasPropertiesIdenticalTo([
+                            self::objectHasPropertiesIdenticalTo([
                                 'getMessage()' => 'syntax error: expected valid version number (RFC2849)',
                                 'getSourceOffset()' => 15
                             ]),
@@ -325,12 +325,12 @@ final class VersionSpecRuleTest extends TestCase
                     'init' => 123456,
                     'value' => null,
                     'state' => [
-                        'getCursor()' => self::hasPropertiesIdenticalTo([
+                        'getCursor()' => self::objectHasPropertiesIdenticalTo([
                             'getOffset()' => 11,
                         ]),
                         'getRecords()' => [],
                         'getErrors()' => [
-                            self::hasPropertiesIdenticalTo([
+                            self::objectHasPropertiesIdenticalTo([
                                 'getMessage()' => "syntax error: unsupported version number: 23",
                                 'getSourceOffset()' => 9,
                             ])
@@ -361,11 +361,11 @@ final class VersionSpecRuleTest extends TestCase
 
         if (is_array($expect['value'])) {
             $this->assertInstanceOf(ValueSpecInterface::class, $value);
-            $this->assertHasPropertiesSameAs($expect['value'], $value);
+            $this->assertObjectHasPropertiesSameAs($expect['value'], $value);
         } else {
             $this->assertSame($expect['value'], $value);
         }
-        $this->assertHasPropertiesSameAs($expect['state'], $state);
+        $this->assertObjectHasPropertiesSameAs($expect['state'], $state);
     }
 }
 

@@ -68,7 +68,7 @@ final class LdapFactoryTest extends TestCase
                     ->with(
                         $this->logicalAnd(
                             $this->isInstanceOf(LdapLinkConfigInterface::class),
-                            $this->hasPropertiesIdenticalTo([
+                            $this->objectHasPropertiesIdenticalTo([
                                 'uri()'     => $resolved['uri'],
                                 'tls()'     => $resolved['tls'],
                                 'options()' => $resolved['options'],

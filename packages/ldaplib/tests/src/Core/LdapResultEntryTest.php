@@ -397,7 +397,7 @@ final class LdapResultEntryTest extends TestCase
                 'return' => 'ldap entry next',
                 'expect' => static::logicalAnd(
                     static::isInstanceOf(LdapResultEntry::class),
-                    static::hasPropertiesIdenticalTo(['getResource()' => 'ldap entry next'])
+                    static::objectHasPropertiesIdenticalTo(['getResource()' => 'ldap entry next'])
                 )
             ],
 

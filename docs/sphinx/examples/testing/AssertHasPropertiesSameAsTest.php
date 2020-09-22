@@ -17,7 +17,7 @@ class AssertHasPropertiesSameAsTest extends \Korowai\Testing\TestCase
     public function testSuccess()
     {
         // assert that:
-        $this->assertHasPropertiesSameAs([
+        $this->assertObjectHasPropertiesSameAs([
             'attribute'     => 'A',   // - attribute is 'A' (ok)
             'getValue()'    => 'V'    // - value is 'V' (ok)
         ], $this);
@@ -26,7 +26,7 @@ class AssertHasPropertiesSameAsTest extends \Korowai\Testing\TestCase
     public function testFailure()
     {
         // assert that:
-        $this->assertHasPropertiesSameAs([
+        $this->assertObjectHasPropertiesSameAs([
             'attribute'     => 'A',   // - attribute is 'A' (ok)
             'getValue()'    => 'X'    // - value is 'X' (fail)
         ], $this);
@@ -35,7 +35,7 @@ class AssertHasPropertiesSameAsTest extends \Korowai\Testing\TestCase
     public function testFailureWithGetter()
     {
         // assert that:
-        $this->assertHasPropertiesSameAs([
+        $this->assertObjectHasPropertiesSameAs([
             'attribute'     => 'A',   // - attribute is 'A' (ok)
             'value'         => 'X'    // - value is 'X' (fail)
         ], $this, '', function (object $object) {

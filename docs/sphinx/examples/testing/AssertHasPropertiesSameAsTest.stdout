@@ -17,7 +17,7 @@ Failed asserting that object AssertHasPropertiesSameAsTest has required properti
 +    'getValue()' => 'V'
  )
 
-/code/packages/testing/testing/Constraint/HasPropertiesIdenticalTo.php:134
+/code/packages/testing/testing/Constraint/ObjectHasPropertiesIdenticalTo.php:134
 /code/packages/testing/testing/Assertions/ObjectPropertiesAssertions.php:67
 /code/docs/sphinx/examples/testing/AssertHasPropertiesSameAsTest.php:30
 
@@ -32,7 +32,7 @@ Failed asserting that object AssertHasPropertiesSameAsTest has required properti
 +    'value' => 'V'
  )
 
-/code/packages/testing/testing/Constraint/HasPropertiesIdenticalTo.php:134
+/code/packages/testing/testing/Constraint/ObjectHasPropertiesIdenticalTo.php:134
 /code/packages/testing/testing/Assertions/ObjectPropertiesAssertions.php:67
 /code/docs/sphinx/examples/testing/AssertHasPropertiesSameAsTest.php:43
 

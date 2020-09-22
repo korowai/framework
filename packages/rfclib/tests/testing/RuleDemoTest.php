@@ -53,7 +53,7 @@ final class RuleDemoTest extends TestCase
         $demo = new RuleDemo(...$args);
         $this->assertInstanceOf(RuleInterface::class, $demo->getRule());
         $this->assertIsString($demo->getFormat());
-        $this->assertHasPropertiesSameAs($expect, $demo);
+        $this->assertObjectHasPropertiesSameAs($expect, $demo);
     }
 
     public static function prov__create()
@@ -62,7 +62,7 @@ final class RuleDemoTest extends TestCase
             'create(Rfc2849::class, "DN_SPEC")' => [
                 [Rfc2849::class, "DN_SPEC"],
                 [
-                    'getRule()' => self::hasPropertiesIdenticalTo([
+                    'getRule()' => self::objectHasPropertiesIdenticalTo([
                         'ruleSetClass()' => Rfc2849::class,
                         'name()' => 'DN_SPEC'
                     ]),
@@ -72,7 +72,7 @@ final class RuleDemoTest extends TestCase
             'create(Rfc2849::class, "DN_SPEC", "/^%s$/")' => [
                 [Rfc2849::class, "DN_SPEC", "/^%s$/"],
                 [
-                    'getRule()' => self::hasPropertiesIdenticalTo([
+                    'getRule()' => self::objectHasPropertiesIdenticalTo([
                         'ruleSetClass()' => Rfc2849::class,
                         'name()' => 'DN_SPEC'
                     ]),
@@ -90,7 +90,7 @@ final class RuleDemoTest extends TestCase
         $demo = RuleDemo::create(...$args);
         $this->assertInstanceOf(RuleInterface::class, $demo->getRule());
         $this->assertIsString($demo->getFormat());
-        $this->assertHasPropertiesSameAs($expect, $demo);
+        $this->assertObjectHasPropertiesSameAs($expect, $demo);
     }
 
     public function test__setRule() : void

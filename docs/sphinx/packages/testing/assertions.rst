@@ -101,16 +101,16 @@ is the inverse of this.
   :linenos:
   :language: none
 
-.. _testing.assertions.assertHasPropertiesSameAs:
+.. _testing.assertions.assertObjectHasPropertiesSameAs:
 
-assertHasPropertiesSameAs()
+assertObjectHasPropertiesSameAs()
 ---------------------------
 
 Synopsis:
 
 .. code:: php
 
-  function assertHasPropertiesSameAs(array $expected, object $object[, string $message = ''[, callable $getters = null]])
+  function assertObjectHasPropertiesSameAs(array $expected, object $object[, string $message = ''[, callable $getters = null]])
 
 Reports an error identified by ``$message`` if ``$object``'s properties do not
 match expectations prescribed in the ``$expected`` array. Property is defined
@@ -149,8 +149,8 @@ is the inverse of this.
 
 .. literalinclude:: ../../examples/testing/AssertHasPropertiesSameAsTest.php
    :linenos:
-   :caption: Usage of assertHasPropertiesSameAs()
-   :name: testing.assertions.assertHasPropertiesSameAs.example
+   :caption: Usage of assertObjectHasPropertiesSameAs()
+   :name: testing.assertions.assertObjectHasPropertiesSameAs.example
 
 .. literalinclude:: ../../examples/testing/AssertHasPropertiesSameAsTest.stdout
   :linenos:

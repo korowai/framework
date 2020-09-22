@@ -109,7 +109,7 @@ final class LdapLinkConstructorTest extends TestCase
         if ($return) {
             $this->assertInstanceOf(LdapLink::class, $link);
             $this->assertSame($return, $link->getResource());
-            $this->assertHasPropertiesSameAs($expect, $link);
+            $this->assertObjectHasPropertiesSameAs($expect, $link);
         } else {
             $this->assertSame($expect, $link);
         }

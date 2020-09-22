@@ -6,8 +6,8 @@ Time: 1.35 seconds, Memory: 179.89 MB
 
 There were 2 failures:
 
-1) HasPropertiesIdenticalToTest::testFailure
-Failed asserting that object HasPropertiesIdenticalToTest has required properties with prescribed values.
+1) ObjectHasPropertiesIdenticalToTest::testFailure
+Failed asserting that object ObjectHasPropertiesIdenticalToTest has required properties with prescribed values.
 --- Expected
 +++ Actual
 @@ @@
@@ -17,11 +17,11 @@ Failed asserting that object HasPropertiesIdenticalToTest has required propertie
 +    'getValue()' => 'V'
  )
 
-/code/packages/testing/testing/Constraint/HasPropertiesIdenticalTo.php:134
-/code/docs/sphinx/examples/testing/hasPropertiesIdenticalToTest.php:30
+/code/packages/testing/testing/Constraint/ObjectHasPropertiesIdenticalTo.php:134
+/code/docs/sphinx/examples/testing/objectHasPropertiesIdenticalToTest.php:30
 
-2) HasPropertiesIdenticalToTest::testFailureWithGetter
-Failed asserting that object HasPropertiesIdenticalToTest has required properties with prescribed values.
+2) ObjectHasPropertiesIdenticalToTest::testFailureWithGetter
+Failed asserting that object ObjectHasPropertiesIdenticalToTest has required properties with prescribed values.
 --- Expected
 +++ Actual
 @@ @@
@@ -31,8 +31,8 @@ Failed asserting that object HasPropertiesIdenticalToTest has required propertie
 +    'value' => 'V'
  )
 
-/code/packages/testing/testing/Constraint/HasPropertiesIdenticalTo.php:134
-/code/docs/sphinx/examples/testing/hasPropertiesIdenticalToTest.php:43
+/code/packages/testing/testing/Constraint/ObjectHasPropertiesIdenticalTo.php:134
+/code/docs/sphinx/examples/testing/objectHasPropertiesIdenticalToTest.php:43
 
 FAILURES!
 Tests: 3, Assertions: 3, Failures: 2.

@@ -229,7 +229,7 @@ final class LdapResultTest extends TestCase
                 'will'   => 'first result entry',
                 'expect' => static::logicalAnd(
                     static::isInstanceOf(LdapResultEntry::class),
-                    static::hasPropertiesIdenticalTo(['getResource()' => 'first result entry'])
+                    static::objectHasPropertiesIdenticalTo(['getResource()' => 'first result entry'])
                 ),
             ],
             // #1
@@ -269,7 +269,7 @@ final class LdapResultTest extends TestCase
                 'will'   => 'first result reference',
                 'expect' => static::logicalAnd(
                     static::isInstanceOf(LdapResultReference::class),
-                    static::hasPropertiesIdenticalTo(['getResource()' => 'first result reference'])
+                    static::objectHasPropertiesIdenticalTo(['getResource()' => 'first result reference'])
                 ),
             ],
             // #1

@@ -89,28 +89,28 @@ only with arrays obtained from ``preg_match()`` invoked with
   :language: none
 
 
-.. _testing.constraints.hasPropertiesIdenticalTo:
+.. _testing.constraints.objectHasPropertiesIdenticalTo:
 
-hasPropertiesIdenticalTo
+objectHasPropertiesIdenticalTo
 ------------------------
 
 Synopsis:
 
 .. code:: php
 
-  function hasPropertiesIdenticalTo(array $expected[, callable $getters = null])
+  function objectHasPropertiesIdenticalTo(array $expected[, callable $getters = null])
 
-Creates :class:`Korowai\\Testing\\Constraint\\HasPropertiesIdenticalTo` constraint.
+Creates :class:`Korowai\\Testing\\Constraint\\ObjectHasPropertiesIdenticalTo` constraint.
 
 The constraint accepts objects having selected properties identical to
 ``$expected``.
 
-.. literalinclude:: ../../examples/testing/hasPropertiesIdenticalToTest.php
+.. literalinclude:: ../../examples/testing/objectHasPropertiesIdenticalToTest.php
    :linenos:
-   :caption: Usage of hasPropertiesIdenticalTo()
-   :name: testing.assertions.hasPropertiesIdenticalTo.example
+   :caption: Usage of objectHasPropertiesIdenticalTo()
+   :name: testing.assertions.objectHasPropertiesIdenticalTo.example
 
-.. literalinclude:: ../../examples/testing/hasPropertiesIdenticalToTest.stdout
+.. literalinclude:: ../../examples/testing/objectHasPropertiesIdenticalToTest.stdout
   :linenos:
   :language: none
 

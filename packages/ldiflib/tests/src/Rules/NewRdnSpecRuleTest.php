@@ -36,7 +36,7 @@ final class NewRdnSpecRuleTest extends TestCase
             '__construct()' => [
                 'args'   => [],
                 'expect' => [
-                    'getRfcRule()' => self::hasPropertiesIdenticalTo([
+                    'getRfcRule()' => self::objectHasPropertiesIdenticalTo([
                         'ruleSetClass()' => Rfc2849::class,
                         'name()' => 'NEWRDN_SPEC',
                     ])
@@ -51,7 +51,7 @@ final class NewRdnSpecRuleTest extends TestCase
     public function test__construct(array $args, array $expect) : void
     {
         $rule = new NewRdnSpecRule(...$args);
-        $this->assertHasPropertiesSameAs($expect, $rule);
+        $this->assertObjectHasPropertiesSameAs($expect, $rule);
     }
 
     public static function rdnMatch__cases()
@@ -70,14 +70,14 @@ final class NewRdnSpecRuleTest extends TestCase
             //          0234567
             $source = ['ł newrdn: '.$rdn, 3 + strlen('newrdn: ') + strlen($rdn)];
             $errors = $result ? [] : [
-                self::hasPropertiesIdenticalTo([
+                self::objectHasPropertiesIdenticalTo([
                     'getSourceOffset()' => 3 + strlen('newrdn: '),
                     'getSourceCharOffset()' => 2 + mb_strlen('newrdn: '),
                     'getMessage()' => 'syntax error: invalid RDN syntax: "'.$rdn.'"',
                 ])
             ];
             $matches = [[$rdn, 3 + strlen('newrdn: ')], 'value_safe' => [$rdn, 3 + strlen('newrdn: ')]];
-            $cursor = self::hasPropertiesIdenticalTo([
+            $cursor = self::objectHasPropertiesIdenticalTo([
                 'getOffset()' => 3 + strlen('newrdn: ') + strlen($rdn),
                 'getSourceOffset()' => 3 + strlen('newrdn: ') + strlen($rdn),
                 'getSourceCharOffset()' => 2 + mb_strlen('newrdn: ') + mb_strlen($rdn),
@@ -102,14 +102,14 @@ final class NewRdnSpecRuleTest extends TestCase
             //          0234567
             $source = ['ł newrdn:: '.$dnBase64, 3 + strlen('newrdn:: ') + strlen($dnBase64)];
             $errors = $result ? [] : [
-                self::hasPropertiesIdenticalTo([
+                self::objectHasPropertiesIdenticalTo([
                     'getSourceOffset()' => 3 + strlen('newrdn:: '),
                     'getSourceCharOffset()' => 2 + strlen('newrdn:: '),
                     'getMessage()' => 'syntax error: invalid RDN syntax: "'.$rdn.'"',
                 ]),
             ];
             $matches = [[$dnBase64, 3 + strlen('newrdn:: ')], 'value_b64' => [$dnBase64, 3 + strlen('newrdn:: ')]];
-            $cursor = self::hasPropertiesIdenticalTo([
+            $cursor = self::objectHasPropertiesIdenticalTo([
                 'getOffset()' => 3 + strlen('newrdn:: ') + strlen($dnBase64),
                 'getSourceOffset()' => 3 + strlen('newrdn:: ') + strlen($dnBase64),
                 'getSourceCharOffset()' => 2 + strlen('newrdn:: ') + mb_strlen($dnBase64),
@@ -133,13 +133,13 @@ final class NewRdnSpecRuleTest extends TestCase
             //          02345678
             $source = ['ł newrdn:: '.$dnBase64, 3 + strlen('newrdn:: ') + $case['getOffset()']];
             $errors = $result ? [] : [
-                self::hasPropertiesIdenticalTo([
+                self::objectHasPropertiesIdenticalTo([
                     'getSourceOffset()' => 3 + strlen('newrdn:: '),
                     'getSourceCharOffset()' => 2 + strlen('newrdn:: '),
                     'getMessage()' => 'syntax error: invalid BASE64 string',
                 ]),
             ];
-            $cursor = self::hasPropertiesIdenticalTo([
+            $cursor = self::objectHasPropertiesIdenticalTo([
                 'getOffset()' => 3 + strlen('newrdn:: ') + $case['getOffset()'],
                 'getSourceOffset()' => 3 + strlen('newrdn:: ') + $case['getOffset()'],
                 'getSourceCharOffset()' => 2 + strlen('newrdn:: ') + $case['getOffset()'],
@@ -169,13 +169,13 @@ final class NewRdnSpecRuleTest extends TestCase
             //          02345678
             $source = ['ł newrdn:: '.$dnBase64, 3 + strlen('newrdn:: ') + $case['getOffset()']];
             $errors = $result ? [] : [
-                self::hasPropertiesIdenticalTo([
+                self::objectHasPropertiesIdenticalTo([
                     'getSourceOffset()' => 3 + strlen('newrdn:: '),
                     'getSourceCharOffset()' => 2 + strlen('newrdn:: '),
                     'getMessage()' => 'syntax error: the string is not a valid UTF8',
                 ]),
             ];
-            $cursor = self::hasPropertiesIdenticalTo([
+            $cursor = self::objectHasPropertiesIdenticalTo([
                 'getOffset()' => 3 + strlen('newrdn:: ') + $case['getOffset()'],
                 'getSourceOffset()' => 3 + strlen('newrdn:: ') + $case['getOffset()'],
                 'getSourceCharOffset()' => 2 + strlen('newrdn:: ') + $case['charOffset'],
@@ -210,13 +210,13 @@ final class NewRdnSpecRuleTest extends TestCase
             $message = $type === 'BASE64' ? 'invalid BASE64 string' : 'invalid RDN syntax: "'.$rdn.'"';
             $dnOffset = strlen('newrdn:'.$sep) + $case[2];
             $errors = $result ? [] : [
-                self::hasPropertiesIdenticalTo([
+                self::objectHasPropertiesIdenticalTo([
                     'getSourceOffset()' => $dnOffset,
                     'getSourceCharOffset()' => $dnOffset,
                     'getMessage()' => 'syntax error: '.$message,
                 ]),
             ];
-            $cursor = self::hasPropertiesIdenticalTo([
+            $cursor = self::objectHasPropertiesIdenticalTo([
                 'getOffset()' => strlen($source[0]),
                 'getSourceOffset()' => strlen($source[0]),
                 'getSourceCharOffset()' => mb_strlen($source[0]),
@@ -254,13 +254,13 @@ final class NewRdnSpecRuleTest extends TestCase
                     'init'   => 'preset string',
                     'rdn'     => null,
                     'state'  => [
-                        'getCursor()' => self::hasPropertiesIdenticalTo([
+                        'getCursor()' => self::objectHasPropertiesIdenticalTo([
                             'getOffset()' => 6,
                             'getSourceOffset()' => 6,
                             'getSourceCharOffset()' => 6,
                         ]),
                         'getErrors()' => [
-                            self::hasPropertiesIdenticalTo([
+                            self::objectHasPropertiesIdenticalTo([
                                 'getSourceOffset()' => 6,
                                 'getSourceCharOffset()' => 6,
                                 'getMessage()' => 'internal error: missing or invalid capture groups "value_safe" and "value_b64"'
@@ -303,7 +303,7 @@ final class NewRdnSpecRuleTest extends TestCase
 
         $this->assertSame($expect['result'], $result);
         $this->assertSame($expect['rdn'], $rdn);
-        $this->assertHasPropertiesSameAs($expect['state'], $state);
+        $this->assertObjectHasPropertiesSameAs($expect['state'], $state);
     }
 
     //
@@ -316,7 +316,7 @@ final class NewRdnSpecRuleTest extends TestCase
             $args = $case['args'] ?? [];
             $optional = $args[0] ?? false;
             $errors = $optional ? [] : [
-                self::hasPropertiesIdenticalTo([
+                self::objectHasPropertiesIdenticalTo([
                     'getSourceOffset()' => $case['getOffset()'],
                     'getSourceCharOffset()' => $case['charOffset'],
                     'getMessage()' => 'syntax error: expected "newrdn:" (RFC2849)',
@@ -330,7 +330,7 @@ final class NewRdnSpecRuleTest extends TestCase
                     'init' => 'preset string',
                     'rdn' => null,
                     'state' => [
-                        'getCursor()' => self::hasPropertiesIdenticalTo([
+                        'getCursor()' => self::objectHasPropertiesIdenticalTo([
                             'getOffset()' => $case['getOffset()'],
                             'getSourceOffset()' => $case['getOffset()'],
                             'getSourceCharOffset()' => $case['charOffset']
@@ -357,13 +357,13 @@ final class NewRdnSpecRuleTest extends TestCase
             //          0234567
             $source = ['ł newrdn: '.$rdn, 3];
             $errors = $result ? [] : [
-                self::hasPropertiesIdenticalTo([
+                self::objectHasPropertiesIdenticalTo([
                     'getSourceOffset()' => 3 + strlen('newrdn: '),
                     'getSourceCharOffset()' => 2 + mb_strlen('newrdn: '),
                     'getMessage()' => 'syntax error: invalid RDN syntax: "'.$rdn.'"',
                 ]),
             ];
-            $cursor = self::hasPropertiesIdenticalTo([
+            $cursor = self::objectHasPropertiesIdenticalTo([
                 'getOffset()' => 3 + strlen('newrdn: ') + strlen($rdn),
                 'getSourceOffset()' => 3 + strlen('newrdn: ') + strlen($rdn),
                 'getSourceCharOffset()' => 2 + mb_strlen('newrdn: ') + mb_strlen($rdn),
@@ -392,13 +392,13 @@ final class NewRdnSpecRuleTest extends TestCase
             //          0234567
             $source = ['ł newrdn:: '.$dnBase64, 3];
             $errors = $result ? [] : [
-                self::hasPropertiesIdenticalTo([
+                self::objectHasPropertiesIdenticalTo([
                     'getSourceOffset()' => 3 + strlen('newrdn:: '),
                     'getSourceCharOffset()' => 2 + mb_strlen('newrdn:: '),
                     'getMessage()' => 'syntax error: invalid RDN syntax: "'.$rdn.'"',
                 ]),
             ];
-            $cursor = self::hasPropertiesIdenticalTo([
+            $cursor = self::objectHasPropertiesIdenticalTo([
                 'getOffset()' => 3 + strlen('newrdn:: ') + strlen($dnBase64),
                 'getSourceOffset()' => 3 + strlen('newrdn:: ') + strlen($dnBase64),
                 'getSourceCharOffset()' => 2 + mb_strlen('newrdn:: ') + mb_strlen($dnBase64),
@@ -426,13 +426,13 @@ final class NewRdnSpecRuleTest extends TestCase
             //          02345678
             $source = ['ł newrdn:: '.$dnBase64, 3];
             $errors = $result ? [] : [
-                self::hasPropertiesIdenticalTo([
+                self::objectHasPropertiesIdenticalTo([
                     'getSourceOffset()' => 3 + strlen('newrdn:: '),
                     'getSourceCharOffset()' => 2 + mb_strlen('newrdn:: '),
                     'getMessage()' => 'syntax error: invalid BASE64 string',
                 ]),
             ];
-            $cursor = self::hasPropertiesIdenticalTo([
+            $cursor = self::objectHasPropertiesIdenticalTo([
                 'getOffset()' => 3 + strlen('newrdn:: ') + $case['getOffset()'],
                 'getSourceOffset()' => 3 + strlen('newrdn:: ') + $case['getOffset()'],
                 'getSourceCharOffset()' => 2 + mb_strlen('newrdn:: ') + $case['getOffset()'],
@@ -465,13 +465,13 @@ final class NewRdnSpecRuleTest extends TestCase
             //          02345678
             $source = ['ł newrdn:: '.$dnBase64, 3];
             $errors = $result ? [] : [
-                self::hasPropertiesIdenticalTo([
+                self::objectHasPropertiesIdenticalTo([
                     'getSourceOffset()' => 3 + strlen('newrdn:: '),
                     'getSourceCharOffset()' => 2 + mb_strlen('newrdn:: '),
                     'getMessage()' => 'syntax error: the string is not a valid UTF8',
                 ])
             ];
-            $cursor = self::hasPropertiesIdenticalTo([
+            $cursor = self::objectHasPropertiesIdenticalTo([
                 'getOffset()' => 3 + strlen('newrdn:: ') + $case['getOffset()'],
                 'getSourceOffset()' => 3 + strlen('newrdn:: ') + $case['getOffset()'],
                 'getSourceCharOffset()' => 2 + mb_strlen('newrdn:: ') + $case['charOffset'],
@@ -507,13 +507,13 @@ final class NewRdnSpecRuleTest extends TestCase
             $type = substr($sep, 0, 1) === ':' ? 'BASE64': 'SAFE';
             $message = 'malformed '.$type.'-STRING (RFC2849)';
             $errors = $result ? [] : [
-                self::hasPropertiesIdenticalTo([
+                self::objectHasPropertiesIdenticalTo([
                     'getSourceOffset()' => strlen('newrdn:'.$sep) + $case[2],
                     'getSourceCharOffset()' => mb_strlen('newrdn:'.$sep) + $case[2],
                     'getMessage()' => 'syntax error: '.$message,
                 ]),
             ];
-            $cursor = self::hasPropertiesIdenticalTo([
+            $cursor = self::objectHasPropertiesIdenticalTo([
                 'getOffset()' => strlen($source[0]),
                 'getSourceOffset()' => strlen($source[0]),
                 'getSourceCharOffset()' => mb_strlen($source[0]),
@@ -568,7 +568,7 @@ final class NewRdnSpecRuleTest extends TestCase
 
         $this->assertSame($expect['result'], $result);
         $this->assertSame($expect['rdn'], $rdn);
-        $this->assertHasPropertiesSameAs($expect['state'], $state);
+        $this->assertObjectHasPropertiesSameAs($expect['state'], $state);
     }
 }
 

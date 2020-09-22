@@ -31,13 +31,13 @@ use SebastianBergmann\Comparator\ComparisonFailure;
  * method that returns property value.
  *
  *      // ...
- *      $matcher = new HasPropertiesIdenticalTo(
+ *      $matcher = new ObjectHasPropertiesIdenticalTo(
  *          ['getName()' => 'John', 'age' => 21],
  *      );
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-final class HasPropertiesIdenticalTo extends Constraint implements ObjectPropertiesComparatorInterface
+final class ObjectHasPropertiesIdenticalTo extends Constraint implements ObjectPropertiesComparatorInterface
 {
     /**
      * @var array

@@ -95,6 +95,6 @@ Feature: Examples
       | "testing/AssertUsesTraitTest.php"             | "testing/AssertUsesTraitTest.stdout"            | "testing/AssertUsesTraitTest.stderr"            | 1         |
       | "testing/extendsClassTest.php"                | "testing/extendsClassTest.stdout"               | "testing/extendsClassTest.stderr"               | 1         |
       | "testing/hasPregCapturesTest.php"             | "testing/hasPregCapturesTest.stdout"            | "testing/hasPregCapturesTest.stderr"            | 1         |
-      | "testing/hasPropertiesIdenticalToTest.php"    | "testing/hasPropertiesIdenticalToTest.stdout"   | "testing/hasPropertiesIdenticalToTest.stderr"   | 1         |
+      | "testing/objectHasPropertiesIdenticalToTest.php"    | "testing/objectHasPropertiesIdenticalToTest.stdout"   | "testing/objectHasPropertiesIdenticalToTest.stderr"   | 1         |
       | "testing/implementsInterfaceTest.php"         | "testing/implementsInterfaceTest.stdout"        | "testing/implementsInterfaceTest.stderr"        | 1         |
       | "testing/usesTraitTest.php"                   | "testing/usesTraitTest.stdout"                  | "testing/usesTraitTest.stderr"                  | 1         |

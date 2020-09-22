@@ -58,13 +58,13 @@ final class ControlRuleTest extends TestCase
     {
         $rule = new ControlRule(...$args);
         $expect = array_merge([
-            'getRfcRule()' => self::hasPropertiesIdenticalTo([
+            'getRfcRule()' => self::objectHasPropertiesIdenticalTo([
                 'ruleSetClass()' => Rfc2849::class,
                 'name()' => 'CONTROL',
             ])
         ], $expect);
         $this->assertInstanceOf(ValueSpecRule::class, $rule->getValueSpecRule());
-        $this->assertHasPropertiesSameAs($expect, $rule);
+        $this->assertObjectHasPropertiesSameAs($expect, $rule);
     }
 
     public function test__valueSpecRule() : void
@@ -98,7 +98,7 @@ final class ControlRuleTest extends TestCase
                         'getValueSpec()' => null,
                     ],
                     'state' => [
-                        'getCursor()' => self::hasPropertiesIdenticalTo(['getOffset()' => 17]),
+                        'getCursor()' => self::objectHasPropertiesIdenticalTo(['getOffset()' => 17]),
                         'getErrors()' => [],
                         'getRecords()' => [],
                     ]
@@ -121,7 +121,7 @@ final class ControlRuleTest extends TestCase
                         'getValueSpec()' => null,
                     ],
                     'state' => [
-                        'getCursor()' => self::hasPropertiesIdenticalTo(['getOffset()' => 22]),
+                        'getCursor()' => self::objectHasPropertiesIdenticalTo(['getOffset()' => 22]),
                         'getErrors()' => [],
                         'getRecords()' => [],
                     ]
@@ -144,7 +144,7 @@ final class ControlRuleTest extends TestCase
                         'getValueSpec()' => null,
                     ],
                     'state' => [
-                        'getCursor()' => self::hasPropertiesIdenticalTo(['getOffset()' => 23]),
+                        'getCursor()' => self::objectHasPropertiesIdenticalTo(['getOffset()' => 23]),
                         'getErrors()' => [],
                         'getRecords()' => [],
                     ]
@@ -163,9 +163,9 @@ final class ControlRuleTest extends TestCase
                     'result' => false,
                     'value' => null,
                     'state' => [
-                        'getCursor()' => self::hasPropertiesIdenticalTo(['getOffset()' => 21]),
+                        'getCursor()' => self::objectHasPropertiesIdenticalTo(['getOffset()' => 21]),
                         'getErrors()' => [
-                            self::hasPropertiesIdenticalTo([
+                            self::objectHasPropertiesIdenticalTo([
                                 'getSourceOffset()' => 18,
                                 'getMessage()' => 'syntax error: invalid control criticality: "foo"'
                             ]),
@@ -188,14 +188,14 @@ final class ControlRuleTest extends TestCase
                     'value' => [
                         'getOid()' => '1.22.333',
                         'getCriticality()' => null,
-                        'getValueSpec()' => self::hasPropertiesIdenticalTo([
+                        'getValueSpec()' => self::objectHasPropertiesIdenticalTo([
                             'getType()' => ValueSpecInterface::TYPE_SAFE,
                             'getSpec()' => 'FOO',
                             'getContent()' => 'FOO',
                         ]),
                     ],
                     'state' => [
-                        'getCursor()' => self::hasPropertiesIdenticalTo(['getOffset()' => 22]),
+                        'getCursor()' => self::objectHasPropertiesIdenticalTo(['getOffset()' => 22]),
                         'getErrors()' => [],
                         'getRecords()' => [],
                     ]
@@ -216,14 +216,14 @@ final class ControlRuleTest extends TestCase
                     'value' => [
                         'getOid()' => '1.22.333',
                         'getCriticality()' => true,
-                        'getValueSpec()' => self::hasPropertiesIdenticalTo([
+                        'getValueSpec()' => self::objectHasPropertiesIdenticalTo([
                             'getType()' => ValueSpecInterface::TYPE_SAFE,
                             'getSpec()' => 'FOO',
                             'getContent()' => 'FOO',
                         ]),
                     ],
                     'state' => [
-                        'getCursor()' => self::hasPropertiesIdenticalTo(['getOffset()' => 27]),
+                        'getCursor()' => self::objectHasPropertiesIdenticalTo(['getOffset()' => 27]),
                         'getErrors()' => [],
                         'getRecords()' => [],
                     ]
@@ -243,9 +243,9 @@ final class ControlRuleTest extends TestCase
                     'result' => false,
                     'value' => null,
                     'state' => [
-                        'getCursor()' => self::hasPropertiesIdenticalTo(['getOffset()' => 21]),
+                        'getCursor()' => self::objectHasPropertiesIdenticalTo(['getOffset()' => 21]),
                         'getErrors()' => [
-                            self::hasPropertiesIdenticalTo([
+                            self::objectHasPropertiesIdenticalTo([
                                 'getSourceOffset()' => 20,
                                 'getMessage()' => 'syntax error: invalid BASE64 string',
                             ]),
@@ -265,9 +265,9 @@ final class ControlRuleTest extends TestCase
                     'result' => false,
                     'value' => null,
                     'state' => [
-                        'getCursor()' => self::hasPropertiesIdenticalTo(['getOffset()' => 21]),
+                        'getCursor()' => self::objectHasPropertiesIdenticalTo(['getOffset()' => 21]),
                         'getErrors()' => [
-                            self::hasPropertiesIdenticalTo([
+                            self::objectHasPropertiesIdenticalTo([
                                 'getSourceOffset()' => 21,
                                 'getMessage()' => 'internal error: missing or invalid capture group "ctl_type"'
                             ]),
@@ -296,11 +296,11 @@ final class ControlRuleTest extends TestCase
 
         $this->assertSame($expect['result'], $result);
         if (is_array($expect['value'])) {
-            $this->assertHasPropertiesSameAs($expect['value'], $value);
+            $this->assertObjectHasPropertiesSameAs($expect['value'], $value);
         } else {
             $this->assertSame($expect['value'], $value);
         }
-        $this->assertHasPropertiesSameAs($expect['state'], $state);
+        $this->assertObjectHasPropertiesSameAs($expect['state'], $state);
     }
 
     //
@@ -320,9 +320,9 @@ final class ControlRuleTest extends TestCase
                     'result' => false,
                     'value' => null,
                     'state' => [
-                        'getCursor()' => self::hasPropertiesIdenticalTo(['getOffset()' => 0]),
+                        'getCursor()' => self::objectHasPropertiesIdenticalTo(['getOffset()' => 0]),
                         'getErrors()' => [
-                            self::hasPropertiesIdenticalTo([
+                            self::objectHasPropertiesIdenticalTo([
                                 'getSourceOffset()' => 0,
                                 'getMessage()' => 'syntax error: expected "control:" (RFC2849)',
                             ])
@@ -342,7 +342,7 @@ final class ControlRuleTest extends TestCase
                     'result' => false,
                     'value' => null,
                     'state' => [
-                        'getCursor()' => self::hasPropertiesIdenticalTo(['getOffset()' => 0]),
+                        'getCursor()' => self::objectHasPropertiesIdenticalTo(['getOffset()' => 0]),
                         'getErrors()' => [],
                         'getRecords()' => []
                     ],
@@ -359,7 +359,7 @@ final class ControlRuleTest extends TestCase
                     'result' => false,
                     'value' => null,
                     'state' => [
-                        'getCursor()' => self::hasPropertiesIdenticalTo(['getOffset()' => 0]),
+                        'getCursor()' => self::objectHasPropertiesIdenticalTo(['getOffset()' => 0]),
                         'getErrors()' => [],
                         'getRecords()' => []
                     ],
@@ -376,9 +376,9 @@ final class ControlRuleTest extends TestCase
                     'result' => false,
                     'value' => null,
                     'state' => [
-                        'getCursor()' => self::hasPropertiesIdenticalTo(['getOffset()' => 0]),
+                        'getCursor()' => self::objectHasPropertiesIdenticalTo(['getOffset()' => 0]),
                         'getErrors()' => [
-                            self::hasPropertiesIdenticalTo([
+                            self::objectHasPropertiesIdenticalTo([
                                 'getSourceOffset()' => 0,
                                 'getMessage()' => 'syntax error: expected "control:" (RFC2849)',
                             ])
@@ -398,7 +398,7 @@ final class ControlRuleTest extends TestCase
                     'result' => false,
                     'value' => null,
                     'state' => [
-                        'getCursor()' => self::hasPropertiesIdenticalTo(['getOffset()' => 0]),
+                        'getCursor()' => self::objectHasPropertiesIdenticalTo(['getOffset()' => 0]),
                         'getErrors()' => [],
                         'getRecords()' => []
                     ],
@@ -414,9 +414,9 @@ final class ControlRuleTest extends TestCase
                     'result' => false,
                     'value' => null,
                     'state' => [
-                        'getCursor()' => self::hasPropertiesIdenticalTo(['getOffset()' => 9]),
+                        'getCursor()' => self::objectHasPropertiesIdenticalTo(['getOffset()' => 9]),
                         'getErrors()' => [
-                            self::hasPropertiesIdenticalTo([
+                            self::objectHasPropertiesIdenticalTo([
                                 'getSourceOffset()' => 9,
                                 'getMessage()' => 'syntax error: missing or invalid OID (RFC2849)'
                             ])
@@ -435,9 +435,9 @@ final class ControlRuleTest extends TestCase
                     'result' => false,
                     'value' => null,
                     'state' => [
-                        'getCursor()' => self::hasPropertiesIdenticalTo(['getOffset()' => 14]),
+                        'getCursor()' => self::objectHasPropertiesIdenticalTo(['getOffset()' => 14]),
                         'getErrors()' => [
-                            self::hasPropertiesIdenticalTo([
+                            self::objectHasPropertiesIdenticalTo([
                                 'getSourceOffset()' => 13,
                                 'getMessage()' => 'syntax error: missing or invalid OID (RFC2849)'
                             ])
@@ -456,9 +456,9 @@ final class ControlRuleTest extends TestCase
                     'result' => false,
                     'value' => null,
                     'state' => [
-                        'getCursor()' => self::hasPropertiesIdenticalTo(['getOffset()' => 14]),
+                        'getCursor()' => self::objectHasPropertiesIdenticalTo(['getOffset()' => 14]),
                         'getErrors()' => [
-                            self::hasPropertiesIdenticalTo([
+                            self::objectHasPropertiesIdenticalTo([
                                 'getSourceOffset()' => 10,
                                 'getMessage()' => 'syntax error: missing or invalid OID (RFC2849)'
                             ])
@@ -477,9 +477,9 @@ final class ControlRuleTest extends TestCase
                     'result' => false,
                     'value' => null,
                     'state' => [
-                        'getCursor()' => self::hasPropertiesIdenticalTo(['getOffset()' => 14]),
+                        'getCursor()' => self::objectHasPropertiesIdenticalTo(['getOffset()' => 14]),
                         'getErrors()' => [
-                            self::hasPropertiesIdenticalTo([
+                            self::objectHasPropertiesIdenticalTo([
                                 'getSourceOffset()' => 9,
                                 'getMessage()' => 'syntax error: missing or invalid OID (RFC2849)'
                             ])
@@ -498,9 +498,9 @@ final class ControlRuleTest extends TestCase
                     'result' => false,
                     'value' => null,
                     'state' => [
-                        'getCursor()' => self::hasPropertiesIdenticalTo(['getOffset()' => 21]),
+                        'getCursor()' => self::objectHasPropertiesIdenticalTo(['getOffset()' => 21]),
                         'getErrors()' => [
-                            self::hasPropertiesIdenticalTo([
+                            self::objectHasPropertiesIdenticalTo([
                                 'getSourceOffset()' => 18,
                                 'getMessage()' => 'syntax error: expected "true" or "false" (RFC2849)'
                             ])
@@ -519,9 +519,9 @@ final class ControlRuleTest extends TestCase
                     'result' => false,
                     'value' => null,
                     'state' => [
-                        'getCursor()' => self::hasPropertiesIdenticalTo(['getOffset()' => 26]),
+                        'getCursor()' => self::objectHasPropertiesIdenticalTo(['getOffset()' => 26]),
                         'getErrors()' => [
-                            self::hasPropertiesIdenticalTo([
+                            self::objectHasPropertiesIdenticalTo([
                                 'getSourceOffset()' => 18,
                                 'getMessage()' => 'syntax error: expected "true" or "false" (RFC2849)'
                             ])
@@ -540,9 +540,9 @@ final class ControlRuleTest extends TestCase
                     'result' => false,
                     'value' => null,
                     'state' => [
-                        'getCursor()' => self::hasPropertiesIdenticalTo(['getOffset()' => 18]),
+                        'getCursor()' => self::objectHasPropertiesIdenticalTo(['getOffset()' => 18]),
                         'getErrors()' => [
-                            self::hasPropertiesIdenticalTo([
+                            self::objectHasPropertiesIdenticalTo([
                                 'getSourceOffset()' => 18,
                                 'getMessage()' => 'syntax error: expected "true" or "false" (RFC2849)'
                             ])
@@ -565,7 +565,7 @@ final class ControlRuleTest extends TestCase
                         'getValueSpec()' => null,
                     ],
                     'state' => [
-                        'getCursor()' => self::hasPropertiesIdenticalTo(['getOffset()' => 17]),
+                        'getCursor()' => self::objectHasPropertiesIdenticalTo(['getOffset()' => 17]),
                         'getErrors()' => [],
                         'getRecords()' => []
                     ],
@@ -585,7 +585,7 @@ final class ControlRuleTest extends TestCase
                         'getValueSpec()' => null,
                     ],
                     'state' => [
-                        'getCursor()' => self::hasPropertiesIdenticalTo(['getOffset()' => 22]),
+                        'getCursor()' => self::objectHasPropertiesIdenticalTo(['getOffset()' => 22]),
                         'getErrors()' => [],
                         'getRecords()' => []
                     ],
@@ -605,7 +605,7 @@ final class ControlRuleTest extends TestCase
                         'getValueSpec()' => null,
                     ],
                     'state' => [
-                        'getCursor()' => self::hasPropertiesIdenticalTo(['getOffset()' => 23]),
+                        'getCursor()' => self::objectHasPropertiesIdenticalTo(['getOffset()' => 23]),
                         'getErrors()' => [],
                         'getRecords()' => []
                     ],
@@ -622,14 +622,14 @@ final class ControlRuleTest extends TestCase
                     'value' => [
                         'getOid()' => '1.22.333',
                         'getCriticality()' => null,
-                        'getValueSpec()' => self::hasPropertiesIdenticalTo([
+                        'getValueSpec()' => self::objectHasPropertiesIdenticalTo([
                             'getType()' => ValueSpecInterface::TYPE_SAFE,
                             'getSpec()' => 'FOO',
                             'getContent()' => 'FOO',
                         ])
                     ],
                     'state' => [
-                        'getCursor()' => self::hasPropertiesIdenticalTo(['getOffset()' => 22]),
+                        'getCursor()' => self::objectHasPropertiesIdenticalTo(['getOffset()' => 22]),
                         'getErrors()' => [],
                         'getRecords()' => []
                     ],
@@ -646,14 +646,14 @@ final class ControlRuleTest extends TestCase
                     'value' => [
                         'getOid()' => '1.22.333',
                         'getCriticality()' => true,
-                        'getValueSpec()' => self::hasPropertiesIdenticalTo([
+                        'getValueSpec()' => self::objectHasPropertiesIdenticalTo([
                             'getType()' => ValueSpecInterface::TYPE_SAFE,
                             'getSpec()' => 'FOO',
                             'getContent()' => 'FOO',
                         ])
                     ],
                     'state' => [
-                        'getCursor()' => self::hasPropertiesIdenticalTo(['getOffset()' => 27]),
+                        'getCursor()' => self::objectHasPropertiesIdenticalTo(['getOffset()' => 27]),
                         'getErrors()' => [],
                         'getRecords()' => []
                     ],
@@ -670,9 +670,9 @@ final class ControlRuleTest extends TestCase
                     'result' => false,
                     'value' => null,
                     'state' => [
-                        'getCursor()' => self::hasPropertiesIdenticalTo(['getOffset()' => 27]),
+                        'getCursor()' => self::objectHasPropertiesIdenticalTo(['getOffset()' => 27]),
                         'getErrors()' => [
-                            self::hasPropertiesIdenticalTo([
+                            self::objectHasPropertiesIdenticalTo([
                                 'getSourceOffset()' => 22,
                                 'getMessage()' => 'syntax error: malformed SAFE-STRING (RFC2849)',
                             ])
@@ -692,14 +692,14 @@ final class ControlRuleTest extends TestCase
                     'value' => [
                         'getOid()' => '1.22.333',
                         'getCriticality()' => null,
-                        'getValueSpec()' => self::hasPropertiesIdenticalTo([
+                        'getValueSpec()' => self::objectHasPropertiesIdenticalTo([
                             'getType()' => ValueSpecInterface::TYPE_BASE64,
                             'getSpec()' => 'xbvDs8WCdGEgxYHDs2TFug==',
                             'getContent()' => 'Żółta Łódź',
                         ])
                     ],
                     'state' => [
-                        'getCursor()' => self::hasPropertiesIdenticalTo(['getOffset()' => 44]),
+                        'getCursor()' => self::objectHasPropertiesIdenticalTo(['getOffset()' => 44]),
                         'getErrors()' => [],
                         'getRecords()' => []
                     ],
@@ -716,14 +716,14 @@ final class ControlRuleTest extends TestCase
                     'value' => [
                         'getOid()' => '1.22.333',
                         'getCriticality()' => true,
-                        'getValueSpec()' => self::hasPropertiesIdenticalTo([
+                        'getValueSpec()' => self::objectHasPropertiesIdenticalTo([
                             'getType()' => ValueSpecInterface::TYPE_BASE64,
                             'getSpec()' => 'xbvDs8WCdGEgxYHDs2TFug==',
                             'getContent()' => 'Żółta Łódź',
                         ])
                     ],
                     'state' => [
-                        'getCursor()' => self::hasPropertiesIdenticalTo(['getOffset()' => 49]),
+                        'getCursor()' => self::objectHasPropertiesIdenticalTo(['getOffset()' => 49]),
                         'getErrors()' => [],
                         'getRecords()' => []
                     ],
@@ -740,9 +740,9 @@ final class ControlRuleTest extends TestCase
                     'result' => false,
                     'value' => null,
                     'state' => [
-                        'getCursor()' => self::hasPropertiesIdenticalTo(['getOffset()' => 28]),
+                        'getCursor()' => self::objectHasPropertiesIdenticalTo(['getOffset()' => 28]),
                         'getErrors()' => [
-                            self::hasPropertiesIdenticalTo([
+                            self::objectHasPropertiesIdenticalTo([
                                 'getSourceOffset()' => 24,
                                 'getMessage()' => 'syntax error: malformed BASE64-STRING (RFC2849)'
                             ]),
@@ -762,9 +762,9 @@ final class ControlRuleTest extends TestCase
                     'result' => false,
                     'value' => null,
                     'state' => [
-                        'getCursor()' => self::hasPropertiesIdenticalTo(['getOffset()' => 21]),
+                        'getCursor()' => self::objectHasPropertiesIdenticalTo(['getOffset()' => 21]),
                         'getErrors()' => [
-                            self::hasPropertiesIdenticalTo([
+                            self::objectHasPropertiesIdenticalTo([
                                 'getSourceOffset()' => 20,
                                 'getMessage()' => 'syntax error: invalid BASE64 string'
                             ]),
@@ -784,9 +784,9 @@ final class ControlRuleTest extends TestCase
                     'value' => [
                         'getOid()' => '1.22.333',
                         'getCriticality()' => null,
-                        'getValueSpec()' => self::hasPropertiesIdenticalTo([
+                        'getValueSpec()' => self::objectHasPropertiesIdenticalTo([
                             'getType()' => ValueSpecInterface::TYPE_URL,
-                            'getSpec()' => self::hasPropertiesIdenticalTo([
+                            'getSpec()' => self::objectHasPropertiesIdenticalTo([
                                 '__toString()' => 'file:///home/jsmith/foo.txt',
                                 'getScheme()' => 'file',
                                 'getAuthority()' => '',
@@ -801,7 +801,7 @@ final class ControlRuleTest extends TestCase
                         ]),
                     ],
                     'state' => [
-                        'getCursor()' => self::hasPropertiesIdenticalTo(['getOffset()' => 47]),
+                        'getCursor()' => self::objectHasPropertiesIdenticalTo(['getOffset()' => 47]),
                         'getErrors()' => [],
                         'getRecords()' => []
                     ],
@@ -818,9 +818,9 @@ final class ControlRuleTest extends TestCase
                     'result' => false,
                     'value' => null,
                     'state' => [
-                        'getCursor()' => self::hasPropertiesIdenticalTo(['getOffset()' => 22]),
+                        'getCursor()' => self::objectHasPropertiesIdenticalTo(['getOffset()' => 22]),
                         'getErrors()' => [
-                            self::hasPropertiesIdenticalTo([
+                            self::objectHasPropertiesIdenticalTo([
                                 'getSourceOffset()' => 21,
                                 'getMessage()' => 'syntax error: malformed URL (RFC2849/RFC3986)',
                             ])
@@ -851,11 +851,11 @@ final class ControlRuleTest extends TestCase
         $this->assertSame($expect['result'], $result);
 
         if (is_array($expect['value'])) {
-            $this->assertHasPropertiesSameAs($expect['value'], $value);
+            $this->assertObjectHasPropertiesSameAs($expect['value'], $value);
         } else {
             $this->assertSame($expect['value'], $value);
         }
-        $this->assertHasPropertiesSameAs($expect['state'], $state);
+        $this->assertObjectHasPropertiesSameAs($expect['state'], $state);
     }
 }
 

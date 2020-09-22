@@ -37,7 +37,7 @@ final class UtilTest extends TestCase
                     'result' => '',
                     'string' => '',
                     'state' => [
-                        'getCursor()' => self::hasPropertiesIdenticalTo([
+                        'getCursor()' => self::objectHasPropertiesIdenticalTo([
                             'getOffset()' => 0,
                         ]),
                         'getRecords()' => [],
@@ -54,7 +54,7 @@ final class UtilTest extends TestCase
                 [
                     'result' => 'cn=John Smith,dc=example,dc=org',
                     'state' => [
-                        'getCursor()' => self::hasPropertiesIdenticalTo([
+                        'getCursor()' => self::objectHasPropertiesIdenticalTo([
                             'getOffset()' => 47,
                         ]),
                         'getRecords()' => [],
@@ -71,7 +71,7 @@ final class UtilTest extends TestCase
                 [
                     'result' => 'tłuszcz',
                     'state' => [
-                        'getCursor()' => self::hasPropertiesIdenticalTo([
+                        'getCursor()' => self::objectHasPropertiesIdenticalTo([
                             'getOffset()' => 15,
                         ]),
                         'getRecords()' => [],
@@ -87,7 +87,7 @@ final class UtilTest extends TestCase
                 [
                     'result' => "foo\x80",
                     'state' => [
-                        'getCursor()' => self::hasPropertiesIdenticalTo([
+                        'getCursor()' => self::objectHasPropertiesIdenticalTo([
                             'getOffset()' => 11,
                         ]),
                         'getRecords()' => [],
@@ -103,12 +103,12 @@ final class UtilTest extends TestCase
                 [
                     'result' => null,
                     'state' => [
-                        'getCursor()' => self::hasPropertiesIdenticalTo([
+                        'getCursor()' => self::objectHasPropertiesIdenticalTo([
                             'getOffset()' => 10,
                         ]),
                         'getRecords()' => [],
                         'getErrors()' => [
-                            self::hasPropertiesIdenticalTo([
+                            self::objectHasPropertiesIdenticalTo([
                                 'getSourceOffset()' => 3,
                                 'getMessage()' => 'syntax error: invalid BASE64 string',
                             ]),
@@ -128,7 +128,7 @@ final class UtilTest extends TestCase
         $state = $this->getParserStateFromSource(...$source);
         $result = Util::base64Decode($state, $string, $offset);
         $this->assertSame($expect['result'], $result);
-        $this->assertHasPropertiesSameAs($expect['state'], $state);
+        $this->assertObjectHasPropertiesSameAs($expect['state'], $state);
     }
 
     //
@@ -144,7 +144,7 @@ final class UtilTest extends TestCase
                 [
                     'result' => true,
                     'state' => [
-                        'getCursor()' => self::hasPropertiesIdenticalTo([
+                        'getCursor()' => self::objectHasPropertiesIdenticalTo([
                             'getOffset()' => 0,
                         ]),
                         'getRecords()' => [],
@@ -162,7 +162,7 @@ final class UtilTest extends TestCase
                     'result' => true,
                     'string' => 'cn=John Smith,dc=example,dc=org',
                     'state' => [
-                        'getCursor()' => self::hasPropertiesIdenticalTo([
+                        'getCursor()' => self::objectHasPropertiesIdenticalTo([
                             'getOffset()' => 13,
                         ]),
                         'getRecords()' => [],
@@ -179,12 +179,12 @@ final class UtilTest extends TestCase
                 [
                     'result' => false,
                     'state' => [
-                        'getCursor()' => self::hasPropertiesIdenticalTo([
+                        'getCursor()' => self::objectHasPropertiesIdenticalTo([
                             'getOffset()' => 6,
                         ]),
                         'getRecords()' => [],
                         'getErrors()' => [
-                            self::hasPropertiesIdenticalTo([
+                            self::objectHasPropertiesIdenticalTo([
                                 'getMessage()' => 'syntax error: the string is not a valid UTF8',
                                 'getSourceOffset()' => 3,
                             ]),
@@ -204,7 +204,7 @@ final class UtilTest extends TestCase
         $state = $this->getParserStateFromSource(...$source);
         $result = Util::utf8Check($state, $string, $offset);
         $this->assertSame($expect['result'], $result);
-        $this->assertHasPropertiesSameAs($expect['state'], $state);
+        $this->assertObjectHasPropertiesSameAs($expect['state'], $state);
     }
 
     //
@@ -245,7 +245,7 @@ final class UtilTest extends TestCase
             $offset = 5;
             $end = $offset + strlen($string);
             $errors = $result ? []: [
-                self::hasPropertiesIdenticalTo([
+                self::objectHasPropertiesIdenticalTo([
                     'getSourceOffset()' => $offset,
                     'getMessage()' => 'syntax error: invalid DN syntax: "'.$string.'"'
                 ]),
@@ -257,7 +257,7 @@ final class UtilTest extends TestCase
                 'expect' => [
                     'result' => $result,
                     'state' => [
-                        'getCursor()' => self::hasPropertiesIdenticalTo([
+                        'getCursor()' => self::objectHasPropertiesIdenticalTo([
                             'getOffset()' => $end,
                         ]),
                         'getErrors()' => $errors,
@@ -276,7 +276,7 @@ final class UtilTest extends TestCase
         $state = $this->getParserStateFromSource(...$source);
         $result = Util::dnCheck($state, $string, $offset);
         $this->assertSame($expect['result'], $result);
-        $this->assertHasPropertiesSameAs($expect['state'], $state);
+        $this->assertObjectHasPropertiesSameAs($expect['state'], $state);
     }
 
     //
@@ -314,7 +314,7 @@ final class UtilTest extends TestCase
             $offset = 5;
             $end = $offset + strlen($string);
             $errors = $result ? []: [
-                self::hasPropertiesIdenticalTo([
+                self::objectHasPropertiesIdenticalTo([
                     'getSourceOffset()' => $offset,
                     'getMessage()' => 'syntax error: invalid RDN syntax: "'.$string.'"'
                 ]),
@@ -326,7 +326,7 @@ final class UtilTest extends TestCase
                 'expect' => [
                     'result' => $result,
                     'state' => [
-                        'getCursor()' => self::hasPropertiesIdenticalTo([
+                        'getCursor()' => self::objectHasPropertiesIdenticalTo([
                             'getOffset()' => $end,
                         ]),
                         'getErrors()' => $errors,
@@ -345,7 +345,7 @@ final class UtilTest extends TestCase
         $state = $this->getParserStateFromSource(...$source);
         $result = Util::rdnCheck($state, $string, $offset);
         $this->assertSame($expect['result'], $result);
-        $this->assertHasPropertiesSameAs($expect['state'], $state);
+        $this->assertObjectHasPropertiesSameAs($expect['state'], $state);
     }
 }
 

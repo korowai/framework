@@ -43,7 +43,7 @@ final class Rfc8089Test extends TestCase
             ]
         ];
         $inheritedCases = [];
-        foreach (Rfc3986Test::HOST__cases() as $case) {
+        foreach (Rfc3986Test::prov__HOST() as $case) {
             $inheritedCases[] = static::transformPregTuple($case, [
                 'merge' => [
                     'file_auth' => [$case[0], 0]
@@ -57,7 +57,7 @@ final class Rfc8089Test extends TestCase
     public function prov__non__FILE_AUTH()
     {
         $strings = [];
-        $inheritedCases = Rfc3986Test::non__HOST__cases();
+        $inheritedCases = Rfc3986Test::prov__non__HOST();
         return array_merge($inheritedCases, static::stringsToPregTuples($strings));
     }
 
@@ -87,7 +87,7 @@ final class Rfc8089Test extends TestCase
     {
         $cases = [];
         $inheritedCases = [];
-        foreach (Rfc3986Test::PATH_ABSOLUTE__cases() as $case) {
+        foreach (Rfc3986Test::prov__PATH_ABSOLUTE() as $case) {
             $inheritedCases[] = static::transformPregTuple($case, [
                 'merge' => [
                     'local_path' => [$case[0], 0],
@@ -103,7 +103,7 @@ final class Rfc8089Test extends TestCase
         ];
         return array_merge(
             static::stringsToPregTuples($strings),
-            Rfc3986Test::non__PATH_ABSOLUTE__cases()
+            Rfc3986Test::prov__non__PATH_ABSOLUTE()
         );
     }
 
@@ -133,7 +133,7 @@ final class Rfc8089Test extends TestCase
     {
         $cases = [];
         $inheritedCases = [];
-        foreach (Rfc3986Test::PATH_ABSOLUTE__cases() as $path) {
+        foreach (Rfc3986Test::prov__PATH_ABSOLUTE() as $path) {
             $inheritedCases[] = static::transformPregTuple($path, [
                 'merge' => [
                     'auth_path' => [$path[0], 0],

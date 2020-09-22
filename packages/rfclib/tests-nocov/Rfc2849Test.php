@@ -268,12 +268,12 @@ final class Rfc2849Test extends TestCase
 
     public static function prov__LDAP_OID()
     {
-        return Rfc2253Test::OID__cases();
+        return Rfc2253Test::prov__OID();
     }
 
     public static function prov__non__LDAP_OID()
     {
-        return Rfc2253Test::non__OID__cases();
+        return Rfc2253Test::prov__non__OID();
     }
 
     /**

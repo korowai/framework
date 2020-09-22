@@ -62,7 +62,7 @@ trait ObjectPropertiesAssertionsTrait
      * @throws ExpectationFailedException
      * @throws \PHPUnit\Framework\Exception when a non-string keys are found in *$expected*
      */
-    public static function assertNotHasPropertiesSameAs(array $expected, object $object, string $message = '') : void {
+    public static function assertNotObjectHasPropertiesSameAs(array $expected, object $object, string $message = '') : void {
         static::assertThat($object, new LogicalNot(static::objectHasPropertiesIdenticalTo($expected)), $message);
     }
 

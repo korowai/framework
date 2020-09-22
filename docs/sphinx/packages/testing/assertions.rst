@@ -143,7 +143,7 @@ The method
 
 .. code:: php
 
-  function assertNotHasPropertiesSameAs(array $expected, array $matches[, string $message = ''[, callable $getters = null]])
+  function assertNotObjectHasPropertiesSameAs(array $expected, array $matches[, string $message = ''[, callable $getters = null]])
 
 is the inverse of this.
 

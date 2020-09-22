@@ -4,7 +4,7 @@
         "php": ">=7.4",
         "ext-ldap": "*",
         "ext-mbstring": "*",
-        "league/uri": "^6.0",
+        "league/uri": "^6.3",
         "league/uri-interfaces": "^2.1",
         "symfony/options-resolver": ">=4.2"
     },

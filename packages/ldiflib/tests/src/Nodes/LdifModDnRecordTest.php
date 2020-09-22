@@ -37,7 +37,7 @@ final class LdifModDnRecordTest extends TestCase
         $this->assertImplementsInterface(LdifModDnRecordInterface::class, LdifModDnRecord::class);
     }
 
-    public function construct__cases()
+    public function prov__construct()
     {
         $snippet = $this->getMockBuilder(SnippetInterface::class)->getMockForAbstractClass();
         return [
@@ -82,7 +82,7 @@ final class LdifModDnRecordTest extends TestCase
     }
 
     /**
-     * @dataProvider construct__cases
+     * @dataProvider prov__construct
      */
     public function test__construct(array $args, array $expect) : void
     {
@@ -90,7 +90,7 @@ final class LdifModDnRecordTest extends TestCase
         $this->assertHasPropertiesSameAs($expect, $record);
     }
 
-    public static function setChangeType__cases()
+    public static function prov__setChangeType()
     {
         return [
             ["moddn"],
@@ -99,7 +99,7 @@ final class LdifModDnRecordTest extends TestCase
     }
 
     /**
-     * @dataProvider setChangeType__cases
+     * @dataProvider prov__setChangeType
      */
     public function test__setChangeType(string $changeType) : void
     {

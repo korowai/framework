@@ -115,7 +115,7 @@ final class Rfc3986Test extends TestCase
     // SEGMENT_NZ_NC
     //
 
-    public static function SEGMENT_NZ_NC__cases()
+    public static function prov__SEGMENT_NZ_NC()
     {
         $strings = [
             "!$&'()*+,;=-._~Ab1%1fx",
@@ -123,14 +123,14 @@ final class Rfc3986Test extends TestCase
         return static::stringsToPregTuples($strings);
     }
 
-    public static function non__SEGMENT_NZ_NC__cases()
+    public static function prov__non__SEGMENT_NZ_NC()
     {
         $strings = ["", ":", "%", "%1", "%G", "%1G", "%G2", "#", "ł", "/", "?", "a/b", "a?"];
         return static::stringsToPregTuples($strings);
     }
 
     /**
-     * @dataProvider SEGMENT_NZ_NC__cases
+     * @dataProvider prov__SEGMENT_NZ_NC
      */
     public function test__SEGMENT_NZ_NC__matches(string $string, array $pieces = []) : void
     {
@@ -138,7 +138,7 @@ final class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider non__SEGMENT_NZ_NC__cases
+     * @dataProvider prov__non__SEGMENT_NZ_NC
      */
     public function test__SEGMENT_NZ_NC__notMatches(string $string) : void
     {
@@ -149,7 +149,7 @@ final class Rfc3986Test extends TestCase
     // SEGMENT_NZ
     //
 
-    public static function SEGMENT_NZ__cases()
+    public static function prov__SEGMENT_NZ()
     {
         $strings = [
             ":",
@@ -158,14 +158,14 @@ final class Rfc3986Test extends TestCase
         return static::stringsToPregTuples($strings);
     }
 
-    public static function non__SEGMENT_NZ__cases()
+    public static function prov__non__SEGMENT_NZ()
     {
         $strings = ["", "%", "%1", "%G", "%1G", "%G2", "#", "ł", "/", "?", "a/b", "a?"];
         return static::stringsToPregTuples($strings);
     }
 
     /**
-     * @dataProvider SEGMENT_NZ__cases
+     * @dataProvider prov__SEGMENT_NZ
      */
     public function test__SEGMENT_NZ__matches(string $string, array $pieces = []) : void
     {
@@ -173,7 +173,7 @@ final class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider non__SEGMENT_NZ__cases
+     * @dataProvider prov__non__SEGMENT_NZ
      */
     public function test__SEGMENT_NZ__notMatches(string $string) : void
     {
@@ -184,7 +184,7 @@ final class Rfc3986Test extends TestCase
     // SEGMENT
     //
 
-    public static function SEGMENT__cases()
+    public static function prov__SEGMENT()
     {
         $strings = [
             "",
@@ -194,14 +194,14 @@ final class Rfc3986Test extends TestCase
         return static::stringsToPregTuples($strings);
     }
 
-    public static function non__SEGMENT__cases()
+    public static function prov__non__SEGMENT()
     {
         $strings = ["%", "%1", "%G", "%1G", "%G2", "#", "ł", "/", "?", "a/b", "a?"];
         return static::stringsToPregTuples($strings);
     }
 
     /**
-     * @dataProvider SEGMENT__cases
+     * @dataProvider prov__SEGMENT
      */
     public function test__SEGMENT__matches(string $string, array $pieces = []) : void
     {
@@ -209,7 +209,7 @@ final class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider non__SEGMENT__cases
+     * @dataProvider prov__non__SEGMENT
      */
     public function test__SEGMENT__notMatches(string $string) : void
     {
@@ -224,20 +224,20 @@ final class Rfc3986Test extends TestCase
         return [''];
     }
 
-    public static function PATH_EMPTY__cases()
+    public static function prov__PATH_EMPTY()
     {
         $strings = static::PATH_EMPTY__strings();
         return static::stringsToPregTuples($strings, 'path_empty');
     }
 
-    public static function non__PATH_EMPTY__cases()
+    public static function prov__non__PATH_EMPTY()
     {
         $strings = [ "a", "A", "1", "." ];
         return static::stringsToPregTuples($strings);
     }
 
     /**
-     * @dataProvider PATH_EMPTY__cases
+     * @dataProvider prov__PATH_EMPTY
      */
     public function test__PATH_EMPTY__matches(string $string, array $pieces = []) : void
     {
@@ -246,7 +246,7 @@ final class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider non__PATH_EMPTY__cases
+     * @dataProvider prov__non__PATH_EMPTY
      */
     public function test__PATH_EMPTY__notMatches(string $string) : void
     {
@@ -265,20 +265,20 @@ final class Rfc3986Test extends TestCase
         ];
     }
 
-    public static function PATH_NOSCHEME__cases()
+    public static function prov__PATH_NOSCHEME()
     {
         $strings = static::PATH_NOSCHEME__strings();
         return static::stringsToPregTuples($strings, 'path_noscheme');
     }
 
-    public static function non__PATH_NOSCHEME__cases()
+    public static function prov__non__PATH_NOSCHEME()
     {
         $strings = [":", ":/"];
-        return array_merge(static::stringsToPregTuples($strings), static::non__PATH_ROOTLESS__cases());
+        return array_merge(static::stringsToPregTuples($strings), static::prov__non__PATH_ROOTLESS());
     }
 
     /**
-     * @dataProvider PATH_NOSCHEME__cases
+     * @dataProvider prov__PATH_NOSCHEME
      */
     public function test__PATH_NOSCHEME__matches(string $string, array $pieces = []) : void
     {
@@ -287,7 +287,7 @@ final class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider non__PATH_NOSCHEME__cases
+     * @dataProvider prov__non__PATH_NOSCHEME
      */
     public function test__PATH_NOSCHEME__notMatches(string $string) : void
     {
@@ -308,20 +308,20 @@ final class Rfc3986Test extends TestCase
         return array_merge($inheritedStrings, $strings);
     }
 
-    public static function PATH_ROOTLESS__cases()
+    public static function prov__PATH_ROOTLESS()
     {
         $strings = static::PATH_ROOTLESS__strings();
         return static::stringsToPregTuples($strings, 'path_rootless');
     }
 
-    public static function non__PATH_ROOTLESS__cases()
+    public static function prov__non__PATH_ROOTLESS()
     {
         $strings = ["", "%", "%1", "%G", "%1G", "%G2", "#", "ł", "/", "?", "/a"];
         return static::stringsToPregTuples($strings);
     }
 
     /**
-     * @dataProvider PATH_ROOTLESS__cases
+     * @dataProvider prov__PATH_ROOTLESS
      */
     public function test__PATH_ROOTLESS__matches(string $string, array $pieces = []) : void
     {
@@ -330,7 +330,7 @@ final class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider non__PATH_ROOTLESS__cases
+     * @dataProvider prov__non__PATH_ROOTLESS
      */
     public function test__PATH_ROOTLESS__notMatches(string $string) : void
     {
@@ -349,20 +349,20 @@ final class Rfc3986Test extends TestCase
         return array_merge($inheritedStrings, $strings);
     }
 
-    public static function PATH_ABSOLUTE__cases()
+    public static function prov__PATH_ABSOLUTE()
     {
         $strings = static::PATH_ABSOLUTE__strings();
         return static::stringsToPregTuples($strings, 'path_absolute');
     }
 
-    public static function non__PATH_ABSOLUTE__cases()
+    public static function prov__non__PATH_ABSOLUTE()
     {
         $strings = ["", "a", ":", "%", "%1", "%G", "%1G", "%G2", "#", "ł", "?", "a/b"];
         return static::stringsToPregTuples($strings);
     }
 
     /**
-     * @dataProvider PATH_ABSOLUTE__cases
+     * @dataProvider prov__PATH_ABSOLUTE
      */
     public function test__PATH_ABSOLUTE__matches(string $string, array $pieces = []) : void
     {
@@ -371,7 +371,7 @@ final class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider non__PATH_ABSOLUTE__cases
+     * @dataProvider prov__non__PATH_ABSOLUTE
      */
     public function test__PATH_ABSOLUTE__notMatches(string $string) : void
     {
@@ -391,20 +391,20 @@ final class Rfc3986Test extends TestCase
         return array_merge($inheritedStrings, $strings);
     }
 
-    public static function PATH_ABEMPTY__cases()
+    public static function prov__PATH_ABEMPTY()
     {
         $strings = static::PATH_ABEMPTY__strings();
         return static::stringsToPregTuples($strings, 'path_abempty');
     }
 
-    public static function non__PATH_ABEMPTY__cases()
+    public static function prov__non__PATH_ABEMPTY()
     {
         $strings = ["a", ":", "%", "%1", "%G", "%1G", "%G2", "#", "ł", "?"];
         return static::stringsToPregTuples($strings);
     }
 
     /**
-     * @dataProvider PATH_ABEMPTY__cases
+     * @dataProvider prov__PATH_ABEMPTY
      */
     public function test__PATH_ABEMPTY__matches(string $string, array $pieces = []) : void
     {
@@ -413,7 +413,7 @@ final class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider non__PATH_ABEMPTY__cases
+     * @dataProvider prov__non__PATH_ABEMPTY
      */
     public function test__PATH_ABEMPTY__notMatches(string $string) : void
     {
@@ -433,20 +433,20 @@ final class Rfc3986Test extends TestCase
         ];
     }
 
-    public static function REG_NAME__cases()
+    public static function prov__REG_NAME()
     {
         $strings = static::REG_NAME__strings();
         return static::stringsToPregTuples($strings, 'reg_name');
     }
 
-    public static function non__REG_NAME__cases()
+    public static function prov__non__REG_NAME()
     {
         $strings = [" ", "#", "%", "%1", "%1G", "%G", "%G2", "/", ":", "?", "@", "[", "]", "ł"];
         return static::stringsToPregTuples($strings);
     }
 
     /**
-     * @dataProvider REG_NAME__cases
+     * @dataProvider prov__REG_NAME
      */
     public function test__REG_NAME__matches(string $string, array $pieces = []) : void
     {
@@ -454,7 +454,7 @@ final class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider non__REG_NAME__cases
+     * @dataProvider prov__non__REG_NAME
      */
     public function test__REG_NAME__notMatches(string $string) : void
     {
@@ -465,13 +465,13 @@ final class Rfc3986Test extends TestCase
     // DEC_OCTET
     //
 
-    public static function DEC_OCTET__cases()
+    public static function prov__DEC_OCTET()
     {
         $strings = ["0", "7", "10", "45", "99", "100", "123", "199", "200", "234", "249", "250", "252", "255" ];
         return static::stringsToPregTuples($strings);
     }
 
-    public static function non__DEC_OCTET__cases()
+    public static function prov__non__DEC_OCTET()
     {
         $strings = ["", " ", "#", "%", "%1", "%1G", "%G", "%G2", "/", ":", "?", "@", "[", "]", "ł",
                     "00", "05", "000", "010", "256",];
@@ -479,7 +479,7 @@ final class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider DEC_OCTET__cases
+     * @dataProvider prov__DEC_OCTET
      */
     public function test__DEC_OCTET__matches(string $string, array $pieces = []) : void
     {
@@ -487,7 +487,7 @@ final class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider non__DEC_OCTET__cases
+     * @dataProvider prov__non__DEC_OCTET
      */
     public function test__DEC_OCTET__notMatches(string $string) : void
     {
@@ -506,13 +506,13 @@ final class Rfc3986Test extends TestCase
         ];
     }
 
-    public static function IPV4ADDRESS__cases()
+    public static function prov__IPV4ADDRESS()
     {
         $strings = static::IPV4ADDRESS__strings();
         return static::stringsToPregTuples($strings, 'ipv4address');
     }
 
-    public static function non__IPV4ADDRESS__cases()
+    public static function prov__non__IPV4ADDRESS()
     {
         $strings = [
             "", " ", "#",
@@ -524,7 +524,7 @@ final class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider IPV4ADDRESS__cases
+     * @dataProvider prov__IPV4ADDRESS
      */
     public function test__IPV4ADDRESS__matches(string $string, array $pieces = []) : void
     {
@@ -533,7 +533,7 @@ final class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider non__IPV4ADDRESS__cases
+     * @dataProvider prov__non__IPV4ADDRESS
      */
     public function test__IPV4ADDRESS__notMatches(string $string) : void
     {
@@ -555,12 +555,12 @@ final class Rfc3986Test extends TestCase
         ];
     }
 
-    public function H16__cases()
+    public function prov__H16()
     {
         return static::stringsToPregTuples(static::H16__strings());
     }
 
-    public function non__H16__cases()
+    public function prov__non__H16()
     {
         $strings = [
             "", " ", "g", "G", "12345", "abcde", "#", "%", "/", ":", "?", "@", "[", "]", "ł",
@@ -569,7 +569,7 @@ final class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider H16__cases
+     * @dataProvider prov__H16
      */
     public function test__H16__matches(string $string, array $pieces = []) : void
     {
@@ -577,7 +577,7 @@ final class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider non__H16__cases
+     * @dataProvider prov__non__H16
      */
     public function test__H16__notMatches(string $string) : void
     {
@@ -592,13 +592,13 @@ final class Rfc3986Test extends TestCase
         return ["1:2", "12:34", "12a:2", "3:af23", "fed2:123a", "1.23.245.212"];
     }
 
-    public function LS32__cases()
+    public function prov__LS32()
     {
         $strings = static::LS32__strings();
         return static::stringsToPregTuples($strings, 'ls32');
     }
 
-    public function non__LS32__cases()
+    public function prov__non__LS32()
     {
         $strings = [
             "", " ", "g", "G", "123", "12345:123", "abcde:dff",
@@ -608,7 +608,7 @@ final class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider LS32__cases
+     * @dataProvider prov__LS32
      */
     public function test__LS32__matches(string $string, array $pieces = []) : void
     {
@@ -617,7 +617,7 @@ final class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider non__LS32__cases
+     * @dataProvider prov__non__LS32
      */
     public function test__LS32__notMatches(string $string) : void
     {
@@ -628,7 +628,7 @@ final class Rfc3986Test extends TestCase
     // IPV6ADDRESS
     //
 
-    public static function IPV6ADDRESS__cases()
+    public static function prov__IPV6ADDRESS()
     {
         $cases = [
             [
@@ -691,7 +691,7 @@ final class Rfc3986Test extends TestCase
         return $cases;
     }
 
-    public static function extra__IPV6ADDRESS__cases()
+    public static function prov__extra__IPV6ADDRESS()
     {
         $cases = [
             // 1'st row in rule
@@ -1223,7 +1223,7 @@ final class Rfc3986Test extends TestCase
         return $cases;
     }
 
-    public static function non__IPV6ADDRESS__cases()
+    public static function prov__non__IPV6ADDRESS()
     {
         $strings = [
             "", " ", "g", "G", "123", "12345:123", "abcde:dff",
@@ -1233,8 +1233,8 @@ final class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider IPV6ADDRESS__cases
-     * @dataProvider extra__IPV6ADDRESS__cases
+     * @dataProvider prov__IPV6ADDRESS
+     * @dataProvider prov__extra__IPV6ADDRESS
      */
     public function test__IPV6ADDRESS__matches(string $string, array $pieces = []) : void
     {
@@ -1243,7 +1243,7 @@ final class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider non__IPV6ADDRESS__cases
+     * @dataProvider prov__non__IPV6ADDRESS
      */
     public function test__IPV6ADDRESS__notMatches(string $string) : void
     {
@@ -1260,13 +1260,13 @@ final class Rfc3986Test extends TestCase
         ];
     }
 
-    public static function IPVFUTURE__cases()
+    public static function prov__IPVFUTURE()
     {
         $strings = static::IPVFUTURE__strings();
         return static::stringsToPregTuples($strings, 'ipvfuture');
     }
 
-    public static function non__IPVFUTURE__cases()
+    public static function prov__non__IPVFUTURE()
     {
         $strings = [
             "", " ", "a", "B", "1", "vGEE.aa", "v.sdf", "#", "%", "/", ":", "?", "@", "[", "]", "ł",
@@ -1275,7 +1275,7 @@ final class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider IPVFUTURE__cases
+     * @dataProvider prov__IPVFUTURE
      */
     public function test__IPVFUTURE__matches(string $string, array $pieces = []) : void
     {
@@ -1284,7 +1284,7 @@ final class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider non__IPVFUTURE__cases
+     * @dataProvider prov__non__IPVFUTURE
      */
     public function test__IPVFUTURE__notMatches(string $string) : void
     {
@@ -1295,11 +1295,11 @@ final class Rfc3986Test extends TestCase
     // IP_LITERAL
     //
 
-    public static function IP_LITERAL__cases()
+    public static function prov__IP_LITERAL()
     {
         $cases = [];
         $inheritedCases = [];
-        foreach (static::IPV6ADDRESS__cases() as $case) {
+        foreach (static::prov__IPV6ADDRESS() as $case) {
             $inheritedCases[] = static::transformPregTuple($case, [
                 'prefix' => '[',
                 'suffix' => ']',
@@ -1309,7 +1309,7 @@ final class Rfc3986Test extends TestCase
                 ]
             ]);
         }
-        foreach (static::IPVFUTURE__cases() as $case) {
+        foreach (static::prov__IPVFUTURE() as $case) {
             $inheritedCases[] = static::transformPregTuple($case, [
                 'prefix' => '[',
                 'suffix' => ']',
@@ -1325,7 +1325,7 @@ final class Rfc3986Test extends TestCase
         return array_merge($inheritedCases, $cases);
     }
 
-    public static function non__IP_LITERAL__cases()
+    public static function prov__non__IP_LITERAL()
     {
         $strings = [
             "", " ", "g", "G", "123", "12345:123", "abcde:dff",
@@ -1346,7 +1346,7 @@ final class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider IP_LITERAL__cases
+     * @dataProvider prov__IP_LITERAL
      */
     public function test__IP_LITERAL__matches(string $string, array $pieces = []) : void
     {
@@ -1355,7 +1355,7 @@ final class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider non__IP_LITERAL__cases
+     * @dataProvider prov__non__IP_LITERAL
      */
     public function test__IP_LITERAL__notMatches(string $string) : void
     {
@@ -1366,20 +1366,20 @@ final class Rfc3986Test extends TestCase
     // PORT
     //
 
-    public static function PORT__cases()
+    public static function prov__PORT()
     {
         $strings = ["", "123"];
         return static::stringsToPregTuples($strings, 'port');
     }
 
-    public static function non__PORT__cases()
+    public static function prov__non__PORT()
     {
         $strings = ["a", "A", "@"];
         return static::stringsToPregTuples($strings);
     }
 
     /**
-     * @dataProvider PORT__cases
+     * @dataProvider prov__PORT
      */
     public function test__PORT__matches(string $string, array $pieces = []) : void
     {
@@ -1388,7 +1388,7 @@ final class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider non__PORT__cases
+     * @dataProvider prov__non__PORT
      */
     public function test__PORT__notMatches(string $string) : void
     {
@@ -1399,11 +1399,11 @@ final class Rfc3986Test extends TestCase
     // HOST
     //
 
-    public static function HOST__cases()
+    public static function prov__HOST()
     {
         $cases = [];
         $inheritedCases = [];
-        foreach (static::IP_LITERAL__cases() as $case) {
+        foreach (static::prov__IP_LITERAL() as $case) {
             $inheritedCases[] = static::transformPregTuple($case, [
                 'merge' => [
                     'host' => [$case[0], 0],
@@ -1412,7 +1412,7 @@ final class Rfc3986Test extends TestCase
                 ]
             ]);
         }
-        foreach (static::IPV4ADDRESS__cases() as $case) {
+        foreach (static::prov__IPV4ADDRESS() as $case) {
             $inheritedCases[] = static::transformPregTuple($case, [
                 'merge' => [
                     'host' => [$case[0], 0],
@@ -1426,7 +1426,7 @@ final class Rfc3986Test extends TestCase
                 ]
             ]);
         }
-        foreach (static::REG_NAME__cases() as $case) {
+        foreach (static::prov__REG_NAME() as $case) {
             $inheritedCases[] = static::transformPregTuple($case, [
                 'merge' => [
                     'host' => [$case[0], 0],
@@ -1443,7 +1443,7 @@ final class Rfc3986Test extends TestCase
         return array_merge($inheritedCases, $cases);
     }
 
-    public static function non__HOST__cases()
+    public static function prov__non__HOST()
     {
         $strings = [
             " ", "12345:123", "abcde:dff",
@@ -1465,7 +1465,7 @@ final class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider HOST__cases
+     * @dataProvider prov__HOST
      */
     public function test__HOST__matches(string $string, array $pieces = []) : void
     {
@@ -1474,7 +1474,7 @@ final class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider non__HOST__cases
+     * @dataProvider prov__non__HOST
      */
     public function test__HOST__notMatches(string $string) : void
     {
@@ -1485,13 +1485,13 @@ final class Rfc3986Test extends TestCase
     // USERINFO
     //
 
-    public static function USERINFO__cases()
+    public static function prov__USERINFO()
     {
         $strings = ["", "!$&'()*+,;=-._~Ab1%1fx:"];
         return static::stringsToPregTuples($strings, 'userinfo');
     }
 
-    public static function non__USERINFO__cases()
+    public static function prov__non__USERINFO()
     {
         $strings = [
             "%", "%1", "%G", "%1G", "%G2", "#", "ł",
@@ -1501,7 +1501,7 @@ final class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider USERINFO__cases
+     * @dataProvider prov__USERINFO
      */
     public function test__USERINFO__matches(string $string, array $pieces = []) : void
     {
@@ -1510,7 +1510,7 @@ final class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider non__USERINFO__cases
+     * @dataProvider prov__non__USERINFO
      */
     public function test__USERINFO__notMatches(string $string) : void
     {
@@ -1521,13 +1521,13 @@ final class Rfc3986Test extends TestCase
     // AUTHORITY
     //
 
-    public static function AUTHORITY__cases()
+    public static function prov__AUTHORITY()
     {
         $cases = [];
 
         $inheritedCases = [];
-        foreach (static::USERINFO__cases() as $user) {
-            foreach (static::HOST__cases() as $host) {
+        foreach (static::prov__USERINFO() as $user) {
+            foreach (static::prov__HOST() as $host) {
                 $userHost = static::joinPregTuples([$user, $host], [
                     'glue' => '@',
                     'merge' => [
@@ -1536,7 +1536,7 @@ final class Rfc3986Test extends TestCase
                     ]
                 ]);
                 $inheritedCases[] = $userHost;
-                foreach (static::PORT__cases() as $port) {
+                foreach (static::prov__PORT() as $port) {
                     $inheritedCases[] = static::joinPregTuples([$userHost, $port], [
                         'glue' => ':',
                         'merge' => [
@@ -1547,7 +1547,7 @@ final class Rfc3986Test extends TestCase
             }
         }
 
-        foreach (static::HOST__cases() as $host) {
+        foreach (static::prov__HOST() as $host) {
             $inheritedCases[] = static::transformPregTuple($host, [
                 'merge' => [
                     'authority' => [$host[0], 0],
@@ -1555,7 +1555,7 @@ final class Rfc3986Test extends TestCase
                     'port' => false
                 ]
             ]);
-            foreach (static::PORT__cases() as $port) {
+            foreach (static::prov__PORT() as $port) {
                 $inheritedCases[] = static::joinPregTuples([$host, $port], [
                     'glue' => ':',
                     'merge' => [
@@ -1568,7 +1568,7 @@ final class Rfc3986Test extends TestCase
         return array_merge($inheritedCases, $cases);
     }
 
-    public static function non__AUTHORITY__cases()
+    public static function prov__non__AUTHORITY()
     {
         $strings = [
             "%", "%1", "%G", "%1G", "%G2", "#", "ł",
@@ -1578,7 +1578,7 @@ final class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider AUTHORITY__cases
+     * @dataProvider prov__AUTHORITY
      */
     public function test__AUTHORITY__matches(string $string, array $pieces = []) : void
     {
@@ -1590,7 +1590,7 @@ final class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider non__AUTHORITY__cases
+     * @dataProvider prov__non__AUTHORITY
      */
     public function test__AUTHORITY__notMatches(string $string) : void
     {
@@ -1601,20 +1601,20 @@ final class Rfc3986Test extends TestCase
     // SCHEME
     //
 
-    public static function SCHEME__cases()
+    public static function prov__SCHEME()
     {
         $strings = ["a.23+x-x"];
         return static::stringsToPregTuples($strings, 'scheme');
     }
 
-    public static function non__SCHEME__cases()
+    public static function prov__non__SCHEME()
     {
         $strings = ["", "1s", "@", "a~"];
         return static::stringsToPregTuples($strings);
     }
 
     /**
-     * @dataProvider SCHEME__cases
+     * @dataProvider prov__SCHEME
      */
     public function test__SCHEME__matches(string $string, array $pieces = []) : void
     {
@@ -1623,7 +1623,7 @@ final class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider non__SCHEME__cases
+     * @dataProvider prov__non__SCHEME
      */
     public function test__SCHEME__notMatches(string $string) : void
     {
@@ -1634,12 +1634,12 @@ final class Rfc3986Test extends TestCase
     // RELATIVE_PART
     //
 
-    public static function RELATIVE_PART__cases()
+    public static function prov__RELATIVE_PART()
     {
         $cases = [];
         $inheritedCases = [];
-        foreach (static::AUTHORITY__cases() as $authority) {
-            foreach (static::PATH_ABEMPTY__cases() as $path) {
+        foreach (static::prov__AUTHORITY() as $authority) {
+            foreach (static::prov__PATH_ABEMPTY() as $path) {
                 $inheritedCases[] = static::joinPregTuples([$authority, $path], [
                     'prefix' => '//',
                     'merge' => [
@@ -1648,17 +1648,17 @@ final class Rfc3986Test extends TestCase
                 ]);
             }
         }
-        foreach (static::PATH_ABSOLUTE__cases() as $path) {
+        foreach (static::prov__PATH_ABSOLUTE() as $path) {
             $inheritedCases[] = static::transformPregTuple($path, [
                 'merge' => ['relative_part' => [$path[0], 0]]
             ]);
         }
-        foreach (static::PATH_NOSCHEME__cases() as $path) {
+        foreach (static::prov__PATH_NOSCHEME() as $path) {
             $inheritedCases[] = static::transformPregTuple($path, [
                 'merge' => ['relative_part' => [$path[0], 0]]
             ]);
         }
-        foreach (static::PATH_EMPTY__cases() as $path) {
+        foreach (static::prov__PATH_EMPTY() as $path) {
             $inheritedCases[] = static::transformPregTuple($path, [
                 'merge' => ['relative_part' => [$path[0], 0]]
             ]);
@@ -1667,14 +1667,14 @@ final class Rfc3986Test extends TestCase
         return array_merge($inheritedCases, $cases);
     }
 
-    public static function non__RELATIVE_PART__cases()
+    public static function prov__non__RELATIVE_PART()
     {
         $strings = ["#", "%", "%1", "%1G", "%G", "%G2", ":", ":/", "?", "ł"];
         return static::stringsToPregTuples($strings);
     }
 
     /**
-     * @dataProvider RELATIVE_PART__cases
+     * @dataProvider prov__RELATIVE_PART
      */
     public function test__RELATIVE_PART__matches(string $string, array $pieces = []) : void
     {
@@ -1683,7 +1683,7 @@ final class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider non__RELATIVE_PART__cases
+     * @dataProvider prov__non__RELATIVE_PART
      */
     public function test__RELATIVE_PART__notMatches(string $string) : void
     {
@@ -1694,12 +1694,12 @@ final class Rfc3986Test extends TestCase
     // HIER_PART
     //
 
-    public static function HIER_PART__cases()
+    public static function prov__HIER_PART()
     {
         $cases = [];
         $inheritedCases = [];
-        foreach (static::AUTHORITY__cases() as $authority) {
-            foreach (static::PATH_ABEMPTY__cases() as $path) {
+        foreach (static::prov__AUTHORITY() as $authority) {
+            foreach (static::prov__PATH_ABEMPTY() as $path) {
                 $inheritedCases[] = static::joinPregTuples([$authority, $path], [
                     'prefix' => '//',
                     'merge' => [
@@ -1711,7 +1711,7 @@ final class Rfc3986Test extends TestCase
                 ]);
             }
         }
-        foreach (static::PATH_ABSOLUTE__cases() as $path) {
+        foreach (static::prov__PATH_ABSOLUTE() as $path) {
             $inheritedCases[] = static::transformPregTuple($path, [
                 'merge' => [
                     'hier_part' => [$path[0], 0],
@@ -1722,7 +1722,7 @@ final class Rfc3986Test extends TestCase
                 ],
             ]);
         }
-        foreach (static::PATH_ROOTLESS__cases() as $path) {
+        foreach (static::prov__PATH_ROOTLESS() as $path) {
             $inheritedCases[] = static::transformPregTuple($path, [
                 'merge' => [
                     'hier_part' => [$path[0], 0],
@@ -1733,7 +1733,7 @@ final class Rfc3986Test extends TestCase
                 ],
             ]);
         }
-        foreach (static::PATH_EMPTY__cases() as $path) {
+        foreach (static::prov__PATH_EMPTY() as $path) {
             $inheritedCases[] = static::transformPregTuple($path, [
                 'merge' => [
                     'hier_part' => [$path[0], 0],
@@ -1747,14 +1747,14 @@ final class Rfc3986Test extends TestCase
         return array_merge($inheritedCases, $cases);
     }
 
-    public static function non__HIER_PART__cases()
+    public static function prov__non__HIER_PART()
     {
         $strings = ["#", "%", "%1", "%1G", "%G", "%G2", "?", "ł"];
         return static::stringsToPregTuples($strings);
     }
 
     /**
-     * @dataProvider HIER_PART__cases
+     * @dataProvider prov__HIER_PART
      */
     public function test__HIER_PART__matches(string $string, array $pieces = []) : void
     {
@@ -1768,7 +1768,7 @@ final class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider non__HIER_PART__cases
+     * @dataProvider prov__non__HIER_PART
      */
     public function test__HIER_PART__notMatches(string $string) : void
     {
@@ -1779,7 +1779,7 @@ final class Rfc3986Test extends TestCase
     // FRAGMENT
     //
 
-    public static function FRAGMENT__cases()
+    public static function prov__FRAGMENT()
     {
         $strings = [
             "", 'aZ2-._~!$&\'()*+,;=/?:@%20'
@@ -1787,14 +1787,14 @@ final class Rfc3986Test extends TestCase
         return static::stringsToPregTuples($strings, 'fragment');
     }
 
-    public static function non__FRAGMENT__cases()
+    public static function prov__non__FRAGMENT()
     {
         $strings = ["%", "%1", "%G", "%1G", "%G2", "#", "ł"];
         return static::stringsToPregTuples($strings);
     }
 
     /**
-     * @dataProvider FRAGMENT__cases
+     * @dataProvider prov__FRAGMENT
      */
     public function test__FRAGMENT__matches(string $string, array $pieces = []) : void
     {
@@ -1803,7 +1803,7 @@ final class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider non__FRAGMENT__cases
+     * @dataProvider prov__non__FRAGMENT
      */
     public function test__FRAGMENT__notMatches(string $string) : void
     {
@@ -1814,7 +1814,7 @@ final class Rfc3986Test extends TestCase
     // QUERY
     //
 
-    public static function QUERY__cases()
+    public static function prov__QUERY()
     {
         $strings = [
             "", 'aZ2-._~!$&\'()*+,;=/?:@%20'
@@ -1822,14 +1822,14 @@ final class Rfc3986Test extends TestCase
         return static::stringsToPregTuples($strings, 'query');
     }
 
-    public static function non__QUERY__cases()
+    public static function prov__non__QUERY()
     {
         $strings = ["%", "%1", "%G", "%1G", "%G2", "#", "ł"];
         return static::stringsToPregTuples($strings);
     }
 
     /**
-     * @dataProvider QUERY__cases
+     * @dataProvider prov__QUERY
      */
     public function test__QUERY__matches(string $string, array $pieces = []) : void
     {
@@ -1838,7 +1838,7 @@ final class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider non__QUERY__cases
+     * @dataProvider prov__non__QUERY
      */
     public function test__QUERY__notMatches(string $string) : void
     {
@@ -1849,11 +1849,11 @@ final class Rfc3986Test extends TestCase
     // RELATIVE_REF
     //
 
-    public static function RELATIVE_REF__cases()
+    public static function prov__RELATIVE_REF()
     {
         $cases = [];
         $inheritedCases = [];
-        foreach (static::RELATIVE_PART__cases() as $relPart) {
+        foreach (static::prov__RELATIVE_PART() as $relPart) {
             $relPartRef = static::transformPregTuple($relPart, [
                 'merge' => [
                     'relative_ref' => [$relPart[0], 0],
@@ -1862,7 +1862,7 @@ final class Rfc3986Test extends TestCase
                 ]
             ]);
             $inheritedCases[] = $relPartRef;
-            foreach (static::QUERY__cases() as $query) {
+            foreach (static::prov__QUERY() as $query) {
                 $relPartQuery = static::joinPregTuples([$relPartRef, $query], [
                     'glue' => '?',
                     'merge' => [
@@ -1871,7 +1871,7 @@ final class Rfc3986Test extends TestCase
                     ]
                 ]);
                 $inheritedCases[] = $relPartQuery;
-                foreach (static::FRAGMENT__cases() as $fragment) {
+                foreach (static::prov__FRAGMENT() as $fragment) {
                     $relPartQueryFrag = static::joinPregTuples([$relPartQuery, $fragment], [
                         'glue' => '#',
                         'merge' => [
@@ -1881,7 +1881,7 @@ final class Rfc3986Test extends TestCase
                     $inheritedCases[] = $relPartQueryFrag;
                 }
             }
-            foreach (static::FRAGMENT__cases() as $fragment) {
+            foreach (static::prov__FRAGMENT() as $fragment) {
                 $relPartFrag = static::joinPregTuples([$relPartRef, $fragment], [
                     'glue' => '#',
                     'merge' => [
@@ -1895,14 +1895,14 @@ final class Rfc3986Test extends TestCase
         return array_merge($inheritedCases, $cases);
     }
 
-    public static function non__RELATIVE_REF__cases()
+    public static function prov__non__RELATIVE_REF()
     {
         $strings = ["%", "%1", "%1G", "%G", "%G2", ":", ":/", "ł"];
         return static::stringsToPregTuples($strings);
     }
 
     /**
-     * @dataProvider RELATIVE_REF__cases
+     * @dataProvider prov__RELATIVE_REF
      */
     public function test__RELATIVE_REF__matches(string $string, array $pieces = []) : void
     {
@@ -1914,7 +1914,7 @@ final class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider non__RELATIVE_REF__cases
+     * @dataProvider prov__non__RELATIVE_REF
      */
     public function test__RELATIVE_REF__notMatches(string $string) : void
     {
@@ -1925,12 +1925,12 @@ final class Rfc3986Test extends TestCase
     // ABSOLUTE_URI
     //
 
-    public static function ABSOLUTE_URI__cases()
+    public static function prov__ABSOLUTE_URI()
     {
         $cases = [];
         $inheritedCases = [];
-        foreach (static::SCHEME__cases() as $scheme) {
-            foreach (static::HIER_PART__cases() as $hierpart) {
+        foreach (static::prov__SCHEME() as $scheme) {
+            foreach (static::prov__HIER_PART() as $hierpart) {
                 $schemeHierpart = static::joinPregTuples([$scheme, $hierpart], [
                     'glue' => ':',
                     'merge' => array_merge($scheme[1] ?? [], [
@@ -1939,7 +1939,7 @@ final class Rfc3986Test extends TestCase
                     ])
                 ]);
                 $inheritedCases[] = $schemeHierpart;
-                foreach (static::QUERY__cases() as $query) {
+                foreach (static::prov__QUERY() as $query) {
                     $inheritedCases[] = static::joinPregTuples([$schemeHierpart, $query], [
                         'glue' => '?',
                         'merge' => [
@@ -1952,7 +1952,7 @@ final class Rfc3986Test extends TestCase
         return array_merge($inheritedCases, $cases);
     }
 
-    public static function non__ABSOLUTE_URI__cases()
+    public static function prov__non__ABSOLUTE_URI()
     {
         $strings = [
             "",
@@ -1965,7 +1965,7 @@ final class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider ABSOLUTE_URI__cases
+     * @dataProvider prov__ABSOLUTE_URI
      */
     public function test__ABSOLUTE_URI__matches(string $string, array $pieces = []) : void
     {
@@ -1977,7 +1977,7 @@ final class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider non__ABSOLUTE_URI__cases
+     * @dataProvider prov__non__ABSOLUTE_URI
      */
     public function test__ABSOLUTE_URI__notMatches(string $string) : void
     {
@@ -1988,11 +1988,11 @@ final class Rfc3986Test extends TestCase
     // URI
     //
 
-    public static function URI__cases()
+    public static function prov__URI()
     {
         $cases = [];
         $inheritedCases = [];
-        foreach (static::ABSOLUTE_URI__cases() as $absUri) {
+        foreach (static::prov__ABSOLUTE_URI() as $absUri) {
             $inheritedCases[] = static::transformPregTuple($absUri, [
                 'merge' => [
                     'uri' => [$absUri[0], 0],
@@ -2000,7 +2000,7 @@ final class Rfc3986Test extends TestCase
                     'fragment'=> false,
                 ],
             ]);
-            foreach (static::FRAGMENT__cases() as $fragment) {
+            foreach (static::prov__FRAGMENT() as $fragment) {
                 $inheritedCases[] = static::joinPregTuples([$absUri, $fragment], [
                     'glue' => '#',
                     'merge' => [
@@ -2013,7 +2013,7 @@ final class Rfc3986Test extends TestCase
         return array_merge($inheritedCases, $cases);
     }
 
-    public static function non__URI__cases()
+    public static function prov__non__URI()
     {
         $strings = [
             "",
@@ -2025,7 +2025,7 @@ final class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider URI__cases
+     * @dataProvider prov__URI
      */
     public function test__URI__matches(string $string, array $pieces = []) : void
     {
@@ -2038,7 +2038,7 @@ final class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider non__URI__cases
+     * @dataProvider prov__non__URI
      */
     public function test__URI__notMatches(string $string) : void
     {
@@ -2049,11 +2049,11 @@ final class Rfc3986Test extends TestCase
     // URI_REFERENCE
     //
 
-    public static function URI_REFERENCE__cases()
+    public static function prov__URI_REFERENCE()
     {
         $cases = [];
         $inheritedCases = [];
-        foreach (static::URI__cases() as $case) {
+        foreach (static::prov__URI() as $case) {
             $inheritedCases[] = static::transformPregTuple($case, [
                 'merge' => [
                     'uri_reference' => [$case[0], 0],
@@ -2062,7 +2062,7 @@ final class Rfc3986Test extends TestCase
                 ]
             ]);
         }
-        foreach (static::RELATIVE_REF__cases() as $case) {
+        foreach (static::prov__RELATIVE_REF() as $case) {
             $inheritedCases[] = static::transformPregTuple($case, [
                 'merge' => [
                     'uri_reference' => [$case[0], 0],
@@ -2074,7 +2074,7 @@ final class Rfc3986Test extends TestCase
         return array_merge($inheritedCases, $cases);
     }
 
-    public static function non__URI_REFERENCE__cases()
+    public static function prov__non__URI_REFERENCE()
     {
         $strings = [
             ':',
@@ -2084,7 +2084,7 @@ final class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider URI_REFERENCE__cases
+     * @dataProvider prov__URI_REFERENCE
      */
     public function test__URI_REFERENCE__matches(string $string, array $pieces = []) : void
     {
@@ -2095,7 +2095,7 @@ final class Rfc3986Test extends TestCase
     }
 
     /**
-     * @dataProvider non__URI_REFERENCE__cases
+     * @dataProvider prov__non__URI_REFERENCE
      */
     public function test__URI_REFERENCE__notMatches(string $string) : void
     {

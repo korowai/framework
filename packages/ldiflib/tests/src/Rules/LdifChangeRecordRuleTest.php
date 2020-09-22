@@ -41,7 +41,7 @@ final class LdifChangeRecordRuleTest extends TestCase
         $this->assertExtendsClass(AbstractLdifRecordRule::class, LdifChangeRecordRule::class);
     }
 
-    public static function construct__cases()
+    public static function prov__construct()
     {
         $dnSpecRule = new DnSpecRule;
         $controlRule = new ControlRule;
@@ -78,7 +78,7 @@ final class LdifChangeRecordRuleTest extends TestCase
     }
 
     /**
-     * @dataProvider construct__cases
+     * @dataProvider prov__construct
      */
     public function test__construct(array $args, array $expect) : void
     {
@@ -1149,7 +1149,7 @@ final class LdifChangeRecordRuleTest extends TestCase
         ];
     }
 
-    public static function parse__cases()
+    public static function prov__parse()
     {
         $cases = [
             'common #0' => [
@@ -1400,7 +1400,7 @@ final class LdifChangeRecordRuleTest extends TestCase
     }
 
     /**
-     * @dataProvider parse__cases
+     * @dataProvider prov__parse
      */
     public function test__parse(array $source, array $args, array $expect) : void
     {

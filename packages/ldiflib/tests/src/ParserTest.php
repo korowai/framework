@@ -42,7 +42,7 @@ final class ParserTest extends TestCase
         $this->assertImplementsInterface(ParserInterface::class, Parser::class);
     }
 //
-//    public function construct__cases()
+//    public function prov__construct()
 //    {
 //        return [
 //            'without args' => [
@@ -67,7 +67,7 @@ final class ParserTest extends TestCase
 //    }
 //
 //    /**
-//     * @dataProvider construct__cases
+//     * @dataProvider prov__construct
 //     */
 //    public function test__construct(array $args, array $expect)
 //    {
@@ -78,7 +78,7 @@ final class ParserTest extends TestCase
 //        $this->assertSame($expectedConfig, $parser->getConfig());
 //    }
 //
-//    public function config__cases()
+//    public function prov__config()
 //    {
 //        $cases = [
 //            [
@@ -120,7 +120,7 @@ final class ParserTest extends TestCase
 //    }
 //
 //    /**
-//     * @dataProvider config__cases
+//     * @dataProvider prov__config
 //     */
 //    public function test__configure(array $config, array $expect = null)
 //    {

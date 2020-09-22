@@ -63,7 +63,7 @@ final class ScanTest extends TestCase
         return $cursor;
     }
 
-    public static function matchAt__cases()
+    public static function prov__matchAt()
     {
         return [
             [['//', ''], ['']],
@@ -75,7 +75,7 @@ final class ScanTest extends TestCase
     }
 
     /**
-     * @dataProvider matchAt__cases
+     * @dataProvider prov__matchAt
      */
     public function test__matchAt(array $case, array $expected) : void
     {
@@ -86,7 +86,7 @@ final class ScanTest extends TestCase
         $this->assertSame($expected, Scan::matchAt(...$args));
     }
 
-    public static function matchAhead__cases()
+    public static function prov__matchAhead()
     {
         return [
             [['//', ''], [['', 0]], 0],
@@ -98,7 +98,7 @@ final class ScanTest extends TestCase
     }
 
     /**
-     * @dataProvider matchAhead__cases
+     * @dataProvider prov__matchAhead
      */
     public function test__matchAhead(array $case, array $expected, int $expMoveTo = null) : void
     {
@@ -108,14 +108,14 @@ final class ScanTest extends TestCase
     }
 
     /**
-     * @dataProvider matchAt__cases
+     * @dataProvider prov__matchAt
      */
     public function test__matchString(array $case, array $expected) : void
     {
         $this->assertSame($expected, Scan::matchString(...$case));
     }
 
-    public static function matched__cases()
+    public static function prov__matched()
     {
         return [
             // #0
@@ -182,7 +182,7 @@ final class ScanTest extends TestCase
     }
 
     /**
-     * @dataProvider matched__cases
+     * @dataProvider prov__matched
      */
     public function test__matched($key, array $matches, array $expect) : void
     {

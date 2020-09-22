@@ -35,7 +35,7 @@ final class ModSpecTest extends TestCase
         $this->assertUsesTrait(HasAttrValSpecs::class, ModSpec::class);
     }
 
-    public static function construct__cases()
+    public static function prov__construct()
     {
         return [
             'ModSpec("delete", "cn")' => [
@@ -76,7 +76,7 @@ final class ModSpecTest extends TestCase
     }
 
     /**
-     * @dataProvider construct__cases
+     * @dataProvider prov__construct
      */
     public function test__construct(array $args, array $expect) : void
     {
@@ -84,7 +84,7 @@ final class ModSpecTest extends TestCase
         $this->assertHasPropertiesSameAs($expect, $record);
     }
 
-    public function modType__cases()
+    public function prov__modType()
     {
         return [
             ['add'],
@@ -94,7 +94,7 @@ final class ModSpecTest extends TestCase
     }
 
     /**
-     * @dataProvider modType__cases
+     * @dataProvider prov__modType
      */
     public function test__setModType(string $modType) : void
     {

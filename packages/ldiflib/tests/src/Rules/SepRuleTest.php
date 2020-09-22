@@ -28,7 +28,7 @@ final class SepRuleTest extends TestCase
         $this->assertExtendsClass(AbstractRfcRule::class, SepRule::class);
     }
 
-    public static function construct__cases()
+    public static function prov__construct()
     {
         return [
             'default' => [
@@ -39,7 +39,7 @@ final class SepRuleTest extends TestCase
     }
 
     /**
-     * @dataProvider construct__cases
+     * @dataProvider prov__construct
      */
     public function test__construct(array $args, array $expect) : void
     {
@@ -61,7 +61,7 @@ final class SepRuleTest extends TestCase
     //
     // parseMatched()
     //
-    public static function parseMatched__cases()
+    public static function prov__parseMatched()
     {
         return [
             [
@@ -148,7 +148,7 @@ final class SepRuleTest extends TestCase
     }
 
     /**
-     * @dataProvider parseMatched__cases
+     * @dataProvider prov__parseMatched
      */
     public function test__parseMatched(array $source, array $matches, array $expect) : void
     {
@@ -171,7 +171,7 @@ final class SepRuleTest extends TestCase
     // parse()
     //
 
-    public static function parse__cases()
+    public static function prov__parse()
     {
         return [
             [
@@ -252,7 +252,7 @@ final class SepRuleTest extends TestCase
     }
 
     /**
-     * @dataProvider parse__cases
+     * @dataProvider prov__parse
      */
     public function test__parse(array $source, array $args, array $expect) : void
     {

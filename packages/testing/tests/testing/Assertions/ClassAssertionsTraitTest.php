@@ -276,7 +276,7 @@ final class ClassAssertionsTraitTest extends TestCase
         self::assertFalse(self::usesTrait(ExampleTrait::class)->matches(123));
     }
 
-    public function assertDeclaresMethod__cases()
+    public function prov__assertDeclaresMethod()
     {
         return [
             "('test__assertDeclaresMethod', self::class)" => [
@@ -298,7 +298,7 @@ final class ClassAssertionsTraitTest extends TestCase
         ];
     }
 
-    public function assertDeclaresMethod__failure__cases()
+    public function prov__assertDeclaresMethod__failure()
     {
         return [
             "('inexistent', self::class)" => [
@@ -338,7 +338,7 @@ final class ClassAssertionsTraitTest extends TestCase
     }
 
     /**
-     * @dataProvider assertDeclaresMethod__cases
+     * @dataProvider prov__assertDeclaresMethod
      */
     public function test__assertDeclaresMethod(array $args, string $message = '') : void
     {
@@ -347,7 +347,7 @@ final class ClassAssertionsTraitTest extends TestCase
 
 
     /**
-     * @dataProvider assertDeclaresMethod__failure__cases
+     * @dataProvider prov__assertDeclaresMethod__failure
      */
     public function test__assertDeclaresMethod__failure(array $args, string $message) : void
     {
@@ -357,7 +357,7 @@ final class ClassAssertionsTraitTest extends TestCase
     }
 
     /**
-     * @dataProvider assertDeclaresMethod__cases
+     * @dataProvider prov__assertDeclaresMethod
      */
     public function test__assertNotDeclaresMethod__failure(array $args, string $message) : void
     {

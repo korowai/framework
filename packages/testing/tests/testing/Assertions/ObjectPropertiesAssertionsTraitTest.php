@@ -44,7 +44,7 @@ final class ObjectPropertiesAssertionsTraitTest extends TestCase
         self::assertTrue($method->isStatic());
     }
 
-    public static function propertiesSameAs__cases()
+    public static function prov__propertiesSameAs()
     {
         $esmith = new class {
             public $name = 'Emily';
@@ -217,7 +217,7 @@ final class ObjectPropertiesAssertionsTraitTest extends TestCase
         ];
     }
 
-    public static function propertiesNotSameAs__cases()
+    public static function prov__propertiesNotSameAs()
     {
         $hbrown = new class {
             public $name = 'Helen';
@@ -360,14 +360,14 @@ final class ObjectPropertiesAssertionsTraitTest extends TestCase
     }
 
     /**
-     * @dataProvider propertiesSameAs__cases
+     * @dataProvider prov__propertiesSameAs
      */
     public function test__hasPropertiesIdenticalTo__withMatchingProperties(array $expect, object $object) {
         self::assertTrue(self::hasPropertiesIdenticalTo($expect)->matches($object));
     }
 
     /**
-     * @dataProvider propertiesNotSameAs__cases
+     * @dataProvider prov__propertiesNotSameAs
      */
     public function test__hasPropertiesIdenticalTo__withNonMatchingProperties(array $expected, object $object) {
         self::assertFalse(self::hasPropertiesIdenticalTo($expected)->matches($object));
@@ -419,14 +419,14 @@ final class ObjectPropertiesAssertionsTraitTest extends TestCase
     }
 
     /**
-     * @dataProvider propertiesSameAs__cases
+     * @dataProvider prov__propertiesSameAs
      */
     public function test__assertHasPropertiesSameAs__withMatchingProperties(array $expected, object $object) {
         self::assertHasPropertiesSameAs(...(self::adjustCase(func_get_args())));
     }
 
     /**
-     * @dataProvider propertiesNotSameAs__cases
+     * @dataProvider prov__propertiesNotSameAs
      */
     public function test__assertHasPropertiesSameAs__withNonMatchingProperties(array $expected, object $object) {
         $regexp = '/^Lorem ipsum.\n'.
@@ -438,14 +438,14 @@ final class ObjectPropertiesAssertionsTraitTest extends TestCase
     }
 
     /**
-     * @dataProvider propertiesNotSameAs__cases
+     * @dataProvider prov__propertiesNotSameAs
      */
     public function test__assertNotHasPropertiesSameAs__withNonMatchingProperties(array $expected, object $object) {
         self::assertNotHasPropertiesSameAs(...(self::adjustCase(func_get_args())));
     }
 
     /**
-     * @dataProvider propertiesSameAs__cases
+     * @dataProvider prov__propertiesSameAs
      */
     public function test__assertNotHasPropertiesSameAs__whithMatchingProperties(array $expected, object $object) {
         $regexp = '/^Lorem ipsum.\n'.

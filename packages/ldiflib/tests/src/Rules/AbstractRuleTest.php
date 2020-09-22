@@ -29,7 +29,7 @@ final class AbstractRuleTest extends TestCase
         $this->assertImplementsInterface(RuleInterface::class, AbstractRule::class);
     }
 
-    public static function repeat__cases()
+    public static function prov__repeat()
     {
         $rule = new class extends AbstractRule {
             public function parse(ParserStateInterface $state, &$value = null, bool $trying = false) : bool
@@ -209,7 +209,7 @@ final class AbstractRuleTest extends TestCase
     }
 
     /**
-     * @dataProvider repeat__cases
+     * @dataProvider prov__repeat
      */
     public function test__repeat(RuleInterface $rule, array $source, array $args, array $expect) : void
     {

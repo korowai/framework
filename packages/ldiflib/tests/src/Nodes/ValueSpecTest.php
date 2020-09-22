@@ -102,7 +102,7 @@ final class ValueSpecTest extends TestCase
         $this->assertSame(file_get_contents(__file__), $value->getContent());
     }
 
-    public static function uriFromRfc3986Matches__cases()
+    public static function prov__uriFromRfc3986Matches()
     {
         return [
             // #0
@@ -175,7 +175,7 @@ final class ValueSpecTest extends TestCase
     }
 
     /**
-     * @dataProvider uriFromRfc3986Matches__cases
+     * @dataProvider prov__uriFromRfc3986Matches
      */
     public function test__uri__fromRfc3986Matches__components(array $matches, array $expect) : void
     {

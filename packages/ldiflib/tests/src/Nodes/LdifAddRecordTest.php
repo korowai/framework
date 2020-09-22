@@ -42,7 +42,7 @@ final class LdifAddRecordTest extends TestCase
         $this->assertUsesTrait(HasAttrValSpecs::class, LdifAddRecord::class);
     }
 
-    public static function construct__cases()
+    public static function prov__construct()
     {
         return [
             '__construct("dc=example,dc=org")' => [
@@ -77,7 +77,7 @@ final class LdifAddRecordTest extends TestCase
     }
 
     /**
-     * @dataProvider construct__cases
+     * @dataProvider prov__construct
      */
     public function test__construct(array $args, array $expect) : void
     {

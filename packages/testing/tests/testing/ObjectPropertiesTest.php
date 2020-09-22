@@ -39,7 +39,7 @@ final class ObjectPropertiesTest extends TestCase
         $this->assertSame($properties, (array)$op);
     }
 
-    public static function getArrayForComparison__cases()
+    public static function prov__getArrayForComparison()
     {
         return [
             [
@@ -108,7 +108,7 @@ final class ObjectPropertiesTest extends TestCase
     }
 
     /**
-     * @dataProvider getArrayForComparison__cases
+     * @dataProvider prov__getArrayForComparison
      */
     public function test__getArrayForComparison(array $properties, array $expect) : void
     {

@@ -37,7 +37,7 @@ final class LdifModifyRecordTest extends TestCase
         $this->assertImplementsInterface(LdifModifyRecordInterface::class, LdifModifyRecord::class);
     }
 
-    public function construct__cases()
+    public function prov__construct()
     {
         $snippet = $this->getMockBuilder(SnippetInterface::class)->getMockForAbstractClass();
         return [
@@ -74,7 +74,7 @@ final class LdifModifyRecordTest extends TestCase
     }
 
     /**
-     * @dataProvider construct__cases
+     * @dataProvider prov__construct
      */
     public function test__construct(array $args, array $expect) : void
     {

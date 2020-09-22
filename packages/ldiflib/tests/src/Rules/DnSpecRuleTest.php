@@ -30,7 +30,7 @@ final class DnSpecRuleTest extends TestCase
         $this->assertExtendsClass(AbstractDnSpecRule::class, DnSpecRule::class);
     }
 
-    public static function construct__cases()
+    public static function prov__construct()
     {
         return [
             '__construct()' => [
@@ -46,7 +46,7 @@ final class DnSpecRuleTest extends TestCase
     }
 
     /**
-     * @dataProvider construct__cases
+     * @dataProvider prov__construct
      */
     public function test__construct(array $args, array $expect) : void
     {
@@ -62,7 +62,7 @@ final class DnSpecRuleTest extends TestCase
     //
     // parseMatched()
     //
-    public static function parseMatched__cases()
+    public static function prov__parseMatched()
     {
         $safeStringCases = array_map(function ($case) {
             $tl = strlen('dn: ');
@@ -288,7 +288,7 @@ final class DnSpecRuleTest extends TestCase
     }
 
     /**
-     * @dataProvider parseMatched__cases
+     * @dataProvider prov__parseMatched
      */
     public function test__parseMatched(array $source, array $matches, array $expect) : void
     {
@@ -311,7 +311,7 @@ final class DnSpecRuleTest extends TestCase
     // parse()
     //
 
-    public static function parse__cases()
+    public static function prov__parse()
     {
         $missingTagCases = array_map(function (array $case) {
             $args = $case['args'] ?? [];
@@ -557,7 +557,7 @@ final class DnSpecRuleTest extends TestCase
     }
 
     /**
-     * @dataProvider parse__cases
+     * @dataProvider prov__parse
      */
     public function test__parse(array $source, array $args, array $expect) : void
     {

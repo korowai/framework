@@ -24,7 +24,7 @@ use Korowai\Testing\TestCase;
  */
 final class RuleDemoTest extends TestCase
 {
-    public static function construct__cases()
+    public static function prov__construct()
     {
         $rule = new Rule(Rfc2849::class, 'DN_SPEC');
         return [
@@ -46,7 +46,7 @@ final class RuleDemoTest extends TestCase
     }
 
     /**
-     * @dataProvider construct__cases
+     * @dataProvider prov__construct
      */
     public function test__construct(array $args, array $expect) : void
     {
@@ -56,7 +56,7 @@ final class RuleDemoTest extends TestCase
         $this->assertHasPropertiesSameAs($expect, $demo);
     }
 
-    public static function create__cases()
+    public static function prov__create()
     {
         return [
             'create(Rfc2849::class, "DN_SPEC")' => [
@@ -83,7 +83,7 @@ final class RuleDemoTest extends TestCase
     }
 
     /**
-     * @dataProvider create__cases
+     * @dataProvider prov__create
      */
     public function test__create(array $args, array $expect) : void
     {
@@ -145,7 +145,7 @@ final class RuleDemoTest extends TestCase
         );
     }
 
-    public static function matchAndGetReport__cases()
+    public static function prov__matchAndGetReport()
     {
         $demo = RuleDemo::create(Rfc2849::class, 'DN_SPEC');
         return [
@@ -196,7 +196,7 @@ final class RuleDemoTest extends TestCase
     }
 
     /**
-     * @dataProvider matchAndGetReport__cases
+     * @dataProvider prov__matchAndGetReport
      */
     public function test__matchAndGetReport(RuleDemo $demo, array $args, array $expect) : void
     {
@@ -212,7 +212,7 @@ final class RuleDemoTest extends TestCase
     }
 
     /**
-     * @dataProvider matchAndGetReport__cases
+     * @dataProvider prov__matchAndGetReport
      */
     public function test__matchAndReport(RuleDemo $demo, array $args, array $expect) : void
     {

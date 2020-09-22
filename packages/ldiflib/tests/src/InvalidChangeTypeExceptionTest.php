@@ -26,7 +26,7 @@ final class InvalidChangeTypeExceptionTest extends TestCase
         $this->assertExtendsClass(\InvalidArgumentException::class, InvalidChangeTypeException::class);
     }
 
-    public static function getMessage__cases()
+    public static function prov__getMessage()
     {
         return [
             'default message' => [[], ''],
@@ -35,7 +35,7 @@ final class InvalidChangeTypeExceptionTest extends TestCase
     }
 
     /**
-     * @dataProvider getMessage__cases
+     * @dataProvider prov__getMessage
      */
     public function test__getMessage(array $args, string $expect) : void
     {

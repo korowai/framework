@@ -24,7 +24,7 @@ final class PregAssertionsTraitTest extends TestCase
 {
     use PregAssertionsTrait;
 
-    public function hasPregCaptures__success__cases()
+    public function prov__hasPregCaptures__success()
     {
         return [
             [[],                                                            []],
@@ -83,7 +83,7 @@ final class PregAssertionsTraitTest extends TestCase
     }
 
     /**
-     * @dataProvider hasPregCaptures__success__cases
+     * @dataProvider prov__hasPregCaptures__success
      */
     public function test__hasPregCaptures__success(array $expected, $other) : void
     {
@@ -92,7 +92,7 @@ final class PregAssertionsTraitTest extends TestCase
     }
 
     /**
-     * @dataProvider hasPregCaptures__success__cases
+     * @dataProvider prov__hasPregCaptures__success
      */
     public function test__assertHasPregCaptures__success(array $expected, $other) : void
     {
@@ -100,7 +100,7 @@ final class PregAssertionsTraitTest extends TestCase
     }
 
     /**
-     * @dataProvider hasPregCaptures__success__cases
+     * @dataProvider prov__hasPregCaptures__success
      */
     public function test__assertNotHasPregCapture__failing(array $expected, $other) : void
     {
@@ -109,7 +109,7 @@ final class PregAssertionsTraitTest extends TestCase
         $this->assertNotHasPregCaptures($expected, $other);
     }
 
-    public function hasPregCaptures__failing__cases()
+    public function prov__hasPregCaptures__failing()
     {
         $re = 'array has expected PCRE capture groups';
         return [
@@ -132,7 +132,7 @@ final class PregAssertionsTraitTest extends TestCase
         ];
     }
 
-    public function hasPregCaptures__nonArray__cases()
+    public function prov__hasPregCaptures__nonArray()
     {
         $re = 'string has expected PCRE capture groups';
         return [
@@ -141,8 +141,8 @@ final class PregAssertionsTraitTest extends TestCase
     }
 
     /**
-     * @dataProvider hasPregCaptures__failing__cases
-     * @dataProvider hasPregCaptures__nonArray__cases
+     * @dataProvider prov__hasPregCaptures__failing
+     * @dataProvider prov__hasPregCaptures__nonArray
      */
     public function test__hasPregCaptures__failing(array $expected, $other, string $regexp) : void
     {
@@ -159,7 +159,7 @@ final class PregAssertionsTraitTest extends TestCase
     }
 
     /**
-     * @dataProvider hasPregCaptures__failing__cases
+     * @dataProvider prov__hasPregCaptures__failing
      */
     public function test__assertHasPregCaptures__failing(array $expected, $other, string $regexp) : void
     {
@@ -169,7 +169,7 @@ final class PregAssertionsTraitTest extends TestCase
     }
 
     /**
-     * @dataProvider hasPregCaptures__failing__cases
+     * @dataProvider prov__hasPregCaptures__failing
      */
     public function test__assertNotHasPregCapture__success(array $expected, $other, string $regexp) : void
     {

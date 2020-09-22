@@ -34,15 +34,6 @@ final class ResourceWrapperInterfaceTest extends TestCase
         $this->assertImplementsInterface(ResourceWrapperInterface::class, $dummy);
     }
 
-    public function test__objectPropertyGettersMap() : void
-    {
-        $expect = [
-            'resource'          => 'getResource',
-            'isValid'           => 'isValid',
-        ];
-        $this->assertObjectPropertyGetters($expect, ResourceWrapperInterface::class);
-    }
-
     public static function prov__getResource() : array
     {
         return [ [''], [null], [123], [[]] ];

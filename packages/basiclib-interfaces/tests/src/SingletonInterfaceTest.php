@@ -35,14 +35,6 @@ final class SingletonInterfaceTest extends TestCase
         $this->assertImplementsInterface(SingletonInterface::class, $dummy);
     }
 
-    public function test__objectPropertyGettersMap() : void
-    {
-        $expect = [
-            'instance' => 'getInstance'
-        ];
-        $this->assertObjectPropertyGetters($expect, SingletonInterface::class);
-    }
-
     public function test__getInstance() : void
     {
         $dummy = $this->createDummyClass();

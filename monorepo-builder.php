@@ -30,8 +30,11 @@ return
 static function ($container) : void {
     $parameters = $container->parameters();
 
+    $top = __dir__;
+    $packagesSubdirsBase = 'packages'; // no trailing slashes here!
+
     $parameters->set(Option::PACKAGE_DIRECTORIES, [
-        __DIR__.'/packages',
+        $top.'/'.$packagesSubdirsBase,
     ]);
 
     $parameters->set(Option::SECTION_ORDER, [
@@ -78,16 +81,17 @@ static function ($container) : void {
         ],
     ]);
 
-    $packagesComposerJsonFiles = glob('packages/*/composer.json');
+    $packagesComposerJsonFiles = glob($top.'/'.$packagesSubdirsBase.'/*/composer.json');
     $packagesDirs  = \array_map('dirname', $packagesComposerJsonFiles);
     $packages = \array_map('basename', $packagesDirs);
+    $packagesSubdirs = \preg_replace('/^/', $packagesSubdirsBase.'/', $packages);
 
-    $defaultSplitRepositoryBase = 'file://'.__dir__.'/build/monorepo-split/repositories/korowai';
+    $defaultSplitRepositoryBase = 'file://'.$top.'/build/monorepo-split/repositories/korowai';
     $parameters->set('default_split_repository_base', $defaultSplitRepositoryBase);
     $splitRepositoryBase = '%env(default:default_split_repository_base:MONOREPO_SPLIT_REPO_BASE)%/';
 
     $packageRepos = \preg_replace('/^(.+)$/', $splitRepositoryBase.'\1.git', $packages);
-    $directoriesToRepositories = array_combine($packagesDirs, $packageRepos);
+    $directoriesToRepositories = array_combine($packagesSubdirs, $packageRepos);
 
     $parameters->set(Option::DIRECTORIES_TO_REPOSITORIES, $directoriesToRepositories);
 };

@@ -39,7 +39,7 @@ OPTIONS:
 
   -f    force reinitialization (deletes existing repositories)
   -d    dry run, print commands that would be executed instead or running them
-  -a    ansii output (do not use colors)
+  -a    ansi output (do not use colors)
   -v    verbose mode
   -h    print help and exit
 
@@ -65,7 +65,7 @@ info() {
 
 force=false;
 dry=false;
-ansii=false;
+ansi=false;
 verbose=false;
 
 while getopts "fdavh" option; do
@@ -78,7 +78,7 @@ while getopts "fdavh" option; do
       verbose=true;
       ;;
     a)
-      ansii=true;
+      ansi=true;
       ;;
     v)
       verbose=true;
@@ -99,7 +99,7 @@ if [ ! -z "$arg1" ]; then
   repobase="$arg1";
 fi
 
-if $ansii; then
+if $ansi; then
   red='';
   green='';
   brown='';
@@ -116,7 +116,6 @@ pushd $abstop > /dev/null
 
 for dir in packages/*; do
   if [ -d "$dir"  ] && [ -f "$dir/composer.json" ]; then
-    #package=`jq -r '.name' "$dir/composer.json"`;
     package=`basename "$dir"`;
     repodir="${repobase}/${package}.git";
 

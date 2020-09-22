@@ -4,6 +4,25 @@ declare(strict_types=1);
 
 use Symplify\MonorepoBuilder\ValueObject\Option;
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// USAGE:
+//
+// 1. Split onto repositories under "build/monorepo-split/repositories/korowai/"
+//
+//      vendor/bin/monorepo-builder split
+//
+//    Bare repository are required to be present uner this base path before the
+//    split is performed. To initialize these repositories run
+//
+//      util/initialize-split-repositories.sh
+//
+// 2. Split onto repositories under git@github.com:korowai/
+//
+//      MONOREPO_SPLIT_REPO_BASE='git@github.com:korowai' vendor/bin/monorepo-builder split
+//
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 return
 /**
  * @psalm-param \Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator $container
@@ -59,22 +78,8 @@ static function ($container) : void {
         ],
     ]);
 
-    $packages = [
-        'basiclib',
-        'basiclib-interfaces',
-        'compatlib',
-        'contextlib',
-        'contextlib-interfaces',
-        'contracts',
-        'errorlib-interfaces',
-        'ldaplib',
-        'ldaplib-interfaces',
-        'ldiflib',
-        'ldiflib-interfaces',
-        'rfclib',
-        'rfclib-interfaces',
-        'testing',
-    ];
+    $packagesComposerJsonFiles = glob('packages/*/composer.json');
+    $packages = \preg_replace('/^packages\/([^\/]+)\/composer.json$/', '\1', $packagesComposerJsonFiles);
 
     $packagesDirBase  = 'packages/';
     $packagesDirs  = \preg_replace('/^/', $packagesDirBase,  $packages);

@@ -20,26 +20,12 @@ use SebastianBergmann\Comparator\ComparisonFailure;
 
 /**
  * Constraint that accepts objects having properties identical to expected
- * ones. A property is defined as either an attribute value or a value
+ * ones.
+ *
+ * Compares only properties present in the array of expectations.
+ * A property is defined as either an attribute value or a value
  * returned by object's method callable without arguments.
  *
- * Compares only properties present in the array of expectations. Additional
- * parameter *$getters* provides a callback that defines mappings between
- * property names and corresponding getter methods for particular objects.
- * For example
- *
- *      class Person {
- *          private $name;
- *          public $age;
- *          public function getName() { return $this->name; }
- *      }
- *      // ...
- *      $matcher = new HasPropertiesIdenticalTo(
- *          ['name' => 'John', 'age' => 21],
- *          function (object $object) {
- *              return ($object instanceof Person) ? ['name' => 'getName'] : [];
- *          }
- *      );
  *
  * Any key in *$expected* array ending with ``"()"`` is considered to be a
  * method that returns property value.
@@ -59,27 +45,15 @@ final class HasPropertiesIdenticalTo extends Constraint implements ObjectPropert
     private $expected;
 
     /**
-     * @var callable
-     */
-    private $getters;
-
-    /**
      * Initializes the constraint.
      *
      * @param  array $expected
      *      An array of key => value pairs where keys are property names and
      *      values are their expected values.
-     * @param  callable $getters
-     *      A callback which takes an object as an argument and returns an
-     *      array of key => value pairs with property names as keys and
-     *      corresponding getter method names as values. The function prototype
-     *      is
-     *
-     *          array getters(object $object);
      *
      * @throws \PHPUnit\Framework\Exception when non-string keys are found in *$expected*.
      */
-    public function __construct(array $expected, callable $getters = null)
+    public function __construct(array $expected)
     {
         $valid = array_filter($expected, \is_string::class, ARRAY_FILTER_USE_KEY);
         if (($count = count($expected) - count($valid)) > 0) {
@@ -87,7 +61,6 @@ final class HasPropertiesIdenticalTo extends Constraint implements ObjectPropert
             throw new \PHPUnit\Framework\Exception($message);
         }
         $this->expected = $expected;
-        $this->getters = $getters;
     }
 
     /**
@@ -189,16 +162,15 @@ final class HasPropertiesIdenticalTo extends Constraint implements ObjectPropert
     public function getActualPropertiesForComparison(object $object) : ObjectPropertiesInterface
     {
         $actual = [];
-        $getters = $this->getters ? call_user_func($this->getters, $object) : [];
         foreach (array_keys($this->expected) as $key) {
-            $this->updateActual($actual, $object, $key, $getters);
+            $this->updateActual($actual, $object, $key);
         }
         return new ObjectProperties($actual);
     }
 
-    private function updateActual(array &$actual, object $object, string $key, array $getters) : void
+    private function updateActual(array &$actual, object $object, string $key) : void
     {
-        $getter = (substr($key, -2) === '()') ? substr($key, 0, -2) : ($getters[$key] ?? null);
+        $getter = (substr($key, -2) === '()') ? substr($key, 0, -2) : null;
         $expected = $this->expected[$key];
         if ($getter !== null) {
             if (!is_callable([$object, $getter])) {

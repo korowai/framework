@@ -24,12 +24,6 @@ final class ObjectPropertiesAssertionsTraitTest extends TestCase
 {
     use ObjectPropertiesAssertionsTrait;
 
-    // Required by the trait.
-    public static function getObjectPropertyGetters($objectOfClass) : array
-    {
-        return ['salary' => 'getSalary'];
-    }
-
     public function staticMethodsThatMustAppear()
     {
         return [
@@ -138,13 +132,6 @@ final class ObjectPropertiesAssertionsTraitTest extends TestCase
                 'object'  => $jsmith
             ],
             [
-                'expect'  => ['age' => 21, 'salary' => 123, 'debit' => -123],
-                'object'  => $jsmith,
-                'getters' => function (object $o) {
-                    return ['salary' => 'getSalary', 'debit' => 'getDebit'];
-                }
-            ],
-            [
                 'expect'  => ['age' => 21, 'getSalary()' => 123, 'getDebit()' => -123],
                 'object'  => $jsmith
             ],
@@ -182,24 +169,6 @@ final class ObjectPropertiesAssertionsTraitTest extends TestCase
                     ])
                 ],
                 'object'  => $jsmith
-            ],
-            [
-                'expect'  => [
-                    'age' => 21,
-                    'salary' => 123,
-                    'debit' => -123,
-                    'wife' => self::hasPropertiesIdenticalTo([
-                        'name' => 'Emily',
-                        'salary' => 98,
-                        'debit' => -98,
-                    ], function (object $o) {
-                        return ['salary' => 'getSalary', 'debit' => 'getDebit'];
-                    })
-                ],
-                'object'  => $jsmith,
-                'getters' => function (object $o) {
-                    return ['salary' => 'getSalary', 'debit' => 'getDebit'];
-                }
             ],
             [
                 'expect' => [
@@ -341,20 +310,6 @@ final class ObjectPropertiesAssertionsTraitTest extends TestCase
                 'object' => $jsmith
             ],
             [
-                'expect' => ['age' => 21, 'salary' => 1230],
-                'object' => $jsmith,
-                'getters' => function (object $o) {
-                    return ['salary' => 'getSalary', 'debit' => 'getDebit'];
-                }
-            ],
-            [
-                'expect' => ['age' => 21, 'salary' => 123, 'debit' => -1230],
-                'object' => $jsmith,
-                'getters' => function (object $o) {
-                    return ['salary' => 'getSalary', 'debit' => 'getDebit'];
-                }
-            ],
-            [
                 'expect' => ['age' => 21, 'getSalary()' => 1230],
                 'object' => $jsmith
             ],
@@ -407,23 +362,15 @@ final class ObjectPropertiesAssertionsTraitTest extends TestCase
     /**
      * @dataProvider propertiesSameAs__cases
      */
-    public function test__hasPropertiesIdenticalTo__withMatchingProperties(
-        array $expect,
-        object $object,
-        callable $getters = null
-    ) {
-        self::assertTrue(self::hasPropertiesIdenticalTo($expect, $getters)->matches($object));
+    public function test__hasPropertiesIdenticalTo__withMatchingProperties(array $expect, object $object) {
+        self::assertTrue(self::hasPropertiesIdenticalTo($expect)->matches($object));
     }
 
     /**
      * @dataProvider propertiesNotSameAs__cases
      */
-    public function test__hasPropertiesIdenticalTo__withNonMatchingProperties(
-        array $expected,
-        object $object,
-        callable $getters = null
-    ) {
-        self::assertFalse(self::hasPropertiesIdenticalTo($expected, $getters)->matches($object));
+    public function test__hasPropertiesIdenticalTo__withNonMatchingProperties(array $expected, object $object) {
+        self::assertFalse(self::hasPropertiesIdenticalTo($expected)->matches($object));
     }
 
     public function test__hasPropertiesIdenticalTo__withNonObject() : void
@@ -459,21 +406,6 @@ final class ObjectPropertiesAssertionsTraitTest extends TestCase
         self::hasPropertiesIdenticalTo(['xxx()' => 'A'])->matches($object);
     }
 
-    public function test__hasPropertiesIdenticalTo__withInvalidGetterOption() : void
-    {
-        $object = new class {
-            protected $a;
-        };
-
-        self::expectException(\PHPUnit\Framework\Exception::class);
-        self::expectExceptionMessage('$object->xxx() is not callable');
-
-        $getters = function (object $o) {
-            return ['a' => 'xxx'];
-        };
-        self::hasPropertiesIdenticalTo(['a' => 'A'], $getters)->matches($object);
-    }
-
     protected static function adjustCase(array $case, string $message = '')
     {
         $args = func_get_args();
@@ -489,22 +421,14 @@ final class ObjectPropertiesAssertionsTraitTest extends TestCase
     /**
      * @dataProvider propertiesSameAs__cases
      */
-    public function test__assertHasPropertiesSameAs__withMatchingProperties(
-        array $expected,
-        object $object,
-        callable $getters = null
-    ) {
+    public function test__assertHasPropertiesSameAs__withMatchingProperties(array $expected, object $object) {
         self::assertHasPropertiesSameAs(...(self::adjustCase(func_get_args())));
     }
 
     /**
      * @dataProvider propertiesNotSameAs__cases
      */
-    public function test__assertHasPropertiesSameAs__withNonMatchingProperties(
-        array $expected,
-        object $object,
-        callable $getters = null
-    ) {
+    public function test__assertHasPropertiesSameAs__withNonMatchingProperties(array $expected, object $object) {
         $regexp = '/^Lorem ipsum.\n'.
                     'Failed asserting that object class\@.+ has required properties with prescribed values/';
         self::expectException(ExpectationFailedException::class);
@@ -516,22 +440,14 @@ final class ObjectPropertiesAssertionsTraitTest extends TestCase
     /**
      * @dataProvider propertiesNotSameAs__cases
      */
-    public function test__assertNotHasPropertiesSameAs__withNonMatchingProperties(
-        array $expected,
-        object $object,
-        callable $getters = null
-    ) {
+    public function test__assertNotHasPropertiesSameAs__withNonMatchingProperties(array $expected, object $object) {
         self::assertNotHasPropertiesSameAs(...(self::adjustCase(func_get_args())));
     }
 
     /**
      * @dataProvider propertiesSameAs__cases
      */
-    public function test__assertNotHasPropertiesSameAs__whithMatchingProperties(
-        array $expected,
-        object $object,
-        callable $getters = null
-    ) {
+    public function test__assertNotHasPropertiesSameAs__whithMatchingProperties(array $expected, object $object) {
         $regexp = '/^Lorem ipsum.\n'.
                     'Failed asserting that object class@.+ does not have required properties with prescribed values/';
         self::expectException(ExpectationFailedException::class);

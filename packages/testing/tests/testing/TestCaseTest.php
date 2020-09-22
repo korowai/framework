@@ -16,7 +16,6 @@ use Korowai\Testing\TestCase;
 use Korowai\Testing\Assertions\ClassAssertionsTrait;
 use Korowai\Testing\Assertions\ObjectPropertiesAssertionsTrait;
 use Korowai\Testing\Assertions\PregAssertionsTrait;
-use Korowai\Testing\Traits\ObjectPropertiesUtilsTrait;
 use Korowai\Testing\Traits\PregUtilsTrait;
 
 /**
@@ -38,11 +37,6 @@ final class TestCaseTest extends TestCase
     public function test__uses__PregAssertionsTrait() : void
     {
         $this->assertUsesTrait(PregAssertionsTrait::class, TestCase::class);
-    }
-
-    public function test__uses__ObjectPropertiesUtilsTrait() : void
-    {
-        $this->assertUsesTrait(ObjectPropertiesUtilsTrait::class, TestCase::class);
     }
 
     public function test__uses__PregUtilsTrait() : void

@@ -49,32 +49,6 @@ final class TestCaseTest extends TestCase
     {
         $this->assertUsesTrait(PregUtilsTrait::class, TestCase::class);
     }
-
-    public function test__objectPropertyGettersMap() : void
-    {
-        $expect = [
-            \Iterator::class => [
-                'current'                   => 'current',
-                'key'                       => 'key',
-                'valid'                     => 'valid',
-            ],
-
-            \IteratorAggregate::class => [
-                'iterator'                  => 'getIterator'
-            ],
-
-            \Throwable::class => [
-                'message'                   => 'getMessage',
-                'code'                      => 'getCode',
-                'file'                      => 'getFile',
-                'line'                      => 'getLine',
-                'trace'                     => 'getTrace',
-                'traceAsString'             => 'getTraceAsString',
-                'previous'                  => 'getPrevious',
-            ],
-        ];
-        $this->assertSame($expect, TestCase::objectPropertyGettersMap());
-    }
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

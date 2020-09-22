@@ -36,15 +36,6 @@ final class ContextFactoryStackInterfaceTest extends TestCase
         $this->assertImplementsInterface(ContextFactoryStackInterface::class, $dummy);
     }
 
-    public function test__objectPropertyGettersMap() : void
-    {
-        $expect = [
-            'top'       => 'top',
-            'size'      => 'size',
-        ];
-        $this->assertObjectPropertyGetters($expect, ContextFactoryStackInterface::class);
-    }
-
     public function test__clean() : void
     {
         $dummy = $this->createDummyInstance();

@@ -51,7 +51,7 @@ trait AbstractLdapResultItemIteratorTestTrait
                 'expect' => [
                     'getFirst()' => $first,
                     'getCurrent()' => $current,
-                    'key' => 123
+                    'key()' => 123
                 ]
             ],
 
@@ -61,7 +61,7 @@ trait AbstractLdapResultItemIteratorTestTrait
                 'expect' => [
                     'getFirst()' => $first,
                     'getCurrent()' => null,
-                    'key' => null
+                    'key()' => null
                 ]
             ],
 
@@ -71,7 +71,7 @@ trait AbstractLdapResultItemIteratorTestTrait
                 'expect' => [
                     'getFirst()' => null,
                     'getCurrent()' => null,
-                    'key' => null
+                    'key()' => null
                 ]
             ],
 
@@ -81,7 +81,7 @@ trait AbstractLdapResultItemIteratorTestTrait
                 'expect' => [
                     'getFirst()' => $first,
                     'getCurrent()' => null,
-                    'key' => null
+                    'key()' => null
                 ]
             ],
 
@@ -91,7 +91,7 @@ trait AbstractLdapResultItemIteratorTestTrait
                 'expect' => [
                     'getFirst()' => $first,
                     'getCurrent()' => $current,
-                    'key' => 0
+                    'key()' => 0
                 ]
             ],
         ];

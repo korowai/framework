@@ -34,16 +34,6 @@ final class PhpIteratorTraitTest extends TestCase
         $this->assertImplementsInterface(\Iterator::class, $dummy);
     }
 
-    public function test__objectPropertyGettersMap() : void
-    {
-        $expect = [
-            'current'   => 'current',
-            'key'       => 'key',
-            'valid'     => 'valid',
-        ];
-        $this->assertObjectPropertyGetters($expect, \Iterator::class);
-    }
-
     public function test__current() : void
     {
         $dummy = $this->createDummyInstance();

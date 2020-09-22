@@ -35,12 +35,6 @@ final class ExecutorInterfaceTest extends TestCase
         $this->assertImplementsInterface(ExecutorInterface::class, $dummy);
     }
 
-    public function test__objectPropertyGettersMap() : void
-    {
-        $expect = [];
-        $this->assertObjectPropertyGetters($expect, ExecutorInterface::class);
-    }
-
     public function test__invoke() : void
     {
         $dummy = $this->createDummyInstance();

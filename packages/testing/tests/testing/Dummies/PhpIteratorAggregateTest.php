@@ -34,14 +34,6 @@ final class PhpIteratorAggregateTest extends TestCase
         $this->assertImplementsInterface(\IteratorAggregate::class, $dummy);
     }
 
-    public function test__objectPropertyGettersMap() : void
-    {
-        $expect = [
-            'iterator'  => 'getIterator',
-        ];
-        $this->assertObjectPropertyGetters($expect, \IteratorAggregate::class);
-    }
-
     public function test__getIterator() : void
     {
         $dummy = $this->createDummyInstance();

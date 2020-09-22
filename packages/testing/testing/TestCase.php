@@ -40,7 +40,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
      */
     public static function objectPropertyGettersMap() : array
     {
-        return ObjectPropertyGettersMap::getObjectPropertyGettersMap();
+        return [];
     }
 }
 

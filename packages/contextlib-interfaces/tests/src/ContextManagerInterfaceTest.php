@@ -35,12 +35,6 @@ final class ContextManagerInterfaceTest extends TestCase
         $this->assertImplementsInterface(ContextManagerInterface::class, $dummy);
     }
 
-    public function test__objectPropertyGettersMap() : void
-    {
-        $expect = [];
-        $this->assertObjectPropertyGetters($expect, ContextManagerInterface::class);
-    }
-
     public function test__enterContext() : void
     {
         $dummy = $this->createDummyInstance();

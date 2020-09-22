@@ -6,14 +6,14 @@ use Symplify\MonorepoBuilder\ValueObject\Option;
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// USAGE:
+// USAGE EXAMPLES:
 //
 // 1. Split onto repositories under "build/monorepo-split/repositories/korowai/"
 //
 //      vendor/bin/monorepo-builder split
 //
-//    Bare repository are required to be present uner this base path before the
-//    split is performed. To initialize these repositories run
+//    Bare repositories are required to be present uner this base path before the
+//    split is attempted. To initialize these repositories run
 //
 //      util/initialize-split-repositories.sh
 //

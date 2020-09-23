@@ -15,10 +15,9 @@ namespace Korowai\Testing;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-interface PropertiesInterface extends \ArrayAccess
+interface PropertiesProcessorInterface
 {
-    public function getArrayCopy();
-    public function canGetComparableFrom(PropertiesInterface $other) : bool;
+    public function walk(PropertiesInterface $properties, &$result = null) : void;
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

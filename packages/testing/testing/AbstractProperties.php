@@ -17,18 +17,9 @@ namespace Korowai\Testing;
  */
 abstract class AbstractProperties extends \ArrayObject implements PropertiesInterface
 {
-    final public function getComparableArray() : array
+    public function canGetComparableFrom(PropertiesInterface $other) : bool
     {
-        $array = $this->getArrayCopy();
-        array_walk_recursive($array, [$this, 'makeValueComparable']);
-        return $array;
-    }
-
-    protected function makeValueComparable(&$value) : void
-    {
-        if ($value instanceof static) {
-            $value = $value->getComparableArray();
-        }
+        return $other instanceof static;
     }
 }
 

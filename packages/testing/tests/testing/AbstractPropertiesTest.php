@@ -50,50 +50,19 @@ final class AbstractPropertiesTest extends TestCase
         $this->assertExtendsClass(\ArrayObject::class, AbstractProperties::class);
     }
 
-    // TODO: start from here
-//    public function prov__getComparableArray() : array
-//    {
-//        $objects = [];
-//
-//        $objects['emp'] = $this->getMockBuilder(AbstractProperties::class)
-//                               ->setConstructorArgs([])
-//                               ->getMockForAbstractClass();
-//        $objects['foo'] = $this->getMockBuilder(AbstractProperties::class)
-//                               ->setConstructorArgs([['foo' => 'FOO']])
-//                               ->getMockForAbstractClass();
-//        $objects['bar'] = $this->getMockBuilder(AbstractProperties::class)
-//                               ->setConstructorArgs([['bar' => 'BAR']])
-//                               ->getMockForAbstractClass();
-//        $objects['bar']['baz'] = $objects['bar']; // FIXME: endless recursion
-//
-//
-//        return [
-//            // #0
-//            [
-//                'proprties' => $objects['emp'],
-//                'expect'    => [],
-//            ],
-//
-//            // #1
-//            [
-//                'proprties' => $objects['foo'],
-//                'expect'    => ['foo' => 'FOO'],
-//            ],
-//
-//            // #2
-//            [
-//                'proprties' => $objects['bar'],
-//                'expect'    => ['bar' => 'BAR', 'baz' => ['bar' => 'BAR']],
-//            ],
-//        ];
-//    }
-//
-//    /**
-//     * @dataProvider prov__getComparableArray
-//     */
-//    public function test__getComparableArray(AbstractProperties $properties, array $expect) : void
-//    {
-//        $this->assertSame($expect, $properties->getComparableArray());
-//    }
+    public static function prov__canGetComparableFrom() : array
+    {
+        return [
+        ];
+    }
+
+
+    /**
+     * @dataProvider prov__canGetComparableFrom
+     */
+    public function test__canGetComparableFrom() : void
+    {
+        $this->makeTestIncomplete("not implemented yet");
+    }
 }
 // vim: syntax=php sw=4 ts=4 et tw=119:

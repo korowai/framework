@@ -15,10 +15,8 @@ namespace Korowai\Testing;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-interface PropertiesInterface extends \ArrayAccess
+final class CircularDependencyException extends \Exception
 {
-    public function getArrayCopy();
-    public function canGetComparableFrom(PropertiesInterface $other) : bool;
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

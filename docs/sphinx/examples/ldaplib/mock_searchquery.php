@@ -29,7 +29,7 @@ function getPosixAccounts(SearchQueryInterface $query) : array
 /* [/functions] */
 
 /* [testcase] */
-class TestGetPosixAccounts extends TestCase
+final class TestGetPosixAccounts extends TestCase
 {
     public function test()
     {

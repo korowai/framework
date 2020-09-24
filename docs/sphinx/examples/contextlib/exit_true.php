@@ -6,7 +6,7 @@ use function Korowai\Lib\Context\with;
 /* [/use] */
 
 /* [MyInt] */
-class MyInt implements ContextManagerInterface
+final class MyInt implements ContextManagerInterface
 {
     public $value;
     public $handle;
@@ -32,7 +32,7 @@ class MyInt implements ContextManagerInterface
 /* [/MyInt] */
 
 /* [MyException] */
-class MyException extends Exception
+final class MyException extends Exception
 {
 }
 /* [/MyException] */

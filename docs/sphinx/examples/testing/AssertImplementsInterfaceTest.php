@@ -1,6 +1,9 @@
 <?php
 
-class AssertImplementsInterfaceTest extends \Korowai\Testing\TestCase
+/**
+ * @coversNothing
+ */
+final class AssertImplementsInterfaceTest extends \Korowai\Testing\TestCase
 {
     public function testAssertImplementsInterface()
     {

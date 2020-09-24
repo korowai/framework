@@ -1,6 +1,9 @@
 <?php
 
-class AssertHasPregCapturesTest extends \Korowai\Testing\TestCase
+/**
+ * @coversNothing
+ */
+final class AssertHasPregCapturesTest extends \Korowai\Testing\TestCase
 {
     private $regexp;
     private $subject;

@@ -1,6 +1,9 @@
 <?php
 
-class ImplementsInterfaceTest extends \Korowai\Testing\TestCase
+/**
+ * @coversNothing
+ */
+final class ImplementsInterfaceTest extends \Korowai\Testing\TestCase
 {
     public function testImplementsInterface()
     {

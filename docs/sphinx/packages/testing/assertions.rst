@@ -104,7 +104,7 @@ is the inverse of this.
 .. _testing.assertions.assertObjectHasPropertiesIdenticalTo:
 
 assertObjectHasPropertiesIdenticalTo()
----------------------------
+--------------------------------------
 
 Synopsis:
 

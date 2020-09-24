@@ -7,7 +7,7 @@ use Korowai\Lib\Context\ContextManagerInterface;
 /* [/use] */
 
 /* [MyCounter] */
-class MyCounter
+final class MyCounter
 {
     public $value;
 
@@ -19,7 +19,7 @@ class MyCounter
 /* [/MyCounter] */
 
 /* [MyCounterManager] */
-class MyCounterManager implements ContextManagerInterface
+final class MyCounterManager implements ContextManagerInterface
 {
     public $counter;
 
@@ -45,7 +45,7 @@ class MyCounterManager implements ContextManagerInterface
 /* [/MyCounterManager] */
 
 /* [MyContextFactory] */
-class MyContextFactory extends AbstractManagedContextFactory
+final class MyContextFactory extends AbstractManagedContextFactory
 {
     public function getContextManager($arg) : ?ContextManagerInterface
     {

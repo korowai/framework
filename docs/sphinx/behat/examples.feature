@@ -2,6 +2,7 @@ Feature: Examples
 
   @initLdapDbBeforeScenario
   @initLdapDbAfterScenario
+  @ldablib
   Scenario Outline: Examples for korowai/ldaplib
     Given I executed doc example <example_file>
     Then I should see stdout from <stdout_file>
@@ -19,6 +20,7 @@ Feature: Examples
       | "ldaplib/ldap_exception_2.php"    | "ldaplib/ldap_exception_2.stdout"    | "ldaplib/ldap_exception_2.stderr"    | 2         |
       | "ldaplib/mock_searchquery.php"    | "ldaplib/mock_searchquery.stdout"    | "ldaplib/mock_searchquery.stderr"    | 0         |
 
+  @basiclib
   Scenario Outline: Examples for korowai/basiclib
     Given I executed doc example <example_file>
     Then I should see stdout from <stdout_file>
@@ -30,6 +32,7 @@ Feature: Examples
       | "basiclib/trivial_singleton.php"         | "basiclib/trivial_singleton.stdout"         | "basiclib/trivial_singleton.stderr"         | 0         |
       | "basiclib/count_singleton.php"           | "basiclib/count_singleton.stdout"           | "basiclib/count_singleton.stderr"           | 0         |
 
+  @contextlib
   Scenario Outline: Examples for korowai/contextlib
     Given I executed doc example <example_file>
     Then I should see stdout from <stdout_file>
@@ -47,6 +50,7 @@ Feature: Examples
       | "contextlib/exception_handling.php"      | "contextlib/exception_handling.stdout"      | "contextlib/exception_handling.stderr"      | 1         |
       | "contextlib/exit_true.php"               | "contextlib/exit_true.stdout"               | "contextlib/exit_true.stderr"               | 0         |
 
+  @errorlib
   Scenario Outline: Examples for korowai/errorlib
     Given I executed doc example <example_file>
     Then I should see stdout from <stdout_file>
@@ -61,6 +65,7 @@ Feature: Examples
       | "errorlib/caller_error_handler.php"      | "errorlib/caller_error_handler.stdout"       | "errorlib/caller_error_handler.stderr"       | 0         |
       | "errorlib/caller_error_thrower.php"      | "errorlib/caller_error_thrower.stdout"       | "errorlib/caller_error_thrower.stderr"       | 1         |
 
+  @rfclib
   Scenario Outline: Examples for korowai/rfclib
     Given I executed doc example <example_file>
     Then I should see stdout from <stdout_file>
@@ -80,6 +85,7 @@ Feature: Examples
       | "rfclib/rfc2849/attrval_spec.php"        | "rfclib/rfc2849/attrval_spec.stdout"         | "rfclib/rfc2849/attrval_spec.stderr"         | 0         |
       | "rfclib/rfc2849/value_spec.php"          | "rfclib/rfc2849/value_spec.stdout"           | "rfclib/rfc2849/value_spec.stderr"           | 0         |
 
+  @testing
   Scenario Outline: Examples for korowai/testing
     Given I tested <example_file> with PHPUnit
     Then I should see PHPUnit stdout from <stdout_file>
@@ -87,14 +93,14 @@ Feature: Examples
     And I should see exit code <exit_code>
 
     Examples:
-      | example_file                                  | stdout_file                                     | stderr_file                                     | exit_code |
-      | "testing/AssertExtendsClassTest.php"          | "testing/AssertExtendsClassTest.stdout"         | "testing/AssertExtendsClassTest.stderr"         | 1         |
-      | "testing/AssertHasPregCapturesTest.php"       | "testing/AssertHasPregCapturesTest.stdout"      | "testing/AssertHasPregCapturesTest.stderr"      | 1         |
-      | "testing/AssertHasPropertiesIdenticalToTest.php"   | "testing/AssertHasPropertiesIdenticalToTest.stdout"  | "testing/AssertHasPropertiesIdenticalToTest.stderr"  | 1         |
-      | "testing/AssertImplementsInterfaceTest.php"   | "testing/AssertImplementsInterfaceTest.stdout"  | "testing/AssertImplementsInterfaceTest.stderr"  | 1         |
-      | "testing/AssertUsesTraitTest.php"             | "testing/AssertUsesTraitTest.stdout"            | "testing/AssertUsesTraitTest.stderr"            | 1         |
-      | "testing/extendsClassTest.php"                | "testing/extendsClassTest.stdout"               | "testing/extendsClassTest.stderr"               | 1         |
-      | "testing/hasPregCapturesTest.php"             | "testing/hasPregCapturesTest.stdout"            | "testing/hasPregCapturesTest.stderr"            | 1         |
+      | example_file                                        | stdout_file                                           | stderr_file                                           | exit_code |
+      | "testing/AssertExtendsClassTest.php"                | "testing/AssertExtendsClassTest.stdout"               | "testing/AssertExtendsClassTest.stderr"               | 1         |
+      | "testing/AssertHasPregCapturesTest.php"             | "testing/AssertHasPregCapturesTest.stdout"            | "testing/AssertHasPregCapturesTest.stderr"            | 1         |
+      | "testing/AssertHasPropertiesIdenticalToTest.php"    | "testing/AssertHasPropertiesIdenticalToTest.stdout"   | "testing/AssertHasPropertiesIdenticalToTest.stderr"   | 1         |
+      | "testing/AssertImplementsInterfaceTest.php"         | "testing/AssertImplementsInterfaceTest.stdout"        | "testing/AssertImplementsInterfaceTest.stderr"        | 1         |
+      | "testing/AssertUsesTraitTest.php"                   | "testing/AssertUsesTraitTest.stdout"                  | "testing/AssertUsesTraitTest.stderr"                  | 1         |
+      | "testing/extendsClassTest.php"                      | "testing/extendsClassTest.stdout"                     | "testing/extendsClassTest.stderr"                     | 1         |
+      | "testing/hasPregCapturesTest.php"                   | "testing/hasPregCapturesTest.stdout"                  | "testing/hasPregCapturesTest.stderr"                  | 1         |
       | "testing/objectHasPropertiesIdenticalToTest.php"    | "testing/objectHasPropertiesIdenticalToTest.stdout"   | "testing/objectHasPropertiesIdenticalToTest.stderr"   | 1         |
-      | "testing/implementsInterfaceTest.php"         | "testing/implementsInterfaceTest.stdout"        | "testing/implementsInterfaceTest.stderr"        | 1         |
-      | "testing/usesTraitTest.php"                   | "testing/usesTraitTest.stdout"                  | "testing/usesTraitTest.stderr"                  | 1         |
+      | "testing/implementsInterfaceTest.php"               | "testing/implementsInterfaceTest.stdout"              | "testing/implementsInterfaceTest.stderr"              | 1         |
+      | "testing/usesTraitTest.php"                         | "testing/usesTraitTest.stdout"                        | "testing/usesTraitTest.stderr"                        | 1         |

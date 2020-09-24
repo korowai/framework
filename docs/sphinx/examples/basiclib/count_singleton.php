@@ -3,7 +3,7 @@
 use Korowai\Lib\Basic\SingletonInterface;
 use Korowai\Lib\Basic\Singleton;
 
-class CountSingleton implements SingletonInterface
+final class CountSingleton implements SingletonInterface
 {
     use Singleton;
 

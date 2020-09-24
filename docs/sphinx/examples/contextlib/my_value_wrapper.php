@@ -6,7 +6,7 @@ use function Korowai\Lib\Context\with;
 /* [/use] */
 
 /* [MyValueWrapper] */
-class MyValueWrapper implements ContextManagerInterface
+final class MyValueWrapper implements ContextManagerInterface
 {
     protected $value;
 

@@ -6,7 +6,7 @@ use Korowai\Lib\Basic\Singleton;
 /* [/use] */
 
 /* [TrivialSingleton] */
-class TrivialSingleton implements SingletonInterface
+final class TrivialSingleton implements SingletonInterface
 {
     use Singleton;
 }

@@ -1,6 +1,9 @@
 <?php
 
-class ObjectHasPropertiesIdenticalToTest extends \Korowai\Testing\TestCase
+/**
+ * @coversNothing
+ */
+final class AssertObjectHasPropertiesIdenticalToTest extends \Korowai\Testing\TestCase
 {
     public $attribute;
 
@@ -17,29 +20,29 @@ class ObjectHasPropertiesIdenticalToTest extends \Korowai\Testing\TestCase
     public function testSuccess()
     {
         // assert that:
-        $this->assertThat($this, $this->objectHasPropertiesIdenticalTo([
+        $this->assertObjectHasPropertiesIdenticalTo([
             'attribute'     => 'A',   // - attribute is 'A' (ok)
             'getValue()'    => 'V'    // - value is 'V' (ok)
-        ]));
+        ], $this);
     }
 
     public function testFailure()
     {
         // assert that:
-        $this->assertThat($this, $this->objectHasPropertiesIdenticalTo([
+        $this->assertObjectHasPropertiesIdenticalTo([
             'attribute'     => 'A',   // - attribute is 'A' (ok)
             'getValue()'    => 'X'    // - value is 'X' (fail)
-        ]));
+        ], $this);
     }
 
     public function testFailureWithGetter()
     {
         // assert that:
-        $this->assertThat($this, $this->objectHasPropertiesIdenticalTo([
+        $this->assertObjectHasPropertiesIdenticalTo([
             'attribute'     => 'A',   // - attribute is 'A' (ok)
             'value'         => 'X'    // - value is 'X' (fail)
-        ], function (object $object) {
-            return ($object instanceof ObjectHasPropertiesIdenticalToTest) ? ['value' => 'getValue'] : [];
-        }));
+        ], $this, '', function (object $object) {
+            return ($object instanceof AssertObjectHasPropertiesIdenticalToTest) ? ['value' => 'getValue'] : [];
+        });
     }
 }

@@ -1,6 +1,9 @@
 <?php
 
-class ExtendsClassTest extends \Korowai\Testing\TestCase
+/**
+ * @coversNothing
+ */
+final class ExtendsClassTest extends \Korowai\Testing\TestCase
 {
     public function testExtendsClass()
     {

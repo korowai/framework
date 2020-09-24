@@ -4,7 +4,10 @@ trait ExampleTrait
 {
 }
 
-class UsesTraitTest extends \Korowai\Testing\TestCase
+/**
+ * @coversNothing
+ */
+final class UsesTraitTest extends \Korowai\Testing\TestCase
 {
     use ExampleTrait;
 

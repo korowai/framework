@@ -1,0 +1,41 @@
+PHPUnit 9.3.11 by Sebastian Bergmann and contributors.
+
+.FF                                                                 3 / 3 (100%)
+
+Time: 00:00.576, Memory: 178.94 MB
+
+There were 2 failures:
+
+1) AssertObjectHasPropertiesIdenticalToTest::testFailure
+Failed asserting that object AssertObjectHasPropertiesIdenticalToTest is an object with properties identical to specified.
+--- Expected
++++ Actual
+@@ @@
+-Properties <Expect> (
++Properties <Actual> (
+     'attribute' => 'A'
+-    'getValue()' => 'X'
++    'getValue()' => 'V'
+ )
+
+/code/packages/testing/testing/Constraint/AbstractPropertiesComparator.php:181
+/code/packages/testing/testing/Assertions/PropertiesAssertionsTrait.php:57
+/code/docs/sphinx/examples/testing/AssertObjectHasPropertiesIdenticalToTest.php:33
+
+2) AssertObjectHasPropertiesIdenticalToTest::testFailureWithGetter
+Failed asserting that object AssertObjectHasPropertiesIdenticalToTest is an object with properties identical to specified.
+--- Expected
++++ Actual
+@@ @@
+-Properties <Expect> (
++Properties <Actual> (
+     'attribute' => 'A'
+-    'value' => 'X'
+ )
+
+/code/packages/testing/testing/Constraint/AbstractPropertiesComparator.php:181
+/code/packages/testing/testing/Assertions/PropertiesAssertionsTrait.php:57
+/code/docs/sphinx/examples/testing/AssertObjectHasPropertiesIdenticalToTest.php:46
+
+FAILURES!
+Tests: 3, Assertions: 6, Failures: 2.

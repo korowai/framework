@@ -92,7 +92,7 @@ only with arrays obtained from ``preg_match()`` invoked with
 .. _testing.constraints.objectHasPropertiesIdenticalTo:
 
 objectHasPropertiesIdenticalTo
-------------------------
+------------------------------
 
 Synopsis:
 

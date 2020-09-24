@@ -16,6 +16,8 @@ use SebastianBergmann\Exporter\Exporter as SebastianBergmannExporter;
 use SebastianBergmann\RecursionContext\Context;
 
 /**
+ * An exporter that handles PropertiesInterface in a special way.
+ *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
 final class Exporter extends SebastianBergmannExporter
@@ -24,9 +26,9 @@ final class Exporter extends SebastianBergmannExporter
     {
         $header = 'Properties';
         if ($properties instanceof ExpectedPropertiesInterface) {
-            $header = 'Expected '.$header;
+            $header .= ' <Expect>';
         } elseif ($properties instanceof ActualPropertiesInterface) {
-            $header = 'Actual '.$header;
+            $header .= ' <Actual>';
         }
 
         return $header;

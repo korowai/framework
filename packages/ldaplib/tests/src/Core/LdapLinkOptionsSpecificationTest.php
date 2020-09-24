@@ -61,7 +61,7 @@ final class LdapLinkOptionsSpecificationTest extends TestCase
         $this->assertSame(['sizelimit' => ['types' => 'int']], $specs->getOptions());
     }
 
-    public static function prov__configureOptionsResolver__thenResolve(): array
+    public static function provConfigureOptionsResolverThenResolve(): array
     {
         $defaults = ['protocol_version' => 3];
 
@@ -428,7 +428,7 @@ final class LdapLinkOptionsSpecificationTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__configureOptionsResolver__thenResolve
+     * @dataProvider provConfigureOptionsResolverThenResolve
      */
     public function testConfigureOptionsResolverThenResolve(array $options, array $expect): void
     {

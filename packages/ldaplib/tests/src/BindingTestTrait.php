@@ -49,7 +49,7 @@ trait BindingTestTrait
     // bind()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__bind(): array
+    public static function provBind(): array
     {
         return [
             // #0
@@ -68,9 +68,9 @@ trait BindingTestTrait
     }
 
     /**
-     * @dataProvider prov__bind
+     * @dataProvider provBind
      */
-    public function test__bind(array $args): void
+    public function testBind(array $args): void
     {
         $link = $this->createMock(LdapLinkInterface::class);
 
@@ -86,7 +86,7 @@ trait BindingTestTrait
         $this->assertTrue($bind->isBound());
     }
 
-    public static function prov__bind__withTriggerError(): array
+    public static function provBindWithTriggerError(): array
     {
         // @codeCoverageIgnoreStart
         return static::feedLdapLinkErrorHandler();
@@ -94,9 +94,9 @@ trait BindingTestTrait
     }
 
     /**
-     * @dataProvider prov__bind__withTriggerError
+     * @dataProvider provBindWithTriggerError
      */
-    public function test__bind__withTriggerError(LdapTriggerErrorTestFixture $fixture): void
+    public function testBindWithTriggerError(LdapTriggerErrorTestFixture $fixture): void
     {
         $this->examineBindingMethodWithTriggerError('bind', [], $fixture);
         // @codeCoverageIgnoreStart
@@ -104,7 +104,7 @@ trait BindingTestTrait
         // @codeCoverageIgnoreEnd
     }
 
-    public static function prov__bind__whenLdapLinkTriggersUnalteringLdapError(): array
+    public static function provBindWhenLdapLinkTriggersUnalteringLdapError(): array
     {
         // @codeCoverageIgnoreStart
         return [
@@ -121,9 +121,9 @@ trait BindingTestTrait
     }
 
     /**
-     * @dataProvider prov__bind__whenLdapLinkTriggersUnalteringLdapError
+     * @dataProvider provBindWhenLdapLinkTriggersUnalteringLdapError
      */
-    public function test__bind__whenLdapLinkTriggersUnalteringLdapError(int $errno, string $message): void
+    public function testBindWhenLdapLinkTriggersUnalteringLdapError(int $errno, string $message): void
     {
         $link = $this->createMock(LdapLinkInterface::class);
         $bind = $this->createBindingInstance($link, true);
@@ -173,7 +173,7 @@ trait BindingTestTrait
     // unbind()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__unbind(): array
+    public static function provUnbind(): array
     {
         return [
             ['bound' => true,  'return' => true,  'expect' => ['isBound' => false]],
@@ -184,9 +184,9 @@ trait BindingTestTrait
     }
 
     /**
-     * @dataProvider prov__unbind
+     * @dataProvider provUnbind
      */
-    public function test__unbind(bool $bound, bool $return, array $expect): void
+    public function testUnbind(bool $bound, bool $return, array $expect): void
     {
         $link = $this->createMock(LdapLinkInterface::class);
 
@@ -201,7 +201,7 @@ trait BindingTestTrait
         $this->assertSame($expect['isBound'], $bind->isBound());
     }
 
-    public static function prov__unbind__withTriggerError(): array
+    public static function provUnbindWithTriggerError(): array
     {
         // @codeCoverageIgnoreStart
         return static::feedLdapLinkErrorHandler();
@@ -209,9 +209,9 @@ trait BindingTestTrait
     }
 
     /**
-     * @dataProvider prov__unbind__withTriggerError
+     * @dataProvider provUnbindWithTriggerError
      */
-    public function test__unbind__withTriggerError(LdapTriggerErrorTestFixture $fixture): void
+    public function testUnbindWithTriggerError(LdapTriggerErrorTestFixture $fixture): void
     {
         $this->examineBindingMethodWithTriggerError('unbind', [], $fixture);
         // @codeCoverageIgnoreStart

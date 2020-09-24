@@ -58,7 +58,7 @@ final class LdapLinkTest extends TestCase
     // __construct()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__construct(): array
+    public static function provConstruct(): array
     {
         return [
             // #0
@@ -80,7 +80,7 @@ final class LdapLinkTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__construct
+     * @dataProvider provConstruct
      *
      * @param mixed $expect
      */
@@ -97,13 +97,13 @@ final class LdapLinkTest extends TestCase
     // supportsResourceType()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__supportsResourceType(): array
+    public static function provSupportsResourceType(): array
     {
         return static::feedSupportsResourceType('ldap link');
     }
 
     /**
-     * @dataProvider prov__supportsResourceType()
+     * @dataProvider provSupportsResourceType()
      *
      * @param mixed $expect
      */
@@ -117,14 +117,14 @@ final class LdapLinkTest extends TestCase
     // isValid()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__isValid(): array
+    public static function provIsValid(): array
     {
         return static::feedIsValid('ldap link');
     }
 
     /**
      * @runInSeparateProcess
-     * @dataProvider prov__isValid
+     * @dataProvider provIsValid
      *
      * @param mixed $arg
      * @param mixed $return
@@ -140,14 +140,14 @@ final class LdapLinkTest extends TestCase
     // add()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__add__withMockedBackend(): array
+    public static function provAddWithMockedBackend(): array
     {
         return static::feedModifyWithMockedBackend();
     }
 
     /**
      * @runInSeparateProcess
-     * @dataProvider prov__add__withMockedBackend
+     * @dataProvider provAddWithMockedBackend
      *
      * @param mixed $return
      * @param mixed $expect
@@ -157,13 +157,13 @@ final class LdapLinkTest extends TestCase
         static::examineLdapMethod('add', $args, $return, $expect);
     }
 
-    public static function prov__add__withInvalidArgType(): array
+    public static function provAddWithInvalidArgType(): array
     {
         return static::feedFuncWithInvalidArgType('add', ['string', 'array', 'array']);
     }
 
     /**
-     * @dataProvider prov__add__withInvalidArgType
+     * @dataProvider provAddWithInvalidArgType
      *
      * @param mixed $resource
      */
@@ -181,7 +181,7 @@ final class LdapLinkTest extends TestCase
     // bind()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__bind__withMockedBackend(): array
+    public static function provBindWithMockedBackend(): array
     {
         return [
             // #0
@@ -225,7 +225,7 @@ final class LdapLinkTest extends TestCase
 
     /**
      * @runInSeparateProcess
-     * @dataProvider prov__bind__withMockedBackend
+     * @dataProvider provBindWithMockedBackend
      *
      * @param mixed $return
      * @param mixed $expect
@@ -235,13 +235,13 @@ final class LdapLinkTest extends TestCase
         $this->examineLdapMethod('bind', $args, $return, $expect);
     }
 
-    public static function prov__bind__withInvalidArgType(): array
+    public static function provBindWithInvalidArgType(): array
     {
         return static::feedFuncWithInvalidArgType('bind', ['string', 'string']);
     }
 
     /**
-     * @dataProvider prov__bind__withInvalidArgType
+     * @dataProvider provBindWithInvalidArgType
      *
      * @param mixed $resource
      */
@@ -259,7 +259,7 @@ final class LdapLinkTest extends TestCase
     // close()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__close__withMockedBackend(): array
+    public static function provCloseWithMockedBackend(): array
     {
         return [
             // #0
@@ -279,7 +279,7 @@ final class LdapLinkTest extends TestCase
 
     /**
      * @runInSeparateProcess
-     * @dataProvider prov__close__withMockedBackend
+     * @dataProvider provCloseWithMockedBackend
      *
      * @param mixed $return
      * @param mixed $expect
@@ -289,13 +289,13 @@ final class LdapLinkTest extends TestCase
         $this->examineLdapMethod('close', $args, $return, $expect);
     }
 
-    public static function prov__close__withInvalidArgType(): array
+    public static function provCloseWithInvalidArgType(): array
     {
         return static::feedFuncWithInvalidArgType('close', []);
     }
 
     /**
-     * @dataProvider prov__close__withInvalidArgType
+     * @dataProvider provCloseWithInvalidArgType
      *
      * @param mixed $resource
      */
@@ -313,7 +313,7 @@ final class LdapLinkTest extends TestCase
     // compare()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__compare__withMockedBackend(): array
+    public static function provCompareWithMockedBackend(): array
     {
         return [
             // #0
@@ -351,7 +351,7 @@ final class LdapLinkTest extends TestCase
 
     /**
      * @runInSeparateProcess
-     * @dataProvider prov__compare__withMockedBackend
+     * @dataProvider provCompareWithMockedBackend
      *
      * @param mixed $return
      * @param mixed $expect
@@ -361,13 +361,13 @@ final class LdapLinkTest extends TestCase
         $this->examineLdapMethod('compare', $args, $return, $expect);
     }
 
-    public static function prov__compare__withInvalidArgType(): array
+    public static function provCompareWithInvalidArgType(): array
     {
         return static::feedFuncWithInvalidArgType('compare', ['string', 'string', 'string', 'array']);
     }
 
     /**
-     * @dataProvider prov__compare__withInvalidArgType
+     * @dataProvider provCompareWithInvalidArgType
      *
      * @param mixed $resource
      */
@@ -385,7 +385,7 @@ final class LdapLinkTest extends TestCase
     // connect()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__connect__withMockedBackend(): array
+    public static function provConnectWithMockedBackend(): array
     {
         return [
             // #0
@@ -441,7 +441,7 @@ final class LdapLinkTest extends TestCase
 
     /**
      * @runInSeparateProcess
-     * @dataProvider prov__connect__withMockedBackend
+     * @dataProvider provConnectWithMockedBackend
      *
      * @param mixed $return
      * @param mixed $expect
@@ -472,14 +472,14 @@ final class LdapLinkTest extends TestCase
     // delete()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__delete__withMockedBackend(): array
+    public static function provDeleteWithMockedBackend(): array
     {
         return static::feedDeleteWithMockedBackend();
     }
 
     /**
      * @runInSeparateProcess
-     * @dataProvider prov__delete__withMockedBackend
+     * @dataProvider provDeleteWithMockedBackend
      *
      * @param mixed $return
      * @param mixed $expect
@@ -489,13 +489,13 @@ final class LdapLinkTest extends TestCase
         static::examineLdapMethod('delete', $args, $return, $expect);
     }
 
-    public static function prov__delete__withInvalidArgType(): array
+    public static function provDeleteWithInvalidArgType(): array
     {
         return static::feedFuncWithInvalidArgType('delete', ['string', 'array']);
     }
 
     /**
-     * @dataProvider prov__delete__withInvalidArgType
+     * @dataProvider provDeleteWithInvalidArgType
      *
      * @param mixed $resource
      */
@@ -513,7 +513,7 @@ final class LdapLinkTest extends TestCase
     // dn2ufn()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__dn2ufn__withMockedBackend(): array
+    public static function provDn2ufnWithMockedBackend(): array
     {
         return [
             // #0
@@ -539,7 +539,7 @@ final class LdapLinkTest extends TestCase
 
     /**
      * @runInSeparateProcess
-     * @dataProvider prov__dn2ufn__withMockedBackend
+     * @dataProvider provDn2ufnWithMockedBackend
      *
      * @param mixed $return
      * @param mixed $expect
@@ -557,13 +557,13 @@ final class LdapLinkTest extends TestCase
         $this->assertSame($expect, LdapLink::dn2ufn(...$args));
     }
 
-    public static function prov__dn2ufn__withInvalidArgType(): array
+    public static function provDn2ufnWithInvalidArgType(): array
     {
         return static::feedFuncWithInvalidArgType('dn2ufn', ['string'], false);
     }
 
     /**
-     * @dataProvider prov__dn2ufn__withInvalidArgType
+     * @dataProvider provDn2ufnWithInvalidArgType
      *
      * @param mixed $resource
      */
@@ -576,7 +576,7 @@ final class LdapLinkTest extends TestCase
     // err2str()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__err2str__withMockedBackend(): array
+    public static function provErr2strWithMockedBackend(): array
     {
         return [
             // #0
@@ -602,7 +602,7 @@ final class LdapLinkTest extends TestCase
 
     /**
      * @runInSeparateProcess
-     * @dataProvider prov__err2str__withMockedBackend
+     * @dataProvider provErr2strWithMockedBackend
      *
      * @param mixed $return
      * @param mixed $expect
@@ -620,13 +620,13 @@ final class LdapLinkTest extends TestCase
         $this->assertSame($expect, LdapLink::err2str(...$args));
     }
 
-    public static function prov__err2str__withInvalidArgType(): array
+    public static function provErr2strWithInvalidArgType(): array
     {
         return static::feedFuncWithInvalidArgType('err2str', ['int'], false);
     }
 
     /**
-     * @dataProvider prov__err2str__withInvalidArgType
+     * @dataProvider provErr2strWithInvalidArgType
      *
      * @param mixed $resource
      */
@@ -643,7 +643,7 @@ final class LdapLinkTest extends TestCase
     // errno()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__errno__withMockedBackend(): array
+    public static function provErrnoWithMockedBackend(): array
     {
         return [
             // #0
@@ -669,7 +669,7 @@ final class LdapLinkTest extends TestCase
 
     /**
      * @runInSeparateProcess
-     * @dataProvider prov__errno__withMockedBackend
+     * @dataProvider provErrnoWithMockedBackend
      *
      * @param mixed $return
      * @param mixed $expect
@@ -679,13 +679,13 @@ final class LdapLinkTest extends TestCase
         $this->examineLdapMethod('errno', $args, $return, $expect);
     }
 
-    public static function prov__errno__withInvalidArgType(): array
+    public static function provErrnoWithInvalidArgType(): array
     {
         return static::feedFuncWithInvalidArgType('errno', []);
     }
 
     /**
-     * @dataProvider prov__errno__withInvalidArgType
+     * @dataProvider provErrnoWithInvalidArgType
      *
      * @param mixed $resource
      */
@@ -703,7 +703,7 @@ final class LdapLinkTest extends TestCase
     // error()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__error__withMockedBackend(): array
+    public static function provErrorWithMockedBackend(): array
     {
         return [
             // #0
@@ -729,7 +729,7 @@ final class LdapLinkTest extends TestCase
 
     /**
      * @runInSeparateProcess
-     * @dataProvider prov__error__withMockedBackend
+     * @dataProvider provErrorWithMockedBackend
      *
      * @param mixed $return
      * @param mixed $expect
@@ -739,13 +739,13 @@ final class LdapLinkTest extends TestCase
         $this->examineLdapMethod('error', $args, $return, $expect);
     }
 
-    public static function prov__error__withInvalidArgType(): array
+    public static function provErrorWithInvalidArgType(): array
     {
         return static::feedFuncWithInvalidArgType('error', []);
     }
 
     /**
-     * @dataProvider prov__error__withInvalidArgType
+     * @dataProvider provErrorWithInvalidArgType
      *
      * @param mixed $resource
      */
@@ -763,7 +763,7 @@ final class LdapLinkTest extends TestCase
     // escape()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__escape__withMockedBackend(): array
+    public static function provEscapeWithMockedBackend(): array
     {
         return [
             // #0
@@ -801,7 +801,7 @@ final class LdapLinkTest extends TestCase
 
     /**
      * @runInSeparateProcess
-     * @dataProvider prov__escape__withMockedBackend
+     * @dataProvider provEscapeWithMockedBackend
      *
      * @param mixed $return
      * @param mixed $expect
@@ -818,13 +818,13 @@ final class LdapLinkTest extends TestCase
         $this->assertSame($expect, LdapLink::escape(...$args));
     }
 
-    public static function prov__escape__withInvalidArgType(): array
+    public static function provEscapeWithInvalidArgType(): array
     {
         return static::feedFuncWithInvalidArgType('escape', ['string', 'string', 'int'], false);
     }
 
     /**
-     * @dataProvider prov__escape__withInvalidArgType
+     * @dataProvider provEscapeWithInvalidArgType
      *
      * @param mixed $resource
      */
@@ -837,7 +837,7 @@ final class LdapLinkTest extends TestCase
     // explode_dn()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__explode_dn__withMockedBackend(): array
+    public static function provExplodeDnWithMockedBackend(): array
     {
         return [
             // #0
@@ -863,7 +863,7 @@ final class LdapLinkTest extends TestCase
 
     /**
      * @runInSeparateProcess
-     * @dataProvider prov__explode_dn__withMockedBackend
+     * @dataProvider provExplodeDnWithMockedBackend
      *
      * @param mixed $return
      * @param mixed $expect
@@ -879,13 +879,13 @@ final class LdapLinkTest extends TestCase
         $this->assertSame($expect, LdapLink::explode_dn(...$args));
     }
 
-    public static function prov__explode_dn__withInvalidArgType(): array
+    public static function provExplodeDnWithInvalidArgType(): array
     {
         return static::feedFuncWithInvalidArgType('explode_dn', ['string', 'int'], false);
     }
 
     /**
-     * @dataProvider prov__explode_dn__withInvalidArgType
+     * @dataProvider provExplodeDnWithInvalidArgType
      *
      * @param mixed $resource
      */
@@ -898,7 +898,7 @@ final class LdapLinkTest extends TestCase
     // get_option()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__get_option__withMockedBackend(): array
+    public static function provGetOptionWithMockedBackend(): array
     {
         return [
             // #0
@@ -934,7 +934,7 @@ final class LdapLinkTest extends TestCase
 
     /**
      * @runInSeparateProcess
-     * @dataProvider prov__get_option__withMockedBackend
+     * @dataProvider provGetOptionWithMockedBackend
      *
      * @param mixed $return
      * @param mixed $expect
@@ -956,13 +956,13 @@ final class LdapLinkTest extends TestCase
         }
     }
 
-    public static function prov__get_option__withInvalidArgType(): array
+    public static function provGetOptionWithInvalidArgType(): array
     {
         return static::feedFuncWithInvalidArgType('get_option', ['int'], null, [&$var]);
     }
 
     /**
-     * @dataProvider prov__get_option__withInvalidArgType
+     * @dataProvider provGetOptionWithInvalidArgType
      *
      * @param mixed $resource
      */
@@ -980,14 +980,14 @@ final class LdapLinkTest extends TestCase
     // list()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__list__withMockedBackend(): array
+    public static function provListWithMockedBackend(): array
     {
         return static::feedSearchWithMockedBackend();
     }
 
     /**
      * @runInSeparateProcess
-     * @dataProvider prov__list__withMockedBackend
+     * @dataProvider provListWithMockedBackend
      *
      * @param mixed $return
      * @param mixed $expect
@@ -997,7 +997,7 @@ final class LdapLinkTest extends TestCase
         $this->examineLdapMethod('list', $args, $return, $expect);
     }
 
-    public static function prov__list__withInvalidArgType(): array
+    public static function provListWithInvalidArgType(): array
     {
         $types = ['string', 'string', 'array', 'int', 'int', 'int', 'int', 'array'];
 
@@ -1005,7 +1005,7 @@ final class LdapLinkTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__list__withInvalidArgType
+     * @dataProvider provListWithInvalidArgType
      *
      * @param mixed $resource
      */
@@ -1019,7 +1019,7 @@ final class LdapLinkTest extends TestCase
         $this->examineMethodWithInvalidLdapLink('list', ['', '']);
     }
 
-    public static function prov__mod_add__withMockedBackend(): array
+    public static function provModAddWithMockedBackend(): array
     {
         return static::feedModifyWithMockedBackend();
     }
@@ -1030,7 +1030,7 @@ final class LdapLinkTest extends TestCase
 
     /**
      * @runInSeparateProcess
-     * @dataProvider prov__mod_add__withMockedBackend
+     * @dataProvider provModAddWithMockedBackend
      *
      * @param mixed $return
      * @param mixed $expect
@@ -1040,13 +1040,13 @@ final class LdapLinkTest extends TestCase
         static::examineLdapMethod('mod_add', $args, $return, $expect);
     }
 
-    public static function prov__mod_add__withInvalidArgType(): array
+    public static function provModAddWithInvalidArgType(): array
     {
         return static::feedFuncWithInvalidArgType('mod_add', ['string', 'array', 'array']);
     }
 
     /**
-     * @dataProvider prov__mod_add__withInvalidArgType
+     * @dataProvider provModAddWithInvalidArgType
      *
      * @param mixed $resource
      */
@@ -1064,14 +1064,14 @@ final class LdapLinkTest extends TestCase
     // mod_del()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__mod_del__withMockedBackend(): array
+    public static function provModDelWithMockedBackend(): array
     {
         return static::feedModifyWithMockedBackend();
     }
 
     /**
      * @runInSeparateProcess
-     * @dataProvider prov__mod_del__withMockedBackend
+     * @dataProvider provModDelWithMockedBackend
      *
      * @param mixed $return
      * @param mixed $expect
@@ -1081,13 +1081,13 @@ final class LdapLinkTest extends TestCase
         static::examineLdapMethod('mod_del', $args, $return, $expect);
     }
 
-    public static function prov__mod_del__withInvalidArgType(): array
+    public static function provModDelWithInvalidArgType(): array
     {
         return static::feedFuncWithInvalidArgType('mod_del', ['string', 'array', 'array']);
     }
 
     /**
-     * @dataProvider prov__mod_del__withInvalidArgType
+     * @dataProvider provModDelWithInvalidArgType
      *
      * @param mixed $resource
      */
@@ -1105,14 +1105,14 @@ final class LdapLinkTest extends TestCase
     // mod_replace()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__mod_replace__withMockedBackend(): array
+    public static function provModReplaceWithMockedBackend(): array
     {
         return static::feedModifyWithMockedBackend();
     }
 
     /**
      * @runInSeparateProcess
-     * @dataProvider prov__mod_replace__withMockedBackend
+     * @dataProvider provModReplaceWithMockedBackend
      *
      * @param mixed $return
      * @param mixed $expect
@@ -1122,13 +1122,13 @@ final class LdapLinkTest extends TestCase
         static::examineLdapMethod('mod_replace', $args, $return, $expect);
     }
 
-    public static function prov__mod_replace__withInvalidArgType(): array
+    public static function provModReplaceWithInvalidArgType(): array
     {
         return static::feedFuncWithInvalidArgType('mod_replace', ['string', 'array', 'array']);
     }
 
     /**
-     * @dataProvider prov__mod_replace__withInvalidArgType
+     * @dataProvider provModReplaceWithInvalidArgType
      *
      * @param mixed $resource
      */
@@ -1146,14 +1146,14 @@ final class LdapLinkTest extends TestCase
     // modify_batch()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__modify_batch__withMockedBackend(): array
+    public static function provModifyBatchWithMockedBackend(): array
     {
         return static::feedModifyWithMockedBackend();
     }
 
     /**
      * @runInSeparateProcess
-     * @dataProvider prov__modify_batch__withMockedBackend
+     * @dataProvider provModifyBatchWithMockedBackend
      *
      * @param mixed $return
      * @param mixed $expect
@@ -1163,13 +1163,13 @@ final class LdapLinkTest extends TestCase
         static::examineLdapMethod('modify_batch', $args, $return, $expect);
     }
 
-    public static function prov__modify_batch__withInvalidArgType(): array
+    public static function provModifyBatchWithInvalidArgType(): array
     {
         return static::feedFuncWithInvalidArgType('modify_batch', ['string', 'array', 'array']);
     }
 
     /**
-     * @dataProvider prov__modify_batch__withInvalidArgType
+     * @dataProvider provModifyBatchWithInvalidArgType
      *
      * @param mixed $resource
      */
@@ -1187,14 +1187,14 @@ final class LdapLinkTest extends TestCase
     // modify()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__modify__withMockedBackend(): array
+    public static function provModifyWithMockedBackend(): array
     {
         return static::feedModifyWithMockedBackend();
     }
 
     /**
      * @runInSeparateProcess
-     * @dataProvider prov__modify__withMockedBackend
+     * @dataProvider provModifyWithMockedBackend
      *
      * @param mixed $return
      * @param mixed $expect
@@ -1204,13 +1204,13 @@ final class LdapLinkTest extends TestCase
         static::examineLdapMethod('modify', $args, $return, $expect);
     }
 
-    public static function prov__modify__withInvalidArgType(): array
+    public static function provModifyWithInvalidArgType(): array
     {
         return static::feedFuncWithInvalidArgType('modify', ['string', 'array', 'array']);
     }
 
     /**
-     * @dataProvider prov__modify__withInvalidArgType
+     * @dataProvider provModifyWithInvalidArgType
      *
      * @param mixed $resource
      */
@@ -1228,14 +1228,14 @@ final class LdapLinkTest extends TestCase
     // read()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__read__withMockedBackend(): array
+    public static function provReadWithMockedBackend(): array
     {
         return static::feedSearchWithMockedBackend();
     }
 
     /**
      * @runInSeparateProcess
-     * @dataProvider prov__read__withMockedBackend
+     * @dataProvider provReadWithMockedBackend
      *
      * @param mixed $return
      * @param mixed $expect
@@ -1245,7 +1245,7 @@ final class LdapLinkTest extends TestCase
         $this->examineLdapMethod('read', $args, $return, $expect);
     }
 
-    public static function prov__read__withInvalidArgType(): array
+    public static function provReadWithInvalidArgType(): array
     {
         $types = ['string', 'string', 'array', 'int', 'int', 'int', 'int', 'array'];
 
@@ -1253,7 +1253,7 @@ final class LdapLinkTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__read__withInvalidArgType
+     * @dataProvider provReadWithInvalidArgType
      *
      * @param mixed $resource
      */
@@ -1271,7 +1271,7 @@ final class LdapLinkTest extends TestCase
     // rename()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__rename__withMockedBackend(): array
+    public static function provRenameWithMockedBackend(): array
     {
         return [
             // #0
@@ -1306,7 +1306,7 @@ final class LdapLinkTest extends TestCase
 
     /**
      * @runInSeparateProcess
-     * @dataProvider prov__rename__withMockedBackend
+     * @dataProvider provRenameWithMockedBackend
      *
      * @param mixed $return
      * @param mixed $expect
@@ -1316,7 +1316,7 @@ final class LdapLinkTest extends TestCase
         $this->examineLdapMethod('rename', $args, $return, $expect);
     }
 
-    public static function prov__rename__withInvalidArgType(): array
+    public static function provRenameWithInvalidArgType(): array
     {
         $types = ['string', 'string', 'string', 'bool', 'array'];
 
@@ -1324,7 +1324,7 @@ final class LdapLinkTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__rename__withInvalidArgType
+     * @dataProvider provRenameWithInvalidArgType
      *
      * @param mixed $resource
      */
@@ -1342,7 +1342,7 @@ final class LdapLinkTest extends TestCase
     // sasl_bind()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__sasl_bind__withMockedBackend(): array
+    public static function provSaslBindWithMockedBackend(): array
     {
         return [
             // #0
@@ -1412,7 +1412,7 @@ final class LdapLinkTest extends TestCase
 
     /**
      * @runInSeparateProcess
-     * @dataProvider prov__sasl_bind__withMockedBackend
+     * @dataProvider provSaslBindWithMockedBackend
      *
      * @param mixed $return
      * @param mixed $expect
@@ -1422,7 +1422,7 @@ final class LdapLinkTest extends TestCase
         $this->examineLdapMethod('sasl_bind', $args, $return, $expect);
     }
 
-    public static function prov__sasl_bind__withInvalidArgType(): array
+    public static function provSaslBindWithInvalidArgType(): array
     {
         $types = ['string', 'string', 'string', 'string', 'string', 'string', 'string'];
 
@@ -1430,7 +1430,7 @@ final class LdapLinkTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__sasl_bind__withInvalidArgType
+     * @dataProvider provSaslBindWithInvalidArgType
      *
      * @param mixed $resource
      */
@@ -1448,14 +1448,14 @@ final class LdapLinkTest extends TestCase
     // search()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__search__withMockedBackend(): array
+    public static function provSearchWithMockedBackend(): array
     {
         return static::feedSearchWithMockedBackend();
     }
 
     /**
      * @runInSeparateProcess
-     * @dataProvider prov__search__withMockedBackend
+     * @dataProvider provSearchWithMockedBackend
      *
      * @param mixed $return
      * @param mixed $expect
@@ -1465,7 +1465,7 @@ final class LdapLinkTest extends TestCase
         $this->examineLdapMethod('search', $args, $return, $expect);
     }
 
-    public static function prov__search__withInvalidArgType(): array
+    public static function provSearchWithInvalidArgType(): array
     {
         $types = ['string', 'string', 'array', 'int', 'int', 'int', 'int', 'array'];
 
@@ -1473,7 +1473,7 @@ final class LdapLinkTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__search__withInvalidArgType
+     * @dataProvider provSearchWithInvalidArgType
      *
      * @param mixed $resource
      */
@@ -1491,7 +1491,7 @@ final class LdapLinkTest extends TestCase
     // set_option()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__set_option__withMockedBackend(): array
+    public static function provSetOptionWithMockedBackend(): array
     {
         return [
             // #0
@@ -1526,7 +1526,7 @@ final class LdapLinkTest extends TestCase
 
     /**
      * @runInSeparateProcess
-     * @dataProvider prov__set_option__withMockedBackend
+     * @dataProvider provSetOptionWithMockedBackend
      *
      * @param mixed $return
      * @param mixed $expect
@@ -1536,13 +1536,13 @@ final class LdapLinkTest extends TestCase
         $this->examineLdapMethod('set_option', $args, $return, $expect);
     }
 
-    public static function prov__set_option__withInvalidArgType(): array
+    public static function provSetOptionWithInvalidArgType(): array
     {
         return static::feedFuncWithInvalidArgType('set_option', ['int'], false, ['x']);
     }
 
     /**
-     * @dataProvider prov__set_option__withInvalidArgType
+     * @dataProvider provSetOptionWithInvalidArgType
      *
      * @param mixed $resource
      */
@@ -1560,7 +1560,7 @@ final class LdapLinkTest extends TestCase
     // set_rebind_proc()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__set_rebind_proc__withMockedBackend(): array
+    public static function provSetRebindProcWithMockedBackend(): array
     {
         return [
             // #0
@@ -1588,7 +1588,7 @@ final class LdapLinkTest extends TestCase
 
     /**
      * @runInSeparateProcess
-     * @dataProvider prov__set_rebind_proc__withMockedBackend
+     * @dataProvider provSetRebindProcWithMockedBackend
      *
      * @param mixed $return
      * @param mixed $expect
@@ -1598,14 +1598,14 @@ final class LdapLinkTest extends TestCase
         $this->examineLdapMethod('set_rebind_proc', $args, $return, $expect);
     }
 
-    public static function prov__set_rebind_proc__withInvalidArgType(): array
+    public static function provSetRebindProcWithInvalidArgType(): array
     {
         return static::feedFuncWithInvalidArgType('set_rebind_proc', [], null, [function () {
         }]);
     }
 
     /**
-     * @dataProvider prov__set_rebind_proc__withInvalidArgType
+     * @dataProvider provSetRebindProcWithInvalidArgType
      *
      * @param mixed $resource
      */
@@ -1623,7 +1623,7 @@ final class LdapLinkTest extends TestCase
     // start_tls()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__start_tls__withMockedBackend(): array
+    public static function provStartTlsWithMockedBackend(): array
     {
         return [
             // #1
@@ -1651,7 +1651,7 @@ final class LdapLinkTest extends TestCase
 
     /**
      * @runInSeparateProcess
-     * @dataProvider prov__start_tls__withMockedBackend
+     * @dataProvider provStartTlsWithMockedBackend
      *
      * @param mixed $return
      * @param mixed $expect
@@ -1661,7 +1661,7 @@ final class LdapLinkTest extends TestCase
         $this->examineLdapMethod('start_tls', $args, $return, $expect);
     }
 
-    public static function prov__unbind__withMockedBackend(): array
+    public static function provUnbindWithMockedBackend(): array
     {
         return [
             // #1
@@ -1680,13 +1680,13 @@ final class LdapLinkTest extends TestCase
         ];
     }
 
-    public static function prov__start_tls__withInvalidArgType(): array
+    public static function provStartTlsWithInvalidArgType(): array
     {
         return static::feedFuncWithInvalidArgType('start_tls', []);
     }
 
     /**
-     * @dataProvider prov__start_tls__withInvalidArgType
+     * @dataProvider provStartTlsWithInvalidArgType
      *
      * @param mixed $resource
      */
@@ -1706,7 +1706,7 @@ final class LdapLinkTest extends TestCase
 
     /**
      * @runInSeparateProcess
-     * @dataProvider prov__unbind__withMockedBackend
+     * @dataProvider provUnbindWithMockedBackend
      *
      * @param mixed $return
      * @param mixed $expect
@@ -1716,13 +1716,13 @@ final class LdapLinkTest extends TestCase
         $this->examineLdapMethod('unbind', $args, $return, $expect);
     }
 
-    public static function prov__unbind__withInvalidArgType(): array
+    public static function provUnbindWithInvalidArgType(): array
     {
         return static::feedFuncWithInvalidArgType('unbind', []);
     }
 
     /**
-     * @dataProvider prov__unbind__withInvalidArgType
+     * @dataProvider provUnbindWithInvalidArgType
      *
      * @param mixed $resource
      */

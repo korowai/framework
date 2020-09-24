@@ -39,7 +39,7 @@ trait EntryManagerTestTrait
     // add()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public function test__add()
+    public function testAdd()
     {
         $entry = $this->createMock(EntryInterface::class);
         $entry->expects($this->once())
@@ -62,15 +62,15 @@ trait EntryManagerTestTrait
         $this->assertNull($manager->add($entry));
     }
 
-    public static function prov__add__withLdapTriggerError(): array
+    public static function provAddWithLdapTriggerError(): array
     {
         return self::feedLdapLinkErrorHandler();
     }
 
     /**
-     * @dataProvider prov__add__withLdapTriggerError
+     * @dataProvider provAddWithLdapTriggerError
      */
-    public function test__add__withLdapTriggerError(LdapTriggerErrorTestFixture $fixture): void
+    public function testAddWithLdapTriggerError(LdapTriggerErrorTestFixture $fixture): void
     {
         $entry = $this->createMock(EntryInterface::class);
         $entry->expects($this->once())
@@ -97,7 +97,7 @@ trait EntryManagerTestTrait
     // update()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public function test__update(): void
+    public function testUpdate(): void
     {
         $entry = $this->createMock(EntryInterface::class);
         $entry->expects($this->once())
@@ -120,15 +120,15 @@ trait EntryManagerTestTrait
         $this->assertNull($manager->update($entry));
     }
 
-    public static function prov__update__withLdapTriggerError(): array
+    public static function provUpdateWithLdapTriggerError(): array
     {
         return self::feedLdapLinkErrorHandler();
     }
 
     /**
-     * @dataProvider prov__update__withLdapTriggerError
+     * @dataProvider provUpdateWithLdapTriggerError
      */
-    public function test__update__withLdapTriggerError(LdapTriggerErrorTestFixture $fixture): void
+    public function testUpdateWithLdapTriggerError(LdapTriggerErrorTestFixture $fixture): void
     {
         $entry = $this->createMock(EntryInterface::class);
         $entry->expects($this->once())
@@ -155,7 +155,7 @@ trait EntryManagerTestTrait
     // rename()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public function test__rename__Default()
+    public function testRenameDefault()
     {
         $entry = $this->createMock(EntryInterface::class);
         $entry->expects($this->once())
@@ -177,7 +177,7 @@ trait EntryManagerTestTrait
         $this->assertNull($manager->rename($entry, 'cn=korowai'));
     }
 
-    public function test__rename__DeleteOldRdn()
+    public function testRenameDeleteOldRdn()
     {
         $entry = $this->createMock(EntryInterface::class);
         $entry->expects($this->once())
@@ -199,7 +199,7 @@ trait EntryManagerTestTrait
         $this->assertNull($manager->rename($entry, 'cn=korowai', true));
     }
 
-    public function test__rename__LeaveOldRdn()
+    public function testRenameLeaveOldRdn()
     {
         $entry = $this->createMock(EntryInterface::class);
         $entry->expects($this->once())
@@ -221,15 +221,15 @@ trait EntryManagerTestTrait
         $this->assertNull($manager->rename($entry, 'cn=korowai', false));
     }
 
-    public static function prov__rename__withLdapTriggerError(): array
+    public static function provRenameWithLdapTriggerError(): array
     {
         return self::feedLdapLinkErrorHandler();
     }
 
     /**
-     * @dataProvider prov__rename__withLdapTriggerError
+     * @dataProvider provRenameWithLdapTriggerError
      */
-    public function test__rename__withLdapTriggerError(LdapTriggerErrorTestFixture $fixture): void
+    public function testRenameWithLdapTriggerError(LdapTriggerErrorTestFixture $fixture): void
     {
         $entry = $this->createMock(EntryInterface::class);
         $entry->expects($this->once())
@@ -256,7 +256,7 @@ trait EntryManagerTestTrait
     // delete()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public function test__delete()
+    public function testDelete()
     {
         $entry = $this->createMock(EntryInterface::class);
         $entry->expects($this->once())
@@ -278,15 +278,15 @@ trait EntryManagerTestTrait
         $this->assertNull($manager->delete($entry));
     }
 
-    public static function prov__delete__withLdapTriggerError(): array
+    public static function provDeleteWithLdapTriggerError(): array
     {
         return self::feedLdapLinkErrorHandler();
     }
 
     /**
-     * @dataProvider prov__delete__withLdapTriggerError
+     * @dataProvider provDeleteWithLdapTriggerError
      */
-    public function test__delete__withLdapTriggerError(LdapTriggerErrorTestFixture $fixture): void
+    public function testDeleteWithLdapTriggerError(LdapTriggerErrorTestFixture $fixture): void
     {
         $entry = $this->createMock(EntryInterface::class);
         $entry->expects($this->once())

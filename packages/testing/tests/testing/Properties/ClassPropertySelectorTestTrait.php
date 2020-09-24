@@ -38,7 +38,7 @@ trait ClassPropertySelectorTestTrait
     //
     // canSelectFrom()
     //
-    public static function prov__ClassPropertySelector__canSelectFrom(): array
+    public static function provClassPropertySelectorCanSelectFrom(): array
     {
         return [
             // #0
@@ -74,11 +74,11 @@ trait ClassPropertySelectorTestTrait
     }
 
     /**
-     * @dataProvider prov__ClassPropertySelector__canSelectFrom
+     * @dataProvider provClassPropertySelectorCanSelectFrom
      *
      * @param mixed $subject
      */
-    public function test__ClassPropertySelector__canSelectFrom($subject, bool $expect): void
+    public function testClassPropertySelectorCanSelectFrom($subject, bool $expect): void
     {
         $selector = $this->createClassPropertySelector();
         $this->assertSame($expect, $selector->canSelectFrom($subject));
@@ -87,7 +87,7 @@ trait ClassPropertySelectorTestTrait
     //
     // selectProperty
     //
-    public static function prov__ClassPropertySelector__selectProperty(): array
+    public static function provClassPropertySelectorSelectProperty(): array
     {
         return [
             // #0
@@ -139,20 +139,20 @@ trait ClassPropertySelectorTestTrait
     }
 
     /**
-     * @dataProvider prov__ClassPropertySelector__selectProperty
+     * @dataProvider provClassPropertySelectorSelectProperty
      *
      * @param mixed $key
      * @param mixed $return
      * @param mixed $expect
      */
-    public function test__ClassPropertySelector__selectProperty(string $class, $key, $return, $expect): void
+    public function testClassPropertySelectorSelectProperty(string $class, $key, $return, $expect): void
     {
         $selector = $this->createClassPropertySelector();
         $this->assertSame($return, $selector->selectProperty($class, $key, $retval));
         $this->assertSame($expect, $retval);
     }
 
-    public function test__ClassPropertySelector__selectProperty__throwsOnPrivateMethod(): void
+    public function testClassPropertySelectorSelectPropertyThrowsOnPrivateMethod(): void
     {
         $class = get_class(new class() {
             private static function foo()
@@ -167,7 +167,7 @@ trait ClassPropertySelectorTestTrait
         $selector->selectProperty($class, 'foo()');
     }
 
-    public function test__ClassPropertySelector__selectProperty__throwsOnPrivateAttribute(): void
+    public function testClassPropertySelectorSelectPropertyThrowsOnPrivateAttribute(): void
     {
         $class = get_class(new class() {
             private $foo = 'FOO';
@@ -180,7 +180,7 @@ trait ClassPropertySelectorTestTrait
         $selector->selectProperty($class, 'foo');
     }
 
-    public function test__ClassPropertySelector__selectProperty__throwsOnNonStaticMethod(): void
+    public function testClassPropertySelectorSelectPropertyThrowsOnNonStaticMethod(): void
     {
         $class = get_class(new class() {
             public function foo()
@@ -195,7 +195,7 @@ trait ClassPropertySelectorTestTrait
         $selector->selectProperty($class, 'foo()');
     }
 
-    public function test__ClassPropertySelector__selectProperty__throwsOnNonStaticProperty(): void
+    public function testClassPropertySelectorSelectPropertyThrowsOnNonStaticProperty(): void
     {
         $class = get_class(new class() {
             public $foo = 'FOO';
@@ -208,7 +208,7 @@ trait ClassPropertySelectorTestTrait
         $selector->selectProperty($class, 'foo');
     }
 
-    public static function prov__ClassPropertySelector__selectProperty__throwsOnNonClass(): array
+    public static function provClassPropertySelectorSelectPropertyThrowsOnNonClass(): array
     {
         return [
             // #0
@@ -226,9 +226,9 @@ trait ClassPropertySelectorTestTrait
     }
 
     /**
-     * @dataProvider prov__ClassPropertySelector__selectProperty__throwsOnNonClass
+     * @dataProvider provClassPropertySelectorSelectPropertyThrowsOnNonClass
      */
-    public function test__ClassPropertySelector__selectProperty__throwsOnNonClass(string $key, string $method): void
+    public function testClassPropertySelectorSelectPropertyThrowsOnNonClass(string $key, string $method): void
     {
         $selector = $this->createClassPropertySelector();
 

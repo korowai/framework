@@ -44,7 +44,7 @@ final class ParserTest extends TestCase
     }
 
 //
-//    public function prov__construct()
+//    public function provConstruct()
 //    {
 //        return [
 //            'without args' => [
@@ -69,9 +69,9 @@ final class ParserTest extends TestCase
 //    }
 //
 //    /**
-//     * @dataProvider prov__construct
+//     * @dataProvider provConstruct
 //     */
-//    public function test__construct(array $args, array $expect)
+//    public function testConstruct(array $args, array $expect)
 //    {
 //        $parser = new Parser(...$args);
 //
@@ -80,7 +80,7 @@ final class ParserTest extends TestCase
 //        $this->assertSame($expectedConfig, $parser->getConfig());
 //    }
 //
-//    public function prov__config()
+//    public function provConfig()
 //    {
 //        $cases = [
 //            [
@@ -122,9 +122,9 @@ final class ParserTest extends TestCase
 //    }
 //
 //    /**
-//     * @dataProvider prov__config
+//     * @dataProvider provConfig
 //     */
-//    public function test__configure(array $config, array $expect = null)
+//    public function testConfigure(array $config, array $expect = null)
 //    {
 //        $parser = new Parser;
 //
@@ -136,7 +136,7 @@ final class ParserTest extends TestCase
 //        $this->assertSame($expect, $parser->getConfig());
 //    }
 //
-//    public function test__configure__wrongFileType()
+//    public function testConfigureWrongFileType()
 //    {
 //        $parser = new Parser;
 //
@@ -146,7 +146,7 @@ final class ParserTest extends TestCase
 //        $parser->configure(['file_type' => 'foo']);
 //    }
 //
-//    public function test__configure__wrongVersionRequired()
+//    public function testConfigureWrongVersionRequired()
 //    {
 //        $parser = new Parser;
 //

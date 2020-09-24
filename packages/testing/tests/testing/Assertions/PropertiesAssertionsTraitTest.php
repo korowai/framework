@@ -46,7 +46,7 @@ final class PropertiesAssertionsTraitTest extends TestCase
         self::assertTrue($method->isStatic());
     }
 
-    public static function prov__matchingProperties()
+    public static function provMatchingProperties()
     {
         $esmith = new class() {
             public $name = 'Emily';
@@ -250,14 +250,14 @@ final class PropertiesAssertionsTraitTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__matchingProperties
+     * @dataProvider provMatchingProperties
      */
     public function testObjectHasPropertiesIdenticalToWithMatchingProperties(array $expect, object $object)
     {
         self::assertThat($object, self::objectHasPropertiesIdenticalTo($expect));
     }
 
-    public static function prov__nonMatchingProperties()
+    public static function provNonMatchingProperties()
     {
         $hbrown = new class() {
             public $name = 'Helen';
@@ -444,7 +444,7 @@ final class PropertiesAssertionsTraitTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__nonMatchingProperties
+     * @dataProvider provNonMatchingProperties
      */
     public function testObjectHasPropertiesIdenticalToWithNonMatchingProperties(array $expect, object $object)
     {
@@ -472,7 +472,7 @@ final class PropertiesAssertionsTraitTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__matchingProperties
+     * @dataProvider provMatchingProperties
      */
     public function testAssertObjectHasPropertiesIdenticalToWithMatchingProperties(array $expect, object $object)
     {
@@ -480,7 +480,7 @@ final class PropertiesAssertionsTraitTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__nonMatchingProperties
+     * @dataProvider provNonMatchingProperties
      */
     public function testAssertObjectHasPropertiesIdenticalToWithNonMatchingProperties(array $expect, object $object)
     {
@@ -494,7 +494,7 @@ final class PropertiesAssertionsTraitTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__nonMatchingProperties
+     * @dataProvider provNonMatchingProperties
      */
     public function testAssertNotObjectHasPropertiesIdenticalToWithNonMatchingProperties(array $expect, object $object)
     {
@@ -502,7 +502,7 @@ final class PropertiesAssertionsTraitTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__matchingProperties
+     * @dataProvider provMatchingProperties
      */
     public function testAssertNotObjectHasPropertiesIdenticalToWithMatchingProperties(array $expect, object $object)
     {

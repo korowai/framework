@@ -36,13 +36,13 @@ final class ResourceWrapperInterfaceTest extends TestCase
         $this->assertImplementsInterface(ResourceWrapperInterface::class, $dummy);
     }
 
-    public static function prov__getResource(): array
+    public static function provGetResource(): array
     {
         return [[''], [null], [123], [[]]];
     }
 
     /**
-     * @dataProvider prov__getResource
+     * @dataProvider provGetResource
      *
      * @param mixed $resource
      */

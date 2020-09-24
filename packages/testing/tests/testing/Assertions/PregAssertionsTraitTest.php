@@ -26,7 +26,7 @@ final class PregAssertionsTraitTest extends TestCase
 {
     use PregAssertionsTrait;
 
-    public function prov__hasPregCaptures__success()
+    public function provHasPregCapturesSuccess()
     {
         return [
             [[],                                                            []],
@@ -85,7 +85,7 @@ final class PregAssertionsTraitTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__hasPregCaptures__success
+     * @dataProvider provHasPregCapturesSuccess
      *
      * @param mixed $other
      */
@@ -96,7 +96,7 @@ final class PregAssertionsTraitTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__hasPregCaptures__success
+     * @dataProvider provHasPregCapturesSuccess
      *
      * @param mixed $other
      */
@@ -106,7 +106,7 @@ final class PregAssertionsTraitTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__hasPregCaptures__success
+     * @dataProvider provHasPregCapturesSuccess
      *
      * @param mixed $other
      */
@@ -117,7 +117,7 @@ final class PregAssertionsTraitTest extends TestCase
         $this->assertNotHasPregCaptures($expected, $other);
     }
 
-    public function prov__hasPregCaptures__failing()
+    public function provHasPregCapturesFailing()
     {
         $re = 'array has expected PCRE capture groups';
 
@@ -141,7 +141,7 @@ final class PregAssertionsTraitTest extends TestCase
         ];
     }
 
-    public function prov__hasPregCaptures__nonArray()
+    public function provHasPregCapturesNonArray()
     {
         $re = 'string has expected PCRE capture groups';
 
@@ -151,8 +151,8 @@ final class PregAssertionsTraitTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__hasPregCaptures__failing
-     * @dataProvider prov__hasPregCaptures__nonArray
+     * @dataProvider provHasPregCapturesFailing
+     * @dataProvider provHasPregCapturesNonArray
      *
      * @param mixed $other
      */
@@ -171,7 +171,7 @@ final class PregAssertionsTraitTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__hasPregCaptures__failing
+     * @dataProvider provHasPregCapturesFailing
      *
      * @param mixed $other
      */
@@ -183,7 +183,7 @@ final class PregAssertionsTraitTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__hasPregCaptures__failing
+     * @dataProvider provHasPregCapturesFailing
      *
      * @param mixed $other
      */

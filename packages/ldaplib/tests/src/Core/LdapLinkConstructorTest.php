@@ -47,7 +47,7 @@ final class LdapLinkConstructorTest extends TestCase
     // connect()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__connect(): array
+    public static function provConnect(): array
     {
         return [
             // #0
@@ -91,7 +91,7 @@ final class LdapLinkConstructorTest extends TestCase
 
     /**
      * @runInSeparateProcess
-     * @dataProvider prov__connect
+     * @dataProvider provConnect
      *
      * @param mixed $return
      * @param mixed $expect
@@ -120,7 +120,7 @@ final class LdapLinkConstructorTest extends TestCase
         }
     }
 
-    public function prov__connect__witLdapLinkReturningFalse(): array
+    public function provConnectWitLdapLinkReturningFalse(): array
     {
         return [
             // #0
@@ -138,7 +138,7 @@ final class LdapLinkConstructorTest extends TestCase
 
     /**
      * @runInSeparateProcess
-     * @dataProvider prov__connect__witLdapLinkReturningFalse
+     * @dataProvider provConnectWitLdapLinkReturningFalse
      *
      * @param mixed $return
      */

@@ -69,7 +69,7 @@ final class LdapLinkConfigResolverTest extends TestCase
     // resolve()
     //
 
-    public static function prov__resolve(): array
+    public static function provResolve(): array
     {
         $defaults = static::getDefaultConfig();
 
@@ -141,7 +141,7 @@ final class LdapLinkConfigResolverTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__resolve
+     * @dataProvider provResolve
      */
     public function testResolve(array $config, array $expect): void
     {
@@ -162,7 +162,7 @@ final class LdapLinkConfigResolverTest extends TestCase
         $this->assertSame($expect, $resolved);
     }
 
-    public static function prov__resolve__withInvalidConfig(): array
+    public static function provResolveWithInvalidConfig(): array
     {
         $invalidUris = [
             '',
@@ -200,7 +200,7 @@ final class LdapLinkConfigResolverTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__resolve__withInvalidConfig
+     * @dataProvider provResolveWithInvalidConfig
      */
     public function testResolveWithInvalidConfig(array $config, array $expect): void
     {

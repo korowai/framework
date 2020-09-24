@@ -5,5 +5,4 @@
 #   prov_foo_bar    -> provFooBar
 #   prov__foo__bar  -> provFooBar
 # ###########################################################################
-s/\<prov__/provider__/g
-/\(test\|provider\)__\?/s/_\+\([A-Za-z]\)/\u\1/g
+/\(test\|prov\)__\?/s/_\+\([A-Za-z]\)/\u\1/g

@@ -31,7 +31,7 @@ final class Rfc2849Test extends TestCase
         return Rfc2849::class;
     }
 
-    public static function prov__characterClasses()
+    public static function provCharacterClasses()
     {
         return [
             // character lists for character classes
@@ -54,14 +54,14 @@ final class Rfc2849Test extends TestCase
     }
 
     /**
-     * @dataProvider prov__characterClasses
+     * @dataProvider provCharacterClasses
      */
     public function testCharacterClasses(string $actual, string $expect): void
     {
         $this->assertSame($expect, $actual);
     }
 
-    public static function prov__simpleProductions()
+    public static function provSimpleProductions()
     {
         return [
             'SEP' => [Rfc2849::SEP,                      '(?:'.Rfc2849::CR.Rfc2849::LF.'|'.Rfc2849::LF.')'],
@@ -87,7 +87,7 @@ final class Rfc2849Test extends TestCase
     }
 
     /**
-     * @dataProvider prov__simpleProductions
+     * @dataProvider provSimpleProductions
      */
     public function testSimpleProductions(string $actual, string $expect): void
     {
@@ -98,7 +98,7 @@ final class Rfc2849Test extends TestCase
     // VERSION_NUMBER
     //
 
-    public static function prov__VERSION_NUMBER()
+    public static function provVERSIONNUMBER()
     {
         return [
             '1' => ['1',       [0 => ['1', 0]]],
@@ -106,7 +106,7 @@ final class Rfc2849Test extends TestCase
         ];
     }
 
-    public static function prov__non__VERSION_NUMBER()
+    public static function provNonVERSIONNUMBER()
     {
         $strings = ['', 'a', '1F'];
 
@@ -114,7 +114,7 @@ final class Rfc2849Test extends TestCase
     }
 
     /**
-     * @dataProvider prov__VERSION_NUMBER
+     * @dataProvider provVERSIONNUMBER
      */
     public function testVERSIONNUMBERMatches(string $string, array $pieces): void
     {
@@ -122,7 +122,7 @@ final class Rfc2849Test extends TestCase
     }
 
     /**
-     * @dataProvider prov__non__VERSION_NUMBER
+     * @dataProvider provNonVERSIONNUMBER
      */
     public function testVERSIONNUMBERNotMatches(string $string): void
     {
@@ -133,7 +133,7 @@ final class Rfc2849Test extends TestCase
     // VERSION_SPEC
     //
 
-    public static function prov__VERSION_SPEC()
+    public static function provVERSIONSPEC()
     {
         return [
             'version:   0123' => [
@@ -179,7 +179,7 @@ final class Rfc2849Test extends TestCase
         ];
     }
 
-    public static function prov__non__VERSION_SPEC()
+    public static function provNonVERSIONSPEC()
     {
         $strings = ['', 'a', 'dn:123', 'a', '1F'];
 
@@ -187,7 +187,7 @@ final class Rfc2849Test extends TestCase
     }
 
     /**
-     * @dataProvider prov__VERSION_SPEC
+     * @dataProvider provVERSIONSPEC
      */
     public function testVERSIONSPECMatches(string $string, array $pieces, array $options = ['suffix' => '/D']): void
     {
@@ -195,7 +195,7 @@ final class Rfc2849Test extends TestCase
     }
 
     /**
-     * @dataProvider prov__non__VERSION_SPEC
+     * @dataProvider provNonVERSIONSPEC
      */
     public function testVERSIONSPECNotMatches(string $string): void
     {
@@ -206,14 +206,14 @@ final class Rfc2849Test extends TestCase
     // BASE64_STRING
     //
 
-    public static function prov__BASE64_STRING()
+    public static function provBASE64STRING()
     {
         $strings = ['', 'azAZ09+/=='];
 
         return static::stringsToPregTuples($strings);
     }
 
-    public static function prov__non__BASE64_STRING()
+    public static function provNonBASE64STRING()
     {
         $strings = ['?', '-', ' ', 'azAZ09+/==?'];
 
@@ -221,7 +221,7 @@ final class Rfc2849Test extends TestCase
     }
 
     /**
-     * @dataProvider prov__BASE64_STRING
+     * @dataProvider provBASE64STRING
      */
     public function testBASE64STRINGMatches(string $string, array $pieces = []): void
     {
@@ -229,7 +229,7 @@ final class Rfc2849Test extends TestCase
     }
 
     /**
-     * @dataProvider prov__non__BASE64_STRING
+     * @dataProvider provNonBASE64STRING
      */
     public function testBASE64STRINGNotMatches(string $string): void
     {
@@ -240,14 +240,14 @@ final class Rfc2849Test extends TestCase
     // SAFE_STRING
     //
 
-    public static function prov__SAFE_STRING()
+    public static function provSAFESTRING()
     {
         $strings = ['', "\x01", "\x7F", 'a', 'a ', 'a:', 'a<'];
 
         return static::stringsToPregTuples($strings);
     }
 
-    public static function prov__non__SAFE_STRING()
+    public static function provNonSAFESTRING()
     {
         $strings = ["\0", "\n", "\r", "\x80", "\xAA", ' ', ':', '<', 'ł', 'tył', "a\0", "a\n", "a\r", "a\x80"];
 
@@ -255,7 +255,7 @@ final class Rfc2849Test extends TestCase
     }
 
     /**
-     * @dataProvider prov__SAFE_STRING
+     * @dataProvider provSAFESTRING
      */
     public function testSAFESTRINGMatches(string $string, array $pieces = []): void
     {
@@ -263,7 +263,7 @@ final class Rfc2849Test extends TestCase
     }
 
     /**
-     * @dataProvider prov__non__SAFE_STRING
+     * @dataProvider provNonSAFESTRING
      */
     public function testSAFESTRINGNotMatches(string $string): void
     {
@@ -274,18 +274,18 @@ final class Rfc2849Test extends TestCase
     // LDAP_OID
     //
 
-    public static function prov__LDAP_OID()
+    public static function provLDAPOID()
     {
-        return Rfc2253Test::prov__OID();
+        return Rfc2253Test::provOID();
     }
 
-    public static function prov__non__LDAP_OID()
+    public static function provNonLDAPOID()
     {
-        return Rfc2253Test::prov__non__OID();
+        return Rfc2253Test::provNonOID();
     }
 
     /**
-     * @dataProvider prov__LDAP_OID
+     * @dataProvider provLDAPOID
      */
     public function testLDAPOIDMatches(string $string, array $pieces = []): void
     {
@@ -293,7 +293,7 @@ final class Rfc2849Test extends TestCase
     }
 
     /**
-     * @dataProvider prov__non__LDAP_OID
+     * @dataProvider provNonLDAPOID
      */
     public function testLDAPOIDNotMatches(string $string): void
     {
@@ -304,14 +304,14 @@ final class Rfc2849Test extends TestCase
     // OPTION
     //
 
-    public static function prov__OPTION()
+    public static function provOPTION()
     {
         $strings = ['a', '-', 'ab1-', '--'];
 
         return static::stringsToPregTuples($strings);
     }
 
-    public static function prov__non__OPTION()
+    public static function provNonOPTION()
     {
         $strings = ['', '?', 'ab1-?'];
 
@@ -319,7 +319,7 @@ final class Rfc2849Test extends TestCase
     }
 
     /**
-     * @dataProvider prov__OPTION
+     * @dataProvider provOPTION
      */
     public function testOPTIONMatches(string $string, array $pieces = []): void
     {
@@ -327,7 +327,7 @@ final class Rfc2849Test extends TestCase
     }
 
     /**
-     * @dataProvider prov__non__OPTION
+     * @dataProvider provNonOPTION
      */
     public function testOPTIONNotMatches(string $string): void
     {
@@ -338,14 +338,14 @@ final class Rfc2849Test extends TestCase
     // OPTIONS
     //
 
-    public static function prov__OPTIONS()
+    public static function provOPTIONS()
     {
         $strings = ['a', '-', 'ab1-', '--', 'ab1-;cd2-4'];
 
         return static::stringsToPregTuples($strings);
     }
 
-    public static function prov__non__OPTIONS()
+    public static function provNonOPTIONS()
     {
         $strings = ['', '?', 'ab1-?', 'ab1-;cd2-?'];
 
@@ -353,7 +353,7 @@ final class Rfc2849Test extends TestCase
     }
 
     /**
-     * @dataProvider prov__OPTIONS
+     * @dataProvider provOPTIONS
      */
     public function testOPTIONSMatches(string $string, array $pieces = []): void
     {
@@ -361,7 +361,7 @@ final class Rfc2849Test extends TestCase
     }
 
     /**
-     * @dataProvider prov__non__OPTIONS
+     * @dataProvider provNonOPTIONS
      */
     public function testOPTIONSNotMatches(string $string): void
     {
@@ -372,17 +372,17 @@ final class Rfc2849Test extends TestCase
     // ATTRIBUTE_TYPE
     //
 
-    public static function prov__ATTRIBUTE_TYPE()
+    public static function provATTRIBUTETYPE()
     {
         $strings = ['a', 'a-'];
 
         return array_merge(
-            static::prov__LDAP_OID(),
+            static::provLDAPOID(),
             static::stringsToPregTuples($strings)
         );
     }
 
-    public static function prov__non__ATTRIBUTE_TYPE()
+    public static function provNonATTRIBUTETYPE()
     {
         $strings = ['', '?', '-', '-a', 'ab1-?', '1.', '.1', 'a.b'];
 
@@ -390,7 +390,7 @@ final class Rfc2849Test extends TestCase
     }
 
     /**
-     * @dataProvider prov__ATTRIBUTE_TYPE
+     * @dataProvider provATTRIBUTETYPE
      */
     public function testATTRIBUTETYPEMatches(string $string, array $pieces = []): void
     {
@@ -398,7 +398,7 @@ final class Rfc2849Test extends TestCase
     }
 
     /**
-     * @dataProvider prov__non__ATTRIBUTE_TYPE
+     * @dataProvider provNonATTRIBUTETYPE
      */
     public function testATTRIBUTETYPENotMatches(string $string): void
     {
@@ -409,13 +409,13 @@ final class Rfc2849Test extends TestCase
     // ATTRIBUTE_DESCRIPTION
     //
 
-    public static function prov__ATTRIBUTE_DESCRIPTION()
+    public static function provATTRIBUTEDESCRIPTION()
     {
         $cases = [];
         $inheritedCases = [];
-        foreach (static::prov__ATTRIBUTE_TYPE() as $attrType) {
+        foreach (static::provATTRIBUTETYPE() as $attrType) {
             $inheritedCases[] = $attrType;
-            foreach (static::prov__OPTIONS() as $options) {
+            foreach (static::provOPTIONS() as $options) {
                 $inheritedCases[] = static::joinPregTuples([$attrType, $options], ['glue' => ';']);
             }
         }
@@ -423,7 +423,7 @@ final class Rfc2849Test extends TestCase
         return array_merge($inheritedCases, $cases);
     }
 
-    public static function prov__non__ATTRIBUTE_DESCRIPTION()
+    public static function provNonATTRIBUTEDESCRIPTION()
     {
         $strings = ['', '?', '-', '-a', 'ab1-?', '1.', '.1', 'a.b'];
 
@@ -431,7 +431,7 @@ final class Rfc2849Test extends TestCase
     }
 
     /**
-     * @dataProvider prov__ATTRIBUTE_DESCRIPTION
+     * @dataProvider provATTRIBUTEDESCRIPTION
      */
     public function testATTRIBUTEDESCRIPTIONMatches(string $string, array $pieces = []): void
     {
@@ -439,7 +439,7 @@ final class Rfc2849Test extends TestCase
     }
 
     /**
-     * @dataProvider prov__non__ATTRIBUTE_DESCRIPTION
+     * @dataProvider provNonATTRIBUTEDESCRIPTION
      */
     public function testATTRIBUTEDESCRIPTIONNotMatches(string $string): void
     {
@@ -450,18 +450,18 @@ final class Rfc2849Test extends TestCase
     // DISTINGUISHED_NAME
     //
 
-    public static function prov__DISTINGUISHED_NAME()
+    public static function provDISTINGUISHEDNAME()
     {
-        return static::prov__SAFE_STRING();
+        return static::provSAFESTRING();
     }
 
-    public static function prov__non__DISTINGUISHED_NAME()
+    public static function provNonDISTINGUISHEDNAME()
     {
-        return static::prov__non__SAFE_STRING();
+        return static::provNonSAFESTRING();
     }
 
     /**
-     * @dataProvider prov__DISTINGUISHED_NAME
+     * @dataProvider provDISTINGUISHEDNAME
      */
     public function testDISTINGUISHEDNAMEMatches(string $string, array $pieces = []): void
     {
@@ -469,7 +469,7 @@ final class Rfc2849Test extends TestCase
     }
 
     /**
-     * @dataProvider prov__non__DISTINGUISHED_NAME
+     * @dataProvider provNonDISTINGUISHEDNAME
      */
     public function testDISTINGUISHEDNAMENotMatches(string $string): void
     {
@@ -480,18 +480,18 @@ final class Rfc2849Test extends TestCase
     // BASE64_DISTINGUISHED_NAME
     //
 
-    public static function prov__BASE64_DISTINGUISHED_NAME()
+    public static function provBASE64DISTINGUISHEDNAME()
     {
-        return static::prov__BASE64_STRING();
+        return static::provBASE64STRING();
     }
 
-    public static function prov__non__BASE64_DISTINGUISHED_NAME()
+    public static function provNonBASE64DISTINGUISHEDNAME()
     {
-        return static::prov__non__BASE64_STRING();
+        return static::provNonBASE64STRING();
     }
 
     /**
-     * @dataProvider prov__BASE64_DISTINGUISHED_NAME
+     * @dataProvider provBASE64DISTINGUISHEDNAME
      */
     public function testBASE64DISTINGUISHEDNAMEMatches(string $string, array $pieces = []): void
     {
@@ -499,7 +499,7 @@ final class Rfc2849Test extends TestCase
     }
 
     /**
-     * @dataProvider prov__non__BASE64_DISTINGUISHED_NAME
+     * @dataProvider provNonBASE64DISTINGUISHEDNAME
      */
     public function testBASE64DISTINGUISHEDNAMENotMatches(string $string): void
     {
@@ -510,7 +510,7 @@ final class Rfc2849Test extends TestCase
     // DN_SPEC
     //
 
-    public static function prov__DN_SPEC()
+    public static function provDNSPEC()
     {
         return [
             'dn: ' => [
@@ -625,7 +625,7 @@ final class Rfc2849Test extends TestCase
         ];
     }
 
-    public static function prov__non__DN_SPEC()
+    public static function provNonDNSPEC()
     {
         $strings = ['', 'a', 'xyz:'];
 
@@ -633,7 +633,7 @@ final class Rfc2849Test extends TestCase
     }
 
     /**
-     * @dataProvider prov__DN_SPEC
+     * @dataProvider provDNSPEC
      */
     public function testDNSPECMatches(string $string, array $pieces, array $options = ['suffix' => '/D']): void
     {
@@ -641,7 +641,7 @@ final class Rfc2849Test extends TestCase
     }
 
     /**
-     * @dataProvider prov__non__DN_SPEC
+     * @dataProvider provNonDNSPEC
      */
     public function testDNSPECNotMatches(string $string): void
     {
@@ -652,7 +652,7 @@ final class Rfc2849Test extends TestCase
     // URL
     //
 
-    public static function prov__URL()
+    public static function provURL()
     {
         return [
             // #0
@@ -785,16 +785,16 @@ final class Rfc2849Test extends TestCase
         ];
     }
 
-    public static function prov__non__URL()
+    public static function provNonURL()
     {
         $strings = [':', '%', '%1'];
         $inheritedCases = [];
-        foreach (static::prov__non__SAFE_STRING() as $nonStr) {
+        foreach (static::provNonSAFESTRING() as $nonStr) {
             if (!preg_match('/^ /', $nonStr[0])) {
                 $inheritedCases[] = [': '.$nonStr[0]];
             }
         }
-        foreach (static::prov__non__BASE64_STRING() as $nonB64Str) {
+        foreach (static::provNonBASE64STRING() as $nonB64Str) {
             if (!preg_match('/^ /', $nonB64Str[0])) {
                 $inheritedCases[] = [':: '.$nonB64Str[0]];
             }
@@ -804,7 +804,7 @@ final class Rfc2849Test extends TestCase
     }
 
     /**
-     * @dataProvider prov__URL
+     * @dataProvider provURL
      */
     public function testURLMatches(string $string, array $pieces): void
     {
@@ -812,7 +812,7 @@ final class Rfc2849Test extends TestCase
     }
 
     /**
-     * @dataProvider prov__non__URL
+     * @dataProvider provNonURL
      */
     public function testURLNotMatches(string $string): void
     {
@@ -823,7 +823,7 @@ final class Rfc2849Test extends TestCase
     // VALUE_SPEC
     //
 
-    public static function prov__VALUE_SPEC()
+    public static function provVALUESPEC()
     {
         $cases = [
             ':\n' => [
@@ -1039,7 +1039,7 @@ final class Rfc2849Test extends TestCase
         ];
 
         $inheritedCases = [];
-        foreach (static::prov__SAFE_STRING() as $case) {
+        foreach (static::provSAFESTRING() as $case) {
             $inheritedCases[] = static::transformPregTuple($case, [
                 'prefix' => ': ',
                 'merge' => [
@@ -1052,7 +1052,7 @@ final class Rfc2849Test extends TestCase
                 ],
             ]);
         }
-        foreach (static::prov__BASE64_STRING() as $case) {
+        foreach (static::provBASE64STRING() as $case) {
             $inheritedCases[] = static::transformPregTuple($case, [
                 'prefix' => ':: ',
                 'merge' => [
@@ -1065,7 +1065,7 @@ final class Rfc2849Test extends TestCase
                 ],
             ]);
         }
-        foreach (static::prov__URL() as $case) {
+        foreach (static::provURL() as $case) {
             $inheritedCases[] = static::transformPregTuple($case, [
                 'prefix' => ':< ',
                 'merge' => [
@@ -1082,7 +1082,7 @@ final class Rfc2849Test extends TestCase
         return array_merge($inheritedCases, $cases);
     }
 
-    public static function prov__non__VALUE_SPEC()
+    public static function provNonVALUESPEC()
     {
         $strings = ['', 'a', 'xyz:123', 'a', '1F'];
 
@@ -1090,7 +1090,7 @@ final class Rfc2849Test extends TestCase
     }
 
     /**
-     * @dataProvider prov__VALUE_SPEC
+     * @dataProvider provVALUESPEC
      */
     public function testVALUESPECMatches(string $string, array $pieces, array $options = ['suffix' => '/D']): void
     {
@@ -1098,7 +1098,7 @@ final class Rfc2849Test extends TestCase
     }
 
     /**
-     * @dataProvider prov__non__VALUE_SPEC
+     * @dataProvider provNonVALUESPEC
      */
     public function testVALUESPECNotMatches(string $string): void
     {
@@ -1109,7 +1109,7 @@ final class Rfc2849Test extends TestCase
     // CONTROL
     //
 
-    public static function prov__CONTROL()
+    public static function provCONTROL()
     {
         $cases = [
             [
@@ -1436,7 +1436,7 @@ final class Rfc2849Test extends TestCase
         ];
 
         $inheritedCases = [];
-        foreach (static::prov__VALUE_SPEC() as $case) {
+        foreach (static::provVALUESPEC() as $case) {
             $inheritedCases[] = static::transformPregTuple($case, [
                 'prefix' => 'control: 1.23',
                 'suffix' => "\n",
@@ -1472,7 +1472,7 @@ final class Rfc2849Test extends TestCase
         return array_merge($inheritedCases, $cases);
     }
 
-    public static function prov__non__CONTROL()
+    public static function provNonCONTROL()
     {
         $strings = [
             '<:', '< %', '< %1', ':: %$', ': ł',
@@ -1482,7 +1482,7 @@ final class Rfc2849Test extends TestCase
     }
 
     /**
-     * @dataProvider prov__CONTROL
+     * @dataProvider provCONTROL
      */
     public function testCONTROLMatches(string $string, array $pieces, array $options = ['suffix' => '/D']): void
     {
@@ -1490,7 +1490,7 @@ final class Rfc2849Test extends TestCase
     }
 
     /**
-     * @dataProvider prov__non__CONTROL
+     * @dataProvider provNonCONTROL
      */
     public function testCONTROLNotMatches(string $string): void
     {
@@ -1501,7 +1501,7 @@ final class Rfc2849Test extends TestCase
     // ATTRVAL_SPEC
     //
 
-    public static function prov__ATTRVAL_SPEC()
+    public static function provATTRVALSPEC()
     {
         $cases = [
             [
@@ -1791,9 +1791,9 @@ final class Rfc2849Test extends TestCase
             ],
         ];
         $inheritedCases = [];
-        foreach (static::prov__ATTRIBUTE_DESCRIPTION() as $attr) {
+        foreach (static::provATTRIBUTEDESCRIPTION() as $attr) {
             [$_0a] = self::pregTupleKeysAt($attr, [0]);
-            foreach (static::prov__VALUE_SPEC() as $value) {
+            foreach (static::provVALUESPEC() as $value) {
                 [$_0v] = self::pregTupleKeysAt($value, [0]);
                 $joint = $attr[$_0a].$value[$_0v];
                 $inheritedCases[$joint] = static::joinPregTuples([$attr, $value], [
@@ -1805,7 +1805,7 @@ final class Rfc2849Test extends TestCase
         return array_merge($inheritedCases, $cases);
     }
 
-    public static function prov__non__ATTRVAL_SPEC()
+    public static function provNonATTRVALSPEC()
     {
         $strings = ['', 'a', ':123', 'a', '1F'];
 
@@ -1813,7 +1813,7 @@ final class Rfc2849Test extends TestCase
     }
 
     /**
-     * @dataProvider prov__ATTRVAL_SPEC
+     * @dataProvider provATTRVALSPEC
      */
     public function testATTRVALSPECMatches(string $string, array $pieces, array $options = ['suffix' => '/D']): void
     {
@@ -1821,7 +1821,7 @@ final class Rfc2849Test extends TestCase
     }
 
     /**
-     * @dataProvider prov__non__ATTRVAL_SPEC
+     * @dataProvider provNonATTRVALSPEC
      */
     public function testATTRVALSPECNotMatches(string $string): void
     {
@@ -1833,7 +1833,7 @@ final class Rfc2849Test extends TestCase
 //    // LDIF_ATTRVAL_RECORD
 //    //
 //
-//    public static function prov__LDIF_ATTRVAL_RECORD()
+//    public static function provLDIFATTRVALRECORD()
 //    {
 //        $strings = [
 //                "dn: \n".
@@ -1847,7 +1847,7 @@ final class Rfc2849Test extends TestCase
 //        return static::stringsToPregTuples($strings);
 //    }
 //
-//    public static function prov__non__LDIF_ATTRVAL_RECORD()
+//    public static function provNonLDIFATTRVALRECORD()
 //    {
 //        $strings = [
 //            '',
@@ -1861,17 +1861,17 @@ final class Rfc2849Test extends TestCase
 //    }
 //
 //    /**
-//     * @dataProvider prov__LDIF_ATTRVAL_RECORD
+//     * @dataProvider provLDIFATTRVALRECORD
 //     */
-//    public function test__LDIF_ATTRVAL_RECORD__matches(string $string, array $pieces = [])
+//    public function testLDIFATTRVALRECORDMatches(string $string, array $pieces = [])
 //    {
 //        $this->assertRfcMatches($string, 'LDIF_ATTRVAL_RECORD', $pieces);
 //    }
 //
 //    /**
-//     * @dataProvider prov__non__LDIF_ATTRVAL_RECORD
+//     * @dataProvider provNonLDIFATTRVALRECORD
 //     */
-//    public function test__LDIF_ATTRVAL_RECORD__notMatches(string $string)
+//    public function testLDIFATTRVALRECORDNotMatches(string $string)
 //    {
 //        $this->assertRfcNotMatches($string, 'LDIF_ATTRVAL_RECORD');
 //    }
@@ -1880,7 +1880,7 @@ final class Rfc2849Test extends TestCase
     // MOD_SPEC_INIT
     //
 
-    public static function prov__MOD_SPEC_INIT()
+    public static function provMODSPECINIT()
     {
         $types = ['add', 'delete', 'replace'];
 
@@ -1988,7 +1988,7 @@ final class Rfc2849Test extends TestCase
 
         $inheritedCases = [];
 
-        foreach (Rfc2849Test::prov__ATTRIBUTE_DESCRIPTION() as $attr) {
+        foreach (Rfc2849Test::provATTRIBUTEDESCRIPTION() as $attr) {
             foreach ($types as $type) {
                 $typeTuples = [$type, ['mod_type' => [$type, 0]]];
                 $inheritedCases[] = static::joinPregTuples([$typeTuples, $attr], [
@@ -2005,12 +2005,12 @@ final class Rfc2849Test extends TestCase
         return array_merge($inheritedCases, $cases);
     }
 
-    public static function prov__non__MOD_SPEC_INIT()
+    public static function provNonMODSPECINIT()
     {
         $strings = [];
 
         $inheritedCases = [];
-        foreach (Rfc2849Test::prov__ATTRIBUTE_DESCRIPTION() as $attr) {
+        foreach (Rfc2849Test::provATTRIBUTEDESCRIPTION() as $attr) {
             $inheritedCases[] = ['foo: '.$attr[0]];
         }
 
@@ -2018,7 +2018,7 @@ final class Rfc2849Test extends TestCase
     }
 
     /**
-     * @dataProvider prov__MOD_SPEC_INIT
+     * @dataProvider provMODSPECINIT
      */
     public function testMODSPECINITMatches(string $string, array $pieces, array $options = ['suffix' => '/D']): void
     {
@@ -2026,7 +2026,7 @@ final class Rfc2849Test extends TestCase
     }
 
     /**
-     * @dataProvider prov__non__MOD_SPEC_INIT
+     * @dataProvider provNonMODSPECINIT
      */
     public function testMODSPECINITNotMatches(string $string): void
     {
@@ -2038,7 +2038,7 @@ final class Rfc2849Test extends TestCase
 //    // CHANGERECORD_INIT
 //    //
 //
-//    public static function prov__CHANGERECORD_INIT()
+//    public static function provCHANGERECORDINIT()
 //    {
 //        return [
 //            [
@@ -2074,7 +2074,7 @@ final class Rfc2849Test extends TestCase
 //        ];
 //    }
 //
-//    public static function prov__non__CHANGERECORD_INIT()
+//    public static function provNonCHANGERECORDINIT()
 //    {
 //        $strings = [
 //            "",
@@ -2092,17 +2092,17 @@ final class Rfc2849Test extends TestCase
 //    }
 //
 //    /**
-//     * @dataProvider prov__CHANGERECORD_INIT
+//     * @dataProvider provCHANGERECORDINIT
 //     */
-//    public function test__CHANGERECORD_INIT__matches(string $string, array $pieces = [])
+//    public function testCHANGERECORDINITMatches(string $string, array $pieces = [])
 //    {
 //        $this->assertRfcMatches($string, 'CHANGERECORD_INIT', $pieces);
 //    }
 //
 //    /**
-//     * @dataProvider prov__non__CHANGERECORD_INIT
+//     * @dataProvider provNonCHANGERECORDINIT
 //     */
-//    public function test__CHANGERECORD_INIT__notMatches(string $string)
+//    public function testCHANGERECORDINITNotMatches(string $string)
 //    {
 //        $this->assertRfcNotMatches($string, 'CHANGERECORD_INIT');
 //    }
@@ -2110,7 +2110,7 @@ final class Rfc2849Test extends TestCase
     // CHANGERECORD_INIT
     //
 
-    public static function prov__CHANGERECORD_INIT()
+    public static function provCHANGERECORDINIT()
     {
         $cases = [
             [
@@ -2192,7 +2192,7 @@ final class Rfc2849Test extends TestCase
         return array_merge($inheritedCases, $cases);
     }
 
-    public static function prov__non__CHANGERECORD_INIT()
+    public static function provNonCHANGERECORDINIT()
     {
         $strings = [
             '',
@@ -2208,7 +2208,7 @@ final class Rfc2849Test extends TestCase
     }
 
     /**
-     * @dataProvider prov__CHANGERECORD_INIT
+     * @dataProvider provCHANGERECORDINIT
      */
     public function testCHANGERECORDINITMatches(string $string, array $pieces, array $options = ['suffix' => '/D']): void
     {
@@ -2216,7 +2216,7 @@ final class Rfc2849Test extends TestCase
     }
 
     /**
-     * @dataProvider prov__non__CHANGERECORD_INIT
+     * @dataProvider provNonCHANGERECORDINIT
      */
     public function testCHANGERECORDINITNotMatches(string $string): void
     {
@@ -2227,7 +2227,7 @@ final class Rfc2849Test extends TestCase
     // NEWRDN_SPEC
     //
 
-    public static function prov__NEWRDN_SPEC()
+    public static function provNEWRDNSPEC()
     {
         $cases = [
             //0
@@ -2289,7 +2289,7 @@ final class Rfc2849Test extends TestCase
         return array_merge($inheritedCases, $cases);
     }
 
-    public static function prov__non__NEWRDN_SPEC()
+    public static function provNonNEWRDNSPEC()
     {
         $strings = [
             '',
@@ -2304,7 +2304,7 @@ final class Rfc2849Test extends TestCase
     }
 
     /**
-     * @dataProvider prov__NEWRDN_SPEC
+     * @dataProvider provNEWRDNSPEC
      */
     public function testNEWRDNSPECMatches(string $string, array $pieces, array $options = ['suffix' => '/D']): void
     {
@@ -2312,7 +2312,7 @@ final class Rfc2849Test extends TestCase
     }
 
     /**
-     * @dataProvider prov__non__NEWRDN_SPEC
+     * @dataProvider provNonNEWRDNSPEC
      */
     public function testNEWRDNSPECNotMatches(string $string): void
     {
@@ -2323,7 +2323,7 @@ final class Rfc2849Test extends TestCase
     // NEWSUPERIOR_SPEC
     //
 
-    public static function prov__NEWSUPERIOR_SPEC()
+    public static function provNEWSUPERIORSPEC()
     {
         $cases = [
             'newsuperior:\n' => [
@@ -2428,7 +2428,7 @@ final class Rfc2849Test extends TestCase
         return array_merge($inheritedCases, $cases);
     }
 
-    public static function prov__non__NEWSUPERIOR_SPEC()
+    public static function provNonNEWSUPERIORSPEC()
     {
         $strings = ['', 'a', 'xyz:123', 'a', '1F'];
 
@@ -2436,7 +2436,7 @@ final class Rfc2849Test extends TestCase
     }
 
     /**
-     * @dataProvider prov__NEWSUPERIOR_SPEC
+     * @dataProvider provNEWSUPERIORSPEC
      */
     public function testNEWSUPERIORSPECMatches(string $string, array $pieces, array $options = ['suffix' => '/D']): void
     {
@@ -2444,7 +2444,7 @@ final class Rfc2849Test extends TestCase
     }
 
     /**
-     * @dataProvider prov__non__NEWSUPERIOR_SPEC
+     * @dataProvider provNonNEWSUPERIORSPEC
      */
     public function testNEWSUPERIORSPECNotMatches(string $string): void
     {

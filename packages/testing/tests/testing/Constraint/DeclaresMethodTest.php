@@ -82,31 +82,31 @@ final class DeclaresMethodTest extends TestCase
 
     public function testEvaluateOnString(): void
     {
-        $constraint = new DeclaresMethod('test__evaluate__onString');
+        $constraint = new DeclaresMethod('testEvaluateOnString');
         $this->assertFalse($constraint->evaluate('@##@##', '', true));
     }
 
     public function testEvaluateOnStringWithFailure(): void
     {
-        $constraint = new DeclaresMethod('test__evaluate__onStringWithFailure');
+        $constraint = new DeclaresMethod('testEvaluateOnStringWithFailure');
 
         $this->expectException(ExpectationFailedException::class);
-        $this->expectExceptionMessage('Failed asserting that string declares method test__evaluate__onStringWithFailure().');
+        $this->expectExceptionMessage('Failed asserting that string declares method testEvaluateOnStringWithFailure().');
         $this->assertThat('@##@##', $constraint);
     }
 
     public function testEvaluateOnArray(): void
     {
-        $constraint = new DeclaresMethod('test__evaluate__onArray');
+        $constraint = new DeclaresMethod('testEvaluateOnArray');
         $this->assertFalse($constraint->evaluate([], '', true));
     }
 
     public function testEvaluateOnArrayWithFailure(): void
     {
-        $constraint = new DeclaresMethod('test__evaluate__onArrayWithFailure');
+        $constraint = new DeclaresMethod('testEvaluateOnArrayWithFailure');
 
         $this->expectException(ExpectationFailedException::class);
-        $this->expectExceptionMessage('Failed asserting that array declares method test__evaluate__onArrayWithFailure().');
+        $this->expectExceptionMessage('Failed asserting that array declares method testEvaluateOnArrayWithFailure().');
         $this->assertThat([], $constraint);
     }
 }

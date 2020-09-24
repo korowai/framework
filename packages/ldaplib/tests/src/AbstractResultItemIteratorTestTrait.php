@@ -25,12 +25,12 @@ trait AbstractResultItemIteratorTestTrait
 
     abstract public function createIteratorInstance(...$args);
 
-    public function test__implements__IteratorInterface(): void
+    public function testImplementsIteratorInterface(): void
     {
         $this->assertImplementsInterface($this->getIteratorInterface(), $this->getIteratorClass());
     }
 
-    public function test__construct(): void
+    public function testConstruct(): void
     {
         $ldapIterator = $this->getMockBuilder($this->getLdapIteratorInterface())
             ->getMockForAbstractClass()
@@ -41,7 +41,7 @@ trait AbstractResultItemIteratorTestTrait
         $this->assertSame($ldapIterator, $iterator->getLdapResultItemIterator());
     }
 
-    public function test__key(): void
+    public function testKey(): void
     {
         $ldapIterator = $this->getMockBuilder($this->getLdapIteratorInterface())
             ->getMockForAbstractClass()
@@ -57,7 +57,7 @@ trait AbstractResultItemIteratorTestTrait
         $this->assertSame(123, $iterator->key());
     }
 
-    public function test__valid(): void
+    public function testValid(): void
     {
         $ldapIterator = $this->getMockBuilder($this->getLdapIteratorInterface())
             ->getMockForAbstractClass()
@@ -75,7 +75,7 @@ trait AbstractResultItemIteratorTestTrait
         $this->assertFalse($iterator->valid());
     }
 
-    public function test__next(): void
+    public function testNext(): void
     {
         $ldapIterator = $this->getMockBuilder($this->getLdapIteratorInterface())
             ->getMockForAbstractClass()
@@ -90,7 +90,7 @@ trait AbstractResultItemIteratorTestTrait
         $this->assertNull($iterator->next());
     }
 
-    public function test__rewind(): void
+    public function testRewind(): void
     {
         $ldapIterator = $this->getMockBuilder($this->getLdapIteratorInterface())
             ->getMockForAbstractClass()

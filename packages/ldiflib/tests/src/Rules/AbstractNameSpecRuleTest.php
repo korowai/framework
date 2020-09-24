@@ -29,13 +29,13 @@ final class AbstractNameSpecRuleTest extends TestCase
         $this->assertExtendsClass(AbstractRfcRule::class, AbstractNameSpecRule::class);
     }
 
-    public static function prov__construct()
+    public static function provConstruct()
     {
-        return AbstractRfcRuleTest::prov__construct();
+        return AbstractRfcRuleTest::provConstruct();
     }
 
     /**
-     * @dataProvider prov__construct
+     * @dataProvider provConstruct
      */
     public function testConstruct(array $args, array $expect): void
     {
@@ -60,7 +60,7 @@ final class AbstractNameSpecRuleTest extends TestCase
     //
     // parseMatched()
     //
-    public static function prov__parseMatched()
+    public static function provParseMatched()
     {
         $safeStringCases = array_map(function ($case) {
             $dn = $case[0];
@@ -285,7 +285,7 @@ final class AbstractNameSpecRuleTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__parseMatched
+     * @dataProvider provParseMatched
      */
     public function testParseMatched(array $source, array $matches, array $expect): void
     {

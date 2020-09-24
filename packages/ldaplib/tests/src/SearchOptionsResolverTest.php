@@ -66,7 +66,7 @@ final class SearchOptionsResolverTest extends TestCase
     // resolve()
     //
 
-    public static function prov__resolve(): array
+    public static function provResolve(): array
     {
         $defaults = self::getDefaultOptions();
 
@@ -218,7 +218,7 @@ final class SearchOptionsResolverTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__resolve
+     * @dataProvider provResolve
      */
     public function testResolve(array $options, array $expect): void
     {
@@ -231,7 +231,7 @@ final class SearchOptionsResolverTest extends TestCase
         $this->assertSame($expect, $actual);
     }
 
-    public static function prov__resolve__withInvalidOptions(): array
+    public static function provResolveWithInvalidOptions(): array
     {
         return [
             // #0
@@ -316,7 +316,7 @@ final class SearchOptionsResolverTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__resolve__withInvalidOptions
+     * @dataProvider provResolveWithInvalidOptions
      */
     public function testResolveWithInvalidOptions(array $options, array $expect): void
     {

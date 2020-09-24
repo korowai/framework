@@ -33,7 +33,7 @@ final class ModSpecRuleTest extends TestCase
         $this->assertExtendsClass(AbstractRule::class, ModSpecRule::class);
     }
 
-    public static function prov__construct()
+    public static function provConstruct()
     {
         $modSpecInitRule = new ModSpecInitRule();
         $attrValSpecRule = new AttrValSpecRule();
@@ -58,7 +58,7 @@ final class ModSpecRuleTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__construct
+     * @dataProvider provConstruct
      */
     public function testConstruct(array $args, array $expect): void
     {
@@ -70,7 +70,7 @@ final class ModSpecRuleTest extends TestCase
     // parse()
     //
 
-    public static function prov__parse()
+    public static function provParse()
     {
         return [
             'add: cn\n-' => [
@@ -450,7 +450,7 @@ final class ModSpecRuleTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__parse
+     * @dataProvider provParse
      */
     public function testParse(array $source, array $args, array $expect): void
     {

@@ -34,7 +34,7 @@ final class LdapExceptionTest extends TestCase
         $this->assertImplementsInterface(LdapExceptionInterface::class, LdapException::class);
     }
 
-    public static function prov__getMessages(): array
+    public static function provGetMessages(): array
     {
         return [
             'default message' => [[], ''],
@@ -43,7 +43,7 @@ final class LdapExceptionTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__getMessages
+     * @dataProvider provGetMessages
      */
     public function testGetMessage(array $args, string $expect): void
     {

@@ -38,7 +38,7 @@ trait ObjectPropertySelectorTestTrait
     //
     // canSelectFrom()
     //
-    public function prov__ObjectPropertySelector__canSelectFrom(): array
+    public function provObjectPropertySelectorCanSelectFrom(): array
     {
         return [
             // #0
@@ -74,11 +74,11 @@ trait ObjectPropertySelectorTestTrait
     }
 
     /**
-     * @dataProvider prov__ObjectPropertySelector__canSelectFrom
+     * @dataProvider provObjectPropertySelectorCanSelectFrom
      *
      * @param mixed $subject
      */
-    public function test__ObjectPropertySelector__canSelectFrom($subject, bool $expect): void
+    public function testObjectPropertySelectorCanSelectFrom($subject, bool $expect): void
     {
         $properties = $this->createObjectPropertySelector();
         $this->assertSame($expect, $properties->canSelectFrom($subject));
@@ -87,7 +87,7 @@ trait ObjectPropertySelectorTestTrait
     //
     // selectProperty
     //
-    public static function prov__ObjectPropertySelector__selectProperty(): array
+    public static function provObjectPropertySelectorSelectProperty(): array
     {
         return [
             // #0
@@ -152,20 +152,20 @@ trait ObjectPropertySelectorTestTrait
     }
 
     /**
-     * @dataProvider prov__ObjectPropertySelector__selectProperty
+     * @dataProvider provObjectPropertySelectorSelectProperty
      *
      * @param mixed $key
      * @param mixed $return
      * @param mixed $expect
      */
-    public function test__ObjectPropertySelector__selectProperty(object $object, $key, $return, $expect): void
+    public function testObjectPropertySelectorSelectProperty(object $object, $key, $return, $expect): void
     {
         $properties = $this->createObjectPropertySelector();
         $this->assertSame($return, $properties->selectProperty($object, $key, $retval));
         $this->assertSame($expect, $retval);
     }
 
-    public function test__ObjectPropertySelector__selectProperty__throwsOnPrivateMethod(): void
+    public function testObjectPropertySelectorSelectPropertyThrowsOnPrivateMethod(): void
     {
         $object = new class() {
             private function foo()
@@ -180,7 +180,7 @@ trait ObjectPropertySelectorTestTrait
         $properties->selectProperty($object, 'foo()');
     }
 
-    public function test__ObjectPropertySelector__selectProperty__throwsOnPrivateAttribute(): void
+    public function testObjectPropertySelectorSelectPropertyThrowsOnPrivateAttribute(): void
     {
         $object = new class() {
             private $foo = 'FOO';
@@ -193,7 +193,7 @@ trait ObjectPropertySelectorTestTrait
         $properties->selectProperty($object, 'foo');
     }
 
-    public function test__ObjectPropertySelector__selectProperty__throwsOnStaticProperty(): void
+    public function testObjectPropertySelectorSelectPropertyThrowsOnStaticProperty(): void
     {
         $object = new class() {
             public static $foo = 'FOO';
@@ -206,7 +206,7 @@ trait ObjectPropertySelectorTestTrait
         $properties->selectProperty($object, 'foo');
     }
 
-    public static function prov__ObjectPropertySelector__selectProperty__throwsOnNonobject(): array
+    public static function provObjectPropertySelectorSelectPropertyThrowsOnNonobject(): array
     {
         return [
             // #0
@@ -224,9 +224,9 @@ trait ObjectPropertySelectorTestTrait
     }
 
     /**
-     * @dataProvider prov__ObjectPropertySelector__selectProperty__throwsOnNonobject
+     * @dataProvider provObjectPropertySelectorSelectPropertyThrowsOnNonobject
      */
-    public function test__ObjectPropertySelector__selectProperty__throwsOnNonobject(string $key, string $method): void
+    public function testObjectPropertySelectorSelectPropertyThrowsOnNonobject(string $key, string $method): void
     {
         $properties = $this->createObjectPropertySelector();
 

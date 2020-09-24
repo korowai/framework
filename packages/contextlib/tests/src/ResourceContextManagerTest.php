@@ -44,7 +44,7 @@ final class ResourceContextManagerTest extends TestCase
         $this->assertSame($destructor, $manager->getDestructor());
     }
 
-    public static function prov__construct__setsDefaultDestructor(): array
+    public static function provConstructSetsDefaultDestructor(): array
     {
         $values = [
             ['bzip2', '\\bzclose'],
@@ -157,7 +157,7 @@ final class ResourceContextManagerTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__construct__setsDefaultDestructor
+     * @dataProvider provConstructSetsDefaultDestructor
      * @runInSeparateProcess
      */
     public function testConstructSetsDefaultDestructor(string $type, ?string $destructor): void

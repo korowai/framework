@@ -43,7 +43,7 @@ final class AbstractRfcRuleTest extends TestCase
     //
     // __construct()
     //
-    public static function prov__construct()
+    public static function provConstruct()
     {
         return [
             '__construct(RuleSet1::class, "ASSIGNMENT_INT")' => [
@@ -59,7 +59,7 @@ final class AbstractRfcRuleTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__construct
+     * @dataProvider provConstruct
      */
     public function testConstruct(array $args, array $expect): void
     {
@@ -75,7 +75,7 @@ final class AbstractRfcRuleTest extends TestCase
     // match()
     //
 
-    public static function prov__match()
+    public static function provMatch()
     {
         return [
             // #0
@@ -273,7 +273,7 @@ final class AbstractRfcRuleTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__match
+     * @dataProvider provMatch
      */
     public function testMatch(array $source, array $args, array $trying, array $expect): void
     {
@@ -301,7 +301,7 @@ final class AbstractRfcRuleTest extends TestCase
     //
 
     /**
-     * @dataProvider prov__match
+     * @dataProvider provMatch
      */
     public function testParse(array $source, array $args, array $trying, array $expect): void
     {

@@ -19,7 +19,7 @@ trait SingletonTestTrait
 {
     abstract public static function getSingletonClassUnderTest(): string;
 
-    public function test__Singleton__getInstance()
+    public function testSingletonGetInstance()
     {
         $class = static::getSingletonClassUnderTest();
 
@@ -28,7 +28,7 @@ trait SingletonTestTrait
         $this->assertSame($obj1, $obj2);
     }
 
-    public function test__Singleton__construct(): void
+    public function testSingletonConstruct(): void
     {
         $class = static::getSingletonClassUnderTest();
 
@@ -39,7 +39,7 @@ trait SingletonTestTrait
         new $class();
     }
 
-    public function test__Singleton__clone(): void
+    public function testSingletonClone(): void
     {
         $class = static::getSingletonClassUnderTest();
 
@@ -53,7 +53,7 @@ trait SingletonTestTrait
         $obj->__clone();
     }
 
-    public function test__Singleton__wakeup(): void
+    public function testSingletonWakeup(): void
     {
         $class = static::getSingletonClassUnderTest();
 

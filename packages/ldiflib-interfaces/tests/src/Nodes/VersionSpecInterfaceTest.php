@@ -31,7 +31,7 @@ final class VersionSpecInterfaceTest extends TestCase
         };
     }
 
-    public static function prov__extendsInterface(): array
+    public static function provExtendsInterface(): array
     {
         return [
             [NodeInterface::class],
@@ -39,7 +39,7 @@ final class VersionSpecInterfaceTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__extendsInterface
+     * @dataProvider provExtendsInterface
      */
     public function testExtendsInterface(string $extends): void
     {

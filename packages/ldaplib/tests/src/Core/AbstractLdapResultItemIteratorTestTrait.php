@@ -21,12 +21,12 @@ use Korowai\Lib\Ldap\LdapException;
  */
 trait AbstractLdapResultItemIteratorTestTrait
 {
-    public function test__implements__IteratorInterface(): void
+    public function testImplementsIteratorInterface(): void
     {
         $this->assertImplementsInterface($this->getIteratorInterface(), $this->getIteratorClass());
     }
 
-    public function prov__construct(): array
+    public function provConstruct(): array
     {
         $first = $this->createIteratorItemStub();
         $current = $this->createIteratorItemStub();
@@ -85,16 +85,16 @@ trait AbstractLdapResultItemIteratorTestTrait
     }
 
     /**
-     * @dataProvider prov__construct
+     * @dataProvider provConstruct
      */
-    public function test__construct(array $args, array $expect): void
+    public function testConstruct(array $args, array $expect): void
     {
         $iterator = $this->createIteratorInstance(...$args);
 
         $this->assertObjectHasPropertiesIdenticalTo($expect, $iterator);
     }
 
-    public function test__next()
+    public function testNext()
     {
         $item1 = $this->createIteratorItemStub();
         $item2 = $this->createIteratorItemStub();
@@ -129,7 +129,7 @@ trait AbstractLdapResultItemIteratorTestTrait
         $this->assertNull($iterator->key());
     }
 
-    public function test__next__withTriggerLdapError()
+    public function testNextWithTriggerLdapError()
     {
         $ldap = $this->getMockBuilder(LdapLinkInterface::class)
             ->getMockForAbstractClass()
@@ -174,7 +174,7 @@ trait AbstractLdapResultItemIteratorTestTrait
         $iterator->next();
     }
 
-    public function test__next__withTriggerNonLdapError()
+    public function testNextWithTriggerNonLdapError()
     {
         $ldap = $this->getMockBuilder(LdapLinkInterface::class)
             ->getMockForAbstractClass()
@@ -219,7 +219,7 @@ trait AbstractLdapResultItemIteratorTestTrait
         $iterator->next();
     }
 
-    public function test__rewind()
+    public function testRewind()
     {
         $item1 = $this->createIteratorItemStub();
         $item2 = $this->createIteratorItemStub();
@@ -238,7 +238,7 @@ trait AbstractLdapResultItemIteratorTestTrait
         $this->assertTrue($iterator->valid());
     }
 
-    public function test__rewind__fromInvalid()
+    public function testRewindFromInvalid()
     {
         $first = $this->createIteratorItemStub();
 

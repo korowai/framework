@@ -78,7 +78,7 @@ final class ResultTest extends TestCase
     // getResultEntries()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__getResultEntries(): array
+    public static function provGetResultEntries(): array
     {
         return [
             // #0
@@ -104,7 +104,7 @@ final class ResultTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__getResultEntries
+     * @dataProvider provGetResultEntries
      */
     public function testGetResultEntries(array $ldapEntries = []): void
     {
@@ -147,13 +147,13 @@ final class ResultTest extends TestCase
         }
     }
 
-    public static function prov__getResultEntries__withTriggerError(): array
+    public static function provGetResultEntriesWithTriggerError(): array
     {
         return static::feedLdapLinkErrorHandler();
     }
 
     /**
-     * @dataProvider prov__getResultEntries__withTriggerError
+     * @dataProvider provGetResultEntriesWithTriggerError
      */
     public function testGetResultEntriesWithTriggerError(LdapTriggerErrorTestFixture $fixture): void
     {
@@ -164,7 +164,7 @@ final class ResultTest extends TestCase
     // getResultReferences()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__getResultReferences(): array
+    public static function provGetResultReferences(): array
     {
         return [
             // #0
@@ -190,7 +190,7 @@ final class ResultTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__getResultReferences
+     * @dataProvider provGetResultReferences
      */
     public function testGetResultReferences(array $ldapReferences = []): void
     {
@@ -233,13 +233,13 @@ final class ResultTest extends TestCase
         }
     }
 
-    public static function prov__getResultReferences__withTriggerError(): array
+    public static function provGetResultReferencesWithTriggerError(): array
     {
         return static::feedLdapLinkErrorHandler();
     }
 
     /**
-     * @dataProvider prov__getResultReferences__withTriggerError
+     * @dataProvider provGetResultReferencesWithTriggerError
      */
     public function testGetResultReferencesWithTriggerError(LdapTriggerErrorTestFixture $fixture): void
     {

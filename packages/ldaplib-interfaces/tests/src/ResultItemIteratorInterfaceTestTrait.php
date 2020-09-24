@@ -21,7 +21,7 @@ trait ResultItemIteratorInterfaceTestTrait
 {
     abstract public static function createDummyInstance(): ResultItemIteratorInterface;
 
-    public function test__key(): void
+    public function testKey(): void
     {
         $dummy = $this->createDummyInstance();
 
@@ -32,7 +32,7 @@ trait ResultItemIteratorInterfaceTestTrait
         $this->assertSame($dummy->key, $dummy->key());
     }
 
-    public function test__key__withRetTypeError(): void
+    public function testKeyWithRetTypeError(): void
     {
         $dummy = $this->createDummyInstance();
         $dummy->key = '';
@@ -43,21 +43,21 @@ trait ResultItemIteratorInterfaceTestTrait
         $dummy->key();
     }
 
-    public function test__next(): void
+    public function testNext(): void
     {
         $dummy = $this->createDummyInstance();
 
         $this->assertNull($dummy->next());
     }
 
-    public function test__rewind(): void
+    public function testRewind(): void
     {
         $dummy = $this->createDummyInstance();
 
         $this->assertNull($dummy->rewind());
     }
 
-    public function test__valid(): void
+    public function testValid(): void
     {
         $dummy = $this->createDummyInstance();
 
@@ -65,7 +65,7 @@ trait ResultItemIteratorInterfaceTestTrait
         $this->assertSame($dummy->valid, $dummy->valid());
     }
 
-    public function test__valid__withRetTypeError(): void
+    public function testValidWithRetTypeError(): void
     {
         $dummy = $this->createDummyInstance();
         $dummy->valid = null;

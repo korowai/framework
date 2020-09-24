@@ -76,7 +76,7 @@ final class ResultReferenceTest extends TestCase
     // getReferrals()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__getReferrals(): array
+    public static function provGetReferrals(): array
     {
         return [
             // #0
@@ -101,7 +101,7 @@ final class ResultReferenceTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__getReferrals
+     * @dataProvider provGetReferrals
      *
      * @param mixed $return
      * @param mixed $output
@@ -123,13 +123,13 @@ final class ResultReferenceTest extends TestCase
         $this->assertSame($expect, $reference->getReferrals());
     }
 
-    public static function prov__getReferrals__withTriggerError(): array
+    public static function provGetReferralsWithTriggerError(): array
     {
         return static::feedLdapLinkErrorHandler();
     }
 
     /**
-     * @dataProvider prov__getReferrals__withTriggerError
+     * @dataProvider provGetReferralsWithTriggerError
      */
     public function testGetReferralsWithTriggerError(LdapTriggerErrorTestFixture $fixture): void
     {
@@ -140,7 +140,7 @@ final class ResultReferenceTest extends TestCase
     // getReferralIterator(), getIterator()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__getReferralIterator(): array
+    public static function provGetReferralIterator(): array
     {
         return [
             // #0
@@ -165,7 +165,7 @@ final class ResultReferenceTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__getReferralIterator
+     * @dataProvider provGetReferralIterator
      *
      * @param mixed $return
      * @param mixed $output
@@ -193,13 +193,13 @@ final class ResultReferenceTest extends TestCase
         $this->assertSame($expect, $iterator->getArrayCopy());
     }
 
-    public static function prov__getReferralIterator__withTriggerError(): array
+    public static function provGetReferralIteratorWithTriggerError(): array
     {
         return static::feedLdapLinkErrorHandler();
     }
 
     /**
-     * @dataProvider prov__getReferralIterator__withTriggerError
+     * @dataProvider provGetReferralIteratorWithTriggerError
      */
     public function testGetReferralIteratorWithTriggerError(LdapTriggerErrorTestFixture $fixture): void
     {

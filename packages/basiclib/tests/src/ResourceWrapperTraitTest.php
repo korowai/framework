@@ -34,14 +34,14 @@ final class ResourceWrapperTraitTest extends TestCase
         $this->assertSame('foo', $wrapper->getResource());
     }
 
-    public function prov__isValid(): array
+    public function provIsValid(): array
     {
         return static::feedIsValid('foo');
     }
 
     /**
      * @runInSeparateProcess
-     * @dataProvider prov__isValid
+     * @dataProvider provIsValid
      *
      * @param mixed $arg
      * @param mixed $return

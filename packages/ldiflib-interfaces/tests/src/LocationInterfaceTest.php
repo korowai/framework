@@ -24,7 +24,7 @@ use Korowai\Testing\LdiflibInterfaces\TestCase;
  */
 final class LocationInterfaceTest extends TestCase
 {
-    public static function prov__extendsInterface(): array
+    public static function provExtendsInterface(): array
     {
         return [
             [SourceLocationInterface::class],
@@ -32,7 +32,7 @@ final class LocationInterfaceTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__extendsInterface
+     * @dataProvider provExtendsInterface
      */
     public function testExtendsInterface(string $extends): void
     {

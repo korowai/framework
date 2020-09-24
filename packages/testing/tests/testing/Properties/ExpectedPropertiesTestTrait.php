@@ -40,7 +40,7 @@ trait ExpectedPropertiesTestTrait
     // canUnwrapChild()
     //
 
-    public function prov__ExpectedProperties__canUnwrapChild(): array
+    public function provExpectedPropertiesCanUnwrapChild(): array
     {
         $selector = $this->createMock(PropertySelectorInterface::class);
 
@@ -62,9 +62,9 @@ trait ExpectedPropertiesTestTrait
     }
 
     /**
-     * @dataProvider prov__ExpectedProperties__canUnwrapChild
+     * @dataProvider provExpectedPropertiesCanUnwrapChild
      */
-    public function test__ExpectedProperties__canUnwrapChild(
+    public function testExpectedPropertiesCanUnwrapChild(
         PropertiesInterface $parent,
         PropertiesInterface $child,
         bool $expect

@@ -116,7 +116,7 @@ final class LdapTest extends TestCase
     // __construct()
     //
 
-    public function prov__construct(): array
+    public function provConstruct(): array
     {
         $link = $this->createMock(LdapLinkInterface::class);
 
@@ -149,7 +149,7 @@ final class LdapTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__construct
+     * @dataProvider provConstruct
      */
     public function testConstruct(array $args, array $expect): void
     {

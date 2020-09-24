@@ -91,13 +91,13 @@ final class LdapResultEntryTest extends TestCase
     // supportsResourceType()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__supportsResourceType(): array
+    public static function provSupportsResourceType(): array
     {
         return static::feedSupportsResourceType('ldap result entry');
     }
 
     /**
-     * @dataProvider prov__supportsResourceType()
+     * @dataProvider provSupportsResourceType()
      *
      * @param mixed $expect
      */
@@ -112,14 +112,14 @@ final class LdapResultEntryTest extends TestCase
     // isValid()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__isValid(): array
+    public static function provIsValid(): array
     {
         return static::feedIsValid('ldap result entry');
     }
 
     /**
      * @runInSeparateProcess
-     * @dataProvider prov__isValid
+     * @dataProvider provIsValid
      *
      * @param mixed $arg
      * @param mixed $return
@@ -135,7 +135,7 @@ final class LdapResultEntryTest extends TestCase
     // get_dn()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__get_dn__withMockedBackend(): array
+    public static function provGetDnWithMockedBackend(): array
     {
         return [
             // #0
@@ -161,7 +161,7 @@ final class LdapResultEntryTest extends TestCase
 
     /**
      * @runInSeparateProcess
-     * @dataProvider prov__get_dn__withMockedBackend
+     * @dataProvider provGetDnWithMockedBackend
      *
      * @param mixed $return
      * @param mixed $expect
@@ -175,7 +175,7 @@ final class LdapResultEntryTest extends TestCase
     // first_attribute()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__first_attribute__withMockedBackend(): array
+    public static function provFirstAttributeWithMockedBackend(): array
     {
         return [
             // #0
@@ -201,7 +201,7 @@ final class LdapResultEntryTest extends TestCase
 
     /**
      * @runInSeparateProcess
-     * @dataProvider prov__first_attribute__withMockedBackend
+     * @dataProvider provFirstAttributeWithMockedBackend
      *
      * @param mixed $return
      * @param mixed $expect
@@ -215,7 +215,7 @@ final class LdapResultEntryTest extends TestCase
     // get_attributes()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__get_attributes__withMockedBackend(): array
+    public static function provGetAttributesWithMockedBackend(): array
     {
         return [
             // #0
@@ -241,7 +241,7 @@ final class LdapResultEntryTest extends TestCase
 
     /**
      * @runInSeparateProcess
-     * @dataProvider prov__get_attributes__withMockedBackend
+     * @dataProvider provGetAttributesWithMockedBackend
      *
      * @param mixed $return
      * @param mixed $expect
@@ -255,7 +255,7 @@ final class LdapResultEntryTest extends TestCase
     // get_values_len()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__get_values_len__withMockedBackend(): array
+    public static function provGetValuesLenWithMockedBackend(): array
     {
         return [
             // #0
@@ -281,7 +281,7 @@ final class LdapResultEntryTest extends TestCase
 
     /**
      * @runInSeparateProcess
-     * @dataProvider prov__get_values_len__withMockedBackend
+     * @dataProvider provGetValuesLenWithMockedBackend
      *
      * @param mixed $return
      * @param mixed $expect
@@ -295,7 +295,7 @@ final class LdapResultEntryTest extends TestCase
     // get_values()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__get_values__withMockedBackend(): array
+    public static function provGetValuesWithMockedBackend(): array
     {
         return [
             // #0
@@ -321,7 +321,7 @@ final class LdapResultEntryTest extends TestCase
 
     /**
      * @runInSeparateProcess
-     * @dataProvider prov__get_values__withMockedBackend
+     * @dataProvider provGetValuesWithMockedBackend
      *
      * @param mixed $return
      * @param mixed $expect
@@ -335,7 +335,7 @@ final class LdapResultEntryTest extends TestCase
     // next_attribute()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__next_attribute__withMockedBackend(): array
+    public static function provNextAttributeWithMockedBackend(): array
     {
         return [
             // #0
@@ -363,7 +363,7 @@ final class LdapResultEntryTest extends TestCase
 
     /**
      * @runInSeparateProcess
-     * @dataProvider prov__next_attribute__withMockedBackend
+     * @dataProvider provNextAttributeWithMockedBackend
      *
      * @param mixed $return
      * @param mixed $expect
@@ -377,7 +377,7 @@ final class LdapResultEntryTest extends TestCase
     // next_entry()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__next_entry__withMockedBackend(): array
+    public static function provNextEntryWithMockedBackend(): array
     {
         return [
             // #0
@@ -408,7 +408,7 @@ final class LdapResultEntryTest extends TestCase
 
     /**
      * @runInSeparateProcess
-     * @dataProvider prov__next_entry__withMockedBackend
+     * @dataProvider provNextEntryWithMockedBackend
      *
      * @param mixed $return
      * @param mixed $expect
@@ -424,7 +424,7 @@ final class LdapResultEntryTest extends TestCase
 
     /**
      * @runInSeparateProcess
-     * @dataProvider prov__next_entry__withMockedBackend
+     * @dataProvider provNextEntryWithMockedBackend
      *
      * @param mixed $return
      * @param mixed $expect

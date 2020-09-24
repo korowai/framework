@@ -25,7 +25,7 @@ use Korowai\Testing\Ldiflib\TestCase;
  */
 final class ScanTest extends TestCase
 {
-    public static function prov__matchAt()
+    public static function provMatchAt()
     {
         return [
             [['//', ''], ['']],
@@ -37,7 +37,7 @@ final class ScanTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__matchAt
+     * @dataProvider provMatchAt
      */
     public function testMatchAt(array $case, array $expected): void
     {
@@ -48,7 +48,7 @@ final class ScanTest extends TestCase
         $this->assertSame($expected, Scan::matchAt(...$args));
     }
 
-    public static function prov__matchAhead()
+    public static function provMatchAhead()
     {
         return [
             [['//', ''], [['', 0]], 0],
@@ -60,7 +60,7 @@ final class ScanTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__matchAhead
+     * @dataProvider provMatchAhead
      */
     public function testMatchAhead(array $case, array $expected, int $expMoveTo = null): void
     {
@@ -70,14 +70,14 @@ final class ScanTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__matchAt
+     * @dataProvider provMatchAt
      */
     public function testMatchString(array $case, array $expected): void
     {
         $this->assertSame($expected, Scan::matchString(...$case));
     }
 
-    public static function prov__matched()
+    public static function provMatched()
     {
         return [
             // #0
@@ -144,7 +144,7 @@ final class ScanTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__matched
+     * @dataProvider provMatched
      *
      * @param mixed $key
      */

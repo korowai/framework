@@ -72,7 +72,7 @@ final class CompareQueryTest extends TestCase
     // execute()/getResult()
     //
 
-    public static function prov__query(): array
+    public static function provQuery(): array
     {
         $common = [
             // #0
@@ -98,7 +98,7 @@ final class CompareQueryTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__query
+     * @dataProvider provQuery
      *
      * @param mixed $return
      * @param mixed $expect
@@ -118,7 +118,7 @@ final class CompareQueryTest extends TestCase
         $this->assertSame($expect, $query->{$method}());
     }
 
-    public static function prov__query__withLdapTriggerError(): array
+    public static function provQueryWithLdapTriggerError(): array
     {
         $common = self::feedLdapLinkErrorHandler();
         foreach (['execute', 'getResult'] as $method) {
@@ -131,7 +131,7 @@ final class CompareQueryTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__query__withLdapTriggerError
+     * @dataProvider provQueryWithLdapTriggerError
      */
     public function testQueryWithLdapTriggerError(string $method, LdapTriggerErrorTestFixture $fixture): void
     {
@@ -145,7 +145,7 @@ final class CompareQueryTest extends TestCase
         $this->examineLdapLinkErrorHandler($function, $subject, $link, $fixture);
     }
 
-    public function prov__query__withLdapReturningFailure(): array
+    public function provQueryWithLdapReturningFailure(): array
     {
         return [
             // # 0
@@ -156,7 +156,7 @@ final class CompareQueryTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__query__withLdapReturningFailure
+     * @dataProvider provQueryWithLdapReturningFailure
      */
     public function testQueryWithLdapReturningFailure(string $method): void
     {

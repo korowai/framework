@@ -32,7 +32,7 @@ final class Rfc8089Test extends TestCase
     // FILE_AUTH
     //
 
-    public function prov__FILE_AUTH()
+    public function provFILEAUTH()
     {
         $cases = [
             [
@@ -44,7 +44,7 @@ final class Rfc8089Test extends TestCase
             ],
         ];
         $inheritedCases = [];
-        foreach (Rfc3986Test::prov__HOST() as $case) {
+        foreach (Rfc3986Test::provHOST() as $case) {
             $inheritedCases[] = static::transformPregTuple($case, [
                 'merge' => [
                     'file_auth' => [$case[0], 0],
@@ -55,16 +55,16 @@ final class Rfc8089Test extends TestCase
         return array_merge($inheritedCases, $cases);
     }
 
-    public function prov__non__FILE_AUTH()
+    public function provNonFILEAUTH()
     {
         $strings = [];
-        $inheritedCases = Rfc3986Test::prov__non__HOST();
+        $inheritedCases = Rfc3986Test::provNonHOST();
 
         return array_merge($inheritedCases, static::stringsToPregTuples($strings));
     }
 
     /**
-     * @dataProvider prov__FILE_AUTH
+     * @dataProvider provFILEAUTH
      */
     public function testFILEAUTHMatches(string $string, array $pieces): void
     {
@@ -74,7 +74,7 @@ final class Rfc8089Test extends TestCase
     }
 
     /**
-     * @dataProvider prov__non__FILE_AUTH
+     * @dataProvider provNonFILEAUTH
      */
     public function testFILEAUTHNotMatches(string $string): void
     {
@@ -85,11 +85,11 @@ final class Rfc8089Test extends TestCase
     // LOCAL_PATH
     //
 
-    public function prov__LOCAL_PATH()
+    public function provLOCALPATH()
     {
         $cases = [];
         $inheritedCases = [];
-        foreach (Rfc3986Test::prov__PATH_ABSOLUTE() as $case) {
+        foreach (Rfc3986Test::provPATHABSOLUTE() as $case) {
             $inheritedCases[] = static::transformPregTuple($case, [
                 'merge' => [
                     'local_path' => [$case[0], 0],
@@ -100,19 +100,19 @@ final class Rfc8089Test extends TestCase
         return array_merge($inheritedCases, $cases);
     }
 
-    public function prov__non__LOCAL_PATH()
+    public function provNonLOCALPATH()
     {
         $strings = [
         ];
 
         return array_merge(
             static::stringsToPregTuples($strings),
-            Rfc3986Test::prov__non__PATH_ABSOLUTE()
+            Rfc3986Test::provNonPATHABSOLUTE()
         );
     }
 
     /**
-     * @dataProvider prov__LOCAL_PATH
+     * @dataProvider provLOCALPATH
      */
     public function testLOCALPATHMatches(string $string, array $pieces): void
     {
@@ -122,7 +122,7 @@ final class Rfc8089Test extends TestCase
     }
 
     /**
-     * @dataProvider prov__non__LOCAL_PATH
+     * @dataProvider provNonLOCALPATH
      */
     public function testLOCALPATHNotMatches(string $string): void
     {
@@ -133,11 +133,11 @@ final class Rfc8089Test extends TestCase
     // AUTH_PATH
     //
 
-    public function prov__AUTH_PATH()
+    public function provAUTHPATH()
     {
         $cases = [];
         $inheritedCases = [];
-        foreach (Rfc3986Test::prov__PATH_ABSOLUTE() as $path) {
+        foreach (Rfc3986Test::provPATHABSOLUTE() as $path) {
             $inheritedCases[] = static::transformPregTuple($path, [
                 'merge' => [
                     'auth_path' => [$path[0], 0],
@@ -145,7 +145,7 @@ final class Rfc8089Test extends TestCase
                     'path_absolute' => [$path[0], 0],
                 ],
             ]);
-            foreach (static::prov__FILE_AUTH() as $fileAuth) {
+            foreach (static::provFILEAUTH() as $fileAuth) {
                 $inheritedCases[] = static::joinPregTuples([$fileAuth, $path], [
                     'merge' => [
                         'auth_path' => [$fileAuth[0].$path[0], 0],
@@ -157,7 +157,7 @@ final class Rfc8089Test extends TestCase
         return array_merge($cases, $inheritedCases);
     }
 
-    public function prov__non__AUTH_PATH()
+    public function provNonAUTHPATH()
     {
         $strings = ['', 'a', ':', '%', '%1', '%G', '%1G', '%G2', '#', 'ł', '?', '1.2.3.4'];
 
@@ -165,7 +165,7 @@ final class Rfc8089Test extends TestCase
     }
 
     /**
-     * @dataProvider prov__AUTH_PATH
+     * @dataProvider provAUTHPATH
      */
     public function testAUTHPATHMatches(string $string, array $pieces): void
     {
@@ -176,7 +176,7 @@ final class Rfc8089Test extends TestCase
     }
 
     /**
-     * @dataProvider prov__non__AUTH_PATH
+     * @dataProvider provNonAUTHPATH
      */
     public function testAUTHPATHNotMatches(string $string): void
     {
@@ -187,11 +187,11 @@ final class Rfc8089Test extends TestCase
     // FILE_HIER_PART
     //
 
-    public function prov__FILE_HIER_PART()
+    public function provFILEHIERPART()
     {
         $cases = [];
         $inheritedCases = [];
-        foreach (self::prov__AUTH_PATH() as $authPath) {
+        foreach (self::provAUTHPATH() as $authPath) {
             $inheritedCases[] = static::transformPregTuple($authPath, [
                 'prefix' => '//',
                 'merge' => [
@@ -200,7 +200,7 @@ final class Rfc8089Test extends TestCase
                 ],
             ]);
         }
-        foreach (self::prov__LOCAL_PATH() as $localPath) {
+        foreach (self::provLOCALPATH() as $localPath) {
             $inheritedCases[] = static::transformPregTuple($localPath, [
                 'merge' => [
                     'file_hier_part' => [$localPath[0], 0],
@@ -212,7 +212,7 @@ final class Rfc8089Test extends TestCase
         return array_merge($inheritedCases, $cases);
     }
 
-    public function prov__non__FILE_HIER_PART()
+    public function provNonFILEHIERPART()
     {
         $strings = ['', 'a', ':', '%', '%1', '%G', '%1G', '%G2', '#', 'ł', '?', '1.2.3.4'];
 
@@ -220,7 +220,7 @@ final class Rfc8089Test extends TestCase
     }
 
     /**
-     * @dataProvider prov__FILE_HIER_PART
+     * @dataProvider provFILEHIERPART
      */
     public function testFILEHIERPARTMatches(string $string, array $pieces): void
     {
@@ -231,7 +231,7 @@ final class Rfc8089Test extends TestCase
     }
 
     /**
-     * @dataProvider prov__non__FILE_HIER_PART
+     * @dataProvider provNonFILEHIERPART
      */
     public function testFILEHIERPARTNotMatches(string $string): void
     {
@@ -251,7 +251,7 @@ final class Rfc8089Test extends TestCase
     // FILE_URI
     //
 
-    public function prov__FILE_URI()
+    public function provFILEURI()
     {
         $cases = [
             [
@@ -287,7 +287,7 @@ final class Rfc8089Test extends TestCase
         $fileScheme = ['file', ['file_scheme' => ['file', 0]]];
 
         $inheritedCases = [];
-        foreach (self::prov__FILE_HIER_PART() as $hierPart) {
+        foreach (self::provFILEHIERPART() as $hierPart) {
             $inheritedCases[] = static::joinPregTuples([$fileScheme, $hierPart], [
                 'glue' => ':',
                 'merge' => [
@@ -299,7 +299,7 @@ final class Rfc8089Test extends TestCase
         return array_merge($cases, $inheritedCases);
     }
 
-    public function prov__non__FILE_URI()
+    public function provNonFILEURI()
     {
         $strings = ['', 'a', ':', '%', '%1', '%G', '%1G', '%G2', '#', 'ł', '?', '1.2.3.4', 'file:'];
 
@@ -307,7 +307,7 @@ final class Rfc8089Test extends TestCase
     }
 
     /**
-     * @dataProvider prov__FILE_URI
+     * @dataProvider provFILEURI
      */
     public function testFILEURIMatches(string $string, array $pieces): void
     {
@@ -318,7 +318,7 @@ final class Rfc8089Test extends TestCase
     }
 
     /**
-     * @dataProvider prov__non__FILE_URI
+     * @dataProvider provNonFILEURI
      */
     public function testFILEURINotMatches(string $string): void
     {

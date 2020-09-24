@@ -26,13 +26,13 @@ final class FunctionsTest extends TestCase
 {
     use FeedConfigPathTrait;
 
-    public static function prov__config_path(): array
+    public static function provConfigPath(): array
     {
         return self::feedConfigPath(realpath(__DIR__.'/../../config'));
     }
 
     /**
-     * @dataProvider prov__config_path
+     * @dataProvider provConfigPath
      */
     public function testConfigPath(array $args, string $expect): void
     {

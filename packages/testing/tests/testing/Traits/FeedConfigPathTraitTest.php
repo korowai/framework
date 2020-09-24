@@ -25,13 +25,13 @@ final class FeedConfigPathTraitTest extends TestCase
 {
     use FeedConfigPathTrait;
 
-    public static function prov__feedConfigPath(): array
+    public static function provFeedConfigPath(): array
     {
         return self::feedConfigPath(__DIR__);
     }
 
     /**
-     * @dataProvider prov__feedConfigPath
+     * @dataProvider provFeedConfigPath
      */
     public function testFeedConfigPath(array $args, string $expect): void
     {

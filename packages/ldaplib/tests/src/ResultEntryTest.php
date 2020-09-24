@@ -84,7 +84,7 @@ final class ResultEntryTest extends TestCase
     // getDn()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__getDn(): array
+    public static function provGetDn(): array
     {
         return [
             // #0
@@ -101,7 +101,7 @@ final class ResultEntryTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__getDn
+     * @dataProvider provGetDn
      *
      * @param mixed $return
      * @param mixed $expect
@@ -118,13 +118,13 @@ final class ResultEntryTest extends TestCase
         $this->assertSame($expect, $resultEntry->getDn());
     }
 
-    public static function prov__getDn__withTriggerError(): array
+    public static function provGetDnWithTriggerError(): array
     {
         return static::feedLdapLinkErrorHandler();
     }
 
     /**
-     * @dataProvider prov__getDn__withTriggerError
+     * @dataProvider provGetDnWithTriggerError
      */
     public function testGetDnWithTriggerError(LdapTriggerErrorTestFixture $fixture): void
     {
@@ -135,7 +135,7 @@ final class ResultEntryTest extends TestCase
     // getAttributes()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__getAttributes(): array
+    public static function provGetAttributes(): array
     {
         return [
             // #0
@@ -187,7 +187,7 @@ final class ResultEntryTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__getAttributes
+     * @dataProvider provGetAttributes
      *
      * @param mixed $return
      * @param mixed $expect
@@ -204,13 +204,13 @@ final class ResultEntryTest extends TestCase
         $this->assertSame($expect, $resultEntry->getAttributes());
     }
 
-    public static function prov__getAttributes__withTriggerError(): array
+    public static function provGetAttributesWithTriggerError(): array
     {
         return static::feedLdapLinkErrorHandler();
     }
 
     /**
-     * @dataProvider prov__getAttributes__withTriggerError
+     * @dataProvider provGetAttributesWithTriggerError
      */
     public function testGetAttributesWithTriggerError(LdapTriggerErrorTestFixture $fixture): void
     {
@@ -256,13 +256,13 @@ final class ResultEntryTest extends TestCase
         $this->assertEquals(['SECOND'], $iterator->current());
     }
 
-    public static function prov__getAttributeIterator__withTriggerError(): array
+    public static function provGetAttributeIteratorWithTriggerError(): array
     {
         return static::feedLdapLinkErrorHandler();
     }
 
     /**
-     * @dataProvider prov__getAttributeIterator__withTriggerError
+     * @dataProvider provGetAttributeIteratorWithTriggerError
      */
     public function testGetAttributeIteratorWithTriggerError(LdapTriggerErrorTestFixture $fixture): void
     {

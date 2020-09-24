@@ -68,7 +68,7 @@ final class BindingTest extends TestCase
         $this->assertUsesTrait(LdapLinkWrapperTrait::class, Binding::class);
     }
 
-    public function prov__construct(): array
+    public function provConstruct(): array
     {
         $link = $this->createMock(LdapLinkInterface::class);
 
@@ -101,7 +101,7 @@ final class BindingTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__construct
+     * @dataProvider provConstruct
      */
     public function testConstruct(array $args, array $expect): void
     {

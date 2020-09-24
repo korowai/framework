@@ -30,18 +30,18 @@ trait ContainerFactoryTestTrait
 
     abstract public function examineConfiguredContainer(ContainerInterface $container, $config): void;
 
-    public function test__implements__ContainerFactoryInterface(): void
+    public function testImplementsContainerFactoryInterface(): void
     {
         $this->assertImplementsInterface(ContainerFactoryInterface::class, $this->getContainerFactoryClass());
     }
 
-    public function test__createContainer__returns__ContainerInterface(): void
+    public function testCreateContainerReturnsContainerInterface(): void
     {
         $factory = $this->getContainerFactory();
         $this->assertInstanceOf(ContainerInterface::class, $factory->createContainer());
     }
 
-    public function test__createContainer__returns__ActualContainerClass(): void
+    public function testCreateContainerReturnsActualContainerClass(): void
     {
         $factory = $this->getContainerFactory();
         $this->assertInstanceOf($this->getContainerClass(), $factory->createContainer());
@@ -49,7 +49,7 @@ trait ContainerFactoryTestTrait
 
     // See https://github.com/korowai/framework/issues/11
     // @codeCoverageIgnoreStart
-    public function prov__ContainerFactory__usesProvidedConfig(): iterable
+    public function provContainerFactoryUsesProvidedConfig(): iterable
     {
         foreach ($this->provideContainerConfigs() as $config) {
             yield [$config];
@@ -59,11 +59,11 @@ trait ContainerFactoryTestTrait
     // @codeCoverageIgnoreEnd
 
     /**
-     * @dataProvider prov__ContainerFactory__usesProvidedConfig
+     * @dataProvider provContainerFactoryUsesProvidedConfig
      *
      * @param mixed $config
      */
-    public function test__ContainerFactory__usesProvidedConfig($config): void
+    public function testContainerFactoryUsesProvidedConfig($config): void
     {
         $container = $this->getContainerFactory()->setConfig($config)->createContainer();
         $this->examineConfiguredContainer($container, $config);

@@ -174,7 +174,7 @@ final class StaticRuleSetInterfaceTest extends TestCase
         $this->assertSame($dummy::$findCapturedErrors, $dummy::findCapturedErrors('', []));
     }
 
-    public static function prov__findCapturedErrors__withArgTypeError(): array
+    public static function provFindCapturedErrorsWithArgTypeError(): array
     {
         return [
             [[null, []], \string::class],
@@ -183,7 +183,7 @@ final class StaticRuleSetInterfaceTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__findCapturedErrors__withArgTypeError
+     * @dataProvider provFindCapturedErrorsWithArgTypeError
      */
     public function testFindCapturedErrorsWithArgTypeError(array $args, string $message): void
     {
@@ -213,7 +213,7 @@ final class StaticRuleSetInterfaceTest extends TestCase
         $this->assertSame($dummy::$findCapturedValues, $dummy::findCapturedValues('', []));
     }
 
-    public static function prov__findCapturedValues__withArgTypeError(): array
+    public static function provFindCapturedValuesWithArgTypeError(): array
     {
         return [
             [[null, []], \string::class],
@@ -222,7 +222,7 @@ final class StaticRuleSetInterfaceTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__findCapturedValues__withArgTypeError
+     * @dataProvider provFindCapturedValuesWithArgTypeError
      */
     public function testFindCapturedValuesWithArgTypeError(array $args, string $message): void
     {
@@ -254,7 +254,7 @@ final class StaticRuleSetInterfaceTest extends TestCase
         $this->assertSame($dummy::$errorMessage, $dummy::getErrorMessage(''));
     }
 
-    public static function prov__getErrorMessage__withArgTypeError(): array
+    public static function provGetErrorMessageWithArgTypeError(): array
     {
         return [
             [['', []], \string::class],
@@ -264,7 +264,7 @@ final class StaticRuleSetInterfaceTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__getErrorMessage__withArgTypeError
+     * @dataProvider provGetErrorMessageWithArgTypeError
      */
     public function testGetErrorMessageWithArgTypeError(array $args, string $message): void
     {

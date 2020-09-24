@@ -28,7 +28,7 @@ final class InvalidModTypeExceptionTest extends TestCase
         $this->assertExtendsClass(\InvalidArgumentException::class, InvalidModTypeException::class);
     }
 
-    public static function prov__getMessage()
+    public static function provGetMessage()
     {
         return [
             'default message' => [[], ''],
@@ -37,7 +37,7 @@ final class InvalidModTypeExceptionTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__getMessage
+     * @dataProvider provGetMessage
      */
     public function testGetMessage(array $args, string $expect): void
     {

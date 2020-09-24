@@ -59,7 +59,7 @@ final class LdapLinkFactoryTest extends TestCase
     // createLdapLink()
     //
 
-    public static function prov__createLdapLink(): array
+    public static function provCreateLdapLink(): array
     {
         return [
             // #0
@@ -83,7 +83,7 @@ final class LdapLinkFactoryTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__createLdapLink
+     * @dataProvider provCreateLdapLink
      */
     public function testCreateLdapLink(array $params): void
     {
@@ -133,13 +133,13 @@ final class LdapLinkFactoryTest extends TestCase
         $this->assertSame($link, $factory->createLdapLink($config));
     }
 
-    public static function prov__createLdapLink__whenStartTlsTriggersError(): array
+    public static function provCreateLdapLinkWhenStartTlsTriggersError(): array
     {
         return static::feedLdapLinkErrorHandler();
     }
 
     /**
-     * @dataProvider prov__createLdapLink__whenStartTlsTriggersError
+     * @dataProvider provCreateLdapLinkWhenStartTlsTriggersError
      */
     public function testCreateLdapLinkWhenStartTlsTriggersError(LdapTriggerErrorTestFixture $fixture): void
     {
@@ -181,13 +181,13 @@ final class LdapLinkFactoryTest extends TestCase
         $this->examineLdapLinkErrorHandler($function, $subject, $link, $fixture);
     }
 
-    public static function prov__createLdapLink__whenSetOptionTriggersError(): array
+    public static function provCreateLdapLinkWhenSetOptionTriggersError(): array
     {
         return static::feedLdapLinkErrorHandler();
     }
 
     /**
-     * @dataProvider prov__createLdapLink__whenSetOptionTriggersError
+     * @dataProvider provCreateLdapLinkWhenSetOptionTriggersError
      */
     public function testCreateLdapLinkWhenSetOptionTriggersError(LdapTriggerErrorTestFixture $fixture): void
     {

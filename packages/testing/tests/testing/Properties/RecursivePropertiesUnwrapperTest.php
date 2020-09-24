@@ -63,7 +63,7 @@ final class RecursivePropertiesUnwrapperTest extends TestCase
     // unwrap()
     //
 
-    public function prov__unwrap(): array
+    public function provUnwrap(): array
     {
         $actualProperties['[baz => BAZ]'] = $this->createActualProperties(['baz' => 'BAZ']);
         $expectProperties['[baz => BAZ]'] = $this->createExpectedProperties(['baz' => 'BAZ']);
@@ -208,7 +208,7 @@ final class RecursivePropertiesUnwrapperTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__unwrap
+     * @dataProvider provUnwrap
      */
     public function testUnwrap(PropertiesInterface $properties, array $expect): void
     {
@@ -216,7 +216,7 @@ final class RecursivePropertiesUnwrapperTest extends TestCase
         $this->assertSame($expect, $unwrapper->unwrap($properties));
     }
 
-    public function prov__unwrap__throwsExceptionOnCircularDependency(): array
+    public function provUnwrapThrowsExceptionOnCircularDependency(): array
     {
         // #0
         $properties['#0'] = $this->createActualProperties([
@@ -282,7 +282,7 @@ final class RecursivePropertiesUnwrapperTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__unwrap__throwsExceptionOnCircularDependency
+     * @dataProvider provUnwrapThrowsExceptionOnCircularDependency
      *
      * @param mixed $key
      */

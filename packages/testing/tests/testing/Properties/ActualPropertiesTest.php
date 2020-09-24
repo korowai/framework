@@ -47,7 +47,7 @@ final class ActualPropertiesTest extends TestCase
     // __construct()
     //
 
-    public static function prov__construct(): array
+    public static function provConstruct(): array
     {
         return [
             // #0
@@ -71,7 +71,7 @@ final class ActualPropertiesTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__construct
+     * @dataProvider provConstruct
      */
     public function testConstruct(array $args, array $expect): void
     {
@@ -85,7 +85,7 @@ final class ActualPropertiesTest extends TestCase
     // canUnwrapChild()
     //
 
-    public function prov__canUnwrapChild(): array
+    public function provCanUnwrapChild(): array
     {
         $selector = $this->createMock(PropertySelectorInterface::class);
 
@@ -107,7 +107,7 @@ final class ActualPropertiesTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__canUnwrapChild
+     * @dataProvider provCanUnwrapChild
      */
     public function testCanUnwrapChild(PropertiesInterface $parent, PropertiesInterface $child, bool $expect): void
     {

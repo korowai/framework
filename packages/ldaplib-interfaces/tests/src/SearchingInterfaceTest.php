@@ -47,7 +47,7 @@ final class SearchingInterfaceTest extends TestCase
         $this->assertSame($dummy->search, $dummy->search('', '', []));
     }
 
-    public static function prov__search__withArgTypeError(): array
+    public static function provSearchWithArgTypeError(): array
     {
         return [
             [[0], \string::class],
@@ -58,7 +58,7 @@ final class SearchingInterfaceTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__search__withArgTypeError
+     * @dataProvider provSearchWithArgTypeError
      */
     public function testSearchWithArgTypeError(array $args, string $message): void
     {
@@ -91,7 +91,7 @@ final class SearchingInterfaceTest extends TestCase
         $this->assertSame($dummy->createSearchQuery, $dummy->createSearchQuery('', '', []));
     }
 
-    public static function prov__createSearchQuery__withArgTypeError(): array
+    public static function provCreateSearchQueryWithArgTypeError(): array
     {
         return [
             [[null, ''], \string::class],
@@ -103,7 +103,7 @@ final class SearchingInterfaceTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__createSearchQuery__withArgTypeError
+     * @dataProvider provCreateSearchQueryWithArgTypeError
      */
     public function testCreateSearchQueryWithArgTypeError(array $args, string $message): void
     {

@@ -68,7 +68,7 @@ final class RuleTest extends TestCase
         ];
     }
 
-    public static function prov__ruleSetClassAndRuleName()
+    public static function provRuleSetClassAndRuleName()
     {
         foreach (static::ruleSetClasses() as $ruleSetClass) {
             foreach ($ruleSetClass::getClassRuleNames() as $ruleName) {
@@ -77,9 +77,9 @@ final class RuleTest extends TestCase
         }
     }
 
-    public static function prov__ruleSetClassRuleNameAndMatches()
+    public static function provRuleSetClassRuleNameAndMatches()
     {
-        foreach (static::prov__ruleSetClassAndRuleName() as $case) {
+        foreach (static::provRuleSetClassAndRuleName() as $case) {
             [$ruleSetClass, $ruleName] = $case;
             foreach (static::sampleMatches() as $matches) {
                 yield [$ruleSetClass, $ruleName, $matches];
@@ -88,7 +88,7 @@ final class RuleTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__ruleSetClassAndRuleName
+     * @dataProvider provRuleSetClassAndRuleName
      */
     public function testConstruct(string $ruleSetClass, string $ruleName): void
     {
@@ -109,7 +109,7 @@ final class RuleTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__ruleSetClassAndRuleName
+     * @dataProvider provRuleSetClassAndRuleName
      */
     public function testToString(string $ruleSetClass, string $ruleName): void
     {
@@ -118,7 +118,7 @@ final class RuleTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__ruleSetClassAndRuleName
+     * @dataProvider provRuleSetClassAndRuleName
      */
     public function testRule(string $ruleSetClass, string $ruleName): void
     {
@@ -127,7 +127,7 @@ final class RuleTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__ruleSetClassAndRuleName
+     * @dataProvider provRuleSetClassAndRuleName
      */
     public function testCaptures(string $ruleSetClass, string $ruleName): void
     {
@@ -136,7 +136,7 @@ final class RuleTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__ruleSetClassAndRuleName
+     * @dataProvider provRuleSetClassAndRuleName
      */
     public function testErrorCaptures(string $ruleSetClass, string $ruleName): void
     {
@@ -145,7 +145,7 @@ final class RuleTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__ruleSetClassAndRuleName
+     * @dataProvider provRuleSetClassAndRuleName
      */
     public function testValueCaptures(string $ruleSetClass, string $ruleName): void
     {
@@ -154,7 +154,7 @@ final class RuleTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__ruleSetClassRuleNameAndMatches
+     * @dataProvider provRuleSetClassRuleNameAndMatches
      */
     public function testFindCapturedErrors(string $ruleSetClass, string $ruleName, array $matches): void
     {
@@ -163,7 +163,7 @@ final class RuleTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__ruleSetClassRuleNameAndMatches
+     * @dataProvider provRuleSetClassRuleNameAndMatches
      */
     public function testFindCapturedValues(string $ruleSetClass, string $ruleName, array $matches): void
     {

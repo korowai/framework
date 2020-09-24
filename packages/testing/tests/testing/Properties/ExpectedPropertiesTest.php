@@ -55,7 +55,7 @@ final class ExpectedPropertiesTest extends TestCase
     // __construct()
     //
 
-    public static function prov__construct(): array
+    public static function provConstruct(): array
     {
         return [
             // #0
@@ -79,7 +79,7 @@ final class ExpectedPropertiesTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__construct
+     * @dataProvider provConstruct
      */
     public function testConstruct(array $args, array $expect): void
     {

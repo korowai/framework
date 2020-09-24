@@ -63,7 +63,7 @@ final class SearchQueryTest extends TestCase
         $this->assertUsesTrait(LdapLinkWrapperTrait::class, SearchQuery::class);
     }
 
-    public static function prov__construct(): array
+    public static function provConstruct(): array
     {
         $cases = [
             // #0
@@ -79,7 +79,7 @@ final class SearchQueryTest extends TestCase
             ],
         ];
 
-        foreach (SearchOptionsResolverTest::prov__resolve() as $case) {
+        foreach (SearchOptionsResolverTest::provResolve() as $case) {
             $cases[] = [
                 'args' => ['', '', $case['options']],
                 'expect' => [
@@ -92,7 +92,7 @@ final class SearchQueryTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__construct
+     * @dataProvider provConstruct
      */
     public function testConstruct(array $args, array $expect): void
     {
@@ -114,15 +114,15 @@ final class SearchQueryTest extends TestCase
         }
     }
 
-    public static function prov__construct__withInvalidOptions(): array
+    public static function provConstructWithInvalidOptions(): array
     {
         return array_map(function (array $case): array {
             return ['args' => ['', '', $case['options']], 'expect' => $case['expect']];
-        }, SearchOptionsResolverTest::prov__resolve__withInvalidOptions());
+        }, SearchOptionsResolverTest::provResolveWithInvalidOptions());
     }
 
     /**
-     * @dataProvider prov__construct__withInvalidOptions
+     * @dataProvider provConstructWithInvalidOptions
      */
     public function testConstructWithInvalidOptions(array $args, array $expect): void
     {
@@ -138,7 +138,7 @@ final class SearchQueryTest extends TestCase
     // execute()/getResult()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__query(): array
+    public static function provQuery(): array
     {
         $args = [
             'dc=korowai,dc=org',
@@ -190,7 +190,7 @@ final class SearchQueryTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__query
+     * @dataProvider provQuery
      */
     public function testQuery(string $method, array $args, array $expect): void
     {
@@ -211,7 +211,7 @@ final class SearchQueryTest extends TestCase
         }
     }
 
-    public static function prov__query__withTriggerError(): array
+    public static function provQueryWithTriggerError(): array
     {
         $args = ['dc=example,dc=org', 'objectClass=*'];
 
@@ -234,7 +234,7 @@ final class SearchQueryTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__query__withTriggerError
+     * @dataProvider provQueryWithTriggerError
      */
     public function testQueryWithTriggerError(
         string $method,
@@ -249,7 +249,7 @@ final class SearchQueryTest extends TestCase
         $this->examineLdapLinkErrorHandler([$query, $method], $subject, $link, $fixture);
     }
 
-    public static function prov__query__withLdapLinkReturningFalse(): array
+    public static function provQueryWithLdapLinkReturningFalse(): array
     {
         $args = ['dc=example,dc=org', 'objectClass=*'];
 
@@ -270,7 +270,7 @@ final class SearchQueryTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__query__withLdapLinkReturningFalse
+     * @dataProvider provQueryWithLdapLinkReturningFalse
      */
     public function testQueryWithLdapLinkReturningFalse(string $method, array $args, array $expect): void
     {

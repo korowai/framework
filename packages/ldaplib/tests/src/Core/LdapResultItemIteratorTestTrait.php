@@ -22,12 +22,12 @@ trait LdapResultItemIteratorTestTrait
 {
     use AbstractLdapResultItemIteratorTestTrait;
 
-    public function test__extends__AbstractLdapResultItemIterator(): void
+    public function testExtendsAbstractLdapResultItemIterator(): void
     {
         $this->assertExtendsClass(AbstractLdapResultItemIterator::class, $this->getIteratorClass());
     }
 
-    public function test__construct__withAbstractItemType(): void
+    public function testConstructWithAbstractItemType(): void
     {
         $first = $this->createIteratorItemStub();
         $item = $this->getMockBuilder(LdapResultItemInterface::class)
@@ -40,7 +40,7 @@ trait LdapResultItemIteratorTestTrait
         $this->createIteratorInstance($first, $item);
     }
 
-    public function test__current(): void
+    public function testCurrent(): void
     {
         $item = $this->getMockBuilder($this->getIteratorItemInterface())
             ->getMockForAbstractClass()

@@ -33,7 +33,7 @@ final class LdifAddRecordInterfaceTest extends TestCase
         };
     }
 
-    public static function prov__extendsInterface(): array
+    public static function provExtendsInterface(): array
     {
         return [
             [LdifChangeRecordInterface::class],
@@ -43,7 +43,7 @@ final class LdifAddRecordInterfaceTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__extendsInterface
+     * @dataProvider provExtendsInterface
      */
     public function testExtendsInterface(string $extends): void
     {

@@ -32,7 +32,7 @@ final class ModSpecInterfaceTest extends TestCase
         };
     }
 
-    public static function prov__extendsInterface(): array
+    public static function provExtendsInterface(): array
     {
         return [
             [HasAttrValSpecsInterface::class],
@@ -41,7 +41,7 @@ final class ModSpecInterfaceTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__extendsInterface
+     * @dataProvider provExtendsInterface
      */
     public function testExtendsInterface(string $extends): void
     {

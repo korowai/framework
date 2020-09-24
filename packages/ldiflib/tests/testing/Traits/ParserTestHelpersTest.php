@@ -48,13 +48,13 @@ final class ParserTestHelpersTest extends TestCase
         ];
     }
 
-    public static function prov__getInputFromSource()
+    public static function provGetInputFromSource()
     {
         return static::inputFromSource__cases();
     }
 
     /**
-     * @dataProvider prov__getInputFromSource
+     * @dataProvider provGetInputFromSource
      */
     public function testGetInputFromSource(array $args, array $expectations): void
     {
@@ -65,7 +65,7 @@ final class ParserTestHelpersTest extends TestCase
         $this->assertSame($expectations['file'], $input->getSourceFileName());
     }
 
-    public static function prov__getCursorFromSource()
+    public static function provGetCursorFromSource()
     {
         $cases = [
             [
@@ -100,7 +100,7 @@ final class ParserTestHelpersTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__getCursorFromSource
+     * @dataProvider provGetCursorFromSource
      */
     public function testGetCursorFromSource(array $args, array $expectations): void
     {
@@ -112,7 +112,7 @@ final class ParserTestHelpersTest extends TestCase
         $this->assertSame($expectations['offset'], $cursor->getOffset());
     }
 
-    public static function prov__getParserStateFromSource()
+    public static function provGetParserStateFromSource()
     {
         $cases = [
             [
@@ -144,13 +144,13 @@ final class ParserTestHelpersTest extends TestCase
                 $args,
                 array_merge($expectations, ['errors' => [], 'records' => []]),
             ];
-        }, static::prov__getCursorFromSource());
+        }, static::provGetCursorFromSource());
 
         return array_merge($inheritedCases, $cases);
     }
 
     /**
-     * @dataProvider prov__getParserStateFromSource
+     * @dataProvider provGetParserStateFromSource
      */
     public function testGetParserStateFromSource(array $args, array $expectations): void
     {

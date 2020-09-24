@@ -28,7 +28,7 @@ final class AttributeExceptionTest extends TestCase
         $this->assertExtendsClass(\OutOfRangeException::class, AttributeException::class);
     }
 
-    public static function prov__getMessages(): array
+    public static function provGetMessages(): array
     {
         return [
             'default message' => [[], 'No such attribute'],
@@ -37,7 +37,7 @@ final class AttributeExceptionTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__getMessages
+     * @dataProvider provGetMessages
      */
     public function testGetMessage(array $args, string $expect): void
     {

@@ -82,7 +82,7 @@ final class EntryManagerInterfaceTest extends TestCase
         $this->assertNull($dummy->rename($entry, '', false));
     }
 
-    public function prov__rename__withArgTypeError(): array
+    public function provRenameWithArgTypeError(): array
     {
         $entry = $this->createStub(EntryInterface::class);
 
@@ -94,7 +94,7 @@ final class EntryManagerInterfaceTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__rename__withArgTypeError
+     * @dataProvider provRenameWithArgTypeError
      */
     public function testRenameWithArgTypeError(array $args, string $message): void
     {

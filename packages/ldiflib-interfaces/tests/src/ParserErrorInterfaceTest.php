@@ -24,7 +24,7 @@ use Korowai\Testing\LdiflibInterfaces\TestCase;
  */
 final class ParserErrorInterfaceTest extends TestCase
 {
-    public static function prov__extendsInterface(): array
+    public static function provExtendsInterface(): array
     {
         return [
             [SourceLocationInterface::class],
@@ -33,7 +33,7 @@ final class ParserErrorInterfaceTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__extendsInterface
+     * @dataProvider provExtendsInterface
      */
     public function testExtendsInterface(string $extends): void
     {

@@ -43,14 +43,14 @@ final class AbstractRuleSetTest extends TestCase
         return [RuleSet2::class, RuleSet1::class, RuleSet0::class];
     }
 
-    public static function prov__class()
+    public static function provClass()
     {
         foreach (static::classesUnderTest() as $class) {
             yield [$class];
         }
     }
 
-    public static function prov__classRulename()
+    public static function provClassRulename()
     {
         foreach (static::classesUnderTest() as $class) {
             $classRules = $class::getClassRuleNames();
@@ -70,7 +70,7 @@ final class AbstractRuleSetTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__class
+     * @dataProvider provClass
      */
     public function testRules(string $class): void
     {
@@ -86,7 +86,7 @@ final class AbstractRuleSetTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__classRulename
+     * @dataProvider provClassRulename
      */
     public function testRegexp(string $class, string $ruleName): void
     {
@@ -97,7 +97,7 @@ final class AbstractRuleSetTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__classRulename
+     * @dataProvider provClassRulename
      */
     public function testCaptures(string $class, string $ruleName): void
     {
@@ -108,7 +108,7 @@ final class AbstractRuleSetTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__classRulename
+     * @dataProvider provClassRulename
      */
     public function testErrorCaptures(string $class, string $ruleName): void
     {
@@ -119,7 +119,7 @@ final class AbstractRuleSetTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__classRulename
+     * @dataProvider provClassRulename
      */
     public function testValueCaptures(string $class, string $ruleName): void
     {
@@ -129,7 +129,7 @@ final class AbstractRuleSetTest extends TestCase
         $this->assertSame($expected, $actual, $message);
     }
 
-    public static function prov__filterMatches()
+    public static function provFilterMatches()
     {
         return [
             [
@@ -144,7 +144,7 @@ final class AbstractRuleSetTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__filterMatches
+     * @dataProvider provFilterMatches
      *
      * @param mixed $matches
      * @param mixed $expected
@@ -158,7 +158,7 @@ final class AbstractRuleSetTest extends TestCase
         $this->assertSame($expected, AbstractRuleSet::filterMatches($matches));
     }
 
-    public static function prov__findCapturedErrors()
+    public static function provFindCapturedErrors()
     {
         return [
             [RuleSet0::class, 'VAR_NAME', ['inexistent' => '']],
@@ -185,7 +185,7 @@ final class AbstractRuleSetTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__findCapturedErrors
+     * @dataProvider provFindCapturedErrors
      *
      * @param mixed $class
      * @param mixed $ruleName
@@ -204,7 +204,7 @@ final class AbstractRuleSetTest extends TestCase
         $this->assertSame($expected, $actual, $message);
     }
 
-    public static function prov__findCapturedValues()
+    public static function provFindCapturedValues()
     {
         return [
             [RuleSet0::class, 'VAR_NAME', ['inexistent' => '']],
@@ -231,7 +231,7 @@ final class AbstractRuleSetTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__findCapturedValues
+     * @dataProvider provFindCapturedValues
      *
      * @param mixed $class
      * @param mixed $ruleName
@@ -250,7 +250,7 @@ final class AbstractRuleSetTest extends TestCase
         $this->assertSame($expected, $actual, $message);
     }
 
-    public function prov__classDefinedErrors()
+    public function provClassDefinedErrors()
     {
         return [
             [
@@ -287,7 +287,7 @@ final class AbstractRuleSetTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__classDefinedErrors
+     * @dataProvider provClassDefinedErrors
      */
     public function testGetDefinedErrors(string $class, array $expected): void
     {
@@ -295,9 +295,9 @@ final class AbstractRuleSetTest extends TestCase
         $this->assertSame($expected, $class::getDefinedErrors(), $message);
     }
 
-    public function prov__getErrorMessage()
+    public function provGetErrorMessage()
     {
-        foreach (static::prov__classDefinedErrors() as $case) {
+        foreach (static::provClassDefinedErrors() as $case) {
             $class = $case[0];
             foreach ($case[1] as $errorKey => $error) {
                 if (is_array($error)) {
@@ -318,7 +318,7 @@ final class AbstractRuleSetTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__getErrorMessage
+     * @dataProvider provGetErrorMessage
      */
     public function testGetErrorMessage(string $class, array $args, string $expected): void
     {

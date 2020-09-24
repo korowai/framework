@@ -134,7 +134,7 @@ final class ParserStateTest extends TestCase
         $this->assertSame($version, $state->getVersionSpec());
     }
 
-    public static function prov__errorHere()
+    public static function provErrorHere()
     {
         return [
             ['error message'],
@@ -145,7 +145,7 @@ final class ParserStateTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__errorHere
+     * @dataProvider provErrorHere
      */
     public function testErrorHere(string $message, ...$tail): void
     {
@@ -184,7 +184,7 @@ final class ParserStateTest extends TestCase
         }
     }
 
-    public static function prov__errorAt(string $message, ...$tail)
+    public static function provErrorAt(string $message, ...$tail)
     {
         return [
             [123, 'error message'],
@@ -195,7 +195,7 @@ final class ParserStateTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__errorAt
+     * @dataProvider provErrorAt
      */
     public function testErrorAt(int $offset, string $message, ...$tail): void
     {

@@ -27,13 +27,13 @@ trait FeedConfigPathTrait
      *  final class ConfigPathTest extends \PHPUnit\Framework\TestCase
      *  {
      *      use \Korowai\Testing\Traits\FeedConfigPathTrait;
-     *      public static function prov__data_path() : array
+     *      public static function provDataPath() : array
      *      {
      *          return feedConfigPath(realpath(__dir__.'/../../config'));
      *      }
      *
-     *      /// @dataProvider prov__data_path
-     *      public function test__data_path(array $args, string $expect) : void
+     *      /// @dataProvider provDataPath
+     *      public function testDataPath(array $args, string $expect) : void
      *      {
      *          $this->assertSame($expect, config_path(...$args));
      *      }

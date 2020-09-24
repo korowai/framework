@@ -56,7 +56,7 @@ final class RecursivePropertiesSelectorTest extends TestCase
     // unwrap()
     //
 
-    public static function prov__selectProperties(): array
+    public static function provSelectProperties(): array
     {
         $actAct = new ActualProperties([
             'act' => 'x:ACT',
@@ -236,7 +236,7 @@ final class RecursivePropertiesSelectorTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__selectProperties
+     * @dataProvider provSelectProperties
      *
      * @param mixed $subject
      */

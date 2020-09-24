@@ -23,7 +23,7 @@ use Korowai\Testing\LdiflibInterfaces\TestCase;
  */
 final class ParserInterfaceTest extends TestCase
 {
-//    public static function prov__extendsInterface()
+//    public static function provExtendsInterface()
 //    {
 //        return [
 //            [YyyInterface::class],
@@ -31,9 +31,9 @@ final class ParserInterfaceTest extends TestCase
 //    }
 //
 //    /**
-//     * @dataProvider prov__extendsInterface
+//     * @dataProvider provExtendsInterface
 //     */
-//    public function test__extendsInterface(string $extends)
+//    public function testExtendsInterface(string $extends)
 //    {
 //        $this->assertImplementsInterface($extends, ParserInterface::class);
 //    }

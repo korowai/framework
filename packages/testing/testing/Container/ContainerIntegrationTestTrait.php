@@ -27,7 +27,7 @@ trait ContainerIntegrationTestTrait
 
     // See https://github.com/korowai/framework/issues/11
     // @codeCoverageIgnoreStart
-    public function prov__containerGetsConfiguredCorrectly(): iterable
+    public function provContainerGetsConfiguredCorrectly(): iterable
     {
         foreach ($this->provideContainerConfigs() as $config) {
             yield [$config];
@@ -37,11 +37,11 @@ trait ContainerIntegrationTestTrait
     // @codeCoverageIgnoreEnd
 
     /**
-     * @dataProvider prov__containerGetsConfiguredCorrectly
+     * @dataProvider provContainerGetsConfiguredCorrectly
      *
      * @param mixed $config
      */
-    public function test__containerGetsConfiguredCorrectly($config): void
+    public function testContainerGetsConfiguredCorrectly($config): void
     {
         $container = $this->getContainerFactory()->setConfig($config)->createContainer();
         $this->examineConfiguredContainer($container, $config);

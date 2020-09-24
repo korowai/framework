@@ -27,7 +27,7 @@ final class UtilTest extends TestCase
     // base64Decode()
     //
 
-    public static function prov__base64Decode()
+    public static function provBase64Decode()
     {
         return [
             [
@@ -121,7 +121,7 @@ final class UtilTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__base64Decode
+     * @dataProvider provBase64Decode
      */
     public function testBase64Decode(array $source, array $expect, string $string, int $offset): void
     {
@@ -135,7 +135,7 @@ final class UtilTest extends TestCase
     // utf8Check()
     //
 
-    public static function prov__utf8Check()
+    public static function provUtf8Check()
     {
         return [
             [
@@ -197,7 +197,7 @@ final class UtilTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__utf8Check
+     * @dataProvider provUtf8Check
      */
     public function testUtf8Check(array $source, array $expect, string $string, int $offset): void
     {
@@ -234,7 +234,7 @@ final class UtilTest extends TestCase
         ];
     }
 
-    public static function prov__dnCheck()
+    public static function provDnCheck()
     {
         $cases = [];
 
@@ -270,7 +270,7 @@ final class UtilTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__dnCheck
+     * @dataProvider provDnCheck
      */
     public function testDnCheck(array $source, string $string, int $offset, array $expect): void
     {
@@ -304,7 +304,7 @@ final class UtilTest extends TestCase
         ];
     }
 
-    public static function prov__rdnCheck()
+    public static function provRdnCheck()
     {
         $cases = [];
 
@@ -340,7 +340,7 @@ final class UtilTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__rdnCheck
+     * @dataProvider provRdnCheck
      */
     public function testRdnCheck(array $source, string $string, int $offset, array $expect): void
     {

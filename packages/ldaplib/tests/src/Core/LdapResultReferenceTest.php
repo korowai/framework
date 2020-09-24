@@ -91,14 +91,14 @@ final class LdapResultReferenceTest extends TestCase
     // supportsResourceType()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__supportsResourceType(): array
+    public static function provSupportsResourceType(): array
     {
         return static::feedSupportsResourceType('ldap result entry');
     }
 
     /**
      * @runInSeparateProcess
-     * @dataProvider prov__supportsResourceType
+     * @dataProvider provSupportsResourceType
      *
      * @param mixed $expect
      */
@@ -112,14 +112,14 @@ final class LdapResultReferenceTest extends TestCase
     // isValid()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__isValid(): array
+    public static function provIsValid(): array
     {
         return static::feedIsValid('ldap result entry');
     }
 
     /**
      * @runInSeparateProcess
-     * @dataProvider prov__isValid
+     * @dataProvider provIsValid
      *
      * @param mixed $arg
      * @param mixed $return
@@ -135,7 +135,7 @@ final class LdapResultReferenceTest extends TestCase
     // next_reference()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__next_reference__withMockedBackend(): array
+    public static function provNextReferenceWithMockedBackend(): array
     {
         return [
             // #0
@@ -166,7 +166,7 @@ final class LdapResultReferenceTest extends TestCase
 
     /**
      * @runInSeparateProcess
-     * @dataProvider prov__next_reference__withMockedBackend
+     * @dataProvider provNextReferenceWithMockedBackend
      *
      * @param mixed $return
      * @param mixed $expect
@@ -180,7 +180,7 @@ final class LdapResultReferenceTest extends TestCase
     // parse_reference()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public function prov__parse_reference__withMockedBackend(): array
+    public function provParseReferenceWithMockedBackend(): array
     {
         return [
             // #0
@@ -211,7 +211,7 @@ final class LdapResultReferenceTest extends TestCase
 
     /**
      * @runInSeparateProcess
-     * @dataProvider prov__parse_reference__withMockedBackend
+     * @dataProvider provParseReferenceWithMockedBackend
      *
      * @param mixed $return
      * @param mixed $expect
@@ -230,7 +230,7 @@ final class LdapResultReferenceTest extends TestCase
 
     /**
      * @runInSeparateProcess
-     * @dataProvider prov__next_reference__withMockedBackend
+     * @dataProvider provNextReferenceWithMockedBackend
      *
      * @param mixed $return
      * @param mixed $expect

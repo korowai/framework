@@ -49,7 +49,7 @@ final class ComparingInterfaceTest extends TestCase
         $this->assertSame($dummy->createCompareQuery, $dummy->createCompareQuery('', '', ''));
     }
 
-    public static function prov__createCompareQuery__withArgTypeError(): array
+    public static function provCreateCompareQueryWithArgTypeError(): array
     {
         return [
             [[null, '', ''], \string::class],
@@ -59,7 +59,7 @@ final class ComparingInterfaceTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__createCompareQuery__withArgTypeError
+     * @dataProvider provCreateCompareQueryWithArgTypeError
      */
     public function testCreateCompareQueryWithArgTypeError(array $args, string $message): void
     {
@@ -93,7 +93,7 @@ final class ComparingInterfaceTest extends TestCase
         $this->assertSame($dummy->compare, $dummy->compare('', '', ''));
     }
 
-    public static function prov__compare__withArgTypeError(): array
+    public static function provCompareWithArgTypeError(): array
     {
         return [
             [[0, '', ''], \string::class],
@@ -103,7 +103,7 @@ final class ComparingInterfaceTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__compare__withArgTypeError
+     * @dataProvider provCompareWithArgTypeError
      */
     public function testCompareWithArgTypeError(array $args, string $message): void
     {

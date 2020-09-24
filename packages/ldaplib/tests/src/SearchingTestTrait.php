@@ -50,7 +50,7 @@ trait SearchingTestTrait
     //
     // createSearchQuery()
     //
-    public static function prov__createSearchQuery(): array
+    public static function provCreateSearchQuery(): array
     {
         return [
             // #0
@@ -100,9 +100,9 @@ trait SearchingTestTrait
     }
 
     /**
-     * @dataProvider prov__createSearchQuery
+     * @dataProvider provCreateSearchQuery
      */
-    public function test__createSearchQuery(array $args, array $expect): void
+    public function testCreateSearchQuery(array $args, array $expect): void
     {
         $link = $this->createMock(LdapLinkInterface::class);
 
@@ -126,7 +126,7 @@ trait SearchingTestTrait
     // search()
     //
 
-    public static function prov__search(): array
+    public static function provSearch(): array
     {
         $args = [
             'dc=korowai,dc=org',
@@ -171,9 +171,9 @@ trait SearchingTestTrait
     }
 
     /**
-     * @dataProvider prov__search
+     * @dataProvider provSearch
      */
-    public function test__search(array $args, array $expect): void
+    public function testSearch(array $args, array $expect): void
     {
         $link = $this->createMock(LdapLinkInterface::class);
         $ldapResult = $this->createMock(LdapResultInterface::class);
@@ -190,15 +190,15 @@ trait SearchingTestTrait
         $this->assertSame($ldapResult, $result->getLdapResult());
     }
 
-    public static function prov__search__withLdapTriggerError(): array
+    public static function provSearchWithLdapTriggerError(): array
     {
         return self::feedLdapLinkErrorHandler();
     }
 
     /**
-     * @dataProvider prov__search__withLdapTriggerError
+     * @dataProvider provSearchWithLdapTriggerError
      */
-    public function test__search__withLdapTriggerError(LdapTriggerErrorTestFixture $fixture): void
+    public function testSearchWithLdapTriggerError(LdapTriggerErrorTestFixture $fixture): void
     {
         $link = $this->createMock(LdapLinkInterface::class);
         $searching = $this->createSearchingInstance($link);
@@ -210,7 +210,7 @@ trait SearchingTestTrait
         $this->examineLdapLinkErrorHandler($function, $subject, $link, $fixture);
     }
 
-    public function test__search__withLdapReturningFalse(): void
+    public function testSearchWithLdapReturningFalse(): void
     {
         $link = $this->createMock(LdapLinkInterface::class);
         $searching = $this->createSearchingInstance($link);

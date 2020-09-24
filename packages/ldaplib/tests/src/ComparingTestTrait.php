@@ -46,7 +46,7 @@ trait ComparingTestTrait
     //
     // createCompareQuery()
     //
-    public function test__createCompareQuery(): void
+    public function testCreateCompareQuery(): void
     {
         $link = $this->createMock(LdapLinkInterface::class);
 
@@ -67,7 +67,7 @@ trait ComparingTestTrait
     // compare()
     //
 
-    public static function prov__compare(): array
+    public static function provCompare(): array
     {
         return [
             // #0
@@ -86,12 +86,12 @@ trait ComparingTestTrait
     }
 
     /**
-     * @dataProvider prov__compare
+     * @dataProvider provCompare
      *
      * @param mixed $return
      * @param mixed $expect
      */
-    public function test__compare(array $args, $return, $expect): void
+    public function testCompare(array $args, $return, $expect): void
     {
         $link = $this->createMock(LdapLinkInterface::class);
         $comparator = $this->createComparingInstance($link);
@@ -104,15 +104,15 @@ trait ComparingTestTrait
         $this->assertSame($expect, $comparator->compare(...$args));
     }
 
-    public static function prov__compare__withLdapTriggerError(): array
+    public static function provCompareWithLdapTriggerError(): array
     {
         return self::feedLdapLinkErrorHandler();
     }
 
     /**
-     * @dataProvider prov__compare__withLdapTriggerError
+     * @dataProvider provCompareWithLdapTriggerError
      */
-    public function test__compare__withLdapTriggerError(LdapTriggerErrorTestFixture $fixture): void
+    public function testCompareWithLdapTriggerError(LdapTriggerErrorTestFixture $fixture): void
     {
         $link = $this->createMock(LdapLinkInterface::class);
         $comparator = $this->createComparingInstance($link);
@@ -124,7 +124,7 @@ trait ComparingTestTrait
         $this->examineLdapLinkErrorHandler($function, $subject, $link, $fixture);
     }
 
-    public function test__compare__withLdapReturningFailure(): void
+    public function testCompareWithLdapReturningFailure(): void
     {
         $link = $this->createMock(LdapLinkInterface::class);
         $comparator = $this->createComparingInstance($link);

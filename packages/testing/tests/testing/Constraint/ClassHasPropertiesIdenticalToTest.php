@@ -12,13 +12,13 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Testing\Constraint;
 
-use Korowai\Testing\TestCase;
 use Korowai\Testing\Constraint\ClassHasPropertiesIdenticalTo;
+use Korowai\Testing\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @covers \Korowai\Testing\Constraint\ClassHasPropertiesIdenticalTo
  * @covers \Korowai\Testing\Constraint\AbstractPropertiesComparator
+ * @covers \Korowai\Testing\Constraint\ClassHasPropertiesIdenticalTo
  * @covers \Korowai\Tests\Testing\Constraint\PropertiesComparatorTestTrait
  *
  * @internal

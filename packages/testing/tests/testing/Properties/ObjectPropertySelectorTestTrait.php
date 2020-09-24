@@ -74,6 +74,7 @@ trait ObjectPropertySelectorTestTrait
             ],
         ];
     }
+
     // @codeCoverageIgnoreEnd
 
     /**
@@ -155,6 +156,7 @@ trait ObjectPropertySelectorTestTrait
             ],
         ];
     }
+
     // @codeCoverageIgnoreEnd
 
     /**
@@ -177,9 +179,9 @@ trait ObjectPropertySelectorTestTrait
             private function foo()
             {
                 // @codeCoverageIgnoreStart
-                return;
-                // @codeCoverageIgnoreEnd
             }
+
+            // @codeCoverageIgnoreEnd
         };
         $properties = $this->createObjectPropertySelector();
 
@@ -189,9 +191,9 @@ trait ObjectPropertySelectorTestTrait
         $properties->selectProperty($object, 'foo()');
 
         // @codeCoverageIgnoreStart
-        return;
-        // @codeCoverageIgnoreEnd
     }
+
+    // @codeCoverageIgnoreEnd
 
     public function testObjectPropertySelectorSelectPropertyThrowsOnPrivateAttribute(): void
     {
@@ -206,9 +208,9 @@ trait ObjectPropertySelectorTestTrait
         $properties->selectProperty($object, 'foo');
 
         // @codeCoverageIgnoreStart
-        return;
-        // @codeCoverageIgnoreEnd
     }
+
+    // @codeCoverageIgnoreEnd
 
     public function testObjectPropertySelectorSelectPropertyThrowsOnStaticProperty(): void
     {
@@ -223,9 +225,9 @@ trait ObjectPropertySelectorTestTrait
         $properties->selectProperty($object, 'foo');
 
         // @codeCoverageIgnoreStart
-        return;
-        // @codeCoverageIgnoreEnd
     }
+
+    // @codeCoverageIgnoreEnd
 
     // @codeCoverageIgnoreStart
     public static function provObjectPropertySelectorSelectPropertyThrowsOnNonobject(): array
@@ -244,6 +246,7 @@ trait ObjectPropertySelectorTestTrait
             ],
         ];
     }
+
     // @codeCoverageIgnoreEnd
 
     /**
@@ -260,8 +263,8 @@ trait ObjectPropertySelectorTestTrait
         $properties->selectProperty(123, $key);
 
         // @codeCoverageIgnoreStart
-        return;
-        // @codeCoverageIgnoreEnd
     }
+
+    // @codeCoverageIgnoreEnd
 }
 // vim: syntax=php sw=4 ts=4 et tw=119:

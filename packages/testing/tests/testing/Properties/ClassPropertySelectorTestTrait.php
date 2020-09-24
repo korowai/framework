@@ -74,6 +74,7 @@ trait ClassPropertySelectorTestTrait
             ],
         ];
     }
+
     // @codeCoverageIgnoreEnd
 
     /**
@@ -142,6 +143,7 @@ trait ClassPropertySelectorTestTrait
             ],
         ];
     }
+
     // @codeCoverageIgnoreEnd
 
     /**
@@ -164,9 +166,9 @@ trait ClassPropertySelectorTestTrait
             private static function foo()
             {
                 // @codeCoverageIgnoreStart
-                return;
-                // @codeCoverageIgnoreEnd
             }
+
+            // @codeCoverageIgnoreEnd
         });
         $selector = $this->createClassPropertySelector();
 
@@ -176,9 +178,9 @@ trait ClassPropertySelectorTestTrait
         $selector->selectProperty($class, 'foo()');
 
         // @codeCoverageIgnoreStart
-        return;
-        // @codeCoverageIgnoreEnd
     }
+
+    // @codeCoverageIgnoreEnd
 
     public function testClassPropertySelectorSelectPropertyThrowsOnPrivateAttribute(): void
     {
@@ -193,9 +195,9 @@ trait ClassPropertySelectorTestTrait
         $selector->selectProperty($class, 'foo');
 
         // @codeCoverageIgnoreStart
-        return;
-        // @codeCoverageIgnoreEnd
     }
+
+    // @codeCoverageIgnoreEnd
 
     public function testClassPropertySelectorSelectPropertyThrowsOnNonStaticMethod(): void
     {
@@ -203,9 +205,9 @@ trait ClassPropertySelectorTestTrait
             public function foo()
             {
                 // @codeCoverageIgnoreStart
-                return;
-                // @codeCoverageIgnoreEnd
             }
+
+            // @codeCoverageIgnoreEnd
         });
         $selector = $this->createClassPropertySelector();
 
@@ -215,9 +217,9 @@ trait ClassPropertySelectorTestTrait
         $selector->selectProperty($class, 'foo()');
 
         // @codeCoverageIgnoreStart
-        return;
-        // @codeCoverageIgnoreEnd
     }
+
+    // @codeCoverageIgnoreEnd
 
     public function testClassPropertySelectorSelectPropertyThrowsOnNonStaticProperty(): void
     {
@@ -232,9 +234,9 @@ trait ClassPropertySelectorTestTrait
         $selector->selectProperty($class, 'foo');
 
         // @codeCoverageIgnoreStart
-        return;
-        // @codeCoverageIgnoreEnd
     }
+
+    // @codeCoverageIgnoreEnd
 
     // @codeCoverageIgnoreStart
     public static function provClassPropertySelectorSelectPropertyThrowsOnNonClass(): array
@@ -253,6 +255,7 @@ trait ClassPropertySelectorTestTrait
             ],
         ];
     }
+
     // @codeCoverageIgnoreEnd
 
     /**
@@ -269,8 +272,8 @@ trait ClassPropertySelectorTestTrait
         $selector->selectProperty(123, $key);
 
         // @codeCoverageIgnoreStart
-        return;
-        // @codeCoverageIgnoreEnd
     }
+
+    // @codeCoverageIgnoreEnd
 }
 // vim: syntax=php sw=4 ts=4 et tw=119:

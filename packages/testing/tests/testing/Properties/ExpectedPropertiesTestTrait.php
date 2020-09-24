@@ -61,6 +61,7 @@ trait ExpectedPropertiesTestTrait
             ],
         ];
     }
+
     // @codeCoverageIgnoreEnd
 
     /**

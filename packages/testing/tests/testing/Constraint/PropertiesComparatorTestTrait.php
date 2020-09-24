@@ -12,7 +12,6 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Testing\Constraint;
 
-use Korowai\Testing\TestCase;
 use Korowai\Testing\Constraint\AbstractPropertiesComparator;
 use Korowai\Testing\Properties\ExpectedPropertiesInterface;
 use Korowai\Testing\Properties\RecursivePropertiesUnwrapper;
@@ -24,9 +23,13 @@ use Korowai\Testing\Properties\RecursivePropertiesUnwrapperInterface;
 trait PropertiesComparatorTestTrait
 {
     abstract public function getPropertiesComparatorClass(): string;
+
     abstract public static function assertExtendsClass(string $parent, $object, string $message = ''): void;
+
     abstract public static function assertImplementsInterface(string $interface, $object, string $message = ''): void;
+
     abstract public static function assertSame($expected, $actual, string $message = ''): void;
+
     abstract public function createMock(string $name);
 
     public function testExtendsAbstractPropertiesComparator(): void
@@ -64,6 +67,7 @@ trait PropertiesComparatorTestTrait
             ],
         ];
     }
+
     // @codeCoverageIgnoreEnd
 
     /**

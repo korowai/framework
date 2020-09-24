@@ -13,9 +13,9 @@ declare(strict_types=1);
 namespace Korowai\Tests\Testing\Assertions;
 
 use Korowai\Testing\Assertions\PropertiesAssertionsTrait;
+use PHPUnit\Framework\Constraint\UnaryOperator;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\Constraint\UnaryOperator;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -65,13 +65,13 @@ final class PropertiesAssertionsTraitTest extends TestCase
     {
         $specs = [
             '3-int-keys' => [
-                'array'  => [
-                    'a' => 'A', 0 => 'B', 2 => 'C', 7 => 'D', 'e' => 'E'
+                'array' => [
+                    'a' => 'A', 0 => 'B', 2 => 'C', 7 => 'D', 'e' => 'E',
                 ],
                 'expect' => [
                     'exception' => \PHPUnit\Framework\Exception::class,
-                    'message'   => 'The array of expected properties contains 3 invalid key(s)',
-                ]
+                    'message' => 'The array of expected properties contains 3 invalid key(s)',
+                ],
             ],
         ];
 
@@ -110,41 +110,41 @@ final class PropertiesAssertionsTraitTest extends TestCase
         return [
             'PropertiesAssertionsTraitTest.php:'.__LINE__ => [
                 'method' => 'objectHasPropertiesIdenticalTo',
-                'array'  => ['foo' => 'FOO'],
-                'value'  => 123,
+                'array' => ['foo' => 'FOO'],
+                'value' => 123,
                 'expect' => [
                     'exception' => ExpectationFailedException::class,
-                    'message'   => '/^Failed asserting that 123 is an object with properties identical to specified.$/'
+                    'message' => '/^Failed asserting that 123 is an object with properties identical to specified.$/',
                 ],
             ],
 
             'PropertiesAssertionsTraitTest.php:'.__LINE__ => [
                 'method' => 'objectHasPropertiesEqualTo',
-                'array'  => ['foo' => 'FOO'],
-                'value'  => 123,
+                'array' => ['foo' => 'FOO'],
+                'value' => 123,
                 'expect' => [
                     'exception' => ExpectationFailedException::class,
-                    'message'   => '/^Failed asserting that 123 is an object with properties equal to specified.$/'
+                    'message' => '/^Failed asserting that 123 is an object with properties equal to specified.$/',
                 ],
             ],
 
             'PropertiesAssertionsTraitTest.php:'.__LINE__ => [
                 'method' => 'classHasPropertiesIdenticalTo',
-                'array'  => ['foo' => 'FOO'],
-                'value'  => 123,
+                'array' => ['foo' => 'FOO'],
+                'value' => 123,
                 'expect' => [
                     'exception' => ExpectationFailedException::class,
-                    'message'   => '/^Failed asserting that 123 is a class with properties identical to specified.$/'
+                    'message' => '/^Failed asserting that 123 is a class with properties identical to specified.$/',
                 ],
             ],
 
             'PropertiesAssertionsTraitTest.php:'.__LINE__ => [
                 'method' => 'classHasPropertiesEqualTo',
-                'array'  => ['foo' => 'FOO'],
-                'value'  => 123,
+                'array' => ['foo' => 'FOO'],
+                'value' => 123,
                 'expect' => [
                     'exception' => ExpectationFailedException::class,
-                    'message'   => '/^Failed asserting that 123 is a class with properties equal to specified.$/'
+                    'message' => '/^Failed asserting that 123 is a class with properties equal to specified.$/',
                 ],
             ],
         ];
@@ -152,6 +152,8 @@ final class PropertiesAssertionsTraitTest extends TestCase
 
     /**
      * @dataProvider provAssertionWithIncompatibleValue
+     *
+     * @param mixed $value
      */
     public function testAssertionWithIncompatibleValue(string $method, array $array, $value, array $expect): void
     {
@@ -682,7 +684,6 @@ final class PropertiesAssertionsTraitTest extends TestCase
         self::assertNotObjectHasPropertiesEqualTo($expect, $object, 'Lorem ipsum.');
     }
 
-
     //
     // class
     //
@@ -711,7 +712,6 @@ final class PropertiesAssertionsTraitTest extends TestCase
 
     public static function provClassPropertiesEqualButNotIdenticalTo(): array
     {
-
         return [
             'PropertiesAssertionsTraitTest.php:'.__LINE__ => [
                 'expect' => [
@@ -734,7 +734,6 @@ final class PropertiesAssertionsTraitTest extends TestCase
 
     public static function provClassPropertiesNotEqualTo(): array
     {
-
         return [
             'PropertiesAssertionsTraitTest.php:'.__LINE__ => [
                 'expect' => [
@@ -880,7 +879,6 @@ final class PropertiesAssertionsTraitTest extends TestCase
         self::assertNotClassHasPropertiesEqualTo($expect, $class, 'Lorem ipsum.');
     }
 
-
     //
     // misc.
     //
@@ -888,16 +886,16 @@ final class PropertiesAssertionsTraitTest extends TestCase
     public function testObjectPropertiesConstraintsWithAndOperator(): void
     {
         $this->assertThat(
-            new class {
+            new class() {
                 public $foo = 'FOO';
                 public $bar = '';
             },
             $this->logicalAnd(
                 $this->objectHasPropertiesIdenticalTo([
-                    'foo' => 'FOO'
+                    'foo' => 'FOO',
                 ]),
                 $this->objectHasPropertiesEqualTo([
-                    'bar' => null
+                    'bar' => null,
                 ])
             )
         );
@@ -912,16 +910,16 @@ final class PropertiesAssertionsTraitTest extends TestCase
         self::expectExceptionMessageMatches($regexp);
 
         $this->assertThat(
-            new class {
+            new class() {
                 public $foo = '';
                 public $bar = 'BAR';
             },
             $this->logicalAnd(
                 $this->objectHasPropertiesIdenticalTo([
-                    'foo' => 'FOO'
+                    'foo' => 'FOO',
                 ]),
                 $this->objectHasPropertiesEqualTo([
-                    'bar' => null
+                    'bar' => null,
                 ])
             )
         );
@@ -931,26 +929,30 @@ final class PropertiesAssertionsTraitTest extends TestCase
     public function testFailureDescriptionOfCustomUnaryOperator(): void
     {
         $constraint = $this->objectHasPropertiesIdenticalTo([
-            'foo' => 'FOO'
+            'foo' => 'FOO',
         ]);
 
         $unary = $this->getMockBuilder(UnaryOperator::class)
-                      ->setConstructorArgs([$constraint])
-                      ->getMockForAbstractClass();
+            ->setConstructorArgs([$constraint])
+            ->getMockForAbstractClass()
+        ;
 
         $unary->expects($this->any())
-              ->method('operator')
-              ->willReturn('!');
+            ->method('operator')
+            ->willReturn('!')
+        ;
         $unary->expects($this->any())
-              ->method('precedence')
-              ->willReturn(1);
+            ->method('precedence')
+            ->willReturn(1)
+        ;
 
         $regexp = '/is an object with properties identical to specified/';
 
         self::expectException(ExpectationFailedException::class);
         self::expectExceptionMessageMatches($regexp);
 
-        $this->assertThat(new class {}, $unary);
+        $this->assertThat(new class() {
+        }, $unary);
     }
 }
 

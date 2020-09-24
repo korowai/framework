@@ -19,6 +19,11 @@ use PHPUnit\Framework\TestCase;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Testing\Assertions\PropertiesAssertionsTrait
+ * @covers \Korowai\Testing\Constraint\AbstractPropertiesComparator
+ * @covers \Korowai\Testing\Constraint\ClassHasPropertiesEqualTo
+ * @covers \Korowai\Testing\Constraint\ClassHasPropertiesIdenticalTo
+ * @covers \Korowai\Testing\Constraint\ObjectHasPropertiesEqualTo
+ * @covers \Korowai\Testing\Constraint\ObjectHasPropertiesIdenticalTo
  *
  * @internal
  */
@@ -26,17 +31,26 @@ final class PropertiesAssertionsTraitTest extends TestCase
 {
     use PropertiesAssertionsTrait;
 
-    public function staticMethodsThatMustAppear()
+    public function provStaticMethodExists()
     {
         return [
+            ['assertClassHasPropertiesEqualTo'],
+            ['assertClassHasPropertiesIdenticalTo'],
+            ['assertObjectHasPropertiesEqualTo'],
             ['assertObjectHasPropertiesIdenticalTo'],
+            ['assertNotClassHasPropertiesEqualTo'],
+            ['assertNotClassHasPropertiesIdenticalTo'],
+            ['assertNotObjectHasPropertiesEqualTo'],
             ['assertNotObjectHasPropertiesIdenticalTo'],
+            ['classHasPropertiesEqualTo'],
+            ['classHasPropertiesIdenticalTo'],
+            ['objectHasPropertiesEqualTo'],
             ['objectHasPropertiesIdenticalTo'],
         ];
     }
 
     /**
-     * @dataProvider staticMethodsThatMustAppear
+     * @dataProvider provStaticMethodExists
      */
     public function testStaticMethodExists(string $name): void
     {
@@ -46,7 +60,7 @@ final class PropertiesAssertionsTraitTest extends TestCase
         self::assertTrue($method->isStatic());
     }
 
-    public static function provMatchingProperties()
+    public static function provObjectPropertiesIdenticalTo()
     {
         $esmith = new class() {
             public $name = 'Emily';
@@ -249,15 +263,7 @@ final class PropertiesAssertionsTraitTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provMatchingProperties
-     */
-    public function testObjectHasPropertiesIdenticalToWithMatchingProperties(array $expect, object $object)
-    {
-        self::assertThat($object, self::objectHasPropertiesIdenticalTo($expect));
-    }
-
-    public static function provNonMatchingProperties()
+    public static function provObjectPropertiesNotIdenticalTo()
     {
         $hbrown = new class() {
             public $name = 'Helen';
@@ -444,9 +450,17 @@ final class PropertiesAssertionsTraitTest extends TestCase
     }
 
     /**
-     * @dataProvider provNonMatchingProperties
+     * @dataProvider provObjectPropertiesIdenticalTo
      */
-    public function testObjectHasPropertiesIdenticalToWithNonMatchingProperties(array $expect, object $object)
+    public function testObjectHasPropertiesIdenticalTo(array $expect, object $object)
+    {
+        self::assertThat($object, self::objectHasPropertiesIdenticalTo($expect));
+    }
+
+    /**
+     * @dataProvider provObjectPropertiesNotIdenticalTo
+     */
+    public function testLogicalNotObjectHasPropertiesIdenticalTo(array $expect, object $object)
     {
         self::assertThat($object, self::logicalNot(self::objectHasPropertiesIdenticalTo($expect)));
     }
@@ -455,7 +469,7 @@ final class PropertiesAssertionsTraitTest extends TestCase
     {
         $matcher = self::objectHasPropertiesIdenticalTo(['a' => 'A']);
         $expectedMessage = '/^Failed asserting that 123 is an object '.
-            'with selected properties identical to given ones.$/';
+            'with properties identical to specified.$/';
 
         self::expectException(ExpectationFailedException::class);
         self::expectExceptionMessageMatches($expectedMessage);
@@ -472,60 +486,47 @@ final class PropertiesAssertionsTraitTest extends TestCase
     }
 
     /**
-     * @dataProvider provMatchingProperties
+     * @dataProvider provObjectPropertiesIdenticalTo
      */
-    public function testAssertObjectHasPropertiesIdenticalToWithMatchingProperties(array $expect, object $object)
+    public function testAssertObjectHasPropertiesIdenticalTo(array $expect, object $object)
     {
-        self::assertObjectHasPropertiesIdenticalTo(...(self::adjustCase(func_get_args())));
+        self::assertObjectHasPropertiesIdenticalTo($expect, $object);
     }
 
     /**
-     * @dataProvider provNonMatchingProperties
+     * @dataProvider provObjectPropertiesNotIdenticalTo
      */
-    public function testAssertObjectHasPropertiesIdenticalToWithNonMatchingProperties(array $expect, object $object)
+    public function testAssertObjectHasPropertiesIdenticalToFails(array $expect, object $object)
     {
         $regexp = '/^Lorem ipsum.\n'.
             'Failed asserting that object class\@.+ is an object '.
-            'with selected properties identical to given ones./';
+            'with properties identical to specified./';
         self::expectException(ExpectationFailedException::class);
         self::expectExceptionMessageMatches($regexp);
 
-        self::assertObjectHasPropertiesIdenticalTo(...(self::adjustCase(func_get_args(), 'Lorem ipsum.')));
+        self::assertObjectHasPropertiesIdenticalTo($expect, $object, 'Lorem ipsum.');
     }
 
     /**
-     * @dataProvider provNonMatchingProperties
+     * @dataProvider provObjectPropertiesNotIdenticalTo
      */
-    public function testAssertNotObjectHasPropertiesIdenticalToWithNonMatchingProperties(array $expect, object $object)
+    public function testAssertNotObjectHasPropertiesIdenticalTo(array $expect, object $object)
     {
-        self::assertNotObjectHasPropertiesIdenticalTo(...(self::adjustCase(func_get_args())));
+        self::assertNotObjectHasPropertiesIdenticalTo($expect, $object);
     }
 
     /**
-     * @dataProvider provMatchingProperties
+     * @dataProvider provObjectPropertiesIdenticalTo
      */
-    public function testAssertNotObjectHasPropertiesIdenticalToWithMatchingProperties(array $expect, object $object)
+    public function testAssertNotObjectHasPropertiesIdenticalToFails(array $expect, object $object)
     {
         $regexp = '/^Lorem ipsum.\n'.
             'Failed asserting that object class@.+ fails to be an object '.
-            'with selected properties identical to given ones./';
+            'with properties identical to specified./';
         self::expectException(ExpectationFailedException::class);
         self::expectExceptionMessageMatches($regexp);
 
-        self::assertNotObjectHasPropertiesIdenticalTo(...(self::adjustCase(func_get_args(), 'Lorem ipsum.')));
-    }
-
-    protected static function adjustCase(array $case, string $message = '')
-    {
-        $args = func_get_args();
-        if (is_callable($case[2] ?? null)) {
-            $case[] = $case[2];
-            $case[2] = $args[1] ?? '';
-        } elseif (null !== ($msg = $args[1] ?? null)) {
-            $case[2] = $msg;
-        }
-
-        return $case;
+        self::assertNotObjectHasPropertiesIdenticalTo($expect, $object, 'Lorem ipsum.');
     }
 }
 

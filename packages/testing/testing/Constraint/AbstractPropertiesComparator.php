@@ -112,7 +112,7 @@ abstract class AbstractPropertiesComparator extends Constraint implements Expect
     public function toString(): string
     {
         return sprintf(
-            'is %s with selected properties %s given ones',
+            'is %s with properties %s specified',
             $this->subject(),
             $this->predicate()
         );
@@ -137,7 +137,7 @@ abstract class AbstractPropertiesComparator extends Constraint implements Expect
     {
         if ($operator instanceof LogicalNot) {
             return sprintf(
-                'fails to be %s with selected properties %s given ones',
+                'fails to be %s with properties %s specified',
                 $this->subject(),
                 $this->predicate()
             );

@@ -145,6 +145,120 @@ trait PropertiesAssertionsTrait
     {
         return ObjectHasPropertiesEqualTo::fromArray($expected);
     }
+
+    /**
+     * Asserts that selected properties of *$class* are identical to *$expected* ones.
+     *
+     * @param array  $expected
+     *                         An array of key => value pairs with property names as keys and
+     *                         their expected values as values
+     * @param string $class
+     *                         A name of a class to be examined
+     * @param string $message
+     *                         Optional failure message
+     *
+     * @throws ExpectationFailedException
+     * @throws \PHPUnit\Framework\Exception when a non-string keys are found in *$expected*
+     */
+    public static function assertClassHasPropertiesIdenticalTo(
+        array $expected,
+        string $class,
+        string $message = ''
+    ): void {
+        static::assertThat($object, static::classHasPropertiesIdenticalTo($expected), $message);
+    }
+
+    /**
+     * Asserts that selected properties of *$object* are not identical to *$expected* ones.
+     *
+     * @param array  $expected
+     *                         An array of key => value pairs with property names as keys and
+     *                         their expected values as values
+     * @param string $class
+     *                         A name of a class to be examined
+     * @param string $message
+     *                         Optional failure message
+     *
+     * @throws ExpectationFailedException
+     * @throws \PHPUnit\Framework\Exception when a non-string keys are found in *$expected*
+     */
+    public static function assertNotClassHasPropertiesIdenticalTo(
+        array $expected,
+        object $object,
+        string $message = ''
+    ): void {
+        static::assertThat($object, new LogicalNot(static::classHasPropertiesIdenticalTo($expected)), $message);
+    }
+
+    /**
+     * Compares selected properties of *$object* with *$expected* ones.
+     *
+     * @param array $expected
+     *                        An array of key => value pairs with expected values of attributes
+     *
+     * @throws \PHPUnit\Framework\Exception when non-string keys are found in *$expected*
+     */
+    public static function classHasPropertiesIdenticalTo(array $expected): ClassHasPropertiesIdenticalTo
+    {
+        return ClassHasPropertiesIdenticalTo::fromArray($expected);
+    }
+
+    /**
+     * Asserts that selected properties of *$object* are identical to *$expected* ones.
+     *
+     * @param array  $expected
+     *                         An array of key => value pairs with property names as keys and
+     *                         their expected values as values
+     * @param string $class
+     *                         A name of a class to be examined
+     * @param string $message
+     *                         Optional failure message
+     *
+     * @throws ExpectationFailedException
+     * @throws \PHPUnit\Framework\Exception when a non-string keys are found in *$expected*
+     */
+    public static function assertClassHasPropertiesEqualTo(
+        array $expected,
+        string $class,
+        string $message = ''
+    ): void {
+        static::assertThat($object, static::classHasPropertiesEqualTo($expected), $message);
+    }
+
+    /**
+     * Asserts that selected properties of *$object* are not identical to *$expected* ones.
+     *
+     * @param array  $expected
+     *                         An array of key => value pairs with property names as keys and
+     *                         their expected values as values
+     * @param string $class
+     *                         A name of a class to be examined
+     * @param string $message
+     *                         Optional failure message
+     *
+     * @throws ExpectationFailedException
+     * @throws \PHPUnit\Framework\Exception when a non-string keys are found in *$expected*
+     */
+    public static function assertNotClassHasPropertiesEqualTo(
+        array $expected,
+        string $class,
+        string $message = ''
+    ): void {
+        static::assertThat($object, new LogicalNot(static::classHasPropertiesEqualTo($expected)), $message);
+    }
+
+    /**
+     * Compares selected properties of *$object* with *$expected* ones.
+     *
+     * @param array $expected
+     *                        An array of key => value pairs with expected values of attributes
+     *
+     * @throws \PHPUnit\Framework\Exception when non-string keys are found in *$expected*
+     */
+    public static function classHasPropertiesEqualTo(array $expected): ClassHasPropertiesEqualTo
+    {
+        return ClassHasPropertiesEqualTo::fromArray($expected);
+    }
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

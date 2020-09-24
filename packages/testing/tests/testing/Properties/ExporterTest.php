@@ -38,6 +38,7 @@ final class ExporterTest extends TestCase
     public function createExpectedProperties(...$args): ExpectedProperties
     {
         $selector = $this->createMock(PropertySelectorInterface::class);
+
         return new ExpectedProperties($selector, ...$args);
     }
 
@@ -98,7 +99,7 @@ final class ExporterTest extends TestCase
             123,                // #2
             [                   // #3
                 'foo' => 'FOO',
-            ]
+            ],
         ];
 
         $cases = [];
@@ -112,13 +113,13 @@ final class ExporterTest extends TestCase
         // #4
         $cases[] = [
             'arguments' => $this->createActualProperties([]),
-            'expected' => "Properties <Actual> ()",
+            'expected' => 'Properties <Actual> ()',
         ];
 
         // #5
         $cases[] = [
             'arguments' => $this->createExpectedProperties([]),
-            'expected' => "Properties <Expect> ()",
+            'expected' => 'Properties <Expect> ()',
         ];
 
         // #6
@@ -128,7 +129,7 @@ final class ExporterTest extends TestCase
             ]),
             'expected' => "Properties <Actual> (\n".
                           "    'foo' => 'FOO'\n".
-                          ")",
+                          ')',
         ];
 
         // #7
@@ -138,15 +139,16 @@ final class ExporterTest extends TestCase
             ]),
             'expected' => "Properties <Expect> (\n".
                           "    'foo' => 'FOO'\n".
-                          ")",
+                          ')',
         ];
-
 
         return $cases;
     }
 
     /**
      * @dataProvider provExport
+     *
+     * @param mixed $argument
      */
     public function testExport($argument, string $expected): void
     {
@@ -163,7 +165,7 @@ final class ExporterTest extends TestCase
         $expected =
             "Properties <Actual> (\n".
             "    'foo' => Properties <Actual>\n".
-            ")";
+            ')';
         $this->assertSame($expected, $exporter->export($argument));
     }
 
@@ -192,13 +194,13 @@ final class ExporterTest extends TestCase
         // #4
         $cases[] = [
             'arguments' => $this->createActualProperties([]),
-            'expected' => "Properties <Actual> ()",
+            'expected' => 'Properties <Actual> ()',
         ];
 
         // #5
         $cases[] = [
             'arguments' => $this->createExpectedProperties([]),
-            'expected' => "Properties <Expect> ()",
+            'expected' => 'Properties <Expect> ()',
         ];
 
         // #6
@@ -206,7 +208,7 @@ final class ExporterTest extends TestCase
             'arguments' => $this->createActualProperties([
                 'foo' => 'FOO',
             ]),
-            'expected' => "Properties <Actual> (...)",
+            'expected' => 'Properties <Actual> (...)',
         ];
 
         // #7
@@ -214,15 +216,16 @@ final class ExporterTest extends TestCase
             'arguments' => $this->createExpectedProperties([
                 'foo' => 'FOO',
             ]),
-            'expected' => "Properties <Expect> (...)",
+            'expected' => 'Properties <Expect> (...)',
         ];
-
 
         return $cases;
     }
 
     /**
      * @dataProvider provShortenedExport
+     *
+     * @param mixed $argument
      */
     public function testShortenedExport($argument, string $expected): void
     {

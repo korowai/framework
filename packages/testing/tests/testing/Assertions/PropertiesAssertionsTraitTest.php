@@ -14,15 +14,15 @@ namespace Korowai\Tests\Testing\Assertions;
 
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\ExpectationFailedException;
-use Korowai\Testing\Assertions\ObjectPropertiesAssertionsTrait;
+use Korowai\Testing\Assertions\PropertiesAssertionsTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @covers \Korowai\Testing\Assertions\ObjectPropertiesAssertionsTrait
+ * @covers \Korowai\Testing\Assertions\PropertiesAssertionsTrait
  */
-final class ObjectPropertiesAssertionsTraitTest extends TestCase
+final class PropertiesAssertionsTraitTest extends TestCase
 {
-    use ObjectPropertiesAssertionsTrait;
+    use PropertiesAssertionsTrait;
 
     public function staticMethodsThatMustAppear()
     {
@@ -436,7 +436,8 @@ final class ObjectPropertiesAssertionsTraitTest extends TestCase
     public function test__objectHasPropertiesIdenticalTo__withNonObject() : void
     {
         $matcher = self::objectHasPropertiesIdenticalTo(['a' => 'A']);
-        $expectedMessage = '/^Failed asserting that 123 has required properties with prescribed values.$/';
+        $expectedMessage = '/^Failed asserting that 123 is an object '.
+            'with selected properties identical to given ones.$/';
 
         self::expectException(ExpectationFailedException::class);
         self::expectExceptionMessageMatches($expectedMessage);
@@ -476,7 +477,8 @@ final class ObjectPropertiesAssertionsTraitTest extends TestCase
      */
     public function test__assertObjectHasPropertiesSameAs__withNonMatchingProperties(array $expect, object $object) {
         $regexp = '/^Lorem ipsum.\n'.
-                    'Failed asserting that object class\@.+ has required properties with prescribed values/';
+            'Failed asserting that object class\@.+ is an object '.
+            'with selected properties identical to given ones./';
         self::expectException(ExpectationFailedException::class);
         self::expectExceptionMessageMatches($regexp);
 
@@ -495,7 +497,8 @@ final class ObjectPropertiesAssertionsTraitTest extends TestCase
      */
     public function test__assertNotObjectHasPropertiesSameAs__withMatchingProperties(array $expect, object $object) {
         $regexp = '/^Lorem ipsum.\n'.
-                    'Failed asserting that object class@.+ does not have required properties with prescribed values/';
+            'Failed asserting that object class@.+ fails to be an object '.
+            'with selected properties identical to given ones./';
         self::expectException(ExpectationFailedException::class);
         self::expectExceptionMessageMatches($regexp);
 

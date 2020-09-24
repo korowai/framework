@@ -44,7 +44,11 @@ trait ObjectPropertiesAssertionsTrait
      * @throws ExpectationFailedException
      * @throws \PHPUnit\Framework\Exception when a non-string keys are found in *$expected*
      */
-    public static function assertObjectHasPropertiesSameAs(array $expected, object $object, string $message = '') : void {
+    public static function assertObjectHasPropertiesIdenticalTo(
+        array $expected,
+        object $object,
+        string $message = ''
+    ) : void {
         static::assertThat($object, static::objectHasPropertiesIdenticalTo($expected), $message);
     }
 
@@ -62,7 +66,11 @@ trait ObjectPropertiesAssertionsTrait
      * @throws ExpectationFailedException
      * @throws \PHPUnit\Framework\Exception when a non-string keys are found in *$expected*
      */
-    public static function assertNotObjectHasPropertiesSameAs(array $expected, object $object, string $message = '') : void {
+    public static function assertNotObjectHasPropertiesIdenticalTo(
+        array $expected,
+        object $object,
+        string $message = ''
+    ) : void {
         static::assertThat($object, new LogicalNot(static::objectHasPropertiesIdenticalTo($expected)), $message);
     }
 
@@ -77,6 +85,63 @@ trait ObjectPropertiesAssertionsTrait
      */
     public static function objectHasPropertiesIdenticalTo(array $expected) : ObjectHasPropertiesIdenticalTo {
         return ObjectHasPropertiesIdenticalTo::fromArray($expected);
+    }
+
+    /**
+     * Asserts that selected properties of *$object* are identical to *$expected* ones.
+     *
+     * @param  array $expected
+     *      An array of key => value pairs with property names as keys and
+     *      their expected values as values.
+     * @param  object $object
+     *      An object to be examined.
+     * @param  string $message
+     *      Optional failure message.
+     *
+     * @throws ExpectationFailedException
+     * @throws \PHPUnit\Framework\Exception when a non-string keys are found in *$expected*
+     */
+    public static function assertObjectHasPropertiesEqualTo(
+        array $expected,
+        object $object,
+        string $message = ''
+    ) : void {
+        static::assertThat($object, static::objectHasPropertiesEqualTo($expected), $message);
+    }
+
+    /**
+     * Asserts that selected properties of *$object* are not identical to *$expected* ones.
+     *
+     * @param  array $expected
+     *      An array of key => value pairs with property names as keys and
+     *      their expected values as values.
+     * @param  object $object
+     *      An object to be examined.
+     * @param  string $message
+     *      Optional failure message.
+     *
+     * @throws ExpectationFailedException
+     * @throws \PHPUnit\Framework\Exception when a non-string keys are found in *$expected*
+     */
+    public static function assertNotObjectHasPropertiesEqualTo(
+        array $expected,
+        object $object,
+        string $message = ''
+    ) : void {
+        static::assertThat($object, new LogicalNot(static::objectHasPropertiesEqualTo($expected)), $message);
+    }
+
+    /**
+     * Compares selected properties of *$object* with *$expected* ones.
+     *
+     * @param  array $expected
+     *      An array of key => value pairs with expected values of attributes.
+     *
+     * @return ObjectHasPropertiesEqualTo
+     * @throws \PHPUnit\Framework\Exception when non-string keys are found in *$expected*
+     */
+    public static function objectHasPropertiesEqualTo(array $expected) : ObjectHasPropertiesEqualTo {
+        return ObjectHasPropertiesEqualTo::fromArray($expected);
     }
 }
 

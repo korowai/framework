@@ -57,7 +57,7 @@ final class ObjectHasPropertiesIdenticalTo extends AbstractPropertiesComparator
 
     protected function compareArrays(array $expected, array $actual) : bool
     {
-        return $expected === $actual;
+        return $expected == $actual;
     }
 
     public function subject() : string
@@ -67,7 +67,7 @@ final class ObjectHasPropertiesIdenticalTo extends AbstractPropertiesComparator
 
     public function predicate() : string
     {
-        return 'identical to';
+        return 'equal to';
     }
 }
 

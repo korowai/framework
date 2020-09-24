@@ -50,7 +50,7 @@ use SebastianBergmann\Exporter\Exporter as BaseExporter;
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-abstract class AbstractHasPropertiesIdenticalTo extends Constraint implements ExpectedPropertiesInterface
+abstract class AbstractPropertiesComparator extends Constraint implements ExpectedPropertiesInterface
 {
     use ExpectedPropertiesDecoratorTrait;
 
@@ -70,6 +70,9 @@ abstract class AbstractHasPropertiesIdenticalTo extends Constraint implements Ex
     private $exporter = null;
 
     abstract protected static function makePropertySelector() : PropertySelectorInterface;
+    abstract protected function compareArrays(array $expected, array $actual) : bool;
+    abstract public function subject() : string;
+    abstract public function predicate() : string;
 
     public static function fromArray(array $expected, RecursiveUnwrapperInterface $unwrapper = null) : self
     {
@@ -114,7 +117,11 @@ abstract class AbstractHasPropertiesIdenticalTo extends Constraint implements Ex
      */
     public function toString() : string
     {
-        return 'has required properties with prescribed values';
+        return sprintf(
+            'is %s with selected properties %s given ones',
+            $this->subject(),
+            $this->predicate()
+        );
     }
 
     /**
@@ -135,7 +142,11 @@ abstract class AbstractHasPropertiesIdenticalTo extends Constraint implements Ex
     public function toStringInContext(Operator $operator, $role) : string
     {
         if ($operator instanceof LogicalNot) {
-            return 'does not have required properties with prescribed values';
+            return sprintf(
+                'fails to be %s with selected properties %s given ones',
+                $this->subject(),
+                $this->predicate()
+            );
         }
         return '';
     }
@@ -194,7 +205,7 @@ abstract class AbstractHasPropertiesIdenticalTo extends Constraint implements Ex
         }
         $actual = $this->unwrapper->unwrap($this->selectActualProperties($other));
         $expect = $this->unwrapper->unwrap($this->expected);
-        return $expect === $actual;
+        return $this->compareArrays($expect, $actual);
     }
 
     protected function exporter() : BaseExporter

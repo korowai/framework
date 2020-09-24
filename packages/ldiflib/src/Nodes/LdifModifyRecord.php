@@ -12,9 +12,8 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldif\Nodes;
 
-use Korowai\Lib\Ldif\SnippetInterface;
 use Korowai\Lib\Ldif\RecordVisitorInterface;
-use Korowai\Lib\Ldif\InvalidChangeTypeException;
+use Korowai\Lib\Ldif\SnippetInterface;
 
 /**
  * Represents [RFC2849](https://tools.ietf.org/html/rfc2849)
@@ -37,10 +36,10 @@ class LdifModifyRecord extends AbstractChangeRecord implements LdifModifyRecordI
     /**
      * Initializes the object.
      *
-     * @param  string $dn
-     *      Distinguished name of the entry being altered by the record.
-     * @param  array $options
-     *      An array of key => value pairs. Supported options are:
+     * @param string $dn
+     *                        Distinguished name of the entry being altered by the record
+     * @param array  $options
+     *                        An array of key => value pairs. Supported options are:
      *
      * - ``"modSpecs" => ModSpecInterface[]`` (optional): an array of [ModSpecInterface](\.\./ModSpecInterface.html)
      *   instances describing modifications to be applied to the entry,
@@ -59,7 +58,7 @@ class LdifModifyRecord extends AbstractChangeRecord implements LdifModifyRecordI
     /**
      * {@inheritdoc}
      */
-    public function getChangeType() : string
+    public function getChangeType(): string
     {
         return 'modify';
     }
@@ -67,19 +66,19 @@ class LdifModifyRecord extends AbstractChangeRecord implements LdifModifyRecordI
     /**
      * Sets new array of [ModSpecInterface](\.\./ModSpecInterface.html) objects.
      *
-     * @param  array $modSpecs
      * @return object $this
      */
     public function setModSpecs(array $modSpecs)
     {
         $this->modSpecs = $modSpecs;
+
         return $this;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getModSpecs() : array
+    public function getModSpecs(): array
     {
         return $this->modSpecs;
     }

@@ -22,21 +22,22 @@ use PHPUnit\Framework\MockObject\Rule\AnyInvokedCount;
  */
 trait CreateLdapResultEntryMockTrait
 {
-    abstract public static function any() : AnyInvokedCount;
+    abstract public static function any(): AnyInvokedCount;
+
     abstract public function getMockBuilder(string $className): MockBuilder;
 
     private function createLdapResultEntryMock(
         LdapResultInterface $result = null,
         $resource = null,
         array $methods = []
-    ) : LdapResultEntryInterface {
+    ): LdapResultEntryInterface {
         $builder = $this->getMockBuilder(LdapResultEntryInterface::class);
 
-        if ($result !== null && !in_array('getLdapResult', $methods)) {
+        if (null !== $result && !in_array('getLdapResult', $methods)) {
             $methods[] = 'getLdapResult';
         }
 
-        if ($resource !== null && !in_array('getResource', $methods)) {
+        if (null !== $resource && !in_array('getResource', $methods)) {
             $methods[] = 'getResource';
         }
 
@@ -44,15 +45,17 @@ trait CreateLdapResultEntryMockTrait
 
         $mock = $builder->getMockForAbstractClass();
 
-        if ($result !== null) {
+        if (null !== $result) {
             $mock->expects($this->any())
-                 ->method('getLdapResult')
-                 ->willReturn($result);
+                ->method('getLdapResult')
+                ->willReturn($result)
+            ;
         }
-        if ($resource !== null) {
+        if (null !== $resource) {
             $mock->expects($this->any())
-                 ->method('getResource')
-                 ->willReturn($resource);
+                ->method('getResource')
+                ->willReturn($resource)
+            ;
         }
 
         return $mock;

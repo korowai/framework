@@ -39,10 +39,8 @@ trait FeedConfigPathTrait
      *      }
      *  }
      * ```
-     *
-     * @param string $configPath
      */
-    public static function feedConfigPath(string $configPath) : array
+    public static function feedConfigPath(string $configPath): array
     {
         return [
             [[], $configPath],

@@ -33,22 +33,19 @@ trait DecoratesSourceLocationInterface
     /**
      * Sets the SourceLocationInterface instance to this object.
      *
-     * @param SourceLocationInterface $location
-     *
      * @return $this
      */
     public function setSourceLocation(SourceLocationInterface $location)
     {
         $this->location = $location;
+
         return $this;
     }
 
     /**
      * Returns the SourceLocationInterface instance wrapped by this object.
-     *
-     * @return SourceLocationInterface|null
      */
-    public function getSourceLocation() : ?SourceLocationInterface
+    public function getSourceLocation(): ?SourceLocationInterface
     {
         return $this->location;
     }

@@ -30,14 +30,6 @@ final class ContextFactoryStack implements ContextFactoryStackInterface, Context
     protected $factories;
 
     /**
-     * Initializes the object.
-     */
-    protected function initializeSingleton()
-    {
-        $this->clean();
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function clean()
@@ -48,7 +40,7 @@ final class ContextFactoryStack implements ContextFactoryStackInterface, Context
     /**
      * {@inheritdoc}
      */
-    public function top() : ?ContextFactoryInterface
+    public function top(): ?ContextFactoryInterface
     {
         return array_slice($this->factories, -1)[0] ?? null;
     }
@@ -66,10 +58,8 @@ final class ContextFactoryStack implements ContextFactoryStackInterface, Context
      * of factories by one element.
      *
      * If the stack is empty, returns null
-     *
-     * @return ContextFactoryInterface|null
      */
-    public function pop() : ?ContextFactoryInterface
+    public function pop(): ?ContextFactoryInterface
     {
         return array_pop($this->factories);
     }
@@ -77,7 +67,7 @@ final class ContextFactoryStack implements ContextFactoryStackInterface, Context
     /**
      * {@inheritdoc}
      */
-    public function size() : int
+    public function size(): int
     {
         return count($this->factories);
     }
@@ -85,15 +75,24 @@ final class ContextFactoryStack implements ContextFactoryStackInterface, Context
     /**
      * {@inheritdoc}
      */
-    public function getContextManager($arg) : ?ContextManagerInterface
+    public function getContextManager($arg): ?ContextManagerInterface
     {
-        for ($i = count($this->factories) - 1; $i >= 0; $i--) {
+        for ($i = count($this->factories) - 1; $i >= 0; --$i) {
             $factory = $this->factories[$i];
             if (null !== ($cm = $factory->getContextManager($arg))) {
                 return $cm;
             }
         }
+
         return null;
+    }
+
+    /**
+     * Initializes the object.
+     */
+    protected function initializeSingleton()
+    {
+        $this->clean();
     }
 }
 

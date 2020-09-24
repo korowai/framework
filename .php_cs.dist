@@ -25,12 +25,14 @@ return PhpCsFixer\Config::create()
     ->setRiskyAllowed(true)
     ->setRules([
         '@PSR2' => true,
+        '@PhpCsFixer' => true,
         'declare_strict_types' => true,
         'header_comment' => [
             'header' => $header,
             'location' => 'after_open',
         ],
         'array_syntax' => ['syntax' => 'short'],
+        'psr4' => true,
     ])
 ;
 // vim: syntax=php sw=4 ts=4 et:

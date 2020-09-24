@@ -12,9 +12,9 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldif\Nodes;
 
-use Korowai\Lib\Ldif\SnippetInterface;
-use Korowai\Lib\Ldif\RecordVisitorInterface;
 use Korowai\Lib\Ldif\InvalidChangeTypeException;
+use Korowai\Lib\Ldif\RecordVisitorInterface;
+use Korowai\Lib\Ldif\SnippetInterface;
 
 /**
  * Represents [RFC2849](https://tools.ietf.org/html/rfc2849)
@@ -47,12 +47,12 @@ class LdifModDnRecord extends AbstractChangeRecord implements LdifModDnRecordInt
     /**
      * Initializes the object.
      *
-     * @param  string $dn
-     *      Distinguished name of the entry being altered by the record.
-     * @param  string $newRdn
-     *      New rdn.
-     * @param  array $options
-     *      An array of key => value pairs. Supported options are:
+     * @param string $dn
+     *                        Distinguished name of the entry being altered by the record
+     * @param string $newRdn
+     *                        New rdn
+     * @param array  $options
+     *                        An array of key => value pairs. Supported options are:
      *
      * - ``"changetype" => string`` (optional): one of ``"moddn"`` or ``"modrdn"``, defaults to ``"modrdn"``,
      * - ``"deleteoldrdn" => bool`` (optional): whether to delete old RDN or not, defaults to ``false``,
@@ -80,25 +80,29 @@ class LdifModDnRecord extends AbstractChangeRecord implements LdifModDnRecordInt
     /**
      * Sets the change type.
      *
-     * @param  string $changeType Must be one of ``"moddn"`` or ``"modrdn"``.
-     * @return object $this
+     * @param string $changeType must be one of ``"moddn"`` or ``"modrdn"``
+     *
      * @throws InvalidChangeTypeException
+     *
+     * @return object $this
      */
     public function setChangeType(string $changeType)
     {
-        if (!in_array(strtolower($changeType), ["moddn", "modrdn"])) {
-            $message = 'Argument 1 to '.__class__.'::setChangeType() must be one of "moddn" or "modrdn", "'.
+        if (!in_array(strtolower($changeType), ['moddn', 'modrdn'])) {
+            $message = 'Argument 1 to '.__CLASS__.'::setChangeType() must be one of "moddn" or "modrdn", "'.
                        $changeType.'" given.';
+
             throw new InvalidChangeTypeException($message);
         }
         $this->changeType = strtolower($changeType);
+
         return $this;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getChangeType() : string
+    public function getChangeType(): string
     {
         return $this->changeType;
     }
@@ -106,19 +110,19 @@ class LdifModDnRecord extends AbstractChangeRecord implements LdifModDnRecordInt
     /**
      * Sets the new RDN.
      *
-     * @param  string $newRdn
      * @return object $this
      */
     public function setNewRdn(string $newRdn)
     {
         $this->newRdn = $newRdn;
+
         return $this;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getNewRdn() : string
+    public function getNewRdn(): string
     {
         return $this->newRdn;
     }
@@ -126,19 +130,19 @@ class LdifModDnRecord extends AbstractChangeRecord implements LdifModDnRecordInt
     /**
      * Sets the boolean flag determining whether to delete old RDN or not.
      *
-     * @param  bool $deleteOldRdn
      * @return object $this
      */
     public function setDeleteOldRdn(bool $deleteOldRdn)
     {
         $this->deleteOldRdn = $deleteOldRdn;
+
         return $this;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getDeleteOldRdn() : bool
+    public function getDeleteOldRdn(): bool
     {
         return $this->deleteOldRdn;
     }
@@ -146,19 +150,21 @@ class LdifModDnRecord extends AbstractChangeRecord implements LdifModDnRecordInt
     /**
      * Sets the distinguished name of new superior.
      *
-     * @param  bool $newSuperior
+     * @param bool $newSuperior
+     *
      * @return object $this
      */
     public function setNewSuperior(?string $newSuperior)
     {
         $this->newSuperior = $newSuperior;
+
         return $this;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getNewSuperior() : ?string
+    public function getNewSuperior(): ?string
     {
         return $this->newSuperior;
     }

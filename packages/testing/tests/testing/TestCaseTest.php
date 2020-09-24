@@ -12,34 +12,36 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Testing;
 
-use Korowai\Testing\TestCase;
 use Korowai\Testing\Assertions\ClassAssertionsTrait;
-use Korowai\Testing\Assertions\PropertiesAssertionsTrait;
 use Korowai\Testing\Assertions\PregAssertionsTrait;
+use Korowai\Testing\Assertions\PropertiesAssertionsTrait;
+use Korowai\Testing\TestCase;
 use Korowai\Testing\Traits\PregUtilsTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Testing\TestCase
+ *
+ * @internal
  */
 final class TestCaseTest extends TestCase
 {
-    public function test__uses__ClassAssertionsTrait() : void
+    public function testUsesClassAssertionsTrait(): void
     {
         $this->assertUsesTrait(ClassAssertionsTrait::class, TestCase::class);
     }
 
-    public function test__uses__PropertiesAssertionsTrait() : void
+    public function testUsesPropertiesAssertionsTrait(): void
     {
         $this->assertUsesTrait(PropertiesAssertionsTrait::class, TestCase::class);
     }
 
-    public function test__uses__PregAssertionsTrait() : void
+    public function testUsesPregAssertionsTrait(): void
     {
         $this->assertUsesTrait(PregAssertionsTrait::class, TestCase::class);
     }
 
-    public function test__uses__PregUtilsTrait() : void
+    public function testUsesPregUtilsTrait(): void
     {
         $this->assertUsesTrait(PregUtilsTrait::class, TestCase::class);
     }

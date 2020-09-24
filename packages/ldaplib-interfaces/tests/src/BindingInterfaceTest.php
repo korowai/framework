@@ -13,29 +13,30 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Ldap;
 
 use Korowai\Lib\Ldap\BindingInterface;
-
 use Korowai\Testing\LdaplibInterfaces\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Tests\Lib\Ldap\BindingInterfaceTrait
+ *
+ * @internal
  */
 final class BindingInterfaceTest extends TestCase
 {
     public static function createDummyInstance()
     {
-        return new class implements BindingInterface {
+        return new class() implements BindingInterface {
             use BindingInterfaceTrait;
         };
     }
 
-    public function test__dummyImplementation() : void
+    public function testDummyImplementation(): void
     {
         $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(BindingInterface::class, $dummy);
     }
 
-    public function test__isBound() : void
+    public function testIsBound(): void
     {
         $dummy = $this->createDummyInstance();
 
@@ -43,7 +44,7 @@ final class BindingInterfaceTest extends TestCase
         $this->assertSame($dummy->isBound, $dummy->isBound());
     }
 
-    public function test__isBound__withRetTypeError() : void
+    public function testIsBoundWithRetTypeError(): void
     {
         $dummy = $this->createDummyInstance();
         $dummy->isBound = null;
@@ -53,7 +54,7 @@ final class BindingInterfaceTest extends TestCase
         $dummy->isBound();
     }
 
-    public function test__bind() : void
+    public function testBind(): void
     {
         $dummy = $this->createDummyInstance();
 
@@ -61,7 +62,7 @@ final class BindingInterfaceTest extends TestCase
         $this->assertSame($dummy->bind, $dummy->bind('', ''));
     }
 
-    public static function prov__bind__withArgTypeError() : array
+    public static function prov__bind__withArgTypeError(): array
     {
         return [
             [[0], \string::class],
@@ -73,7 +74,7 @@ final class BindingInterfaceTest extends TestCase
     /**
      * @dataProvider prov__bind__withArgTypeError
      */
-    public function test__bind__withArgTypeError(array $args, string $message) : void
+    public function testBindWithArgTypeError(array $args, string $message): void
     {
         $dummy = $this->createDummyInstance();
         $dummy->bind = null;
@@ -83,7 +84,7 @@ final class BindingInterfaceTest extends TestCase
         $dummy->bind(...$args);
     }
 
-    public function test__bind__withRetTypeError() : void
+    public function testBindWithRetTypeError(): void
     {
         $dummy = $this->createDummyInstance();
         $dummy->bind = null;
@@ -94,7 +95,7 @@ final class BindingInterfaceTest extends TestCase
         $dummy->bind();
     }
 
-    public function test__unbind() : void
+    public function testUnbind(): void
     {
         $dummy = $this->createDummyInstance();
 

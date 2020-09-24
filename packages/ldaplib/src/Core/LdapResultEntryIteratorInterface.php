@@ -20,12 +20,10 @@ interface LdapResultEntryIteratorInterface extends LdapResultItemIteratorInterfa
     /**
      * Returns the current entry.
      *
-     * @return LdapResultEntryInterface|null
-     *
      * @psalm-mutation-free
      * @psalm-suppress MoreSpecificReturnType
      */
-    public function current() : ?LdapResultEntryInterface;
+    public function current(): ?LdapResultEntryInterface;
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

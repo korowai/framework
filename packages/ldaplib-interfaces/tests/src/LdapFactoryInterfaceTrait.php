@@ -19,9 +19,9 @@ use Korowai\Lib\Ldap\LdapInterface;
  */
 trait LdapFactoryInterfaceTrait
 {
-    public $createLdapInterface = null;
+    public $createLdapInterface;
 
-    public function createLdapInterface(array $config) : LdapInterface
+    public function createLdapInterface(array $config): LdapInterface
     {
         return $this->createLdapInterface;
     }

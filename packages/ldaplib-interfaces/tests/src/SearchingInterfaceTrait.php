@@ -23,12 +23,12 @@ trait SearchingInterfaceTrait
     public $search;
     public $createSearchQuery;
 
-    public function search(string $base_dn, string $filter, array $options = []) : ResultInterface
+    public function search(string $base_dn, string $filter, array $options = []): ResultInterface
     {
         return $this->search;
     }
 
-    public function createSearchQuery(string $base_dn, string $filter, array $options = []) : SearchQueryInterface
+    public function createSearchQuery(string $base_dn, string $filter, array $options = []): SearchQueryInterface
     {
         return $this->createSearchQuery;
     }

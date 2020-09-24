@@ -24,24 +24,18 @@ interface ControlInterface extends NodeInterface
     /**
      * Returns [RFC2849](https://tools.ietf.org/html/rfc2849#page-3)
      * control type OID as string.
-     *
-     * @return string
      */
-    public function getOid() : string;
+    public function getOid(): string;
 
     /**
      * Returns the control's criticality as bool, or nul (if not specified).
-     *
-     * @return bool|null
      */
-    public function getCriticality() : ?bool;
+    public function getCriticality(): ?bool;
 
     /**
      * Returns an object representing control's value, or null (if not set).
-     *
-     * @return ValueSpecInterface|null
      */
-    public function getValueSpec() : ?ValueSpecInterface;
+    public function getValueSpec(): ?ValueSpecInterface;
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

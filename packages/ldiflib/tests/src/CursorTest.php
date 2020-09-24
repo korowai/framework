@@ -14,28 +14,29 @@ namespace Korowai\Tests\Lib\Ldif;
 
 use Korowai\Lib\Ldif\Cursor;
 use Korowai\Lib\Ldif\CursorInterface;
-use Korowai\Lib\Ldif\Location;
 use Korowai\Lib\Ldif\Input;
-
+use Korowai\Lib\Ldif\Location;
 use Korowai\Testing\Ldiflib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Ldif\Cursor
+ *
+ * @internal
  */
 final class CursorTest extends TestCase
 {
-    public function test__implements__CursorInterface() : void
+    public function testImplementsCursorInterface(): void
     {
         $this->assertImplementsInterface(CursorInterface::class, Cursor::class);
     }
 
-    public function test__extends__Location() : void
+    public function testExtendsLocation(): void
     {
         $this->assertExtendsClass(Location::class, Cursor::class);
     }
 
-    public function test__getClonedLocation() : void
+    public function testGetClonedLocation(): void
     {
         $input = $this->createMock(Input::class);
 
@@ -60,7 +61,7 @@ final class CursorTest extends TestCase
         $this->assertSame(321, $clone3->getOffset());
     }
 
-    public function test__moveBy() : void
+    public function testMoveBy(): void
     {
         $input = $this->createMock(Input::class);
         $cursor = new Cursor($input, 0);
@@ -77,7 +78,7 @@ final class CursorTest extends TestCase
         $this->assertSame(3, $cursor->getOffset());
     }
 
-    public function test__moveTo() : void
+    public function testMoveTo(): void
     {
         $input = $this->createMock(Input::class);
         $cursor = new Cursor($input, 0);

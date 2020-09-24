@@ -12,8 +12,8 @@ declare(strict_types=1);
 
 namespace Korowai\Testing\Ldaplib;
 
-use Korowai\Lib\Ldap\LdapException;
 use Korowai\Lib\Ldap\ErrorException;
+use Korowai\Lib\Ldap\LdapException;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -32,12 +32,16 @@ final class LdapTriggerErrorTestFixture
      */
     private $expect;
 
+    private function __construct(array $params, array $expect)
+    {
+        $this->params = $params;
+        $this->expect = $expect;
+    }
+
     /**
      * Returns array of fixture instances suitable to be returned from within a dataProvider.
-     *
-     * @return array
      */
-    public static function getFixtures() : array
+    public static function getFixtures(): array
     {
         return [
             // #0
@@ -95,18 +99,12 @@ final class LdapTriggerErrorTestFixture
         ];
     }
 
-    private function __construct(array $params, array $expect)
-    {
-        $this->params = $params;
-        $this->expect = $expect;
-    }
-
-    public function getParams() : array
+    public function getParams(): array
     {
         return $this->params;
     }
 
-    public function getExpect() : array
+    public function getExpect(): array
     {
         return $this->expect;
     }

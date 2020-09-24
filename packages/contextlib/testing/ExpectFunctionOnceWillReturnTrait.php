@@ -21,13 +21,16 @@ trait ExpectFunctionOnceWillReturnTrait
 
     /**
      * @todo Write documentation.
+     *
+     * @param mixed $return
      */
-    public function expectFunctionOnceWillReturn(string $function, array $args, $return) : void
+    public function expectFunctionOnceWillReturn(string $function, array $args, $return): void
     {
         $this->getContextFunctionMock($function)
-             ->expects($this->once())
-             ->with(...$args)
-             ->willReturn($return);
+            ->expects($this->once())
+            ->with(...$args)
+            ->willReturn($return)
+        ;
     }
 }
 

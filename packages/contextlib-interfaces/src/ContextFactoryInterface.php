@@ -18,11 +18,11 @@ namespace Korowai\Lib\Context;
 interface ContextFactoryInterface
 {
     /**
-     * @param  mixed $arg An argument to be turned into a context manager.
+     * @param mixed $arg an argument to be turned into a context manager
      *
      * @return ContextManagerInterface
      */
-    public function getContextManager($arg) : ?ContextManagerInterface;
+    public function getContextManager($arg): ?ContextManagerInterface;
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

@@ -24,7 +24,6 @@ trait Singleton
      */
     private static $instance;
 
-
     /**
      * Singleton's constructor is hidden from user.
      */
@@ -35,6 +34,7 @@ trait Singleton
 
     /**
      * Singleton's __clone() is hidden from user.
+     *
      * @codeCoverageIgnore
      */
     private function __clone()
@@ -43,18 +43,10 @@ trait Singleton
 
     /**
      * Singleton's __wakeup() is hidden from user.
+     *
      * @codeCoverageIgnore
      */
     private function __wakeup()
-    {
-    }
-
-    /**
-     * Initializes the object.
-     *
-     * This method may be overwriten in the target class.
-     */
-    protected function initializeSingleton()
     {
     }
 
@@ -66,7 +58,17 @@ trait Singleton
         if (!isset(self::$instance)) {
             self::$instance = new self();
         }
+
         return self::$instance;
+    }
+
+    /**
+     * Initializes the object.
+     *
+     * This method may be overwriten in the target class.
+     */
+    protected function initializeSingleton()
+    {
     }
 }
 

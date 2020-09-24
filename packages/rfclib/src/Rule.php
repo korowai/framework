@@ -12,8 +12,6 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Rfc;
 
-use Korowai\Lib\Rfc\InvalidRuleSetNameException;
-
 /**
  * Single rule in the set of rules.
  *
@@ -34,21 +32,23 @@ class Rule implements RuleInterface
     /**
      * Initializes the rule.
      *
-     * @param  string $ruleSetClass
-     *      Must be a fully qualified name of a class implementing
-     *      [StaticRuleSetInterface](StaticRuleSetInterface.html).
-     * @param  string $name
-     *      Name of the rule in the $ruleSetClass (i.e.
-     *      ``$ruleSetClass::regexp($name)`` must be available).
-     * @throws InvalidRuleSetNameException
-     *      When invalid *$ruleSetClass* is passed to the constructor.
+     * @param string $ruleSetClass
+     *                             Must be a fully qualified name of a class implementing
+     *                             [StaticRuleSetInterface](StaticRuleSetInterface.html).
+     * @param string $name
+     *                             Name of the rule in the $ruleSetClass (i.e.
+     *                             ``$ruleSetClass::regexp($name)`` must be available).
+     *
+     * @throws invalidRuleSetNameException
+     *                                     When invalid *$ruleSetClass* is passed to the constructor
      */
     public function __construct(string $ruleSetClass, string $name)
     {
         if (!is_subclass_of($ruleSetClass, StaticRuleSetInterface::class)) {
-            $message = 'Argument 1 passed to '.__class__.'::__construct() must be '.
+            $message = 'Argument 1 passed to '.__CLASS__.'::__construct() must be '.
                        'a name of class implementing '.StaticRuleSetInterface::class.', '.
                        '"'.$ruleSetClass.'" given';
+
             throw new InvalidRuleSetNameException($message);
         }
         $this->ruleSetClass = $ruleSetClass;
@@ -56,21 +56,25 @@ class Rule implements RuleInterface
     }
 
     /**
-     * Returns the rule name as it appears in the set of rules.
-     *
-     * @return string
+     * {@inheritdoc}
      */
-    public function name() : string
+    public function __toString(): string
+    {
+        return $this->regexp();
+    }
+
+    /**
+     * Returns the rule name as it appears in the set of rules.
+     */
+    public function name(): string
     {
         return $this->name;
     }
 
     /**
      * Returns the *$ruleSetClass* passed in to __construc() at creation.
-     *
-     * @return string
      */
-    public function ruleSetClass() : string
+    public function ruleSetClass(): string
     {
         return $this->ruleSetClass;
     }
@@ -78,15 +82,7 @@ class Rule implements RuleInterface
     /**
      * {@inheritdoc}
      */
-    public function __toString() : string
-    {
-        return $this->regexp();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function regexp() : string
+    public function regexp(): string
     {
         return $this->delegate('regexp', [$this->name()]);
     }
@@ -94,7 +90,7 @@ class Rule implements RuleInterface
     /**
      * {@inheritdoc}
      */
-    public function captures() : array
+    public function captures(): array
     {
         return $this->delegate('captures', [$this->name()]);
     }
@@ -102,7 +98,7 @@ class Rule implements RuleInterface
     /**
      * {@inheritdoc}
      */
-    public function errorCaptures() : array
+    public function errorCaptures(): array
     {
         return $this->delegate('errorCaptures', [$this->name()]);
     }
@@ -110,7 +106,7 @@ class Rule implements RuleInterface
     /**
      * {@inheritdoc}
      */
-    public function valueCaptures() : array
+    public function valueCaptures(): array
     {
         return $this->delegate('valueCaptures', [$this->name()]);
     }
@@ -118,7 +114,7 @@ class Rule implements RuleInterface
     /**
      * {@inheritdoc}
      */
-    public function findCapturedErrors(array $matches) : array
+    public function findCapturedErrors(array $matches): array
     {
         return $this->delegate('findCapturedErrors', [$this->name(), $matches]);
     }
@@ -126,7 +122,7 @@ class Rule implements RuleInterface
     /**
      * {@inheritdoc}
      */
-    public function findCapturedValues(array $matches) : array
+    public function findCapturedValues(array $matches): array
     {
         return $this->delegate('findCapturedValues', [$this->name(), $matches]);
     }
@@ -134,7 +130,7 @@ class Rule implements RuleInterface
     /**
      * {@inheritdoc}
      */
-    public function getErrorMessage(string $errorKey = '') : string
+    public function getErrorMessage(string $errorKey = ''): string
     {
         return $this->delegate('getErrorMessage', [$errorKey, $this->name()]);
     }
@@ -142,8 +138,6 @@ class Rule implements RuleInterface
     /**
      * Delegates method call to the $this->ruleSetClass.
      *
-     * @param  string $method
-     * @param  array $arguments
      * @return mixed
      */
     protected function delegate(string $method, array $arguments)

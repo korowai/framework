@@ -19,21 +19,20 @@ use Korowai\Lib\Basic\ResourceWrapperInterface;
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-interface LdapResultItemInterface extends
-    ResourceWrapperInterface,
-    LdapResultWrapperInterface,
-    LdapLinkWrapperInterface
+interface LdapResultItemInterface extends ResourceWrapperInterface, LdapResultWrapperInterface, LdapLinkWrapperInterface
 {
     // @codingStandardsIgnoreStart
     // phpcs:disable Generic.NamingConventions.CamelCapsFunctionName
+
     /**
-     * Get next result item in the chain
+     * Get next result item in the chain.
      *
-     * @return LdapResultItemInterface|false
+     * @return false|LdapResultItemInterface
      *
-     * @link http://php.net/manual/en/function.ldap-next-entry.php ldap_next_entry()
+     * @see http://php.net/manual/en/function.ldap-next-entry.php ldap_next_entry()
      */
     public function next_item();
+
     // phpcs:enable Generic.NamingConventions.CamelCapsFunctionName
     // @codingStandardsIgnoreEnd
 }

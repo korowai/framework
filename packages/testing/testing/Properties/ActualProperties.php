@@ -17,7 +17,7 @@ namespace Korowai\Testing\Properties;
  */
 final class ActualProperties extends \ArrayObject implements ActualPropertiesInterface
 {
-    public function canUnwrapChild(PropertiesInterface $child) : bool
+    public function canUnwrapChild(PropertiesInterface $child): bool
     {
         return $child instanceof ActualPropertiesInterface;
     }

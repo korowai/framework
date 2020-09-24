@@ -13,29 +13,30 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Error;
 
 use Korowai\Lib\Error\ErrorHandlerInterface;
-
 use Korowai\Testing\ErrorlibInterfaces\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Tests\Lib\Error\ErrorHandlerInterfaceTrait
+ *
+ * @internal
  */
 final class ErrorHandlerInterfaceTest extends TestCase
 {
     public static function createDummyInstance()
     {
-        return new class implements ErrorHandlerInterface {
+        return new class() implements ErrorHandlerInterface {
             use ErrorHandlerInterfaceTrait;
         };
     }
 
-    public function test__dummyImplementation() : void
+    public function testDummyImplementation(): void
     {
         $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(ErrorHandlerInterface::class, $dummy);
     }
 
-    public function test__invoke() : void
+    public function testInvoke(): void
     {
         $dummy = $this->createDummyInstance();
 
@@ -43,7 +44,7 @@ final class ErrorHandlerInterfaceTest extends TestCase
         $this->assertSame($dummy->invoke, $dummy(0, '', '', 0));
     }
 
-    public static function prov__invoke__withArgTypeError() : array
+    public static function prov__invoke__withArgTypeError(): array
     {
         return [
             [[null, '', '', 0], \int::class],
@@ -56,7 +57,7 @@ final class ErrorHandlerInterfaceTest extends TestCase
     /**
      * @dataProvider prov__invoke__withArgTypeError
      */
-    public function test__invoke__withArgTypeError(array $args, string $message) : void
+    public function testInvokeWithArgTypeError(array $args, string $message): void
     {
         $dummy = $this->createDummyInstance();
 
@@ -65,7 +66,7 @@ final class ErrorHandlerInterfaceTest extends TestCase
         $dummy->__invoke(...$args);
     }
 
-    public function test__invoke__withRetTypeError() : void
+    public function testInvokeWithRetTypeError(): void
     {
         $dummy = $this->createDummyInstance();
         $dummy->invoke = '';
@@ -75,7 +76,7 @@ final class ErrorHandlerInterfaceTest extends TestCase
         $dummy(0, '', '', 0);
     }
 
-    public function test__getErrorTypes() : void
+    public function testGetErrorTypes(): void
     {
         $dummy = $this->createDummyInstance();
 
@@ -83,7 +84,7 @@ final class ErrorHandlerInterfaceTest extends TestCase
         $this->assertSame($dummy->errorTypes, $dummy->getErrorTypes(''));
     }
 
-    public function test__getErrorTypes__withTypeError() : void
+    public function testGetErrorTypesWithTypeError(): void
     {
         $dummy = $this->createDummyInstance();
         $dummy->errorTypes = '';

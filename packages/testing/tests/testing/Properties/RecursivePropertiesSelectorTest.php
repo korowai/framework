@@ -12,33 +12,33 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Testing\Properties;
 
-use Korowai\Testing\TestCase;
 use Korowai\Testing\Properties\ActualProperties;
-use Korowai\Testing\Properties\RecursivePropertiesSelector;
-use Korowai\Testing\Properties\RecursivePropertiesUnwrapper;
-use Korowai\Testing\Properties\RecursivePropertiesSelectorInterface;
-use Korowai\Testing\Properties\ExpectedProperties;
-use Korowai\Testing\Properties\PropertiesInterface;
-use Korowai\Testing\Properties\ObjectPropertySelector;
 use Korowai\Testing\Properties\ClassPropertySelector;
-use Korowai\Testing\Properties\CircularDependencyException;
+use Korowai\Testing\Properties\ExpectedProperties;
+use Korowai\Testing\Properties\ObjectPropertySelector;
+use Korowai\Testing\Properties\RecursivePropertiesSelector;
+use Korowai\Testing\Properties\RecursivePropertiesSelectorInterface;
+use Korowai\Testing\Properties\RecursivePropertiesUnwrapper;
+use Korowai\Testing\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Testing\Properties\RecursivePropertiesSelector
+ *
+ * @internal
  */
 final class RecursivePropertiesSelectorTest extends TestCase
 {
     public const UNIQUE_TAG = RecursivePropertiesUnwrapper::UNIQUE_TAG;
 
-    public static function createExpectedObjectProperties(...$args) : ExpectedProperties
+    public static function createExpectedObjectProperties(...$args): ExpectedProperties
     {
-        return new ExpectedProperties(new ObjectPropertySelector, ...$args);
+        return new ExpectedProperties(new ObjectPropertySelector(), ...$args);
     }
 
-    public static function createExpectedClassProperties(...$args) : ExpectedProperties
+    public static function createExpectedClassProperties(...$args): ExpectedProperties
     {
-        return new ExpectedProperties(new ClassPropertySelector, ...$args);
+        return new ExpectedProperties(new ClassPropertySelector(), ...$args);
     }
 
     //
@@ -47,7 +47,7 @@ final class RecursivePropertiesSelectorTest extends TestCase
     //
     //
 
-    public function test__implements__RecursivePropertiesSelectorInterface() : void
+    public function testImplementsRecursivePropertiesSelectorInterface(): void
     {
         $this->assertImplementsInterface(RecursivePropertiesSelectorInterface::class, RecursivePropertiesSelector::class);
     }
@@ -56,13 +56,13 @@ final class RecursivePropertiesSelectorTest extends TestCase
     // unwrap()
     //
 
-    public static function prov__selectProperties() : array
+    public static function prov__selectProperties(): array
     {
         $actAct = new ActualProperties([
             'act' => 'x:ACT',
         ]);
 
-        $expExp = new ExpectedProperties(new ObjectPropertySelector, [
+        $expExp = new ExpectedProperties(new ObjectPropertySelector(), [
             'exp' => 'x:EXP',
         ]);
 
@@ -70,9 +70,9 @@ final class RecursivePropertiesSelectorTest extends TestCase
             // #0
             [
                 'selector' => static::createExpectedObjectProperties([]),
-                'subject'  => new class {
+                'subject' => new class() {
                 },
-                'expect'   => [
+                'expect' => [
                     self::UNIQUE_TAG => true,
                 ],
             ],
@@ -80,13 +80,13 @@ final class RecursivePropertiesSelectorTest extends TestCase
             // #1
             [
                 'selector' => static::createExpectedObjectProperties([
-                    'foo'  => 'e:FOO',
+                    'foo' => 'e:FOO',
                 ]),
-                'subject'  => new class {
+                'subject' => new class() {
                     public $foo = 'a:FOO';
                 },
-                'expect'   => [
-                    'foo'  => 'a:FOO',
+                'expect' => [
+                    'foo' => 'a:FOO',
                     self::UNIQUE_TAG => true,
                 ],
             ],
@@ -94,20 +94,20 @@ final class RecursivePropertiesSelectorTest extends TestCase
             // #2
             [
                 'selector' => static::createExpectedObjectProperties([
-                    'foo'  => 'e:FOO',
-                    'bar'  => [
-                        'baz' => 'e:BAZ'
+                    'foo' => 'e:FOO',
+                    'bar' => [
+                        'baz' => 'e:BAZ',
                     ],
                 ]),
-                'subject'  => new class {
+                'subject' => new class() {
                     public $foo = 'a:FOO';
                     public $bar = [
-                        'baz' => 'a:BAZ'
+                        'baz' => 'a:BAZ',
                     ];
                 },
-                'expect'   => [
-                    'foo'  => 'a:FOO',
-                    'bar'  => [
+                'expect' => [
+                    'foo' => 'a:FOO',
+                    'bar' => [
                         'baz' => 'a:BAZ',
                     ],
                     self::UNIQUE_TAG => true,
@@ -117,18 +117,18 @@ final class RecursivePropertiesSelectorTest extends TestCase
             // #3
             [
                 'selector' => static::createExpectedObjectProperties([
-                    'foo'  => 'e:FOO',
-                    'bar'  => [
-                        'baz' => 'e:BAZ'
+                    'foo' => 'e:FOO',
+                    'bar' => [
+                        'baz' => 'e:BAZ',
                     ],
                 ]),
-                'subject'  => new class {
+                'subject' => new class() {
                     public $foo = 'a:FOO';
                     public $bar = 'a:BAR';
                 },
-                'expect'   => [
-                    'foo'  => 'a:FOO',
-                    'bar'  => 'a:BAR',
+                'expect' => [
+                    'foo' => 'a:FOO',
+                    'bar' => 'a:BAR',
                     self::UNIQUE_TAG => true,
                 ],
             ],
@@ -136,25 +136,25 @@ final class RecursivePropertiesSelectorTest extends TestCase
             // #4
             [
                 'selector' => static::createExpectedObjectProperties([
-                    'foo'  => 'e:FOO',
-                    'bar'  => static::createExpectedObjectProperties([
+                    'foo' => 'e:FOO',
+                    'bar' => static::createExpectedObjectProperties([
                         'baz' => 'e:BAZ',
                     ]),
                 ]),
-                'subject'  => new class {
+                'subject' => new class() {
                     public $foo = 'a:FOO';
                     public $bar;
 
                     public function __construct()
                     {
-                        $this->bar = new class {
+                        $this->bar = new class() {
                             public $baz = 'a:BAZ';
                         };
                     }
                 },
-                'expect'   => [
-                    'foo'  => 'a:FOO',
-                    'bar'  => [
+                'expect' => [
+                    'foo' => 'a:FOO',
+                    'bar' => [
                         'baz' => 'a:BAZ',
                         self::UNIQUE_TAG => true,
                     ],
@@ -165,10 +165,10 @@ final class RecursivePropertiesSelectorTest extends TestCase
             // #5
             [
                 'selector' => static::createExpectedObjectProperties([
-                    'foo'  => 'e:FOO',
-                    'bar'  => 'e:BAR',
+                    'foo' => 'e:FOO',
+                    'bar' => 'e:BAR',
                 ]),
-                'subject'  => new class($actAct) {
+                'subject' => new class($actAct) {
                     public $foo = 'a:FOO';
                     public $bar;
 
@@ -177,9 +177,9 @@ final class RecursivePropertiesSelectorTest extends TestCase
                         $this->bar = $bar;
                     }
                 },
-                'expect'   => [
-                    'foo'  => 'a:FOO',
-                    'bar'  => [
+                'expect' => [
+                    'foo' => 'a:FOO',
+                    'bar' => [
                         'act' => 'x:ACT',
                         self::UNIQUE_TAG => true,
                     ],
@@ -190,10 +190,10 @@ final class RecursivePropertiesSelectorTest extends TestCase
             // #6
             [
                 'selector' => static::createExpectedObjectProperties([
-                    'foo'  => 'e:FOO',
-                    'bar'  => 'e:BAR',
+                    'foo' => 'e:FOO',
+                    'bar' => 'e:BAR',
                 ]),
-                'subject'  => new class($expExp) {
+                'subject' => new class($expExp) {
                     public $foo = 'a:FOO';
                     public $bar;
 
@@ -202,9 +202,9 @@ final class RecursivePropertiesSelectorTest extends TestCase
                         $this->bar = $bar;
                     }
                 },
-                'expect'   => [
-                    'foo'  => 'a:FOO',
-                    'bar'  => $expExp,
+                'expect' => [
+                    'foo' => 'a:FOO',
+                    'bar' => $expExp,
                     self::UNIQUE_TAG => true,
                 ],
             ],
@@ -212,9 +212,9 @@ final class RecursivePropertiesSelectorTest extends TestCase
             // #7
             [
                 'selector' => static::createExpectedClassProperties([]),
-                'subject'  => new class {
+                'subject' => new class() {
                 },
-                'expect'   => [
+                'expect' => [
                     self::UNIQUE_TAG => true,
                 ],
             ],
@@ -222,27 +222,28 @@ final class RecursivePropertiesSelectorTest extends TestCase
             // #8
             [
                 'selector' => static::createExpectedClassProperties([
-                    'foo'  => 'e:FOO',
+                    'foo' => 'e:FOO',
                 ]),
-                'subject'  => get_class(new class {
+                'subject' => get_class(new class() {
                     public static $foo = 'a:FOO';
                 }),
-                'expect'   => [
-                    'foo'  => 'a:FOO',
+                'expect' => [
+                    'foo' => 'a:FOO',
                     self::UNIQUE_TAG => true,
                 ],
             ],
         ];
     }
 
-
     /**
      * @dataProvider prov__selectProperties
+     *
+     * @param mixed $subject
      */
-    public function test__selectProperties(ExpectedProperties $selector, $subject, array $expect) : void
+    public function testSelectProperties(ExpectedProperties $selector, $subject, array $expect): void
     {
         $selector = new RecursivePropertiesSelector($selector);
-        $unwrapper = new RecursivePropertiesUnwrapper;
+        $unwrapper = new RecursivePropertiesUnwrapper();
         $selected = $selector->selectProperties($subject);
         $this->assertInstanceOf(ActualProperties::class, $selected);
         $this->assertSame($expect, $unwrapper->unwrap($selected));

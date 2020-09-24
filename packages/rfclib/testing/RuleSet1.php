@@ -35,20 +35,21 @@ class RuleSet1 extends RuleSet0
     /**
      * {@inheritdoc}
      */
-    public static function getClassRuleNames() : array
+    public static function getClassRuleNames(): array
     {
         $rules = [
             'INT',
             'PARTIAL_INT',
             'ASSIGNMENT_INT',
         ];
+
         return array_merge($rules, parent::getClassRuleNames());
     }
 
     /**
      * {@inheritdoc}
      */
-    public static function getDefinedErrors() : array
+    public static function getDefinedErrors(): array
     {
         $errors = [
             '' => [
@@ -56,15 +57,14 @@ class RuleSet1 extends RuleSet0
             ],
             'value_int_error' => 'malformed integer value',
         ];
+
         return array_merge(parent::getDefinedErrors(), $errors);
     }
 
     /**
      * Returns what we expected the *getClassCaptures()* to return.
-     *
-     * @return array
      */
-    public static function expectedClassCaptures() : array
+    public static function expectedClassCaptures(): array
     {
         $captures = [
             'INT' => [],
@@ -72,9 +72,10 @@ class RuleSet1 extends RuleSet0
             'ASSIGNMENT_INT' => [
                 'var_name' => 'var_name',
                 'value_int' => 'value_int',
-                'value_int_error' => 'value_int_error'
+                'value_int_error' => 'value_int_error',
             ],
         ];
+
         return array_merge(parent::expectedClassCaptures(), $captures);
     }
 }

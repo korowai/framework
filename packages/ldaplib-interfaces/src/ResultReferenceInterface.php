@@ -18,16 +18,16 @@ namespace Korowai\Lib\Ldap;
 interface ResultReferenceInterface extends \IteratorAggregate
 {
     /**
-     * Returns referrals
+     * Returns referrals.
+     *
      * @return array An array of referrals
      */
-    public function getReferrals() : array;
+    public function getReferrals(): array;
 
     /**
-     * Returns iterator over referrals
-     * @return ResultReferralIteratorInterface
+     * Returns iterator over referrals.
      */
-    public function getReferralIterator() : ResultReferralIteratorInterface;
+    public function getReferralIterator(): ResultReferralIteratorInterface;
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

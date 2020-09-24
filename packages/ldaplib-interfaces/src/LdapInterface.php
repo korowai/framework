@@ -13,15 +13,11 @@ declare(strict_types=1);
 namespace Korowai\Lib\Ldap;
 
 /**
- * LDAP interface
+ * LDAP interface.
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-interface LdapInterface extends
-    BindingInterface,
-    SearchingInterface,
-    ComparingInterface,
-    EntryManagerInterface
+interface LdapInterface extends BindingInterface, SearchingInterface, ComparingInterface, EntryManagerInterface
 {
 }
 

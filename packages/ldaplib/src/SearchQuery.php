@@ -12,12 +12,10 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldap;
 
+use function Korowai\Lib\Context\with;
 use Korowai\Lib\Ldap\Core\LdapLinkInterface;
 use Korowai\Lib\Ldap\Core\LdapLinkWrapperInterface;
 use Korowai\Lib\Ldap\Core\LdapLinkWrapperTrait;
-use Korowai\Lib\Ldap\Result;
-
-use function Korowai\Lib\Context\with;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -28,26 +26,21 @@ final class SearchQuery implements SearchQueryInterface, LdapLinkWrapperInterfac
 
     public const SCOPES_METHODS = [
         'base' => 'read',
-        'one'  => 'list',
-        'sub'  => 'search',
+        'one' => 'list',
+        'sub' => 'search',
     ];
 
     /** @var string */
     protected $base_dn;
     /** @var string */
     protected $filter;
-    /** @var ResultInterface|null */
+    /** @var null|ResultInterface */
     protected $result;
     /** @var array */
     protected $options;
 
     /**
-     * Constructs SearchQuery
-     *
-     * @param  LdapLinkInterface $link
-     * @param  string $base_dn
-     * @param  string $filter
-     * @param  array $options
+     * Constructs SearchQuery.
      */
     public function __construct(LdapLinkInterface $link, string $base_dn, string $filter, array $options = [])
     {
@@ -55,12 +48,13 @@ final class SearchQuery implements SearchQueryInterface, LdapLinkWrapperInterfac
         $this->base_dn = $base_dn;
         $this->filter = $filter;
         // FIXME: use dependency injection?
-        $resolver = new SearchOptionsResolver;
+        $resolver = new SearchOptionsResolver();
         $this->options = $resolver->resolve($options);
     }
 
     /**
-     * Returns ``$base_dn`` provided to ``__construct()``
+     * Returns ``$base_dn`` provided to ``__construct()``.
+     *
      * @return string The ``$base_dn`` value provided to ``__construct()``
      */
     public function getBaseDn()
@@ -69,7 +63,8 @@ final class SearchQuery implements SearchQueryInterface, LdapLinkWrapperInterfac
     }
 
     /**
-     * Returns ``$filter`` provided to ``__construct()``
+     * Returns ``$filter`` provided to ``__construct()``.
+     *
      * @return string The ``$filter`` value provided to ``__construct()``
      */
     public function getFilter()
@@ -85,7 +80,7 @@ final class SearchQuery implements SearchQueryInterface, LdapLinkWrapperInterfac
      *
      * @return array Options used by this query
      */
-    public function getOptions() : array
+    public function getOptions(): array
     {
         return $this->options;
     }
@@ -93,26 +88,28 @@ final class SearchQuery implements SearchQueryInterface, LdapLinkWrapperInterfac
     /**
      * {@inheritdoc}
      */
-    public function execute() : ResultInterface
+    public function execute(): ResultInterface
     {
         $options = $this->getOptions();
         $method = static::selectSearchMethod($options);
         $this->result = $this->invokeQueryMethod($method, $options);
+
         return $this->result;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getResult() : ResultInterface
+    public function getResult(): ResultInterface
     {
         if (!isset($this->result)) {
             return $this->execute();
         }
+
         return $this->result;
     }
 
-    private function invokeQueryMethod(string $method, array $options) : ResultInterface
+    private function invokeQueryMethod(string $method, array $options): ResultInterface
     {
         $link = $this->getLdapLink();
         $ldapResult = with($link->getErrorHandler())(
@@ -128,18 +125,21 @@ final class SearchQuery implements SearchQueryInterface, LdapLinkWrapperInterfac
                     $options['timeLimit'],
                     $options['deref']
                 );
-                if ($result === false) {
+                if (false === $result) {
                     trigger_error('LdapLinkInterface::'.$method.'() returned false');
                 }
+
                 return $result;
             }
         );
+
         return new Result($ldapResult);
     }
 
-    private static function selectSearchMethod(array $options) : string
+    private static function selectSearchMethod(array $options): string
     {
         $scope = strtolower($options['scope'] ?? 'sub');
+
         return self::SCOPES_METHODS[$scope] ?? 'search';
     }
 }

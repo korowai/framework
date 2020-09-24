@@ -12,20 +12,17 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldif\Rules;
 
-use Korowai\Lib\Ldif\RuleInterface;
-use Korowai\Lib\Ldif\ParserStateInterface as State;
-use Korowai\Lib\Ldif\LocationInterface;
-use Korowai\Lib\Ldif\Snippet;
 use Korowai\Lib\Ldif\Nodes\LdifAddRecord;
-use Korowai\Lib\Ldif\Nodes\LdifDeleteRecord;
-use Korowai\Lib\Ldif\Nodes\LdifModDnRecord;
-use Korowai\Lib\Ldif\Nodes\LdifModifyRecord;
-use Korowai\Lib\Ldif\Nodes\LdifChangeRecordInterface;
 use Korowai\Lib\Ldif\Nodes\LdifAddRecordInterface;
+use Korowai\Lib\Ldif\Nodes\LdifChangeRecordInterface;
+use Korowai\Lib\Ldif\Nodes\LdifDeleteRecord;
 use Korowai\Lib\Ldif\Nodes\LdifDeleteRecordInterface;
+use Korowai\Lib\Ldif\Nodes\LdifModDnRecord;
 use Korowai\Lib\Ldif\Nodes\LdifModDnRecordInterface;
+use Korowai\Lib\Ldif\Nodes\LdifModifyRecord;
 use Korowai\Lib\Ldif\Nodes\LdifModifyRecordInterface;
-use Korowai\Lib\Ldif\InvalidRuleClassException;
+use Korowai\Lib\Ldif\ParserStateInterface as State;
+use Korowai\Lib\Ldif\Snippet;
 
 /**
  * A rule object that parses *ldif-change-record* as defined in [RFC2849](https://tools.ietf.org/html/rfc2849).
@@ -53,14 +50,12 @@ final class LdifChangeRecordRule extends AbstractLdifRecordRule
 
     /**
      * Initializes the object.
-     *
-     * @param  array $options
      */
     public function __construct(array $options = [])
     {
-        $this->setControlRule($options['controlRule'] ?? new ControlRule);
-        $this->setChangeRecordInitRule($options['changeRecordInitRule'] ?? new ChangeRecordInitRule);
-        $this->setModSpecRule($options['modSpecRule'] ?? new ModSpecRule);
+        $this->setControlRule($options['controlRule'] ?? new ControlRule());
+        $this->setChangeRecordInitRule($options['changeRecordInitRule'] ?? new ChangeRecordInitRule());
+        $this->setModSpecRule($options['modSpecRule'] ?? new ModSpecRule());
         parent::__construct($options);
     }
 
@@ -69,7 +64,7 @@ final class LdifChangeRecordRule extends AbstractLdifRecordRule
      *
      * @return ControlRule
      */
-    public function getControlRule() : ?ControlRule
+    public function getControlRule(): ?ControlRule
     {
         return $this->controlRule;
     }
@@ -77,12 +72,12 @@ final class LdifChangeRecordRule extends AbstractLdifRecordRule
     /**
      * Sets new nested ControlRule object.
      *
-     * @param  ControlRule $rule
      * @return object $this
      */
     public function setControlRule(ControlRule $rule)
     {
         $this->controlRule = $rule;
+
         return $this;
     }
 
@@ -91,7 +86,7 @@ final class LdifChangeRecordRule extends AbstractLdifRecordRule
      *
      * @return ChangeRecordInitRule
      */
-    public function getChangeRecordInitRule() : ?ChangeRecordInitRule
+    public function getChangeRecordInitRule(): ?ChangeRecordInitRule
     {
         return $this->changeRecordInitRule;
     }
@@ -99,12 +94,12 @@ final class LdifChangeRecordRule extends AbstractLdifRecordRule
     /**
      * Sets new nested ChangeRecordInitRule object.
      *
-     * @param  ChangeRecordInitRule $rule
      * @return object $this
      */
     public function setChangeRecordInitRule(ChangeRecordInitRule $rule)
     {
         $this->changeRecordInitRule = $rule;
+
         return $this;
     }
 
@@ -113,7 +108,7 @@ final class LdifChangeRecordRule extends AbstractLdifRecordRule
      *
      * @return ModSpecRule
      */
-    public function getModSpecRule() : ?ModSpecRule
+    public function getModSpecRule(): ?ModSpecRule
     {
         return $this->modSpecRule;
     }
@@ -121,19 +116,19 @@ final class LdifChangeRecordRule extends AbstractLdifRecordRule
     /**
      * Sets new nested ModSpecRule object.
      *
-     * @param  ModSpecRule $rule
      * @return object $this
      */
     public function setModSpecRule(ModSpecRule $rule)
     {
         $this->modSpecRule = $rule;
+
         return $this;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function parse(State $state, &$value = null, bool $trying = false) : bool
+    public function parse(State $state, &$value = null, bool $trying = false): bool
     {
         $begin = $state->getCursor()->getClonedLocation();
         if (!$this->getDnSpecRule()->parse($state, $dn, $trying) ||
@@ -141,40 +136,42 @@ final class LdifChangeRecordRule extends AbstractLdifRecordRule
             !$this->getControlRule()->repeat($state, $controls) ||
             !$this->parseRecord($state, $value, compact('dn', 'controls'))) {
             $value = null;
+
             return false;
         }
 
         $snippet = Snippet::createFromLocationAndState($begin, $state);
         $value->setSnippet($snippet);
+
         return true;
     }
 
     /**
      * Parses the *changerecord* rule of the *ldif-change-record*.
      *
-     * @param  State $state
-     * @param  LdifChangeRecordInterface $record
-     * @param  array $vars
+     * @param LdifChangeRecordInterface $record
      */
-    protected function parseRecord(State $state, LdifChangeRecordInterface &$record = null, array $vars = []) : bool
+    protected function parseRecord(State $state, LdifChangeRecordInterface &$record = null, array $vars = []): bool
     {
         static $parsers = [
-            'add'    => 'parseAdd',
+            'add' => 'parseAdd',
             'delete' => 'parseDelete',
-            'moddn'  => 'parseModDn',
+            'moddn' => 'parseModDn',
             'modrdn' => 'parseModDn',
             'modify' => 'parseModify',
         ];
 
         if (!$this->getChangeRecordInitRule()->parse($state, $changeType)) {
             $record = null;
+
             return false;
         }
 
         $vars['changeType'] = $changeType;
 
-        if (($parser = $parsers[$changeType] ?? null) === null) {
+        if (null === ($parser = $parsers[$changeType] ?? null)) {
             $state->errorHere('internal error: unsupported changeType: "'.$changeType.'"');
+
             return false;
         }
 
@@ -184,50 +181,53 @@ final class LdifChangeRecordRule extends AbstractLdifRecordRule
     /**
      * @todo Write documentation
      */
-    protected function parseAdd(State $state, LdifAddRecordInterface &$record = null, array $vars = []) : bool
+    protected function parseAdd(State $state, LdifAddRecordInterface &$record = null, array $vars = []): bool
     {
         extract($vars);
         if (!$this->getAttrValSpecRule()->repeat($state, $attrValSpecs, 1)) {
             return false;
         }
         $record = new LdifAddRecord($dn, compact('controls', 'attrValSpecs'));
+
         return true;
     }
 
     /**
      * @todo Write documentation
      */
-    protected function parseDelete(State $state, LdifDeleteRecordInterface &$record = null, array $vars = []) : bool
+    protected function parseDelete(State $state, LdifDeleteRecordInterface &$record = null, array $vars = []): bool
     {
         extract($vars);
         $record = new LdifDeleteRecord($dn, compact('controls'));
+
         return true;
     }
 
     /**
      * @todo Write documentation
      */
-    protected function parseModDn(State $state, LdifModDnRecordInterface &$record = null, array $vars = []) : bool
+    protected function parseModDn(State $state, LdifModDnRecordInterface &$record = null, array $vars = []): bool
     {
         extract($vars);
 
         throw new \BadMethodCallException('not implemented');
-
         $options = compact('controls', 'changeType', 'deleteOldRdn', 'newSuperior');
         $record = new LdifModDnRecord($dn, $newRdn, $options);
+
         return true;
     }
 
     /**
      * @todo Write documentation
      */
-    protected function parseModify(State $state, LdifModifyRecordInterface &$record = null, array $vars = []) : bool
+    protected function parseModify(State $state, LdifModifyRecordInterface &$record = null, array $vars = []): bool
     {
         extract($vars);
         if (!$this->getModSpecRule()->repeat($state, $modSpecs)) {
             return false;
         }
         $record = new LdifModifyRecord($dn, compact('controls', 'modSpecs'));
+
         return true;
     }
 }

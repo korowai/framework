@@ -12,9 +12,9 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldap;
 
-use Korowai\Testing\Dummies\PhpIteratorAggregateTrait;
 use Korowai\Lib\Ldap\ResultEntryIteratorInterface;
 use Korowai\Lib\Ldap\ResultReferenceIteratorInterface;
+use Korowai\Testing\Dummies\PhpIteratorAggregateTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -29,27 +29,27 @@ trait ResultInterfaceTrait
     public $resultReferences;
     public $entries;
 
-    public function getResultEntryIterator() : ResultEntryIteratorInterface
+    public function getResultEntryIterator(): ResultEntryIteratorInterface
     {
         return $this->resultEntryIterator;
     }
 
-    public function getResultReferenceIterator() : ResultReferenceIteratorInterface
+    public function getResultReferenceIterator(): ResultReferenceIteratorInterface
     {
         return $this->resultReferenceIterator;
     }
 
-    public function getResultEntries() : array
+    public function getResultEntries(): array
     {
         return $this->resultEntries;
     }
 
-    public function getResultReferences() : array
+    public function getResultReferences(): array
     {
         return $this->resultReferences;
     }
 
-    public function getEntries(bool $use_keys = true) : array
+    public function getEntries(bool $use_keys = true): array
     {
         return $this->entries;
     }

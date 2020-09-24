@@ -17,20 +17,20 @@ namespace Korowai\Tests\Lib\Ldap;
  */
 trait BindingInterfaceTrait
 {
-    public $isBound = null;
-    public $bind = null;
+    public $isBound;
+    public $bind;
 
-    public function isBound() : bool
+    public function isBound(): bool
     {
         return $this->isBound;
     }
 
-    public function bind(string $dn = null, string $password = null) : bool
+    public function bind(string $dn = null, string $password = null): bool
     {
         return $this->bind;
     }
 
-    public function unbind() : void
+    public function unbind(): void
     {
     }
 }

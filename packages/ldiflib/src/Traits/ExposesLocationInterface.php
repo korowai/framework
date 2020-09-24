@@ -12,9 +12,9 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldif\Traits;
 
+use Korowai\Lib\Ldif\InputInterface;
 use Korowai\Lib\Ldif\LocationInterface;
 use Korowai\Lib\Ldif\SourceLocationInterface;
-use Korowai\Lib\Ldif\InputInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -25,37 +25,31 @@ trait ExposesLocationInterface
 
     /**
      * Returns the encapsulated instance of LocationInterface.
-     *
-     * @return LocationInterface|null
      */
-    abstract public function getLocation() : ?LocationInterface;
+    abstract public function getLocation(): ?LocationInterface;
 
     /**
      * Returns the encapsulated instance of SourceLocationInterface.
      *
      * @return SourceLocationInterface
      */
-    public function getSourceLocation() : ?SourceLocationInterface
+    public function getSourceLocation(): ?SourceLocationInterface
     {
         return $this->getLocation();
     }
 
     /**
      * Returns the whole input string.
-     *
-     * @return string
      */
-    public function getString() : string
+    public function getString(): string
     {
         return $this->getLocation()->getString();
     }
 
     /**
      * Returns zero-based byte offset in the input string of the location.
-     *
-     * @return int
      */
-    public function getOffset() : int
+    public function getOffset(): int
     {
         return $this->getLocation()->getOffset();
     }
@@ -68,20 +62,16 @@ trait ExposesLocationInterface
      * ```
      *  (getOffset() >= 0 && getOffset() < strlen(getString()))
      * ```
-     *
-     * @return bool
      */
-    public function isValid() : bool
+    public function isValid(): bool
     {
         return $this->getLocation()->isValid();
     }
 
     /**
      * Returns zero-based (multibyte) character offset in the input string of the location.
-     *
-     * @return int
      */
-    public function getCharOffset(string $encoding = null) : int
+    public function getCharOffset(string $encoding = null): int
     {
         return $this->getLocation()->getCharOffset(...(func_get_args()));
     }
@@ -89,9 +79,9 @@ trait ExposesLocationInterface
     /**
      * Returns the InputInterface containing the character at location.
      *
-     * @return InputInterface|null
+     * @return null|InputInterface
      */
-    public function getInput() : InputInterface
+    public function getInput(): InputInterface
     {
         return $this->getLocation()->getInput();
     }
@@ -100,12 +90,8 @@ trait ExposesLocationInterface
      * Returns new LocationInterface instance made out of this one. The
      * returned object points to the same input at *$offset*. If *$offset* is
      * null or not given, then it's taken from this location.
-     *
-     * @param  int|null $offset
-     *
-     * @return LocationInterface
      */
-    public function getClonedLocation(int $offset = null) : LocationInterface
+    public function getClonedLocation(int $offset = null): LocationInterface
     {
         return $this->getLocation()->getClonedLocation($offset);
     }

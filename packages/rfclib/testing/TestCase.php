@@ -21,17 +21,13 @@ abstract class TestCase extends \Korowai\Testing\TestCase
 {
     /**
      * Returns the name of RFC class being tested.
-     *
-     * @return string
      */
-    abstract public static function getRfcClass() : string;
+    abstract public static function getRfcClass(): string;
 
     /**
      * Returns the fully qualified name of RFC constant being tested.
-     *
-     * @return string
      */
-    public static function getRfcFqdnConstName(string $constname) : string
+    public static function getRfcFqdnConstName(string $constname): string
     {
         return (static::getRfcClass()).'::'.$constname;
     }
@@ -39,15 +35,13 @@ abstract class TestCase extends \Korowai\Testing\TestCase
     /**
      * Returns full PCRE expression for an expression stored in RFC constant.
      *
-     * @param  string $fqdnConstName
-     * @param  array $options
-     *
      * @return string
      */
     public static function getRfcRegexp(string $fqdnConstName, array $options = [])
     {
         $prefix = $options['prefix'] ?? '/^';
         $suffix = $options['suffix'] ?? '$/D';
+
         return $prefix.constant($fqdnConstName).$suffix;
     }
 
@@ -55,21 +49,16 @@ abstract class TestCase extends \Korowai\Testing\TestCase
      * Asserts that an expression stored in an RFC constant (*$constname*)
      * matches the *$subject*. *$expMatches* may be provided to perform
      * additional checks on *$matches* returned by ``preg_match()``.
-     *
-     * @param  string $subject
-     * @param  string $constname
-     * @param  array $expMatches
-     * @param  array $options
      */
     public static function assertRfcMatches(
         string $subject,
         string $constname,
         array $expMatches = [],
         array $options = []
-    ) : void {
+    ): void {
         $fqdnConstName = static::getRfcFqdnConstName($constname);
         $re = static::getRfcRegexp($fqdnConstName, $options);
-        $result = preg_match($re, $subject, $matches, PREG_UNMATCHED_AS_NULL|PREG_OFFSET_CAPTURE);
+        $result = preg_match($re, $subject, $matches, PREG_UNMATCHED_AS_NULL | PREG_OFFSET_CAPTURE);
         $msg = 'Failed asserting that '.$fqdnConstName.' matches '.var_export($subject, true);
         static::assertSame(1, $result, $msg);
         static::assertHasPregCaptures($expMatches, $matches);
@@ -78,12 +67,8 @@ abstract class TestCase extends \Korowai\Testing\TestCase
     /**
      * Asserts that an expression stored in an RFC constant (*$constname*)
      * does not match the *$subject*.
-     *
-     * @param  string $subject
-     * @param  string $constname
-     * @param  array $options
      */
-    public static function assertRfcNotMatches(string $subject, string $constname, array $options = []) : void
+    public static function assertRfcNotMatches(string $subject, string $constname, array $options = []): void
     {
         $fqdnConstName = static::getRfcFqdnConstName($constname);
         $re = static::getRfcRegexp($fqdnConstName, $options);
@@ -96,33 +81,35 @@ abstract class TestCase extends \Korowai\Testing\TestCase
      * Gets all defined constants from the tested Rfc class.
      *
      * @return array
-     *      An array of constants of the tested Rfc class, where the keys
-     *      hold the name and the values the value of the constants.
+     *               An array of constants of the tested Rfc class, where the keys
+     *               hold the name and the values the value of the constants
      */
-    public static function findRfcConstants() : array
+    public static function findRfcConstants(): array
     {
         $class = new \ReflectionClass(static::getRfcClass());
+
         return $class->getConstants();
     }
 
     /**
      * @todo Write documentation.
      *
-     * @param  array $constants An array with names of Rfc constants.
-     * @param  string $nameRe Regular expression used to match names of the capture groups.
-     * @return array
+     * @param array  $constants an array with names of Rfc constants
+     * @param string $nameRe    regular expression used to match names of the capture groups
      */
-    public static function findRfcCaptures(array $constants = null, string $nameRe = '\w+') : array
+    public static function findRfcCaptures(array $constants = null, string $nameRe = '\w+'): array
     {
         $constantValues = static::findRfcConstants();
-        if ($constants === null) {
+        if (null === $constants) {
             $constants = array_keys($constantValues);
         }
 
         $re = '/\(\?P?<(?<list>'.$nameRe.')>/';
+
         return array_map(function (string $key) use ($constantValues, $re) {
             $value = $constantValues[$key];
             preg_match_all($re, $value, $matches);
+
             return array_combine($matches['list'], $matches['list']);
         }, array_combine($constants, $constants));
     }

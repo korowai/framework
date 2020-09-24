@@ -12,53 +12,55 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Testing\Rfclib;
 
-use Korowai\Testing\TestCase as BaseTestCase;
 use Korowai\Testing\Rfclib\TestCase;
+use Korowai\Testing\TestCase as BaseTestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Testing\Rfclib\TestCase
+ *
+ * @internal
  */
 final class TestCaseTest extends TestCase
 {
     public const FOO = '(?<foo>foo)';
     public const BAR = '(?<bar>bar)';
 
-    public static function getRfcClass() : string
+    public static function getRfcClass(): string
     {
         return self::class;
     }
 
-    public function test__extends__TestCase() : void
+    public function testExtendsTestCase(): void
     {
         $this->assertExtendsClass(BaseTestCase::class, parent::class);
     }
 
-    public function test__getRfcFqdnConstName() : void
+    public function testGetRfcFqdnConstName(): void
     {
         $this->assertSame(self::class.'::FOO', static::getRfcFqdnConstName('FOO'));
         $this->assertSame(self::class.'::BAR', static::getRfcFqdnConstName('BAR'));
     }
 
-    public function test__getRfcRegexp() : void
+    public function testGetRfcRegexp(): void
     {
         $this->assertSame('/^(?<foo>foo)$/D', static::getRfcRegexp(self::class.'::FOO'));
         $this->assertSame('/^(?<bar>bar)$/D', static::getRfcRegexp(self::class.'::BAR'));
     }
 
-    public function test__assertRfcMatches() : void
+    public function testAssertRfcMatches(): void
     {
-        $this->assertRfcMatches('foo', 'FOO', ['foo' => ['foo',0], 'bar' => false]);
+        $this->assertRfcMatches('foo', 'FOO', ['foo' => ['foo', 0], 'bar' => false]);
         $this->assertRfcMatches('bar', 'BAR', ['foo' => false, 'bar' => ['bar', 0]]);
     }
 
-    public function test__assertRfcNotMatches() : void
+    public function testAssertRfcNotMatches(): void
     {
         $this->assertRfcNotMatches('bar', 'FOO');
         $this->assertRfcNotMatches('foo', 'BAR');
     }
 
-    public function test__findRfcConstants() : void
+    public function testFindRfcConstants(): void
     {
         $constants = self::findRfcConstants();
         $this->assertArrayHasKey('FOO', $constants);
@@ -67,7 +69,7 @@ final class TestCaseTest extends TestCase
         $this->assertSame($constants['BAR'], self::BAR);
     }
 
-    public function test__findRfcCaptures() : void
+    public function testFindRfcCaptures(): void
     {
         $this->assertSame(['FOO' => ['foo' => 'foo']], static::findRfcCaptures(['FOO']));
         $this->assertSame(['BAR' => ['bar' => 'bar']], static::findRfcCaptures(['BAR']));

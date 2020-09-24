@@ -12,18 +12,20 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldap;
 
-use Korowai\Testing\Ldaplib\TestCase;
+use Korowai\Lib\Ldap\Core\LdapLinkConfigInterface;
+use Korowai\Lib\Ldap\Core\LdapLinkConfigResolverInterface;
+use Korowai\Lib\Ldap\Core\LdapLinkFactoryInterface;
+use Korowai\Lib\Ldap\Core\LdapLinkInterface;
 use Korowai\Lib\Ldap\Ldap;
 use Korowai\Lib\Ldap\LdapFactory;
 use Korowai\Lib\Ldap\LdapFactoryInterface;
-use Korowai\Lib\Ldap\Core\LdapLinkInterface;
-use Korowai\Lib\Ldap\Core\LdapLinkFactoryInterface;
-use Korowai\Lib\Ldap\Core\LdapLinkConfigInterface;
-use Korowai\Lib\Ldap\Core\LdapLinkConfigResolverInterface;
+use Korowai\Testing\Ldaplib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Ldap\LdapFactory
+ *
+ * @internal
  */
 final class LdapFactoryTest extends TestCase
 {
@@ -33,7 +35,7 @@ final class LdapFactoryTest extends TestCase
     //
     //
 
-    public function test__implements__LdapFactoryInterface() : void
+    public function testImplementsLdapFactoryInterface(): void
     {
         $this->assertImplementsInterface(LdapFactoryInterface::class, LdapFactory::class);
     }
@@ -42,7 +44,7 @@ final class LdapFactoryTest extends TestCase
     // __construct()
     //
 
-    public function test__construct() : void
+    public function testConstruct(): void
     {
         $linkFactory = $this->createMock(LdapLinkFactoryInterface::class);
         $resolver = $this->createMock(LdapLinkConfigResolverInterface::class);
@@ -55,32 +57,34 @@ final class LdapFactoryTest extends TestCase
     // creteLdapInterface()
     //
 
-    public function test__createLdapInterface() : void
+    public function testCreateLdapInterface(): void
     {
-        $link        = $this->createMock(LdapLinkInterface::class);
+        $link = $this->createMock(LdapLinkInterface::class);
         $linkFactory = $this->createMock(LdapLinkFactoryInterface::class);
-        $resolver    = $this->createMock(LdapLinkConfigResolverInterface::class);
-        $config      = ['foo' => 'bar'];
-        $resolved    = ['uri' => 'ldap:///', 'tls' => true, 'options' => []];
+        $resolver = $this->createMock(LdapLinkConfigResolverInterface::class);
+        $config = ['foo' => 'bar'];
+        $resolved = ['uri' => 'ldap:///', 'tls' => true, 'options' => []];
 
         $linkFactory->expects($this->once())
-                    ->method('createLdapLink')
-                    ->with(
-                        $this->logicalAnd(
+            ->method('createLdapLink')
+            ->with(
+                $this->logicalAnd(
                             $this->isInstanceOf(LdapLinkConfigInterface::class),
                             $this->objectHasPropertiesIdenticalTo([
-                                'uri()'     => $resolved['uri'],
-                                'tls()'     => $resolved['tls'],
+                                'uri()' => $resolved['uri'],
+                                'tls()' => $resolved['tls'],
                                 'options()' => $resolved['options'],
                             ])
                         )
-                    )
-                    ->willReturn($link);
+            )
+            ->willReturn($link)
+        ;
 
         $resolver->expects($this->once())
-                 ->method('resolve')
-                 ->with($config)
-                 ->willReturn($resolved);
+            ->method('resolve')
+            ->with($config)
+            ->willReturn($resolved)
+        ;
 
         $factory = new LdapFactory($linkFactory, $resolver);
 

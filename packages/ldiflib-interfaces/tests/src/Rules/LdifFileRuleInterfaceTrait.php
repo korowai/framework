@@ -12,9 +12,9 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldif\Rules;
 
-use Korowai\Tests\Lib\Ldif\RuleInterfaceTrait;
-use Korowai\Lib\Ldif\Rules\LdifContentRuleInterface;
 use Korowai\Lib\Ldif\Rules\LdifChangesRuleInterface;
+use Korowai\Lib\Ldif\Rules\LdifContentRuleInterface;
+use Korowai\Tests\Lib\Ldif\RuleInterfaceTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -23,15 +23,15 @@ trait LdifFileRuleInterfaceTrait
 {
     use RuleInterfaceTrait;
 
-    public $ldifContentRule = null;
-    public $ldifChangesRule = null;
+    public $ldifContentRule;
+    public $ldifChangesRule;
 
-    public function getLdifContentRule() : LdifContentRuleInterface
+    public function getLdifContentRule(): LdifContentRuleInterface
     {
         return $this->ldifContentRule;
     }
 
-    public function getLdifChangesRule() : LdifChangesRuleInterface
+    public function getLdifChangesRule(): LdifChangesRuleInterface
     {
         return $this->ldifChangesRule;
     }

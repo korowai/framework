@@ -14,16 +14,17 @@ namespace Korowai\Tests\Lib\Ldif\Rules;
 
 use Korowai\Lib\Ldif\Rules\AbstractNameSpecRule;
 use Korowai\Lib\Ldif\Rules\AbstractRfcRule;
-use Korowai\Lib\Rfc\Rfc2849;
 use Korowai\Testing\Ldiflib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Ldif\Rules\AbstractNameSpecRule
+ *
+ * @internal
  */
 final class AbstractNameSpecRuleTest extends TestCase
 {
-    public function test__extends__AbstractRfcRule() : void
+    public function testExtendsAbstractRfcRule(): void
     {
         $this->assertExtendsClass(AbstractRfcRule::class, AbstractNameSpecRule::class);
     }
@@ -36,11 +37,12 @@ final class AbstractNameSpecRuleTest extends TestCase
     /**
      * @dataProvider prov__construct
      */
-    public function test__construct(array $args, array $expect) : void
+    public function testConstruct(array $args, array $expect): void
     {
         $rule = $this->getMockBuilder(AbstractNameSpecRule::class)
-                     ->setConstructorArgs($args)
-                     ->getMockForAbstractClass();
+            ->setConstructorArgs($args)
+            ->getMockForAbstractClass()
+        ;
 
         $this->assertObjectHasPropertiesIdenticalTo($expect, $rule);
     }
@@ -70,7 +72,7 @@ final class AbstractNameSpecRuleTest extends TestCase
                     'getSourceOffset()' => strlen('ł dn: '),
                     'getSourceCharOffset()' => mb_strlen('ł dn: '),
                     'getMessage()' => 'syntax error: invalid DN syntax: "'.$dn.'"',
-                ])
+                ]),
             ];
             $matches = [[$dn, strlen('ł dn: ')], 'value_safe' => [$dn, strlen('ł dn: ')]];
             $cursor = self::objectHasPropertiesIdenticalTo([
@@ -154,8 +156,8 @@ final class AbstractNameSpecRuleTest extends TestCase
 
             return [$source, $matches, $expect];
         }, [
-        //    0000000 00
-        //    0123456 78
+            //    0000000 00
+            //    0123456 78
             ["Zm9vgA=\n", 'offset' => 7, 'charOffset' => 7],
         ]);
 
@@ -190,9 +192,9 @@ final class AbstractNameSpecRuleTest extends TestCase
 
             return [$source, $matches, $expect];
         }, [
-        //    00000000 0
-        //    01234567 8
-            ["YXNkgGZm", 'offset' => 8, 'charOffset' => 8, 'dn' => "asd\x80ff"],
+            //    00000000 0
+            //    01234567 8
+            ['YXNkgGZm', 'offset' => 8, 'charOffset' => 8, 'dn' => "asd\x80ff"],
         ]);
 
         $malformedStringCases = array_map(function ($case) {
@@ -202,8 +204,8 @@ final class AbstractNameSpecRuleTest extends TestCase
             //          0123456
             $source = ['dn:'.$sep.$dn];
             $source[] = strlen($source[0]);
-            $type = substr($sep, 0, 1) === ':' ? 'BASE64': 'SAFE';
-            $message = $type === 'BASE64' ? 'invalid BASE64 string' : 'invalid DN syntax: "'.$dn.'"';
+            $type = ':' === substr($sep, 0, 1) ? 'BASE64' : 'SAFE';
+            $message = 'BASE64' === $type ? 'invalid BASE64 string' : 'invalid DN syntax: "'.$dn.'"';
             $dnOffset = strlen('dn:'.$sep) + $case[2];
             $errors = $result ? [] : [
                 self::objectHasPropertiesIdenticalTo([
@@ -218,7 +220,7 @@ final class AbstractNameSpecRuleTest extends TestCase
                 'getSourceCharOffset()' => mb_strlen($source[0]),
             ]);
 
-            $dnKey = $type === 'BASE64' ? 'value_b64' : 'value_safe';
+            $dnKey = 'BASE64' === $type ? 'value_b64' : 'value_safe';
             $matches = [[$dn, $dnOffset], $dnKey => [$dn, $dnOffset]];
 
             $expect = [
@@ -243,13 +245,13 @@ final class AbstractNameSpecRuleTest extends TestCase
         $missingCaptureCases = array_map(function (array $matches) {
             return [
                 //              0123456
-                'source'  => ['x: O=1', 6],
+                'source' => ['x: O=1', 6],
                 'matches' => $matches,
-                'expect'   => [
+                'expect' => [
                     'result' => false,
-                    'init'   => 'preset string',
-                    'dn'     => null,
-                    'state'  => [
+                    'init' => 'preset string',
+                    'dn' => null,
+                    'state' => [
                         'getCursor()' => self::objectHasPropertiesIdenticalTo([
                             'getOffset()' => 6,
                             'getSourceOffset()' => 6,
@@ -259,17 +261,17 @@ final class AbstractNameSpecRuleTest extends TestCase
                             self::objectHasPropertiesIdenticalTo([
                                 'getSourceOffset()' => 6,
                                 'getSourceCharOffset()' => 6,
-                                'getMessage()' => 'internal error: missing or invalid capture groups "value_safe" and "value_b64"'
+                                'getMessage()' => 'internal error: missing or invalid capture groups "value_safe" and "value_b64"',
                             ]),
                         ],
                         'getRecords()' => [],
-                    ]
-                ]
+                    ],
+                ],
             ];
         }, [
             [],
-            [[null,-1], 'value_safe' => [null,-1]],
-            [[null,-1], 'value_b64'  => [null,-1]],
+            [[null, -1], 'value_safe' => [null, -1]],
+            [[null, -1], 'value_b64' => [null, -1]],
         ]);
 
         return array_merge(
@@ -285,7 +287,7 @@ final class AbstractNameSpecRuleTest extends TestCase
     /**
      * @dataProvider prov__parseMatched
      */
-    public function test__parseMatched(array $source, array $matches, array $expect) : void
+    public function testParseMatched(array $source, array $matches, array $expect): void
     {
         $state = $this->getParserStateFromSource(...$source);
 
@@ -294,13 +296,15 @@ final class AbstractNameSpecRuleTest extends TestCase
         }
 
         $rule = $this->getMockBuilder(AbstractNameSpecRule::class)
-                     ->disableOriginalConstructor()
-                     ->setMethods(['prefix'])
-                     ->getMockForAbstractClass();
+            ->disableOriginalConstructor()
+            ->setMethods(['prefix'])
+            ->getMockForAbstractClass()
+        ;
 
         $rule->expects($this->any())
-             ->method('prefix')
-             ->willReturn('dn');
+            ->method('prefix')
+            ->willReturn('dn')
+        ;
 
         $result = $rule->parseMatched($state, $matches, $dn);
 

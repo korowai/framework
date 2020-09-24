@@ -12,57 +12,19 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldif;
 
-use Korowai\Lib\Ldif\Scan;
 use Korowai\Lib\Ldif\CursorInterface;
 use Korowai\Lib\Ldif\LocationInterface;
+use Korowai\Lib\Ldif\Scan;
 use Korowai\Testing\Ldiflib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Ldif\Scan
+ *
+ * @internal
  */
 final class ScanTest extends TestCase
 {
-    protected function configureLocationMock(LocationInterface $location, array $case)
-    {
-        $location->expects($this->once())
-                 ->method('getString')
-                 ->willReturn($case[1]);
-        $location->expects($this->once())
-                 ->method('getOffset')
-                 ->willReturn($case[3] ?? 0);
-    }
-
-    protected function configureCursorMock(CursorInterface $cursor, array $case, ?int $expMoveTo)
-    {
-        $this->configureLocationMock($cursor, $case);
-
-        if ($expMoveTo !== null) {
-            $cursor->expects($this->once())
-                   ->method('moveTo')
-                   ->with($expMoveTo);
-        } else {
-            $cursor->expects($this->never())
-                   ->method('moveTo');
-        }
-    }
-
-    protected function createLocationMock(array $case)
-    {
-        $location = $this->getMockBuilder(LocationInterface::class)
-                         ->getMockForAbstractClass();
-        $this->configureLocationMock($location, $case);
-        return $location;
-    }
-
-    protected function createCursorMock(array $case, ?int $expMoveTo)
-    {
-        $cursor = $this->getMockBuilder(CursorInterface::class)
-                       ->getMockForAbstractClass();
-        $this->configureCursorMock($cursor, $case, $expMoveTo);
-        return $cursor;
-    }
-
     public static function prov__matchAt()
     {
         return [
@@ -77,7 +39,7 @@ final class ScanTest extends TestCase
     /**
      * @dataProvider prov__matchAt
      */
-    public function test__matchAt(array $case, array $expected) : void
+    public function testMatchAt(array $case, array $expected): void
     {
         $location = $this->createLocationMock($case);
         $this->configureLocationMock($location, $case);
@@ -100,7 +62,7 @@ final class ScanTest extends TestCase
     /**
      * @dataProvider prov__matchAhead
      */
-    public function test__matchAhead(array $case, array $expected, int $expMoveTo = null) : void
+    public function testMatchAhead(array $case, array $expected, int $expMoveTo = null): void
     {
         $cursor = $this->createCursorMock($case, $expMoveTo);
         $args = array_merge([$case[0], $cursor], count($case) > 2 ? [$case[2]] : []);
@@ -110,7 +72,7 @@ final class ScanTest extends TestCase
     /**
      * @dataProvider prov__matchAt
      */
-    public function test__matchString(array $case, array $expected) : void
+    public function testMatchString(array $case, array $expected): void
     {
         $this->assertSame($expected, Scan::matchString(...$case));
     }
@@ -120,75 +82,125 @@ final class ScanTest extends TestCase
         return [
             // #0
             [
-                'key'       => 0,
-                'matches'   => [],
-                'expect'    => [
+                'key' => 0,
+                'matches' => [],
+                'expect' => [
                     'result' => false,
                     'string' => null,
                     'offset' => -1,
-                ]
+                ],
             ],
             // #1
             [
-                'key'       => 'foo',
-                'matches'   => ['bar' => ['BAR', 4]],
-                'expect'    => [
+                'key' => 'foo',
+                'matches' => ['bar' => ['BAR', 4]],
+                'expect' => [
                     'result' => false,
                     'string' => null,
                     'offset' => -1,
-                ]
+                ],
             ],
             // #2
             [
-                'key'       => 'foo',
-                'matches'   => ['foo' => null],
-                'expect'    => [
+                'key' => 'foo',
+                'matches' => ['foo' => null],
+                'expect' => [
                     'result' => false,
                     'string' => null,
                     'offset' => -1,
-                ]
+                ],
             ],
             // #3
             [
-                'key'       => 'foo',
-                'matches'   => ['foo' => [null, 4]],
-                'expect'    => [
+                'key' => 'foo',
+                'matches' => ['foo' => [null, 4]],
+                'expect' => [
                     'result' => false,
                     'string' => null,
                     'offset' => 4,
-                ]
+                ],
             ],
             // #4
             [
-                'key'       => 'foo',
-                'matches'   => ['foo' => ['FOO', -2]],
-                'expect'    => [
+                'key' => 'foo',
+                'matches' => ['foo' => ['FOO', -2]],
+                'expect' => [
                     'result' => false,
                     'string' => 'FOO',
                     'offset' => -2,
-                ]
+                ],
             ],
             // #5
             [
-                'key'       => 'foo',
-                'matches'   => ['foo' => ['FOO', 3]],
-                'expect'    => [
+                'key' => 'foo',
+                'matches' => ['foo' => ['FOO', 3]],
+                'expect' => [
                     'result' => true,
                     'string' => 'FOO',
                     'offset' => 3,
-                ]
+                ],
             ],
         ];
     }
 
     /**
      * @dataProvider prov__matched
+     *
+     * @param mixed $key
      */
-    public function test__matched($key, array $matches, array $expect) : void
+    public function testMatched($key, array $matches, array $expect): void
     {
         $this->assertSame($expect['result'], Scan::matched($key, $matches, $string, $offset));
         $this->assertSame($expect['string'], $string);
         $this->assertSame($expect['offset'], $offset);
+    }
+
+    protected function configureLocationMock(LocationInterface $location, array $case)
+    {
+        $location->expects($this->once())
+            ->method('getString')
+            ->willReturn($case[1])
+        ;
+        $location->expects($this->once())
+            ->method('getOffset')
+            ->willReturn($case[3] ?? 0)
+        ;
+    }
+
+    protected function configureCursorMock(CursorInterface $cursor, array $case, ?int $expMoveTo)
+    {
+        $this->configureLocationMock($cursor, $case);
+
+        if (null !== $expMoveTo) {
+            $cursor->expects($this->once())
+                ->method('moveTo')
+                ->with($expMoveTo)
+            ;
+        } else {
+            $cursor->expects($this->never())
+                ->method('moveTo')
+            ;
+        }
+    }
+
+    protected function createLocationMock(array $case)
+    {
+        $location = $this->getMockBuilder(LocationInterface::class)
+            ->getMockForAbstractClass()
+        ;
+        $this->configureLocationMock($location, $case);
+
+        return $location;
+    }
+
+    protected function createCursorMock(array $case, ?int $expMoveTo)
+    {
+        $cursor = $this->getMockBuilder(CursorInterface::class)
+            ->getMockForAbstractClass()
+        ;
+        $this->configureCursorMock($cursor, $case, $expMoveTo);
+
+        return $cursor;
     }
 }
 

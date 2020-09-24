@@ -12,25 +12,26 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldif\Nodes;
 
+use Korowai\Lib\Ldif\InvalidModTypeException;
 use Korowai\Lib\Ldif\Nodes\ModSpec;
 use Korowai\Lib\Ldif\Nodes\ModSpecInterface;
 use Korowai\Lib\Ldif\Traits\HasAttrValSpecs;
-use Korowai\Lib\Ldif\InvalidModTypeException;
-
 use Korowai\Testing\Ldiflib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Ldif\Nodes\ModSpec
+ *
+ * @internal
  */
 final class ModSpecTest extends TestCase
 {
-    public function test__implements__ModSpecInterface() : void
+    public function testImplementsModSpecInterface(): void
     {
         $this->assertImplementsInterface(ModSpecInterface::class, ModSpec::class);
     }
 
-    public function test__uses__HasAttrValSpecs() : void
+    public function testUsesHasAttrValSpecs(): void
     {
         $this->assertUsesTrait(HasAttrValSpecs::class, ModSpec::class);
     }
@@ -41,36 +42,36 @@ final class ModSpecTest extends TestCase
             'ModSpec("delete", "cn")' => [
                 'args' => [
                     'delete',
-                    'cn'
+                    'cn',
                 ],
                 'expect' => [
                     'getModType()' => 'delete',
                     'getAttribute()' => 'cn',
-                ]
+                ],
             ],
             'ModSpec("add", "cn", [])' => [
                 'args' => [
                     'add',
                     'cn',
-                    [ 'attrVal0' ]
+                    ['attrVal0'],
                 ],
                 'expect' => [
                     'getModType()' => 'add',
                     'getAttribute()' => 'cn',
-                    'getAttrValSpecs()' => [ 'attrVal0' ]
-                ]
+                    'getAttrValSpecs()' => ['attrVal0'],
+                ],
             ],
             'ModSpec("replace", "cn", [])' => [
                 'args' => [
                     'replace',
                     'cn',
-                    [ 'attrVal0' ]
+                    ['attrVal0'],
                 ],
                 'expect' => [
                     'getModType()' => 'replace',
                     'getAttribute()' => 'cn',
-                    'getAttrValSpecs()' => [ 'attrVal0' ]
-                ]
+                    'getAttrValSpecs()' => ['attrVal0'],
+                ],
             ],
         ];
     }
@@ -78,7 +79,7 @@ final class ModSpecTest extends TestCase
     /**
      * @dataProvider prov__construct
      */
-    public function test__construct(array $args, array $expect) : void
+    public function testConstruct(array $args, array $expect): void
     {
         $record = new ModSpec(...$args);
         $this->assertObjectHasPropertiesIdenticalTo($expect, $record);
@@ -89,39 +90,38 @@ final class ModSpecTest extends TestCase
         return [
             ['add'],
             ['delete'],
-            ['replace']
+            ['replace'],
         ];
     }
 
     /**
      * @dataProvider prov__modType
      */
-    public function test__setModType(string $modType) : void
+    public function testSetModType(string $modType): void
     {
-        $record = new ModSpec("add", "cn");
+        $record = new ModSpec('add', 'cn');
 
         $this->assertSame($record, $record->setModType($modType));
         $this->assertSame($modType, $record->getModType());
     }
 
-    public function test__setModType__withInvalidArg() : void
+    public function testSetModTypeWithInvalidArg(): void
     {
-        $record = new ModSpec("add", "cn");
+        $record = new ModSpec('add', 'cn');
 
         $message = 'Argument 1 to '.ModSpec::class.'::setModType() must be one of "add", "delete", or "replace", "foo" given.';
         $this->expectException(InvalidModTypeException::class);
         $this->expectExceptionMessage($message);
 
-        $record->setModType("foo");
+        $record->setModType('foo');
     }
 
-
-    public function test__setAttribute() : void
+    public function testSetAttribute(): void
     {
-        $record = new ModSpec("add", "cn");
+        $record = new ModSpec('add', 'cn');
 
-        $this->assertSame($record, $record->setAttribute("objectclass"));
-        $this->assertSame("objectclass", $record->getAttribute());
+        $this->assertSame($record, $record->setAttribute('objectclass'));
+        $this->assertSame('objectclass', $record->getAttribute());
     }
 }
 

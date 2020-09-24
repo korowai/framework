@@ -12,13 +12,15 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Testing\Assertions;
 
-use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\ExpectationFailedException;
 use Korowai\Testing\Assertions\PropertiesAssertionsTrait;
+use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Testing\Assertions\PropertiesAssertionsTrait
+ *
+ * @internal
  */
 final class PropertiesAssertionsTraitTest extends TestCase
 {
@@ -36,7 +38,7 @@ final class PropertiesAssertionsTraitTest extends TestCase
     /**
      * @dataProvider staticMethodsThatMustAppear
      */
-    public function test__staticMethodExists(string $name) : void
+    public function testStaticMethodExists(string $name): void
     {
         $classAndMethod = [self::class, $name];
         self::assertTrue(method_exists(...$classAndMethod));
@@ -46,21 +48,24 @@ final class PropertiesAssertionsTraitTest extends TestCase
 
     public static function prov__matchingProperties()
     {
-        $esmith = new class {
+        $esmith = new class() {
             public $name = 'Emily';
             public $last = 'Smith';
             public $age = 20;
-            public $husband = null;
+            public $husband;
             public $family = [];
             private $salary = 98;
+
             public function getSalary()
             {
                 return $this->salary;
             }
+
             public function getDebit()
             {
                 return -$this->salary;
             }
+
             public function marry($husband)
             {
                 $this->husband = $husband;
@@ -68,21 +73,24 @@ final class PropertiesAssertionsTraitTest extends TestCase
             }
         };
 
-        $jsmith = new class {
+        $jsmith = new class() {
             public $name = 'John';
             public $last = 'Smith';
             public $age = 21;
-            public $wife = null;
+            public $wife;
             public $family = [];
             private $salary = 123;
+
             public function getSalary()
             {
                 return $this->salary;
             }
+
             public function getDebit()
             {
                 return -$this->salary;
             }
+
             public function marry($wife)
             {
                 $this->wife = $wife;
@@ -93,9 +101,10 @@ final class PropertiesAssertionsTraitTest extends TestCase
         $esmith->marry($jsmith);
         $jsmith->marry($esmith);
 
-        $registry = new class {
+        $registry = new class() {
             public $persons = [];
             public $families = [];
+
             public function addFamily(string $key, array $persons)
             {
                 $this->families[$key] = $persons;
@@ -108,48 +117,48 @@ final class PropertiesAssertionsTraitTest extends TestCase
         return [
             // #0
             [
-                'expect'  => ['name' => 'John', 'last' => 'Smith', 'age' => 21, 'wife' => $esmith],
-                'object'  => $jsmith
+                'expect' => ['name' => 'John', 'last' => 'Smith', 'age' => 21, 'wife' => $esmith],
+                'object' => $jsmith,
             ],
 
             // #1
             [
-                'expect'  => [
+                'expect' => [
                     'name' => 'John',
                     'last' => 'Smith',
                     'age' => 21,
                     'wife' => $esmith,
                 ],
-                'object'  => $jsmith
+                'object' => $jsmith,
             ],
 
             // #2
             [
-                'expect'  => ['name' => 'John', 'last' => 'Smith', 'age' => 21],
-                'object'  => $jsmith
+                'expect' => ['name' => 'John', 'last' => 'Smith', 'age' => 21],
+                'object' => $jsmith,
             ],
 
             // #3
             [
-                'expect'  => ['name' => 'John', 'last' => 'Smith'],
-                'object'  => $jsmith
+                'expect' => ['name' => 'John', 'last' => 'Smith'],
+                'object' => $jsmith,
             ],
 
             // #4
             [
-                'expect'  => ['age' => 21],
-                'object'  => $jsmith
+                'expect' => ['age' => 21],
+                'object' => $jsmith,
             ],
 
             // #5
             [
-                'expect'  => ['age' => 21, 'getSalary()' => 123, 'getDebit()' => -123],
-                'object'  => $jsmith
+                'expect' => ['age' => 21, 'getSalary()' => 123, 'getDebit()' => -123],
+                'object' => $jsmith,
             ],
 
             // #6
             [
-                'expect'  => [
+                'expect' => [
                     'name' => 'John',
                     'last' => 'Smith',
                     'age' => 21,
@@ -158,15 +167,15 @@ final class PropertiesAssertionsTraitTest extends TestCase
                         'last' => 'Smith',
                         'age' => 20,
                         'husband' => $jsmith,
-                        'getSalary()' => 98
-                    ])
+                        'getSalary()' => 98,
+                    ]),
                 ],
-                'object'  => $jsmith
+                'object' => $jsmith,
             ],
 
             // #7
             [
-                'expect'  => [
+                'expect' => [
                     'name' => 'John',
                     'last' => 'Smith',
                     'age' => 21,
@@ -180,18 +189,18 @@ final class PropertiesAssertionsTraitTest extends TestCase
                             'age' => 21,
                             'getSalary()' => 123,
                         ]),
-                        'getSalary()' => 98
-                    ])
+                        'getSalary()' => 98,
+                    ]),
                 ],
-                'object'  => $jsmith
+                'object' => $jsmith,
             ],
 
             // #8
             [
                 'expect' => [
-                    'family' => [ $esmith ],
+                    'family' => [$esmith],
                 ],
-                'object' => $jsmith
+                'object' => $jsmith,
             ],
 
             // #9
@@ -201,7 +210,7 @@ final class PropertiesAssertionsTraitTest extends TestCase
                         self::objectHasPropertiesIdenticalTo(['name' => 'Emily', 'last' => 'Smith']),
                     ],
                 ],
-                'object' => $jsmith
+                'object' => $jsmith,
             ],
 
             // #10
@@ -215,10 +224,10 @@ final class PropertiesAssertionsTraitTest extends TestCase
                         'smith' => [
                             self::objectHasPropertiesIdenticalTo(['name' => 'Emily', 'last' => 'Smith']),
                             self::objectHasPropertiesIdenticalTo(['name' => 'John', 'last' => 'Smith']),
-                        ]
-                    ]
+                        ],
+                    ],
                 ],
-                'object' => $registry
+                'object' => $registry,
             ],
 
             // #11
@@ -232,10 +241,10 @@ final class PropertiesAssertionsTraitTest extends TestCase
                         'smith' => [
                             $esmith,
                             $jsmith,
-                        ]
-                    ]
+                        ],
+                    ],
                 ],
-                'object' => $registry
+                'object' => $registry,
             ],
         ];
     }
@@ -243,34 +252,37 @@ final class PropertiesAssertionsTraitTest extends TestCase
     /**
      * @dataProvider prov__matchingProperties
      */
-    public function test__objectHasPropertiesIdenticalTo__withMatchingProperties(array $expect, object $object)
+    public function testObjectHasPropertiesIdenticalToWithMatchingProperties(array $expect, object $object)
     {
         self::assertThat($object, self::objectHasPropertiesIdenticalTo($expect));
     }
 
     public static function prov__nonMatchingProperties()
     {
-        $hbrown = new class {
+        $hbrown = new class() {
             public $name = 'Helen';
             public $last = 'Brown';
             public $age = 44;
         };
 
-        $esmith = new class {
+        $esmith = new class() {
             public $name = 'Emily';
             public $last = 'Smith';
             public $age = 20;
-            public $husband = null;
+            public $husband;
             public $family = [];
             private $salary = 98;
+
             public function getSalary()
             {
                 return $this->salary;
             }
+
             public function getDebit()
             {
                 return -$this->salary;
             }
+
             public function marry($husband)
             {
                 $this->husband = $husband;
@@ -278,21 +290,24 @@ final class PropertiesAssertionsTraitTest extends TestCase
             }
         };
 
-        $jsmith = new class {
+        $jsmith = new class() {
             public $name = 'John';
             public $last = 'Smith';
             public $age = 21;
-            public $wife = null;
+            public $wife;
             public $family = [];
             private $salary = 123;
+
             public function getSalary()
             {
                 return $this->salary;
             }
+
             public function getDebit()
             {
                 return -$this->salary;
             }
+
             public function marry($wife)
             {
                 $this->wife = $wife;
@@ -303,9 +318,10 @@ final class PropertiesAssertionsTraitTest extends TestCase
         $esmith->marry($jsmith);
         $jsmith->marry($esmith);
 
-        $registry = new class {
+        $registry = new class() {
             public $persons = [];
             public $families = [];
+
             public function addFamily(string $key, array $persons)
             {
                 $this->families[$key] = $persons;
@@ -319,48 +335,48 @@ final class PropertiesAssertionsTraitTest extends TestCase
             // #0
             [
                 'expect' => ['name' => 'John', 'last' => 'Brown', 'age' => 21],
-                'object' => $jsmith
+                'object' => $jsmith,
             ],
 
             // #1
             [
                 'expect' => ['name' => 'John', 'last' => 'Smith', 'wife' => null],
-                'object' => $jsmith
+                'object' => $jsmith,
             ],
 
             // #2
             [
                 'expect' => ['name' => 'John', 'last' => 'Smith', 'wife' => 'Emily'],
-                'object' => $jsmith
+                'object' => $jsmith,
             ],
 
             // #3
             [
                 'expect' => ['name' => 'John', 'last' => 'Smith', 'wife' => $hbrown],
-                'object' => $jsmith
+                'object' => $jsmith,
             ],
 
             // #4
             [
                 'expect' => ['name' => 'John', 'last' => 'Brown'],
-                'object' => $jsmith
+                'object' => $jsmith,
             ],
 
             // #5
             [
                 'expect' => ['age' => 19],
-                'object' => $jsmith
+                'object' => $jsmith,
             ],
 
             // #6
             [
                 'expect' => ['age' => 21, 'getSalary()' => 1230],
-                'object' => $jsmith
+                'object' => $jsmith,
             ],
 
             // #7
             [
-                'expect'  => [
+                'expect' => [
                     'name' => 'John',
                     'last' => 'Smith',
                     'age' => 21,
@@ -374,10 +390,10 @@ final class PropertiesAssertionsTraitTest extends TestCase
                             'age' => 21,
                             'getSalary()' => 123,
                         ],
-                        'getSalary()' => 98
-                    ]
+                        'getSalary()' => 98,
+                    ],
                 ],
-                'object'  => $jsmith
+                'object' => $jsmith,
             ],
 
             // #8
@@ -387,7 +403,7 @@ final class PropertiesAssertionsTraitTest extends TestCase
                         ['name' => 'Emily', 'last' => 'Smith'],
                     ],
                 ],
-                'object' => $jsmith
+                'object' => $jsmith,
             ],
 
             // #9
@@ -401,10 +417,10 @@ final class PropertiesAssertionsTraitTest extends TestCase
                         'smith' => [
                             ['name' => 'Emily', 'last' => 'Smith'],
                             ['name' => 'John', 'last' => 'Smith'],
-                        ]
-                    ]
+                        ],
+                    ],
                 ],
-                'object' => $registry
+                'object' => $registry,
             ],
 
             // #10
@@ -419,10 +435,10 @@ final class PropertiesAssertionsTraitTest extends TestCase
                         'smith' => [
                             $esmith,
                             $jsmith,
-                        ]
+                        ],
                     ]),
                 ],
-                'object' => $registry
+                'object' => $registry,
             ],
         ];
     }
@@ -430,12 +446,12 @@ final class PropertiesAssertionsTraitTest extends TestCase
     /**
      * @dataProvider prov__nonMatchingProperties
      */
-    public function test__objectHasPropertiesIdenticalTo__withNonMatchingProperties(array $expect, object $object)
+    public function testObjectHasPropertiesIdenticalToWithNonMatchingProperties(array $expect, object $object)
     {
         self::assertThat($object, self::logicalNot(self::objectHasPropertiesIdenticalTo($expect)));
     }
 
-    public function test__objectHasPropertiesIdenticalTo__withNonObject() : void
+    public function testObjectHasPropertiesIdenticalToWithNonObject(): void
     {
         $matcher = self::objectHasPropertiesIdenticalTo(['a' => 'A']);
         $expectedMessage = '/^Failed asserting that 123 is an object '.
@@ -447,7 +463,7 @@ final class PropertiesAssertionsTraitTest extends TestCase
         self::assertThat(123, $matcher);
     }
 
-    public function test__objectHasPropertiesIdenticalTo__withInvalidArray() : void
+    public function testObjectHasPropertiesIdenticalToWithInvalidArray(): void
     {
         self::expectException(\PHPUnit\Framework\Exception::class);
         self::expectExceptionMessage('The array of expected properties contains 3 invalid key(s)');
@@ -455,22 +471,10 @@ final class PropertiesAssertionsTraitTest extends TestCase
         self::objectHasPropertiesIdenticalTo(['a' => 'A', 0 => 'B', 2 => 'C', 7 => 'D', 'e' => 'E']);
     }
 
-    protected static function adjustCase(array $case, string $message = '')
-    {
-        $args = func_get_args();
-        if (is_callable($case[2] ?? null)) {
-            $case[] = $case[2];
-            $case[2] = $args[1] ?? '';
-        } elseif (($msg = $args[1] ?? null) !== null) {
-            $case[2] = $msg;
-        }
-        return $case;
-    }
-
     /**
      * @dataProvider prov__matchingProperties
      */
-    public function test__assertObjectHasPropertiesIdenticalTo__withMatchingProperties(array $expect, object $object)
+    public function testAssertObjectHasPropertiesIdenticalToWithMatchingProperties(array $expect, object $object)
     {
         self::assertObjectHasPropertiesIdenticalTo(...(self::adjustCase(func_get_args())));
     }
@@ -478,7 +482,7 @@ final class PropertiesAssertionsTraitTest extends TestCase
     /**
      * @dataProvider prov__nonMatchingProperties
      */
-    public function test__assertObjectHasPropertiesIdenticalTo__withNonMatchingProperties(array $expect, object $object)
+    public function testAssertObjectHasPropertiesIdenticalToWithNonMatchingProperties(array $expect, object $object)
     {
         $regexp = '/^Lorem ipsum.\n'.
             'Failed asserting that object class\@.+ is an object '.
@@ -492,7 +496,7 @@ final class PropertiesAssertionsTraitTest extends TestCase
     /**
      * @dataProvider prov__nonMatchingProperties
      */
-    public function test__assertNotObjectHasPropertiesIdenticalTo__withNonMatchingProperties(array $expect, object $object)
+    public function testAssertNotObjectHasPropertiesIdenticalToWithNonMatchingProperties(array $expect, object $object)
     {
         self::assertNotObjectHasPropertiesIdenticalTo(...(self::adjustCase(func_get_args())));
     }
@@ -500,7 +504,7 @@ final class PropertiesAssertionsTraitTest extends TestCase
     /**
      * @dataProvider prov__matchingProperties
      */
-    public function test__assertNotObjectHasPropertiesIdenticalTo__withMatchingProperties(array $expect, object $object)
+    public function testAssertNotObjectHasPropertiesIdenticalToWithMatchingProperties(array $expect, object $object)
     {
         $regexp = '/^Lorem ipsum.\n'.
             'Failed asserting that object class@.+ fails to be an object '.
@@ -509,6 +513,19 @@ final class PropertiesAssertionsTraitTest extends TestCase
         self::expectExceptionMessageMatches($regexp);
 
         self::assertNotObjectHasPropertiesIdenticalTo(...(self::adjustCase(func_get_args(), 'Lorem ipsum.')));
+    }
+
+    protected static function adjustCase(array $case, string $message = '')
+    {
+        $args = func_get_args();
+        if (is_callable($case[2] ?? null)) {
+            $case[] = $case[2];
+            $case[2] = $args[1] ?? '';
+        } elseif (null !== ($msg = $args[1] ?? null)) {
+            $case[2] = $msg;
+        }
+
+        return $case;
     }
 }
 

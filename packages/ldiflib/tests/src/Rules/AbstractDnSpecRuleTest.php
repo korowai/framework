@@ -19,19 +19,22 @@ use Korowai\Testing\Ldiflib\TestCase;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Ldif\Rules\AbstractDnSpecRule
+ *
+ * @internal
  */
 final class AbstractDnSpecRuleTest extends TestCase
 {
-    public function test__extends__AbstractNameSpecRule() : void
+    public function testExtendsAbstractNameSpecRule(): void
     {
         $this->assertExtendsClass(AbstractNameSpecRule::class, AbstractDnSpecRule::class);
     }
 
-    public function test__prefix() : void
+    public function testPrefix(): void
     {
         $rule = $this->getMockBuilder(AbstractDnSpecRule::class)
-                     ->disableOriginalConstructor()
-                     ->getMockForAbstractClass();
+            ->disableOriginalConstructor()
+            ->getMockForAbstractClass()
+        ;
         $this->assertSame('dn', $rule->prefix());
     }
 }

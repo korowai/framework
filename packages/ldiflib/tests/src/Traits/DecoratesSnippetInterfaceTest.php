@@ -12,36 +12,39 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldif\Traits;
 
+use Korowai\Lib\Ldif\SnippetInterface;
 use Korowai\Lib\Ldif\Traits\DecoratesSnippetInterface;
 use Korowai\Lib\Ldif\Traits\ExposesSnippetInterface;
 use Korowai\Lib\Ldif\Traits\HasSnippet;
-use Korowai\Lib\Ldif\SnippetInterface;
-
 use Korowai\Testing\Ldiflib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Ldif\Traits\DecoratesSnippetInterface
+ *
+ * @internal
  */
 final class DecoratesSnippetInterfaceTest extends TestCase
 {
-    public function test__uses__ExposesSnippetInterface() : void
+    public function testUsesExposesSnippetInterface(): void
     {
         $this->assertUsesTrait(ExposesSnippetInterface::class, DecoratesSnippetInterface::class);
     }
 
-    public function test__uses__HasSnippet() : void
+    public function testUsesHasSnippet(): void
     {
         $this->assertUsesTrait(HasSnippet::class, DecoratesSnippetInterface::class);
     }
 
-    public function test__snippet() : void
+    public function testSnippet(): void
     {
         $snippet = $this->getMockBuilder(SnippetInterface::class)
-                        ->getMockForAbstractClass();
+            ->getMockForAbstractClass()
+        ;
 
         $object = $this->getMockBuilder(DecoratesSnippetInterface::class)
-                       ->getMockForTrait();
+            ->getMockForTrait()
+        ;
 
         $this->assertNull($object->getSnippet());
 

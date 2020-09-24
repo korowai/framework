@@ -19,18 +19,14 @@ interface SearchQueryInterface
 {
     /**
      * Executes query and returns result.
-     *
-     * @return ResultInterface
      */
-    public function execute() : ResultInterface;
+    public function execute(): ResultInterface;
 
     /**
      * Returns the result of last execution of the query, calls execute() if
      * necessary.
-     *
-     * @return ResultInterface
      */
-    public function getResult() : ResultInterface;
+    public function getResult(): ResultInterface;
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

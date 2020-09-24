@@ -12,9 +12,9 @@ declare(strict_types=1);
 
 namespace Korowai\Testing\Container\Illuminate;
 
+use Illuminate\Container\Container;
 use Korowai\Testing\Container\ContainerFactoryInterface;
 use Psr\Container\ContainerInterface;
-use Illuminate\Container\Container;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -24,33 +24,33 @@ final class ContainerFactory implements ContainerFactoryInterface
     /**
      * @var mixed
      */
-    private $config = null;
+    private $config;
 
     /**
      * Configure factory to use the $config when configuring a newly created container.
      *
      * @param mixed $config
      */
-    public function setConfig($config) : self
+    public function setConfig($config): self
     {
         $this->config = $config;
+
         return $this;
     }
 
     /**
      * Creates an instance of ContainerInterface.
      *
-     * @param array $configs An array of configurations.
-     *
-     * @return ContainerInterface
+     * @param array $configs an array of configurations
      */
-    public function createContainer() : ContainerInterface
+    public function createContainer(): ContainerInterface
     {
-        $container = new Container;
-        if ($this->config !== null) {
+        $container = new Container();
+        if (null !== $this->config) {
             $configure = require $this->config;
             $configure($container);
         }
+
         return $container;
     }
 }

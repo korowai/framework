@@ -17,6 +17,7 @@ use Korowai\Lib\Ldif\Traits\HasSnippet;
 
 /**
  * @todo Write documentation
+ *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
 class VersionSpec implements VersionSpecInterface
@@ -30,9 +31,6 @@ class VersionSpec implements VersionSpecInterface
 
     /**
      * Initializes the object.
-     *
-     * @param SnippetInterface $snippet
-     * @param  int $version
      */
     public function __construct(SnippetInterface $snippet, int $version)
     {
@@ -43,20 +41,19 @@ class VersionSpec implements VersionSpecInterface
     /**
      * Sets version number.
      *
-     * @param  int $version
-     *
      * @return object $this
      */
     public function setVersion(int $version)
     {
         $this->version = $version;
+
         return $this;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getVersion() : int
+    public function getVersion(): int
     {
         return $this->version;
     }

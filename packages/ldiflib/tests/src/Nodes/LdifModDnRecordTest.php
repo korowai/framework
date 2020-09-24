@@ -12,18 +12,19 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldif\Nodes;
 
+use Korowai\Lib\Ldif\InvalidChangeTypeException;
+use Korowai\Lib\Ldif\Nodes\AbstractRecord;
 use Korowai\Lib\Ldif\Nodes\LdifModDnRecord;
 use Korowai\Lib\Ldif\Nodes\LdifModDnRecordInterface;
-use Korowai\Lib\Ldif\Nodes\AbstractRecord;
 use Korowai\Lib\Ldif\RecordVisitorInterface;
 use Korowai\Lib\Ldif\SnippetInterface;
-use Korowai\Lib\Ldif\InvalidChangeTypeException;
-
 use Korowai\Testing\Ldiflib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Ldif\Nodes\LdifModDnRecord
+ *
+ * @internal
  */
 final class LdifModDnRecordTest extends TestCase
 {
@@ -32,7 +33,7 @@ final class LdifModDnRecordTest extends TestCase
         $this->assertExtendsClass(AbstractRecord::class, LdifModDnRecord::class);
     }
 
-    public function test__implements__LdifModDnRecordInterface() : void
+    public function testImplementsLdifModDnRecordInterface(): void
     {
         $this->assertImplementsInterface(LdifModDnRecordInterface::class, LdifModDnRecord::class);
     }
@@ -40,6 +41,7 @@ final class LdifModDnRecordTest extends TestCase
     public function prov__construct()
     {
         $snippet = $this->getMockBuilder(SnippetInterface::class)->getMockForAbstractClass();
+
         return [
             '__construct("dc=example,dc=org", "cn=bar")' => [
                 'args' => [
@@ -54,7 +56,7 @@ final class LdifModDnRecordTest extends TestCase
                     'getNewSuperior()' => null,
                     'getControls()' => [],
                     'getSnippet()' => null,
-                ]
+                ],
             ],
             '__construct("dc=example,dc=org", "cn=bar", [...])' => [
                 'args' => [
@@ -76,15 +78,15 @@ final class LdifModDnRecordTest extends TestCase
                     'getNewSuperior()' => 'dc=foobar,dc=com',
                     'getControls()' => ['Y'],
                     'getSnippet()' => $snippet,
-                ]
-            ]
+                ],
+            ],
         ];
     }
 
     /**
      * @dataProvider prov__construct
      */
-    public function test__construct(array $args, array $expect) : void
+    public function testConstruct(array $args, array $expect): void
     {
         $record = new LdifModDnRecord(...$args);
         $this->assertObjectHasPropertiesIdenticalTo($expect, $record);
@@ -93,45 +95,45 @@ final class LdifModDnRecordTest extends TestCase
     public static function prov__setChangeType()
     {
         return [
-            ["moddn"],
-            ["modrdn"]
+            ['moddn'],
+            ['modrdn'],
         ];
     }
 
     /**
      * @dataProvider prov__setChangeType
      */
-    public function test__setChangeType(string $changeType) : void
+    public function testSetChangeType(string $changeType): void
     {
-        $record = new LdifModDnRecord("dc=example,dc=org", "cn=bar");
+        $record = new LdifModDnRecord('dc=example,dc=org', 'cn=bar');
 
         $this->assertSame($record, $record->setChangeType($changeType));
         $this->assertSame($changeType, $record->getChangeType());
     }
 
-    public function test__setChangeType__invalidChangeType() : void
+    public function testSetChangeTypeInvalidChangeType(): void
     {
-        $record = new LdifModDnRecord("dc=example,dc=org", "cn=bar");
+        $record = new LdifModDnRecord('dc=example,dc=org', 'cn=bar');
 
         $message = 'Argument 1 to '.LdifModDnRecord::class.'::setChangeType() must be one of "moddn" or "modrdn", '.
                    '"foo" given.';
         $this->expectException(InvalidChangeTypeException::class);
         $this->expectExceptionMessage($message);
 
-        $record->setChangeType("foo");
+        $record->setChangeType('foo');
     }
 
-    public function test__setNewRdn() : void
+    public function testSetNewRdn(): void
     {
-        $record = new LdifModDnRecord("dc=example,dc=org", "cn=bar");
+        $record = new LdifModDnRecord('dc=example,dc=org', 'cn=bar');
 
-        $this->assertSame($record, $record->setNewRdn("cn=gez"));
-        $this->assertSame("cn=gez", $record->getNewRdn());
+        $this->assertSame($record, $record->setNewRdn('cn=gez'));
+        $this->assertSame('cn=gez', $record->getNewRdn());
     }
 
-    public function test__setDeleteOldRdn() : void
+    public function testSetDeleteOldRdn(): void
     {
-        $record = new LdifModDnRecord("dc=example,dc=org", "cn=bar");
+        $record = new LdifModDnRecord('dc=example,dc=org', 'cn=bar');
 
         $this->assertSame($record, $record->setDeleteOldRdn(true));
         $this->assertSame(true, $record->getDeleteOldRdn());
@@ -140,28 +142,30 @@ final class LdifModDnRecordTest extends TestCase
         $this->assertSame(false, $record->getDeleteOldRdn());
     }
 
-    public function test__setNewSuperior() : void
+    public function testSetNewSuperior(): void
     {
-        $record = new LdifModDnRecord("dc=example,dc=org", "cn=bar");
+        $record = new LdifModDnRecord('dc=example,dc=org', 'cn=bar');
 
-        $this->assertSame($record, $record->setNewSuperior("dc=foobar,dc=com"));
-        $this->assertSame("dc=foobar,dc=com", $record->getNewSuperior());
+        $this->assertSame($record, $record->setNewSuperior('dc=foobar,dc=com'));
+        $this->assertSame('dc=foobar,dc=com', $record->getNewSuperior());
 
         $this->assertSame($record, $record->setNewSuperior(null));
         $this->assertSame(null, $record->getNewSuperior());
     }
 
-    public function test__acceptRecordVisitor() : void
+    public function testAcceptRecordVisitor(): void
     {
         $visitor = $this->getMockBuilder(RecordVisitorInterface::class)
-                        ->getMockForAbstractClass();
+            ->getMockForAbstractClass()
+        ;
 
-        $record = new LdifModDnRecord("dc=example,dc=org", "cn=bar");
+        $record = new LdifModDnRecord('dc=example,dc=org', 'cn=bar');
 
         $visitor->expects($this->once())
-                ->method('visitLdifModDnRecord')
-                ->with($record)
-                ->will($this->returnValue('ok'));
+            ->method('visitLdifModDnRecord')
+            ->with($record)
+            ->will($this->returnValue('ok'))
+        ;
 
         $this->assertSame('ok', $record->acceptRecordVisitor($visitor));
     }

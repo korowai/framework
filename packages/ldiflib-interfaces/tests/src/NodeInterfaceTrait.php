@@ -19,7 +19,7 @@ use Korowai\Lib\Ldif\SnippetInterface;
  */
 trait NodeInterfaceTrait
 {
-    public function getSnippet() : ?SnippetInterface
+    public function getSnippet(): ?SnippetInterface
     {
         return null;
     }

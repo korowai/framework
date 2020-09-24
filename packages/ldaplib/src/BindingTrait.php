@@ -12,10 +12,8 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldap;
 
-use Korowai\Lib\Ldap\Core\LdapLinkInterface;
-use Korowai\Lib\Ldap\LdapException;
-
 use function Korowai\Lib\Context\with;
+use Korowai\Lib\Ldap\Core\LdapLinkInterface;
 
 /**
  * Provides implementation of BindingInterface.
@@ -24,22 +22,20 @@ use function Korowai\Lib\Context\with;
  */
 trait BindingTrait
 {
-    /**
-     * Returns the encapsulated LdapLink instance.
-     *
-     * @return LdapLinkInterface
-     *
-     * @psalm-mutation-free
-     */
-    abstract public function getLdapLink() : LdapLinkInterface;
-
     /** @var bool */
     private $bound;
 
     /**
+     * Returns the encapsulated LdapLink instance.
+     *
+     * @psalm-mutation-free
+     */
+    abstract public function getLdapLink(): LdapLinkInterface;
+
+    /**
      * {@inheritdoc}
      */
-    public function isBound() : bool
+    public function isBound(): bool
     {
         return $this->bound;
     }
@@ -47,10 +43,11 @@ trait BindingTrait
     /**
      * {@inheritdoc}
      */
-    public function bind(string $dn = null, string $password = null) : bool
+    public function bind(string $dn = null, string $password = null): bool
     {
         $args = func_get_args();
         $link = $this->getLdapLink();
+
         try {
             with($link->getErrorHandler())(function () use ($link, $args) {
                 $this->bound = $link->bind(...$args);
@@ -65,25 +62,27 @@ trait BindingTrait
             // OpenLDAP's ldap_bind() is not made, so the state of ldap link
             // resource remains unaltered. This means, an already bound ldap
             // link remains bound.
-            if ($code !== 49 || preg_match('/(DN|Password) contains a null byte/', $message) === 0) {
+            if (49 !== $code || 0 === preg_match('/(DN|Password) contains a null byte/', $message)) {
                 $this->bound = false;
             }
+
             throw $exception;
         }
+
         return $this->bound;
     }
 
     /**
-     * Unbinds the link
+     * Unbinds the link.
      *
      * After unbind the connection is no longer valid (and useful)
      *
      * @throws LdapException
      */
-    public function unbind() : void
+    public function unbind(): void
     {
         $link = $this->getLdapLink();
-        $result = with($link->getErrorHandler())(function () use ($link) : bool {
+        $result = with($link->getErrorHandler())(function () use ($link): bool {
             return $link->unbind();
         });
         // the state can only change to false and only when unbind is successful

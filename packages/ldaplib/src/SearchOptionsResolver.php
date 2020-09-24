@@ -12,8 +12,8 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldap;
 
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\Options;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -21,9 +21,9 @@ use Symfony\Component\OptionsResolver\Options;
 final class SearchOptionsResolver
 {
     public const DEREF_OPTIONS = [
-        'always'    => LDAP_DEREF_ALWAYS,
-        'never'     => LDAP_DEREF_NEVER,
-        'finding'   => LDAP_DEREF_FINDING,
+        'always' => LDAP_DEREF_ALWAYS,
+        'never' => LDAP_DEREF_NEVER,
+        'finding' => LDAP_DEREF_FINDING,
         'searching' => LDAP_DEREF_SEARCHING,
     ];
 
@@ -33,10 +33,23 @@ final class SearchOptionsResolver
     private $resolver;
 
     /**
-     * Returns defaults for query options
+     * Initializes the object.
+     */
+    public function __construct(OptionsResolver $resolver = null)
+    {
+        if (null === $resolver) {
+            $resolver = new OptionsResolver();
+        }
+        $this->configureOptionsResolver($resolver);
+        $this->resolver = $resolver;
+    }
+
+    /**
+     * Returns defaults for query options.
+     *
      * @return array Default options
      */
-    public static function getDefaultOptions() : array
+    public static function getDefaultOptions(): array
     {
         return [
             'attributes' => ['*'],
@@ -49,36 +62,17 @@ final class SearchOptionsResolver
     }
 
     /**
-     * Initializes the object.
-     *
-     * @param  OptionsResolver|null $resolver
-     */
-    public function __construct(OptionsResolver $resolver = null)
-    {
-        if ($resolver === null) {
-            $resolver = new OptionsResolver;
-        }
-        $this->configureOptionsResolver($resolver);
-        $this->resolver = $resolver;
-    }
-
-    /**
      * Returns the encapsulated OptionsResolver instance.
-     *
-     * @return OptionsResolver
      */
-    public function getOptionsResolver() : OptionsResolver
+    public function getOptionsResolver(): OptionsResolver
     {
         return $this->resolver;
     }
 
     /**
      * Resolves $options.
-     *
-     * @param array $options
-     * @return array
      */
-    public function resolve(array $options) : array
+    public function resolve(array $options): array
     {
         return $this->resolver->resolve($options);
     }
@@ -88,7 +82,7 @@ final class SearchOptionsResolver
      *
      * @param OptionsResolver $resolver The resolver to be configured
      */
-    private function configureOptionsResolver(OptionsResolver $resolver) : void
+    private function configureOptionsResolver(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(static::getDefaultOptions());
 
@@ -108,7 +102,7 @@ final class SearchOptionsResolver
         $resolver->setNormalizer(
             'attributes',
             /** @psalm-param mixed $value */
-            function (Options $options, $value) : array {
+            function (Options $options, $value): array {
                 return is_array($value) ? $value : [$value];
             }
         );
@@ -116,7 +110,7 @@ final class SearchOptionsResolver
         $resolver->setNormalizer(
             'deref',
             /** @psalm-param mixed $value */
-            function (Options $options, $value) : int {
+            function (Options $options, $value): int {
                 return is_string($value) ? self::DEREF_OPTIONS[$value] : $value;
             }
         );
@@ -124,8 +118,8 @@ final class SearchOptionsResolver
         $resolver->setNormalizer(
             'attrsOnly',
             /** @psalm-param mixed $value */
-            function (Options $options, $value) : int {
-                return (int)((bool)$value);
+            function (Options $options, $value): int {
+                return (int) ((bool) $value);
             }
         );
     }

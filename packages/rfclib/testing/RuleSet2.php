@@ -34,45 +34,43 @@ class RuleSet2 extends RuleSet1
 
     /**
      * Returns an array of names of rules provided by this class.
-     *
-     * @return array
      */
-    public static function getClassRuleNames() : array
+    public static function getClassRuleNames(): array
     {
         $rules = [
             'STRING',
             'PARTIAL_STRING',
             'ASSIGNMENT_STRING',
         ];
+
         return array_merge($rules, parent::getClassRuleNames());
     }
 
     /**
      * {@inheritdoc}
      */
-    public static function getDefinedErrors() : array
+    public static function getDefinedErrors(): array
     {
         $errors = [
             '' => [
-                'ASSIGNMENT_STRING' => 'missing "var_name =" in string assignment'
+                'ASSIGNMENT_STRING' => 'missing "var_name =" in string assignment',
             ],
             'value_int_error' => [
                 'ASSIGNMENT_INT' => 'malformed integer in assignment',
             ],
             'value_string_error' => [
                 'malformed string',
-                'ASSIGNMENT_STRING' => 'malformed string in assignment'
+                'ASSIGNMENT_STRING' => 'malformed string in assignment',
             ],
         ];
+
         return array_merge_recursive(parent::getDefinedErrors(), $errors);
     }
 
     /**
      * Returns what we expected the *getClassCaptures()* to return.
-     *
-     * @return array
      */
-    public static function expectedClassCaptures() : array
+    public static function expectedClassCaptures(): array
     {
         $captures = [
             'STRING' => [],
@@ -80,9 +78,10 @@ class RuleSet2 extends RuleSet1
             'ASSIGNMENT_STRING' => [
                 'var_name' => 'var_name',
                 'value_string' => 'value_string',
-                'value_string_error' => 'value_string_error'
+                'value_string_error' => 'value_string_error',
             ],
         ];
+
         return array_merge(parent::expectedClassCaptures(), $captures);
     }
 }

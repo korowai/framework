@@ -12,23 +12,24 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Error;
 
-use Korowai\Testing\TestCase;
-
-use Korowai\Lib\Error\ErrorHandler;
 use Korowai\Lib\Error\AbstractManagedErrorHandler;
+use Korowai\Lib\Error\ErrorHandler;
+use Korowai\Testing\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Error\ErrorHandler
+ *
+ * @internal
  */
 final class ErrorHandlerTest extends TestCase
 {
-    public function test__extends__AbstractManagedErrorHandler() : void
+    public function testExtendsAbstractManagedErrorHandler(): void
     {
         $this->assertExtendsClass(AbstractManagedErrorHandler::class, ErrorHandler::class);
     }
 
-    public function test__construct__withoutErrorTypes() : void
+    public function testConstructWithoutErrorTypes(): void
     {
         $func = function () {
         };
@@ -37,7 +38,7 @@ final class ErrorHandlerTest extends TestCase
         $this->assertEquals(E_ALL | E_STRICT, $handler->getErrorTypes());
     }
 
-    public function test__construct__withErrorTypes() : void
+    public function testConstructWithErrorTypes(): void
     {
         $func = function () {
         };
@@ -47,15 +48,16 @@ final class ErrorHandlerTest extends TestCase
         $this->assertEquals(123, $handler->getErrorTypes());
     }
 
-    public function test__invoke() : void
+    public function testInvoke(): void
     {
         $called = 0;
         $args = [];
 
         $handler = new ErrorHandler(
-            function (int $severity, string $message, string $file, int $line) use (&$called, &$args) : bool {
-                $called += 1;
+            function (int $severity, string $message, string $file, int $line) use (&$called, &$args): bool {
+                ++$called;
                 $args = func_get_args();
+
                 return true;
             }
         );

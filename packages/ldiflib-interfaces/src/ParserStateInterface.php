@@ -22,17 +22,15 @@ interface ParserStateInterface
     /**
      * Returns the cursor pointing to the current position within
      * source/preprocessed string.
-     *
-     * @return CursorInterface
      */
-    public function getCursor() : CursorInterface;
+    public function getCursor(): CursorInterface;
 
     /**
      * Returns errors detected by parser so far.
      *
-     * @return array an array of ParserErrorInterface instances.
+     * @return array an array of ParserErrorInterface instances
      */
-    public function getErrors() : array;
+    public function getErrors(): array;
 
     // /**
     //  * Returns records extracted from LDIF source so far.
@@ -51,15 +49,11 @@ interface ParserStateInterface
 
     /**
      * Returns true if there are no errors.
-     *
-     * @return bool
      */
-    public function isOk() : bool;
+    public function isOk(): bool;
 
     /**
      * Append new error.
-     *
-     * @param  ParserErrorInterface $error
      *
      * @return object $this
      */
@@ -69,8 +63,7 @@ interface ParserStateInterface
      * Appends new error created with *$message* and using *$this* object's
      * cursor as error's location.
      *
-     * @param  string $message
-     * @param  array $arguments Optional arguments passed to error's constructor.
+     * @param array $arguments optional arguments passed to error's constructor
      *
      * @return object $this
      */
@@ -80,9 +73,7 @@ interface ParserStateInterface
      * Appends new error created with *$message* and using *$offset* as error's
      * location. The cursor remains unchanged.
      *
-     * @param  int $offset
-     * @param  string $message
-     * @param  array $arguments Optional arguments passed to error's constructor.
+     * @param array $arguments optional arguments passed to error's constructor
      *
      * @return object $this
      */

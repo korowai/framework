@@ -16,56 +16,62 @@ use Korowai\Lib\Ldif\Nodes\AbstractRecord;
 use Korowai\Lib\Ldif\RecordInterface;
 use Korowai\Lib\Ldif\SnippetInterface;
 use Korowai\Lib\Ldif\Traits\HasSnippet;
-
 use Korowai\Testing\Ldiflib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Ldif\Nodes\AbstractRecord
+ *
+ * @internal
  */
 final class AbstractRecordTest extends TestCase
 {
-    public function test__implements__RecordInterface() : void
+    public function testImplementsRecordInterface(): void
     {
         $this->assertImplementsInterface(RecordInterface::class, AbstractRecord::class);
     }
 
-    public function test__uses__HasSnippet() : void
+    public function testUsesHasSnippet(): void
     {
         $this->assertUsesTrait(HasSnippet::class, AbstractRecord::class);
     }
 
-    public function test__initAbstractRecord() : void
+    public function testInitAbstractRecord(): void
     {
         $snippet = $this->getMockBuilder(SnippetInterface::class)
-                        ->getMockForAbstractClass();
+            ->getMockForAbstractClass()
+        ;
         $record = $this->getMockBuilder(AbstractRecord::class)
-                       ->getMockForAbstractClass();
+            ->getMockForAbstractClass()
+        ;
 
-        $this->assertSame($record, $record->initAbstractRecord("dc=example,dc=org", ['snippet' => $snippet]));
-        $this->assertSame("dc=example,dc=org", $record->getDn());
+        $this->assertSame($record, $record->initAbstractRecord('dc=example,dc=org', ['snippet' => $snippet]));
+        $this->assertSame('dc=example,dc=org', $record->getDn());
         $this->assertSame($snippet, $record->getSnippet());
 
-        $this->assertSame($record, $record->initAbstractRecord("dc=asme,dc=com"));
-        $this->assertSame("dc=asme,dc=com", $record->getDn());
+        $this->assertSame($record, $record->initAbstractRecord('dc=asme,dc=com'));
+        $this->assertSame('dc=asme,dc=com', $record->getDn());
         $this->assertNull($record->getSnippet());
     }
 
-    public function test__setDn() : void
+    public function testSetDn(): void
     {
         $record = $this->getMockBuilder(AbstractRecord::class)
-                       ->getMockForAbstractClass();
+            ->getMockForAbstractClass()
+        ;
 
-        $this->assertSame($record, $record->setDn("dc=example,dc=org"));
-        $this->assertSame("dc=example,dc=org", $record->getDn());
+        $this->assertSame($record, $record->setDn('dc=example,dc=org'));
+        $this->assertSame('dc=example,dc=org', $record->getDn());
     }
 
-    public function test__setSnippet() : void
+    public function testSetSnippet(): void
     {
         $snippet = $this->getMockBuilder(SnippetInterface::class)
-                        ->getMockForAbstractClass();
+            ->getMockForAbstractClass()
+        ;
         $record = $this->getMockBuilder(AbstractRecord::class)
-                       ->getMockForAbstractClass();
+            ->getMockForAbstractClass()
+        ;
 
         $this->assertSame($record, $record->setSnippet($snippet));
         $this->assertSame($snippet, $record->getSnippet());

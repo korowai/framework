@@ -25,9 +25,7 @@ final class EntryManager implements EntryManagerInterface, LdapLinkWrapperInterf
     use LdapLinkWrapperTrait;
 
     /**
-     * Constructs EntryManager
-     *
-     * @param LdapLinkInterface $link
+     * Constructs EntryManager.
      */
     public function __construct(LdapLinkInterface $link)
     {

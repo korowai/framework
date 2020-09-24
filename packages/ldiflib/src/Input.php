@@ -12,8 +12,8 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldif;
 
-use Korowai\Lib\Ldif\Util\IndexMap;
 use function Korowai\Lib\Compat\preg_split;
+use Korowai\Lib\Ldif\Util\IndexMap;
 
 /**
  * Preprocessed input.
@@ -66,12 +66,12 @@ class Input implements InputInterface
     protected $sourceLines;
 
     /**
-     * Initializes the object
+     * Initializes the object.
      *
-     * @param  string $source Source string
-     * @param  string $string Preprocessed string
-     * @param  array $im Index map produced by preprocessor
-     * @param  string $sourceFileName Input name (file name)
+     * @param string $source         Source string
+     * @param string $string         Preprocessed string
+     * @param array  $im             Index map produced by preprocessor
+     * @param string $sourceFileName Input name (file name)
      */
     public function __construct(string $source, string $string, IndexMap $im, string $sourceFileName = null)
     {
@@ -79,12 +79,20 @@ class Input implements InputInterface
     }
 
     /**
-     * Initializes the object
+     * {@inheritdoc}
+     */
+    public function __toString()
+    {
+        return $this->getString();
+    }
+
+    /**
+     * Initializes the object.
      *
-     * @param  string $source Source string
-     * @param  string $string Preprocessed string
-     * @param  array $im Index map produced by preprocessor
-     * @param  string $sourceFileName Input name (file name)
+     * @param string $source         Source string
+     * @param string $string         Preprocessed string
+     * @param array  $im             Index map produced by preprocessor
+     * @param string $sourceFileName Input name (file name)
      */
     public function init(string $source, string $string, IndexMap $im, string $sourceFileName = null)
     {
@@ -99,7 +107,7 @@ class Input implements InputInterface
     /**
      * {@inheritdoc}
      */
-    public function getSourceString() : string
+    public function getSourceString(): string
     {
         return $this->source;
     }
@@ -107,7 +115,7 @@ class Input implements InputInterface
     /**
      * {@inheritdoc}
      */
-    public function getString() : string
+    public function getString(): string
     {
         return $this->string;
     }
@@ -115,7 +123,7 @@ class Input implements InputInterface
     /**
      * {@inheritdoc}
      */
-    public function getSourceFileName() : string
+    public function getSourceFileName(): string
     {
         return $this->sourceFileName;
     }
@@ -126,7 +134,7 @@ class Input implements InputInterface
      *
      * @return array
      */
-    public function getIndexMap() : IndexMap
+    public function getIndexMap(): IndexMap
     {
         return $this->im;
     }
@@ -134,15 +142,7 @@ class Input implements InputInterface
     /**
      * {@inheritdoc}
      */
-    public function __toString()
-    {
-        return $this->getString();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getSourceOffset(int $i) : int
+    public function getSourceOffset(int $i): int
     {
         return ($this->getIndexMap())($i);
     }
@@ -150,28 +150,30 @@ class Input implements InputInterface
     /**
      * {@inheritdoc}
      */
-    public function getSourceCharOffset(int $i, string $encoding = null) : int
+    public function getSourceCharOffset(int $i, string $encoding = null): int
     {
         $offset = $this->getSourceOffset($i);
         $substr = substr($this->getSourceString(), 0, $offset);
+
         return mb_strlen($substr, ...(array_slice(func_get_args(), 1)));
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getSourceLines() : array
+    public function getSourceLines(): array
     {
         if (!isset($this->sourceLines)) {
             $this->initSourceLines($this->getSourceString());
         }
+
         return $this->sourceLines;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getSourceLinesCount() : int
+    public function getSourceLinesCount(): int
     {
         return count($this->getSourceLines());
     }
@@ -179,7 +181,7 @@ class Input implements InputInterface
     /**
      * {@inheritdoc}
      */
-    public function getSourceLine(int $i) : string
+    public function getSourceLine(int $i): string
     {
         return ($this->getSourceLines())[$i];
     }
@@ -187,16 +189,17 @@ class Input implements InputInterface
     /**
      * {@inheritdoc}
      */
-    public function getSourceLineIndex(int $i) : int
+    public function getSourceLineIndex(int $i): int
     {
         $j = $this->getSourceOffset($i);
+
         return ($this->getSourceLinesMap())($j);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getSourceLineAndOffset(int $i) : array
+    public function getSourceLineAndOffset(int $i): array
     {
         $j = $this->getSourceOffset($i);
         $map = $this->getSourceLinesMap();
@@ -206,18 +209,20 @@ class Input implements InputInterface
         } else {
             $offset = 0;
         }
+
         return [$line, $offset];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getSourceLineAndCharOffset(int $i, string $encoding = null) : array
+    public function getSourceLineAndCharOffset(int $i, string $encoding = null): array
     {
         [$line, $byte] = $this->getSourceLineAndOffset($i);
         $lineStr = $this->getSourceLine($line);
         $args = array_slice(func_get_args(), 1);
         $char = mb_strlen(substr($lineStr, 0, $byte), ...$args);
+
         return [$line, $char];
     }
 
@@ -230,27 +235,24 @@ class Input implements InputInterface
      *
      * @return InexMap
      */
-    public function getSourceLinesMap() : IndexMap
+    public function getSourceLinesMap(): IndexMap
     {
         if (!isset($this->sourceLinesMap)) {
             $this->initSourceLines($this->getSourceString());
         }
+
         return $this->sourceLinesMap;
     }
 
     /**
      * Sets the source file name.
-     *
-     * @param  string $sourceFileName
-     *
-     * @return Input
      */
-    public function setSourceFileName(string $sourceFileName) : Input
+    public function setSourceFileName(string $sourceFileName): Input
     {
         $this->sourceFileName = $sourceFileName;
+
         return $this;
     }
-
 
     protected function initSourceLines(string $source)
     {
@@ -260,7 +262,7 @@ class Input implements InputInterface
         $cnt = count($pieces);
 
         $lm = [[-PHP_INT_MAX, -1]];
-        for ($i = 0; $i < $cnt; $i++) {
+        for ($i = 0; $i < $cnt; ++$i) {
             $lm[] = [$pieces[$i][1], $i];
         }
 

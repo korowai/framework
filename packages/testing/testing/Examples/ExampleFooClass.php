@@ -26,7 +26,7 @@ class ExampleFooClass implements ExampleFooInterface
     /**
      * Initialized ExampleFooClass instance.
      *
-     * @param  array $options Initial values for attributes.
+     * @param array $options initial values for attributes
      */
     public function __construct($options = [])
     {
@@ -37,19 +37,21 @@ class ExampleFooClass implements ExampleFooInterface
     /**
      * Sets value of the *$foo* attribute.
      *
-     * @param  mixed $foo
-     *      New attribute value.
-     * @return ExampleFooInterface
-     *      Returns *$this*.
+     * @param mixed $foo
+     *                   New attribute value
+     *
+     * @return exampleFooInterface
+     *                             Returns *$this*
      */
-    public function setFoo($foo) : ExampleFooInterface
+    public function setFoo($foo): ExampleFooInterface
     {
         $this->foo = $foo;
+
         return $this;
     }
 
     /**
-     * {@inheritedoc}
+     * {@inheritedoc}.
      */
     public function getFoo()
     {

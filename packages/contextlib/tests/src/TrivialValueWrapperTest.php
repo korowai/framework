@@ -12,37 +12,38 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Context;
 
-use Korowai\Testing\TestCase;
-
-use Korowai\Lib\Context\TrivialValueWrapper;
 use Korowai\Lib\Context\ContextManagerInterface;
+use Korowai\Lib\Context\TrivialValueWrapper;
+use Korowai\Testing\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Context\TrivialValueWrapper
+ *
+ * @internal
  */
 final class TrivialValueWrapperTest extends TestCase
 {
-    public function test__implements__ContextManagerInterface() : void
+    public function testImplementsContextManagerInterface(): void
     {
         $this->assertImplementsInterface(ContextManagerInterface::class, TrivialValueWrapper::class);
     }
 
-    public function test__construct() : void
+    public function testConstruct(): void
     {
         $value = ['foo'];
         $cm = new TrivialValueWrapper($value);
         $this->assertSame($value, $cm->getValue());
     }
 
-    public function test__enterContext() : void
+    public function testEnterContext(): void
     {
         $value = ['foo'];
         $cm = new TrivialValueWrapper($value);
         $this->assertSame($value, $cm->enterContext());
     }
 
-    public function test__exitContext() : void
+    public function testExitContext(): void
     {
         $value = ['foo'];
         $cm = new TrivialValueWrapper($value);

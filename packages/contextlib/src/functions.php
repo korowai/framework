@@ -14,16 +14,14 @@ namespace Korowai\Lib\Context;
 
 /**
  * Creates an executor object which invokes user function within a context.
- *
- * @access public
- * @return ExecutorInterface
  */
-function with(... $args) : ExecutorInterface
+function with(...$args): ExecutorInterface
 {
-    $context = array_map(function ($arg) : ContextManagerInterface {
+    $context = array_map(function ($arg): ContextManagerInterface {
         return ContextFactoryStack::getInstance()->getContextManager($arg) ??
                DefaultContextFactory::getInstance()->getContextManager($arg);
     }, $args);
+
     return new WithContextExecutor($context);
 }
 

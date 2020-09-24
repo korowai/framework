@@ -13,18 +13,19 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Ldif;
 
 use Korowai\Lib\Ldif\PreprocessorInterface;
-
 use Korowai\Testing\LdiflibInterfaces\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Tests\Lib\Ldif\PreprocessorInterfaceTrait
+ *
+ * @internal
  */
 final class PreprocessorInterfaceTest extends TestCase
 {
-    public function test__dummyImplementation() : void
+    public function testDummyImplementation(): void
     {
-        $dummy = new class implements PreprocessorInterface {
+        $dummy = new class() implements PreprocessorInterface {
             use PreprocessorInterfaceTrait;
         };
         $this->assertImplementsInterface(PreprocessorInterface::class, $dummy);

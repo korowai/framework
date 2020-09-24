@@ -22,65 +22,52 @@ interface RuleInterface
     /**
      * Returns the regular expression that implements the rule. Same as
      * *$this->regexp()*.
-     *
-     * @return string
      */
-    public function __toString() : string;
+    public function __toString(): string;
 
     /**
      * Returns the regular expression that implements the rule.
-     *
-     * @return string
      */
-    public function regexp() : string;
+    public function regexp(): string;
 
     /**
      * Returns an array of capture group names for the rule.
      *
-     * @return array Array of captures.
+     * @return array array of captures
      */
-    public function captures() : array;
+    public function captures(): array;
 
     /**
      * Returns an array of error-catching capture group names for the rule.
      *
-     * @return array Array of error-catching captures.
+     * @return array array of error-catching captures
      */
-    public function errorCaptures() : array;
+    public function errorCaptures(): array;
 
     /**
      * Returns an array of non-error capture group names for the rule.
      *
-     * @return array Array of non-error captures.
+     * @return array array of non-error captures
      */
-    public function valueCaptures() : array;
+    public function valueCaptures(): array;
 
     /**
      * Returns an array containing all entries of *$matches* which have keys
      * that are present in *errorCaptures()*.
-     *
-     * @param  array $matches
-     * @return array
      */
-    public function findCapturedErrors(array $matches) : array;
+    public function findCapturedErrors(array $matches): array;
 
     /**
      * Returns an array containing all entries of *$matches* which have keys
      * that are present in *valueCaptures()*.
-     *
-     * @param  array $matches
-     * @return array
      */
-    public function findCapturedValues(array $matches) : array;
+    public function findCapturedValues(array $matches): array;
 
     /**
      * Returns error message for given *$errorKey* (or for the whole unmatched
      * rule, without *$errorKey*).
-     *
-     * @param  string $errorKey
-     * @return string
      */
-    public function getErrorMessage(string $errorKey = '') : string;
+    public function getErrorMessage(string $errorKey = ''): string;
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

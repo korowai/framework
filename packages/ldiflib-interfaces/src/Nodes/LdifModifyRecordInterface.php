@@ -25,10 +25,8 @@ interface LdifModifyRecordInterface extends LdifChangeRecordInterface, NodeInter
 {
     /**
      * Returns array of [ModSpecInterface](ModSpecInterface.html) objects.
-     *
-     * @return array
      */
-    public function getModSpecs() : array;
+    public function getModSpecs(): array;
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

@@ -23,12 +23,12 @@ final class TrivialValueWrapper implements ContextManagerInterface
     /**
      * @var mixed
      */
-    protected $value;
+    private $value;
 
     /**
      * Initializes the object.
      *
-     * @param  mixed $value The value being wrapped by the object.
+     * @param mixed $value the value being wrapped by the object
      */
     public function __construct($value)
     {
@@ -43,7 +43,6 @@ final class TrivialValueWrapper implements ContextManagerInterface
         return $this->value;
     }
 
-
     /**
      * {@inheritdoc}
      */
@@ -55,7 +54,7 @@ final class TrivialValueWrapper implements ContextManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function exitContext(\Throwable $exception = null) : bool
+    public function exitContext(\Throwable $exception = null): bool
     {
         return false;
     }

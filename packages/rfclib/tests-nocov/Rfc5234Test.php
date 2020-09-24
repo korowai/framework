@@ -18,15 +18,17 @@ use Korowai\Testing\Rfclib\TestCase;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Rfc\Rfc5234
+ *
+ * @internal
  */
 final class Rfc5234Test extends TestCase
 {
-    public static function getRfcClass() : string
+    public static function getRfcClass(): string
     {
         return Rfc5234::class;
     }
 
-    public function test__constValues() : void
+    public function testConstValues(): void
     {
         // character lists for character classes
         $this->assertSame('A-Za-z', Rfc5234::ALPHACHARS);

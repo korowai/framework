@@ -17,9 +17,9 @@ namespace Korowai\Tests\Lib\Ldif\Nodes;
  */
 trait HasAttrValSpecsInterfaceTrait
 {
-    public $attrValSpecs = null;
+    public $attrValSpecs;
 
-    public function getAttrValSpecs() : array
+    public function getAttrValSpecs(): array
     {
         return $this->attrValSpecs;
     }

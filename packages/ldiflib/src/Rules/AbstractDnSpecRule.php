@@ -12,8 +12,6 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldif\Rules;
 
-use Korowai\Lib\Ldif\ParserStateInterface as State;
-
 /**
  * A rule object that implements *dn-spec* rule defined in RFC2849.
  *
@@ -26,7 +24,7 @@ abstract class AbstractDnSpecRule extends AbstractNameSpecRule
     /**
      * {@inheritdoc}
      */
-    public function prefix() : string
+    public function prefix(): string
     {
         return 'dn';
     }

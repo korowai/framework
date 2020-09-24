@@ -20,11 +20,9 @@ interface LdapResultReferenceIteratorInterface extends LdapResultItemIteratorInt
     /**
      * Returns current reference.
      *
-     * @return LdapResultReferenceInterface|null
-     *
      * @psalm-mutation-free
      */
-    public function current() : ?LdapResultReferenceInterface;
+    public function current(): ?LdapResultReferenceInterface;
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

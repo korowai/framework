@@ -34,15 +34,14 @@ trait DecoratesLocationInterface
     public function setLocation(LocationInterface $location)
     {
         $this->location = $location;
+
         return $this;
     }
 
     /**
      * Returns the encapsulated instance of LocationInterface.
-     *
-     * @return LocationInterface|null
      */
-    public function getLocation() : ?LocationInterface
+    public function getLocation(): ?LocationInterface
     {
         return $this->location;
     }

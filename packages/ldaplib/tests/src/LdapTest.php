@@ -12,35 +12,32 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldap;
 
-use Korowai\Testing\Ldaplib\TestCase;
-use Korowai\Testing\Ldaplib\ExamineLdapLinkErrorHandlerTrait;
-
-use Korowai\Lib\Ldap\Ldap;
-use Korowai\Lib\Ldap\LdapInterface;
 use Korowai\Lib\Ldap\BindingInterface;
+use Korowai\Lib\Ldap\BindingTrait;
 use Korowai\Lib\Ldap\ComparingInterface;
-use Korowai\Lib\Ldap\SearchingInterface;
-use Korowai\Lib\Ldap\EntryManagerInterface;
+use Korowai\Lib\Ldap\ComparingTrait;
 use Korowai\Lib\Ldap\Core\LdapLinkInterface;
-use Korowai\Lib\Ldap\Core\LdapLinkConstructorInterface;
-use Korowai\Lib\Ldap\Core\LdapLinkFactoryInterface;
-use Korowai\Lib\Ldap\Core\LdapLinkConfigResolver;
-use Korowai\Lib\Ldap\Core\LdapLinkConfigResolverInterface;
 use Korowai\Lib\Ldap\Core\LdapLinkWrapperInterface;
 use Korowai\Lib\Ldap\Core\LdapLinkWrapperTrait;
-use Korowai\Lib\Ldap\BindingTrait;
-use Korowai\Lib\Ldap\ComparingTrait;
-use Korowai\Lib\Ldap\SearchingTrait;
+use Korowai\Lib\Ldap\EntryManagerInterface;
 use Korowai\Lib\Ldap\EntryManagerTrait;
+use Korowai\Lib\Ldap\Ldap;
+use Korowai\Lib\Ldap\LdapInterface;
+use Korowai\Lib\Ldap\SearchingInterface;
+use Korowai\Lib\Ldap\SearchingTrait;
+use Korowai\Testing\Ldaplib\ExamineLdapLinkErrorHandlerTrait;
+use Korowai\Testing\Ldaplib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Ldap\Ldap
- * @covers \Korowai\Tests\Lib\Ldap\BindingTestTrait
- * @covers \Korowai\Tests\Lib\Ldap\EntryManagerTestTrait
- * @covers \Korowai\Tests\Lib\Ldap\ComparingTestTrait
- * @covers \Korowai\Tests\Lib\Ldap\SearchingTestTrait
  * @covers \Korowai\Testing\Ldaplib\ExamineLdapLinkErrorHandlerTrait
+ * @covers \Korowai\Tests\Lib\Ldap\BindingTestTrait
+ * @covers \Korowai\Tests\Lib\Ldap\ComparingTestTrait
+ * @covers \Korowai\Tests\Lib\Ldap\EntryManagerTestTrait
+ * @covers \Korowai\Tests\Lib\Ldap\SearchingTestTrait
+ *
+ * @internal
  */
 final class LdapTest extends TestCase
 {
@@ -51,25 +48,25 @@ final class LdapTest extends TestCase
     use ExamineLdapLinkErrorHandlerTrait;
 
     // required by BindingTestTrait
-    public function createBindingInstance(LdapLinkInterface $ldapLink, bool $bound = false) : BindingInterface
+    public function createBindingInstance(LdapLinkInterface $ldapLink, bool $bound = false): BindingInterface
     {
         return new Ldap(...func_get_args());
     }
 
     // required by EntryManagerTrait
-    public function createEntryManagerInstance(LdapLinkinterface $ldapLink) : EntryManagerInterface
+    public function createEntryManagerInstance(LdapLinkinterface $ldapLink): EntryManagerInterface
     {
         return new Ldap(...func_get_args());
     }
 
     // required by ComparingTestTrait
-    public function createComparingInstance(LdapLinkinterface $ldapLink) : ComparingInterface
+    public function createComparingInstance(LdapLinkinterface $ldapLink): ComparingInterface
     {
         return new Ldap(...func_get_args());
     }
 
     // required by SearchingTestTrait
-    public function createSearchingInstance(LdapLinkinterface $ldapLink) : SearchingInterface
+    public function createSearchingInstance(LdapLinkinterface $ldapLink): SearchingInterface
     {
         return new Ldap(...func_get_args());
     }
@@ -80,37 +77,37 @@ final class LdapTest extends TestCase
     //
     //
 
-    public function test__implements__LdapInterface() : void
+    public function testImplementsLdapInterface(): void
     {
         $this->assertImplementsInterface(LdapInterface::class, Ldap::class);
     }
 
-    public function test__implements__LdapLinkWrapperInterface() : void
+    public function testImplementsLdapLinkWrapperInterface(): void
     {
         $this->assertImplementsInterface(LdapLinkWrapperInterface::class, Ldap::class);
     }
 
-    public function test__uses__LdapLinkWrapperTrait() : void
+    public function testUsesLdapLinkWrapperTrait(): void
     {
         $this->assertUsesTrait(LdapLinkWrapperTrait::class, Ldap::class);
     }
 
-    public function test__uses__BindingTrait() : void
+    public function testUsesBindingTrait(): void
     {
         $this->assertUsesTrait(BindingTrait::class, Ldap::class);
     }
 
-    public function test__uses__ComparingTrait() : void
+    public function testUsesComparingTrait(): void
     {
         $this->assertUsesTrait(ComparingTrait::class, Ldap::class);
     }
 
-    public function test__uses__SearchingTrait() : void
+    public function testUsesSearchingTrait(): void
     {
         $this->assertUsesTrait(SearchingTrait::class, Ldap::class);
     }
 
-    public function test__uses__EntryManagerTrait() : void
+    public function testUsesEntryManagerTrait(): void
     {
         $this->assertUsesTrait(EntryManagerTrait::class, Ldap::class);
     }
@@ -119,16 +116,17 @@ final class LdapTest extends TestCase
     // __construct()
     //
 
-    public function prov__construct() : array
+    public function prov__construct(): array
     {
         $link = $this->createMock(LdapLinkInterface::class);
+
         return [
             // #0
             [
                 'args' => [$link],
                 'expect' => [
                     'getLdapLink()' => $link,
-                    'isBound()' => false
+                    'isBound()' => false,
                 ],
             ],
             // #1
@@ -136,7 +134,7 @@ final class LdapTest extends TestCase
                 'args' => [$link, false],
                 'expect' => [
                     'getLdapLink()' => $link,
-                    'isBound()' => false
+                    'isBound()' => false,
                 ],
             ],
             // #2
@@ -144,7 +142,7 @@ final class LdapTest extends TestCase
                 'args' => [$link, true],
                 'expect' => [
                     'getLdapLink()' => $link,
-                    'isBound()' => true
+                    'isBound()' => true,
                 ],
             ],
         ];
@@ -153,7 +151,7 @@ final class LdapTest extends TestCase
     /**
      * @dataProvider prov__construct
      */
-    public function test__construct(array $args, array $expect) : void
+    public function testConstruct(array $args, array $expect): void
     {
         $bind = new Ldap(...$args);
         $this->assertObjectHasPropertiesIdenticalTo($expect, $bind);

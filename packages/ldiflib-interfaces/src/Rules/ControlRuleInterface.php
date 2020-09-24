@@ -23,10 +23,8 @@ interface ControlRuleInterface extends RuleInterface
 {
     /**
      * Returns the nested ValueSpecRuleInteface.
-     *
-     * @return ValueSpecRuleInterface
      */
-    public function getValueSpecRule() : ValueSpecRuleInterface;
+    public function getValueSpecRule(): ValueSpecRuleInterface;
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

@@ -23,17 +23,13 @@ interface LdifFileRuleInterface extends RuleInterface
 {
     /**
      * Returns the nested LdifContentRuleInteface.
-     *
-     * @return LdifContentRuleInterface
      */
-    public function getLdifContentRule() : LdifContentRuleInterface;
+    public function getLdifContentRule(): LdifContentRuleInterface;
 
     /**
      * Returns the nested LdifChangesRuleInteface.
-     *
-     * @return LdifChangesRuleInterface
      */
-    public function getLdifChangesRule() : LdifChangesRuleInterface;
+    public function getLdifChangesRule(): LdifChangesRuleInterface;
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

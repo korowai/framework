@@ -12,29 +12,31 @@ declare(strict_types=1);
 
 namespace Korowai\Tests;
 
-use Korowai\Testing\TestCase;
 use Korowai\Testing\Dummies\PhpIteratorTrait;
+use Korowai\Testing\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Testing\Dummies\PhpIteratorTrait
+ *
+ * @internal
  */
 final class PhpIteratorTraitTest extends TestCase
 {
     public static function createDummyInstance()
     {
-        return new class implements \Iterator {
+        return new class() implements \Iterator {
             use PhpIteratorTrait;
         };
     }
 
-    public function test__dummyImplementation() : void
+    public function testDummyImplementation(): void
     {
         $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(\Iterator::class, $dummy);
     }
 
-    public function test__current() : void
+    public function testCurrent(): void
     {
         $dummy = $this->createDummyInstance();
 
@@ -48,7 +50,7 @@ final class PhpIteratorTraitTest extends TestCase
         $this->assertSame($dummy->current, $dummy->current());
     }
 
-    public function test__key() : void
+    public function testKey(): void
     {
         $dummy = $this->createDummyInstance();
 
@@ -62,7 +64,7 @@ final class PhpIteratorTraitTest extends TestCase
         $this->assertSame($dummy->key, $dummy->key());
     }
 
-    public function test__next() : void
+    public function testNext(): void
     {
         $dummy = $this->createDummyInstance();
 
@@ -76,7 +78,7 @@ final class PhpIteratorTraitTest extends TestCase
         $this->assertSame($dummy->next, $dummy->next());
     }
 
-    public function test__rewind() : void
+    public function testRewind(): void
     {
         $dummy = $this->createDummyInstance();
 
@@ -90,7 +92,7 @@ final class PhpIteratorTraitTest extends TestCase
         $this->assertSame($dummy->rewind, $dummy->rewind());
     }
 
-    public function test__valid() : void
+    public function testValid(): void
     {
         $dummy = $this->createDummyInstance();
 

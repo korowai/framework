@@ -25,13 +25,12 @@ trait HasAttrValSpecs
     /**
      * Sets the new array of attribute value specifications to this record.
      *
-     * @param  array $attrValSpecs
-     *
      * @return object $this
      */
     public function setAttrValSpecs(array $attrValSpecs)
     {
         $this->attrValSpecs = $attrValSpecs;
+
         return $this;
     }
 
@@ -41,7 +40,7 @@ trait HasAttrValSpecs
      *
      * @return array an array of [AttrValSpecInterface](AttrValSpecInterface.html) instances.
      */
-    public function getAttrValSpecs() : array
+    public function getAttrValSpecs(): array
     {
         return $this->attrValSpecs;
     }

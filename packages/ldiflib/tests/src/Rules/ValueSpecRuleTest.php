@@ -12,19 +12,21 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldif\Rules;
 
-use Korowai\Lib\Ldif\Rules\ValueSpecRule;
-use Korowai\Lib\Ldif\Rules\AbstractRfcRule;
 use Korowai\Lib\Ldif\Nodes\ValueSpecInterface;
+use Korowai\Lib\Ldif\Rules\AbstractRfcRule;
+use Korowai\Lib\Ldif\Rules\ValueSpecRule;
 use Korowai\Lib\Rfc\Rfc2849;
 use Korowai\Testing\Ldiflib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Ldif\Rules\ValueSpecRule
+ *
+ * @internal
  */
 final class ValueSpecRuleTest extends TestCase
 {
-    public function test__extendsAbstractRfcRule() : void
+    public function testExtendsAbstractRfcRule(): void
     {
         $this->assertExtendsClass(AbstractRfcRule::class, ValueSpecRule::class);
     }
@@ -33,7 +35,7 @@ final class ValueSpecRuleTest extends TestCase
     {
         return [
             'default' => [
-                'args'   => [],
+                'args' => [],
                 'expect' => [],
             ],
         ];
@@ -42,14 +44,14 @@ final class ValueSpecRuleTest extends TestCase
     /**
      * @dataProvider prov__construct
      */
-    public function test__construct(array $args, array $expect) : void
+    public function testConstruct(array $args, array $expect): void
     {
         $rule = new ValueSpecRule(...$args);
         $expect = array_merge([
             'getRfcRule()' => self::objectHasPropertiesIdenticalTo([
                 'ruleSetClass()' => Rfc2849::class,
                 'name()' => 'VALUE_SPEC',
-            ])
+            ]),
         ], $expect);
         $this->assertObjectHasPropertiesIdenticalTo($expect, $rule);
     }
@@ -63,7 +65,7 @@ final class ValueSpecRuleTest extends TestCase
             'value_b64' => [
                 'source' => ['::xbvDs8WCdGEgxYJ5xbxrYQ==', 121],
                 'matches' => [
-                    'value_b64' => ['xbvDs8WCdGEgxYJ5xbxrYQ==', 123]
+                    'value_b64' => ['xbvDs8WCdGEgxYJ5xbxrYQ==', 123],
                 ],
                 'expect' => [
                     'result' => true,
@@ -76,13 +78,13 @@ final class ValueSpecRuleTest extends TestCase
                         'getCursor()' => self::objectHasPropertiesIdenticalTo(['getOffset()' => 121]),
                         'getErrors()' => [],
                         'getRecords()' => [],
-                    ]
-                ]
+                    ],
+                ],
             ],
             'invalid value_b64' => [
                 'source' => ['::xbvDs8WCdGEgxYJ5xbxrYQ==', 121],
                 'matches' => [
-                    'value_b64' => ['xbvDs8WCdGEgxYJ5xbxrYQ=', 123]
+                    'value_b64' => ['xbvDs8WCdGEgxYJ5xbxrYQ=', 123],
                 ],
                 'expect' => [
                     'result' => false,
@@ -92,17 +94,17 @@ final class ValueSpecRuleTest extends TestCase
                         'getErrors()' => [
                             self::objectHasPropertiesIdenticalTo([
                                 'getSourceOffset()' => 123,
-                                'getMessage()' => 'syntax error: invalid BASE64 string'
+                                'getMessage()' => 'syntax error: invalid BASE64 string',
                             ]),
                         ],
                         'getRecords()' => [],
-                    ]
-                ]
+                    ],
+                ],
             ],
             'value_safe' => [
                 'source' => ['John Smith', 121],
                 'matches' => [
-                    'value_safe' => ['John Smith', 123]
+                    'value_safe' => ['John Smith', 123],
                 ],
                 'expect' => [
                     'result' => true,
@@ -115,8 +117,8 @@ final class ValueSpecRuleTest extends TestCase
                         'getCursor()' => self::objectHasPropertiesIdenticalTo(['getOffset()' => 121]),
                         'getErrors()' => [],
                         'getRecords()' => [],
-                    ]
-                ]
+                    ],
+                ],
             ],
             'value_url (file_uri)' => [
                 'source' => [':<file:///home/jsmith/foo.txt', 121],
@@ -140,15 +142,15 @@ final class ValueSpecRuleTest extends TestCase
                             'getPort()' => null,
                             'getPath()' => '/home/jsmith/foo.txt',
                             'getQuery()' => null,
-                            'getFragment()' => null
+                            'getFragment()' => null,
                         ]),
                     ],
                     'state' => [
                         'getCursor()' => self::objectHasPropertiesIdenticalTo(['getOffset()' => 121]),
                         'getErrors()' => [],
                         'getRecords()' => [],
-                    ]
-                ]
+                    ],
+                ],
             ],
             'value_url (UriSyntaxError)' => [
                 //            00000000001111111111222222222233333333334444
@@ -172,12 +174,12 @@ final class ValueSpecRuleTest extends TestCase
                                 'getSourceOffset()' => 43,
                                 'getMessage()' => 'syntax error: in URL: '.
                                              'The uri `file://example.org:80/home/jsmith/foo.txt` '.
-                                             'is invalid for the `file` scheme.'
-                            ])
+                                             'is invalid for the `file` scheme.',
+                            ]),
                         ],
                         'getRecords()' => [],
-                    ]
-                ]
+                    ],
+                ],
             ],
             'missing value' => [
                 'source' => [':<file:///home/jsmith/foo.txt', 121],
@@ -195,12 +197,12 @@ final class ValueSpecRuleTest extends TestCase
                             self::objectHasPropertiesIdenticalTo([
                                 'getSourceOffset()' => 121,
                                 'getMessage()' => 'internal error: missing or invalid capture groups '.
-                                             '"value_safe", "value_b64" and "value_url"'
+                                             '"value_safe", "value_b64" and "value_url"',
                             ]),
                         ],
                         'getRecords()' => [],
-                    ]
-                ]
+                    ],
+                ],
             ],
         ];
     }
@@ -208,7 +210,7 @@ final class ValueSpecRuleTest extends TestCase
     /**
      * @dataProvider prov__parseMatched
      */
-    public function test__parseMatched(array $source, array $matches, array $expect) : void
+    public function testParseMatched(array $source, array $matches, array $expect): void
     {
         $state = $this->getParserStateFromSource(...$source);
 
@@ -241,7 +243,7 @@ final class ValueSpecRuleTest extends TestCase
                 //            000000000011111111112222222
                 //            012345678901234567890123456
                 'source' => ['::xbvDs8WCdGEgxYJ5xbxrYQ==', 0],
-                'args'   => [],
+                'args' => [],
                 'expect' => [
                     'result' => true,
                     'value' => [
@@ -253,18 +255,18 @@ final class ValueSpecRuleTest extends TestCase
                         'getCursor()' => self::objectHasPropertiesIdenticalTo([
                             'getOffset()' => 26,
                             'getSourceOffset()' => 26,
-                            'getSourceCharOffset()' => 26
+                            'getSourceCharOffset()' => 26,
                         ]),
                         'getErrors()' => [],
                         'getRecords()' => [],
-                    ]
-                ]
+                    ],
+                ],
             ],
             'invalid value_b64' => [
                 //            00000000001111111111222222
                 //            01234567890123456789012345
                 'source' => ['::xbvDs8WCdGEgxYJ5xbxrYQ=', 0],
-                'args'   => [],
+                'args' => [],
                 'expect' => [
                     'result' => false,
                     'value' => null,
@@ -272,23 +274,23 @@ final class ValueSpecRuleTest extends TestCase
                         'getCursor()' => self::objectHasPropertiesIdenticalTo([
                             'getOffset()' => 25,
                             'getSourceOffset()' => 25,
-                            'getSourceCharOffset()' => 25
+                            'getSourceCharOffset()' => 25,
                         ]),
                         'getErrors()' => [
                             self::objectHasPropertiesIdenticalTo([
                                 'getSourceOffset()' => 2,
-                                'getMessage()' => 'syntax error: invalid BASE64 string'
+                                'getMessage()' => 'syntax error: invalid BASE64 string',
                             ]),
                         ],
                         'getRecords()' => [],
-                    ]
-                ]
+                    ],
+                ],
             ],
             'value_safe' => [
                 //            000000000011
                 //            012345678901
                 'source' => [':John Smith', 0],
-                'args'   => [],
+                'args' => [],
                 'expect' => [
                     'result' => true,
                     'value' => [
@@ -300,18 +302,18 @@ final class ValueSpecRuleTest extends TestCase
                         'getCursor()' => self::objectHasPropertiesIdenticalTo([
                             'getOffset()' => 11,
                             'getSourceOffset()' => 11,
-                            'getSourceCharOffset()' => 11
+                            'getSourceCharOffset()' => 11,
                         ]),
                         'getErrors()' => [],
                         'getRecords()' => [],
-                    ]
-                ]
+                    ],
+                ],
             ],
             'value_url (file_uri)' => [
                 //            000000000011111111112222222222
                 //            012345678901234567890123456789
                 'source' => [':<file:///home/jsmith/foo.txt', 0],
-                'args'   => [],
+                'args' => [],
                 'expect' => [
                     'result' => true,
                     'value' => [
@@ -325,28 +327,27 @@ final class ValueSpecRuleTest extends TestCase
                             'getPort()' => null,
                             'getPath()' => '/home/jsmith/foo.txt',
                             'getQuery()' => null,
-                            'getFragment()' => null
+                            'getFragment()' => null,
                         ]),
                     ],
                     'state' => [
                         'getCursor()' => self::objectHasPropertiesIdenticalTo([
                             'getOffset()' => 29,
                             'getSourceOffset()' => 29,
-                            'getSourceCharOffset()' => 29
+                            'getSourceCharOffset()' => 29,
                         ]),
                         'getErrors()' => [],
                         'getRecords()' => [],
-                    ]
-                ]
-            ]
+                    ],
+                ],
+            ],
         ];
     }
-
 
     /**
      * @dataProvider prov__parse
      */
-    public function test__parse(array $source, array $args, array $expect) : void
+    public function testParse(array $source, array $args, array $expect): void
     {
         $state = $this->getParserStateFromSource(...$source);
 
@@ -354,7 +355,7 @@ final class ValueSpecRuleTest extends TestCase
             $value = $this->getMockBuilder(ValueSpecInterface::class)->getMockForAbstractClass();
         }
 
-        $rule = new ValueSpecRule;
+        $rule = new ValueSpecRule();
 
         $result = $rule->parse($state, $value, ...$args);
 

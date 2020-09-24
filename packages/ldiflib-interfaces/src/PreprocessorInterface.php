@@ -20,12 +20,9 @@ interface PreprocessorInterface
     /**
      * Runs preprocessor on source string.
      *
-     * @param  string $source
-     * @param  string $filename
-     *
-     * @return InputInterface
+     * @param string $filename
      */
-    public function preprocess(string $source, string $filename = null) : InputInterface;
+    public function preprocess(string $source, string $filename = null): InputInterface;
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

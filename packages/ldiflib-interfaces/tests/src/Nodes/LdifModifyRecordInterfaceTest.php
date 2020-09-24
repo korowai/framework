@@ -12,26 +12,27 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldif\Nodes;
 
-use Korowai\Lib\Ldif\Nodes\LdifModifyRecordInterface;
-use Korowai\Lib\Ldif\Nodes\LdifChangeRecordInterface;
 use Korowai\Lib\Ldif\NodeInterface;
-
+use Korowai\Lib\Ldif\Nodes\LdifChangeRecordInterface;
+use Korowai\Lib\Ldif\Nodes\LdifModifyRecordInterface;
 use Korowai\Testing\LdiflibInterfaces\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Tests\Lib\Ldif\Nodes\LdifModifyRecordInterfaceTrait
+ *
+ * @internal
  */
 final class LdifModifyRecordInterfaceTest extends TestCase
 {
     public static function createDummyInstance()
     {
-        return new class implements LdifModifyRecordInterface {
+        return new class() implements LdifModifyRecordInterface {
             use LdifModifyRecordInterfaceTrait;
         };
     }
 
-    public static function prov__extendsInterface() : array
+    public static function prov__extendsInterface(): array
     {
         return [
             [LdifChangeRecordInterface::class],
@@ -42,25 +43,25 @@ final class LdifModifyRecordInterfaceTest extends TestCase
     /**
      * @dataProvider prov__extendsInterface
      */
-    public function test__extendsInterface(string $extends) : void
+    public function testExtendsInterface(string $extends): void
     {
         $this->assertImplementsInterface($extends, LdifModifyRecordInterface::class);
     }
 
-    public function test__dummyImplementation() : void
+    public function testDummyImplementation(): void
     {
         $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(LdifModifyRecordInterface::class, $dummy);
     }
 
-    public function test__getModSpecs() : void
+    public function testGetModSpecs(): void
     {
         $dummy = $this->createDummyInstance();
         $dummy->modSpecs = [];
         $this->assertSame($dummy->modSpecs, $dummy->getModSpecs());
     }
 
-    public function test__getModSpecs__withNull() : void
+    public function testGetModSpecsWithNull(): void
     {
         $dummy = $this->createDummyInstance();
         $dummy->modSpecs = null;

@@ -12,13 +12,14 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Testing\Traits;
 
-use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\ExpectationFailedException;
 use Korowai\Testing\Traits\PregUtilsTrait;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Testing\Traits\PregUtilsTrait
+ *
+ * @internal
  */
 final class PregUtilsTraitTest extends TestCase
 {
@@ -29,50 +30,50 @@ final class PregUtilsTraitTest extends TestCase
         return [
             // #0
             'pregTupleKeysAt([], [0, 1])' => [
-                'args'   => [[], [0, 1]],
+                'args' => [[], [0, 1]],
                 'expect' => [0, 1],
             ],
 
             // #1
             'pregTupleKeysAt(["A"], [0, 1])' => [
-                'args'   => [["A"], [0, 1]],
+                'args' => [['A'], [0, 1]],
                 'expect' => [0, 1],
             ],
 
             // #2
             'pregTupleKeysAt(["A", "B"], [0, 1])' => [
-                'args'   => [["A", "B"], [0, 1]],
+                'args' => [['A', 'B'], [0, 1]],
                 'expect' => [0, 1],
             ],
 
             // #3
             'pregTupleKeysAt(["a" => "A"], [0, 1])' => [
-                'args'   => [["a" => "A"], [0, 1]],
-                'expect' => ["a", 1],
+                'args' => [['a' => 'A'], [0, 1]],
+                'expect' => ['a', 1],
             ],
 
             // #4
             'pregTupleKeysAt(["a" => "A", "B"], [0, 1])' => [
-                'args'   => [["a" => "A", "B"], [0, 1]],
-                'expect' => ["a", 0],
+                'args' => [['a' => 'A', 'B'], [0, 1]],
+                'expect' => ['a', 0],
             ],
 
             // #5
             'pregTupleKeysAt(["a" => "A", 8 => "B"], [0, 1])' => [
-                'args'   => [["a" => "A", 8 => "B"], [0, 1]],
-                'expect' => ["a", 8],
+                'args' => [['a' => 'A', 8 => 'B'], [0, 1]],
+                'expect' => ['a', 8],
             ],
 
             // #6
             'pregTupleKeysAt(["a" => "A", 8 => "B"], [0, 1, 2, 5])' => [
-                'args'   => [["a" => "A", 8 => "B"], [0, 1, 2, 5]],
-                'expect' => ["a", 8, 2, 5],
+                'args' => [['a' => 'A', 8 => 'B'], [0, 1, 2, 5]],
+                'expect' => ['a', 8, 2, 5],
             ],
 
             // #7
             'pregTupleKeysAt(["a" => "A", 8 => "B"], ["x" => 0, "y" => 1, "z" => 2])' => [
-                'args'   => [["a" => "A", 8 => "B"], ["x" => 0, "y" => 1, "z" => 2]],
-                'expect' => ["a", 8, 2],
+                'args' => [['a' => 'A', 8 => 'B'], ['x' => 0, 'y' => 1, 'z' => 2]],
+                'expect' => ['a', 8, 2],
             ],
         ];
     }
@@ -80,7 +81,7 @@ final class PregUtilsTraitTest extends TestCase
     /**
      * @dataProvider prov__pregTupleKeysAt
      */
-    public function test__pregTupleKeysAt(array $args, array $expect) : void
+    public function testPregTupleKeysAt(array $args, array $expect): void
     {
         $this->assertSame($expect, static::pregTupleKeysAt(...$args));
     }
@@ -90,20 +91,20 @@ final class PregUtilsTraitTest extends TestCase
         return [
             // #0
             'stringsToPregTuples(["a", "b"])' => [
-                'args'       => [["a", "b"]],
-                'expect'     => [["a"], ["b"]],
+                'args' => [['a', 'b']],
+                'expect' => [['a'], ['b']],
             ],
 
             // #1
             'stringsToPregTuples(["a", "b"], "key")' => [
-                'args'       => [["a", "b"], "key"],
-                'expect'     => [["a", ["key" => ["a", 0]]], ["b", ["key" => ["b", 0]]]],
+                'args' => [['a', 'b'], 'key'],
+                'expect' => [['a', ['key' => ['a', 0]]], ['b', ['key' => ['b', 0]]]],
             ],
 
             // #2
             'stringsToPregTuples(["a", "b"], "key", 3)' => [
-                'args'       => [["a", "b"], "key", 3],
-                'expect'     => [["a", ["key" => ["a", 3]]], ["b", ["key" => ["b", 3]]]],
+                'args' => [['a', 'b'], 'key', 3],
+                'expect' => [['a', ['key' => ['a', 3]]], ['b', ['key' => ['b', 3]]]],
             ],
         ];
     }
@@ -111,7 +112,7 @@ final class PregUtilsTraitTest extends TestCase
     /**
      * @dataProvider prov__stringsToPregTuples
      */
-    public function test__stringsToPregTuples(array $args, array $expect) : void
+    public function testStringsToPregTuples(array $args, array $expect): void
     {
         $this->assertSame($expect, static::stringsToPregTuples(...$args));
     }
@@ -121,32 +122,32 @@ final class PregUtilsTraitTest extends TestCase
         return [
             // #1
             'shiftPregCaptures([], 1)' => [
-                'args'     => [[], 1],
-                'expect'   => []
+                'args' => [[], 1],
+                'expect' => [],
             ],
 
             // #2
             'shiftPregCaptures(["whole string"], 1)' => [
-                'args'     => [['whole string'], 1],
-                'expect'   => [ 'whole string']
+                'args' => [['whole string'], 1],
+                'expect' => ['whole string'],
             ],
 
             // #3
             'shiftPregCaptures(["whole string", "second" => "string"], 5)' => [
-                'args'     => [['whole string', 'second' => 'string'], 5],
-                'expect'   => [ 'whole string', 'second' => 'string']
+                'args' => [['whole string', 'second' => 'string'], 5],
+                'expect' => ['whole string', 'second' => 'string'],
             ],
 
             // #4
             'shiftPregCaptures(["whole string", "second" => ["string", 6]], 5)' => [
-                'args'     => [['whole string', 'second' => ['string',  6]], 5],
-                'expect'   => [ 'whole string', 'second' => ['string', 11]]
+                'args' => [['whole string', 'second' => ['string',  6]], 5],
+                'expect' => ['whole string', 'second' => ['string', 11]],
             ],
 
             // #5
             'shiftPregCaptures([["whole string", 2], "second" => ["string", 8]], 5)' => [
-                'args'     => [[['whole string', 2], 'second' => ['string',  8]], 5],
-                'expect'   => [ ['whole string', 7], 'second' => ['string', 13]]
+                'args' => [[['whole string', 2], 'second' => ['string',  8]], 5],
+                'expect' => [['whole string', 7], 'second' => ['string', 13]],
             ],
         ];
     }
@@ -154,7 +155,7 @@ final class PregUtilsTraitTest extends TestCase
     /**
      * @dataProvider prov__shiftPregCaptures
      */
-    public function test__shiftPregCaptures(array $args, array $expect) : void
+    public function testShiftPregCaptures(array $args, array $expect): void
     {
         $this->assertSame($expect, self::shiftPregCaptures(...$args));
     }
@@ -165,49 +166,49 @@ final class PregUtilsTraitTest extends TestCase
             // #0
             [
                 [[], 'prefix '],
-                []
+                [],
             ],
 
             // #1
             [
                 [['whole string'], 'prefix '],
-                [ 'whole string']
+                ['whole string'],
             ],
 
             // #2
             [
                 [['whole string', 'second' => 'string'], 'prefix '],
-                [ 'whole string', 'second' => 'string']
+                ['whole string', 'second' => 'string'],
             ],
 
             // #3
             [
                 [['whole string', 'second' => ['string',  6]], 'prefix '],
-                [ 'whole string', 'second' => ['string', 13]]
+                ['whole string', 'second' => ['string', 13]],
             ],
 
             // #4
             [
                 [['whole string', 'second' => ['string',  6], ['string',  6]], 'prefix '],
-                [ 'whole string', 'second' => ['string', 13], ['string', 13]]
+                ['whole string', 'second' => ['string', 13], ['string', 13]],
             ],
 
             // #5
             [
                 [[['whole string', 2], 'second' => ['string',  8]], 'prefix '],
-                [ ['whole string', 9], 'second' => ['string', 15]]
+                [['whole string', 9], 'second' => ['string', 15]],
             ],
 
             // #6
             [
-                [[[       'whole string', 2], 'second' => ['string',  8]], 'prefix ', true],
-                [ ['prefix whole string', 2], 'second' => ['string', 15]]
+                [[['whole string', 2], 'second' => ['string',  8]], 'prefix ', true],
+                [['prefix whole string', 2], 'second' => ['string', 15]],
             ],
 
             // #7
             [
-                [[[       'whole string', 2], 'second' => ['string',  8]], 'prefix ', 'Idefix '],
-                [ ['Idefix whole string', 2], 'second' => ['string', 15]]
+                [[['whole string', 2], 'second' => ['string',  8]], 'prefix ', 'Idefix '],
+                [['Idefix whole string', 2], 'second' => ['string', 15]],
             ],
         ];
     }
@@ -215,7 +216,7 @@ final class PregUtilsTraitTest extends TestCase
     /**
      * @dataProvider prov__prefixPregCaptures
      */
-    public function test__prefixPregCaptures(array $args, array $expect) : void
+    public function testPrefixPregCaptures(array $args, array $expect): void
     {
         $this->assertSame($expect, self::prefixPregCaptures(...$args));
     }
@@ -226,8 +227,8 @@ final class PregUtilsTraitTest extends TestCase
             // #0
             [
                 'args' => [
-                    [                'left' => 'LEFT', 'both' => 'LEFT'],
-                    [                'rght' => 'RGHT', 'both' => 'RGHT'],
+                    ['left' => 'LEFT', 'both' => 'LEFT'],
+                    ['rght' => 'RGHT', 'both' => 'RGHT'],
                 ],
                 'expect' => ['left' => 'LEFT', 'both' => 'RGHT', 'rght' => 'RGHT'],
             ],
@@ -236,7 +237,7 @@ final class PregUtilsTraitTest extends TestCase
             [
                 'args' => [
                     [0 => 'LEFT 0',  'left' => 'LEFT', 'both' => 'LEFT'],
-                    [                'rght' => 'RGHT', 'both' => 'RGHT'],
+                    ['rght' => 'RGHT', 'both' => 'RGHT'],
                 ],
                 'expect' => [0 => 'LEFT 0', 'left' => 'LEFT', 'both' => 'RGHT',  'rght' => 'RGHT'],
             ],
@@ -244,7 +245,7 @@ final class PregUtilsTraitTest extends TestCase
             // #2
             [
                 'args' => [
-                    [               'left' => 'LEFT', 'both' => 'LEFT'],
+                    ['left' => 'LEFT', 'both' => 'LEFT'],
                     [0 => 'RGHT 0', 'rght' => 'RGHT', 'both' => 'RGHT'],
                 ],
                 'expect' => ['left' => 'LEFT', 'both' => 'RGHT', 0 => 'RGHT 0', 'rght' => 'RGHT'],
@@ -262,9 +263,9 @@ final class PregUtilsTraitTest extends TestCase
             // #4
             [
                 'args' => [
-                    [               'left' => 'LEFT', 'both' => 'LEFT'],
-                    [               'rght' => 'RGHT', 'both' => 'RGHT'],
-                    true
+                    ['left' => 'LEFT', 'both' => 'LEFT'],
+                    ['rght' => 'RGHT', 'both' => 'RGHT'],
+                    true,
                 ],
                 'expect' => ['left' => 'LEFT', 'both' => 'RGHT', 'rght' => 'RGHT'],
             ],
@@ -272,9 +273,9 @@ final class PregUtilsTraitTest extends TestCase
             // #5
             [
                 'args' => [
-                    [               'left' => 'LEFT', 'both' => 'LEFT'],
+                    ['left' => 'LEFT', 'both' => 'LEFT'],
                     [0 => 'RGHT 0', 'rght' => 'RGHT', 'both' => 'RGHT'],
-                    true
+                    true,
                 ],
                 'expect' => [0 => 'RGHT 0', 'left' => 'LEFT', 'both' => 'RGHT', 'rght' => 'RGHT'],
             ],
@@ -283,8 +284,8 @@ final class PregUtilsTraitTest extends TestCase
             [
                 'args' => [
                     [0 => 'LEFT 0', 'left' => 'LEFT', 'both' => 'LEFT'],
-                    [               'rght' => 'RGHT', 'both' => 'RGHT'],
-                    true
+                    ['rght' => 'RGHT', 'both' => 'RGHT'],
+                    true,
                 ],
                 'expect' => [0 => 'LEFT 0', 'left' => 'LEFT', 'both' => 'RGHT', 'rght' => 'RGHT'],
             ],
@@ -294,7 +295,7 @@ final class PregUtilsTraitTest extends TestCase
                 'args' => [
                     [0 => 'LEFT 0', 'left' => 'LEFT', 'both' => 'LEFT'],
                     [0 => 'RGHT 0', 'rght' => 'RGHT', 'both' => 'RGHT'],
-                    true
+                    true,
                 ],
                 'expect' => [0 => 'RGHT 0', 'left' => 'LEFT', 'both' => 'RGHT', 'rght' => 'RGHT'],
             ],
@@ -302,9 +303,9 @@ final class PregUtilsTraitTest extends TestCase
             // #8
             [
                 'args' => [
-                    [               'left' => 'LEFT', 'both' => 'LEFT'],
-                    [               'rght' => 'RGHT', 'both' => 'RGHT'],
-                    'FOO'
+                    ['left' => 'LEFT', 'both' => 'LEFT'],
+                    ['rght' => 'RGHT', 'both' => 'RGHT'],
+                    'FOO',
                 ],
                 'expect' => [0 => 'FOO', 'left' => 'LEFT', 'both' => 'RGHT', 'rght' => 'RGHT'],
             ],
@@ -313,8 +314,8 @@ final class PregUtilsTraitTest extends TestCase
             [
                 'args' => [
                     [0 => 'LEFT 0', 'left' => 'LEFT', 'both' => 'LEFT'],
-                    [               'rght' => 'RGHT', 'both' => 'RGHT'],
-                    'FOO'
+                    ['rght' => 'RGHT', 'both' => 'RGHT'],
+                    'FOO',
                 ],
                 'expect' => [0 => 'FOO', 'left' => 'LEFT', 'both' => 'RGHT', 'rght' => 'RGHT'],
             ],
@@ -322,9 +323,9 @@ final class PregUtilsTraitTest extends TestCase
             // #10
             [
                 'args' => [
-                    [               'left' => 'LEFT', 'both' => 'LEFT'],
+                    ['left' => 'LEFT', 'both' => 'LEFT'],
                     [0 => 'RGHT 0', 'rght' => 'RGHT', 'both' => 'RGHT'],
-                    'FOO'
+                    'FOO',
                 ],
                 'expect' => [0 => 'FOO', 'left' => 'LEFT', 'both' => 'RGHT', 'rght' => 'RGHT'],
             ],
@@ -334,7 +335,7 @@ final class PregUtilsTraitTest extends TestCase
                 'args' => [
                     [0 => 'LEFT 0', 'left' => 'LEFT', 'both' => 'LEFT'],
                     [0 => 'RGHT 0', 'rght' => 'RGHT', 'both' => 'RGHT'],
-                    'FOO'
+                    'FOO',
                 ],
                 'expect' => [0 => 'FOO', 'left' => 'LEFT', 'both' => 'RGHT', 'rght' => 'RGHT'],
             ],
@@ -342,27 +343,27 @@ final class PregUtilsTraitTest extends TestCase
             // #12
             [
                 'args' => [
-                    [                   'left' => ['LEFT', 0], 'both' => ['LEFT', 1]],
-                    [                   'rght' => ['RGHT', 2], 'both' => ['RGHT', 3]],
+                    ['left' => ['LEFT', 0], 'both' => ['LEFT', 1]],
+                    ['rght' => ['RGHT', 2], 'both' => ['RGHT', 3]],
                 ],
                 'expect' => [
                     'left' => ['LEFT', 0],
                     'both' => ['RGHT', 3],
-                    'rght' => ['RGHT', 2]
+                    'rght' => ['RGHT', 2],
                 ],
             ],
 
             // #13
             [
                 'args' => [
-                    [                  'left' => ['LEFT', 1], 'both' => ['LEFT', 2]],
+                    ['left' => ['LEFT', 1], 'both' => ['LEFT', 2]],
                     [0 => ['RGHT', 3], 'rght' => ['RGHT', 4], 'both' => ['RGHT', 5]],
                 ],
                 'expect' => [
                     'left' => ['LEFT', 1],
                     'both' => ['RGHT', 5],
                     0 => ['RGHT', 3],
-                    'rght' => ['RGHT', 4]
+                    'rght' => ['RGHT', 4],
                 ],
             ],
 
@@ -370,7 +371,7 @@ final class PregUtilsTraitTest extends TestCase
             [
                 'args' => [
                     [0 => ['LEFT', 0], 'left' => ['LEFT', 1], 'both' => ['LEFT', 2]],
-                    [                  'rght' => ['RGHT', 4], 'both' => ['RGHT', 5]],
+                    ['rght' => ['RGHT', 4], 'both' => ['RGHT', 5]],
                 ],
                 'expect' => [
                     0 => ['LEFT', 0],
@@ -391,21 +392,21 @@ final class PregUtilsTraitTest extends TestCase
                     'left' => ['LEFT', 1],
                     'both' => ['RGHT', 5],
                     1 => ['RGHT', 3],
-                    'rght' => ['RGHT', 4]
+                    'rght' => ['RGHT', 4],
                 ],
             ],
 
             // #16
             [
                 'args' => [
-                    [                  'left' => ['LEFT', 1], 'both' => ['LEFT', 2]],
-                    [                  'rght' => ['RGHT', 4], 'both' => ['RGHT', 5]],
-                    true
+                    ['left' => ['LEFT', 1], 'both' => ['LEFT', 2]],
+                    ['rght' => ['RGHT', 4], 'both' => ['RGHT', 5]],
+                    true,
                 ],
                 'expect' => [
                     'left' => ['LEFT', 1],
                     'both' => ['RGHT', 5],
-                    'rght' => ['RGHT', 4]
+                    'rght' => ['RGHT', 4],
                 ],
             ],
 
@@ -413,29 +414,29 @@ final class PregUtilsTraitTest extends TestCase
             [
                 'args' => [
                     [0 => ['LEFT', 0], 'left' => ['LEFT', 1], 'both' => ['LEFT', 2]],
-                    [                  'rght' => ['RGHT', 4], 'both' => ['RGHT', 5]],
-                    true
+                    ['rght' => ['RGHT', 4], 'both' => ['RGHT', 5]],
+                    true,
                 ],
                 'expect' => [
                     0 => ['LEFT', 0],
                     'left' => ['LEFT', 1],
                     'both' => ['RGHT', 5],
-                    'rght' => ['RGHT', 4]
+                    'rght' => ['RGHT', 4],
                 ],
             ],
 
             // #18
             [
                 'args' => [
-                    [                  'left' => ['LEFT', 1], 'both' => ['LEFT', 2]],
+                    ['left' => ['LEFT', 1], 'both' => ['LEFT', 2]],
                     [0 => ['RGHT', 3], 'rght' => ['RGHT', 4], 'both' => ['RGHT', 5]],
-                    true
+                    true,
                 ],
                 'expect' => [
                     0 => ['RGHT', 3],
                     'left' => ['LEFT', 1],
                     'both' => ['RGHT', 5],
-                    'rght' => ['RGHT', 4]
+                    'rght' => ['RGHT', 4],
                 ],
             ],
 
@@ -444,28 +445,28 @@ final class PregUtilsTraitTest extends TestCase
                 'args' => [
                     [0 => ['LEFT', 0], 'left' => ['LEFT', 1], 'both' => ['LEFT', 2]],
                     [0 => ['RGHT', 3], 'rght' => ['RGHT', 4], 'both' => ['RGHT', 5]],
-                    true
+                    true,
                 ],
                 'expect' => [
                     0 => ['RGHT', 3],
                     'left' => ['LEFT', 1],
                     'both' => ['RGHT', 5],
-                    'rght' => ['RGHT', 4]
+                    'rght' => ['RGHT', 4],
                 ],
             ],
 
             // #20
             [
                 'args' => [
-                    [                  'left' => ['LEFT', 1], 'both' => ['LEFT', 2]],
-                    [                  'rght' => ['RGHT', 4], 'both' => ['RGHT', 5]],
-                    ['FOO', 6]
+                    ['left' => ['LEFT', 1], 'both' => ['LEFT', 2]],
+                    ['rght' => ['RGHT', 4], 'both' => ['RGHT', 5]],
+                    ['FOO', 6],
                 ],
                 'expect' => [
                     0 => ['FOO', 6],
                     'left' => ['LEFT', 1],
                     'both' => ['RGHT', 5],
-                    'rght' => ['RGHT', 4]
+                    'rght' => ['RGHT', 4],
                 ],
             ],
 
@@ -473,29 +474,29 @@ final class PregUtilsTraitTest extends TestCase
             [
                 'args' => [
                     [0 => ['LEFT', 0], 'left' => ['LEFT', 1], 'both' => ['LEFT', 2]],
-                    [                  'rght' => ['RGHT', 4], 'both' => ['RGHT', 5]],
-                    ['FOO', 6]
+                    ['rght' => ['RGHT', 4], 'both' => ['RGHT', 5]],
+                    ['FOO', 6],
                 ],
                 'expect' => [
                     0 => ['FOO', 6],
                     'left' => ['LEFT', 1],
                     'both' => ['RGHT', 5],
-                    'rght' => ['RGHT', 4]
+                    'rght' => ['RGHT', 4],
                 ],
             ],
 
             // #22
             [
                 'args' => [
-                    [                  'left' => ['LEFT', 1], 'both' => ['LEFT', 2]],
+                    ['left' => ['LEFT', 1], 'both' => ['LEFT', 2]],
                     [0 => ['RGHT', 3], 'rght' => ['RGHT', 4], 'both' => ['RGHT', 5]],
-                    ['FOO', 6]
+                    ['FOO', 6],
                 ],
                 'expect' => [
                     0 => ['FOO', 6],
                     'left' => ['LEFT', 1],
                     'both' => ['RGHT', 5],
-                    'rght' => ['RGHT', 4]
+                    'rght' => ['RGHT', 4],
                 ],
             ],
 
@@ -504,13 +505,13 @@ final class PregUtilsTraitTest extends TestCase
                 'args' => [
                     [0 => ['LEFT', 0], 'left' => ['LEFT', 1], 'both' => ['LEFT', 2]],
                     [0 => ['RGHT', 3], 'rght' => ['RGHT', 4], 'both' => ['RGHT', 5]],
-                    ['FOO', 6]
+                    ['FOO', 6],
                 ],
                 'expect' => [
                     0 => ['FOO', 6],
                     'left' => ['LEFT', 1],
                     'both' => ['RGHT', 5],
-                    'rght' => ['RGHT', 4]
+                    'rght' => ['RGHT', 4],
                 ],
             ],
         ];
@@ -519,7 +520,7 @@ final class PregUtilsTraitTest extends TestCase
     /**
      * @dataProvider prov__mergePregCaptures
      */
-    public function test__mergePregCaptures(array $args, array $expect) : void
+    public function testMergePregCaptures(array $args, array $expect): void
     {
         $this->assertSame($expect, self::mergePregCaptures(...$args));
     }
@@ -529,52 +530,52 @@ final class PregUtilsTraitTest extends TestCase
         return [
             [ // #0
                 [[''], 'prefix '],
-                 ['prefix ']
+                ['prefix '],
             ],
 
             [ // #1
                 [['', []], 'prefix '],
-                 ['prefix ', []]
+                ['prefix ', []],
             ],
 
             [ // #2
-                [      ['whole string', ['whole string']], 'prefix '],
-                ['prefix whole string', ['whole string']]
+                [['whole string', ['whole string']], 'prefix '],
+                ['prefix whole string', ['whole string']],
             ],
 
             [ // #3
-                [       ['whole string', ['whole string', 'second' => 'string']], 'prefix '],
-                [ 'prefix whole string', ['whole string', 'second' => 'string']]
+                [['whole string', ['whole string', 'second' => 'string']], 'prefix '],
+                ['prefix whole string', ['whole string', 'second' => 'string']],
             ],
 
             [ // #4
-                [       ['whole string', ['whole string', 'second' => ['string',  6]]], 'prefix '],
-                [ 'prefix whole string', ['whole string', 'second' => ['string', 13]]]
+                [['whole string', ['whole string', 'second' => ['string',  6]]], 'prefix '],
+                ['prefix whole string', ['whole string', 'second' => ['string', 13]]],
             ],
 
             [ // #5
-                [      ['whole string', [['whole string', 2], 'second' => ['string',  8]]], 'prefix '],
-                ['prefix whole string', [['whole string', 9], 'second' => ['string', 15]]]
+                [['whole string', [['whole string', 2], 'second' => ['string',  8]]], 'prefix '],
+                ['prefix whole string', [['whole string', 9], 'second' => ['string', 15]]],
             ],
 
             [ // #6
-                [      ['whole string', [['whole string', 2], 'second' => ['string',  8], ['string',  8]]], 'prefix '],
-                ['prefix whole string', [['whole string', 9], 'second' => ['string', 15], ['string', 15]]]
+                [['whole string', [['whole string', 2], 'second' => ['string',  8], ['string',  8]]], 'prefix '],
+                ['prefix whole string', [['whole string', 9], 'second' => ['string', 15], ['string', 15]]],
             ],
 
             [ // #7
-                [      ['whole string', [[       'whole string', 2], 'second' => ['string',  8]]], 'prefix ', true],
-                ['prefix whole string', [['prefix whole string', 2], 'second' => ['string', 15]]]
+                [['whole string', [['whole string', 2], 'second' => ['string',  8]]], 'prefix ', true],
+                ['prefix whole string', [['prefix whole string', 2], 'second' => ['string', 15]]],
             ],
 
             [ // #8
-                [      ['whole string', [[       'whole string', 2], 'second' => ['string',  8]]], 'prefix ', 'Idefix '],
-                ['prefix whole string', [['Idefix whole string', 2], 'second' => ['string', 15]]]
+                [['whole string', [['whole string', 2], 'second' => ['string',  8]]], 'prefix ', 'Idefix '],
+                ['prefix whole string', [['Idefix whole string', 2], 'second' => ['string', 15]]],
             ],
 
             [ // #9 (top-level keys are preserved)
-                [      ['string' => 'whole string', 'matches' => ['whole string']], 'prefix '],
-                ['string' => 'prefix whole string', 'matches' => ['whole string']]
+                [['string' => 'whole string', 'matches' => ['whole string']], 'prefix '],
+                ['string' => 'prefix whole string', 'matches' => ['whole string']],
             ],
         ];
     }
@@ -582,11 +583,10 @@ final class PregUtilsTraitTest extends TestCase
     /**
      * @dataProvider prov__prefixPregTuple
      */
-    public function test__prefixPregTuple(array $args, array $expect) : void
+    public function testPrefixPregTuple(array $args, array $expect): void
     {
         $this->assertSame($expect, self::prefixPregTuple(...$args));
     }
-
 
     public static function prov__suffixPregTuple()
     {
@@ -594,55 +594,55 @@ final class PregUtilsTraitTest extends TestCase
             // #0
             [
                 [[''], ' suffix'],
-                 [' suffix']
+                [' suffix'],
             ],
 
             // #1
             [
                 [['', []], ' suffix'],
-                 [' suffix', []]
+                [' suffix', []],
             ],
 
             // #2
             [
-                [['whole string',        ['whole string']       ], ' suffix'],
-                [ 'whole string suffix', ['whole string']]
+                [['whole string',        ['whole string']], ' suffix'],
+                ['whole string suffix', ['whole string']],
             ],
 
             // #3
             [
                 [['whole string',        ['whole string', 'second' => 'string']], ' suffix'],
-                [ 'whole string suffix', ['whole string', 'second' => 'string']]
+                ['whole string suffix', ['whole string', 'second' => 'string']],
             ],
 
             // #4
             [
                 [['whole string',        ['whole string', 'second' => ['string',  6]]], ' suffix'],
-                [ 'whole string suffix', ['whole string', 'second' => ['string',  6]]]
+                ['whole string suffix', ['whole string', 'second' => ['string',  6]]],
             ],
 
             // #5
             [
                 [['whole string',        [['whole string', 2], 'second' => ['string',  8]]], ' suffix'],
-                [ 'whole string suffix', [['whole string', 2], 'second' => ['string',  8]]]
+                ['whole string suffix', [['whole string', 2], 'second' => ['string',  8]]],
             ],
 
             // #6
             [
                 [['whole string',        [['whole string',        2], 'second' => ['string',  8]]], ' suffix', true],
-                [ 'whole string suffix', [['whole string suffix', 2], 'second' => ['string',  8]]]
+                ['whole string suffix', [['whole string suffix', 2], 'second' => ['string',  8]]],
             ],
 
             // #7
             [
                 [['whole string',        [['whole string',        2], 'second' => ['string',  8]]], ' suffix', ' Idefix'],
-                [ 'whole string suffix', [['whole string Idefix', 2], 'second' => ['string',  8]]]
+                ['whole string suffix', [['whole string Idefix', 2], 'second' => ['string',  8]]],
             ],
 
             // #8 (top-level keys are preserved)
             [
-                [['string' => 'whole string',        'matches' => ['whole string']       ], ' suffix'],
-                [ 'string' => 'whole string suffix', 'matches' => ['whole string']]
+                [['string' => 'whole string',        'matches' => ['whole string']], ' suffix'],
+                ['string' => 'whole string suffix', 'matches' => ['whole string']],
             ],
         ];
     }
@@ -650,7 +650,7 @@ final class PregUtilsTraitTest extends TestCase
     /**
      * @dataProvider prov__suffixPregTuple
      */
-    public function test__suffixPregTuple(array $args, array $expect) : void
+    public function testSuffixPregTuple(array $args, array $expect): void
     {
         $this->assertSame($expect, self::suffixPregTuple(...$args));
     }
@@ -660,62 +660,62 @@ final class PregUtilsTraitTest extends TestCase
         return [
             [ // #0
                 [[''], ['prefix' => 'prefix ']],
-                 ['prefix ']
+                ['prefix '],
             ],
 
             [ // #1
                 [['', []], ['prefix' => 'prefix ']],
-                 ['prefix ', []]
+                ['prefix ', []],
             ],
 
             [ // #2
-                [      ['whole string', ['whole string']], ['prefix' => 'prefix ']],
-                ['prefix whole string', ['whole string']]
+                [['whole string', ['whole string']], ['prefix' => 'prefix ']],
+                ['prefix whole string', ['whole string']],
             ],
 
             [ // #3
-                [       ['whole string', ['whole string', 'second' => 'string']], ['prefix' => 'prefix ']],
-                [ 'prefix whole string', ['whole string', 'second' => 'string']]
+                [['whole string', ['whole string', 'second' => 'string']], ['prefix' => 'prefix ']],
+                ['prefix whole string', ['whole string', 'second' => 'string']],
             ],
 
             [ // #4
-                [       ['whole string', ['whole string', 'second' => ['string',  6]]], ['prefix' => 'prefix ']],
-                [ 'prefix whole string', ['whole string', 'second' => ['string', 13]]]
+                [['whole string', ['whole string', 'second' => ['string',  6]]], ['prefix' => 'prefix ']],
+                ['prefix whole string', ['whole string', 'second' => ['string', 13]]],
             ],
 
             [ // #5
-                [      ['whole string', [['whole string', 2], 'second' => ['string',  8]]], ['prefix' => 'prefix ']],
-                ['prefix whole string', [['whole string', 9], 'second' => ['string', 15]]]
+                [['whole string', [['whole string', 2], 'second' => ['string',  8]]], ['prefix' => 'prefix ']],
+                ['prefix whole string', [['whole string', 9], 'second' => ['string', 15]]],
             ],
 
             [ // #6
-                [      ['whole string',        [['whole string', 2], 'second' => ['string',  8]]], ['prefix' => 'prefix ', 'suffix' => ' suffix']],
-                ['prefix whole string suffix', [['whole string', 9], 'second' => ['string', 15]]]
+                [['whole string',        [['whole string', 2], 'second' => ['string',  8]]], ['prefix' => 'prefix ', 'suffix' => ' suffix']],
+                ['prefix whole string suffix', [['whole string', 9], 'second' => ['string', 15]]],
             ],
 
             [ // #7
-                [      ['whole string',        [['whole string', 2], 'second' => ['string',  8]]], ['prefix' => 'prefix ', 'prefixMain' => true, 'suffix' => ' suffix', 'suffixMain' => true]],
-                ['prefix whole string suffix', [['prefix whole string suffix', 2], 'second' => ['string', 15]]]
+                [['whole string',        [['whole string', 2], 'second' => ['string',  8]]], ['prefix' => 'prefix ', 'prefixMain' => true, 'suffix' => ' suffix', 'suffixMain' => true]],
+                ['prefix whole string suffix', [['prefix whole string suffix', 2], 'second' => ['string', 15]]],
             ],
 
             [ // #8
-                [       ['whole string', ['whole string', 'second' => ['string',  6]]], ['prefix' => 'prefix ', 'merge' => ['whole right', 'first' => ['whole', 7]], 'mergeMain' => true]],
-                [ 'prefix whole string', ['whole right',  'second' => ['string', 13], 'first' => ['whole', 7]]]
+                [['whole string', ['whole string', 'second' => ['string',  6]]], ['prefix' => 'prefix ', 'merge' => ['whole right', 'first' => ['whole', 7]], 'mergeMain' => true]],
+                ['prefix whole string', ['whole right',  'second' => ['string', 13], 'first' => ['whole', 7]]],
             ],
 
             [ // #9
                 [['whole string', ['whole string']], ['merge' => null, 'mergeMain' => true]],
-                [ 'whole string', ['whole string']]
+                ['whole string', ['whole string']],
             ],
 
             [ // #10
                 [['whole string', ['whole string']], ['merge' => null, 'mergeMain' => 'main']],
-                [ 'whole string', ['main']]
+                ['whole string', ['main']],
             ],
 
             [ // #11 (top-level keys are preserved)
-                [       ['string' => 'whole string', 'matches' => ['whole string', 'second' => ['string',  6]]], ['prefix' => 'prefix ', 'merge' => ['whole right', 'first' => ['whole', 7]], 'mergeMain' => true]],
-                [ 'string' => 'prefix whole string', 'matches' => ['whole right',  'second' => ['string', 13], 'first' => ['whole', 7]]]
+                [['string' => 'whole string', 'matches' => ['whole string', 'second' => ['string',  6]]], ['prefix' => 'prefix ', 'merge' => ['whole right', 'first' => ['whole', 7]], 'mergeMain' => true]],
+                ['string' => 'prefix whole string', 'matches' => ['whole right',  'second' => ['string', 13], 'first' => ['whole', 7]]],
             ],
         ];
     }
@@ -723,7 +723,7 @@ final class PregUtilsTraitTest extends TestCase
     /**
      * @dataProvider prov__transformPregTuple
      */
-    public function test__transformPregTuple(array $args, array $expect) : void
+    public function testTransformPregTuple(array $args, array $expect): void
     {
         $this->assertSame($expect, self::transformPregTuple(...$args));
     }
@@ -732,41 +732,41 @@ final class PregUtilsTraitTest extends TestCase
     {
         return [
             [ // #0
-                'args'      => [['first'], ['second']],
-                'expect'    => [ 'firstsecond']
+                'args' => [['first'], ['second']],
+                'expect' => ['firstsecond'],
             ],
 
             [ // #0
-                'args'      => [['first'], ['second'], ['glue' => ' ']],
-                'expect'    => [ 'first second']
+                'args' => [['first'], ['second'], ['glue' => ' ']],
+                'expect' => ['first second'],
             ],
 
             [ // #1
-                'args'      => [
+                'args' => [
                     ['first',   ['f' => ['first',  0]]],
                     ['second',  ['s' => ['second', 0]]],
-                    ['glue' => ' ']
+                    ['glue' => ' '],
                 ],
-                'expect'    => [
-                //   0000000000111111111
-                //   0123456789012345678
+                'expect' => [
+                    //   0000000000111111111
+                    //   0123456789012345678
                     'first second',
                     [
                         'f' => ['first',   0],
                         's' => ['second',  6],
-                    ]
-                ]
+                    ],
+                ],
             ],
 
             [ // #2
-                'args'      => [
+                'args' => [
                     ['first',   [['first',  0], 'f' => ['first',  0], ['first',  0]]],
                     ['second',  [['second', 0], 's' => ['second', 0], ['second', 0]]],
-                    ['glue' => ' ']
+                    ['glue' => ' '],
                 ],
-                'expect'    => [
-                //   0000000000111111111
-                //   0123456789012345678
+                'expect' => [
+                    //   0000000000111111111
+                    //   0123456789012345678
                     'first second',
                     [
                         ['first', 0],
@@ -775,8 +775,8 @@ final class PregUtilsTraitTest extends TestCase
                         ['second', 6],
                         's' => ['second',  6],
                         ['second', 6],
-                    ]
-                ]
+                    ],
+                ],
             ],
         ];
     }
@@ -784,7 +784,7 @@ final class PregUtilsTraitTest extends TestCase
     /**
      * @dataProvider prov__joinTwoPregTuples
      */
-    public function test__joinTwoPregTuples(array $args, array $expect) : void
+    public function testJoinTwoPregTuples(array $args, array $expect): void
     {
         $this->assertSame($expect, static::joinTwoPregTuples(...$args));
     }
@@ -796,54 +796,54 @@ final class PregUtilsTraitTest extends TestCase
                 [
                     [['first']],
                 ],
-                ['first']
+                ['first'],
             ],
             [ // #1
                 [
                     [['first'], ['second']],
-                    ['glue' => ' ']
+                    ['glue' => ' '],
                 ],
-                ['first second']
+                ['first second'],
             ],
             [ // #2
                 [
                     [['first'], ['second'], ['third']],
-                    ['glue' => ' ']
+                    ['glue' => ' '],
                 ],
-                ['first second third']
+                ['first second third'],
             ],
             [ // #3
                 [
                     [
                         ['first',   ['f' => ['first',  0]]],
                         ['second',  ['s' => ['second', 0]]],
-                        ['third',   ['t' => ['third',  0]]]
+                        ['third',   ['t' => ['third',  0]]],
                     ],
-                    ['glue' => ' ']
+                    ['glue' => ' '],
                 ],
                 [
-                //   0000000000111111111
-                //   0123456789012345678
+                    //   0000000000111111111
+                    //   0123456789012345678
                     'first second third',
                     [
                         'f' => ['first',   0],
                         's' => ['second',  6],
                         't' => ['third',  13],
-                    ]
-                ]
+                    ],
+                ],
             ],
             [ // #4
                 [
                     [
                         ['first',   [['first',  0], 'f' => ['first',  0], ['first',  0]]],
                         ['second',  [['second', 0], 's' => ['second', 0], ['second', 0]]],
-                        ['third',   [['third',  0], 't' => ['third',  0], ['third',  0]]]
+                        ['third',   [['third',  0], 't' => ['third',  0], ['third',  0]]],
                     ],
-                    ['glue' => ' ']
+                    ['glue' => ' '],
                 ],
                 [
-                //   0000000000111111111
-                //   0123456789012345678
+                    //   0000000000111111111
+                    //   0123456789012345678
                     'first second third',
                     [
                         ['first', 0],
@@ -855,29 +855,29 @@ final class PregUtilsTraitTest extends TestCase
                         ['third', 13],
                         't' => ['third',  13],
                         ['third', 13],
-                    ]
-                ]
+                    ],
+                ],
             ],
             [ // #5
                 [
                     [
                         ['first',   ['f' => ['first',  0], ['first',  0]]],
                         ['second',  ['s' => ['second', 0], ['second', 0]]],
-                        ['third',   ['t' => ['third',  0], ['third',  0]]]
+                        ['third',   ['t' => ['third',  0], ['third',  0]]],
                     ],
-                    ['glue' => ' ', 'merge' => ['x' => ['st', 3], ['st', 3]]]
+                    ['glue' => ' ', 'merge' => ['x' => ['st', 3], ['st', 3]]],
                 ],
                 [
-                //   0000000000111111111
-                //   0123456789012345678
+                    //   0000000000111111111
+                    //   0123456789012345678
                     'first second third',
                     [
                         'f' => ['first',   0], ['first',   0],
                         's' => ['second',  6], ['second',  6],
                         't' => ['third',  13], ['third',  13],
-                        'x' => ['st',      3], ['st',      3]
-                    ]
-                ]
+                        'x' => ['st',      3], ['st',      3],
+                    ],
+                ],
             ],
         ];
     }
@@ -885,12 +885,12 @@ final class PregUtilsTraitTest extends TestCase
     /**
      * @dataProvider prov__joinPregTuples
      */
-    public function test__joinPregTuples(array $args, array $expect) : void
+    public function testJoinPregTuples(array $args, array $expect): void
     {
         $this->assertSame($expect, self::joinPregTuples(...$args));
     }
 
-    public function test__joinPregTuples__exception() : void
+    public function testJoinPregTuplesException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('$tuples array passed to '.self::class.'::joinPregTuples() can not be empty');

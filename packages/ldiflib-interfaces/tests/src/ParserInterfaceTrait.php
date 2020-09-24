@@ -19,7 +19,7 @@ use Korowai\Lib\Ldif\ParserStateInterface;
  */
 trait ParserInterfaceTrait
 {
-    public function parse(ParserStateInterface $state) : bool
+    public function parse(ParserStateInterface $state): bool
     {
         return false;
     }

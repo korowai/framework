@@ -14,23 +14,24 @@ namespace Korowai\Tests\Lib\Ldif\Nodes;
 
 use Korowai\Lib\Ldif\Nodes\LdifChangeRecordInterface;
 use Korowai\Lib\Ldif\RecordInterface;
-
 use Korowai\Testing\LdiflibInterfaces\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Tests\Lib\Ldif\Nodes\LdifChangeRecordInterfaceTrait
+ *
+ * @internal
  */
 final class LdifChangeRecordInterfaceTest extends TestCase
 {
     public static function createDummyInstance()
     {
-        return new class implements LdifChangeRecordInterface {
+        return new class() implements LdifChangeRecordInterface {
             use LdifChangeRecordInterfaceTrait;
         };
     }
 
-    public static function prov__extendsInterface() : array
+    public static function prov__extendsInterface(): array
     {
         return [
             [RecordInterface::class],
@@ -40,25 +41,25 @@ final class LdifChangeRecordInterfaceTest extends TestCase
     /**
      * @dataProvider prov__extendsInterface
      */
-    public function test__extendsInterface(string $extends) : void
+    public function testExtendsInterface(string $extends): void
     {
         $this->assertImplementsInterface($extends, LdifChangeRecordInterface::class);
     }
 
-    public function test__dummyImplementation() : void
+    public function testDummyImplementation(): void
     {
         $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(LdifChangeRecordInterface::class, $dummy);
     }
 
-    public function test__getChangeType() : void
+    public function testGetChangeType(): void
     {
         $dummy = $this->createDummyInstance();
         $dummy->changeType = '';
         $this->assertSame($dummy->changeType, $dummy->getChangeType());
     }
 
-    public function test__getChangeType__withNull() : void
+    public function testGetChangeTypeWithNull(): void
     {
         $dummy = $this->createDummyInstance();
         $dummy->changeType = null;
@@ -68,14 +69,14 @@ final class LdifChangeRecordInterfaceTest extends TestCase
         $dummy->getChangeType();
     }
 
-    public function test__getControls() : void
+    public function testGetControls(): void
     {
         $dummy = $this->createDummyInstance();
         $dummy->controls = [];
         $this->assertSame($dummy->controls, $dummy->getControls());
     }
 
-    public function test__getControls__withNull() : void
+    public function testGetControlsWithNull(): void
     {
         $dummy = $this->createDummyInstance();
         $dummy->controls = null;

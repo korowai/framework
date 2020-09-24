@@ -12,9 +12,9 @@ declare(strict_types=1);
 
 namespace Korowai\Testing\Ldaplib\Container;
 
+use Korowai\Lib\Ldap\Core\LdapLinkFactoryInterface;
 use Korowai\Lib\Ldap\LdapFactory;
 use Korowai\Lib\Ldap\LdapFactoryInterface;
-use Korowai\Lib\Ldap\Core\LdapLinkFactoryInterface;
 use Psr\Container\ContainerInterface;
 
 /**
@@ -23,9 +23,10 @@ use Psr\Container\ContainerInterface;
 trait ExamineConfiguredContainerTrait
 {
     abstract public static function assertInstanceOf(string $class, $value, string $message = '');
+
     abstract public static function assertSame($expected, $value, string $message = '');
 
-    public function examineConfiguredContainer(ContainerInterface $container, $config) : void
+    public function examineConfiguredContainer(ContainerInterface $container, $config): void
     {
         $ldapFactory = $container->get(LdapFactoryInterface::class);
         $this->assertInstanceOf(LdapFactory::class, $ldapFactory);
@@ -33,7 +34,7 @@ trait ExamineConfiguredContainerTrait
         $this->assertSame($ldapFactory->getLdapLinkFactory(), $container->get(LdapLinkFactoryInterface::class));
     }
 
-    public function getServicesVisibility() : array
+    public function getServicesVisibility(): array
     {
         return [
             LdapFactoryInterface::class => true,

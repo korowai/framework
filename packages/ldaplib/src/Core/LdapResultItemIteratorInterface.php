@@ -20,31 +20,27 @@ interface LdapResultItemIteratorInterface extends \Iterator
     /**
      * Returns current offset.
      *
-     * @return int|null
-     *
      * @psalm-suppress ImplementedReturnTypeMismatch
      * @psalm-mutation-free
      */
-    public function key() : ?int;
+    public function key(): ?int;
 
     /**
      * Moves iterator to the next position.
      */
-    public function next() : void;
+    public function next(): void;
 
     /**
      * Moves iterator to the first position.
      */
-    public function rewind() : void;
+    public function rewind(): void;
 
     /**
      * Returns true if the iterator is valid.
      *
-     * @return bool
-     *
      * @psalm-mutation-free
      */
-    public function valid() : bool;
+    public function valid(): bool;
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

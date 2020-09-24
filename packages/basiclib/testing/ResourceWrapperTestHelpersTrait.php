@@ -29,26 +29,27 @@ trait ResourceWrapperTestHelpersTrait
     /**
      * Mocks is_resource() and get_resource_type() for argument $arg.
      *
-     * @param  mixed $arg
-     *      Expected argument value to be passed to mocked functions.
-     * @param  mixed $return
-     *      Value to be returned by mocked function; is_resource() will return
-     *      ``(bool)$return`` while get_resource_type() will return
-     *      ``(string)$return``.
-     * @param  string $namespace
+     * @param mixed $arg
+     *                      Expected argument value to be passed to mocked functions
+     * @param mixed $return
+     *                      Value to be returned by mocked function; is_resource() will return
+     *                      ``(bool)$return`` while get_resource_type() will return
+     *                      ``(string)$return``
      */
-    private function mockResourceFunctions($arg, $return, string $namespace = '') : void
+    private function mockResourceFunctions($arg, $return, string $namespace = ''): void
     {
-        if ($return !== null) {
+        if (null !== $return) {
             $this->getResourceFunctionMock('is_resource')
-                 ->expects($this->any())
-                 ->with($this->identicalTo($arg))
-                 ->willReturn((bool)$return);
+                ->expects($this->any())
+                ->with($this->identicalTo($arg))
+                ->willReturn((bool) $return)
+            ;
             if ($return) {
                 $this->getResourceFunctionMock('get_resource_type')
-                     ->expects($this->any())
-                     ->with($this->identicalTo($arg))
-                     ->willReturn((string)$return);
+                    ->expects($this->any())
+                    ->with($this->identicalTo($arg))
+                    ->willReturn((string) $return)
+                ;
             }
         }
     }
@@ -57,18 +58,18 @@ trait ResourceWrapperTestHelpersTrait
     // supportsResourceType()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    private static function feedSupportsResourceType(string $supportedType) : array
+    private static function feedSupportsResourceType(string $supportedType): array
     {
         return [
             // #0
             [
-                'args'   => [$supportedType],
+                'args' => [$supportedType],
                 'expect' => true,
             ],
 
             // #1
             [
-                'args'   => ['Un$uPP0rt3D'],
+                'args' => ['Un$uPP0rt3D'],
                 'expect' => false,
             ],
         ];
@@ -78,7 +79,7 @@ trait ResourceWrapperTestHelpersTrait
         ResourceWrapperInterface $wrapper,
         array $args,
         $expect
-    ) : void {
+    ): void {
         $this->assertSame($expect, $wrapper->supportsResourceType(...$args));
     }
 
@@ -86,47 +87,47 @@ trait ResourceWrapperTestHelpersTrait
     // isValid()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    private static function feedIsValid(string $supportedType) : array
+    private static function feedIsValid(string $supportedType): array
     {
         return [
             // #0
             [
-                'arg'    => null,
+                'arg' => null,
                 'return' => null,
                 'expect' => false,
             ],
 
             // #1
             [
-                'arg'    => 'foo',
+                'arg' => 'foo',
                 'return' => null,
                 'expect' => false,
             ],
 
             // #2
             [
-                'arg'    => 'mocked false',
+                'arg' => 'mocked false',
                 'return' => false,
                 'expect' => false,
             ],
 
             // #3
             [
-                'arg'    => 'mocked unknown',
+                'arg' => 'mocked unknown',
                 'return' => 'unknown',
                 'expect' => false,
             ],
 
             // #4
             [
-                'arg'    => $supportedType,
+                'arg' => $supportedType,
                 'return' => $supportedType,
                 'expect' => true,
             ],
         ];
     }
 
-    private function examineIsValid(ResourceWrapperInterface $wrapper, $arg, $return, $expect) : void
+    private function examineIsValid(ResourceWrapperInterface $wrapper, $arg, $return, $expect): void
     {
         $this->mockResourceFunctions($arg, $return);
         $this->assertSame($expect, $wrapper->isValid());

@@ -27,9 +27,7 @@ abstract class AbstractResultItemIterator implements ResultItemIteratorInterface
     protected $ldapIterator;
 
     /**
-     * Constructs ResultEntryIterator
-     *
-     * @param LdapResultItemIteratorInterface $ldapIterator
+     * Constructs ResultEntryIterator.
      */
     public function __construct(LdapResultItemIteratorInterface $ldapIterator)
     {
@@ -37,14 +35,12 @@ abstract class AbstractResultItemIterator implements ResultItemIteratorInterface
     }
 
     /**
-     * Returns the encapsulated LdapResultItemIteratorInterface
-     *
-     * @return LdapResultItemIteratorInterface
+     * Returns the encapsulated LdapResultItemIteratorInterface.
      *
      * @psalm-mutation-free
      * @psalm-pure
      */
-    public function getLdapResultItemIterator() : LdapResultItemIteratorInterface
+    public function getLdapResultItemIterator(): LdapResultItemIteratorInterface
     {
         return $this->ldapIterator;
     }
@@ -54,7 +50,7 @@ abstract class AbstractResultItemIterator implements ResultItemIteratorInterface
      *
      * @psalm-mutation-free
      */
-    final public function key() : ?int
+    final public function key(): ?int
     {
         return $this->ldapIterator->key();
     }
@@ -64,7 +60,7 @@ abstract class AbstractResultItemIterator implements ResultItemIteratorInterface
      *
      * @psalm-mutation-free
      */
-    final public function valid() : bool
+    final public function valid(): bool
     {
         return $this->ldapIterator->valid();
     }
@@ -72,7 +68,7 @@ abstract class AbstractResultItemIterator implements ResultItemIteratorInterface
     /**
      * {@inheritdoc}
      */
-    final public function next() : void
+    final public function next(): void
     {
         $this->ldapIterator->next();
     }
@@ -80,7 +76,7 @@ abstract class AbstractResultItemIterator implements ResultItemIteratorInterface
     /**
      * {@inheritdoc}
      */
-    final public function rewind() : void
+    final public function rewind(): void
     {
         $this->ldapIterator->rewind();
     }

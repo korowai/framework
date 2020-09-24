@@ -12,8 +12,8 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldif\Nodes;
 
-use Korowai\Lib\Ldif\SnippetInterface;
 use Korowai\Lib\Ldif\RecordVisitorInterface;
+use Korowai\Lib\Ldif\SnippetInterface;
 
 /**
  * Represents [RFC2849](https://tools.ietf.org/html/rfc2849)
@@ -26,10 +26,10 @@ class LdifDeleteRecord extends AbstractChangeRecord implements LdifDeleteRecordI
     /**
      * Initializes the object.
      *
-     * @param  string $dn
-     *      Distinguished name of the entry being altered by the record.
-     * @param  array $options
-     *      An array of key => value pairs. Supported options are:
+     * @param string $dn
+     *                        Distinguished name of the entry being altered by the record
+     * @param array  $options
+     *                        An array of key => value pairs. Supported options are:
      *
      * - ``"controls" => ControlInterface[]`` (optional): an optional
      *   array of controls for the operation.
@@ -47,9 +47,9 @@ class LdifDeleteRecord extends AbstractChangeRecord implements LdifDeleteRecordI
     /**
      * {@inheritdoc}
      */
-    public function getChangeType() : string
+    public function getChangeType(): string
     {
-        return "delete";
+        return 'delete';
     }
 
     /**

@@ -21,10 +21,6 @@ class CallerErrorHandler extends ErrorHandler
 
     /**
      * Initializes the object.
-     *
-     * @param  callable $errorHandler
-     * @param  int $distance
-     * @param  int $errorTypes
      */
     public function __construct(callable $errorHandler, int $distance = 1, int $errorTypes = E_ALL | E_STRICT)
     {

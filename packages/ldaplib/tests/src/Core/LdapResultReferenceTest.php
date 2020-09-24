@@ -12,25 +12,24 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldap\Core;
 
-use Korowai\Testing\Ldaplib\TestCase;
-use Korowai\Testing\Ldaplib\CreateLdapLinkMockTrait;
-use Korowai\Testing\Ldaplib\CreateLdapResultMockTrait;
-use Korowai\Testing\Ldaplib\ExamineCallWithMockedLdapFunctionTrait;
-use Korowai\Testing\Ldaplib\MakeArgsForLdapFunctionMockTrait;
-use Korowai\Testing\Ldaplib\GetLdapFunctionMockTrait;
-use Korowai\Testing\Basiclib\ResourceWrapperTestHelpersTrait;
-
+use Korowai\Lib\Ldap\Core\LdapResultItemTrait;
 use Korowai\Lib\Ldap\Core\LdapResultReference;
 use Korowai\Lib\Ldap\Core\LdapResultReferenceInterface;
 use Korowai\Lib\Ldap\Core\LdapResultReferenceWrapperInterface;
 use Korowai\Lib\Ldap\Core\LdapResultWrapperInterface;
-use Korowai\Lib\Ldap\Core\LdapResultInterface;
-use Korowai\Lib\Ldap\Core\LdapLinkInterface;
-use Korowai\Lib\Ldap\Core\LdapResultItemTrait;
+use Korowai\Testing\Basiclib\ResourceWrapperTestHelpersTrait;
+use Korowai\Testing\Ldaplib\CreateLdapLinkMockTrait;
+use Korowai\Testing\Ldaplib\CreateLdapResultMockTrait;
+use Korowai\Testing\Ldaplib\ExamineCallWithMockedLdapFunctionTrait;
+use Korowai\Testing\Ldaplib\GetLdapFunctionMockTrait;
+use Korowai\Testing\Ldaplib\MakeArgsForLdapFunctionMockTrait;
+use Korowai\Testing\Ldaplib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Ldap\Core\LdapResultReference
+ *
+ * @internal
  */
 final class LdapResultReferenceTest extends TestCase
 {
@@ -42,20 +41,220 @@ final class LdapResultReferenceTest extends TestCase
     use ExamineCallWithMockedLdapFunctionTrait;
     use ResourceWrapperTestHelpersTrait;
 
-    private function createLdapResultReferenceAndMocks(int $mocksLevel = 2, $resource = null) : array
+    //
+    //
+    // TESTS
+    //
+    //
+
+    public function testImplementsLdapResultReferenceInterface(): void
     {
-        $link = $mocksLevel >= 2 ?$this->createLdapLinkMock() : null;
+        $this->assertImplementsInterface(LdapResultReferenceInterface::class, LdapResultReference::class);
+    }
+
+    public function testUsesLdapResultItemTrait(): void
+    {
+        $this->assertUsesTrait(LdapResultItemTrait::class, LdapResultReference::class);
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // getResource()
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public function testGetResource(): void
+    {
+        [$reference, $result] = $this->createLdapResultReferenceAndMocks(1, 'ldap reference');
+        $this->assertSame('ldap reference', $reference->getResource());
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // getLdapResult()
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public function testGetLdapResult(): void
+    {
+        [$reference, $result] = $this->createLdapResultReferenceAndMocks(1);
+        $this->assertSame($result, $reference->getLdapResult());
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // getLdapLink()
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public function testGetLdapLink(): void
+    {
+        [$reference, $result, $link] = $this->createLdapResultReferenceAndMocks();
+        $this->assertSame($link, $reference->getLdapLink());
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // supportsResourceType()
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public static function prov__supportsResourceType(): array
+    {
+        return static::feedSupportsResourceType('ldap result entry');
+    }
+
+    /**
+     * @runInSeparateProcess
+     * @dataProvider prov__supportsResourceType
+     *
+     * @param mixed $expect
+     */
+    public function testSupportsResourceType(array $args, $expect): void
+    {
+        [$reference, $result] = $this->createLdapResultReferenceAndMocks(1);
+        $this->examineSupportsResourceType($reference, $args, $expect);
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // isValid()
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public static function prov__isValid(): array
+    {
+        return static::feedIsValid('ldap result entry');
+    }
+
+    /**
+     * @runInSeparateProcess
+     * @dataProvider prov__isValid
+     *
+     * @param mixed $arg
+     * @param mixed $return
+     * @param mixed $expect
+     */
+    public function testIsValid($arg, $return, $expect): void
+    {
+        [$reference, $result] = $this->createLdapResultReferenceAndMocks(1, $arg);
+        $this->examineIsValid($reference, $arg, $return, $expect);
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // next_reference()
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public static function prov__next_reference__withMockedBackend(): array
+    {
+        return [
+            // #0
+            [
+                'args' => [],
+                'return' => 'ldap entry next',
+                'expect' => static::logicalAnd(
+                    static::isInstanceOf(LdapResultReference::class),
+                    static::objectHasPropertiesIdenticalTo(['getResource()' => 'ldap entry next'])
+                ),
+            ],
+
+            // #1
+            [
+                'args' => [],
+                'return' => false,
+                'expect' => false,
+            ],
+
+            // #2
+            [
+                'args' => [],
+                'return' => null,
+                'expect' => false,
+            ],
+        ];
+    }
+
+    /**
+     * @runInSeparateProcess
+     * @dataProvider prov__next_reference__withMockedBackend
+     *
+     * @param mixed $return
+     * @param mixed $expect
+     */
+    public function testNextReferenceWithMockedBackend(array $args, $return, $expect): void
+    {
+        $this->examineLdapMethod('next_reference', $args, $return, $expect);
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // parse_reference()
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public function prov__parse_reference__withMockedBackend(): array
+    {
+        return [
+            // #0
+            [
+                'args' => [&$rv1],
+                'return' => true,
+                'expect' => true,
+                'values' => [['ldap://example.org/dc=subtree,dc=example,dc=org??sub']],
+            ],
+
+            // #1
+            [
+                'args' => [&$rv2],
+                'return' => false,
+                'expect' => false,
+                'values' => [null],
+            ],
+
+            // #2
+            [
+                'args' => [&$rv3],
+                'return' => false,
+                'expect' => false,
+                'values' => [null],
+            ],
+        ];
+    }
+
+    /**
+     * @runInSeparateProcess
+     * @dataProvider prov__parse_reference__withMockedBackend
+     *
+     * @param mixed $return
+     * @param mixed $expect
+     */
+    public function testParseReferenceWithMockedBackend(array $args, $return, $expect, array $values): void
+    {
+        $this->examineLdapMethod('parse_reference', $args, $return, $expect);
+        if (count($args) > 1) {
+            $this->assertSame($values[0] ?? null, $args[1]);
+        }
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // next_item()
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * @runInSeparateProcess
+     * @dataProvider prov__next_reference__withMockedBackend
+     *
+     * @param mixed $return
+     * @param mixed $expect
+     */
+    public function testNextItemWithMockedBackend(array $args, $return, $expect): void
+    {
+        $this->examineLdapMethod('next_item', $args, $return, $expect, 'ldap_next_reference');
+    }
+
+    private function createLdapResultReferenceAndMocks(int $mocksLevel = 2, $resource = null): array
+    {
+        $link = $mocksLevel >= 2 ? $this->createLdapLinkMock() : null;
         $result = $this->createLdapResultMock($link);
         $reference = new LdapResultReference($resource, $result);
+
         return array_slice([$reference, $result, $link], 0, max(2, 1 + $mocksLevel));
     }
 
-    private function examineLdapMethod(string $method, array $args, $will, $expect, $ldapFunction = null) : void
+    private function examineLdapMethod(string $method, array $args, $will, $expect, $ldapFunction = null): void
     {
         [$reference, $result, $link] = $this->createLdapResultReferenceAndMocks();
 
-        if ($ldapFunction === null) {
-            $ldapFunction = "ldap_$method";
+        if (null === $ldapFunction) {
+            $ldapFunction = "ldap_{$method}";
         }
 
         $actual = $this->examineCallWithMockedLdapFunction(
@@ -74,191 +273,6 @@ final class LdapResultReferenceTest extends TestCase
         if ($actual instanceof LdapResultWrapperInterface) {
             $this->assertSame($result, $actual->getLdapResult());
         }
-    }
-
-    //
-    //
-    // TESTS
-    //
-    //
-
-    public function test__implements__LdapResultReferenceInterface() : void
-    {
-        $this->assertImplementsInterface(LdapResultReferenceInterface::class, LdapResultReference::class);
-    }
-
-    public function test__uses__LdapResultItemTrait() : void
-    {
-        $this->assertUsesTrait(LdapResultItemTrait::class, LdapResultReference::class);
-    }
-
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // getResource()
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    public function test__getResource() : void
-    {
-        [$reference, $result] = $this->createLdapResultReferenceAndMocks(1, 'ldap reference');
-        $this->assertSame('ldap reference', $reference->getResource());
-    }
-
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // getLdapResult()
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    public function test__getLdapResult() : void
-    {
-        [$reference, $result] = $this->createLdapResultReferenceAndMocks(1);
-        $this->assertSame($result, $reference->getLdapResult());
-    }
-
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // getLdapLink()
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    public function test__getLdapLink() : void
-    {
-        [$reference, $result, $link] = $this->createLdapResultReferenceAndMocks();
-        $this->assertSame($link, $reference->getLdapLink());
-    }
-
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // supportsResourceType()
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    public static function prov__supportsResourceType() : array
-    {
-        return static::feedSupportsResourceType('ldap result entry');
-    }
-
-    /**
-     * @runInSeparateProcess
-     * @dataProvider prov__supportsResourceType
-     */
-    public function test__supportsResourceType(array $args, $expect) : void
-    {
-        [$reference, $result] = $this->createLdapResultReferenceAndMocks(1);
-        $this->examineSupportsResourceType($reference, $args, $expect);
-    }
-
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // isValid()
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    public static function prov__isValid() : array
-    {
-        return static::feedIsValid('ldap result entry');
-    }
-
-    /**
-     * @runInSeparateProcess
-     * @dataProvider prov__isValid
-     */
-    public function test__isValid($arg, $return, $expect) : void
-    {
-        [$reference, $result] = $this->createLdapResultReferenceAndMocks(1, $arg);
-        $this->examineIsValid($reference, $arg, $return, $expect);
-    }
-
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // next_reference()
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    public static function prov__next_reference__withMockedBackend() : array
-    {
-        return [
-            // #0
-            [
-                'args'   => [],
-                'return' => 'ldap entry next',
-                'expect' => static::logicalAnd(
-                    static::isInstanceOf(LdapResultReference::class),
-                    static::objectHasPropertiesIdenticalTo(['getResource()' => 'ldap entry next'])
-                ),
-            ],
-
-            // #1
-            [
-                'args'   => [],
-                'return' => false,
-                'expect' => false,
-            ],
-
-            // #2
-            [
-                'args'   => [],
-                'return' => null,
-                'expect' => false,
-            ],
-        ];
-    }
-
-    /**
-     * @runInSeparateProcess
-     * @dataProvider prov__next_reference__withMockedBackend
-     */
-    public function test__next_reference__withMockedBackend(array $args, $return, $expect) : void
-    {
-        $this->examineLdapMethod('next_reference', $args, $return, $expect);
-    }
-
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // parse_reference()
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    public function prov__parse_reference__withMockedBackend() : array
-    {
-        return [
-            // #0
-            [
-                'args'   => [&$rv1],
-                'return' => true,
-                'expect' => true,
-                'values' => [['ldap://example.org/dc=subtree,dc=example,dc=org??sub']],
-            ],
-
-            // #1
-            [
-                'args'   => [&$rv2],
-                'return' => false,
-                'expect' => false,
-                'values' => [null],
-            ],
-
-            // #2
-            [
-                'args'   => [&$rv3],
-                'return' => false,
-                'expect' => false,
-                'values' => [null],
-            ],
-        ];
-    }
-
-
-    /**
-     * @runInSeparateProcess
-     * @dataProvider prov__parse_reference__withMockedBackend
-     */
-    public function test__parse_reference__withMockedBackend(array $args, $return, $expect, array $values) : void
-    {
-        $this->examineLdapMethod('parse_reference', $args, $return, $expect);
-        if (count($args) > 1) {
-            $this->assertSame($values[0] ?? null, $args[1]);
-        }
-    }
-
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // next_item()
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    /**
-     * @runInSeparateProcess
-     * @dataProvider prov__next_reference__withMockedBackend
-     */
-    public function test__next_item__withMockedBackend(array $args, $return, $expect) : void
-    {
-        $this->examineLdapMethod('next_item', $args, $return, $expect, 'ldap_next_reference');
     }
 }
 

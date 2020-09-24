@@ -22,22 +22,17 @@ trait LdapResultItemIteratorTestTrait
 {
     use AbstractLdapResultItemIteratorTestTrait;
 
-    protected function createIteratorInstance(...$args)
-    {
-        $class = $this->getIteratorClass();
-        return new $class(...$args);
-    }
-
-    public function test__extends__AbstractLdapResultItemIterator() : void
+    public function test__extends__AbstractLdapResultItemIterator(): void
     {
         $this->assertExtendsClass(AbstractLdapResultItemIterator::class, $this->getIteratorClass());
     }
 
-    public function test__construct__withAbstractItemType() : void
+    public function test__construct__withAbstractItemType(): void
     {
         $first = $this->createIteratorItemStub();
         $item = $this->getMockBuilder(LdapResultItemInterface::class)
-                     ->getMockForAbstractClass();
+            ->getMockForAbstractClass()
+        ;
 
         $this->expectException(\TypeError::class);
         $this->expectExceptionMessage($this->getIteratorItemInterface());
@@ -45,14 +40,22 @@ trait LdapResultItemIteratorTestTrait
         $this->createIteratorInstance($first, $item);
     }
 
-    public function test__current() : void
+    public function test__current(): void
     {
         $item = $this->getMockBuilder($this->getIteratorItemInterface())
-                     ->getMockForAbstractClass();
+            ->getMockForAbstractClass()
+        ;
 
         $iterator = $this->createIteratorInstance(null, $item);
 
         $this->assertSame($item, $iterator->current());
+    }
+
+    protected function createIteratorInstance(...$args)
+    {
+        $class = $this->getIteratorClass();
+
+        return new $class(...$args);
     }
 }
 

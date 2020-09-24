@@ -18,7 +18,8 @@ namespace Korowai\Testing\Properties;
 interface PropertiesInterface extends \IteratorAggregate, \ArrayAccess, \Countable
 {
     public function getArrayCopy();
-    public function canUnwrapChild(PropertiesInterface $child) : bool;
+
+    public function canUnwrapChild(PropertiesInterface $child): bool;
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

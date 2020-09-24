@@ -12,10 +12,10 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Rfc;
 
+use Korowai\Lib\Rfc\InvalidRuleSetNameException;
 use Korowai\Lib\Rfc\Rule;
 use Korowai\Lib\Rfc\RuleInterface;
 use Korowai\Lib\Rfc\StaticRuleSetInterface;
-use Korowai\Lib\Rfc\InvalidRuleSetNameException;
 use Korowai\Testing\Rfclib\RuleSet0;
 use Korowai\Testing\Rfclib\RuleSet1;
 use Korowai\Testing\Rfclib\RuleSet2;
@@ -24,10 +24,12 @@ use Korowai\Testing\TestCase;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Rfc\Rule
+ *
+ * @internal
  */
 final class RuleTest extends TestCase
 {
-    public function test__implements__RuleInterface() : void
+    public function testImplementsRuleInterface(): void
     {
         $this->assertImplementsInterface(RuleInterface::class, Rule::class);
     }
@@ -88,14 +90,14 @@ final class RuleTest extends TestCase
     /**
      * @dataProvider prov__ruleSetClassAndRuleName
      */
-    public function test__construct(string $ruleSetClass, string $ruleName) : void
+    public function testConstruct(string $ruleSetClass, string $ruleName): void
     {
         $rule = new Rule($ruleSetClass, $ruleName);
         $this->assertSame($ruleSetClass, $rule->ruleSetClass());
         $this->assertSame($ruleName, $rule->name());
     }
 
-    public function test__construct__exception() : void
+    public function testConstructException(): void
     {
         $message = 'Argument 1 passed to '.Rule::class.'::__construct() must be '.
             'a name of class implementing '.StaticRuleSetInterface::class.', '.
@@ -109,16 +111,16 @@ final class RuleTest extends TestCase
     /**
      * @dataProvider prov__ruleSetClassAndRuleName
      */
-    public function test__toString(string $ruleSetClass, string $ruleName) : void
+    public function testToString(string $ruleSetClass, string $ruleName): void
     {
         $rule = new Rule($ruleSetClass, $ruleName);
-        $this->assertSame($ruleSetClass::regexp($ruleName), (string)$rule);
+        $this->assertSame($ruleSetClass::regexp($ruleName), (string) $rule);
     }
 
     /**
      * @dataProvider prov__ruleSetClassAndRuleName
      */
-    public function test__rule(string $ruleSetClass, string $ruleName) : void
+    public function testRule(string $ruleSetClass, string $ruleName): void
     {
         $rule = new Rule($ruleSetClass, $ruleName);
         $this->assertSame($ruleSetClass::regexp($ruleName), $rule->regexp());
@@ -127,7 +129,7 @@ final class RuleTest extends TestCase
     /**
      * @dataProvider prov__ruleSetClassAndRuleName
      */
-    public function test__captures(string $ruleSetClass, string $ruleName) : void
+    public function testCaptures(string $ruleSetClass, string $ruleName): void
     {
         $rule = new Rule($ruleSetClass, $ruleName);
         $this->assertSame($ruleSetClass::captures($ruleName), $rule->captures());
@@ -136,7 +138,7 @@ final class RuleTest extends TestCase
     /**
      * @dataProvider prov__ruleSetClassAndRuleName
      */
-    public function test__errorCaptures(string $ruleSetClass, string $ruleName) : void
+    public function testErrorCaptures(string $ruleSetClass, string $ruleName): void
     {
         $rule = new Rule($ruleSetClass, $ruleName);
         $this->assertSame($ruleSetClass::errorCaptures($ruleName), $rule->errorCaptures());
@@ -145,7 +147,7 @@ final class RuleTest extends TestCase
     /**
      * @dataProvider prov__ruleSetClassAndRuleName
      */
-    public function test__valueCaptures(string $ruleSetClass, string $ruleName) : void
+    public function testValueCaptures(string $ruleSetClass, string $ruleName): void
     {
         $rule = new Rule($ruleSetClass, $ruleName);
         $this->assertSame($ruleSetClass::valueCaptures($ruleName), $rule->valueCaptures());
@@ -154,7 +156,7 @@ final class RuleTest extends TestCase
     /**
      * @dataProvider prov__ruleSetClassRuleNameAndMatches
      */
-    public function test__findCapturedErrors(string $ruleSetClass, string $ruleName, array $matches) : void
+    public function testFindCapturedErrors(string $ruleSetClass, string $ruleName, array $matches): void
     {
         $rule = new Rule($ruleSetClass, $ruleName);
         $this->assertSame($ruleSetClass::findCapturedErrors($ruleName, $matches), $rule->findCapturedErrors($matches));
@@ -163,13 +165,13 @@ final class RuleTest extends TestCase
     /**
      * @dataProvider prov__ruleSetClassRuleNameAndMatches
      */
-    public function test__findCapturedValues(string $ruleSetClass, string $ruleName, array $matches) : void
+    public function testFindCapturedValues(string $ruleSetClass, string $ruleName, array $matches): void
     {
         $rule = new Rule($ruleSetClass, $ruleName);
         $this->assertSame($ruleSetClass::findCapturedValues($ruleName, $matches), $rule->findCapturedValues($matches));
     }
 
-    public function test__getErrorMessage() : void
+    public function testGetErrorMessage(): void
     {
         $rule = new Rule(RuleSet1::class, 'ASSIGNMENT_INT');
         $this->assertSame('malformed integer value', $rule->getErrorMessage('value_int_error'));

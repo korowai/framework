@@ -21,6 +21,7 @@ final class LdapGetOptionClosure extends AbstractClosure
     {
         $values = $this->getReturnArguments();
         $retval = $values[0] ?? null;
+
         return $this->getReturnValue();
     }
 }

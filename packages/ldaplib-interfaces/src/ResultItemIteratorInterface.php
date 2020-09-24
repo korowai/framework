@@ -22,30 +22,26 @@ interface ResultItemIteratorInterface extends \Iterator
     /**
      * Returns the current offset or null if the iterator is invalid.
      *
-     * @return int|null
-     *
      * @psalm-mutation-free
      */
-    public function key() : ?int;
+    public function key(): ?int;
 
     /**
      * Moves the iterator to the next position.
      */
-    public function next() : void;
+    public function next(): void;
 
     /**
      * Moves the iterator to the begining of the sequence.
      */
-    public function rewind() : void;
+    public function rewind(): void;
 
     /**
      * Returns true if the iterator is valid or false otherwise.
      *
-     * @return bool
-     *
      * @psalm-mutation-free
      */
-    public function valid() : bool;
+    public function valid(): bool;
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

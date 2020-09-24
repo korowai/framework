@@ -22,11 +22,9 @@ interface ResultEntryIteratorInterface extends ResultItemIteratorInterface
     /**
      * Returns the current entry or null if the iterator is invalid.
      *
-     * @return ResultEntryInterface|null
-     *
      * @psalm-mutation-free
      */
-    public function current() : ?ResultEntryInterface;
+    public function current(): ?ResultEntryInterface;
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

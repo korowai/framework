@@ -12,18 +12,18 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldif\Nodes;
 
+use Korowai\Lib\Ldif\Nodes\AbstractChangeRecord;
 use Korowai\Lib\Ldif\Nodes\LdifModifyRecord;
 use Korowai\Lib\Ldif\Nodes\LdifModifyRecordInterface;
-use Korowai\Lib\Ldif\Nodes\AbstractChangeRecord;
 use Korowai\Lib\Ldif\RecordVisitorInterface;
 use Korowai\Lib\Ldif\SnippetInterface;
-use Korowai\Lib\Ldif\InvalidChangeTypeException;
-
 use Korowai\Testing\Ldiflib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Ldif\Nodes\LdifModifyRecord
+ *
+ * @internal
  */
 final class LdifModifyRecordTest extends TestCase
 {
@@ -32,7 +32,7 @@ final class LdifModifyRecordTest extends TestCase
         $this->assertExtendsClass(AbstractChangeRecord::class, LdifModifyRecord::class);
     }
 
-    public function test__implements__LdifModifyRecordInterface() : void
+    public function testImplementsLdifModifyRecordInterface(): void
     {
         $this->assertImplementsInterface(LdifModifyRecordInterface::class, LdifModifyRecord::class);
     }
@@ -40,6 +40,7 @@ final class LdifModifyRecordTest extends TestCase
     public function prov__construct()
     {
         $snippet = $this->getMockBuilder(SnippetInterface::class)->getMockForAbstractClass();
+
         return [
             '__construct(, "dc=example,dc=org")' => [
                 'args' => [
@@ -51,15 +52,15 @@ final class LdifModifyRecordTest extends TestCase
                     'getModSpecs()' => [],
                     'getControls()' => [],
                     'getSnippet()' => null,
-                ]
+                ],
             ],
             '__construct("dc=example,dc=org", ["modSpecs" => ["X"], "controls" => ["Y"], "snippet" => $snippet]' => [
                 'args' => [
                     'dc=example,dc=org',
                     [
-                        "modSpecs" => ['X'],
-                        "controls" => ['Y'],
-                        "snippet" => $snippet
+                        'modSpecs' => ['X'],
+                        'controls' => ['Y'],
+                        'snippet' => $snippet,
                     ],
                 ],
                 'expect' => [
@@ -68,45 +69,47 @@ final class LdifModifyRecordTest extends TestCase
                     'getModSpecs()' => ['X'],
                     'getControls()' => ['Y'],
                     'getSnippet()' => $snippet,
-                ]
-            ]
+                ],
+            ],
         ];
     }
 
     /**
      * @dataProvider prov__construct
      */
-    public function test__construct(array $args, array $expect) : void
+    public function testConstruct(array $args, array $expect): void
     {
         $record = new LdifModifyRecord(...$args);
         $this->assertObjectHasPropertiesIdenticalTo($expect, $record);
     }
 
-    public function test__getChangeType() : void
+    public function testGetChangeType(): void
     {
-        $record = new LdifModifyRecord("dc=example,dc=org");
-        $this->assertSame("modify", $record->getChangeType());
+        $record = new LdifModifyRecord('dc=example,dc=org');
+        $this->assertSame('modify', $record->getChangeType());
     }
 
-    public function test__setModSpecs() : void
+    public function testSetModSpecs(): void
     {
-        $record = new LdifModifyRecord("dc=example,dc=org");
+        $record = new LdifModifyRecord('dc=example,dc=org');
 
         $this->assertSame($record, $record->setModSpecs(['X']));
         $this->assertSame(['X'], $record->getModSpecs());
     }
 
-    public function test__acceptRecordVisitor() : void
+    public function testAcceptRecordVisitor(): void
     {
         $visitor = $this->getMockBuilder(RecordVisitorInterface::class)
-                        ->getMockForAbstractClass();
+            ->getMockForAbstractClass()
+        ;
 
-        $record = new LdifModifyRecord("dc=example,dc=org", ['X']);
+        $record = new LdifModifyRecord('dc=example,dc=org', ['X']);
 
         $visitor->expects($this->once())
-                ->method('visitLdifModifyRecord')
-                ->with($record)
-                ->will($this->returnValue('ok'));
+            ->method('visitLdifModifyRecord')
+            ->with($record)
+            ->will($this->returnValue('ok'))
+        ;
 
         $this->assertSame('ok', $record->acceptRecordVisitor($visitor));
     }

@@ -26,9 +26,9 @@ class ParserError extends \Exception implements ParserErrorInterface
      * Initializes the error object.
      *
      * @param SourceLocationInterface $location Error location
-     * @param  string $message Error message.
-     * @param  int $code User-defined code.
-     * @param \Throwable $previous
+     * @param string                  $message  error message
+     * @param int                     $code     user-defined code
+     * @param \Throwable              $previous
      */
     public function __construct(
         SourceLocationInterface $location,
@@ -41,21 +41,28 @@ class ParserError extends \Exception implements ParserErrorInterface
     }
 
     /**
-     * Returns the error location as a string.
-     *
-     * @return string
+     * {@inheritdoc}
      */
-    public function getSourceLocationString(array $line_and_char = null) : string
+    public function __toString()
+    {
+        return $this->getSourceLocationString().':'.$this->getMessage();
+    }
+
+    /**
+     * Returns the error location as a string.
+     */
+    public function getSourceLocationString(array $line_and_char = null): string
     {
         [$line, $char] = ($line_and_char ?? $this->getSourceLineAndCharOffset());
-        return  $this->getSourceFileName() .':'. ($line + 1) .':'. ($char + 1);
+
+        return  $this->getSourceFileName().':'.($line + 1).':'.($char + 1);
     }
 
     /**
      * Returns a string which consists of a number of leading spaces and the
      * ``"^"`` character.
      *
-     * @param  array $line_and_char
+     * @param array $line_and_char
      *
      * The position of the ``"^"`` character corresponds to the error location
      * in the source line. The typical use of the function is as
@@ -76,7 +83,8 @@ class ParserError extends \Exception implements ParserErrorInterface
     public function getSourceLocationIndicator(array $line_and_char = null)
     {
         $char = ($line_and_char ?? $this->getSourceLineAndCharOffset())[1];
-        return str_repeat(' ', $char) . '^';
+
+        return str_repeat(' ', $char).'^';
     }
 
     /**
@@ -90,35 +98,28 @@ class ParserError extends \Exception implements ParserErrorInterface
      *  echo implode("\n", $err->getMultilineMessageArray()) . "\n";
      * ```
      *
-     * @return array A 3-element array of strings, with error message at
+     * @return array a 3-element array of strings, with error message at
      *               position 0, source line at position 1 and location
-     *               indicator at position 2.
+     *               indicator at position 2
      */
-    public function getMultilineMessageLines() : array
+    public function getMultilineMessageLines(): array
     {
         $line_and_char = $this->getSourceLineAndCharOffset();
         $location = $this->getSourceLocationString($line_and_char);
+
         return [
-            $location .':'. $this->getMessage(),
-            $location .':'. $this->getSourceLine($line_and_char[0]),
-            $location .':'. $this->getSourceLocationIndicator($line_and_char)
+            $location.':'.$this->getMessage(),
+            $location.':'.$this->getSourceLine($line_and_char[0]),
+            $location.':'.$this->getSourceLocationIndicator($line_and_char),
         ];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getMultilineMessage() : string
+    public function getMultilineMessage(): string
     {
         return implode("\n", $this->getMultilineMessageLines());
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function __toString()
-    {
-        return $this->getSourceLocationString() .':'. $this->getMessage();
     }
 }
 

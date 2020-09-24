@@ -13,18 +13,19 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Ldif;
 
 use Korowai\Lib\Ldif\SourceLocationInterface;
-
 use Korowai\Testing\LdiflibInterfaces\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Tests\Lib\Ldif\SourceLocationInterfaceTrait
+ *
+ * @internal
  */
 final class SourceLocationInterfaceTest extends TestCase
 {
-    public function test__dummyImplementation() : void
+    public function testDummyImplementation(): void
     {
-        $dummy = new class implements SourceLocationInterface {
+        $dummy = new class() implements SourceLocationInterface {
             use SourceLocationInterfaceTrait;
         };
         $this->assertImplementsInterface(SourceLocationInterface::class, $dummy);

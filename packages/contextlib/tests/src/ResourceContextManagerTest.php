@@ -12,16 +12,17 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Context;
 
-use Korowai\Testing\TestCase;
-use Korowai\Testing\Contextlib\GetContextFunctionMockTrait;
-use Korowai\Testing\Contextlib\ExpectFunctionOnceWillReturnTrait;
-
-use Korowai\Lib\Context\ResourceContextManager;
 use Korowai\Lib\Context\ContextManagerInterface;
+use Korowai\Lib\Context\ResourceContextManager;
+use Korowai\Testing\Contextlib\ExpectFunctionOnceWillReturnTrait;
+use Korowai\Testing\Contextlib\GetContextFunctionMockTrait;
+use Korowai\Testing\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Context\ResourceContextManager
+ *
+ * @internal
  */
 final class ResourceContextManagerTest extends TestCase
 {
@@ -29,12 +30,12 @@ final class ResourceContextManagerTest extends TestCase
     use GetContextFunctionMockTrait;
     use ExpectFunctionOnceWillReturnTrait;
 
-    public function test__implements__ContextManagerInterface() : void
+    public function testImplementsContextManagerInterface(): void
     {
         $this->assertImplementsInterface(ContextManagerInterface::class, ResourceContextManager::class);
     }
 
-    public function test__construct() : void
+    public function testConstruct(): void
     {
         $destructor = function () {
         };
@@ -43,7 +44,7 @@ final class ResourceContextManagerTest extends TestCase
         $this->assertSame($destructor, $manager->getDestructor());
     }
 
-    public static function prov__construct__setsDefaultDestructor() : array
+    public static function prov__construct__setsDefaultDestructor(): array
     {
         $values = [
             ['bzip2', '\\bzclose'],
@@ -148,9 +149,10 @@ final class ResourceContextManagerTest extends TestCase
             ['zlib.deflate', null],
             ['zlib.inflate', null],
         ];
-        $keys = array_map(function (array $value) : string {
+        $keys = array_map(function (array $value): string {
             return $value[0];
         }, $values);
+
         return array_combine($keys, $values);
     }
 
@@ -158,7 +160,7 @@ final class ResourceContextManagerTest extends TestCase
      * @dataProvider prov__construct__setsDefaultDestructor
      * @runInSeparateProcess
      */
-    public function test__construct__setsDefaultDestructor(string $type, ?string $destructor) : void
+    public function testConstructSetsDefaultDestructor(string $type, ?string $destructor): void
     {
         $this->expectFunctionOnceWillReturn('get_resource_type', ['foo'], $type);
         $manager = new ResourceContextManager('foo');
@@ -168,13 +170,15 @@ final class ResourceContextManagerTest extends TestCase
     /**
      * @runInSeprarateProcess
      */
-    public function test__construct__setsDefaultDestructor__oci8_collection() : void
+    public function testConstructSetsDefaultDestructorOci8Collection(): void
     {
         $resource = $this->getMockBuilder(\StdClass::class)
-                         ->setMethods(['free'])
-                         ->getMock();
+            ->setMethods(['free'])
+            ->getMock()
+        ;
         $resource->expects($this->once())
-                 ->method('free');
+            ->method('free')
+        ;
 
         $this->expectFunctionOnceWillReturn('get_resource_type', [$resource], 'oci8 collection');
 
@@ -188,13 +192,15 @@ final class ResourceContextManagerTest extends TestCase
     /**
      * @runInSeprarateProcess
      */
-    public function test__construct__setsDefaultDestructor__oci8_lob() : void
+    public function testConstructSetsDefaultDestructorOci8Lob(): void
     {
         $resource = $this->getMockBuilder(\StdClass::class)
-                         ->setMethods(['free'])
-                         ->getMock();
+            ->setMethods(['free'])
+            ->getMock()
+        ;
         $resource->expects($this->once())
-                 ->method('free');
+            ->method('free')
+        ;
 
         $this->expectFunctionOnceWillReturn('get_resource_type', [$resource], 'oci8 lob');
 
@@ -208,7 +214,7 @@ final class ResourceContextManagerTest extends TestCase
     /**
      * @runInSeprarateProcess
      */
-    public function test__construct__setsDefaultDestructor__dirStream() : void
+    public function testConstructSetsDefaultDestructorDirStream(): void
     {
         $this->expectFunctionOnceWillReturn('get_resource_type', ['foo'], 'stream');
         $this->expectFunctionOnceWillReturn('stream_get_meta_data', ['foo'], ['stream_type' => 'dir']);
@@ -219,7 +225,7 @@ final class ResourceContextManagerTest extends TestCase
     /**
      * @runInSeparateProcess
      */
-    public function test__construct__setsDefaultDestructor__nonDirStream() : void
+    public function testConstructSetsDefaultDestructorNonDirStream(): void
     {
         $this->expectFunctionOnceWillReturn('get_resource_type', ['foo'], 'stream');
         $this->expectFunctionOnceWillReturn('stream_get_meta_data', ['foo'], ['stream_type' => 'baz']);
@@ -227,14 +233,14 @@ final class ResourceContextManagerTest extends TestCase
         $this->assertEquals('\\fclose', $manager->getDestructor());
     }
 
-    public function test__enterContext() : void
+    public function testEnterContext(): void
     {
         $manager = new ResourceContextManager('foo', function () {
         });
         $this->assertSame('foo', $manager->enterContext());
     }
 
-    public function test__exitContext__withNullDestructor() : void
+    public function testExitContextWithNullDestructor(): void
     {
         $this->expectFunctionOnceWillReturn('get_resource_type', ['dba persistent'], 'dba persistent');
         $manager = new ResourceContextManager('dba persistent');
@@ -245,14 +251,16 @@ final class ResourceContextManagerTest extends TestCase
     /**
      * @runInSeparateProcess
      */
-    public function test__exitContext__withCallableDestructor() : void
+    public function testExitContextWithCallableDestructor(): void
     {
         $destructor = $this->getMockBuilder(\StdClass::class)
-                           ->setMethods(['__invoke'])
-                           ->getMock();
+            ->setMethods(['__invoke'])
+            ->getMock()
+        ;
         $destructor->expects($this->once())
-                   ->method('__invoke')
-                   ->with('foo');
+            ->method('__invoke')
+            ->with('foo')
+        ;
 
         $manager = new ResourceContextManager('foo', $destructor);
 

@@ -12,24 +12,25 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldap;
 
-use Korowai\Testing\Ldaplib\TestCase;
-use Korowai\Testing\Ldaplib\ExamineLdapLinkErrorHandlerTrait;
-use Korowai\Testing\Ldaplib\LdapTriggerErrorTestFixture;
-use Korowai\Testing\Ldaplib\LdapTriggerErrorTestSubject;
-
-use Korowai\Lib\Ldap\SearchQuery;
+use Korowai\Lib\Ldap\Core\LdapLinkErrorHandler;
 use Korowai\Lib\Ldap\Core\LdapLinkInterface;
 use Korowai\Lib\Ldap\Core\LdapLinkWrapperInterface;
 use Korowai\Lib\Ldap\Core\LdapLinkWrapperTrait;
-use Korowai\Lib\Ldap\Core\LdapLinkErrorHandler;
 use Korowai\Lib\Ldap\Core\LdapResultInterface;
-use Korowai\Lib\Ldap\ResultInterface;
 use Korowai\Lib\Ldap\ErrorException;
+use Korowai\Lib\Ldap\ResultInterface;
+use Korowai\Lib\Ldap\SearchQuery;
+use Korowai\Testing\Ldaplib\ExamineLdapLinkErrorHandlerTrait;
+use Korowai\Testing\Ldaplib\LdapTriggerErrorTestFixture;
+use Korowai\Testing\Ldaplib\LdapTriggerErrorTestSubject;
+use Korowai\Testing\Ldaplib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Ldap\SearchQuery
  * @covers \Korowai\Testing\Ldaplib\ExamineLdapLinkErrorHandlerTrait
+ *
+ * @internal
  */
 final class SearchQueryTest extends TestCase
 {
@@ -37,8 +38,8 @@ final class SearchQueryTest extends TestCase
 
     public const SCOPES_METHODS = [
         'base' => 'read',
-        'one'  => 'list',
-        'sub'  => 'search'
+        'one' => 'list',
+        'sub' => 'search',
     ];
 
     //
@@ -47,22 +48,22 @@ final class SearchQueryTest extends TestCase
     //
     //
 
-    public function test__implements__LdapLinkWrapperInterface() : void
+    public function testImplementsLdapLinkWrapperInterface(): void
     {
         $this->assertImplementsInterface(LdapLinkWrapperInterface::class, SearchQuery::class);
     }
 
-    public function test__implements__SearchQueryInterface() : void
+    public function testImplementsSearchQueryInterface(): void
     {
         $this->assertImplementsInterface(LdapLinkWrapperInterface::class, SearchQuery::class);
     }
 
-    public function test__uses__LdapLinkWrapperTrait() : void
+    public function testUsesLdapLinkWrapperTrait(): void
     {
         $this->assertUsesTrait(LdapLinkWrapperTrait::class, SearchQuery::class);
     }
 
-    public static function prov__construct() : array
+    public static function prov__construct(): array
     {
         $cases = [
             // #0
@@ -83,7 +84,7 @@ final class SearchQueryTest extends TestCase
                 'args' => ['', '', $case['options']],
                 'expect' => [
                     'options' => $case['expect'],
-                ]
+                ],
             ];
         }
 
@@ -93,7 +94,7 @@ final class SearchQueryTest extends TestCase
     /**
      * @dataProvider prov__construct
      */
-    public function test__construct(array $args, array $expect) : void
+    public function testConstruct(array $args, array $expect): void
     {
         $link = $this->createMock(LdapLinkInterface::class);
         $query = new SearchQuery($link, ...$args);
@@ -113,9 +114,9 @@ final class SearchQueryTest extends TestCase
         }
     }
 
-    public static function prov__construct__withInvalidOptions() : array
+    public static function prov__construct__withInvalidOptions(): array
     {
-        return array_map(function (array $case) : array {
+        return array_map(function (array $case): array {
             return ['args' => ['', '', $case['options']], 'expect' => $case['expect']];
         }, SearchOptionsResolverTest::prov__resolve__withInvalidOptions());
     }
@@ -123,7 +124,7 @@ final class SearchQueryTest extends TestCase
     /**
      * @dataProvider prov__construct__withInvalidOptions
      */
-    public function test__construct__withInvalidOptions(array $args, array $expect) : void
+    public function testConstructWithInvalidOptions(array $args, array $expect): void
     {
         $link = $this->createMock(LdapLinkInterface::class);
 
@@ -137,7 +138,7 @@ final class SearchQueryTest extends TestCase
     // execute()/getResult()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__query() : array
+    public static function prov__query(): array
     {
         $args = [
             'dc=korowai,dc=org',
@@ -147,8 +148,8 @@ final class SearchQueryTest extends TestCase
                 'attrsOnly' => true,
                 'sizeLimit' => 123,
                 'timeLimit' => 456,
-                'deref' => 'always'
-            ]
+                'deref' => 'always',
+            ],
         ];
 
         $expectArgs = [
@@ -156,18 +157,18 @@ final class SearchQueryTest extends TestCase
             'objectClass=*',
             ['foo'],
             1, 123, 456,
-            LDAP_DEREF_ALWAYS
+            LDAP_DEREF_ALWAYS,
         ];
 
         $cases = [];
         foreach (['execute' => 2, 'getResult' => 1] as $method => $expectCalls) {
             $cases[] = [
                 'method' => $method,
-                'args'   => $args,
+                'args' => $args,
                 'expect' => [
-                    'calls'  => $expectCalls,
+                    'calls' => $expectCalls,
                     'method' => 'search',
-                    'args'   => $expectArgs,
+                    'args' => $expectArgs,
                 ],
             ];
             foreach (self::SCOPES_METHODS as $scope => $expectMethod) {
@@ -175,9 +176,9 @@ final class SearchQueryTest extends TestCase
                     'method' => $method,
                     'args' => $args,
                     'expect' => [
-                        'calls'  => $expectCalls,
+                        'calls' => $expectCalls,
                         'method' => $expectMethod,
-                        'args'   => $expectArgs,
+                        'args' => $expectArgs,
                     ],
                 ];
                 $case['args'][2]['scope'] = $scope;
@@ -191,25 +192,26 @@ final class SearchQueryTest extends TestCase
     /**
      * @dataProvider prov__query
      */
-    public function test__query(string $method, array $args, array $expect) : void
+    public function testQuery(string $method, array $args, array $expect): void
     {
         $link = $this->createMock(LdapLinkInterface::class);
         $ldapResult = $this->createMock(LdapResultInterface::class);
         $query = new SearchQuery($link, ...$args);
         $link->expects($this->exactly($expect['calls']))
-             ->method($expect['method'])
-             ->with(...$expect['args'])
-             ->willReturn($ldapResult);
-        $result = $query->$method();
-        $result = $query->$method();
+            ->method($expect['method'])
+            ->with(...$expect['args'])
+            ->willReturn($ldapResult)
+        ;
+        $result = $query->{$method}();
+        $result = $query->{$method}();
         $this->assertInstanceOf(ResultInterface::class, $result);
         $this->assertSame($ldapResult, $result->getLdapResult());
-        if ($method !== 'getResult') {
+        if ('getResult' !== $method) {
             $this->assertSame($result, $query->getResult());
         }
     }
 
-    public static function prov__query__withTriggerError() : array
+    public static function prov__query__withTriggerError(): array
     {
         $args = ['dc=example,dc=org', 'objectClass=*'];
 
@@ -219,7 +221,7 @@ final class SearchQueryTest extends TestCase
                 foreach (self::feedLdapLinkErrorHandler() as $fixture) {
                     $case = [
                         'method' => $method,
-                        'args'   => $args,
+                        'args' => $args,
                         'expect' => ['method' => $expectMethod],
                     ];
                     $case['args'][] = ['scope' => $scope];
@@ -227,18 +229,19 @@ final class SearchQueryTest extends TestCase
                 }
             }
         }
+
         return $cases;
     }
 
     /**
      * @dataProvider prov__query__withTriggerError
      */
-    public function test__query__withTriggerError(
+    public function testQueryWithTriggerError(
         string $method,
         array $args,
         array $expect,
         LdapTriggerErrorTestFixture $fixture
-    ) : void {
+    ): void {
         $link = $this->createMock(LdapLinkInterface::class);
         $query = new SearchQuery($link, ...$args);
 
@@ -246,7 +249,7 @@ final class SearchQueryTest extends TestCase
         $this->examineLdapLinkErrorHandler([$query, $method], $subject, $link, $fixture);
     }
 
-    public static function prov__query__withLdapLinkReturningFalse() : array
+    public static function prov__query__withLdapLinkReturningFalse(): array
     {
         $args = ['dc=example,dc=org', 'objectClass=*'];
 
@@ -255,37 +258,40 @@ final class SearchQueryTest extends TestCase
             foreach (self::SCOPES_METHODS as $scope => $expectMethod) {
                 $case = [
                     'method' => $method,
-                    'args'   => $args,
+                    'args' => $args,
                     'expect' => ['method' => $expectMethod],
                 ];
                 $case['args'][] = ['scope' => $scope];
                 $cases[] = $case;
             }
         }
+
         return $cases;
     }
 
     /**
      * @dataProvider prov__query__withLdapLinkReturningFalse
      */
-    public function test__query__withLdapLinkReturningFalse(string $method, array $args, array $expect) : void
+    public function testQueryWithLdapLinkReturningFalse(string $method, array $args, array $expect): void
     {
         $link = $this->createMock(LdapLinkInterface::class);
 
         $link->expects($this->once())
-             ->method($expect['method'])
-             ->willReturn(false);
+            ->method($expect['method'])
+            ->willReturn(false)
+        ;
 
         $link->expects($this->once())
-             ->method('getErrorHandler')
-             ->willReturn($errorHandler = new LdapLinkErrorHandler($link));
+            ->method('getErrorHandler')
+            ->willReturn($errorHandler = new LdapLinkErrorHandler($link))
+        ;
 
         $query = new SearchQuery($link, ...$args);
 
         $this->expectException(ErrorException::class);
         $this->expectExceptionMessage('LdapLinkInterface::'.$expect['method'].'() returned false');
 
-        $query->$method();
+        $query->{$method}();
     }
 }
 

@@ -12,30 +12,35 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldif;
 
-use Korowai\Testing\Ldiflib\TestCase;
 use Korowai\Lib\Ldif\Util\IndexMap;
 use Korowai\Lib\Ldif\Util\IndexMapArrayCombineAlgorithm;
+use Korowai\Testing\Ldiflib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Ldif\Util\IndexMap
+ *
+ * @internal
  */
 final class IndexMapTest extends TestCase
 {
     public function arrayFromPieces()
     {
         return [
-            [ [],                                                       [] ],
-            [ [['a piece', 0]],                                         [[0,0]] ],
-            [ [['first piece', 0], ['second piece', 15]],               [[0,0], [11,15]] ],
-            [ [['first piece', 4], ['second piece', 19]],               [[0,4], [11,19]] ],
+            [[],                                                       []],
+            [[['a piece', 0]],                                         [[0, 0]]],
+            [[['first piece', 0], ['second piece', 15]],               [[0, 0], [11, 15]]],
+            [[['first piece', 4], ['second piece', 19]],               [[0, 4], [11, 19]]],
         ];
     }
 
     /**
      * @dataProvider arrayFromPieces
+     *
+     * @param mixed $pieces
+     * @param mixed $expect
      */
-    public function test__arrayFromPieces($pieces, $expect) : void
+    public function testArrayFromPieces($pieces, $expect): void
     {
         $array = IndexMap::arrayFromPieces($pieces);
         $this->assertSame($expect, $array);
@@ -47,79 +52,79 @@ final class IndexMapTest extends TestCase
         // particular offsets are expected to be mapped.
         return [
             [
-                [[[0,0]]], [
+                [[[0, 0]]], [
                     -2 => [-2, 0],
-                     0 => [ 0, 0],
-                     1 => [ 1, 0],
-                     2 => [ 2, 0],
+                    0 => [0, 0],
+                    1 => [1, 0],
+                    2 => [2, 0],
                     -1 => [-1, 0],
-                ]
+                ],
             ],
             [
-                [[[0,0], [4,6], [8,12]]], [
+                [[[0, 0], [4, 6], [8, 12]]], [
                     -2 => [-2, 0],
-                     0 => [ 0, 0],
-                     1 => [ 1, 0],
-                     2 => [ 2, 0],
-                     3 => [ 3, 0],
-                     4 => [ 6, 1],
-                     5 => [ 7, 1],
-                     6 => [ 8, 1],
-                     7 => [ 9, 1],
-                     8 => [12, 2],
-                     9 => [13, 2],
+                    0 => [0, 0],
+                    1 => [1, 0],
+                    2 => [2, 0],
+                    3 => [3, 0],
+                    4 => [6, 1],
+                    5 => [7, 1],
+                    6 => [8, 1],
+                    7 => [9, 1],
+                    8 => [12, 2],
+                    9 => [13, 2],
                     10 => [14, 2],
                     -1 => [-1, 0],
-                ]
+                ],
             ],
             [
-                [[[0,0], [4,6], [8,12]], 0], [
-                    -2 => [ 0, 0],
-                     0 => [ 0, 0],
-                     1 => [ 0, 0],
-                     2 => [ 0, 0],
-                     3 => [ 0, 0],
-                     4 => [ 6, 1],
-                     5 => [ 6, 1],
-                     6 => [ 6, 1],
-                     7 => [ 6, 1],
-                     8 => [12, 2],
-                     9 => [12, 2],
+                [[[0, 0], [4, 6], [8, 12]], 0], [
+                    -2 => [0, 0],
+                    0 => [0, 0],
+                    1 => [0, 0],
+                    2 => [0, 0],
+                    3 => [0, 0],
+                    4 => [6, 1],
+                    5 => [6, 1],
+                    6 => [6, 1],
+                    7 => [6, 1],
+                    8 => [12, 2],
+                    9 => [12, 2],
                     10 => [12, 2],
-                    -1 => [ 0, 0],
-                ]
+                    -1 => [0, 0],
+                ],
             ],
             [
-                [[[4,6], [8,12]]], [
-                    -2 => [ 0, 0],
-                     0 => [ 2, 0],
-                     1 => [ 3, 0],
-                     2 => [ 4, 0],
-                     3 => [ 5, 0],
-                     4 => [ 6, 0],
-                     5 => [ 7, 0],
-                     6 => [ 8, 0],
-                     7 => [ 9, 0],
-                     8 => [12, 1],
-                     9 => [13, 1],
+                [[[4, 6], [8, 12]]], [
+                    -2 => [0, 0],
+                    0 => [2, 0],
+                    1 => [3, 0],
+                    2 => [4, 0],
+                    3 => [5, 0],
+                    4 => [6, 0],
+                    5 => [7, 0],
+                    6 => [8, 0],
+                    7 => [9, 0],
+                    8 => [12, 1],
+                    9 => [13, 1],
                     10 => [14, 1],
-                    -1 => [ 1, 0],
-                ]
+                    -1 => [1, 0],
+                ],
             ],
             [
                 [[]], [
                     -1 => [-1, null],
-                     0 => [ 0, null],
-                     1 => [ 1, null],
-                ]
-            ]
+                    0 => [0, null],
+                    1 => [1, null],
+                ],
+            ],
         ];
     }
 
     /**
      * @dataProvider arrayIndexMapCases
      */
-    public function test__arrayApply(array $args, array $cases) : void
+    public function testArrayApply(array $args, array $cases): void
     {
         $im = $args[0];
         $inc = $args[1] ?? 1;
@@ -135,31 +140,34 @@ final class IndexMapTest extends TestCase
     {
         return [
             [
-                [[0,0]], [
-                     0 => 0,
-                     1 => 0,
-                    41 => 0
-                ]
+                [[0, 0]], [
+                    0 => 0,
+                    1 => 0,
+                    41 => 0,
+                ],
             ],
             [
-                [[0,0], [3,10], [5,19]], [
-                     0 => 0,
-                     1 => 0,
-                     2 => 0,
-                     3 => 1,
-                     4 => 1,
-                     5 => 2,
-                     6 => 2,
-                    41 => 2
-                ]
+                [[0, 0], [3, 10], [5, 19]], [
+                    0 => 0,
+                    1 => 0,
+                    2 => 0,
+                    3 => 1,
+                    4 => 1,
+                    5 => 2,
+                    6 => 2,
+                    41 => 2,
+                ],
             ],
         ];
     }
 
     /**
      * @dataProvider arraySearchCases
+     *
+     * @param mixed $im
+     * @param mixed $cases
      */
-    public function test__arraySearch($im, $cases) : void
+    public function testArraySearch($im, $cases): void
     {
         foreach ($cases as $i => $j) {
             $this->assertSame($j, IndexMap::arraySearch($im, $i));
@@ -169,17 +177,20 @@ final class IndexMapTest extends TestCase
     public function arraySearchFailingCases()
     {
         return [
-            [ [], 0 ],
-            [ [], 1 ],
-            [ [[0,0]], -1 ],
-            [ [[1,12]],  0 ],
+            [[], 0],
+            [[], 1],
+            [[[0, 0]], -1],
+            [[[1, 12]],  0],
         ];
     }
 
     /**
      * @dataProvider arraySearchFailingCases
+     *
+     * @param mixed $im
+     * @param mixed $i
      */
-    public function test__arraySearch__exception($im, $i) : void
+    public function testArraySearchException($im, $i): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('internal error: arraySearch() failed');
@@ -189,8 +200,11 @@ final class IndexMapTest extends TestCase
 
     /**
      * @dataProvider arrayFromPieces
+     *
+     * @param mixed $pieces
+     * @param mixed $expect
      */
-    public function test__createFromPieces($pieces, $expect) : void
+    public function testCreateFromPieces($pieces, $expect): void
     {
         $im = IndexMap::createFromPieces($pieces);
         $this->assertInstanceOf(IndexMap::class, $im);
@@ -198,26 +212,26 @@ final class IndexMapTest extends TestCase
         $this->assertSame(1, $im->getIncrement());
     }
 
-    public function test__construct() : void
+    public function testConstruct(): void
     {
-        $im = new IndexMap([[0,1]]);
-        $this->assertSame([[0,1]], $im->getArray());
+        $im = new IndexMap([[0, 1]]);
+        $this->assertSame([[0, 1]], $im->getArray());
         $this->assertSame(1, $im->getIncrement());
     }
 
-    public function test__construct__withIncrement() : void
+    public function testConstructWithIncrement(): void
     {
-        $im = new IndexMap([[0,1]], 0);
-        $this->assertSame([[0,1]], $im->getArray());
+        $im = new IndexMap([[0, 1]], 0);
+        $this->assertSame([[0, 1]], $im->getArray());
         $this->assertEquals(0, $im->getIncrement());
     }
 
-    public function test__arrayCombineAlgorithm() : void
+    public function testArrayCombineAlgorithm(): void
     {
         $im = new IndexMap([]);
         $alg1 = $im->getArrayCombineAlgorithm();
         $this->assertInstanceOf(IndexMapArrayCombineAlgorithm::class, $alg1);
-        $alg2 = new IndexMapArrayCombineAlgorithm;
+        $alg2 = new IndexMapArrayCombineAlgorithm();
         $this->assertSame($im, $im->setArrayCombineAlgorithm($alg2));
         $this->assertSame($alg2, $im->getArrayCombineAlgorithm());
 
@@ -237,7 +251,7 @@ final class IndexMapTest extends TestCase
     /**
      * @dataProvider indexMapCases
      */
-    public function test__apply(IndexMap $im, array $cases) : void
+    public function testApply(IndexMap $im, array $cases): void
     {
         foreach ($cases as $i => $case) {
             $expect = $case[0];
@@ -247,58 +261,62 @@ final class IndexMapTest extends TestCase
         }
     }
 
-
-    public function test__invoke() : void
+    public function testInvoke(): void
     {
         // apply() is already tested, so we only check that it's properly used
         $im = $this->getMockBuilder(IndexMap::class)
-                   ->setMethods(['apply'])
-                   ->disableOriginalConstructor()
-                   ->getMock();
+            ->setMethods(['apply'])
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
         $im->expects($this->once())
-           ->method('apply')
-           ->with(3)
-           ->willReturnCallback(function (int $i, int &$index = null) {
+            ->method('apply')
+            ->with(3)
+            ->willReturnCallback(function (int $i, int &$index = null) {
                $index = 123;
+
                return 7;
-           });
+           })
+        ;
 
         $this->assertEquals(7, $im(3, $index));
         $this->assertEquals(123, $index);
     }
 
-    public function test__combineWithArray() : void
+    public function testCombineWithArray(): void
     {
         // The IndexMapArrayCombineAlgorithm is already tested, so only check
         // that it's properly used.
         $combine = $this->createMock(IndexMapArrayCombineAlgorithm::class);
         $combine->expects($this->once())
-                ->method('__invoke')
-                ->with(['A'], ['B'])
-                ->willReturn(['A', 'B']);
+            ->method('__invoke')
+            ->with(['A'], ['B'])
+            ->willReturn(['A', 'B'])
+        ;
 
         $im = new IndexMap(['A']);
         $im->setArrayCombineAlgorithm($combine);
-
 
         $this->assertSame($im, $im->combineWithArray(['B']));
         $this->assertSame(['A', 'B'], $im->getArray());
     }
 
-    public function test__combineWith() : void
+    public function testCombineWith(): void
     {
         // combineWithArray() is already tested, so we only check that
         // combineWith() calls the combineWithArray() correctly.
         $im = $this->getMockBuilder(IndexMap::class)
-                   ->setMethods(['combineWithArray'])
-                   ->disableOriginalConstructor()
-                   ->getMock();
+            ->setMethods(['combineWithArray'])
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
         $im->expects($this->once())
-           ->method('combineWithArray')
-           ->with([[10,20], [30,40]])
-           ->will($this->returnSelf());
+            ->method('combineWithArray')
+            ->with([[10, 20], [30, 40]])
+            ->will($this->returnSelf())
+        ;
 
-        $jm = new IndexMap([[10,20], [30,40]]);
+        $jm = new IndexMap([[10, 20], [30, 40]]);
 
         $this->assertSame($im, $im->combineWith($jm));
     }

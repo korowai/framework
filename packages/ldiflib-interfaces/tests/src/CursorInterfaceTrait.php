@@ -12,7 +12,6 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldif;
 
-use Korowai\Tests\Lib\Ldif\LocationInterfaceTrait;
 use Korowai\Lib\Ldif\CursorInterface;
 
 /**
@@ -22,12 +21,12 @@ trait CursorInterfaceTrait
 {
     use LocationInterfaceTrait;
 
-    public function moveBy(int $offset) : CursorInterface
+    public function moveBy(int $offset): CursorInterface
     {
         return $this;
     }
 
-    public function moveTo(int $position) : CursorInterface
+    public function moveTo(int $position): CursorInterface
     {
         return $this;
     }

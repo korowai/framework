@@ -25,7 +25,7 @@ namespace Korowai\Lib\Rfc;
 class Rfc8089 extends Rfc3986
 {
     /**
-     * [RFC8089](https://tools.ietf.org/html/rfc8089#section-2):
+     * [RFC8089](https://tools.ietf.org/html/rfc8089#section-2):.
      *
      * ```
      * file-auth = "localhost"
@@ -50,7 +50,7 @@ class Rfc8089 extends Rfc3986
         ')';
 
     /**
-     * [RFC8089](https://tools.ietf.org/html/rfc8089#section-2):
+     * [RFC8089](https://tools.ietf.org/html/rfc8089#section-2):.
      *
      * ```
      * local-path = path-absolute
@@ -64,7 +64,7 @@ class Rfc8089 extends Rfc3986
     public const LOCAL_PATH = '(?<local_path>'.self::PATH_ABSOLUTE.')';
 
     /**
-     * [RFC8089](https://tools.ietf.org/html/rfc8089#section-2):
+     * [RFC8089](https://tools.ietf.org/html/rfc8089#section-2):.
      *
      * ```
      * auth-path = [ file-auth ] path-absolute
@@ -90,7 +90,7 @@ class Rfc8089 extends Rfc3986
         ')';
 
     /**
-     * [RFC8089](https://tools.ietf.org/html/rfc8089#section-2):
+     * [RFC8089](https://tools.ietf.org/html/rfc8089#section-2):.
      *
      * ```
      * file-hier-part = ( "//" auth-path )
@@ -120,7 +120,7 @@ class Rfc8089 extends Rfc3986
         ')';
 
     /**
-     * [RFC8089](https://tools.ietf.org/html/rfc8089#section-2):
+     * [RFC8089](https://tools.ietf.org/html/rfc8089#section-2):.
      *
      * ```
      * file-scheme = "file"
@@ -133,7 +133,7 @@ class Rfc8089 extends Rfc3986
     public const FILE_SCHEME = '(?<file_scheme>file)';
 
     /**
-     * [RFC8089](https://tools.ietf.org/html/rfc8089#section-2):
+     * [RFC8089](https://tools.ietf.org/html/rfc8089#section-2):.
      *
      * ```
      * file-URI = file-scheme ":" file-hier-part
@@ -175,7 +175,7 @@ class Rfc8089 extends Rfc3986
     /**
      * {@inheritdoc}
      */
-    public static function getClassRuleNames() : array
+    public static function getClassRuleNames(): array
     {
         return array_merge(self::$rfc8089Rules, parent::getClassRuleNames());
     }

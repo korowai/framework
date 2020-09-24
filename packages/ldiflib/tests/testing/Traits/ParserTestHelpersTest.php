@@ -12,15 +12,17 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Testing\Ldiflib\Traits;
 
-use Korowai\Testing\TestCase;
-use Korowai\Testing\Ldiflib\Traits\ParserTestHelpers;
-use Korowai\Lib\Ldif\Input;
 use Korowai\Lib\Ldif\Cursor;
+use Korowai\Lib\Ldif\Input;
 use Korowai\Lib\Ldif\ParserState;
+use Korowai\Testing\Ldiflib\Traits\ParserTestHelpers;
+use Korowai\Testing\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Testing\Ldiflib\Traits\ParserTestHelpers
+ *
+ * @internal
  */
 final class ParserTestHelpersTest extends TestCase
 {
@@ -34,14 +36,14 @@ final class ParserTestHelpersTest extends TestCase
                 [
                     'string' => "version: 1\n",
                     'file' => '-',
-                ]
+                ],
             ],
             [
                 ["# comment\nversion: 1\n", ['filename' => 'foo.ldif']],
                 [
                     'string' => "version: 1\n",
                     'file' => 'foo.ldif',
-                ]
+                ],
             ],
         ];
     }
@@ -54,7 +56,7 @@ final class ParserTestHelpersTest extends TestCase
     /**
      * @dataProvider prov__getInputFromSource
      */
-    public function test__getInputFromSource(array $args, array $expectations) : void
+    public function testGetInputFromSource(array $args, array $expectations): void
     {
         $input = $this->getInputFromSource(...$args);
         $this->assertInstanceOf(Input::class, $input);
@@ -71,25 +73,26 @@ final class ParserTestHelpersTest extends TestCase
                 [
                     'string' => "version: 1\n",
                     'file' => '-',
-                    'offset' => 4
-                ]
+                    'offset' => 4,
+                ],
             ],
             [
                 ["#commend\nversion: 1\n", 4, ['filename' => 'foo.ldif']],
                 [
                     'string' => "version: 1\n",
                     'file' => 'foo.ldif',
-                    'offset' => 4
-                ]
-            ]
+                    'offset' => 4,
+                ],
+            ],
         ];
 
         $inheritedCases = array_map(function ($case) {
             $args = $case[0];
             $expectations = $case[1];
+
             return [
                 ((count($args) > 1) ? [$args[0], 0, $args[1]] : $args),
-                array_merge($expectations, ['offset' => 0])
+                array_merge($expectations, ['offset' => 0]),
             ];
         }, static::inputFromSource__cases());
 
@@ -99,7 +102,7 @@ final class ParserTestHelpersTest extends TestCase
     /**
      * @dataProvider prov__getCursorFromSource
      */
-    public function test__getCursorFromSource(array $args, array $expectations) : void
+    public function testGetCursorFromSource(array $args, array $expectations): void
     {
         $cursor = $this->getCursorFromSource(...$args);
         $this->assertInstanceOf(Cursor::class, $cursor);
@@ -120,7 +123,7 @@ final class ParserTestHelpersTest extends TestCase
                     'offset' => 4,
                     'errors' => ['E'],
                     'records' => ['R'],
-                ]
+                ],
             ],
             [
                 ["#commend\nversion: 1\n", 4, ['filename' => 'foo.ldif', 'errors' => ['E'], 'records' => ['R']]],
@@ -130,15 +133,16 @@ final class ParserTestHelpersTest extends TestCase
                     'offset' => 4,
                     'errors' => ['E'],
                     'records' => ['R'],
-                ]
-            ]
+                ],
+            ],
         ];
         $inheritedCases = array_map(function (array $case) {
             $args = $case[0];
             $expectations = $case[1];
+
             return [
                 $args,
-                array_merge($expectations, ['errors' => [], 'records' => []])
+                array_merge($expectations, ['errors' => [], 'records' => []]),
             ];
         }, static::prov__getCursorFromSource());
 
@@ -148,7 +152,7 @@ final class ParserTestHelpersTest extends TestCase
     /**
      * @dataProvider prov__getParserStateFromSource
      */
-    public function test__getParserStateFromSource(array $args, array $expectations) : void
+    public function testGetParserStateFromSource(array $args, array $expectations): void
     {
         $state = $this->getParserStateFromSource(...$args);
         $this->assertInstanceOf(ParserState::class, $state);

@@ -29,32 +29,10 @@ abstract class AbstractRuleSet implements StaticRuleSetInterface
     protected static $capturesPerClass = [];
 
     /**
-     * Returns the array of captures for current class.
-     *
-     * @return array
-     *      The array of captures for the class (or null) as assigned with
-     *      *setClassCaptures()*.
-     */
-    protected static function getClassCaptures() : ?array
-    {
-        return self::$capturesPerClass[static::class] ?? null;
-    }
-
-    /**
-     * Assigns *$captures* to the internal array of captures for current class.
-     *
-     * @param  array $captures
-     */
-    protected static function setClassCaptures(array $captures) : void
-    {
-        self::$capturesPerClass[static::class] = $captures;
-    }
-
-    /**
      * Unsets the class captures. After this, *getClassCaptures()* will return
      * null until *setClassCaptures()* will assign new class captures.
      */
-    public static function unsetClassCaptures() : void
+    public static function unsetClassCaptures(): void
     {
         unset(self::$capturesPerClass[static::class]);
     }
@@ -62,50 +40,46 @@ abstract class AbstractRuleSet implements StaticRuleSetInterface
     /**
      * Returns true, if capture group with name *$name* is an error-catching
      * capture group.
-     *
-     * @param  string $name
-     * @return bool
      */
-    public static function isErrorCapture(string $name) : bool
+    public static function isErrorCapture(string $name): bool
     {
-        return substr_compare(strtolower($name), 'error', -5) == 0;
+        return 0 == substr_compare(strtolower($name), 'error', -5);
     }
 
     /**
      * Returns non null *$matches*.
-     *
-     * @param  array $matches
-     * @return array
      */
-    public static function filterMatches(array $matches) : array
+    public static function filterMatches(array $matches): array
     {
         return array_filter($matches, function ($item) {
-            return is_array($item) ? $item[0] !== null : $item !== null;
+            return is_array($item) ? null !== $item[0] : null !== $item;
         });
     }
 
     /**
      * {@inheritdoc}
      */
-    public static function findCapturedErrors(string $ruleName, array $matches) : array
+    public static function findCapturedErrors(string $ruleName, array $matches): array
     {
         $matches = static::filterMatches($matches);
+
         return array_intersect_key($matches, static::errorCaptures($ruleName));
     }
 
     /**
      * {@inheritdoc}
      */
-    public static function findCapturedValues(string $ruleName, array $matches) : array
+    public static function findCapturedValues(string $ruleName, array $matches): array
     {
         $matches = static::filterMatches($matches);
+
         return array_intersect_key($matches, static::valueCaptures($ruleName));
     }
 
     /**
      * {@inheritdoc}
      */
-    public static function getErrorMessage(string $errorKey, string $ruleName = null) : string
+    public static function getErrorMessage(string $errorKey, string $ruleName = null): string
     {
         $definedErrors = static::getDefinedErrors();
         $error = $definedErrors[$errorKey];
@@ -125,12 +99,30 @@ abstract class AbstractRuleSet implements StaticRuleSetInterface
      * message (string) or an array of error messages per rule (rule names as
      * keys and corresponding messages as values). The element at index 0 is
      * used as default message for given error key.
-     *
-     * @return array
      */
-    public static function getDefinedErrors() : array
+    public static function getDefinedErrors(): array
     {
         return [];
+    }
+
+    /**
+     * Returns the array of captures for current class.
+     *
+     * @return array
+     *               The array of captures for the class (or null) as assigned with
+     *               *setClassCaptures()*
+     */
+    protected static function getClassCaptures(): ?array
+    {
+        return self::$capturesPerClass[static::class] ?? null;
+    }
+
+    /**
+     * Assigns *$captures* to the internal array of captures for current class.
+     */
+    protected static function setClassCaptures(array $captures): void
+    {
+        self::$capturesPerClass[static::class] = $captures;
     }
 }
 

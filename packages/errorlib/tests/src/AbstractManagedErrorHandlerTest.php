@@ -12,53 +12,57 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Error;
 
-use Korowai\Testing\TestCase;
-
+use Korowai\Lib\Context\ContextManagerInterface;
 use Korowai\Lib\Error\AbstractManagedErrorHandler;
 use Korowai\Lib\Error\ErrorHandlerInterface;
-use Korowai\Lib\Context\ContextManagerInterface;
+use Korowai\Testing\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Error\AbstractManagedErrorHandler
+ *
+ * @internal
  */
 final class AbstractManagedErrorHandlerTest extends TestCase
 {
     use \phpmock\phpunit\PHPMock;
 
-    public function test__implements__ErrorHandlerInterface() : void
+    public function testImplementsErrorHandlerInterface(): void
     {
         $this->assertImplementsInterface(ErrorHandlerInterface::class, AbstractManagedErrorHandler::class);
     }
 
-    public function test__implements__ContextManagerInterface() : void
+    public function testImplementsContextManagerInterface(): void
     {
         $this->assertImplementsInterface(ContextManagerInterface::class, AbstractManagedErrorHandler::class);
     }
 
-    public function test__construct__withoutArguments() : void
+    public function testConstructWithoutArguments(): void
     {
         $handler = $this->getMockBuilder(AbstractManagedErrorHandler::class)
-                        ->getMockForAbstractClass();
+            ->getMockForAbstractClass()
+        ;
         $this->assertEquals(E_ALL | E_STRICT, $handler->getErrorTypes());
     }
 
-    public function test__construct__withArgument() : void
+    public function testConstructWithArgument(): void
     {
         $handler = $this->getMockBuilder(AbstractManagedErrorHandler::class)
-                        ->setConstructorArgs([123])
-                        ->getMockForAbstractClass();
+            ->setConstructorArgs([123])
+            ->getMockForAbstractClass()
+        ;
         $this->assertEquals(123, $handler->getErrorTypes());
     }
 
     /**
      * @runInSeparateProcess
      */
-    public function test__enterContextt() : void
+    public function testEnterContextt(): void
     {
         $handler = $this->getMockBuilder(AbstractManagedErrorHandler::class)
-                        ->setConstructorArgs([123])
-                        ->getMockForAbstractClass();
+            ->setConstructorArgs([123])
+            ->getMockForAbstractClass()
+        ;
 
         $set_error_handler = $this->getFunctionMock('Korowai\Lib\Error', 'set_error_handler');
         $set_error_handler->expects($this->once())->with($handler, 123);
@@ -69,11 +73,12 @@ final class AbstractManagedErrorHandlerTest extends TestCase
     /**
      * @runInSeparateProcess
      */
-    public function test__exitContextt() : void
+    public function testExitContextt(): void
     {
         $handler = $this->getMockBuilder(AbstractManagedErrorHandler::class)
-                        ->setConstructorArgs([123])
-                        ->getMockForAbstractClass();
+            ->setConstructorArgs([123])
+            ->getMockForAbstractClass()
+        ;
 
         $restore_error_handler = $this->getFunctionMock('Korowai\Lib\Error', 'restore_error_handler');
         $restore_error_handler->expects($this->once());

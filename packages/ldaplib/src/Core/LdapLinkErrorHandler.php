@@ -12,9 +12,9 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldap\Core;
 
+use Korowai\Lib\Error\AbstractManagedErrorHandler;
 use Korowai\Lib\Ldap\ErrorException;
 use Korowai\Lib\Ldap\LdapException;
-use Korowai\Lib\Error\AbstractManagedErrorHandler;
 
 /**
  * Error handler for errors originating from [LdapLink](LdapLink.html) calls.
@@ -26,42 +26,7 @@ final class LdapLinkErrorHandler extends AbstractManagedErrorHandler implements 
     use LdapLinkWrapperTrait;
 
     /**
-     * Create LdapLinkErrorHandler instance from LdapLinkWrapperInterface.
-     *
-     * @param  LdapLinkWrapperInterface $wrapper
-     * @return self
-     */
-    public static function fromLdapLinkWrapper(LdapLinkWrapperInterface $wrapper) : self
-    {
-        return new self($wrapper->getLdapLink());
-    }
-
-    /**
-     * Create LdapLinkErrorHandler instance from LdapResultWrapperInterface.
-     *
-     * @param  LdapResultWrapperInterface $wrapper
-     * @return self
-     */
-    public static function fromLdapResultWrapper(LdapResultWrapperInterface $wrapper) : self
-    {
-        return self::fromLdapLinkWrapper($wrapper->getLdapResult());
-    }
-
-    /**
-     * Create LdapLinkErrorHandler from LdapResultItemWrapperInterface.
-     *
-     * @param  LdapResultItemWrapperInterface $wrapper
-     * @return self
-     */
-    public static function fromLdapResultItemWrapper(LdapResultItemWrapperInterface $wrapper) : self
-    {
-        return self::fromLdapResultWrapper($wrapper->getLdapResultItem());
-    }
-
-    /**
      * Initializes the object.
-     *
-     * @param  LdapLinkInterface $ldapLink
      */
     public function __construct(LdapLinkInterface $ldapLink)
     {
@@ -71,20 +36,40 @@ final class LdapLinkErrorHandler extends AbstractManagedErrorHandler implements 
     /**
      * Handler implementation.
      *
-     * @param  int $severity
-     * @param  string $message
-     * @param  string $file
-     * @param  int $line
-     *
      * @throws LdapException
      * @throws ErrorException
      *
      * @return never-return
      */
-    public function __invoke(int $severity, string $message, string $file, int $line) : bool
+    public function __invoke(int $severity, string $message, string $file, int $line): bool
     {
         $this->throwLastLdapErrorIfSet($severity, $message, $file, $line);
+
         throw new ErrorException($message, 0, $severity, $file, $line);
+    }
+
+    /**
+     * Create LdapLinkErrorHandler instance from LdapLinkWrapperInterface.
+     */
+    public static function fromLdapLinkWrapper(LdapLinkWrapperInterface $wrapper): self
+    {
+        return new self($wrapper->getLdapLink());
+    }
+
+    /**
+     * Create LdapLinkErrorHandler instance from LdapResultWrapperInterface.
+     */
+    public static function fromLdapResultWrapper(LdapResultWrapperInterface $wrapper): self
+    {
+        return self::fromLdapLinkWrapper($wrapper->getLdapResult());
+    }
+
+    /**
+     * Create LdapLinkErrorHandler from LdapResultItemWrapperInterface.
+     */
+    public static function fromLdapResultItemWrapper(LdapResultItemWrapperInterface $wrapper): self
+    {
+        return self::fromLdapResultWrapper($wrapper->getLdapResultItem());
     }
 
     /**
@@ -94,15 +79,9 @@ final class LdapLinkErrorHandler extends AbstractManagedErrorHandler implements 
      *
      * The exception is created with *$code* obtained from $this->getLdapLink()->errno()* $message
      *
-     * @param int $severity
-     * @param string $file
-     * @param int $line
-     *
-     * @return void
-     *
      * @throws LdapException
      */
-    private function throwLastLdapErrorIfSet(int $severity, string $message, string $file, int $line) : void
+    private function throwLastLdapErrorIfSet(int $severity, string $message, string $file, int $line): void
     {
         $ldapLink = $this->getLdapLink();
         if ($ldapLink->isValid() && ($code = $ldapLink->errno())) {

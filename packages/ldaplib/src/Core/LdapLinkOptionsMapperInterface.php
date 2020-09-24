@@ -25,21 +25,16 @@ interface LdapLinkOptionsMapperInterface
      *
      * The returned array is limited to the options supported by the current PHP version.
      *
-     * @return array
-     *
      * @psalm-mutation-free
      */
-    public function getMappings() : array;
+    public function getMappings(): array;
 
     /**
      * Maps LDAP options provided by user to options for suitable for LdapLinkInterface::set_option().
      *
-     * @param  array $options
-     * @return array
-     *
      * @psalm-mutation-free
      */
-    public function mapOptions(array $options) : array;
+    public function mapOptions(array $options): array;
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

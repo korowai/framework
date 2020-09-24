@@ -12,28 +12,26 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Testing\Properties;
 
-use Korowai\Testing\TestCase;
 use Korowai\Testing\Properties\AbstractPropertySelector;
-use Korowai\Testing\Properties\ActualProperties;
-use Korowai\Testing\Properties\ActualPropertiesInterface;
 use Korowai\Testing\Properties\ObjectPropertySelector;
 use Korowai\Testing\Properties\PropertySelectorInterface;
-use Korowai\Testing\Properties\PropertiesInterface;
-use PHPUnit\Framework\InvalidArgumentException;
+use Korowai\Testing\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @covers \Korowai\Testing\Properties\ObjectPropertySelector
  * @covers \Korowai\Testing\Properties\AbstractPropertySelector
+ * @covers \Korowai\Testing\Properties\ObjectPropertySelector
+ *
+ * @internal
  */
 final class ObjectPropertySelectorTest extends TestCase
 {
     use ObjectPropertySelectorTestTrait;
 
     // required by ObjectPropertySelectorTestTrait
-    public function createObjectPropertySelector() : PropertySelectorInterface
+    public function createObjectPropertySelector(): PropertySelectorInterface
     {
-        return new ObjectPropertySelector;
+        return new ObjectPropertySelector();
     }
 
     //
@@ -42,12 +40,12 @@ final class ObjectPropertySelectorTest extends TestCase
     //
     //
 
-    public function test__implements__PropertySelectorInterface() : void
+    public function testImplementsPropertySelectorInterface(): void
     {
         $this->assertImplementsInterface(PropertySelectorInterface::class, ObjectPropertySelector::class);
     }
 
-    public function test__extends__AbstractPropertySelector() : void
+    public function testExtendsAbstractPropertySelector(): void
     {
         $this->assertExtendsClass(AbstractPropertySelector::class, ObjectPropertySelector::class);
     }

@@ -12,19 +12,20 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldap\Core;
 
-use Korowai\Testing\Ldaplib\TestCase;
 use Korowai\Lib\Ldap\Core\LdapLinkConfigResolver;
 use Korowai\Lib\Ldap\Core\LdapLinkConfigResolverInterface;
+use Korowai\Lib\Ldap\Core\LdapLinkOptionsMapper;
 use Korowai\Lib\Ldap\Core\LdapLinkOptionsSpecification;
 use Korowai\Lib\Ldap\Core\LdapLinkOptionsSpecificationInterface;
-use Korowai\Lib\Ldap\Core\LdapLinkOptionsMapper;
-use Korowai\Lib\Ldap\Core\LdapLinkOptionsMapperInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
+use Korowai\Testing\Ldaplib\TestCase;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Ldap\Core\LdapLinkConfigResolver
+ *
+ * @internal
  */
 final class LdapLinkConfigResolverTest extends TestCase
 {
@@ -32,11 +33,11 @@ final class LdapLinkConfigResolverTest extends TestCase
     public static function getDefaultConfig()
     {
         return [
-            'uri'  => 'ldap://localhost',
-            'tls'  => false,
+            'uri' => 'ldap://localhost',
+            'tls' => false,
             'options' => [
                 LDAP_OPT_PROTOCOL_VERSION => 3,
-            ]
+            ],
         ];
     }
 
@@ -46,7 +47,7 @@ final class LdapLinkConfigResolverTest extends TestCase
     //
     //
 
-    public function test__implements__LdapLinkConfigResolverInterface() : void
+    public function testImplementsLdapLinkConfigResolverInterface(): void
     {
         $this->assertImplementsInterface(LdapLinkConfigResolverInterface::class, LdapLinkConfigResolver::class);
     }
@@ -55,10 +56,10 @@ final class LdapLinkConfigResolverTest extends TestCase
     // __construct()
     //
 
-    public function test__construct() : void
+    public function testConstruct(): void
     {
         $specs = $this->createMock(LdapLinkOptionsSpecificationInterface::class);
-        $resolver= new LdapLinkConfigResolver($specs);
+        $resolver = new LdapLinkConfigResolver($specs);
 
         $this->assertInstanceOf(OptionsResolver::class, $resolver->getOptionsResolver());
         $this->assertSame($specs, $resolver->getOptionsSpecification());
@@ -68,11 +69,11 @@ final class LdapLinkConfigResolverTest extends TestCase
     // resolve()
     //
 
-    public static function prov__resolve() : array
+    public static function prov__resolve(): array
     {
         $defaults = static::getDefaultConfig();
 
-        $validUris =  [
+        $validUris = [
             'ldap://',
             'ldap:///',
             'ldap://localhost',
@@ -99,7 +100,7 @@ final class LdapLinkConfigResolverTest extends TestCase
             'ldap://example.org/dc=example,dc=org????1.2.3=10,4.5.6',
         ];
 
-        $validUriCases = array_map(function (string $uri) use ($defaults) : array {
+        $validUriCases = array_map(function (string $uri) use ($defaults): array {
             return [
                 'config' => [
                     'uri' => $uri,
@@ -112,7 +113,7 @@ final class LdapLinkConfigResolverTest extends TestCase
 
         return array_merge([
             [
-                'config' => [ ],
+                'config' => [],
                 'expect' => $defaults,
             ],
             [
@@ -126,7 +127,7 @@ final class LdapLinkConfigResolverTest extends TestCase
             [
                 'config' => [
                     'options' => [
-                        'sizelimit' => 123
+                        'sizelimit' => 123,
                     ],
                 ],
                 'expect' => [
@@ -134,17 +135,17 @@ final class LdapLinkConfigResolverTest extends TestCase
                         LDAP_OPT_PROTOCOL_VERSION => 3,
                         LDAP_OPT_SIZELIMIT => 123,
                     ],
-                ] + $defaults
-            ]
+                ] + $defaults,
+            ],
         ], $validUriCases);
     }
 
     /**
      * @dataProvider prov__resolve
      */
-    public function test__resolve(array $config, array $expect) : void
+    public function testResolve(array $config, array $expect): void
     {
-        $mapper = new LdapLinkOptionsMapper;
+        $mapper = new LdapLinkOptionsMapper();
         $specs = new LdapLinkOptionsSpecification($mapper);
         $resolver = new LdapLinkConfigResolver($specs);
 
@@ -161,19 +162,19 @@ final class LdapLinkConfigResolverTest extends TestCase
         $this->assertSame($expect, $resolved);
     }
 
-    public static function prov__resolve__withInvalidConfig() : array
+    public static function prov__resolve__withInvalidConfig(): array
     {
         $invalidUris = [
-            "",
-            "ldap",
-            "ldap:",
-            "ldap:/",
-            "ldap://localhost:",
-            "ldap://localhost:0",
-            "ldap://localhost:65536",
+            '',
+            'ldap',
+            'ldap:',
+            'ldap:/',
+            'ldap://localhost:',
+            'ldap://localhost:0',
+            'ldap://localhost:65536',
         ];
 
-        $cases = array_map(function (string $uri) : array {
+        $cases = array_map(function (string $uri): array {
             return [
                 'config' => [
                     'uri' => $uri,
@@ -181,7 +182,7 @@ final class LdapLinkConfigResolverTest extends TestCase
                 'expect' => [
                     'exception' => InvalidOptionsException::class,
                     'message' => 'The option "uri" with value "'.$uri.'" is invalid',
-                ]
+                ],
             ];
         }, $invalidUris);
 
@@ -191,7 +192,7 @@ final class LdapLinkConfigResolverTest extends TestCase
             ],
             'expect' => [
                 'exception' => InvalidOptionsException::class,
-                'message' => 'The option "tls" with value 123 is expected to be of type "bool", but is of type "int"'
+                'message' => 'The option "tls" with value 123 is expected to be of type "bool", but is of type "int"',
             ],
         ];
 
@@ -201,9 +202,9 @@ final class LdapLinkConfigResolverTest extends TestCase
     /**
      * @dataProvider prov__resolve__withInvalidConfig
      */
-    public function test__resolve__withInvalidConfig(array $config, array $expect) : void
+    public function testResolveWithInvalidConfig(array $config, array $expect): void
     {
-        $mapper = new LdapLinkOptionsMapper;
+        $mapper = new LdapLinkOptionsMapper();
         $specs = new LdapLinkOptionsSpecification($mapper);
         $resolver = new LdapLinkConfigResolver($specs);
 

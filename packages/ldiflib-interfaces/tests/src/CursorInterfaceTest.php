@@ -14,23 +14,24 @@ namespace Korowai\Tests\Lib\Ldif;
 
 use Korowai\Lib\Ldif\CursorInterface;
 use Korowai\Lib\Ldif\LocationInterface;
-
 use Korowai\Testing\LdiflibInterfaces\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Tests\Lib\Ldif\CursorInterfaceTrait
+ *
+ * @internal
  */
 final class CursorInterfaceTest extends TestCase
 {
     public static function createDummyInstance()
     {
-        return new class implements CursorInterface {
+        return new class() implements CursorInterface {
             use CursorInterfaceTrait;
         };
     }
 
-    public static function prov__extendsInterface() : array
+    public static function prov__extendsInterface(): array
     {
         return [
             [LocationInterface::class],
@@ -40,12 +41,12 @@ final class CursorInterfaceTest extends TestCase
     /**
      * @dataProvider prov__extendsInterface
      */
-    public function test__extendsInterface(string $extends) : void
+    public function testExtendsInterface(string $extends): void
     {
         $this->assertImplementsInterface($extends, CursorInterface::class);
     }
 
-    public function test__dummyImplementation() : void
+    public function testDummyImplementation(): void
     {
         $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(CursorInterface::class, $dummy);

@@ -12,21 +12,23 @@ declare(strict_types=1);
 
 namespace Korowai\Testing\Ldaplib\Container\PhpDi;
 
+use function Korowai\Ldaplib\config_path;
 use Korowai\Testing\Container\PhpDi\TestCase;
 use Korowai\Testing\Ldaplib\Container\ExamineConfiguredContainerTrait;
-use function Korowai\Ldaplib\config_path;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Testing\Ldaplib\Container\ExamineConfiguredContainerTrait
+ *
+ * @internal
  */
 final class ContainerIntegrationTest extends TestCase
 {
     use ExamineConfiguredContainerTrait;
 
-    public function provideContainerConfigs() : array
+    public function provideContainerConfigs(): array
     {
-        return [ config_path('php-di/services.php') ];
+        return [config_path('php-di/services.php')];
     }
 }
 

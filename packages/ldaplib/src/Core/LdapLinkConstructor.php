@@ -12,10 +12,9 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldap\Core;
 
-use Korowai\Lib\Ldap\ErrorException;
-
 use function Korowai\Lib\Context\with;
 use function Korowai\Lib\Error\exceptionErrorHandler;
+use Korowai\Lib\Ldap\ErrorException;
 
 /**
  * Creates new instances of LdapLink by calling LdapLink::connect().
@@ -27,14 +26,16 @@ final class LdapLinkConstructor implements LdapLinkConstructorInterface
     /**
      * {@inheritdoc}
      */
-    public function connect(string $host_or_uri = null, int $port = 389) : LdapLinkInterface
+    public function connect(string $host_or_uri = null, int $port = 389): LdapLinkInterface
     {
         /** @psalm-suppress ImpureFunctionCall */
         $args = func_get_args();
-        return with(exceptionErrorHandler(ErrorException::class))(function () use ($args) : LdapLinkInterface {
-            if (($link = LdapLink::connect(...$args)) === false) {
+
+        return with(exceptionErrorHandler(ErrorException::class))(function () use ($args): LdapLinkInterface {
+            if (false === ($link = LdapLink::connect(...$args))) {
                 trigger_error('LdapLink::connect() returned false', E_USER_ERROR);
             }
+
             return $link;
         });
     }

@@ -30,8 +30,6 @@ interface VersionSpecInterface extends NodeInterface
 {
     /**
      * Returns the version number.
-     *
-     * @return int
      */
     public function getVersion(): int;
 }

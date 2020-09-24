@@ -30,9 +30,9 @@ trait ExceptionLog
     {
         if (count($this->exceptions) < 1) {
             return null;
-        } else {
-            return $this->exceptions[count($this->exceptions)-1];
         }
+
+        return $this->exceptions[count($this->exceptions) - 1];
     }
 }
 

@@ -23,8 +23,6 @@ interface DnSpecInterface extends NodeInterface
 {
     /**
      * Returns the DN string.
-     *
-     * @return string
      */
     public function getDn(): string;
 }

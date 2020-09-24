@@ -23,12 +23,11 @@ interface ObjectPropertiesComparatorInterface
      * Returns actual *$object* properties in a form suitable for direct comparison or for representation. The returned
      * object contains only properties that are expected by this constraint.
      *
-     * @param  object $object
-     * @param  bool $represenation
+     * @param bool $represenation
      *
      * @return array|ObjectPropertiesInterface
-     *      If *$representation* is false, returns an array suitable for comparison, if *$representation* is true,
-     *      returns an instance of ObjectPropertiesInterface suitable for representation with exporter.
+     *                                         If *$representation* is false, returns an array suitable for comparison, if *$representation* is true,
+     *                                         returns an instance of ObjectPropertiesInterface suitable for representation with exporter
      */
     public function getActualProperties(object $object, bool $representation);
 
@@ -36,11 +35,11 @@ interface ObjectPropertiesComparatorInterface
      * Returns array of expected properties to be used for comparison. The
      * method may also apply its own transformations to particular properties.
      *
-     * @param  bool $represenation
+     * @param bool $represenation
      *
      * @return array|ObjectPropertiesInterface
-     *      If *$representation* is false, returns an array suitable for comparison, if *$representation* is true,
-     *      returns an instance of ObjectPropertiesInterface suitable for representation with exporter.
+     *                                         If *$representation* is false, returns an array suitable for comparison, if *$representation* is true,
+     *                                         returns an instance of ObjectPropertiesInterface suitable for representation with exporter
      */
     public function getExpectedProperties(bool $representation);
 }

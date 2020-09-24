@@ -12,66 +12,43 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Context;
 
-use Korowai\Testing\TestCase;
-
 use Korowai\Lib\Context\ContextFactoryInterface;
 use Korowai\Lib\Context\ContextFactoryStack;
 use Korowai\Lib\Context\ContextFactoryStackInterface;
 use Korowai\Lib\Context\ContextManagerInterface;
+use Korowai\Testing\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Context\ContextFactoryStack
+ *
+ * @internal
  */
 final class ContextFactoryStackTest extends TestCase
 {
     use \Korowai\Testing\Basiclib\SingletonTestTrait;
 
-    public static function getSingletonClassUnderTest() : string
+    public static function getSingletonClassUnderTest(): string
     {
         return ContextFactoryStack::class;
     }
 
-    protected function getDummyContextFactory()
-    {
-        return new class implements ContextFactoryInterface {
-            public function getContextManager($arg) : ?ContextManagerInterface
-            {
-                return null;
-            }
-        };
-    }
-
-    protected function getDummyContextManager()
-    {
-        return new class implements ContextManagerInterface {
-            public function enterContext()
-            {
-                return $this;
-            }
-
-            public function exitContext(\Throwable $exception = null) : bool
-            {
-                return false;
-            }
-        };
-    }
-
-    public function test__implements__ContextFactoryStackInterface() : void
+    public function testImplementsContextFactoryStackInterface(): void
     {
         $this->assertImplementsInterface(ContextFactoryStackInterface::class, ContextFactoryStack::class);
     }
 
-    public function test__implements__ContextFactoryInterface() : void
+    public function testImplementsContextFactoryInterface(): void
     {
         $this->assertImplementsInterface(ContextFactoryInterface::class, ContextFactoryStack::class);
     }
 
     /**
      * Need to run separate process to deal with a fresh singleton instance.
+     *
      * @runInSeparateProcess
      */
-    public function test__basicStackMethods() : void
+    public function testBasicStackMethods(): void
     {
         $f0 = $this->getDummyContextFactory();
         $f1 = $this->getDummyContextFactory();
@@ -107,9 +84,10 @@ final class ContextFactoryStackTest extends TestCase
 
     /**
      * Need to run separate process to deal with a fresh singleton instance.
+     *
      * @runInSeparateProcess
      */
-    public function test__getContextManager__onEmptyStack() : void
+    public function testGetContextManagerOnEmptyStack(): void
     {
         $stack = ContextFactoryStack::getInstance();
 
@@ -118,9 +96,10 @@ final class ContextFactoryStackTest extends TestCase
 
     /**
      * Need to run separate process to deal with a fresh singleton instance.
+     *
      * @runInSeparateProcess
      */
-    public function test__getContextManager() : void
+    public function testGetContextManager(): void
     {
         $cm0 = $this->getDummyContextManager();
         $cm1 = $this->getDummyContextManager();
@@ -130,17 +109,20 @@ final class ContextFactoryStackTest extends TestCase
         $f2 = $this->createMock(ContextFactoryInterface::class);
 
         $f0->expects($this->exactly(3))
-           ->method('getContextManager')
-           ->withConsecutive(['foo'], ['foo'], ['baz'])
-           ->willReturn($cm0);
+            ->method('getContextManager')
+            ->withConsecutive(['foo'], ['foo'], ['baz'])
+            ->willReturn($cm0)
+        ;
         $f1->expects($this->once())
-           ->method('getContextManager')
-           ->with('bar')
-           ->willReturn($cm1);
+            ->method('getContextManager')
+            ->with('bar')
+            ->willReturn($cm1)
+        ;
         $f2->expects($this->once())
-           ->method('getContextManager')
-           ->with('baz')
-           ->willReturn(null);
+            ->method('getContextManager')
+            ->with('baz')
+            ->willReturn(null)
+        ;
 
         $stack = ContextFactoryStack::getInstance();
 
@@ -155,6 +137,31 @@ final class ContextFactoryStackTest extends TestCase
 
         $stack->push($f2);
         $this->assertSame($cm0, $stack->getContextManager('baz'));
+    }
+
+    protected function getDummyContextFactory()
+    {
+        return new class() implements ContextFactoryInterface {
+            public function getContextManager($arg): ?ContextManagerInterface
+            {
+                return null;
+            }
+        };
+    }
+
+    protected function getDummyContextManager()
+    {
+        return new class() implements ContextManagerInterface {
+            public function enterContext()
+            {
+                return $this;
+            }
+
+            public function exitContext(\Throwable $exception = null): bool
+            {
+                return false;
+            }
+        };
     }
 }
 

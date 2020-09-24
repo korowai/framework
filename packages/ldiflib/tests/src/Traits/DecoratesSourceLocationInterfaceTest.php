@@ -12,34 +12,36 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldif\Traits;
 
+use Korowai\Lib\Ldif\SourceLocationInterface;
 use Korowai\Lib\Ldif\Traits\DecoratesSourceLocationInterface;
 use Korowai\Lib\Ldif\Traits\ExposesSourceLocationInterface;
-use Korowai\Lib\Ldif\SourceLocationInterface;
-
 use Korowai\Testing\Ldiflib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Ldif\Traits\DecoratesSourceLocationInterface
+ *
+ * @internal
  */
 final class DecoratesSourceLocationInterfaceTest extends TestCase
 {
     public function getTestObject()
     {
-        return new class {
+        return new class() {
             use DecoratesSourceLocationInterface;
         };
     }
 
-    public function test__uses__ExposesSourceLocationInterface() : void
+    public function testUsesExposesSourceLocationInterface(): void
     {
         $this->assertUsesTrait(ExposesSourceLocationInterface::class, DecoratesSourceLocationInterface::class);
     }
 
-    public function test__sourceLocation() : void
+    public function testSourceLocation(): void
     {
         $location = $this->getMockBuilder(SourceLocationInterface::class)
-                         ->getMockForAbstractClass();
+            ->getMockForAbstractClass()
+        ;
 
         $obj = $this->getTestObject();
         $this->assertNull($obj->getSourceLocation());

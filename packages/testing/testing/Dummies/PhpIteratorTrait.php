@@ -17,11 +17,11 @@ namespace Korowai\Testing\Dummies;
  */
 trait PhpIteratorTrait
 {
-    public $current = null;
-    public $key = null;
-    public $next = null;
-    public $rewind = null;
-    public $valid = null;
+    public $current;
+    public $key;
+    public $next;
+    public $rewind;
+    public $valid;
 
     public function current()
     {

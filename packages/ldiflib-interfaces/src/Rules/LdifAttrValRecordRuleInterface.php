@@ -23,24 +23,18 @@ interface LdifAttrValRecordRuleInterface extends RuleInterface
 {
     /**
      * Returns the nested DnSpecRuleInteface.
-     *
-     * @return DnSpecRuleInterface
      */
-    public function getDnSpecRule() : DnSpecRuleInterface;
+    public function getDnSpecRule(): DnSpecRuleInterface;
 
     /**
      * Returns the nested SepRuleInteface.
-     *
-     * @return SepRuleInterface
      */
-    public function getSepRule() : SepRuleInterface;
+    public function getSepRule(): SepRuleInterface;
 
     /**
      * Returns the nested AttrValSpecRuleInteface.
-     *
-     * @return AttrValSpecRuleInterface
      */
-    public function getAttrValSpecRule() : AttrValSpecRuleInterface;
+    public function getAttrValSpecRule(): AttrValSpecRuleInterface;
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

@@ -12,27 +12,28 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldif\Rules;
 
-use Korowai\Lib\Ldif\Rules\AbstractRule;
-use Korowai\Lib\Ldif\RuleInterface;
 use Korowai\Lib\Ldif\ParserStateInterface;
-
+use Korowai\Lib\Ldif\RuleInterface;
+use Korowai\Lib\Ldif\Rules\AbstractRule;
 use Korowai\Testing\Ldiflib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Ldif\Rules\AbstractRule
+ *
+ * @internal
  */
 final class AbstractRuleTest extends TestCase
 {
-    public function test__implements__RuleInterface() : void
+    public function testImplementsRuleInterface(): void
     {
         $this->assertImplementsInterface(RuleInterface::class, AbstractRule::class);
     }
 
     public static function prov__repeat()
     {
-        $rule = new class extends AbstractRule {
-            public function parse(ParserStateInterface $state, &$value = null, bool $trying = false) : bool
+        $rule = new class() extends AbstractRule {
+            public function parse(ParserStateInterface $state, &$value = null, bool $trying = false): bool
             {
                 $cursor = $state->getCursor();
                 $subject = $cursor->getString();
@@ -40,19 +41,21 @@ final class AbstractRuleTest extends TestCase
                     '/\G(?<tag>\w+):\s*(?<val>\w+)\n/D',
                     $subject,
                     $matches,
-                    PREG_UNMATCHED_AS_NULL|PREG_OFFSET_CAPTURE,
+                    PREG_UNMATCHED_AS_NULL | PREG_OFFSET_CAPTURE,
                     $cursor->getOffset()
                 );
                 if (!$m) {
                     if (!$trying) {
-                        $state->errorHere("syntax error");
+                        $state->errorHere('syntax error');
                     }
                     $value = null;
+
                     return false;
                 }
 
                 $cursor->moveTo($matches[0][1] + strlen($matches[0][0]));
                 $value = $matches['val'];
+
                 return true;
             }
         };
@@ -60,10 +63,10 @@ final class AbstractRuleTest extends TestCase
         return [
             // #0
             [
-                'rule'      => $rule,
-                'source'    => ["", 0],
-                'args'      => [],
-                'expect'    => [
+                'rule' => $rule,
+                'source' => ['', 0],
+                'args' => [],
+                'expect' => [
                     'result' => true,
                     'value' => [],
                     'state' => [
@@ -78,10 +81,10 @@ final class AbstractRuleTest extends TestCase
 
             // #1
             [
-                'rule'      => $rule,
-                'source'    => ["", 0],
-                'args'      => [1],
-                'expect'    => [
+                'rule' => $rule,
+                'source' => ['', 0],
+                'args' => [1],
+                'expect' => [
                     'result' => false,
                     'value' => [],
                     'state' => [
@@ -98,14 +101,13 @@ final class AbstractRuleTest extends TestCase
                 ],
             ],
 
-            //
             [
-                'rule'      => $rule,
+                'rule' => $rule,
                 //               00000000 0011111
                 //               01234567 8901234
-                'source'    => ["foo: FOO\nbar:", 0],
-                'args'      => [1],
-                'expect'    => [
+                'source' => ["foo: FOO\nbar:", 0],
+                'args' => [1],
+                'expect' => [
                     'result' => true,
                     'value' => [['FOO', 5]],
                     'state' => [
@@ -118,14 +120,13 @@ final class AbstractRuleTest extends TestCase
                 ],
             ],
 
-            //
             [
-                'rule'      => $rule,
+                'rule' => $rule,
                 //               00000000 0011111
                 //               01234567 8901234
-                'source'    => ["foo: FOO\nbar:", 0],
-                'args'      => [2],
-                'expect'    => [
+                'source' => ["foo: FOO\nbar:", 0],
+                'args' => [2],
+                'expect' => [
                     'result' => false,
                     'value' => [['FOO', 5]],
                     'state' => [
@@ -142,14 +143,13 @@ final class AbstractRuleTest extends TestCase
                 ],
             ],
 
-            //
             [
-                'rule'      => $rule,
+                'rule' => $rule,
                 //               00000000 001111111 11
                 //               01234567 890123456 78
-                'source'    => ["foo: FOO\nbar: BAR\n", 0],
-                'args'      => [2],
-                'expect'    => [
+                'source' => ["foo: FOO\nbar: BAR\n", 0],
+                'args' => [2],
+                'expect' => [
                     'result' => true,
                     'value' => [['FOO', 5], ['BAR', 14]],
                     'state' => [
@@ -162,14 +162,13 @@ final class AbstractRuleTest extends TestCase
                 ],
             ],
 
-            //
             [
-                'rule'      => $rule,
+                'rule' => $rule,
                 //               00000000 001111111 11
                 //               01234567 890123456 78
-                'source'    => ["foo: FOO\nbar: BAR\n", 0],
-                'args'      => [3],
-                'expect'    => [
+                'source' => ["foo: FOO\nbar: BAR\n", 0],
+                'args' => [3],
+                'expect' => [
                     'result' => false,
                     'value' => [['FOO', 5], ['BAR', 14]],
                     'state' => [
@@ -186,14 +185,13 @@ final class AbstractRuleTest extends TestCase
                 ],
             ],
 
-            //
             [
-                'rule'      => $rule,
+                'rule' => $rule,
                 //               00000000 001111111 11
                 //               01234567 890123456 78
-                'source'    => ["foo: FOO\nbar: BAR\n", 0],
-                'args'      => [0, 1],
-                'expect'    => [
+                'source' => ["foo: FOO\nbar: BAR\n", 0],
+                'args' => [0, 1],
+                'expect' => [
                     'result' => true,
                     'value' => [['FOO', 5]],
                     'state' => [
@@ -211,7 +209,7 @@ final class AbstractRuleTest extends TestCase
     /**
      * @dataProvider prov__repeat
      */
-    public function test__repeat(RuleInterface $rule, array $source, array $args, array $expect) : void
+    public function testRepeat(RuleInterface $rule, array $source, array $args, array $expect): void
     {
         $state = $this->getParserStateFromSource(...$source);
         $result = $rule->repeat($state, $value, ...$args);

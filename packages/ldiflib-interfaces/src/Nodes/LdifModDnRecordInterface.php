@@ -25,25 +25,19 @@ interface LdifModDnRecordInterface extends LdifChangeRecordInterface, NodeInterf
 {
     /**
      * Returns the string value of new RDN.
-     *
-     * @return string
      */
-    public function getNewRdn() : string;
+    public function getNewRdn(): string;
 
     /**
      * Returns boolean flag determining whether to delete old RDN or not.
-     *
-     * @return bool
      */
-    public function getDeleteOldRdn() : bool;
+    public function getDeleteOldRdn(): bool;
 
     /**
      * Returns the  distinguished name of new superior or null if not
      * specified.
-     *
-     * @return string|null
      */
-    public function getNewSuperior() : ?string;
+    public function getNewSuperior(): ?string;
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

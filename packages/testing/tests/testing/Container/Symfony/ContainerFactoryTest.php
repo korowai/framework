@@ -12,49 +12,49 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Testing\Container\Symfony;
 
-use Korowai\Testing\TestCase;
-use Psr\Container\ContainerInterface;
+use function Korowai\Testing\config_path;
 use Korowai\Testing\Container\ContainerFactoryInterface;
 use Korowai\Testing\Container\Symfony\ContainerFactory;
+use Korowai\Testing\TestCase;
 use Korowai\Tests\Testing\Container\ContainerFactoryTestTrait;
+use Psr\Container\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
-
-use function Korowai\Testing\config_path;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Testing\Container\Symfony\ContainerFactory
  * @covers \Korowai\Tests\Testing\Container\ContainerFactoryTestTrait
+ *
+ * @internal
  */
 final class ContainerFactoryTest extends TestCase
 {
     use ContainerFactoryTestTrait;
 
-    public function getContainerFactory() : ContainerFactoryInterface
+    public function getContainerFactory(): ContainerFactoryInterface
     {
-        return (new ContainerFactory)->setServicesVisibility([
+        return (new ContainerFactory())->setServicesVisibility([
             ContainerFactoryInterface::class => true,
             ContainerFactory::class => true,
         ]);
     }
 
-    public function getContainerFactoryClass() : string
+    public function getContainerFactoryClass(): string
     {
         return ContainerFactory::class;
     }
 
-    public function getContainerClass() : string
+    public function getContainerClass(): string
     {
         return ContainerBuilder::class;
     }
 
-    public function provideContainerConfigs() : array
+    public function provideContainerConfigs(): array
     {
-        return [ config_path('symfony/services.php') ];
+        return [config_path('symfony/services.php')];
     }
 
-    public function examineConfiguredContainer(ContainerInterface $container, $config) : void
+    public function examineConfiguredContainer(ContainerInterface $container, $config): void
     {
         $this->assertInstanceOf(ContainerFactory::class, $container->get(ContainerFactoryInterface::class));
     }

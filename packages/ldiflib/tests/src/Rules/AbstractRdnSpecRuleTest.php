@@ -12,17 +12,19 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldif\Rules;
 
-use Korowai\Lib\Ldif\Rules\AbstractRdnSpecRule;
 use Korowai\Lib\Ldif\Rules\AbstractNameSpecRule;
+use Korowai\Lib\Ldif\Rules\AbstractRdnSpecRule;
 use Korowai\Testing\Ldiflib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Ldif\Rules\AbstractRdnSpecRule
+ *
+ * @internal
  */
 final class AbstractRdnSpecRuleTest extends TestCase
 {
-    public function test__extends__AbstractNameSpecRule() : void
+    public function testExtendsAbstractNameSpecRule(): void
     {
         $this->assertExtendsClass(AbstractNameSpecRule::class, AbstractRdnSpecRule::class);
     }

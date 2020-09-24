@@ -14,16 +14,13 @@ namespace Korowai\Testing\Properties;
 
 use SebastianBergmann\Exporter\Exporter as SebastianBergmannExporter;
 use SebastianBergmann\RecursionContext\Context;
-use Korowai\Testing\Properties\PropertiesInterface;
-use Korowai\Testing\Properties\ActualPropertiesInterface;
-use Korowai\Testing\Properties\ExpectedPropertiesInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
 final class Exporter extends SebastianBergmannExporter
 {
-    public function describe(PropertiesInterface $properties) : string
+    public function describe(PropertiesInterface $properties): string
     {
         $header = 'Properties';
         if ($properties instanceof ExpectedPropertiesInterface) {
@@ -31,6 +28,7 @@ final class Exporter extends SebastianBergmannExporter
         } elseif ($properties instanceof ActualPropertiesInterface) {
             $header = 'Actual '.$header;
         }
+
         return $header;
     }
 
@@ -43,28 +41,28 @@ final class Exporter extends SebastianBergmannExporter
             $whitespace = str_repeat(' ', (int) (4 * $indentation));
 
             if (!$processed) {
-                $processed = new Context;
+                $processed = new Context();
             }
 
             if ($hash = $processed->contains($value)) {
                 return $this->describe($value);
             }
 
-            $hash   = $processed->add($value);
+            $hash = $processed->add($value);
             $values = '';
-            $array  = $this->toArray($value);
+            $array = $this->toArray($value);
 
             if (count($array) > 0) {
                 foreach ($array as $k => $v) {
                     $values .= sprintf(
-                        '%s    %s => %s' . "\n",
+                        '%s    %s => %s'."\n",
                         $whitespace,
                         $this->recursiveExport($k, $indentation),
                         $this->recursiveExport($v, $indentation + 1, $processed)
                     );
                 }
 
-                $values = "\n" . $values . $whitespace;
+                $values = "\n".$values.$whitespace;
             }
 
             return sprintf('%s (%s)', $this->describe($value), $values);
@@ -85,6 +83,7 @@ final class Exporter extends SebastianBergmannExporter
                 count($this->toArray($value)) > 0 ? '...' : ''
             );
         }
+
         return parent::shortenedExport($value);
     }
 }

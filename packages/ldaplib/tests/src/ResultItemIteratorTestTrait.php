@@ -22,18 +22,20 @@ trait ResultItemIteratorTestTrait
 {
     use AbstractResultItemIteratorTestTrait;
 
-    abstract public function getItemInterface() : string;
-    abstract public function getLdapItemInterface() : string;
+    abstract public function getItemInterface(): string;
 
-    public function test__extends__AbstractResultItemIterator() : void
+    abstract public function getLdapItemInterface(): string;
+
+    public function test__extends__AbstractResultItemIterator(): void
     {
         $this->assertExtendsClass(AbstractResultItemIterator::class, $this->getIteratorClass());
     }
 
-    public function test__construct__withAbstractLdapIterator() : void
+    public function test__construct__withAbstractLdapIterator(): void
     {
         $ldapIterator = $this->getMockBuilder(LdapResultItemIteratorInterface::class)
-                             ->getMockForAbstractClass();
+            ->getMockForAbstractClass()
+        ;
 
         $this->expectException(\TypeError::class);
         $this->expectExceptionMessage($this->getLdapIteratorInterface());
@@ -41,19 +43,22 @@ trait ResultItemIteratorTestTrait
         $this->createIteratorInstance($ldapIterator);
     }
 
-    public function test__current() : void
+    public function test__current(): void
     {
         $ldapItem = $this->getMockBuilder($this->getLdapItemInterface())
-                         ->getMockForAbstractClass();
+            ->getMockForAbstractClass()
+        ;
         $ldapIterator = $this->getMockBuilder($this->getLdapIteratorInterface())
-                             ->getMockForAbstractClass();
+            ->getMockForAbstractClass()
+        ;
 
         $iterator = $this->createIteratorInstance($ldapIterator);
 
         $ldapIterator->expects($this->exactly(2))
-                     ->method('current')
-                     ->withConsecutive([], [])
-                     ->will($this->onConsecutiveCalls($ldapItem, null));
+            ->method('current')
+            ->withConsecutive([], [])
+            ->will($this->onConsecutiveCalls($ldapItem, null))
+        ;
 
         $current = $iterator->current();
         $this->assertInstanceOf($this->getItemInterface(), $current);

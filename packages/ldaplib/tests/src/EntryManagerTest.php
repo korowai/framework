@@ -12,20 +12,22 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldap;
 
-use Korowai\Testing\Ldaplib\TestCase;
-use Korowai\Testing\Ldaplib\ExamineLdapLinkErrorHandlerTrait;
-use Korowai\Lib\Ldap\EntryManagerInterface;
-use Korowai\Lib\Ldap\EntryManager;
-use Korowai\Lib\Ldap\EntryManagerTrait;
 use Korowai\Lib\Ldap\Core\LdapLinkInterface;
 use Korowai\Lib\Ldap\Core\LdapLinkWrapperInterface;
 use Korowai\Lib\Ldap\Core\LdapLinkWrapperTrait;
+use Korowai\Lib\Ldap\EntryManager;
+use Korowai\Lib\Ldap\EntryManagerInterface;
+use Korowai\Lib\Ldap\EntryManagerTrait;
+use Korowai\Testing\Ldaplib\ExamineLdapLinkErrorHandlerTrait;
+use Korowai\Testing\Ldaplib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Ldap\EntryManager
- * @covers \Korowai\Tests\Lib\Ldap\EntryManagerTestTrait
  * @covers \Korowai\Testing\Ldaplib\ExamineLdapLinkErrorHandlerTrait
+ * @covers \Korowai\Tests\Lib\Ldap\EntryManagerTestTrait
+ *
+ * @internal
  */
 final class EntryManagerTest extends TestCase
 {
@@ -33,7 +35,7 @@ final class EntryManagerTest extends TestCase
     use ExamineLdapLinkErrorHandlerTrait;
 
     // required by EntryManagerTestTrait
-    public function createEntryManagerInstance(LdapLinkinterface $ldapLink) : EntryManagerInterface
+    public function createEntryManagerInstance(LdapLinkinterface $ldapLink): EntryManagerInterface
     {
         return new EntryManager($ldapLink);
     }
@@ -44,30 +46,31 @@ final class EntryManagerTest extends TestCase
     //
     //
 
-    public function test__implements__EntryManagerInterface() : void
+    public function testImplementsEntryManagerInterface(): void
     {
         $this->assertImplementsInterface(EntryManagerInterface::class, EntryManager::class);
     }
 
-    public function test__implements__LdapLinkWrapperInterface() : void
+    public function testImplementsLdapLinkWrapperInterface(): void
     {
         $this->assertImplementsInterface(LdapLinkWrapperInterface::class, EntryManager::class);
     }
 
-    public function test__uses__EntryManagerTrait() : void
+    public function testUsesEntryManagerTrait(): void
     {
         $this->assertUsesTrait(EntryManagerTrait::class, EntryManager::class);
     }
 
-    public function test__uses__LdapLinkWrapperTrait() : void
+    public function testUsesLdapLinkWrapperTrait(): void
     {
         $this->assertUsesTrait(LdapLinkWrapperTrait::class, EntryManager::class);
     }
 
-    public function test__construct() : void
+    public function testConstruct(): void
     {
         $link = $this->getMockBuilder(LdapLinkInterface::class)
-                     ->getMockForAbstractClass();
+            ->getMockForAbstractClass()
+        ;
         $manager = $this->createEntryManagerInstance($link);
         $this->assertSame($link, $manager->getLdapLink());
     }

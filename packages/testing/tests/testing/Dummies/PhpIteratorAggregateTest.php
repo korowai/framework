@@ -12,29 +12,31 @@ declare(strict_types=1);
 
 namespace Korowai\Tests;
 
-use Korowai\Testing\TestCase;
 use Korowai\Testing\Dummies\PhpIteratorAggregateTrait;
+use Korowai\Testing\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Testing\Dummies\PhpIteratorAggregateTrait
+ *
+ * @internal
  */
 final class PhpIteratorAggregateTest extends TestCase
 {
     public static function createDummyInstance()
     {
-        return new class implements \IteratorAggregate {
+        return new class() implements \IteratorAggregate {
             use PhpIteratorAggregateTrait;
         };
     }
 
-    public function test__dummyImplementation() : void
+    public function testDummyImplementation(): void
     {
         $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(\IteratorAggregate::class, $dummy);
     }
 
-    public function test__getIterator() : void
+    public function testGetIterator(): void
     {
         $dummy = $this->createDummyInstance();
 

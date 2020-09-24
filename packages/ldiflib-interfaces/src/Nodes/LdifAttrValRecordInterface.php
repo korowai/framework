@@ -12,8 +12,8 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldif\Nodes;
 
-use Korowai\Lib\Ldif\RecordInterface;
 use Korowai\Lib\Ldif\NodeInterface;
+use Korowai\Lib\Ldif\RecordInterface;
 
 /**
  * Interface for record objects representing

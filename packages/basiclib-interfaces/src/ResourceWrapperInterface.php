@@ -29,22 +29,17 @@ interface ResourceWrapperInterface
     /**
      * Checks whether the wrapped resource is valid.
      *
-     * @return bool
-     *
      * @psalm-mutation-free
      */
-    public function isValid() : bool;
+    public function isValid(): bool;
 
     /**
-     * Returns whether the object supports resource of given $type
-     *
-     * @param  string $type
-     * @return bool
+     * Returns whether the object supports resource of given $type.
      *
      * @psalm-mutation-free
      * @psalm-pure
      */
-    public function supportsResourceType(string $type) : bool;
+    public function supportsResourceType(string $type): bool;
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

@@ -30,9 +30,9 @@ trait ResultLog
     {
         if (count($this->results) < 1) {
             return null;
-        } else {
-            return $this->results[count($this->results)-1];
         }
+
+        return $this->results[count($this->results) - 1];
     }
 }
 

@@ -22,15 +22,16 @@ final class DefaultContextFactory implements ContextFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function getContextManager($arg) : ?ContextManagerInterface
+    public function getContextManager($arg): ?ContextManagerInterface
     {
         if (is_a($arg, ContextManagerInterface::class)) {
             return $arg;
-        } elseif (is_resource($arg)) {
-            return new ResourceContextManager($arg);
-        } else {
-            return new TrivialValueWrapper($arg);
         }
+        if (is_resource($arg)) {
+            return new ResourceContextManager($arg);
+        }
+
+        return new TrivialValueWrapper($arg);
     }
 }
 

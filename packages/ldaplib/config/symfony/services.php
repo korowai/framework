@@ -12,11 +12,10 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldap;
 
-use Psr\Container\ContainerInterface;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 
-return function (ContainerConfigurator $configurator) : void {
+return function (ContainerConfigurator $configurator): void {
     $services = $configurator->services();
 
     $services->alias(LdapFactoryInterface::class, LdapFactory::class);
@@ -27,24 +26,28 @@ return function (ContainerConfigurator $configurator) : void {
     $services->alias(Core\LdapLinkOptionsSpecificationInterface::class, Core\LdapLinkOptionsSpecification::class);
 
     $services->set(LdapFactory::class)
-             ->args([
-                 service(Core\LdapLinkFactoryInterface::class),
-                 service(Core\LdapLinkConfigResolverInterface::class)
-             ]);
+        ->args([
+            service(Core\LdapLinkFactoryInterface::class),
+            service(Core\LdapLinkConfigResolverInterface::class),
+        ])
+    ;
 
     $services->set(Core\LdapLinkConstructor::class);
     $services->set(Core\LdapLinkConfigResolver::class)
-             ->args([
-                 service(Core\LdapLinkOptionsSpecificationInterface::class)
-             ]);
+        ->args([
+            service(Core\LdapLinkOptionsSpecificationInterface::class),
+        ])
+    ;
     $services->set(Core\LdapLinkFactory::class)
-             ->args([
-                 service(Core\LdapLinkConstructorInterface::class)
-             ]);
+        ->args([
+            service(Core\LdapLinkConstructorInterface::class),
+        ])
+    ;
     $services->set(Core\LdapLinkOptionsMapper::class);
 
     $services->set(Core\LdapLinkOptionsSpecification::class)
-             ->args([
-                 service(Core\LdapLinkOptionsMapperInterface::class)
-             ]);
+        ->args([
+            service(Core\LdapLinkOptionsMapperInterface::class),
+        ])
+    ;
 };

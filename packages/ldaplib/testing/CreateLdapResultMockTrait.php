@@ -12,8 +12,8 @@ declare(strict_types=1);
 
 namespace Korowai\Testing\Ldaplib;
 
-use Korowai\Lib\Ldap\Core\LdapResultInterface;
 use Korowai\Lib\Ldap\Core\LdapLinkInterface;
+use Korowai\Lib\Ldap\Core\LdapResultInterface;
 use PHPUnit\Framework\MockObject\MockBuilder;
 use PHPUnit\Framework\MockObject\Rule\AnyInvokedCount;
 
@@ -23,20 +23,21 @@ use PHPUnit\Framework\MockObject\Rule\AnyInvokedCount;
 trait CreateLdapResultMockTrait
 {
     abstract public function getMockBuilder(string $className): MockBuilder;
-    abstract public static function any() : AnyInvokedCount;
+
+    abstract public static function any(): AnyInvokedCount;
 
     private function createLdapResultMock(
         LdapLinkInterface $link = null,
         $resource = null,
         array $methods = []
-    ) : LdapResultInterface {
+    ): LdapResultInterface {
         $builder = $this->getMockBuilder(LdapResultInterface::class);
 
-        if ($link !== null && !in_array('getLdapLink', $methods)) {
+        if (null !== $link && !in_array('getLdapLink', $methods)) {
             $methods[] = 'getLdapLink';
         }
 
-        if ($resource !== null && !in_array('getResource', $methods)) {
+        if (null !== $resource && !in_array('getResource', $methods)) {
             $methods[] = 'getResource';
         }
 
@@ -44,16 +45,18 @@ trait CreateLdapResultMockTrait
 
         $mock = $builder->getMockForAbstractClass();
 
-        if ($link !== null) {
+        if (null !== $link) {
             $mock->expects($this->any())
-                   ->method('getLdapLink')
-                   ->willReturn($link);
+                ->method('getLdapLink')
+                ->willReturn($link)
+            ;
         }
 
-        if ($resource !== null) {
+        if (null !== $resource) {
             $mock->expects($this->any())
-                   ->method('getResource')
-                   ->willReturn($resource);
+                ->method('getResource')
+                ->willReturn($resource)
+            ;
         }
 
         return $mock;

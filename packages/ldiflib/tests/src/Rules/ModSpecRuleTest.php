@@ -12,46 +12,47 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldif\Rules;
 
-use Korowai\Lib\Ldif\Rules\ModSpecRule;
-use Korowai\Lib\Ldif\Rules\AbstractRule;
-use Korowai\Lib\Ldif\RuleInterface;
-use Korowai\Lib\Ldif\Rules\ModSpecInitRule;
-use Korowai\Lib\Ldif\Rules\AttrValSpecRule;
 use Korowai\Lib\Ldif\Nodes\ModSpecInterface;
 use Korowai\Lib\Ldif\Nodes\ValueSpecInterface;
+use Korowai\Lib\Ldif\Rules\AbstractRule;
+use Korowai\Lib\Ldif\Rules\AttrValSpecRule;
+use Korowai\Lib\Ldif\Rules\ModSpecInitRule;
+use Korowai\Lib\Ldif\Rules\ModSpecRule;
 use Korowai\Testing\Ldiflib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Ldif\Rules\ModSpecRule
+ *
+ * @internal
  */
 final class ModSpecRuleTest extends TestCase
 {
-    public function test__extends__AbstractRule() : void
+    public function testExtendsAbstractRule(): void
     {
         $this->assertExtendsClass(AbstractRule::class, ModSpecRule::class);
     }
 
     public static function prov__construct()
     {
-        $modSpecInitRule = new ModSpecInitRule;
-        $attrValSpecRule = new AttrValSpecRule;
+        $modSpecInitRule = new ModSpecInitRule();
+        $attrValSpecRule = new AttrValSpecRule();
 
         return [
             '__construct()' => [
-                'args'   => [],
+                'args' => [],
                 'expect' => [
-                ]
+                ],
             ],
             '__construct([...])' => [
-                'args'   => [[
+                'args' => [[
                     'modSpecInitRule' => $modSpecInitRule,
                     'attrValSpecRule' => $attrValSpecRule,
                 ]],
                 'expect' => [
                     'getModSpecInitRule()' => $modSpecInitRule,
                     'getAttrValSpecRule()' => $attrValSpecRule,
-                ]
+                ],
             ],
         ];
     }
@@ -59,7 +60,7 @@ final class ModSpecRuleTest extends TestCase
     /**
      * @dataProvider prov__construct
      */
-    public function test__construct(array $args, array $expect) : void
+    public function testConstruct(array $args, array $expect): void
     {
         $rule = new ModSpecRule(...$args);
         $this->assertObjectHasPropertiesIdenticalTo($expect, $rule);
@@ -76,30 +77,30 @@ final class ModSpecRuleTest extends TestCase
                 //            0000000 00011111111112222222
                 //            0123456 78901234567890123456
                 'source' => ["add: cn\n-", 0],
-                'args'   => [],
+                'args' => [],
                 'expect' => [
                     'result' => true,
                     'value' => [
                         'getModType()' => 'add',
                         'getAttribute()' => 'cn',
-                        'getAttrValSpecs()' => []
+                        'getAttrValSpecs()' => [],
                     ],
                     'state' => [
                         'getCursor()' => self::objectHasPropertiesIdenticalTo([
                             'getOffset()' => 9,
                             'getSourceOffset()' => 9,
-                            'getSourceCharOffset()' => 9
+                            'getSourceCharOffset()' => 9,
                         ]),
                         'getErrors()' => [],
                         'getRecords()' => [],
-                    ]
-                ]
+                    ],
+                ],
             ],
             'add: cn\ncn: foo\n-' => [
                 //            0000000 00011111 111112222222
                 //            0123456 78901234 567890123456
                 'source' => ["add: cn\ncn: foo\n-", 0],
-                'args'   => [],
+                'args' => [],
                 'expect' => [
                     'result' => true,
                     'value' => [
@@ -111,27 +112,27 @@ final class ModSpecRuleTest extends TestCase
                                 'getValueSpec()' => self::objectHasPropertiesIdenticalTo([
                                     'getType()' => ValueSpecInterface::TYPE_SAFE,
                                     'getSpec()' => 'foo',
-                                    'getContent()' => 'foo'
-                                ])
-                            ])
-                        ]
+                                    'getContent()' => 'foo',
+                                ]),
+                            ]),
+                        ],
                     ],
                     'state' => [
                         'getCursor()' => self::objectHasPropertiesIdenticalTo([
                             'getOffset()' => 17,
                             'getSourceOffset()' => 17,
-                            'getSourceCharOffset()' => 17
+                            'getSourceCharOffset()' => 17,
                         ]),
                         'getErrors()' => [],
                         'getRecords()' => [],
-                    ]
-                ]
+                    ],
+                ],
             ],
             'add: cn\ncn: foo\ncn:: YmFy\n-' => [
                 //            0000000 00011111 1111122222 222
                 //            0123456 78901234 5678901234 567
                 'source' => ["add: cn\ncn: foo\ncn:: YmFy\n-", 0],
-                'args'   => [],
+                'args' => [],
                 'expect' => [
                     'result' => true,
                     'value' => [
@@ -143,81 +144,81 @@ final class ModSpecRuleTest extends TestCase
                                 'getValueSpec()' => self::objectHasPropertiesIdenticalTo([
                                     'getType()' => ValueSpecInterface::TYPE_SAFE,
                                     'getSpec()' => 'foo',
-                                    'getContent()' => 'foo'
-                                ])
+                                    'getContent()' => 'foo',
+                                ]),
                             ]),
                             self::objectHasPropertiesIdenticalTo([
                                 'getAttribute()' => 'cn',
                                 'getValueSpec()' => self::objectHasPropertiesIdenticalTo([
                                     'getType()' => ValueSpecInterface::TYPE_BASE64,
                                     'getSpec()' => 'YmFy',
-                                    'getContent()' => 'bar'
-                                ])
-                            ])
-                        ]
+                                    'getContent()' => 'bar',
+                                ]),
+                            ]),
+                        ],
                     ],
                     'state' => [
                         'getCursor()' => self::objectHasPropertiesIdenticalTo([
                             'getOffset()' => 27,
                             'getSourceOffset()' => 27,
-                            'getSourceCharOffset()' => 27
+                            'getSourceCharOffset()' => 27,
                         ]),
                         'getErrors()' => [],
                         'getRecords()' => [],
-                    ]
-                ]
+                    ],
+                ],
             ],
             'delete: cn\n-' => [
                 //            0000000000 11111111112222222
                 //            0123456789 01234567890123456
                 'source' => ["delete: cn\n-", 0],
-                'args'   => [],
+                'args' => [],
                 'expect' => [
                     'result' => true,
                     'value' => [
                         'getModType()' => 'delete',
                         'getAttribute()' => 'cn',
-                        'getAttrValSpecs()' => []
+                        'getAttrValSpecs()' => [],
                     ],
                     'state' => [
                         'getCursor()' => self::objectHasPropertiesIdenticalTo([
                             'getOffset()' => 12,
                             'getSourceOffset()' => 12,
-                            'getSourceCharOffset()' => 12
+                            'getSourceCharOffset()' => 12,
                         ]),
                         'getErrors()' => [],
                         'getRecords()' => [],
-                    ]
-                ]
+                    ],
+                ],
             ],
             'replace: cn\n-' => [
                 //            00000000001 1111111112222222
                 //            01234567890 1234567890123456
                 'source' => ["replace: cn\n-", 0],
-                'args'   => [],
+                'args' => [],
                 'expect' => [
                     'result' => true,
                     'value' => [
                         'getModType()' => 'replace',
                         'getAttribute()' => 'cn',
-                        'getAttrValSpecs()' => []
+                        'getAttrValSpecs()' => [],
                     ],
                     'state' => [
                         'getCursor()' => self::objectHasPropertiesIdenticalTo([
                             'getOffset()' => 13,
                             'getSourceOffset()' => 13,
-                            'getSourceCharOffset()' => 13
+                            'getSourceCharOffset()' => 13,
                         ]),
                         'getErrors()' => [],
                         'getRecords()' => [],
-                    ]
-                ]
+                    ],
+                ],
             ],
             'replace: cn\ncn: foo\n-' => [
                 //            00000000001 11111111 12222222
                 //            01234567890 12345678 90123456
                 'source' => ["replace: cn\ncn: foo\n-", 0],
-                'args'   => [],
+                'args' => [],
                 'expect' => [
                     'result' => true,
                     'value' => [
@@ -229,27 +230,27 @@ final class ModSpecRuleTest extends TestCase
                                 'getValueSpec()' => self::objectHasPropertiesIdenticalTo([
                                     'getType()' => ValueSpecInterface::TYPE_SAFE,
                                     'getSpec()' => 'foo',
-                                    'getContent()' => 'foo'
-                                ])
-                            ])
-                        ]
+                                    'getContent()' => 'foo',
+                                ]),
+                            ]),
+                        ],
                     ],
                     'state' => [
                         'getCursor()' => self::objectHasPropertiesIdenticalTo([
                             'getOffset()' => 21,
                             'getSourceOffset()' => 21,
-                            'getSourceCharOffset()' => 21
+                            'getSourceCharOffset()' => 21,
                         ]),
                         'getErrors()' => [],
                         'getRecords()' => [],
-                    ]
-                ]
+                    ],
+                ],
             ],
             'foo: cn\n-' => [
                 //            000000000011111111112222222
                 //            012345678901234567890123456
                 'source' => ["foo: cn\n-", 0],
-                'args'   => [],
+                'args' => [],
                 'expect' => [
                     'result' => false,
                     'value' => null,
@@ -257,7 +258,7 @@ final class ModSpecRuleTest extends TestCase
                         'getCursor()' => self::objectHasPropertiesIdenticalTo([
                             'getOffset()' => 0,
                             'getSourceOffset()' => 0,
-                            'getSourceCharOffset()' => 0
+                            'getSourceCharOffset()' => 0,
                         ]),
                         'getErrors()' => [
                             self::objectHasPropertiesIdenticalTo([
@@ -266,14 +267,14 @@ final class ModSpecRuleTest extends TestCase
                             ]),
                         ],
                         'getRecords()' => [],
-                    ]
-                ]
+                    ],
+                ],
             ],
             'foo: cn\n- (trying)' => [
                 //            000000000011111111112222222
                 //            012345678901234567890123456
                 'source' => ["foo: cn\n-", 0],
-                'args'   => [true],
+                'args' => [true],
                 'expect' => [
                     'result' => false,
                     'value' => null,
@@ -281,18 +282,18 @@ final class ModSpecRuleTest extends TestCase
                         'getCursor()' => self::objectHasPropertiesIdenticalTo([
                             'getOffset()' => 0,
                             'getSourceOffset()' => 0,
-                            'getSourceCharOffset()' => 0
+                            'getSourceCharOffset()' => 0,
                         ]),
                         'getErrors()' => [],
                         'getRecords()' => [],
-                    ]
-                ]
+                    ],
+                ],
             ],
             'add: \n-' => [
                 //            00000 0000011111111112222222
                 //            01234 5678901234567890123456
                 'source' => ["add: \n-", 0],
-                'args'   => [],
+                'args' => [],
                 'expect' => [
                     'result' => false,
                     'value' => null,
@@ -300,23 +301,23 @@ final class ModSpecRuleTest extends TestCase
                         'getCursor()' => self::objectHasPropertiesIdenticalTo([
                             'getOffset()' => 6,
                             'getSourceOffset()' => 6,
-                            'getSourceCharOffset()' => 6
+                            'getSourceCharOffset()' => 6,
                         ]),
                         'getErrors()' => [
                             self::objectHasPropertiesIdenticalTo([
                                 'getSourceOffset()' => 5,
-                                'getMessage()' => 'syntax error: missing or invalid AttributeType (RFC2849)'
-                            ])
+                                'getMessage()' => 'syntax error: missing or invalid AttributeType (RFC2849)',
+                            ]),
                         ],
                         'getRecords()' => [],
-                    ]
-                ]
+                    ],
+                ],
             ],
             'add: atłybut\n-' => [
                 //            000000000111 111111122222222
                 //            012345679012 345678901234567
                 'source' => ["add: atłybut\n-", 0],
-                'args'   => [],
+                'args' => [],
                 'expect' => [
                     'result' => false,
                     'value' => null,
@@ -324,23 +325,23 @@ final class ModSpecRuleTest extends TestCase
                         'getCursor()' => self::objectHasPropertiesIdenticalTo([
                             'getOffset()' => 14,
                             'getSourceOffset()' => 14,
-                            'getSourceCharOffset()' => 13
+                            'getSourceCharOffset()' => 13,
                         ]),
                         'getErrors()' => [
                             self::objectHasPropertiesIdenticalTo([
                                 'getSourceOffset()' => 7,
-                                'getMessage()' => 'syntax error: missing or invalid AttributeType (RFC2849)'
-                            ])
+                                'getMessage()' => 'syntax error: missing or invalid AttributeType (RFC2849)',
+                            ]),
                         ],
                         'getRecords()' => [],
-                    ]
-                ]
+                    ],
+                ],
             ],
             'add: ;\n-' => [
                 //            000000 000011111111112222222
                 //            012345 678901234567890123456
                 'source' => ["add: ;\n-", 0],
-                'args'   => [],
+                'args' => [],
                 'expect' => [
                     'result' => false,
                     'value' => null,
@@ -348,23 +349,23 @@ final class ModSpecRuleTest extends TestCase
                         'getCursor()' => self::objectHasPropertiesIdenticalTo([
                             'getOffset()' => 7,
                             'getSourceOffset()' => 7,
-                            'getSourceCharOffset()' => 7
+                            'getSourceCharOffset()' => 7,
                         ]),
                         'getErrors()' => [
                             self::objectHasPropertiesIdenticalTo([
                                 'getSourceOffset()' => 5,
-                                'getMessage()' => 'syntax error: missing or invalid AttributeType (RFC2849)'
-                            ])
+                                'getMessage()' => 'syntax error: missing or invalid AttributeType (RFC2849)',
+                            ]),
                         ],
                         'getRecords()' => [],
-                    ]
-                ]
+                    ],
+                ],
             ],
             'add: cn;\n-' => [
                 //            00000000 0011111111112222222
                 //            01234567 8901234567890123456
                 'source' => ["add: cn;\n-", 0],
-                'args'   => [],
+                'args' => [],
                 'expect' => [
                     'result' => false,
                     'value' => null,
@@ -372,23 +373,23 @@ final class ModSpecRuleTest extends TestCase
                         'getCursor()' => self::objectHasPropertiesIdenticalTo([
                             'getOffset()' => 9,
                             'getSourceOffset()' => 9,
-                            'getSourceCharOffset()' => 9
+                            'getSourceCharOffset()' => 9,
                         ]),
                         'getErrors()' => [
                             self::objectHasPropertiesIdenticalTo([
                                 'getSourceOffset()' => 8,
-                                'getMessage()' => 'syntax error: missing or invalid options (RFC2849)'
-                            ])
+                                'getMessage()' => 'syntax error: missing or invalid options (RFC2849)',
+                            ]),
                         ],
                         'getRecords()' => [],
-                    ]
-                ]
+                    ],
+                ],
             ],
             'add: cn;błąd\n-' => [
                 //            000000000011 1111112222222
                 //            012345678913 4567890123456
                 'source' => ["add: cn;błąd\n-", 0],
-                'args'   => [],
+                'args' => [],
                 'expect' => [
                     'result' => false,
                     'value' => null,
@@ -396,23 +397,23 @@ final class ModSpecRuleTest extends TestCase
                         'getCursor()' => self::objectHasPropertiesIdenticalTo([
                             'getOffset()' => 15,
                             'getSourceOffset()' => 15,
-                            'getSourceCharOffset()' => 13
+                            'getSourceCharOffset()' => 13,
                         ]),
                         'getErrors()' => [
                             self::objectHasPropertiesIdenticalTo([
                                 'getSourceOffset()' => 9,
-                                'getMessage()' => 'syntax error: missing or invalid options (RFC2849)'
-                            ])
+                                'getMessage()' => 'syntax error: missing or invalid options (RFC2849)',
+                            ]),
                         ],
                         'getRecords()' => [],
-                    ]
-                ]
+                    ],
+                ],
             ],
             'add: cn\ncn: foo' => [
                 //            0000000 000111111112222222
                 //            0123456 789012345678901234
                 'source' => ["add: cn\ncn: foo", 0],
-                'args'   => [],
+                'args' => [],
                 'expect' => [
                     'result' => false,
                     'value' => [
@@ -424,35 +425,34 @@ final class ModSpecRuleTest extends TestCase
                                 'getValueSpec()' => self::objectHasPropertiesIdenticalTo([
                                     'getType()' => ValueSpecInterface::TYPE_SAFE,
                                     'getSpec()' => 'foo',
-                                    'getContent()' => 'foo'
-                                ])
+                                    'getContent()' => 'foo',
+                                ]),
                             ]),
-                        ]
+                        ],
                     ],
                     'state' => [
                         'getCursor()' => self::objectHasPropertiesIdenticalTo([
                             'getOffset()' => 15,
                             'getSourceOffset()' => 15,
-                            'getSourceCharOffset()' => 15
+                            'getSourceCharOffset()' => 15,
                         ]),
                         'getErrors()' => [
                             self::objectHasPropertiesIdenticalTo([
                                 'getSourceOffset()' => 15,
-                                'getMessage()' => 'syntax error: expected "-" followed by end of line'
-                            ])
+                                'getMessage()' => 'syntax error: expected "-" followed by end of line',
+                            ]),
                         ],
                         'getRecords()' => [],
-                    ]
-                ]
+                    ],
+                ],
             ],
         ];
     }
 
-
     /**
      * @dataProvider prov__parse
      */
-    public function test__parse(array $source, array $args, array $expect) : void
+    public function testParse(array $source, array $args, array $expect): void
     {
         $state = $this->getParserStateFromSource(...$source);
 
@@ -460,7 +460,7 @@ final class ModSpecRuleTest extends TestCase
             $value = $this->getMockBuilder(ModSpecInterface::class)->getMockForAbstractClass();
         }
 
-        $rule = new ModSpecRule;
+        $rule = new ModSpecRule();
 
         $result = $rule->parse($state, $value, ...$args);
 

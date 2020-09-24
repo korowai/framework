@@ -26,10 +26,8 @@ class RuleSet0 extends AbstractRuleSet
 
     /**
      * Returns an array of names of rules provided by this class.
-     *
-     * @return array
      */
-    public static function getClassRuleNames() : array
+    public static function getClassRuleNames(): array
     {
         return [
             'VAR_NAME',
@@ -38,10 +36,8 @@ class RuleSet0 extends AbstractRuleSet
 
     /**
      * Returns what we expected the *getClassCaptures()* to return.
-     *
-     * @return array
      */
-    public static function expectedClassCaptures() : array
+    public static function expectedClassCaptures(): array
     {
         return [
             'VAR_NAME' => ['var_name' => 'var_name'],
@@ -50,37 +46,33 @@ class RuleSet0 extends AbstractRuleSet
 
     /**
      * Returns what we expect the *captures($ruleName)* to return.
-     *
-     * @return array
      */
-    public static function expectedCaptures(string $ruleName) : array
+    public static function expectedCaptures(string $ruleName): array
     {
         return static::expectedClassCaptures()[$ruleName];
     }
 
     /**
      * Returns what we expect the *errorCaptures($ruleName)* to return.
-     *
-     * @return array
      */
-    public static function expectedErrorCaptures(string $ruleName) : array
+    public static function expectedErrorCaptures(string $ruleName): array
     {
         $captures = static::expectedCaptures($ruleName);
+
         return array_filter($captures, function (string $name) {
-            return substr_compare(strtolower($name), 'error', -5) === 0;
+            return 0 === substr_compare(strtolower($name), 'error', -5);
         });
     }
 
     /**
      * Returns what we expect the *valueCaptures($ruleName)* to return.
-     *
-     * @return array
      */
-    public static function expectedValueCaptures(string $ruleName) : array
+    public static function expectedValueCaptures(string $ruleName): array
     {
         $captures = static::expectedCaptures($ruleName);
+
         return array_filter($captures, function (string $name) {
-            return substr_compare(strtolower($name), 'error', -5) !== 0;
+            return 0 !== substr_compare(strtolower($name), 'error', -5);
         });
     }
 }

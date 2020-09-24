@@ -17,14 +17,14 @@ namespace Korowai\Tests\Lib\Ldap;
  */
 trait EntryInterfaceTrait
 {
-    public $dn = null;
-    public $attributes = null;
-    public $attribute = null;
-    public $hasAttribute = null;
-    public $setAttributes = null;
-    public $setAttribute = null;
+    public $dn;
+    public $attributes;
+    public $attribute;
+    public $hasAttribute;
+    public $setAttributes;
+    public $setAttribute;
 
-    public function getDn() : string
+    public function getDn(): string
     {
         return $this->dn;
     }
@@ -34,17 +34,17 @@ trait EntryInterfaceTrait
         return $this->setDn;
     }
 
-    public function getAttributes() : array
+    public function getAttributes(): array
     {
         return $this->attributes;
     }
 
-    public function getAttribute(string $name) : array
+    public function getAttribute(string $name): array
     {
         return $this->attribute;
     }
 
-    public function hasAttribute(string $name) : bool
+    public function hasAttribute(string $name): bool
     {
         return $this->hasAttribute;
     }

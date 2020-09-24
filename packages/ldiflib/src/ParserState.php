@@ -43,11 +43,6 @@ class ParserState implements ParserStateInterface
 
     /**
      * Initializes the ParserState object.
-     *
-     * @param  CursorInterface $cursor
-     * @param  array|null $errors
-     * @param  array|null $records
-     * @param  VersionSpecInterface|null $versionSpec
      */
     public function __construct(
         CursorInterface $cursor,
@@ -61,7 +56,7 @@ class ParserState implements ParserStateInterface
     /**
      * {@inheritdoc}
      */
-    public function getCursor() : CursorInterface
+    public function getCursor(): CursorInterface
     {
         return $this->cursor;
     }
@@ -69,7 +64,7 @@ class ParserState implements ParserStateInterface
     /**
      * {@inheritdoc}
      */
-    public function getErrors() : array
+    public function getErrors(): array
     {
         return $this->errors;
     }
@@ -77,7 +72,7 @@ class ParserState implements ParserStateInterface
     /**
      * {@inheritdoc}
      */
-    public function getRecords() : array
+    public function getRecords(): array
     {
         return $this->records;
     }
@@ -85,7 +80,7 @@ class ParserState implements ParserStateInterface
     /**
      * {@inheritdoc}
      */
-    public function getVersionSpec() : ?VersionSpecInterface
+    public function getVersionSpec(): ?VersionSpecInterface
     {
         return $this->versionSpec;
     }
@@ -93,44 +88,44 @@ class ParserState implements ParserStateInterface
     /**
      * {@inheritdoc}
      */
-    public function isOk() : bool
+    public function isOk(): bool
     {
-        return count($this->errors) === 0;
+        return 0 === count($this->errors);
     }
 
     /**
      * Sets the instance of CursorInterface to this object.
      *
-     * @param  CursorInterface $cursor
      * @return object $this
      */
     public function setCursor(CursorInterface $cursor)
     {
         $this->cursor = $cursor;
+
         return $this;
     }
 
     /**
      * Replaces the errors array with new one.
      *
-     * @param  array $errors
      * @return object $this
      */
     public function setErrors(array $errors)
     {
         $this->errors = $errors;
+
         return $this;
     }
 
     /**
      * Replaces the records array with new one.
      *
-     * @param  array $records
      * @return object $this
      */
     public function setRecords(array $records)
     {
         $this->records = $records;
+
         return $this;
     }
 
@@ -140,6 +135,7 @@ class ParserState implements ParserStateInterface
     public function appendError(ParserErrorInterface $error)
     {
         $this->errors[] = $error;
+
         return $this;
     }
 
@@ -149,6 +145,7 @@ class ParserState implements ParserStateInterface
     public function errorHere(string $message, array $arguments = [])
     {
         $error = new ParserError($this->getCursor()->getClonedLocation(), $message, ...$arguments);
+
         return $this->appendError($error);
     }
 
@@ -158,6 +155,7 @@ class ParserState implements ParserStateInterface
     public function errorAt(int $offset, string $message, array $arguments = [])
     {
         $error = new ParserError($this->getCursor()->getClonedLocation($offset), $message, ...$arguments);
+
         return $this->appendError($error);
     }
 
@@ -167,6 +165,7 @@ class ParserState implements ParserStateInterface
     public function appendRecord(RecordInterface $record)
     {
         $this->records[] = $record;
+
         return $this;
     }
 
@@ -176,16 +175,12 @@ class ParserState implements ParserStateInterface
     public function setVersionSpec(?VersionSpecInterface $versionSpec)
     {
         $this->versionSpec = $versionSpec;
+
         return $this;
     }
 
     /**
-     * Initializes the ParserState object
-     *
-     * @param  CursorInterface $cursor
-     * @param  array|null $errors
-     * @param  array|null $records
-     * @param  VersionSpecInterface|null $versionSpec
+     * Initializes the ParserState object.
      */
     protected function initParserState(
         CursorInterface $cursor,

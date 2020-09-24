@@ -15,24 +15,26 @@ namespace Korowai\Tests\Lib\Ldif\Nodes;
 use Korowai\Lib\Ldif\Nodes\VersionSpec;
 use Korowai\Lib\Ldif\Nodes\VersionSpecInterface;
 use Korowai\Lib\Ldif\SnippetInterface;
-
 use Korowai\Testing\Ldiflib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Ldif\Nodes\VersionSpec
+ *
+ * @internal
  */
 final class VersionSpecTest extends TestCase
 {
-    public function test__implements__VersionSpecInterface() : void
+    public function testImplementsVersionSpecInterface(): void
     {
         $this->assertImplementsInterface(VersionSpecInterface::class, VersionSpec::class);
     }
 
-    public function test__construct() : void
+    public function testConstruct(): void
     {
         $snippet = $this->getMockBuilder(SnippetInterface::class)
-                        ->getMockForAbstractClass();
+            ->getMockForAbstractClass()
+        ;
 
         $record = new VersionSpec($snippet, 123);
 
@@ -40,10 +42,11 @@ final class VersionSpecTest extends TestCase
         $this->assertSame(123, $record->getVersion());
     }
 
-    public function test__setVersion() : void
+    public function testSetVersion(): void
     {
         $snippet = $this->getMockBuilder(SnippetInterface::class)
-                        ->getMockForAbstractClass();
+            ->getMockForAbstractClass()
+        ;
 
         $record = new VersionSpec($snippet, 0);
 

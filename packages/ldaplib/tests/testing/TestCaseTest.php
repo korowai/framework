@@ -17,10 +17,12 @@ use Korowai\Testing\Ldaplib\TestCase;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Testing\Ldaplib\TestCase
+ *
+ * @internal
  */
 final class TestCaseTest extends TestCase
 {
-    public function test__extends__TestCase() : void
+    public function testExtendsTestCase(): void
     {
         $this->assertExtendsClass(\Korowai\Testing\TestCase::class, parent::class);
     }

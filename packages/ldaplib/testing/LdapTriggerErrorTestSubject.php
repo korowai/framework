@@ -13,7 +13,6 @@ declare(strict_types=1);
 namespace Korowai\Testing\Ldaplib;
 
 use PHPUnit\Framework\MockObject\MockObject;
-use Korowai\Lib\Ldap\Core\LdapLinkInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -42,11 +41,7 @@ final class LdapTriggerErrorTestSubject
     private $with;
 
     /**
-     * Initializes the object
-     *
-     * @param MockObject $mock
-     * @param string $method
-     * @param array $with
+     * Initializes the object.
      */
     public function __construct(MockObject $mock, string $method, array $with = [])
     {
@@ -55,17 +50,17 @@ final class LdapTriggerErrorTestSubject
         $this->with = $with;
     }
 
-    public function mock() : MockObject
+    public function mock(): MockObject
     {
         return $this->mock;
     }
 
-    public function method() : string
+    public function method(): string
     {
         return $this->method;
     }
 
-    public function with() : array
+    public function with(): array
     {
         return $this->with;
     }

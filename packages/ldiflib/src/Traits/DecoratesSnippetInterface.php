@@ -12,8 +12,6 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldif\Traits;
 
-use Korowai\Lib\Ldif\SnippetInterface;
-
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */

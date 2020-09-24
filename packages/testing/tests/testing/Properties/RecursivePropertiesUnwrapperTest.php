@@ -12,32 +12,35 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Testing\Properties;
 
-use Korowai\Testing\TestCase;
 use Korowai\Testing\Properties\ActualProperties;
 use Korowai\Testing\Properties\ActualPropertiesInterface;
-use Korowai\Testing\Properties\RecursivePropertiesUnwrapper;
-use Korowai\Testing\Properties\RecursivePropertiesUnwrapperInterface;
+use Korowai\Testing\Properties\CircularDependencyException;
 use Korowai\Testing\Properties\ExpectedProperties;
 use Korowai\Testing\Properties\ExpectedPropertiesInterface;
 use Korowai\Testing\Properties\PropertiesInterface;
 use Korowai\Testing\Properties\PropertySelectorInterface;
-use Korowai\Testing\Properties\CircularDependencyException;
+use Korowai\Testing\Properties\RecursivePropertiesUnwrapper;
+use Korowai\Testing\Properties\RecursivePropertiesUnwrapperInterface;
+use Korowai\Testing\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Testing\Properties\RecursivePropertiesUnwrapper
+ *
+ * @internal
  */
 final class RecursivePropertiesUnwrapperTest extends TestCase
 {
     public const UNIQUE_TAG = RecursivePropertiesUnwrapper::UNIQUE_TAG;
 
-    public function createExpectedProperties(...$args) : ExpectedPropertiesInterface
+    public function createExpectedProperties(...$args): ExpectedPropertiesInterface
     {
         $selector = $this->createMock(PropertySelectorInterface::class);
+
         return new ExpectedProperties($selector, ...$args);
     }
 
-    public function createActualProperties(...$args) : ActualPropertiesInterface
+    public function createActualProperties(...$args): ActualPropertiesInterface
     {
         return new ActualProperties(...$args);
     }
@@ -48,7 +51,7 @@ final class RecursivePropertiesUnwrapperTest extends TestCase
     //
     //
 
-    public function test__implements__RecursivePropertiesUnwrapperInterface() : void
+    public function testImplementsRecursivePropertiesUnwrapperInterface(): void
     {
         $this->assertImplementsInterface(
             RecursivePropertiesUnwrapperInterface::class,
@@ -60,7 +63,7 @@ final class RecursivePropertiesUnwrapperTest extends TestCase
     // unwrap()
     //
 
-    public function prov__unwrap() : array
+    public function prov__unwrap(): array
     {
         $actualProperties['[baz => BAZ]'] = $this->createActualProperties(['baz' => 'BAZ']);
         $expectProperties['[baz => BAZ]'] = $this->createExpectedProperties(['baz' => 'BAZ']);
@@ -71,7 +74,7 @@ final class RecursivePropertiesUnwrapperTest extends TestCase
             [
                 'properties' => $this->createExpectedProperties([
                 ]),
-                'expect'     => [
+                'expect' => [
                     self::UNIQUE_TAG => true,
                 ],
             ],
@@ -79,9 +82,9 @@ final class RecursivePropertiesUnwrapperTest extends TestCase
             // #1
             [
                 'properties' => $this->createExpectedProperties([
-                    'foo' => 'FOO'
+                    'foo' => 'FOO',
                 ]),
-                'expect'     => [
+                'expect' => [
                     'foo' => 'FOO',
                     self::UNIQUE_TAG => true,
                 ],
@@ -96,7 +99,7 @@ final class RecursivePropertiesUnwrapperTest extends TestCase
                         'qux' => 'QUX',
                     ],
                 ]),
-                'expect'     => [
+                'expect' => [
                     'foo' => 'FOO',
                     'bar' => [
                         'baz' => 'BAZ',
@@ -114,7 +117,7 @@ final class RecursivePropertiesUnwrapperTest extends TestCase
                         'baz' => 'BAZ',
                     ]),
                 ]),
-                'expect'     => [
+                'expect' => [
                     'foo' => 'FOO',
                     'bar' => [
                         'baz' => 'BAZ',
@@ -133,7 +136,7 @@ final class RecursivePropertiesUnwrapperTest extends TestCase
                         $this->createExpectedProperties(['fred' => 'FRED']),
                     ]),
                 ]),
-                'expect'     => [
+                'expect' => [
                     'foo' => 'FOO',
                     'bar' => [
                         'qux' => [
@@ -156,7 +159,7 @@ final class RecursivePropertiesUnwrapperTest extends TestCase
                     'foo' => 'FOO',
                     'bar' => $actualProperties['[baz => BAZ]'],
                 ]),
-                'expect'     => [
+                'expect' => [
                     'foo' => 'FOO',
                     'bar' => $actualProperties['[baz => BAZ]'],
                     self::UNIQUE_TAG => true,
@@ -169,7 +172,7 @@ final class RecursivePropertiesUnwrapperTest extends TestCase
                     'foo' => 'FOO',
                     'bar' => $expectProperties['[baz => BAZ]'],
                 ]),
-                'expect'     => [
+                'expect' => [
                     'foo' => 'FOO',
                     'bar' => $expectProperties['[baz => BAZ]'],
                     self::UNIQUE_TAG => true,
@@ -182,7 +185,7 @@ final class RecursivePropertiesUnwrapperTest extends TestCase
                     'foo' => 'FOO',
                     'bar' => $arrayObject['[baz => BAZ]'],
                 ]),
-                'expect'     => [
+                'expect' => [
                     'foo' => 'FOO',
                     'bar' => $arrayObject['[baz => BAZ]'],
                     self::UNIQUE_TAG => true,
@@ -195,27 +198,25 @@ final class RecursivePropertiesUnwrapperTest extends TestCase
                     'foo' => 'FOO',
                     'bar' => $arrayObject['[baz => BAZ]'],
                 ]),
-                'expect'     => [
+                'expect' => [
                     'foo' => 'FOO',
                     'bar' => $arrayObject['[baz => BAZ]'],
                     self::UNIQUE_TAG => true,
                 ],
-            ]
+            ],
         ];
     }
-
 
     /**
      * @dataProvider prov__unwrap
      */
-    public function test__unwrap(PropertiesInterface $properties, array $expect) : void
+    public function testUnwrap(PropertiesInterface $properties, array $expect): void
     {
-        $unwrapper = new RecursivePropertiesUnwrapper;
+        $unwrapper = new RecursivePropertiesUnwrapper();
         $this->assertSame($expect, $unwrapper->unwrap($properties));
     }
 
-
-    public function prov__unwrap__throwsExceptionOnCircularDependency() : array
+    public function prov__unwrap__throwsExceptionOnCircularDependency(): array
     {
         // #0
         $properties['#0'] = $this->createActualProperties([
@@ -223,7 +224,6 @@ final class RecursivePropertiesUnwrapperTest extends TestCase
             ],
         ]);
         $properties['#0']['foo']['bar'] = $properties['#0'];
-
 
         // #1
         $properties['#1'] = $this->createActualProperties([
@@ -234,12 +234,11 @@ final class RecursivePropertiesUnwrapperTest extends TestCase
         ]);
         $properties['#1']['foo']['bar']['baz'] = $properties['#1'];
 
-
         // #2
         $properties['#2'] = $this->createActualProperties([
             'foo' => [
                 'bar' => $this->createActualProperties([
-                    'baz' => 'BAZ'
+                    'baz' => 'BAZ',
                 ]),
             ],
         ]);
@@ -252,47 +251,49 @@ final class RecursivePropertiesUnwrapperTest extends TestCase
                 'baz' => $this->createActualProperties([]),
             ],
         ]);
-        $properties['#3']['foo']['bar']['qux']  = $properties['#3']['foo']['baz'];
+        $properties['#3']['foo']['bar']['qux'] = $properties['#3']['foo']['baz'];
         $properties['#3']['foo']['baz']['fred'] = $properties['#3']['foo']['bar'];
 
         return [
             // #0
             [
                 'properties' => $properties['#0'],
-                'key'        => 'bar',
+                'key' => 'bar',
             ],
 
             // #1
             [
                 'properties' => $properties['#1'],
-                'key'        => 'baz',
+                'key' => 'baz',
             ],
 
             // #2
             [
                 'properties' => $properties['#2'],
-                'key'        => 'qux',
+                'key' => 'qux',
             ],
 
             // #3
             [
                 'properties' => $properties['#3'],
-                'key'        => 'fred',
+                'key' => 'fred',
             ],
         ];
     }
 
     /**
      * @dataProvider prov__unwrap__throwsExceptionOnCircularDependency
+     *
+     * @param mixed $key
      */
-    public function test__unwrap__throwsExceptionOnCircularDependency(PropertiesInterface $properties, $key) : void
+    public function testUnwrapThrowsExceptionOnCircularDependency(PropertiesInterface $properties, $key): void
     {
         $id = is_string($key) ? "'".addslashes($key)."'" : $key;
         $id = preg_quote($id, '/');
         $this->expectException(CircularDependencyException::class);
-        $this->expectExceptionMessageMatches("/^Circular dependency found in nested properties at key $id\\.$/");
+        $this->expectExceptionMessageMatches("/^Circular dependency found in nested properties at key {$id}\\.$/");
 
-        (new RecursivePropertiesUnwrapper)->unwrap($properties);
+        (new RecursivePropertiesUnwrapper())->unwrap($properties);
     }
 }
 // vim: syntax=php sw=4 ts=4 et tw=119:

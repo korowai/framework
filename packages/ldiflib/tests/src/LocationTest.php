@@ -12,41 +12,45 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldif;
 
+use Korowai\Lib\Ldif\InputInterface;
 use Korowai\Lib\Ldif\Location;
 use Korowai\Lib\Ldif\LocationInterface;
-use Korowai\Lib\Ldif\InputInterface;
-
 use Korowai\Testing\Ldiflib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Ldif\Location
+ *
+ * @internal
  */
 final class LocationTest extends TestCase
 {
-    public function test__implements__LocationInterface() : void
+    public function testImplementsLocationInterface(): void
     {
         $this->assertImplementsInterface(LocationInterface::class, Location::class);
     }
 
-    public function test__construct() : void
+    public function testConstruct(): void
     {
         $input = $this->getMockBuilder(InputInterface::class)
-                      ->getMockForAbstractClass();
+            ->getMockForAbstractClass()
+        ;
         $location = new Location($input, 12);
 
         $this->assertSame($input, $location->getInput());
         $this->assertSame(12, $location->getOffset());
     }
 
-    public function test__isValid() : void
+    public function testIsValid(): void
     {
         $input = $this->getMockBuilder(InputInterface::class)
-                      ->getMock();
+            ->getMock()
+        ;
 
         $input->expects($this->any())
-              ->method('getString')
-              ->willReturn('FOO');
+            ->method('getString')
+            ->willReturn('FOO')
+        ;
 
         $location = new Location($input, -1);
         $this->assertFalse($location->isValid());
@@ -64,10 +68,11 @@ final class LocationTest extends TestCase
         $this->assertFalse($location->isValid());
     }
 
-    public function test__getClonedLocation() : void
+    public function testGetClonedLocation(): void
     {
         $input = $this->getMockBuilder(InputInterface::class)
-                      ->getMockForAbstractClass();
+            ->getMockForAbstractClass()
+        ;
 
         $location = new Location($input, 123);
 
@@ -92,13 +97,15 @@ final class LocationTest extends TestCase
         $this->assertSame(321, $clone3->getOffset());
     }
 
-    public function test__getString() : void
+    public function testGetString(): void
     {
         $input = $this->getMockBuilder(InputInterface::class)
-                      ->getMockForAbstractClass();
+            ->getMockForAbstractClass()
+        ;
         $input->expects($this->once())
-              ->method('getString')
-              ->willReturn('A');
+            ->method('getString')
+            ->willReturn('A')
+        ;
 
         $location = new Location($input, 0);
         $this->assertSame('A', $location->getString());
@@ -108,16 +115,16 @@ final class LocationTest extends TestCase
     {
         return [
             [
-                "",
+                '',
                 [
                     0 => 0,
                     1 => 0,
-                ]
+                ],
             ],
 
             [
-            //   012467
-                "dałże",
+                //   012467
+                'dałże',
                 [
                     0 => 0, // d
                     1 => 1, // a
@@ -125,21 +132,23 @@ final class LocationTest extends TestCase
                     4 => 3, // ż
                     6 => 4, // e
                     7 => 5, // EOF
-                ]
-            ]
+                ],
+            ],
         ];
     }
 
     /**
      * @dataProvider charOffsetCases
      */
-    public function test__getCharOffset(string $string, array $cases) : void
+    public function testGetCharOffset(string $string, array $cases): void
     {
         $input = $this->getMockBuilder(InputInterface::class)
-                      ->getMockForAbstractClass();
+            ->getMockForAbstractClass()
+        ;
         $input->expects($this->any())
-              ->method('getString')
-              ->willReturn($string);
+            ->method('getString')
+            ->willReturn($string)
+        ;
 
         foreach ($cases as $i => $j) {
             $location = new Location($input, $i);
@@ -147,110 +156,127 @@ final class LocationTest extends TestCase
         }
     }
 
-    public function test__getSourceFileName() : void
+    public function testGetSourceFileName(): void
     {
         $input = $this->getMockBuilder(InputInterface::class)
-                      ->getMockForAbstractClass();
+            ->getMockForAbstractClass()
+        ;
         $input->expects($this->once())
-              ->method('getSourceFileName')
-              ->willReturn('foo.ldif');
+            ->method('getSourceFileName')
+            ->willReturn('foo.ldif')
+        ;
 
         $location = new Location($input, 0);
         $this->assertSame('foo.ldif', $location->getSourceFileName());
     }
 
-    public function test__getSourceString() : void
+    public function testGetSourceString(): void
     {
         $input = $this->getMockBuilder(InputInterface::class)
-                      ->getMockForAbstractClass();
+            ->getMockForAbstractClass()
+        ;
         $input->expects($this->once())
-              ->method('getSourceString')
-              ->willReturn('A');
+            ->method('getSourceString')
+            ->willReturn('A')
+        ;
 
         $location = new Location($input, 0);
         $this->assertSame('A', $location->getSourceString());
     }
 
-    public function test__getSourceOffset() : void
+    public function testGetSourceOffset(): void
     {
         $input = $this->getMockBuilder(InputInterface::class)
-                      ->getMockForAbstractClass();
+            ->getMockForAbstractClass()
+        ;
         $input->expects($this->once())
-              ->method('getSourceOffset')
-              ->with(2)
-              ->willReturn(4);
+            ->method('getSourceOffset')
+            ->with(2)
+            ->willReturn(4)
+        ;
 
         $location = new Location($input, 2);
         $this->assertSame(4, $location->getSourceOffset());
     }
 
-    public function test__getSourceCharOffset() : void
+    public function testGetSourceCharOffset(): void
     {
         $input = $this->getMockBuilder(InputInterface::class)
-                      ->getMockForAbstractClass();
+            ->getMockForAbstractClass()
+        ;
         $input->expects($this->once())
-              ->method('getSourceCharOffset')
-              ->with(4, 'U')
-              ->willReturn(2);
+            ->method('getSourceCharOffset')
+            ->with(4, 'U')
+            ->willReturn(2)
+        ;
 
         $location = new Location($input, 4);
         $this->assertSame(2, $location->getSourceCharOffset('U'));
     }
 
-    public function test__getSourceLineIndex() : void
+    public function testGetSourceLineIndex(): void
     {
         $input = $this->getMockBuilder(InputInterface::class)
-                      ->getMockForAbstractClass();
+            ->getMockForAbstractClass()
+        ;
         $input->expects($this->once())
-              ->method('getSourceLineIndex')
-              ->with(4)
-              ->willReturn(1);
+            ->method('getSourceLineIndex')
+            ->with(4)
+            ->willReturn(1)
+        ;
 
         $location = new Location($input, 4);
         $this->assertSame(1, $location->getSourceLineIndex());
     }
 
-    public function test__getSourceLine() : void
+    public function testGetSourceLine(): void
     {
         $input = $this->getMockBuilder(InputInterface::class)
-                      ->getMockForAbstractClass();
+            ->getMockForAbstractClass()
+        ;
         $input->expects($this->once())
-              ->method('getSourceLineIndex')
-              ->with(4)
-              ->willReturn(1);
+            ->method('getSourceLineIndex')
+            ->with(4)
+            ->willReturn(1)
+        ;
         $input->expects($this->once())
-              ->method('getSourceLine')
-              ->with(1)
-              ->willReturn('A');
+            ->method('getSourceLine')
+            ->with(1)
+            ->willReturn('A')
+        ;
 
         $location = new Location($input, 4);
         $this->assertSame('A', $location->getSourceLine());
     }
 
-    public function test__getSourceLineAndOffset() : void
+    public function testGetSourceLineAndOffset(): void
     {
         $input = $this->getMockBuilder(InputInterface::class)
-                      ->getMockForAbstractClass();
+            ->getMockForAbstractClass()
+        ;
         $input->expects($this->once())
-              ->method('getSourceLineAndOffset')
-              ->with(4)
-              ->willReturn(['A',1]);
+            ->method('getSourceLineAndOffset')
+            ->with(4)
+            ->willReturn(['A', 1])
+        ;
 
         $location = new Location($input, 4);
-        $this->assertSame(['A',1], $location->getSourceLineAndOffset());
+        $this->assertSame(['A', 1], $location->getSourceLineAndOffset());
     }
 
-    public function test__getSourceLineAndCharOffset() : void
+    public function testGetSourceLineAndCharOffset(): void
     {
         $input = $this->getMockBuilder(InputInterface::class)
-                      ->getMockForAbstractClass();
+            ->getMockForAbstractClass()
+        ;
         $input->expects($this->once())
-              ->method('getSourceLineAndCharOffset')
-              ->with(4, 'U')
-              ->willReturn(['A',1]);
+            ->method('getSourceLineAndCharOffset')
+            ->with(4, 'U')
+            ->willReturn(['A', 1])
+        ;
 
         $location = new Location($input, 4);
-        $this->assertSame(['A',1], $location->getSourceLineAndCharOffset('U'));
+        $this->assertSame(['A', 1], $location->getSourceLineAndCharOffset('U'));
     }
 }
 

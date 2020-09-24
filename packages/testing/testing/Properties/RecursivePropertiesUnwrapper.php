@@ -20,28 +20,28 @@ final class RecursivePropertiesUnwrapper implements RecursivePropertiesUnwrapper
     public const UNIQUE_TAG = 'unwrapped-properties:$1$zIlgusJc$ZZCyNRPOX1SbpKdzoD2hU/';
 
     /**
-     * @var SplObjectProperties|null
+     * @var null|SplObjectProperties
      */
-    private $seen = null;
+    private $seen;
 
-    /**
-     * @param PropertiesInterface $properties
-     */
-    public function unwrap(PropertiesInterface $properties) : array
+    public function unwrap(PropertiesInterface $properties): array
     {
-        $this->seen = new \SplObjectStorage;
+        $this->seen = new \SplObjectStorage();
+
         try {
             $result = $this->walkRecursive($properties);
         } finally {
             $this->seen = null;
         }
+
         return $result;
     }
 
-    private function walkRecursive(PropertiesInterface $current) : array
+    private function walkRecursive(PropertiesInterface $current): array
     {
         $array = $current->getArrayCopy();
         $this->seen->attach($current);
+
         try {
             array_walk_recursive($array, [$this, 'visit'], $current);
         } finally {
@@ -50,10 +50,11 @@ final class RecursivePropertiesUnwrapper implements RecursivePropertiesUnwrapper
         // Distinguish unwrapped properties from regular arrays
         // by adding UNIQUE TAG AT THE END of $array.
         $array[self::UNIQUE_TAG] = true;
+
         return $array;
     }
 
-    private function visit(&$value, $key, PropertiesInterface $parent) : void
+    private function visit(&$value, $key, PropertiesInterface $parent): void
     {
         if ($value instanceof PropertiesInterface && $parent->canUnwrapChild($value)) {
             if ($this->seen->contains($value)) {
@@ -65,12 +66,13 @@ final class RecursivePropertiesUnwrapper implements RecursivePropertiesUnwrapper
     }
 
     /**
-     * @param string|int $key
+     * @param int|string $key
      */
-    private function throwCircular($key) : void
+    private function throwCircular($key): void
     {
         $id = is_string($key) ? "'".addslashes($key)."'" : $key;
-        throw new CircularDependencyException("Circular dependency found in nested properties at key $id.");
+
+        throw new CircularDependencyException("Circular dependency found in nested properties at key {$id}.");
     }
 }
 

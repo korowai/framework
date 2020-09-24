@@ -12,23 +12,25 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Testing\Examples;
 
-use Korowai\Testing\TestCase;
 use Korowai\Testing\Examples\ExampleBazTrait;
+use Korowai\Testing\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Testing\Examples\ExampleBazTrait
+ *
+ * @internal
  */
 final class ExampleBazTraitTest extends TestCase
 {
     public function getTestObject()
     {
-        return new class {
+        return new class() {
             use ExampleBazTrait;
         };
     }
 
-    public function test__setBaz() : void
+    public function testSetBaz(): void
     {
         $object = $this->getTestObject();
         $this->assertNull($object->getBaz());

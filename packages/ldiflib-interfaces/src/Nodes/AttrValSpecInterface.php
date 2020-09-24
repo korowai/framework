@@ -25,17 +25,13 @@ interface AttrValSpecInterface extends NodeInterface
      * Returns [RFC2849](https://tools.ietf.org/html/rfc2849#page-3)
      * AttributeDescription string consisting of attribute type and
      * options.
-     *
-     * @return string
      */
-    public function getAttribute() : string;
+    public function getAttribute(): string;
 
     /**
      * Returns the object representing attribute value.
-     *
-     * @return ValueSpecInterface
      */
-    public function getValueSpec() : ValueSpecInterface;
+    public function getValueSpec(): ValueSpecInterface;
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

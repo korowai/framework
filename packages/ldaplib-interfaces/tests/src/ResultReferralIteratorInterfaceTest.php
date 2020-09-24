@@ -13,23 +13,24 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Ldap;
 
 use Korowai\Lib\Ldap\ResultReferralIteratorInterface;
-
 use Korowai\Testing\LdaplibInterfaces\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Tests\Lib\Ldap\ResultReferralIteratorInterfaceTrait
+ *
+ * @internal
  */
 final class ResultReferralIteratorInterfaceTest extends TestCase
 {
     public static function createDummyInstance()
     {
-        return new class implements ResultReferralIteratorInterface {
+        return new class() implements ResultReferralIteratorInterface {
             use ResultReferralIteratorInterfaceTrait;
         };
     }
 
-    public function test__dummyImplementation() : void
+    public function testDummyImplementation(): void
     {
         $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(ResultReferralIteratorInterface::class, $dummy);

@@ -26,12 +26,12 @@ trait ResourceWrapperInterfaceTrait
         return $this->getResource;
     }
 
-    public function isValid() : bool
+    public function isValid(): bool
     {
         return $this->isValid;
     }
 
-    public function supportsResourceType(string $type) : bool
+    public function supportsResourceType(string $type): bool
     {
         return $this->supportsResourceType;
     }

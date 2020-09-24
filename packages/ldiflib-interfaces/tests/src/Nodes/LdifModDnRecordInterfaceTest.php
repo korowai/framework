@@ -12,26 +12,27 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldif\Nodes;
 
-use Korowai\Lib\Ldif\Nodes\LdifModDnRecordInterface;
-use Korowai\Lib\Ldif\Nodes\LdifChangeRecordInterface;
 use Korowai\Lib\Ldif\NodeInterface;
-
+use Korowai\Lib\Ldif\Nodes\LdifChangeRecordInterface;
+use Korowai\Lib\Ldif\Nodes\LdifModDnRecordInterface;
 use Korowai\Testing\LdiflibInterfaces\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Tests\Lib\Ldif\Nodes\LdifModDnRecordInterfaceTrait
+ *
+ * @internal
  */
 final class LdifModDnRecordInterfaceTest extends TestCase
 {
     public static function createDummyInstance()
     {
-        return new class implements LdifModDnRecordInterface {
+        return new class() implements LdifModDnRecordInterface {
             use LdifModDnRecordInterfaceTrait;
         };
     }
 
-    public static function prov__extendsInterface() : array
+    public static function prov__extendsInterface(): array
     {
         return [
             [LdifChangeRecordInterface::class],
@@ -42,25 +43,25 @@ final class LdifModDnRecordInterfaceTest extends TestCase
     /**
      * @dataProvider prov__extendsInterface
      */
-    public function test__extendsInterface(string $extends) : void
+    public function testExtendsInterface(string $extends): void
     {
         $this->assertImplementsInterface($extends, LdifModDnRecordInterface::class);
     }
 
-    public function test__dummyImplementation() : void
+    public function testDummyImplementation(): void
     {
         $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(LdifModDnRecordInterface::class, $dummy);
     }
 
-    public function test__getNewRdn() : void
+    public function testGetNewRdn(): void
     {
         $dummy = $this->createDummyInstance();
         $dummy->newRdn = '';
         $this->assertSame($dummy->newRdn, $dummy->getNewRdn());
     }
 
-    public function test__getNewRdn__withNull() : void
+    public function testGetNewRdnWithNull(): void
     {
         $dummy = $this->createDummyInstance();
         $dummy->newRdn = null;
@@ -70,14 +71,14 @@ final class LdifModDnRecordInterfaceTest extends TestCase
         $dummy->getNewRdn();
     }
 
-    public function test__getDeleteOldRdn() : void
+    public function testGetDeleteOldRdn(): void
     {
         $dummy = $this->createDummyInstance();
         $dummy->deleteOldRdn = false;
         $this->assertSame($dummy->deleteOldRdn, $dummy->getDeleteOldRdn());
     }
 
-    public function test__getDeleteOldRdn__withNull() : void
+    public function testGetDeleteOldRdnWithNull(): void
     {
         $dummy = $this->createDummyInstance();
         $dummy->deleteOldRdn = null;
@@ -87,7 +88,7 @@ final class LdifModDnRecordInterfaceTest extends TestCase
         $dummy->getDeleteOldRdn();
     }
 
-    public function test__getNewSuperior() : void
+    public function testGetNewSuperior(): void
     {
         $dummy = $this->createDummyInstance();
         $dummy->newSuperior = '';
@@ -96,7 +97,7 @@ final class LdifModDnRecordInterfaceTest extends TestCase
         $this->assertSame($dummy->newSuperior, $dummy->getNewSuperior());
     }
 
-    public function test__getNewSuperior__withTypeError() : void
+    public function testGetNewSuperiorWithTypeError(): void
     {
         $dummy = $this->createDummyInstance();
         $dummy->newSuperior = 123;

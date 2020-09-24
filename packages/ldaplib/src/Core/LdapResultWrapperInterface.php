@@ -20,11 +20,9 @@ interface LdapResultWrapperInterface
     /**
      * Returns the encapsulated LdapResultInterface instance.
      *
-     * @return LdapResultInterface
-     *
      * @psalm-mutation-free
      */
-    public function getLdapResult() : LdapResultInterface;
+    public function getLdapResult(): LdapResultInterface;
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

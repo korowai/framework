@@ -12,35 +12,37 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Testing\Examples;
 
-use Korowai\Testing\TestCase;
+use Korowai\Testing\Examples\ExampleBazTrait;
 use Korowai\Testing\Examples\ExampleFooClass;
 use Korowai\Testing\Examples\ExampleFooInterface;
-use Korowai\Testing\Examples\ExampleBazTrait;
+use Korowai\Testing\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Testing\Examples\ExampleFooClass
+ *
+ * @internal
  */
 final class ExampleFooClassTest extends TestCase
 {
-    public function test__implements__ExampleFooInterface() : void
+    public function testImplementsExampleFooInterface(): void
     {
         $this->assertImplementsInterface(ExampleFooInterface::class, ExampleFooClass::class);
     }
 
-    public function test__uses__ExampleBazTrait() : void
+    public function testUsesExampleBazTrait(): void
     {
         $this->assertUsesTrait(ExampleBazTrait::class, ExampleFooClass::class);
     }
 
-    public function test__construct() : void
+    public function testConstruct(): void
     {
         $object = new ExampleFooClass(['foo' => 'FOO', 'baz' => 'BAZ']);
         $this->assertSame('FOO', $object->getFoo());
         $this->assertSame('BAZ', $object->getBaz());
     }
 
-    public function test__setFoo() : void
+    public function testSetFoo(): void
     {
         $object = new ExampleFooClass();
         $this->assertNull($object->getFoo());
@@ -48,7 +50,7 @@ final class ExampleFooClassTest extends TestCase
         $this->assertSame('FOO', $object->getFoo());
     }
 
-    public function test__setBaz() : void
+    public function testSetBaz(): void
     {
         $object = new ExampleFooClass();
         $this->assertNull($object->getBaz());

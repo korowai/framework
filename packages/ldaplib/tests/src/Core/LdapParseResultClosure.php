@@ -21,11 +21,12 @@ final class LdapParseResultClosure extends AbstractClosure
     {
         $values = $this->getReturnArguments();
         $errcode = $values[0];
-        for ($i = 0; $i < 3; $i++) {
+        for ($i = 0; $i < 3; ++$i) {
             if (count($tail) > $i) {
-                $tail[$i] = $values[$i+1] ?? null;
+                $tail[$i] = $values[$i + 1] ?? null;
             }
         }
+
         return $this->getReturnValue();
     }
 }

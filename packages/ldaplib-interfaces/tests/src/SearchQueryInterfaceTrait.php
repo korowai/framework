@@ -19,15 +19,15 @@ use Korowai\Lib\Ldap\ResultInterface;
  */
 trait SearchQueryInterfaceTrait
 {
-    public $execute = null;
-    public $result = null;
+    public $execute;
+    public $result;
 
-    public function execute() : ResultInterface
+    public function execute(): ResultInterface
     {
         return $this->execute;
     }
 
-    public function getResult() : ResultInterface
+    public function getResult(): ResultInterface
     {
         return $this->result;
     }

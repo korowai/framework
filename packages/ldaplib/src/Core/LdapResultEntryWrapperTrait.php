@@ -27,11 +27,9 @@ trait LdapResultEntryWrapperTrait
     /**
      * Returns the encapsulated LdapResultEntry instance.
      *
-     * @return LdapResultEntryInterface
-     *
      * @psalm-mutation-free
      */
-    public function getLdapResultEntry() : LdapResultEntryInterface
+    public function getLdapResultEntry(): LdapResultEntryInterface
     {
         return $this->ldapResultEntry;
     }
@@ -39,11 +37,9 @@ trait LdapResultEntryWrapperTrait
     /**
      * Returns the encapsulated LdapResultEntry instance.
      *
-     * @return LdapResultEntryInterface
-     *
      * @psalm-mutation-free
      */
-    public function getLdapResultItem() : LdapResultEntryInterface
+    public function getLdapResultItem(): LdapResultEntryInterface
     {
         return $this->getLdapResultEntry();
     }

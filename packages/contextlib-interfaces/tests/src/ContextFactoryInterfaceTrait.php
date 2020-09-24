@@ -19,9 +19,9 @@ use Korowai\Lib\Context\ContextManagerInterface;
  */
 trait ContextFactoryInterfaceTrait
 {
-    public $contextManager = null;
+    public $contextManager;
 
-    public function getContextManager($arg) : ?ContextManagerInterface
+    public function getContextManager($arg): ?ContextManagerInterface
     {
         return $this->contextManager;
     }

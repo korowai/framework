@@ -28,10 +28,10 @@ abstract class AbstractClosure
     private $returnArguments;
 
     /**
-     * Initializes the object
+     * Initializes the object.
      *
-     * @param  mixed $returnValue
-     * @param  array|null $returnArguments
+     * @param mixed      $returnValue
+     * @param null|array $returnArguments
      */
     public function __construct($returnValue, array $returnArguments)
     {
@@ -49,10 +49,8 @@ abstract class AbstractClosure
 
     /**
      * Returns the array of arguments to be set to parameters passed via reference.
-     *
-     * @return array|null
      */
-    protected function getReturnArguments() : ?array
+    protected function getReturnArguments(): ?array
     {
         return $this->returnArguments;
     }

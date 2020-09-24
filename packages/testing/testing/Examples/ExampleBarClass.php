@@ -26,7 +26,7 @@ final class ExampleBarClass extends ExampleFooClass implements ExampleBarInterfa
     /**
      * Initialized ExampleBarClass instance.
      *
-     * @param  mixed $options Initial values for attributes.
+     * @param mixed $options initial values for attributes
      */
     public function __construct(array $options = [])
     {
@@ -38,14 +38,16 @@ final class ExampleBarClass extends ExampleFooClass implements ExampleBarInterfa
     /**
      * Sets value of the *$bar* attribute.
      *
-     * @param  mixed $bar
-     *      New attribute value.
-     * @return ExampleBarInterface
-     *      Returns *$this*.
+     * @param mixed $bar
+     *                   New attribute value
+     *
+     * @return exampleBarInterface
+     *                             Returns *$this*
      */
-    public function setBar($bar) : ExampleBarInterface
+    public function setBar($bar): ExampleBarInterface
     {
         $this->bar = $bar;
+
         return $this;
     }
 

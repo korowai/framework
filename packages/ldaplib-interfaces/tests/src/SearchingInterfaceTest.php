@@ -12,32 +12,33 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldap;
 
+use Korowai\Lib\Ldap\ResultInterface;
 use Korowai\Lib\Ldap\SearchingInterface;
 use Korowai\Lib\Ldap\SearchQueryInterface;
-use Korowai\Lib\Ldap\ResultInterface;
-
 use Korowai\Testing\LdaplibInterfaces\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Tests\Lib\Ldap\SearchingInterfaceTrait
+ *
+ * @internal
  */
 final class SearchingInterfaceTest extends TestCase
 {
     public static function createDummyInstance()
     {
-        return new class implements SearchingInterface {
+        return new class() implements SearchingInterface {
             use SearchingInterfaceTrait;
         };
     }
 
-    public function test__dummyImplementation() : void
+    public function testDummyImplementation(): void
     {
         $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(SearchingInterface::class, $dummy);
     }
 
-    public function test__search() : void
+    public function testSearch(): void
     {
         $dummy = $this->createDummyInstance();
 
@@ -46,7 +47,7 @@ final class SearchingInterfaceTest extends TestCase
         $this->assertSame($dummy->search, $dummy->search('', '', []));
     }
 
-    public static function prov__search__withArgTypeError() : array
+    public static function prov__search__withArgTypeError(): array
     {
         return [
             [[0], \string::class],
@@ -59,7 +60,7 @@ final class SearchingInterfaceTest extends TestCase
     /**
      * @dataProvider prov__search__withArgTypeError
      */
-    public function test__search__withArgTypeError(array $args, string $message) : void
+    public function testSearchWithArgTypeError(array $args, string $message): void
     {
         $dummy = $this->createDummyInstance();
         $dummy->search = $this->createMock(ResultInterface::class);
@@ -69,7 +70,7 @@ final class SearchingInterfaceTest extends TestCase
         $dummy->search(...$args);
     }
 
-    public function test__search__withRetTypeError() : void
+    public function testSearchWithRetTypeError(): void
     {
         $dummy = $this->createDummyInstance();
         $dummy->search = null;
@@ -80,7 +81,7 @@ final class SearchingInterfaceTest extends TestCase
         $dummy->search('', '');
     }
 
-    public function test__createSearchQuery() : void
+    public function testCreateSearchQuery(): void
     {
         $dummy = $this->createDummyInstance();
 
@@ -90,7 +91,7 @@ final class SearchingInterfaceTest extends TestCase
         $this->assertSame($dummy->createSearchQuery, $dummy->createSearchQuery('', '', []));
     }
 
-    public static function prov__createSearchQuery__withArgTypeError() : array
+    public static function prov__createSearchQuery__withArgTypeError(): array
     {
         return [
             [[null, ''], \string::class],
@@ -104,7 +105,7 @@ final class SearchingInterfaceTest extends TestCase
     /**
      * @dataProvider prov__createSearchQuery__withArgTypeError
      */
-    public function test__createSearchQuery__withArgTypeError(array $args, string $message) : void
+    public function testCreateSearchQueryWithArgTypeError(array $args, string $message): void
     {
         $dummy = $this->createDummyInstance();
         $dummy->createSearchQuery = $this->createStub(SearchQueryInterface::class);
@@ -114,7 +115,7 @@ final class SearchingInterfaceTest extends TestCase
         $dummy->createSearchQuery(...$args);
     }
 
-    public function test__createSearchQuery__withRetTypeError() : void
+    public function testCreateSearchQueryWithRetTypeError(): void
     {
         $dummy = $this->createDummyInstance();
         $dummy->createSearchQuery = null;

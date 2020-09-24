@@ -12,26 +12,27 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldif\Nodes;
 
-use Korowai\Lib\Ldif\Nodes\ModSpecInterface;
-use Korowai\Lib\Ldif\Nodes\HasAttrValSpecsInterface;
 use Korowai\Lib\Ldif\NodeInterface;
-
+use Korowai\Lib\Ldif\Nodes\HasAttrValSpecsInterface;
+use Korowai\Lib\Ldif\Nodes\ModSpecInterface;
 use Korowai\Testing\LdiflibInterfaces\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Tests\Lib\Ldif\Nodes\ModSpecInterfaceTrait
+ *
+ * @internal
  */
 final class ModSpecInterfaceTest extends TestCase
 {
     public static function createDummyInstance()
     {
-        return new class implements ModSpecInterface {
+        return new class() implements ModSpecInterface {
             use ModSpecInterfaceTrait;
         };
     }
 
-    public static function prov__extendsInterface() : array
+    public static function prov__extendsInterface(): array
     {
         return [
             [HasAttrValSpecsInterface::class],
@@ -42,25 +43,25 @@ final class ModSpecInterfaceTest extends TestCase
     /**
      * @dataProvider prov__extendsInterface
      */
-    public function test__extendsInterface(string $extends) : void
+    public function testExtendsInterface(string $extends): void
     {
         $this->assertImplementsInterface($extends, ModSpecInterface::class);
     }
 
-    public function test__dummyImplementation() : void
+    public function testDummyImplementation(): void
     {
         $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(ModSpecInterface::class, $dummy);
     }
 
-    public function test__getModType() : void
+    public function testGetModType(): void
     {
         $dummy = $this->createDummyInstance();
         $dummy->modType = '';
         $this->assertSame($dummy->modType, $dummy->getModType());
     }
 
-    public function test__getModType__withNull() : void
+    public function testGetModTypeWithNull(): void
     {
         $dummy = $this->createDummyInstance();
         $dummy->modType = null;
@@ -70,14 +71,14 @@ final class ModSpecInterfaceTest extends TestCase
         $dummy->getModType();
     }
 
-    public function test__getAttribute() : void
+    public function testGetAttribute(): void
     {
         $dummy = $this->createDummyInstance();
         $dummy->attribute = '';
         $this->assertSame($dummy->attribute, $dummy->getAttribute());
     }
 
-    public function test__getAttribute__withNull() : void
+    public function testGetAttributeWithNull(): void
     {
         $dummy = $this->createDummyInstance();
         $dummy->attribute = null;

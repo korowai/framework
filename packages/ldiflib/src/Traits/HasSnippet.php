@@ -27,22 +27,19 @@ trait HasSnippet
     /**
      * Sets instance of SnippetInterface to this wrapper.
      *
-     * @param  SnippetInterface|null $snippet
-     *
      * @return $this
      */
     public function setSnippet(?SnippetInterface $snippet)
     {
         $this->snippet = $snippet;
+
         return $this;
     }
 
     /**
      * Returns the encapsulated instance of SnippetInterface.
-     *
-     * @return SnippetInterface|null
      */
-    public function getSnippet() : ?SnippetInterface
+    public function getSnippet(): ?SnippetInterface
     {
         return $this->snippet;
     }

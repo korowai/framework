@@ -13,38 +13,39 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Ldif\Rules;
 
 use Korowai\Lib\Ldif\Rules\AbstractLdifRecordRule;
-use Korowai\Lib\Ldif\RuleInterface;
 use Korowai\Lib\Ldif\Rules\AbstractRule;
+use Korowai\Lib\Ldif\Rules\AttrValSpecRule;
 use Korowai\Lib\Ldif\Rules\DnSpecRule;
 use Korowai\Lib\Ldif\Rules\SepRule;
-use Korowai\Lib\Ldif\Rules\AttrValSpecRule;
 use Korowai\Testing\Ldiflib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Ldif\Rules\AbstractLdifRecordRule
+ *
+ * @internal
  */
 final class AbstractLdifRecordRuleTest extends TestCase
 {
-    public function test__extends__AbstractRule() : void
+    public function testExtendsAbstractRule(): void
     {
         $this->assertExtendsClass(AbstractRule::class, AbstractLdifRecordRule::class);
     }
 
     public static function prov__construct()
     {
-        $dnSpecRule = new DnSpecRule;
-        $sepRule = new SepRule;
-        $attrValSpecRule = new AttrValSpecRule;
+        $dnSpecRule = new DnSpecRule();
+        $sepRule = new SepRule();
+        $attrValSpecRule = new AttrValSpecRule();
 
         return [
             '__construct()' => [
-                'args'   => [],
+                'args' => [],
                 'expect' => [
-                ]
+                ],
             ],
             '__construct([...])' => [
-                'args'   => [[
+                'args' => [[
                     'dnSpecRule' => $dnSpecRule,
                     'sepRule' => $sepRule,
                     'attrValSpecRule' => $attrValSpecRule,
@@ -53,7 +54,7 @@ final class AbstractLdifRecordRuleTest extends TestCase
                     'getDnSpecRule()' => $dnSpecRule,
                     'getSepRule()' => $sepRule,
                     'getAttrValSpecRule()' => $attrValSpecRule,
-                ]
+                ],
             ],
         ];
     }
@@ -61,42 +62,46 @@ final class AbstractLdifRecordRuleTest extends TestCase
     /**
      * @dataProvider prov__construct
      */
-    public function test__construct(array $args, array $expect) : void
+    public function testConstruct(array $args, array $expect): void
     {
         $rule = $this->getMockBuilder(AbstractLdifRecordRule::class)
-                     ->setConstructorArgs($args)
-                     ->getMockForAbstractClass();
+            ->setConstructorArgs($args)
+            ->getMockForAbstractClass()
+        ;
         $this->assertInstanceOf(DnSpecRule::class, $rule->getDnSpecRule());
         $this->assertInstanceOf(SepRule::class, $rule->getSepRule());
         $this->assertInstanceOf(AttrValSpecRule::class, $rule->getAttrValSpecRule());
         $this->assertObjectHasPropertiesIdenticalTo($expect, $rule);
     }
 
-    public function test__setDnSpecRule() : void
+    public function testSetDnSpecRule(): void
     {
         $rule = $this->getMockBuilder(AbstractLdifRecordRule::class)
-                     ->getMockForAbstractClass();
-        $dnSpecRule = new DnSpecRule;
+            ->getMockForAbstractClass()
+        ;
+        $dnSpecRule = new DnSpecRule();
 
         $this->assertSame($rule, $rule->setDnSpecRule($dnSpecRule));
         $this->assertSame($dnSpecRule, $rule->getDnSpecRule());
     }
 
-    public function test__setSepRule() : void
+    public function testSetSepRule(): void
     {
         $rule = $this->getMockBuilder(AbstractLdifRecordRule::class)
-                     ->getMockForAbstractClass();
-        $sepRule = new SepRule;
+            ->getMockForAbstractClass()
+        ;
+        $sepRule = new SepRule();
 
         $this->assertSame($rule, $rule->setSepRule($sepRule));
         $this->assertSame($sepRule, $rule->getSepRule());
     }
 
-    public function test__setAttrValSpecRule() : void
+    public function testSetAttrValSpecRule(): void
     {
         $rule = $this->getMockBuilder(AbstractLdifRecordRule::class)
-                     ->getMockForAbstractClass();
-        $attrValSpecRule = new AttrValSpecRule;
+            ->getMockForAbstractClass()
+        ;
+        $attrValSpecRule = new AttrValSpecRule();
 
         $this->assertSame($rule, $rule->setAttrValSpecRule($attrValSpecRule));
         $this->assertSame($attrValSpecRule, $rule->getAttrValSpecRule());

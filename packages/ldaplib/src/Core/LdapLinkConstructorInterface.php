@@ -23,13 +23,9 @@ interface LdapLinkConstructorInterface
      * Creates and returns new instance of LdapLinkInterface with given
      * parameters using LdapLinkInterface::connect().
      *
-     * @param  string|null $host_or_uri
-     * @param  int $port
-     *
-     * @return LdapLinkInterface
      * @throws \Korowai\Lib\Ldap\ExceptionInterface
      */
-    public function connect(string $host_or_uri = null, int $port = 389) : LdapLinkInterface;
+    public function connect(string $host_or_uri = null, int $port = 389): LdapLinkInterface;
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

@@ -12,34 +12,35 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldap;
 
-use Korowai\Testing\Ldaplib\TestCase;
-
 use Korowai\Lib\Ldap\Core\LdapResultReferenceInterface;
 use Korowai\Lib\Ldap\Core\LdapResultReferenceIteratorInterface;
-use Korowai\Lib\Ldap\ResultReferenceIterator;
 use Korowai\Lib\Ldap\ResultReferenceInterface;
+use Korowai\Lib\Ldap\ResultReferenceIterator;
 use Korowai\Lib\Ldap\ResultReferenceIteratorInterface;
+use Korowai\Testing\Ldaplib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Ldap\ResultReferenceIterator
  * @covers \Korowai\Tests\Lib\Ldap\ResultItemIteratorTestTrait
+ *
+ * @internal
  */
 final class ResultReferenceIteratorTest extends TestCase
 {
     use ResultItemIteratorTestTrait;
 
-    public function getIteratorClass() : string
+    public function getIteratorClass(): string
     {
         return ResultReferenceIterator::class;
     }
 
-    public function getIteratorInterface() : string
+    public function getIteratorInterface(): string
     {
         return ResultReferenceIteratorInterface::class;
     }
 
-    public function getLdapIteratorInterface() : string
+    public function getLdapIteratorInterface(): string
     {
         return LdapResultReferenceIteratorInterface::class;
     }
@@ -49,12 +50,12 @@ final class ResultReferenceIteratorTest extends TestCase
         return new ResultReferenceIterator($ldapIterator);
     }
 
-    public function getItemInterface() : string
+    public function getItemInterface(): string
     {
         return ResultReferenceInterface::class;
     }
 
-    public function getLdapItemInterface() : string
+    public function getLdapItemInterface(): string
     {
         return LdapResultReferenceInterface::class;
     }

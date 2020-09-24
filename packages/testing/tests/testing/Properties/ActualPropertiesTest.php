@@ -12,17 +12,18 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Testing\Properties;
 
-use Korowai\Testing\TestCase;
 use Korowai\Testing\Properties\ActualProperties;
 use Korowai\Testing\Properties\ActualPropertiesInterface;
 use Korowai\Testing\Properties\ExpectedProperties;
-use Korowai\Testing\Properties\ExpectedPropertiesInterface;
 use Korowai\Testing\Properties\PropertiesInterface;
 use Korowai\Testing\Properties\PropertySelectorInterface;
+use Korowai\Testing\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Testing\Properties\ActualProperties
+ *
+ * @internal
  */
 final class ActualPropertiesTest extends TestCase
 {
@@ -32,12 +33,12 @@ final class ActualPropertiesTest extends TestCase
     //
     //
 
-    public function test__implements__ActualPropertiesInterface() : void
+    public function testImplementsActualPropertiesInterface(): void
     {
         $this->assertImplementsInterface(ActualPropertiesInterface::class, ActualProperties::class);
     }
 
-    public function test__extends__ArrayObject() : void
+    public function testExtendsArrayObject(): void
     {
         $this->assertExtendsClass(\ArrayObject::class, ActualProperties::class);
     }
@@ -46,25 +47,25 @@ final class ActualPropertiesTest extends TestCase
     // __construct()
     //
 
-    public static function prov__construct() : array
+    public static function prov__construct(): array
     {
         return [
             // #0
             [
-                'args'   => [],
+                'args' => [],
                 'expect' => [],
             ],
 
             // #1
             [
-                'args'   => [[]],
+                'args' => [[]],
                 'expect' => [],
             ],
 
             // #2
             [
-                'args'   => [['foo' => 'FOO']],
-                'expect' => [ 'foo' => 'FOO' ],
+                'args' => [['foo' => 'FOO']],
+                'expect' => ['foo' => 'FOO'],
             ],
         ];
     }
@@ -72,33 +73,34 @@ final class ActualPropertiesTest extends TestCase
     /**
      * @dataProvider prov__construct
      */
-    public function test__construct(array $args, array $expect) : void
+    public function testConstruct(array $args, array $expect): void
     {
         $properties = new ActualProperties(...$args);
 
         $this->assertSame($expect, $properties->getArrayCopy());
-        $this->assertSame($expect, (array)$properties);
+        $this->assertSame($expect, (array) $properties);
     }
 
     //
     // canUnwrapChild()
     //
 
-    public function prov__canUnwrapChild() : array
+    public function prov__canUnwrapChild(): array
     {
         $selector = $this->createMock(PropertySelectorInterface::class);
+
         return [
             // #0
             [
-                'parent' => new ActualProperties,
-                'child'  => new ExpectedProperties($selector),
+                'parent' => new ActualProperties(),
+                'child' => new ExpectedProperties($selector),
                 'expect' => false,
             ],
 
             // #1
             [
-                'parent' => new ActualProperties,
-                'child'  => new ActualProperties,
+                'parent' => new ActualProperties(),
+                'child' => new ActualProperties(),
                 'expect' => true,
             ],
         ];
@@ -107,7 +109,7 @@ final class ActualPropertiesTest extends TestCase
     /**
      * @dataProvider prov__canUnwrapChild
      */
-    public function test__canUnwrapChild(PropertiesInterface $parent, PropertiesInterface $child, bool $expect) : void
+    public function testCanUnwrapChild(PropertiesInterface $parent, PropertiesInterface $child, bool $expect): void
     {
         $this->assertSame($expect, $parent->canUnwrapChild($child));
     }

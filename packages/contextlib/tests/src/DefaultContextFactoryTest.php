@@ -12,19 +12,20 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Context;
 
-use Korowai\Testing\TestCase;
-use Korowai\Testing\Contextlib\GetContextFunctionMockTrait;
-use Korowai\Testing\Contextlib\ExpectFunctionOnceWillReturnTrait;
-
-use Korowai\Lib\Context\DefaultContextFactory;
-use Korowai\Lib\Context\ContextManagerInterface;
 use Korowai\Lib\Context\ContextFactoryInterface;
+use Korowai\Lib\Context\ContextManagerInterface;
+use Korowai\Lib\Context\DefaultContextFactory;
 use Korowai\Lib\Context\ResourceContextManager;
 use Korowai\Lib\Context\TrivialValueWrapper;
+use Korowai\Testing\Contextlib\ExpectFunctionOnceWillReturnTrait;
+use Korowai\Testing\Contextlib\GetContextFunctionMockTrait;
+use Korowai\Testing\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Context\DefaultContextFactory
+ *
+ * @internal
  */
 final class DefaultContextFactoryTest extends TestCase
 {
@@ -33,12 +34,12 @@ final class DefaultContextFactoryTest extends TestCase
     use GetContextFunctionMockTrait;
     use ExpectFunctionOnceWillReturnTrait;
 
-    public static function getSingletonClassUnderTest() : string
+    public static function getSingletonClassUnderTest(): string
     {
         return DefaultContextFactory::class;
     }
 
-    public function test__implements__ContextFactoryInterface() : void
+    public function testImplementsContextFactoryInterface(): void
     {
         $this->assertImplementsInterface(ContextFactoryInterface::class, DefaultContextFactory::class);
     }
@@ -46,7 +47,7 @@ final class DefaultContextFactoryTest extends TestCase
     /**
      * @runInSeparateProcess
      */
-    public function test__getContextManager__withContextManager() : void
+    public function testGetContextManagerWithContextManager(): void
     {
         $factory = DefaultContextFactory::getInstance();
 
@@ -64,7 +65,7 @@ final class DefaultContextFactoryTest extends TestCase
     /**
      * @runInSeparateProcess
      */
-    public function test__getContextManager__withResource() : void
+    public function testGetContextManagerWithResource(): void
     {
         $this->expectFunctionOnceWillReturn('is_resource', ['foo'], true);
         $this->expectFunctionOnceWillReturn('get_resource_type', ['foo'], 'bar');
@@ -81,15 +82,16 @@ final class DefaultContextFactoryTest extends TestCase
     /**
      * @runInSeparateProcess
      */
-    public function test__getContextManager__withValue() : void
+    public function testGetContextManagerWithValue(): void
     {
         $factory = DefaultContextFactory::getInstance();
 
         $is_resource = $this->getFunctionMock('Korowai\\Lib\\Context', 'is_resource');
 
         $is_resource->expects($this->once())
-                    ->with('foo')
-                    ->willReturn(false);
+            ->with('foo')
+            ->willReturn(false)
+        ;
 
         $cm = $factory->getContextManager('foo');
 

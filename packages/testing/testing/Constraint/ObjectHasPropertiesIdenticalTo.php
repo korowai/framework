@@ -51,24 +51,24 @@ use Korowai\Testing\Properties\PropertySelectorInterface;
  */
 final class ObjectHasPropertiesIdenticalTo extends AbstractPropertiesComparator
 {
-    protected static function makePropertySelector() : PropertySelectorInterface
-    {
-        return new ObjectPropertySelector;
-    }
-
-    protected function compareArrays(array $expected, array $actual) : bool
-    {
-        return $expected === $actual;
-    }
-
-    public function subject() : string
+    public function subject(): string
     {
         return 'an object';
     }
 
-    public function predicate() : string
+    public function predicate(): string
     {
         return 'identical to';
+    }
+
+    protected static function makePropertySelector(): PropertySelectorInterface
+    {
+        return new ObjectPropertySelector();
+    }
+
+    protected function compareArrays(array $expected, array $actual): bool
+    {
+        return $expected === $actual;
     }
 }
 

@@ -12,11 +12,10 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldap;
 
-use Korowai\Lib\Ldap\Adapter\AbstractCompareQuery;
+use function Korowai\Lib\Context\with;
 use Korowai\Lib\Ldap\Core\LdapLinkInterface;
 use Korowai\Lib\Ldap\Core\LdapLinkWrapperInterface;
 use Korowai\Lib\Ldap\Core\LdapLinkWrapperTrait;
-use function Korowai\Lib\Context\with;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -31,16 +30,11 @@ final class CompareQuery implements CompareQueryInterface, LdapLinkWrapperInterf
     protected $attribute;
     /** @var string */
     protected $value;
-    /** @var bool|null */
+    /** @var null|bool */
     protected $result;
 
     /**
-     * Constructs CompareQuery
-     *
-     * @param  LdapLinkInterface $link
-     * @param  string $dn
-     * @param  string $attribute
-     * @param  string $value
+     * Constructs CompareQuery.
      */
     public function __construct(LdapLinkInterface $link, string $dn, string $attribute, string $value)
     {
@@ -51,28 +45,25 @@ final class CompareQuery implements CompareQueryInterface, LdapLinkWrapperInterf
     }
 
     /**
-     * Returns ``$dn`` provided to ``__construct()`` at creation time
-     * @return string
+     * Returns ``$dn`` provided to ``__construct()`` at creation time.
      */
-    public function getDn() : string
+    public function getDn(): string
     {
         return $this->dn;
     }
 
     /**
-     * Returns ``$attribute`` provided to ``__construct()`` at creation time
-     * @return string
+     * Returns ``$attribute`` provided to ``__construct()`` at creation time.
      */
-    public function getAttribute() : string
+    public function getAttribute(): string
     {
         return $this->attribute;
     }
 
     /**
      * Returns ``$value`` provided to ``__construct()`` at creation time.
-     * @return string
      */
-    public function getValue() : string
+    public function getValue(): string
     {
         return $this->value;
     }
@@ -80,32 +71,35 @@ final class CompareQuery implements CompareQueryInterface, LdapLinkWrapperInterf
     /**
      * {@inheritdoc}
      */
-    public function getResult() : bool
+    public function getResult(): bool
     {
         if (!isset($this->result)) {
             return $this->execute();
         }
+
         return $this->result;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function execute() : bool
+    public function execute(): bool
     {
         $this->result = $this->doExecuteQuery();
+
         return $this->result;
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function doExecuteQuery() : bool
+    protected function doExecuteQuery(): bool
     {
-        return with($this->ldapLink->getErrorHandler())(function () : bool {
-            if (($result = $this->ldapLink->compare($this->dn, $this->attribute, $this->value)) === -1) {
-                trigger_error("LdapLinkInterface::compare() returned -1");
+        return with($this->ldapLink->getErrorHandler())(function (): bool {
+            if (-1 === ($result = $this->ldapLink->compare($this->dn, $this->attribute, $this->value))) {
+                trigger_error('LdapLinkInterface::compare() returned -1');
             }
+
             return $result;
         });
     }

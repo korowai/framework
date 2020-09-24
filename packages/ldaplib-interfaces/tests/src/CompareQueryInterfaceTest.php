@@ -13,29 +13,30 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Ldap;
 
 use Korowai\Lib\Ldap\CompareQueryInterface;
-
 use Korowai\Testing\LdaplibInterfaces\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Tests\Lib\Ldap\CompareQueryInterfaceTrait
+ *
+ * @internal
  */
 final class CompareQueryInterfaceTest extends TestCase
 {
     public static function createDummyInstance()
     {
-        return new class implements CompareQueryInterface {
+        return new class() implements CompareQueryInterface {
             use CompareQueryInterfaceTrait;
         };
     }
 
-    public function test__dummyImplementation() : void
+    public function testDummyImplementation(): void
     {
         $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(CompareQueryInterface::class, $dummy);
     }
 
-    public function test__execute() : void
+    public function testExecute(): void
     {
         $dummy = $this->createDummyInstance();
 
@@ -43,7 +44,7 @@ final class CompareQueryInterfaceTest extends TestCase
         $this->assertSame($dummy->execute, $dummy->execute());
     }
 
-    public function test__execute__withRetTypeError() : void
+    public function testExecuteWithRetTypeError(): void
     {
         $dummy = $this->createDummyInstance();
         $dummy->execute = null;
@@ -53,7 +54,7 @@ final class CompareQueryInterfaceTest extends TestCase
         $dummy->execute();
     }
 
-    public function test__getResult() : void
+    public function testGetResult(): void
     {
         $dummy = $this->createDummyInstance();
 
@@ -61,7 +62,7 @@ final class CompareQueryInterfaceTest extends TestCase
         $this->assertSame($dummy->result, $dummy->getResult());
     }
 
-    public function test__getResult__withRetTypeError() : void
+    public function testGetResultWithRetTypeError(): void
     {
         $dummy = $this->createDummyInstance();
         $dummy->result = null;

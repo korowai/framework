@@ -27,12 +27,12 @@ final class RecursivePropertiesSelector implements RecursivePropertiesSelectorIn
         $this->expected = $expected;
     }
 
-    public function selectProperties($subject) : ActualPropertiesInterface
+    public function selectProperties($subject): ActualPropertiesInterface
     {
         return new ActualProperties($this->selectPropertiesArray($subject));
     }
 
-    private function selectPropertiesArray($subject) : array
+    private function selectPropertiesArray($subject): array
     {
         $array = [];
         $selector = $this->expected->getPropertySelector();
@@ -42,6 +42,7 @@ final class RecursivePropertiesSelector implements RecursivePropertiesSelectorIn
                 $array[$key] = $this->adjustActualValue($actual, $expect);
             }
         }
+
         return $array;
     }
 
@@ -56,6 +57,7 @@ final class RecursivePropertiesSelector implements RecursivePropertiesSelectorIn
                 $val = self::adjustActualValue($val, $expect[$key]);
             }
         }
+
         return $actual;
     }
 }

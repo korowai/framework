@@ -22,29 +22,23 @@ interface LdapLinkConfigInterface
     /**
      * Returns the $uri to connect LdapLinkInterface to.
      *
-     * @return string
-     *
      * @psalm-mutation-free
      */
-    public function uri() : string;
+    public function uri(): string;
 
     /**
      * Returns whether to run start_tls on an LdapLinkInterface.
      *
-     * @return bool
-     *
      * @psalm-mutation-free
      */
-    public function tls() : bool;
+    public function tls(): bool;
 
     /**
      * Returns an array of options that should be set with LdapLinkInterface::set_option().
      *
-     * @return array
-     *
      * @psalm-mutation-free
      */
-    public function options() : array;
+    public function options(): array;
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

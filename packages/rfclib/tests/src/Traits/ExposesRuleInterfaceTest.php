@@ -12,13 +12,15 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Rfc\Traits;
 
-use Korowai\Lib\Rfc\Traits\ExposesRuleInterface;
 use Korowai\Lib\Rfc\RuleInterface;
+use Korowai\Lib\Rfc\Traits\ExposesRuleInterface;
 use Korowai\Testing\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Rfc\Traits\ExposesRuleInterface
+ *
+ * @internal
  */
 final class ExposesRuleInterfaceTest extends TestCase
 {
@@ -26,112 +28,131 @@ final class ExposesRuleInterfaceTest extends TestCase
     {
         $obj = new class($rule) implements RuleInterface {
             use ExposesRuleInterface;
+
             public function __construct(?RuleInterface $rule)
             {
                 $this->rule = $rule;
             }
-            public function getRfcRule() : ?RuleInterface
+
+            public function getRfcRule(): ?RuleInterface
             {
                 return $this->rule;
             }
         };
+
         return $obj;
     }
 
-    public function test____toString() : void
+    public function testToString(): void
     {
         $rule = $this->getMockBuilder(RuleInterface::class)
-                         ->getMockForAbstractClass();
+            ->getMockForAbstractClass()
+        ;
         $rule->expects($this->once())
-             ->method('__toString')
-             ->willReturn('foo');
+            ->method('__toString')
+            ->willReturn('foo')
+        ;
         $obj = $this->getTestObject($rule);
 
         $this->assertSame('foo', $obj->__toString());
     }
 
-    public function test__regexp() : void
+    public function testRegexp(): void
     {
         $rule = $this->getMockBuilder(RuleInterface::class)
-                         ->getMockForAbstractClass();
+            ->getMockForAbstractClass()
+        ;
         $rule->expects($this->once())
-             ->method('regexp')
-             ->willReturn('/^foo$/');
+            ->method('regexp')
+            ->willReturn('/^foo$/')
+        ;
         $obj = $this->getTestObject($rule);
 
         $this->assertSame('/^foo$/', $obj->regexp());
     }
 
-    public function test__captures() : void
+    public function testCaptures(): void
     {
         $rule = $this->getMockBuilder(RuleInterface::class)
-                         ->getMockForAbstractClass();
+            ->getMockForAbstractClass()
+        ;
         $rule->expects($this->once())
-             ->method('captures')
-             ->willReturn(['v', 'e']);
+            ->method('captures')
+            ->willReturn(['v', 'e'])
+        ;
         $obj = $this->getTestObject($rule);
 
         $this->assertSame(['v', 'e'], $obj->captures());
     }
 
-    public function test__errorCaptures() : void
+    public function testErrorCaptures(): void
     {
         $rule = $this->getMockBuilder(RuleInterface::class)
-                         ->getMockForAbstractClass();
+            ->getMockForAbstractClass()
+        ;
         $rule->expects($this->once())
-             ->method('errorCaptures')
-             ->willReturn(['e']);
+            ->method('errorCaptures')
+            ->willReturn(['e'])
+        ;
         $obj = $this->getTestObject($rule);
 
         $this->assertSame(['e'], $obj->errorCaptures());
     }
 
-    public function test__valueCaptures() : void
+    public function testValueCaptures(): void
     {
         $rule = $this->getMockBuilder(RuleInterface::class)
-                         ->getMockForAbstractClass();
+            ->getMockForAbstractClass()
+        ;
         $rule->expects($this->once())
-             ->method('valueCaptures')
-             ->willReturn(['v']);
+            ->method('valueCaptures')
+            ->willReturn(['v'])
+        ;
         $obj = $this->getTestObject($rule);
 
         $this->assertSame(['v'], $obj->valueCaptures());
     }
 
-    public function test__findCapturedErrors() : void
+    public function testFindCapturedErrors(): void
     {
         $rule = $this->getMockBuilder(RuleInterface::class)
-                         ->getMockForAbstractClass();
+            ->getMockForAbstractClass()
+        ;
         $rule->expects($this->once())
-             ->method('findCapturedErrors')
-             ->with(['v1', 'e1', 'v2', 'e2'])
-             ->willReturn(['e1', 'e2']);
+            ->method('findCapturedErrors')
+            ->with(['v1', 'e1', 'v2', 'e2'])
+            ->willReturn(['e1', 'e2'])
+        ;
         $obj = $this->getTestObject($rule);
 
         $this->assertSame(['e1', 'e2'], $obj->findCapturedErrors(['v1', 'e1', 'v2', 'e2']));
     }
 
-    public function test__findCapturedValues() : void
+    public function testFindCapturedValues(): void
     {
         $rule = $this->getMockBuilder(RuleInterface::class)
-                         ->getMockForAbstractClass();
+            ->getMockForAbstractClass()
+        ;
         $rule->expects($this->once())
-             ->method('findCapturedValues')
-             ->with(['v1', 'e1', 'v2', 'e2'])
-             ->willReturn(['v1', 'v2']);
+            ->method('findCapturedValues')
+            ->with(['v1', 'e1', 'v2', 'e2'])
+            ->willReturn(['v1', 'v2'])
+        ;
         $obj = $this->getTestObject($rule);
 
         $this->assertSame(['v1', 'v2'], $obj->findCapturedValues(['v1', 'e1', 'v2', 'e2']));
     }
 
-    public function test__getErrorMessage() : void
+    public function testGetErrorMessage(): void
     {
         $rule = $this->getMockBuilder(RuleInterface::class)
-                         ->getMockForAbstractClass();
+            ->getMockForAbstractClass()
+        ;
         $rule->expects($this->exactly(2))
-             ->method('getErrorMessage')
-             ->withConsecutive([], ['asd'])
-             ->will($this->onConsecutiveCalls('foo', 'bar'));
+            ->method('getErrorMessage')
+            ->withConsecutive([], ['asd'])
+            ->will($this->onConsecutiveCalls('foo', 'bar'))
+        ;
         $obj = $this->getTestObject($rule);
 
         $this->assertSame('foo', $obj->getErrorMessage());

@@ -26,9 +26,6 @@ final class Binding implements BindingInterface, LdapLinkWrapperInterface
 
     /**
      * Initializes the Binding object with LdapLink instance.
-     *
-     * @param LdapLinkInterface $link
-     * @param bool $bound
      */
     public function __construct(LdapLinkInterface $link, bool $bound = false)
     {

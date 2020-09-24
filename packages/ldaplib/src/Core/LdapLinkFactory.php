@@ -31,8 +31,8 @@ final class LdapLinkFactory implements LdapLinkFactoryInterface
     /**
      * Initializes the object.
      *
-     * @param  LdapLinkConstructorInterface $constructor
-     *      An object used to create initial LdapLink.
+     * @param ldapLinkConstructorInterface $constructor
+     *                                                  An object used to create initial LdapLink
      */
     public function __construct(LdapLinkConstructorInterface $constructor)
     {
@@ -42,11 +42,9 @@ final class LdapLinkFactory implements LdapLinkFactoryInterface
     /**
      * Returns constructor object used to create LdapLink instance.
      *
-     * @return LdapLinkConstructorInterface
-     *
      * @psalm-mutation-free
      */
-    public function getLdapLinkConstructor() : LdapLinkConstructorInterface
+    public function getLdapLinkConstructor(): LdapLinkConstructorInterface
     {
         return $this->constructor;
     }
@@ -54,26 +52,27 @@ final class LdapLinkFactory implements LdapLinkFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function createLdapLink(LdapLinkConfigInterface $config) : LdapLinkInterface
+    public function createLdapLink(LdapLinkConfigInterface $config): LdapLinkInterface
     {
         $link = $this->constructor->connect($config->uri());
         if ($config->tls()) {
             $this->startTlsOnLdapLink($link);
         }
         $this->setOptionsToLdapLink($link, $config->options());
+
         return $link;
     }
 
-    private function startTlsOnLdapLink(LdapLinkInterface $link) : void
+    private function startTlsOnLdapLink(LdapLinkInterface $link): void
     {
-        with($link->getErrorHandler())(function () use ($link) : void {
+        with($link->getErrorHandler())(function () use ($link): void {
             $link->start_tls();
         });
     }
 
-    private function setOptionsToLdapLink(LdapLinkInterface $link, array $options) : void
+    private function setOptionsToLdapLink(LdapLinkInterface $link, array $options): void
     {
-        with($link->getErrorHandler())(function () use ($link, $options) : void {
+        with($link->getErrorHandler())(function () use ($link, $options): void {
             foreach ($options as $id => $value) {
                 $link->set_option($id, $value);
             }

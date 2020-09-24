@@ -23,27 +23,27 @@ trait ResultEntryInterfaceTrait
 {
     use PhpIteratorAggregateTrait;
 
-    public $dn = null;
-    public $attributes = null;
-    public $entry = null;
-    public $attributeIterator = null;
+    public $dn;
+    public $attributes;
+    public $entry;
+    public $attributeIterator;
 
-    public function getDn() : string
+    public function getDn(): string
     {
         return $this->dn;
     }
 
-    public function getAttributes() : array
+    public function getAttributes(): array
     {
         return $this->attributes;
     }
 
-    public function toEntry() : EntryInterface
+    public function toEntry(): EntryInterface
     {
         return $this->entry;
     }
 
-    public function getAttributeIterator() : ResultAttributeIteratorInterface
+    public function getAttributeIterator(): ResultAttributeIteratorInterface
     {
         return $this->attributeIterator;
     }

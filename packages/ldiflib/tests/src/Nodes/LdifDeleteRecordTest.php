@@ -12,17 +12,18 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldif\Nodes;
 
+use Korowai\Lib\Ldif\Nodes\AbstractChangeRecord;
 use Korowai\Lib\Ldif\Nodes\LdifDeleteRecord;
 use Korowai\Lib\Ldif\Nodes\LdifDeleteRecordInterface;
-use Korowai\Lib\Ldif\Nodes\AbstractChangeRecord;
 use Korowai\Lib\Ldif\RecordVisitorInterface;
 use Korowai\Lib\Ldif\SnippetInterface;
-
 use Korowai\Testing\Ldiflib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Ldif\Nodes\LdifDeleteRecord
+ *
+ * @internal
  */
 final class LdifDeleteRecordTest extends TestCase
 {
@@ -31,7 +32,7 @@ final class LdifDeleteRecordTest extends TestCase
         $this->assertExtendsClass(AbstractChangeRecord::class, LdifDeleteRecord::class);
     }
 
-    public function test__implements__LdifDeleteRecordInterface() : void
+    public function testImplementsLdifDeleteRecordInterface(): void
     {
         $this->assertImplementsInterface(LdifDeleteRecordInterface::class, LdifDeleteRecord::class);
     }
@@ -50,46 +51,48 @@ final class LdifDeleteRecordTest extends TestCase
                     'getChangeType()' => 'delete',
                     'getControls()' => [],
                     'getSnippet()' => null,
-                ]
+                ],
             ],
             '__construct("dc=example,dc=org", ["controls" => ["Y"], "snippet" => $snippet]' => [
                 'args' => [
                     'dc=example,dc=org',
                     [
-                        "controls" => ['Y'],
-                        "snippet" => $snippet,
+                        'controls' => ['Y'],
+                        'snippet' => $snippet,
                     ],
                 ],
                 'expect' => [
                     'getDn()' => 'dc=example,dc=org',
                     'getChangeType()' => 'delete',
                     'getControls()' => ['Y'],
-                    'getSnippet()' => $snippet
-                ]
-            ]
+                    'getSnippet()' => $snippet,
+                ],
+            ],
         ];
     }
 
     /**
      * @dataProvider prov__construct
      */
-    public function test__construct(array $args, array $expect) : void
+    public function testConstruct(array $args, array $expect): void
     {
         $record = new LdifDeleteRecord(...$args);
         $this->assertObjectHasPropertiesIdenticalTo($expect, $record);
     }
 
-    public function test__acceptRecordVisitor() : void
+    public function testAcceptRecordVisitor(): void
     {
         $visitor = $this->getMockBuilder(RecordVisitorInterface::class)
-                        ->getMockForAbstractClass();
+            ->getMockForAbstractClass()
+        ;
 
-        $record = new LdifDeleteRecord("dc=example,dc=org");
+        $record = new LdifDeleteRecord('dc=example,dc=org');
 
         $visitor->expects($this->once())
-                ->method('visitLdifDeleteRecord')
-                ->with($record)
-                ->will($this->returnValue('ok'));
+            ->method('visitLdifDeleteRecord')
+            ->with($record)
+            ->will($this->returnValue('ok'))
+        ;
 
         $this->assertSame('ok', $record->acceptRecordVisitor($visitor));
     }

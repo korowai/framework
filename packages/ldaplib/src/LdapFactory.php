@@ -12,9 +12,9 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldap;
 
-use Korowai\Lib\Ldap\Core\LdapLinkFactoryInterface;
-use Korowai\Lib\Ldap\Core\LdapLinkConfigResolverInterface;
 use Korowai\Lib\Ldap\Core\LdapLinkConfig;
+use Korowai\Lib\Ldap\Core\LdapLinkConfigResolverInterface;
+use Korowai\Lib\Ldap\Core\LdapLinkFactoryInterface;
 
 /**
  * Abstract base class for Adapter factories.
@@ -38,9 +38,7 @@ final class LdapFactory implements LdapFactoryInterface
     private $ldapLinkConfigResolver;
 
     /**
-     * Creates an LdapFactory
-     *
-     * @param  LdapLinkFactoryInterface $ldapLinkFactory
+     * Creates an LdapFactory.
      */
     public function __construct(
         LdapLinkFactoryInterface $ldapLinkFactory,
@@ -53,11 +51,9 @@ final class LdapFactory implements LdapFactoryInterface
     /**
      * Returns the encapsulated LdapLinkFactoryInterface.
      *
-     * @return LdapLinkFactoryInterface
-     *
      * @psalm-mutation-free
      */
-    public function getLdapLinkFactory() : LdapLinkFactoryInterface
+    public function getLdapLinkFactory(): LdapLinkFactoryInterface
     {
         return $this->ldapLinkFactory;
     }
@@ -65,11 +61,9 @@ final class LdapFactory implements LdapFactoryInterface
     /**
      * Returns the encapsulated LdapLinkConfigResolverInterface.
      *
-     * @return LdapLinkConfigResolverInterface
-     *
      * @psalm-mutation-free
      */
-    public function getLdapLinkConfigResolver() : LdapLinkConfigResolverInterface
+    public function getLdapLinkConfigResolver(): LdapLinkConfigResolverInterface
     {
         return $this->ldapLinkConfigResolver;
     }
@@ -77,10 +71,11 @@ final class LdapFactory implements LdapFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function createLdapInterface(array $config) : LdapInterface
+    public function createLdapInterface(array $config): LdapInterface
     {
         $config = LdapLinkConfig::fromArray($this->ldapLinkConfigResolver, $config);
         $link = $this->ldapLinkFactory->createLdapLink($config);
+
         return new Ldap($link);
     }
 }

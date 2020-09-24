@@ -33,7 +33,6 @@ trait NodeVisitorInterfaceTrait
 {
     /**
      * Visits instance of AttrValSpecInterface.
-     * @param AttrValSpecInterface $record
      */
     public function visitAttrValSpec(AttrValSpecInterface $record)
     {
@@ -41,7 +40,6 @@ trait NodeVisitorInterfaceTrait
 
     /**
      * Visits instance of ControlInterface.
-     * @param ControlInterface $record
      */
     public function visitControl(ControlInterface $record)
     {
@@ -49,7 +47,6 @@ trait NodeVisitorInterfaceTrait
 
     /**
      * Visits instance of DnSpecInterface.
-     * @param DnSpecInterface $record
      */
     public function visitDnSpec(DnSpecInterface $record)
     {
@@ -57,7 +54,6 @@ trait NodeVisitorInterfaceTrait
 
     /**
      * Visits instance of HasAttrValSpecsInterface.
-     * @param HasAttrValSpecsInterface $record
      */
     public function visitHasAttrValSpecs(HasAttrValSpecsInterface $record)
     {
@@ -65,7 +61,6 @@ trait NodeVisitorInterfaceTrait
 
     /**
      * Visits instance of LdifAddRecordInterface.
-     * @param LdifAddRecordInterface $record
      */
     public function visitLdifAddRecord(LdifAddRecordInterface $record)
     {
@@ -73,7 +68,6 @@ trait NodeVisitorInterfaceTrait
 
     /**
      * Visits instance of LdifAttrValRecordInterface.
-     * @param LdifAttrValRecordInterface $record
      */
     public function visitLdifAttrValRecord(LdifAttrValRecordInterface $record)
     {
@@ -81,7 +75,6 @@ trait NodeVisitorInterfaceTrait
 
     /**
      * Visits instance of LdifChangeRecordInterface.
-     * @param LdifChangeRecordInterface $record
      */
     public function visitLdifChangeRecord(LdifChangeRecordInterface $record)
     {
@@ -89,7 +82,6 @@ trait NodeVisitorInterfaceTrait
 
     /**
      * Visits instance of LdifDeleteRecordInterface.
-     * @param LdifDeleteRecordInterface $record
      */
     public function visitLdifDeleteRecord(LdifDeleteRecordInterface $record)
     {
@@ -97,7 +89,6 @@ trait NodeVisitorInterfaceTrait
 
     /**
      * Visits instance of LdifModDnRecordInterface.
-     * @param LdifModDnRecordInterface $record
      */
     public function visitLdifModDnRecord(LdifModDnRecordInterface $record)
     {
@@ -105,7 +96,6 @@ trait NodeVisitorInterfaceTrait
 
     /**
      * Visits instance of LdifModifyRecordInterface.
-     * @param LdifModifyRecordInterface $record
      */
     public function visitLdifModifyRecord(LdifModifyRecordInterface $record)
     {
@@ -113,7 +103,6 @@ trait NodeVisitorInterfaceTrait
 
     /**
      * Visits instance of ModSpecInterface.
-     * @param ModSpecInterface $record
      */
     public function visitModSpec(ModSpecInterface $record)
     {
@@ -121,7 +110,6 @@ trait NodeVisitorInterfaceTrait
 
     /**
      * Visits instance of ValueSpecInterface.
-     * @param ValueSpecInterface $record
      */
     public function visitValueSpec(ValueSpecInterface $record)
     {
@@ -129,7 +117,6 @@ trait NodeVisitorInterfaceTrait
 
     /**
      * Visits instance of VersionSpecInterface.
-     * @param VersionSpecInterface $record
      */
     public function visitVersionSpec(VersionSpecInterface $record)
     {

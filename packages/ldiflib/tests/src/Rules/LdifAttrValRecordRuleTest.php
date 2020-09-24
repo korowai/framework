@@ -12,42 +12,42 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldif\Rules;
 
-use Korowai\Lib\Ldif\Rules\LdifAttrValRecordRule;
-use Korowai\Lib\Ldif\Rules\AbstractLdifRecordRule;
-use Korowai\Lib\Ldif\RuleInterface;
-use Korowai\Lib\Ldif\Rules\DnSpecRule;
-use Korowai\Lib\Ldif\Rules\SepRule;
-use Korowai\Lib\Ldif\Rules\AttrValSpecRule;
 use Korowai\Lib\Ldif\Nodes\LdifAttrValRecordInterface;
 use Korowai\Lib\Ldif\Nodes\ValueSpecInterface;
-use Korowai\Lib\Ldif\InvalidRuleClassException;
+use Korowai\Lib\Ldif\Rules\AbstractLdifRecordRule;
+use Korowai\Lib\Ldif\Rules\AttrValSpecRule;
+use Korowai\Lib\Ldif\Rules\DnSpecRule;
+use Korowai\Lib\Ldif\Rules\LdifAttrValRecordRule;
+use Korowai\Lib\Ldif\Rules\SepRule;
 use Korowai\Testing\Ldiflib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Ldif\Rules\LdifAttrValRecordRule
+ *
+ * @internal
  */
 final class LdifAttrValRecordRuleTest extends TestCase
 {
-    public function test__extends__AbstractLdifRecordRule() : void
+    public function testExtendsAbstractLdifRecordRule(): void
     {
         $this->assertExtendsClass(AbstractLdifRecordRule::class, LdifAttrValRecordRule::class);
     }
 
     public static function prov__construct()
     {
-        $dnSpecRule = new DnSpecRule;
-        $sepRule = new SepRule;
-        $attrValSpecRule = new AttrValSpecRule;
+        $dnSpecRule = new DnSpecRule();
+        $sepRule = new SepRule();
+        $attrValSpecRule = new AttrValSpecRule();
 
         return [
             '__construct()' => [
-                'args'   => [],
+                'args' => [],
                 'expect' => [
-                ]
+                ],
             ],
             '__construct([...])' => [
-                'args'   => [[
+                'args' => [[
                     'dnSpecRule' => $dnSpecRule,
                     'sepRule' => $sepRule,
                     'attrValSpecRule' => $attrValSpecRule,
@@ -56,7 +56,7 @@ final class LdifAttrValRecordRuleTest extends TestCase
                     'getDnSpecRule()' => $dnSpecRule,
                     'getSepRule()' => $sepRule,
                     'getAttrValSpecRule()' => $attrValSpecRule,
-                ]
+                ],
             ],
         ];
     }
@@ -64,7 +64,7 @@ final class LdifAttrValRecordRuleTest extends TestCase
     /**
      * @dataProvider prov__construct
      */
-    public function test__construct(array $args, array $expect) : void
+    public function testConstruct(array $args, array $expect): void
     {
         $rule = new LdifAttrValRecordRule(...$args);
         $this->assertInstanceOf(DnSpecRule::class, $rule->getDnSpecRule());
@@ -80,7 +80,7 @@ final class LdifAttrValRecordRuleTest extends TestCase
     public static function prov__parse()
     {
         return [
-            #0
+            //0
             [
                 //            00000000001111111111222222222233333
                 //            01234567890123456789012345678901234
@@ -96,13 +96,13 @@ final class LdifAttrValRecordRuleTest extends TestCase
                             self::objectHasPropertiesIdenticalTo([
                                 'getSourceOffset()' => 0,
                                 'getMessage()' => 'syntax error: expected "dn:" (RFC2849)',
-                            ])
+                            ]),
                         ],
-                        'getRecords()' => []
+                        'getRecords()' => [],
                     ],
-                ]
+                ],
             ],
-            #1
+            //1
             [
                 //            00000000001111111111222222222233333
                 //            01234567890123456789012345678901234
@@ -115,11 +115,11 @@ final class LdifAttrValRecordRuleTest extends TestCase
                     'state' => [
                         'getCursor()' => self::objectHasPropertiesIdenticalTo(['getOffset()' => 0]),
                         'getErrors()' => [],
-                        'getRecords()' => []
+                        'getRecords()' => [],
                     ],
-                ]
+                ],
             ],
-            #2
+            //2
             [
                 //            00000000001111111111222222222233333
                 //            01234567890123456789012345678901234
@@ -135,13 +135,13 @@ final class LdifAttrValRecordRuleTest extends TestCase
                             self::objectHasPropertiesIdenticalTo([
                                 'getSourceOffset()' => 0,
                                 'getMessage()' => 'syntax error: expected "dn:" (RFC2849)',
-                            ])
+                            ]),
                         ],
-                        'getRecords()' => []
+                        'getRecords()' => [],
                     ],
-                ]
+                ],
             ],
-            #3
+            //3
             [
                 //            000000000011111111112 22222222233333
                 //            012345678901234567890 12345678901234
@@ -157,13 +157,13 @@ final class LdifAttrValRecordRuleTest extends TestCase
                             self::objectHasPropertiesIdenticalTo([
                                 'getSourceOffset()' => 22,
                                 'getMessage()' => 'syntax error: expected <AttributeDescription>":" (RFC2849)',
-                            ])
+                            ]),
                         ],
-                        'getRecords()' => []
+                        'getRecords()' => [],
                     ],
-                ]
+                ],
             ],
-            #4
+            //4
             [
                 //            000000000011111111112 22222222233333
                 //            012345678901234567890 12345678901234
@@ -179,13 +179,13 @@ final class LdifAttrValRecordRuleTest extends TestCase
                             self::objectHasPropertiesIdenticalTo([
                                 'getSourceOffset()' => 22,
                                 'getMessage()' => 'syntax error: expected <AttributeDescription>":" (RFC2849)',
-                            ])
+                            ]),
                         ],
-                        'getRecords()' => []
+                        'getRecords()' => [],
                     ],
-                ]
+                ],
             ],
-            #5
+            //5
             [
                 //            000000000011111111112 22222 222233333
                 //            012345678901234567890 12345 678901234
@@ -202,7 +202,7 @@ final class LdifAttrValRecordRuleTest extends TestCase
                                 'getValueSpec()' => self::objectHasPropertiesIdenticalTo([
                                     'getType()' => ValueSpecInterface::TYPE_SAFE,
                                     'getSpec()' => '',
-                                    'getContent()' => ''
+                                    'getContent()' => '',
                                 ]),
                             ]),
                         ],
@@ -210,11 +210,11 @@ final class LdifAttrValRecordRuleTest extends TestCase
                     'state' => [
                         'getCursor()' => self::objectHasPropertiesIdenticalTo(['getOffset()' => 27]),
                         'getErrors()' => [],
-                        'getRecords()' => []
+                        'getRecords()' => [],
                     ],
-                ]
+                ],
             ],
-            #6
+            //6
             [
                 //            000000000011111111112 222222222333 33
                 //            012345678901234567890 123456789012 34
@@ -231,7 +231,7 @@ final class LdifAttrValRecordRuleTest extends TestCase
                                 'getValueSpec()' => self::objectHasPropertiesIdenticalTo([
                                     'getType()' => ValueSpecInterface::TYPE_SAFE,
                                     'getSpec()' => 'example',
-                                    'getContent()' => 'example'
+                                    'getContent()' => 'example',
                                 ]),
                             ]),
                         ],
@@ -239,11 +239,11 @@ final class LdifAttrValRecordRuleTest extends TestCase
                     'state' => [
                         'getCursor()' => self::objectHasPropertiesIdenticalTo(['getOffset()' => 34]),
                         'getErrors()' => [],
-                        'getRecords()' => []
+                        'getRecords()' => [],
                     ],
-                ]
+                ],
             ],
-            #7
+            //7
             [
                 //            000000000011111111112 222222222333 33333334444444444555555 55
                 //            012345678901234567890 123456789012 34567890123456789012345 67
@@ -260,7 +260,7 @@ final class LdifAttrValRecordRuleTest extends TestCase
                                 'getValueSpec()' => self::objectHasPropertiesIdenticalTo([
                                     'getType()' => ValueSpecInterface::TYPE_SAFE,
                                     'getSpec()' => 'example',
-                                    'getContent()' => 'example'
+                                    'getContent()' => 'example',
                                 ]),
                             ]),
                             self::objectHasPropertiesIdenticalTo([
@@ -268,7 +268,7 @@ final class LdifAttrValRecordRuleTest extends TestCase
                                 'getValueSpec()' => self::objectHasPropertiesIdenticalTo([
                                     'getType()' => ValueSpecInterface::TYPE_BASE64,
                                     'getSpec()' => 'xbzDs8WCdGtv',
-                                    'getContent()' => 'żółtko'
+                                    'getContent()' => 'żółtko',
                                 ]),
                             ]),
                         ],
@@ -276,9 +276,9 @@ final class LdifAttrValRecordRuleTest extends TestCase
                     'state' => [
                         'getCursor()' => self::objectHasPropertiesIdenticalTo(['getOffset()' => 57]),
                         'getErrors()' => [],
-                        'getRecords()' => []
+                        'getRecords()' => [],
                     ],
-                ]
+                ],
             ],
         ];
     }
@@ -286,7 +286,7 @@ final class LdifAttrValRecordRuleTest extends TestCase
     /**
      * @dataProvider prov__parse
      */
-    public function test__parse(array $source, array $args, array $expect) : void
+    public function testParse(array $source, array $args, array $expect): void
     {
         $state = $this->getParserStateFromSource(...$source);
 

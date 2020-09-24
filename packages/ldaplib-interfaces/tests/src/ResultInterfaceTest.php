@@ -12,32 +12,33 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldap;
 
-use Korowai\Lib\Ldap\ResultInterface;
 use Korowai\Lib\Ldap\ResultEntryIteratorInterface;
+use Korowai\Lib\Ldap\ResultInterface;
 use Korowai\Lib\Ldap\ResultReferenceIteratorInterface;
-
 use Korowai\Testing\LdaplibInterfaces\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Tests\Lib\Ldap\ResultInterfaceTrait
+ *
+ * @internal
  */
 final class ResultInterfaceTest extends TestCase
 {
     public static function createDummyInstance()
     {
-        return new class implements ResultInterface {
+        return new class() implements ResultInterface {
             use ResultInterfaceTrait;
         };
     }
 
-    public function test__dummyImplementation() : void
+    public function testDummyImplementation(): void
     {
         $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(ResultInterface::class, $dummy);
     }
 
-    public function test__getResultEntryIterator() : void
+    public function testGetResultEntryIterator(): void
     {
         $dummy = $this->createDummyInstance();
 
@@ -45,7 +46,7 @@ final class ResultInterfaceTest extends TestCase
         $this->assertSame($dummy->resultEntryIterator, $dummy->getResultEntryIterator());
     }
 
-    public function test__getResultEntryIterator__withRetTypeError() : void
+    public function testGetResultEntryIteratorWithRetTypeError(): void
     {
         $dummy = $this->createDummyInstance();
         $dummy->resultEntryIterator = null;
@@ -55,7 +56,7 @@ final class ResultInterfaceTest extends TestCase
         $dummy->getResultEntryIterator();
     }
 
-    public function test__getResultReferenceIterator() : void
+    public function testGetResultReferenceIterator(): void
     {
         $dummy = $this->createDummyInstance();
 
@@ -63,7 +64,7 @@ final class ResultInterfaceTest extends TestCase
         $this->assertSame($dummy->resultReferenceIterator, $dummy->getResultReferenceIterator());
     }
 
-    public function test__getResultReferenceIterator__withRetTypeError() : void
+    public function testGetResultReferenceIteratorWithRetTypeError(): void
     {
         $dummy = $this->createDummyInstance();
         $dummy->resultReferenceIterator = null;
@@ -73,7 +74,7 @@ final class ResultInterfaceTest extends TestCase
         $dummy->getResultReferenceIterator();
     }
 
-    public function test__getResultEntries() : void
+    public function testGetResultEntries(): void
     {
         $dummy = $this->createDummyInstance();
 
@@ -81,7 +82,7 @@ final class ResultInterfaceTest extends TestCase
         $this->assertSame($dummy->resultEntries, $dummy->getResultEntries());
     }
 
-    public function test__getResultEntries__withRetTypeError() : void
+    public function testGetResultEntriesWithRetTypeError(): void
     {
         $dummy = $this->createDummyInstance();
         $dummy->resultEntries = null;
@@ -91,7 +92,7 @@ final class ResultInterfaceTest extends TestCase
         $dummy->getResultEntries();
     }
 
-    public function test__getResultReferences() : void
+    public function testGetResultReferences(): void
     {
         $dummy = $this->createDummyInstance();
 
@@ -99,7 +100,7 @@ final class ResultInterfaceTest extends TestCase
         $this->assertSame($dummy->resultReferences, $dummy->getResultReferences());
     }
 
-    public function test__getResultReferences__withRetTypeError() : void
+    public function testGetResultReferencesWithRetTypeError(): void
     {
         $dummy = $this->createDummyInstance();
         $dummy->resultReferences = null;
@@ -109,7 +110,7 @@ final class ResultInterfaceTest extends TestCase
         $dummy->getResultReferences();
     }
 
-    public function test__getEntries() : void
+    public function testGetEntries(): void
     {
         $dummy = $this->createDummyInstance();
 
@@ -118,7 +119,7 @@ final class ResultInterfaceTest extends TestCase
         $this->assertSame($dummy->entries, $dummy->getEntries(false));
     }
 
-    public function test__getEntries__withRetTypeError() : void
+    public function testGetEntriesWithRetTypeError(): void
     {
         $dummy = $this->createDummyInstance();
         $dummy->entries = null;
@@ -128,7 +129,7 @@ final class ResultInterfaceTest extends TestCase
         $dummy->getEntries();
     }
 
-    public function test__getEntries__withArgTypeError() : void
+    public function testGetEntriesWithArgTypeError(): void
     {
         $dummy = $this->createDummyInstance();
         $dummy->entries = [];

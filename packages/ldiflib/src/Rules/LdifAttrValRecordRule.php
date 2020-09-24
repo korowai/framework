@@ -12,10 +12,9 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldif\Rules;
 
-use Korowai\Lib\Ldif\RuleInterface;
+use Korowai\Lib\Ldif\Nodes\LdifAttrValRecord;
 use Korowai\Lib\Ldif\ParserStateInterface as State;
 use Korowai\Lib\Ldif\Snippet;
-use Korowai\Lib\Ldif\Nodes\LdifAttrValRecord;
 
 /**
  * A rule object that parses *ldif-attrval-record* as defined in [RFC2849](https://tools.ietf.org/html/rfc2849).
@@ -43,41 +42,39 @@ final class LdifAttrValRecordRule extends AbstractLdifRecordRule
 
     /**
      * Initializes the object.
-     *
-     * @param  array $options
      */
     public function __construct(array $options = [])
     {
-        $this->setControlRule($options['controlRule'] ?? new ControlRule);
-        $this->setChangeRecordInitRule($options['changeRecordInitRule'] ?? new ChangeRecordInitRule);
-        $this->setModSpecRule($options['modSpecRule'] ?? new ModSpecRule);
+        $this->setControlRule($options['controlRule'] ?? new ControlRule());
+        $this->setChangeRecordInitRule($options['changeRecordInitRule'] ?? new ChangeRecordInitRule());
+        $this->setModSpecRule($options['modSpecRule'] ?? new ModSpecRule());
         parent::__construct($options);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function parse(State $state, &$value = null, bool $trying = false) : bool
+    public function parse(State $state, &$value = null, bool $trying = false): bool
     {
         $begin = $state->getCursor()->getClonedLocation();
         if (!$this->getDnSpecRule()->parse($state, $dn, $trying) ||
             !$this->getSepRule()->parse($state) ||
             !$this->getAttrValSpecRule()->repeat($state, $attrVals, 1)) {
             $value = null;
+
             return false;
         }
 
         $snippet = Snippet::createFromLocationAndState($begin, $state);
         $value = new LdifAttrValRecord($dn, $attrVals, compact('snippet'));
+
         return true;
     }
 
     /**
      * Returns the nested ControlRule object.
-     *
-     * @return ControlRule
      */
-    public function getControlRule() : ControlRule
+    public function getControlRule(): ControlRule
     {
         return $this->controlRule;
     }
@@ -85,21 +82,19 @@ final class LdifAttrValRecordRule extends AbstractLdifRecordRule
     /**
      * Sets new nested ControlRule object.
      *
-     * @param  ControlRule $rule
      * @return object $this
      */
     public function setControlRule(ControlRule $rule)
     {
         $this->controlRule = $rule;
+
         return $this;
     }
 
     /**
      * Returns the nested ChangeRecordInitRule object.
-     *
-     * @return ChangeRecordInitRule
      */
-    public function getChangeRecordInitRule() : ChangeRecordInitRule
+    public function getChangeRecordInitRule(): ChangeRecordInitRule
     {
         return $this->changeRecordInitRule;
     }
@@ -107,21 +102,19 @@ final class LdifAttrValRecordRule extends AbstractLdifRecordRule
     /**
      * Sets new nested ChangeRecordInitRule object.
      *
-     * @param  ChangeRecordInitRule $rule
      * @return object $this
      */
     public function setChangeRecordInitRule(ChangeRecordInitRule $rule)
     {
         $this->changeRecordInitRule = $rule;
+
         return $this;
     }
 
     /**
      * Returns the nested ModSpecRule object.
-     *
-     * @return ModSpecRule
      */
-    public function getModSpecRule() : ModSpecRule
+    public function getModSpecRule(): ModSpecRule
     {
         return $this->modSpecRule;
     }
@@ -129,12 +122,12 @@ final class LdifAttrValRecordRule extends AbstractLdifRecordRule
     /**
      * Sets new nested ModSpecRule object.
      *
-     * @param  ModSpecRule $rule
      * @return object $this
      */
     public function setModSpecRule(ModSpecRule $rule)
     {
         $this->modSpecRule = $rule;
+
         return $this;
     }
 }

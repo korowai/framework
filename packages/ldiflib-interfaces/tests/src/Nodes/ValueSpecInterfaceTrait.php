@@ -21,14 +21,13 @@ trait ValueSpecInterfaceTrait
 {
     use NodeInterfaceTrait;
 
-    public $type = null;
-    public $spec = null;
-    public $content = null;
+    public $type;
+    public $spec;
+    public $content;
 
-    public function getType() : int
+    public function getType(): int
     {
         return $this->type;
-        ;
     }
 
     public function getSpec()
@@ -36,7 +35,7 @@ trait ValueSpecInterfaceTrait
         return $this->spec;
     }
 
-    public function getContent() : string
+    public function getContent(): string
     {
         return $this->content;
     }

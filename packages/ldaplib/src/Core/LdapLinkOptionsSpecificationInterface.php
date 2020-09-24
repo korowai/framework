@@ -22,20 +22,16 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 interface LdapLinkOptionsSpecificationInterface
 {
     /**
-     * Returns the encapsulated LdapLinkOptionsMapperInterface
-     *
-     * @return LdapLinkOptionsMapperInterface
+     * Returns the encapsulated LdapLinkOptionsMapperInterface.
      *
      * @psalm-mutation-free
      */
-    public function getOptionsMapper() : LdapLinkOptionsMapperInterface;
+    public function getOptionsMapper(): LdapLinkOptionsMapperInterface;
 
     /**
-     * Configures symfony's  OptionsResolver to parse LdapLink options
-     *
-     * @param OptionsResolver $resolver
+     * Configures symfony's  OptionsResolver to parse LdapLink options.
      */
-    public function configureOptionsResolver(OptionsResolver $resolver) : void;
+    public function configureOptionsResolver(OptionsResolver $resolver): void;
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

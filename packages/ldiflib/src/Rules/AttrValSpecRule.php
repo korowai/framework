@@ -12,8 +12,8 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldif\Rules;
 
-use Korowai\Lib\Ldif\ParserStateInterface as State;
 use Korowai\Lib\Ldif\Nodes\AttrValSpec;
+use Korowai\Lib\Ldif\ParserStateInterface as State;
 use Korowai\Lib\Ldif\Scan;
 use Korowai\Lib\Rfc\Rfc2849;
 
@@ -34,25 +34,23 @@ final class AttrValSpecRule extends AbstractRfcRule
     /**
      * Initializes the object.
      *
-     * @param  ValueSpecRule $valueSpecRule
-     *      Optional instance of [ValueSpecRule](ValueSpecRule.html), if not provided,
-     *      the instance is created internally.
+     * @param ValueSpecRule $valueSpecRule
+     *                                     Optional instance of [ValueSpecRule](ValueSpecRule.html), if not provided,
+     *                                     the instance is created internally.
      */
     public function __construct(ValueSpecRule $valueSpecRule = null)
     {
         parent::__construct(Rfc2849::class, 'ATTRVAL_SPEC');
-        if ($valueSpecRule === null) {
-            $valueSpecRule = new ValueSpecRule;
+        if (null === $valueSpecRule) {
+            $valueSpecRule = new ValueSpecRule();
         }
         $this->setValueSpecRule($valueSpecRule);
     }
 
     /**
      * Returns the internal instance of [ValueSpecRule](ValueSpecRule.html).
-     *
-     * @return ValueSpecRule|null
      */
-    public function getValueSpecRule() : ?ValueSpecRule
+    public function getValueSpecRule(): ?ValueSpecRule
     {
         return $this->valueSpecRule;
     }
@@ -60,13 +58,14 @@ final class AttrValSpecRule extends AbstractRfcRule
     /**
      * Sets the new instance of ValueSpecRule to this object.
      *
-     * @param  ValueSpecRule $valueSpecRule
+     * @param ValueSpecRule $valueSpecRule
      *
      * @return object $this
      */
     public function setValueSpecRule(?ValueSpecRule $valueSpecRule)
     {
         $this->valueSpecRule = $valueSpecRule;
+
         return $this;
     }
 
@@ -79,29 +78,33 @@ final class AttrValSpecRule extends AbstractRfcRule
      * to the caller any semantic *$value*. The function shall return true on
      * success or false on failure.
      *
-     * @param  State $state
-     *      Provides the input string, cursor, containers for errors, etc..
-     * @param  array $matches
-     *      An array of matches as returned from *preg_match()*. Contains
-     *      substrings captured by the encapsulated RFC rule.
-     * @param  mixed $value
-     *      Semantic value to be returned to caller.
-     * @return bool true on success, false on failure.
+     * @param State $state
+     *                       Provides the input string, cursor, containers for errors, etc..
+     * @param array $matches
+     *                       An array of matches as returned from *preg_match()*. Contains
+     *                       substrings captured by the encapsulated RFC rule.
+     * @param mixed $value
+     *                       Semantic value to be returned to caller
+     *
+     * @return bool true on success, false on failure
      */
-    public function parseMatched(State $state, array $matches, &$value = null) : bool
+    public function parseMatched(State $state, array $matches, &$value = null): bool
     {
         if (Scan::matched('attr_desc', $matches, $string, $offset)) {
             if (!$this->valueSpecRule->parseMatched($state, $matches, $tmp)) {
                 $value = null;
+
                 return false;
             }
             $value = new AttrValSpec($string, $tmp);
+
             return true;
         }
 
         // This may happen with broken Rfc2849::ATTRVAL_SPEC rule.
         $state->errorHere('internal error: missing or invalid capture group "attr_desc"');
         $value = null;
+
         return false;
     }
 }

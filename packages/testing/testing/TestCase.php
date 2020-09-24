@@ -13,8 +13,8 @@ declare(strict_types=1);
 namespace Korowai\Testing;
 
 use Korowai\Testing\Assertions\ClassAssertionsTrait;
-use Korowai\Testing\Assertions\PropertiesAssertionsTrait;
 use Korowai\Testing\Assertions\PregAssertionsTrait;
+use Korowai\Testing\Assertions\PropertiesAssertionsTrait;
 use Korowai\Testing\Traits\PregUtilsTrait;
 
 /**

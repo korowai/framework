@@ -12,47 +12,48 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Testing\Assertions;
 
-use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\ExpectationFailedException;
 use Korowai\Testing\Assertions\ClassAssertionsTrait;
-
+use Korowai\Testing\Examples\ExampleClassNotUsingTrait;
+use Korowai\Testing\Examples\ExampleClassUsingTrait;
 use Korowai\Testing\Examples\ExampleTrait;
 use Korowai\Testing\Examples\ExampleTraitUsingTrait;
-use Korowai\Testing\Examples\ExampleClassUsingTrait;
-use Korowai\Testing\Examples\ExampleClassNotUsingTrait;
+use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Testing\Assertions\ClassAssertionsTrait
+ *
+ * @internal
  */
 final class ClassAssertionsTraitTest extends TestCase
 {
     use ClassAssertionsTrait;
 
-    public function test__assertImplementsInterface__success() : void
+    public function testAssertImplementsInterfaceSuccess(): void
     {
         self::assertImplementsInterface(\Throwable::class, \Exception::class);
         self::assertImplementsInterface(\Throwable::class, new \Exception());
         self::assertImplementsInterface(\Traversable::class, \Iterator::class);
     }
 
-    public function test__assertImplementsInterface__failureWithClass() : void
+    public function testAssertImplementsInterfaceFailureWithClass(): void
     {
         self::expectException(ExpectationFailedException::class);
-        self::expectExceptionMessage("Failed asserting that Exception implements interface Traversable");
+        self::expectExceptionMessage('Failed asserting that Exception implements interface Traversable');
 
         self::assertImplementsInterface(\Traversable::class, \Exception::class);
     }
 
-    public function test__assertImplementsInterface__failureWithObject() : void
+    public function testAssertImplementsInterfaceFailureWithObject(): void
     {
         self::expectException(ExpectationFailedException::class);
-        self::expectExceptionMessage("Failed asserting that Exception object implements interface Traversable");
+        self::expectExceptionMessage('Failed asserting that Exception object implements interface Traversable');
 
         self::assertImplementsInterface(\Traversable::class, new \Exception());
     }
 
-    public function test__assertImplementsInterface__failureWithNonClassString() : void
+    public function testAssertImplementsInterfaceFailureWithNonClassString(): void
     {
         self::expectException(ExpectationFailedException::class);
         self::expectExceptionMessage("Failed asserting that 'lorem ipsum' implements interface Traversable");
@@ -60,15 +61,15 @@ final class ClassAssertionsTraitTest extends TestCase
         self::assertImplementsInterface(\Traversable::class, 'lorem ipsum');
     }
 
-    public function test__assertImplementsInterface__failureWithInteger() : void
+    public function testAssertImplementsInterfaceFailureWithInteger(): void
     {
         self::expectException(ExpectationFailedException::class);
-        self::expectExceptionMessage("Failed asserting that 123 implements interface Traversable");
+        self::expectExceptionMessage('Failed asserting that 123 implements interface Traversable');
 
         self::assertImplementsInterface(\Traversable::class, 123);
     }
 
-    public function test__assertNotImplementsInterface__success() : void
+    public function testAssertNotImplementsInterfaceSuccess(): void
     {
         self::assertNotImplementsInterface(\Traversable::class, \Exception::class);
         self::assertNotImplementsInterface(\Traversable::class, new \Exception());
@@ -76,7 +77,7 @@ final class ClassAssertionsTraitTest extends TestCase
         self::assertNotImplementsInterface(\Traversable::class, 123);
     }
 
-    public function test__assertNotImplementsInterface__failureWithClass() : void
+    public function testAssertNotImplementsInterfaceFailureWithClass(): void
     {
         self::expectException(ExpectationFailedException::class);
         // FIXME: negation for "implements" verb is not implemented in LogicalNot
@@ -85,7 +86,7 @@ final class ClassAssertionsTraitTest extends TestCase
         self::assertNotImplementsInterface(\Throwable::class, \Exception::class);
     }
 
-    public function test__assertNotImplementsInterface__failureWithObject() : void
+    public function testAssertNotImplementsInterfaceFailureWithObject(): void
     {
         self::expectException(ExpectationFailedException::class);
         // FIXME: negation for "implements" verb is not implemented in LogicalNot
@@ -94,7 +95,7 @@ final class ClassAssertionsTraitTest extends TestCase
         self::assertNotImplementsInterface(\Throwable::class, new \Exception());
     }
 
-    public function test__assertNotImplementsInterface__failureWithInterface() : void
+    public function testAssertNotImplementsInterfaceFailureWithInterface(): void
     {
         self::expectException(ExpectationFailedException::class);
         // FIXME: negation for "implements" verb is not implemented in LogicalNot
@@ -103,7 +104,7 @@ final class ClassAssertionsTraitTest extends TestCase
         self::assertNotImplementsInterface(\Traversable::class, \Iterator::class);
     }
 
-    public function test__implementsInterface() : void
+    public function testImplementsInterface(): void
     {
         self::assertTrue(self::implementsInterface(\Throwable::class)->matches(\Exception::class));
         self::assertTrue(self::implementsInterface(\Throwable::class)->matches(new \Exception()));
@@ -115,29 +116,29 @@ final class ClassAssertionsTraitTest extends TestCase
         self::assertFalse(self::implementsInterface(\Traversable::class)->matches(123));
     }
 
-    public function test__assertExtendsClass__success() : void
+    public function testAssertExtendsClassSuccess(): void
     {
         self::assertExtendsClass(\Exception::class, \ErrorException::class);
         self::assertExtendsClass(\Exception::class, new \ErrorException());
     }
 
-    public function test__assertExtendsClass__failureWithClass() : void
+    public function testAssertExtendsClassFailureWithClass(): void
     {
         self::expectException(ExpectationFailedException::class);
-        self::expectExceptionMessage("Failed asserting that ErrorException extends class Error");
+        self::expectExceptionMessage('Failed asserting that ErrorException extends class Error');
 
         self::assertExtendsClass(\Error::class, \ErrorException::class);
     }
 
-    public function test__assertExtendsClass__failureWithObject() : void
+    public function testAssertExtendsClassFailureWithObject(): void
     {
         self::expectException(ExpectationFailedException::class);
-        self::expectExceptionMessage("Failed asserting that ErrorException object extends class Error");
+        self::expectExceptionMessage('Failed asserting that ErrorException object extends class Error');
 
         self::assertExtendsClass(\Error::class, new \ErrorException());
     }
 
-    public function test__assertExtendsClass__failureWithInterface() : void
+    public function testAssertExtendsClassFailureWithInterface(): void
     {
         self::expectException(ExpectationFailedException::class);
         self::expectExceptionMessage("Failed asserting that 'Iterator' extends class Traversable");
@@ -145,7 +146,7 @@ final class ClassAssertionsTraitTest extends TestCase
         self::assertExtendsClass(\Traversable::class, \Iterator::class);
     }
 
-    public function test__assertExtendsClass__failureWithNonClassString() : void
+    public function testAssertExtendsClassFailureWithNonClassString(): void
     {
         self::expectException(ExpectationFailedException::class);
         self::expectExceptionMessage("Failed asserting that 'lorem ipsum' extends class Error");
@@ -153,15 +154,15 @@ final class ClassAssertionsTraitTest extends TestCase
         self::assertExtendsClass(\Error::class, 'lorem ipsum');
     }
 
-    public function test__assertExtendsClass__failureWithInteger() : void
+    public function testAssertExtendsClassFailureWithInteger(): void
     {
         self::expectException(ExpectationFailedException::class);
-        self::expectExceptionMessage("Failed asserting that 123 extends class Error");
+        self::expectExceptionMessage('Failed asserting that 123 extends class Error');
 
         self::assertExtendsClass(\Error::class, 123);
     }
 
-    public function test__assertNotExtendsClass__success() : void
+    public function testAssertNotExtendsClassSuccess(): void
     {
         self::assertNotExtendsClass(\Error::class, \ErrorException::class);
         self::assertNotExtendsClass(\Error::class, new \ErrorException());
@@ -170,7 +171,7 @@ final class ClassAssertionsTraitTest extends TestCase
         self::assertNotExtendsClass(\Traversable::class, \Iterator::class);
     }
 
-    public function test__assertNotExtendsClass__failureWithClass() : void
+    public function testAssertNotExtendsClassFailureWithClass(): void
     {
         self::expectException(ExpectationFailedException::class);
         // FIXME: negation for "implements" verb is not implemented in LogicalNot
@@ -179,7 +180,7 @@ final class ClassAssertionsTraitTest extends TestCase
         self::assertNotExtendsClass(\Exception::class, \ErrorException::class);
     }
 
-    public function test__assertNotExtendsClass__failureWithObject() : void
+    public function testAssertNotExtendsClassFailureWithObject(): void
     {
         self::expectException(ExpectationFailedException::class);
         // FIXME: negation for "implements" verb is not implemented in LogicalNot
@@ -188,7 +189,7 @@ final class ClassAssertionsTraitTest extends TestCase
         self::assertNotExtendsClass(\Exception::class, new \ErrorException());
     }
 
-    public function test__extendsClass() : void
+    public function testExtendsClass(): void
     {
         self::assertTrue(self::extendsClass(\Exception::class)->matches(\ErrorException::class));
         self::assertTrue(self::extendsClass(\Exception::class)->matches(new \ErrorException()));
@@ -200,30 +201,30 @@ final class ClassAssertionsTraitTest extends TestCase
         self::assertFalse(self::extendsClass(\Traversable::class)->matches(\Iterator::class));
     }
 
-    public function test__assertUsesTrait__success() : void
+    public function testAssertUsesTraitSuccess(): void
     {
         self::assertUsesTrait(ExampleTrait::class, ExampleClassUsingTrait::class);
         self::assertUsesTrait(ExampleTrait::class, new ExampleClassUsingTrait());
         self::assertUsesTrait(ExampleTrait::class, ExampleTraitUsingTrait::class);
     }
 
-    public function test__assertUsesTrait__failureWithClass() : void
+    public function testAssertUsesTraitFailureWithClass(): void
     {
         self::expectException(ExpectationFailedException::class);
-        self::expectExceptionMessage("Failed asserting that ".ExampleClassNotUsingTrait::class." uses trait ".ExampleTrait::class);
+        self::expectExceptionMessage('Failed asserting that '.ExampleClassNotUsingTrait::class.' uses trait '.ExampleTrait::class);
 
         self::assertUsesTrait(ExampleTrait::class, ExampleClassNotUsingTrait::class);
     }
 
-    public function test__assertUsesTrait__failureWithObject() : void
+    public function testAssertUsesTraitFailureWithObject(): void
     {
         self::expectException(ExpectationFailedException::class);
-        self::expectExceptionMessage("Failed asserting that ".ExampleClassNotUsingTrait::class." object uses trait ".ExampleTrait::class);
+        self::expectExceptionMessage('Failed asserting that '.ExampleClassNotUsingTrait::class.' object uses trait '.ExampleTrait::class);
 
         self::assertUsesTrait(ExampleTrait::class, new ExampleClassNotUsingTrait());
     }
 
-    public function test__assertUsesTrait__failureWithNonClassString() : void
+    public function testAssertUsesTraitFailureWithNonClassString(): void
     {
         self::expectException(ExpectationFailedException::class);
         self::expectExceptionMessage("Failed asserting that 'lorem ipsum' uses trait ".ExampleTrait::class);
@@ -231,15 +232,15 @@ final class ClassAssertionsTraitTest extends TestCase
         self::assertUsesTrait(ExampleTrait::class, 'lorem ipsum');
     }
 
-    public function test__assertUsesTrait__failureWithInteger() : void
+    public function testAssertUsesTraitFailureWithInteger(): void
     {
         self::expectException(ExpectationFailedException::class);
-        self::expectExceptionMessage("Failed asserting that 123 uses trait ".ExampleTrait::class);
+        self::expectExceptionMessage('Failed asserting that 123 uses trait '.ExampleTrait::class);
 
         self::assertUsesTrait(ExampleTrait::class, 123);
     }
 
-    public function test__assertNotUsesTrait__success() : void
+    public function testAssertNotUsesTraitSuccess(): void
     {
         self::assertNotUsesTrait(ExampleTrait::class, ExampleClassNotUsingTrait::class);
         self::assertNotUsesTrait(ExampleTrait::class, new ExampleClassNotUsingTrait());
@@ -247,7 +248,7 @@ final class ClassAssertionsTraitTest extends TestCase
         self::assertNotUsesTrait(ExampleTrait::class, 123);
     }
 
-    public function test__assertNotUsesTrait__failureWithClass() : void
+    public function testAssertNotUsesTraitFailureWithClass(): void
     {
         self::expectException(ExpectationFailedException::class);
         // FIXME: negation for "implements" verb is not implemented in LogicalNot
@@ -256,7 +257,7 @@ final class ClassAssertionsTraitTest extends TestCase
         self::assertNotUsesTrait(ExampleTrait::class, ExampleClassUsingTrait::class);
     }
 
-    public function test__assertNotUsesTrait__failureWithObject() : void
+    public function testAssertNotUsesTraitFailureWithObject(): void
     {
         self::expectException(ExpectationFailedException::class);
         // FIXME: negation for "implements" verb is not implemented in LogicalNot
@@ -265,7 +266,7 @@ final class ClassAssertionsTraitTest extends TestCase
         self::assertNotUsesTrait(ExampleTrait::class, new ExampleClassUsingTrait());
     }
 
-    public function test__usesTrait() : void
+    public function testUsesTrait(): void
     {
         self::assertTrue(self::usesTrait(ExampleTrait::class)->matches(ExampleClassUsingTrait::class));
         self::assertTrue(self::usesTrait(ExampleTrait::class)->matches(new ExampleClassUsingTrait()));
@@ -279,21 +280,21 @@ final class ClassAssertionsTraitTest extends TestCase
     public function prov__assertDeclaresMethod()
     {
         return [
-            "('test__assertDeclaresMethod', self::class)" => [
-                ['test__assertDeclaresMethod', self::class],
-                "Failed asserting that class ".self::class." does not declare method test__assertDeclaresMethod()"
+            "('testAssertDeclaresMethod', self::class)" => [
+                ['testAssertDeclaresMethod', self::class],
+                'Failed asserting that class '.self::class.' does not declare method testAssertDeclaresMethod()',
             ],
-            "('test__assertDeclaresMethod', \$this)" => [
-                ['test__assertDeclaresMethod', $this],
-                "",
+            "('testAssertDeclaresMethod', \$this)" => [
+                ['testAssertDeclaresMethod', $this],
+                '',
             ],
             "('assertDeclaresMethod', self::class)" => [
                 ['assertDeclaresMethod', self::class],
-                "",
+                '',
             ],
             "('assertDeclaresMethod', ClassAssertionsTrait::class)" => [
                 ['assertDeclaresMethod', ClassAssertionsTrait::class],
-                "",
+                '',
             ],
         ];
     }
@@ -303,36 +304,36 @@ final class ClassAssertionsTraitTest extends TestCase
         return [
             "('inexistent', self::class)" => [
                 ['inexistent', self::class],
-                "Failed asserting that class ".self::class." declares method inexistent()",
+                'Failed asserting that class '.self::class.' declares method inexistent()',
             ],
             "('inexistent', \$this)" => [
                 ['inexistent', $this],
-                "Failed asserting that class ".self::class." declares method inexistent()",
+                'Failed asserting that class '.self::class.' declares method inexistent()',
             ],
             "('inexistent', ClassAssertionsTrait::class)" => [
                 ['inexistent', ClassAssertionsTrait::class],
-                "Failed asserting that trait ".ClassAssertionsTrait::class." declares method inexistent()",
+                'Failed asserting that trait '.ClassAssertionsTrait::class.' declares method inexistent()',
             ],
-            "(inexistent', \Throwable::class)" => [
+            "(inexistent', \\Throwable::class)" => [
                 ['inexistent', \Throwable::class],
-                "Failed asserting that interface ".\Throwable::class." declares method inexistent()",
+                'Failed asserting that interface '.\Throwable::class.' declares method inexistent()',
             ],
             // assertThat() exists, but it's defined in parent class.
             "('assertThat', self::class)" => [
                 ['assertThat', self::class],
-                "Failed asserting that class ".self::class." declares method assertThat()",
+                'Failed asserting that class '.self::class.' declares method assertThat()',
             ],
             "('assertThat', 1)" => [
                 ['assertThat', 1],
-                "Failed asserting that ".gettype(1)." declares method assertThat()",
+                'Failed asserting that '.gettype(1).' declares method assertThat()',
             ],
             "('assertThat', [])" => [
                 ['assertThat', []],
-                "Failed asserting that ".gettype([])." declares method assertThat()",
+                'Failed asserting that '.gettype([]).' declares method assertThat()',
             ],
             "('foo', '#@#@#@')" => [
                 ['foo', '#@#@#@'],
-                "Failed asserting that ".gettype('#@#@#@')." declares method foo()",
+                'Failed asserting that '.gettype('#@#@#@').' declares method foo()',
             ],
         ];
     }
@@ -340,16 +341,15 @@ final class ClassAssertionsTraitTest extends TestCase
     /**
      * @dataProvider prov__assertDeclaresMethod
      */
-    public function test__assertDeclaresMethod(array $args, string $message = '') : void
+    public function testAssertDeclaresMethod(array $args, string $message = ''): void
     {
         self::assertDeclaresMethod(...$args);
     }
 
-
     /**
      * @dataProvider prov__assertDeclaresMethod__failure
      */
-    public function test__assertDeclaresMethod__failure(array $args, string $message) : void
+    public function testAssertDeclaresMethodFailure(array $args, string $message): void
     {
         self::expectException(ExpectationFailedException::class);
         self::expectExceptionMessage($message);
@@ -359,15 +359,13 @@ final class ClassAssertionsTraitTest extends TestCase
     /**
      * @dataProvider prov__assertDeclaresMethod
      */
-    public function test__assertNotDeclaresMethod__failure(array $args, string $message) : void
+    public function testAssertNotDeclaresMethodFailure(array $args, string $message): void
     {
         self::expectException(ExpectationFailedException::class);
         // Sorry, but LogicalNot is currently unable to negate our message.
         //self::expectExceptionMessage($message);
         self::assertNotDeclaresMethod(...$args);
     }
-
-    //public function test__assertDeclaresMethod__failure()
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

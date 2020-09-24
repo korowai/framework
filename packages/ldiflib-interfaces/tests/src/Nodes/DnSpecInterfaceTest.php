@@ -12,53 +12,54 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldif\Nodes;
 
-use Korowai\Lib\Ldif\Nodes\DnSpecInterface;
 use Korowai\Lib\Ldif\NodeInterface;
-
+use Korowai\Lib\Ldif\Nodes\DnSpecInterface;
 use Korowai\Testing\LdiflibInterfaces\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Tests\Lib\Ldif\Nodes\DnSpecInterfaceTrait
+ *
+ * @internal
  */
 final class DnSpecInterfaceTest extends TestCase
 {
     public static function createDummyInstance()
     {
-        return new class implements DnSpecInterface {
+        return new class() implements DnSpecInterface {
             use DnSpecInterfaceTrait;
         };
     }
 
-    public static function prov__extendsInterface() : array
+    public static function prov__extendsInterface(): array
     {
         return [
-            [NodeInterface::class]
+            [NodeInterface::class],
         ];
     }
 
     /**
      * @dataProvider prov__extendsInterface
      */
-    public function test__extendsInterface(string $extends) : void
+    public function testExtendsInterface(string $extends): void
     {
         $this->assertImplementsInterface($extends, DnSpecInterface::class);
     }
 
-    public function test__dummyImplementation() : void
+    public function testDummyImplementation(): void
     {
         $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(DnSpecInterface::class, $dummy);
     }
 
-    public function test__getdn() : void
+    public function testGetdn(): void
     {
         $dummy = $this->createDummyInstance();
         $dummy->dn = '';
         $this->assertSame($dummy->dn, $dummy->getdn());
     }
 
-    public function test__getdn__withNull() : void
+    public function testGetdnWithNull(): void
     {
         $dummy = $this->createDummyInstance();
         $dummy->dn = null;

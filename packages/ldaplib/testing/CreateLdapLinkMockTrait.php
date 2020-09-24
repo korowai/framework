@@ -22,19 +22,20 @@ use PHPUnit\Framework\MockObject\Rule\AnyInvokedCount;
 trait CreateLdapLinkMockTrait
 {
     abstract public function getMockBuilder(string $className): MockBuilder;
-    abstract public static function any() : AnyInvokedCount;
+
+    abstract public static function any(): AnyInvokedCount;
 
     /**
      * Creates LdapLinkInterface mock.
      *
      * @param mixed $resource
-     * @param array $methods Array of method names to be set.
+     * @param array $methods  array of method names to be set
      */
-    private function createLdapLinkMock($resource = null, array $methods = []) : LdapLinkInterface
+    private function createLdapLinkMock($resource = null, array $methods = []): LdapLinkInterface
     {
         $builder = $this->getMockBuilder(LdapLinkInterface::class);
 
-        if ($resource !== null && !in_array('getResource', $methods)) {
+        if (null !== $resource && !in_array('getResource', $methods)) {
             $methods[] = 'getResource';
         }
 
@@ -42,10 +43,11 @@ trait CreateLdapLinkMockTrait
 
         $mock = $builder->getMockForAbstractClass();
 
-        if ($resource !== null) {
+        if (null !== $resource) {
             $mock->expects($this->any())
-                 ->method('getResource')
-                 ->willReturn($resource);
+                ->method('getResource')
+                ->willReturn($resource)
+            ;
         }
 
         return $mock;

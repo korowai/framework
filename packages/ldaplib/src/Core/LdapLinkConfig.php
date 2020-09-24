@@ -43,32 +43,16 @@ final class LdapLinkConfig implements LdapLinkConfigInterface
     private $options;
 
     /**
-     * Creates an LdapLinkConfig using configuration array.
-     *
-     * @param  LdapLinkConstructorInterface $constructor
-     * @param  LdapLinkConfigResolverInterface $resolver
-     * @param  array $config
-     *
-     * @return self
-     * @throws OptionsResolverException
-     */
-    public static function fromArray(LdapLinkConfigResolverInterface $resolver, array $config) : self
-    {
-        $config = $resolver->resolve($config);
-        return new self($config['uri'], $config['tls'], $config['options']);
-    }
-
-    /**
      * Initializes the object.
      *
-     * @param  string $uri
-     *      The URI to connect the LdapLink to.
-     * @param  bool $tls
-     *      If set to true, start_tls() will be called on each newly created LdapLink.
-     * @param  array $options
-     *      An array of options to be set to each newly created LdapLink. It must be an array of key => value pairs
-     *      with integers as keys. Each key must be a valid LDAP option identifier. $options are not validated by the
-     *      constructor, though.
+     * @param string $uri
+     *                        The URI to connect the LdapLink to
+     * @param bool   $tls
+     *                        If set to true, start_tls() will be called on each newly created LdapLink
+     * @param array  $options
+     *                        An array of options to be set to each newly created LdapLink. It must be an array of key => value pairs
+     *                        with integers as keys. Each key must be a valid LDAP option identifier. $options are not validated by the
+     *                        constructor, though.
      */
     private function __construct(string $uri, bool $tls, array $options)
     {
@@ -78,11 +62,25 @@ final class LdapLinkConfig implements LdapLinkConfigInterface
     }
 
     /**
+     * Creates an LdapLinkConfig using configuration array.
+     *
+     * @param LdapLinkConstructorInterface $constructor
+     *
+     * @throws OptionsResolverException
+     */
+    public static function fromArray(LdapLinkConfigResolverInterface $resolver, array $config): self
+    {
+        $config = $resolver->resolve($config);
+
+        return new self($config['uri'], $config['tls'], $config['options']);
+    }
+
+    /**
      * {@inheritdoc}
      *
      * @psalm-mutation-free
      */
-    public function uri() : string
+    public function uri(): string
     {
         return $this->uri;
     }
@@ -92,7 +90,7 @@ final class LdapLinkConfig implements LdapLinkConfigInterface
      *
      * @psalm-mutation-free
      */
-    public function tls() : bool
+    public function tls(): bool
     {
         return $this->tls;
     }
@@ -102,7 +100,7 @@ final class LdapLinkConfig implements LdapLinkConfigInterface
      *
      * @psalm-mutation-free
      */
-    public function options() : array
+    public function options(): array
     {
         return $this->options;
     }

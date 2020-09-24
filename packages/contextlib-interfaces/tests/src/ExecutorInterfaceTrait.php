@@ -17,7 +17,7 @@ namespace Korowai\Tests\Lib\Context;
  */
 trait ExecutorInterfaceTrait
 {
-    public $invoke = null;
+    public $invoke;
 
     public function __invoke(callable $func)
     {

@@ -24,19 +24,22 @@ trait ExampleQuxTrait
     /**
      * Sets value of the *$qux* attribute.
      *
-     * @param  mixed $qux
-     *      New attribute value.
+     * @param mixed $qux
+     *                   New attribute value
+     *
      * @return object
-     *      Returns *$this*.
+     *                Returns *$this*
      */
     public function setQux($qux)
     {
         $this->qux = $qux;
+
         return $this;
     }
 
     /**
      * Returns *$qux* attribute.
+     *
      * @return mixed
      */
     public function getQux()

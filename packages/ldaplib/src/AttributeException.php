@@ -17,7 +17,7 @@ namespace Korowai\Lib\Ldap;
  */
 class AttributeException extends \OutOfRangeException
 {
-    protected $message = "No such attribute";
+    protected $message = 'No such attribute';
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

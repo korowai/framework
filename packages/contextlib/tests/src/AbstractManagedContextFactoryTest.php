@@ -12,35 +12,36 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Context;
 
-use Korowai\Testing\TestCase;
-
-use Korowai\Lib\Context\ContextFactoryInterface;
-use Korowai\Lib\Context\ContextManagerInterface;
 use Korowai\Lib\Context\AbstractManagedContextFactory;
-use Korowai\Lib\Context\ContextFactoryStackInterface;
+use Korowai\Lib\Context\ContextFactoryInterface;
 use Korowai\Lib\Context\ContextFactoryStack;
+use Korowai\Lib\Context\ContextManagerInterface;
+use Korowai\Testing\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Context\AbstractManagedContextFactory
+ *
+ * @internal
  */
 final class AbstractManagedContextFactoryTest extends TestCase
 {
-    public function test__implements__ContextFactoryInterface() : void
+    public function testImplementsContextFactoryInterface(): void
     {
         $this->assertImplementsInterface(ContextFactoryInterface::class, AbstractManagedContextFactory::class);
     }
 
-    public function test__implements__ContextManagerInterface() : void
+    public function testImplementsContextManagerInterface(): void
     {
         $interfaces = class_implements(AbstractManagedContextFactory::class);
         $this->assertContains(ContextManagerInterface::class, $interfaces);
     }
 
-    public function test__enterContext_and_exitContext() : void
+    public function testEnterContextAndExitContext(): void
     {
         $factory = $this->getMockBuilder(AbstractManagedContextFactory::class)
-                        ->getMockForAbstractClass();
+            ->getMockForAbstractClass()
+        ;
 
         $stack = ContextFactoryStack::getInstance();
         $stack->clean();

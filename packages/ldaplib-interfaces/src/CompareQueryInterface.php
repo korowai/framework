@@ -19,18 +19,14 @@ interface CompareQueryInterface
 {
     /**
      * Executes query and returns result.
-     *
-     * @return bool
      */
-    public function execute() : bool;
+    public function execute(): bool;
 
     /**
      * Returns the result of last execution of the query, calls execute() if
      * necessary.
-     *
-     * @return bool
      */
-    public function getResult() : bool;
+    public function getResult(): bool;
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

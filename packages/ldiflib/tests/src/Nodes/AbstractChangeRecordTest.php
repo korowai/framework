@@ -14,41 +14,43 @@ namespace Korowai\Tests\Lib\Ldif\Nodes;
 
 use Korowai\Lib\Ldif\Nodes\AbstractChangeRecord;
 use Korowai\Lib\Ldif\Nodes\AbstractRecord;
-use Korowai\Lib\Ldif\RecordInterface;
 use Korowai\Lib\Ldif\SnippetInterface;
-use Korowai\Lib\Ldif\Traits\DecoratesSnippetInterface;
-
 use Korowai\Testing\Ldiflib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Ldif\Nodes\AbstractChangeRecord
+ *
+ * @internal
  */
 final class AbstractChangeRecordTest extends TestCase
 {
-    public function test__extends__AbstractRecord() : void
+    public function testExtendsAbstractRecord(): void
     {
         $this->assertExtendsClass(AbstractRecord::class, AbstractChangeRecord::class);
     }
 
-    public function test__initAbstractChangeRecord() : void
+    public function testInitAbstractChangeRecord(): void
     {
         $snippet = $this->getMockBuilder(SnippetInterface::class)
-                        ->getMockForAbstractClass();
+            ->getMockForAbstractClass()
+        ;
         $record = $this->getMockBuilder(AbstractChangeRecord::class)
-                       ->getMockForAbstractClass();
+            ->getMockForAbstractClass()
+        ;
 
         $options = ['controls' => ['Y'], 'snippet' => $snippet];
-        $this->assertSame($record, $record->initAbstractChangeRecord("dc=example,dc=org", $options));
-        $this->assertSame("dc=example,dc=org", $record->getDn());
+        $this->assertSame($record, $record->initAbstractChangeRecord('dc=example,dc=org', $options));
+        $this->assertSame('dc=example,dc=org', $record->getDn());
         $this->assertSame(['Y'], $record->getControls());
         $this->assertSame($snippet, $record->getSnippet());
     }
 
-    public function test__setControls() : void
+    public function testSetControls(): void
     {
         $record = $this->getMockBuilder(AbstractChangeRecord::class)
-                       ->getMockForAbstractClass();
+            ->getMockForAbstractClass()
+        ;
 
         $this->assertSame($record, $record->setControls(['Y']));
         $this->assertSame(['Y'], $record->getControls());

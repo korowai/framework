@@ -12,32 +12,33 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldap;
 
-use Korowai\Lib\Ldap\ResultEntryInterface;
 use Korowai\Lib\Ldap\EntryInterface;
 use Korowai\Lib\Ldap\ResultAttributeIteratorInterface;
-
+use Korowai\Lib\Ldap\ResultEntryInterface;
 use Korowai\Testing\LdaplibInterfaces\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Tests\Lib\Ldap\ResultEntryInterfaceTrait
+ *
+ * @internal
  */
 final class ResultEntryInterfaceTest extends TestCase
 {
     public static function createDummyInstance()
     {
-        return new class implements ResultEntryInterface {
+        return new class() implements ResultEntryInterface {
             use ResultEntryInterfaceTrait;
         };
     }
 
-    public function test__dummyImplementation() : void
+    public function testDummyImplementation(): void
     {
         $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(ResultEntryInterface::class, $dummy);
     }
 
-    public function test__getDn() : void
+    public function testGetDn(): void
     {
         $dummy = $this->createDummyInstance();
 
@@ -45,7 +46,7 @@ final class ResultEntryInterfaceTest extends TestCase
         $this->assertSame($dummy->dn, $dummy->getDn());
     }
 
-    public function test__getDn__withRetTypeError() : void
+    public function testGetDnWithRetTypeError(): void
     {
         $dummy = $this->createDummyInstance();
         $dummy->dn = null;
@@ -55,7 +56,7 @@ final class ResultEntryInterfaceTest extends TestCase
         $dummy->getDn();
     }
 
-    public function test__getAttributes() : void
+    public function testGetAttributes(): void
     {
         $dummy = $this->createDummyInstance();
 
@@ -63,7 +64,7 @@ final class ResultEntryInterfaceTest extends TestCase
         $this->assertSame($dummy->attributes, $dummy->getAttributes());
     }
 
-    public function test__getAttributes__withRetTypeError() : void
+    public function testGetAttributesWithRetTypeError(): void
     {
         $dummy = $this->createDummyInstance();
         $dummy->yyy = null;
@@ -73,7 +74,7 @@ final class ResultEntryInterfaceTest extends TestCase
         $dummy->getAttributes();
     }
 
-    public function test__toEntry() : void
+    public function testToEntry(): void
     {
         $dummy = $this->createDummyInstance();
 
@@ -81,7 +82,7 @@ final class ResultEntryInterfaceTest extends TestCase
         $this->assertSame($dummy->entry, $dummy->toEntry());
     }
 
-    public function test__toEntry__withRetTypeError() : void
+    public function testToEntryWithRetTypeError(): void
     {
         $dummy = $this->createDummyInstance();
         $dummy->entry = null;
@@ -91,7 +92,7 @@ final class ResultEntryInterfaceTest extends TestCase
         $dummy->toEntry();
     }
 
-    public function test__getAttributeIterator() : void
+    public function testGetAttributeIterator(): void
     {
         $dummy = $this->createDummyInstance();
 
@@ -99,7 +100,7 @@ final class ResultEntryInterfaceTest extends TestCase
         $this->assertSame($dummy->attributeIterator, $dummy->getAttributeIterator());
     }
 
-    public function test__getAttributeIterator__withRetTypeError() : void
+    public function testGetAttributeIteratorWithRetTypeError(): void
     {
         $dummy = $this->createDummyInstance();
         $dummy->attributeIterator = null;

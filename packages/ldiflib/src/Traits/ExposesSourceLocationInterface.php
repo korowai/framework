@@ -21,37 +21,29 @@ trait ExposesSourceLocationInterface
 {
     /**
      * Returns the SourceLocationInterface instance wrapped by this object.
-     *
-     * @return SourceLocationInterface|null
      */
-    abstract public function getSourceLocation() : ?SourceLocationInterface;
+    abstract public function getSourceLocation(): ?SourceLocationInterface;
 
     /**
      * Returns the source file name as string.
-     *
-     * @return string
      */
-    public function getSourceFileName() : string
+    public function getSourceFileName(): string
     {
         return $this->getSourceLocation()->getSourceFileName();
     }
 
     /**
      * Returns the whole source string.
-     *
-     * @return string
      */
-    public function getSourceString() : string
+    public function getSourceString(): string
     {
         return $this->getSourceLocation()->getSourceString();
     }
 
     /**
      * Returns zero-based byte offset in the source string at the location.
-     *
-     * @return int
      */
-    public function getSourceOffset() : int
+    public function getSourceOffset(): int
     {
         return $this->getSourceLocation()->getSourceOffset();
     }
@@ -59,20 +51,16 @@ trait ExposesSourceLocationInterface
     /**
      * Returns zero-based (multibyte) character offset of the source character
      * at the location.
-     *
-     * @return int
      */
-    public function getSourceCharOffset(string $encoding = null) : int
+    public function getSourceCharOffset(string $encoding = null): int
     {
         return $this->getSourceLocation()->getSourceCharOffset(...(func_get_args()));
     }
 
     /**
      * Returns zero-based source line index of the line at location.
-     *
-     * @return int
      */
-    public function getSourceLineIndex() : int
+    public function getSourceLineIndex(): int
     {
         return $this->getSourceLocation()->getSourceLineIndex();
     }
@@ -80,13 +68,11 @@ trait ExposesSourceLocationInterface
     /**
      * Returns the source line at location as string.
      *
-     * @param  int $index Zero-based line index of the line to be returned. If
+     * @param int $index Zero-based line index of the line to be returned. If
      *                   not given, an implementation should use the value
      *                   returned by ``getSourceLineIndex()`` instead.
-     *
-     * @return string
      */
-    public function getSourceLine(int $index = null) : string
+    public function getSourceLine(int $index = null): string
     {
         return $this->getSourceLocation()->getSourceLine(...func_get_args());
     }
@@ -99,10 +85,10 @@ trait ExposesSourceLocationInterface
      *  [$line, $byte] = $obj->getSourceLineAndOffset();
      * ```
      *
-     * @return array Two-element array with line number stored at position 0
-     *               and byte offset at position 1.
+     * @return array two-element array with line number stored at position 0
+     *               and byte offset at position 1
      */
-    public function getSourceLineAndOffset() : array
+    public function getSourceLineAndOffset(): array
     {
         return $this->getSourceLocation()->getSourceLineAndOffset();
     }
@@ -115,10 +101,10 @@ trait ExposesSourceLocationInterface
      *  [$line, $char] = $obj->getSourceLineAndCharOffset();
      * ```
      *
-     * @return array Two-element array with line number stored at position 0
-     *               and character offset at position 1.
+     * @return array two-element array with line number stored at position 0
+     *               and character offset at position 1
      */
-    public function getSourceLineAndCharOffset(string $encoding = null) : array
+    public function getSourceLineAndCharOffset(string $encoding = null): array
     {
         return $this->getSourceLocation()->getSourceLineAndCharOffset(...(func_get_args()));
     }

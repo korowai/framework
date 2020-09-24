@@ -23,20 +23,20 @@ class LdapService
         'password' => 'admin',
         'bindRequiresDn' => true,
         'accountDomainName' => 'example.org',
-        'baseDn' => 'dc=example,dc=org'
+        'baseDn' => 'dc=example,dc=org',
     ];
 
     /**
      * Store the singleton object.
      *
-     * @var LdapService|null
+     * @var null|LdapService
      */
     private static $instance = null;
 
     /**
-     * @var array|null
+     * @var null|array
      */
-    private $config = null;
+    private $config;
 
     /**
      * @var \Zend\Ldap\Ldap
@@ -61,26 +61,24 @@ class LdapService
         if (is_null(self::$instance)) {
             self::$instance = new self();
         }
+
         return self::$instance;
     }
 
     /**
      * Returns current config.
-     *
-     * @return array
      */
     public function getConfig(): array
     {
-        if ($this->config === null) {
+        if (null === $this->config) {
             $this->config = self::$defaultConfig;
         }
+
         return $this->config;
     }
 
     /**
      * Returns the underlying Zend Ldap object.
-     *
-     * @return \Zend\Ldap\Ldap
      */
     public function getLdap(): \Zend\Ldap\Ldap
     {
@@ -90,21 +88,23 @@ class LdapService
             $ldap->bind();
             $this->ldap = $ldap;
         }
+
         return $this->ldap;
     }
 
     /**
      * Deletes all the data, except bind dn.
      *
-     * @param  string $base Base dn of the search
-     * @param  string $filter Search filter.
+     * @param string $base   Base dn of the search
+     * @param string $filter search filter
      *
-     * @return array A list of distinguished names deleted (only roots of the deleted sub-trees are returned).
+     * @return array a list of distinguished names deleted (only roots of the deleted sub-trees are returned)
      */
     public function deleteAllData()
     {
         $config = $this->getConfig();
         $base = $config['baseDn'] ?? 'dc=example,dc=org';
+
         return $this->deleteDescendants($base);
     }
 
@@ -113,33 +113,32 @@ class LdapService
      *
      * Only the $config['bindDn'] is preserved.
      *
-     * @param  string $base Base dn of the search
-     * @param  string $filter Search filter.
+     * @param string $base   Base dn of the search
+     * @param string $filter search filter
      *
-     * @return array A list of distinguished names deleted (only roots of the deleted sub-trees are returned).
+     * @return array a list of distinguished names deleted (only roots of the deleted sub-trees are returned)
      */
-    public function deleteDescendants(string $base, string $filter=null) : array
+    public function deleteDescendants(string $base, string $filter = null): array
     {
         $ldap = $this->getLdap();
         $deleted = [];
         $result = $ldap->search($filter ?? '(objectclass=*)', $base, \Zend\Ldap\Ldap::SEARCH_SCOPE_ONE, ['dn']);
         if ($result) {
             foreach ($result as $entry) {
-                if ($entry !== null && $this->isSafeToDeleteEntry($entry)) {
+                if (null !== $entry && $this->isSafeToDeleteEntry($entry)) {
                     $ldap->delete($entry['dn'], true);
                     $deleted[] = $entry['dn'];
                 }
             }
         }
+
         return $deleted;
     }
 
     /**
      * Check if the $entry can be safely deleted from database.
-     *
-     * @param  array $entry
      */
-    public function isSafeToDeleteEntry(array $entry) : bool
+    public function isSafeToDeleteEntry(array $entry): bool
     {
         return $this->isSafeToDeleteDn($entry['dn']);
     }
@@ -148,20 +147,16 @@ class LdapService
      * Check if the distinguished name $dn can be safely deleted from database.
      *
      * For example, current bindDn should not be deleted.
-     *
-     * @param  string $dn
-     * @return bool
      */
-    public function isSafeToDeleteDn(string $dn) : bool
+    public function isSafeToDeleteDn(string $dn): bool
     {
         $config = $this->getConfig();
+
         return strtolower($dn) !== strtolower($config['username']);
     }
 
     /**
      * Add entries from LDIF file.
-     *
-     * @param  string $file
      */
     public function addFromLdifFile(string $file)
     {
@@ -170,8 +165,6 @@ class LdapService
 
     /**
      * Add entries from LDIF string.
-     *
-     * @param  string $ldif
      */
     protected function addFromLdifString(string $ldif)
     {

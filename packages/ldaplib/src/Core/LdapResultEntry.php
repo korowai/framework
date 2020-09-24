@@ -12,8 +12,6 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldap\Core;
 
-use function Korowai\Lib\Context\with;
-
 /**
  * Wrapper for ldap entry result resource.
  *
@@ -27,11 +25,11 @@ final class LdapResultEntry implements LdapResultEntryInterface
     // phpcs:disable Generic.NamingConventions.CamelCapsFunctionName
 
     /**
-     * Get the DN of a result entry
+     * Get the DN of a result entry.
      *
-     * @return string|false
+     * @return false|string
      *
-     * @link http://php.net/manual/en/function.ldap-get-dn.php ldap_get_dn()
+     * @see http://php.net/manual/en/function.ldap-get-dn.php ldap_get_dn()
      *
      * @psalm-mutation-free
      */
@@ -40,17 +38,18 @@ final class LdapResultEntry implements LdapResultEntryInterface
         $ldap = $this->getLdapLink();
 
         // PHP 7.x and earlier may return null instead of false
-        /** @var string|false|null */
+        /** @var null|false|string */
         $dn = @ldap_get_dn($ldap->getResource(), $this->getResource());
+
         return $dn ?? false;
     }
 
     /**
-     * Return first attribute
+     * Return first attribute.
      *
-     * @return string|false
+     * @return false|string
      *
-     * @link http://php.net/manual/en/function.ldap-first-attribute.php ldap_first_attribute()
+     * @see http://php.net/manual/en/function.ldap-first-attribute.php ldap_first_attribute()
      *
      * @psalm-suppress TypeDoesNotContainType
      * @psalm-return string|false
@@ -60,16 +59,16 @@ final class LdapResultEntry implements LdapResultEntryInterface
     {
         $ldap = $this->getLdapLink();
         // PHP 7.x and earlier may return null instead of false
-        /** @psalm-suppress TypeDoesNotContainType */
+        // @psalm-suppress TypeDoesNotContainType
         return ldap_first_attribute($ldap->getResource(), $this->getResource()) ?? false;
     }
 
     /**
-     * Get attributes from a search result entry
+     * Get attributes from a search result entry.
      *
      * @return array|false
      *
-     * @link http://php.net/manual/en/function.ldap-get-attributes.php ldap_get_attributes()
+     * @see http://php.net/manual/en/function.ldap-get-attributes.php ldap_get_attributes()
      *
      * @psalm-mutation-free
      */
@@ -77,18 +76,16 @@ final class LdapResultEntry implements LdapResultEntryInterface
     {
         $ldap = $this->getLdapLink();
         // PHP 7.x and earlier may return null instead of false
-        /** @psalm-suppress TypeDoesNotContainType */
+        // @psalm-suppress TypeDoesNotContainType
         return ldap_get_attributes($ldap->getResource(), $this->getResource()) ?? false;
     }
 
     /**
-     * Get all binary values from a result entry
-     *
-     * @param  string $attribute
+     * Get all binary values from a result entry.
      *
      * @return array|false
      *
-     * @link http://php.net/manual/en/function.ldap-get-values-len.php ldap_get_values_len()
+     * @see http://php.net/manual/en/function.ldap-get-values-len.php ldap_get_values_len()
      *
      * @psalm-mutation-free
      */
@@ -96,18 +93,16 @@ final class LdapResultEntry implements LdapResultEntryInterface
     {
         $ldap = $this->getLdapLink();
         // PHP 7.x and earlier may return null instead of false
-        /** @psalm-suppress TypeDoesNotContainType */
+        // @psalm-suppress TypeDoesNotContainType
         return ldap_get_values_len($ldap->getResource(), $this->getResource(), $attribute) ?? false;
     }
 
     /**
-     * Get all values from a result entry
-     *
-     * @param  string $attribute
+     * Get all values from a result entry.
      *
      * @return array|false
      *
-     * @link http://php.net/manual/en/function.ldap-get-values.php ldap_get_values()
+     * @see http://php.net/manual/en/function.ldap-get-values.php ldap_get_values()
      *
      * @psalm-mutation-free
      */
@@ -115,16 +110,16 @@ final class LdapResultEntry implements LdapResultEntryInterface
     {
         $ldap = $this->getLdapLink();
         // PHP 7.x and earlier may return null instead of false
-        /** @psalm-suppress TypeDoesNotContainType */
+        // @psalm-suppress TypeDoesNotContainType
         return ldap_get_values($ldap->getResource(), $this->getResource(), $attribute) ?? false;
     }
 
     /**
-     * Get the next attribute in result
+     * Get the next attribute in result.
      *
-     * @return string|false
+     * @return false|string
      *
-     * @link http://php.net/manual/en/function.ldap-next-attribute.php ldap_next_attribute()
+     * @see http://php.net/manual/en/function.ldap-next-attribute.php ldap_next_attribute()
      *
      * @psalm-mutation-free
      */
@@ -132,17 +127,18 @@ final class LdapResultEntry implements LdapResultEntryInterface
     {
         $ldap = $this->getLdapLink();
         // PHP 7.x and earlier may return null instead of false
-        /** @var string|false|null */
+        /** @var null|false|string */
         $next = ldap_next_attribute($ldap->getResource(), $this->getResource());
+
         return $next ?? false;
     }
 
     /**
-     * Get next result entry
+     * Get next result entry.
      *
-     * @return LdapResultEntryInterface|false
+     * @return false|LdapResultEntryInterface
      *
-     * @link http://php.net/manual/en/function.ldap-next-entry.php ldap_next_entry()
+     * @see http://php.net/manual/en/function.ldap-next-entry.php ldap_next_entry()
      *
      * @psalm-mutation-free
      */
@@ -152,15 +148,16 @@ final class LdapResultEntry implements LdapResultEntryInterface
         $ldap = $this->getLdapLink();
         // PHP 7.x and earlier may return null instead of false
         $res = ldap_next_entry($ldap->getResource(), $this->getResource());
+
         return $res ? new LdapResultEntry($res, $result) : false;
     }
 
     /**
-     * Get next result entry
+     * Get next result entry.
      *
-     * @return LdapResultEntryInterface|false
+     * @return false|LdapResultEntryInterface
      *
-     * @link http://php.net/manual/en/function.ldap-next-entry.php ldap_next_entry()
+     * @see http://php.net/manual/en/function.ldap-next-entry.php ldap_next_entry()
      *
      * @psalm-mutation-free
      */

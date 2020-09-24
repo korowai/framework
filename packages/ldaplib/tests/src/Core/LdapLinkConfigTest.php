@@ -12,28 +12,26 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldap\Core;
 
-use Korowai\Testing\Ldaplib\TestCase;
-
 use Korowai\Lib\Ldap\Core\LdapLinkConfig;
 use Korowai\Lib\Ldap\Core\LdapLinkConfigInterface;
-use Korowai\Lib\Ldap\Core\LdapLinkConfigResolver;
 use Korowai\Lib\Ldap\Core\LdapLinkConfigResolverInterface;
-use Korowai\Lib\Ldap\Core\LdapLinkInterface;
+use Korowai\Testing\Ldaplib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Ldap\Core\LdapLinkConfig
+ *
+ * @internal
  */
 final class LdapLinkConfigTest extends TestCase
 {
-
     //
     //
     // TESTS
     //
     //
 
-    public function test__implements__LdapLinkConfigInterface() : void
+    public function testImplementsLdapLinkConfigInterface(): void
     {
         $this->assertImplementsInterface(LdapLinkConfigInterface::class, LdapLinkConfig::class);
     }
@@ -41,26 +39,27 @@ final class LdapLinkConfigTest extends TestCase
     //
     // fromArray()
     //
-    public function test__fromArray() : void
+    public function testFromArray(): void
     {
         $resolver = $this->createMock(LdapLinkConfigResolverInterface::class);
 
         $config = [];
         $resolved = [
-            'uri'     => 'URI',
-            'tls'     => false,
-            'options' => [0 => 1]
+            'uri' => 'URI',
+            'tls' => false,
+            'options' => [0 => 1],
         ];
         $resolver->expects($this->once())
-                 ->method('resolve')
-                 ->with($config)
-                 ->willReturn($resolved);
+            ->method('resolve')
+            ->with($config)
+            ->willReturn($resolved)
+        ;
 
         $factory = LdapLinkConfig::fromArray($resolver, $config);
 
         $this->assertObjectHasPropertiesIdenticalTo([
-            'uri()'     => $resolved['uri'],
-            'tls()'     => $resolved['tls'],
+            'uri()' => $resolved['uri'],
+            'tls()' => $resolved['tls'],
             'options()' => $resolved['options'],
         ], $factory);
     }
@@ -69,7 +68,7 @@ final class LdapLinkConfigTest extends TestCase
     // __construct()
     //
 
-    public function test__construct() : void
+    public function testConstruct(): void
     {
         $this->expectException(\Error::class);
         $this->expectExceptionMessageMatches('/private .*::__construct/');

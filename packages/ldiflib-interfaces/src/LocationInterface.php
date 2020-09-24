@@ -19,17 +19,13 @@ interface LocationInterface extends SourceLocationInterface
 {
     /**
      * Returns the whole input string.
-     *
-     * @return string
      */
-    public function getString() : string;
+    public function getString(): string;
 
     /**
      * Returns zero-based byte offset in the input string of the location.
-     *
-     * @return int
      */
-    public function getOffset() : int;
+    public function getOffset(): int;
 
     /**
      * Returns whether the offset points at a character within the string.
@@ -39,35 +35,25 @@ interface LocationInterface extends SourceLocationInterface
      * ```
      *  (getOffset() >= 0 && getOffset() < strlen(getString()))
      * ```
-     *
-     * @return bool
      */
-    public function isValid() : bool;
+    public function isValid(): bool;
 
     /**
      * Returns zero-based (multibyte) character offset in the input string of the location.
-     *
-     * @return int
      */
-    public function getCharOffset(string $encoding = null) : int;
+    public function getCharOffset(string $encoding = null): int;
 
     /**
      * Returns the InputInterface containing the character at location.
-     *
-     * @return InputInterface
      */
-    public function getInput() : InputInterface;
+    public function getInput(): InputInterface;
 
     /**
      * Returns new LocationInterface instance made out of this one. The
      * returned object points to the same input at *$offset*. If *$offset* is
      * null or not given, then it's taken from this location.
-     *
-     * @param  int|null $offset
-     *
-     * @return LocationInterface
      */
-    public function getClonedLocation(int $offset = null) : LocationInterface;
+    public function getClonedLocation(int $offset = null): LocationInterface;
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

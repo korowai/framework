@@ -12,28 +12,29 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldap;
 
-use Korowai\Testing\Ldaplib\TestCase;
-
 use Korowai\Lib\Ldap\ResultReferralIterator;
 use Korowai\Lib\Ldap\ResultReferralIteratorInterface;
+use Korowai\Testing\Ldaplib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Ldap\ResultReferralIterator
+ *
+ * @internal
  */
 final class ResultReferralIteratorTest extends TestCase
 {
-    public function test__implements__ResultReferralIteratorInterface() : void
+    public function testImplementsResultReferralIteratorInterface(): void
     {
         $this->assertImplementsInterface(ResultReferralIteratorInterface::class, ResultReferralIterator::class);
     }
 
-    public function test__extends__ArrayIterator() : void
+    public function testExtendsArrayIterator(): void
     {
         $this->assertExtendsClass(\ArrayIterator::class, ResultReferralIterator::class);
     }
 
-    public function test__construct() : void
+    public function testConstruct(): void
     {
         $iterator = new ResultReferralIterator(['foo', 'bar']);
         $this->assertSame(['foo', 'bar'], $iterator->getArrayCopy());

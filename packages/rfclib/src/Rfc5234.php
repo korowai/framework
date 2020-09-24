@@ -86,7 +86,7 @@ class Rfc5234 extends AbstractRuleSet
     /**
      * {@inheritdoc}
      */
-    public static function getClassRuleNames() : array
+    public static function getClassRuleNames(): array
     {
         return self::$rfc5234Rules;
     }

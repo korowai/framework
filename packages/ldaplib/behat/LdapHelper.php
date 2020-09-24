@@ -13,13 +13,13 @@ declare(strict_types=1);
 namespace Korowai\Lib\Ldap\Behat;
 
 use Korowai\Lib\Ldap\Ldap;
-use Korowai\Lib\Ldap\LdapException;
 
 trait LdapHelper
 {
-    use ExceptionLog, ResultLog;
+    use ExceptionLog;
+    use ResultLog;
 
-    private $ldap = null;
+    private $ldap;
 
     protected function initLdapHelper()
     {
@@ -42,6 +42,7 @@ trait LdapHelper
             return $this->ldap->bind(...$args);
         } catch (\Exception $e) {
             $this->appendException($e);
+
             return false;
         }
     }
@@ -52,9 +53,11 @@ trait LdapHelper
             $result = $this->ldap->search(...$args);
         } catch (\Exception $e) {
             $this->appendException($e);
+
             return false;
         }
         $this->appendResult($result);
+
         return $result;
     }
 
@@ -64,9 +67,11 @@ trait LdapHelper
             $result = $this->ldap->compare(...$args);
         } catch (\Exception $e) {
             $this->appendException($e);
+
             return false;
         }
         $this->appendResult($result);
+
         return $result;
     }
 }

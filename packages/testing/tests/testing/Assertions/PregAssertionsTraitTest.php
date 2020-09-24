@@ -12,13 +12,15 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Testing\Assertions;
 
-use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\ExpectationFailedException;
 use Korowai\Testing\Assertions\PregAssertionsTrait;
+use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Testing\Assertions\PregAssertionsTrait
+ *
+ * @internal
  */
 final class PregAssertionsTraitTest extends TestCase
 {
@@ -74,18 +76,20 @@ final class PregAssertionsTraitTest extends TestCase
             [['bar' => true],                                               [0 => 'FOO BAR', 'bar' => ['BAR', 4]]],
             [[0 => 'FOO BAR', 'bar' => ['BAR', 4]],                         [0 => 'FOO BAR', 'bar' => ['BAR', 4]]],
             [[0 => true, 'bar' => true],                                    [0 => 'FOO BAR', 'bar' => ['BAR', 4]]],
-            [[0 => 'FOO BAR', 'bar' => ['BAR', 4], 'gez' => false],         [0 => 'FOO BAR', 'bar' => ['BAR', 4], 'gez' => [null,-1]]],
+            [[0 => 'FOO BAR', 'bar' => ['BAR', 4], 'gez' => false],         [0 => 'FOO BAR', 'bar' => ['BAR', 4], 'gez' => [null, -1]]],
 
             // other corner cases
             [['foo' => null],                                               ['foo' => null]],
-            [['foo' => [null,-1]],                                          ['foo' => [null,-1]]],
+            [['foo' => [null, -1]],                                          ['foo' => [null, -1]]],
         ];
     }
 
     /**
      * @dataProvider prov__hasPregCaptures__success
+     *
+     * @param mixed $other
      */
-    public function test__hasPregCaptures__success(array $expected, $other) : void
+    public function testHasPregCapturesSuccess(array $expected, $other): void
     {
         $constraint = $this->hasPregCaptures($expected);
         $this->assertTrue($constraint->matches($other));
@@ -93,16 +97,20 @@ final class PregAssertionsTraitTest extends TestCase
 
     /**
      * @dataProvider prov__hasPregCaptures__success
+     *
+     * @param mixed $other
      */
-    public function test__assertHasPregCaptures__success(array $expected, $other) : void
+    public function testAssertHasPregCapturesSuccess(array $expected, $other): void
     {
         $this->assertHasPregCaptures($expected, $other);
     }
 
     /**
      * @dataProvider prov__hasPregCaptures__success
+     *
+     * @param mixed $other
      */
-    public function test__assertNotHasPregCapture__failing(array $expected, $other) : void
+    public function testAssertNotHasPregCaptureFailing(array $expected, $other): void
     {
         $this->expectException(ExpectationFailedException::class);
         $this->expectExceptionMessageMatches('/^Failed asserting that array does not have expected PCRE capture groups.$/sD');
@@ -112,29 +120,31 @@ final class PregAssertionsTraitTest extends TestCase
     public function prov__hasPregCaptures__failing()
     {
         $re = 'array has expected PCRE capture groups';
+
         return [
             [['foo' => true],                       [],                     $re],
-            [['foo' => true],                       ['foo' => [null,-1]],   $re],
+            [['foo' => true],                       ['foo' => [null, -1]],   $re],
 
             [['foo' => 'FOO'],                      [],                     $re],
             [['foo' => 'FOO'],                      ['bar' => 'FOO'],       $re],
-            [['foo' => 'FOO'],                      ['foo' => [null,-1]],   $re],
-            [['foo' => 'FOO'],                      ['foo' => ['FOO',-1]],  $re],
+            [['foo' => 'FOO'],                      ['foo' => [null, -1]],   $re],
+            [['foo' => 'FOO'],                      ['foo' => ['FOO', -1]],  $re],
 
             [['foo' => false],                      ['foo' => 'FOO'],       $re],
             [['foo' => 'BAR'],                      ['foo' => 'FOO'],       $re],
-            [['foo' => 'BAR'],                      ['foo' => ['FOO',-1]],  $re],
+            [['foo' => 'BAR'],                      ['foo' => ['FOO', -1]],  $re],
 
             // other corner cases
             [['foo' => null],                       [],                     $re],
-            [['foo' => [null,-1]],                  ['foo' => null],        $re],
-            [['foo' => [null,-1]],                  [],                     $re],
+            [['foo' => [null, -1]],                  ['foo' => null],        $re],
+            [['foo' => [null, -1]],                  [],                     $re],
         ];
     }
 
     public function prov__hasPregCaptures__nonArray()
     {
         $re = 'string has expected PCRE capture groups';
+
         return [
             [['foo' => false],  'stuff', $re],
         ];
@@ -143,8 +153,10 @@ final class PregAssertionsTraitTest extends TestCase
     /**
      * @dataProvider prov__hasPregCaptures__failing
      * @dataProvider prov__hasPregCaptures__nonArray
+     *
+     * @param mixed $other
      */
-    public function test__hasPregCaptures__failing(array $expected, $other, string $regexp) : void
+    public function testHasPregCapturesFailing(array $expected, $other, string $regexp): void
     {
         $constraint = $this->hasPregCaptures($expected);
         $this->assertFalse($constraint->matches($other));
@@ -160,8 +172,10 @@ final class PregAssertionsTraitTest extends TestCase
 
     /**
      * @dataProvider prov__hasPregCaptures__failing
+     *
+     * @param mixed $other
      */
-    public function test__assertHasPregCaptures__failing(array $expected, $other, string $regexp) : void
+    public function testAssertHasPregCapturesFailing(array $expected, $other, string $regexp): void
     {
         $this->expectException(ExpectationFailedException::class);
         $this->expectExceptionMessageMatches('/^Failed asserting that '.$regexp.'.$/sD');
@@ -170,8 +184,10 @@ final class PregAssertionsTraitTest extends TestCase
 
     /**
      * @dataProvider prov__hasPregCaptures__failing
+     *
+     * @param mixed $other
      */
-    public function test__assertNotHasPregCapture__success(array $expected, $other, string $regexp) : void
+    public function testAssertNotHasPregCaptureSuccess(array $expected, $other, string $regexp): void
     {
         $this->assertNotHasPregCaptures($expected, $other);
     }

@@ -19,15 +19,15 @@ use Korowai\Lib\Context\ContextFactoryInterface;
  */
 trait ContextFactoryStackInterfaceTrait
 {
-    public $top = null;
-    public $pop = null;
-    public $size = null;
+    public $top;
+    public $pop;
+    public $size;
 
     public function clean()
     {
     }
 
-    public function top() : ?ContextFactoryInterface
+    public function top(): ?ContextFactoryInterface
     {
         return $this->top;
     }
@@ -36,12 +36,12 @@ trait ContextFactoryStackInterfaceTrait
     {
     }
 
-    public function pop() : ?ContextFactoryInterface
+    public function pop(): ?ContextFactoryInterface
     {
         return $this->pop;
     }
 
-    public function size() : int
+    public function size(): int
     {
         return $this->size;
     }

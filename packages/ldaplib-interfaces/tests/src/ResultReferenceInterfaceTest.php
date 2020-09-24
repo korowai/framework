@@ -14,29 +14,30 @@ namespace Korowai\Tests\Lib\Ldap;
 
 use Korowai\Lib\Ldap\ResultReferenceInterface;
 use Korowai\Lib\Ldap\ResultReferralIteratorInterface;
-
 use Korowai\Testing\LdaplibInterfaces\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Tests\Lib\Ldap\ResultReferenceInterfaceTrait
+ *
+ * @internal
  */
 final class ResultReferenceInterfaceTest extends TestCase
 {
     public static function createDummyInstance()
     {
-        return new class implements ResultReferenceInterface {
+        return new class() implements ResultReferenceInterface {
             use ResultReferenceInterfaceTrait;
         };
     }
 
-    public function test__dummyImplementation() : void
+    public function testDummyImplementation(): void
     {
         $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(ResultReferenceInterface::class, $dummy);
     }
 
-    public function test__getReferrals() : void
+    public function testGetReferrals(): void
     {
         $dummy = $this->createDummyInstance();
 
@@ -44,7 +45,7 @@ final class ResultReferenceInterfaceTest extends TestCase
         $this->assertSame($dummy->referrals, $dummy->getReferrals());
     }
 
-    public function test__getReferrals__withRetTypeError() : void
+    public function testGetReferralsWithRetTypeError(): void
     {
         $dummy = $this->createDummyInstance();
         $dummy->referrals = null;
@@ -54,7 +55,7 @@ final class ResultReferenceInterfaceTest extends TestCase
         $dummy->getReferrals();
     }
 
-    public function test__getReferralIterator() : void
+    public function testGetReferralIterator(): void
     {
         $dummy = $this->createDummyInstance();
 
@@ -62,7 +63,7 @@ final class ResultReferenceInterfaceTest extends TestCase
         $this->assertSame($dummy->referralIterator, $dummy->getReferralIterator());
     }
 
-    public function test__getReferralIterator__withRetTypeError() : void
+    public function testGetReferralIteratorWithRetTypeError(): void
     {
         $dummy = $this->createDummyInstance();
         $dummy->referralIterator = null;

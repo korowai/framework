@@ -12,7 +12,11 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldap;
 
-use Korowai\Testing\Ldaplib\TestCase;
+use Korowai\Lib\Ldap\Core\LdapResultReferenceWrapperInterface;
+use Korowai\Lib\Ldap\Core\LdapResultReferenceWrapperTrait;
+use Korowai\Lib\Ldap\ResultReference;
+use Korowai\Lib\Ldap\ResultReferenceInterface;
+use Korowai\Lib\Ldap\ResultReferralIterator;
 use Korowai\Testing\Ldaplib\CreateLdapLinkMockTrait;
 use Korowai\Testing\Ldaplib\CreateLdapResultMockTrait;
 use Korowai\Testing\Ldaplib\CreateLdapResultReferenceMockTrait;
@@ -20,16 +24,13 @@ use Korowai\Testing\Ldaplib\ExamineLdapLinkErrorHandlerTrait;
 use Korowai\Testing\Ldaplib\GetLdapFunctionMockTrait;
 use Korowai\Testing\Ldaplib\LdapTriggerErrorTestFixture;
 use Korowai\Testing\Ldaplib\LdapTriggerErrorTestSubject;
-
-use Korowai\Lib\Ldap\ResultReference;
-use Korowai\Lib\Ldap\ResultReferenceInterface;
-use Korowai\Lib\Ldap\Core\LdapResultReferenceWrapperInterface;
-use Korowai\Lib\Ldap\Core\LdapResultReferenceWrapperTrait;
-use Korowai\Lib\Ldap\ResultReferralIterator;
+use Korowai\Testing\Ldaplib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @covers Korowai\Lib\Ldap\ResultReference
+ * @covers \Korowai\Lib\Ldap\ResultReference
+ *
+ * @internal
  */
 final class ResultReferenceTest extends TestCase
 {
@@ -40,48 +41,23 @@ final class ResultReferenceTest extends TestCase
     use CreateLdapResultReferenceMockTrait;
     use ExamineLdapLinkErrorHandlerTrait;
 
-    private function createResultReferenceAndMocks(int $mocksDepth = 3) : array
-    {
-        $link            = $mocksDepth >= 3 ? $this->createLdapLinkMock() : null;
-        $ldapResult      = $mocksDepth >= 2 ? $this->createLdapResultMock($link) : null;
-        $ldapReference   = $this->createLdapResultReferenceMock($ldapResult);
-        $resultReference = new ResultReference($ldapReference);
-        return array_slice([$resultReference, $ldapReference, $ldapResult, $link], 0, max(2, 1+ $mocksDepth));
-    }
-
-    private function examineMethodWithTriggerError(
-        string $method,
-        string $backendMethod,
-        array $args,
-        LdapTriggerErrorTestFixture $fixture
-    ) : void {
-        [$reference, $ldapReference, $ldapResult, $link] = $this->createResultReferenceAndMocks();
-
-        $function = function () use ($reference, $method, $args) : void {
-            $reference->$method(...$args);
-        };
-
-        $subject = new LdapTriggerErrorTestSubject($ldapReference, $backendMethod);
-        $this->examineLdapLinkErrorHandler($function, $subject, $link, $fixture);
-    }
-
     //
     //
     // TESTS
     //
     //
 
-    public function test__implements__ResultReferenceInterface() : void
+    public function testImplementsResultReferenceInterface(): void
     {
         $this->assertImplementsInterface(ResultReferenceInterface::class, ResultReference::class);
     }
 
-    public function test__implements__LdapResultReferenceWraperInterface() : void
+    public function testImplementsLdapResultReferenceWraperInterface(): void
     {
         $this->assertImplementsInterface(LdapResultReferenceWrapperInterface::class, ResultReference::class);
     }
 
-    public function test__uses__LdapResultReferenceWrapperTrait() : void
+    public function testUsesLdapResultReferenceWrapperTrait(): void
     {
         $this->assertUsesTrait(LdapResultReferenceWrapperTrait::class, ResultReference::class);
     }
@@ -90,7 +66,7 @@ final class ResultReferenceTest extends TestCase
     // getLdapResultReference()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public function test_getLdapResultReference() : void
+    public function testGetLdapResultReference(): void
     {
         [$reference, $ldapReference] = $this->createResultReferenceAndMocks(1);
         $this->assertSame($ldapReference, $reference->getLdapResultReference());
@@ -100,7 +76,7 @@ final class ResultReferenceTest extends TestCase
     // getReferrals()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__getReferrals() : array
+    public static function prov__getReferrals(): array
     {
         return [
             // #0
@@ -126,22 +102,28 @@ final class ResultReferenceTest extends TestCase
 
     /**
      * @dataProvider prov__getReferrals
+     *
+     * @param mixed $return
+     * @param mixed $output
+     * @param mixed $expect
      */
-    public function test__getReferrals($return, $output, $expect) : void
+    public function testGetReferrals($return, $output, $expect): void
     {
         [$reference, $ldapReference] = $this->createResultReferenceAndMocks(1);
 
         $ldapReference->expects($this->once())
-                      ->method('parse_reference')
-                      ->will($this->returnCallback(function (&$referrals) use ($return, $output) {
+            ->method('parse_reference')
+            ->will($this->returnCallback(function (&$referrals) use ($return, $output) {
                           $referrals = $output;
+
                           return $return;
-                      }));
+                      }))
+        ;
 
         $this->assertSame($expect, $reference->getReferrals());
     }
 
-    public static function prov__getReferrals__withTriggerError() : array
+    public static function prov__getReferrals__withTriggerError(): array
     {
         return static::feedLdapLinkErrorHandler();
     }
@@ -149,7 +131,7 @@ final class ResultReferenceTest extends TestCase
     /**
      * @dataProvider prov__getReferrals__withTriggerError
      */
-    public function test__getReferrals__withTriggerError(LdapTriggerErrorTestFixture $fixture) : void
+    public function testGetReferralsWithTriggerError(LdapTriggerErrorTestFixture $fixture): void
     {
         $this->examineMethodWithTriggerError('getReferrals', 'parse_reference', [&$referrals], $fixture);
     }
@@ -158,7 +140,7 @@ final class ResultReferenceTest extends TestCase
     // getReferralIterator(), getIterator()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__getReferralIterator() : array
+    public static function prov__getReferralIterator(): array
     {
         return [
             // #0
@@ -184,17 +166,23 @@ final class ResultReferenceTest extends TestCase
 
     /**
      * @dataProvider prov__getReferralIterator
+     *
+     * @param mixed $return
+     * @param mixed $output
+     * @param mixed $expect
      */
-    public function test__getReferralIterator($return, $output, $expect) : void
+    public function testGetReferralIterator($return, $output, $expect): void
     {
         [$reference, $ldapReference] = $this->createResultReferenceAndMocks(1);
 
         $ldapReference->expects($this->once())
-                      ->method('parse_reference')
-                      ->will($this->returnCallback(function (&$referrals) use ($return, $output) {
+            ->method('parse_reference')
+            ->will($this->returnCallback(function (&$referrals) use ($return, $output) {
                           $referrals = $output;
+
                           return $return;
-                      }));
+                      }))
+        ;
 
         $iterator = $reference->getReferralIterator();
         $this->assertInstanceOf(ResultReferralIterator::class, $iterator);
@@ -205,7 +193,7 @@ final class ResultReferenceTest extends TestCase
         $this->assertSame($expect, $iterator->getArrayCopy());
     }
 
-    public static function prov__getReferralIterator__withTriggerError() : array
+    public static function prov__getReferralIterator__withTriggerError(): array
     {
         return static::feedLdapLinkErrorHandler();
     }
@@ -213,9 +201,35 @@ final class ResultReferenceTest extends TestCase
     /**
      * @dataProvider prov__getReferralIterator__withTriggerError
      */
-    public function test__getReferralIterator__withTriggerError(LdapTriggerErrorTestFixture $fixture) : void
+    public function testGetReferralIteratorWithTriggerError(LdapTriggerErrorTestFixture $fixture): void
     {
         $this->examineMethodWithTriggerError('getReferralIterator', 'parse_reference', [&$referrals], $fixture);
+    }
+
+    private function createResultReferenceAndMocks(int $mocksDepth = 3): array
+    {
+        $link = $mocksDepth >= 3 ? $this->createLdapLinkMock() : null;
+        $ldapResult = $mocksDepth >= 2 ? $this->createLdapResultMock($link) : null;
+        $ldapReference = $this->createLdapResultReferenceMock($ldapResult);
+        $resultReference = new ResultReference($ldapReference);
+
+        return array_slice([$resultReference, $ldapReference, $ldapResult, $link], 0, max(2, 1 + $mocksDepth));
+    }
+
+    private function examineMethodWithTriggerError(
+        string $method,
+        string $backendMethod,
+        array $args,
+        LdapTriggerErrorTestFixture $fixture
+    ): void {
+        [$reference, $ldapReference, $ldapResult, $link] = $this->createResultReferenceAndMocks();
+
+        $function = function () use ($reference, $method, $args): void {
+            $reference->{$method}(...$args);
+        };
+
+        $subject = new LdapTriggerErrorTestSubject($ldapReference, $backendMethod);
+        $this->examineLdapLinkErrorHandler($function, $subject, $link, $fixture);
     }
 }
 

@@ -12,20 +12,18 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Testing\Properties;
 
-use Korowai\Testing\TestCase;
-use Korowai\Testing\Properties\AbstractProperties;
-use Korowai\Testing\Properties\ActualProperties;
-use Korowai\Testing\Properties\ActualPropertiesInterface;
 use Korowai\Testing\Properties\ExpectedProperties;
+use Korowai\Testing\Properties\ExpectedPropertiesDecoratorTrait;
 use Korowai\Testing\Properties\ExpectedPropertiesInterface;
 use Korowai\Testing\Properties\PropertiesInterface;
 use Korowai\Testing\Properties\PropertySelectorInterface;
-use Korowai\Testing\Properties\ExpectedPropertiesDecoratorTrait;
-use PHPUnit\Framework\InvalidArgumentException;
+use Korowai\Testing\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Testing\Properties\ExpectedPropertiesDecoratorTrait
+ *
+ * @internal
  */
 final class ExpectedPropertiesDecoratorTraitTest extends TestCase
 {
@@ -33,12 +31,13 @@ final class ExpectedPropertiesDecoratorTraitTest extends TestCase
     public function createExpectedProperties(
         PropertySelectorInterface $selector,
         ...$args
-    ) : ExpectedPropertiesInterface {
+    ): ExpectedPropertiesInterface {
         $properties = new ExpectedProperties($selector, ...$args);
+
         return $this->createDummyInstance($properties);
     }
 
-    public static function createDummyInstance(ExpectedPropertiesInterface $wrapped) : ExpectedPropertiesInterface
+    public static function createDummyInstance(ExpectedPropertiesInterface $wrapped): ExpectedPropertiesInterface
     {
         return new class($wrapped) implements ExpectedPropertiesInterface {
             use ExpectedPropertiesDecoratorTrait;
@@ -50,7 +49,7 @@ final class ExpectedPropertiesDecoratorTraitTest extends TestCase
                 $this->wrapped = $wrapped;
             }
 
-            public function getExpectedProperties() : ExpectedPropertiesInterface
+            public function getExpectedProperties(): ExpectedPropertiesInterface
             {
                 return $this->wrapped;
             }
@@ -67,13 +66,14 @@ final class ExpectedPropertiesDecoratorTraitTest extends TestCase
     // getIterator()
     //
 
-    public function test__getIterator__invokesAdapteeMethod() : void
+    public function testGetIteratorInvokesAdapteeMethod(): void
     {
         $iterator = $this->createMock(\Traversable::class);
         $adaptee = $this->createMock(ExpectedPropertiesInterface::class);
         $adaptee->expects($this->once())
-                ->method('getIterator')
-                ->willReturn($iterator);
+            ->method('getIterator')
+            ->willReturn($iterator)
+        ;
         $properties = $this->createDummyInstance($adaptee);
         $this->assertSame($iterator, $properties->getIterator());
     }
@@ -82,13 +82,14 @@ final class ExpectedPropertiesDecoratorTraitTest extends TestCase
     // offsetExists()
     //
 
-    public function test__offsetExists__invokesAdapteeMethod() : void
+    public function testOffsetExistsInvokesAdapteeMethod(): void
     {
         $adaptee = $this->createMock(ExpectedPropertiesInterface::class);
         $adaptee->expects($this->once())
-                ->method('offsetExists')
-                ->with(123)
-                ->willReturn(true);
+            ->method('offsetExists')
+            ->with(123)
+            ->willReturn(true)
+        ;
         $properties = $this->createDummyInstance($adaptee);
         $this->assertTrue($properties->offsetExists(123));
     }
@@ -97,14 +98,15 @@ final class ExpectedPropertiesDecoratorTraitTest extends TestCase
     // offsetGet()
     //
 
-    public function test__offsetGet__invokesAdapteeMethod() : void
+    public function testOffsetGetInvokesAdapteeMethod(): void
     {
-        $value = new \StdClass;
+        $value = new \StdClass();
         $adaptee = $this->createMock(ExpectedPropertiesInterface::class);
         $adaptee->expects($this->once())
-                ->method('offsetGet')
-                ->with(123)
-                ->willReturn($value);
+            ->method('offsetGet')
+            ->with(123)
+            ->willReturn($value)
+        ;
         $properties = $this->createDummyInstance($adaptee);
         $this->assertSame($value, $properties->offsetGet(123));
     }
@@ -113,13 +115,14 @@ final class ExpectedPropertiesDecoratorTraitTest extends TestCase
     // offsetSet()
     //
 
-    public function test__offsetSet__invokesAdapteeMethod() : void
+    public function testOffsetSetInvokesAdapteeMethod(): void
     {
-        $value = new \StdClass;
+        $value = new \StdClass();
         $adaptee = $this->createMock(ExpectedPropertiesInterface::class);
         $adaptee->expects($this->once())
-                ->method('offsetSet')
-                ->with(123, $value);
+            ->method('offsetSet')
+            ->with(123, $value)
+        ;
         $properties = $this->createDummyInstance($adaptee);
         $properties->offsetSet(123, $value);
     }
@@ -128,12 +131,13 @@ final class ExpectedPropertiesDecoratorTraitTest extends TestCase
     // offsetUnset()
     //
 
-    public function test__offsetUnset__invokesAdapteeMethod() : void
+    public function testOffsetUnsetInvokesAdapteeMethod(): void
     {
         $adaptee = $this->createMock(ExpectedPropertiesInterface::class);
         $adaptee->expects($this->once())
-                ->method('offsetUnset')
-                ->with(123);
+            ->method('offsetUnset')
+            ->with(123)
+        ;
         $properties = $this->createDummyInstance($adaptee);
         $properties->offsetUnset(123);
     }
@@ -142,12 +146,13 @@ final class ExpectedPropertiesDecoratorTraitTest extends TestCase
     // count()
     //
 
-    public function test__count__invokesAdapteeMethod() : void
+    public function testCountInvokesAdapteeMethod(): void
     {
         $adaptee = $this->createMock(ExpectedPropertiesInterface::class);
         $adaptee->expects($this->once())
-                ->method('count')
-                ->willReturn(123);
+            ->method('count')
+            ->willReturn(123)
+        ;
         $properties = $this->createDummyInstance($adaptee);
         $this->assertSame(123, $properties->count());
     }
@@ -156,13 +161,14 @@ final class ExpectedPropertiesDecoratorTraitTest extends TestCase
     // getArrayCopy()
     //
 
-    public function test__getArrayCopy__invokesAdapteeMethod() : void
+    public function testGetArrayCopyInvokesAdapteeMethod(): void
     {
         $array = ['foo' => 'FOO'];
         $adaptee = $this->createMock(ExpectedPropertiesInterface::class);
         $adaptee->expects($this->once())
-                ->method('getArrayCopy')
-                ->willReturn($array);
+            ->method('getArrayCopy')
+            ->willReturn($array)
+        ;
         $properties = $this->createDummyInstance($adaptee);
         $this->assertSame($array, $properties->getArrayCopy());
     }
@@ -171,14 +177,15 @@ final class ExpectedPropertiesDecoratorTraitTest extends TestCase
     // canUnwrapChild()
     //
 
-    public function test__canUnwrapChild__invokesAdapteeMethod() : void
+    public function testCanUnwrapChildInvokesAdapteeMethod(): void
     {
         $child = $this->createMock(PropertiesInterface::class);
         $adaptee = $this->createMock(ExpectedPropertiesInterface::class);
         $adaptee->expects($this->once())
-                ->method('canUnwrapChild')
-                ->with($child)
-                ->willReturn(true);
+            ->method('canUnwrapChild')
+            ->with($child)
+            ->willReturn(true)
+        ;
         $properties = $this->createDummyInstance($adaptee);
         $this->assertTrue($properties->canUnwrapChild($child));
     }
@@ -187,13 +194,14 @@ final class ExpectedPropertiesDecoratorTraitTest extends TestCase
     // getPropertySelector()
     //
 
-    public function test__getPropertySelector__invokesAdapteeMethod() : void
+    public function testGetPropertySelectorInvokesAdapteeMethod(): void
     {
         $selector = $this->createMock(PropertySelectorInterface::class);
         $adaptee = $this->createMock(ExpectedPropertiesInterface::class);
         $adaptee->expects($this->once())
-                ->method('getPropertySelector')
-                ->willReturn($selector);
+            ->method('getPropertySelector')
+            ->willReturn($selector)
+        ;
         $properties = $this->createDummyInstance($adaptee);
         $this->assertSame($selector, $properties->getPropertySelector());
     }

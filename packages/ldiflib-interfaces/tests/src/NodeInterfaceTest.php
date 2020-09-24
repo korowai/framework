@@ -13,18 +13,19 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Ldif;
 
 use Korowai\Lib\Ldif\NodeInterface;
-
 use Korowai\Testing\LdiflibInterfaces\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Tests\Lib\Ldif\NodeInterfaceTrait
+ *
+ * @internal
  */
 final class NodeInterfaceTest extends TestCase
 {
-    public function test__dummyImplementation() : void
+    public function testDummyImplementation(): void
     {
-        $dummy = new class implements NodeInterface {
+        $dummy = new class() implements NodeInterface {
             use NodeInterfaceTrait;
         };
         $this->assertImplementsInterface(NodeInterface::class, $dummy);

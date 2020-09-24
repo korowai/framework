@@ -12,7 +12,6 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldap\Core;
 
-use Korowai\Lib\Ldap\ResultInterface;
 use Korowai\Lib\Basic\ResourceWrapperInterface;
 
 /**
@@ -26,77 +25,75 @@ interface LdapResultInterface extends ResourceWrapperInterface, LdapLinkWrapperI
     // phpcs:disable Generic.NamingConventions.CamelCapsFunctionName
 
     /**
-     * Count the number of entries in a search
+     * Count the number of entries in a search.
      *
-     * @return int|false
+     * @return false|int
      *
-     * @link http://php.net/manual/en/function.ldap-count-entries.php ldap_count_entries()
+     * @see http://php.net/manual/en/function.ldap-count-entries.php ldap_count_entries()
      *
      * @psalm-mutation-free
      */
     public function count_entries();
 
     /**
-     * Count the number of references in a search
+     * Count the number of references in a search.
      *
-     * @return int|false
+     * @return false|int
      *
-     * @link http://php.net/manual/en/function.ldap-count-references.php ldap_count_references()
+     * @see http://php.net/manual/en/function.ldap-count-references.php ldap_count_references()
      *
      * @psalm-mutation-free
      */
     public function count_references();
 
     /**
-     * Returns result's first entry
+     * Returns result's first entry.
      *
-     * @return LdapResultEntryInterface|false
+     * @return false|LdapResultEntryInterface
      *
-     * @link http://php.net/manual/en/function.ldap-first-entry.php ldap_first_entry()
+     * @see http://php.net/manual/en/function.ldap-first-entry.php ldap_first_entry()
      *
      * @psalm-mutation-free
      */
     public function first_entry();
 
     /**
-     * Returns result's first reference
+     * Returns result's first reference.
      *
-     * @return LdapResultReferenceInterface|false
+     * @return false|LdapResultReferenceInterface
      *
-     * @link http://php.net/manual/en/function.ldap-first-reference.php ldap_first_reference()
+     * @see http://php.net/manual/en/function.ldap-first-reference.php ldap_first_reference()
      *
      * @psalm-mutation-free
      */
     public function first_reference();
 
     /**
-     * Free result memory
+     * Free result memory.
      *
-     * @return bool
-     *
-     * @link http://php.net/manual/en/function.ldap-free-result.php ldap_free_result()
+     * @see http://php.net/manual/en/function.ldap-free-result.php ldap_free_result()
      */
-    public function free_result() : bool;
+    public function free_result(): bool;
 
     /**
-     * Get all result entries
+     * Get all result entries.
      *
      * @return array|false
      *
-     * @link http://php.net/manual/en/function.ldap-get-entries.php ldap_get_entries()
+     * @see http://php.net/manual/en/function.ldap-get-entries.php ldap_get_entries()
      *
      * @psalm-mutation-free
      */
     public function get_entries();
 
     /**
-     * Extract information from result
+     * Extract information from result.
      *
-     * @param  mixed $errcode
-     * @param  mixed $matcheddn
-     * @param  mixed $errmsg
-     * @param  mixed $referrals
-     * @param  mixed $serverctls
+     * @param mixed $errcode
+     * @param mixed $matcheddn
+     * @param mixed $errmsg
+     * @param mixed $referrals
+     * @param mixed $serverctls
      *
      * @param-out int $errcode
      * @param-out string|null $matcheddn
@@ -104,9 +101,7 @@ interface LdapResultInterface extends ResourceWrapperInterface, LdapLinkWrapperI
      * @param-out array $referrals
      * @param-out array $serverctls
      *
-     * @return bool
-     *
-     * @link http://php.net/manual/en/function.ldap-parse-result.php ldap_parse_result()
+     * @see http://php.net/manual/en/function.ldap-parse-result.php ldap_parse_result()
      *
      * @psalm-mutation-free
      */
@@ -116,18 +111,14 @@ interface LdapResultInterface extends ResourceWrapperInterface, LdapLinkWrapperI
         &$errmsg = null,
         &$referrals = null,
         &$serverctls = null
-    ) : bool;
+    ): bool;
 
     /**
-     * Sort LDAP result entries on the client side
+     * Sort LDAP result entries on the client side.
      *
-     * @param  string $sortfilter
-     *
-     * @return bool
-     *
-     * @link http://php.net/manual/en/function.ldap-sort.php ldap_sort()
+     * @see http://php.net/manual/en/function.ldap-sort.php ldap_sort()
      */
-    public function sort(string $sortfilter) : bool;
+    public function sort(string $sortfilter): bool;
 
     // phpcs:enable Generic.NamingConventions.CamelCapsFunctionName
     // @codingStandardsIgnoreEnd

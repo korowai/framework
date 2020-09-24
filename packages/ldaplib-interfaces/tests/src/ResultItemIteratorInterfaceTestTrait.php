@@ -19,9 +19,9 @@ use Korowai\Lib\Ldap\ResultItemIteratorInterface;
  */
 trait ResultItemIteratorInterfaceTestTrait
 {
-    abstract public static function createDummyInstance() : ResultItemIteratorInterface;
+    abstract public static function createDummyInstance(): ResultItemIteratorInterface;
 
-    public function test__key() : void
+    public function test__key(): void
     {
         $dummy = $this->createDummyInstance();
 
@@ -32,7 +32,7 @@ trait ResultItemIteratorInterfaceTestTrait
         $this->assertSame($dummy->key, $dummy->key());
     }
 
-    public function test__key__withRetTypeError() : void
+    public function test__key__withRetTypeError(): void
     {
         $dummy = $this->createDummyInstance();
         $dummy->key = '';
@@ -43,21 +43,21 @@ trait ResultItemIteratorInterfaceTestTrait
         $dummy->key();
     }
 
-    public function test__next() : void
+    public function test__next(): void
     {
         $dummy = $this->createDummyInstance();
 
         $this->assertNull($dummy->next());
     }
 
-    public function test__rewind() : void
+    public function test__rewind(): void
     {
         $dummy = $this->createDummyInstance();
 
         $this->assertNull($dummy->rewind());
     }
 
-    public function test__valid() : void
+    public function test__valid(): void
     {
         $dummy = $this->createDummyInstance();
 
@@ -65,7 +65,7 @@ trait ResultItemIteratorInterfaceTestTrait
         $this->assertSame($dummy->valid, $dummy->valid());
     }
 
-    public function test__valid__withRetTypeError() : void
+    public function test__valid__withRetTypeError(): void
     {
         $dummy = $this->createDummyInstance();
         $dummy->valid = null;

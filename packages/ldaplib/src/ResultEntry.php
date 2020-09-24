@@ -12,11 +12,11 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldap;
 
+use function Korowai\Lib\Context\with;
+use Korowai\Lib\Ldap\Core\LdapLinkErrorHandler;
 use Korowai\Lib\Ldap\Core\LdapResultEntryInterface;
 use Korowai\Lib\Ldap\Core\LdapResultEntryWrapperInterface;
 use Korowai\Lib\Ldap\Core\LdapResultEntryWrapperTrait;
-use Korowai\Lib\Ldap\Core\LdapLinkErrorHandler;
-use function Korowai\Lib\Context\with;
 
 /**
  * Wrapper for ldap entry result resource.
@@ -27,13 +27,13 @@ final class ResultEntry implements ResultEntryInterface, LdapResultEntryWrapperI
 {
     use LdapResultEntryWrapperTrait;
 
-    /** @var ResultAttributeIteratorInterface|null */
+    /** @var null|ResultAttributeIteratorInterface */
     private $iterator;
 
     /**
-     * Initializes the object
+     * Initializes the object.
      *
-     * @param  LdapEntryInterface $ldapEntry
+     * @param LdapEntryInterface $ldapEntry
      */
     public function __construct(LdapResultEntryInterface $ldapResultEntry)
     {
@@ -43,22 +43,22 @@ final class ResultEntry implements ResultEntryInterface, LdapResultEntryWrapperI
     /**
      * {@inheritdoc}
      */
-    public function getDn() : string
+    public function getDn(): string
     {
         $entry = $this->getLdapResultEntry();
 
-        /** @var string|false */
+        /** @var false|string */
         $dn = with(LdapLinkErrorHandler::fromLdapResultWrapper($entry))(function () use ($entry) {
             return $entry->get_dn();
         });
 
-        return (string)$dn;
+        return (string) $dn;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getAttributes() : array
+    public function getAttributes(): array
     {
         $entry = $this->getLdapResultEntry();
 
@@ -67,7 +67,7 @@ final class ResultEntry implements ResultEntryInterface, LdapResultEntryWrapperI
             return $entry->get_attributes();
         });
 
-        return static::cleanupAttributes($attributes === false ? [] : $attributes);
+        return static::cleanupAttributes(false === $attributes ? [] : $attributes);
     }
 
     /**
@@ -76,27 +76,26 @@ final class ResultEntry implements ResultEntryInterface, LdapResultEntryWrapperI
      * For subsequent calls, the method just return the iterator without
      * altering its position.
      */
-    public function getAttributeIterator() : ResultAttributeIteratorInterface
+    public function getAttributeIterator(): ResultAttributeIteratorInterface
     {
         if (!isset($this->iterator)) {
             $entry = $this->getLdapResultEntry();
 
-            /** @var string|false */
+            /** @var false|string */
             $first = with(LdapLinkErrorHandler::fromLdapResultWrapper($entry))(function () use ($entry) {
                 return $entry->first_attribute();
             });
 
-            $this->iterator = new ResultAttributeIterator($entry, $first === false ? null : $first);
+            $this->iterator = new ResultAttributeIterator($entry, false === $first ? null : $first);
         }
+
         return $this->iterator;
     }
 
     /**
      * Returns iterator over entry's attributes.
-     *
-     * @return ResultAttributeIteratorInterface
      */
-    public function getIterator() : ResultAttributeIteratorInterface
+    public function getIterator(): ResultAttributeIteratorInterface
     {
         return $this->getAttributeIterator();
     }
@@ -104,24 +103,25 @@ final class ResultEntry implements ResultEntryInterface, LdapResultEntryWrapperI
     /**
      * {@inheritdoc}
      */
-    public function toEntry() : EntryInterface
+    public function toEntry(): EntryInterface
     {
         return new Entry($this->getDn(), $this->getAttributes());
     }
 
-    private static function cleanupAttributes(array $attributes) : array
+    private static function cleanupAttributes(array $attributes): array
     {
         $attributes = array_filter(
             $attributes,
             /** @psalm-param mixed $key */
             function ($key) {
-                return is_string($key) && ($key !== 'count');
+                return is_string($key) && ('count' !== $key);
             },
             ARRAY_FILTER_USE_KEY
         );
         array_walk($attributes, function (array &$values) {
             unset($values['count']);
         });
+
         return array_change_key_case($attributes, CASE_LOWER);
     }
 }

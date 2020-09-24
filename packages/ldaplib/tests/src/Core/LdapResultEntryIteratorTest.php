@@ -12,16 +12,17 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldap\Core;
 
-use Korowai\Testing\Ldaplib\TestCase;
-
+use Korowai\Lib\Ldap\Core\LdapResultEntryInterface;
 use Korowai\Lib\Ldap\Core\LdapResultEntryIterator;
 use Korowai\Lib\Ldap\Core\LdapResultEntryIteratorInterface;
-use Korowai\Lib\Ldap\Core\LdapResultEntryInterface;
+use Korowai\Testing\Ldaplib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Ldap\Core\LdapResultEntryIterator
  * @covers \Korowai\Tests\Lib\Ldap\Core\LdapResultItemIteratorTestTrait
+ *
+ * @internal
  */
 final class LdapResultEntryIteratorTest extends TestCase
 {

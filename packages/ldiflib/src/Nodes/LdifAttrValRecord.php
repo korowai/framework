@@ -12,7 +12,6 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldif\Nodes;
 
-use Korowai\Lib\Ldif\SnippetInterface;
 use Korowai\Lib\Ldif\RecordVisitorInterface;
 use Korowai\Lib\Ldif\Traits\HasAttrValSpecs;
 
@@ -28,10 +27,6 @@ class LdifAttrValRecord extends AbstractRecord implements LdifAttrValRecordInter
 
     /**
      * Initializes the object.
-     *
-     * @param  string $dn
-     * @param  array $attrValSpecs
-     * @param  array $options
      */
     public function __construct(string $dn, array $attrValSpecs, array $options = [])
     {

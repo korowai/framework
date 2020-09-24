@@ -19,12 +19,12 @@ use Korowai\Lib\Ldif\ParserStateInterface;
  */
 trait RuleInterfaceTrait
 {
-    public function repeat(ParserStateInterface $state, array &$values = null, int $min = 0, int $max = null) : bool
+    public function repeat(ParserStateInterface $state, array &$values = null, int $min = 0, int $max = null): bool
     {
         return false;
     }
 
-    public function parse(ParserStateInterface $state, &$value = null, bool $trying = false) : bool
+    public function parse(ParserStateInterface $state, &$value = null, bool $trying = false): bool
     {
         return false;
     }

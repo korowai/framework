@@ -12,26 +12,22 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldap\Core;
 
-use Korowai\Lib\Ldap\ResultEntryIteratorInterface;
-use Korowai\Lib\Ldap\ResultEntryInterface;
-
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-final class LdapResultEntryIterator extends AbstractLdapResultItemIterator implements
-    LdapResultEntryIteratorInterface
+final class LdapResultEntryIterator extends AbstractLdapResultItemIterator implements LdapResultEntryIteratorInterface
 {
     /**
-     * Initializes the iterator
+     * Initializes the iterator.
      *
-     * @param  LdapResultEntryInterface|null $first
-     *      The first result entry in the list (``null`` to create an
-     *      iterator over empty sequence which is always invalid).
-     * @param  LdapResultEntryInterface|null $current
-     *      The item currently pointed to by iterator (``null`` to create an
-     *      invalid/past the end iterator).
-     * @param  int $offset
-     *      The offset of the $current item in the chain.
+     * @param null|ldapResultEntryInterface $first
+     *                                               The first result entry in the list (``null`` to create an
+     *                                               iterator over empty sequence which is always invalid)
+     * @param null|ldapResultEntryInterface $current
+     *                                               The item currently pointed to by iterator (``null`` to create an
+     *                                               invalid/past the end iterator)
+     * @param int                           $offset
+     *                                               The offset of the $current item in the chain
      */
     public function __construct(
         ?LdapResultEntryInterface $first,
@@ -42,14 +38,12 @@ final class LdapResultEntryIterator extends AbstractLdapResultItemIterator imple
     }
 
     /**
-     * @return LdapResultEntryInterface|null
-     *
      * @psalm-mutation-free
      * @psalm-suppress MoreSpecificReturnType
      */
-    public function current() : ?LdapResultEntryInterface
+    public function current(): ?LdapResultEntryInterface
     {
-        /** @var LdapResultEntryInterface|null */
+        // @var LdapResultEntryInterface|null
         return $this->getCurrent();
     }
 }

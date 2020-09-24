@@ -12,10 +12,9 @@ declare(strict_types=1);
 
 namespace Korowai\Testing\Container\PhpDi;
 
+use DI\ContainerBuilder;
 use Korowai\Testing\Container\ContainerFactoryInterface;
 use Psr\Container\ContainerInterface;
-use DI\ContainerBuilder;
-use DI\Container;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -23,26 +22,28 @@ use DI\Container;
 final class ContainerFactory implements ContainerFactoryInterface
 {
     /**
-     * @var string|array
+     * @var array|string
      */
     private $config = [];
 
     /**
      * {@inheritdoc}
      */
-    public function setConfig(string $config) : self
+    public function setConfig(string $config): self
     {
         $this->config = $config;
+
         return $this;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function createContainer() : ContainerInterface
+    public function createContainer(): ContainerInterface
     {
-        $builder = new ContainerBuilder;
+        $builder = new ContainerBuilder();
         $builder->addDefinitions($this->config);
+
         return $builder->build();
     }
 }

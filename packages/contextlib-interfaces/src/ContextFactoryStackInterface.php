@@ -25,7 +25,7 @@ interface ContextFactoryStackInterface
     /**
      * Returns the factory from the top of stack or null if the stack is empty.
      */
-    public function top() : ?ContextFactoryInterface;
+    public function top(): ?ContextFactoryInterface;
 
     /**
      * Pushes the $factory to the top of stack.
@@ -37,18 +37,13 @@ interface ContextFactoryStackInterface
      * of factories by one element.
      *
      * If the stack is empty, returns null
-     *
-     * @return ContextFactoryInterface|null
      */
-    public function pop() : ?ContextFactoryInterface;
-
+    public function pop(): ?ContextFactoryInterface;
 
     /**
      * Returns the stack size.
-     *
-     * @return int
      */
-    public function size() : int;
+    public function size(): int;
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

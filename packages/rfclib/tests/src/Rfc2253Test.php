@@ -12,27 +12,29 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Rfc;
 
-use Korowai\Lib\Rfc\Rfc2253;
 use Korowai\Lib\Rfc\AbstractRuleSet;
+use Korowai\Lib\Rfc\Rfc2253;
 use Korowai\Testing\Rfclib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Rfc\Rfc2253
+ *
+ * @internal
  */
 final class Rfc2253Test extends TestCase
 {
-    public static function getRfcClass() : string
+    public static function getRfcClass(): string
     {
         return Rfc2253::class;
     }
 
-    public function test__extends__AbstractRuleSet() : void
+    public function testExtendsAbstractRuleSet(): void
     {
         $this->assertExtendsClass(AbstractRuleSet::class, Rfc2253::class);
     }
 
-    public function test__getClassRuleNames() : void
+    public function testGetClassRuleNames(): void
     {
         $class = self::getRfcClass();
         $this->assertSame(array_keys(self::findRfcConstants()), $class::getClassRuleNames());

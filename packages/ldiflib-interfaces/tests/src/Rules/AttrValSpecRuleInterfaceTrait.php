@@ -12,8 +12,8 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldif\Rules;
 
-use Korowai\Tests\Lib\Ldif\RuleInterfaceTrait;
 use Korowai\Lib\Ldif\Rules\ValueSpecRuleInterface;
+use Korowai\Tests\Lib\Ldif\RuleInterfaceTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -22,9 +22,9 @@ trait AttrValSpecRuleInterfaceTrait
 {
     use RuleInterfaceTrait;
 
-    public $valueSpecRule = null;
+    public $valueSpecRule;
 
-    public function getValueSpecRule() : ValueSpecRuleInterface
+    public function getValueSpecRule(): ValueSpecRuleInterface
     {
         return $this->valueSpecRule;
     }

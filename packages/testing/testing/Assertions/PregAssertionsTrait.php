@@ -13,8 +13,8 @@ declare(strict_types=1);
 namespace Korowai\Testing\Assertions;
 
 use Korowai\Testing\Constraint\HasPregCaptures;
-use PHPUnit\Framework\Constraint\LogicalNot;
 use PHPUnit\Framework\Constraint\Constraint;
+use PHPUnit\Framework\Constraint\LogicalNot;
 use PHPUnit\Framework\ExpectationFailedException;
 
 /**
@@ -25,10 +25,12 @@ trait PregAssertionsTrait
     /**
      * Evaluates a \PHPUnit\Framework\Constraint matcher object.
      *
+     * @param mixed $value
+     *
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
-    abstract public static function assertThat($value, Constraint $constraint, string $message = '') : void;
+    abstract public static function assertThat($value, Constraint $constraint, string $message = ''): void;
 
     /**
      * Asserts that an array of *$matches* returned from ``preg_match()`` has
@@ -45,16 +47,16 @@ trait PregAssertionsTrait
      * properly only with arrays obtained from ``preg_match()`` invoked with
      * ``PREG_UNMATCHED_AS_NULL`` flag.
      *
-     * @param  array $expected
-     *      An array of expectations.
-     * @param  array $matches
-     *      An array of preg matches to be examined.
-     * @param  string $message
-     *      Additional message.
+     * @param array  $expected
+     *                         An array of expectations
+     * @param array  $matches
+     *                         An array of preg matches to be examined
+     * @param string $message
+     *                         Additional message
      *
      * @throws ExpectationFailedException
      */
-    public static function assertHasPregCaptures(array $expected, array $matches, string $message = '') : void
+    public static function assertHasPregCaptures(array $expected, array $matches, string $message = ''): void
     {
         static::assertThat($matches, static::hasPregCaptures($expected), $message);
     }
@@ -62,17 +64,17 @@ trait PregAssertionsTrait
     /**
      * Negated assertHasPregCaptures().
      *
-     * @param  array $expected
-     *      An array of expectations.
-     * @param  array $matches
-     *      An array of preg matches to be examined.
-     * @param  string $message
-     *      Additional message.
+     * @param array  $expected
+     *                         An array of expectations
+     * @param array  $matches
+     *                         An array of preg matches to be examined
+     * @param string $message
+     *                         Additional message
      *
      * @throws ExpectationFailedException
      * @throws \PHPUnit\Framework\Exception when a non-string keys are found in *$expected*
      */
-    public static function assertNotHasPregCaptures(array $expected, array $matches, string $message = '') : void
+    public static function assertNotHasPregCaptures(array $expected, array $matches, string $message = ''): void
     {
         static::assertThat($matches, new LogicalNot(static::hasPregCaptures($expected)), $message);
     }
@@ -91,12 +93,8 @@ trait PregAssertionsTrait
      * Boolean expectations (``['foo' => true]`` or ``['foo' => false]``) work
      * properly only with arrays obtained from ``preg_match()`` invoked with
      * ``PREG_UNMATCHED_AS_NULL`` flag.
-     *
-     * @param  array $expected
-     *
-     * @return HasPregCaptures
      */
-    public static function hasPregCaptures(array $expected) : HasPregCaptures
+    public static function hasPregCaptures(array $expected): HasPregCaptures
     {
         return new HasPregCaptures($expected);
     }

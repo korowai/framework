@@ -12,49 +12,49 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldap;
 
-use Korowai\Lib\Ldap\LdapInterface;
 use Korowai\Lib\Ldap\BindingInterface;
-use Korowai\Lib\Ldap\SearchingInterface;
 use Korowai\Lib\Ldap\ComparingInterface;
 use Korowai\Lib\Ldap\EntryManagerInterface;
-use Korowai\Lib\Ldap\SearchQueryInterface;
-
+use Korowai\Lib\Ldap\LdapInterface;
+use Korowai\Lib\Ldap\SearchingInterface;
 use Korowai\Testing\LdaplibInterfaces\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Tests\Lib\Ldap\LdapInterfaceTrait
+ *
+ * @internal
  */
 final class LdapInterfaceTest extends TestCase
 {
     public static function createDummyInstance()
     {
-        return new class implements LdapInterface {
+        return new class() implements LdapInterface {
             use LdapInterfaceTrait;
         };
     }
 
-    public function test__implements__BindingInterface() : void
+    public function testImplementsBindingInterface(): void
     {
         $this->assertImplementsInterface(BindingInterface::class, LdapInterface::class);
     }
 
-    public function test__implements__SearchingInterface() : void
+    public function testImplementsSearchingInterface(): void
     {
         $this->assertImplementsInterface(SearchingInterface::class, LdapInterface::class);
     }
 
-    public function test__implements__ComparingInterface() : void
+    public function testImplementsComparingInterface(): void
     {
         $this->assertImplementsInterface(ComparingInterface::class, LdapInterface::class);
     }
 
-    public function test__implements__EntryManagerInterface() : void
+    public function testImplementsEntryManagerInterface(): void
     {
         $this->assertImplementsInterface(EntryManagerInterface::class, LdapInterface::class);
     }
 
-    public function test__dummyImplementation() : void
+    public function testDummyImplementation(): void
     {
         $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(LdapInterface::class, $dummy);

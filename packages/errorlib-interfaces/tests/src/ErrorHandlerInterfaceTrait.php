@@ -17,15 +17,15 @@ namespace Korowai\Tests\Lib\Error;
  */
 trait ErrorHandlerInterfaceTrait
 {
-    public $invoke = null;
-    public $errorTypes = null;
+    public $invoke;
+    public $errorTypes;
 
-    public function __invoke(int $severity, string $message, string $file, int $line) : bool
+    public function __invoke(int $severity, string $message, string $file, int $line): bool
     {
         return $this->invoke;
     }
 
-    public function getErrorTypes() : int
+    public function getErrorTypes(): int
     {
         return $this->errorTypes;
     }

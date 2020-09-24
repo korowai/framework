@@ -13,18 +13,19 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Ldif;
 
 use Korowai\Lib\Ldif\ParserStateInterface;
-
 use Korowai\Testing\LdiflibInterfaces\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Tests\Lib\Ldif\ParserStateInterfaceTrait
+ *
+ * @internal
  */
 final class ParserStateInterfaceTest extends TestCase
 {
-    public function test__dummyImplementation() : void
+    public function testDummyImplementation(): void
     {
-        $dummy = new class implements ParserStateInterface {
+        $dummy = new class() implements ParserStateInterface {
             use ParserStateInterfaceTrait;
         };
         $this->assertImplementsInterface(ParserStateInterface::class, $dummy);

@@ -19,12 +19,12 @@ use PHPUnit\Framework\InvalidArgumentException;
  */
 final class ObjectPropertySelector extends AbstractPropertySelector
 {
-    public function canSelectFrom($subject) : bool
+    public function canSelectFrom($subject): bool
     {
         return is_object($subject);
     }
 
-    protected function selectWithMethod($object, $method, &$retval = null) : bool
+    protected function selectWithMethod($object, $method, &$retval = null): bool
     {
         if (!is_object($object)) {
             throw InvalidArgumentException::create(1, 'object');
@@ -33,10 +33,11 @@ final class ObjectPropertySelector extends AbstractPropertySelector
             return false;
         }
         $retval = call_user_func([$object, $method]);
+
         return true;
     }
 
-    protected function selectWithAttribute($object, $key, &$retval = null) : bool
+    protected function selectWithAttribute($object, $key, &$retval = null): bool
     {
         if (!is_object($object)) {
             throw InvalidArgumentException::create(1, 'object');
@@ -45,6 +46,7 @@ final class ObjectPropertySelector extends AbstractPropertySelector
             return false;
         }
         $retval = $object->{$key};
+
         return true;
     }
 }

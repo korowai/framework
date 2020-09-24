@@ -12,8 +12,8 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldif\Nodes;
 
-use Korowai\Lib\Ldif\SnippetInterface;
 use Korowai\Lib\Ldif\RecordVisitorInterface;
+use Korowai\Lib\Ldif\SnippetInterface;
 use Korowai\Lib\Ldif\Traits\HasAttrValSpecs;
 
 /**
@@ -29,10 +29,10 @@ class LdifAddRecord extends AbstractChangeRecord implements LdifAddRecordInterfa
     /**
      * Initializes the object.
      *
-     * @param  string $dn
-     *      Distinguished name of the entry being altered by the record.
-     * @param  array $options
-     *      An array of key => value pairs. Supported options are:
+     * @param string $dn
+     *                        Distinguished name of the entry being altered by the record
+     * @param array  $options
+     *                        An array of key => value pairs. Supported options are:
      *
      * - ``"attrValSpecs" => AttrValSpecInterface[]`` (optional): an optional
      *   array of [AttrValSpecInterface](\.\./AttrValSpecInterface.html) objects
@@ -54,7 +54,7 @@ class LdifAddRecord extends AbstractChangeRecord implements LdifAddRecordInterfa
     /**
      * {@inheritdoc}
      */
-    public function getChangeType() : string
+    public function getChangeType(): string
     {
         return 'add';
     }

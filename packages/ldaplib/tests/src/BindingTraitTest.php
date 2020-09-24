@@ -12,17 +12,18 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldap;
 
-use Korowai\Testing\Ldaplib\TestCase;
-use Korowai\Testing\Ldaplib\ExamineLdapLinkErrorHandlerTrait;
-
+use Korowai\Lib\Ldap\BindingInterface;
 use Korowai\Lib\Ldap\BindingTrait;
 use Korowai\Lib\Ldap\Core\LdapLinkInterface;
-use Korowai\Lib\Ldap\BindingInterface;
+use Korowai\Testing\Ldaplib\ExamineLdapLinkErrorHandlerTrait;
+use Korowai\Testing\Ldaplib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Ldap\BindingTrait
  * @covers \Korowai\Tests\Lib\Ldap\BindingTestTrait
+ *
+ * @internal
  */
 final class BindingTraitTest extends TestCase
 {
@@ -30,7 +31,7 @@ final class BindingTraitTest extends TestCase
     use ExamineLdapLinkErrorHandlerTrait;
 
     // required by BindingTestTrait
-    public function createBindingInstance(LdapLinkInterface $ldapLink, bool $bound = false) : BindingInterface
+    public function createBindingInstance(LdapLinkInterface $ldapLink, bool $bound = false): BindingInterface
     {
         return new class($ldapLink, $bound) implements BindingInterface {
             use BindingTrait;
@@ -43,7 +44,7 @@ final class BindingTraitTest extends TestCase
                 $this->bound = $bound;
             }
 
-            public function getLdapLink() : LdapLinkInterface
+            public function getLdapLink(): LdapLinkInterface
             {
                 return $this->ldapLink;
             }

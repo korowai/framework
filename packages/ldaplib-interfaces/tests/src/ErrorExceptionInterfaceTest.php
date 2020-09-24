@@ -12,29 +12,30 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldap;
 
-use Korowai\Lib\Ldap\ExceptionInterface;
 use Korowai\Lib\Ldap\ErrorExceptionInterface;
-
+use Korowai\Lib\Ldap\ExceptionInterface;
 use Korowai\Testing\LdaplibInterfaces\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @coversNothing
+ *
+ * @internal
  */
 final class ErrorExceptionInterfaceTest extends TestCase
 {
     public static function createDummyInstance()
     {
-        return new class extends \ErrorException implements ErrorExceptionInterface {
+        return new class() extends \ErrorException implements ErrorExceptionInterface {
         };
     }
 
-    public function test__implements__ExceptionInterface() : void
+    public function testImplementsExceptionInterface(): void
     {
         $this->assertImplementsInterface(ExceptionInterface::class, ErrorExceptionInterface::class);
     }
 
-    public function test__dummyImplementation() : void
+    public function testDummyImplementation(): void
     {
         $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(ErrorExceptionInterface::class, $dummy);

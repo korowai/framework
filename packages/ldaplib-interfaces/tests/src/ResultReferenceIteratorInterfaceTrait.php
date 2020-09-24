@@ -23,7 +23,7 @@ trait ResultReferenceIteratorInterfaceTrait
 
     public $current;
 
-    public function current() : ?ResultReferenceInterface
+    public function current(): ?ResultReferenceInterface
     {
         return $this->current;
     }

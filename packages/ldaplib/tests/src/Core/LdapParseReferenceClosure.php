@@ -21,6 +21,7 @@ final class LdapParseReferenceClosure extends AbstractClosure
     {
         $values = $this->getReturnArguments();
         $referrals = $values[0] ?? null;
+
         return $this->getReturnValue();
     }
 }

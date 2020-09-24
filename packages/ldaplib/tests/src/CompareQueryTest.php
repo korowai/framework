@@ -12,21 +12,22 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldap;
 
-use Korowai\Testing\Ldaplib\TestCase;
+use Korowai\Lib\Ldap\CompareQuery;
+use Korowai\Lib\Ldap\CompareQueryInterface;
+use Korowai\Lib\Ldap\Core\LdapLinkErrorHandler;
+use Korowai\Lib\Ldap\Core\LdapLinkInterface;
+use Korowai\Lib\Ldap\Core\LdapLinkWrapperInterface;
+use Korowai\Lib\Ldap\ErrorException;
 use Korowai\Testing\Ldaplib\ExamineLdapLinkErrorHandlerTrait;
 use Korowai\Testing\Ldaplib\LdapTriggerErrorTestFixture;
 use Korowai\Testing\Ldaplib\LdapTriggerErrorTestSubject;
-
-use Korowai\Lib\Ldap\CompareQuery;
-use Korowai\Lib\Ldap\CompareQueryInterface;
-use Korowai\Lib\Ldap\Core\LdapLinkInterface;
-use Korowai\Lib\Ldap\Core\LdapLinkWrapperInterface;
-use Korowai\Lib\Ldap\Core\LdapLinkErrorHandler;
-use Korowai\Lib\Ldap\ErrorException;
+use Korowai\Testing\Ldaplib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Ldap\CompareQuery
+ *
+ * @internal
  */
 final class CompareQueryTest extends TestCase
 {
@@ -39,12 +40,12 @@ final class CompareQueryTest extends TestCase
     //
     //
 
-    public function test__implements__CompareQueryInterface() : void
+    public function testImplementsCompareQueryInterface(): void
     {
         $this->assertImplementsInterface(CompareQueryInterface::class, CompareQuery::class);
     }
 
-    public function test__implements__LdapLinkWrapperInterface() : void
+    public function testImplementsLdapLinkWrapperInterface(): void
     {
         $this->assertImplementsInterface(LdapLinkWrapperInterface::class, CompareQuery::class);
     }
@@ -53,16 +54,17 @@ final class CompareQueryTest extends TestCase
     // __construct()
     //
 
-    public function test__construct() : void
+    public function testConstruct(): void
     {
         $link = $this->getMockBuilder(LdapLinkInterface::class)
-                     ->getMockForAbstractClass();
+            ->getMockForAbstractClass()
+        ;
         $query = new CompareQuery($link, 'dc=example,dc=org', 'attribute', 'value');
         $this->assertSame($link, $query->getLdapLink());
         $this->assertObjectHasPropertiesIdenticalTo([
-            'getDn()' => "dc=example,dc=org",
+            'getDn()' => 'dc=example,dc=org',
             'getAttribute()' => 'attribute',
-            'getValue()' => 'value'
+            'getValue()' => 'value',
         ], $query);
     }
 
@@ -70,48 +72,53 @@ final class CompareQueryTest extends TestCase
     // execute()/getResult()
     //
 
-    public static function prov__query() : array
+    public static function prov__query(): array
     {
         $common = [
             // #0
             [
-                'args'   => ['dc=example,dc=org', 'attribute', 'matching'],
+                'args' => ['dc=example,dc=org', 'attribute', 'matching'],
                 'return' => false,
                 'expect' => false,
             ],
             // #1
             [
-                'args'   => ['dc=example,dc=org', 'attribute', 'non-matching'],
+                'args' => ['dc=example,dc=org', 'attribute', 'non-matching'],
                 'return' => true,
                 'expect' => true,
             ],
         ];
 
         return [
-            [ 'method' => 'execute',   'calls' => 2] +  $common[0],
-            [ 'method' => 'execute',   'calls' => 2] +  $common[1],
-            [ 'method' => 'getResult', 'calls' => 1] +  $common[0],
-            [ 'method' => 'getResult', 'calls' => 1] +  $common[1],
+            ['method' => 'execute',   'calls' => 2] + $common[0],
+            ['method' => 'execute',   'calls' => 2] + $common[1],
+            ['method' => 'getResult', 'calls' => 1] + $common[0],
+            ['method' => 'getResult', 'calls' => 1] + $common[1],
         ];
     }
 
     /**
      * @dataProvider prov__query
+     *
+     * @param mixed $return
+     * @param mixed $expect
      */
-    public function test__query(string $method, int $calls, array $args, $return, $expect) : void
+    public function testQuery(string $method, int $calls, array $args, $return, $expect): void
     {
         $link = $this->getMockBuilder(LdapLinkInterface::class)
-                     ->getMockForAbstractClass();
+            ->getMockForAbstractClass()
+        ;
         $query = new CompareQuery($link, ...$args);
         $link->expects($this->exactly($calls))
-             ->method('compare')
-             ->with(...$args)
-             ->willReturn($return);
-        $this->assertSame($expect, $query->$method());
-        $this->assertSame($expect, $query->$method());
+            ->method('compare')
+            ->with(...$args)
+            ->willReturn($return)
+        ;
+        $this->assertSame($expect, $query->{$method}());
+        $this->assertSame($expect, $query->{$method}());
     }
 
-    public static function prov__query__withLdapTriggerError() : array
+    public static function prov__query__withLdapTriggerError(): array
     {
         $common = self::feedLdapLinkErrorHandler();
         foreach (['execute', 'getResult'] as $method) {
@@ -119,16 +126,18 @@ final class CompareQueryTest extends TestCase
                 $cases[] = ['method' => $method] + $array;
             }
         }
+
         return $cases;
     }
 
     /**
      * @dataProvider prov__query__withLdapTriggerError
      */
-    public function test__query__withLdapTriggerError(string $method, LdapTriggerErrorTestFixture $fixture): void
+    public function testQueryWithLdapTriggerError(string $method, LdapTriggerErrorTestFixture $fixture): void
     {
         $link = $this->getMockBuilder(LdapLinkInterface::class)
-                     ->getMockForAbstractClass();
+            ->getMockForAbstractClass()
+        ;
         $query = new CompareQuery($link, '', '', '');
         $function = [$query, $method];
 
@@ -136,7 +145,7 @@ final class CompareQueryTest extends TestCase
         $this->examineLdapLinkErrorHandler($function, $subject, $link, $fixture);
     }
 
-    public function prov__query__withLdapReturningFailure() : array
+    public function prov__query__withLdapReturningFailure(): array
     {
         return [
             // # 0
@@ -149,19 +158,22 @@ final class CompareQueryTest extends TestCase
     /**
      * @dataProvider prov__query__withLdapReturningFailure
      */
-    public function test__query__withLdapReturningFailure(string $method) : void
+    public function testQueryWithLdapReturningFailure(string $method): void
     {
         $link = $this->getMockBuilder(LdapLinkInterface::class)
-                     ->getMockForAbstractClass();
+            ->getMockForAbstractClass()
+        ;
         $query = new CompareQuery($link, '', '', '');
 
         $link->expects($this->once())
-             ->method('compare')
-             ->willReturn(-1);
+            ->method('compare')
+            ->willReturn(-1)
+        ;
 
         $link->expects($this->once())
-             ->method('getErrorHandler')
-             ->willReturn(new LdapLinkErrorHandler($link));
+            ->method('getErrorHandler')
+            ->willReturn(new LdapLinkErrorHandler($link))
+        ;
 
         $this->expectException(ErrorException::class);
         $this->expectExceptionMessage('LdapLinkInterface::compare() returned -1');

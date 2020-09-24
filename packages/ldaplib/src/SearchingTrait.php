@@ -24,36 +24,28 @@ trait SearchingTrait
     /**
      * Returns the encapsulated LdapLink instance.
      *
-     * @return LdapLinkInterface
-     *
      * @psalm-mutation-free
      */
-    abstract public function getLdapLink() : LdapLinkInterface;
+    abstract public function getLdapLink(): LdapLinkInterface;
 
     /**
      * Creates a search query.
      *
-     * @param  string $base_dn Base DN where the search will start
-     * @param  string $filter Filter used by ldap search
-     * @param  array $options Additional search options
-     *
-     * @return SearchQueryInterface
+     * @param string $base_dn Base DN where the search will start
+     * @param string $filter  Filter used by ldap search
+     * @param array  $options Additional search options
      */
-    public function createSearchQuery(string $base_dn, string $filter, array $options = []) : SearchQueryInterface
+    public function createSearchQuery(string $base_dn, string $filter, array $options = []): SearchQueryInterface
     {
         return new SearchQuery($this->getLdapLink(), $base_dn, $filter, $options);
     }
 
     /**
-     * Create search query, execute and return its result
-     *
-     * @param  string $base_dn
-     * @param  string $filter
-     * @param  array $options
+     * Create search query, execute and return its result.
      *
      * @return ResultInterface Query result
      */
-    public function search(string $base_dn, string $filter, array $options = []) : ResultInterface
+    public function search(string $base_dn, string $filter, array $options = []): ResultInterface
     {
         return $this->createSearchQuery($base_dn, $filter, $options)->getResult();
     }

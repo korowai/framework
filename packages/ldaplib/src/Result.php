@@ -12,16 +12,13 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldap;
 
-use Korowai\Lib\Ldap\Adapter\AbstractResult;
-use Korowai\Lib\Ldap\ResultEntryIterator;
-use Korowai\Lib\Ldap\ResultReferenceIterator;
+use function Korowai\Lib\Context\with;
+use Korowai\Lib\Ldap\Core\LdapLinkErrorHandler;
+use Korowai\Lib\Ldap\Core\LdapResultEntryIterator;
 use Korowai\Lib\Ldap\Core\LdapResultInterface;
+use Korowai\Lib\Ldap\Core\LdapResultReferenceIterator;
 use Korowai\Lib\Ldap\Core\LdapResultWrapperInterface;
 use Korowai\Lib\Ldap\Core\LdapResultWrapperTrait;
-use Korowai\Lib\Ldap\Core\LdapResultEntryIterator;
-use Korowai\Lib\Ldap\Core\LdapResultReferenceIterator;
-use Korowai\Lib\Ldap\Core\LdapLinkErrorHandler;
-use function Korowai\Lib\Context\with;
 
 /**
  * Wrapper for ldap result resource.
@@ -33,9 +30,7 @@ final class Result implements ResultInterface, LdapResultWrapperInterface
     use LdapResultWrapperTrait;
 
     /**
-     * Initializes the object
-     *
-     * @param  LdapResultInterface $ldapResult
+     * Initializes the object.
      */
     public function __construct(LdapResultInterface $ldapResult)
     {
@@ -45,7 +40,7 @@ final class Result implements ResultInterface, LdapResultWrapperInterface
     /**
      * {@inheritdoc}
      */
-    public function getResultEntryIterator() : ResultEntryIteratorInterface
+    public function getResultEntryIterator(): ResultEntryIteratorInterface
     {
         return new ResultEntryIterator(
             $this->getResultItemIterator('first_entry', LdapResultEntryIterator::class)
@@ -55,7 +50,7 @@ final class Result implements ResultInterface, LdapResultWrapperInterface
     /**
      * {@inheritdoc}
      */
-    public function getResultReferenceIterator() : ResultReferenceIteratorInterface
+    public function getResultReferenceIterator(): ResultReferenceIteratorInterface
     {
         return new ResultReferenceIterator(
             $this->getResultItemIterator('first_reference', LdapResultReferenceIterator::class)
@@ -65,7 +60,7 @@ final class Result implements ResultInterface, LdapResultWrapperInterface
     /**
      * {@inheritdoc}
      */
-    public function getResultEntries() : array
+    public function getResultEntries(): array
     {
         return iterator_to_array($this->getResultEntryIterator(), false);
     }
@@ -73,53 +68,51 @@ final class Result implements ResultInterface, LdapResultWrapperInterface
     /**
      * {@inheritdoc}
      */
-    public function getResultReferences() : array
+    public function getResultReferences(): array
     {
         return iterator_to_array($this->getResultReferenceIterator(), false);
     }
 
     /**
-     * @param string $method
-     * @param string $class
-     * @return object
-     *
-     * @psalm-template T
-     * @psalm-param class-string<T> $class
-     * @psalm-return T
-     */
-    private function getResultItemIterator(string $method, string $class) : object
-    {
-        $result = $this->getLdapResult();
-        $first = with(LdapLinkErrorHandler::fromLdapLinkWrapper($result))(
-            /** @return LdapResultItemInterface|false */
-            function () use ($result, $method) {
-                return $result->{$method}();
-            }
-        );
-        return new $class($first ?: null, $first ?: null, 0);
-    }
-
-    /**
      * {@inheritdoc}
      */
-    public function getEntries(bool $use_keys = true) : array
+    public function getEntries(bool $use_keys = true): array
     {
         return iterator_to_array($this, $use_keys);
     }
 
     /**
-     * Makes the ``Result`` object iterable
+     * Makes the ``Result`` object iterable.
      */
     public function getIterator()
     {
         $iterator = $this->getResultEntryIterator();
         foreach ($iterator as $key => $entry) {
-            if ($entry === null) {
-                $message = sprintf("Null returned by %s::current() during iteration", get_class($iterator));
+            if (null === $entry) {
+                $message = sprintf('Null returned by %s::current() during iteration', get_class($iterator));
+
                 throw new \UnexpectedValueException($message);
             }
             yield $key => $entry->toEntry();
         }
+    }
+
+    /**
+     * @psalm-template T
+     * @psalm-param class-string<T> $class
+     * @psalm-return T
+     */
+    private function getResultItemIterator(string $method, string $class): object
+    {
+        $result = $this->getLdapResult();
+        $first = with(LdapLinkErrorHandler::fromLdapLinkWrapper($result))(
+            /** @return false|LdapResultItemInterface */
+            function () use ($result, $method) {
+                return $result->{$method}();
+            }
+        );
+
+        return new $class($first ?: null, $first ?: null, 0);
     }
 }
 

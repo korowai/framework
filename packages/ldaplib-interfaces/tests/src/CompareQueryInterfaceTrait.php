@@ -17,15 +17,15 @@ namespace Korowai\Tests\Lib\Ldap;
  */
 trait CompareQueryInterfaceTrait
 {
-    public $execute = null;
-    public $result = null;
+    public $execute;
+    public $result;
 
-    public function execute() : bool
+    public function execute(): bool
     {
         return $this->execute;
     }
 
-    public function getResult() : bool
+    public function getResult(): bool
     {
         return $this->result;
     }

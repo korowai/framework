@@ -20,22 +20,18 @@ use PHPUnit\Framework\Constraint\IsIdentical;
  */
 trait MakeArgsForLdapFunctionMockTrait
 {
-    abstract public static function identicalTo($value) : IsIdentical;
+    abstract public static function identicalTo($value): IsIdentical;
 
     /**
      * Prepares an array of PHPUnit constraints that describe expected
      * arguments to a mocked LDAP function.
-     *
-     * @param array $resources
-     * @param array $args
-     *
-     * @return array
      */
-    private static function makeArgsForLdapFunctionMock(array $resources, array $args) : array
+    private static function makeArgsForLdapFunctionMock(array $resources, array $args): array
     {
         $resources = array_map(function ($resource) {
             return ($resource instanceof ResourceWrapperInterface) ? $resource->getResource() : $resource;
         }, $resources);
+
         return array_map([static::class, 'identicalTo'], array_merge($resources, $args));
     }
 }

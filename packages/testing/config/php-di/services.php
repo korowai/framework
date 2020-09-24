@@ -12,14 +12,13 @@ declare(strict_types=1);
 
 namespace Korowai\Testing;
 
-use Psr\Container\ContainerInterface;
 use function DI\get;
+use Psr\Container\ContainerInterface;
 
 return [
     Container\ContainerFactoryInterface::class => get(Container\PhpDi\ContainerFactory::class),
 
-    Container\PhpDi\ContainerFactory::class =>
-    function (ContainerInterface $container) : Container\PhpDi\ContainerFactory {
-        return new Container\PhpDi\ContainerFactory;
+    Container\PhpDi\ContainerFactory::class => function (ContainerInterface $container): Container\PhpDi\ContainerFactory {
+        return new Container\PhpDi\ContainerFactory();
     },
 ];

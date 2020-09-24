@@ -17,13 +17,13 @@ namespace Korowai\Testing\Properties;
  */
 trait ExpectedPropertiesDecoratorTrait
 {
-    abstract public function getExpectedProperties() : ExpectedPropertiesInterface;
+    abstract public function getExpectedProperties(): ExpectedPropertiesInterface;
 
     //
     // \IteratorAggregate
     //
 
-    public function getIterator() : \Traversable
+    public function getIterator(): \Traversable
     {
         return $this->getExpectedProperties()->getIterator();
     }
@@ -32,7 +32,7 @@ trait ExpectedPropertiesDecoratorTrait
     // \ArrayAccess
     //
 
-    public function offsetExists($offset) : bool
+    public function offsetExists($offset): bool
     {
         return $this->getExpectedProperties()->offsetExists($offset);
     }
@@ -42,12 +42,12 @@ trait ExpectedPropertiesDecoratorTrait
         return $this->getExpectedProperties()->offsetGet($offset);
     }
 
-    public function offsetSet($offset, $value) : void
+    public function offsetSet($offset, $value): void
     {
         $this->getExpectedProperties()->offsetSet($offset, $value);
     }
 
-    public function offsetUnset($offset) : void
+    public function offsetUnset($offset): void
     {
         $this->getExpectedProperties()->offsetUnset($offset);
     }
@@ -55,7 +55,7 @@ trait ExpectedPropertiesDecoratorTrait
     //
     // \Countable
     //
-    public function count() : int
+    public function count(): int
     {
         return $this->getExpectedProperties()->count();
     }
@@ -69,7 +69,7 @@ trait ExpectedPropertiesDecoratorTrait
         return $this->getExpectedProperties()->getArrayCopy();
     }
 
-    public function canUnwrapChild(PropertiesInterface $child) : bool
+    public function canUnwrapChild(PropertiesInterface $child): bool
     {
         return $this->getExpectedProperties()->canUnwrapChild($child);
     }
@@ -78,7 +78,7 @@ trait ExpectedPropertiesDecoratorTrait
     // ExpectedPropertiesInterface
     //
 
-    public function getPropertySelector() : PropertySelectorInterface
+    public function getPropertySelector(): PropertySelectorInterface
     {
         return $this->getExpectedProperties()->getPropertySelector();
     }

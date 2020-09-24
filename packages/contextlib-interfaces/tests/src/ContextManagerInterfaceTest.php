@@ -13,29 +13,30 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Context;
 
 use Korowai\Lib\Context\ContextManagerInterface;
-
 use Korowai\Testing\ContextlibInterfaces\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Tests\Lib\Context\ContextManagerInterfaceTrait
+ *
+ * @internal
  */
 final class ContextManagerInterfaceTest extends TestCase
 {
     public static function createDummyInstance()
     {
-        return new class implements ContextManagerInterface {
+        return new class() implements ContextManagerInterface {
             use ContextManagerInterfaceTrait;
         };
     }
 
-    public function test__dummyImplementation() : void
+    public function testDummyImplementation(): void
     {
         $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(ContextManagerInterface::class, $dummy);
     }
 
-    public function test__enterContext() : void
+    public function testEnterContext(): void
     {
         $dummy = $this->createDummyInstance();
 
@@ -43,17 +44,17 @@ final class ContextManagerInterfaceTest extends TestCase
         $this->assertSame($dummy->enterContext, $dummy->enterContext());
     }
 
-    public function test__exitContext() : void
+    public function testExitContext(): void
     {
         $dummy = $this->createDummyInstance();
 
         $dummy->exitContext = false;
-        $this->assertSame($dummy->exitContext, $dummy->exitContext(new \Exception));
+        $this->assertSame($dummy->exitContext, $dummy->exitContext(new \Exception()));
         $this->assertSame($dummy->exitContext, $dummy->exitContext(null));
         $this->assertSame($dummy->exitContext, $dummy->exitContext());
     }
 
-    public function test__exitContext__withArgTypeError() : void
+    public function testExitContextWithArgTypeError(): void
     {
         $dummy = $this->createDummyInstance();
 
@@ -62,14 +63,14 @@ final class ContextManagerInterfaceTest extends TestCase
         $dummy->exitContext('');
     }
 
-    public function test__exitContext__withRetTypeError() : void
+    public function testExitContextWithRetTypeError(): void
     {
         $dummy = $this->createDummyInstance();
         $dummy->exitContext = '';
 
         $this->expectException(\TypeError::class);
         $this->expectExceptionMessage(\bool::class);
-        $dummy->exitContext(new \Exception);
+        $dummy->exitContext(new \Exception());
     }
 }
 

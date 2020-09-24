@@ -20,18 +20,21 @@ use Korowai\Testing\Ldiflib\TestCase;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Ldif\Nodes\Control
+ *
+ * @internal
  */
 final class ControlTest extends TestCase
 {
-    public function test__implmements__ControlInterface() : void
+    public function testImplmementsControlInterface(): void
     {
         $this->assertImplementsInterface(ControlInterface::class, Control::class);
     }
 
-    public function test__construct() : void
+    public function testConstruct(): void
     {
         $value = $this->getMockBuilder(ValueSpecInterface::class)
-                      ->getMockForAbstractClass();
+            ->getMockForAbstractClass()
+        ;
 
         $ctl = new Control('foo', true, $value);
         $this->assertSame('foo', $ctl->getOid());

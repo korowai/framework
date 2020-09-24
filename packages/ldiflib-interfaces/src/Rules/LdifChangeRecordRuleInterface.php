@@ -23,31 +23,23 @@ interface LdifChangeRecordRuleInterface extends RuleInterface
 {
     /**
      * Returns the nested DnSpecRuleInteface.
-     *
-     * @return DnSpecRuleInterface
      */
-    public function getDnSpecRule() : DnSpecRuleInterface;
+    public function getDnSpecRule(): DnSpecRuleInterface;
 
     /**
      * Returns the nested SepRuleInteface.
-     *
-     * @return SepRuleInterface
      */
-    public function getSepRule() : SepRuleInterface;
+    public function getSepRule(): SepRuleInterface;
 
     /**
      * Returns the nested ControlRuleInteface.
-     *
-     * @return ControlRuleInterface
      */
-    public function getControlRule() : ControlRuleInterface;
+    public function getControlRule(): ControlRuleInterface;
 
     /**
      * Returns the nested ChangeRecordInitRuleInteface.
-     *
-     * @return ChangeRecordInitRuleInterface
      */
-    public function getChangeRecordInitRule() : ChangeRecordInitRuleInterface;
+    public function getChangeRecordInitRule(): ChangeRecordInitRuleInterface;
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

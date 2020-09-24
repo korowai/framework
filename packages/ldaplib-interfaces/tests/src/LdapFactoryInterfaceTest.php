@@ -14,29 +14,30 @@ namespace Korowai\Tests\Lib\Ldap;
 
 use Korowai\Lib\Ldap\LdapFactoryInterface;
 use Korowai\Lib\Ldap\LdapInterface;
-
 use Korowai\Testing\LdaplibInterfaces\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Tests\Lib\Ldap\LdapFactoryInterfaceTrait
+ *
+ * @internal
  */
 final class LdapFactoryInterfaceTest extends TestCase
 {
     public static function createDummyInstance()
     {
-        return new class implements LdapFactoryInterface {
+        return new class() implements LdapFactoryInterface {
             use LdapFactoryInterfaceTrait;
         };
     }
 
-    public function test__dummyImplementation() : void
+    public function testDummyImplementation(): void
     {
         $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(LdapFactoryInterface::class, $dummy);
     }
 
-    public function test__createLdapInterface() : void
+    public function testCreateLdapInterface(): void
     {
         $dummy = $this->createDummyInstance();
 
@@ -44,7 +45,7 @@ final class LdapFactoryInterfaceTest extends TestCase
         $this->assertSame($dummy->createLdapInterface, $dummy->createLdapInterface([]));
     }
 
-    public function test__createLdapInterface__withRetTypeError() : void
+    public function testCreateLdapInterfaceWithRetTypeError(): void
     {
         $dummy = $this->createDummyInstance();
         $dummy->createLdapInterface = null;
@@ -54,7 +55,7 @@ final class LdapFactoryInterfaceTest extends TestCase
         $dummy->createLdapInterface([]);
     }
 
-    public function test__createLdapInterface__withArgTypeError() : void
+    public function testCreateLdapInterfaceWithArgTypeError(): void
     {
         $dummy = $this->createDummyInstance();
         $dummy->createLdapInterface = $this->createMock(LdapInterface::class);

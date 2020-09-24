@@ -13,16 +13,12 @@ declare(strict_types=1);
 namespace Korowai\Tests\Testing\Properties;
 
 use Korowai\Testing\TestCase;
-use Korowai\Testing\Properties\ActualProperties;
-use Korowai\Testing\Properties\ActualPropertiesInterface;
-use Korowai\Testing\Properties\ExpectedProperties;
-use Korowai\Testing\Properties\ExpectedPropertiesInterface;
-use Korowai\Testing\Properties\PropertiesInterface;
-use Korowai\Testing\Properties\PropertySelectorInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Testing\Properties\ActualProperties
+ *
+ * @internal
  */
 final class ExporterTest extends TestCase
 {

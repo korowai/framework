@@ -12,8 +12,8 @@ declare(strict_types=1);
 
 namespace Korowai\TestsNocov\Lib\Rfc;
 
-use Korowai\Lib\Rfc\Rfc2849;
 use Korowai\Lib\Rfc\Rfc2253;
+use Korowai\Lib\Rfc\Rfc2849;
 use Korowai\Lib\Rfc\Rfc3986;
 use Korowai\Lib\Rfc\Rfc5234;
 use Korowai\Testing\Rfclib\TestCase;
@@ -21,10 +21,12 @@ use Korowai\Testing\Rfclib\TestCase;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Rfc\Rfc2849
+ *
+ * @internal
  */
 final class Rfc2849Test extends TestCase
 {
-    public static function getRfcClass() : string
+    public static function getRfcClass(): string
     {
         return Rfc2849::class;
     }
@@ -35,26 +37,26 @@ final class Rfc2849Test extends TestCase
             // character lists for character classes
 
             // character classes
-            'ALPHA'             => [ Rfc2849::ALPHA,            Rfc5234::ALPHA ],
-            'DIGIT'             => [ Rfc2849::DIGIT,            Rfc5234::DIGIT ],
-            'CR'                => [ Rfc2849::CR,               Rfc5234::CR ],
-            'LF'                => [ Rfc2849::LF,               Rfc5234::LF ],
-            'SPACE'             => [ Rfc2849::SPACE,            Rfc5234::SP ],
-            'ATTR_TYPE_CHARS'   => [ Rfc2849::ATTR_TYPE_CHARS,  '[0-9A-Za-z-]' ],
-            'BASE64_CHAR'       => [ Rfc2849::BASE64_CHAR,      '[\+\/0-9=A-Za-z]' ],
-            'OPT_CHAR'          => [ Rfc2849::OPT_CHAR,         Rfc2849::ATTR_TYPE_CHARS ],
-            'SAFE_INIT_CHAR'    => [ Rfc2849::SAFE_INIT_CHAR,   '[\x01-\x09\x0B-\x0C\x0E-\x1F\x21-\x39\x3B\x3D-\x7F]' ],
-            'SAFE_CHAR'         => [ Rfc2849::SAFE_CHAR,        '[\x01-\x09\x0B-\x0C\x0E-\x7F]' ],
-            'SEP'               => [ Rfc2849::SEP,              '(?:'.Rfc2849::CR.Rfc2849::LF.'|'.Rfc2849::LF.')' ],
-            'EOL'               => [ Rfc2849::EOL,              '(?:'.Rfc2849::SEP.'|$)' ],
-            'NOTEOL'            => [ Rfc2849::NOTEOL,           '(?:[^'.Rfc2849::CR.Rfc2849::LF.']|'.Rfc2849::CR.'(?!'.Rfc2849::LF.'))' ],
+            'ALPHA' => [Rfc2849::ALPHA,            Rfc5234::ALPHA],
+            'DIGIT' => [Rfc2849::DIGIT,            Rfc5234::DIGIT],
+            'CR' => [Rfc2849::CR,               Rfc5234::CR],
+            'LF' => [Rfc2849::LF,               Rfc5234::LF],
+            'SPACE' => [Rfc2849::SPACE,            Rfc5234::SP],
+            'ATTR_TYPE_CHARS' => [Rfc2849::ATTR_TYPE_CHARS,  '[0-9A-Za-z-]'],
+            'BASE64_CHAR' => [Rfc2849::BASE64_CHAR,      '[\+\/0-9=A-Za-z]'],
+            'OPT_CHAR' => [Rfc2849::OPT_CHAR,         Rfc2849::ATTR_TYPE_CHARS],
+            'SAFE_INIT_CHAR' => [Rfc2849::SAFE_INIT_CHAR,   '[\x01-\x09\x0B-\x0C\x0E-\x1F\x21-\x39\x3B\x3D-\x7F]'],
+            'SAFE_CHAR' => [Rfc2849::SAFE_CHAR,        '[\x01-\x09\x0B-\x0C\x0E-\x7F]'],
+            'SEP' => [Rfc2849::SEP,              '(?:'.Rfc2849::CR.Rfc2849::LF.'|'.Rfc2849::LF.')'],
+            'EOL' => [Rfc2849::EOL,              '(?:'.Rfc2849::SEP.'|$)'],
+            'NOTEOL' => [Rfc2849::NOTEOL,           '(?:[^'.Rfc2849::CR.Rfc2849::LF.']|'.Rfc2849::CR.'(?!'.Rfc2849::LF.'))'],
         ];
     }
 
     /**
      * @dataProvider prov__characterClasses
      */
-    public function test__characterClasses(string $actual, string $expect) : void
+    public function testCharacterClasses(string $actual, string $expect): void
     {
         $this->assertSame($expect, $actual);
     }
@@ -62,32 +64,32 @@ final class Rfc2849Test extends TestCase
     public static function prov__simpleProductions()
     {
         return [
-            'SEP'                       => [ Rfc2849::SEP,                      '(?:'.Rfc2849::CR.Rfc2849::LF.'|'.Rfc2849::LF.')' ],
-            'EOL'                       => [ Rfc2849::EOL,                      '(?:'.Rfc2849::SEP.'|$)' ],
-            'NOTEOL'                    => [ Rfc2849::NOTEOL,                   '(?:[^'.Rfc2849::CR.Rfc2849::LF.']|'.Rfc2849::CR.'(?!'.Rfc2849::LF.'))' ],
-            'FILL'                      => [ Rfc2849::FILL,                     '(?:'.Rfc2849::SPACE.'*)' ],
-            'VERSION_NUMBER'            => [ Rfc2849::VERSION_NUMBER,           '(?:'.Rfc2849::DIGIT.'+)' ],
-            'BASE64_STRING'             => [ Rfc2849::BASE64_STRING,            '(?:'.Rfc2849::BASE64_CHAR.'*)' ],
-            'BASE64_UTF8_STRING'        => [ Rfc2849::BASE64_UTF8_STRING,       Rfc2849::BASE64_STRING ],
-            'SAFE_STRING'               => [ Rfc2849::SAFE_STRING,              '(?:(?:'.Rfc2849::SAFE_INIT_CHAR.Rfc2849::SAFE_CHAR.'*)?)' ],
-            'LDAP_OID'                  => [ Rfc2849::LDAP_OID,                 Rfc2253::OID ],
-            'OPTION'                    => [ Rfc2849::OPTION,                   '(?:'.Rfc2849::OPT_CHAR.'+)' ],
-            'OPTIONS'                   => [ Rfc2849::OPTIONS,                  '(?:'.Rfc2849::OPTION.'(?:;'.Rfc2849::OPTION.')*)' ],
-            'ATTRIBUTE_TYPE'            => [ Rfc2849::ATTRIBUTE_TYPE,           '(?:'.Rfc2849::LDAP_OID.'|(?:'.Rfc2849::ALPHA.Rfc2849::ATTR_TYPE_CHARS.'*))' ],
-            'ATTRIBUTE_DESCRIPTION'     => [ Rfc2849::ATTRIBUTE_DESCRIPTION,    '(?:'.Rfc2849::ATTRIBUTE_TYPE.'(?:;'.Rfc2849::OPTIONS.')?)' ],
-            'DISTINGUISHED_NAME'        => [ Rfc2849::DISTINGUISHED_NAME,       Rfc2849::SAFE_STRING ],
-            'BASE64_DISTINGUISHED_NAME' => [ Rfc2849::BASE64_DISTINGUISHED_NAME,Rfc2849::BASE64_UTF8_STRING ],
-            'RDN'                       => [ Rfc2849::RDN,                      Rfc2849::SAFE_STRING ],
-            'BASE64_RDN'                => [ Rfc2849::BASE64_RDN,               Rfc2849::BASE64_UTF8_STRING ],
-            'URL'                       => [ Rfc2849::URL,                      Rfc3986::URI_REFERENCE ],
-            'ATTRVAL_SPEC'              => [ Rfc2849::ATTRVAL_SPEC,             '(?:(?<attr_desc>'.Rfc2849::ATTRIBUTE_DESCRIPTION.')'.Rfc2849::VALUE_SPEC.Rfc2849::EOL.')' ],
+            'SEP' => [Rfc2849::SEP,                      '(?:'.Rfc2849::CR.Rfc2849::LF.'|'.Rfc2849::LF.')'],
+            'EOL' => [Rfc2849::EOL,                      '(?:'.Rfc2849::SEP.'|$)'],
+            'NOTEOL' => [Rfc2849::NOTEOL,                   '(?:[^'.Rfc2849::CR.Rfc2849::LF.']|'.Rfc2849::CR.'(?!'.Rfc2849::LF.'))'],
+            'FILL' => [Rfc2849::FILL,                     '(?:'.Rfc2849::SPACE.'*)'],
+            'VERSION_NUMBER' => [Rfc2849::VERSION_NUMBER,           '(?:'.Rfc2849::DIGIT.'+)'],
+            'BASE64_STRING' => [Rfc2849::BASE64_STRING,            '(?:'.Rfc2849::BASE64_CHAR.'*)'],
+            'BASE64_UTF8_STRING' => [Rfc2849::BASE64_UTF8_STRING,       Rfc2849::BASE64_STRING],
+            'SAFE_STRING' => [Rfc2849::SAFE_STRING,              '(?:(?:'.Rfc2849::SAFE_INIT_CHAR.Rfc2849::SAFE_CHAR.'*)?)'],
+            'LDAP_OID' => [Rfc2849::LDAP_OID,                 Rfc2253::OID],
+            'OPTION' => [Rfc2849::OPTION,                   '(?:'.Rfc2849::OPT_CHAR.'+)'],
+            'OPTIONS' => [Rfc2849::OPTIONS,                  '(?:'.Rfc2849::OPTION.'(?:;'.Rfc2849::OPTION.')*)'],
+            'ATTRIBUTE_TYPE' => [Rfc2849::ATTRIBUTE_TYPE,           '(?:'.Rfc2849::LDAP_OID.'|(?:'.Rfc2849::ALPHA.Rfc2849::ATTR_TYPE_CHARS.'*))'],
+            'ATTRIBUTE_DESCRIPTION' => [Rfc2849::ATTRIBUTE_DESCRIPTION,    '(?:'.Rfc2849::ATTRIBUTE_TYPE.'(?:;'.Rfc2849::OPTIONS.')?)'],
+            'DISTINGUISHED_NAME' => [Rfc2849::DISTINGUISHED_NAME,       Rfc2849::SAFE_STRING],
+            'BASE64_DISTINGUISHED_NAME' => [Rfc2849::BASE64_DISTINGUISHED_NAME, Rfc2849::BASE64_UTF8_STRING],
+            'RDN' => [Rfc2849::RDN,                      Rfc2849::SAFE_STRING],
+            'BASE64_RDN' => [Rfc2849::BASE64_RDN,               Rfc2849::BASE64_UTF8_STRING],
+            'URL' => [Rfc2849::URL,                      Rfc3986::URI_REFERENCE],
+            'ATTRVAL_SPEC' => [Rfc2849::ATTRVAL_SPEC,             '(?:(?<attr_desc>'.Rfc2849::ATTRIBUTE_DESCRIPTION.')'.Rfc2849::VALUE_SPEC.Rfc2849::EOL.')'],
         ];
     }
 
     /**
      * @dataProvider prov__simpleProductions
      */
-    public function test__simpleProductions(string $actual, string $expect) : void
+    public function testSimpleProductions(string $actual, string $expect): void
     {
         $this->assertSame($expect, $actual);
     }
@@ -99,21 +101,22 @@ final class Rfc2849Test extends TestCase
     public static function prov__VERSION_NUMBER()
     {
         return [
-            '1'     => ['1',       [0 => ['1', 0]]],
-            '0123'  => ['0123',    [0 => ['0123', 0]]],
+            '1' => ['1',       [0 => ['1', 0]]],
+            '0123' => ['0123',    [0 => ['0123', 0]]],
         ];
     }
 
     public static function prov__non__VERSION_NUMBER()
     {
         $strings = ['', 'a', '1F'];
+
         return static::stringsToPregTuples($strings);
     }
 
     /**
      * @dataProvider prov__VERSION_NUMBER
      */
-    public function test__VERSION_NUMBER__matches(string $string, array $pieces) : void
+    public function testVERSIONNUMBERMatches(string $string, array $pieces): void
     {
         $this->assertRfcMatches($string, 'VERSION_NUMBER', $pieces);
     }
@@ -121,7 +124,7 @@ final class Rfc2849Test extends TestCase
     /**
      * @dataProvider prov__non__VERSION_NUMBER
      */
-    public function test__VERSION_NUMBER__notMatches(string $string) : void
+    public function testVERSIONNUMBERNotMatches(string $string): void
     {
         $this->assertRfcNotMatches($string, 'VERSION_NUMBER');
     }
@@ -156,7 +159,7 @@ final class Rfc2849Test extends TestCase
             'version: ' => [
                 //           0000000000111111
                 //           0123456789012345
-                'string' => "version: ",
+                'string' => 'version: ',
                 'pieces' => [
                     0 => ['version: ', 0],
                     'version_number' => false,
@@ -166,7 +169,7 @@ final class Rfc2849Test extends TestCase
             'version: foo' => [
                 //           0000000000111111
                 //           0123456789012345
-                'string' => "version: foo",
+                'string' => 'version: foo',
                 'pieces' => [
                     0 => ['version: foo', 0],
                     'version_number' => false,
@@ -179,13 +182,14 @@ final class Rfc2849Test extends TestCase
     public static function prov__non__VERSION_SPEC()
     {
         $strings = ['', 'a', 'dn:123', 'a', '1F'];
+
         return static::stringsToPregTuples($strings);
     }
 
     /**
      * @dataProvider prov__VERSION_SPEC
      */
-    public function test__VERSION_SPEC__matches(string $string, array $pieces, array $options = ['suffix' => '/D']) : void
+    public function testVERSIONSPECMatches(string $string, array $pieces, array $options = ['suffix' => '/D']): void
     {
         $this->assertRfcMatches($string, 'VERSION_SPEC', $pieces, $options);
     }
@@ -193,7 +197,7 @@ final class Rfc2849Test extends TestCase
     /**
      * @dataProvider prov__non__VERSION_SPEC
      */
-    public function test__VERSION_SPEC__notMatches(string $string) : void
+    public function testVERSIONSPECNotMatches(string $string): void
     {
         $this->assertRfcNotMatches($string, 'VERSION_SPEC');
     }
@@ -205,19 +209,21 @@ final class Rfc2849Test extends TestCase
     public static function prov__BASE64_STRING()
     {
         $strings = ['', 'azAZ09+/=='];
+
         return static::stringsToPregTuples($strings);
     }
 
     public static function prov__non__BASE64_STRING()
     {
         $strings = ['?', '-', ' ', 'azAZ09+/==?'];
+
         return static::stringsToPregTuples($strings);
     }
 
     /**
      * @dataProvider prov__BASE64_STRING
      */
-    public function test__BASE64_STRING__matches(string $string, array $pieces = []) : void
+    public function testBASE64STRINGMatches(string $string, array $pieces = []): void
     {
         $this->assertRfcMatches($string, 'BASE64_STRING', $pieces);
     }
@@ -225,7 +231,7 @@ final class Rfc2849Test extends TestCase
     /**
      * @dataProvider prov__non__BASE64_STRING
      */
-    public function test__BASE64_STRING__notMatches(string $string) : void
+    public function testBASE64STRINGNotMatches(string $string): void
     {
         $this->assertRfcNotMatches($string, 'BASE64_STRING');
     }
@@ -236,20 +242,22 @@ final class Rfc2849Test extends TestCase
 
     public static function prov__SAFE_STRING()
     {
-        $strings = ['', "\x01", "\x7F", 'a', "a ", "a:", "a<"];
+        $strings = ['', "\x01", "\x7F", 'a', 'a ', 'a:', 'a<'];
+
         return static::stringsToPregTuples($strings);
     }
 
     public static function prov__non__SAFE_STRING()
     {
-        $strings = ["\0", "\n", "\r", "\x80", "\xAA", " ", ":", "<", 'ł', 'tył', "a\0", "a\n", "a\r", "a\x80"];
+        $strings = ["\0", "\n", "\r", "\x80", "\xAA", ' ', ':', '<', 'ł', 'tył', "a\0", "a\n", "a\r", "a\x80"];
+
         return static::stringsToPregTuples($strings);
     }
 
     /**
      * @dataProvider prov__SAFE_STRING
      */
-    public function test__SAFE_STRING__matches(string $string, array $pieces = []) : void
+    public function testSAFESTRINGMatches(string $string, array $pieces = []): void
     {
         $this->assertRfcMatches($string, 'SAFE_STRING', $pieces);
     }
@@ -257,7 +265,7 @@ final class Rfc2849Test extends TestCase
     /**
      * @dataProvider prov__non__SAFE_STRING
      */
-    public function test__SAFE_STRING__notMatches(string $string) : void
+    public function testSAFESTRINGNotMatches(string $string): void
     {
         $this->assertRfcNotMatches($string, 'SAFE_STRING');
     }
@@ -279,7 +287,7 @@ final class Rfc2849Test extends TestCase
     /**
      * @dataProvider prov__LDAP_OID
      */
-    public function test__LDAP_OID__matches(string $string, array $pieces = []) : void
+    public function testLDAPOIDMatches(string $string, array $pieces = []): void
     {
         $this->assertRfcMatches($string, 'LDAP_OID', $pieces);
     }
@@ -287,7 +295,7 @@ final class Rfc2849Test extends TestCase
     /**
      * @dataProvider prov__non__LDAP_OID
      */
-    public function test__LDAP_OID__notMatches(string $string) : void
+    public function testLDAPOIDNotMatches(string $string): void
     {
         $this->assertRfcNotMatches($string, 'LDAP_OID');
     }
@@ -299,19 +307,21 @@ final class Rfc2849Test extends TestCase
     public static function prov__OPTION()
     {
         $strings = ['a', '-', 'ab1-', '--'];
+
         return static::stringsToPregTuples($strings);
     }
 
     public static function prov__non__OPTION()
     {
         $strings = ['', '?', 'ab1-?'];
+
         return static::stringsToPregTuples($strings);
     }
 
     /**
      * @dataProvider prov__OPTION
      */
-    public function test__OPTION__matches(string $string, array $pieces = []) : void
+    public function testOPTIONMatches(string $string, array $pieces = []): void
     {
         $this->assertRfcMatches($string, 'OPTION', $pieces);
     }
@@ -319,7 +329,7 @@ final class Rfc2849Test extends TestCase
     /**
      * @dataProvider prov__non__OPTION
      */
-    public function test__OPTION__notMatches(string $string) : void
+    public function testOPTIONNotMatches(string $string): void
     {
         $this->assertRfcNotMatches($string, 'OPTION');
     }
@@ -331,19 +341,21 @@ final class Rfc2849Test extends TestCase
     public static function prov__OPTIONS()
     {
         $strings = ['a', '-', 'ab1-', '--', 'ab1-;cd2-4'];
+
         return static::stringsToPregTuples($strings);
     }
 
     public static function prov__non__OPTIONS()
     {
         $strings = ['', '?', 'ab1-?', 'ab1-;cd2-?'];
+
         return static::stringsToPregTuples($strings);
     }
 
     /**
      * @dataProvider prov__OPTIONS
      */
-    public function test__OPTIONS__matches(string $string, array $pieces = []) : void
+    public function testOPTIONSMatches(string $string, array $pieces = []): void
     {
         $this->assertRfcMatches($string, 'OPTIONS', $pieces);
     }
@@ -351,7 +363,7 @@ final class Rfc2849Test extends TestCase
     /**
      * @dataProvider prov__non__OPTIONS
      */
-    public function test__OPTIONS__notMatches(string $string) : void
+    public function testOPTIONSNotMatches(string $string): void
     {
         $this->assertRfcNotMatches($string, 'OPTIONS');
     }
@@ -363,6 +375,7 @@ final class Rfc2849Test extends TestCase
     public static function prov__ATTRIBUTE_TYPE()
     {
         $strings = ['a', 'a-'];
+
         return array_merge(
             static::prov__LDAP_OID(),
             static::stringsToPregTuples($strings)
@@ -372,13 +385,14 @@ final class Rfc2849Test extends TestCase
     public static function prov__non__ATTRIBUTE_TYPE()
     {
         $strings = ['', '?', '-', '-a', 'ab1-?', '1.', '.1', 'a.b'];
+
         return static::stringsToPregTuples($strings);
     }
 
     /**
      * @dataProvider prov__ATTRIBUTE_TYPE
      */
-    public function test__ATTRIBUTE_TYPE__matches(string $string, array $pieces = []) : void
+    public function testATTRIBUTETYPEMatches(string $string, array $pieces = []): void
     {
         $this->assertRfcMatches($string, 'ATTRIBUTE_TYPE', $pieces);
     }
@@ -386,7 +400,7 @@ final class Rfc2849Test extends TestCase
     /**
      * @dataProvider prov__non__ATTRIBUTE_TYPE
      */
-    public function test__ATTRIBUTE_TYPE__notMatches(string $string) : void
+    public function testATTRIBUTETYPENotMatches(string $string): void
     {
         $this->assertRfcNotMatches($string, 'ATTRIBUTE_TYPE');
     }
@@ -405,19 +419,21 @@ final class Rfc2849Test extends TestCase
                 $inheritedCases[] = static::joinPregTuples([$attrType, $options], ['glue' => ';']);
             }
         }
+
         return array_merge($inheritedCases, $cases);
     }
 
     public static function prov__non__ATTRIBUTE_DESCRIPTION()
     {
         $strings = ['', '?', '-', '-a', 'ab1-?', '1.', '.1', 'a.b'];
+
         return static::stringsToPregTuples($strings);
     }
 
     /**
      * @dataProvider prov__ATTRIBUTE_DESCRIPTION
      */
-    public function test__ATTRIBUTE_DESCRIPTION__matches(string $string, array $pieces = []) : void
+    public function testATTRIBUTEDESCRIPTIONMatches(string $string, array $pieces = []): void
     {
         $this->assertRfcMatches($string, 'ATTRIBUTE_DESCRIPTION', $pieces);
     }
@@ -425,7 +441,7 @@ final class Rfc2849Test extends TestCase
     /**
      * @dataProvider prov__non__ATTRIBUTE_DESCRIPTION
      */
-    public function test__ATTRIBUTE_DESCRIPTION__notMatches(string $string) : void
+    public function testATTRIBUTEDESCRIPTIONNotMatches(string $string): void
     {
         $this->assertRfcNotMatches($string, 'ATTRIBUTE_DESCRIPTION');
     }
@@ -447,7 +463,7 @@ final class Rfc2849Test extends TestCase
     /**
      * @dataProvider prov__DISTINGUISHED_NAME
      */
-    public function test__DISTINGUISHED_NAME__matches(string $string, array $pieces = []) : void
+    public function testDISTINGUISHEDNAMEMatches(string $string, array $pieces = []): void
     {
         $this->assertRfcMatches($string, 'DISTINGUISHED_NAME', $pieces);
     }
@@ -455,7 +471,7 @@ final class Rfc2849Test extends TestCase
     /**
      * @dataProvider prov__non__DISTINGUISHED_NAME
      */
-    public function test__DISTINGUISHED_NAME__notMatches(string $string) : void
+    public function testDISTINGUISHEDNAMENotMatches(string $string): void
     {
         $this->assertRfcNotMatches($string, 'DISTINGUISHED_NAME');
     }
@@ -477,7 +493,7 @@ final class Rfc2849Test extends TestCase
     /**
      * @dataProvider prov__BASE64_DISTINGUISHED_NAME
      */
-    public function test__BASE64_DISTINGUISHED_NAME__matches(string $string, array $pieces = []) : void
+    public function testBASE64DISTINGUISHEDNAMEMatches(string $string, array $pieces = []): void
     {
         $this->assertRfcMatches($string, 'BASE64_DISTINGUISHED_NAME', $pieces);
     }
@@ -485,7 +501,7 @@ final class Rfc2849Test extends TestCase
     /**
      * @dataProvider prov__non__BASE64_DISTINGUISHED_NAME
      */
-    public function test__BASE64_DISTINGUISHED_NAME__notMatches(string $string) : void
+    public function testBASE64DISTINGUISHEDNAMENotMatches(string $string): void
     {
         $this->assertRfcNotMatches($string, 'BASE64_DISTINGUISHED_NAME');
     }
@@ -498,9 +514,9 @@ final class Rfc2849Test extends TestCase
     {
         return [
             'dn: ' => [
-                'string' => "dn: ",
+                'string' => 'dn: ',
                 'pieces' => [
-                    0 => ["dn: ", 0],
+                    0 => ['dn: ', 0],
                     'value_safe' => ['', strlen('dn: ')],
                     'value_b64' => false,
                     'value_safe_error' => false,
@@ -511,7 +527,7 @@ final class Rfc2849Test extends TestCase
             'dn: \nnext' => [
                 'string' => "dn: \nnext",
                 'pieces' => [
-                    0 => ["dn: ", 0],
+                    0 => ['dn: ', 0],
                     'value_safe' => ['', strlen('dn: ')],
                     'value_b64' => false,
                     'value_safe_error' => false,
@@ -520,9 +536,9 @@ final class Rfc2849Test extends TestCase
             ],
 
             'dn: dc=example,dc=org' => [
-                'string' => "dn: dc=example,dc=org",
+                'string' => 'dn: dc=example,dc=org',
                 'pieces' => [
-                    0 => ["dn: dc=example,dc=org", 0],
+                    0 => ['dn: dc=example,dc=org', 0],
                     'value_safe' => ['dc=example,dc=org', strlen('dn: ')],
                     'value_b64' => false,
                     'value_safe_error' => false,
@@ -533,7 +549,7 @@ final class Rfc2849Test extends TestCase
             'dn: dc=example,dc=org\nnext' => [
                 'string' => "dn: dc=example,dc=org\nnext",
                 'pieces' => [
-                    0 => ["dn: dc=example,dc=org", 0],
+                    0 => ['dn: dc=example,dc=org', 0],
                     'value_safe' => ['dc=example,dc=org', strlen('dn: ')],
                     'value_b64' => false,
                     'value_safe_error' => false,
@@ -544,7 +560,7 @@ final class Rfc2849Test extends TestCase
             'dn: :unsafe\nnext' => [
                 'string' => "dn: :unsafe\nnext",
                 'pieces' => [
-                    0 => ["dn: :unsafe", 0],
+                    0 => ['dn: :unsafe', 0],
                     'value_safe' => false,
                     'value_b64' => false,
                     'value_safe_error' => [':unsafe', strlen('dn: ')],
@@ -555,7 +571,7 @@ final class Rfc2849Test extends TestCase
             'dn: błąd\nnext' => [
                 'string' => "dn: błąd\nnext",
                 'pieces' => [
-                    0 => ["dn: błąd", 0],
+                    0 => ['dn: błąd', 0],
                     'value_safe' => false,
                     'value_b64' => false,
                     'value_safe_error' => ['łąd', strlen('dn: b')],
@@ -564,9 +580,9 @@ final class Rfc2849Test extends TestCase
             ],
 
             'dn:: ' => [
-                'string' => "dn:: ",
+                'string' => 'dn:: ',
                 'pieces' => [
-                    0 => ["dn:: ", 0],
+                    0 => ['dn:: ', 0],
                     'value_safe' => false,
                     'value_b64' => ['', strlen('dn:: ')],
                     'value_safe_error' => false,
@@ -577,7 +593,7 @@ final class Rfc2849Test extends TestCase
             'dn:: \nnext' => [
                 'string' => "dn:: \nnext",
                 'pieces' => [
-                    0 => ["dn:: ", 0],
+                    0 => ['dn:: ', 0],
                     'value_safe' => false,
                     'value_b64' => ['', strlen('dn:: ')],
                     'value_safe_error' => false,
@@ -588,7 +604,7 @@ final class Rfc2849Test extends TestCase
             'dn:: ASDF==\nnext' => [
                 'string' => "dn:: ASDF==\nnext",
                 'pieces' => [
-                    0 => ["dn:: ASDF==", 0],
+                    0 => ['dn:: ASDF==', 0],
                     'value_safe' => false,
                     'value_b64' => ['ASDF==', strlen('dn:: ')],
                     'value_safe_error' => false,
@@ -599,7 +615,7 @@ final class Rfc2849Test extends TestCase
             'dn:: błąd\nnext' => [
                 'string' => "dn:: błąd==\nnext",
                 'pieces' => [
-                    0 => ["dn:: błąd==", 0],
+                    0 => ['dn:: błąd==', 0],
                     'value_safe' => false,
                     'value_b64' => false,
                     'value_safe_error' => false,
@@ -612,13 +628,14 @@ final class Rfc2849Test extends TestCase
     public static function prov__non__DN_SPEC()
     {
         $strings = ['', 'a', 'xyz:'];
+
         return static::stringsToPregTuples($strings);
     }
 
     /**
      * @dataProvider prov__DN_SPEC
      */
-    public function test__DN_SPEC__matches(string $string, array $pieces, array $options = ['suffix' => '/D']) : void
+    public function testDNSPECMatches(string $string, array $pieces, array $options = ['suffix' => '/D']): void
     {
         $this->assertRfcMatches($string, 'DN_SPEC', $pieces, $options);
     }
@@ -626,7 +643,7 @@ final class Rfc2849Test extends TestCase
     /**
      * @dataProvider prov__non__DN_SPEC
      */
-    public function test__DN_SPEC__notMatches(string $string) : void
+    public function testDNSPECNotMatches(string $string): void
     {
         $this->assertRfcNotMatches($string, 'DN_SPEC');
     }
@@ -642,127 +659,127 @@ final class Rfc2849Test extends TestCase
             [
                 '',
                 [
-                    'uri_reference'     => ['', 0],
-                    'uri'               => false,
-                    'scheme'            => false,
-                    'authority'         => false,
-                    'host'              => false,
-                    'path_abempty'      => false,
-                    'path_absolute'     => false,
-                    'path_noscheme'     => false,
-                    'path_rootless'     => false,
-                    'path_empty'        => ['', 0],
-                    'relative_ref'      => ['', 0],
+                    'uri_reference' => ['', 0],
+                    'uri' => false,
+                    'scheme' => false,
+                    'authority' => false,
+                    'host' => false,
+                    'path_abempty' => false,
+                    'path_absolute' => false,
+                    'path_noscheme' => false,
+                    'path_rootless' => false,
+                    'path_empty' => ['', 0],
+                    'relative_ref' => ['', 0],
                 ],
             ],
             // #1
             [
                 '/',
                 [
-                    'uri_reference'     => ['/', 0],
-                    'uri'               => false,
-                    'scheme'            => false,
-                    'authority'         => false,
-                    'host'              => false,
-                    'path_abempty'      => false,
-                    'path_absolute'     => ['/', 0],
-                    'path_noscheme'     => false,
-                    'path_rootless'     => false,
-                    'path_empty'        => false,
-                    'relative_ref'      => ['/', 0]
+                    'uri_reference' => ['/', 0],
+                    'uri' => false,
+                    'scheme' => false,
+                    'authority' => false,
+                    'host' => false,
+                    'path_abempty' => false,
+                    'path_absolute' => ['/', 0],
+                    'path_noscheme' => false,
+                    'path_rootless' => false,
+                    'path_empty' => false,
+                    'relative_ref' => ['/', 0],
                 ],
             ],
             // #2
             [
-            //   012345678
+                //   012345678
                 'a.b-c+d:',
                 [
-                    'uri_reference'     => ['a.b-c+d:', 0],
-                    'uri'               => ['a.b-c+d:', 0],
-                    'scheme'            => ['a.b-c+d', 0],
-                    'authority'         => false,
-                    'host'              => false,
-                    'path_abempty'      => false,
-                    'path_absolute'     => false,
-                    'path_noscheme'     => false,
-                    'path_rootless'     => false,
-                    'path_empty'        => ['', 8],
-                    'relative_ref'      => false
+                    'uri_reference' => ['a.b-c+d:', 0],
+                    'uri' => ['a.b-c+d:', 0],
+                    'scheme' => ['a.b-c+d', 0],
+                    'authority' => false,
+                    'host' => false,
+                    'path_abempty' => false,
+                    'path_absolute' => false,
+                    'path_noscheme' => false,
+                    'path_rootless' => false,
+                    'path_empty' => ['', 8],
+                    'relative_ref' => false,
                 ],
             ],
             // #3
             [
-            //   00000000001
-            //   01234567890
+                //   00000000001
+                //   01234567890
                 'a.b-c+d:xxx',
                 [
-                    'uri_reference'     => ['a.b-c+d:xxx', 0],
-                    'uri'               => ['a.b-c+d:xxx', 0],
-                    'authority'         => false,
-                    'host'              => false,
-                    'path_abempty'      => false,
-                    'path_absolute'     => false,
-                    'path_noscheme'     => false,
-                    'path_rootless'     => ['xxx', 8],
-                    'path_empty'        => false,
-                    'relative_ref'      => false
+                    'uri_reference' => ['a.b-c+d:xxx', 0],
+                    'uri' => ['a.b-c+d:xxx', 0],
+                    'authority' => false,
+                    'host' => false,
+                    'path_abempty' => false,
+                    'path_absolute' => false,
+                    'path_noscheme' => false,
+                    'path_rootless' => ['xxx', 8],
+                    'path_empty' => false,
+                    'relative_ref' => false,
                 ],
             ],
             // #4
             [
-            //   0000000000111
-            //   0123456789012
+                //   0000000000111
+                //   0123456789012
                 'a.b-c+d:/xxx',
                 [
-                    'uri_reference'     => ['a.b-c+d:/xxx', 0],
-                    'uri'               => ['a.b-c+d:/xxx', 0],
-                    'authority'         => false,
-                    'host'              => false,
-                    'path_abempty'      => false,
-                    'path_absolute'     => ['/xxx', 8],
-                    'path_noscheme'     => false,
-                    'path_rootless'     => false,
-                    'path_empty'        => false,
-                    'relative_ref'      => false
+                    'uri_reference' => ['a.b-c+d:/xxx', 0],
+                    'uri' => ['a.b-c+d:/xxx', 0],
+                    'authority' => false,
+                    'host' => false,
+                    'path_abempty' => false,
+                    'path_absolute' => ['/xxx', 8],
+                    'path_noscheme' => false,
+                    'path_rootless' => false,
+                    'path_empty' => false,
+                    'relative_ref' => false,
                 ],
             ],
             // #5
             [
-            //   0000000000111111111122
-            //   0123456789012345678901
+                //   0000000000111111111122
+                //   0123456789012345678901
                 'a.b-c+d://example.com',
                 [
-                    'uri_reference'     => ['a.b-c+d://example.com', 0],
-                    'uri'               => ['a.b-c+d://example.com', 0],
-                    'authority'         => ['example.com', 10],
-                    'host'              => ['example.com', 10],
-                    'path_abempty'      => ['', 21],
-                    'path_absolute'     => false,
-                    'path_noscheme'     => false,
-                    'path_rootless'     => false,
-                    'path_empty'        => false,
-                    'relative_ref'      => false
+                    'uri_reference' => ['a.b-c+d://example.com', 0],
+                    'uri' => ['a.b-c+d://example.com', 0],
+                    'authority' => ['example.com', 10],
+                    'host' => ['example.com', 10],
+                    'path_abempty' => ['', 21],
+                    'path_absolute' => false,
+                    'path_noscheme' => false,
+                    'path_rootless' => false,
+                    'path_empty' => false,
+                    'relative_ref' => false,
                 ],
             ],
             // #6
             [
-            //   00000000001111111111222222222233333333334444
-            //   01234567890123456789012345678901234567890123
+                //   00000000001111111111222222222233333333334444
+                //   01234567890123456789012345678901234567890123
                 'a.b-c+d://jsmith@example.com/foo?a=v#fr?b=w',
                 [
-                    'uri_reference'     => ['a.b-c+d://jsmith@example.com/foo?a=v#fr?b=w', 0],
-                    'uri'               => ['a.b-c+d://jsmith@example.com/foo?a=v#fr?b=w', 0],
-                    'authority'         => ['jsmith@example.com', 10],
-                    'userinfo'          => ['jsmith', 10],
-                    'host'              => ['example.com', 17],
-                    'path_abempty'      => ['/foo', 28],
-                    'path_absolute'     => false,
-                    'path_noscheme'     => false,
-                    'path_rootless'     => false,
-                    'path_empty'        => false,
-                    'query'             => ['a=v', 33],
-                    'fragment'          => ['fr?b=w', 37],
-                    'relative_ref'      => false
+                    'uri_reference' => ['a.b-c+d://jsmith@example.com/foo?a=v#fr?b=w', 0],
+                    'uri' => ['a.b-c+d://jsmith@example.com/foo?a=v#fr?b=w', 0],
+                    'authority' => ['jsmith@example.com', 10],
+                    'userinfo' => ['jsmith', 10],
+                    'host' => ['example.com', 17],
+                    'path_abempty' => ['/foo', 28],
+                    'path_absolute' => false,
+                    'path_noscheme' => false,
+                    'path_rootless' => false,
+                    'path_empty' => false,
+                    'query' => ['a=v', 33],
+                    'fragment' => ['fr?b=w', 37],
+                    'relative_ref' => false,
                 ],
             ],
         ];
@@ -782,13 +799,14 @@ final class Rfc2849Test extends TestCase
                 $inheritedCases[] = [':: '.$nonB64Str[0]];
             }
         }
+
         return array_merge($inheritedCases, static::stringsToPregTuples($strings));
     }
 
     /**
      * @dataProvider prov__URL
      */
-    public function test__URL__matches(string $string, array $pieces) : void
+    public function testURLMatches(string $string, array $pieces): void
     {
         $this->assertRfcMatches($string, 'URL', $pieces);
     }
@@ -796,7 +814,7 @@ final class Rfc2849Test extends TestCase
     /**
      * @dataProvider prov__non__URL
      */
-    public function test__URL__notMatches(string $string) : void
+    public function testURLNotMatches(string $string): void
     {
         $this->assertRfcNotMatches($string, 'URL');
     }
@@ -813,7 +831,7 @@ final class Rfc2849Test extends TestCase
                 //           0123
                 'string' => ":\n",
                 'pieces' => [
-                    0 => [":", 0],
+                    0 => [':', 0],
                     'value_safe' => ['', 1],
                     'value_b64' => false,
                     'value_url' => false,
@@ -827,7 +845,7 @@ final class Rfc2849Test extends TestCase
                 //   01234
                 'string' => "::\n",
                 'pieces' => [
-                    0 => ["::", 0],
+                    0 => ['::', 0],
                     'value_safe' => false,
                     'value_b64' => ['', 2],
                     'value_url' => false,
@@ -841,7 +859,7 @@ final class Rfc2849Test extends TestCase
                 //           01 23
                 'string' => ":<\n",
                 'pieces' => [
-                    0 => [":<", 0],
+                    0 => [':<', 0],
                     'value_safe' => false,
                     'value_b64' => false,
                     'value_url' => ['', 2],
@@ -855,7 +873,7 @@ final class Rfc2849Test extends TestCase
                 //           012 34
                 'string' => ":</\n",
                 'pieces' => [
-                    0 => [":</", 0],
+                    0 => [':</', 0],
                     'value_safe' => false,
                     'value_b64' => false,
                     'value_url' => ['/', 2],
@@ -869,7 +887,7 @@ final class Rfc2849Test extends TestCase
                 //   01234567 89
                 'string' => ":<file:/\n",
                 'pieces' => [
-                    0 => [":<file:/", 0],
+                    0 => [':<file:/', 0],
                     'value_safe' => false,
                     'value_b64' => false,
                     'value_url' => ['file:/', 2],
@@ -879,11 +897,11 @@ final class Rfc2849Test extends TestCase
                 ],
             ],
             ':<#\n' => [
-            //   000 00
-            //   012 34
+                //   000 00
+                //   012 34
                 'string' => ":<#\n",
                 'pieces' => [
-                    0 => [":<#", 0],
+                    0 => [':<#', 0],
                     'value_safe' => false,
                     'value_b64' => false,
                     'value_url' => ['#', 2],
@@ -895,9 +913,9 @@ final class Rfc2849Test extends TestCase
             ': :foo' => [
                 //           0000000
                 //           0123456
-                'string' => ": :foo",
+                'string' => ': :foo',
                 'pieces' => [
-                    0 => [": :foo", 0],
+                    0 => [': :foo', 0],
                     'value_safe' => false,
                     'value_b64' => false,
                     'value_url' => false,
@@ -911,7 +929,7 @@ final class Rfc2849Test extends TestCase
                 //           01234567 89
                 'string' => ": łuszcz\n",
                 'pieces' => [
-                    0 => [": łuszcz", 0],
+                    0 => [': łuszcz', 0],
                     'value_safe' => false,
                     'value_b64' => false,
                     'value_url' => false,
@@ -925,7 +943,7 @@ final class Rfc2849Test extends TestCase
                 //           012345678 90
                 'string' => ": tłuszcz\n",
                 'pieces' => [
-//                    0 => [": tłuszcz", 0],
+                    //                    0 => [": tłuszcz", 0],
                     'value_safe' => false,
                     'value_b64' => false,
                     'value_url' => false,
@@ -937,9 +955,9 @@ final class Rfc2849Test extends TestCase
             ':::foo' => [
                 //           0000000
                 //           0123456
-                'string' => ":::foo",
+                'string' => ':::foo',
                 'pieces' => [
-                    0 => [":::foo", 0],
+                    0 => [':::foo', 0],
                     'value_safe' => false,
                     'value_b64' => false,
                     'value_url' => false,
@@ -951,9 +969,9 @@ final class Rfc2849Test extends TestCase
             ':: :foo' => [
                 //           00000000
                 //           01234567
-                'string' => ":: :foo",
+                'string' => ':: :foo',
                 [
-                    0 => [":: :foo", 0],
+                    0 => [':: :foo', 0],
                     'value_safe' => false,
                     'value_b64' => false,
                     'value_url' => false,
@@ -967,7 +985,7 @@ final class Rfc2849Test extends TestCase
                 //           012345678 90
                 'string' => ":: A1@x=+\n",
                 'pieces' => [
-                    0 => [":: A1@x=+", 0],
+                    0 => [':: A1@x=+', 0],
                     'value_safe' => false,
                     'value_b64' => false,
                     'value_url' => false,
@@ -981,7 +999,7 @@ final class Rfc2849Test extends TestCase
                 //           0123 45
                 'string' => ":<# \n",
                 'pieces' => [
-                    0 => [":<# ", 0],
+                    0 => [':<# ', 0],
                     'value_safe' => false,
                     'value_b64' => false,
                     'value_url' => false,
@@ -995,7 +1013,7 @@ final class Rfc2849Test extends TestCase
                 //   01234567 89
                 'string' => ":<##  xx\n",
                 'pieces' => [
-                    0 => [":<##  xx", 0],
+                    0 => [':<##  xx', 0],
                     'value_safe' => false,
                     'value_b64' => false,
                     'value_url' => false,
@@ -1009,7 +1027,7 @@ final class Rfc2849Test extends TestCase
                 //           012345678901234567890 1
                 'string' => ":<http://with spaces/\n",
                 'pieces' => [
-                    0 => [":<http://with spaces/", 0],
+                    0 => [':<http://with spaces/', 0],
                     'value_safe' => false,
                     'value_b64' => false,
                     'value_url' => false,
@@ -1030,8 +1048,8 @@ final class Rfc2849Test extends TestCase
                     'value_url' => false,
                     'value_safe_error' => false,
                     'value_b64_error' => false,
-                    'value_url_error' => false
-                ]
+                    'value_url_error' => false,
+                ],
             ]);
         }
         foreach (static::prov__BASE64_STRING() as $case) {
@@ -1043,8 +1061,8 @@ final class Rfc2849Test extends TestCase
                     'value_url' => false,
                     'value_safe_error' => false,
                     'value_b64_error' => false,
-                    'value_url_error' => false
-                ]
+                    'value_url_error' => false,
+                ],
             ]);
         }
         foreach (static::prov__URL() as $case) {
@@ -1056,23 +1074,25 @@ final class Rfc2849Test extends TestCase
                     'value_url' => [$case[0], strlen(':< ')],
                     'value_safe_error' => false,
                     'value_b64_error' => false,
-                    'value_url_error' => false
-                ]
+                    'value_url_error' => false,
+                ],
             ]);
         }
+
         return array_merge($inheritedCases, $cases);
     }
 
     public static function prov__non__VALUE_SPEC()
     {
         $strings = ['', 'a', 'xyz:123', 'a', '1F'];
+
         return static::stringsToPregTuples($strings);
     }
 
     /**
      * @dataProvider prov__VALUE_SPEC
      */
-    public function test__VALUE_SPEC__matches(string $string, array $pieces, array $options = ['suffix' => '/D']) : void
+    public function testVALUESPECMatches(string $string, array $pieces, array $options = ['suffix' => '/D']): void
     {
         $this->assertRfcMatches($string, 'VALUE_SPEC', $pieces, $options);
     }
@@ -1080,7 +1100,7 @@ final class Rfc2849Test extends TestCase
     /**
      * @dataProvider prov__non__VALUE_SPEC
      */
-    public function test__VALUE_SPEC__notMatches(string $string) : void
+    public function testVALUESPECNotMatches(string $string): void
     {
         $this->assertRfcNotMatches($string, 'VALUE_SPEC');
     }
@@ -1093,8 +1113,8 @@ final class Rfc2849Test extends TestCase
     {
         $cases = [
             [
-            //   012345678
-                "control:",
+                //   012345678
+                'control:',
                 [
                     'ctl_type' => false,
                     'ctl_crit' => false,
@@ -1106,11 +1126,11 @@ final class Rfc2849Test extends TestCase
                     'value_url_error' => false,
                     'ctl_type_error' => ['', 8],
                     'ctl_crit_error' => false,
-                ]
+                ],
             ],
             [
-            //   0123456789
-                "control: ",
+                //   0123456789
+                'control: ',
                 [
                     'ctl_type' => false,
                     'ctl_crit' => false,
@@ -1122,12 +1142,12 @@ final class Rfc2849Test extends TestCase
                     'value_url_error' => false,
                     'ctl_type_error' => ['', 9],
                     'ctl_crit_error' => false,
-                ]
+                ],
             ],
             [
-            //   0000000000011
-            //   0123456789012
-                "control: #$%",
+                //   0000000000011
+                //   0123456789012
+                'control: #$%',
                 [
                     'ctl_type' => false,
                     'ctl_crit' => false,
@@ -1139,12 +1159,12 @@ final class Rfc2849Test extends TestCase
                     'value_url_error' => false,
                     'ctl_type_error' => ['#$%', 9],
                     'ctl_crit_error' => false,
-                ]
+                ],
             ],
             [
-            //   0000000000011
-            //   0123456789012
-                "control: :",
+                //   0000000000011
+                //   0123456789012
+                'control: :',
                 [
                     'ctl_type' => false,
                     'ctl_crit' => false,
@@ -1156,12 +1176,12 @@ final class Rfc2849Test extends TestCase
                     'value_url_error' => false,
                     'ctl_type_error' => [':', 9],
                     'ctl_crit_error' => false,
-                ]
+                ],
             ],
             [
-            //   000000000001111
-            //   012345678901234
-                "control: :asdf",
+                //   000000000001111
+                //   012345678901234
+                'control: :asdf',
                 [
                     'ctl_type' => false,
                     'ctl_crit' => false,
@@ -1173,12 +1193,12 @@ final class Rfc2849Test extends TestCase
                     'value_url_error' => false,
                     'ctl_type_error' => [':asdf', 9],
                     'ctl_crit_error' => false,
-                ]
+                ],
             ],
             [
-            //   0000000000011
-            //   0123456789012
-                "control: 1.2.",
+                //   0000000000011
+                //   0123456789012
+                'control: 1.2.',
                 [
                     'ctl_type' => false,
                     'ctl_crit' => false,
@@ -1190,12 +1210,12 @@ final class Rfc2849Test extends TestCase
                     'value_url_error' => false,
                     'ctl_type_error' => ['.', 12],
                     'ctl_crit_error' => false,
-                ]
+                ],
             ],
             [
-            //   0000000000011
-            //   0123456789012
-                "control: 1.2. ",
+                //   0000000000011
+                //   0123456789012
+                'control: 1.2. ',
                 [
                     'ctl_type' => false,
                     'ctl_crit' => false,
@@ -1207,12 +1227,12 @@ final class Rfc2849Test extends TestCase
                     'value_url_error' => false,
                     'ctl_type_error' => ['. ', 12],
                     'ctl_crit_error' => false,
-                ]
+                ],
             ],
             [
-            //   0000000000011111111
-            //   0123456789012345678
-                "control: 1.2. true",
+                //   0000000000011111111
+                //   0123456789012345678
+                'control: 1.2. true',
                 [
                     'ctl_type' => false,
                     'ctl_crit' => false,
@@ -1224,12 +1244,12 @@ final class Rfc2849Test extends TestCase
                     'value_url_error' => false,
                     'ctl_type_error' => ['. true', 12],
                     'ctl_crit_error' => false,
-                ]
+                ],
             ],
             [
-            //   0000000000011
-            //   0123456789012
-                "control: 1.2. ",
+                //   0000000000011
+                //   0123456789012
+                'control: 1.2. ',
                 [
                     'ctl_type' => false,
                     'ctl_crit' => false,
@@ -1241,12 +1261,12 @@ final class Rfc2849Test extends TestCase
                     'value_url_error' => false,
                     'ctl_type_error' => ['. ', 12],
                     'ctl_crit_error' => false,
-                ]
+                ],
             ],
             [
-            //   0000000000011111
-            //   0123456789012345
-                "control: 1.2.33",
+                //   0000000000011111
+                //   0123456789012345
+                'control: 1.2.33',
                 [
                     'ctl_type' => ['1.2.33', 9],
                     'ctl_crit' => false,
@@ -1258,12 +1278,12 @@ final class Rfc2849Test extends TestCase
                     'value_url_error' => false,
                     'ctl_type_error' => false,
                     'ctl_crit_error' => false,
-                ]
+                ],
             ],
             [
-            //   00000000000111111
-            //   01234567890123456
-                "control: 1.2.33 ",
+                //   00000000000111111
+                //   01234567890123456
+                'control: 1.2.33 ',
                 [
                     'ctl_type' => false,
                     'ctl_crit' => false,
@@ -1275,12 +1295,12 @@ final class Rfc2849Test extends TestCase
                     'value_url_error' => false,
                     'ctl_type_error' => false,
                     'ctl_crit_error' => ['', 16],
-                ]
+                ],
             ],
             [
-            //   00000000000111111111
-            //   01234567890123456789
-                "control: 1.2.33 true",
+                //   00000000000111111111
+                //   01234567890123456789
+                'control: 1.2.33 true',
                 [
                     'ctl_type' => ['1.2.33', 9],
                     'ctl_crit' => ['true', 16],
@@ -1292,12 +1312,12 @@ final class Rfc2849Test extends TestCase
                     'value_url_error' => false,
                     'ctl_type_error' => false,
                     'ctl_crit_error' => false,
-                ]
+                ],
             ],
             [
-            //   00000000000111111111
-            //   01234567890123456789
-                "control: 1.2.33 false",
+                //   00000000000111111111
+                //   01234567890123456789
+                'control: 1.2.33 false',
                 [
                     'ctl_type' => ['1.2.33', 9],
                     'ctl_crit' => ['false', 16],
@@ -1309,12 +1329,12 @@ final class Rfc2849Test extends TestCase
                     'value_url_error' => false,
                     'ctl_type_error' => false,
                     'ctl_crit_error' => false,
-                ]
+                ],
             ],
             [
-            //   00000000000111111111
-            //   01234567890123456789
-                "control: 1.2.33 xyz",
+                //   00000000000111111111
+                //   01234567890123456789
+                'control: 1.2.33 xyz',
                 [
                     'ctl_type' => false,
                     'ctl_crit' => false,
@@ -1326,12 +1346,12 @@ final class Rfc2849Test extends TestCase
                     'value_url_error' => false,
                     'ctl_type_error' => false,
                     'ctl_crit_error' => ['xyz', 16],
-                ]
+                ],
             ],
             [
-            //   000000000001111111112222
-            //   012345678901234567890123
-                "control: 1.2.33 truexyz",
+                //   000000000001111111112222
+                //   012345678901234567890123
+                'control: 1.2.33 truexyz',
                 [
                     'ctl_type' => false,
                     'ctl_crit' => false,
@@ -1343,12 +1363,12 @@ final class Rfc2849Test extends TestCase
                     'value_url_error' => false,
                     'ctl_type_error' => false,
                     'ctl_crit_error' => ['truexyz', 16],
-                ]
+                ],
             ],
             [
-            //   000000000001111111112222
-            //   012345678901234567890123
-                "control: 1.2.33 falsexyz",
+                //   000000000001111111112222
+                //   012345678901234567890123
+                'control: 1.2.33 falsexyz',
                 [
                     'ctl_type' => false,
                     'ctl_crit' => false,
@@ -1360,12 +1380,12 @@ final class Rfc2849Test extends TestCase
                     'value_url_error' => false,
                     'ctl_type_error' => false,
                     'ctl_crit_error' => ['falsexyz', 16],
-                ]
+                ],
             ],
             [
-            //   000000000001111111112222
-            //   012345678901234567890123
-                "control: 1.2.33 :asdf",
+                //   000000000001111111112222
+                //   012345678901234567890123
+                'control: 1.2.33 :asdf',
                 [
                     'ctl_type' => false,
                     'ctl_crit' => false,
@@ -1377,12 +1397,12 @@ final class Rfc2849Test extends TestCase
                     'value_url_error' => false,
                     'ctl_type_error' => false,
                     'ctl_crit_error' => [':asdf', 16],
-                ]
+                ],
             ],
             [
-            //   000000000001111111112222
-            //   012345678901234567890123
-                "control: 1.2.33: asdf",
+                //   000000000001111111112222
+                //   012345678901234567890123
+                'control: 1.2.33: asdf',
                 [
                     'ctl_type' => ['1.2.33', 9],
                     'ctl_crit' => false,
@@ -1394,12 +1414,12 @@ final class Rfc2849Test extends TestCase
                     'value_url_error' => false,
                     'ctl_type_error' => false,
                     'ctl_crit_error' => false,
-                ]
+                ],
             ],
             [
-            //   000000000001111111112222222
-            //   012345678901234567890123456
-                "control: 1.2.33 true: asdf",
+                //   000000000001111111112222222
+                //   012345678901234567890123456
+                'control: 1.2.33 true: asdf',
                 [
                     'ctl_type' => ['1.2.33', 9],
                     'ctl_crit' => ['true', 16],
@@ -1411,7 +1431,7 @@ final class Rfc2849Test extends TestCase
                     'value_url_error' => false,
                     'ctl_type_error' => false,
                     'ctl_crit_error' => false,
-                ]
+                ],
             ],
         ];
 
@@ -1423,9 +1443,9 @@ final class Rfc2849Test extends TestCase
                 'prefixMain' => true,
                 'suffixMain' => true,
                 'merge' => [
-                    'ctl_type'  => ['1.23', 9],
-                    'ctl_crit'  => false,
-                ]
+                    'ctl_type' => ['1.23', 9],
+                    'ctl_crit' => false,
+                ],
             ]);
             $inheritedCases[] = static::transformPregTuple($case, [
                 'prefix' => 'control: 1.23 true',
@@ -1433,9 +1453,9 @@ final class Rfc2849Test extends TestCase
                 'prefixMain' => true,
                 'suffixMain' => true,
                 'merge' => [
-                    'ctl_type'  => ['1.23', 9],
-                    'ctl_crit'  => ['true', 14],
-                ]
+                    'ctl_type' => ['1.23', 9],
+                    'ctl_crit' => ['true', 14],
+                ],
             ]);
             $inheritedCases[] = static::transformPregTuple($case, [
                 'prefix' => 'control: 1.23 false',
@@ -1443,11 +1463,12 @@ final class Rfc2849Test extends TestCase
                 'prefixMain' => true,
                 'suffixMain' => true,
                 'merge' => [
-                    'ctl_type'  => ['1.23', 9],
-                    'ctl_crit'  => ['false', 14],
-                ]
+                    'ctl_type' => ['1.23', 9],
+                    'ctl_crit' => ['false', 14],
+                ],
             ]);
         }
+
         return array_merge($inheritedCases, $cases);
     }
 
@@ -1456,13 +1477,14 @@ final class Rfc2849Test extends TestCase
         $strings = [
             '<:', '< %', '< %1', ':: %$', ': ł',
         ];
+
         return static::stringsToPregTuples($strings);
     }
 
     /**
      * @dataProvider prov__CONTROL
      */
-    public function test__CONTROL__matches(string $string, array $pieces, array $options = ['suffix' => '/D']) : void
+    public function testCONTROLMatches(string $string, array $pieces, array $options = ['suffix' => '/D']): void
     {
         $this->assertRfcMatches($string, 'CONTROL', $pieces, $options);
     }
@@ -1470,7 +1492,7 @@ final class Rfc2849Test extends TestCase
     /**
      * @dataProvider prov__non__CONTROL
      */
-    public function test__CONTROL__notMatches(string $string) : void
+    public function testCONTROLNotMatches(string $string): void
     {
         $this->assertRfcNotMatches($string, 'CONTROL');
     }
@@ -1483,8 +1505,8 @@ final class Rfc2849Test extends TestCase
     {
         $cases = [
             [
-            //   00000000001 111
-            //   01234567890 123
+                //   00000000001 111
+                //   01234567890 123
                 "ou;lang-pl:\nnext",
                 [
                     0 => ["ou;lang-pl:\n", 0],
@@ -1495,11 +1517,11 @@ final class Rfc2849Test extends TestCase
                     'value_safe_error' => false,
                     'value_b64_error' => false,
                     'value_url_error' => false,
-                ]
+                ],
             ],
             [
-            //   00000000001 1 11
-            //   01234567890 1 23
+                //   00000000001 1 11
+                //   01234567890 1 23
                 "ou;lang-pl:\r\nnext",
                 [
                     0 => ["ou;lang-pl:\r\n", 0],
@@ -1510,11 +1532,11 @@ final class Rfc2849Test extends TestCase
                     'value_safe_error' => false,
                     'value_b64_error' => false,
                     'value_url_error' => false,
-                ]
+                ],
             ],
             [
-            //   000000000011 11
-            //   012345678901 23
+                //   000000000011 11
+                //   012345678901 23
                 "ou;lang-pl::\nnext",
                 [
                     0 => ["ou;lang-pl::\n", 0],
@@ -1525,11 +1547,11 @@ final class Rfc2849Test extends TestCase
                     'value_safe_error' => false,
                     'value_b64_error' => false,
                     'value_url_error' => false,
-                ]
+                ],
             ],
             [
-            //   000000000011 11
-            //   012345678901 23
+                //   000000000011 11
+                //   012345678901 23
                 "ou;lang-pl::\r\nnext",
                 [
                     0 => ["ou;lang-pl::\r\n", 0],
@@ -1540,11 +1562,11 @@ final class Rfc2849Test extends TestCase
                     'value_safe_error' => false,
                     'value_b64_error' => false,
                     'value_url_error' => false,
-                ]
+                ],
             ],
             [
-            //   000000000011 11
-            //   012345678901 23
+                //   000000000011 11
+                //   012345678901 23
                 "ou;lang-pl:<\nnext",
                 [
                     0 => ["ou;lang-pl:<\n", 0],
@@ -1555,11 +1577,11 @@ final class Rfc2849Test extends TestCase
                     'value_safe_error' => false,
                     'value_b64_error' => false,
                     'value_url_error' => false,
-                ]
+                ],
             ],
             [
-            //   000000000011 11
-            //   012345678901 23
+                //   000000000011 11
+                //   012345678901 23
                 "ou;lang-pl:<\r\nnext",
                 [
                     0 => ["ou;lang-pl:<\r\n", 0],
@@ -1570,11 +1592,11 @@ final class Rfc2849Test extends TestCase
                     'value_safe_error' => false,
                     'value_b64_error' => false,
                     'value_url_error' => false,
-                ]
+                ],
             ],
             [
-            //   0000000000111 11
-            //   0123456789012 34
+                //   0000000000111 11
+                //   0123456789012 34
                 "ou;lang-pl:</\nnext",
                 [
                     0 => ["ou;lang-pl:</\n", 0],
@@ -1585,11 +1607,11 @@ final class Rfc2849Test extends TestCase
                     'value_safe_error' => false,
                     'value_b64_error' => false,
                     'value_url_error' => false,
-                ]
+                ],
             ],
             [
-            //   0000000000111 11
-            //   0123456789012 34
+                //   0000000000111 11
+                //   0123456789012 34
                 "ou;lang-pl:</\r\nnext",
                 [
                     0 => ["ou;lang-pl:</\r\n", 0],
@@ -1600,11 +1622,11 @@ final class Rfc2849Test extends TestCase
                     'value_safe_error' => false,
                     'value_b64_error' => false,
                     'value_url_error' => false,
-                ]
+                ],
             ],
             [
-            //   000000000011111111 1
-            //   012345678901234567 8
+                //   000000000011111111 1
+                //   012345678901234567 8
                 "ou;lang-pl:<file:/\nnext",
                 [
                     0 => ["ou;lang-pl:<file:/\n", 0],
@@ -1615,11 +1637,11 @@ final class Rfc2849Test extends TestCase
                     'value_safe_error' => false,
                     'value_b64_error' => false,
                     'value_url_error' => false,
-                ]
+                ],
             ],
             [
-            //   0000000000111 1
-            //   0123456789012 3
+                //   0000000000111 1
+                //   0123456789012 3
                 "ou;lang-pl:<#\n",
                 [
                     0 => ["ou;lang-pl:<#\n", 0],
@@ -1630,14 +1652,14 @@ final class Rfc2849Test extends TestCase
                     'value_safe_error' => false,
                     'value_b64_error' => false,
                     'value_url_error' => false,
-                ]
+                ],
             ],
             [
-            //   00000000001111111
-            //   01234567890123456
-                "ou;lang-pl: :foo",
+                //   00000000001111111
+                //   01234567890123456
+                'ou;lang-pl: :foo',
                 [
-                    0 => ["ou;lang-pl: :foo", 0],
+                    0 => ['ou;lang-pl: :foo', 0],
                     'value_safe' => false,
                     'attr_desc' => ['ou;lang-pl', 0],
                     'value_b64' => false,
@@ -1645,11 +1667,11 @@ final class Rfc2849Test extends TestCase
                     'value_safe_error' => [':foo', 12],
                     'value_b64_error' => false,
                     'value_url_error' => false,
-                ]
+                ],
             ],
             [
-            //   000000000011111111 1
-            //   012345678901245678 9
+                //   000000000011111111 1
+                //   012345678901245678 9
                 "ou;lang-pl: łuszcz\nnext",
                 [
                     0 => ["ou;lang-pl: łuszcz\n", 0],
@@ -1660,11 +1682,11 @@ final class Rfc2849Test extends TestCase
                     'value_safe_error' => ['łuszcz', 12],
                     'value_b64_error' => false,
                     'value_url_error' => false,
-                ]
+                ],
             ],
             [
-            //   0000000000111111111 1
-            //   0123456789012345678 9
+                //   0000000000111111111 1
+                //   0123456789012345678 9
                 "ou;lang-pl: tłuszcz\nnext",
                 [
                     0 => ["ou;lang-pl: tłuszcz\n", 0],
@@ -1675,14 +1697,14 @@ final class Rfc2849Test extends TestCase
                     'value_safe_error' => ['łuszcz', 13],
                     'value_b64_error' => false,
                     'value_url_error' => false,
-                ]
+                ],
             ],
             [
-            //   00000000001111111
-            //   01234567890123456
-                "ou;lang-pl:::foo",
+                //   00000000001111111
+                //   01234567890123456
+                'ou;lang-pl:::foo',
                 [
-                    0 => ["ou;lang-pl:::foo", 0],
+                    0 => ['ou;lang-pl:::foo', 0],
                     'value_safe' => false,
                     'attr_desc' => ['ou;lang-pl', 0],
                     'value_b64' => false,
@@ -1690,14 +1712,14 @@ final class Rfc2849Test extends TestCase
                     'value_safe_error' => false,
                     'value_b64_error' => [':foo', 12],
                     'value_url_error' => false,
-                ]
+                ],
             ],
             [
-            //   000000000011111111
-            //   012345678901234567
-                "ou;lang-pl:: :foo",
+                //   000000000011111111
+                //   012345678901234567
+                'ou;lang-pl:: :foo',
                 [
-                    0 => ["ou;lang-pl:: :foo", 0],
+                    0 => ['ou;lang-pl:: :foo', 0],
                     'value_safe' => false,
                     'attr_desc' => ['ou;lang-pl', 0],
                     'value_b64' => false,
@@ -1705,11 +1727,11 @@ final class Rfc2849Test extends TestCase
                     'value_safe_error' => false,
                     'value_b64_error' => [':foo', 13],
                     'value_url_error' => false,
-                ]
+                ],
             ],
             [
-            //   0000000000111111111 1
-            //   0123456789012345678 9
+                //   0000000000111111111 1
+                //   0123456789012345678 9
                 "ou;lang-pl:: A1@x=+\n",
                 [
                     0 => ["ou;lang-pl:: A1@x=+\n", 0],
@@ -1720,11 +1742,11 @@ final class Rfc2849Test extends TestCase
                     'value_safe_error' => false,
                     'value_b64_error' => ['@x=+', 15],
                     'value_url_error' => false,
-                ]
+                ],
             ],
             [
-            //   00000000001111 1
-            //   01234567890123 4
+                //   00000000001111 1
+                //   01234567890123 4
                 "ou;lang-pl:<# \n",
                 [
                     0 => ["ou;lang-pl:<# \n", 0],
@@ -1735,11 +1757,11 @@ final class Rfc2849Test extends TestCase
                     'value_safe_error' => false,
                     'value_b64_error' => false,
                     'value_url_error' => [' ', 13],
-                ]
+                ],
             ],
             [
-            //   000000000011111111 1
-            //   012345678901234567 8
+                //   000000000011111111 1
+                //   012345678901234567 8
                 "ou;lang-pl:<##  xx\n",
                 [
                     0 => ["ou;lang-pl:<##  xx\n", 0],
@@ -1750,11 +1772,11 @@ final class Rfc2849Test extends TestCase
                     'value_safe_error' => false,
                     'value_b64_error' => false,
                     'value_url_error' => ['#  xx', 13],
-                ]
+                ],
             ],
             [
-            //   0000000000111111111122222222223 3
-            //   0123456789012345678901234567890 1
+                //   0000000000111111111122222222223 3
+                //   0123456789012345678901234567890 1
                 "ou;lang-pl:<http://with spaces/\n",
                 [
                     0 => ["ou;lang-pl:<http://with spaces/\n", 0],
@@ -1765,7 +1787,7 @@ final class Rfc2849Test extends TestCase
                     'value_safe_error' => false,
                     'value_b64_error' => false,
                     'value_url_error' => [' spaces/', 23],
-                ]
+                ],
             ],
         ];
         $inheritedCases = [];
@@ -1779,19 +1801,21 @@ final class Rfc2849Test extends TestCase
                 ]);
             }
         }
+
         return array_merge($inheritedCases, $cases);
     }
 
     public static function prov__non__ATTRVAL_SPEC()
     {
         $strings = ['', 'a', ':123', 'a', '1F'];
+
         return static::stringsToPregTuples($strings);
     }
 
     /**
      * @dataProvider prov__ATTRVAL_SPEC
      */
-    public function test__ATTRVAL_SPEC__matches(string $string, array $pieces, array $options = ['suffix' => '/D']) : void
+    public function testATTRVALSPECMatches(string $string, array $pieces, array $options = ['suffix' => '/D']): void
     {
         $this->assertRfcMatches($string, 'ATTRVAL_SPEC', $pieces, $options);
     }
@@ -1799,10 +1823,11 @@ final class Rfc2849Test extends TestCase
     /**
      * @dataProvider prov__non__ATTRVAL_SPEC
      */
-    public function test__ATTRVAL_SPEC__notMatches(string $string) : void
+    public function testATTRVALSPECNotMatches(string $string): void
     {
         $this->assertRfcNotMatches($string, 'ATTRVAL_SPEC');
     }
+
 //
 //    //
 //    // LDIF_ATTRVAL_RECORD
@@ -1861,103 +1886,103 @@ final class Rfc2849Test extends TestCase
 
         $cases = [
             [
-            //   0000000000111111111122222222223
-            //   0123456789012345678901234567890
-                "add:",
+                //   0000000000111111111122222222223
+                //   0123456789012345678901234567890
+                'add:',
                 [
                     'mod_type' => ['add', 0],
                     'attr_desc' => false,
                     'attr_type_error' => ['', 4],
                     'attr_opts_error' => false,
-                ]
+                ],
             ],
             [
-            //   0000000000111111111122222222223
-            //   0123456789012345678901234567890
-                "add:  ",
+                //   0000000000111111111122222222223
+                //   0123456789012345678901234567890
+                'add:  ',
                 [
                     'mod_type' => ['add', 0],
                     'attr_desc' => false,
                     'attr_type_error' => ['', 6],
                     'attr_opts_error' => false,
-                ]
+                ],
             ],
             [
-            //   0000000000111111111122222222223
-            //   0123456789012345678901234567890
+                //   0000000000111111111122222222223
+                //   0123456789012345678901234567890
                 "add:\next",
                 [
                     'mod_type' => ['add', 0],
                     'attr_desc' => false,
                     'attr_type_error' => ['', 4],
                     'attr_opts_error' => false,
-                ]
+                ],
             ],
             [
-            //   0000000000111111111122222222223
-            //   0123456789012345678901234567890
-                "add: atłybut ",
+                //   0000000000111111111122222222223
+                //   0123456789012345678901234567890
+                'add: atłybut ',
                 [
                     'mod_type' => ['add', 0],
                     'attr_desc' => false,
                     'attr_type_error' => ['łybut ', 7],
                     'attr_opts_error' => false,
-                ]
+                ],
             ],
             [
-            //   0000000000111111111122222222223
-            //   0123456789012345678901234567890
+                //   0000000000111111111122222222223
+                //   0123456789012345678901234567890
                 "add: atłybut \next",
                 [
                     'mod_type' => ['add', 0],
                     'attr_desc' => false,
                     'attr_type_error' => ['łybut ', 7],
                     'attr_opts_error' => false,
-                ]
+                ],
             ],
             [
-            //   0000000000111111111122222222223
-            //   0123456789012345678901234567890
-                "add: cn;",
+                //   0000000000111111111122222222223
+                //   0123456789012345678901234567890
+                'add: cn;',
                 [
                     'mod_type' => ['add', 0],
                     'attr_desc' => false,
                     'attr_type_error' => false,
                     'attr_opts_error' => ['', 8],
-                ]
+                ],
             ],
             [
-            //   0000000000111111111122222222223
-            //   0123456789012345678901234567890
-                "add: cn;a;",
+                //   0000000000111111111122222222223
+                //   0123456789012345678901234567890
+                'add: cn;a;',
                 [
                     'mod_type' => ['add', 0],
                     'attr_desc' => false,
                     'attr_type_error' => false,
                     'attr_opts_error' => [';', 9],
-                ]
+                ],
             ],
             [
-            //   0000000000111111111122222222223
-            //   0123456789012345678901234567890
-                "add: cn;a;błąd",
+                //   0000000000111111111122222222223
+                //   0123456789012345678901234567890
+                'add: cn;a;błąd',
                 [
                     'mod_type' => ['add', 0],
                     'attr_desc' => false,
                     'attr_type_error' => false,
                     'attr_opts_error' => ['łąd', 11],
-                ]
+                ],
             ],
             [
-            //   0000000000111111111122222222223
-            //   0123456789012345678901234567890
+                //   0000000000111111111122222222223
+                //   0123456789012345678901234567890
                 "add: cn;a;błąd\nnext",
                 [
                     'mod_type' => ['add', 0],
                     'attr_desc' => false,
                     'attr_type_error' => false,
                     'attr_opts_error' => ['łąd', 11],
-                ]
+                ],
             ],
         ];
 
@@ -1971,11 +1996,12 @@ final class Rfc2849Test extends TestCase
                     'merge' => [
                         'mod_type_error' => false,
                         'attr_opts_error' => false,
-                        'attr_type_error' => false
-                    ]
+                        'attr_type_error' => false,
+                    ],
                 ]);
             }
         }
+
         return array_merge($inheritedCases, $cases);
     }
 
@@ -1994,7 +2020,7 @@ final class Rfc2849Test extends TestCase
     /**
      * @dataProvider prov__MOD_SPEC_INIT
      */
-    public function test__MOD_SPEC_INIT__matches(string $string, array $pieces, array $options = ['suffix' => '/D']) : void
+    public function testMODSPECINITMatches(string $string, array $pieces, array $options = ['suffix' => '/D']): void
     {
         $this->assertRfcMatches($string, 'MOD_SPEC_INIT', $pieces, $options);
     }
@@ -2002,7 +2028,7 @@ final class Rfc2849Test extends TestCase
     /**
      * @dataProvider prov__non__MOD_SPEC_INIT
      */
-    public function test__MOD_SPEC_INIT__notMatches(string $string) : void
+    public function testMODSPECINITNotMatches(string $string): void
     {
         $this->assertRfcNotMatches($string, 'MOD_SPEC_INIT');
     }
@@ -2088,76 +2114,76 @@ final class Rfc2849Test extends TestCase
     {
         $cases = [
             [
-            //   0000000000111111111122222222223
-            //   0123456789012345678901234567890
-                "changetype: add",
+                //   0000000000111111111122222222223
+                //   0123456789012345678901234567890
+                'changetype: add',
                 [
                     'chg_type' => ['add', 12],
                     'chg_type_error' => false,
-                ]
+                ],
             ],
             [
-            //   0000000000111111111122222222223
-            //   0123456789012345678901234567890
-                "changetype: delete",
+                //   0000000000111111111122222222223
+                //   0123456789012345678901234567890
+                'changetype: delete',
                 [
                     'chg_type' => ['delete', 12],
                     'chg_type_error' => false,
-                ]
+                ],
             ],
             [
-            //   0000000000111111111122222222223
-            //   0123456789012345678901234567890
-                "changetype: moddn",
+                //   0000000000111111111122222222223
+                //   0123456789012345678901234567890
+                'changetype: moddn',
                 [
                     'chg_type' => ['moddn', 12],
                     'chg_type_error' => false,
-                ]
+                ],
             ],
             [
-            //   0000000000111111111122222222223
-            //   0123456789012345678901234567890
-                "changetype: modrdn",
+                //   0000000000111111111122222222223
+                //   0123456789012345678901234567890
+                'changetype: modrdn',
                 [
                     'chg_type' => ['modrdn', 12],
                     'chg_type_error' => false,
-                ]
+                ],
             ],
             [
-            //   0000000000111111111122222222223
-            //   0123456789012345678901234567890
-                "changetype: modify",
+                //   0000000000111111111122222222223
+                //   0123456789012345678901234567890
+                'changetype: modify',
                 [
                     'chg_type' => ['modify', 12],
                     'chg_type_error' => false,
-                ]
+                ],
             ],
             [
-            //   0000000000111111111122222222223
-            //   0123456789012345678901234567890
-                "changetype: foo",
+                //   0000000000111111111122222222223
+                //   0123456789012345678901234567890
+                'changetype: foo',
                 [
                     'chg_type' => false,
                     'chg_type_error' => ['foo', 12],
-                ]
+                ],
             ],
             [
-            //   0000000000111111111122222222223
-            //   0123456789012345678901234567890
-                "changetype: ",
+                //   0000000000111111111122222222223
+                //   0123456789012345678901234567890
+                'changetype: ',
                 [
                     'chg_type' => false,
                     'chg_type_error' => ['', 12],
-                ]
+                ],
             ],
             [
-            //   000000000011 1111111122222222223
-            //   012345678901 2345678901234567890
+                //   000000000011 1111111122222222223
+                //   012345678901 2345678901234567890
                 "changetype: \n",
                 [
                     'chg_type' => false,
                     'chg_type_error' => ['', 12],
-                ]
+                ],
             ],
         ];
 
@@ -2169,9 +2195,9 @@ final class Rfc2849Test extends TestCase
     public static function prov__non__CHANGERECORD_INIT()
     {
         $strings = [
-            "",
-            "foo:",
-            "changetype",
+            '',
+            'foo:',
+            'changetype',
             "changetype foo\n",
             "changetype\n",
         ];
@@ -2184,7 +2210,7 @@ final class Rfc2849Test extends TestCase
     /**
      * @dataProvider prov__CHANGERECORD_INIT
      */
-    public function test__CHANGERECORD_INIT__matches(string $string, array $pieces, array $options = ['suffix' => '/D']) : void
+    public function testCHANGERECORDINITMatches(string $string, array $pieces, array $options = ['suffix' => '/D']): void
     {
         $this->assertRfcMatches($string, 'CHANGERECORD_INIT', $pieces, $options);
     }
@@ -2192,7 +2218,7 @@ final class Rfc2849Test extends TestCase
     /**
      * @dataProvider prov__non__CHANGERECORD_INIT
      */
-    public function test__CHANGERECORD_INIT__notMatches(string $string) : void
+    public function testCHANGERECORDINITNotMatches(string $string): void
     {
         $this->assertRfcNotMatches($string, 'CHANGERECORD_INIT');
     }
@@ -2204,10 +2230,10 @@ final class Rfc2849Test extends TestCase
     public static function prov__NEWRDN_SPEC()
     {
         $cases = [
-            #0
+            //0
             [
-            //   0000000000111111111122222222223
-            //   0123456789012345678901234567890
+                //   0000000000111111111122222222223
+                //   0123456789012345678901234567890
                 "newrdn: \nxx",
                 [
                     ["newrdn: \n", 0],
@@ -2215,12 +2241,12 @@ final class Rfc2849Test extends TestCase
                     'value_b64' => false,
                     'value_safe_error' => false,
                     'value_b64_error' => false,
-                ]
+                ],
             ],
-            #1
+            //1
             [
-            //   0000000000111111111122222222223
-            //   0123456789012345678901234567890
+                //   0000000000111111111122222222223
+                //   0123456789012345678901234567890
                 "newrdn:: \nxx",
                 [
                     ["newrdn:: \n", 0],
@@ -2228,12 +2254,12 @@ final class Rfc2849Test extends TestCase
                     'value_b64' => ['', 9],
                     'value_safe_error' => false,
                     'value_b64_error' => false,
-                ]
+                ],
             ],
-            #2
+            //2
             [
-            //   0000000000111111111122222222223
-            //   0123456789012345678901234567890
+                //   0000000000111111111122222222223
+                //   0123456789012345678901234567890
                 "newrdn: błąd \nxx",
                 [
                     ["newrdn: błąd \n", 0],
@@ -2241,12 +2267,12 @@ final class Rfc2849Test extends TestCase
                     'value_b64' => false,
                     'value_safe_error' => ['łąd ', 9],
                     'value_b64_error' => false,
-                ]
+                ],
             ],
-            #3
+            //3
             [
-            //   0000000000111111111122222222223
-            //   0123456789012345678901234567890
+                //   0000000000111111111122222222223
+                //   0123456789012345678901234567890
                 "newrdn:: błąd \nxx",
                 [
                     ["newrdn:: błąd \n", 0],
@@ -2254,7 +2280,7 @@ final class Rfc2849Test extends TestCase
                     'value_b64' => false,
                     'value_safe_error' => false,
                     'value_b64_error' => ['łąd ', 10],
-                ]
+                ],
             ],
         ];
 
@@ -2266,9 +2292,9 @@ final class Rfc2849Test extends TestCase
     public static function prov__non__NEWRDN_SPEC()
     {
         $strings = [
-            "",
-            "foo:",
-            "newrdn",
+            '',
+            'foo:',
+            'newrdn',
             "newrdn foo\n",
         ];
 
@@ -2280,7 +2306,7 @@ final class Rfc2849Test extends TestCase
     /**
      * @dataProvider prov__NEWRDN_SPEC
      */
-    public function test__NEWRDN_SPEC__matches(string $string, array $pieces, array $options = ['suffix' => '/D']) : void
+    public function testNEWRDNSPECMatches(string $string, array $pieces, array $options = ['suffix' => '/D']): void
     {
         $this->assertRfcMatches($string, 'NEWRDN_SPEC', $pieces, $options);
     }
@@ -2288,7 +2314,7 @@ final class Rfc2849Test extends TestCase
     /**
      * @dataProvider prov__non__NEWRDN_SPEC
      */
-    public function test__NEWRDN_SPEC__notMatches(string $string) : void
+    public function testNEWRDNSPECNotMatches(string $string): void
     {
         $this->assertRfcNotMatches($string, 'NEWRDN_SPEC');
     }
@@ -2310,7 +2336,7 @@ final class Rfc2849Test extends TestCase
                     'value_b64' => false,
                     'value_safe_error' => false,
                     'value_b64_error' => false,
-                ]
+                ],
             ],
             'newsuperior::\n' => [
                 //           0000000000111 11
@@ -2322,19 +2348,19 @@ final class Rfc2849Test extends TestCase
                     'value_b64' => ['', 13],
                     'value_safe_error' => false,
                     'value_b64_error' => false,
-                ]
+                ],
             ],
             'newsuperior: :foo' => [
                 //           000000000011111111
                 //           012345678901234567
-                'string' => "newsuperior: :foo",
+                'string' => 'newsuperior: :foo',
                 'pieces' => [
-                    0 => ["newsuperior: :foo", 0],
+                    0 => ['newsuperior: :foo', 0],
                     'value_safe' => false,
                     'value_b64' => false,
                     'value_safe_error' => [':foo', 13],
                     'value_b64_error' => false,
-                ]
+                ],
             ],
             'newsuperior: łuszcz\nnext' => [
                 //           0000000000111111111 222222
@@ -2346,7 +2372,7 @@ final class Rfc2849Test extends TestCase
                     'value_b64' => false,
                     'value_safe_error' => ['łuszcz', 13],
                     'value_b64_error' => false,
-                ]
+                ],
             ],
             'newsuperior: tłuszcz\nnext' => [
                 //           00000000001111111112 222222
@@ -2358,31 +2384,31 @@ final class Rfc2849Test extends TestCase
                     'value_b64' => false,
                     'value_safe_error' => ['łuszcz', 14],
                     'value_b64_error' => false,
-                ]
+                ],
             ],
             'newsuperior:::foo' => [
                 //           000000000011111111
                 //           012345678901234567
-                'string' => "newsuperior:::foo",
+                'string' => 'newsuperior:::foo',
                 'pieces' => [
-                    0 => ["newsuperior:::foo", 0],
+                    0 => ['newsuperior:::foo', 0],
                     'value_safe' => false,
                     'value_b64' => false,
                     'value_safe_error' => false,
                     'value_b64_error' => [':foo', 13],
-                ]
+                ],
             ],
             'newsuperior:: :foo' => [
                 //           000000000011111111
                 //           012345678901234567
-                'string' => "newsuperior:: :foo",
+                'string' => 'newsuperior:: :foo',
                 'pieces' => [
-                    0 => ["newsuperior:: :foo", 0],
+                    0 => ['newsuperior:: :foo', 0],
                     'value_safe' => false,
                     'value_b64' => false,
                     'value_safe_error' => false,
                     'value_b64_error' => [':foo', 14],
-                ]
+                ],
             ],
             'newsuperior:: A1@x=+\n' => [
                 //           00000000001111111111 22
@@ -2394,23 +2420,25 @@ final class Rfc2849Test extends TestCase
                     'value_b64' => false,
                     'value_safe_error' => false,
                     'value_b64_error' => ['@x=+', 16],
-                ]
+                ],
             ],
         ];
         $inheritedCases = [];
+
         return array_merge($inheritedCases, $cases);
     }
 
     public static function prov__non__NEWSUPERIOR_SPEC()
     {
         $strings = ['', 'a', 'xyz:123', 'a', '1F'];
+
         return static::stringsToPregTuples($strings);
     }
 
     /**
      * @dataProvider prov__NEWSUPERIOR_SPEC
      */
-    public function test__NEWSUPERIOR_SPEC__matches(string $string, array $pieces, array $options = ['suffix' => '/D']) : void
+    public function testNEWSUPERIORSPECMatches(string $string, array $pieces, array $options = ['suffix' => '/D']): void
     {
         $this->assertRfcMatches($string, 'NEWSUPERIOR_SPEC', $pieces, $options);
     }
@@ -2418,7 +2446,7 @@ final class Rfc2849Test extends TestCase
     /**
      * @dataProvider prov__non__NEWSUPERIOR_SPEC
      */
-    public function test__NEWSUPERIOR_SPEC__notMatches(string $string) : void
+    public function testNEWSUPERIORSPECNotMatches(string $string): void
     {
         $this->assertRfcNotMatches($string, 'NEWSUPERIOR_SPEC');
     }

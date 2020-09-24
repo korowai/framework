@@ -12,28 +12,29 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldif\Rules;
 
-use Korowai\Lib\Ldif\Rules\LdifAttrValRecordRuleInterface;
-use Korowai\Lib\Ldif\Rules\DnSpecRuleInterface;
-use Korowai\Lib\Ldif\Rules\SepRuleInterface;
-use Korowai\Lib\Ldif\Rules\AttrValSpecRuleInterface;
 use Korowai\Lib\Ldif\RuleInterface;
-
+use Korowai\Lib\Ldif\Rules\AttrValSpecRuleInterface;
+use Korowai\Lib\Ldif\Rules\DnSpecRuleInterface;
+use Korowai\Lib\Ldif\Rules\LdifAttrValRecordRuleInterface;
+use Korowai\Lib\Ldif\Rules\SepRuleInterface;
 use Korowai\Testing\LdiflibInterfaces\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Tests\Lib\Ldif\Rules\LdifAttrValRecordRuleInterfaceTrait
+ *
+ * @internal
  */
 final class LdifAttrValRecordRuleInterfaceTest extends TestCase
 {
     public static function createDummyInstance()
     {
-        return new class implements LdifAttrValRecordRuleInterface {
+        return new class() implements LdifAttrValRecordRuleInterface {
             use LdifAttrValRecordRuleInterfaceTrait;
         };
     }
 
-    public static function prov__extendsInterface() : array
+    public static function prov__extendsInterface(): array
     {
         return [
             [RuleInterface::class],
@@ -43,25 +44,25 @@ final class LdifAttrValRecordRuleInterfaceTest extends TestCase
     /**
      * @dataProvider prov__extendsInterface
      */
-    public function test__extendsInterface(string $extends) : void
+    public function testExtendsInterface(string $extends): void
     {
         $this->assertImplementsInterface($extends, LdifAttrValRecordRuleInterface::class);
     }
 
-    public function test__dummyImplementation() : void
+    public function testDummyImplementation(): void
     {
         $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(LdifAttrValRecordRuleInterface::class, $dummy);
     }
 
-    public function test__getDnSpecRule() : void
+    public function testGetDnSpecRule(): void
     {
         $dummy = $this->createDummyInstance();
         $dummy->dnSpecRule = $this->createStub(DnSpecRuleInterface::class);
         $this->assertSame($dummy->dnSpecRule, $dummy->getDnSpecRule());
     }
 
-    public function test__getDnSpecRule__withNull() : void
+    public function testGetDnSpecRuleWithNull(): void
     {
         $dummy = $this->createDummyInstance();
         $this->expectException(\TypeError::class);
@@ -71,14 +72,14 @@ final class LdifAttrValRecordRuleInterfaceTest extends TestCase
         $dummy->getDnSpecRule();
     }
 
-    public function test__getSepRule() : void
+    public function testGetSepRule(): void
     {
         $dummy = $this->createDummyInstance();
         $dummy->sepRule = $this->createStub(SepRuleInterface::class);
         $this->assertSame($dummy->sepRule, $dummy->getSepRule());
     }
 
-    public function test__getSepRule__withNull() : void
+    public function testGetSepRuleWithNull(): void
     {
         $dummy = $this->createDummyInstance();
         $this->expectException(\TypeError::class);
@@ -88,14 +89,14 @@ final class LdifAttrValRecordRuleInterfaceTest extends TestCase
         $dummy->getSepRule();
     }
 
-    public function test__getAttrValSpecRule() : void
+    public function testGetAttrValSpecRule(): void
     {
         $dummy = $this->createDummyInstance();
         $dummy->attrValSpecRule = $this->createStub(AttrValSpecRuleInterface::class);
         $this->assertSame($dummy->attrValSpecRule, $dummy->getAttrValSpecRule());
     }
 
-    public function test__getAttrValSpecRule__withNull() : void
+    public function testGetAttrValSpecRuleWithNull(): void
     {
         $dummy = $this->createDummyInstance();
         $this->expectException(\TypeError::class);

@@ -22,12 +22,12 @@ trait ComparingInterfaceTrait
     public $compare;
     public $createCompareQuery;
 
-    public function compare(string $dn, string $attribute, string $value) : bool
+    public function compare(string $dn, string $attribute, string $value): bool
     {
         return $this->compare;
     }
 
-    public function createCompareQuery(string $dn, string $attribute, string $value) : CompareQueryInterface
+    public function createCompareQuery(string $dn, string $attribute, string $value): CompareQueryInterface
     {
         return $this->createCompareQuery;
     }

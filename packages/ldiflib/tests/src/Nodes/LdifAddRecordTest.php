@@ -12,18 +12,18 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldif\Nodes;
 
+use Korowai\Lib\Ldif\Nodes\AbstractChangeRecord;
 use Korowai\Lib\Ldif\Nodes\LdifAddRecord;
 use Korowai\Lib\Ldif\Nodes\LdifAddRecordInterface;
-use Korowai\Lib\Ldif\Nodes\AbstractChangeRecord;
 use Korowai\Lib\Ldif\RecordVisitorInterface;
-use Korowai\Lib\Ldif\SnippetInterface;
 use Korowai\Lib\Ldif\Traits\HasAttrValSpecs;
-
 use Korowai\Testing\Ldiflib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Ldif\Nodes\LdifAddRecord
+ *
+ * @internal
  */
 final class LdifAddRecordTest extends TestCase
 {
@@ -32,12 +32,12 @@ final class LdifAddRecordTest extends TestCase
         $this->assertExtendsClass(AbstractChangeRecord::class, LdifAddRecord::class);
     }
 
-    public function test__implements__LdifAddRecordInterface() : void
+    public function testImplementsLdifAddRecordInterface(): void
     {
         $this->assertImplementsInterface(LdifAddRecordInterface::class, LdifAddRecord::class);
     }
 
-    public function test__uses__HasAttrValSpecs() : void
+    public function testUsesHasAttrValSpecs(): void
     {
         $this->assertUsesTrait(HasAttrValSpecs::class, LdifAddRecord::class);
     }
@@ -55,14 +55,14 @@ final class LdifAddRecordTest extends TestCase
                     'getAttrValSpecs()' => [],
                     'getControls()' => [],
                     'getSnippet()' => null,
-                ]
+                ],
             ],
             '__construct("dc=example,dc=org", ["attrValSpecs" => ["X"], "controls" => ["Y"]]' => [
                 'args' => [
                     'dc=example,dc=org',
                     [
-                        "attrValSpecs" => ['X'],
-                        "controls" => ['Y'],
+                        'attrValSpecs' => ['X'],
+                        'controls' => ['Y'],
                     ],
                 ],
                 'expect' => [
@@ -70,39 +70,41 @@ final class LdifAddRecordTest extends TestCase
                     'getChangeType()' => 'add',
                     'getAttrValSpecs()' => ['X'],
                     'getControls()' => ['Y'],
-                    'getSnippet()' => null
-                ]
-            ]
+                    'getSnippet()' => null,
+                ],
+            ],
         ];
     }
 
     /**
      * @dataProvider prov__construct
      */
-    public function test__construct(array $args, array $expect) : void
+    public function testConstruct(array $args, array $expect): void
     {
         $record = new LdifAddRecord(...$args);
         $this->assertObjectHasPropertiesIdenticalTo($expect, $record);
     }
 
-    public function test__setAttrValSpecs() : void
+    public function testSetAttrValSpecs(): void
     {
-        $record = new LdifAddRecord("dc=example,dc=org");
+        $record = new LdifAddRecord('dc=example,dc=org');
         $this->assertSame($record, $record->setAttrValSpecs(['X']));
         $this->assertSame(['X'], $record->getAttrValSpecs());
     }
 
-    public function test__acceptRecordVisitor() : void
+    public function testAcceptRecordVisitor(): void
     {
         $visitor = $this->getMockBuilder(RecordVisitorInterface::class)
-                        ->getMockForAbstractClass();
+            ->getMockForAbstractClass()
+        ;
 
-        $record = new LdifAddRecord("dc=example,dc=org");
+        $record = new LdifAddRecord('dc=example,dc=org');
 
         $visitor->expects($this->once())
-                ->method('visitLdifAddRecord')
-                ->with($record)
-                ->will($this->returnValue('ok'));
+            ->method('visitLdifAddRecord')
+            ->with($record)
+            ->will($this->returnValue('ok'))
+        ;
 
         $this->assertSame('ok', $record->acceptRecordVisitor($visitor));
     }

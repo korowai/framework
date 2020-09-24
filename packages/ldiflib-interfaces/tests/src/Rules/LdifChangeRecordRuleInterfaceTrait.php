@@ -12,11 +12,11 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldif\Rules;
 
-use Korowai\Tests\Lib\Ldif\RuleInterfaceTrait;
+use Korowai\Lib\Ldif\Rules\ChangeRecordInitRuleInterface;
+use Korowai\Lib\Ldif\Rules\ControlRuleInterface;
 use Korowai\Lib\Ldif\Rules\DnSpecRuleInterface;
 use Korowai\Lib\Ldif\Rules\SepRuleInterface;
-use Korowai\Lib\Ldif\Rules\ControlRuleInterface;
-use Korowai\Lib\Ldif\Rules\ChangeRecordInitRuleInterface;
+use Korowai\Tests\Lib\Ldif\RuleInterfaceTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -25,27 +25,27 @@ trait LdifChangeRecordRuleInterfaceTrait
 {
     use RuleInterfaceTrait;
 
-    public $dnSpecRule = null;
-    public $sepRule = null;
-    public $controlRule = null;
-    public $changeRecordInitRule = null;
+    public $dnSpecRule;
+    public $sepRule;
+    public $controlRule;
+    public $changeRecordInitRule;
 
-    public function getDnSpecRule() : DnSpecRuleInterface
+    public function getDnSpecRule(): DnSpecRuleInterface
     {
         return $this->dnSpecRule;
     }
 
-    public function getSepRule() : SepRuleInterface
+    public function getSepRule(): SepRuleInterface
     {
         return $this->sepRule;
     }
 
-    public function getControlRule() : ControlRuleInterface
+    public function getControlRule(): ControlRuleInterface
     {
         return $this->controlRule;
     }
 
-    public function getChangeRecordInitRule() : ChangeRecordInitRuleInterface
+    public function getChangeRecordInitRule(): ChangeRecordInitRuleInterface
     {
         return $this->changeRecordInitRule;
     }

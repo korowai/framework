@@ -12,15 +12,11 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Testing\Properties;
 
-use Korowai\Testing\TestCase;
-use Korowai\Testing\Properties\AbstractProperties;
 use Korowai\Testing\Properties\ActualProperties;
-use Korowai\Testing\Properties\ActualPropertiesInterface;
 use Korowai\Testing\Properties\ExpectedProperties;
 use Korowai\Testing\Properties\ExpectedPropertiesInterface;
 use Korowai\Testing\Properties\PropertiesInterface;
 use Korowai\Testing\Properties\PropertySelectorInterface;
-use PHPUnit\Framework\InvalidArgumentException;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -30,9 +26,9 @@ trait ExpectedPropertiesTestTrait
     abstract public function createExpectedProperties(
         PropertySelectorInterface $selector,
         ...$args
-    ) : ExpectedPropertiesInterface;
+    ): ExpectedPropertiesInterface;
 
-    abstract public static function assertSame($expected, $actual, string $message = '') : void;
+    abstract public static function assertSame($expected, $actual, string $message = ''): void;
 
     //
     //
@@ -44,21 +40,22 @@ trait ExpectedPropertiesTestTrait
     // canUnwrapChild()
     //
 
-    public function prov__ExpectedProperties__canUnwrapChild() : array
+    public function prov__ExpectedProperties__canUnwrapChild(): array
     {
         $selector = $this->createMock(PropertySelectorInterface::class);
+
         return [
             // #0
             [
                 'parent' => $this->createExpectedProperties($selector),
-                'child'  => new ActualProperties,
+                'child' => new ActualProperties(),
                 'expect' => false,
             ],
 
             // #1
             [
                 'parent' => $this->createExpectedProperties($selector),
-                'child'  => new ExpectedProperties($selector),
+                'child' => new ExpectedProperties($selector),
                 'expect' => true,
             ],
         ];
@@ -71,7 +68,7 @@ trait ExpectedPropertiesTestTrait
         PropertiesInterface $parent,
         PropertiesInterface $child,
         bool $expect
-    ) : void {
+    ): void {
         $this->assertSame($expect, $parent->canUnwrapChild($child));
     }
 }

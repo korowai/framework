@@ -12,37 +12,38 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Testing\Container\Symfony;
 
-use Korowai\Testing\Container\Symfony\TestCase;
-use Psr\Container\ContainerInterface;
+use function Korowai\Testing\config_path;
 use Korowai\Testing\Container\ContainerFactoryInterface;
 use Korowai\Testing\Container\Symfony\ContainerFactory;
-
-use function Korowai\Testing\config_path;
+use Korowai\Testing\Container\Symfony\TestCase;
+use Psr\Container\ContainerInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Testing\Container\Symfony\TestCase
+ *
+ * @internal
  */
 final class TestCaseTest extends TestCase
 {
-    public function getServicesVisibility() : array
+    public function getServicesVisibility(): array
     {
         return [
-            ContainerFactoryInterface::class => true
+            ContainerFactoryInterface::class => true,
         ];
     }
 
-    public function provideContainerConfigs() : array
+    public function provideContainerConfigs(): array
     {
-        return [ config_path('symfony/services.php') ];
+        return [config_path('symfony/services.php')];
     }
 
-    public function examineConfiguredContainer(ContainerInterface $container, $config) : void
+    public function examineConfiguredContainer(ContainerInterface $container, $config): void
     {
         $this->assertInstanceOf(ContainerFactory::class, $container->get(ContainerFactoryInterface::class));
     }
 
-    public function test__getServicesVisibility__returnsEmptyArray() : void
+    public function testGetServicesVisibilityReturnsEmptyArray(): void
     {
         $this->assertSame([], parent::getServicesVisibility());
     }

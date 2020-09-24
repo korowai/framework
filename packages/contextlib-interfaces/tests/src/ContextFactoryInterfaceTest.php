@@ -14,29 +14,30 @@ namespace Korowai\Tests\Lib\Context;
 
 use Korowai\Lib\Context\ContextFactoryInterface;
 use Korowai\Lib\Context\ContextManagerInterface;
-
 use Korowai\Testing\ContextlibInterfaces\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Tests\Lib\Context\ContextFactoryInterfaceTrait
+ *
+ * @internal
  */
 final class ContextFactoryInterfaceTest extends TestCase
 {
     public static function createDummyInstance()
     {
-        return new class implements ContextFactoryInterface {
+        return new class() implements ContextFactoryInterface {
             use ContextFactoryInterfaceTrait;
         };
     }
 
-    public function test__dummyImplementation() : void
+    public function testDummyImplementation(): void
     {
         $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(ContextFactoryInterface::class, $dummy);
     }
 
-    public function test__getContextManager() : void
+    public function testGetContextManager(): void
     {
         $dummy = $this->createDummyInstance();
 
@@ -47,7 +48,7 @@ final class ContextFactoryInterfaceTest extends TestCase
         $this->assertSame($dummy->contextManager, $dummy->getContextManager(''));
     }
 
-    public function test__getContextManager__withTypeError() : void
+    public function testGetContextManagerWithTypeError(): void
     {
         $dummy = $this->createDummyInstance();
         $dummy->contextManager = '';

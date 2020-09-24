@@ -12,20 +12,21 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldif;
 
+use Korowai\Lib\Ldif\Input;
 use Korowai\Lib\Ldif\Preprocessor;
 use Korowai\Lib\Ldif\PreprocessorInterface;
-use Korowai\Lib\Ldif\Input;
 use Korowai\Lib\Ldif\Util\IndexMap;
-
 use Korowai\Testing\Ldiflib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Ldif\Preprocessor
+ *
+ * @internal
  */
 final class PreprocessorTest extends TestCase
 {
-    public function test__implements__PreprocessorInterface() : void
+    public function testImplementsPreprocessorInterface(): void
     {
         $this->assertImplementsInterface(PreprocessorInterface::class, Preprocessor::class);
     }
@@ -37,49 +38,54 @@ final class PreprocessorTest extends TestCase
                 '/foo/',
                 '',
                 '',
-                new IndexMap([])
+                new IndexMap([]),
             ],
 
             [
                 '/foo/',
                 'bar baz',
                 'bar baz',
-                new IndexMap([[0,0]])
+                new IndexMap([[0, 0]]),
             ],
 
             [
                 '/\n /m',
-            //   00000 000011111 11111122
-            //   01234 567890123 45678901
+                //   00000 000011111 11111122
+                //   01234 567890123 45678901
                 "first\n  second\n  third",
                 'first second third',
-                new IndexMap([[0,0], [5,7], [12,16]])
+                new IndexMap([[0, 0], [5, 7], [12, 16]]),
             ],
 
             [
                 '/\n /m',
-            //   00000000001 111111 111222222 22223333 3 33333444444 4444555555
-            //   01234567890 123456 789012345 67890123 4 56789012345 6789012345
+                //   00000000001 111111 111222222 22223333 3 33333444444 4444555555
+                //   01234567890 123456 789012345 67890123 4 56789012345 6789012345
                 "# comment 1\nfirst\n  second\n  third\n\n# two-line\n  comment",
                 "# comment 1\nfirst second third\n\n# two-line comment",
-                new IndexMap([[0,0], [17,19], [24,28], [42,48]]),
+                new IndexMap([[0, 0], [17, 19], [24, 28], [42, 48]]),
             ],
 
             [
                 '/^#[^\n]*\n?/m',
-            //   00000000001 111111 111222222 22223333 3 33333444444 4444555555
-            //   01234567890 123456 789012345 67890123 4 56789012345 6789012345
+                //   00000000001 111111 111222222 22223333 3 33333444444 4444555555
+                //   01234567890 123456 789012345 67890123 4 56789012345 6789012345
                 "# comment 1\nfirst\n  second\n  third\n\n# comment 2",
                 "first\n  second\n  third\n\n",
-                new IndexMap([[0,12]]),
-            ]
+                new IndexMap([[0, 12]]),
+            ],
         ];
     }
 
     /**
      * @dataProvider rmReCases
+     *
+     * @param mixed $re
+     * @param mixed $src
+     * @param mixed $expect
+     * @param mixed $expectIm
      */
-    public function test__rmRe($re, $src, $expect, $expectIm) : void
+    public function testRmRe($re, $src, $expect, $expectIm): void
     {
         $im = new IndexMap([]);
         $this->assertSame($expect, Preprocessor::rmRe($re, $src, $im));
@@ -87,7 +93,7 @@ final class PreprocessorTest extends TestCase
         $this->assertSame($expectIm->getIncrement(), $im->getIncrement());
     }
 
-    public function test__rmRe__twice() : void
+    public function testRmReTwice(): void
     {
         //
         // Double application of Preprocessor::rmRe with same IndexMap instance.
@@ -100,27 +106,27 @@ final class PreprocessorTest extends TestCase
         //                         00000000001 1111111112222222222 3 3333333334444444444
         //                         01234567890 1234567890123456789 0 1234567890123456789
         $this->assertSame("# comment 1\nfirst second third\n\n# two-line comment", $str);
-        $this->assertSame([[0,0], [17,19], [24,28], [42,48]], $im->getArray());
+        $this->assertSame([[0, 0], [17, 19], [24, 28], [42, 48]], $im->getArray());
 
         $str = Preprocessor::rmRe('/^#[^\n]*\n?/m', $str, $im);
         //                         000000000011111111 1 1
         //                         012345678901234567 8 9
         $this->assertSame("first second third\n\n", $str);
-        $this->assertSame([[0,12], [5,19], [12,28], [30, 48]], $im->getArray());
+        $this->assertSame([[0, 12], [5, 19], [12, 28], [30, 48]], $im->getArray());
     }
 
     public function rmLnContCases()
     {
         return [
-            [ "a text\nwithout\nln cont", "a text\nwithout\nln cont", [[0,0]] ],
-            [ "a text\n  with\n  ln conts", "a text with ln conts", [[0,0], [6,8], [11,15]] ],
+            ["a text\nwithout\nln cont", "a text\nwithout\nln cont", [[0, 0]]],
+            ["a text\n  with\n  ln conts", 'a text with ln conts', [[0, 0], [6, 8], [11, 15]]],
         ];
     }
 
     /**
      * @dataProvider rmLnContCases
      */
-    public function test__rmLnCont(string $src, string $expect, array $expectIm) : void
+    public function testRmLnCont(string $src, string $expect, array $expectIm): void
     {
         $im = new IndexMap([]);
         $this->assertSame($expect, Preprocessor::rmLnCont($src, $im));
@@ -131,15 +137,15 @@ final class PreprocessorTest extends TestCase
     public function rmCommentsCases()
     {
         return [
-            [ "A text without comments", "A text without comments", [[0,0]] ],
+            ['A text without comments', 'A text without comments', [[0, 0]]],
             [
-            //   00000000001 1111111112222222222333333333344 4 444444455555 55555666666666677777777778888888
-            //   01234567890 1234567890123456789012345678901 2 345678901234 56789012345678901234567890123456
+                //   00000000001 1111111112222222222333333333344 4 444444455555 55555666666666677777777778888888
+                //   01234567890 1234567890123456789012345678901 2 345678901234 56789012345678901234567890123456
                 "# comment 1\ndn: cn=admin,dc=example,dc=org\n\n# comment 2\ndn: ou=people,dc=example,dc=org",
                 "dn: cn=admin,dc=example,dc=org\n\ndn: ou=people,dc=example,dc=org",
-            //   000000000011111111112222222222 3 33333333344444444445555555555666
-            //   012345678901234567890123456789 0 12345678901234567890123456789012
-                [[0,12], [32,56]]
+                //   000000000011111111112222222222 3 33333333344444444445555555555666
+                //   012345678901234567890123456789 0 12345678901234567890123456789012
+                [[0, 12], [32, 56]],
             ],
         ];
     }
@@ -147,7 +153,7 @@ final class PreprocessorTest extends TestCase
     /**
      * @dataProvider rmCommentsCases
      */
-    public function test__rmComments(string $src, string $expect, array $expectIm) : void
+    public function testRmComments(string $src, string $expect, array $expectIm): void
     {
         $im = new IndexMap([]);
         $this->assertSame($expect, Preprocessor::rmComments($src, $im));
@@ -157,17 +163,17 @@ final class PreprocessorTest extends TestCase
 
     public function preprocessCases()
     {
-        $pp = new Preprocessor;
+        $pp = new Preprocessor();
 
         return [
             [
                 $pp,
-                [""],
+                [''],
                 [
-                    "",
+                    '',
                     [],
-                    '-'
-                ]
+                    '-',
+                ],
             ],
 
             [
@@ -175,9 +181,9 @@ final class PreprocessorTest extends TestCase
                 ["dn: cn=admin,dc=example,dc=org\ncn: admin"],
                 [
                     "dn: cn=admin,dc=example,dc=org\ncn: admin",
-                    [[0,0]],
-                    '-'
-                ]
+                    [[0, 0]],
+                    '-',
+                ],
             ],
 
             [
@@ -186,12 +192,12 @@ final class PreprocessorTest extends TestCase
                 //012345678901234567890123 45678901 2345678901
                 ["dn: cn=admin,dc=example,\n dc=org\ncn: admin"],
                 [
-                //   000000000011111111112222222222 333333333344
-                //   012345678901234567890123456789 012345678901
+                    //   000000000011111111112222222222 333333333344
+                    //   012345678901234567890123456789 012345678901
                     "dn: cn=admin,dc=example,dc=org\ncn: admin",
-                    [[0,0], [24,26]],
-                    '-'
-                ]
+                    [[0, 0], [24, 26]],
+                    '-',
+                ],
             ],
 
             [
@@ -200,12 +206,12 @@ final class PreprocessorTest extends TestCase
                 //01234567890 1234567890123 45678901 23456789 012345678901
                 ["# comment 1\ndn: cn=admin,dc=example,dc=org\n# comment 2"],
                 [
-                //   000000000011111111112222222222 3
-                //   012345678901234567890123456789 0
+                    //   000000000011111111112222222222 3
+                    //   012345678901234567890123456789 0
                     "dn: cn=admin,dc=example,dc=org\n",
-                    [[0,12]],
-                    '-'
-                ]
+                    [[0, 12]],
+                    '-',
+                ],
             ],
 
             [
@@ -214,12 +220,12 @@ final class PreprocessorTest extends TestCase
                 //0123456789 012345678901 2345678901234567890123456789012
                 ["version: 1\n# comment 1\ndn: cn=admin,dc=example,dc=org"],
                 [
-                //   0000000000 1111111111222222222233333333334 4
-                //   0123456789 0123456789012345678901234567890 1
+                    //   0000000000 1111111111222222222233333333334 4
+                    //   0123456789 0123456789012345678901234567890 1
                     "version: 1\ndn: cn=admin,dc=example,dc=org",
-                    [[0,0], [11,23]],
-                    '-'
-                ]
+                    [[0, 0], [11, 23]],
+                    '-',
+                ],
             ],
 
             [
@@ -228,12 +234,12 @@ final class PreprocessorTest extends TestCase
                 //012345678 9012 3456789012345678901234567 89012345 678901234567
                 ["# comment\n  1\ndn: cn=admin,dc=example,\n dc=org\n# comment 2"],
                 [
-                //   000000000011111111112222222222 3
-                //   012345678901234567890123456789 0
+                    //   000000000011111111112222222222 3
+                    //   012345678901234567890123456789 0
                     "dn: cn=admin,dc=example,dc=org\n",
-                    [[0,14], [24,40]],
-                    '-'
-                ]
+                    [[0, 14], [24, 40]],
+                    '-',
+                ],
             ],
         ];
     }
@@ -241,7 +247,7 @@ final class PreprocessorTest extends TestCase
     /**
      * @dataProvider preprocessCases
      */
-    public function test__preprocess(Preprocessor $pp, array $args, array $expect) : void
+    public function testPreprocess(Preprocessor $pp, array $args, array $expect): void
     {
         [$expString, $expIm, $expFile] = $expect;
 

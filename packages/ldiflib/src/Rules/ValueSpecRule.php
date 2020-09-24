@@ -12,9 +12,9 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldif\Rules;
 
-use Korowai\Lib\Ldif\ParserStateInterface as State;
-use Korowai\Lib\Ldif\Nodes\ValueSpecInterface;
 use Korowai\Lib\Ldif\Nodes\ValueSpec;
+use Korowai\Lib\Ldif\Nodes\ValueSpecInterface;
+use Korowai\Lib\Ldif\ParserStateInterface as State;
 use Korowai\Lib\Ldif\Scan;
 use Korowai\Lib\Rfc\Rfc2849;
 use League\Uri\Exceptions\SyntaxError as UriSyntaxError;
@@ -43,77 +43,76 @@ final class ValueSpecRule extends AbstractRfcRule
      * to the caller any semantic *$value*. The function shall return true on
      * success or false on failure.
      *
-     * @param  State $state
-     *      Provides the input string, cursor, containers for errors, etc..
-     * @param  array $matches
-     *      An array of matches as returned from *preg_match()*. Contains
-     *      substrings captured by the encapsulated RFC rule.
-     * @param  mixed $value
-     *      Semantic value to be returned to caller.
-     * @return bool true on success, false on failure.
+     * @param State $state
+     *                       Provides the input string, cursor, containers for errors, etc..
+     * @param array $matches
+     *                       An array of matches as returned from *preg_match()*. Contains
+     *                       substrings captured by the encapsulated RFC rule.
+     * @param mixed $value
+     *                       Semantic value to be returned to caller
+     *
+     * @return bool true on success, false on failure
      */
-    public function parseMatched(State $state, array $matches, &$value = null) : bool
+    public function parseMatched(State $state, array $matches, &$value = null): bool
     {
         if (Scan::matched('value_safe', $matches, $string, $offset)) {
             $value = ValueSpec::createSafeString($string);
+
             return true;
-        } elseif (Scan::matched('value_b64', $matches, $string, $offset)) {
+        }
+        if (Scan::matched('value_b64', $matches, $string, $offset)) {
             return $this->parseMatchedBase64String($state, $string, $offset, $value);
-        } elseif (Scan::matched('value_url', $matches, $string, $offset)) {
+        }
+        if (Scan::matched('value_url', $matches, $string, $offset)) {
             return $this->parseMatchedUriReference($state, $matches, $value);
         }
 
         $message = 'internal error: missing or invalid capture groups "value_safe", "value_b64" and "value_url"';
         $state->errorHere($message);
         $value = null;
+
         return false;
     }
 
     /**
-     *
-     * @param  State $state
-     * @param  string $string
-     * @param  int $offset
-     * @param  ValueSpecInterface $value
-     *
-     * @return bool
+     * @param ValueSpecInterface $value
      */
     protected function parseMatchedBase64String(
         State $state,
         string $string,
         int $offset,
         ValueSpecInterface &$value = null
-    ) : bool {
+    ): bool {
         $decoded = Util::base64Decode($state, $string, $offset);
         if (null === $decoded) {
             $value = null;
+
             return false;
         }
         $value = ValueSpec::createBase64String($string, $decoded);
+
         return true;
     }
 
     /**
-     * Make URI reference
+     * Make URI reference.
      *
-     * @param  State $state
-     * @param  array $matches
-     * @param  array $value
-     *
-     * @return bool
+     * @param array $value
      */
     protected function parseMatchedUriReference(
         State $state,
         array $matches,
         ValueSpecInterface &$value = null
-    ) : bool {
+    ): bool {
         try {
             $value = ValueSpec::createUriFromRfc3986Matches($matches);
         } catch (UriSyntaxError $e) {
             $state->errorHere('syntax error: in URL: '.$e->getMessage());
             $value = null;
+
             return false;
         }
+
         return true;
     }
 }

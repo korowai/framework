@@ -20,10 +20,8 @@ interface ParserErrorInterface extends SourceLocationInterface, \Throwable
 {
     /**
      * Returns multiline error message for detailed error reporting.
-     *
-     * @return string
      */
-    public function getMultilineMessage() : string;
+    public function getMultilineMessage(): string;
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

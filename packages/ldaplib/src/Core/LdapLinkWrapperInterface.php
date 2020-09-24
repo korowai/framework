@@ -20,11 +20,9 @@ interface LdapLinkWrapperInterface
     /**
      * Returns the encapsulated LdapLink instance.
      *
-     * @return LdapLinkInterface
-     *
      * @psalm-mutation-free
      */
-    public function getLdapLink() : LdapLinkInterface;
+    public function getLdapLink(): LdapLinkInterface;
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

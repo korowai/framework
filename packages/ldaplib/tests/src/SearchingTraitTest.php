@@ -12,19 +12,19 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldap;
 
-use Korowai\Testing\Ldaplib\TestCase;
-use Korowai\Testing\Ldaplib\ExamineLdapLinkErrorHandlerTrait;
-
-use Korowai\Lib\Ldap\SearchingTrait;
-use Korowai\Lib\Ldap\SearchingInterface;
-use Korowai\Lib\Ldap\SearchQueryInterface;
 use Korowai\Lib\Ldap\Core\LdapLinkInterface;
+use Korowai\Lib\Ldap\SearchingInterface;
+use Korowai\Lib\Ldap\SearchingTrait;
+use Korowai\Testing\Ldaplib\ExamineLdapLinkErrorHandlerTrait;
+use Korowai\Testing\Ldaplib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Ldap\SearchingTrait
- * @covers \Korowai\Tests\Lib\Ldap\SearchingTestTrait
  * @covers \Korowai\Testing\Ldaplib\ExamineLdapLinkErrorHandlerTrait
+ * @covers \Korowai\Tests\Lib\Ldap\SearchingTestTrait
+ *
+ * @internal
  */
 final class SearchingTraitTest extends TestCase
 {
@@ -32,7 +32,7 @@ final class SearchingTraitTest extends TestCase
     use ExamineLdapLinkErrorHandlerTrait;
 
     // required by SearchingTestTrait
-    public function createSearchingInstance(LdapLinkInterface $ldapLink) : SearchingInterface
+    public function createSearchingInstance(LdapLinkInterface $ldapLink): SearchingInterface
     {
         return new class($ldapLink) implements SearchingInterface {
             use SearchingTrait;
@@ -44,7 +44,7 @@ final class SearchingTraitTest extends TestCase
                 $this->ldapLink = $ldapLink;
             }
 
-            public function getLdapLink() : LdapLinkInterface
+            public function getLdapLink(): LdapLinkInterface
             {
                 return $this->ldapLink;
             }

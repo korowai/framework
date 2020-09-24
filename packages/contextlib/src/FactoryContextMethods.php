@@ -25,6 +25,7 @@ trait FactoryContextMethods
     public function enterContext()
     {
         ContextFactoryStack::getInstance()->push($this);
+
         return $this;
     }
 
@@ -33,9 +34,10 @@ trait FactoryContextMethods
      *
      * @return bool false
      */
-    public function exitContext(\Throwable $exception = null) : bool
+    public function exitContext(\Throwable $exception = null): bool
     {
         ContextFactoryStack::getInstance()->pop();
+
         return false;
     }
 }

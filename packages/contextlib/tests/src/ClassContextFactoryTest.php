@@ -12,32 +12,34 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Context;
 
-use Korowai\Testing\TestCase;
-
-use Korowai\Lib\Context\ClassContextFactory;
 use Korowai\Lib\Context\AbstractManagedContextFactory;
+use Korowai\Lib\Context\ClassContextFactory;
 use Korowai\Lib\Context\ContextManagerInterface;
+use Korowai\Testing\TestCase;
 
 final class ClassYVO2VPY5
 {
-};
+}
 
 final class ClassJG8MG9JQ
 {
-};
+}
 
 abstract class BaseContextOLESLFOV implements ContextManagerInterface
 {
     public $wrapped;
+
     public function __construct($wrapped)
     {
         $this->wrapped = $wrapped;
     }
+
     public function enterContext()
     {
         return $this;
     }
-    public function exitContext(\Throwable $exception = null) : bool
+
+    public function exitContext(\Throwable $exception = null): bool
     {
         return false;
     }
@@ -54,27 +56,29 @@ final class ContextJG8MG9JQ extends BaseContextOLESLFOV
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Context\ClassContextFactory
+ *
+ * @internal
  */
 final class ClassContextFactoryTest extends TestCase
 {
-    public function test__extends__AbstractManagedContextFactory() : void
+    public function testExtendsAbstractManagedContextFactory(): void
     {
         $this->assertExtendsClass(AbstractManagedContextFactory::class, ClassContextFactory::class);
     }
 
-    public function test__construct__withoutArgs() : void
+    public function testConstructWithoutArgs(): void
     {
         $factory = new ClassContextFactory();
         $this->assertEquals([], $factory->getRegistry());
     }
 
-    public function test__construct__withSomeWrappers() : void
+    public function testConstructWithSomeWrappers(): void
     {
         $wrappers = [
             ClassYVO2VPY5::class => ContextYVO2VPY5::class,
-            '\\' . ClassJG8MG9JQ::class => function ($wrapped) {
+            '\\'.ClassJG8MG9JQ::class => function ($wrapped) {
                 return new ContextJG8MG9JQ($wrapped);
-            }
+            },
         ];
 
         $factory = new ClassContextFactory($wrappers);
@@ -95,11 +99,11 @@ final class ClassContextFactoryTest extends TestCase
         $this->assertSame($obj2, $ctx2->wrapped);
     }
 
-    public function test__register() : void
+    public function testRegister(): void
     {
         $factory = new ClassContextFactory();
         $factory->register(ClassYVO2VPY5::class, ContextYVO2VPY5::class);
-        $factory->register('\\' . ClassJG8MG9JQ::class, function ($wrapped) {
+        $factory->register('\\'.ClassJG8MG9JQ::class, function ($wrapped) {
             return new ContextJG8MG9JQ($wrapped);
         });
 
@@ -120,38 +124,38 @@ final class ClassContextFactoryTest extends TestCase
         $this->assertSame($obj2, $ctx2->wrapped);
     }
 
-    public function test__register__withContextManagerNotAClass() : void
+    public function testRegisterWithContextManagerNotAClass(): void
     {
         $factory = new ClassContextFactory();
 
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'argument 2 to ' . ClassContextFactory::class . '::register()' .
+            'argument 2 to '.ClassContextFactory::class.'::register()'.
             ' must be a callable or a class name, string given'
         );
         $factory->register(ClassJG8MG9JQ::class, 'In-Ex-Is-Tent');
     }
 
-    public function test__register__withContextManagerNotAString() : void
+    public function testRegisterWithContextManagerNotAString(): void
     {
         $factory = new ClassContextFactory();
 
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessageMatches(
-            '/argument 2 to ' . preg_quote(ClassContextFactory::class) .
-            '::register\\(\\)' .
+            '/argument 2 to '.preg_quote(ClassContextFactory::class).
+            '::register\\(\\)'.
             ' must be a callable or a class name, int(?:eger)? given/'
         );
         $factory->register(ClassJG8MG9JQ::class, 123);
     }
 
-    public function test__remove() : void
+    public function testRemove(): void
     {
         $wrappers = [
             ClassYVO2VPY5::class => ContextYVO2VPY5::class,
-            '\\' . ClassJG8MG9JQ::class => function ($wrapped) {
+            '\\'.ClassJG8MG9JQ::class => function ($wrapped) {
                 return new ContextJG8MG9JQ($wrapped);
-            }
+            },
         ];
 
         $factory = new ClassContextFactory($wrappers);
@@ -176,13 +180,13 @@ final class ClassContextFactoryTest extends TestCase
         $this->assertEquals(0, count($registry));
     }
 
-    public function test__getContextManager() : void
+    public function testGetContextManager(): void
     {
         $wrappers = [
             ClassYVO2VPY5::class => ContextYVO2VPY5::class,
-            '\\' . ClassJG8MG9JQ::class => function ($wrapped) {
+            '\\'.ClassJG8MG9JQ::class => function ($wrapped) {
                 return new ContextJG8MG9JQ($wrapped);
-            }
+            },
         ];
 
         $factory = new ClassContextFactory($wrappers);
@@ -199,13 +203,13 @@ final class ClassContextFactoryTest extends TestCase
         $this->assertSame($obj2, $ctx2->wrapped);
     }
 
-    public function test__getContextManager__withNonObject() : void
+    public function testGetContextManagerWithNonObject(): void
     {
         $wrappers = [
             ClassYVO2VPY5::class => ContextYVO2VPY5::class,
-            '\\' . ClassJG8MG9JQ::class => function ($wrapped) {
+            '\\'.ClassJG8MG9JQ::class => function ($wrapped) {
                 return new ContextJG8MG9JQ($wrapped);
-            }
+            },
         ];
 
         $factory = new ClassContextFactory($wrappers);
@@ -213,7 +217,7 @@ final class ClassContextFactoryTest extends TestCase
         $this->assertNull($factory->getContextManager('foo'));
     }
 
-    public function test__getContextManager__withUnregisteredObject() : void
+    public function testGetContextManagerWithUnregisteredObject(): void
     {
         $wrappers = [
             ClassYVO2VPY5::class => ContextYVO2VPY5::class,
@@ -221,7 +225,7 @@ final class ClassContextFactoryTest extends TestCase
 
         $factory = new ClassContextFactory($wrappers);
 
-        $this->assertNull($factory->getContextManager(new ClassJG8MG9JQ));
+        $this->assertNull($factory->getContextManager(new ClassJG8MG9JQ()));
     }
 }
 

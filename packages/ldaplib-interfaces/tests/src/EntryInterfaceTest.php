@@ -13,29 +13,30 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Ldap;
 
 use Korowai\Lib\Ldap\EntryInterface;
-
 use Korowai\Testing\LdaplibInterfaces\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Tests\Lib\Ldap\EntryInterfaceTrait
+ *
+ * @internal
  */
 final class EntryInterfaceTest extends TestCase
 {
     public static function createDummyInstance()
     {
-        return new class implements EntryInterface {
+        return new class() implements EntryInterface {
             use EntryInterfaceTrait;
         };
     }
 
-    public function test__dummyImplementation() : void
+    public function testDummyImplementation(): void
     {
         $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(EntryInterface::class, $dummy);
     }
 
-    public function test__getDn() : void
+    public function testGetDn(): void
     {
         $dummy = $this->createDummyInstance();
 
@@ -43,7 +44,7 @@ final class EntryInterfaceTest extends TestCase
         $this->assertSame($dummy->dn, $dummy->getDn());
     }
 
-    public function test__getDn__withiRetTypeError() : void
+    public function testGetDnWithiRetTypeError(): void
     {
         $dummy = $this->createDummyInstance();
         $dummy->dn = null;
@@ -53,7 +54,7 @@ final class EntryInterfaceTest extends TestCase
         $dummy->getDn();
     }
 
-    public function test__setDn() : void
+    public function testSetDn(): void
     {
         $dummy = $this->createDummyInstance();
 
@@ -61,7 +62,7 @@ final class EntryInterfaceTest extends TestCase
         $this->assertSame($dummy->setDn, $dummy->setDn(''));
     }
 
-    public function test__setDn__withArgTypeError() : void
+    public function testSetDnWithArgTypeError(): void
     {
         $dummy = $this->createDummyInstance();
 
@@ -70,7 +71,7 @@ final class EntryInterfaceTest extends TestCase
         $dummy->setDn(null);
     }
 
-    public function test__getAttributes() : void
+    public function testGetAttributes(): void
     {
         $dummy = $this->createDummyInstance();
 
@@ -78,7 +79,7 @@ final class EntryInterfaceTest extends TestCase
         $this->assertSame($dummy->attributes, $dummy->getAttributes());
     }
 
-    public function test__getAttributes__withRetTypeError() : void
+    public function testGetAttributesWithRetTypeError(): void
     {
         $dummy = $this->createDummyInstance();
         $dummy->attributes = null;
@@ -88,7 +89,7 @@ final class EntryInterfaceTest extends TestCase
         $dummy->getAttributes();
     }
 
-    public function test__getAttribute() : void
+    public function testGetAttribute(): void
     {
         $dummy = $this->createDummyInstance();
 
@@ -96,7 +97,7 @@ final class EntryInterfaceTest extends TestCase
         $this->assertSame($dummy->attribute, $dummy->getAttribute(''));
     }
 
-    public function test__getAttribute__withArgTypeError() : void
+    public function testGetAttributeWithArgTypeError(): void
     {
         $dummy = $this->createDummyInstance();
 
@@ -105,7 +106,7 @@ final class EntryInterfaceTest extends TestCase
         $dummy->getAttribute(null);
     }
 
-    public function test__getAttribute__withRetTypeError() : void
+    public function testGetAttributeWithRetTypeError(): void
     {
         $dummy = $this->createDummyInstance();
         $dummy->attribute = null;
@@ -115,7 +116,7 @@ final class EntryInterfaceTest extends TestCase
         $dummy->getAttribute('');
     }
 
-    public function test__hasAttribute() : void
+    public function testHasAttribute(): void
     {
         $dummy = $this->createDummyInstance();
 
@@ -123,7 +124,7 @@ final class EntryInterfaceTest extends TestCase
         $this->assertSame($dummy->hasAttribute, $dummy->hasAttribute(''));
     }
 
-    public function test__hasAttribute__withArgTypeError() : void
+    public function testHasAttributeWithArgTypeError(): void
     {
         $dummy = $this->createDummyInstance();
         $dummy->hasAttribute = false;
@@ -133,7 +134,7 @@ final class EntryInterfaceTest extends TestCase
         $dummy->hasAttribute(null);
     }
 
-    public function test__hasAttribute__withRetTypeError() : void
+    public function testHasAttributeWithRetTypeError(): void
     {
         $dummy = $this->createDummyInstance();
         $dummy->hasAttribute = null;
@@ -143,7 +144,7 @@ final class EntryInterfaceTest extends TestCase
         $dummy->hasAttribute('');
     }
 
-    public function test__setAttributes() : void
+    public function testSetAttributes(): void
     {
         $dummy = $this->createDummyInstance();
 
@@ -157,7 +158,7 @@ final class EntryInterfaceTest extends TestCase
         $this->assertSame($dummy->setAttributes, $dummy->setAttributes([]));
     }
 
-    public function test__setAttributes__withArgTypeError() : void
+    public function testSetAttributesWithArgTypeError(): void
     {
         $dummy = $this->createDummyInstance();
 
@@ -166,7 +167,7 @@ final class EntryInterfaceTest extends TestCase
         $dummy->setAttributes(null);
     }
 
-    public function test__setAttribute() : void
+    public function testSetAttribute(): void
     {
         $dummy = $this->createDummyInstance();
 
@@ -180,18 +181,18 @@ final class EntryInterfaceTest extends TestCase
         $this->assertSame($dummy->setAttribute, $dummy->setAttribute('', []));
     }
 
-    public function prov__setAttribute__withArgTypeError() : array
+    public function prov__setAttribute__withArgTypeError(): array
     {
         return [
             [[null, []], \string::class],
-            [['', null], 'array']
+            [['', null], 'array'],
         ];
     }
 
     /**
      * @dataProvider prov__setAttribute__withArgTypeError
      */
-    public function test__setAttribute__withArgTypeError(array $args, string $message) : void
+    public function testSetAttributeWithArgTypeError(array $args, string $message): void
     {
         $dummy = $this->createDummyInstance();
 

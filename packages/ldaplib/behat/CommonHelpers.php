@@ -19,20 +19,21 @@ trait CommonHelpers
         if (preg_match('/^\{([A-Z0-9]{3,5})\}(.+)$/', $actual_password, $matches)) {
             $tag = $matches[1];
             $actual_hash = $matches[2];
-            if (strtoupper($tag) == 'CRYPT') {
+            if ('CRYPT' == strtoupper($tag)) {
                 $hash = crypt($password, $actual_hash);
-            } elseif (strtoupper($tag) == 'MD5') {
+            } elseif ('MD5' == strtoupper($tag)) {
                 $hash = base64_encode(md5($password, true));
-            } elseif (strtoupper($tag) == 'SHA1') {
-                $hash =  base64_encode(sha1($password, true));
-            } elseif (strtoupper($tag) == 'SSHA') {
+            } elseif ('SHA1' == strtoupper($tag)) {
+                $hash = base64_encode(sha1($password, true));
+            } elseif ('SSHA' == strtoupper($tag)) {
                 $salt = substr(base64_decode($actual_hash), 20);
-                $hash = base64_encode(sha1($password.$salt, true) . $salt);
+                $hash = base64_encode(sha1($password.$salt, true).$salt);
             } else {
-                throw new \RuntimeException("unsupported password hash format: $tag");
+                throw new \RuntimeException("unsupported password hash format: {$tag}");
             }
-            $password = '{' . $tag . '}' . $hash;
+            $password = '{'.$tag.'}'.$hash;
         }
+
         return $password;
     }
 }

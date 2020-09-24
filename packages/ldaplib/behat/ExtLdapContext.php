@@ -14,19 +14,19 @@ namespace Korowai\Lib\Ldap\Behat;
 
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\PyStringNode;
-use Korowai\Lib\Ldap\Ldap;
 use Korowai\Lib\Ldap\Core\Adapter as ExtLdapAdapter;
+use Korowai\Lib\Ldap\Ldap;
 use Korowai\Lib\Ldap\LdapException;
-
-use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 use Korowai\Testing\Ldaplib\TestCase;
+use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 
 /**
  * Defines application features from the specific context.
  */
 class ExtLdapContext implements Context
 {
-    use LdapHelper, CommonHelpers;
+    use LdapHelper;
+    use CommonHelpers;
 
     /**
      * @var Ldap
@@ -70,6 +70,8 @@ class ExtLdapContext implements Context
     /**
      * @Transform :config
      * @Transform :options
+     *
+     * @param mixed $string
      */
     public function decodeJsonString($string)
     {
@@ -88,10 +90,13 @@ class ExtLdapContext implements Context
 
     /**
      * @Given I am connected to uri :uri
+     *
+     * @param mixed $uri
      */
     public function iAmConnectedToUri($uri)
     {
         $config = ['uri' => $uri];
+
         try {
             $this->ldap = Ldap::createWithConfig($config);
         } catch (\Exception $e) {
@@ -101,6 +106,8 @@ class ExtLdapContext implements Context
 
     /**
      * @Given I am connected using config :config
+     *
+     * @param mixed $config
      */
     public function iAmConnectedUsingConfig($config)
     {
@@ -117,6 +124,8 @@ class ExtLdapContext implements Context
 
     /**
      * @Given I am bound with binddn :binddn
+     *
+     * @param mixed $binddn
      */
     public function iAmBoundWithBindDn($binddn)
     {
@@ -125,6 +134,9 @@ class ExtLdapContext implements Context
 
     /**
      * @Given I am bound with binddn :binddn and password :password
+     *
+     * @param mixed $binddn
+     * @param mixed $password
      */
     public function iAmBoundWithBindDnAndPassword($binddn, $password)
     {
@@ -133,6 +145,8 @@ class ExtLdapContext implements Context
 
     /**
      * @When I create ldap link with config :config
+     *
+     * @param mixed $config
      */
     public function iCreateLdapLinkWithJsonConfig($config)
     {
@@ -149,6 +163,8 @@ class ExtLdapContext implements Context
 
     /**
      * @When I bind with binddn :binddn
+     *
+     * @param mixed $binddn
      */
     public function iBindWithBindDn($binddn)
     {
@@ -157,6 +173,9 @@ class ExtLdapContext implements Context
 
     /**
      * @When I bind with binddn :binddn and password :password
+     *
+     * @param mixed $binddn
+     * @param mixed $password
      */
     public function iBindWithBindDnAndPassword($binddn, $password)
     {
@@ -165,6 +184,9 @@ class ExtLdapContext implements Context
 
     /**
      * @When I search with basedn :basedn and filter :filter
+     *
+     * @param mixed $basedn
+     * @param mixed $filter
      */
     public function iSearchWithBaseDnAndFilter($basedn, $filter)
     {
@@ -173,6 +195,10 @@ class ExtLdapContext implements Context
 
     /**
      * @When I search with basedn :basedn, filter :filter and options :options
+     *
+     * @param mixed $basedn
+     * @param mixed $filter
+     * @param mixed $options
      */
     public function iSearchWithBaseDnFilterAndOptions($basedn, $filter, $options)
     {
@@ -181,6 +207,10 @@ class ExtLdapContext implements Context
 
     /**
      * @When I compare dn :dn, attribute :attribute with value :value
+     *
+     * @param mixed $dn
+     * @param mixed $attribute
+     * @param mixed $value
      */
     public function iCompareDnAttributeAndValue($dn, $attribute, $value)
     {
@@ -197,25 +227,29 @@ class ExtLdapContext implements Context
 
     /**
      * @Then I should see ldap exception with message :arg1
+     *
+     * @param mixed $arg1
      */
     public function iShouldSeeLdapExceptionWithMessage($arg1)
     {
         $matchedExceptions = array_filter($this->exceptions, function ($e) use ($arg1) {
             return ($e instanceof LdapException) && $e->getMessage() == $arg1;
         });
-        $expectedException = LdapException::class . '("' . $arg1 .'")';
+        $expectedException = LdapException::class.'("'.$arg1.'")';
         $foundExceptions = array_map(
             function ($e) {
-                return get_class($e) . '("' . $e->getMessage() . '")';
+                return get_class($e).'("'.$e->getMessage().'")';
             },
             $this->exceptions
         );
-        $foundExceptionsStr = '[ ' . implode(', ', $foundExceptions) . ' ]';
-        TestCase::assertTrue(count($matchedExceptions) > 0, $expectedException . " not found in " . $foundExceptionsStr);
+        $foundExceptionsStr = '[ '.implode(', ', $foundExceptions).' ]';
+        TestCase::assertTrue(count($matchedExceptions) > 0, $expectedException.' not found in '.$foundExceptionsStr);
     }
 
     /**
      * @Then I should see ldap exception with code :arg1
+     *
+     * @param mixed $arg1
      */
     public function iShouldSeeLdapExceptionWithCode($arg1)
     {
@@ -225,6 +259,8 @@ class ExtLdapContext implements Context
 
     /**
      * @Then I should see invalid options exception with message :arg1
+     *
+     * @param mixed $arg1
      */
     public function iShouldSeeInvalidOptionsExceptionWithMessage($arg1)
     {
@@ -238,7 +274,7 @@ class ExtLdapContext implements Context
     public function iShouldSeeNoException()
     {
         $e = $this->lastException();
-        $msg = $e === null ? '' : "The last exception's message was: " . $e->getMessage();
+        $msg = null === $e ? '' : "The last exception's message was: ".$e->getMessage();
         TestCase::assertSame($e, null, $msg);
     }
 
@@ -277,23 +313,23 @@ class ExtLdapContext implements Context
     {
         $expectedEntries = $this->decodeJsonPyStringNode($pystring);
         $actualEntries = array_map(
-            function ($entry) : array {
+            function ($entry): array {
                 return [
                     'dn' => $entry->getDn(),
-                    'attributes' => $entry->getAttributes()
+                    'attributes' => $entry->getAttributes(),
                 ];
             },
             $this->lastResult()->getEntries()
         );
 
-        $comparator = function (array $left, array $right) : int {
+        $comparator = function (array $left, array $right): int {
             return strcmp($left['dn'] ?? '', $right['dn'] ?? '');
         };
 
         usort($expectedEntries, $comparator);
         usort($actualEntries, $comparator);
 
-        # handle passwords
+        // handle passwords
         foreach ($expectedEntries as $i => $ee) {
             $expectedPassword = $ee['attributes']['userpassword'][0] ?? null;
             $actualPassword = $actualEntries[$i]['attributes']['userpassword'][0] ?? null;

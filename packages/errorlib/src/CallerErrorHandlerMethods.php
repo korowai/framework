@@ -27,6 +27,30 @@ trait CallerErrorHandlerMethods
      */
     protected $callerLine;
 
+    /**
+     * {@inheritdoc}
+     */
+    public function __invoke(int $severity, string $message, string $file, int $line): bool
+    {
+        return parent::__invoke($severity, $message, $this->getCallerFile(), $this->getCallerLine());
+    }
+
+    /**
+     * Returns the caller's file name as determined by the constructor.
+     */
+    public function getCallerFile(): string
+    {
+        return $this->callerFile;
+    }
+
+    /**
+     * Returns the caller's line number as determined by the constructor.
+     */
+    public function getCallerLine(): int
+    {
+        return $this->callerLine;
+    }
+
     protected function initCallerErrorHandler($distance)
     {
         $trace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 1 + $distance);
@@ -34,32 +58,6 @@ trait CallerErrorHandlerMethods
 
         $this->callerFile = $caller['file'];
         $this->callerLine = $caller['line'];
-    }
-
-    /**
-     * Returns the caller's file name as determined by the constructor.
-     * @return string
-     */
-    public function getCallerFile() : string
-    {
-        return $this->callerFile;
-    }
-
-    /**
-     * Returns the caller's line number as determined by the constructor.
-     * @return int
-     */
-    public function getCallerLine() : int
-    {
-        return $this->callerLine;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function __invoke(int $severity, string $message, string $file, int $line) : bool
-    {
-        return parent::__invoke($severity, $message, $this->getCallerFile(), $this->getCallerLine());
     }
 }
 

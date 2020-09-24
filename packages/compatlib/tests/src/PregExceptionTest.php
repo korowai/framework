@@ -12,17 +12,18 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Compat;
 
-use Korowai\Testing\TestCase;
-
 use Korowai\Lib\Compat\PregException;
+use Korowai\Testing\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Compat\PregException
+ *
+ * @internal
  */
 final class PregExceptionTest extends TestCase
 {
-    public function test__extends__ErrorException() : void
+    public function testExtendsErrorException(): void
     {
         $this->assertExtendsClass(\ErrorException::class, PregException::class);
     }

@@ -24,10 +24,8 @@ interface AttrValSpecRuleInterface extends RuleInterface
     /**
      * Returns the nested ValueSpecRuleInteface used for parsing *value-spec*
      * part of the *control* production.
-     *
-     * @return ValueSpecRuleInterface
      */
-    public function getValueSpecRule() : ValueSpecRuleInterface;
+    public function getValueSpecRule(): ValueSpecRuleInterface;
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

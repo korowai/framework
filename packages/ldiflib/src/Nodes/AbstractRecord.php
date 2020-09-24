@@ -33,10 +33,10 @@ abstract class AbstractRecord implements RecordInterface
     /**
      * Initializes the object. Should be invoked from subclass' constructor.
      *
-     * @param  string $dn
-     *      Distinguished name of the entry being altered by the record.
-     * @param  array $options
-     *      An array of key => value pairs. Supported options are:
+     * @param string $dn
+     *                        Distinguished name of the entry being altered by the record
+     * @param array  $options
+     *                        An array of key => value pairs. Supported options are:
      *
      * - ``"snippet" => SnippetInterface`` (optional): an optional
      *   instance of [SnippetInterface](\.\./SnippetInterface.html) to be
@@ -50,28 +50,26 @@ abstract class AbstractRecord implements RecordInterface
     {
         $this->setDn($dn);
         $this->setSnippet($options['snippet'] ?? null);
+
         return $this;
     }
 
     /**
      * Sets new DN to this object.
      *
-     * @param  string $dn
-     *
      * @return object $this
      */
     public function setDn(string $dn)
     {
         $this->dn = $dn;
+
         return $this;
     }
 
     /**
      * Returns the value of DN as string.
-     *
-     * @return string
      */
-    public function getDn() : string
+    public function getDn(): string
     {
         return $this->dn;
     }

@@ -14,6 +14,7 @@ namespace Korowai\Lib\Context;
 
 /**
  * A context manager that wraps a PHP resource and releases it at exit.
+ *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
 final class ResourceContextManager implements ContextManagerInterface
@@ -73,7 +74,7 @@ final class ResourceContextManager implements ContextManagerInterface
         'msql link' => '\\msql_close',
         'msql link persistent' => null,
         'msql query' => '\\msql_free_result',
-        'mssql link' =>  '\\mssql_close',
+        'mssql link' => '\\mssql_close',
         'mssql link persistent' => null,
         'mssql result' => '\\mssql_free_result',
         'mysql link' => '\\mysql_close',
@@ -123,7 +124,7 @@ final class ResourceContextManager implements ContextManagerInterface
         'xml' => '\\xml_parser_free',
         'zlib' => '\\gzclose',
         'zlib.deflate' => null,
-        'zlib.inflate' => null
+        'zlib.inflate' => null,
     ];
 
     /**
@@ -133,7 +134,7 @@ final class ResourceContextManager implements ContextManagerInterface
     private $resource;
 
     /**
-     * @var callable|string|null
+     * @var null|callable|string
      * @psalm-readonly
      */
     private $destructor;
@@ -141,10 +142,10 @@ final class ResourceContextManager implements ContextManagerInterface
     /**
      * Initializes the context manager.
      *
-     * @param  resource $resource The resource to be wrapped;
-     * @param  callable|null $destructor
-     *      Destructor function called from exitContext() to release the
-     *      $resource. If not given or null, a default destructor will be used.
+     * @param resource      $resource   The resource to be wrapped;
+     * @param null|callable $destructor
+     *                                  Destructor function called from exitContext() to release the
+     *                                  $resource. If not given or null, a default destructor will be used.
      */
     public function __construct($resource, ?callable $destructor = null)
     {
@@ -166,7 +167,7 @@ final class ResourceContextManager implements ContextManagerInterface
     /**
      * Returns the destructor that is used to release the resource.
      *
-     * @return callable|string|null
+     * @return null|callable|string
      * @psalm-mutation-free
      */
     public function getDestructor()
@@ -185,11 +186,12 @@ final class ResourceContextManager implements ContextManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function exitContext(\Throwable $exception = null) : bool
+    public function exitContext(\Throwable $exception = null): bool
     {
-        if ($this->destructor !== null) {
+        if (null !== $this->destructor) {
             call_user_func($this->destructor, $this->resource);
         }
+
         return false;
     }
 
@@ -197,20 +199,23 @@ final class ResourceContextManager implements ContextManagerInterface
      * Returns a callable that shall be used to release given $resource.
      *
      * @param mixed $resource
+     *
      * @return callable
      */
     private static function getDefaultDestructor($resource)
     {
         $type = get_resource_type($resource);
         $func = self::DEFAULT_RESOURCE_DESTRUCTORS[$type] ?? null;
-        if (is_string($func) && substr($func, 0, 2) === '->') {
+        if (is_string($func) && '->' === substr($func, 0, 2)) {
             $method = substr($func, 2);
+
             return self::mkObjectResourceDestructor($method);
-        } elseif ($type === 'stream' && is_null($func)) {
-            return self::getStreamResourceDestructor($resource);
-        } else {
-            return $func;
         }
+        if ('stream' === $type && is_null($func)) {
+            return self::getStreamResourceDestructor($resource);
+        }
+
+        return $func;
     }
 
 //    private static function destroyResource($resource) : void
@@ -230,11 +235,11 @@ final class ResourceContextManager implements ContextManagerInterface
     private static function getStreamResourceDestructor($resource)
     {
         $meta = stream_get_meta_data($resource);
-        if ($meta['stream_type'] === 'dir') {
+        if ('dir' === $meta['stream_type']) {
             return '\\closedir';
-        } else {
-            return '\\fclose';
         }
+
+        return '\\fclose';
     }
 }
 

@@ -12,21 +12,22 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldap;
 
-use Korowai\Testing\Ldaplib\TestCase;
-use Korowai\Testing\Ldaplib\ExamineLdapLinkErrorHandlerTrait;
-
 use Korowai\Lib\Ldap\Binding;
+use Korowai\Lib\Ldap\BindingInterface;
 use Korowai\Lib\Ldap\BindingTrait;
 use Korowai\Lib\Ldap\Core\LdapLinkInterface;
 use Korowai\Lib\Ldap\Core\LdapLinkWrapperInterface;
 use Korowai\Lib\Ldap\Core\LdapLinkWrapperTrait;
-use Korowai\Lib\Ldap\BindingInterface;
+use Korowai\Testing\Ldaplib\ExamineLdapLinkErrorHandlerTrait;
+use Korowai\Testing\Ldaplib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Ldap\Binding
- * @covers \Korowai\Tests\Lib\Ldap\BindingTestTrait
  * @covers \Korowai\Testing\Ldaplib\ExamineLdapLinkErrorHandlerTrait
+ * @covers \Korowai\Tests\Lib\Ldap\BindingTestTrait
+ *
+ * @internal
  */
 final class BindingTest extends TestCase
 {
@@ -34,9 +35,10 @@ final class BindingTest extends TestCase
     use ExamineLdapLinkErrorHandlerTrait;
 
     // required by BindingTestTrait
-    public function createBindingInstance(LdapLinkInterface $ldapLink, bool $bound = false) : BindingInterface
+    public function createBindingInstance(LdapLinkInterface $ldapLink, bool $bound = false): BindingInterface
     {
         $args = func_get_args();
+
         return new Binding(...$args);
     }
 
@@ -46,36 +48,37 @@ final class BindingTest extends TestCase
     //
     //
 
-    public function test__implements__BindingInterface() : void
+    public function testImplementsBindingInterface(): void
     {
         $this->assertImplementsInterface(BindingInterface::class, Binding::class);
     }
 
-    public function test__implements__LdapLinkWrapperInterface() : void
+    public function testImplementsLdapLinkWrapperInterface(): void
     {
         $this->assertImplementsInterface(LdapLinkWrapperInterface::class, Binding::class);
     }
 
-    public function test__uses__BindingTrait() : void
+    public function testUsesBindingTrait(): void
     {
         $this->assertUsesTrait(BindingTrait::class, Binding::class);
     }
 
-    public function test__uses__LdapLinkWrapperTrait() : void
+    public function testUsesLdapLinkWrapperTrait(): void
     {
         $this->assertUsesTrait(LdapLinkWrapperTrait::class, Binding::class);
     }
 
-    public function prov__construct() : array
+    public function prov__construct(): array
     {
         $link = $this->createMock(LdapLinkInterface::class);
+
         return [
             // #0
             [
                 'args' => [$link],
                 'expect' => [
                     'getLdapLink()' => $link,
-                    'isBound()' => false
+                    'isBound()' => false,
                 ],
             ],
             // #1
@@ -83,7 +86,7 @@ final class BindingTest extends TestCase
                 'args' => [$link, false],
                 'expect' => [
                     'getLdapLink()' => $link,
-                    'isBound()' => false
+                    'isBound()' => false,
                 ],
             ],
             // #2
@@ -91,7 +94,7 @@ final class BindingTest extends TestCase
                 'args' => [$link, true],
                 'expect' => [
                     'getLdapLink()' => $link,
-                    'isBound()' => true
+                    'isBound()' => true,
                 ],
             ],
         ];
@@ -100,7 +103,7 @@ final class BindingTest extends TestCase
     /**
      * @dataProvider prov__construct
      */
-    public function test__construct(array $args, array $expect) : void
+    public function testConstruct(array $args, array $expect): void
     {
         $bind = new Binding(...$args);
         $this->assertObjectHasPropertiesIdenticalTo($expect, $bind);

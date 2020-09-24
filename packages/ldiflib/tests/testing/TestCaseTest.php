@@ -12,22 +12,24 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Testing\Ldiflib;
 
-use Korowai\Testing\TestCase as BaseTestCase;
 use Korowai\Testing\Ldiflib\TestCase;
 use Korowai\Testing\Ldiflib\Traits\ParserTestHelpers;
+use Korowai\Testing\TestCase as BaseTestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Testing\Ldiflib\TestCase
+ *
+ * @internal
  */
 final class TestCaseTest extends TestCase
 {
-    public function test__extends__TestCase() : void
+    public function testExtendsTestCase(): void
     {
         $this->assertExtendsClass(BaseTestCase::class, parent::class);
     }
 
-    public function test__uses__ParserTestHelpers() : void
+    public function testUsesParserTestHelpers(): void
     {
         $this->assertUsesTrait(ParserTestHelpers::class, parent::class);
     }

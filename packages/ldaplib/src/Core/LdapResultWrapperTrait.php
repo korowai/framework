@@ -27,11 +27,9 @@ trait LdapResultWrapperTrait
     /**
      * Returns the encapsulated LdapResult instance.
      *
-     * @return LdapResultInterface
-     *
      * @psalm-mutation-free
      */
-    public function getLdapResult() : LdapResultInterface
+    public function getLdapResult(): LdapResultInterface
     {
         return $this->ldapResult;
     }

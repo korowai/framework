@@ -24,19 +24,22 @@ trait ExampleBazTrait
     /**
      * Sets value of the *$baz* attribute.
      *
-     * @param  mixed $baz
-     *      New attribute value.
+     * @param mixed $baz
+     *                   New attribute value
+     *
      * @return object
-     *      Returns *$this*.
+     *                Returns *$this*
      */
     public function setBaz($baz)
     {
         $this->baz = $baz;
+
         return $this;
     }
 
     /**
      * Returns *$baz* attribute.
+     *
      * @return mixed
      */
     public function getBaz()

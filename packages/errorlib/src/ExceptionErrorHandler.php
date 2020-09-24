@@ -23,12 +23,31 @@ class ExceptionErrorHandler extends AbstractManagedErrorHandler
     protected $exceptionGenerator;
 
     /**
+     * Initializes the object.
+     *
+     * @param int $errorTypes error types to be handled by this handler
+     */
+    public function __construct(callable $exceptionGenerator, int $errorTypes = E_ALL | E_STRICT)
+    {
+        $this->exceptionGenerator = $exceptionGenerator;
+        parent::__construct($errorTypes);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function __invoke(int $severity, string $message, string $file, int $line): bool
+    {
+        throw $this->getException($severity, $message, $file, $line);
+    }
+
+    /**
      * Converts argument $arg to an exception generator.
      *
      * An exception generator is a function (or callable object) which creates
      * and returns exception objects.
      *
-     * @param  mixed $arg Either a callable or a class name. If it's a callable
+     * @param mixed $arg Either a callable or a class name. If it's a callable
      *                   then it gets returned as is, if it is a class name
      *                   then a new callable is returned which creates and
      *                   returns new instance of this class. The constructor of
@@ -37,10 +56,9 @@ class ExceptionErrorHandler extends AbstractManagedErrorHandler
      *                   $arg is null, then ``\ErrorException`` is used as a
      *                   class.
      *
-     * @return callable
      * @throws \InvalidArgumentException
      */
-    public static function makeExceptionGenerator($arg = null) : callable
+    public static function makeExceptionGenerator($arg = null): callable
     {
         if (is_callable($arg)) {
             return $arg;
@@ -59,29 +77,15 @@ class ExceptionErrorHandler extends AbstractManagedErrorHandler
         }
 
         throw new \InvalidArgumentException(
-            "argument 1 to " . __METHOD__  . "() must be a callable, a class" .
-            " name or null, " . gettype($arg) .  " given"
+            'argument 1 to '.__METHOD__.'() must be a callable, a class'.
+            ' name or null, '.gettype($arg).' given'
         );
     }
 
     /**
-     * Initializes the object.
-     *
-     * @param  callable $exceptionGenerator
-     * @param  int $errorTypes Error types to be handled by this handler.
-     */
-    public function __construct(callable $exceptionGenerator, int $errorTypes = E_ALL | E_STRICT)
-    {
-        $this->exceptionGenerator = $exceptionGenerator;
-        parent::__construct($errorTypes);
-    }
-
-    /**
      * Returns the $exceptionGenerator provided to constructor.
-     *
-     * @return callable
      */
-    public function getExceptionGenerator() : callable
+    public function getExceptionGenerator(): callable
     {
         return $this->exceptionGenerator;
     }
@@ -89,23 +93,16 @@ class ExceptionErrorHandler extends AbstractManagedErrorHandler
     /**
      * Creates and returns new exception using the encapsulated $exceptionGenerator.
      *
-     * @param  int $severity The level of error raised
-     * @param  string $message The error message, as a string
-     * @param  string $file The file name that the error was raised in
-     * @param  int $line The line number the error was raised at
+     * @param int    $severity The level of error raised
+     * @param string $message  The error message, as a string
+     * @param string $file     The file name that the error was raised in
+     * @param int    $line     The line number the error was raised at
      */
     public function getException(int $severity, string $message, string $file, int $line)
     {
         $generator = $this->getExceptionGenerator();
-        return call_user_func($generator, $severity, $message, $file, $line);
-    }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function __invoke(int $severity, string $message, string $file, int $line) : bool
-    {
-        throw $this->getException($severity, $message, $file, $line);
+        return call_user_func($generator, $severity, $message, $file, $line);
     }
 }
 

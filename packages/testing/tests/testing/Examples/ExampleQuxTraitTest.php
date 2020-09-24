@@ -12,23 +12,25 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Testing\Examples;
 
-use Korowai\Testing\TestCase;
 use Korowai\Testing\Examples\ExampleQuxTrait;
+use Korowai\Testing\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Testing\Examples\ExampleQuxTrait
+ *
+ * @internal
  */
 final class ExampleQuxTraitTest extends TestCase
 {
     public function getTestObject()
     {
-        return new class {
+        return new class() {
             use ExampleQuxTrait;
         };
     }
 
-    public function test__setQux() : void
+    public function testSetQux(): void
     {
         $object = $this->getTestObject();
         $this->assertNull($object->getQux());

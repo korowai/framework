@@ -19,9 +19,9 @@ use Korowai\Testing\Container\ContainerFactoryInterface;
  */
 abstract class TestCase extends \Korowai\Testing\Container\TestCase
 {
-    public function getContainerFactory() : ContainerFactoryInterface
+    public function getContainerFactory(): ContainerFactoryInterface
     {
-        return new ContainerFactory;
+        return new ContainerFactory();
     }
 }
 

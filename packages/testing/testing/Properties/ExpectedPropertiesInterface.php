@@ -17,7 +17,7 @@ namespace Korowai\Testing\Properties;
  */
 interface ExpectedPropertiesInterface extends PropertiesInterface
 {
-    public function getPropertySelector() : PropertySelectorInterface;
+    public function getPropertySelector(): PropertySelectorInterface;
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

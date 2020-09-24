@@ -25,17 +25,17 @@ final class EmptyErrorHandler implements ErrorHandlerInterface, ContextManagerIn
     /**
      * {@inheritdoc}
      */
-    public function getErrorTypes() : int
+    public function __invoke(int $severity, string $message, string $file, int $line): bool
     {
-        return E_ALL | E_STRICT;
+        return true;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function __invoke(int $severity, string $message, string $file, int $line) : bool
+    public function getErrorTypes(): int
     {
-        return true;
+        return E_ALL | E_STRICT;
     }
 }
 

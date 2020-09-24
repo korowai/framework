@@ -21,10 +21,8 @@ trait ContextManagerMethods
      * Returns an integer used to mask the triggering of the error handler.
      *
      * When the handler is activated it usually calls ``set_error_handler($this, $this->getErrorTypes())``
-     *
-     * @return int
      */
-    abstract public function getErrorTypes() : int;
+    abstract public function getErrorTypes(): int;
 
     /**
      * Sets this error handler object as error handler using PHP function
@@ -35,6 +33,7 @@ trait ContextManagerMethods
     public function enterContext()
     {
         set_error_handler($this, $this->getErrorTypes());
+
         return $this;
     }
 
@@ -42,11 +41,12 @@ trait ContextManagerMethods
      * Restores original error handler using PHP function
      * \restore_error_hander() and returns ``false``.
      *
-     * @return bool Always ``false``.
+     * @return bool always ``false``
      */
-    public function exitContext(\Throwable $exception = null) : bool
+    public function exitContext(\Throwable $exception = null): bool
     {
         restore_error_handler();
+
         return false;
     }
 }

@@ -12,19 +12,19 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldap;
 
-use Korowai\Testing\Ldaplib\TestCase;
-use Korowai\Testing\Ldaplib\ExamineLdapLinkErrorHandlerTrait;
-
-use Korowai\Lib\Ldap\ComparingTrait;
 use Korowai\Lib\Ldap\ComparingInterface;
-use Korowai\Lib\Ldap\CompareQueryInterface;
+use Korowai\Lib\Ldap\ComparingTrait;
 use Korowai\Lib\Ldap\Core\LdapLinkInterface;
+use Korowai\Testing\Ldaplib\ExamineLdapLinkErrorHandlerTrait;
+use Korowai\Testing\Ldaplib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Ldap\ComparingTrait
- * @covers \Korowai\Tests\Lib\Ldap\ComparingTestTrait
  * @covers \Korowai\Testing\LdapLib\ExamineLdapLinkErrorHandlerTrait
+ * @covers \Korowai\Tests\Lib\Ldap\ComparingTestTrait
+ *
+ * @internal
  */
 final class ComparingTraitTest extends TestCase
 {
@@ -32,7 +32,7 @@ final class ComparingTraitTest extends TestCase
     use ExamineLdapLinkErrorHandlerTrait;
 
     // required by ComparingTestTrait
-    public function createComparingInstance(LdapLinkInterface $ldapLink) : ComparingInterface
+    public function createComparingInstance(LdapLinkInterface $ldapLink): ComparingInterface
     {
         return new class($ldapLink) implements ComparingInterface {
             use ComparingTrait;
@@ -44,7 +44,7 @@ final class ComparingTraitTest extends TestCase
                 $this->ldapLink = $ldapLink;
             }
 
-            public function getLdapLink() : LdapLinkInterface
+            public function getLdapLink(): LdapLinkInterface
             {
                 return $this->ldapLink;
             }

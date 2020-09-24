@@ -12,7 +12,14 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldap;
 
-use Korowai\Testing\Ldaplib\TestCase;
+use Korowai\Lib\Ldap\Core\LdapResultWrapperInterface;
+use Korowai\Lib\Ldap\Core\LdapResultWrapperTrait;
+use Korowai\Lib\Ldap\Result;
+use Korowai\Lib\Ldap\ResultEntry;
+use Korowai\Lib\Ldap\ResultEntryIteratorInterface;
+use Korowai\Lib\Ldap\ResultInterface;
+use Korowai\Lib\Ldap\ResultReference;
+use Korowai\Lib\Ldap\ResultReferenceIteratorInterface;
 use Korowai\Testing\Ldaplib\CreateLdapLinkMockTrait;
 use Korowai\Testing\Ldaplib\CreateLdapResultEntryMockTrait;
 use Korowai\Testing\Ldaplib\CreateLdapResultMockTrait;
@@ -20,21 +27,13 @@ use Korowai\Testing\Ldaplib\CreateLdapResultReferenceMockTrait;
 use Korowai\Testing\Ldaplib\ExamineLdapLinkErrorHandlerTrait;
 use Korowai\Testing\Ldaplib\LdapTriggerErrorTestFixture;
 use Korowai\Testing\Ldaplib\LdapTriggerErrorTestSubject;
-
-use PHPUnit\Framework\Constraint\Constraint;
-
-use Korowai\Lib\Ldap\Result;
-use Korowai\Lib\Ldap\ResultInterface;
-use Korowai\Lib\Ldap\ResultEntry;
-use Korowai\Lib\Ldap\ResultReference;
-use Korowai\Lib\Ldap\ResultEntryIteratorInterface;
-use Korowai\Lib\Ldap\ResultReferenceIteratorInterface;
-use Korowai\Lib\Ldap\Core\LdapResultWrapperInterface;
-use Korowai\Lib\Ldap\Core\LdapResultWrapperTrait;
+use Korowai\Testing\Ldaplib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Ldap\Result
+ *
+ * @internal
  */
 final class ResultTest extends TestCase
 {
@@ -44,47 +43,23 @@ final class ResultTest extends TestCase
     use CreateLdapResultReferenceMockTrait;
     use ExamineLdapLinkErrorHandlerTrait;
 
-    private function createResultAndMocks(int $mocksDepth = 2) : array
-    {
-        $link = $mocksDepth >= 2 ? $this->createLdapLinkMock() : null;
-        $ldapResult = $this->createLdapResultMock($link);
-        $result = new Result($ldapResult);
-        return array_slice([$result, $ldapResult, $link], 0, max(2, 1 + $mocksDepth));
-    }
-
-    private function examineResultMethodWithTriggerError(
-        string $method,
-        string $backendMethod,
-        array $args,
-        LdapTriggerErrorTestFixture $fixture
-    ) : void {
-        [$result, $ldapResult, $link] = $this->createResultAndMocks();
-
-        $function = function () use ($result, $method, $args) : void {
-            $result->$method(...$args);
-        };
-
-        $subject = new LdapTriggerErrorTestSubject($ldapResult, $backendMethod);
-        $this->examineLdapLinkErrorHandler($function, $subject, $link, $fixture);
-    }
-
     //
     //
     // TEST
     //
     //
 
-    public function test__implements__ResultInterface() : void
+    public function testImplementsResultInterface(): void
     {
         $this->assertImplementsInterface(ResultInterface::class, Result::class);
     }
 
-    public function test__implements__LdapResultWrapperInterface() : void
+    public function testImplementsLdapResultWrapperInterface(): void
     {
         $this->assertImplementsInterface(LdapResultWrapperInterface::class, Result::class);
     }
 
-    public function test__uses__LdapResultWrapperTrait() : void
+    public function testUsesLdapResultWrapperTrait(): void
     {
         $this->assertUsesTrait(LdapResultWrapperTrait::class, Result::class);
     }
@@ -93,7 +68,7 @@ final class ResultTest extends TestCase
     // getLdapResult()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public function test__getLdapResult() : void
+    public function testGetLdapResult(): void
     {
         [$result, $ldapResult] = $this->createResultAndMocks(1);
         $this->assertSame($ldapResult, $result->getLdapResult());
@@ -103,7 +78,7 @@ final class ResultTest extends TestCase
     // getResultEntries()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__getResultEntries() : array
+    public static function prov__getResultEntries(): array
     {
         return [
             // #0
@@ -131,7 +106,7 @@ final class ResultTest extends TestCase
     /**
      * @dataProvider prov__getResultEntries
      */
-    public function test__getResultEntries(array $ldapEntries = []) : void
+    public function testGetResultEntries(array $ldapEntries = []): void
     {
         [$result, $ldapResult] = $this->createResultAndMocks(1);
 
@@ -141,15 +116,17 @@ final class ResultTest extends TestCase
 
         $first = $ldapEntries[0] ?? false;
         $ldapResult->expects($this->once())
-                   ->method('first_entry')
-                   ->willReturn($first);
+            ->method('first_entry')
+            ->willReturn($first)
+        ;
 
         for ($i = 0; $i < count($ldapEntries); ++$i) {
             $curr = $ldapEntries[$i];
-            $next = $ldapEntries[$i+1] ?? false;
+            $next = $ldapEntries[$i + 1] ?? false;
             $curr->expects($this->once())
-                 ->method('next_item')
-                 ->willReturn($next);
+                ->method('next_item')
+                ->willReturn($next)
+            ;
         }
 
         $constraints = array_map(function ($ldapEntry) {
@@ -170,7 +147,7 @@ final class ResultTest extends TestCase
         }
     }
 
-    public static function prov__getResultEntries__withTriggerError() : array
+    public static function prov__getResultEntries__withTriggerError(): array
     {
         return static::feedLdapLinkErrorHandler();
     }
@@ -178,7 +155,7 @@ final class ResultTest extends TestCase
     /**
      * @dataProvider prov__getResultEntries__withTriggerError
      */
-    public function test__getResultEntries__withTriggerError(LdapTriggerErrorTestFixture $fixture) : void
+    public function testGetResultEntriesWithTriggerError(LdapTriggerErrorTestFixture $fixture): void
     {
         $this->examineResultMethodWithTriggerError('getResultEntries', 'first_entry', [], $fixture);
     }
@@ -187,7 +164,7 @@ final class ResultTest extends TestCase
     // getResultReferences()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__getResultReferences() : array
+    public static function prov__getResultReferences(): array
     {
         return [
             // #0
@@ -215,7 +192,7 @@ final class ResultTest extends TestCase
     /**
      * @dataProvider prov__getResultReferences
      */
-    public function test__getResultReferences(array $ldapReferences = []) : void
+    public function testGetResultReferences(array $ldapReferences = []): void
     {
         [$result, $ldapResult] = $this->createResultAndMocks(1);
 
@@ -225,15 +202,17 @@ final class ResultTest extends TestCase
 
         $first = $ldapReferences[0] ?? false;
         $ldapResult->expects($this->once())
-                   ->method('first_reference')
-                   ->willReturn($first);
+            ->method('first_reference')
+            ->willReturn($first)
+        ;
 
         for ($i = 0; $i < count($ldapReferences); ++$i) {
             $curr = $ldapReferences[$i];
-            $next = $ldapReferences[$i+1] ?? false;
+            $next = $ldapReferences[$i + 1] ?? false;
             $curr->expects($this->once())
-                 ->method('next_item')
-                 ->willReturn($next);
+                ->method('next_item')
+                ->willReturn($next)
+            ;
         }
 
         $constraints = array_map(function ($ldapReference) {
@@ -254,7 +233,7 @@ final class ResultTest extends TestCase
         }
     }
 
-    public static function prov__getResultReferences__withTriggerError() : array
+    public static function prov__getResultReferences__withTriggerError(): array
     {
         return static::feedLdapLinkErrorHandler();
     }
@@ -262,22 +241,22 @@ final class ResultTest extends TestCase
     /**
      * @dataProvider prov__getResultReferences__withTriggerError
      */
-    public function test__getResultReferences__withTriggerError(LdapTriggerErrorTestFixture $fixture) : void
+    public function testGetResultReferencesWithTriggerError(LdapTriggerErrorTestFixture $fixture): void
     {
         $this->examineResultMethodWithTriggerError('getResultReferences', 'first_reference', [], $fixture);
     }
 
-
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // getResultEntryIterator()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public function test__getResultEntryIterator() : void
+    public function testGetResultEntryIterator(): void
     {
         [$result, $ldapResult] = $this->createResultAndMocks(1);
 
         $ldapResult->expects($this->once())
-                   ->method('first_entry')
-                   ->willReturn(false);
+            ->method('first_entry')
+            ->willReturn(false)
+        ;
 
         $iterator = $result->getResultEntryIterator();
 
@@ -288,13 +267,14 @@ final class ResultTest extends TestCase
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // getResultReferenceIterator()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public function test__getResultReferenceIterator() : void
+    public function testGetResultReferenceIterator(): void
     {
         [$result, $ldapResult] = $this->createResultAndMocks(1);
 
         $ldapResult->expects($this->once())
-                   ->method('first_reference')
-                   ->willReturn(false);
+            ->method('first_reference')
+            ->willReturn(false)
+        ;
 
         $iterator = $result->getResultReferenceIterator();
 
@@ -305,7 +285,7 @@ final class ResultTest extends TestCase
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // getEntries()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public function test__getEntries() : void
+    public function testGetEntries(): void
     {
         $this->markTestIncomplete('Test not implemented yet');
     }
@@ -313,9 +293,34 @@ final class ResultTest extends TestCase
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // getIterator()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public function test__getIterator() : void
+    public function testGetIterator(): void
     {
         $this->markTestIncomplete('Test not implemented yet');
+    }
+
+    private function createResultAndMocks(int $mocksDepth = 2): array
+    {
+        $link = $mocksDepth >= 2 ? $this->createLdapLinkMock() : null;
+        $ldapResult = $this->createLdapResultMock($link);
+        $result = new Result($ldapResult);
+
+        return array_slice([$result, $ldapResult, $link], 0, max(2, 1 + $mocksDepth));
+    }
+
+    private function examineResultMethodWithTriggerError(
+        string $method,
+        string $backendMethod,
+        array $args,
+        LdapTriggerErrorTestFixture $fixture
+    ): void {
+        [$result, $ldapResult, $link] = $this->createResultAndMocks();
+
+        $function = function () use ($result, $method, $args): void {
+            $result->{$method}(...$args);
+        };
+
+        $subject = new LdapTriggerErrorTestSubject($ldapResult, $backendMethod);
+        $this->examineLdapLinkErrorHandler($function, $subject, $link, $fixture);
     }
 }
 

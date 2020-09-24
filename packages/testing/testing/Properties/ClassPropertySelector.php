@@ -19,12 +19,12 @@ use PHPUnit\Framework\InvalidArgumentException;
  */
 final class ClassPropertySelector extends AbstractPropertySelector
 {
-    public function canSelectFrom($subject) : bool
+    public function canSelectFrom($subject): bool
     {
-        return (is_string($subject) && class_exists($subject));
+        return is_string($subject) && class_exists($subject);
     }
 
-    protected function selectWithMethod($class, $method, &$retval = null) : bool
+    protected function selectWithMethod($class, $method, &$retval = null): bool
     {
         if (!is_string($class) || !class_exists($class)) {
             throw InvalidArgumentException::create(1, 'class');
@@ -33,10 +33,11 @@ final class ClassPropertySelector extends AbstractPropertySelector
             return false;
         }
         $retval = call_user_func([$class, $method]);
+
         return true;
     }
 
-    protected function selectWithAttribute($class, $key, &$retval = null) : bool
+    protected function selectWithAttribute($class, $key, &$retval = null): bool
     {
         if (!is_string($class) || !class_exists($class)) {
             throw InvalidArgumentException::create(1, 'class');
@@ -45,6 +46,7 @@ final class ClassPropertySelector extends AbstractPropertySelector
             return false;
         }
         $retval = $class::${$key};
+
         return true;
     }
 }

@@ -43,7 +43,7 @@ final class HasPregCaptures extends Constraint
     /**
      * Initializes the constraint.
      *
-     * @param  array $expected An array of expected values.
+     * @param array $expected an array of expected values
      */
     public function __construct(array $expected)
     {
@@ -53,13 +53,13 @@ final class HasPregCaptures extends Constraint
     /**
      * Returns a string representation of the constraint.
      */
-    public function toString() : string
+    public function toString(): string
     {
         return 'has expected PCRE capture groups';
     }
 
     /**
-     * Evaluates the constraint for parameter $other
+     * Evaluates the constraint for parameter $other.
      *
      * If $returnResult is set to false (the default), an exception is thrown
      * in case of a failure. null is returned otherwise.
@@ -67,6 +67,8 @@ final class HasPregCaptures extends Constraint
      * If $returnResult is true, the result of the evaluation is returned as
      * a boolean value instead: true in case of success, false in case of a
      * failure.
+     *
+     * @param mixed $other
      *
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
@@ -102,32 +104,34 @@ final class HasPregCaptures extends Constraint
      * Evaluates the constraint for parameter $other. Returns true if the
      * constraint is met, false otherwise.
      *
-     * @param  mixed $other value or object to evaluate
+     * @param mixed $other value or object to evaluate
      */
-    public function matches($other) : bool
+    public function matches($other): bool
     {
         if (!is_array($other)) {
             return false;
         }
         [$expected, $actual] = $this->getArraysForComparison($other);
-        return ($expected === $actual);
+
+        return $expected === $actual;
     }
 
     /**
-     * Returns the description of the failure
+     * Returns the description of the failure.
      *
      * The beginning of failure messages is "Failed asserting that" in most
      * cases. This method should return the second part of that sentence.
      *
-     * @param  mixed $other evaluated value or object
+     * @param mixed $other evaluated value or object
      */
-    public function failureDescription($other) : string
+    public function failureDescription($other): string
     {
         if (is_object($other)) {
             $what = 'object '.get_class($other);
         } else {
             $what = gettype($other);
         }
+
         return $what.' '.$this->toString();
     }
 
@@ -138,12 +142,13 @@ final class HasPregCaptures extends Constraint
             self::updateExpectForComparison($expect, $matches, $key, $value);
             self::updateActualForComparison($actual, $matches, $key);
         }
+
         return [$expect, $actual];
     }
 
     private static function updateExpectForComparison(array &$expect, array $matches, $key, $value)
     {
-        $exists = ($matches[$key] ?? [null, -1])[0] !== null;
+        $exists = null !== ($matches[$key] ?? [null, -1])[0];
         if ($value === $exists) {
             if (array_key_exists($key, $matches)) {
                 $expect[$key] = $matches[$key];

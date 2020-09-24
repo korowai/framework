@@ -12,10 +12,9 @@ declare(strict_types=1);
 
 namespace Korowai\Testing;
 
-use Psr\Container\ContainerInterface;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
-return function (ContainerConfigurator $configurator) : void {
+return function (ContainerConfigurator $configurator): void {
     $services = $configurator->services();
 
     $services->alias(Container\ContainerFactoryInterface::class, Container\Symfony\ContainerFactory::class);

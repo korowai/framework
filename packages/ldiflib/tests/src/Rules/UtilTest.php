@@ -13,13 +13,13 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Ldif\Rules;
 
 use Korowai\Lib\Ldif\Rules\Util;
-use Korowai\Lib\Ldif\ParserStateInterface;
-use Korowai\Lib\Ldif\RuleInterface;
 use Korowai\Testing\Ldiflib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Ldif\Rules\Util
+ *
+ * @internal
  */
 final class UtilTest extends TestCase
 {
@@ -41,15 +41,15 @@ final class UtilTest extends TestCase
                             'getOffset()' => 0,
                         ]),
                         'getRecords()' => [],
-                        'getErrors()' => []
-                    ]
+                        'getErrors()' => [],
+                    ],
                 ],
-                '', 0
+                '', 0,
             ],
 
             [
-            //    0000000001111111111222222222233333333334444444 4
-            //    0234567890123456789012345678901234567890123456 7
+                //    0000000001111111111222222222233333333334444444 4
+                //    0234567890123456789012345678901234567890123456 7
                 ["ł Y249Sm9obiBTbWl0aCxkYz1leGFtcGxlLGRjPW9yZw==\n", 47],
                 [
                     'result' => 'cn=John Smith,dc=example,dc=org',
@@ -58,15 +58,15 @@ final class UtilTest extends TestCase
                             'getOffset()' => 47,
                         ]),
                         'getRecords()' => [],
-                        'getErrors()' => []
-                    ]
+                        'getErrors()' => [],
+                    ],
                 ],
-                'Y249Sm9obiBTbWl0aCxkYz1leGFtcGxlLGRjPW9yZw==', 3
+                'Y249Sm9obiBTbWl0aCxkYz1leGFtcGxlLGRjPW9yZw==', 3,
             ],
 
             [
-            //    00000000011111 11
-            //    02345678901234 56
+                //    00000000011111 11
+                //    02345678901234 56
                 ["ł dMWCdXN6Y3o=\n", 15],
                 [
                     'result' => 'tłuszcz',
@@ -75,14 +75,14 @@ final class UtilTest extends TestCase
                             'getOffset()' => 15,
                         ]),
                         'getRecords()' => [],
-                        'getErrors()' => []
-                    ]
+                        'getErrors()' => [],
+                    ],
                 ],
-                'dMWCdXN6Y3o=', 3
+                'dMWCdXN6Y3o=', 3,
             ],
             [
-            //    0000000001 11
-            //    0234567890 12
+                //    0000000001 11
+                //    0234567890 12
                 ["ł Zm9vgA==\n", 11],
                 [
                     'result' => "foo\x80",
@@ -91,14 +91,14 @@ final class UtilTest extends TestCase
                             'getOffset()' => 11,
                         ]),
                         'getRecords()' => [],
-                        'getErrors()' => []
-                    ]
+                        'getErrors()' => [],
+                    ],
                 ],
-                'Zm9vgA==', 3
+                'Zm9vgA==', 3,
             ],
             [
-            //    000000000 11
-            //    023456789 01
+                //    000000000 11
+                //    023456789 01
                 ["ł Zm9vgA=\n", 10],
                 [
                     'result' => null,
@@ -112,10 +112,10 @@ final class UtilTest extends TestCase
                                 'getSourceOffset()' => 3,
                                 'getMessage()' => 'syntax error: invalid BASE64 string',
                             ]),
-                        ]
-                    ]
+                        ],
+                    ],
                 ],
-                'Zm9vgA=', 3
+                'Zm9vgA=', 3,
             ],
         ];
     }
@@ -123,7 +123,7 @@ final class UtilTest extends TestCase
     /**
      * @dataProvider prov__base64Decode
      */
-    public function test__base64Decode(array $source, array $expect, string $string, int $offset) : void
+    public function testBase64Decode(array $source, array $expect, string $string, int $offset): void
     {
         $state = $this->getParserStateFromSource(...$source);
         $result = Util::base64Decode($state, $string, $offset);
@@ -148,15 +148,15 @@ final class UtilTest extends TestCase
                             'getOffset()' => 0,
                         ]),
                         'getRecords()' => [],
-                        'getErrors()' => []
-                    ]
+                        'getErrors()' => [],
+                    ],
                 ],
-                '', 0
+                '', 0,
             ],
 
             [
-            //    0000000001111
-            //    0234567890123
+                //    0000000001111
+                //    0234567890123
                 ["ł zażółć\ntę", 13],
                 [
                     'result' => true,
@@ -166,15 +166,15 @@ final class UtilTest extends TestCase
                             'getOffset()' => 13,
                         ]),
                         'getRecords()' => [],
-                        'getErrors()' => []
-                    ]
+                        'getErrors()' => [],
+                    ],
                 ],
-                "zażółć\ntę", 3
+                "zażółć\ntę", 3,
             ],
 
             [
-            //    000   0   0000011111 11
-            //    023   4   5678901234 56
+                //    000   0   0000011111 11
+                //    023   4   5678901234 56
                 ["ł t\xC5\x82uszcz", 6],
                 [
                     'result' => false,
@@ -188,10 +188,10 @@ final class UtilTest extends TestCase
                                 'getMessage()' => 'syntax error: the string is not a valid UTF8',
                                 'getSourceOffset()' => 3,
                             ]),
-                        ]
-                    ]
+                        ],
+                    ],
                 ],
-                "sd\xC5", 3
+                "sd\xC5", 3,
             ],
         ];
     }
@@ -199,7 +199,7 @@ final class UtilTest extends TestCase
     /**
      * @dataProvider prov__utf8Check
      */
-    public function test__utf8Check(array $source, array $expect, string $string, int $offset) : void
+    public function testUtf8Check(array $source, array $expect, string $string, int $offset): void
     {
         $state = $this->getParserStateFromSource(...$source);
         $result = Util::utf8Check($state, $string, $offset);
@@ -244,10 +244,10 @@ final class UtilTest extends TestCase
             $result = $case[1];
             $offset = 5;
             $end = $offset + strlen($string);
-            $errors = $result ? []: [
+            $errors = $result ? [] : [
                 self::objectHasPropertiesIdenticalTo([
                     'getSourceOffset()' => $offset,
-                    'getMessage()' => 'syntax error: invalid DN syntax: "'.$string.'"'
+                    'getMessage()' => 'syntax error: invalid DN syntax: "'.$string.'"',
                 ]),
             ];
             $inheritedCases[] = [
@@ -261,17 +261,18 @@ final class UtilTest extends TestCase
                             'getOffset()' => $end,
                         ]),
                         'getErrors()' => $errors,
-                    ]
-                ]
+                    ],
+                ],
             ];
         }
+
         return array_merge($inheritedCases, $cases);
     }
 
     /**
      * @dataProvider prov__dnCheck
      */
-    public function test__dnCheck(array $source, string $string, int $offset, array $expect) : void
+    public function testDnCheck(array $source, string $string, int $offset, array $expect): void
     {
         $state = $this->getParserStateFromSource(...$source);
         $result = Util::dnCheck($state, $string, $offset);
@@ -313,10 +314,10 @@ final class UtilTest extends TestCase
             $result = $case[1];
             $offset = 5;
             $end = $offset + strlen($string);
-            $errors = $result ? []: [
+            $errors = $result ? [] : [
                 self::objectHasPropertiesIdenticalTo([
                     'getSourceOffset()' => $offset,
-                    'getMessage()' => 'syntax error: invalid RDN syntax: "'.$string.'"'
+                    'getMessage()' => 'syntax error: invalid RDN syntax: "'.$string.'"',
                 ]),
             ];
             $inheritedCases[] = [
@@ -330,17 +331,18 @@ final class UtilTest extends TestCase
                             'getOffset()' => $end,
                         ]),
                         'getErrors()' => $errors,
-                    ]
-                ]
+                    ],
+                ],
             ];
         }
+
         return array_merge($inheritedCases, $cases);
     }
 
     /**
      * @dataProvider prov__rdnCheck
      */
-    public function test__rdnCheck(array $source, string $string, int $offset, array $expect) : void
+    public function testRdnCheck(array $source, string $string, int $offset, array $expect): void
     {
         $state = $this->getParserStateFromSource(...$source);
         $result = Util::rdnCheck($state, $string, $offset);

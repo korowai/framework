@@ -12,16 +12,18 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldif;
 
-use Korowai\Testing\TestCase;
 use Korowai\Lib\Ldif\InvalidModTypeException;
+use Korowai\Testing\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Ldif\InvalidModTypeException
+ *
+ * @internal
  */
 final class InvalidModTypeExceptionTest extends TestCase
 {
-    public function test__extendsInvalidArgumentException() : void
+    public function testExtendsInvalidArgumentException(): void
     {
         $this->assertExtendsClass(\InvalidArgumentException::class, InvalidModTypeException::class);
     }
@@ -30,14 +32,14 @@ final class InvalidModTypeExceptionTest extends TestCase
     {
         return [
             'default message' => [[], ''],
-            'custom message'  => [['custom message'], 'custom message']
+            'custom message' => [['custom message'], 'custom message'],
         ];
     }
 
     /**
      * @dataProvider prov__getMessage
      */
-    public function test__getMessage(array $args, string $expect) : void
+    public function testGetMessage(array $args, string $expect): void
     {
         $e = new InvalidModTypeException(...$args);
         $this->assertEquals($expect, $e->getMessage());

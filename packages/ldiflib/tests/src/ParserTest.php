@@ -14,13 +14,14 @@ namespace Korowai\Tests\Lib\Ldif;
 
 use Korowai\Lib\Ldif\Parser;
 use Korowai\Lib\Ldif\ParserInterface;
-use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
-
 use Korowai\Testing\Ldiflib\TestCase;
+use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Ldif\Parser
+ *
+ * @internal
  */
 final class ParserTest extends TestCase
 {
@@ -37,10 +38,11 @@ final class ParserTest extends TestCase
 //        return ['content', 'changes', 'mixed', 'detect'];
 //    }
 //
-    public function test__implements__ParserInterface() : void
+    public function testImplementsParserInterface(): void
     {
         $this->assertImplementsInterface(ParserInterface::class, Parser::class);
     }
+
 //
 //    public function prov__construct()
 //    {

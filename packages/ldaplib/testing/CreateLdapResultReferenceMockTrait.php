@@ -12,8 +12,8 @@ declare(strict_types=1);
 
 namespace Korowai\Testing\Ldaplib;
 
-use Korowai\Lib\Ldap\Core\LdapResultReferenceInterface;
 use Korowai\Lib\Ldap\Core\LdapResultInterface;
+use Korowai\Lib\Ldap\Core\LdapResultReferenceInterface;
 use PHPUnit\Framework\MockObject\MockBuilder;
 use PHPUnit\Framework\MockObject\Rule\AnyInvokedCount;
 
@@ -23,20 +23,21 @@ use PHPUnit\Framework\MockObject\Rule\AnyInvokedCount;
 trait CreateLdapResultReferenceMockTrait
 {
     abstract public function getMockBuilder(string $className): MockBuilder;
-    abstract public static function any() : AnyInvokedCount;
+
+    abstract public static function any(): AnyInvokedCount;
 
     private function createLdapResultReferenceMock(
         LdapResultInterface $result = null,
         $resource = null,
         array $methods = []
-    ) : LdapResultReferenceInterface {
+    ): LdapResultReferenceInterface {
         $builder = $this->getMockBuilder(LdapResultReferenceInterface::class);
 
-        if ($result !== null && !in_array('getLdapResult', $methods)) {
+        if (null !== $result && !in_array('getLdapResult', $methods)) {
             $methods[] = 'getLdapResult';
         }
 
-        if ($resource !== null && !in_array('getResource', $methods)) {
+        if (null !== $resource && !in_array('getResource', $methods)) {
             $methods[] = 'getResource';
         }
 
@@ -44,15 +45,17 @@ trait CreateLdapResultReferenceMockTrait
 
         $mock = $builder->getMockForAbstractClass();
 
-        if ($result !== null) {
+        if (null !== $result) {
             $mock->expects($this->any())
-                 ->method('getLdapResult')
-                 ->willReturn($result);
+                ->method('getLdapResult')
+                ->willReturn($result)
+            ;
         }
-        if ($resource !== null) {
+        if (null !== $resource) {
             $mock->expects($this->any())
-                 ->method('getResource')
-                 ->willReturn($resource);
+                ->method('getResource')
+                ->willReturn($resource)
+            ;
         }
 
         return $mock;

@@ -12,31 +12,32 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldap;
 
-use Korowai\Lib\Ldap\EntryManagerInterface;
 use Korowai\Lib\Ldap\EntryInterface;
-
+use Korowai\Lib\Ldap\EntryManagerInterface;
 use Korowai\Testing\LdaplibInterfaces\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Tests\Lib\Ldap\EntryManagerInterfaceTrait
+ *
+ * @internal
  */
 final class EntryManagerInterfaceTest extends TestCase
 {
     public static function createDummyInstance()
     {
-        return new class implements EntryManagerInterface {
+        return new class() implements EntryManagerInterface {
             use EntryManagerInterfaceTrait;
         };
     }
 
-    public function test__dummyImplementation() : void
+    public function testDummyImplementation(): void
     {
         $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(EntryManagerInterface::class, $dummy);
     }
 
-    public function test__add() : void
+    public function testAdd(): void
     {
         $dummy = $this->createDummyInstance();
 
@@ -45,7 +46,7 @@ final class EntryManagerInterfaceTest extends TestCase
         $this->assertNull($dummy->add($entry));
     }
 
-    public function test__add__withArgTypeError() : void
+    public function testAddWithArgTypeError(): void
     {
         $dummy = $this->createDummyInstance();
 
@@ -54,7 +55,7 @@ final class EntryManagerInterfaceTest extends TestCase
         $dummy->add(null);
     }
 
-    public function test__update() : void
+    public function testUpdate(): void
     {
         $dummy = $this->createDummyInstance();
 
@@ -63,7 +64,7 @@ final class EntryManagerInterfaceTest extends TestCase
         $this->assertNull($dummy->update($entry));
     }
 
-    public function test__update__withArgTypeError() : void
+    public function testUpdateWithArgTypeError(): void
     {
         $dummy = $this->createDummyInstance();
 
@@ -72,7 +73,7 @@ final class EntryManagerInterfaceTest extends TestCase
         $dummy->update(null);
     }
 
-    public function test__rename() : void
+    public function testRename(): void
     {
         $dummy = $this->createDummyInstance();
 
@@ -81,9 +82,10 @@ final class EntryManagerInterfaceTest extends TestCase
         $this->assertNull($dummy->rename($entry, '', false));
     }
 
-    public function prov__rename__withArgTypeError() : array
+    public function prov__rename__withArgTypeError(): array
     {
         $entry = $this->createStub(EntryInterface::class);
+
         return [
             [[null, '', false], EntryInterface::class],
             [[$entry, null, false], \string::class],
@@ -94,7 +96,7 @@ final class EntryManagerInterfaceTest extends TestCase
     /**
      * @dataProvider prov__rename__withArgTypeError
      */
-    public function test__rename__withArgTypeError(array $args, string $message) : void
+    public function testRenameWithArgTypeError(array $args, string $message): void
     {
         $dummy = $this->createDummyInstance();
 
@@ -103,7 +105,7 @@ final class EntryManagerInterfaceTest extends TestCase
         $dummy->rename(...$args);
     }
 
-    public function test__delete() : void
+    public function testDelete(): void
     {
         $dummy = $this->createDummyInstance();
 
@@ -112,7 +114,7 @@ final class EntryManagerInterfaceTest extends TestCase
         $this->assertNull($dummy->delete($entry));
     }
 
-    public function test__delete__withArgTypeError() : void
+    public function testDeleteWithArgTypeError(): void
     {
         $dummy = $this->createDummyInstance();
 

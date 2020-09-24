@@ -13,8 +13,6 @@ declare(strict_types=1);
 namespace Korowai\Testing\Constraint;
 
 use PHPUnit\Framework\Constraint\Constraint;
-use PHPUnit\Framework\ExpectationFailedException;
-use SebastianBergmann\Comparator\ComparisonFailure;
 
 /**
  * Accepts objects or classes that declare a method given by name.
@@ -35,8 +33,8 @@ final class DeclaresMethod extends Constraint
      *
      * Initializes the constraint.
      *
-     * @param  string $expected
-     *      Method name.
+     * @param string $expected
+     *                         Method name
      */
     public function __construct(string $expected)
     {
@@ -46,7 +44,7 @@ final class DeclaresMethod extends Constraint
     /**
      * Returns a string representation of the constraint.
      */
-    public function toString() : string
+    public function toString(): string
     {
         return 'declares method '.$this->expected.'()';
     }
@@ -55,29 +53,30 @@ final class DeclaresMethod extends Constraint
      * Evaluates the constraint for parameter $other. Returns true if the
      * constraint is met, false otherwise.
      *
-     * @param  mixed $other value or object to evaluate
+     * @param mixed $other value or object to evaluate
      */
-    protected function matches($other) : bool
+    protected function matches($other): bool
     {
         $class = is_object($other) ? get_class($other) : $other;
+
         try {
             $reflection = new \ReflectionMethod($class, $this->expected);
         } catch (\ReflectionException $exception) {
             return false;
         }
+
         return $reflection->getDeclaringClass()->getName() === $class;
     }
 
     /**
-     * Returns the description of the failure
+     * Returns the description of the failure.
      *
      * The beginning of failure messages is "Failed asserting that" in most
      * cases. This method should return the second part of that sentence.
      *
-     * @param  mixed $other evaluated value or object
-     * @return string
+     * @param mixed $other evaluated value or object
      */
-    protected function failureDescription($other) : string
+    protected function failureDescription($other): string
     {
         return $this->getSubjectString($other).' '.$this->toString();
     }
@@ -85,15 +84,15 @@ final class DeclaresMethod extends Constraint
     /**
      * Returns a string describing $other.
      *
-     * @param  mixed $other
-     * @return string
+     * @param mixed $other
      */
-    protected function getSubjectString($other) : string
+    protected function getSubjectString($other): string
     {
         if (is_object($other) || is_string($other)) {
             try {
                 $reflection = new \ReflectionClass($other);
                 $kind = ($reflection->isInterface() ? 'interface' : ($reflection->isTrait() ? 'trait' : 'class'));
+
                 return $kind.' '.$reflection->getName();
             } catch (\ReflectionException $exception) {
                 return gettype($other);

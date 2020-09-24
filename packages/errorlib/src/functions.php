@@ -14,24 +14,20 @@ namespace Korowai\Lib\Error;
 
 /**
  * A shortcut to EmptyErrorHandler::getInstance().
- *
- * @return EmptyErrorHandler
  */
-function emptyErrorHandler() : EmptyErrorHandler
+function emptyErrorHandler(): EmptyErrorHandler
 {
     return EmptyErrorHandler::getInstance();
 }
 
 /**
-* A shortcut to new ErrorHandler(...).
-*
-* @param  callable $errorHandler User-provided error handler function.
-* @param  int $errorTypes Can be used to mask the triggering of the error
-*                        handler function.
-*
-* @return ErrorHandler
-*/
-function errorHandler(callable $errorHandler, int $errorTypes = E_ALL | E_STRICT) : ErrorHandler
+ * A shortcut to new ErrorHandler(...).
+ *
+ * @param callable $errorHandler user-provided error handler function
+ * @param int      $errorTypes   can be used to mask the triggering of the error
+ *                               handler function
+ */
+function errorHandler(callable $errorHandler, int $errorTypes = E_ALL | E_STRICT): ErrorHandler
 {
     return new ErrorHandler($errorHandler, $errorTypes);
 }
@@ -50,31 +46,24 @@ function errorHandler(callable $errorHandler, int $errorTypes = E_ALL | E_STRICT
  * If it is a class name, the class should provide constructor
  * having interface compatible with PHP's \ErrorException class.
  *
- * @param  mixed $arg Either a callable or an exception's class name.
- * @param  int $errorTypes Error types handled by the new handler.
- *
- * @return ExceptionErrorHandler
+ * @param mixed $arg        either a callable or an exception's class name
+ * @param int   $errorTypes error types handled by the new handler
  */
-function exceptionErrorHandler($arg = null, int $errorTypes = E_ALL | E_STRICT) : ExceptionErrorHandler
+function exceptionErrorHandler($arg = null, int $errorTypes = E_ALL | E_STRICT): ExceptionErrorHandler
 {
     $exceptionGenerator = ExceptionErrorHandler::makeExceptionGenerator($arg);
+
     return new ExceptionErrorHandler($exceptionGenerator, $errorTypes);
 }
 
 /**
  * A shortcut to new CallerErrorHandler(...).
- *
- * @param  callable $errorHandler
- * @param  int $distance
- * @param  int $errorTypes
- *
- * @return CallerErrorHandler
  */
 function callerErrorHandler(
     callable $errorHandler,
     int $distance = 1,
     int $errorTypes = E_ALL | E_STRICT
-) : CallerErrorHandler {
+): CallerErrorHandler {
     return new CallerErrorHandler($errorHandler, 1 + $distance, $errorTypes);
 }
 
@@ -92,18 +81,17 @@ function callerErrorHandler(
  * If it is a class name, the class should provide constructor
  * having interface compatible with PHP's \ErrorException class.
  *
- * @param  mixed $arg Either a callable or an exception's class name.
- * @param  mixed $distance The distance from our caller to his caller.
- * @param  int $errorTypes Error types handled by the new handler.
- *
- * @return CallerExceptionErrorHandler
+ * @param mixed $arg        either a callable or an exception's class name
+ * @param mixed $distance   the distance from our caller to his caller
+ * @param int   $errorTypes error types handled by the new handler
  */
 function callerExceptionErrorHandler(
     $arg = null,
     int $distance = 1,
     int $errorTypes = E_ALL | E_STRICT
-) : CallerExceptionErrorHandler {
+): CallerExceptionErrorHandler {
     $exceptionGenerator = ExceptionErrorHandler::makeExceptionGenerator($arg);
+
     return new CallerExceptionErrorHandler($exceptionGenerator, 1 + $distance, $errorTypes);
 }
 

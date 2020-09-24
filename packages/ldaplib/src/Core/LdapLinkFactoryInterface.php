@@ -22,10 +22,9 @@ interface LdapLinkFactoryInterface
     /**
      * Creates and returns new instance of LdapLinkInterface.
      *
-     * @return LdapLinkInterface
      * @throws \Korowai\Lib\Ldap\ExceptionInterface
      */
-    public function createLdapLink(LdapLinkConfigInterface $config) : LdapLinkInterface;
+    public function createLdapLink(LdapLinkConfigInterface $config): LdapLinkInterface;
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

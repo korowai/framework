@@ -25,17 +25,13 @@ interface ModSpecInterface extends NodeInterface, HasAttrValSpecsInterface
     /**
      * Returns the modification type. Must return one of ``"add"``,
      * ``"delete"`` or ``"replace"``.
-     *
-     * @return string
      */
-    public function getModType() : string;
+    public function getModType(): string;
 
     /**
      * Returns the attribute name.
-     *
-     * @return string
      */
-    public function getAttribute() : string;
+    public function getAttribute(): string;
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

@@ -12,41 +12,42 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Testing\Examples;
 
-use Korowai\Testing\TestCase;
-use Korowai\Testing\Examples\ExampleFooClass;
 use Korowai\Testing\Examples\ExampleBarClass;
-use Korowai\Testing\Examples\ExampleFooInterface;
 use Korowai\Testing\Examples\ExampleBarInterface;
-use Korowai\Testing\Examples\ExampleBazTrait;
+use Korowai\Testing\Examples\ExampleFooClass;
+use Korowai\Testing\Examples\ExampleFooInterface;
 use Korowai\Testing\Examples\ExampleQuxTrait;
+use Korowai\Testing\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Testing\Examples\ExampleBarClass
+ *
+ * @internal
  */
 final class ExampleBarClassTest extends TestCase
 {
-    public function test__implements__ExampleFooInterface() : void
+    public function testImplementsExampleFooInterface(): void
     {
         $this->assertImplementsInterface(ExampleFooInterface::class, ExampleBarClass::class);
     }
 
-    public function test__implements__ExampleBarInterface() : void
+    public function testImplementsExampleBarInterface(): void
     {
         $this->assertImplementsInterface(ExampleBarInterface::class, ExampleBarClass::class);
     }
 
-    public function test__extends__ExampleFooClass() : void
+    public function testExtendsExampleFooClass(): void
     {
         $this->assertExtendsClass(ExampleFooClass::class, ExampleBarClass::class);
     }
 
-    public function test__uses__ExampleQuxTrait() : void
+    public function testUsesExampleQuxTrait(): void
     {
         $this->assertUsesTrait(ExampleQuxTrait::class, ExampleBarClass::class);
     }
 
-    public function test__construct() : void
+    public function testConstruct(): void
     {
         $object = new ExampleBarClass(['foo' => 'FOO', 'bar' => 'BAR', 'baz' => 'BAZ', 'qux' => 'QUX']);
         $this->assertSame('FOO', $object->getFoo());
@@ -55,7 +56,7 @@ final class ExampleBarClassTest extends TestCase
         $this->assertSame('QUX', $object->getQux());
     }
 
-    public function test__setFoo() : void
+    public function testSetFoo(): void
     {
         $object = new ExampleBarClass();
         $this->assertNull($object->getFoo());
@@ -63,7 +64,7 @@ final class ExampleBarClassTest extends TestCase
         $this->assertSame('FOO', $object->getFoo());
     }
 
-    public function test__setBar() : void
+    public function testSetBar(): void
     {
         $object = new ExampleBarClass();
         $this->assertNull($object->getBar());
@@ -71,7 +72,7 @@ final class ExampleBarClassTest extends TestCase
         $this->assertSame('BAR', $object->getBar());
     }
 
-    public function test__setBaz() : void
+    public function testSetBaz(): void
     {
         $object = new ExampleBarClass();
         $this->assertNull($object->getBaz());
@@ -79,7 +80,7 @@ final class ExampleBarClassTest extends TestCase
         $this->assertSame('BAZ', $object->getBaz());
     }
 
-    public function test__setQux() : void
+    public function testSetQux(): void
     {
         $object = new ExampleBarClass();
         $this->assertNull($object->getQux());

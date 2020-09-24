@@ -25,10 +25,10 @@ abstract class AbstractErrorHandler implements ErrorHandlerInterface
     protected $errorTypes = E_ALL | E_STRICT;
 
     /**
-     * Initializes the object
+     * Initializes the object.
      *
-     * @param  int $errorTypes
-     *        Can be used to mask the triggering of the error handler.
+     * @param int $errorTypes
+     *                        Can be used to mask the triggering of the error handler
      */
     public function __construct(int $errorTypes = E_ALL | E_STRICT)
     {
@@ -38,10 +38,8 @@ abstract class AbstractErrorHandler implements ErrorHandlerInterface
     /**
      * Returns the integer defining error types that are captured by the error
      * handler.
-     *
-     * @return int
      */
-    public function getErrorTypes() : int
+    public function getErrorTypes(): int
     {
         return $this->errorTypes;
     }

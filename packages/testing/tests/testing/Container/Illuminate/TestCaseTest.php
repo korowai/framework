@@ -12,25 +12,26 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Testing\Container\Illuminate;
 
-use Korowai\Testing\Container\Illuminate\TestCase;
-use Psr\Container\ContainerInterface;
+use function Korowai\Testing\config_path;
 use Korowai\Testing\Container\ContainerFactoryInterface;
 use Korowai\Testing\Container\Illuminate\ContainerFactory;
-
-use function Korowai\Testing\config_path;
+use Korowai\Testing\Container\Illuminate\TestCase;
+use Psr\Container\ContainerInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Testing\Container\Illuminate\TestCase
+ *
+ * @internal
  */
 final class TestCaseTest extends TestCase
 {
-    public function provideContainerConfigs() : array
+    public function provideContainerConfigs(): array
     {
-        return [ config_path('illuminate/services.php') ];
+        return [config_path('illuminate/services.php')];
     }
 
-    public function examineConfiguredContainer(ContainerInterface $container, $config) : void
+    public function examineConfiguredContainer(ContainerInterface $container, $config): void
     {
         $this->assertInstanceOf(ContainerFactory::class, $container->get(ContainerFactoryInterface::class));
     }

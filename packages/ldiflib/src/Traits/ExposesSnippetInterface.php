@@ -12,8 +12,8 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldif\Traits;
 
-use Korowai\Lib\Ldif\SnippetInterface;
 use Korowai\Lib\Ldif\LocationInterface;
+use Korowai\Lib\Ldif\SnippetInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -24,77 +24,61 @@ trait ExposesSnippetInterface
 
     /**
      * Returns the encapsulated instance of SnippetInterface.
-     *
-     * @return SnippetInterface|null
      */
-    abstract public function getSnippet() : ?SnippetInterface;
+    abstract public function getSnippet(): ?SnippetInterface;
 
     /**
      * Returns the CouledLocationInterface instance as required by ExposesLocationInterface.
-     *
-     * @return LocationInterface|null
      */
-    public function getLocation() : ?LocationInterface
+    public function getLocation(): ?LocationInterface
     {
         return $this->getSnippet();
     }
 
     /**
      * Returns the snippet length in bytes.
-     *
-     * @return int
      */
-    public function getLength() : int
+    public function getLength(): int
     {
         return $this->getSnippet()->getLength();
     }
 
     /**
      * Returns the end offset of the snippet in bytes.
-     *
-     * @return int
      */
-    public function getEndOffset() : int
+    public function getEndOffset(): int
     {
         return $this->getSnippet()->getEndOffset();
     }
 
     /**
      * Returns the length in bytes of the snippet mapped to source string.
-     *
-     * @return int
      */
-    public function getSourceLength() : int
+    public function getSourceLength(): int
     {
         return $this->getSnippet()->getSourceLength();
     }
 
     /**
      * Returns the end offset in bytes of the snippet mapped to source string.
-     *
-     * @return int
      */
-    public function getSourceEndOffset() : int
+    public function getSourceEndOffset(): int
     {
         return $this->getSnippet()->getSourceEndOffset();
     }
 
     /**
      * Returns the length in characters of the snippet mapped to source string.
-     *
-     * @return int
      */
-    public function getSourceCharLength(string $encoding = null) : int
+    public function getSourceCharLength(string $encoding = null): int
     {
         return $this->getSnippet()->getSourceCharLength(...(func_get_args()));
     }
 
     /**
      * Returns the end offset in characters of the snippet mapped to source string.
-     *
-     * @return int
      */
-    public function getSourceCharEndOffset(string $encoding = null) : int
+    public function getSourceCharEndOffset(string $encoding = null): int
     {
         return $this->getSnippet()->getSourceCharEndOffset(...(func_get_args()));
     }

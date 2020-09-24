@@ -17,42 +17,42 @@ namespace Korowai\Tests\Lib\Ldif;
  */
 trait SourceLocationInterfaceTrait
 {
-    public function getSourceFileName() : string
+    public function getSourceFileName(): string
     {
-        return "";
+        return '';
     }
 
-    public function getSourceString() : string
+    public function getSourceString(): string
     {
-        return "";
+        return '';
     }
 
-    public function getSourceOffset() : int
-    {
-        return 0;
-    }
-
-    public function getSourceCharOffset(string $encoding = null) : int
+    public function getSourceOffset(): int
     {
         return 0;
     }
 
-    public function getSourceLineIndex() : int
+    public function getSourceCharOffset(string $encoding = null): int
     {
         return 0;
     }
 
-    public function getSourceLine(int $index = null) : string
+    public function getSourceLineIndex(): int
     {
         return 0;
     }
 
-    public function getSourceLineAndOffset() : array
+    public function getSourceLine(int $index = null): string
+    {
+        return 0;
+    }
+
+    public function getSourceLineAndOffset(): array
     {
         return [];
     }
 
-    public function getSourceLineAndCharOffset(string $encoding = null) : array
+    public function getSourceLineAndCharOffset(string $encoding = null): array
     {
         return [];
     }

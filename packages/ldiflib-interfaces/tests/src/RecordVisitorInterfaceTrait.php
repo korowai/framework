@@ -12,8 +12,8 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldif;
 
-use Korowai\Lib\Ldif\Nodes\LdifAttrValRecordInterface;
 use Korowai\Lib\Ldif\Nodes\LdifAddRecordInterface;
+use Korowai\Lib\Ldif\Nodes\LdifAttrValRecordInterface;
 use Korowai\Lib\Ldif\Nodes\LdifDeleteRecordInterface;
 use Korowai\Lib\Ldif\Nodes\LdifModDnRecordInterface;
 use Korowai\Lib\Ldif\Nodes\LdifModifyRecordInterface;

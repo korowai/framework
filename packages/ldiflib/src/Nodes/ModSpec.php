@@ -12,8 +12,8 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldif\Nodes;
 
-use Korowai\Lib\Ldif\Traits\HasAttrValSpecs;
 use Korowai\Lib\Ldif\InvalidModTypeException;
+use Korowai\Lib\Ldif\Traits\HasAttrValSpecs;
 
 /**
  * Represents [RFC2849](https://tools.ietf.org/html/rfc2849)
@@ -38,10 +38,6 @@ class ModSpec implements ModSpecInterface
     /**
      * Initializes the object.
      *
-     * @param  string $modType
-     * @param  string $attribute
-     * @param  array $attrValSpecs
-     *
      * @throws InvalidModTypeException
      */
     public function __construct(
@@ -58,25 +54,27 @@ class ModSpec implements ModSpecInterface
      * Sets modType. Allowed values of *$modType* are ``"add"``, ``"delete"``,
      * and ``"replace"``.
      *
-     * @param  string $modType
-     * @return object $this
      * @throws InvalidModTypeException
+     *
+     * @return object $this
      */
     public function setModType(string $modType)
     {
         if (!in_array(strtolower($modType), ['add', 'delete', 'replace'])) {
-            $message = 'Argument 1 to '.__class__.'::setModType() must be one of "add", "delete", or "replace", "'.
+            $message = 'Argument 1 to '.__CLASS__.'::setModType() must be one of "add", "delete", or "replace", "'.
                        $modType.'" given.';
+
             throw new InvalidModTypeException($message);
         }
         $this->modType = strtolower($modType);
+
         return $this;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getModType() : string
+    public function getModType(): string
     {
         return $this->modType;
     }
@@ -84,19 +82,19 @@ class ModSpec implements ModSpecInterface
     /**
      * Set the attribute name.
      *
-     * @param  string $attribute
      * @return object $this
      */
     public function setAttribute(string $attribute)
     {
         $this->attribute = $attribute;
+
         return $this;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getAttribute() : string
+    public function getAttribute(): string
     {
         return $this->attribute;
     }

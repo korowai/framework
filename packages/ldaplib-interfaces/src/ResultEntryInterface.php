@@ -12,39 +12,38 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldap;
 
-use Korowai\Lib\Ldap\EntryInterface;
-
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
 interface ResultEntryInterface extends \IteratorAggregate
 {
     /**
-     * Returns Distinguished Name (DN) of the result entry
+     * Returns Distinguished Name (DN) of the result entry.
      *
      * @return string Distinguished Name of the result entry
      */
-    public function getDn() : string;
+    public function getDn(): string;
 
     /**
      * Returns entry attributes as an array. The keys in array are lower-case.
      *
      * @return array Entry's attributes
      */
-    public function getAttributes() : array;
+    public function getAttributes(): array;
 
     /**
      * Creates an actual ``Entry`` object from this object.
      *
      * @return EntryInterface A new instance of EntryInterface
      */
-    public function toEntry() : EntryInterface;
+    public function toEntry(): EntryInterface;
 
     /**
      * Returns an iterator over entry's attributes.
+     *
      * @return ResultAttributeIteratorInterface Attribute iterator
      */
-    public function getAttributeIterator() : ResultAttributeIteratorInterface;
+    public function getAttributeIterator(): ResultAttributeIteratorInterface;
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

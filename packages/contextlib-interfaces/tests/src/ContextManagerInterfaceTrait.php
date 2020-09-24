@@ -17,15 +17,15 @@ namespace Korowai\Tests\Lib\Context;
  */
 trait ContextManagerInterfaceTrait
 {
-    public $enterContext = null;
-    public $exitContext = null;
+    public $enterContext;
+    public $exitContext;
 
     public function enterContext()
     {
         return $this->enterContext;
     }
 
-    public function exitContext(\Throwable $exception = null) : bool
+    public function exitContext(\Throwable $exception = null): bool
     {
         return $this->exitContext;
     }

@@ -12,38 +12,40 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldap;
 
-use Korowai\Testing\LdaplibInterfaces\TestCase;
 use Korowai\Lib\Ldap\LdapException;
 use Korowai\Lib\Ldap\LdapExceptionInterface;
+use Korowai\Testing\LdaplibInterfaces\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Ldap\LdapException
+ *
+ * @internal
  */
 final class LdapExceptionTest extends TestCase
 {
-    public function test__extends__ErrorException() : void
+    public function testExtendsErrorException(): void
     {
         $this->assertExtendsClass(\ErrorException::class, LdapException::class);
     }
 
-    public function test__implements__LdapExceptionInterface() : void
+    public function testImplementsLdapExceptionInterface(): void
     {
         $this->assertImplementsInterface(LdapExceptionInterface::class, LdapException::class);
     }
 
-    public static function prov__getMessages() : array
+    public static function prov__getMessages(): array
     {
         return [
             'default message' => [[], ''],
-            'custom message'  => [['custom message'], 'custom message']
+            'custom message' => [['custom message'], 'custom message'],
         ];
     }
 
     /**
      * @dataProvider prov__getMessages
      */
-    public function test__getMessage(array $args, string $expect) : void
+    public function testGetMessage(array $args, string $expect): void
     {
         $e = new LdapException(...$args);
         $this->assertEquals($expect, $e->getMessage());

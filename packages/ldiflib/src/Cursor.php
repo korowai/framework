@@ -20,18 +20,20 @@ class Cursor extends Location implements CursorInterface
     /**
      * {@inheritdoc}
      */
-    public function moveBy(int $offset) : CursorInterface
+    public function moveBy(int $offset): CursorInterface
     {
         $this->position += $offset;
+
         return $this;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function moveTo(int $position) : CursorInterface
+    public function moveTo(int $position): CursorInterface
     {
         $this->position = $position;
+
         return $this;
     }
 }

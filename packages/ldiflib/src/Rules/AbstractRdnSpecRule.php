@@ -12,8 +12,6 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldif\Rules;
 
-use Korowai\Lib\Ldif\ParserStateInterface as State;
-
 /**
  * @todo Write documentation
  *
@@ -26,7 +24,7 @@ abstract class AbstractRdnSpecRule extends AbstractNameSpecRule
     /**
      * {@inheritdoc}
      */
-    public function prefix() : string
+    public function prefix(): string
     {
         return 'rdn';
     }

@@ -12,20 +12,17 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldap\Core;
 
-use Korowai\Testing\Ldaplib\TestCase;
-
 use Korowai\Lib\Ldap\Core\AbstractLdapResultItemIterator;
-use Korowai\Lib\Ldap\Core\LdapResultWrapperInterface;
-use Korowai\Lib\Ldap\Core\LdapResultWrapperTrait;
-use Korowai\Lib\Ldap\Core\LdapResultItemIteratorInterface;
-use Korowai\Lib\Ldap\Core\LdapResultItemWrapperInterface;
 use Korowai\Lib\Ldap\Core\LdapResultItemInterface;
-use Korowai\Lib\Ldap\Core\LdapResultInterface;
+use Korowai\Lib\Ldap\Core\LdapResultItemIteratorInterface;
+use Korowai\Testing\Ldaplib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Ldap\Core\AbstractLdapResultItemIterator
  * @covers \Korowai\Tests\Lib\Ldap\Core\AbstractLdapResultItemIteratorTestTrait
+ *
+ * @internal
  */
 final class AbstractLdapResultItemIteratorTest extends TestCase
 {
@@ -49,8 +46,9 @@ final class AbstractLdapResultItemIteratorTest extends TestCase
     protected function createIteratorInstance(...$args)
     {
         return $this->getMockBuilder(AbstractLdapResultItemIterator::class)
-                    ->setConstructorArgs($args)
-                    ->getMockForAbstractClass();
+            ->setConstructorArgs($args)
+            ->getMockForAbstractClass()
+        ;
     }
 }
 

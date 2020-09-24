@@ -12,21 +12,19 @@ declare(strict_types=1);
 
 namespace Korowai\Testing\Constraint;
 
-use Korowai\Testing\Properties\ActualProperties;
 use Korowai\Testing\Properties\ActualPropertiesInterface;
+use Korowai\Testing\Properties\CircularDependencyException;
 use Korowai\Testing\Properties\ExpectedProperties;
-use Korowai\Testing\Properties\ExpectedPropertiesInterface;
 use Korowai\Testing\Properties\ExpectedPropertiesDecoratorTrait;
+use Korowai\Testing\Properties\ExpectedPropertiesInterface;
+use Korowai\Testing\Properties\Exporter;
+use Korowai\Testing\Properties\PropertySelectorInterface;
+use Korowai\Testing\Properties\RecursivePropertiesSelector as RecursiveSelector;
 use Korowai\Testing\Properties\RecursivePropertiesUnwrapper as RecursiveUnwrapper;
 use Korowai\Testing\Properties\RecursivePropertiesUnwrapperInterface as RecursiveUnwrapperInterface;
-use Korowai\Testing\Properties\RecursivePropertiesSelector as RecursiveSelector;
-use Korowai\Testing\Properties\RecursivePropertiesSelectorInterface as RecursiveSelectorInterface;
-use Korowai\Testing\Properties\CircularDependencyException;
-use Korowai\Testing\Properties\PropertySelectorInterface;
-use Korowai\Testing\Properties\Exporter;
 use PHPUnit\Framework\Constraint\Constraint;
-use PHPUnit\Framework\Constraint\Operator;
 use PHPUnit\Framework\Constraint\LogicalNot;
+use PHPUnit\Framework\Constraint\Operator;
 use PHPUnit\Framework\ExpectationFailedException;
 use SebastianBergmann\Comparator\ComparisonFailure;
 use SebastianBergmann\Exporter\Exporter as BaseExporter;
@@ -67,47 +65,43 @@ abstract class AbstractPropertiesComparator extends Constraint implements Expect
     /**
      * @var Exporter
      */
-    private $exporter = null;
-
-    abstract protected static function makePropertySelector() : PropertySelectorInterface;
-    abstract protected function compareArrays(array $expected, array $actual) : bool;
-    abstract public function subject() : string;
-    abstract public function predicate() : string;
-
-    public static function fromArray(array $expected, RecursiveUnwrapperInterface $unwrapper = null) : self
-    {
-        $selector = static::makePropertySelector();
-        if ($unwrapper === null) {
-            $unwrapper = new RecursiveUnwrapper;
-        }
-        return new static(new ExpectedProperties($selector, $expected), $unwrapper);
-    }
+    private $exporter;
 
     /**
-     * @throws \PHPUnit\Framework\Exception when non-string keys are found in *$expected*.
+     * @throws \PHPUnit\Framework\Exception when non-string keys are found in *$expected*
      */
     final protected function __construct(ExpectedPropertiesInterface $expected, RecursiveUnwrapperInterface $unwrapper)
     {
         $valid = array_filter($expected->getArrayCopy(), \is_string::class, ARRAY_FILTER_USE_KEY);
         if (($count = count($expected) - count($valid)) > 0) {
             $message = 'The array of expected properties contains '.$count.' invalid key(s)';
+
             throw new \PHPUnit\Framework\Exception($message);
         }
         $this->expected = $expected;
         $this->unwrapper = $unwrapper;
     }
 
-    public function getExpectedProperties() : ExpectedPropertiesInterface
+    abstract public function subject(): string;
+
+    abstract public function predicate(): string;
+
+    public static function fromArray(array $expected, RecursiveUnwrapperInterface $unwrapper = null): self
+    {
+        $selector = static::makePropertySelector();
+        if (null === $unwrapper) {
+            $unwrapper = new RecursiveUnwrapper();
+        }
+
+        return new static(new ExpectedProperties($selector, $expected), $unwrapper);
+    }
+
+    public function getExpectedProperties(): ExpectedPropertiesInterface
     {
         return $this->expected;
     }
 
-    private function selectActualProperties($subject) : ActualPropertiesInterface
-    {
-        return (new RecursiveSelector($this->expected))->selectProperties($subject);
-    }
-
-    public function getPropertiesUnwrapper() : RecursiveUnwrapperInterface
+    public function getPropertiesUnwrapper(): RecursiveUnwrapperInterface
     {
         return $this->unwrapper;
     }
@@ -115,7 +109,7 @@ abstract class AbstractPropertiesComparator extends Constraint implements Expect
     /**
      * Returns a string representation of the constraint.
      */
-    public function toString() : string
+    public function toString(): string
     {
         return sprintf(
             'is %s with selected properties %s given ones',
@@ -139,7 +133,7 @@ abstract class AbstractPropertiesComparator extends Constraint implements Expect
      * @param Operator $operator the $operator of the expression
      * @param mixed    $role     role of $this constraint in the $operator expression
      */
-    public function toStringInContext(Operator $operator, $role) : string
+    public function toStringInContext(Operator $operator, $role): string
     {
         if ($operator instanceof LogicalNot) {
             return sprintf(
@@ -148,11 +142,12 @@ abstract class AbstractPropertiesComparator extends Constraint implements Expect
                 $this->predicate()
             );
         }
+
         return '';
     }
 
     /**
-     * Evaluates the constraint for parameter $other
+     * Evaluates the constraint for parameter $other.
      *
      * If $returnResult is set to false (the default), an exception is thrown
      * in case of a failure. null is returned otherwise.
@@ -160,6 +155,8 @@ abstract class AbstractPropertiesComparator extends Constraint implements Expect
      * If $returnResult is true, the result of the evaluation is returned as
      * a boolean value instead: true in case of success, false in case of a
      * failure.
+     *
+     * @param mixed $other
      *
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
@@ -196,35 +193,41 @@ abstract class AbstractPropertiesComparator extends Constraint implements Expect
      * Evaluates the constraint for parameter $other. Returns true if the
      * constraint is met, false otherwise.
      *
-     * @param  mixed $other value or object to evaluate
+     * @param mixed $other value or object to evaluate
      */
-    public function matches($other) : bool
+    public function matches($other): bool
     {
         if (!$this->getPropertySelector()->canSelectFrom($other)) {
             return false;
         }
         $actual = $this->unwrapper->unwrap($this->selectActualProperties($other));
         $expect = $this->unwrapper->unwrap($this->expected);
+
         return $this->compareArrays($expect, $actual);
     }
 
-    protected function exporter() : BaseExporter
+    abstract protected static function makePropertySelector(): PropertySelectorInterface;
+
+    abstract protected function compareArrays(array $expected, array $actual): bool;
+
+    protected function exporter(): BaseExporter
     {
-        if ($this->exporter === null) {
-            $this->exporter = new Exporter;
+        if (null === $this->exporter) {
+            $this->exporter = new Exporter();
         }
+
         return $this->exporter;
     }
 
     /**
-     * Returns the description of the failure
+     * Returns the description of the failure.
      *
      * The beginning of failure messages is "Failed asserting that" in most
      * cases. This method should return the second part of that sentence.
      *
-     * @param  mixed $other evaluated value or object
+     * @param mixed $other evaluated value or object
      */
-    protected function failureDescription($other) : string
+    protected function failureDescription($other): string
     {
         return $this->short($other).' '.$this->toString();
     }
@@ -249,25 +252,30 @@ abstract class AbstractPropertiesComparator extends Constraint implements Expect
     {
         $string = $this->toStringInContext($operator, $role);
 
-        if ($string === '') {
+        if ('' === $string) {
             return '';
         }
 
-        return $this->short($other) . ' ' . $string;
+        return $this->short($other).' '.$string;
+    }
+
+    private function selectActualProperties($subject): ActualPropertiesInterface
+    {
+        return (new RecursiveSelector($this->expected))->selectProperties($subject);
     }
 
     /**
      * Returns short representation of $subject for failureDescription().
      *
-     * @return string
+     * @param mixed $subject
      */
-    private function short($subject) : string
+    private function short($subject): string
     {
         if (is_object($subject)) {
             return 'object '.get_class($subject);
-        } else {
-            return $this->exporter()->export($subject);
         }
+
+        return $this->exporter()->export($subject);
     }
 }
 

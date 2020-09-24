@@ -12,12 +12,14 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldap;
 
-use Korowai\Testing\LdaplibInterfaces\TestCase;
 use Korowai\Lib\Ldap\ResultItemIteratorInterface;
+use Korowai\Testing\LdaplibInterfaces\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Tests\Lib\Ldap\ResultItemIteratorInterfaceTrait
+ *
+ * @internal
  */
 final class ResultItemIteratorInterfaceTest extends TestCase
 {
@@ -25,7 +27,7 @@ final class ResultItemIteratorInterfaceTest extends TestCase
 
     public static function createDummyInstance()
     {
-        return new class implements ResultItemIteratorInterface {
+        return new class() implements ResultItemIteratorInterface {
             use ResultItemIteratorInterfaceTrait;
 
             public $current;
@@ -37,13 +39,13 @@ final class ResultItemIteratorInterfaceTest extends TestCase
         };
     }
 
-    public function test__dummyImplementation() : void
+    public function testDummyImplementation(): void
     {
         $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(ResultItemIteratorInterface::class, $dummy);
     }
 
-    public function test__current() : void
+    public function testCurrent(): void
     {
         $dummy = $this->createDummyInstance();
 

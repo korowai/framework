@@ -38,7 +38,7 @@ class ResultAttributeIterator implements ResultAttributeIteratorInterface, LdapR
 {
     use LdapResultEntryWrapperTrait;
 
-    /** @var string|null */
+    /** @var null|string */
     private $attribute;
 
     /**
@@ -48,8 +48,8 @@ class ResultAttributeIterator implements ResultAttributeIteratorInterface, LdapR
      * ``$entry->first_attribute()`` or ``$entry->next_attribute()`` or
      * it should be null.
      *
-     * @param  LdapResultEntryInterface $ldapResultEntry An ldap entry containing the attributes
-     * @param  string|null $attribute Name of the current attribute pointed to by Iterator
+     * @param LdapResultEntryInterface $ldapResultEntry An ldap entry containing the attributes
+     * @param null|string              $attribute       Name of the current attribute pointed to by Iterator
      */
     public function __construct(LdapResultEntryInterface $ldapResultEntry, string $attribute = null)
     {
@@ -62,8 +62,9 @@ class ResultAttributeIterator implements ResultAttributeIteratorInterface, LdapR
      *
      * Should only be used on valid iterator.
      *
-     * @return array an array of values of the current attribute.
-     * @link http://php.net/manual/en/iterator.current.php Iterator::current
+     * @return array an array of values of the current attribute
+     *
+     * @see http://php.net/manual/en/iterator.current.php Iterator::current
      */
     public function current()
     {
@@ -71,15 +72,17 @@ class ResultAttributeIterator implements ResultAttributeIteratorInterface, LdapR
         // FIXME: with(new LdapLinkErrorHandler(...)) ...
         $values = $entry->get_values($this->attribute);
         unset($values['count']);
+
         return $values;
     }
 
     /**
      * Returns the key of the current element (name of current attribute).
-     * @return string|null The name of current attribute or ``null`` if the
-     *         iterator is invalid (past the end).
      *
-     * @link http://php.net/manual/en/iterator.key.php Iterator::key
+     * @return null|string the name of current attribute or ``null`` if the
+     *                     iterator is invalid (past the end)
+     *
+     * @see http://php.net/manual/en/iterator.key.php Iterator::key
      */
     public function key()
     {
@@ -87,9 +90,9 @@ class ResultAttributeIterator implements ResultAttributeIteratorInterface, LdapR
     }
 
     /**
-     * Moves the current position to the next element
+     * Moves the current position to the next element.
      *
-     * @link http://php.net/manual/en/iterator.next.php Iterator::next
+     * @see http://php.net/manual/en/iterator.next.php Iterator::next
      */
     public function next()
     {
@@ -100,9 +103,9 @@ class ResultAttributeIterator implements ResultAttributeIteratorInterface, LdapR
     }
 
     /**
-     * Rewinds back to the first element of the iterator
+     * Rewinds back to the first element of the iterator.
      *
-     * @link http://php.net/manual/en/iterator.rewind.php Iterator::rewind
+     * @see http://php.net/manual/en/iterator.rewind.php Iterator::rewind
      */
     public function rewind()
     {
@@ -113,9 +116,9 @@ class ResultAttributeIterator implements ResultAttributeIteratorInterface, LdapR
     }
 
     /**
-     * Checks if current position is valid
+     * Checks if current position is valid.
      *
-     * @link http://php.net/manual/en/iterator.valid.php Iterator::valid
+     * @see http://php.net/manual/en/iterator.valid.php Iterator::valid
      */
     public function valid()
     {

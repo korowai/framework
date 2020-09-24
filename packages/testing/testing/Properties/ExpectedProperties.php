@@ -28,12 +28,12 @@ final class ExpectedProperties extends \ArrayObject implements ExpectedPropertie
         parent::__construct($input);
     }
 
-    public function getPropertySelector() : PropertySelectorInterface
+    public function getPropertySelector(): PropertySelectorInterface
     {
         return $this->propertySelector;
     }
 
-    public function canUnwrapChild(PropertiesInterface $child) : bool
+    public function canUnwrapChild(PropertiesInterface $child): bool
     {
         return $child instanceof ExpectedPropertiesInterface;
     }

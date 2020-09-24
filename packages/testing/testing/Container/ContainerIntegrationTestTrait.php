@@ -12,7 +12,6 @@ declare(strict_types=1);
 
 namespace Korowai\Testing\Container;
 
-use Korowai\Testing\Container\ContainerFactoryInterface;
 use Psr\Container\ContainerInterface;
 
 /**
@@ -20,24 +19,29 @@ use Psr\Container\ContainerInterface;
  */
 trait ContainerIntegrationTestTrait
 {
-    abstract public function getContainerFactory() : ContainerFactoryInterface;
-    abstract public function provideContainerConfigs() : iterable;
-    abstract public function examineConfiguredContainer(ContainerInterface $container, $config) : void;
+    abstract public function getContainerFactory(): ContainerFactoryInterface;
+
+    abstract public function provideContainerConfigs(): iterable;
+
+    abstract public function examineConfiguredContainer(ContainerInterface $container, $config): void;
 
     // See https://github.com/korowai/framework/issues/11
     // @codeCoverageIgnoreStart
-    public function prov__containerGetsConfiguredCorrectly() : iterable
+    public function prov__containerGetsConfiguredCorrectly(): iterable
     {
         foreach ($this->provideContainerConfigs() as $config) {
             yield [$config];
         }
     }
+
     // @codeCoverageIgnoreEnd
 
     /**
      * @dataProvider prov__containerGetsConfiguredCorrectly
+     *
+     * @param mixed $config
      */
-    public function test__containerGetsConfiguredCorrectly($config) : void
+    public function test__containerGetsConfiguredCorrectly($config): void
     {
         $container = $this->getContainerFactory()->setConfig($config)->createContainer();
         $this->examineConfiguredContainer($container, $config);

@@ -25,9 +25,9 @@ class ErrorHandler extends AbstractManagedErrorHandler
     /**
      * Initializes the object.
      *
-     * @param  callable $errorHandler User-provided error handler function.
-     * @param  int $errorTypes Can be used to mask the triggering of the error
-     *                        handler function.
+     * @param callable $errorHandler user-provided error handler function
+     * @param int      $errorTypes   can be used to mask the triggering of the error
+     *                               handler function
      */
     public function __construct(callable $errorHandler, int $errorTypes = E_ALL | E_STRICT)
     {
@@ -36,21 +36,19 @@ class ErrorHandler extends AbstractManagedErrorHandler
     }
 
     /**
-     * Returns the $errorHandler provided to constructor.
-     *
-     * @return callable
+     * {@inheritdoc}
      */
-    public function getErrorHandler() : callable
+    public function __invoke(int $severity, string $message, string $file, int $line): bool
     {
-        return $this->errorHandler;
+        return call_user_func($this->getErrorHandler(), $severity, $message, $file, $line);
     }
 
     /**
-     * {@inheritdoc}
+     * Returns the $errorHandler provided to constructor.
      */
-    public function __invoke(int $severity, string $message, string $file, int $line) : bool
+    public function getErrorHandler(): callable
     {
-        return call_user_func($this->getErrorHandler(), $severity, $message, $file, $line);
+        return $this->errorHandler;
     }
 }
 

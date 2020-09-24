@@ -17,19 +17,21 @@ namespace Korowai\Testing\Properties;
  */
 abstract class AbstractPropertySelector implements PropertySelectorInterface
 {
-    abstract protected function selectWithMethod($subject, $method, array &$retval = null) : bool;
-    abstract protected function selectWithAttribute($subject, $key, array &$retval = null) : bool;
-
-    public function selectProperty($subject, $key, &$retval = null) : bool
+    public function selectProperty($subject, $key, &$retval = null): bool
     {
-        $method = (substr($key, -2) === '()') ? substr($key, 0, -2) : null;
-        if ($method !== null) {
+        $method = ('()' === substr($key, -2)) ? substr($key, 0, -2) : null;
+        if (null !== $method) {
             return $this->selectWithMethod($subject, $method, $retval);
-        } else {
-            return $this->selectWithAttribute($subject, $key, $retval);
         }
+
+        return $this->selectWithAttribute($subject, $key, $retval);
+
         return false;
     }
+
+    abstract protected function selectWithMethod($subject, $method, array &$retval = null): bool;
+
+    abstract protected function selectWithAttribute($subject, $key, array &$retval = null): bool;
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

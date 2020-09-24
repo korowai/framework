@@ -12,25 +12,26 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldif\Rules;
 
-use Korowai\Lib\Ldif\Rules\ValueSpecRuleInterface;
 use Korowai\Lib\Ldif\RuleInterface;
-
+use Korowai\Lib\Ldif\Rules\ValueSpecRuleInterface;
 use Korowai\Testing\LdiflibInterfaces\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Tests\Lib\Ldif\Rules\ValueSpecRuleInterfaceTrait
+ *
+ * @internal
  */
 final class ValueSpecRuleInterfaceTest extends TestCase
 {
     public static function createDummyInstance()
     {
-        return new class implements ValueSpecRuleInterface {
+        return new class() implements ValueSpecRuleInterface {
             use ValueSpecRuleInterfaceTrait;
         };
     }
 
-    public static function prov__extendsInterface() : array
+    public static function prov__extendsInterface(): array
     {
         return [
             [RuleInterface::class],
@@ -40,12 +41,12 @@ final class ValueSpecRuleInterfaceTest extends TestCase
     /**
      * @dataProvider prov__extendsInterface
      */
-    public function test__extendsInterface(string $extends) : void
+    public function testExtendsInterface(string $extends): void
     {
         $this->assertImplementsInterface($extends, ValueSpecRuleInterface::class);
     }
 
-    public function test__dummyImplementation() : void
+    public function testDummyImplementation(): void
     {
         $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(ValueSpecRuleInterface::class, $dummy);

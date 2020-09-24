@@ -20,9 +20,7 @@ use Korowai\Lib\Ldap\Core\LdapResultEntryIteratorInterface;
 final class ResultEntryIterator extends AbstractResultItemIterator implements ResultEntryIteratorInterface
 {
     /**
-     * Constructs ResultEntryIterator
-     *
-     * @param LdapResultEntryIteratorInterface $ldapIterator
+     * Constructs ResultEntryIterator.
      */
     public function __construct(LdapResultEntryIteratorInterface $ldapIterator)
     {
@@ -34,11 +32,12 @@ final class ResultEntryIterator extends AbstractResultItemIterator implements Re
      *
      * @psalm-mutation-free
      */
-    public function current() : ?ResultEntryInterface
+    public function current(): ?ResultEntryInterface
     {
         /** @var LdapResultEntryIteratorInterface $this->ldapIterator */
         $current = $this->ldapIterator->current();
-        return $current === null ? null : new ResultEntry($current);
+
+        return null === $current ? null : new ResultEntry($current);
     }
 }
 

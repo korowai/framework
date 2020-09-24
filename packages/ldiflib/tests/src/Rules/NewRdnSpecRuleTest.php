@@ -12,20 +12,20 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldif\Rules;
 
-use Korowai\Lib\Ldif\Rules\NewRdnSpecRule;
 use Korowai\Lib\Ldif\Rules\AbstractRdnSpecRule;
-use Korowai\Lib\Ldif\Rules\Util;
+use Korowai\Lib\Ldif\Rules\NewRdnSpecRule;
 use Korowai\Lib\Rfc\Rfc2849;
-
 use Korowai\Testing\Ldiflib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Ldif\Rules\NewRdnSpecRule
+ *
+ * @internal
  */
 final class NewRdnSpecRuleTest extends TestCase
 {
-    public function test__extends__AbstractRdnSpecRule() : void
+    public function testExtendsAbstractRdnSpecRule(): void
     {
         $this->assertExtendsClass(AbstractRdnSpecRule::class, NewRdnSpecRule::class);
     }
@@ -34,13 +34,13 @@ final class NewRdnSpecRuleTest extends TestCase
     {
         return [
             '__construct()' => [
-                'args'   => [],
+                'args' => [],
                 'expect' => [
                     'getRfcRule()' => self::objectHasPropertiesIdenticalTo([
                         'ruleSetClass()' => Rfc2849::class,
                         'name()' => 'NEWRDN_SPEC',
-                    ])
-                ]
+                    ]),
+                ],
             ],
         ];
     }
@@ -48,7 +48,7 @@ final class NewRdnSpecRuleTest extends TestCase
     /**
      * @dataProvider prov__construct
      */
-    public function test__construct(array $args, array $expect) : void
+    public function testConstruct(array $args, array $expect): void
     {
         $rule = new NewRdnSpecRule(...$args);
         $this->assertObjectHasPropertiesIdenticalTo($expect, $rule);
@@ -74,7 +74,7 @@ final class NewRdnSpecRuleTest extends TestCase
                     'getSourceOffset()' => 3 + strlen('newrdn: '),
                     'getSourceCharOffset()' => 2 + mb_strlen('newrdn: '),
                     'getMessage()' => 'syntax error: invalid RDN syntax: "'.$rdn.'"',
-                ])
+                ]),
             ];
             $matches = [[$rdn, 3 + strlen('newrdn: ')], 'value_safe' => [$rdn, 3 + strlen('newrdn: ')]];
             $cursor = self::objectHasPropertiesIdenticalTo([
@@ -158,8 +158,8 @@ final class NewRdnSpecRuleTest extends TestCase
 
             return [$source, $matches, $expect];
         }, [
-        //    0000000 00
-        //    0123456 78
+            //    0000000 00
+            //    0123456 78
             ["Zm9vgA=\n", 'getOffset()' => 7, 'charOffset' => 7],
         ]);
 
@@ -194,9 +194,9 @@ final class NewRdnSpecRuleTest extends TestCase
 
             return [$source, $matches, $expect];
         }, [
-        //    00000000 0
-        //    01234567 8
-            ["YXNkgGZm", 'getOffset()' => 8, 'charOffset' => 8, 'rdn' => "asd\x80ff"],
+            //    00000000 0
+            //    01234567 8
+            ['YXNkgGZm', 'getOffset()' => 8, 'charOffset' => 8, 'rdn' => "asd\x80ff"],
         ]);
 
         $malformedStringCases = array_map(function ($case) {
@@ -206,8 +206,8 @@ final class NewRdnSpecRuleTest extends TestCase
             //          0123456
             $source = ['newrdn:'.$sep.$rdn];
             $source[] = strlen($source[0]);
-            $type = substr($sep, 0, 1) === ':' ? 'BASE64': 'SAFE';
-            $message = $type === 'BASE64' ? 'invalid BASE64 string' : 'invalid RDN syntax: "'.$rdn.'"';
+            $type = ':' === substr($sep, 0, 1) ? 'BASE64' : 'SAFE';
+            $message = 'BASE64' === $type ? 'invalid BASE64 string' : 'invalid RDN syntax: "'.$rdn.'"';
             $dnOffset = strlen('newrdn:'.$sep) + $case[2];
             $errors = $result ? [] : [
                 self::objectHasPropertiesIdenticalTo([
@@ -222,7 +222,7 @@ final class NewRdnSpecRuleTest extends TestCase
                 'getSourceCharOffset()' => mb_strlen($source[0]),
             ]);
 
-            $dnKey = $type === 'BASE64' ? 'value_b64' : 'value_safe';
+            $dnKey = 'BASE64' === $type ? 'value_b64' : 'value_safe';
             $matches = [[$rdn, $dnOffset], $dnKey => [$rdn, $dnOffset]];
 
             $expect = [
@@ -247,13 +247,13 @@ final class NewRdnSpecRuleTest extends TestCase
         $missingCaptureCases = array_map(function (array $matches) {
             return [
                 //              0123456
-                'source'  => ['x: O=1', 6],
+                'source' => ['x: O=1', 6],
                 'matches' => $matches,
-                'expect'   => [
+                'expect' => [
                     'result' => false,
-                    'init'   => 'preset string',
-                    'rdn'     => null,
-                    'state'  => [
+                    'init' => 'preset string',
+                    'rdn' => null,
+                    'state' => [
                         'getCursor()' => self::objectHasPropertiesIdenticalTo([
                             'getOffset()' => 6,
                             'getSourceOffset()' => 6,
@@ -263,17 +263,17 @@ final class NewRdnSpecRuleTest extends TestCase
                             self::objectHasPropertiesIdenticalTo([
                                 'getSourceOffset()' => 6,
                                 'getSourceCharOffset()' => 6,
-                                'getMessage()' => 'internal error: missing or invalid capture groups "value_safe" and "value_b64"'
+                                'getMessage()' => 'internal error: missing or invalid capture groups "value_safe" and "value_b64"',
                             ]),
                         ],
                         'getRecords()' => [],
-                    ]
-                ]
+                    ],
+                ],
             ];
         }, [
             [],
-            [[null,-1], 'value_safe' => [null,-1]],
-            [[null,-1], 'value_b64'  => [null,-1]],
+            [[null, -1], 'value_safe' => [null, -1]],
+            [[null, -1], 'value_b64' => [null, -1]],
         ]);
 
         return array_merge(
@@ -289,7 +289,7 @@ final class NewRdnSpecRuleTest extends TestCase
     /**
      * @dataProvider prov__parseMatched
      */
-    public function test__parseMatched(array $source, array $matches, array $expect) : void
+    public function testParseMatched(array $source, array $matches, array $expect): void
     {
         $state = $this->getParserStateFromSource(...$source);
 
@@ -322,9 +322,10 @@ final class NewRdnSpecRuleTest extends TestCase
                     'getMessage()' => 'syntax error: expected "newrdn:" (RFC2849)',
                 ]),
             ];
+
             return [
                 'source' => $case[0],
-                'args'   => $args,
+                'args' => $args,
                 'expect' => [
                     'result' => false,
                     'init' => 'preset string',
@@ -333,23 +334,22 @@ final class NewRdnSpecRuleTest extends TestCase
                         'getCursor()' => self::objectHasPropertiesIdenticalTo([
                             'getOffset()' => $case['getOffset()'],
                             'getSourceOffset()' => $case['getOffset()'],
-                            'getSourceCharOffset()' => $case['charOffset']
+                            'getSourceCharOffset()' => $case['charOffset'],
                         ]),
                         'getErrors()' => $errors,
                         'getRecords()' => [],
                     ],
-                ]
+                ],
             ];
         }, [
-            [["ł ", 3],         'getOffset()' => 3, 'charOffset' => 2],
-            [["ł ", 3],         'getOffset()' => 3, 'charOffset' => 2, 'args' => [false]],
-            [["ł ", 3],         'getOffset()' => 3, 'charOffset' => 2, 'args' => [true]],
-            [["ł x", 3],        'getOffset()' => 3, 'charOffset' => 2],
-            [["ł dns:", 3],     'getOffset()' => 3, 'charOffset' => 2],
-            [["ł rdn :", 3],     'getOffset()' => 3, 'charOffset' => 2],
+            [['ł ', 3],         'getOffset()' => 3, 'charOffset' => 2],
+            [['ł ', 3],         'getOffset()' => 3, 'charOffset' => 2, 'args' => [false]],
+            [['ł ', 3],         'getOffset()' => 3, 'charOffset' => 2, 'args' => [true]],
+            [['ł x', 3],        'getOffset()' => 3, 'charOffset' => 2],
+            [['ł dns:', 3],     'getOffset()' => 3, 'charOffset' => 2],
+            [['ł rdn :', 3],     'getOffset()' => 3, 'charOffset' => 2],
             [["ł rdn\n:", 3],    'getOffset()' => 3, 'charOffset' => 2],
         ]);
-
 
         $safeStringCases = array_map(function ($case) {
             $rdn = $case[0];
@@ -380,8 +380,8 @@ final class NewRdnSpecRuleTest extends TestCase
 
             return [
                 'source' => $source,
-                'args'   => [],
-                'expect' => $expect
+                'args' => [],
+                'expect' => $expect,
             ];
         }, static::rdnMatch__cases());
 
@@ -415,8 +415,8 @@ final class NewRdnSpecRuleTest extends TestCase
 
             return [
                 'source' => $source,
-                'args'   => [],
-                'expect' => $expect
+                'args' => [],
+                'expect' => $expect,
             ];
         }, static::rdnMatch__cases());
 
@@ -450,12 +450,12 @@ final class NewRdnSpecRuleTest extends TestCase
 
             return [
                 'source' => $source,
-                'args'   => [],
-                'expect' => $expect
+                'args' => [],
+                'expect' => $expect,
             ];
         }, [
-        //    0000000 00
-        //    0123456 78
+            //    0000000 00
+            //    0123456 78
             ["Zm9vgA=\n", 'getOffset()' => 8, 'charOffset' => 8],
         ]);
 
@@ -469,7 +469,7 @@ final class NewRdnSpecRuleTest extends TestCase
                     'getSourceOffset()' => 3 + strlen('newrdn:: '),
                     'getSourceCharOffset()' => 2 + mb_strlen('newrdn:: '),
                     'getMessage()' => 'syntax error: the string is not a valid UTF8',
-                ])
+                ]),
             ];
             $cursor = self::objectHasPropertiesIdenticalTo([
                 'getOffset()' => 3 + strlen('newrdn:: ') + $case['getOffset()'],
@@ -489,12 +489,12 @@ final class NewRdnSpecRuleTest extends TestCase
 
             return [
                 'source' => $source,
-                'args'   => [],
-                'expect' => $expect
+                'args' => [],
+                'expect' => $expect,
             ];
         }, [
-        //    00000000 00
-        //    01234567 89
+            //    00000000 00
+            //    01234567 89
             ["YXNkgGZm\n", 'getOffset()' => 9, 'charOffset' => 9, 'rdn' => "asd\x80ff"],
         ]);
 
@@ -504,7 +504,7 @@ final class NewRdnSpecRuleTest extends TestCase
             $result = false;
             //          0123456
             $source = ['newrdn:'.$sep.$rdn, 0];
-            $type = substr($sep, 0, 1) === ':' ? 'BASE64': 'SAFE';
+            $type = ':' === substr($sep, 0, 1) ? 'BASE64' : 'SAFE';
             $message = 'malformed '.$type.'-STRING (RFC2849)';
             $errors = $result ? [] : [
                 self::objectHasPropertiesIdenticalTo([
@@ -531,8 +531,8 @@ final class NewRdnSpecRuleTest extends TestCase
 
             return [
                 'source' => $source,
-                'args'   => [],
-                'expect' => $expect
+                'args' => [],
+                'expect' => $expect,
             ];
         }, [
             [' ',  ':sdf',     0],  // 1'st is not SAFE-INIT-CHAR (colon)
@@ -554,7 +554,7 @@ final class NewRdnSpecRuleTest extends TestCase
     /**
      * @dataProvider prov__parse
      */
-    public function test__parse(array $source, array $args, array $expect) : void
+    public function testParse(array $source, array $args, array $expect): void
     {
         $state = $this->getParserStateFromSource(...$source);
 
@@ -562,7 +562,7 @@ final class NewRdnSpecRuleTest extends TestCase
             $rdn = $expect['init'];
         }
 
-        $rule = new NewRdnSpecRule;
+        $rule = new NewRdnSpecRule();
 
         $result = $rule->parse($state, $rdn, ...$args);
 

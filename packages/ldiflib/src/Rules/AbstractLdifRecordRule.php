@@ -12,9 +12,6 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldif\Rules;
 
-use Korowai\Lib\Ldif\RuleInterface;
-use Korowai\Lib\Ldif\ParserStateInterface as State;
-
 /**
  * @todo Write documentation.
  *
@@ -40,14 +37,14 @@ abstract class AbstractLdifRecordRule extends AbstractRule
     /**
      * Initializes the object.
      *
-     * @param  array $options
      * @return object $this
      */
     public function __construct(array $options = [])
     {
-        $this->setDnSpecRule($options['dnSpecRule'] ?? new DnSpecRule);
-        $this->setSepRule($options['sepRule'] ?? new SepRule);
-        $this->setAttrValSpecRule($options['attrValSpecRule'] ?? new AttrValSpecRule);
+        $this->setDnSpecRule($options['dnSpecRule'] ?? new DnSpecRule());
+        $this->setSepRule($options['sepRule'] ?? new SepRule());
+        $this->setAttrValSpecRule($options['attrValSpecRule'] ?? new AttrValSpecRule());
+
         return $this;
     }
 
@@ -56,7 +53,7 @@ abstract class AbstractLdifRecordRule extends AbstractRule
      *
      * @return DnSpecRule
      */
-    public function getDnSpecRule() : ?DnSpecRule
+    public function getDnSpecRule(): ?DnSpecRule
     {
         return $this->dnSpecRule;
     }
@@ -64,12 +61,12 @@ abstract class AbstractLdifRecordRule extends AbstractRule
     /**
      * Sets new nested DnSpecRule object.
      *
-     * @param  DnSpecRule $rule
      * @return object $this
      */
     public function setDnSpecRule(DnSpecRule $rule)
     {
         $this->dnSpecRule = $rule;
+
         return $this;
     }
 
@@ -78,7 +75,7 @@ abstract class AbstractLdifRecordRule extends AbstractRule
      *
      * @return SepRule
      */
-    public function getSepRule() : ?SepRule
+    public function getSepRule(): ?SepRule
     {
         return $this->sepRule;
     }
@@ -86,12 +83,12 @@ abstract class AbstractLdifRecordRule extends AbstractRule
     /**
      * Sets new nested SepRule object.
      *
-     * @param  SepRule $rule
      * @return object $this
      */
     public function setSepRule(SepRule $rule)
     {
         $this->sepRule = $rule;
+
         return $this;
     }
 
@@ -100,7 +97,7 @@ abstract class AbstractLdifRecordRule extends AbstractRule
      *
      * @return AttrValSpecRule
      */
-    public function getAttrValSpecRule() : ?AttrValSpecRule
+    public function getAttrValSpecRule(): ?AttrValSpecRule
     {
         return $this->attrValSpecRule;
     }
@@ -108,12 +105,12 @@ abstract class AbstractLdifRecordRule extends AbstractRule
     /**
      * Sets new nested AttrValSpecRule object.
      *
-     * @param  AttrValSpecRule $rule
      * @return object $this
      */
     public function setAttrValSpecRule(AttrValSpecRule $rule)
     {
         $this->attrValSpecRule = $rule;
+
         return $this;
     }
 }

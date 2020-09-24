@@ -27,14 +27,13 @@ interface RuleInterface
      * ``$this->parse($state, $value, false)``, the remaining iterations with
      * ``$this->parse($state, $value, true)``.
      *
-     * @param  ParserStateInterface $state
-     * @param  array $values
-     * @param  int $min
-     * @param  int $max
+     * @param array $values
+     * @param int   $max
      *
-     * @return bool Returns ``true`` on success of ``false`` on failure.
+     * @return bool returns ``true`` on success of ``false`` on failure
      */
-    public function repeat(ParserStateInterface $state, array &$values = null, int $min = 0, int $max = null) : bool;
+    public function repeat(ParserStateInterface $state, array &$values = null, int $min = 0, int $max = null): bool;
+
     /**
      * Parse string starting at position defined by *$state*.
      *
@@ -55,16 +54,16 @@ interface RuleInterface
      * appended to *$state* in cases 2, 3. In case 1, error is appended to
      * *$state* only if *$trying === false* (default).
      *
-     * @param  ParserStateInterface $state
-     *      Provides the input string, cursor, containers for errors, etc..
-     * @param  mixed $value
-     *      Semantic value to be returned to caller.
-     * @param  bool $trying
-     *      If ``false``, error is appended to *$state* when the rule does not match.
+     * @param ParserStateInterface $state
+     *                                     Provides the input string, cursor, containers for errors, etc..
+     * @param mixed                $value
+     *                                     Semantic value to be returned to caller
+     * @param bool                 $trying
+     *                                     If ``false``, error is appended to *$state* when the rule does not match
      *
-     * @return bool Returns true on success or false on error.
+     * @return bool returns true on success or false on error
      */
-    public function parse(ParserStateInterface $state, &$value = null, bool $trying = false) : bool;
+    public function parse(ParserStateInterface $state, &$value = null, bool $trying = false): bool;
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

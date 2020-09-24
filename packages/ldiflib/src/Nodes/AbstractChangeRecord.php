@@ -29,10 +29,10 @@ abstract class AbstractChangeRecord extends AbstractRecord
     /**
      * Initializes the object. Should be invoked from subclass' constructor.
      *
-     * @param  string $dn
-     *      Distinguished name of the entry being altered by the record.
-     * @param  array $options
-     *      An array of key => value pairs. Supported options are:
+     * @param string $dn
+     *                        Distinguished name of the entry being altered by the record
+     * @param array  $options
+     *                        An array of key => value pairs. Supported options are:
      *
      * - ``"controls" => ControlInterface[]`` (optional): an optional
      *   array of controls for the operation.
@@ -48,28 +48,26 @@ abstract class AbstractChangeRecord extends AbstractRecord
     {
         $this->initAbstractRecord($dn, $options);
         $this->setControls($options['controls'] ?? []);
+
         return $this;
     }
 
     /**
      * Sets new controls to this object.
      *
-     * @param  array $controls
-     *
      * @return object $this
      */
     public function setControls(array $controls)
     {
         $this->controls = $controls;
+
         return $this;
     }
 
     /**
      * Returns the controls assigned to this object.
-     *
-     * @return array
      */
-    public function getControls() : array
+    public function getControls(): array
     {
         return $this->controls;
     }

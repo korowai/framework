@@ -32,11 +32,11 @@ final class AttrValSpec implements AttrValSpecInterface
     /**
      * Initializes the object.
      *
-     * @param  string $attribute
-     *      Attribute description string consisting of attribute type and
-     *      options.
-     * @param  ValueSpecInterface $valueSpec
-     *      An object encapsulating the value of the attribute.
+     * @param string             $attribute
+     *                                      Attribute description string consisting of attribute type and
+     *                                      options
+     * @param valueSpecInterface $valueSpec
+     *                                      An object encapsulating the value of the attribute
      */
     public function __construct(string $attribute, ValueSpecInterface $valueSpec)
     {
@@ -47,7 +47,7 @@ final class AttrValSpec implements AttrValSpecInterface
     /**
      * {@inheritdoc}
      */
-    public function getAttribute() : string
+    public function getAttribute(): string
     {
         return $this->attribute;
     }
@@ -55,7 +55,7 @@ final class AttrValSpec implements AttrValSpecInterface
     /**
      * {@inheritdoc}
      */
-    public function getValueSpec() : ValueSpecInterface
+    public function getValueSpec(): ValueSpecInterface
     {
         return $this->valueSpec;
     }

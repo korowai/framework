@@ -39,11 +39,10 @@ interface ContextManagerInterface
      * Returning a true from this method will cause the "with" caller to
      * suppress the exception and continue execution.
      *
-     * @param \Throwable $exception The exception thrown from user function or
-     *                              ``null``.
-     * @return bool
+     * @param \Throwable $exception the exception thrown from user function or
+     *                              ``null``
      */
-    public function exitContext(\Throwable $exception = null) : bool;
+    public function exitContext(\Throwable $exception = null): bool;
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

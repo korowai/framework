@@ -22,17 +22,15 @@ trait DecoratesRuleInterface
     use ExposesRuleInterface;
 
     /**
-     * @var RuleInterface|null
+     * @var null|RuleInterface
      */
     protected $rfcRule;
 
     /**
      * Returns the instance of RFC [RuleInterface](\.\./RuleInterface.html)
      * encapsulated by this object.
-     *
-     * @return RuleInterface|null
      */
-    public function getRfcRule() : ?RuleInterface
+    public function getRfcRule(): ?RuleInterface
     {
         return $this->rfcRule;
     }
@@ -41,13 +39,12 @@ trait DecoratesRuleInterface
      * Sets the new instance of RFC [RuleInterface](\.\./RuleInterface.html) to
      * this object.
      *
-     * @param  RuleInterface|null $rfcRule
-     *
      * @return object $this
      */
     public function setRfcRule(?RuleInterface $rfcRule)
     {
         $this->rfcRule = $rfcRule;
+
         return $this;
     }
 }

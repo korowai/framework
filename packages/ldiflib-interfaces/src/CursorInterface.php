@@ -19,21 +19,13 @@ interface CursorInterface extends LocationInterface
 {
     /**
      * Change the cursor position by $offset.
-     *
-     * @param  int $offset
-     *
-     * @return CursorInterface
      */
-    public function moveBy(int $offset) : CursorInterface;
+    public function moveBy(int $offset): CursorInterface;
 
     /**
      * Move the cursor to a given $position.
-     *
-     * @param  int $position
-     *
-     * @return CursorInterface
      */
-    public function moveTo(int $position) : CursorInterface;
+    public function moveTo(int $position): CursorInterface;
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

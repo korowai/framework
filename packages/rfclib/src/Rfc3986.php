@@ -22,21 +22,21 @@ namespace Korowai\Lib\Rfc;
  * $result = preg_match('/^'.Rfc3986::URI_REFERENCE.'$/', $subject, $matches, PREG_UNMATCHED_AS_NULL)
  * ```
  *
- * @link https://tools.ietf.org/html/rfc3986 (the URI specification)
+ * @see https://tools.ietf.org/html/rfc3986 (the URI specification)
  */
 class Rfc3986 extends AbstractRuleSet
 {
     // character lists for character classes
     /**
-     * Same as [Rfc5234::ALPHACHARS](Rfc5234.html)
+     * Same as [Rfc5234::ALPHACHARS](Rfc5234.html).
      */
     public const ALPHACHARS = Rfc5234::ALPHACHARS;
     /**
-     * Same as [Rfc5234::DIGITCHARS](Rfc5234.html)
+     * Same as [Rfc5234::DIGITCHARS](Rfc5234.html).
      */
     public const DIGITCHARS = Rfc5234::DIGITCHARS;
     /**
-     * Same as [Rfc5234::HEXDIGCHARS](Rfc5234.html)
+     * Same as [Rfc5234::HEXDIGCHARS](Rfc5234.html).
      */
     public const HEXDIGCHARS = Rfc5234::HEXDIGCHARS.'a-f';
     public const GEN_DELIM_CHARS = ':\/\?#\[\]@';
@@ -47,22 +47,22 @@ class Rfc3986 extends AbstractRuleSet
 
     // character classes
     /**
-     * Same as [Rfc5234::ALPHA](Rfc5234.html)
+     * Same as [Rfc5234::ALPHA](Rfc5234.html).
      */
     public const ALPHA = Rfc5234::ALPHA;
 
     /**
-     * Same as [Rfc5234::DIGIT](Rfc5234.html)
+     * Same as [Rfc5234::DIGIT](Rfc5234.html).
      */
     public const DIGIT = Rfc5234::DIGIT;
 
     /**
-     * Same as [Rfc5234::HEXDIG](Rfc5234.html)
+     * Same as [Rfc5234::HEXDIG](Rfc5234.html).
      */
     public const HEXDIG = '['.self::HEXDIGCHARS.']';
 
     /**
-     * [RFC3986](https://tools.ietf.org/html/rfc3986#section-2.2):
+     * [RFC3986](https://tools.ietf.org/html/rfc3986#section-2.2):.
      *
      * ```
      * sub-delims  = "!" / "$" / "&" / "'" / "(" / ")"
@@ -72,7 +72,7 @@ class Rfc3986 extends AbstractRuleSet
     public const SUB_DELIMS = '['.self::SUB_DELIM_CHARS.']';
 
     /**
-     * [RFC3986](https://tools.ietf.org/html/rfc3986#section-2.2):
+     * [RFC3986](https://tools.ietf.org/html/rfc3986#section-2.2):.
      *
      * ```
      * gen-delims = ":" / "/" / "?" / "#" / "[" / "]" / "@"
@@ -81,7 +81,7 @@ class Rfc3986 extends AbstractRuleSet
     public const GEN_DELIMS = '['.self::GEN_DELIM_CHARS.']';
 
     /**
-     * [RFC3986](https://tools.ietf.org/html/rfc3986#section-2.2):
+     * [RFC3986](https://tools.ietf.org/html/rfc3986#section-2.2):.
      *
      * ```
      * reserved = gen-delims / sub-delims
@@ -90,7 +90,7 @@ class Rfc3986 extends AbstractRuleSet
     public const RESERVED = '['.self::RESERVEDCHARS.']';
 
     /**
-     * [RFC3986](https://tools.ietf.org/html/rfc3986#section-2.3):
+     * [RFC3986](https://tools.ietf.org/html/rfc3986#section-2.3):.
      *
      * ```
      * unreserved = ALPHA / DIGIT / "-" / "." / "_" / "~"
@@ -100,7 +100,7 @@ class Rfc3986 extends AbstractRuleSet
 
     // (sub)expressions
     /**
-     * [RFC3986](https://tools.ietf.org/html/rfc3986#section-2.1):
+     * [RFC3986](https://tools.ietf.org/html/rfc3986#section-2.1):.
      *
      * ```
      * pct-encoded = "%" HEXDIG HEXDIG
@@ -110,7 +110,7 @@ class Rfc3986 extends AbstractRuleSet
     public const PCT_ENCODED = '(?:%'.self::HEXDIG.self::HEXDIG.')';
 
     /**
-     * [RFC3986](https://tools.ietf.org/html/rfc3986#section-3.3):
+     * [RFC3986](https://tools.ietf.org/html/rfc3986#section-3.3):.
      *
      * ```
      * pchar = unreserved / pct-encoded / sub-delims / ":" / "@"
@@ -119,7 +119,7 @@ class Rfc3986 extends AbstractRuleSet
     public const PCHAR = '(?:['.self::PCHARCHARS.']|'.self::PCT_ENCODED.')';
 
     /**
-     * [RFC3986](https://tools.ietf.org/html/rfc3986#section-3.3):
+     * [RFC3986](https://tools.ietf.org/html/rfc3986#section-3.3):.
      *
      * ```
      * segment-nz-nc = 1*( unreserved / pct-encoded / sub-delims / "@" )
@@ -129,7 +129,7 @@ class Rfc3986 extends AbstractRuleSet
     public const SEGMENT_NZ_NC = '(?:(?:[@'.self::SUB_DELIM_CHARS.self::UNRESERVEDCHARS.']|'.self::PCT_ENCODED.')+)';
 
     /**
-     * [RFC3986](https://tools.ietf.org/html/rfc3986#section-3.3):
+     * [RFC3986](https://tools.ietf.org/html/rfc3986#section-3.3):.
      *
      * ```
      * segment-nz = 1*pchar
@@ -138,7 +138,7 @@ class Rfc3986 extends AbstractRuleSet
     public const SEGMENT_NZ = '(?:'.self::PCHAR.'+)';
 
     /**
-     * [RFC3986](https://tools.ietf.org/html/rfc3986#section-3.3):
+     * [RFC3986](https://tools.ietf.org/html/rfc3986#section-3.3):.
      *
      * ```
      * segment = *pchar
@@ -147,7 +147,7 @@ class Rfc3986 extends AbstractRuleSet
     public const SEGMENT = '(?:'.self::PCHAR.'*)';
 
     /**
-     * [RFC3986](https://tools.ietf.org/html/rfc3986#section-3.3):
+     * [RFC3986](https://tools.ietf.org/html/rfc3986#section-3.3):.
      *
      * ```
      * path-empty    = 0<pchar>
@@ -160,7 +160,7 @@ class Rfc3986 extends AbstractRuleSet
     public const PATH_EMPTY = '(?<path_empty>)';
 
     /**
-     * [RFC3986](https://tools.ietf.org/html/rfc3986#section-3.3):
+     * [RFC3986](https://tools.ietf.org/html/rfc3986#section-3.3):.
      *
      * ```
      * path-noscheme = segment-nz-nc *( "/" segment )
@@ -173,7 +173,7 @@ class Rfc3986 extends AbstractRuleSet
     public const PATH_NOSCHEME = '(?<path_noscheme>'.self::SEGMENT_NZ_NC.'(?:\/'.self::SEGMENT.')*)';
 
     /**
-     * [RFC3986](https://tools.ietf.org/html/rfc3986#section-3.3):
+     * [RFC3986](https://tools.ietf.org/html/rfc3986#section-3.3):.
      *
      * ```
      * path-rootless = segment-nz *( "/" segment )
@@ -186,7 +186,7 @@ class Rfc3986 extends AbstractRuleSet
     public const PATH_ROOTLESS = '(?<path_rootless>'.self::SEGMENT_NZ.'(?:\/'.self::SEGMENT.')*)';
 
     /**
-     * [RFC3986](https://tools.ietf.org/html/rfc3986#section-3.3):
+     * [RFC3986](https://tools.ietf.org/html/rfc3986#section-3.3):.
      *
      * ```
      * path-absolute = "/" [ segment-nz *( "/" segment ) ]
@@ -199,7 +199,7 @@ class Rfc3986 extends AbstractRuleSet
     public const PATH_ABSOLUTE = '(?<path_absolute>\/(?:'.self::SEGMENT_NZ.'(?:\/'.self::SEGMENT.')*)?)';
 
     /**
-     * [RFC3986](https://tools.ietf.org/html/rfc3986#section-3.3):
+     * [RFC3986](https://tools.ietf.org/html/rfc3986#section-3.3):.
      *
      * ```
      * path-abempty  = *( "/" segment )
@@ -212,7 +212,7 @@ class Rfc3986 extends AbstractRuleSet
     public const PATH_ABEMPTY = '(?<path_abempty>(?:\/'.self::SEGMENT.')*)';
 
     /**
-     * [RFC3986](https://tools.ietf.org/html/rfc3986#section-3.2.2):
+     * [RFC3986](https://tools.ietf.org/html/rfc3986#section-3.2.2):.
      *
      * ```
      * reg-name = *( unreserved / pct-encoded / sub-delims )
@@ -228,7 +228,7 @@ class Rfc3986 extends AbstractRuleSet
         ')';
 
     /**
-     * [RFC3986](https://tools.ietf.org/html/rfc3986#section-3.2.2):
+     * [RFC3986](https://tools.ietf.org/html/rfc3986#section-3.2.2):.
      *
      * ```
      * dec-octet = DIGIT                 ; 0-9
@@ -263,7 +263,7 @@ class Rfc3986 extends AbstractRuleSet
         ')';
 
     /**
-     * [RFC3986](https://tools.ietf.org/html/rfc3986#section-3.2.2):
+     * [RFC3986](https://tools.ietf.org/html/rfc3986#section-3.2.2):.
      *
      * ```
      * IPv4address = dec-octet "." dec-octet "." dec-octet "." dec-octet
@@ -276,7 +276,7 @@ class Rfc3986 extends AbstractRuleSet
     public const IPV4ADDRESS = '(?<ipv4address>'.self::DEC4OCTETS.')';
 
     /**
-     * [RFC3986](https://tools.ietf.org/html/rfc3986#section-3.2.2):
+     * [RFC3986](https://tools.ietf.org/html/rfc3986#section-3.2.2):.
      *
      * ```
      * IPv4address = dec-octet "." dec-octet "." dec-octet "." dec-octet
@@ -289,7 +289,7 @@ class Rfc3986 extends AbstractRuleSet
     public const IPV6V4ADDRESS = '(?<ipv6v4address>'.self::DEC4OCTETS.')';
 
     /**
-     * [RFC3986](https://tools.ietf.org/html/rfc3986#section-3.2.2):
+     * [RFC3986](https://tools.ietf.org/html/rfc3986#section-3.2.2):.
      *
      * ```
      * h16 = 1*4HEXDIG
@@ -299,7 +299,7 @@ class Rfc3986 extends AbstractRuleSet
     public const H16 = '(?:'.self::HEXDIG.'{1,4})';
 
     /**
-     * [RFC3986](https://tools.ietf.org/html/rfc3986#section-3.2.2):
+     * [RFC3986](https://tools.ietf.org/html/rfc3986#section-3.2.2):.
      *
      * ```
      * ls32 = ( h16 ":" h16 ) / IPv4address
@@ -314,7 +314,7 @@ class Rfc3986 extends AbstractRuleSet
     public const LS32 = '(?<ls32>(?:'.self::H16.':'.self::H16.')|'.self::IPV6V4ADDRESS.')';
 
     /**
-     * [RFC3986](https://tools.ietf.org/html/rfc3986#section-3.2.2):
+     * [RFC3986](https://tools.ietf.org/html/rfc3986#section-3.2.2):.
      *
      * ```
      * IPv6address =                            6( h16 ":" ) ls32
@@ -336,19 +336,19 @@ class Rfc3986 extends AbstractRuleSet
      */
     public const IPV6ADDRESS =
         '(?<ipv6address>(?|'.
-             '(?:'.                                                    '(?:'.self::H16.':){6,6}'.self::LS32.')'.
-            '|(?:'.                                                  '::(?:'.self::H16.':){5,5}'.self::LS32.')'.
-            '|(?:'.                           '(?:'.self::H16.')?'.  '::(?:'.self::H16.':){4,4}'.self::LS32.')'.
-            '|(?:'.    '(?:(?:'.self::H16.':){0,1}'.self::H16.')?'.  '::(?:'.self::H16.':){3,3}'.self::LS32.')'.
-            '|(?:'.    '(?:(?:'.self::H16.':){0,2}'.self::H16.')?'.  '::(?:'.self::H16.':){2,2}'.self::LS32.')'.
-            '|(?:'.    '(?:(?:'.self::H16.':){0,3}'.self::H16.')?'.  '::(?:'.self::H16.':){1,1}'.self::LS32.')'.
-            '|(?:'.    '(?:(?:'.self::H16.':){0,4}'.self::H16.')?'.  '::'.self::LS32.')'.
-            '|(?:'.    '(?:(?:'.self::H16.':){0,5}'.self::H16.')?'.  '::'.self::H16.')'.
-            '|(?:'.    '(?:(?:'.self::H16.':){0,6}'.self::H16.')?'.  '::)'.
+             '(?:'.'(?:'.self::H16.':){6,6}'.self::LS32.')'.
+            '|(?:'.'::(?:'.self::H16.':){5,5}'.self::LS32.')'.
+            '|(?:'.'(?:'.self::H16.')?'.'::(?:'.self::H16.':){4,4}'.self::LS32.')'.
+            '|(?:'.'(?:(?:'.self::H16.':){0,1}'.self::H16.')?'.'::(?:'.self::H16.':){3,3}'.self::LS32.')'.
+            '|(?:'.'(?:(?:'.self::H16.':){0,2}'.self::H16.')?'.'::(?:'.self::H16.':){2,2}'.self::LS32.')'.
+            '|(?:'.'(?:(?:'.self::H16.':){0,3}'.self::H16.')?'.'::(?:'.self::H16.':){1,1}'.self::LS32.')'.
+            '|(?:'.'(?:(?:'.self::H16.':){0,4}'.self::H16.')?'.'::'.self::LS32.')'.
+            '|(?:'.'(?:(?:'.self::H16.':){0,5}'.self::H16.')?'.'::'.self::H16.')'.
+            '|(?:'.'(?:(?:'.self::H16.':){0,6}'.self::H16.')?'.'::)'.
         '))';
 
     /**
-     * [RFC3986](https://tools.ietf.org/html/rfc3986#section-3.2.2):
+     * [RFC3986](https://tools.ietf.org/html/rfc3986#section-3.2.2):.
      *
      * ```
      * IPvFuture = "v" 1*HEXDIG "." 1*( unreserved / sub-delims / ":" )
@@ -365,7 +365,7 @@ class Rfc3986 extends AbstractRuleSet
         ')';
 
     /**
-     * [RFC3986](https://tools.ietf.org/html/rfc3986#section-3.2.2):
+     * [RFC3986](https://tools.ietf.org/html/rfc3986#section-3.2.2):.
      *
      * ```
      * IP-literal = "[" ( IPv6address / IPvFuture  ) "]"
@@ -387,7 +387,7 @@ class Rfc3986 extends AbstractRuleSet
         ')';
 
     /**
-     * [RFC3986](https://tools.ietf.org/html/rfc3986#section-3.2.3):
+     * [RFC3986](https://tools.ietf.org/html/rfc3986#section-3.2.3):.
      *
      * ```
      * port = *DIGIT
@@ -403,7 +403,7 @@ class Rfc3986 extends AbstractRuleSet
         ')';
 
     /**
-     * [RFC3986](https://tools.ietf.org/html/rfc3986#section-3.2.2):
+     * [RFC3986](https://tools.ietf.org/html/rfc3986#section-3.2.2):.
      *
      * ```
      * host = IP-literal / IPv4address / reg-name
@@ -430,7 +430,7 @@ class Rfc3986 extends AbstractRuleSet
         ')';
 
     /**
-     * [RFC3986](https://tools.ietf.org/html/rfc3986#section-3.2.1):
+     * [RFC3986](https://tools.ietf.org/html/rfc3986#section-3.2.1):.
      *
      * ```
      * userinfo = *(unreserved / pct-encoded / sub-delims / ":")
@@ -446,7 +446,7 @@ class Rfc3986 extends AbstractRuleSet
         ')';
 
     /**
-     * [RFC3986](https://tools.ietf.org/html/rfc3986#section-3.2):
+     * [RFC3986](https://tools.ietf.org/html/rfc3986#section-3.2):.
      *
      * ```
      * authority = [ userinfo "@" ] host [ ":" port ]
@@ -474,7 +474,7 @@ class Rfc3986 extends AbstractRuleSet
         ')';
 
     /**
-     * [RFC3986](https://tools.ietf.org/html/rfc3986#section-3.1):
+     * [RFC3986](https://tools.ietf.org/html/rfc3986#section-3.1):.
      *
      * ```
      * scheme = ALPHA *( ALPHA / DIGIT / "+" / "-" / ".")
@@ -490,7 +490,7 @@ class Rfc3986 extends AbstractRuleSet
         ')';
 
     /**
-     * [RFC3986](https://tools.ietf.org/html/rfc3986#section-4.2):
+     * [RFC3986](https://tools.ietf.org/html/rfc3986#section-4.2):.
      *
      * ```
      * relative-part = "//" authority path-abempty
@@ -531,7 +531,7 @@ class Rfc3986 extends AbstractRuleSet
         ')';
 
     /**
-     * [RFC3986](https://tools.ietf.org/html/rfc3986#section-3):
+     * [RFC3986](https://tools.ietf.org/html/rfc3986#section-3):.
      *
      * ```
      * hier-part = "//" authority path-abempty
@@ -570,7 +570,7 @@ class Rfc3986 extends AbstractRuleSet
         ')';
 
     /**
-     * [RFC3986](https://tools.ietf.org/html/rfc3986#section-3.5):
+     * [RFC3986](https://tools.ietf.org/html/rfc3986#section-3.5):.
      *
      * ```
      * fragment = *( pchar / "/" / "?" )
@@ -583,7 +583,7 @@ class Rfc3986 extends AbstractRuleSet
     public const FRAGMENT = '(?<fragment>(?:'.self::PCHAR.'|\/|\?)*)';
 
     /**
-     * [RFC3986](https://tools.ietf.org/html/rfc3986#section-3.4):
+     * [RFC3986](https://tools.ietf.org/html/rfc3986#section-3.4):.
      *
      * ```
      * query = *( pchar / "/" / "?" )
@@ -596,7 +596,7 @@ class Rfc3986 extends AbstractRuleSet
     public const QUERY = '(?<query>(?:'.self::PCHAR.'|\/|\?)*)';
 
     /**
-     * [RFC3986](https://tools.ietf.org/html/rfc3986#section-4.2):
+     * [RFC3986](https://tools.ietf.org/html/rfc3986#section-4.2):.
      *
      * ```
      * relative-ref = relative-part [ "?" query ] [ "#" fragment ]
@@ -631,7 +631,7 @@ class Rfc3986 extends AbstractRuleSet
         ')';
 
     /**
-     * [RFC3986](https://tools.ietf.org/html/rfc3986#section-4.3):
+     * [RFC3986](https://tools.ietf.org/html/rfc3986#section-4.3):.
      *
      * ```
      * absolute-URI = scheme ":" hier-part [ "?" query ]
@@ -667,7 +667,7 @@ class Rfc3986 extends AbstractRuleSet
         ')';
 
     /**
-     * [RFC3986](https://tools.ietf.org/html/rfc3986#section-3):
+     * [RFC3986](https://tools.ietf.org/html/rfc3986#section-3):.
      *
      * ```
      * URI = scheme ":" hier-part [ "?" query ] [ "#" fragment ]
@@ -705,7 +705,7 @@ class Rfc3986 extends AbstractRuleSet
         ')';
 
     /**
-     * [RFC3986](https://tools.ietf.org/html/rfc3986#section-4.1):
+     * [RFC3986](https://tools.ietf.org/html/rfc3986#section-4.1):.
      *
      * ```
      * URI-reference = URI / relative-ref
@@ -816,7 +816,7 @@ class Rfc3986 extends AbstractRuleSet
     /**
      * {@inheritdoc}
      */
-    public static function getClassRuleNames() : array
+    public static function getClassRuleNames(): array
     {
         return self::$rfc3986Rules;
     }

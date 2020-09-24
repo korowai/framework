@@ -13,8 +13,8 @@ declare(strict_types=1);
 namespace Korowai\Lib\Ldif;
 
 use Korowai\Lib\Ldif\ParserStateInterface as State;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\Options;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * LDIF parser.
@@ -91,10 +91,11 @@ class Parser implements ParserInterface
 //        return $this->config;
 //    }
 //
+
     /**
      * {@inheritdoc}
      */
-    public function parse(State $state) : bool
+    public function parse(State $state): bool
     {
 //        $prevErrCount = count($state->getErrors());
 //
@@ -121,6 +122,7 @@ class Parser implements ParserInterface
 
         return true;
     }
+
 //
 //    /**
 //     * @todo Write documentation

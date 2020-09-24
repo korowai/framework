@@ -12,37 +12,38 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldap\Core;
 
-use Korowai\Testing\Ldaplib\TestCase;
-
+use Korowai\Lib\Ldap\Core\LdapResultReferenceInterface;
 use Korowai\Lib\Ldap\Core\LdapResultReferenceIterator;
 use Korowai\Lib\Ldap\Core\LdapResultReferenceIteratorInterface;
-use Korowai\Lib\Ldap\Core\LdapResultReferenceInterface;
+use Korowai\Testing\Ldaplib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Ldap\Core\LdapResultReferenceIterator
  * @covers \Korowai\Tests\Lib\Ldap\Core\LdapResultItemIteratorTestTrait
+ *
+ * @internal
  */
 final class LdapResultReferenceIteratorTest extends TestCase
 {
     use LdapResultItemIteratorTestTrait;
 
-    protected function getIteratorItemInterface() : string
+    protected function getIteratorItemInterface(): string
     {
         return LdapResultReferenceInterface::class;
     }
 
-    protected function getIteratorInterface() : string
+    protected function getIteratorInterface(): string
     {
         return LdapResultReferenceIteratorInterface::class;
     }
 
-    protected function getIteratorClass() : string
+    protected function getIteratorClass(): string
     {
         return LdapResultReferenceIterator::class;
     }
 
-    protected function getFirstItemMethod() : string
+    protected function getFirstItemMethod(): string
     {
         return 'first_reference';
     }

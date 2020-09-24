@@ -12,12 +12,12 @@ declare(strict_types=1);
 
 namespace Korowai\Testing\Assertions;
 
-use Korowai\Testing\Constraint\ImplementsInterface;
-use Korowai\Testing\Constraint\ExtendsClass;
-use Korowai\Testing\Constraint\UsesTrait;
 use Korowai\Testing\Constraint\DeclaresMethod;
-use PHPUnit\Framework\Constraint\LogicalNot;
+use Korowai\Testing\Constraint\ExtendsClass;
+use Korowai\Testing\Constraint\ImplementsInterface;
+use Korowai\Testing\Constraint\UsesTrait;
 use PHPUnit\Framework\Constraint\Constraint;
+use PHPUnit\Framework\Constraint\LogicalNot;
 use PHPUnit\Framework\ExpectationFailedException;
 
 /**
@@ -25,18 +25,18 @@ use PHPUnit\Framework\ExpectationFailedException;
  */
 trait ClassAssertionsTrait
 {
-    abstract public static function assertThat($value, Constraint $constraint, string $message = '') : void;
+    abstract public static function assertThat($value, Constraint $constraint, string $message = ''): void;
 
     /**
      * Asserts that *$object* implements *$interface*.
      *
-     * @param  string $interface Name of the interface that is expected to be implemented.
-     * @param  mixed $object An object or a class name that is being examined.
-     * @param  string $message Custom message.
+     * @param string $interface name of the interface that is expected to be implemented
+     * @param mixed  $object    an object or a class name that is being examined
+     * @param string $message   custom message
      *
      * @throws ExpectationFailedException
      */
-    public static function assertImplementsInterface(string $interface, $object, string $message = '') : void
+    public static function assertImplementsInterface(string $interface, $object, string $message = ''): void
     {
         static::assertThat(
             $object,
@@ -48,13 +48,13 @@ trait ClassAssertionsTrait
     /**
      * Asserts that *$object* does not implement *$interface*.
      *
-     * @param  string $interface Name of the interface that is expected to be implemented.
-     * @param  mixed $object An object or a class name that is being examined.
-     * @param  string $message Custom message.
+     * @param string $interface name of the interface that is expected to be implemented
+     * @param mixed  $object    an object or a class name that is being examined
+     * @param string $message   custom message
      *
      * @throws ExpectationFailedException
      */
-    public static function assertNotImplementsInterface(string $interface, $object, string $message = '') : void
+    public static function assertNotImplementsInterface(string $interface, $object, string $message = ''): void
     {
         static::assertThat(
             $object,
@@ -66,11 +66,9 @@ trait ClassAssertionsTrait
     /**
      * Checks classes that they implement *$interface*.
      *
-     * @param  string $interface Name of the interface that is expected to be implemented.
-     *
-     * @return ImplementsInterface
+     * @param string $interface name of the interface that is expected to be implemented
      */
-    public static function implementsInterface(string $interface) : ImplementsInterface
+    public static function implementsInterface(string $interface): ImplementsInterface
     {
         return new ImplementsInterface($interface);
     }
@@ -78,13 +76,13 @@ trait ClassAssertionsTrait
     /**
      * Asserts that *$object* extends the class *$parent*.
      *
-     * @param  string $parent Name of the class that is supposed to be extended by *$object*.
-     * @param  mixed $object An object or a class name that is being examined.
-     * @param  string $message Custom message.
+     * @param string $parent  name of the class that is supposed to be extended by *$object*
+     * @param mixed  $object  an object or a class name that is being examined
+     * @param string $message custom message
      *
      * @throws ExpectationFailedException
      */
-    public static function assertExtendsClass(string $parent, $object, string $message = '') : void
+    public static function assertExtendsClass(string $parent, $object, string $message = ''): void
     {
         static::assertThat(
             $object,
@@ -96,13 +94,13 @@ trait ClassAssertionsTrait
     /**
      * Asserts that *$object* does not extend the class *$parent*.
      *
-     * @param  string $parent Name of the class that is expected to be extended by *$object*.
-     * @param  mixed $object An object or a class name that is being examined.
-     * @param  string $message Custom message.
+     * @param string $parent  name of the class that is expected to be extended by *$object*
+     * @param mixed  $object  an object or a class name that is being examined
+     * @param string $message custom message
      *
      * @throws ExpectationFailedException
      */
-    public static function assertNotExtendsClass(string $parent, $object, string $message = '') : void
+    public static function assertNotExtendsClass(string $parent, $object, string $message = ''): void
     {
         static::assertThat(
             $object,
@@ -114,11 +112,9 @@ trait ClassAssertionsTrait
     /**
      * Checks objects (an classes) that they extend *$parent* class.
      *
-     * @param  string $parent Name of the class that is expected to be extended.
-     *
-     * @return ExtendsClass
+     * @param string $parent name of the class that is expected to be extended
      */
-    public static function extendsClass(string $parent) : ExtendsClass
+    public static function extendsClass(string $parent): ExtendsClass
     {
         return new ExtendsClass($parent);
     }
@@ -126,13 +122,13 @@ trait ClassAssertionsTrait
     /**
      * Asserts that *$object* uses *$trait*.
      *
-     * @param  string $trait Name of the trait that is supposed to be included by *$object*.
-     * @param  mixed $object An object or a class name that is being examined.
-     * @param  string $message Custom message.
+     * @param string $trait   name of the trait that is supposed to be included by *$object*
+     * @param mixed  $object  an object or a class name that is being examined
+     * @param string $message custom message
      *
      * @throws ExpectationFailedException
      */
-    public static function assertUsesTrait(string $trait, $object, string $message = '') : void
+    public static function assertUsesTrait(string $trait, $object, string $message = ''): void
     {
         static::assertThat(
             $object,
@@ -144,13 +140,13 @@ trait ClassAssertionsTrait
     /**
      * Asserts that *$object* does not use *$trait*.
      *
-     * @param  string $trait Name of the trait that is expected to be used by *$object*.
-     * @param  mixed $object An object or a class name that is being examined.
-     * @param  string $message Custom message.
+     * @param string $trait   name of the trait that is expected to be used by *$object*
+     * @param mixed  $object  an object or a class name that is being examined
+     * @param string $message custom message
      *
      * @throws ExpectationFailedException
      */
-    public static function assertNotUsesTrait(string $trait, $object, string $message = '') : void
+    public static function assertNotUsesTrait(string $trait, $object, string $message = ''): void
     {
         static::assertThat(
             $object,
@@ -162,19 +158,19 @@ trait ClassAssertionsTrait
     /**
      * Checks objects (an classes) that they use given *$trait*.
      *
-     * @param  string $trait Name of the trait that is expected to be included.
-     *
-     * @return UsesTrait
+     * @param string $trait name of the trait that is expected to be included
      */
-    public static function usesTrait(string $trait) : UsesTrait
+    public static function usesTrait(string $trait): UsesTrait
     {
         return new UsesTrait($trait);
     }
 
     /**
      * @todo Write documentation.
+     *
+     * @param mixed $object
      */
-    public static function assertDeclaresMethod(string $method, $object, string $message = '') : void
+    public static function assertDeclaresMethod(string $method, $object, string $message = ''): void
     {
         static::assertThat(
             $object,
@@ -185,8 +181,10 @@ trait ClassAssertionsTrait
 
     /**
      * @todo Write documentation.
+     *
+     * @param mixed $object
      */
-    public static function assertNotDeclaresMethod(string $method, $object, string $message = '') : void
+    public static function assertNotDeclaresMethod(string $method, $object, string $message = ''): void
     {
         static::assertThat(
             $object,
@@ -198,7 +196,7 @@ trait ClassAssertionsTrait
     /**
      * @todo Write documentation.
      */
-    public static function declaresMethod(string $method) : DeclaresMethod
+    public static function declaresMethod(string $method): DeclaresMethod
     {
         return new DeclaresMethod($method);
     }

@@ -37,12 +37,12 @@ final class Control implements ControlInterface
     /**
      * Initializes the object.
      *
-     * @param  string $oid
-     *      OID string; specifies control type.
-     * @param  bool $criticality
-     *      Control's criticality, as defined in RFC2849.
-     * @param  ValueSpecInterface
-     *      An object encapsulating the value of the attribute.
+     * @param string $oid
+     *                            OID string; specifies control type
+     * @param bool   $criticality
+     *                            Control's criticality, as defined in RFC2849
+     * @param  valueSpecInterface
+     *      An object encapsulating the value of the attribute
      */
     public function __construct(string $oid, bool $criticality = null, ValueSpecInterface $valueSpec = null)
     {
@@ -54,7 +54,7 @@ final class Control implements ControlInterface
     /**
      * {@inheritdoc}
      */
-    public function getOid() : string
+    public function getOid(): string
     {
         return $this->oid;
     }
@@ -62,7 +62,7 @@ final class Control implements ControlInterface
     /**
      * {@inheritdoc}
      */
-    public function getCriticality() : ?bool
+    public function getCriticality(): ?bool
     {
         return $this->criticality;
     }
@@ -70,7 +70,7 @@ final class Control implements ControlInterface
     /**
      * {@inheritdoc}
      */
-    public function getValueSpec() : ?ValueSpecInterface
+    public function getValueSpec(): ?ValueSpecInterface
     {
         return $this->valueSpec;
     }

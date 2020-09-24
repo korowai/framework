@@ -22,9 +22,9 @@ trait LdifModifyRecordInterfaceTrait
     use LdifChangeRecordInterfaceTrait;
     use NodeInterfaceTrait;
 
-    public $modSpecs = null;
+    public $modSpecs;
 
-    public function getModSpecs() : array
+    public function getModSpecs(): array
     {
         return $this->modSpecs;
     }

@@ -23,24 +23,18 @@ interface LdifChangesRuleInterface extends RuleInterface
 {
     /**
      * Returns the nested VersionSpecRuleInteface.
-     *
-     * @return VersionSpecRuleInterface
      */
-    public function getVersionSpecRule() : VersionSpecRuleInterface;
+    public function getVersionSpecRule(): VersionSpecRuleInterface;
 
     /**
      * Returns the nested SepRuleInteface.
-     *
-     * @return SepRuleInterface
      */
-    public function getSepRule() : SepRuleInterface;
+    public function getSepRule(): SepRuleInterface;
 
     /**
      * Returns the nested LdifChangeRecordRuleInteface.
-     *
-     * @return LdifChangeRecordRuleInterface
      */
-    public function getLdifChangeRecordRule() : LdifChangeRecordRuleInterface;
+    public function getLdifChangeRecordRule(): LdifChangeRecordRuleInterface;
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

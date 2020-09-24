@@ -23,24 +23,18 @@ interface ModSpecRuleInterface extends RuleInterface
 {
     /**
      * Returns the nested ModSpecInitRuleInteface.
-     *
-     * @return ModSpecInitRuleInterface
      */
-    public function getModSpecInitRule() : ModSpecInitRuleInterface;
+    public function getModSpecInitRule(): ModSpecInitRuleInterface;
 
     /**
      * Returns the nested SepRuleInteface.
-     *
-     * @return SepRuleInterface
      */
-    public function getSepRule() : SepRuleInterface;
+    public function getSepRule(): SepRuleInterface;
 
     /**
      * Returns the nested AttrValSpecRuleInteface.
-     *
-     * @return AttrValSpecRuleInterface
      */
-    public function getAttrValSpecRule() : AttrValSpecRuleInterface;
+    public function getAttrValSpecRule(): AttrValSpecRuleInterface;
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

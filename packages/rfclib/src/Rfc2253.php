@@ -36,7 +36,7 @@ class Rfc2253 extends AbstractRuleSet
     //
 
     /**
-     * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):
+     * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):.
      *
      * ```
      * ALPHA =  <any ASCII alphabetic character> ; (decimal 65-90 and 97-122)
@@ -45,7 +45,7 @@ class Rfc2253 extends AbstractRuleSet
     public const ALPHA = '['.self::ALPHACHARS.']';
 
     /**
-     * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):
+     * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):.
      *
      * ```
      * DIGIT = <any ASCII decimal digit> ; (decimal 48-57)
@@ -54,7 +54,7 @@ class Rfc2253 extends AbstractRuleSet
     public const DIGIT = '['.self::DIGITCHARS.']';
 
     /**
-     * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):
+     * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):.
      *
      * ```
      * hexchar = DIGIT / "A" / "B" / "C" / "D" / "E" / "F" / "a" / "b" / "c" / "d" / "e" / "f"
@@ -63,7 +63,7 @@ class Rfc2253 extends AbstractRuleSet
     public const HEXCHAR = '['.self::HEXDIGCHARS.']';
 
     /**
-     * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):
+     * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):.
      *
      * ```
      * special = "," / "=" / "+" / "<" /  ">" / "#" / ";"
@@ -72,7 +72,7 @@ class Rfc2253 extends AbstractRuleSet
     public const SPECIAL = '['.self::SPECIALCHARS.']';
 
     /**
-     * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):
+     * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):.
      *
      * ```
      * keychar = ALPHA / DIGIT / "-"
@@ -81,7 +81,7 @@ class Rfc2253 extends AbstractRuleSet
     public const KEYCHAR = '['.self::KEYCHARCHARS.']';
 
     /**
-     * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):
+     * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):.
      *
      * ```
      * stringchar = <any character except one of special, "\" or QUOTATION >
@@ -90,7 +90,7 @@ class Rfc2253 extends AbstractRuleSet
     public const STRINGCHAR = '[^'.self::SPECIALCHARS.'\\\\"]';
 
     /**
-     * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):
+     * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):.
      *
      * ```
      * quotechar = <any character except "\" or QUOTATION >
@@ -103,7 +103,7 @@ class Rfc2253 extends AbstractRuleSet
     //
 
     /**
-     * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):
+     * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):.
      *
      * ```
      * hexpair = hexchar hexchar
@@ -112,7 +112,7 @@ class Rfc2253 extends AbstractRuleSet
     public const HEXPAIR = '(?:'.self::HEXCHAR.self::HEXCHAR.')';
 
     /**
-     * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):
+     * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):.
      *
      * ```
      * string_hex  = 1*hexpair
@@ -121,7 +121,7 @@ class Rfc2253 extends AbstractRuleSet
     public const HEXSTRING = '(?:'.self::HEXPAIR.'+)';
 
     /**
-     * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):
+     * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):.
      *
      * ```
      * pair = "\" ( special / "\" / QUOTATION / hexpair )
@@ -130,7 +130,7 @@ class Rfc2253 extends AbstractRuleSet
     public const PAIR = '(?:\\\\(?:['.self::SPECIALCHARS.'\\\\"]|'.self::HEXPAIR.'))';
 
     /**
-     * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):
+     * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):.
      *
      * ```
      * oid = 1*DIGIT *("." 1*DIGIT)
@@ -139,7 +139,7 @@ class Rfc2253 extends AbstractRuleSet
     public const OID = '(?:'.self::DIGIT.'+(?:\.'.self::DIGIT.'+)*)';
 
     /**
-     * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):
+     * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):.
      *
      * ```
      * string = *( stringchar / pair ) / "#" string_hex / QUOTATION *( quotechar / pair ) QUOTATION
@@ -155,7 +155,7 @@ class Rfc2253 extends AbstractRuleSet
         ')';
 
     /**
-     * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):
+     * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):.
      *
      * ```
      * attributeValue = string
@@ -164,7 +164,7 @@ class Rfc2253 extends AbstractRuleSet
     public const ATTRIBUTE_VALUE = self::STRING;
 
     /**
-     * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):
+     * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):.
      *
      * ```
      * attributeType = (ALPHA 1*keychar) / oid
@@ -178,7 +178,7 @@ class Rfc2253 extends AbstractRuleSet
         ')';
 
     /**
-     * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):
+     * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):.
      *
      * ```
      * attributeTypeAndValue = attributeType "=" attributeValue
@@ -187,7 +187,7 @@ class Rfc2253 extends AbstractRuleSet
     public const ATTRIBUTE_TYPE_AND_VALUE = '(?:'.self::ATTRIBUTE_TYPE.'='.self::ATTRIBUTE_VALUE.')';
 
     /**
-     * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):
+     * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):.
      *
      * ```
      * name-component = attributeTypeAndValue *("+" attributeTypeAndValue)
@@ -196,7 +196,7 @@ class Rfc2253 extends AbstractRuleSet
     public const NAME_COMPONENT = '(?:'.self::ATTRIBUTE_TYPE_AND_VALUE.'(?:\+'.self::ATTRIBUTE_TYPE_AND_VALUE.')*)';
 
     /**
-     * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):
+     * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):.
      *
      * ```
      * name = name-component *("," name-component)
@@ -205,7 +205,7 @@ class Rfc2253 extends AbstractRuleSet
     public const NAME = '(?:'.self::NAME_COMPONENT.'(?:,'.self::NAME_COMPONENT.')*)';
 
     /**
-     * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):
+     * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3):.
      *
      * ```
      * distinguishedName = [name] ; may be empty string
@@ -249,7 +249,7 @@ class Rfc2253 extends AbstractRuleSet
     /**
      * {@inheritdoc}
      */
-    public static function getClassRuleNames() : array
+    public static function getClassRuleNames(): array
     {
         return self::$rfc2253Rules;
     }

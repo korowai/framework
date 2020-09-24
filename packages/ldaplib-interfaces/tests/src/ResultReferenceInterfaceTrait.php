@@ -26,12 +26,12 @@ trait ResultReferenceInterfaceTrait
 
     public $referralIterator;
 
-    public function getReferrals() : array
+    public function getReferrals(): array
     {
         return $this->referrals;
     }
 
-    public function getReferralIterator() : ResultReferralIteratorInterface
+    public function getReferralIterator(): ResultReferralIteratorInterface
     {
         return $this->referralIterator;
     }

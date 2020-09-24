@@ -12,21 +12,23 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Context;
 
-use Korowai\Testing\TestCase;
-
+use Korowai\Lib\Context\TrivialValueWrapper;
 use function Korowai\Lib\Context\with;
 use Korowai\Lib\Context\WithContextExecutor;
-use Korowai\Lib\Context\TrivialValueWrapper;
+use Korowai\Testing\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ *
+ * @internal
+ * @coversNothing
  */
 final class functionsTest extends TestCase
 {
     /**
      * @covers \Korowai\Lib\Context\with
      */
-    public function test__with__withoutArgs() : void
+    public function testWithWithoutArgs(): void
     {
         $executor = with();
         $this->assertInstanceOf(WithContextExecutor::class, $executor);
@@ -36,7 +38,7 @@ final class functionsTest extends TestCase
     /**
      * @covers \Korowai\Lib\Context\with
      */
-    public function test__with__withArgs() : void
+    public function testWithWithArgs(): void
     {
         $executor = with('foo', 'bar');
         $this->assertInstanceOf(WithContextExecutor::class, $executor);

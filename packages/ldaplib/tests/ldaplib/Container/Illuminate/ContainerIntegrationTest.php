@@ -12,21 +12,22 @@ declare(strict_types=1);
 
 namespace Korowai\Testing\Ldaplib\Container\Illuminate;
 
-use Korowai\Testing\Container\Illuminate\TestCase;
-use Korowai\Testing\Ldaplib\Container\ExamineConfiguredContainerTrait;
 use function Korowai\Ldaplib\config_path;
+use Korowai\Testing\Ldaplib\Container\ExamineConfiguredContainerTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Testing\Ldaplib\Container\ExamineConfiguredContainerTrait
+ *
+ * @internal
  */
 final class ContainerIntegrationTest extends \Korowai\Testing\Container\Illuminate\TestCase
 {
     use ExamineConfiguredContainerTrait;
 
-    public function provideContainerConfigs() : array
+    public function provideContainerConfigs(): array
     {
-        return [ config_path('illuminate/services.php') ];
+        return [config_path('illuminate/services.php')];
     }
 }
 

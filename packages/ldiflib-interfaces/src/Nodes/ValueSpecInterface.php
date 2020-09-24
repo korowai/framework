@@ -16,6 +16,7 @@ use Korowai\Lib\Ldif\NodeInterface;
 
 /**
  * Interface for semantic value of RFC2849 *value-spec* rule.
+ *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
 interface ValueSpecInterface extends NodeInterface
@@ -39,9 +40,9 @@ interface ValueSpecInterface extends NodeInterface
      * Returns an integer which specifies the type of this value.
      *
      * @return int
-     *      Returns one of ``TYPE_SAFE`` (0), ``TYPE_BASE64`` (1) or ``TYPE_URL`` (2).
+     *             Returns one of ``TYPE_SAFE`` (0), ``TYPE_BASE64`` (1) or ``TYPE_URL`` (2)
      */
-    public function getType() : int;
+    public function getType(): int;
 
     /**
      * Returns a value or an object which specifies the content.
@@ -53,7 +54,7 @@ interface ValueSpecInterface extends NodeInterface
      * string is the content.
      *
      * @return mixed
-     *      Returns a value or object that specifies the content.
+     *               Returns a value or object that specifies the content
      */
     public function getSpec();
 
@@ -63,10 +64,8 @@ interface ValueSpecInterface extends NodeInterface
      * RFC2849 defines a value as one of SAFE-STRING, BASE64-STRING or URL.
      * This method returns the actual content, either SAFE-STRING, decoded
      * BASE64-STRING or the content of the file pointed to by the URL.
-     *
-     * @return string
      */
-    public function getContent() : string;
+    public function getContent(): string;
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

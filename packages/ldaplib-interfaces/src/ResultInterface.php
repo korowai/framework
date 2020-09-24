@@ -18,39 +18,35 @@ namespace Korowai\Lib\Ldap;
 interface ResultInterface extends \IteratorAggregate
 {
     /**
-     * Get iterator over result's entries
+     * Get iterator over result's entries.
      *
      * @return ResultEntryIteratorInterface The iterator
      */
-    public function getResultEntryIterator() : ResultEntryIteratorInterface;
+    public function getResultEntryIterator(): ResultEntryIteratorInterface;
 
     /**
-     * Get iterator over result's references
+     * Get iterator over result's references.
      *
      * @return ResultReferenceIteratorInterface The iterator
      */
-    public function getResultReferenceIterator() : ResultReferenceIteratorInterface;
+    public function getResultReferenceIterator(): ResultReferenceIteratorInterface;
 
     /**
      * Get an array of result entries.
-     *
-     * @return array
      */
-    public function getResultEntries() : array;
+    public function getResultEntries(): array;
 
     /**
      * Get an array of result references.
-     *
-     * @return array
      */
-    public function getResultReferences() : array;
+    public function getResultReferences(): array;
 
     /**
-     * Get an array of Entries from ldap result
+     * Get an array of Entries from ldap result.
      *
      * @return array Entries
      */
-    public function getEntries(bool $use_keys = true) : array;
+    public function getEntries(bool $use_keys = true): array;
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

@@ -12,28 +12,31 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Rfc\Traits;
 
+use Korowai\Lib\Rfc\RuleInterface;
 use Korowai\Lib\Rfc\Traits\DecoratesRuleInterface;
 use Korowai\Lib\Rfc\Traits\ExposesRuleInterface;
-use Korowai\Lib\Rfc\RuleInterface;
 use Korowai\Testing\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @covers Korowai\Lib\Rfc\Traits\DecoratesRuleInterface
+ * @covers \Korowai\Lib\Rfc\Traits\DecoratesRuleInterface
+ *
+ * @internal
  */
 final class DecoratesRuleInterfaceTest extends TestCase
 {
-    public function test__uses__ExposesRuleInterface() : void
+    public function testUsesExposesRuleInterface(): void
     {
         $this->assertUsesTrait(ExposesRuleInterface::class, DecoratesRuleInterface::class);
     }
 
-    public function test__rfcRule() : void
+    public function testRfcRule(): void
     {
         $rule = $this->getMockBuilder(RuleInterface::class)
-                     ->getMockForAbstractClass();
+            ->getMockForAbstractClass()
+        ;
 
-        $obj = new class implements RuleInterface {
+        $obj = new class() implements RuleInterface {
             use DecoratesRuleInterface;
         };
 

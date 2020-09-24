@@ -12,10 +12,8 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldap;
 
-use Korowai\Lib\Ldap\AttributeException;
-
 /**
- * Represents single ldap entry with DN and attributes
+ * Represents single ldap entry with DN and attributes.
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
@@ -39,7 +37,7 @@ class Entry implements EntryInterface
     /**
      * {@inheritdoc}
      */
-    public function getDn() : string
+    public function getDn(): string
     {
         return $this->dn;
     }
@@ -56,7 +54,6 @@ class Entry implements EntryInterface
     /**
      * Validates string provided as DN.
      *
-     * @param  string $dn
      * @throws \TypeError
      */
     public function validateDn(string $dn)
@@ -66,7 +63,7 @@ class Entry implements EntryInterface
     /**
      * {@inheritdoc}
      */
-    public function getAttributes() : array
+    public function getAttributes(): array
     {
         return $this->attributes;
     }
@@ -74,21 +71,23 @@ class Entry implements EntryInterface
     /**
      * {@inheritdoc}
      */
-    public function getAttribute(string $name) : array
+    public function getAttribute(string $name): array
     {
         $this->ensureAttributeExists($name);
+
         return $this->attributes[$name];
     }
 
     /**
-     * Throws AttributeException if given attribute does not exist
+     * Throws AttributeException if given attribute does not exist.
      *
      * @throws AttributeException
      */
     public function ensureAttributeExists(string $name)
     {
         if (!$this->hasAttribute($name)) {
-            $msg = "Entry '" . $this->dn . "' has no attribute '". $name ."'";
+            $msg = "Entry '".$this->dn."' has no attribute '".$name."'";
+
             throw new AttributeException($msg);
         }
     }
@@ -96,7 +95,7 @@ class Entry implements EntryInterface
     /**
      * {@inheritdoc}
      */
-    public function hasAttribute(string $name) : bool
+    public function hasAttribute(string $name): bool
     {
         return isset($this->attributes[$name]);
     }
@@ -136,7 +135,7 @@ class Entry implements EntryInterface
     }
 
     /**
-     * Currently only check the types of attribute name and values
+     * Currently only check the types of attribute name and values.
      *
      * @throws \TypeError
      */

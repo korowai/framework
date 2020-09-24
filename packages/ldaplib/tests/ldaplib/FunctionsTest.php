@@ -12,27 +12,29 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\LdapLib;
 
+use function Korowai\Ldaplib\config_path;
 use Korowai\Testing\Ldaplib\TestCase;
 use Korowai\Testing\Traits\FeedConfigPathTrait;
-
-use function Korowai\Ldaplib\config_path;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Ldaplib\config_path
+ *
+ * @internal
  */
 final class FunctionsTest extends TestCase
 {
     use FeedConfigPathTrait;
-    public static function prov__config_path() : array
+
+    public static function prov__config_path(): array
     {
-        return self::feedConfigPath(realpath(__dir__.'/../../config'));
+        return self::feedConfigPath(realpath(__DIR__.'/../../config'));
     }
 
     /**
      * @dataProvider prov__config_path
      */
-    public function test__config_path(array $args, string $expect) : void
+    public function testConfigPath(array $args, string $expect): void
     {
         $this->assertSame($expect, config_path(...$args));
     }

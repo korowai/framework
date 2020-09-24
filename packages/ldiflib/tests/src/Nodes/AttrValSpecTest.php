@@ -20,18 +20,21 @@ use Korowai\Testing\Ldiflib\TestCase;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Ldif\Nodes\AttrValSpec
+ *
+ * @internal
  */
 final class AttrValSpecTest extends TestCase
 {
-    public function test__implmements__AttrValSpecInterface() : void
+    public function testImplmementsAttrValSpecInterface(): void
     {
         $this->assertImplementsInterface(AttrValSpecInterface::class, AttrValSpec::class);
     }
 
-    public function test__construct() : void
+    public function testConstruct(): void
     {
         $value = $this->getMockBuilder(ValueSpecInterface::class)
-                      ->getMockForAbstractClass();
+            ->getMockForAbstractClass()
+        ;
 
         $attrVal = new AttrValSpec('foo', $value);
         $this->assertSame('foo', $attrVal->getAttribute());

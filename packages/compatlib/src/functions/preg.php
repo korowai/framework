@@ -12,8 +12,6 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Compat;
 
-use Korowai\Lib\Compat\PregException;
-
 // @codingStandardsIgnoreStart
 // phpcs:disable Generic.NamingConventions.CamelCapsFunctionName
 
@@ -21,15 +19,14 @@ use Korowai\Lib\Compat\PregException;
  * Like [preg_filter()](https://www.php.net/manual/en/function.preg-filter.php),
  * but throws exception instead of returning errors.
  *
- * @param  mixed $pattern
- * @param  mixed $replacement
- * @param  string $subject
- * @param  int $limit
- * @param  int $count
- *
- * @return mixed
+ * @param mixed  $pattern
+ * @param mixed  $replacement
+ * @param string $subject
+ * @param int    $count
  *
  * @throws PregException
+ *
+ * @return mixed
  */
 function preg_filter(
     $pattern,
@@ -42,6 +39,7 @@ function preg_filter(
     if (count($args) >= 5) {
         $args[4] = &$count;
     }
+
     return Preg::callPregFunc('\preg_filter', $args, 1);
 }
 
@@ -49,11 +47,8 @@ function preg_filter(
  * Like [preg_grep()](https://www.php.net/manual/en/function.preg-grep.php),
  * but throws exception instead of returning errors.
  *
- * @param  mixed $pattern
- * @param  mixed $replacement
- * @param  int $flags
- *
- * @return array
+ * @param mixed $pattern
+ * @param mixed $replacement
  *
  * @throws PregException
  */
@@ -61,8 +56,9 @@ function preg_grep(
     string $pattern,
     array $input,
     int $flags = 0
-) : array {
+): array {
     $args = func_get_args();
+
     return Preg::callPregFunc('\preg_grep', $args, 1);
 }
 
@@ -70,15 +66,11 @@ function preg_grep(
  * Like [preg_match()](https://www.php.net/manual/en/function.preg-match.php),
  * but throws exception instead of returning errors.
  *
- * @param  string $pattern
- * @param  string $subject
- * @param  array $matches
- * @param  int $flags
- * @param  int $offset
- *
- * @return int
+ * @param array $matches
  *
  * @throws PregException
+ *
+ * @return int
  */
 function preg_match(
     string $pattern,
@@ -91,6 +83,7 @@ function preg_match(
     if (count($args) >= 3) {
         $args[2] = &$matches;
     }
+
     return Preg::callPregFunc('\preg_match', $args, 1);
 }
 
@@ -98,15 +91,11 @@ function preg_match(
  * Like [preg_match_all()](https://www.php.net/manual/en/function.preg-match-all.php),
  * but throws exception instead of returning errors.
  *
- * @param  string $pattern
- * @param  string $subject
- * @param  array $matches
- * @param  int $flags
- * @param  int $offset
- *
- * @return int
+ * @param array $matches
  *
  * @throws PregException
+ *
+ * @return int
  */
 function preg_match_all(
     string $pattern,
@@ -119,6 +108,7 @@ function preg_match_all(
     if (count($args) >= 3) {
         $args[2] = &$matches;
     }
+
     return Preg::callPregFunc('\preg_match_all', $args, 1);
 }
 
@@ -126,15 +116,14 @@ function preg_match_all(
  * Like [preg_replace()](https://www.php.net/manual/en/function.preg-replace.php),
  * but throws exception instead of returning errors.
  *
- * @param  mixed $pattern
- * @param  mixed $replacement
- * @param  string $subject
- * @param  int $limit
- * @param  int $count
- *
- * @return mixed
+ * @param mixed  $pattern
+ * @param mixed  $replacement
+ * @param string $subject
+ * @param int    $count
  *
  * @throws PregException
+ *
+ * @return mixed
  */
 function preg_replace(
     $pattern,
@@ -147,6 +136,7 @@ function preg_replace(
     if (count($args) >= 5) {
         $args[4] = &$count;
     }
+
     return Preg::callPregFunc('\preg_replace', $args, 1);
 }
 
@@ -154,15 +144,13 @@ function preg_replace(
  * Like [preg_replace_callback()](https://www.php.net/manual/en/function.preg-replace-callback.php),
  * but throws exception instead of returning errors.
  *
- * @param  mixed $pattern
- * @param  callable $callback
- * @param  string $subject
- * @param  int $limit
- * @param  int $count
- *
- * @return mixed
+ * @param mixed  $pattern
+ * @param string $subject
+ * @param int    $count
  *
  * @throws PregException
+ *
+ * @return mixed
  */
 function preg_replace_callback(
     $pattern,
@@ -175,6 +163,7 @@ function preg_replace_callback(
     if (count($args) >= 5) {
         $args[4] = &$count;
     }
+
     return Preg::callPregFunc('\preg_replace_callback', $args, 1);
 }
 
@@ -182,14 +171,12 @@ function preg_replace_callback(
  * Like [preg_replace_callback_array()](https://www.php.net/manual/en/function.preg-replace-callback-array.php),
  * but throws exception instead of returning errors.
  *
- * @param  array $patterns_and_callbacks
- * @param  string $subject
- * @param  int $limit
- * @param  int $count
- *
- * @return mixed
+ * @param string $subject
+ * @param int    $count
  *
  * @throws PregException
+ *
+ * @return mixed
  */
 function preg_replace_callback_array(
     array $patterns_and_callbacks,
@@ -201,6 +188,7 @@ function preg_replace_callback_array(
     if (count($args) >= 4) {
         $args[3] = &$count;
     }
+
     return Preg::callPregFunc('\preg_replace_callback_array', $args, 1);
 }
 
@@ -208,15 +196,12 @@ function preg_replace_callback_array(
  * Like [preg_split()](https://www.php.net/manual/en/function.preg-split.php),
  * but throws exception instead of returning errors.
  *
- * @param  string $pattern
- * @param  string $subject
- * @param  array $matches
- * @param  int $flags
- * @param  int $offset
- *
- * @return int
+ * @param array $matches
+ * @param int   $offset
  *
  * @throws PregException
+ *
+ * @return int
  */
 function preg_split(
     string $pattern,
@@ -225,6 +210,7 @@ function preg_split(
     int $flags = 0
 ) {
     $args = func_get_args();
+
     return Preg::callPregFunc('\preg_split', $args, 1);
 }
 

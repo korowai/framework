@@ -12,25 +12,26 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldif\Nodes;
 
-use Korowai\Lib\Ldif\Nodes\VersionSpecInterface;
 use Korowai\Lib\Ldif\NodeInterface;
-
+use Korowai\Lib\Ldif\Nodes\VersionSpecInterface;
 use Korowai\Testing\LdiflibInterfaces\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Tests\Lib\Ldif\Nodes\VersionSpecInterfaceTrait
+ *
+ * @internal
  */
 final class VersionSpecInterfaceTest extends TestCase
 {
     public static function createDummyInstance()
     {
-        return new class implements VersionSpecInterface {
+        return new class() implements VersionSpecInterface {
             use VersionSpecInterfaceTrait;
         };
     }
 
-    public static function prov__extendsInterface() : array
+    public static function prov__extendsInterface(): array
     {
         return [
             [NodeInterface::class],
@@ -40,25 +41,25 @@ final class VersionSpecInterfaceTest extends TestCase
     /**
      * @dataProvider prov__extendsInterface
      */
-    public function test__extendsInterface(string $extends) : void
+    public function testExtendsInterface(string $extends): void
     {
         $this->assertImplementsInterface($extends, VersionSpecInterface::class);
     }
 
-    public function test__dummyImplementation() : void
+    public function testDummyImplementation(): void
     {
         $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(VersionSpecInterface::class, $dummy);
     }
 
-    public function test__getVersion() : void
+    public function testGetVersion(): void
     {
         $dummy = $this->createDummyInstance();
         $dummy->getVersion = 0;
         $this->assertSame($dummy->getVersion, $dummy->getVersion());
     }
 
-    public function test__getVersion__withRetTypeError() : void
+    public function testGetVersionWithRetTypeError(): void
     {
         $dummy = $this->createDummyInstance();
         $dummy->getVersion = null;

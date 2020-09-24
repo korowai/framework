@@ -12,18 +12,16 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Testing\Properties;
 
-use Korowai\Testing\TestCase;
-use Korowai\Testing\Properties\ActualProperties;
-use Korowai\Testing\Properties\ActualPropertiesInterface;
 use Korowai\Testing\Properties\ExpectedProperties;
 use Korowai\Testing\Properties\ExpectedPropertiesInterface;
-use Korowai\Testing\Properties\PropertiesInterface;
 use Korowai\Testing\Properties\PropertySelectorInterface;
-use PHPUnit\Framework\InvalidArgumentException;
+use Korowai\Testing\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Testing\Properties\ExpectedProperties
+ *
+ * @internal
  */
 final class ExpectedPropertiesTest extends TestCase
 {
@@ -33,7 +31,7 @@ final class ExpectedPropertiesTest extends TestCase
     public function createExpectedProperties(
         PropertySelectorInterface $selector,
         ...$args
-    ) : ExpectedPropertiesInterface {
+    ): ExpectedPropertiesInterface {
         return new ExpectedProperties($selector, ...$args);
     }
 
@@ -43,12 +41,12 @@ final class ExpectedPropertiesTest extends TestCase
     //
     //
 
-    public function test__implements__ExpectedPropertiesInterface() : void
+    public function testImplementsExpectedPropertiesInterface(): void
     {
         $this->assertImplementsInterface(ExpectedPropertiesInterface::class, ExpectedProperties::class);
     }
 
-    public function test__extends__ArrayObject() : void
+    public function testExtendsArrayObject(): void
     {
         $this->assertExtendsClass(\ArrayObject::class, ExpectedProperties::class);
     }
@@ -57,25 +55,25 @@ final class ExpectedPropertiesTest extends TestCase
     // __construct()
     //
 
-    public static function prov__construct() : array
+    public static function prov__construct(): array
     {
         return [
             // #0
             [
-                'args'   => [],
+                'args' => [],
                 'expect' => [],
             ],
 
             // #1
             [
-                'args'   => [[]],
+                'args' => [[]],
                 'expect' => [],
             ],
 
             // #2
             [
-                'args'   => [['foo' => 'FOO']],
-                'expect' => [ 'foo' => 'FOO' ],
+                'args' => [['foo' => 'FOO']],
+                'expect' => ['foo' => 'FOO'],
             ],
         ];
     }
@@ -83,7 +81,7 @@ final class ExpectedPropertiesTest extends TestCase
     /**
      * @dataProvider prov__construct
      */
-    public function test__construct(array $args, array $expect) : void
+    public function testConstruct(array $args, array $expect): void
     {
         $selector = $this->createMock(PropertySelectorInterface::class);
 
@@ -91,7 +89,7 @@ final class ExpectedPropertiesTest extends TestCase
 
         $this->assertSame($selector, $properties->getPropertySelector());
         $this->assertSame($expect, $properties->getArrayCopy());
-        $this->assertSame($expect, (array)$properties);
+        $this->assertSame($expect, (array) $properties);
     }
 }
 // vim: syntax=php sw=4 ts=4 et tw=119:

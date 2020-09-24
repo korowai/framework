@@ -27,10 +27,9 @@ trait LdapResultItemTrait
     use LdapResultWrapperTrait;
 
     /**
-     * Initializes the object
+     * Initializes the object.
      *
-     * @param  resource $resource
-     * @param  LdapResultInterface $ldapResult
+     * @param resource $resource
      */
     public function __construct($resource, LdapResultInterface $ldapResult)
     {
@@ -44,9 +43,9 @@ trait LdapResultItemTrait
      * @psalm-mutation-free
      * @psalm-pure
      */
-    public function supportsResourceType(string $type) : bool
+    public function supportsResourceType(string $type): bool
     {
-        return $type === 'ldap result entry';
+        return 'ldap result entry' === $type;
     }
 
     /**
@@ -54,7 +53,7 @@ trait LdapResultItemTrait
      *
      * @psalm-mutation-free
      */
-    public function getLdapLink() : LdapLinkInterface
+    public function getLdapLink(): LdapLinkInterface
     {
         return $this->getLdapResult()->getLdapLink();
     }

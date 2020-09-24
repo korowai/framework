@@ -12,16 +12,18 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldap\Core;
 
-use Korowai\Testing\Ldaplib\TestCase;
-use Korowai\Lib\Ldap\Core\LdapLinkOptionsSpecification;
-use Korowai\Lib\Ldap\Core\LdapLinkOptionsSpecificationInterface;
 use Korowai\Lib\Ldap\Core\LdapLinkOptionsMapper;
 use Korowai\Lib\Ldap\Core\LdapLinkOptionsMapperInterface;
+use Korowai\Lib\Ldap\Core\LdapLinkOptionsSpecification;
+use Korowai\Lib\Ldap\Core\LdapLinkOptionsSpecificationInterface;
+use Korowai\Testing\Ldaplib\TestCase;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Ldap\Core\LdapLinkOptionsSpecification
+ *
+ * @internal
  */
 final class LdapLinkOptionsSpecificationTest extends TestCase
 {
@@ -31,7 +33,7 @@ final class LdapLinkOptionsSpecificationTest extends TestCase
     //
     //
 
-    public function test__implements__LdapLinkOptionsSpecificationInterface() : void
+    public function testImplementsLdapLinkOptionsSpecificationInterface(): void
     {
         $this->assertImplementsInterface(
             LdapLinkOptionsSpecificationInterface::class,
@@ -43,22 +45,23 @@ final class LdapLinkOptionsSpecificationTest extends TestCase
     // __construct()
     //
 
-    public function test__construct() : void
+    public function testConstruct(): void
     {
         $mapper = $this->createMock(LdapLinkOptionsMapperInterface::class);
         $mapper->expects($this->once())
-               ->method('getMappings')
-               ->willReturn(['sizelimit' => null]);
+            ->method('getMappings')
+            ->willReturn(['sizelimit' => null])
+        ;
         $mapper->expects($this->never())
-               ->method('mapOptions');
-
+            ->method('mapOptions')
+        ;
 
         $specs = new LdapLinkOptionsSpecification($mapper);
         $this->assertSame($mapper, $specs->getOptionsMapper());
         $this->assertSame(['sizelimit' => ['types' => 'int']], $specs->getOptions());
     }
 
-    public static function prov__configureOptionsResolver__thenResolve() : array
+    public static function prov__configureOptionsResolver__thenResolve(): array
     {
         $defaults = ['protocol_version' => 3];
 
@@ -69,10 +72,10 @@ final class LdapLinkOptionsSpecificationTest extends TestCase
         if (defined('LDAP_OPT_DEREF')) {
             $specs['deref'] = [
                 'aliases' => [
-                    'never'     => LDAP_DEREF_NEVER,
+                    'never' => LDAP_DEREF_NEVER,
                     'searching' => LDAP_DEREF_SEARCHING,
-                    'finding'   => LDAP_DEREF_FINDING,
-                    'always'    => LDAP_DEREF_ALWAYS,
+                    'finding' => LDAP_DEREF_FINDING,
+                    'always' => LDAP_DEREF_ALWAYS,
                 ],
             ];
         }
@@ -250,11 +253,11 @@ final class LdapLinkOptionsSpecificationTest extends TestCase
         if (defined('LDAP_OPT_X_TLS_REQUIRE_CERT')) {
             $specs['tls_require_cert'] = [
                 'aliases' => [
-                    'never'  => LDAP_OPT_X_TLS_NEVER,
-                    'hard'   => LDAP_OPT_X_TLS_HARD,
+                    'never' => LDAP_OPT_X_TLS_NEVER,
+                    'hard' => LDAP_OPT_X_TLS_HARD,
                     'demand' => LDAP_OPT_X_TLS_DEMAND,
-                    'allow'  => LDAP_OPT_X_TLS_ALLOW,
-                    'try'    => LDAP_OPT_X_TLS_TRY,
+                    'allow' => LDAP_OPT_X_TLS_ALLOW,
+                    'try' => LDAP_OPT_X_TLS_TRY,
                 ],
             ];
         }
@@ -314,7 +317,7 @@ final class LdapLinkOptionsSpecificationTest extends TestCase
                 'aliases' => [
                     'none' => LDAP_OPT_X_TLS_CRL_NONE,
                     'peer' => LDAP_OPT_X_TLS_CRL_PEER,
-                    'all'  => LDAP_OPT_X_TLS_CRL_ALL,
+                    'all' => LDAP_OPT_X_TLS_CRL_ALL,
                 ],
             ];
         }
@@ -340,14 +343,14 @@ final class LdapLinkOptionsSpecificationTest extends TestCase
         if (defined('LDAP_OPT_X_TLS_PROTOCOL_MIN')) {
             $specs['tls_protocol_min'] = [
                 'aliases' => [
-                    'ssl2'   => LDAP_OPT_X_TLS_PROTOCOL_SSL2,
-                    'ssl3'   => LDAP_OPT_X_TLS_PROTOCOL_SSL3,
+                    'ssl2' => LDAP_OPT_X_TLS_PROTOCOL_SSL2,
+                    'ssl3' => LDAP_OPT_X_TLS_PROTOCOL_SSL3,
                     'tls1.0' => LDAP_OPT_X_TLS_PROTOCOL_TLS1_0,
                     'tls1.1' => LDAP_OPT_X_TLS_PROTOCOL_TLS1_1,
                     'tls1.2' => LDAP_OPT_X_TLS_PROTOCOL_TLS1_2,
                 ],
                 'values' => [
-                    (3 << 8) + 4
+                    (3 << 8) + 4,
                 ],
             ];
         }
@@ -387,24 +390,22 @@ final class LdapLinkOptionsSpecificationTest extends TestCase
         // generate cases
 
         $cases = [
-
             [
                 'options' => [],
-                'expect'  => [],
+                'expect' => [],
             ],
-
         ];
 
         foreach ($specs as $name => $spec) {
             if (array_key_exists('aliases', $spec)) {
                 foreach ($spec['aliases'] as $alias => $value) {
                     $cases[] = [
-                        'options' => [ $name => $alias ],
-                        'expect'  => [ $name => $value ],
+                        'options' => [$name => $alias],
+                        'expect' => [$name => $value],
                     ];
                     $cases[] = [
-                        'options' => [ $name => $value ],
-                        'expect'  => [ $name => $value ],
+                        'options' => [$name => $value],
+                        'expect' => [$name => $value],
                     ];
                 }
             }
@@ -412,15 +413,16 @@ final class LdapLinkOptionsSpecificationTest extends TestCase
             if (array_key_exists('values', $spec)) {
                 foreach ($spec['values'] as $value) {
                     $cases[] = [
-                        'options' => [ $name => $value ],
-                        'expect'  => [ $name => $value ],
+                        'options' => [$name => $value],
+                        'expect' => [$name => $value],
                     ];
                 }
             }
         }
 
-        return array_map(function (array $case) use ($defaults) : array {
+        return array_map(function (array $case) use ($defaults): array {
             $case['expect'] += $defaults;
+
             return $case;
         }, $cases);
     }
@@ -428,10 +430,10 @@ final class LdapLinkOptionsSpecificationTest extends TestCase
     /**
      * @dataProvider prov__configureOptionsResolver__thenResolve
      */
-    public function test__configureOptionsResolver__thenResolve(array $options, array $expect) : void
+    public function testConfigureOptionsResolverThenResolve(array $options, array $expect): void
     {
-        $specs = new LdapLinkOptionsSpecification(new LdapLinkOptionsMapper);
-        $specs->configureOptionsResolver($resolver = new OptionsResolver);
+        $specs = new LdapLinkOptionsSpecification(new LdapLinkOptionsMapper());
+        $specs->configureOptionsResolver($resolver = new OptionsResolver());
 
         $resolved = $resolver->resolve($options);
 

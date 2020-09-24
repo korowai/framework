@@ -14,13 +14,12 @@ namespace Korowai\Tests\Lib\Basic;
 
 use Korowai\Lib\Basic\Singleton;
 use Korowai\Testing\Basiclib\SingletonTestTrait;
-
 use Korowai\Testing\TestCase;
 
 class SingletonC91F82BJ
 {
     use Singleton;
-};
+}
 
 class Singleton76YO7MV5
 {
@@ -32,25 +31,27 @@ class Singleton76YO7MV5
     {
         $this->value = 'initialized';
     }
-};
+}
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @covers Korowai\Lib\Basic\Singleton
+ * @covers \Korowai\Lib\Basic\Singleton
+ *
+ * @internal
  */
 final class SingletonTest extends TestCase
 {
     use SingletonTestTrait;
 
-    protected function getSingletonClassUnderTest()
-    {
-        return SingletonC91F82BJ::class;
-    }
-
-    public function test__initializeSingleton() : void
+    public function testInitializeSingleton(): void
     {
         $obj = Singleton76YO7MV5::getInstance();
         $this->assertEquals('initialized', $obj->value);
+    }
+
+    protected function getSingletonClassUnderTest()
+    {
+        return SingletonC91F82BJ::class;
     }
 }
 

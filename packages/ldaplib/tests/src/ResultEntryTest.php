@@ -12,26 +12,25 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldap;
 
-use Korowai\Testing\Ldaplib\TestCase;
+use Korowai\Lib\Ldap\Core\LdapResultEntryWrapperInterface;
+use Korowai\Lib\Ldap\Core\LdapResultEntryWrapperTrait;
+use Korowai\Lib\Ldap\Entry;
+use Korowai\Lib\Ldap\ResultAttributeIterator;
+use Korowai\Lib\Ldap\ResultEntry;
+use Korowai\Lib\Ldap\ResultEntryInterface;
 use Korowai\Testing\Ldaplib\CreateLdapLinkMockTrait;
 use Korowai\Testing\Ldaplib\CreateLdapResultEntryMockTrait;
 use Korowai\Testing\Ldaplib\CreateLdapResultMockTrait;
 use Korowai\Testing\Ldaplib\ExamineLdapLinkErrorHandlerTrait;
 use Korowai\Testing\Ldaplib\LdapTriggerErrorTestFixture;
 use Korowai\Testing\Ldaplib\LdapTriggerErrorTestSubject;
-use PHPUnit\Framework\MockObject\MockObject;
-
-use Korowai\Lib\Ldap\ResultEntry;
-use Korowai\Lib\Ldap\ResultEntryInterface;
-use Korowai\Lib\Ldap\Entry;
-use Korowai\Lib\Ldap\ResultAttributeIterator;
-use Korowai\Lib\Ldap\Core\LdapResultEntryWrapperInterface;
-use Korowai\Lib\Ldap\Core\LdapResultEntryWrapperTrait;
-use Korowai\Lib\Ldap\LdapException;
+use Korowai\Testing\Ldaplib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Ldap\ResultEntry
+ *
+ * @internal
  */
 final class ResultEntryTest extends TestCase
 {
@@ -40,48 +39,23 @@ final class ResultEntryTest extends TestCase
     use CreateLdapResultEntryMockTrait;
     use ExamineLdapLinkErrorHandlerTrait;
 
-    private function createResultEntryAndMocks(int $mocksDepth = 3) : array
-    {
-        $link        = $mocksDepth >= 3 ? $this->createLdapLinkMock() : null;
-        $ldapResult  = $mocksDepth >= 2 ? $this->createLdapResultMock($link) : null;
-        $ldapEntry   = $this->createLdapResultEntryMock($ldapResult);
-        $resultEntry = new ResultEntry($ldapEntry);
-        return array_slice([$resultEntry, $ldapEntry, $ldapResult, $link], 0, max(2, 1+ $mocksDepth));
-    }
-
-    private function examineResultEntryMethodWithTriggerError(
-        string $method,
-        string $backendMethod,
-        array $args,
-        LdapTriggerErrorTestFixture $fixture
-    ) : void {
-        [$resultEntry, $ldapEntry, $ldapResult, $link] = $this->createResultEntryAndMocks();
-
-        $function  = function () use ($resultEntry, $method, $args) : void {
-            $resultEntry->$method(...$args);
-        };
-
-        $subject = new LdapTriggerErrorTestSubject($ldapEntry, $backendMethod);
-        $this->examineLdapLinkErrorHandler($function, $subject, $link, $fixture);
-    }
-
     //
     //
     // TESTS
     //
     //
 
-    public function test__implements__ResultEntryInterface() : void
+    public function testImplementsResultEntryInterface(): void
     {
         $this->assertImplementsInterface(ResultEntryInterface::class, ResultEntry::class);
     }
 
-    public function test__implements__LdapResultEntryWrapperInterface() : void
+    public function testImplementsLdapResultEntryWrapperInterface(): void
     {
         $this->assertImplementsInterface(LdapResultEntryWrapperInterface::class, ResultEntry::class);
     }
 
-    public function test__uses__LdapResultEntryWrapperTrait() : void
+    public function testUsesLdapResultEntryWrapperTrait(): void
     {
         $this->assertUsesTrait(LdapResultEntryWrapperTrait::class, ResultEntry::class);
     }
@@ -90,7 +64,7 @@ final class ResultEntryTest extends TestCase
     // getLdapResultEntry()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public function test_getLdapResultEntry() : void
+    public function testGetLdapResultEntry(): void
     {
         [$resultEntry, $ldapEntry] = $this->createResultEntryAndMocks(1);
         $this->assertSame($ldapEntry, $resultEntry->getLdapResultEntry());
@@ -100,7 +74,7 @@ final class ResultEntryTest extends TestCase
     // getLdapResultItem()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public function test_getLdapResultItem() : void
+    public function testGetLdapResultItem(): void
     {
         [$resultEntry, $ldapEntry] = $this->createResultEntryAndMocks(1);
         $this->assertSame($ldapEntry, $resultEntry->getLdapResultItem());
@@ -110,7 +84,7 @@ final class ResultEntryTest extends TestCase
     // getDn()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__getDn() : array
+    public static function prov__getDn(): array
     {
         return [
             // #0
@@ -128,19 +102,23 @@ final class ResultEntryTest extends TestCase
 
     /**
      * @dataProvider prov__getDn
+     *
+     * @param mixed $return
+     * @param mixed $expect
      */
-    public function test__getDn($return, $expect) : void
+    public function testGetDn($return, $expect): void
     {
         [$resultEntry, $ldapEntry] = $this->createResultEntryAndMocks(1);
 
         $ldapEntry->expects($this->once())
-                  ->method('get_dn')
-                  ->willReturn($return);
+            ->method('get_dn')
+            ->willReturn($return)
+        ;
 
         $this->assertSame($expect, $resultEntry->getDn());
     }
 
-    public static function prov__getDn__withTriggerError() : array
+    public static function prov__getDn__withTriggerError(): array
     {
         return static::feedLdapLinkErrorHandler();
     }
@@ -148,7 +126,7 @@ final class ResultEntryTest extends TestCase
     /**
      * @dataProvider prov__getDn__withTriggerError
      */
-    public function test__getDn__withTriggerError(LdapTriggerErrorTestFixture $fixture) : void
+    public function testGetDnWithTriggerError(LdapTriggerErrorTestFixture $fixture): void
     {
         $this->examineResultEntryMethodWithTriggerError('getDn', 'get_dn', [], $fixture);
     }
@@ -157,7 +135,7 @@ final class ResultEntryTest extends TestCase
     // getAttributes()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static function prov__getAttributes() : array
+    public static function prov__getAttributes(): array
     {
         return [
             // #0
@@ -192,11 +170,11 @@ final class ResultEntryTest extends TestCase
                     'objectClass' => [
                         'count' => 2,
                         'top',
-                        'inetOrgPerson'
+                        'inetOrgPerson',
                     ],
                     'cn' => [
                         'count' => 1,
-                        'John Smith'
+                        'John Smith',
                     ],
                     'count' => 2,
                 ],
@@ -210,19 +188,23 @@ final class ResultEntryTest extends TestCase
 
     /**
      * @dataProvider prov__getAttributes
+     *
+     * @param mixed $return
+     * @param mixed $expect
      */
-    public function test__getAttributes($return, $expect) : void
+    public function testGetAttributes($return, $expect): void
     {
         [$resultEntry, $ldapEntry] = $this->createResultEntryAndMocks(1);
 
         $ldapEntry->expects($this->once())
-                  ->method('get_attributes')
-                  ->willReturn($return);
+            ->method('get_attributes')
+            ->willReturn($return)
+        ;
 
         $this->assertSame($expect, $resultEntry->getAttributes());
     }
 
-    public static function prov__getAttributes__withTriggerError() : array
+    public static function prov__getAttributes__withTriggerError(): array
     {
         return static::feedLdapLinkErrorHandler();
     }
@@ -230,7 +212,7 @@ final class ResultEntryTest extends TestCase
     /**
      * @dataProvider prov__getAttributes__withTriggerError
      */
-    public function test__getAttributes__withTriggerError(LdapTriggerErrorTestFixture $fixture) : void
+    public function testGetAttributesWithTriggerError(LdapTriggerErrorTestFixture $fixture): void
     {
         $this->examineResultEntryMethodWithTriggerError('getAttributes', 'get_attributes', [], $fixture);
     }
@@ -239,22 +221,25 @@ final class ResultEntryTest extends TestCase
     // getAttributeIterator()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public function test__getAttributeIterator() : void
+    public function testGetAttributeIterator(): void
     {
         [$resultEntry, $ldapEntry] = $this->createResultEntryAndMocks(1);
 
         $ldapEntry->expects($this->exactly(2))
-                  ->method('get_values')
-                  ->withConsecutive(['firstattribute'], ['secondattribute'])
-                  ->will($this->onConsecutiveCalls(['FIRST', 'count' => 1], ['SECOND', 'count' => 1]));
+            ->method('get_values')
+            ->withConsecutive(['firstattribute'], ['secondattribute'])
+            ->will($this->onConsecutiveCalls(['FIRST', 'count' => 1], ['SECOND', 'count' => 1]))
+        ;
 
         $ldapEntry->expects($this->once())
-                  ->method('first_attribute')
-                  ->willReturn('FirstAttribute');
+            ->method('first_attribute')
+            ->willReturn('FirstAttribute')
+        ;
 
         $ldapEntry->expects($this->once())
-                  ->method('next_attribute')
-                  ->willReturn('SecondAttribute');
+            ->method('next_attribute')
+            ->willReturn('SecondAttribute')
+        ;
 
         $iterator = $resultEntry->getAttributeIterator();
         $this->assertInstanceOf(ResultAttributeIterator::class, $iterator);
@@ -271,7 +256,7 @@ final class ResultEntryTest extends TestCase
         $this->assertEquals(['SECOND'], $iterator->current());
     }
 
-    public static function prov__getAttributeIterator__withTriggerError() : array
+    public static function prov__getAttributeIterator__withTriggerError(): array
     {
         return static::feedLdapLinkErrorHandler();
     }
@@ -279,7 +264,7 @@ final class ResultEntryTest extends TestCase
     /**
      * @dataProvider prov__getAttributeIterator__withTriggerError
      */
-    public function test__getAttributeIterator__withTriggerError(LdapTriggerErrorTestFixture $fixture) : void
+    public function testGetAttributeIteratorWithTriggerError(LdapTriggerErrorTestFixture $fixture): void
     {
         $this->examineResultEntryMethodWithTriggerError('getAttributeIterator', 'first_attribute', [], $fixture);
     }
@@ -288,13 +273,14 @@ final class ResultEntryTest extends TestCase
     // getIterator()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public function test__getIterator() : void
+    public function testGetIterator(): void
     {
         [$resultEntry, $ldapEntry] = $this->createResultEntryAndMocks(1);
 
         $ldapEntry->expects($this->once())
-                  ->method('first_attribute')
-                  ->willReturn('first attribute');
+            ->method('first_attribute')
+            ->willReturn('first attribute')
+        ;
 
         $this->assertSame($resultEntry->getIterator(), $resultEntry->getAttributeIterator());
     }
@@ -303,35 +289,63 @@ final class ResultEntryTest extends TestCase
     // toEntry()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public function test__toEntry() : void
+    public function testToEntry(): void
     {
         $ldapDn = 'uid=jsmith,ou=people,dc=korowai,dc=org';
         $ldapAttributes = [
             'count' => 3,
             'uid' => ['count' => 1, 'jsmith'],
             'firstName' => ['count' => 1, 'John'],
-            'sn' => ['count' => 1, 'Smith']
+            'sn' => ['count' => 1, 'Smith'],
         ];
         $expectAttributes = [
             'uid' => ['jsmith'],
             'firstname' => ['John'],
-            'sn' => ['Smith']
+            'sn' => ['Smith'],
         ];
 
         [$resultEntry, $ldapEntry] = $this->createResultEntryAndMocks(1);
 
         $ldapEntry->expects($this->once())
-                  ->method('get_dn')
-                  ->willReturn($ldapDn);
+            ->method('get_dn')
+            ->willReturn($ldapDn)
+        ;
         $ldapEntry->expects($this->once())
-                  ->method('get_attributes')
-                  ->willReturn($ldapAttributes);
+            ->method('get_attributes')
+            ->willReturn($ldapAttributes)
+        ;
 
         $entry = $resultEntry->toEntry();
 
         $this->assertInstanceOf(Entry::class, $entry);
         $this->assertEquals($ldapDn, $entry->getDn());
         $this->assertSame($expectAttributes, $entry->getAttributes());
+    }
+
+    private function createResultEntryAndMocks(int $mocksDepth = 3): array
+    {
+        $link = $mocksDepth >= 3 ? $this->createLdapLinkMock() : null;
+        $ldapResult = $mocksDepth >= 2 ? $this->createLdapResultMock($link) : null;
+        $ldapEntry = $this->createLdapResultEntryMock($ldapResult);
+        $resultEntry = new ResultEntry($ldapEntry);
+
+        return array_slice([$resultEntry, $ldapEntry, $ldapResult, $link], 0, max(2, 1 + $mocksDepth));
+    }
+
+    private function examineResultEntryMethodWithTriggerError(
+        string $method,
+        string $backendMethod,
+        array $args,
+        LdapTriggerErrorTestFixture $fixture
+    ): void {
+        [$resultEntry, $ldapEntry, $ldapResult, $link] = $this->createResultEntryAndMocks();
+
+        $function = function () use ($resultEntry, $method, $args): void {
+            $resultEntry->{$method}(...$args);
+        };
+
+        $subject = new LdapTriggerErrorTestSubject($ldapEntry, $backendMethod);
+        $this->examineLdapLinkErrorHandler($function, $subject, $link, $fixture);
     }
 }
 

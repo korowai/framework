@@ -12,52 +12,51 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldif\Rules;
 
-use Korowai\Lib\Ldif\Rules\LdifChangeRecordRule;
+use Korowai\Lib\Ldif\Nodes\LdifAddRecordInterface;
+use Korowai\Lib\Ldif\Nodes\LdifChangeRecordInterface;
+use Korowai\Lib\Ldif\Nodes\LdifDeleteRecordInterface;
+use Korowai\Lib\Ldif\Nodes\LdifModifyRecordInterface;
+use Korowai\Lib\Ldif\Nodes\ValueSpecInterface;
 use Korowai\Lib\Ldif\Rules\AbstractLdifRecordRule;
-use Korowai\Lib\Ldif\RuleInterface;
-use Korowai\Lib\Ldif\Rules\DnSpecRule;
-use Korowai\Lib\Ldif\Rules\ControlRule;
+use Korowai\Lib\Ldif\Rules\AttrValSpecRule;
 use Korowai\Lib\Ldif\Rules\ChangeRecordInitRule;
+use Korowai\Lib\Ldif\Rules\ControlRule;
+use Korowai\Lib\Ldif\Rules\DnSpecRule;
+use Korowai\Lib\Ldif\Rules\LdifChangeRecordRule;
 use Korowai\Lib\Ldif\Rules\ModSpecRule;
 use Korowai\Lib\Ldif\Rules\SepRule;
-use Korowai\Lib\Ldif\Rules\AttrValSpecRule;
-use Korowai\Lib\Ldif\Nodes\ValueSpecInterface;
-use Korowai\Lib\Ldif\Nodes\LdifChangeRecordInterface;
-use Korowai\Lib\Ldif\Nodes\LdifAddRecordInterface;
-use Korowai\Lib\Ldif\Nodes\LdifDeleteRecordInterface;
-use Korowai\Lib\Ldif\Nodes\LdifModDnRecordInterface;
-use Korowai\Lib\Ldif\Nodes\LdifModifyRecordInterface;
-use Korowai\Lib\Ldif\InvalidRuleClassException;
 use Korowai\Testing\Ldiflib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Ldif\Rules\LdifChangeRecordRule
+ *
+ * @internal
  */
 final class LdifChangeRecordRuleTest extends TestCase
 {
-    public function test__extends__AbstractLdifRecordRule() : void
+    public function testExtendsAbstractLdifRecordRule(): void
     {
         $this->assertExtendsClass(AbstractLdifRecordRule::class, LdifChangeRecordRule::class);
     }
 
     public static function prov__construct()
     {
-        $dnSpecRule = new DnSpecRule;
-        $controlRule = new ControlRule;
-        $changeRecordInitRule = new ChangeRecordInitRule;
-        $modSpecRule = new ModSpecRule;
-        $sepRule = new SepRule;
-        $attrValSpecRule = new AttrValSpecRule;
+        $dnSpecRule = new DnSpecRule();
+        $controlRule = new ControlRule();
+        $changeRecordInitRule = new ChangeRecordInitRule();
+        $modSpecRule = new ModSpecRule();
+        $sepRule = new SepRule();
+        $attrValSpecRule = new AttrValSpecRule();
 
         return [
             '__construct()' => [
-                'args'   => [],
+                'args' => [],
                 'expect' => [
-                ]
+                ],
             ],
             '__construct([...])' => [
-                'args'   => [[
+                'args' => [[
                     'dnSpecRule' => $dnSpecRule,
                     'controlRule' => $controlRule,
                     'changeRecordInitRule' => $changeRecordInitRule,
@@ -72,7 +71,7 @@ final class LdifChangeRecordRuleTest extends TestCase
                     'getModSpecRule()' => $modSpecRule,
                     'getSepRule()' => $sepRule,
                     'getAttrValSpecRule()' => $attrValSpecRule,
-                ]
+                ],
             ],
         ];
     }
@@ -80,7 +79,7 @@ final class LdifChangeRecordRuleTest extends TestCase
     /**
      * @dataProvider prov__construct
      */
-    public function test__construct(array $args, array $expect) : void
+    public function testConstruct(array $args, array $expect): void
     {
         $rule = new LdifChangeRecordRule(...$args);
         $this->assertInstanceOf(DnSpecRule::class, $rule->getDnSpecRule());
@@ -92,28 +91,28 @@ final class LdifChangeRecordRuleTest extends TestCase
         $this->assertObjectHasPropertiesIdenticalTo($expect, $rule);
     }
 
-    public function test__setControlRule() : void
+    public function testSetControlRule(): void
     {
-        $rule = new LdifChangeRecordRule;
-        $controlRule = new ControlRule;
+        $rule = new LdifChangeRecordRule();
+        $controlRule = new ControlRule();
 
         $this->assertSame($rule, $rule->setControlRule($controlRule));
         $this->assertSame($controlRule, $rule->getControlRule());
     }
 
-    public function test__setChangeRecordInitRule() : void
+    public function testSetChangeRecordInitRule(): void
     {
-        $rule = new LdifChangeRecordRule;
-        $changeRecordInitRule = new ChangeRecordInitRule;
+        $rule = new LdifChangeRecordRule();
+        $changeRecordInitRule = new ChangeRecordInitRule();
 
         $this->assertSame($rule, $rule->setChangeRecordInitRule($changeRecordInitRule));
         $this->assertSame($changeRecordInitRule, $rule->getChangeRecordInitRule());
     }
 
-    public function test__setModSpecRule() : void
+    public function testSetModSpecRule(): void
     {
-        $rule = new LdifChangeRecordRule;
-        $modSpecRule = new ModSpecRule;
+        $rule = new LdifChangeRecordRule();
+        $modSpecRule = new ModSpecRule();
 
         $this->assertSame($rule, $rule->setModSpecRule($modSpecRule));
         $this->assertSame($modSpecRule, $rule->getModSpecRule());
@@ -141,11 +140,11 @@ final class LdifChangeRecordRuleTest extends TestCase
                             self::objectHasPropertiesIdenticalTo([
                                 'getSourceOffset()' => 37,
                                 'getMessage()' => 'syntax error: expected <AttributeDescription>":" (RFC2849)',
-                            ])
+                            ]),
                         ],
-                        'getRecords()' => []
+                        'getRecords()' => [],
                     ],
-                ]
+                ],
             ],
 
             'add #1' => [
@@ -168,22 +167,22 @@ final class LdifChangeRecordRuleTest extends TestCase
                                     'getType()' => ValueSpecInterface::TYPE_SAFE,
                                     'getSpec()' => 'John',
                                     'getContent()' => 'John',
-                                ])
-                            ])
+                                ]),
+                            ]),
                         ],
                         'getSnippet()' => self::objectHasPropertiesIdenticalTo([
                             'getLocation()' => self::objectHasPropertiesIdenticalTo([
                                 'getOffset()' => 0,
                             ]),
-                            'getLength()' => 46
+                            'getLength()' => 46,
                         ]),
                     ],
                     'state' => [
                         'getCursor()' => self::objectHasPropertiesIdenticalTo(['getOffset()' => 46]),
                         'getErrors()' => [],
-                        'getRecords()' => []
+                        'getRecords()' => [],
                     ],
-                ]
+                ],
             ],
 
             'add #2' => [
@@ -212,22 +211,22 @@ final class LdifChangeRecordRuleTest extends TestCase
                                     'getType()' => ValueSpecInterface::TYPE_SAFE,
                                     'getSpec()' => 'John',
                                     'getContent()' => 'John',
-                                ])
-                            ])
+                                ]),
+                            ]),
                         ],
                         'getSnippet()' => self::objectHasPropertiesIdenticalTo([
                             'getLocation()' => self::objectHasPropertiesIdenticalTo([
                                 'getOffset()' => 0,
                             ]),
-                            'getLength()' => 61
+                            'getLength()' => 61,
                         ]),
                     ],
                     'state' => [
                         'getCursor()' => self::objectHasPropertiesIdenticalTo(['getOffset()' => 61]),
                         'getErrors()' => [],
-                        'getRecords()' => []
+                        'getRecords()' => [],
                     ],
-                ]
+                ],
             ],
 
             'add #3' => [
@@ -236,7 +235,7 @@ final class LdifChangeRecordRuleTest extends TestCase
                 'source' => ["dn: dc=example,dc=org\ncontrol: 1.2.3\ncontrol: 4.5 true: foo\n".
                 //            666666666677777 777778888 8888889999999999 00
                 //            012345678901234 567890123 4567890123456789 01
-                             "changetype: add\ncn: John\ncomment: Johnny\n", 0],
+                             "changetype: add\ncn: John\ncomment: Johnny\n", 0, ],
                 'args' => [true],
                 'expect' => [
                     'init' => null,
@@ -252,12 +251,12 @@ final class LdifChangeRecordRuleTest extends TestCase
                                 'getValueSpec()' => null,
                             ]),
                             self::objectHasPropertiesIdenticalTo([
-                                    'getOid()' => '4.5',
+                                'getOid()' => '4.5',
                                 'getCriticality()' => true,
                                 'getValueSpec()' => self::objectHasPropertiesIdenticalTo([
                                     'getType()' => ValueSpecInterface::TYPE_SAFE,
                                     'getSpec()' => 'foo',
-                                    'getContent()' => 'foo'
+                                    'getContent()' => 'foo',
                                 ]),
                             ]),
                         ],
@@ -268,7 +267,7 @@ final class LdifChangeRecordRuleTest extends TestCase
                                     'getType()' => ValueSpecInterface::TYPE_SAFE,
                                     'getSpec()' => 'John',
                                     'getContent()' => 'John',
-                                ])
+                                ]),
                             ]),
                             self::objectHasPropertiesIdenticalTo([
                                 'getAttribute()' => 'comment',
@@ -276,22 +275,22 @@ final class LdifChangeRecordRuleTest extends TestCase
                                     'getType()' => ValueSpecInterface::TYPE_SAFE,
                                     'getSpec()' => 'Johnny',
                                     'getContent()' => 'Johnny',
-                                ])
-                            ])
+                                ]),
+                            ]),
                         ],
                         'getSnippet()' => self::objectHasPropertiesIdenticalTo([
                             'getLocation()' => self::objectHasPropertiesIdenticalTo([
                                 'getOffset()' => 0,
                             ]),
-                            'getLength()' => 101
+                            'getLength()' => 101,
                         ]),
                     ],
                     'state' => [
                         'getCursor()' => self::objectHasPropertiesIdenticalTo(['getOffset()' => 101]),
                         'getErrors()' => [],
-                        'getRecords()' => []
+                        'getRecords()' => [],
                     ],
-                ]
+                ],
             ],
         ];
     }
@@ -316,15 +315,15 @@ final class LdifChangeRecordRuleTest extends TestCase
                             'getLocation()' => self::objectHasPropertiesIdenticalTo([
                                 'getOffset()' => 0,
                             ]),
-                            'getLength()' => 40
+                            'getLength()' => 40,
                         ]),
                     ],
                     'state' => [
                         'getCursor()' => self::objectHasPropertiesIdenticalTo(['getOffset()' => 40]),
                         'getErrors()' => [],
-                        'getRecords()' => []
+                        'getRecords()' => [],
                     ],
-                ]
+                ],
             ],
 
             'delete #1' => [
@@ -350,15 +349,15 @@ final class LdifChangeRecordRuleTest extends TestCase
                             'getLocation()' => self::objectHasPropertiesIdenticalTo([
                                 'getOffset()' => 0,
                             ]),
-                            'getLength()' => 56
+                            'getLength()' => 56,
                         ]),
                     ],
                     'state' => [
                         'getCursor()' => self::objectHasPropertiesIdenticalTo(['getOffset()' => 56]),
                         'getErrors()' => [],
-                        'getRecords()' => []
+                        'getRecords()' => [],
                     ],
-                ]
+                ],
             ],
 
             'delete #2' => [
@@ -380,12 +379,12 @@ final class LdifChangeRecordRuleTest extends TestCase
                                 'getValueSpec()' => null,
                             ]),
                             self::objectHasPropertiesIdenticalTo([
-                                    'getOid()' => '4.5',
+                                'getOid()' => '4.5',
                                 'getCriticality()' => true,
                                 'getValueSpec()' => self::objectHasPropertiesIdenticalTo([
                                     'getType()' => ValueSpecInterface::TYPE_SAFE,
                                     'getSpec()' => 'foo',
-                                    'getContent()' => 'foo'
+                                    'getContent()' => 'foo',
                                 ]),
                             ]),
                         ],
@@ -393,15 +392,15 @@ final class LdifChangeRecordRuleTest extends TestCase
                             'getLocation()' => self::objectHasPropertiesIdenticalTo([
                                 'getOffset()' => 0,
                             ]),
-                            'getLength()' => 78
+                            'getLength()' => 78,
                         ]),
                     ],
                     'state' => [
                         'getCursor()' => self::objectHasPropertiesIdenticalTo(['getOffset()' => 78]),
                         'getErrors()' => [],
-                        'getRecords()' => []
+                        'getRecords()' => [],
                     ],
-                ]
+                ],
             ],
         ];
     }
@@ -433,15 +432,15 @@ final class LdifChangeRecordRuleTest extends TestCase
                             'getLocation()' => self::objectHasPropertiesIdenticalTo([
                                 'getOffset()' => 0,
                             ]),
-                            'getLength()' => 40
+                            'getLength()' => 40,
                         ]),
                     ],
                     'state' => [
                         'getCursor()' => self::objectHasPropertiesIdenticalTo(['getOffset()' => 40]),
                         'getErrors()' => [],
-                        'getRecords()' => []
+                        'getRecords()' => [],
                     ],
-                ]
+                ],
             ],
 
             'modify #1' => [
@@ -468,15 +467,15 @@ final class LdifChangeRecordRuleTest extends TestCase
                             'getLocation()' => self::objectHasPropertiesIdenticalTo([
                                 'getOffset()' => 0,
                             ]),
-                            'getLength()' => 56
+                            'getLength()' => 56,
                         ]),
                     ],
                     'state' => [
                         'getCursor()' => self::objectHasPropertiesIdenticalTo(['getOffset()' => 56]),
                         'getErrors()' => [],
-                        'getRecords()' => []
+                        'getRecords()' => [],
                     ],
-                ]
+                ],
             ],
 
             'modify #2' => [
@@ -498,12 +497,12 @@ final class LdifChangeRecordRuleTest extends TestCase
                                 'getValueSpec()' => null,
                             ]),
                             self::objectHasPropertiesIdenticalTo([
-                                    'getOid()' => '4.5',
+                                'getOid()' => '4.5',
                                 'getCriticality()' => true,
                                 'getValueSpec()' => self::objectHasPropertiesIdenticalTo([
                                     'getType()' => ValueSpecInterface::TYPE_SAFE,
                                     'getSpec()' => 'foo',
-                                    'getContent()' => 'foo'
+                                    'getContent()' => 'foo',
                                 ]),
                             ]),
                         ],
@@ -512,15 +511,15 @@ final class LdifChangeRecordRuleTest extends TestCase
                             'getLocation()' => self::objectHasPropertiesIdenticalTo([
                                 'getOffset()' => 0,
                             ]),
-                            'getLength()' => 78
+                            'getLength()' => 78,
                         ]),
                     ],
                     'state' => [
                         'getCursor()' => self::objectHasPropertiesIdenticalTo(['getOffset()' => 78]),
                         'getErrors()' => [],
-                        'getRecords()' => []
+                        'getRecords()' => [],
                     ],
-                ]
+                ],
             ],
         ];
 
@@ -549,12 +548,12 @@ final class LdifChangeRecordRuleTest extends TestCase
                         'getErrors()' => [
                             self::objectHasPropertiesIdenticalTo([
                                 'getSourceOffset()' => 46,
-                                'getMessage()' => 'syntax error: missing or invalid AttributeType (RFC2849)'
-                            ])
+                                'getMessage()' => 'syntax error: missing or invalid AttributeType (RFC2849)',
+                            ]),
                         ],
-                        'getRecords()' => []
+                        'getRecords()' => [],
                     ],
-                ]
+                ],
             ],
 
             'modify add #1' => [
@@ -572,11 +571,11 @@ final class LdifChangeRecordRuleTest extends TestCase
                             self::objectHasPropertiesIdenticalTo([
                                 'getSourceOffset()' => 49,
                                 'getMessage()' => 'syntax error: expected "-" followed by end of line',
-                            ])
+                            ]),
                         ],
-                        'getRecords()' => []
+                        'getRecords()' => [],
                     ],
-                ]
+                ],
             ],
 
             'modify add #2' => [
@@ -596,22 +595,22 @@ final class LdifChangeRecordRuleTest extends TestCase
                             self::objectHasPropertiesIdenticalTo([
                                 'getModType()' => 'add',
                                 'getAttribute()' => 'cn',
-                                'getAttrValSpecs()' => []
-                            ])
+                                'getAttrValSpecs()' => [],
+                            ]),
                         ],
                         'getSnippet()' => self::objectHasPropertiesIdenticalTo([
                             'getLocation()' => self::objectHasPropertiesIdenticalTo([
                                 'getOffset()' => 0,
                             ]),
-                            'getLength()' => 51
+                            'getLength()' => 51,
                         ]),
                     ],
                     'state' => [
                         'getCursor()' => self::objectHasPropertiesIdenticalTo(['getOffset()' => 51]),
                         'getErrors()' => [],
-                        'getRecords()' => []
+                        'getRecords()' => [],
                     ],
-                ]
+                ],
             ],
 
             'modify add #3' => [
@@ -631,27 +630,27 @@ final class LdifChangeRecordRuleTest extends TestCase
                             self::objectHasPropertiesIdenticalTo([
                                 'getModType()' => 'add',
                                 'getAttribute()' => 'cn',
-                                'getAttrValSpecs()' => []
+                                'getAttrValSpecs()' => [],
                             ]),
                             self::objectHasPropertiesIdenticalTo([
                                 'getModType()' => 'add',
                                 'getAttribute()' => 'ou',
-                                'getAttrValSpecs()' => []
-                            ])
+                                'getAttrValSpecs()' => [],
+                            ]),
                         ],
                         'getSnippet()' => self::objectHasPropertiesIdenticalTo([
                             'getLocation()' => self::objectHasPropertiesIdenticalTo([
                                 'getOffset()' => 0,
                             ]),
-                            'getLength()' => 61
+                            'getLength()' => 61,
                         ]),
                     ],
                     'state' => [
                         'getCursor()' => self::objectHasPropertiesIdenticalTo(['getOffset()' => 61]),
                         'getErrors()' => [],
-                        'getRecords()' => []
+                        'getRecords()' => [],
                     ],
-                ]
+                ],
             ],
 
             'modify add #4' => [
@@ -671,28 +670,28 @@ final class LdifChangeRecordRuleTest extends TestCase
                                 'getOid()' => '1.2.3',
                                 'getCriticality()' => null,
                                 'getValueSpec()' => null,
-                            ])
+                            ]),
                         ],
                         'getModSpecs()' => [
                             self::objectHasPropertiesIdenticalTo([
                                 'getModType()' => 'add',
                                 'getAttribute()' => 'cn',
-                                'getAttrValSpecs()' => []
-                            ])
+                                'getAttrValSpecs()' => [],
+                            ]),
                         ],
                         'getSnippet()' => self::objectHasPropertiesIdenticalTo([
                             'getLocation()' => self::objectHasPropertiesIdenticalTo([
                                 'getOffset()' => 0,
                             ]),
-                            'getLength()' => 66
+                            'getLength()' => 66,
                         ]),
                     ],
                     'state' => [
                         'getCursor()' => self::objectHasPropertiesIdenticalTo(['getOffset()' => 66]),
                         'getErrors()' => [],
-                        'getRecords()' => []
+                        'getRecords()' => [],
                     ],
-                ]
+                ],
             ],
 
             'modify add #5' => [
@@ -701,7 +700,7 @@ final class LdifChangeRecordRuleTest extends TestCase
                 'source' => ["dn: dc=example,dc=org\ncontrol: 1.2.3\nchangetype: modify\nadd: cn\ncn: ".
                 //            6677 7777777788 88 88
                 //            8901 2345678901 23 45
-                             "John\ncn: Clark\n-\n", 0],
+                             "John\ncn: Clark\n-\n", 0, ],
                 'args' => [true],
                 'expect' => [
                     'init' => null,
@@ -715,7 +714,7 @@ final class LdifChangeRecordRuleTest extends TestCase
                                 'getOid()' => '1.2.3',
                                 'getCriticality()' => null,
                                 'getValueSpec()' => null,
-                            ])
+                            ]),
                         ],
                         'getModSpecs()' => [
                             self::objectHasPropertiesIdenticalTo([
@@ -738,22 +737,22 @@ final class LdifChangeRecordRuleTest extends TestCase
                                             'getContent()' => 'Clark',
                                         ]),
                                     ]),
-                                ]
+                                ],
                             ]),
                         ],
                         'getSnippet()' => self::objectHasPropertiesIdenticalTo([
                             'getLocation()' => self::objectHasPropertiesIdenticalTo([
                                 'getOffset()' => 0,
                             ]),
-                            'getLength()' => 85
+                            'getLength()' => 85,
                         ]),
                     ],
                     'state' => [
                         'getCursor()' => self::objectHasPropertiesIdenticalTo(['getOffset()' => 85]),
                         'getErrors()' => [],
-                        'getRecords()' => []
+                        'getRecords()' => [],
                     ],
-                ]
+                ],
             ],
         ];
     }
@@ -775,12 +774,12 @@ final class LdifChangeRecordRuleTest extends TestCase
                         'getErrors()' => [
                             self::objectHasPropertiesIdenticalTo([
                                 'getSourceOffset()' => 49,
-                                'getMessage()' => 'syntax error: missing or invalid AttributeType (RFC2849)'
-                            ])
+                                'getMessage()' => 'syntax error: missing or invalid AttributeType (RFC2849)',
+                            ]),
                         ],
-                        'getRecords()' => []
+                        'getRecords()' => [],
                     ],
-                ]
+                ],
             ],
 
             'modify delete #1' => [
@@ -798,11 +797,11 @@ final class LdifChangeRecordRuleTest extends TestCase
                             self::objectHasPropertiesIdenticalTo([
                                 'getSourceOffset()' => 52,
                                 'getMessage()' => 'syntax error: expected "-" followed by end of line',
-                            ])
+                            ]),
                         ],
-                        'getRecords()' => []
+                        'getRecords()' => [],
                     ],
-                ]
+                ],
             ],
 
             'modify delete #2' => [
@@ -822,22 +821,22 @@ final class LdifChangeRecordRuleTest extends TestCase
                             self::objectHasPropertiesIdenticalTo([
                                 'getModType()' => 'delete',
                                 'getAttribute()' => 'cn',
-                                'getAttrValSpecs()' => []
-                            ])
+                                'getAttrValSpecs()' => [],
+                            ]),
                         ],
                         'getSnippet()' => self::objectHasPropertiesIdenticalTo([
                             'getLocation()' => self::objectHasPropertiesIdenticalTo([
                                 'getOffset()' => 0,
                             ]),
-                            'getLength()' => 54
+                            'getLength()' => 54,
                         ]),
                     ],
                     'state' => [
                         'getCursor()' => self::objectHasPropertiesIdenticalTo(['getOffset()' => 54]),
                         'getErrors()' => [],
-                        'getRecords()' => []
+                        'getRecords()' => [],
                     ],
-                ]
+                ],
             ],
 
             'modify delete #3' => [
@@ -857,27 +856,27 @@ final class LdifChangeRecordRuleTest extends TestCase
                             self::objectHasPropertiesIdenticalTo([
                                 'getModType()' => 'delete',
                                 'getAttribute()' => 'cn',
-                                'getAttrValSpecs()' => []
+                                'getAttrValSpecs()' => [],
                             ]),
                             self::objectHasPropertiesIdenticalTo([
                                 'getModType()' => 'delete',
                                 'getAttribute()' => 'ou',
-                                'getAttrValSpecs()' => []
-                            ])
+                                'getAttrValSpecs()' => [],
+                            ]),
                         ],
                         'getSnippet()' => self::objectHasPropertiesIdenticalTo([
                             'getLocation()' => self::objectHasPropertiesIdenticalTo([
                                 'getOffset()' => 0,
                             ]),
-                            'getLength()' => 67
+                            'getLength()' => 67,
                         ]),
                     ],
                     'state' => [
                         'getCursor()' => self::objectHasPropertiesIdenticalTo(['getOffset()' => 67]),
                         'getErrors()' => [],
-                        'getRecords()' => []
+                        'getRecords()' => [],
                     ],
-                ]
+                ],
             ],
 
             'modify delete #4' => [
@@ -897,28 +896,28 @@ final class LdifChangeRecordRuleTest extends TestCase
                                 'getOid()' => '1.2.3',
                                 'getCriticality()' => null,
                                 'getValueSpec()' => null,
-                            ])
+                            ]),
                         ],
                         'getModSpecs()' => [
                             self::objectHasPropertiesIdenticalTo([
                                 'getModType()' => 'delete',
                                 'getAttribute()' => 'cn',
-                                'getAttrValSpecs()' => []
-                            ])
+                                'getAttrValSpecs()' => [],
+                            ]),
                         ],
                         'getSnippet()' => self::objectHasPropertiesIdenticalTo([
                             'getLocation()' => self::objectHasPropertiesIdenticalTo([
                                 'getOffset()' => 0,
                             ]),
-                            'getLength()' => 69
+                            'getLength()' => 69,
                         ]),
                     ],
                     'state' => [
                         'getCursor()' => self::objectHasPropertiesIdenticalTo(['getOffset()' => 69]),
                         'getErrors()' => [],
-                        'getRecords()' => []
+                        'getRecords()' => [],
                     ],
-                ]
+                ],
             ],
         ];
     }
@@ -940,12 +939,12 @@ final class LdifChangeRecordRuleTest extends TestCase
                         'getErrors()' => [
                             self::objectHasPropertiesIdenticalTo([
                                 'getSourceOffset()' => 50,
-                                'getMessage()' => 'syntax error: missing or invalid AttributeType (RFC2849)'
-                            ])
+                                'getMessage()' => 'syntax error: missing or invalid AttributeType (RFC2849)',
+                            ]),
                         ],
-                        'getRecords()' => []
+                        'getRecords()' => [],
                     ],
-                ]
+                ],
             ],
 
             'modify replace #1' => [
@@ -963,11 +962,11 @@ final class LdifChangeRecordRuleTest extends TestCase
                             self::objectHasPropertiesIdenticalTo([
                                 'getSourceOffset()' => 53,
                                 'getMessage()' => 'syntax error: expected "-" followed by end of line',
-                            ])
+                            ]),
                         ],
-                        'getRecords()' => []
+                        'getRecords()' => [],
                     ],
-                ]
+                ],
             ],
 
             'modify replace #2' => [
@@ -987,22 +986,22 @@ final class LdifChangeRecordRuleTest extends TestCase
                             self::objectHasPropertiesIdenticalTo([
                                 'getModType()' => 'replace',
                                 'getAttribute()' => 'cn',
-                                'getAttrValSpecs()' => []
-                            ])
+                                'getAttrValSpecs()' => [],
+                            ]),
                         ],
                         'getSnippet()' => self::objectHasPropertiesIdenticalTo([
                             'getLocation()' => self::objectHasPropertiesIdenticalTo([
                                 'getOffset()' => 0,
                             ]),
-                            'getLength()' => 55
+                            'getLength()' => 55,
                         ]),
                     ],
                     'state' => [
                         'getCursor()' => self::objectHasPropertiesIdenticalTo(['getOffset()' => 55]),
                         'getErrors()' => [],
-                        'getRecords()' => []
+                        'getRecords()' => [],
                     ],
-                ]
+                ],
             ],
 
             'modify replace #3' => [
@@ -1022,27 +1021,27 @@ final class LdifChangeRecordRuleTest extends TestCase
                             self::objectHasPropertiesIdenticalTo([
                                 'getModType()' => 'replace',
                                 'getAttribute()' => 'cn',
-                                'getAttrValSpecs()' => []
+                                'getAttrValSpecs()' => [],
                             ]),
                             self::objectHasPropertiesIdenticalTo([
                                 'getModType()' => 'replace',
                                 'getAttribute()' => 'ou',
-                                'getAttrValSpecs()' => []
-                            ])
+                                'getAttrValSpecs()' => [],
+                            ]),
                         ],
                         'getSnippet()' => self::objectHasPropertiesIdenticalTo([
                             'getLocation()' => self::objectHasPropertiesIdenticalTo([
                                 'getOffset()' => 0,
                             ]),
-                            'getLength()' => 69
+                            'getLength()' => 69,
                         ]),
                     ],
                     'state' => [
                         'getCursor()' => self::objectHasPropertiesIdenticalTo(['getOffset()' => 69]),
                         'getErrors()' => [],
-                        'getRecords()' => []
+                        'getRecords()' => [],
                     ],
-                ]
+                ],
             ],
 
             'modify replace #4' => [
@@ -1062,28 +1061,28 @@ final class LdifChangeRecordRuleTest extends TestCase
                                 'getOid()' => '1.2.3',
                                 'getCriticality()' => null,
                                 'getValueSpec()' => null,
-                            ])
+                            ]),
                         ],
                         'getModSpecs()' => [
                             self::objectHasPropertiesIdenticalTo([
                                 'getModType()' => 'replace',
                                 'getAttribute()' => 'cn',
-                                'getAttrValSpecs()' => []
-                            ])
+                                'getAttrValSpecs()' => [],
+                            ]),
                         ],
                         'getSnippet()' => self::objectHasPropertiesIdenticalTo([
                             'getLocation()' => self::objectHasPropertiesIdenticalTo([
                                 'getOffset()' => 0,
                             ]),
-                            'getLength()' => 70
+                            'getLength()' => 70,
                         ]),
                     ],
                     'state' => [
                         'getCursor()' => self::objectHasPropertiesIdenticalTo(['getOffset()' => 70]),
                         'getErrors()' => [],
-                        'getRecords()' => []
+                        'getRecords()' => [],
                     ],
-                ]
+                ],
             ],
 
             'modify replace #5' => [
@@ -1092,7 +1091,7 @@ final class LdifChangeRecordRuleTest extends TestCase
                 'source' => ["dn: dc=example,dc=org\ncontrol: 1.2.3\nchangetype: modify\nreplace: cn\ncn: ".
                 //            7777 7777888888 88 88
                 //            2345 6789012345 67 89
-                             "John\ncn: Clark\n-\n", 0],
+                             "John\ncn: Clark\n-\n", 0, ],
                 'args' => [true],
                 'expect' => [
                     'init' => null,
@@ -1106,7 +1105,7 @@ final class LdifChangeRecordRuleTest extends TestCase
                                 'getOid()' => '1.2.3',
                                 'getCriticality()' => null,
                                 'getValueSpec()' => null,
-                            ])
+                            ]),
                         ],
                         'getModSpecs()' => [
                             self::objectHasPropertiesIdenticalTo([
@@ -1129,22 +1128,22 @@ final class LdifChangeRecordRuleTest extends TestCase
                                             'getContent()' => 'Clark',
                                         ]),
                                     ]),
-                                ]
+                                ],
                             ]),
                         ],
                         'getSnippet()' => self::objectHasPropertiesIdenticalTo([
                             'getLocation()' => self::objectHasPropertiesIdenticalTo([
                                 'getOffset()' => 0,
                             ]),
-                            'getLength()' => 89
+                            'getLength()' => 89,
                         ]),
                     ],
                     'state' => [
                         'getCursor()' => self::objectHasPropertiesIdenticalTo(['getOffset()' => 89]),
                         'getErrors()' => [],
-                        'getRecords()' => []
+                        'getRecords()' => [],
                     ],
-                ]
+                ],
             ],
         ];
     }
@@ -1167,11 +1166,11 @@ final class LdifChangeRecordRuleTest extends TestCase
                             self::objectHasPropertiesIdenticalTo([
                                 'getSourceOffset()' => 0,
                                 'getMessage()' => 'syntax error: expected "dn:" (RFC2849)',
-                            ])
+                            ]),
                         ],
-                        'getRecords()' => []
+                        'getRecords()' => [],
                     ],
-                ]
+                ],
             ],
 
             'common #1' => [
@@ -1186,9 +1185,9 @@ final class LdifChangeRecordRuleTest extends TestCase
                     'state' => [
                         'getCursor()' => self::objectHasPropertiesIdenticalTo(['getOffset()' => 0]),
                         'getErrors()' => [],
-                        'getRecords()' => []
+                        'getRecords()' => [],
                     ],
-                ]
+                ],
             ],
 
             'common #2' => [
@@ -1206,11 +1205,11 @@ final class LdifChangeRecordRuleTest extends TestCase
                             self::objectHasPropertiesIdenticalTo([
                                 'getSourceOffset()' => 0,
                                 'getMessage()' => 'syntax error: expected "dn:" (RFC2849)',
-                            ])
+                            ]),
                         ],
-                        'getRecords()' => []
+                        'getRecords()' => [],
                     ],
-                ]
+                ],
             ],
 
             'common #3' => [
@@ -1228,11 +1227,11 @@ final class LdifChangeRecordRuleTest extends TestCase
                             self::objectHasPropertiesIdenticalTo([
                                 'getSourceOffset()' => 4,
                                 'getMessage()' => 'syntax error: expected line separator (RFC2849)',
-                            ])
+                            ]),
                         ],
-                        'getRecords()' => []
+                        'getRecords()' => [],
                     ],
-                ]
+                ],
             ],
 
             'common #4' => [
@@ -1250,11 +1249,11 @@ final class LdifChangeRecordRuleTest extends TestCase
                             self::objectHasPropertiesIdenticalTo([
                                 'getSourceOffset()' => 4,
                                 'getMessage()' => 'syntax error: invalid DN syntax: "foo"',
-                            ])
+                            ]),
                         ],
-                        'getRecords()' => []
+                        'getRecords()' => [],
                     ],
-                ]
+                ],
             ],
 
             'common #5' => [
@@ -1272,11 +1271,11 @@ final class LdifChangeRecordRuleTest extends TestCase
                             self::objectHasPropertiesIdenticalTo([
                                 'getSourceOffset()' => 21,
                                 'getMessage()' => 'syntax error: expected line separator (RFC2849)',
-                            ])
+                            ]),
                         ],
-                        'getRecords()' => []
+                        'getRecords()' => [],
                     ],
-                ]
+                ],
             ],
 
             'common #6' => [
@@ -1294,11 +1293,11 @@ final class LdifChangeRecordRuleTest extends TestCase
                             self::objectHasPropertiesIdenticalTo([
                                 'getSourceOffset()' => 22,
                                 'getMessage()' => 'syntax error: expected "changetype:" (RFC2849)',
-                            ])
+                            ]),
                         ],
-                        'getRecords()' => []
+                        'getRecords()' => [],
                     ],
-                ]
+                ],
             ],
 
             'common #7' => [
@@ -1316,11 +1315,11 @@ final class LdifChangeRecordRuleTest extends TestCase
                             self::objectHasPropertiesIdenticalTo([
                                 'getSourceOffset()' => 22,
                                 'getMessage()' => 'syntax error: expected "changetype:" (RFC2849)',
-                            ])
+                            ]),
                         ],
-                        'getRecords()' => []
+                        'getRecords()' => [],
                     ],
-                ]
+                ],
             ],
 
             'common #8' => [
@@ -1338,11 +1337,11 @@ final class LdifChangeRecordRuleTest extends TestCase
                             self::objectHasPropertiesIdenticalTo([
                                 'getSourceOffset()' => 60,
                                 'getMessage()' => 'syntax error: expected "changetype:" (RFC2849)',
-                            ])
+                            ]),
                         ],
-                        'getRecords()' => []
+                        'getRecords()' => [],
                     ],
-                ]
+                ],
             ],
 
             'common #9' => [
@@ -1360,11 +1359,11 @@ final class LdifChangeRecordRuleTest extends TestCase
                             self::objectHasPropertiesIdenticalTo([
                                 'getSourceOffset()' => 34,
                                 'getMessage()' => 'syntax error: missing or invalid change type (RFC2849)',
-                            ])
+                            ]),
                         ],
-                        'getRecords()' => []
+                        'getRecords()' => [],
                     ],
-                ]
+                ],
             ],
 
             'common #10' => [
@@ -1382,11 +1381,11 @@ final class LdifChangeRecordRuleTest extends TestCase
                             self::objectHasPropertiesIdenticalTo([
                                 'getSourceOffset()' => 34,
                                 'getMessage()' => 'syntax error: missing or invalid change type (RFC2849)',
-                            ])
+                            ]),
                         ],
-                        'getRecords()' => []
+                        'getRecords()' => [],
                     ],
-                ]
+                ],
             ],
         ];
 
@@ -1402,7 +1401,7 @@ final class LdifChangeRecordRuleTest extends TestCase
     /**
      * @dataProvider prov__parse
      */
-    public function test__parse(array $source, array $args, array $expect) : void
+    public function testParse(array $source, array $args, array $expect): void
     {
         $state = $this->getParserStateFromSource(...$source);
 

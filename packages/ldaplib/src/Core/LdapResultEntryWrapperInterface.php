@@ -20,20 +20,16 @@ interface LdapResultEntryWrapperInterface extends LdapResultItemWrapperInterface
     /**
      * Returns the encapsulated LdapResultEntryInterface instance.
      *
-     * @return LdapResultEntryInterface
-     *
      * @psalm-mutation-free
      */
-    public function getLdapResultEntry() : LdapResultEntryInterface;
+    public function getLdapResultEntry(): LdapResultEntryInterface;
 
     /**
      * Returns the encapsulated LdapResultEntryInterface instance.
      *
-     * @return LdapResultEntryInterface
-     *
      * @psalm-mutation-free
      */
-    public function getLdapResultItem() : LdapResultEntryInterface;
+    public function getLdapResultItem(): LdapResultEntryInterface;
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

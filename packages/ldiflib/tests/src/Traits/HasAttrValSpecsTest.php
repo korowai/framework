@@ -12,25 +12,26 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldif\Traits;
 
-use Korowai\Lib\Ldif\Traits\HasAttrValSpecs;
 use Korowai\Lib\Ldif\Nodes\HasAttrValSpecsInterface;
-
+use Korowai\Lib\Ldif\Traits\HasAttrValSpecs;
 use Korowai\Testing\Ldiflib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Ldif\Traits\HasAttrValSpecs
+ *
+ * @internal
  */
 final class HasAttrValSpecsTest extends TestCase
 {
     public function getTestObject()
     {
-        return new class implements HasAttrValSpecsInterface {
+        return new class() implements HasAttrValSpecsInterface {
             use HasAttrValSpecs;
         };
     }
 
-    public function test__attrValSpecs() : void
+    public function testAttrValSpecs(): void
     {
         $object = $this->getTestObject();
         $this->assertSame($object, $object->setAttrValSpecs(['A']));

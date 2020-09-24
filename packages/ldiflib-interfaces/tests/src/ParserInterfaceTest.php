@@ -13,12 +13,13 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Ldif;
 
 use Korowai\Lib\Ldif\ParserInterface;
-
 use Korowai\Testing\LdiflibInterfaces\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Tests\Lib\Ldif\ParserInterfaceTrait
+ *
+ * @internal
  */
 final class ParserInterfaceTest extends TestCase
 {
@@ -37,9 +38,9 @@ final class ParserInterfaceTest extends TestCase
 //        $this->assertImplementsInterface($extends, ParserInterface::class);
 //    }
 //
-    public function test__dummyImplementation() : void
+    public function testDummyImplementation(): void
     {
-        $dummy = new class implements ParserInterface {
+        $dummy = new class() implements ParserInterface {
             use ParserInterfaceTrait;
         };
         $this->assertImplementsInterface(ParserInterface::class, $dummy);

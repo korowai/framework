@@ -14,26 +14,25 @@ namespace Korowai\Tests\Lib\Ldif;
 
 use Korowai\Lib\Ldif\CursorInterface;
 use Korowai\Lib\Ldif\ParserErrorInterface;
-use Korowai\Tests\Lib\Ldif\CursorInterfaceTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
 trait ParserStateInterfaceTrait
 {
-    public function getCursor() : CursorInterface
+    public function getCursor(): CursorInterface
     {
-        return new class implements CursorInterface {
+        return new class() implements CursorInterface {
             use CursorInterfaceTrait;
         };
     }
 
-    public function getErrors() : array
+    public function getErrors(): array
     {
         return [];
     }
 
-    public function isOk() : bool
+    public function isOk(): bool
     {
         return false;
     }

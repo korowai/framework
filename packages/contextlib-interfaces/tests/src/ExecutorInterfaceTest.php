@@ -13,29 +13,30 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Context;
 
 use Korowai\Lib\Context\ExecutorInterface;
-
 use Korowai\Testing\ContextlibInterfaces\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Tests\Lib\Context\ExecutorInterfaceTrait
+ *
+ * @internal
  */
 final class ExecutorInterfaceTest extends TestCase
 {
     public static function createDummyInstance()
     {
-        return new class implements ExecutorInterface {
+        return new class() implements ExecutorInterface {
             use ExecutorInterfaceTrait;
         };
     }
 
-    public function test__dummyImplementation() : void
+    public function testDummyImplementation(): void
     {
         $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(ExecutorInterface::class, $dummy);
     }
 
-    public function test__invoke() : void
+    public function testInvoke(): void
     {
         $dummy = $this->createDummyInstance();
 
@@ -44,7 +45,7 @@ final class ExecutorInterfaceTest extends TestCase
         }));
     }
 
-    public function test__invoke__withTypeError() : void
+    public function testInvokeWithTypeError(): void
     {
         $dummy = $this->createDummyInstance();
 

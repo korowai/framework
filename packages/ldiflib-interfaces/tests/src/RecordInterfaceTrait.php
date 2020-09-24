@@ -19,9 +19,9 @@ use Korowai\Lib\Ldif\RecordVisitorInterface;
  */
 trait RecordInterfaceTrait
 {
-    public function getDn() : string
+    public function getDn(): string
     {
-        return "";
+        return '';
     }
 
     public function acceptRecordVisitor(RecordVisitorInterface $visitor)

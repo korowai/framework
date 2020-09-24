@@ -19,12 +19,8 @@ interface ParserInterface
 {
     /**
      * Parses preprocessed LDIF text.
-     *
-     * @param ParserStateInterface $state
-     *
-     * @return bool
      */
-    public function parse(ParserStateInterface $state) : bool;
+    public function parse(ParserStateInterface $state): bool;
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

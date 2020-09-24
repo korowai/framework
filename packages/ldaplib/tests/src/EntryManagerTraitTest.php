@@ -12,18 +12,20 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldap;
 
-use Korowai\Testing\Ldaplib\TestCase;
-use Korowai\Testing\Ldaplib\ExamineLdapLinkErrorHandlerTrait;
-use Korowai\Lib\Ldap\EntryManagerInterface;
-use Korowai\Lib\Ldap\EntryManagerTrait;
 use Korowai\Lib\Ldap\Core\LdapLinkInterface;
 use Korowai\Lib\Ldap\Core\LdapLinkWrapperInterface;
+use Korowai\Lib\Ldap\EntryManagerInterface;
+use Korowai\Lib\Ldap\EntryManagerTrait;
+use Korowai\Testing\Ldaplib\ExamineLdapLinkErrorHandlerTrait;
+use Korowai\Testing\Ldaplib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Lib\Ldap\EntryManagerTrait
- * @covers \Korowai\Tests\Lib\Ldap\EntryManagerTestTrait
  * @covers \Korowai\Testing\Ldaplib\ExamineLdapLinkErrorHandlerTrait
+ * @covers \Korowai\Tests\Lib\Ldap\EntryManagerTestTrait
+ *
+ * @internal
  */
 final class EntryManagerTraitTest extends TestCase
 {
@@ -31,7 +33,7 @@ final class EntryManagerTraitTest extends TestCase
     use ExamineLdapLinkErrorHandlerTrait;
 
     // required by EntryManagerTestTrait
-    public function createEntryManagerInstance(LdapLinkinterface $ldapLink) : EntryManagerInterface
+    public function createEntryManagerInstance(LdapLinkinterface $ldapLink): EntryManagerInterface
     {
         return new class($ldapLink) implements EntryManagerInterface, LdapLinkWrapperInterface {
             use EntryManagerTrait;
@@ -41,7 +43,7 @@ final class EntryManagerTraitTest extends TestCase
                 $this->ldapLink = $ldapLink;
             }
 
-            public function getLdapLink() : LdapLinkInterface
+            public function getLdapLink(): LdapLinkInterface
             {
                 return $this->ldapLink;
             }

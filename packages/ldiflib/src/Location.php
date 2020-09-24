@@ -27,12 +27,11 @@ class Location implements LocationInterface
      */
     protected $position;
 
-
     /**
      * Initializes the error object.
      *
-     * @param InputInterface $input Preprocessed source code.
-     * @param  int $position Character offset (in bytes) the $input,
+     * @param InputInterface $input    preprocessed source code
+     * @param int            $position Character offset (in bytes) the $input,
      */
     public function __construct(InputInterface $input, int $position = 0)
     {
@@ -42,8 +41,8 @@ class Location implements LocationInterface
     /**
      * Initializes the error object.
      *
-     * @param InputInterface $input Preprocessed source code.
-     * @param  int $position Character offset (in bytes) the $input,
+     * @param InputInterface $input    preprocessed source code
+     * @param int            $position Character offset (in bytes) the $input,
      */
     public function init(InputInterface $input, int $position)
     {
@@ -52,11 +51,9 @@ class Location implements LocationInterface
     }
 
     /**
-     * Returns the Preprocessed input provided to the constructor as $input
-     *
-     * @return InputInterface
+     * Returns the Preprocessed input provided to the constructor as $input.
      */
-    public function getInput() : InputInterface
+    public function getInput(): InputInterface
     {
         return $this->input;
     }
@@ -64,7 +61,7 @@ class Location implements LocationInterface
     /**
      * {@inheritdoc}
      */
-    public function getClonedLocation(int $offset = null) : LocationInterface
+    public function getClonedLocation(int $offset = null): LocationInterface
     {
         return new self($this->getInput(), $offset ?? $this->getOffset());
     }
@@ -72,7 +69,7 @@ class Location implements LocationInterface
     /**
      * {@inheritdoc}
      */
-    public function getString() : string
+    public function getString(): string
     {
         return $this->getInput()->getString();
     }
@@ -80,7 +77,7 @@ class Location implements LocationInterface
     /**
      * {@inheritdoc}
      */
-    public function getOffset() : int
+    public function getOffset(): int
     {
         return $this->position;
     }
@@ -88,7 +85,7 @@ class Location implements LocationInterface
     /**
      * {@inheritdoc}
      */
-    public function isValid() : bool
+    public function isValid(): bool
     {
         return $this->getOffset() >= 0 && ($this->getOffset() < strlen($this->getString()));
     }
@@ -96,16 +93,17 @@ class Location implements LocationInterface
     /**
      * {@inheritdoc}
      */
-    public function getCharOffset(string $encoding = null) : int
+    public function getCharOffset(string $encoding = null): int
     {
         $substring = substr($this->getString(), 0, $this->getOffset());
+
         return mb_strlen($substring, ...(func_get_args()));
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getSourceFileName() : string
+    public function getSourceFileName(): string
     {
         return $this->getInput()->getSourceFileName();
     }
@@ -113,7 +111,7 @@ class Location implements LocationInterface
     /**
      * {@inheritdoc}
      */
-    public function getSourceString() : string
+    public function getSourceString(): string
     {
         return $this->getInput()->getSourceString();
     }
@@ -121,7 +119,7 @@ class Location implements LocationInterface
     /**
      * {@inheritdoc}
      */
-    public function getSourceOffset() : int
+    public function getSourceOffset(): int
     {
         return $this->getInput()->getSourceOffset($this->getOffset());
     }
@@ -129,7 +127,7 @@ class Location implements LocationInterface
     /**
      * {@inheritdoc}
      */
-    public function getSourceCharOffset(string $encoding = null) : int
+    public function getSourceCharOffset(string $encoding = null): int
     {
         return $this->getInput()->getSourceCharOffset($this->getOffset(), ...(func_get_args()));
     }
@@ -137,7 +135,7 @@ class Location implements LocationInterface
     /**
      * {@inheritdoc}
      */
-    public function getSourceLineIndex() : int
+    public function getSourceLineIndex(): int
     {
         return $this->getInput()->getSourceLineIndex($this->getOffset());
     }
@@ -145,7 +143,7 @@ class Location implements LocationInterface
     /**
      * {@inheritdoc}
      */
-    public function getSourceLine(int $index = null) : string
+    public function getSourceLine(int $index = null): string
     {
         return $this->getInput()->getSourceLine($index ?? $this->getSourceLineIndex());
     }
@@ -153,7 +151,7 @@ class Location implements LocationInterface
     /**
      * {@inheritdoc}
      */
-    public function getSourceLineAndOffset() : array
+    public function getSourceLineAndOffset(): array
     {
         return $this->getInput()->getSourceLineAndOffset($this->getOffset());
     }
@@ -161,7 +159,7 @@ class Location implements LocationInterface
     /**
      * {@inheritdoc}
      */
-    public function getSourceLineAndCharOffset(string $encoding = null) : array
+    public function getSourceLineAndCharOffset(string $encoding = null): array
     {
         return $this->getInput()->getSourceLineAndCharOffset($this->getOffset(), ...(func_get_args()));
     }

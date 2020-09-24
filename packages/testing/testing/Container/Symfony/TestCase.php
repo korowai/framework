@@ -19,17 +19,15 @@ use Korowai\Testing\Container\ContainerFactoryInterface;
  */
 abstract class TestCase extends \Korowai\Testing\Container\TestCase
 {
-    public function getContainerFactory() : ContainerFactoryInterface
+    public function getContainerFactory(): ContainerFactoryInterface
     {
-        return (new ContainerFactory)->setServicesVisibility($this->getServicesVisibility());
+        return (new ContainerFactory())->setServicesVisibility($this->getServicesVisibility());
     }
 
     /**
      * Override this method in subclass to specify which services should be made publicly visible in the container.
-     *
-     * @return array
      */
-    public function getServicesVisibility() : array
+    public function getServicesVisibility(): array
     {
         return [];
     }

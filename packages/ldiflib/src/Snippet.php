@@ -30,40 +30,7 @@ class Snippet implements SnippetInterface
     protected $length;
 
     /**
-     * Creates snippet out of begin and end locations.
-     *
-     * @param  LocationInterface $begin
-     * @param  LocationInterface $end
-     * @return Snippet
-     */
-    public static function createFromLocations(LocationInterface $begin, LocationInterface $end) : Snippet
-    {
-        if ($begin->getInput() !== $end->getInput()) {
-            // FIXME: dedicated exception
-            $call = __class__.'::'.__function__.'($begin, $end)';
-            $message = 'Arguments $begin and $end in '.$call.' must satisfy $begin->getInput() === $end->getInput().';
-            throw new \InvalidArgumentException($message);
-        }
-        return new self($begin, $end->getOffset() - $begin->getOffset());
-    }
-
-    /**
-     * Creates snippet out of beginning location and parser state.
-     *
-     * @param  LocationInterface $begin
-     * @param  ParserStateInterface $state
-     * @return Snippet
-     */
-    public static function createFromLocationAndState(LocationInterface $begin, ParserStateInterface $state) : Snippet
-    {
-        return self::createFromLocations($begin, $state->getCursor());
-    }
-
-    /**
      * Initializes the object.
-     *
-     * @param  LocationInterface $location
-     * @param  int $length
      */
     public function __construct(LocationInterface $location, int $length)
     {
@@ -71,10 +38,31 @@ class Snippet implements SnippetInterface
     }
 
     /**
+     * Creates snippet out of begin and end locations.
+     */
+    public static function createFromLocations(LocationInterface $begin, LocationInterface $end): Snippet
+    {
+        if ($begin->getInput() !== $end->getInput()) {
+            // FIXME: dedicated exception
+            $call = __CLASS__.'::'.__FUNCTION__.'($begin, $end)';
+            $message = 'Arguments $begin and $end in '.$call.' must satisfy $begin->getInput() === $end->getInput().';
+
+            throw new \InvalidArgumentException($message);
+        }
+
+        return new self($begin, $end->getOffset() - $begin->getOffset());
+    }
+
+    /**
+     * Creates snippet out of beginning location and parser state.
+     */
+    public static function createFromLocationAndState(LocationInterface $begin, ParserStateInterface $state): Snippet
+    {
+        return self::createFromLocations($begin, $state->getCursor());
+    }
+
+    /**
      * Initializes the object.
-     *
-     * @param  LocationInterface $location
-     * @param  int $length
      *
      * @return Snippet $this
      */
@@ -82,25 +70,26 @@ class Snippet implements SnippetInterface
     {
         $this->setLocation($location);
         $this->setLength($length);
+
         return $this;
     }
 
     /**
      * Sets the length of snippet.
      *
-     * @param  int $length
      * @return Snippet $this
      */
     public function setLength(int $length)
     {
         $this->length = $length;
+
         return $this;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getLength() : int
+    public function getLength(): int
     {
         return $this->length;
     }
@@ -108,7 +97,7 @@ class Snippet implements SnippetInterface
     /**
      * {@inheritdoc}
      */
-    public function getEndOffset() : int
+    public function getEndOffset(): int
     {
         return $this->getOffset() + $this->getLength();
     }
@@ -116,7 +105,7 @@ class Snippet implements SnippetInterface
     /**
      * {@inheritdoc}
      */
-    public function getSourceLength() : int
+    public function getSourceLength(): int
     {
         return $this->getSourceEndOffset() - $this->getSourceOffset();
     }
@@ -124,7 +113,7 @@ class Snippet implements SnippetInterface
     /**
      * {@inheritdoc}
      */
-    public function getSourceEndOffset() : int
+    public function getSourceEndOffset(): int
     {
         return $this->getInput()->getSourceOffset($this->getEndOffset());
     }
@@ -132,18 +121,20 @@ class Snippet implements SnippetInterface
     /**
      * {@inheritdoc}
      */
-    public function getSourceCharLength(string $encoding = null) : int
+    public function getSourceCharLength(string $encoding = null): int
     {
         $args = func_get_args();
+
         return $this->getSourceCharEndOffset(...$args) - $this->getSourceCharOffset(...$args);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getSourceCharEndOffset(string $encoding = null) : int
+    public function getSourceCharEndOffset(string $encoding = null): int
     {
         $args = func_get_args();
+
         return $this->getInput()->getSourceCharOffset($this->getEndOffset(), ...$args);
     }
 }

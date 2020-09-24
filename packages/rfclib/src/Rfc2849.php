@@ -45,54 +45,54 @@ class Rfc2849 extends AbstractRuleSet
     /**
      * [RFC2849](https://tools.ietf.org/html/rfc2849):
      * ``ALPHA = %x41-5A / %x61-7A``;
-     * A-Z / a-z
+     * A-Z / a-z.
      */
     public const ALPHA = Rfc5234::ALPHA;
 
     /**
      * [RFC2849](https://tools.ietf.org/html/rfc2849):
      * ``DIGIT = %x30-39``;
-     * 0-9
+     * 0-9.
      */
     public const DIGIT = Rfc5234::DIGIT;
 
     /**
      * [RFC2849](https://tools.ietf.org/html/rfc2849):
      * ``CR = %x0D``;
-     * ASCII CR, carriage return
+     * ASCII CR, carriage return.
      */
     public const CR = Rfc5234::CR;
 
     /**
      * [RFC2849](https://tools.ietf.org/html/rfc2849):
      * ``LF = %x0A``;
-     * ASCII LF, line feed
+     * ASCII LF, line feed.
      */
     public const LF = Rfc5234::LF;
 
     /**
      * [RFC2849](https://tools.ietf.org/html/rfc2849):
      * ``SPACE = %x20``;
-     * ASCII SP, space
+     * ASCII SP, space.
      */
     public const SPACE = Rfc5234::SP;
 
     /**
      * [RFC2849](https://tools.ietf.org/html/rfc2849):
-     * ``attr-type-chars = ALPHA / DIGIT / "-"``
+     * ``attr-type-chars = ALPHA / DIGIT / "-"``.
      */
     public const ATTR_TYPE_CHARS = '['.self::DIGITCHARS.self::ALPHACHARS.'-]';
 
     /**
      * [RFC2849](https://tools.ietf.org/html/rfc2849):
      * ``BASE64-CHAR = %x2B / %x2F / %x30-39 / %x3D / %x41-5A / %x61-7A``;
-     * +, /, 0-9, =, A-Z, and a-z
+     * +, /, 0-9, =, A-Z, and a-z.
      */
     public const BASE64_CHAR = '[\+\/0-9=A-Za-z]';
 
     /**
      * [RFC2849](https://tools.ietf.org/html/rfc2849):
-     * ``opt-char = attr-type-chars``
+     * ``opt-char = attr-type-chars``.
      */
     public const OPT_CHAR = self::ATTR_TYPE_CHARS;
 
@@ -113,7 +113,7 @@ class Rfc2849 extends AbstractRuleSet
 
     /**
      * [RFC2849](https://tools.ietf.org/html/rfc2849):
-     * ``SEP = (CR LF / LF)``
+     * ``SEP = (CR LF / LF)``.
      */
     public const SEP = '(?:'.self::CR.self::LF.'|'.self::LF.')';
 
@@ -133,20 +133,20 @@ class Rfc2849 extends AbstractRuleSet
 
     /**
      * [RFC2849](https://tools.ietf.org/html/rfc2849):
-     * ``FILL = *SPACE``
+     * ``FILL = *SPACE``.
      */
     public const FILL = '(?:'.self::SPACE.'*)';
 
     /**
      * [RFC2849](https://tools.ietf.org/html/rfc2849):
-     * ``version-number = 1*DIGIT``
+     * ``version-number = 1*DIGIT``.
      */
     public const VERSION_NUMBER = '(?:'.self::DIGIT.'+)';
     // [/VERSION_NUMBER]
 
     /**
      * [RFC2849](https://tools.ietf.org/html/rfc2849):
-     * ``version-spec = "version:" FILL version-number``
+     * ``version-spec = "version:" FILL version-number``.
      *
      * Capture groups:
      *
@@ -167,21 +167,21 @@ class Rfc2849 extends AbstractRuleSet
 
     /**
      * [RFC2849](https://tools.ietf.org/html/rfc2849):
-     * ``BASE64-STRING = [*(BASE64-CHAR)]``
+     * ``BASE64-STRING = [*(BASE64-CHAR)]``.
      */
     public const BASE64_STRING = '(?:'.self::BASE64_CHAR.'*)';
     // [/BASE64_STRING]
 
     /**
      * [RFC2849](https://tools.ietf.org/html/rfc2849):
-     * ``BASE64-UTF8-STRING = BASE64-STRING``
+     * ``BASE64-UTF8-STRING = BASE64-STRING``.
      */
     public const BASE64_UTF8_STRING = self::BASE64_STRING;
     // [/BASE64_UTF8_STRING]
 
     /**
      * [RFC2849](https://tools.ietf.org/html/rfc2849)
-     * ``SAFE-STRING = [SAFE-INIT-CHAR *SAFE-CHAR]``
+     * ``SAFE-STRING = [SAFE-INIT-CHAR *SAFE-CHAR]``.
      */
     public const SAFE_STRING = '(?:(?:'.self::SAFE_INIT_CHAR.self::SAFE_CHAR.'*)?)';
     // [/SAFE_STRING]
@@ -189,49 +189,49 @@ class Rfc2849 extends AbstractRuleSet
     /**
      * [RFC2849](https://tools.ietf.org/html/rfc2849):
      * ``ldap-oid = 1*DIGIT *("." 1*DIGIT)``;
-     * An LDAPOID, as defined in [RFC2251](https://tools.ietf.org/html/rfc2251)
+     * An LDAPOID, as defined in [RFC2251](https://tools.ietf.org/html/rfc2251).
      */
     public const LDAP_OID = Rfc2253::OID;
     // [/LDAP_OID]
 
     /**
      * [RFC2849](https://tools.ietf.org/html/rfc2849):
-     * ``option = 1*opt-char``;
+     * ``option = 1*opt-char``;.
      */
     public const OPTION = '(?:'.self::OPT_CHAR.'+)';
     // [/OPTION]
 
     /**
      * [RFC2849](https://tools.ietf.org/html/rfc2849):
-     * ``options = option / (option ";" options)``
+     * ``options = option / (option ";" options)``.
      */
     public const OPTIONS = '(?:'.self::OPTION.'(?:;'.self::OPTION.')*)';
     // [/OPTIONS]
 
     /**
      * [RFC2849](https://tools.ietf.org/html/rfc2849):
-     * ``AttributeType = ldap-oid / (ALPHA *(attr-type-chars))``
+     * ``AttributeType = ldap-oid / (ALPHA *(attr-type-chars))``.
      */
     public const ATTRIBUTE_TYPE = '(?:'.self::LDAP_OID.'|(?:'.self::ALPHA.self::ATTR_TYPE_CHARS.'*))';
     // [/ATTRIBUTE_TYPE]
 
     /**
      * [RFC2849](https://tools.ietf.org/html/rfc2849):
-     * ``AttributeDescription = AttributeType [";" options]``
+     * ``AttributeDescription = AttributeType [";" options]``.
      */
     public const ATTRIBUTE_DESCRIPTION = '(?:'.self::ATTRIBUTE_TYPE.'(?:;'.self::OPTIONS.')?)';
     // [/ATTRIBUTE_DESCRIPTION]
 
     /**
      * [RFC2849](https://tools.ietf.org/html/rfc2849):
-     * ``distinguishedName = SAFE-STRING``
+     * ``distinguishedName = SAFE-STRING``.
      */
     public const DISTINGUISHED_NAME = self::SAFE_STRING;
     // [/DISTINGUISHED_NAME]
 
     /**
      * [RFC2849](https://tools.ietf.org/html/rfc2849):
-     * ``base64-distinguishedName = SAFE-STRING``
+     * ``base64-distinguishedName = SAFE-STRING``.
      */
     public const BASE64_DISTINGUISHED_NAME = self::BASE64_UTF8_STRING;
     // [/BASE64_DISTINGUISHED_NAME]
@@ -240,7 +240,7 @@ class Rfc2849 extends AbstractRuleSet
      * [RFC2849](https://tools.ietf.org/html/rfc2849):
      * ``rdn = SAFE-STRING``;
      * a relative distinguished name defined as name-component in
-     * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3)
+     * [RFC2253](https://tools.ietf.org/html/rfc2253#section-3).
      */
     public const RDN = self::SAFE_STRING;
     // [/RDN]
@@ -248,13 +248,13 @@ class Rfc2849 extends AbstractRuleSet
     /**
      * [RFC2849](https://tools.ietf.org/html/rfc2849):
      * ``base64-rdn = BASE64-UTF8-STRING``;
-     * an rdn which has been base64 encoded
+     * an rdn which has been base64 encoded.
      */
     public const BASE64_RDN = self::BASE64_UTF8_STRING;
     // [/BASE64_RDN]
 
     /**
-     * ``value-safe = SAFE-STRING``
+     * ``value-safe = SAFE-STRING``.
      *
      * Capture groups:
      *
@@ -274,7 +274,7 @@ class Rfc2849 extends AbstractRuleSet
     // [/VALUE_SAFE]
 
     /**
-     * ``value-base64 = BASE64-STRING``
+     * ``value-base64 = BASE64-STRING``.
      *
      * Capture groups:
      *
@@ -294,7 +294,7 @@ class Rfc2849 extends AbstractRuleSet
     // [/VALUE_BASE64]
 
     /**
-     * ``value-url = URL``
+     * ``value-url = URL``.
      *
      * Capture groups
      *
@@ -313,9 +313,8 @@ class Rfc2849 extends AbstractRuleSet
         ')';
     // [/VALUE_URL]
 
-
     /**
-     * ``dn-value-spec = ":" ( FILL distinguishedName / ":" FILL base64-distinguishedName )``
+     * ``dn-value-spec = ":" ( FILL distinguishedName / ":" FILL base64-distinguishedName )``.
      *
      * Capture groups:
      *
@@ -337,7 +336,7 @@ class Rfc2849 extends AbstractRuleSet
 
     /**
      * [RFC2849](https://tools.ietf.org/html/rfc2849):
-     * ``dn-spec = "dn:" (FILL distinguishedName / ":" FILL base64-distinguishedName)``
+     * ``dn-spec = "dn:" (FILL distinguishedName / ":" FILL base64-distinguishedName)``.
      *
      * Capture groups:
      *
@@ -350,14 +349,14 @@ class Rfc2849 extends AbstractRuleSet
     /**
      * [RFC2849](https://tools.ietf.org/html/rfc2849):
      * ``url = <a URL as defined in `` [RFC1738](https://tools.ietf.org/html/rfc1738) `` >``;
-     * (we use URI-reference from [RFC3986](https://tools.ietf.org/html/rfc3986) instead of RFC1738)
+     * (we use URI-reference from [RFC3986](https://tools.ietf.org/html/rfc3986) instead of RFC1738).
      */
     public const URL = Rfc3986::URI_REFERENCE;
     // [/URL]
 
     /**
      * [RFC2849](https://tools.ietf.org/html/rfc2849):
-     * ``value-spec = ":" (FILL 0*1(SAFE-STRING) / ":" FILL (BASE64-STRING) / "<" FILL url)``
+     * ``value-spec = ":" (FILL 0*1(SAFE-STRING) / ":" FILL (BASE64-STRING) / "<" FILL url)``.
      *
      * Matches any string that starts with one of ``":"``, ``"::"`` or ``":<"``
      * and spans to the nearest [EOL](Rfc2849.html). Returns one of
@@ -388,7 +387,7 @@ class Rfc2849 extends AbstractRuleSet
 
     /**
      * [RFC2849](https://tools.ietf.org/html/rfc2849):
-     * ``control = "control:" FILL ldap-oid 0*1(1*SPACE ("true" / "false")) 0*1(value-spec) SEP``
+     * ``control = "control:" FILL ldap-oid 0*1(1*SPACE ("true" / "false")) 0*1(value-spec) SEP``.
      *
      * Matches any string that starts with ``"control:"`` tag and spans to the
      * nearest [EOL](Rfc2849.html).
@@ -424,10 +423,9 @@ class Rfc2849 extends AbstractRuleSet
         ')';
     // [/CONTROL]
 
-
     /**
      * [RFC2849](https://tools.ietf.org/html/rfc2849):
-     * ``attrval-spec = AttributeDescription value-spec SEP``
+     * ``attrval-spec = AttributeDescription value-spec SEP``.
      *
      * Capture groups:
      *
@@ -449,7 +447,7 @@ class Rfc2849 extends AbstractRuleSet
 
     /**
      * [RFC2849](https://tools.ietf.org/html/rfc2849):
-     * ``mod-spec = ("add:" / "delete:" / "replace:") FILL AttributeDescription SEP *attrval-spec "-" SEP``
+     * ``mod-spec = ("add:" / "delete:" / "replace:") FILL AttributeDescription SEP *attrval-spec "-" SEP``.
      *
      * This pattern implements the initial line of the *mod-spec* rule (call it
      * *mod-spec-init*), such that::
@@ -490,7 +488,7 @@ class Rfc2849 extends AbstractRuleSet
 
     /**
      * [RFC2849](https://tools.ietf.org/html/rfc2849):
-     * ``changerecord = "changetype:" FILL (change-add / change-delete / change-modify / change-moddn)``
+     * ``changerecord = "changetype:" FILL (change-add / change-delete / change-modify / change-moddn)``.
      *
      * This pattern implements the initial line of the *changerecord* rule (call it *changerecord-init*),
      * such that:
@@ -532,7 +530,7 @@ class Rfc2849 extends AbstractRuleSet
     // [/NEWRDN_SPEC]
 
     /**
-     * ``newsuperior-spec = "newsuperior:" (FILL distinguishedName / ":" FILL base64-distinguishedName) SEP``
+     * ``newsuperior-spec = "newsuperior:" (FILL distinguishedName / ":" FILL base64-distinguishedName) SEP``.
      *
      * Matches any string that starts with ``"newsuperior:"``, and spans to the nearest
      * [EOL](Rfc2849.html) including it. Returns one of the ``value_*_error``
@@ -603,64 +601,64 @@ class Rfc2849 extends AbstractRuleSet
      */
     protected static $rfc2849Errors = [
         '' => [
-//            'ALPHACHARS'                => 'expected ALPHACHARS (RFC2849)',
-//            'DIGITCHARS'                => 'expected DIGITCHARS (RFC2849)',
-//            'ALPHA'                     => 'expected ALPHA (RFC2849)',
-//            'DIGIT'                     => 'expected DIGIT (RFC2849)',
-//            'CR'                        => 'expected CR (RFC2849)',
-//            'LF'                        => 'expected LF (RFC2849)',
-//            'SPACE'                     => 'expected SPACE (RFC2849)',
-//            'ATTR_TYPE_CHARS'           => 'expected attr-type-chars (RFC2849)',
-//            'BASE64_CHAR'               => 'expected BASE64-CHAR (RFC2849)',
-//            'OPT_CHAR'                  => 'expected OPT-CHAR (RFC2849)',
-//            'SAFE_CHAR'                 => 'expected SAFE-CHAR (RFC2849)',
-//            'SAFE_INIT_CHAR'            => 'expected SAFE-INIT-CHAR (RFC2849)',
-            'SEP'                       => 'expected line separator (RFC2849)',
-////            'FILL'                      => 'expected FILL (RFC2849)',
-////            'VERSION_NUMBER'            => 'expected version-number (RFC2849)',
-////            'VERSION_SPEC'              => 'expected version-spec (RFC2849)',
-////            'BASE64_STRING'             => 'expected BASE64-STRING (RFC2849)',
-////            'BASE64_UTF8_STRING'        => 'expected BASE64-UTF8-STRING (RFC2849)',
-////            'SAFE_STRING'               => 'expected SAFE-STRING (RFC2849)',
-////            'LDAP_OID'                  => 'expected ldap-oid (RFC2849)',
-////            'OPTION'                    => 'expected option (RFC2849)',
-////            'OPTIONS'                   => 'expected options (RFC2849)',
-////            'ATTRIBUTE_TYPE'            => 'expected AttributeType (RFC2849)',
-////            'ATTRIBUTE_DESCRIPTION'     => 'expected AttributeDescription (RFC2849)',
-////            'DISTINGUISHED_NAME'        => 'expected distinguishedName (RFC2849)',
-////            'BASE64_DISTINGUISHED_NAME' => 'expected base64-distinguishedName (RFC2849)',
-////            'RDN'                       => 'expected rdn (RFC2849)',
-////            'BASE64_RDN'                => 'expected base64-rdn (RFC2849)',
-////            'DN_SPEC'                   => 'expected dn-spec (RFC2849)',
-////            'URL'                       => 'expected URL (RFC2849)',
-////            'VALUE_SPEC'                => 'expected value-spec (RFC2849)',
-////            'CONTROL'                   => 'expected control (RFC2849)',
-////            'ATTRVAL_SPEC'              => 'expected attrval-spec (RFC2849)',
-            'VERSION_SPEC'          => 'expected "version:" (RFC2849)',
-            'DN_SPEC'               => 'expected "dn:" (RFC2849)',
-            'VALUE_SPEC'            => 'expected ":" (RFC2849)',
-            'CONTROL'               => 'expected "control:" (RFC2849)',
-            'ATTRVAL_SPEC'          => 'expected <AttributeDescription>":" (RFC2849)',
-            'MOD_SPEC_INIT'         => 'expected one of "add:", "delete:" or "replace:" (RFC2849)',
-            'CHANGERECORD_INIT'     => 'expected "changetype:" (RFC2849)',
-            'NEWRDN_SPEC'           => 'expected "newrdn:" (RFC2849)',
-            'NEWSUPERIOR_SPEC'      => 'expected "newsuperior:" (RFC2849)',
+            //            'ALPHACHARS'                => 'expected ALPHACHARS (RFC2849)',
+            //            'DIGITCHARS'                => 'expected DIGITCHARS (RFC2849)',
+            //            'ALPHA'                     => 'expected ALPHA (RFC2849)',
+            //            'DIGIT'                     => 'expected DIGIT (RFC2849)',
+            //            'CR'                        => 'expected CR (RFC2849)',
+            //            'LF'                        => 'expected LF (RFC2849)',
+            //            'SPACE'                     => 'expected SPACE (RFC2849)',
+            //            'ATTR_TYPE_CHARS'           => 'expected attr-type-chars (RFC2849)',
+            //            'BASE64_CHAR'               => 'expected BASE64-CHAR (RFC2849)',
+            //            'OPT_CHAR'                  => 'expected OPT-CHAR (RFC2849)',
+            //            'SAFE_CHAR'                 => 'expected SAFE-CHAR (RFC2849)',
+            //            'SAFE_INIT_CHAR'            => 'expected SAFE-INIT-CHAR (RFC2849)',
+            'SEP' => 'expected line separator (RFC2849)',
+            ////            'FILL'                      => 'expected FILL (RFC2849)',
+            ////            'VERSION_NUMBER'            => 'expected version-number (RFC2849)',
+            ////            'VERSION_SPEC'              => 'expected version-spec (RFC2849)',
+            ////            'BASE64_STRING'             => 'expected BASE64-STRING (RFC2849)',
+            ////            'BASE64_UTF8_STRING'        => 'expected BASE64-UTF8-STRING (RFC2849)',
+            ////            'SAFE_STRING'               => 'expected SAFE-STRING (RFC2849)',
+            ////            'LDAP_OID'                  => 'expected ldap-oid (RFC2849)',
+            ////            'OPTION'                    => 'expected option (RFC2849)',
+            ////            'OPTIONS'                   => 'expected options (RFC2849)',
+            ////            'ATTRIBUTE_TYPE'            => 'expected AttributeType (RFC2849)',
+            ////            'ATTRIBUTE_DESCRIPTION'     => 'expected AttributeDescription (RFC2849)',
+            ////            'DISTINGUISHED_NAME'        => 'expected distinguishedName (RFC2849)',
+            ////            'BASE64_DISTINGUISHED_NAME' => 'expected base64-distinguishedName (RFC2849)',
+            ////            'RDN'                       => 'expected rdn (RFC2849)',
+            ////            'BASE64_RDN'                => 'expected base64-rdn (RFC2849)',
+            ////            'DN_SPEC'                   => 'expected dn-spec (RFC2849)',
+            ////            'URL'                       => 'expected URL (RFC2849)',
+            ////            'VALUE_SPEC'                => 'expected value-spec (RFC2849)',
+            ////            'CONTROL'                   => 'expected control (RFC2849)',
+            ////            'ATTRVAL_SPEC'              => 'expected attrval-spec (RFC2849)',
+            'VERSION_SPEC' => 'expected "version:" (RFC2849)',
+            'DN_SPEC' => 'expected "dn:" (RFC2849)',
+            'VALUE_SPEC' => 'expected ":" (RFC2849)',
+            'CONTROL' => 'expected "control:" (RFC2849)',
+            'ATTRVAL_SPEC' => 'expected <AttributeDescription>":" (RFC2849)',
+            'MOD_SPEC_INIT' => 'expected one of "add:", "delete:" or "replace:" (RFC2849)',
+            'CHANGERECORD_INIT' => 'expected "changetype:" (RFC2849)',
+            'NEWRDN_SPEC' => 'expected "newrdn:" (RFC2849)',
+            'NEWSUPERIOR_SPEC' => 'expected "newsuperior:" (RFC2849)',
         ],
-        'attr_opts_error'   => 'missing or invalid options (RFC2849)',
-        'attr_type_error'   => 'missing or invalid AttributeType (RFC2849)',
-        'chg_type_error'    => 'missing or invalid change type (RFC2849)',
-        'ctl_type_error'    => 'missing or invalid OID (RFC2849)',
-        'ctl_crit_error'    => 'expected "true" or "false" (RFC2849)',
-        'value_b64_error'   => 'malformed BASE64-STRING (RFC2849)',
-        'value_safe_error'  => 'malformed SAFE-STRING (RFC2849)',
-        'value_url_error'   => 'malformed URL (RFC2849/RFC3986)',
-        'version_error'     => 'expected valid version number (RFC2849)',
+        'attr_opts_error' => 'missing or invalid options (RFC2849)',
+        'attr_type_error' => 'missing or invalid AttributeType (RFC2849)',
+        'chg_type_error' => 'missing or invalid change type (RFC2849)',
+        'ctl_type_error' => 'missing or invalid OID (RFC2849)',
+        'ctl_crit_error' => 'expected "true" or "false" (RFC2849)',
+        'value_b64_error' => 'malformed BASE64-STRING (RFC2849)',
+        'value_safe_error' => 'malformed SAFE-STRING (RFC2849)',
+        'value_url_error' => 'malformed URL (RFC2849/RFC3986)',
+        'version_error' => 'expected valid version number (RFC2849)',
     ];
 
     /**
      * {@inheritdoc}
      */
-    public static function getClassRuleNames() : array
+    public static function getClassRuleNames(): array
     {
         return self::$rfc2849Rules;
     }
@@ -668,7 +666,7 @@ class Rfc2849 extends AbstractRuleSet
     /**
      * {@inheritdoc}
      */
-    public static function getDefinedErrors() : array
+    public static function getDefinedErrors(): array
     {
         return array_merge_recursive(parent::getDefinedErrors(), self::$rfc2849Errors);
     }

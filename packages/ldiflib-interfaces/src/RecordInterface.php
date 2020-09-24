@@ -32,15 +32,11 @@ interface RecordInterface
 {
     /**
      * Returns the DN of this record.
-     *
-     * @return string
      */
-    public function getDn() : string;
+    public function getDn(): string;
 
     /**
      * Accept record visitor.
-     *
-     * @param  RecordVisitorInterface $visitor
      */
     public function acceptRecordVisitor(RecordVisitorInterface $visitor);
 }

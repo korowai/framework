@@ -12,9 +12,8 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldap;
 
-use Korowai\Lib\Ldap\Core\LdapLinkInterface;
-
 use function Korowai\Lib\Context\with;
+use Korowai\Lib\Ldap\Core\LdapLinkInterface;
 
 /**
  * Provides implementation of EntryManagerInterface.
@@ -26,21 +25,19 @@ trait EntryManagerTrait
     /**
      * Returns the encapsulated LdapLink instance.
      *
-     * @return LdapLinkInterface
-     *
      * @psalm-mutation-free
      */
-    abstract public function getLdapLink() : LdapLinkInterface;
+    abstract public function getLdapLink(): LdapLinkInterface;
 
     /**
      * {@inheritdoc}
      *
      * Invokes ldap_add().
      */
-    public function add(EntryInterface $entry) : void
+    public function add(EntryInterface $entry): void
     {
         $link = $this->getLdapLink();
-        with($link->getErrorHandler())(function () use ($link, $entry) : void {
+        with($link->getErrorHandler())(function () use ($link, $entry): void {
             $link->add($entry->getDn(), $entry->getAttributes());
         });
     }
@@ -50,10 +47,10 @@ trait EntryManagerTrait
      *
      * Invokes ldap_modify()
      */
-    public function update(EntryInterface $entry) : void
+    public function update(EntryInterface $entry): void
     {
         $link = $this->getLdapLink();
-        with($link->getErrorHandler())(function () use ($link, $entry) : void {
+        with($link->getErrorHandler())(function () use ($link, $entry): void {
             $link->modify($entry->getDn(), $entry->getAttributes());
         });
     }
@@ -63,10 +60,10 @@ trait EntryManagerTrait
      *
      * Invokes ldap_rename()
      */
-    public function rename(EntryInterface $entry, string $newRdn, bool $deleteOldRdn = true) : void
+    public function rename(EntryInterface $entry, string $newRdn, bool $deleteOldRdn = true): void
     {
         $link = $this->getLdapLink();
-        with($link->getErrorHandler())(function () use ($link, $entry, $newRdn, $deleteOldRdn) : void {
+        with($link->getErrorHandler())(function () use ($link, $entry, $newRdn, $deleteOldRdn): void {
             $link->rename($entry->getDn(), $newRdn, '', $deleteOldRdn);
         });
     }
@@ -76,10 +73,10 @@ trait EntryManagerTrait
      *
      * Invokes ldap_delete()
      */
-    public function delete(EntryInterface $entry) : void
+    public function delete(EntryInterface $entry): void
     {
         $link = $this->getLdapLink();
-        with($link->getErrorHandler())(function () use ($link, $entry) : void {
+        with($link->getErrorHandler())(function () use ($link, $entry): void {
             $link->delete($entry->getDn());
         });
     }

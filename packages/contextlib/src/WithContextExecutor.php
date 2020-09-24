@@ -20,10 +20,10 @@ final class WithContextExecutor implements ExecutorInterface
     /**
      * @var ContextManagerInterface[]
      */
-    protected $context;
+    private $context;
 
     /**
-     * Initializes the object
+     * Initializes the object.
      *
      * @param ContextManagerInterface[] $context
      */
@@ -33,20 +33,11 @@ final class WithContextExecutor implements ExecutorInterface
     }
 
     /**
-     * Returns the context provided to __construct()
-     *
-     * @return array
-     */
-    public function getContext() : array
-    {
-        return $this->context;
-    }
-
-    /**
      * Calls user function within context.
      *
-     * @param  callable $func The user function to be called
-     * @return mixed The value returned by ``$func``.
+     * @param callable $func The user function to be called
+     *
+     * @return mixed the value returned by ``$func``
      */
     public function __invoke(callable $func)
     {
@@ -54,6 +45,7 @@ final class WithContextExecutor implements ExecutorInterface
         $return = null;
 
         $i = 0;
+
         try {
             $args = $this->enterContext($i);
             $return = call_user_func_array($func, $args);
@@ -64,7 +56,7 @@ final class WithContextExecutor implements ExecutorInterface
         // exit all the entered contexts
         $exception = $this->exitContext($i, $exception);
 
-        if ($exception !== null) {
+        if (null !== $exception) {
             throw $exception;
         }
 
@@ -72,22 +64,31 @@ final class WithContextExecutor implements ExecutorInterface
     }
 
     /**
+     * Returns the context provided to __construct().
+     */
+    public function getContext(): array
+    {
+        return $this->context;
+    }
+
+    /**
      * Invokes ``enterContext()`` method on the context managers from
      * ``$this->context`` array.
      *
-     * @param  int $i
-     *          Index used by the internal loop (passed by reference, so
-     *          its value is not lost when an exception is thrown).
+     * @param int $i
+     *               Index used by the internal loop (passed by reference, so
+     *               its value is not lost when an exception is thrown)
      *
      * @return array
-     *          An array of arguments to be passed to user function.
+     *               An array of arguments to be passed to user function
      */
-    protected function enterContext(int &$i) : array
+    private function enterContext(int &$i): array
     {
         $args = [];
-        for (; $i < count($this->context); $i++) {
+        for (; $i < count($this->context); ++$i) {
             $args[] = $this->context[$i]->enterContext();
         }
+
         return $args;
     }
 
@@ -95,24 +96,25 @@ final class WithContextExecutor implements ExecutorInterface
      * Invokes ``exitContext()`` method on the context managers from
      * ``$this->context`` array.
      *
-     * @param  int $i
-     *          Index used by the internal loop (passed by reference, so its
-     *          value is not lost when an exception is thrown).
+     * @param int        $i
+     *                              Index used by the internal loop (passed by reference, so its
+     *                              value is not lost when an exception is thrown)
      * @param \Throwable $exception
-     *          An exception thrown from enterContext() or form user's
-     *          callback.
+     *                              An exception thrown from enterContext() or form user's
+     *                              callback
      *
      * @return \Throwable
-     *          An exception or null (if the exception was handled by one of
-     *          the context managers).
+     *                    An exception or null (if the exception was handled by one of
+     *                    the context managers)
      */
-    protected function exitContext(int &$i, \Throwable $exception = null) : ?\Throwable
+    private function exitContext(int &$i, \Throwable $exception = null): ?\Throwable
     {
-        for ($i--; $i >= 0; $i--) {
+        for ($i--; $i >= 0; --$i) {
             if ($this->context[$i]->exitContext($exception)) {
                 $exception = null;
             }
         }
+
         return $exception;
     }
 }

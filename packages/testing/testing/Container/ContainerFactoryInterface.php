@@ -21,19 +21,15 @@ interface ContainerFactoryInterface
 {
     /**
      * Configure factory to use the $config file for a newly created container.
-     *
-     * @param string $config
      */
-    public function setConfig(string $config) : self;
+    public function setConfig(string $config): self;
 
     /**
      * Creates an instance of ContainerInterface.
      *
-     * @param array $configs An array of configurations.
-     *
-     * @return ContainerInterface
+     * @param array $configs an array of configurations
      */
-    public function createContainer() : ContainerInterface;
+    public function createContainer(): ContainerInterface;
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

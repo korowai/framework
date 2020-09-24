@@ -12,18 +12,19 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Compat;
 
-use Korowai\Testing\TestCase;
-
-use Korowai\Lib\Compat\PregException;
 use Korowai\Lib\Compat\Preg;
+use Korowai\Lib\Compat\PregException;
+use Korowai\Testing\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @covers Korowai\Lib\Compat\Preg
+ * @covers \Korowai\Lib\Compat\Preg
+ *
+ * @internal
  */
 final class PregTest extends TestCase
 {
-    public function test__getPregErrorConst() : void
+    public function testGetPregErrorConst(): void
     {
         $this->assertSame('PREG_NO_ERROR', Preg::getPregErrorConst(PREG_NO_ERROR));
         $this->assertSame('PREG_INTERNAL_ERROR', Preg::getPregErrorConst(PREG_INTERNAL_ERROR));
@@ -35,7 +36,7 @@ final class PregTest extends TestCase
         $this->assertSame('Error 23456', Preg::getPregErrorConst(23456));
     }
 
-    public function test__getPregErrorMessage() : void
+    public function testGetPregErrorMessage(): void
     {
         $this->assertSame('No error', Preg::getPregErrorMessage(PREG_NO_ERROR));
         $this->assertSame('Internal error', Preg::getPregErrorMessage(PREG_INTERNAL_ERROR));
@@ -46,40 +47,42 @@ final class PregTest extends TestCase
         $this->assertSame('Failed due to limited JIT stack space', Preg::getPregErrorMessage(PREG_JIT_STACKLIMIT_ERROR));
     }
 
-    public function test__callPregFunc() : void
+    public function testCallPregFunc(): void
     {
         $this->assertSame(1, Preg::callPregFunc('\preg_match', ['/bar/', 'foo bar baz']));
         $this->assertSame(0, Preg::callPregFunc('\preg_match', ['/bob/', 'foo bar baz']));
     }
 
-    public function test__callPregFunc__triggeredError() : void
+    public function testCallPregFuncTriggeredError(): void
     {
         $this->expectException(PregException::class);
         $this->expectExceptionMessage("preg_match(): No ending delimiter '*' found");
         $this->expectExceptionCode(PREG_INTERNAL_ERROR);
 
         try {
-            $line = 1 + __line__;
+            $line = 1 + __LINE__;
             Preg::callPregFunc('\preg_match', ['*', 'foo']);
         } catch (PregException $e) {
-            $this->assertSame(__file__, $e->getFile());
+            $this->assertSame(__FILE__, $e->getFile());
             $this->assertSame($line, $e->getLine());
+
             throw $e;
         }
     }
 
-    public function test__callPregFunc__returnedError() : void
+    public function testCallPregFuncReturnedError(): void
     {
         $this->expectException(PregException::class);
         $this->expectExceptionMessage('preg_match(): Backtrack limit exhaused');
         $this->expectExceptionCode(PREG_BACKTRACK_LIMIT_ERROR);
 
         try {
-            $line = 1 + __line__;
+            $line = 1 + __LINE__;
             Preg::callPregFunc('\preg_match', ['/(?:\D+|<\d+>)*[!?]/', 'foobar foobar foobar']);
         } catch (PregException $e) {
-            $this->assertSame(__file__, $e->getFile());
+            $this->assertSame(__FILE__, $e->getFile());
             $this->assertSame($line, $e->getLine());
+
             throw $e;
         }
     }

@@ -12,54 +12,55 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldif\Nodes;
 
+use Korowai\Lib\Ldif\NodeInterface;
 use Korowai\Lib\Ldif\Nodes\ControlInterface;
 use Korowai\Lib\Ldif\Nodes\ValueSpecInterface;
-use Korowai\Lib\Ldif\NodeInterface;
-
 use Korowai\Testing\LdiflibInterfaces\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Tests\Lib\Ldif\Nodes\ControlInterfaceTrait
+ *
+ * @internal
  */
 final class ControlInterfaceTest extends TestCase
 {
     public static function createDummyInstance()
     {
-        return new class implements ControlInterface {
+        return new class() implements ControlInterface {
             use ControlInterfaceTrait;
         };
     }
 
-    public static function prov__extendsInterface() : array
+    public static function prov__extendsInterface(): array
     {
         return [
-            [NodeInterface::class]
+            [NodeInterface::class],
         ];
     }
 
     /**
      * @dataProvider prov__extendsInterface
      */
-    public function test__extendsInterface(string $extends) : void
+    public function testExtendsInterface(string $extends): void
     {
         $this->assertImplementsInterface($extends, ControlInterface::class);
     }
 
-    public function test__dummyImplementation() : void
+    public function testDummyImplementation(): void
     {
         $dummy = $this->createDummyInstance();
         $this->assertImplementsInterface(ControlInterface::class, $dummy);
     }
 
-    public function test__getOid() : void
+    public function testGetOid(): void
     {
         $dummy = $this->createDummyInstance();
         $dummy->oid = '';
         $this->assertSame($dummy->oid, $dummy->getOid());
     }
 
-    public function test__getOid__withNull() : void
+    public function testGetOidWithNull(): void
     {
         $dummy = $this->createDummyInstance();
         $dummy->oid = null;
@@ -69,7 +70,7 @@ final class ControlInterfaceTest extends TestCase
         $dummy->getOid();
     }
 
-    public function test__getCriticality() : void
+    public function testGetCriticality(): void
     {
         $dummy = $this->createDummyInstance();
         $dummy->criticality = false;
@@ -79,7 +80,7 @@ final class ControlInterfaceTest extends TestCase
         $this->assertSame($dummy->criticality, $dummy->getCriticality());
     }
 
-    public function test__getCriticality__withTypeError() : void
+    public function testGetCriticalityWithTypeError(): void
     {
         $dummy = $this->createDummyInstance();
         $dummy->criticality = '';
@@ -89,14 +90,14 @@ final class ControlInterfaceTest extends TestCase
         $dummy->getCriticality();
     }
 
-    public function test__getValueSpec() : void
+    public function testGetValueSpec(): void
     {
         $dummy = $this->createDummyInstance();
         $dummy->valueSpec = $this->createStub(ValueSpecInterface::class);
         $this->assertSame($dummy->valueSpec, $dummy->getValueSpec());
     }
 
-    public function test__getValueSpec__withTypeError() : void
+    public function testGetValueSpecWithTypeError(): void
     {
         $dummy = $this->createDummyInstance();
         $dummy->valueSpec = '';

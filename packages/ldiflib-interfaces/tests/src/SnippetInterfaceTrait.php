@@ -12,8 +12,6 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldif;
 
-use Korowai\Tests\Lib\Ldif\LocationInterfaceTrait;
-
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
@@ -21,32 +19,32 @@ trait SnippetInterfaceTrait
 {
     use LocationInterfaceTrait;
 
-    public function getLength() : int
+    public function getLength(): int
     {
         return 0;
     }
 
-    public function getEndOffset() : int
+    public function getEndOffset(): int
     {
         return 0;
     }
 
-    public function getSourceLength() : int
+    public function getSourceLength(): int
     {
         return 0;
     }
 
-    public function getSourceEndOffset() : int
+    public function getSourceEndOffset(): int
     {
         return 0;
     }
 
-    public function getSourceCharLength(string $encoding = null) : int
+    public function getSourceCharLength(string $encoding = null): int
     {
         return 0;
     }
 
-    public function getSourceCharEndOffset(string $encoding = null) : int
+    public function getSourceCharEndOffset(string $encoding = null): int
     {
         return 0;
     }

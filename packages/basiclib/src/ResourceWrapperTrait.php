@@ -20,22 +20,19 @@ namespace Korowai\Lib\Basic;
 trait ResourceWrapperTrait
 {
     /**
-     * Returns whether the object supports resource of given $type
-     *
-     * @param  string $type
-     * @return bool
-     *
-     * @psalm-mutation-free
-     * @psalm-pure
-     */
-    abstract public function supportsResourceType(string $type) : bool;
-
-    /**
      * @var mixed
      *
      * @psalm-readonly
      */
     private $resource;
+
+    /**
+     * Returns whether the object supports resource of given $type.
+     *
+     * @psalm-mutation-free
+     * @psalm-pure
+     */
+    abstract public function supportsResourceType(string $type): bool;
 
     /**
      * Returns the encapsulated resource.
@@ -52,11 +49,9 @@ trait ResourceWrapperTrait
     /**
      * Checks whether the wrapped resource is valid.
      *
-     * @return bool
-     *
      * @psalm-mutation-free
      */
-    public function isValid() : bool
+    public function isValid(): bool
     {
         return is_resource($this->resource) && ($this->supportsResourceType(get_resource_type($this->resource)));
     }

@@ -21,9 +21,9 @@ trait DnSpecInterfaceTrait
 {
     use NodeInterfaceTrait;
 
-    public $dn = null;
+    public $dn;
 
-    public function getDn() : string
+    public function getDn(): string
     {
         return $this->dn;
     }

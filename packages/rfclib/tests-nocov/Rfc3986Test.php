@@ -284,7 +284,7 @@ final class Rfc3986Test extends TestCase
     {
         $strings = [':', ':/'];
 
-        return arrayMerge(static::stringsToPregTuples($strings), static::provNonPATHROOTLESS());
+        return array_merge(static::stringsToPregTuples($strings), static::provNonPATHROOTLESS());
     }
 
     /**

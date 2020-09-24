@@ -40,7 +40,7 @@ final class ExpectedPropertiesDecoratorTraitTest extends TestCase
 
     public static function createDummyInstance(ExpectedPropertiesInterface $wrapped) : ExpectedPropertiesInterface
     {
-        return new class ($wrapped) implements ExpectedPropertiesInterface {
+        return new class($wrapped) implements ExpectedPropertiesInterface {
             use ExpectedPropertiesDecoratorTrait;
 
             private $wrapped;

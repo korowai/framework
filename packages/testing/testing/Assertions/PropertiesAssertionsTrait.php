@@ -83,7 +83,8 @@ trait PropertiesAssertionsTrait
      * @return ObjectHasPropertiesIdenticalTo
      * @throws \PHPUnit\Framework\Exception when non-string keys are found in *$expected*
      */
-    public static function objectHasPropertiesIdenticalTo(array $expected) : ObjectHasPropertiesIdenticalTo {
+    public static function objectHasPropertiesIdenticalTo(array $expected) : ObjectHasPropertiesIdenticalTo
+    {
         return ObjectHasPropertiesIdenticalTo::fromArray($expected);
     }
 
@@ -140,7 +141,8 @@ trait PropertiesAssertionsTrait
      * @return ObjectHasPropertiesEqualTo
      * @throws \PHPUnit\Framework\Exception when non-string keys are found in *$expected*
      */
-    public static function objectHasPropertiesEqualTo(array $expected) : ObjectHasPropertiesEqualTo {
+    public static function objectHasPropertiesEqualTo(array $expected) : ObjectHasPropertiesEqualTo
+    {
         return ObjectHasPropertiesEqualTo::fromArray($expected);
     }
 }

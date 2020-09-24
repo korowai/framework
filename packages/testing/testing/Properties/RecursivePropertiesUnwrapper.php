@@ -56,7 +56,7 @@ final class RecursivePropertiesUnwrapper implements RecursivePropertiesUnwrapper
     private function visit(&$value, $key, PropertiesInterface $parent) : void
     {
         if ($value instanceof PropertiesInterface && $parent->canUnwrapChild($value)) {
-            if($this->seen->contains($value)) {
+            if ($this->seen->contains($value)) {
                 // circular dependency
                 $this->throwCircular($key);
             }

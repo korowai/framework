@@ -59,7 +59,8 @@ trait ClassPropertySelectorTestTrait
 
             // #2
             'object' => [
-                'subject' => get_class(new class {}),
+                'subject' => get_class(new class {
+                }),
                 'expect'  => true,
             ],
 
@@ -109,7 +110,8 @@ trait ClassPropertySelectorTestTrait
             // #2
             [
                 'class'  => get_class(new class {
-                    public static function foo() {
+                    public static function foo()
+                    {
                         return 'FOO';
                     }
                 }),
@@ -121,7 +123,8 @@ trait ClassPropertySelectorTestTrait
             // #3
             [
                 'class'  => get_class(new class {
-                    public static function foo() {
+                    public static function foo()
+                    {
                         return 'FOO';
                     }
                 }),
@@ -145,7 +148,9 @@ trait ClassPropertySelectorTestTrait
     public function test__ClassPropertySelector__selectProperty__throwsOnPrivateMethod() : void
     {
         $class = get_class(new class {
-            private static function foo() { }
+            private static function foo()
+            {
+            }
         });
         $selector = $this->createClassPropertySelector();
 
@@ -171,7 +176,9 @@ trait ClassPropertySelectorTestTrait
     public function test__ClassPropertySelector__selectProperty__throwsOnNonStaticMethod() : void
     {
         $class = get_class(new class {
-            public function foo() {}
+            public function foo()
+            {
+            }
         });
         $selector = $this->createClassPropertySelector();
 
@@ -188,7 +195,7 @@ trait ClassPropertySelectorTestTrait
         });
         $selector = $this->createClassPropertySelector();
 
-        $this->expectException(\Error::Class);
+        $this->expectException(\Error::class);
         $this->expectExceptionMessage('undeclared static property');
 
         $selector->selectProperty($class, 'foo');

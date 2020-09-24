@@ -243,7 +243,8 @@ final class PropertiesAssertionsTraitTest extends TestCase
     /**
      * @dataProvider prov__matchingProperties
      */
-    public function test__objectHasPropertiesIdenticalTo__withMatchingProperties(array $expect, object $object) {
+    public function test__objectHasPropertiesIdenticalTo__withMatchingProperties(array $expect, object $object)
+    {
         self::assertThat($object, self::objectHasPropertiesIdenticalTo($expect));
     }
 
@@ -429,7 +430,8 @@ final class PropertiesAssertionsTraitTest extends TestCase
     /**
      * @dataProvider prov__nonMatchingProperties
      */
-    public function test__objectHasPropertiesIdenticalTo__withNonMatchingProperties(array $expect, object $object) {
+    public function test__objectHasPropertiesIdenticalTo__withNonMatchingProperties(array $expect, object $object)
+    {
         self::assertThat($object, self::logicalNot(self::objectHasPropertiesIdenticalTo($expect)));
     }
 
@@ -468,14 +470,16 @@ final class PropertiesAssertionsTraitTest extends TestCase
     /**
      * @dataProvider prov__matchingProperties
      */
-    public function test__assertObjectHasPropertiesIdenticalTo__withMatchingProperties(array $expect, object $object) {
+    public function test__assertObjectHasPropertiesIdenticalTo__withMatchingProperties(array $expect, object $object)
+    {
         self::assertObjectHasPropertiesIdenticalTo(...(self::adjustCase(func_get_args())));
     }
 
     /**
      * @dataProvider prov__nonMatchingProperties
      */
-    public function test__assertObjectHasPropertiesIdenticalTo__withNonMatchingProperties(array $expect, object $object) {
+    public function test__assertObjectHasPropertiesIdenticalTo__withNonMatchingProperties(array $expect, object $object)
+    {
         $regexp = '/^Lorem ipsum.\n'.
             'Failed asserting that object class\@.+ is an object '.
             'with selected properties identical to given ones./';
@@ -488,14 +492,16 @@ final class PropertiesAssertionsTraitTest extends TestCase
     /**
      * @dataProvider prov__nonMatchingProperties
      */
-    public function test__assertNotObjectHasPropertiesIdenticalTo__withNonMatchingProperties(array $expect, object $object) {
+    public function test__assertNotObjectHasPropertiesIdenticalTo__withNonMatchingProperties(array $expect, object $object)
+    {
         self::assertNotObjectHasPropertiesIdenticalTo(...(self::adjustCase(func_get_args())));
     }
 
     /**
      * @dataProvider prov__matchingProperties
      */
-    public function test__assertNotObjectHasPropertiesIdenticalTo__withMatchingProperties(array $expect, object $object) {
+    public function test__assertNotObjectHasPropertiesIdenticalTo__withMatchingProperties(array $expect, object $object)
+    {
         $regexp = '/^Lorem ipsum.\n'.
             'Failed asserting that object class@.+ fails to be an object '.
             'with selected properties identical to given ones./';

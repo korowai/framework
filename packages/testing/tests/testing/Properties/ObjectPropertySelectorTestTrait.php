@@ -59,7 +59,8 @@ trait ObjectPropertySelectorTestTrait
 
             // #2
             'object' => [
-                'subject' => new class {},
+                'subject' => new class {
+                },
                 'expect'  => true,
             ],
 
@@ -109,7 +110,8 @@ trait ObjectPropertySelectorTestTrait
             // #2
             [
                 'object'  => new class {
-                    public function foo() {
+                    public function foo()
+                    {
                         return 'FOO';
                     }
                 },
@@ -121,7 +123,8 @@ trait ObjectPropertySelectorTestTrait
             // #3
             [
                 'object'  => new class {
-                    public static function foo() {
+                    public static function foo()
+                    {
                         return 'FOO';
                     }
                 },
@@ -133,7 +136,8 @@ trait ObjectPropertySelectorTestTrait
             // #4
             [
                 'object'  => new class {
-                    public function foo() {
+                    public function foo()
+                    {
                         return 'FOO';
                     }
                 },
@@ -157,7 +161,9 @@ trait ObjectPropertySelectorTestTrait
     public function test__ObjectPropertySelector__selectProperty__throwsOnPrivateMethod() : void
     {
         $object = new class {
-            private function foo() { }
+            private function foo()
+            {
+            }
         };
         $properties = $this->createObjectPropertySelector();
 

@@ -40,7 +40,6 @@ final class Exporter extends SebastianBergmannExporter
     public function recursiveExport(&$value, $indentation, $processed = null)
     {
         if ($value instanceof PropertiesInterface) {
-
             $whitespace = str_repeat(' ', (int) (4 * $indentation));
 
             if (!$processed) {

@@ -31,7 +31,7 @@ final class ClassPropertySelectorTest extends TestCase
     use ClassPropertySelectorTestTrait;
 
     // required by ClassPropertySelectorTestTrait
-    public function createClassPropertySelector () : PropertySelectorInterface
+    public function createClassPropertySelector() : PropertySelectorInterface
     {
         return new ClassPropertySelector;
     }

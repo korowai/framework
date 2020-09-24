@@ -20,6 +20,7 @@ namespace Korowai\Testing\Constraint;
 //use Korowai\Testing\Properties\RecursivePropertiesUnwrapperInterface;
 use Korowai\Testing\Properties\ClassPropertySelector;
 use Korowai\Testing\Properties\PropertySelectorInterface;
+
 //use Korowai\Testing\Properties\CircularDependencyException;
 //use Korowai\Testing\Exporter;
 //use PHPUnit\Framework\Constraint\Constraint;

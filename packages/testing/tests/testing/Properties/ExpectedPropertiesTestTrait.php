@@ -69,7 +69,8 @@ trait ExpectedPropertiesTestTrait
      */
     public function test__ExpectedProperties__canUnwrapChild(
         PropertiesInterface $parent,
-        PropertiesInterface $child, bool $expect
+        PropertiesInterface $child,
+        bool $expect
     ) : void {
         $this->assertSame($expect, $parent->canUnwrapChild($child));
     }

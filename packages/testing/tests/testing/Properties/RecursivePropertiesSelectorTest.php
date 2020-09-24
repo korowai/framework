@@ -70,7 +70,8 @@ final class RecursivePropertiesSelectorTest extends TestCase
             // #0
             [
                 'selector' => static::createExpectedObjectProperties([]),
-                'subject'  => new class { },
+                'subject'  => new class {
+                },
                 'expect'   => [
                     self::UNIQUE_TAG => true,
                 ],
@@ -211,7 +212,8 @@ final class RecursivePropertiesSelectorTest extends TestCase
             // #7
             [
                 'selector' => static::createExpectedClassProperties([]),
-                'subject'  => new class { },
+                'subject'  => new class {
+                },
                 'expect'   => [
                     self::UNIQUE_TAG => true,
                 ],

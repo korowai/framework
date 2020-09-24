@@ -19,7 +19,7 @@ namespace Korowai\Lib\Ldif;
  */
 interface NodeInterface
 {
-// FIXME: this is only temporarily commented out
+    // FIXME: this is only temporarily commented out
 //    /**
 //     * Returns this node's snippet.
 //     *

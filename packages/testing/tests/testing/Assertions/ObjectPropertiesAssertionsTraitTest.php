@@ -44,7 +44,7 @@ final class ObjectPropertiesAssertionsTraitTest extends TestCase
         self::assertTrue($method->isStatic());
     }
 
-    public static function prov__propertiesSameAs()
+    public static function prov__matchingProperties()
     {
         $esmith = new class {
             public $name = 'Emily';
@@ -240,7 +240,14 @@ final class ObjectPropertiesAssertionsTraitTest extends TestCase
         ];
     }
 
-    public static function prov__propertiesNotSameAs()
+    /**
+     * @dataProvider prov__matchingProperties
+     */
+    public function test__objectHasPropertiesIdenticalTo__withMatchingProperties(array $expect, object $object) {
+        self::assertThat($object, self::objectHasPropertiesIdenticalTo($expect));
+    }
+
+    public static function prov__nonMatchingProperties()
     {
         $hbrown = new class {
             public $name = 'Helen';
@@ -420,14 +427,7 @@ final class ObjectPropertiesAssertionsTraitTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__propertiesSameAs
-     */
-    public function test__objectHasPropertiesIdenticalTo__withMatchingProperties(array $expect, object $object) {
-        self::assertThat($object, self::objectHasPropertiesIdenticalTo($expect));
-    }
-
-    /**
-     * @dataProvider prov__propertiesNotSameAs
+     * @dataProvider prov__nonMatchingProperties
      */
     public function test__objectHasPropertiesIdenticalTo__withNonMatchingProperties(array $expect, object $object) {
         self::assertThat($object, self::logicalNot(self::objectHasPropertiesIdenticalTo($expect)));
@@ -452,18 +452,6 @@ final class ObjectPropertiesAssertionsTraitTest extends TestCase
         self::objectHasPropertiesIdenticalTo(['a' => 'A', 0 => 'B', 2 => 'C', 7 => 'D', 'e' => 'E']);
     }
 
-    public function test__objectHasPropertiesIdenticalTo__withInvalidGetter() : void
-    {
-        $object = new class {
-            protected $a;
-        };
-
-        self::expectException(\PHPUnit\Framework\Exception::class);
-        self::expectExceptionMessage('$object->xxx() is not callable');
-
-        self::objectHasPropertiesIdenticalTo(['xxx()' => 'A'])->matches($object);
-    }
-
     protected static function adjustCase(array $case, string $message = '')
     {
         $args = func_get_args();
@@ -477,14 +465,14 @@ final class ObjectPropertiesAssertionsTraitTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__propertiesSameAs
+     * @dataProvider prov__matchingProperties
      */
     public function test__assertObjectHasPropertiesSameAs__withMatchingProperties(array $expect, object $object) {
         self::assertObjectHasPropertiesSameAs(...(self::adjustCase(func_get_args())));
     }
 
     /**
-     * @dataProvider prov__propertiesNotSameAs
+     * @dataProvider prov__nonMatchingProperties
      */
     public function test__assertObjectHasPropertiesSameAs__withNonMatchingProperties(array $expect, object $object) {
         $regexp = '/^Lorem ipsum.\n'.
@@ -496,14 +484,14 @@ final class ObjectPropertiesAssertionsTraitTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__propertiesNotSameAs
+     * @dataProvider prov__nonMatchingProperties
      */
     public function test__assertNotObjectHasPropertiesSameAs__withNonMatchingProperties(array $expect, object $object) {
         self::assertNotObjectHasPropertiesSameAs(...(self::adjustCase(func_get_args())));
     }
 
     /**
-     * @dataProvider prov__propertiesSameAs
+     * @dataProvider prov__matchingProperties
      */
     public function test__assertNotObjectHasPropertiesSameAs__withMatchingProperties(array $expect, object $object) {
         $regexp = '/^Lorem ipsum.\n'.

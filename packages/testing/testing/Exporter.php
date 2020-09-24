@@ -14,6 +14,9 @@ namespace Korowai\Testing;
 
 use SebastianBergmann\Exporter\Exporter as BaseExporter;
 use SebastianBergmann\RecursionContext\Context;
+use Korowai\Testing\Properties\PropertiesInterface;
+use Korowai\Testing\Properties\ActualPropertiesInterface;
+use Korowai\Testing\Properties\ExpectedPropertiesInterface;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -25,7 +28,7 @@ final class Exporter extends BaseExporter
      */
     public function recursiveExport(&$value, $indentation, $processed = null)
     {
-        if ($value instanceof ObjectPropertiesInterface) {
+        if ($value instanceof PropertiesInterface) {
 
             $whitespace = str_repeat(' ', (int) (4 * $indentation));
 
@@ -34,7 +37,7 @@ final class Exporter extends BaseExporter
             }
 
             if ($hash = $processed->contains($value)) {
-                return sprintf('ObjectProperties');
+                return sprintf('Properties');
             }
 
             $hash   = $processed->add($value);
@@ -54,7 +57,7 @@ final class Exporter extends BaseExporter
                 $values = "\n" . $values . $whitespace;
             }
 
-            return sprintf('ObjectProperties (%s)', $values);
+            return sprintf('Properties (%s)', $values);
         }
 
         return parent::recursiveExport($value, $indentation, $processed);
@@ -65,9 +68,9 @@ final class Exporter extends BaseExporter
      */
     public function shortenedExport($value)
     {
-        if ($value instanceof ObjectPropertiesInterface) {
+        if ($value instanceof PropertiesInterface) {
             return sprintf(
-                'ObjectProperties (%s)',
+                'Properties (%s)',
                 count($this->toArray($value)) > 0 ? '...' : ''
             );
         }

@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Testing;
+namespace Korowai\Testing\Properties;
 
 use PHPUnit\Framework\InvalidArgumentException;
 

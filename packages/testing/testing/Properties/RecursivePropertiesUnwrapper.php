@@ -10,13 +10,15 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Testing;
+namespace Korowai\Testing\Properties;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
 final class RecursivePropertiesUnwrapper implements RecursivePropertiesUnwrapperInterface
 {
+    public const UNIQUE_TAG = 'unwrapped-properties:$1$zIlgusJc$ZZCyNRPOX1SbpKdzoD2hU/';
+
     /**
      * @var SplObjectProperties|null
      */
@@ -45,6 +47,9 @@ final class RecursivePropertiesUnwrapper implements RecursivePropertiesUnwrapper
         } finally {
             $this->seen->detach($current);
         }
+        // Distinguish unwrapped properties from regular arrays
+        // by adding UNIQUE TAG AT THE END of $array.
+        $array[self::UNIQUE_TAG] = true;
         return $array;
     }
 

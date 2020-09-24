@@ -10,14 +10,12 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Testing;
+namespace Korowai\Testing\Properties;
 
 /**
- * Specifies properties of an object.
- *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-final class ObjectProperties extends \ArrayObject implements ObjectPropertiesInterface
+interface ActualPropertiesInterface extends PropertiesInterface
 {
 }
 

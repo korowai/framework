@@ -10,14 +10,17 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Testing;
+namespace Korowai\Testing\Properties;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-interface RecursivePropertiesUnwrapperInterface
+final class ActualProperties extends \ArrayObject implements ActualPropertiesInterface
 {
-    public function unwrap(PropertiesInterface $properties) : array;
+    public function canUnwrapChild(PropertiesInterface $child) : bool
+    {
+        return $child instanceof ActualPropertiesInterface;
+    }
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

@@ -10,12 +10,12 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Testing;
+namespace Korowai\Testing\Properties;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-final class ExpectedProperties extends AbstractProperties implements ExpectedPropertiesInterface
+final class ExpectedProperties extends \ArrayObject implements ExpectedPropertiesInterface
 {
     /**
      * @var PropertySelectorInterface
@@ -31,6 +31,11 @@ final class ExpectedProperties extends AbstractProperties implements ExpectedPro
     public function getPropertySelector() : PropertySelectorInterface
     {
         return $this->propertySelector;
+    }
+
+    public function canUnwrapChild(PropertiesInterface $child) : bool
+    {
+        return $child instanceof ExpectedPropertiesInterface;
     }
 }
 

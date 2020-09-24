@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Testing;
+namespace Korowai\Testing\Properties;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -45,18 +45,18 @@ final class RecursivePropertiesSelector implements RecursivePropertiesSelectorIn
         return $array;
     }
 
-    private function adjustActualValue($value, $expect)
+    private function adjustActualValue($actual, $expect)
     {
         if ($expect instanceof ExpectedPropertiesInterface) {
-            if ($expect->canSelectFrom($value)) {
-                return (new RecursivePropertiesSelector($expect))->selectProperties($value);
+            if ($expect->getPropertySelector()->canSelectFrom($actual)) {
+                return (new RecursivePropertiesSelector($expect))->selectProperties($actual);
             }
-        } elseif (is_array($expect) && is_array($value)) {
-            foreach ($value as $key => &$val) {
+        } elseif (is_array($expect) && is_array($actual)) {
+            foreach ($actual as $key => &$val) {
                 $val = self::adjustActualValue($val, $expect[$key]);
             }
         }
-        return $value;
+        return $actual;
     }
 }
 

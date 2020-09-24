@@ -76,7 +76,7 @@ trait ObjectPropertiesAssertionsTrait
      * @throws \PHPUnit\Framework\Exception when non-string keys are found in *$expected*
      */
     public static function objectHasPropertiesIdenticalTo(array $expected) : ObjectHasPropertiesIdenticalTo {
-        return new ObjectHasPropertiesIdenticalTo($expected);
+        return ObjectHasPropertiesIdenticalTo::fromArray($expected);
     }
 }
 

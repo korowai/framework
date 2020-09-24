@@ -18,7 +18,7 @@ namespace Korowai\Testing\Constraint;
 //use Korowai\Testing\Properties\ExpectedPropertiesInterface;
 //use Korowai\Testing\Properties\RecursivePropertiesUnwrapper;
 //use Korowai\Testing\Properties\RecursivePropertiesUnwrapperInterface;
-use Korowai\Testing\Properties\ObjectPropertySelector;
+use Korowai\Testing\Properties\ClassPropertySelector;
 use Korowai\Testing\Properties\PropertySelectorInterface;
 //use Korowai\Testing\Properties\CircularDependencyException;
 //use Korowai\Testing\Exporter;
@@ -42,17 +42,17 @@ use Korowai\Testing\Properties\PropertySelectorInterface;
  * method that returns property value.
  *
  *      // ...
- *      $matcher = new ObjectHasPropertiesIdenticalTo(
+ *      $matcher = new ClassHasPropertiesIdenticalTo(
  *          ['getName()' => 'John', 'age' => 21],
  *      );
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-final class ObjectHasPropertiesIdenticalTo extends AbstractHasPropertiesIdenticalTo
+final class ClassHasPropertiesIdenticalTo extends AbstractHasPropertiesIdenticalTo
 {
     protected static function makePropertySelector() : PropertySelectorInterface
     {
-        return new ObjectPropertySelector;
+        return new ClassPropertySelector;
     }
 }
 

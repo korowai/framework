@@ -10,13 +10,14 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Testing;
+namespace Korowai\Testing\Properties;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-final class ActualProperties extends AbstractProperties implements ActualPropertiesInterface
+interface RecursivePropertiesUnwrapperInterface
 {
+    public function unwrap(PropertiesInterface $properties) : array;
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

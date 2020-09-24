@@ -10,43 +10,34 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Tests\Testing;
+namespace Korowai\Tests\Testing\Properties;
 
 use Korowai\Testing\TestCase;
-use Korowai\Testing\AbstractPropertySelector;
-use Korowai\Testing\ActualProperties;
-use Korowai\Testing\ActualPropertiesInterface;
-use Korowai\Testing\ObjectPropertySelector;
-use Korowai\Testing\PropertySelectorInterface;
-use Korowai\Testing\PropertiesInterface;
+use Korowai\Testing\Properties\AbstractPropertySelector;
+use Korowai\Testing\Properties\ActualProperties;
+use Korowai\Testing\Properties\ActualPropertiesInterface;
+use Korowai\Testing\Properties\ObjectPropertySelector;
+use Korowai\Testing\Properties\PropertySelectorInterface;
+use Korowai\Testing\Properties\PropertiesInterface;
 use PHPUnit\Framework\InvalidArgumentException;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @covers \Korowai\Testing\ObjectPropertySelector
  */
-final class ObjectPropertySelectorTest extends TestCase
+trait ObjectPropertySelectorTestTrait
 {
-    //
-    //
-    // TESTS
-    //
-    //
-
-    public function test__implements__PropertySelectorInterface() : void
-    {
-        $this->assertImplementsInterface(PropertySelectorInterface::class, ObjectPropertySelector::class);
-    }
-
-    public function test__extends__AbstractPropertySelector() : void
-    {
-        $this->assertExtendsClass(AbstractPropertySelector::class, ObjectPropertySelector::class);
-    }
+    abstract public function createObjectPropertySelector() : PropertySelectorInterface;
+    abstract public static function assertSame($expected, $value, string $message = '') : void;
+    abstract public function expectError() : void;
+    abstract public function expectErrorMessage(string $message) : void;
+    abstract public function expectException(string $exception) : void;
+    abstract public function expectExceptionMessage(string $message) : void;
+    abstract public function expectExceptionMessageMatches(string $regularExpression) : void;
 
     //
     // canSelectFrom()
     //
-    public static function prov__canSelectFrom() : array
+    public function prov__ObjectPropertySelector__canSelectFrom() : array
     {
         return [
             // #0
@@ -74,25 +65,25 @@ final class ObjectPropertySelectorTest extends TestCase
 
             // #3
             'new ObjectPropertySelector' => [
-                'subject' => new ObjectPropertySelector,
+                'subject' => $this->createObjectPropertySelector(),
                 'expect'  => true,
             ]
         ];
     }
 
     /**
-     * @dataProvider prov__canSelectFrom
+     * @dataProvider prov__ObjectPropertySelector__canSelectFrom
      */
-    public function test__canSelectFrom($subject, bool $expect) : void
+    public function test__ObjectPropertySelector__canSelectFrom($subject, bool $expect) : void
     {
-        $properties = new ObjectPropertySelector;
+        $properties = $this->createObjectPropertySelector();
         $this->assertSame($expect, $properties->canSelectFrom($subject));
     }
 
     //
     // selectProperty
     //
-    public static function prov__selectProperty() : array
+    public static function prov__ObjectPropertySelector__selectProperty() : array
     {
         return [
             // #0
@@ -154,21 +145,21 @@ final class ObjectPropertySelectorTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__selectProperty
+     * @dataProvider prov__ObjectPropertySelector__selectProperty
      */
-    public function test__selectProperty(object $object, $key, $return, $expect) : void
+    public function test__ObjectPropertySelector__selectProperty(object $object, $key, $return, $expect) : void
     {
-        $properties = new ObjectPropertySelector;
+        $properties = $this->createObjectPropertySelector();
         $this->assertSame($return, $properties->selectProperty($object, $key, $retval));
         $this->assertSame($expect, $retval);
     }
 
-    public function test__selectProperty__throwsOnPrivateMethod() : void
+    public function test__ObjectPropertySelector__selectProperty__throwsOnPrivateMethod() : void
     {
         $object = new class {
             private function foo() { }
         };
-        $properties = new ObjectPropertySelector;
+        $properties = $this->createObjectPropertySelector();
 
         $this->expectException(\Error::class);
         $this->expectExceptionMessage('private method');
@@ -176,12 +167,12 @@ final class ObjectPropertySelectorTest extends TestCase
         $properties->selectProperty($object, 'foo()');
     }
 
-    public function test__selectProperty__throwsOnPrivateAttribute() : void
+    public function test__ObjectPropertySelector__selectProperty__throwsOnPrivateAttribute() : void
     {
         $object = new class {
             private $foo = 'FOO';
         };
-        $properties = new ObjectPropertySelector;
+        $properties = $this->createObjectPropertySelector();
 
         $this->expectException(\Error::class);
         $this->expectExceptionMessage('private property');
@@ -189,12 +180,12 @@ final class ObjectPropertySelectorTest extends TestCase
         $properties->selectProperty($object, 'foo');
     }
 
-    public function test__selectProperty__throwsOnStaticProperty() : void
+    public function test__ObjectPropertySelector__selectProperty__throwsOnStaticProperty() : void
     {
         $object = new class {
             public static $foo = 'FOO';
         };
-        $properties = new ObjectPropertySelector;
+        $properties = $this->createObjectPropertySelector();
 
         $this->expectError();
         $this->expectErrorMessage('static property');
@@ -202,7 +193,7 @@ final class ObjectPropertySelectorTest extends TestCase
         $properties->selectProperty($object, 'foo');
     }
 
-    public static function prov__selectProperty__throwsOnNonobject() : array
+    public static function prov__ObjectPropertySelector__selectProperty__throwsOnNonobject() : array
     {
         return [
             // #0
@@ -220,11 +211,11 @@ final class ObjectPropertySelectorTest extends TestCase
     }
 
     /**
-     * @dataProvider prov__selectProperty__throwsOnNonobject
+     * @dataProvider prov__ObjectPropertySelector__selectProperty__throwsOnNonobject
      */
-    public function test__selectProperty__throwsOnNonobject(string $key, string $method) : void
+    public function test__ObjectPropertySelector__selectProperty__throwsOnNonobject(string $key, string $method) : void
     {
-        $properties = new ObjectPropertySelector;
+        $properties = $this->createObjectPropertySelector();
 
         $method = preg_quote(ObjectPropertySelector::class.'::'.$method.'()', '/');
         $this->expectException(InvalidArgumentException::class);

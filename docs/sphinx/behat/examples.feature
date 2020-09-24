@@ -90,7 +90,7 @@ Feature: Examples
       | example_file                                  | stdout_file                                     | stderr_file                                     | exit_code |
       | "testing/AssertExtendsClassTest.php"          | "testing/AssertExtendsClassTest.stdout"         | "testing/AssertExtendsClassTest.stderr"         | 1         |
       | "testing/AssertHasPregCapturesTest.php"       | "testing/AssertHasPregCapturesTest.stdout"      | "testing/AssertHasPregCapturesTest.stderr"      | 1         |
-      | "testing/AssertHasPropertiesSameAsTest.php"   | "testing/AssertHasPropertiesSameAsTest.stdout"  | "testing/AssertHasPropertiesSameAsTest.stderr"  | 1         |
+      | "testing/AssertHasPropertiesIdenticalToTest.php"   | "testing/AssertHasPropertiesIdenticalToTest.stdout"  | "testing/AssertHasPropertiesIdenticalToTest.stderr"  | 1         |
       | "testing/AssertImplementsInterfaceTest.php"   | "testing/AssertImplementsInterfaceTest.stdout"  | "testing/AssertImplementsInterfaceTest.stderr"  | 1         |
       | "testing/AssertUsesTraitTest.php"             | "testing/AssertUsesTraitTest.stdout"            | "testing/AssertUsesTraitTest.stderr"            | 1         |
       | "testing/extendsClassTest.php"                | "testing/extendsClassTest.stdout"               | "testing/extendsClassTest.stderr"               | 1         |

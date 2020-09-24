@@ -62,7 +62,7 @@ final class ModSpecRuleTest extends TestCase
     public function test__construct(array $args, array $expect) : void
     {
         $rule = new ModSpecRule(...$args);
-        $this->assertObjectHasPropertiesSameAs($expect, $rule);
+        $this->assertObjectHasPropertiesIdenticalTo($expect, $rule);
     }
 
     //
@@ -468,11 +468,11 @@ final class ModSpecRuleTest extends TestCase
 
         if (is_array($expect['value'])) {
             $this->assertInstanceOf(ModSpecInterface::class, $value);
-            $this->assertObjectHasPropertiesSameAs($expect['value'], $value);
+            $this->assertObjectHasPropertiesIdenticalTo($expect['value'], $value);
         } else {
             $this->assertSame($expect['value'], $value);
         }
-        $this->assertObjectHasPropertiesSameAs($expect['state'], $state);
+        $this->assertObjectHasPropertiesIdenticalTo($expect['state'], $state);
     }
 }
 

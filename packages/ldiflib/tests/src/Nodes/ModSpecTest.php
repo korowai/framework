@@ -81,7 +81,7 @@ final class ModSpecTest extends TestCase
     public function test__construct(array $args, array $expect) : void
     {
         $record = new ModSpec(...$args);
-        $this->assertObjectHasPropertiesSameAs($expect, $record);
+        $this->assertObjectHasPropertiesIdenticalTo($expect, $record);
     }
 
     public function prov__modType()

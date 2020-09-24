@@ -42,7 +42,7 @@ final class AbstractNameSpecRuleTest extends TestCase
                      ->setConstructorArgs($args)
                      ->getMockForAbstractClass();
 
-        $this->assertObjectHasPropertiesSameAs($expect, $rule);
+        $this->assertObjectHasPropertiesIdenticalTo($expect, $rule);
     }
 
     public static function dnMatch__cases()
@@ -306,7 +306,7 @@ final class AbstractNameSpecRuleTest extends TestCase
 
         $this->assertSame($expect['result'], $result);
         $this->assertSame($expect['dn'], $dn);
-        $this->assertObjectHasPropertiesSameAs($expect['state'], $state);
+        $this->assertObjectHasPropertiesIdenticalTo($expect['state'], $state);
     }
 }
 

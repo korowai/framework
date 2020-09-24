@@ -27,8 +27,8 @@ final class PropertiesAssertionsTraitTest extends TestCase
     public function staticMethodsThatMustAppear()
     {
         return [
-            ['assertObjectHasPropertiesSameAs'],
-            ['assertNotObjectHasPropertiesSameAs'],
+            ['assertObjectHasPropertiesIdenticalTo'],
+            ['assertNotObjectHasPropertiesIdenticalTo'],
             ['objectHasPropertiesIdenticalTo'],
         ];
     }
@@ -468,41 +468,41 @@ final class PropertiesAssertionsTraitTest extends TestCase
     /**
      * @dataProvider prov__matchingProperties
      */
-    public function test__assertObjectHasPropertiesSameAs__withMatchingProperties(array $expect, object $object) {
-        self::assertObjectHasPropertiesSameAs(...(self::adjustCase(func_get_args())));
+    public function test__assertObjectHasPropertiesIdenticalTo__withMatchingProperties(array $expect, object $object) {
+        self::assertObjectHasPropertiesIdenticalTo(...(self::adjustCase(func_get_args())));
     }
 
     /**
      * @dataProvider prov__nonMatchingProperties
      */
-    public function test__assertObjectHasPropertiesSameAs__withNonMatchingProperties(array $expect, object $object) {
+    public function test__assertObjectHasPropertiesIdenticalTo__withNonMatchingProperties(array $expect, object $object) {
         $regexp = '/^Lorem ipsum.\n'.
             'Failed asserting that object class\@.+ is an object '.
             'with selected properties identical to given ones./';
         self::expectException(ExpectationFailedException::class);
         self::expectExceptionMessageMatches($regexp);
 
-        self::assertObjectHasPropertiesSameAs(...(self::adjustCase(func_get_args(), 'Lorem ipsum.')));
+        self::assertObjectHasPropertiesIdenticalTo(...(self::adjustCase(func_get_args(), 'Lorem ipsum.')));
     }
 
     /**
      * @dataProvider prov__nonMatchingProperties
      */
-    public function test__assertNotObjectHasPropertiesSameAs__withNonMatchingProperties(array $expect, object $object) {
-        self::assertNotObjectHasPropertiesSameAs(...(self::adjustCase(func_get_args())));
+    public function test__assertNotObjectHasPropertiesIdenticalTo__withNonMatchingProperties(array $expect, object $object) {
+        self::assertNotObjectHasPropertiesIdenticalTo(...(self::adjustCase(func_get_args())));
     }
 
     /**
      * @dataProvider prov__matchingProperties
      */
-    public function test__assertNotObjectHasPropertiesSameAs__withMatchingProperties(array $expect, object $object) {
+    public function test__assertNotObjectHasPropertiesIdenticalTo__withMatchingProperties(array $expect, object $object) {
         $regexp = '/^Lorem ipsum.\n'.
             'Failed asserting that object class@.+ fails to be an object '.
             'with selected properties identical to given ones./';
         self::expectException(ExpectationFailedException::class);
         self::expectExceptionMessageMatches($regexp);
 
-        self::assertNotObjectHasPropertiesSameAs(...(self::adjustCase(func_get_args(), 'Lorem ipsum.')));
+        self::assertNotObjectHasPropertiesIdenticalTo(...(self::adjustCase(func_get_args(), 'Lorem ipsum.')));
     }
 }
 

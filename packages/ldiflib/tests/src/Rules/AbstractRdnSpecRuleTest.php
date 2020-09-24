@@ -43,7 +43,7 @@ final class AbstractRdnSpecRuleTest extends TestCase
 //    public function test__construct(array $args, array $expect)
 //    {
 //        $rule = new AbstractRdnSpecRule(...$args);
-//        $this->assertObjectHasPropertiesSameAs($expect, $rule);
+//        $this->assertObjectHasPropertiesIdenticalTo($expect, $rule);
 //    }
 //
 //    public static function dnMatch__cases()
@@ -304,7 +304,7 @@ final class AbstractRdnSpecRuleTest extends TestCase
 //
 //        $this->assertSame($expect['result'], $result);
 //        $this->assertSame($expect['dn'], $dn);
-//        $this->assertObjectHasPropertiesSameAs($expect['state'], $state);
+//        $this->assertObjectHasPropertiesIdenticalTo($expect['state'], $state);
 //    }
 //
 //    //
@@ -578,7 +578,7 @@ final class AbstractRdnSpecRuleTest extends TestCase
 //
 //        $this->assertSame($expect['result'], $result);
 //        $this->assertSame($expect['dn'], $dn);
-//        $this->assertObjectHasPropertiesSameAs($expect['state'], $state);
+//        $this->assertObjectHasPropertiesIdenticalTo($expect['state'], $state);
 //    }
 }
 

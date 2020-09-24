@@ -6,8 +6,8 @@ Time: 1.35 seconds, Memory: 179.89 MB
 
 There were 2 failures:
 
-1) AssertHasPropertiesSameAsTest::testFailure
-Failed asserting that object AssertHasPropertiesSameAsTest has required properties with prescribed values.
+1) AssertHasPropertiesIdenticalToTest::testFailure
+Failed asserting that object AssertHasPropertiesIdenticalToTest has required properties with prescribed values.
 --- Expected
 +++ Actual
 @@ @@
@@ -19,10 +19,10 @@ Failed asserting that object AssertHasPropertiesSameAsTest has required properti
 
 /code/packages/testing/testing/Constraint/ObjectHasPropertiesIdenticalTo.php:134
 /code/packages/testing/testing/Assertions/ObjectPropertiesAssertions.php:67
-/code/docs/sphinx/examples/testing/AssertHasPropertiesSameAsTest.php:30
+/code/docs/sphinx/examples/testing/AssertHasPropertiesIdenticalToTest.php:30
 
-2) AssertHasPropertiesSameAsTest::testFailureWithGetter
-Failed asserting that object AssertHasPropertiesSameAsTest has required properties with prescribed values.
+2) AssertHasPropertiesIdenticalToTest::testFailureWithGetter
+Failed asserting that object AssertHasPropertiesIdenticalToTest has required properties with prescribed values.
 --- Expected
 +++ Actual
 @@ @@
@@ -34,7 +34,7 @@ Failed asserting that object AssertHasPropertiesSameAsTest has required properti
 
 /code/packages/testing/testing/Constraint/ObjectHasPropertiesIdenticalTo.php:134
 /code/packages/testing/testing/Assertions/ObjectPropertiesAssertions.php:67
-/code/docs/sphinx/examples/testing/AssertHasPropertiesSameAsTest.php:43
+/code/docs/sphinx/examples/testing/AssertHasPropertiesIdenticalToTest.php:43
 
 FAILURES!
 Tests: 3, Assertions: 3, Failures: 2.

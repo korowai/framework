@@ -51,7 +51,7 @@ final class NewSuperiorSpecRuleTest extends TestCase
     public function test__construct(array $args, array $expect) : void
     {
         $rule = new NewSuperiorSpecRule(...$args);
-        $this->assertObjectHasPropertiesSameAs($expect, $rule);
+        $this->assertObjectHasPropertiesIdenticalTo($expect, $rule);
     }
 
     public static function dnMatch__cases()
@@ -303,7 +303,7 @@ final class NewSuperiorSpecRuleTest extends TestCase
 
         $this->assertSame($expect['result'], $result);
         $this->assertSame($expect['getDn()'], $dn);
-        $this->assertObjectHasPropertiesSameAs($expect['state'], $state);
+        $this->assertObjectHasPropertiesIdenticalTo($expect['state'], $state);
     }
 
     //
@@ -568,7 +568,7 @@ final class NewSuperiorSpecRuleTest extends TestCase
 
         $this->assertSame($expect['result'], $result);
         $this->assertSame($expect['getDn()'], $dn);
-        $this->assertObjectHasPropertiesSameAs($expect['state'], $state);
+        $this->assertObjectHasPropertiesIdenticalTo($expect['state'], $state);
     }
 }
 

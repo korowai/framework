@@ -87,7 +87,7 @@ final class LdifModDnRecordTest extends TestCase
     public function test__construct(array $args, array $expect) : void
     {
         $record = new LdifModDnRecord(...$args);
-        $this->assertObjectHasPropertiesSameAs($expect, $record);
+        $this->assertObjectHasPropertiesIdenticalTo($expect, $record);
     }
 
     public static function prov__setChangeType()

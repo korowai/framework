@@ -64,7 +64,7 @@ final class ControlRuleTest extends TestCase
             ])
         ], $expect);
         $this->assertInstanceOf(ValueSpecRule::class, $rule->getValueSpecRule());
-        $this->assertObjectHasPropertiesSameAs($expect, $rule);
+        $this->assertObjectHasPropertiesIdenticalTo($expect, $rule);
     }
 
     public function test__valueSpecRule() : void
@@ -296,11 +296,11 @@ final class ControlRuleTest extends TestCase
 
         $this->assertSame($expect['result'], $result);
         if (is_array($expect['value'])) {
-            $this->assertObjectHasPropertiesSameAs($expect['value'], $value);
+            $this->assertObjectHasPropertiesIdenticalTo($expect['value'], $value);
         } else {
             $this->assertSame($expect['value'], $value);
         }
-        $this->assertObjectHasPropertiesSameAs($expect['state'], $state);
+        $this->assertObjectHasPropertiesIdenticalTo($expect['state'], $state);
     }
 
     //
@@ -851,11 +851,11 @@ final class ControlRuleTest extends TestCase
         $this->assertSame($expect['result'], $result);
 
         if (is_array($expect['value'])) {
-            $this->assertObjectHasPropertiesSameAs($expect['value'], $value);
+            $this->assertObjectHasPropertiesIdenticalTo($expect['value'], $value);
         } else {
             $this->assertSame($expect['value'], $value);
         }
-        $this->assertObjectHasPropertiesSameAs($expect['state'], $state);
+        $this->assertObjectHasPropertiesIdenticalTo($expect['state'], $state);
     }
 }
 

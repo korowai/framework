@@ -76,7 +76,7 @@ final class LdifDeleteRecordTest extends TestCase
     public function test__construct(array $args, array $expect) : void
     {
         $record = new LdifDeleteRecord(...$args);
-        $this->assertObjectHasPropertiesSameAs($expect, $record);
+        $this->assertObjectHasPropertiesIdenticalTo($expect, $record);
     }
 
     public function test__acceptRecordVisitor() : void

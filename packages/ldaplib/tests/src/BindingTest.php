@@ -103,7 +103,7 @@ final class BindingTest extends TestCase
     public function test__construct(array $args, array $expect) : void
     {
         $bind = new Binding(...$args);
-        $this->assertObjectHasPropertiesSameAs($expect, $bind);
+        $this->assertObjectHasPropertiesIdenticalTo($expect, $bind);
     }
 }
 

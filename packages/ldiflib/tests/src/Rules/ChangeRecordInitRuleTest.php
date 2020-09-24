@@ -50,7 +50,7 @@ final class ChangeRecordInitRuleTest extends TestCase
                 'name()' => 'CHANGERECORD_INIT',
             ])
         ], $expect);
-        $this->assertObjectHasPropertiesSameAs($expect, $rule);
+        $this->assertObjectHasPropertiesIdenticalTo($expect, $rule);
     }
 
     //
@@ -208,11 +208,11 @@ final class ChangeRecordInitRuleTest extends TestCase
         $this->assertSame($expect['result'], $result);
         if (is_array($expect['value'])) {
             $this->assertInstanceOf(ModSpecInterface::class, $value);
-            $this->assertObjectHasPropertiesSameAs($expect['value'], $value);
+            $this->assertObjectHasPropertiesIdenticalTo($expect['value'], $value);
         } else {
             $this->assertSame($expect['value'], $value);
         }
-        $this->assertObjectHasPropertiesSameAs($expect['state'], $state);
+        $this->assertObjectHasPropertiesIdenticalTo($expect['state'], $state);
     }
 
     //
@@ -431,11 +431,11 @@ final class ChangeRecordInitRuleTest extends TestCase
 
         if (is_array($expect['value'])) {
             $this->assertInstanceOf(ModSpecInterface::class, $value);
-            $this->assertObjectHasPropertiesSameAs($expect['value'], $value);
+            $this->assertObjectHasPropertiesIdenticalTo($expect['value'], $value);
         } else {
             $this->assertSame($expect['value'], $value);
         }
-        $this->assertObjectHasPropertiesSameAs($expect['state'], $state);
+        $this->assertObjectHasPropertiesIdenticalTo($expect['state'], $state);
     }
 }
 

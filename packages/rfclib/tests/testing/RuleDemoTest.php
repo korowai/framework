@@ -53,7 +53,7 @@ final class RuleDemoTest extends TestCase
         $demo = new RuleDemo(...$args);
         $this->assertInstanceOf(RuleInterface::class, $demo->getRule());
         $this->assertIsString($demo->getFormat());
-        $this->assertObjectHasPropertiesSameAs($expect, $demo);
+        $this->assertObjectHasPropertiesIdenticalTo($expect, $demo);
     }
 
     public static function prov__create()
@@ -90,7 +90,7 @@ final class RuleDemoTest extends TestCase
         $demo = RuleDemo::create(...$args);
         $this->assertInstanceOf(RuleInterface::class, $demo->getRule());
         $this->assertIsString($demo->getFormat());
-        $this->assertObjectHasPropertiesSameAs($expect, $demo);
+        $this->assertObjectHasPropertiesIdenticalTo($expect, $demo);
     }
 
     public function test__setRule() : void

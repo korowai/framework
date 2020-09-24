@@ -59,7 +59,7 @@ final class CompareQueryTest extends TestCase
                      ->getMockForAbstractClass();
         $query = new CompareQuery($link, 'dc=example,dc=org', 'attribute', 'value');
         $this->assertSame($link, $query->getLdapLink());
-        $this->assertObjectHasPropertiesSameAs([
+        $this->assertObjectHasPropertiesIdenticalTo([
             'getDn()' => "dc=example,dc=org",
             'getAttribute()' => 'attribute',
             'getValue()' => 'value'

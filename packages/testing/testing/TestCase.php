@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Korowai\Testing;
 
 use Korowai\Testing\Assertions\ClassAssertionsTrait;
-use Korowai\Testing\Assertions\ObjectPropertiesAssertionsTrait;
+use Korowai\Testing\Assertions\PropertiesAssertionsTrait;
 use Korowai\Testing\Assertions\PregAssertionsTrait;
 use Korowai\Testing\Traits\PregUtilsTrait;
 
@@ -23,7 +23,7 @@ use Korowai\Testing\Traits\PregUtilsTrait;
 abstract class TestCase extends \PHPUnit\Framework\TestCase
 {
     use ClassAssertionsTrait;
-    use ObjectPropertiesAssertionsTrait;
+    use PropertiesAssertionsTrait;
     use PregAssertionsTrait;
     use PregUtilsTrait;
 }

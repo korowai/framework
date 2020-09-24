@@ -61,7 +61,7 @@ final class AttrValSpecRuleTest extends TestCase
             ])
         ], $expect);
 
-        $this->assertObjectHasPropertiesSameAs($expect, $rule);
+        $this->assertObjectHasPropertiesIdenticalTo($expect, $rule);
 
         if (null === ($expect['getValueSpecRule()'] ?? null)) {
             $this->assertInstanceOf(ValueSpecRule::class, $rule->getValueSpecRule());
@@ -170,11 +170,11 @@ final class AttrValSpecRuleTest extends TestCase
 
         $this->assertSame($expect['result'], $result);
         if (is_array($expect['value'])) {
-            $this->assertObjectHasPropertiesSameAs($expect['value'], $value);
+            $this->assertObjectHasPropertiesIdenticalTo($expect['value'], $value);
         } else {
             $this->assertSame($expect['value'], $value);
         }
-        $this->assertObjectHasPropertiesSameAs($expect['state'], $state);
+        $this->assertObjectHasPropertiesIdenticalTo($expect['state'], $state);
     }
 
     //
@@ -478,11 +478,11 @@ final class AttrValSpecRuleTest extends TestCase
         $this->assertSame($expect['result'], $result);
 
         if (is_array($expect['value'])) {
-            $this->assertObjectHasPropertiesSameAs($expect['value'], $value);
+            $this->assertObjectHasPropertiesIdenticalTo($expect['value'], $value);
         } else {
             $this->assertSame($expect['value'], $value);
         }
-        $this->assertObjectHasPropertiesSameAs($expect['state'], $state);
+        $this->assertObjectHasPropertiesIdenticalTo($expect['state'], $state);
     }
 }
 

@@ -67,7 +67,7 @@ final class AbstractRfcRuleTest extends TestCase
                      ->setConstructorArgs($args)
                      ->getMockForAbstractClass();
 
-        $this->assertObjectHasPropertiesSameAs($expect, $rule);
+        $this->assertObjectHasPropertiesIdenticalTo($expect, $rule);
     }
 
     //
@@ -289,7 +289,7 @@ final class AbstractRfcRuleTest extends TestCase
         $result = $rule->match($state, $matches, ...$trying);
 
         $this->assertSame($expect['result'] ?? true, $result);
-        $this->assertObjectHasPropertiesSameAs($expect['state'], $state);
+        $this->assertObjectHasPropertiesIdenticalTo($expect['state'], $state);
         $this->assertHasPregCaptures($expect['matches'], $matches);
     }
 
@@ -325,7 +325,7 @@ final class AbstractRfcRuleTest extends TestCase
         $result = $rule->parse($state, $value, ...$trying);
 
         $this->assertSame($expect['result'] ?? true, $result);
-        $this->assertObjectHasPropertiesSameAs($expect['state'], $state);
+        $this->assertObjectHasPropertiesIdenticalTo($expect['state'], $state);
     }
 }
 

@@ -128,7 +128,7 @@ final class UtilTest extends TestCase
         $state = $this->getParserStateFromSource(...$source);
         $result = Util::base64Decode($state, $string, $offset);
         $this->assertSame($expect['result'], $result);
-        $this->assertObjectHasPropertiesSameAs($expect['state'], $state);
+        $this->assertObjectHasPropertiesIdenticalTo($expect['state'], $state);
     }
 
     //
@@ -204,7 +204,7 @@ final class UtilTest extends TestCase
         $state = $this->getParserStateFromSource(...$source);
         $result = Util::utf8Check($state, $string, $offset);
         $this->assertSame($expect['result'], $result);
-        $this->assertObjectHasPropertiesSameAs($expect['state'], $state);
+        $this->assertObjectHasPropertiesIdenticalTo($expect['state'], $state);
     }
 
     //
@@ -276,7 +276,7 @@ final class UtilTest extends TestCase
         $state = $this->getParserStateFromSource(...$source);
         $result = Util::dnCheck($state, $string, $offset);
         $this->assertSame($expect['result'], $result);
-        $this->assertObjectHasPropertiesSameAs($expect['state'], $state);
+        $this->assertObjectHasPropertiesIdenticalTo($expect['state'], $state);
     }
 
     //
@@ -345,7 +345,7 @@ final class UtilTest extends TestCase
         $state = $this->getParserStateFromSource(...$source);
         $result = Util::rdnCheck($state, $string, $offset);
         $this->assertSame($expect['result'], $result);
-        $this->assertObjectHasPropertiesSameAs($expect['state'], $state);
+        $this->assertObjectHasPropertiesIdenticalTo($expect['state'], $state);
     }
 }
 

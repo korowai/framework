@@ -51,7 +51,7 @@ final class NewRdnSpecRuleTest extends TestCase
     public function test__construct(array $args, array $expect) : void
     {
         $rule = new NewRdnSpecRule(...$args);
-        $this->assertObjectHasPropertiesSameAs($expect, $rule);
+        $this->assertObjectHasPropertiesIdenticalTo($expect, $rule);
     }
 
     public static function rdnMatch__cases()
@@ -303,7 +303,7 @@ final class NewRdnSpecRuleTest extends TestCase
 
         $this->assertSame($expect['result'], $result);
         $this->assertSame($expect['rdn'], $rdn);
-        $this->assertObjectHasPropertiesSameAs($expect['state'], $state);
+        $this->assertObjectHasPropertiesIdenticalTo($expect['state'], $state);
     }
 
     //
@@ -568,7 +568,7 @@ final class NewRdnSpecRuleTest extends TestCase
 
         $this->assertSame($expect['result'], $result);
         $this->assertSame($expect['rdn'], $rdn);
-        $this->assertObjectHasPropertiesSameAs($expect['state'], $state);
+        $this->assertObjectHasPropertiesIdenticalTo($expect['state'], $state);
     }
 }
 

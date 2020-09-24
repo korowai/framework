@@ -217,7 +217,7 @@ final class AbstractRuleTest extends TestCase
         $result = $rule->repeat($state, $value, ...$args);
         $this->assertSame($expect['result'], $result);
         $this->assertSame($expect['value'], $value);
-        $this->assertObjectHasPropertiesSameAs($expect['state'], $state);
+        $this->assertObjectHasPropertiesIdenticalTo($expect['state'], $state);
     }
 }
 

@@ -57,7 +57,7 @@ trait ComparingTestTrait
         $query = $comparator->createCompareQuery('dc=example,dc=org', 'foo', 'bar');
 
         $this->assertInstanceOf(CompareQuery::class, $query);
-        $this->assertObjectHasPropertiesSameAs([
+        $this->assertObjectHasPropertiesIdenticalTo([
             'getLdapLink()' => $link,
             'getDn()' => 'dc=example,dc=org',
             'getAttribute()' => 'foo',

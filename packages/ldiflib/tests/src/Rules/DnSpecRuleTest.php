@@ -51,7 +51,7 @@ final class DnSpecRuleTest extends TestCase
     public function test__construct(array $args, array $expect) : void
     {
         $rule = new DnSpecRule(...$args);
-        $this->assertObjectHasPropertiesSameAs($expect, $rule);
+        $this->assertObjectHasPropertiesIdenticalTo($expect, $rule);
     }
 
     public static function dnMatch__cases()
@@ -304,7 +304,7 @@ final class DnSpecRuleTest extends TestCase
 
         $this->assertSame($expect['result'], $result);
         $this->assertSame($expect['dn'], $dn);
-        $this->assertObjectHasPropertiesSameAs($expect['state'], $state);
+        $this->assertObjectHasPropertiesIdenticalTo($expect['state'], $state);
     }
 
     //
@@ -573,7 +573,7 @@ final class DnSpecRuleTest extends TestCase
 
         $this->assertSame($expect['result'], $result);
         $this->assertSame($expect['dn'], $dn);
-        $this->assertObjectHasPropertiesSameAs($expect['state'], $state);
+        $this->assertObjectHasPropertiesIdenticalTo($expect['state'], $state);
     }
 }
 

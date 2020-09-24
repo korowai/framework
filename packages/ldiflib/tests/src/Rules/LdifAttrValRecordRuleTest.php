@@ -70,7 +70,7 @@ final class LdifAttrValRecordRuleTest extends TestCase
         $this->assertInstanceOf(DnSpecRule::class, $rule->getDnSpecRule());
         $this->assertInstanceOf(SepRule::class, $rule->getSepRule());
         $this->assertInstanceOf(AttrValSpecRule::class, $rule->getAttrValSpecRule());
-        $this->assertObjectHasPropertiesSameAs($expect, $rule);
+        $this->assertObjectHasPropertiesIdenticalTo($expect, $rule);
     }
 
     //
@@ -302,11 +302,11 @@ final class LdifAttrValRecordRuleTest extends TestCase
 
         if (is_array($expect['value'])) {
             $this->assertImplementsInterface(LdifAttrValRecordInterface::class, $value);
-            $this->assertObjectHasPropertiesSameAs($expect['value'], $value);
+            $this->assertObjectHasPropertiesIdenticalTo($expect['value'], $value);
         } else {
             $this->assertSame($expect['value'], $value);
         }
-        $this->assertObjectHasPropertiesSameAs($expect['state'], $state);
+        $this->assertObjectHasPropertiesIdenticalTo($expect['state'], $state);
     }
 }
 

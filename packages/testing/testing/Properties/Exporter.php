@@ -10,9 +10,9 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Testing;
+namespace Korowai\Testing\Properties;
 
-use SebastianBergmann\Exporter\Exporter as BaseExporter;
+use SebastianBergmann\Exporter\Exporter as SebastianBergmannExporter;
 use SebastianBergmann\RecursionContext\Context;
 use Korowai\Testing\Properties\PropertiesInterface;
 use Korowai\Testing\Properties\ActualPropertiesInterface;
@@ -21,8 +21,19 @@ use Korowai\Testing\Properties\ExpectedPropertiesInterface;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-final class Exporter extends BaseExporter
+final class Exporter extends SebastianBergmannExporter
 {
+    public function describe(PropertiesInterface $properties) : string
+    {
+        $header = 'Properties';
+        if ($properties instanceof ExpectedPropertiesInterface) {
+            $header = 'Expected '.$header;
+        } elseif ($properties instanceof ActualPropertiesInterface) {
+            $header = 'Actual '.$header;
+        }
+        return $header;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -37,7 +48,7 @@ final class Exporter extends BaseExporter
             }
 
             if ($hash = $processed->contains($value)) {
-                return sprintf('Properties');
+                return $this->describe($value);
             }
 
             $hash   = $processed->add($value);
@@ -57,7 +68,7 @@ final class Exporter extends BaseExporter
                 $values = "\n" . $values . $whitespace;
             }
 
-            return sprintf('Properties (%s)', $values);
+            return sprintf('%s (%s)', $this->describe($value), $values);
         }
 
         return parent::recursiveExport($value, $indentation, $processed);
@@ -70,7 +81,8 @@ final class Exporter extends BaseExporter
     {
         if ($value instanceof PropertiesInterface) {
             return sprintf(
-                'Properties (%s)',
+                '%s (%s)',
+                $this->describe($value),
                 count($this->toArray($value)) > 0 ? '...' : ''
             );
         }

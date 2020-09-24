@@ -23,7 +23,7 @@ use Korowai\Testing\Properties\RecursivePropertiesSelector as RecursiveSelector;
 use Korowai\Testing\Properties\RecursivePropertiesSelectorInterface as RecursiveSelectorInterface;
 use Korowai\Testing\Properties\CircularDependencyException;
 use Korowai\Testing\Properties\PropertySelectorInterface;
-use Korowai\Testing\Exporter;
+use Korowai\Testing\Properties\Exporter;
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\Constraint\Operator;
 use PHPUnit\Framework\Constraint\LogicalNot;

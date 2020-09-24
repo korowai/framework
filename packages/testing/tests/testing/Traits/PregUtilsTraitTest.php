@@ -25,7 +25,7 @@ final class PregUtilsTraitTest extends TestCase
 {
     use PregUtilsTrait;
 
-    public static function provPregTupleKeysAt()
+    public static function provPregTupleKeysAt(): array
     {
         return [
             // #0
@@ -86,7 +86,7 @@ final class PregUtilsTraitTest extends TestCase
         $this->assertSame($expect, static::pregTupleKeysAt(...$args));
     }
 
-    public static function provStringsToPregTuples()
+    public static function provStringsToPregTuples(): array
     {
         return [
             // #0
@@ -117,7 +117,7 @@ final class PregUtilsTraitTest extends TestCase
         $this->assertSame($expect, static::stringsToPregTuples(...$args));
     }
 
-    public static function provShiftPregCaptures()
+    public static function provShiftPregCaptures(): array
     {
         return [
             // #1
@@ -160,7 +160,7 @@ final class PregUtilsTraitTest extends TestCase
         $this->assertSame($expect, self::shiftPregCaptures(...$args));
     }
 
-    public static function provPrefixPregCaptures()
+    public static function provPrefixPregCaptures(): array
     {
         return [
             // #0
@@ -221,7 +221,7 @@ final class PregUtilsTraitTest extends TestCase
         $this->assertSame($expect, self::prefixPregCaptures(...$args));
     }
 
-    public static function provMergePregCaptures()
+    public static function provMergePregCaptures(): array
     {
         return [
             // #0
@@ -525,7 +525,7 @@ final class PregUtilsTraitTest extends TestCase
         $this->assertSame($expect, self::mergePregCaptures(...$args));
     }
 
-    public static function provPrefixPregTuple()
+    public static function provPrefixPregTuple(): array
     {
         return [
             [ // #0
@@ -588,7 +588,7 @@ final class PregUtilsTraitTest extends TestCase
         $this->assertSame($expect, self::prefixPregTuple(...$args));
     }
 
-    public static function provSuffixPregTuple()
+    public static function provSuffixPregTuple(): array
     {
         return [
             // #0
@@ -655,7 +655,7 @@ final class PregUtilsTraitTest extends TestCase
         $this->assertSame($expect, self::suffixPregTuple(...$args));
     }
 
-    public static function provTransformPregTuple()
+    public static function provTransformPregTuple(): array
     {
         return [
             [ // #0
@@ -728,7 +728,7 @@ final class PregUtilsTraitTest extends TestCase
         $this->assertSame($expect, self::transformPregTuple(...$args));
     }
 
-    public static function provJoinTwoPregTuples()
+    public static function provJoinTwoPregTuples(): array
     {
         return [
             [ // #0
@@ -789,7 +789,7 @@ final class PregUtilsTraitTest extends TestCase
         $this->assertSame($expect, static::joinTwoPregTuples(...$args));
     }
 
-    public static function provJoinPregTuples()
+    public static function provJoinPregTuples(): array
     {
         return [
             [ // #0

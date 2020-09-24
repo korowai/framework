@@ -31,7 +31,7 @@ final class PropertiesAssertionsTraitTest extends TestCase
 {
     use PropertiesAssertionsTrait;
 
-    public function provStaticMethodExists()
+    public function provStaticMethodExists(): array
     {
         return [
             ['assertClassHasPropertiesEqualTo'],
@@ -60,7 +60,7 @@ final class PropertiesAssertionsTraitTest extends TestCase
         self::assertTrue($method->isStatic());
     }
 
-    public static function provObjectPropertiesIdenticalTo()
+    public static function provObjectPropertiesIdenticalTo(): array
     {
         $esmith = new class() {
             public $name = 'Emily';
@@ -263,7 +263,7 @@ final class PropertiesAssertionsTraitTest extends TestCase
         ];
     }
 
-    public static function provObjectPropertiesNotIdenticalTo()
+    public static function provObjectPropertiesNotIdenticalTo(): array
     {
         $hbrown = new class() {
             public $name = 'Helen';

@@ -48,7 +48,7 @@ final class ParserTestHelpersTest extends TestCase
         ];
     }
 
-    public static function provGetInputFromSource()
+    public static function provGetInputFromSource(): array
     {
         return static::inputFromSource__cases();
     }
@@ -65,7 +65,7 @@ final class ParserTestHelpersTest extends TestCase
         $this->assertSame($expectations['file'], $input->getSourceFileName());
     }
 
-    public static function provGetCursorFromSource()
+    public static function provGetCursorFromSource(): array
     {
         $cases = [
             [
@@ -112,7 +112,7 @@ final class ParserTestHelpersTest extends TestCase
         $this->assertSame($expectations['offset'], $cursor->getOffset());
     }
 
-    public static function provGetParserStateFromSource()
+    public static function provGetParserStateFromSource(): array
     {
         $cases = [
             [

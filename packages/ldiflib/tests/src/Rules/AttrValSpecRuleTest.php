@@ -33,7 +33,7 @@ final class AttrValSpecRuleTest extends TestCase
         $this->assertExtendsClass(AbstractRfcRule::class, AttrValSpecRule::class);
     }
 
-    public static function provConstruct()
+    public static function provConstruct(): array
     {
         $valueSpecRule = new ValueSpecRule();
 
@@ -83,7 +83,7 @@ final class AttrValSpecRuleTest extends TestCase
     //
     // parseMatched()
     //
-    public static function provParseMatched()
+    public static function provParseMatched(): array
     {
         return [
             'valid' => [
@@ -183,7 +183,7 @@ final class AttrValSpecRuleTest extends TestCase
     // parse()
     //
 
-    public static function provParse()
+    public static function provParse(): array
     {
         return [
             'empty string' => [

@@ -32,7 +32,7 @@ final class Rfc8089Test extends TestCase
     // FILE_AUTH
     //
 
-    public function provFILEAUTH()
+    public function provFILEAUTH(): array
     {
         $cases = [
             [
@@ -55,7 +55,7 @@ final class Rfc8089Test extends TestCase
         return array_merge($inheritedCases, $cases);
     }
 
-    public function provNonFILEAUTH()
+    public function provNonFILEAUTH(): array
     {
         $strings = [];
         $inheritedCases = Rfc3986Test::provNonHOST();
@@ -85,7 +85,7 @@ final class Rfc8089Test extends TestCase
     // LOCAL_PATH
     //
 
-    public function provLOCALPATH()
+    public function provLOCALPATH(): array
     {
         $cases = [];
         $inheritedCases = [];
@@ -100,7 +100,7 @@ final class Rfc8089Test extends TestCase
         return array_merge($inheritedCases, $cases);
     }
 
-    public function provNonLOCALPATH()
+    public function provNonLOCALPATH(): array
     {
         $strings = [
         ];
@@ -133,7 +133,7 @@ final class Rfc8089Test extends TestCase
     // AUTH_PATH
     //
 
-    public function provAUTHPATH()
+    public function provAUTHPATH(): array
     {
         $cases = [];
         $inheritedCases = [];
@@ -157,7 +157,7 @@ final class Rfc8089Test extends TestCase
         return array_merge($cases, $inheritedCases);
     }
 
-    public function provNonAUTHPATH()
+    public function provNonAUTHPATH(): array
     {
         $strings = ['', 'a', ':', '%', '%1', '%G', '%1G', '%G2', '#', 'ł', '?', '1.2.3.4'];
 
@@ -187,7 +187,7 @@ final class Rfc8089Test extends TestCase
     // FILE_HIER_PART
     //
 
-    public function provFILEHIERPART()
+    public function provFILEHIERPART(): array
     {
         $cases = [];
         $inheritedCases = [];
@@ -212,7 +212,7 @@ final class Rfc8089Test extends TestCase
         return array_merge($inheritedCases, $cases);
     }
 
-    public function provNonFILEHIERPART()
+    public function provNonFILEHIERPART(): array
     {
         $strings = ['', 'a', ':', '%', '%1', '%G', '%1G', '%G2', '#', 'ł', '?', '1.2.3.4'];
 
@@ -251,7 +251,7 @@ final class Rfc8089Test extends TestCase
     // FILE_URI
     //
 
-    public function provFILEURI()
+    public function provFILEURI(): array
     {
         $cases = [
             [
@@ -299,7 +299,7 @@ final class Rfc8089Test extends TestCase
         return array_merge($cases, $inheritedCases);
     }
 
-    public function provNonFILEURI()
+    public function provNonFILEURI(): array
     {
         $strings = ['', 'a', ':', '%', '%1', '%G', '%1G', '%G2', '#', 'ł', '?', '1.2.3.4', 'file:'];
 

@@ -277,7 +277,7 @@ final class ClassAssertionsTraitTest extends TestCase
         self::assertFalse(self::usesTrait(ExampleTrait::class)->matches(123));
     }
 
-    public function provAssertDeclaresMethod()
+    public function provAssertDeclaresMethod(): array
     {
         return [
             "('testAssertDeclaresMethod', self::class)" => [
@@ -299,7 +299,7 @@ final class ClassAssertionsTraitTest extends TestCase
         ];
     }
 
-    public function provAssertDeclaresMethodFailure()
+    public function provAssertDeclaresMethodFailure(): array
     {
         return [
             "('inexistent', self::class)" => [

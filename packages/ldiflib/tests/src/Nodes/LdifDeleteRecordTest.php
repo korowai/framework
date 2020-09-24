@@ -37,7 +37,7 @@ final class LdifDeleteRecordTest extends TestCase
         $this->assertImplementsInterface(LdifDeleteRecordInterface::class, LdifDeleteRecord::class);
     }
 
-    public function provConstruct()
+    public function provConstruct(): array
     {
         $snippet = $this->getMockBuilder(SnippetInterface::class)->getMockForAbstractClass();
 

@@ -43,7 +43,7 @@ final class AbstractRfcRuleTest extends TestCase
     //
     // __construct()
     //
-    public static function provConstruct()
+    public static function provConstruct(): array
     {
         return [
             '__construct(RuleSet1::class, "ASSIGNMENT_INT")' => [
@@ -75,7 +75,7 @@ final class AbstractRfcRuleTest extends TestCase
     // match()
     //
 
-    public static function provMatch()
+    public static function provMatch(): array
     {
         return [
             // #0

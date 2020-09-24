@@ -44,7 +44,7 @@ final class ParserTest extends TestCase
     }
 
 //
-//    public function provConstruct()
+//    public function provConstruct(): array
 //    {
 //        return [
 //            'without args' => [
@@ -80,7 +80,7 @@ final class ParserTest extends TestCase
 //        $this->assertSame($expectedConfig, $parser->getConfig());
 //    }
 //
-//    public function provConfig()
+//    public function provConfig(): array
 //    {
 //        $cases = [
 //            [

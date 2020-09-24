@@ -59,14 +59,14 @@ final class Rfc2253Test extends TestCase
     // OID
     //
 
-    public static function provOID()
+    public static function provOID(): array
     {
         $strings = ['1', '1.23', '1.23.456'];
 
         return self::stringsToPregTuples($strings);
     }
 
-    public static function provNonOID()
+    public static function provNonOID(): array
     {
         $strings = ['', '~', 'O', '1.', '.1', '1.23.', 'a', 'ab', 'ab.cd'];
 
@@ -93,7 +93,7 @@ final class Rfc2253Test extends TestCase
     // STRING
     //
 
-    public static function provSTRING()
+    public static function provSTRING(): array
     {
         $strings = [
             '',
@@ -107,7 +107,7 @@ final class Rfc2253Test extends TestCase
         return static::stringsToPregTuples($strings);
     }
 
-    public static function provNonSTRING()
+    public static function provNonSTRING(): array
     {
         $strings = [
             '\\',       // incomplete pair
@@ -155,7 +155,7 @@ final class Rfc2253Test extends TestCase
     // ATTRIBUTE_TYPE
     //
 
-    public static function provATTRIBUTETYPE()
+    public static function provATTRIBUTETYPE(): array
     {
         $strings = [
             'O',
@@ -167,7 +167,7 @@ final class Rfc2253Test extends TestCase
         return self::stringsToPregTuples($strings);
     }
 
-    public static function provNonATTRIBUTETYPE()
+    public static function provNonATTRIBUTETYPE(): array
     {
         $strings = [
             '',
@@ -200,7 +200,7 @@ final class Rfc2253Test extends TestCase
     // ATTRIBUTE_TYPE_AND_VALUE
     //
 
-    public static function provATTRIBUTETYPEANDVALUE()
+    public static function provATTRIBUTETYPEANDVALUE(): array
     {
         $cases = [
         ];
@@ -218,7 +218,7 @@ final class Rfc2253Test extends TestCase
         return array_merge($inheritedCases, $cases);
     }
 
-    public static function provNonATTRIBUTETYPEANDVALUE()
+    public static function provNonATTRIBUTETYPEANDVALUE(): array
     {
         $strings = [
             '',
@@ -254,7 +254,7 @@ final class Rfc2253Test extends TestCase
     // NAME_COMPONENT
     //
 
-    public static function provNAMECOMPONENT()
+    public static function provNAMECOMPONENT(): array
     {
         $cases = [
         ];
@@ -272,7 +272,7 @@ final class Rfc2253Test extends TestCase
         return array_merge($inheritedCases, $cases);
     }
 
-    public static function provNonNAMECOMPONENT()
+    public static function provNonNAMECOMPONENT(): array
     {
         $strings = [
             '',
@@ -310,7 +310,7 @@ final class Rfc2253Test extends TestCase
     // NAME
     //
 
-    public static function provNAME()
+    public static function provNAME(): array
     {
         $cases = [
         ];
@@ -334,7 +334,7 @@ final class Rfc2253Test extends TestCase
         return array_merge($inheritedCases, $cases);
     }
 
-    public static function provNonNAME()
+    public static function provNonNAME(): array
     {
         $strings = [
             '',

@@ -27,7 +27,7 @@ final class UtilTest extends TestCase
     // base64Decode()
     //
 
-    public static function provBase64Decode()
+    public static function provBase64Decode(): array
     {
         return [
             [
@@ -135,7 +135,7 @@ final class UtilTest extends TestCase
     // utf8Check()
     //
 
-    public static function provUtf8Check()
+    public static function provUtf8Check(): array
     {
         return [
             [
@@ -234,7 +234,7 @@ final class UtilTest extends TestCase
         ];
     }
 
-    public static function provDnCheck()
+    public static function provDnCheck(): array
     {
         $cases = [];
 
@@ -304,7 +304,7 @@ final class UtilTest extends TestCase
         ];
     }
 
-    public static function provRdnCheck()
+    public static function provRdnCheck(): array
     {
         $cases = [];
 

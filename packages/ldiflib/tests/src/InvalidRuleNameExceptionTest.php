@@ -28,7 +28,7 @@ final class InvalidRuleNameExceptionTest extends TestCase
         $this->assertExtendsClass(\InvalidArgumentException::class, InvalidRuleNameException::class);
     }
 
-    public static function provGetMessage()
+    public static function provGetMessage(): array
     {
         return [
             'default message' => [[], ''],

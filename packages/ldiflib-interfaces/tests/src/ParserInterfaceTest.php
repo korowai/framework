@@ -23,7 +23,7 @@ use Korowai\Testing\LdiflibInterfaces\TestCase;
  */
 final class ParserInterfaceTest extends TestCase
 {
-//    public static function provExtendsInterface()
+//    public static function provExtendsInterface(): array
 //    {
 //        return [
 //            [YyyInterface::class],

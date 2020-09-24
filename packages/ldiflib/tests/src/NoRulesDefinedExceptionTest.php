@@ -28,7 +28,7 @@ final class NoRulesDefinedExceptionTest extends TestCase
         $this->assertExtendsClass(\RuntimeException::class, NoRulesDefinedException::class);
     }
 
-    public static function provGetMessage()
+    public static function provGetMessage(): array
     {
         return [
             'default message' => [[], ''],

@@ -36,7 +36,7 @@ final class ModSpecTest extends TestCase
         $this->assertUsesTrait(HasAttrValSpecs::class, ModSpec::class);
     }
 
-    public static function provConstruct()
+    public static function provConstruct(): array
     {
         return [
             'ModSpec("delete", "cn")' => [
@@ -85,7 +85,7 @@ final class ModSpecTest extends TestCase
         $this->assertObjectHasPropertiesIdenticalTo($expect, $record);
     }
 
-    public function provModType()
+    public function provModType(): array
     {
         return [
             ['add'],

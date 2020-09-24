@@ -33,7 +33,7 @@ final class ControlRuleTest extends TestCase
         $this->assertExtendsClass(AbstractRfcRule::class, ControlRule::class);
     }
 
-    public static function provConstruct()
+    public static function provConstruct(): array
     {
         $valueSpecRule = new ValueSpecRule();
 
@@ -82,7 +82,7 @@ final class ControlRuleTest extends TestCase
     //
     // parseMatched()
     //
-    public static function provParseMatched()
+    public static function provParseMatched(): array
     {
         return [
             'valid w/o crit w/o value' => [
@@ -309,7 +309,7 @@ final class ControlRuleTest extends TestCase
     // parse()
     //
 
-    public static function provParse()
+    public static function provParse(): array
     {
         return [
             'empty string' => [

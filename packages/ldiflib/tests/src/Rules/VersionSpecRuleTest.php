@@ -31,7 +31,7 @@ final class VersionSpecRuleTest extends TestCase
         $this->assertExtendsClass(AbstractRfcRule::class, VersionSpecRule::class);
     }
 
-    public static function provConstruct()
+    public static function provConstruct(): array
     {
         return [
             'default' => [
@@ -59,7 +59,7 @@ final class VersionSpecRuleTest extends TestCase
     //
     // parseMatched()
     //
-    public static function provParseMatched()
+    public static function provParseMatched(): array
     {
         return [
             // #0
@@ -188,7 +188,7 @@ final class VersionSpecRuleTest extends TestCase
     // parse()
     //
 
-    public static function provParse()
+    public static function provParse(): array
     {
         return [
             // #0

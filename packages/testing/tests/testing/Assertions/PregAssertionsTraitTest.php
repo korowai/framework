@@ -26,7 +26,7 @@ final class PregAssertionsTraitTest extends TestCase
 {
     use PregAssertionsTrait;
 
-    public function provHasPregCapturesSuccess()
+    public function provHasPregCapturesSuccess(): array
     {
         return [
             [[],                                                            []],
@@ -117,7 +117,7 @@ final class PregAssertionsTraitTest extends TestCase
         $this->assertNotHasPregCaptures($expected, $other);
     }
 
-    public function provHasPregCapturesFailing()
+    public function provHasPregCapturesFailing(): array
     {
         $re = 'array has expected PCRE capture groups';
 
@@ -141,7 +141,7 @@ final class PregAssertionsTraitTest extends TestCase
         ];
     }
 
-    public function provHasPregCapturesNonArray()
+    public function provHasPregCapturesNonArray(): array
     {
         $re = 'string has expected PCRE capture groups';
 

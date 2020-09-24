@@ -43,7 +43,7 @@ final class LdifAttrValRecordTest extends TestCase
         $this->assertUsesTrait(HasAttrValSpecs::class, LdifAttrValRecord::class);
     }
 
-    public function provConstruct()
+    public function provConstruct(): array
     {
         $snippet = $this->getMockBuilder(SnippetInterface::class)->getMockForAbstractClass();
 

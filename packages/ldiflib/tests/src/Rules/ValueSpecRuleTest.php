@@ -31,7 +31,7 @@ final class ValueSpecRuleTest extends TestCase
         $this->assertExtendsClass(AbstractRfcRule::class, ValueSpecRule::class);
     }
 
-    public static function provConstruct()
+    public static function provConstruct(): array
     {
         return [
             'default' => [
@@ -59,7 +59,7 @@ final class ValueSpecRuleTest extends TestCase
     //
     // parseMatched()
     //
-    public static function provParseMatched()
+    public static function provParseMatched(): array
     {
         return [
             'value_b64' => [
@@ -236,7 +236,7 @@ final class ValueSpecRuleTest extends TestCase
     // parse()
     //
 
-    public static function provParse()
+    public static function provParse(): array
     {
         return [
             'value_b64' => [

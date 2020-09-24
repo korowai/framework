@@ -34,7 +34,7 @@ final class LdifAttrValRecordRuleTest extends TestCase
         $this->assertExtendsClass(AbstractLdifRecordRule::class, LdifAttrValRecordRule::class);
     }
 
-    public static function provConstruct()
+    public static function provConstruct(): array
     {
         $dnSpecRule = new DnSpecRule();
         $sepRule = new SepRule();
@@ -77,7 +77,7 @@ final class LdifAttrValRecordRuleTest extends TestCase
     // parse()
     //
 
-    public static function provParse()
+    public static function provParse(): array
     {
         return [
             //0

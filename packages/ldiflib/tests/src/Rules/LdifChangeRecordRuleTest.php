@@ -40,7 +40,7 @@ final class LdifChangeRecordRuleTest extends TestCase
         $this->assertExtendsClass(AbstractLdifRecordRule::class, LdifChangeRecordRule::class);
     }
 
-    public static function provConstruct()
+    public static function provConstruct(): array
     {
         $dnSpecRule = new DnSpecRule();
         $controlRule = new ControlRule();
@@ -1148,7 +1148,7 @@ final class LdifChangeRecordRuleTest extends TestCase
         ];
     }
 
-    public static function provParse()
+    public static function provParse(): array
     {
         $cases = [
             'common #0' => [

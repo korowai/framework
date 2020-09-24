@@ -30,7 +30,7 @@ final class NewRdnSpecRuleTest extends TestCase
         $this->assertExtendsClass(AbstractRdnSpecRule::class, NewRdnSpecRule::class);
     }
 
-    public static function provConstruct()
+    public static function provConstruct(): array
     {
         return [
             '__construct()' => [
@@ -62,7 +62,7 @@ final class NewRdnSpecRuleTest extends TestCase
     //
     // parseMatched()
     //
-    public static function provParseMatched()
+    public static function provParseMatched(): array
     {
         $safeStringCases = array_map(function ($case) {
             $rdn = $case[0];
@@ -310,7 +310,7 @@ final class NewRdnSpecRuleTest extends TestCase
     // parse()
     //
 
-    public static function provParse()
+    public static function provParse(): array
     {
         $missingTagCases = array_map(function (array $case) {
             $args = $case['args'] ?? [];

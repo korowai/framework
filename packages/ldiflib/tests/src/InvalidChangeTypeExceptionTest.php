@@ -28,7 +28,7 @@ final class InvalidChangeTypeExceptionTest extends TestCase
         $this->assertExtendsClass(\InvalidArgumentException::class, InvalidChangeTypeException::class);
     }
 
-    public static function provGetMessage()
+    public static function provGetMessage(): array
     {
         return [
             'default message' => [[], ''],

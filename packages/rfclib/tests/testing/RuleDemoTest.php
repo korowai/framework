@@ -26,7 +26,7 @@ use Korowai\Testing\TestCase;
  */
 final class RuleDemoTest extends TestCase
 {
-    public static function provConstruct()
+    public static function provConstruct(): array
     {
         $rule = new Rule(Rfc2849::class, 'DN_SPEC');
 
@@ -59,7 +59,7 @@ final class RuleDemoTest extends TestCase
         $this->assertObjectHasPropertiesIdenticalTo($expect, $demo);
     }
 
-    public static function provCreate()
+    public static function provCreate(): array
     {
         return [
             'create(Rfc2849::class, "DN_SPEC")' => [
@@ -148,7 +148,7 @@ final class RuleDemoTest extends TestCase
         );
     }
 
-    public static function provMatchAndGetReport()
+    public static function provMatchAndGetReport(): array
     {
         $demo = RuleDemo::create(Rfc2849::class, 'DN_SPEC');
 

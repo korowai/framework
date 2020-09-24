@@ -134,7 +134,7 @@ final class ParserStateTest extends TestCase
         $this->assertSame($version, $state->getVersionSpec());
     }
 
-    public static function provErrorHere()
+    public static function provErrorHere(): array
     {
         return [
             ['error message'],

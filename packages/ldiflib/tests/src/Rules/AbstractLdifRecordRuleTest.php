@@ -32,7 +32,7 @@ final class AbstractLdifRecordRuleTest extends TestCase
         $this->assertExtendsClass(AbstractRule::class, AbstractLdifRecordRule::class);
     }
 
-    public static function provConstruct()
+    public static function provConstruct(): array
     {
         $dnSpecRule = new DnSpecRule();
         $sepRule = new SepRule();

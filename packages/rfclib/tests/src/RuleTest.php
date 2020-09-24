@@ -68,7 +68,7 @@ final class RuleTest extends TestCase
         ];
     }
 
-    public static function provRuleSetClassAndRuleName()
+    public static function provRuleSetClassAndRuleName(): iterable
     {
         foreach (static::ruleSetClasses() as $ruleSetClass) {
             foreach ($ruleSetClass::getClassRuleNames() as $ruleName) {
@@ -77,7 +77,7 @@ final class RuleTest extends TestCase
         }
     }
 
-    public static function provRuleSetClassRuleNameAndMatches()
+    public static function provRuleSetClassRuleNameAndMatches(): iterable
     {
         foreach (static::provRuleSetClassAndRuleName() as $case) {
             [$ruleSetClass, $ruleName] = $case;

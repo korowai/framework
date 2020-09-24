@@ -43,14 +43,14 @@ final class AbstractRuleSetTest extends TestCase
         return [RuleSet2::class, RuleSet1::class, RuleSet0::class];
     }
 
-    public static function provClass()
+    public static function provClass(): iterable
     {
         foreach (static::classesUnderTest() as $class) {
             yield [$class];
         }
     }
 
-    public static function provClassRulename()
+    public static function provClassRulename(): iterable
     {
         foreach (static::classesUnderTest() as $class) {
             $classRules = $class::getClassRuleNames();
@@ -129,7 +129,7 @@ final class AbstractRuleSetTest extends TestCase
         $this->assertSame($expected, $actual, $message);
     }
 
-    public static function provFilterMatches()
+    public static function provFilterMatches(): array
     {
         return [
             [
@@ -158,7 +158,7 @@ final class AbstractRuleSetTest extends TestCase
         $this->assertSame($expected, AbstractRuleSet::filterMatches($matches));
     }
 
-    public static function provFindCapturedErrors()
+    public static function provFindCapturedErrors(): array
     {
         return [
             [RuleSet0::class, 'VAR_NAME', ['inexistent' => '']],
@@ -204,7 +204,7 @@ final class AbstractRuleSetTest extends TestCase
         $this->assertSame($expected, $actual, $message);
     }
 
-    public static function provFindCapturedValues()
+    public static function provFindCapturedValues(): array
     {
         return [
             [RuleSet0::class, 'VAR_NAME', ['inexistent' => '']],
@@ -250,7 +250,7 @@ final class AbstractRuleSetTest extends TestCase
         $this->assertSame($expected, $actual, $message);
     }
 
-    public function provClassDefinedErrors()
+    public function provClassDefinedErrors(): array
     {
         return [
             [
@@ -295,7 +295,7 @@ final class AbstractRuleSetTest extends TestCase
         $this->assertSame($expected, $class::getDefinedErrors(), $message);
     }
 
-    public function provGetErrorMessage()
+    public function provGetErrorMessage(): iterable
     {
         foreach (static::provClassDefinedErrors() as $case) {
             $class = $case[0];

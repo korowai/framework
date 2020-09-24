@@ -31,7 +31,7 @@ final class ModSpecInitRuleTest extends TestCase
         $this->assertExtendsClass(AbstractRfcRule::class, ModSpecInitRule::class);
     }
 
-    public static function provConstruct()
+    public static function provConstruct(): array
     {
         return [
             'default' => [
@@ -59,7 +59,7 @@ final class ModSpecInitRuleTest extends TestCase
     //
     // parseMatched()
     //
-    public static function provParseMatched()
+    public static function provParseMatched(): array
     {
         return [
             'add: cn' => [
@@ -228,7 +228,7 @@ final class ModSpecInitRuleTest extends TestCase
     // parse()
     //
 
-    public static function provParse()
+    public static function provParse(): array
     {
         return [
             'add: cn' => [

@@ -30,7 +30,7 @@ final class ChangeRecordInitRuleTest extends TestCase
         $this->assertExtendsClass(AbstractRfcRule::class, ChangeRecordInitRule::class);
     }
 
-    public static function provConstruct()
+    public static function provConstruct(): array
     {
         return [
             'default' => [
@@ -58,7 +58,7 @@ final class ChangeRecordInitRuleTest extends TestCase
     //
     // parseMatched()
     //
-    public static function provParseMatched()
+    public static function provParseMatched(): array
     {
         return [
             'changetype: add' => [
@@ -221,7 +221,7 @@ final class ChangeRecordInitRuleTest extends TestCase
     // parse()
     //
 
-    public static function provParse()
+    public static function provParse(): array
     {
         return [
             'changetype: add' => [

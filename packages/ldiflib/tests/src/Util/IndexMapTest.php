@@ -273,10 +273,10 @@ final class IndexMapTest extends TestCase
             ->method('apply')
             ->with(3)
             ->willReturnCallback(function (int $i, int &$index = null) {
-               $index = 123;
+                $index = 123;
 
-               return 7;
-           })
+                return 7;
+            })
         ;
 
         $this->assertEquals(7, $im(3, $index));

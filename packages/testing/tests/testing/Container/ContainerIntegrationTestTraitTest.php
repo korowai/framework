@@ -37,10 +37,10 @@ final class ContainerIntegrationTestTraitTest extends TestCase
             ->with($this->anything())
             ->will($this->returnCallback(
                 function (string $config) use ($factory): ContainerFactoryInterface {
-                        $factory->config = $config;
+                    $factory->config = $config;
 
-                        return $factory;
-                    }
+                    return $factory;
+                }
             ))
         ;
 
@@ -48,10 +48,10 @@ final class ContainerIntegrationTestTraitTest extends TestCase
             ->method('createContainer')
             ->will($this->returnCallback(
                 function () use ($container, $factory): ContainerInterface {
-                        $container->config = $factory->config;
+                    $container->config = $factory->config;
 
-                        return $container;
-                    }
+                    return $container;
+                }
             ))
         ;
 

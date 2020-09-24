@@ -171,10 +171,10 @@ final class LdapLinkConstructorTest extends TestCase
             ->expects($this->once())
             ->with('#$%')
             ->will($this->returnCallback(function () {
-                    trigger_error('error message');
+                trigger_error('error message');
 
-                    return false;
-                }))
+                return false;
+            }))
         ;
 
         $constructor = new LdapLinkConstructor();

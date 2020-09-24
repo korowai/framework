@@ -146,11 +146,11 @@ trait BindingTestTrait
         $link->expects($this->once())
             ->method('bind')
             ->will($this->returnCallback(function () use ($message) {
-                 trigger_error($message);
-                 // @codeCoverageIgnoreStart
-                 return false;
-                 // @codeCoverageIgnoreEnd
-             }))
+                trigger_error($message);
+                // @codeCoverageIgnoreStart
+                return false;
+                // @codeCoverageIgnoreEnd
+            }))
         ;
 
         $this->expectException(LdapException::class);

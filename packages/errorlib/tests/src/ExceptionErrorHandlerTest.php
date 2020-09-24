@@ -162,7 +162,7 @@ final class ExceptionErrorHandlerTest extends TestCase
         } catch (ExceptionA98DB973 $e) {
             $this->assertEquals(E_USER_ERROR, $e->getSeverity());
             $this->assertEquals(__FILE__, $e->getFile());
-            $this->assertEquals(__line__ - 5, $e->getLine());
+            $this->assertEquals(__LINE__ - 5, $e->getLine());
 
             throw $e;
         }

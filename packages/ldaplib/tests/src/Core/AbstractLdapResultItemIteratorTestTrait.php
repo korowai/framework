@@ -151,10 +151,10 @@ trait AbstractLdapResultItemIteratorTestTrait
         $item->expects($this->once())
             ->method('next_item')
             ->will($this->returnCallback(function () {
-                 trigger_error('an LDAP error', E_USER_ERROR);
+                trigger_error('an LDAP error', E_USER_ERROR);
 
-                 return false;
-             }))
+                return false;
+            }))
         ;
 
         $ldap->expects($this->once())
@@ -196,10 +196,10 @@ trait AbstractLdapResultItemIteratorTestTrait
         $item->expects($this->once())
             ->method('next_item')
             ->will($this->returnCallback(function () {
-                 trigger_error('non-LDAP error', E_USER_ERROR);
+                trigger_error('non-LDAP error', E_USER_ERROR);
 
-                 return false;
-             }))
+                return false;
+            }))
         ;
 
         $ldap->expects($this->once())

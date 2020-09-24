@@ -89,10 +89,10 @@ trait ExamineLdapLinkErrorHandlerTrait
             ->method($method)
             ->with(...$with)
             ->willReturnCallback(function () use ($params) {
-                 trigger_error($params['message'], $params['severity']);
+                trigger_error($params['message'], $params['severity']);
 
-                 return $params['return'];
-             })
+                return $params['return'];
+            })
         ;
 
         $this->expectException($expect['exception']);

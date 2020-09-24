@@ -72,12 +72,6 @@ abstract class AbstractPropertiesComparator extends Constraint implements Expect
      */
     final protected function __construct(ExpectedPropertiesInterface $expected, RecursiveUnwrapperInterface $unwrapper)
     {
-        $valid = array_filter($expected->getArrayCopy(), \is_string::class, ARRAY_FILTER_USE_KEY);
-        if (($count = count($expected) - count($valid)) > 0) {
-            $message = 'The array of expected properties contains '.$count.' invalid key(s)';
-
-            throw new \PHPUnit\Framework\Exception($message);
-        }
         $this->expected = $expected;
         $this->unwrapper = $unwrapper;
     }
@@ -88,6 +82,13 @@ abstract class AbstractPropertiesComparator extends Constraint implements Expect
 
     public static function fromArray(array $expected, RecursiveUnwrapperInterface $unwrapper = null): self
     {
+        $valid = array_filter($expected, \is_string::class, ARRAY_FILTER_USE_KEY);
+        if (($count = count($expected) - count($valid)) > 0) {
+            $message = 'The array of expected properties contains '.$count.' invalid key(s)';
+
+            throw new \PHPUnit\Framework\Exception($message);
+        }
+
         $selector = static::makePropertySelector();
         if (null === $unwrapper) {
             $unwrapper = new RecursiveUnwrapper();

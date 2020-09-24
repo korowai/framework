@@ -94,7 +94,7 @@ trait AbstractLdapResultItemIteratorTestTrait
         $this->assertObjectHasPropertiesIdenticalTo($expect, $iterator);
     }
 
-    public function testNext()
+    public function testNext(): void
     {
         $item1 = $this->createIteratorItemStub();
         $item2 = $this->createIteratorItemStub();
@@ -129,7 +129,7 @@ trait AbstractLdapResultItemIteratorTestTrait
         $this->assertNull($iterator->key());
     }
 
-    public function testNextWithTriggerLdapError()
+    public function testNextWithTriggerLdapError(): void
     {
         $ldap = $this->getMockBuilder(LdapLinkInterface::class)
             ->getMockForAbstractClass()
@@ -174,7 +174,7 @@ trait AbstractLdapResultItemIteratorTestTrait
         $iterator->next();
     }
 
-    public function testNextWithTriggerNonLdapError()
+    public function testNextWithTriggerNonLdapError(): void
     {
         $ldap = $this->getMockBuilder(LdapLinkInterface::class)
             ->getMockForAbstractClass()
@@ -219,7 +219,7 @@ trait AbstractLdapResultItemIteratorTestTrait
         $iterator->next();
     }
 
-    public function testRewind()
+    public function testRewind(): void
     {
         $item1 = $this->createIteratorItemStub();
         $item2 = $this->createIteratorItemStub();
@@ -238,7 +238,7 @@ trait AbstractLdapResultItemIteratorTestTrait
         $this->assertTrue($iterator->valid());
     }
 
-    public function testRewindFromInvalid()
+    public function testRewindFromInvalid(): void
     {
         $first = $this->createIteratorItemStub();
 

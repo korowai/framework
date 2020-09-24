@@ -136,7 +136,7 @@ final class ParserTest extends TestCase
 //        $this->assertSame($expect, $parser->getConfig());
 //    }
 //
-//    public function testConfigureWrongFileType()
+//    public function testConfigureWrongFileType(): void
 //    {
 //        $parser = new Parser;
 //
@@ -146,7 +146,7 @@ final class ParserTest extends TestCase
 //        $parser->configure(['file_type' => 'foo']);
 //    }
 //
-//    public function testConfigureWrongVersionRequired()
+//    public function testConfigureWrongVersionRequired(): void
 //    {
 //        $parser = new Parser;
 //

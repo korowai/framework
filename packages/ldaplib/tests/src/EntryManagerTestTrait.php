@@ -39,7 +39,7 @@ trait EntryManagerTestTrait
     // add()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public function testAdd()
+    public function testAdd(): void
     {
         $entry = $this->createMock(EntryInterface::class);
         $entry->expects($this->once())
@@ -155,7 +155,7 @@ trait EntryManagerTestTrait
     // rename()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public function testRenameDefault()
+    public function testRenameDefault(): void
     {
         $entry = $this->createMock(EntryInterface::class);
         $entry->expects($this->once())
@@ -177,7 +177,7 @@ trait EntryManagerTestTrait
         $this->assertNull($manager->rename($entry, 'cn=korowai'));
     }
 
-    public function testRenameDeleteOldRdn()
+    public function testRenameDeleteOldRdn(): void
     {
         $entry = $this->createMock(EntryInterface::class);
         $entry->expects($this->once())
@@ -199,7 +199,7 @@ trait EntryManagerTestTrait
         $this->assertNull($manager->rename($entry, 'cn=korowai', true));
     }
 
-    public function testRenameLeaveOldRdn()
+    public function testRenameLeaveOldRdn(): void
     {
         $entry = $this->createMock(EntryInterface::class);
         $entry->expects($this->once())
@@ -256,7 +256,7 @@ trait EntryManagerTestTrait
     // delete()
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public function testDelete()
+    public function testDelete(): void
     {
         $entry = $this->createMock(EntryInterface::class);
         $entry->expects($this->once())

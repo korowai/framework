@@ -19,7 +19,7 @@ trait SingletonTestTrait
 {
     abstract public static function getSingletonClassUnderTest(): string;
 
-    public function testSingletonGetInstance()
+    public function testSingletonGetInstance(): void
     {
         $class = static::getSingletonClassUnderTest();
 

@@ -17,6 +17,21 @@ namespace Korowai\Testing;
  */
 final class ExpectedProperties extends AbstractProperties implements ExpectedPropertiesInterface
 {
+    /**
+     * @var PropertySelectorInterface
+     */
+    private $propertySelector;
+
+    public function __construct(PropertySelectorInterface $propertySelector, $input = [])
+    {
+        $this->propertySelector = $propertySelector;
+        parent::__construct($input);
+    }
+
+    public function getPropertySelector() : PropertySelectorInterface
+    {
+        return $this->propertySelector;
+    }
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

@@ -15,10 +15,10 @@ namespace Korowai\Testing;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-interface PropertiesInterface extends \ArrayAccess
+interface PropertySelectorInterface
 {
-    public function getArrayCopy();
-    public function canUnwrapChild(PropertiesInterface $child) : bool;
+    public function canSelectFrom($subject) : bool;
+    public function selectProperty($subject, $key, &$retval = null) : bool;
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

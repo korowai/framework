@@ -12,9 +12,15 @@ declare(strict_types=1);
 
 namespace Korowai\Testing\Constraint;
 
-use Korowai\Testing\ObjectProperties;
-use Korowai\Testing\ObjectPropertiesInterface;
+use Korowai\Testing\ActualProperties;
+use Korowai\Testing\ActualPropertiesInterface;
+use Korowai\Testing\ExpectedProperties;
+use Korowai\Testing\ExpectedPropertiesInterface;
+use Korowai\Testing\RecursivePropertiesUnwrapper;
+use Korowai\Testing\RecursivePropertiesUnwrapperInterface;
 use Korowai\Testing\Exporter;
+use Korowai\Testing\CircularDependencyException;
+use Korowai\Testing\ObjectPropertySelector;
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\Constraint\Operator;
 use PHPUnit\Framework\Constraint\LogicalNot;
@@ -44,14 +50,14 @@ use SebastianBergmann\Exporter\Exporter as BaseExporter;
 final class ObjectHasPropertiesIdenticalTo extends Constraint implements ObjectPropertiesComparatorInterface
 {
     /**
-     * @var array
+     * @var ExpectedProperties
      */
     private $expected;
 
     /**
      * @var Exporter
      */
-    private $exporter;
+    private $exporter = null;
 
     /**
      * Initializes the constraint.
@@ -69,7 +75,7 @@ final class ObjectHasPropertiesIdenticalTo extends Constraint implements ObjectP
             $message = 'The array of expected properties contains '.$count.' invalid key(s)';
             throw new \PHPUnit\Framework\Exception($message);
         }
-        $this->expected = $expected;
+        $this->expected = new ExpectedProperties(new ObjectPropertySelector, $expected);
     }
 
     /**
@@ -115,6 +121,7 @@ final class ObjectHasPropertiesIdenticalTo extends Constraint implements ObjectP
      *
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws CircularDependencyException
      */
     public function evaluate($other, string $description = '', bool $returnResult = false): ?bool
     {
@@ -129,12 +136,12 @@ final class ObjectHasPropertiesIdenticalTo extends Constraint implements ObjectP
 
             if (is_object($other)) {
                 $actual = $this->getActualProperties($other, true);
-                $expect = $this->getExpectedProperties(true);
+                $expect = $this->unwrapper->unwrap($expected);
                 $f = new ComparisonFailure(
                     $this->expected,
                     $other,
-                    $this->exporter()->export($expect/*->getArrayForComparison()*/),
-                    $this->exporter()->export($actual/*->getArrayForComparison()*/)
+                    $this->exporter()->export($expect),
+                    $this->exporter()->export($actual)
                 );
             }
 

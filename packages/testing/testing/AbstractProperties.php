@@ -17,9 +17,9 @@ namespace Korowai\Testing;
  */
 abstract class AbstractProperties extends \ArrayObject implements PropertiesInterface
 {
-    public function canGetComparableFrom(PropertiesInterface $other) : bool
+    public function canUnwrapChild(PropertiesInterface $child) : bool
     {
-        return $other instanceof static;
+        return $child instanceof static;
     }
 }
 

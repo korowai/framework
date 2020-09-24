@@ -19,6 +19,8 @@ use Korowai\Testing\ActualPropertiesInterface;
 use Korowai\Testing\ExpectedProperties;
 use Korowai\Testing\ExpectedPropertiesInterface;
 use Korowai\Testing\PropertiesInterface;
+use Korowai\Testing\PropertySelectorInterface;
+use PHPUnit\Framework\InvalidArgumentException;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -37,7 +39,8 @@ final class ExpectedPropertiesTest extends TestCase
     // required by PropertiesTestTrait
     public function getTestedObject(...$args) : PropertiesInterface
     {
-        return new ExpectedProperties(...$args);
+        $selector = $this->createMock(PropertySelectorInterface::class);
+        return new ExpectedProperties($selector, ...$args);
     }
 
     //
@@ -54,6 +57,38 @@ final class ExpectedPropertiesTest extends TestCase
     public function test__extends__AbstractProperties() : void
     {
         $this->assertExtendsClass(AbstractProperties::class, ExpectedProperties::class);
+    }
+
+    //
+    // canUnwrapChild()
+    //
+
+    public function prov__canUnwrapChild() : array
+    {
+        $selector = $this->createMock(PropertySelectorInterface::class);
+        return [
+            // #0
+            [
+                'parent' => new ExpectedProperties($selector),
+                'child'  => new ActualProperties,
+                'expect' => false,
+            ],
+
+            // #1
+            [
+                'parent' => new ExpectedProperties($selector),
+                'child'  => new ExpectedProperties($selector),
+                'expect' => true,
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider prov__canUnwrapChild
+     */
+    public function test__canUnwrapChild(PropertiesInterface $parent, PropertiesInterface $child, bool $expect) : void
+    {
+        $this->assertSame($expect, $parent->canUnwrapChild($child));
     }
 }
 // vim: syntax=php sw=4 ts=4 et tw=119:

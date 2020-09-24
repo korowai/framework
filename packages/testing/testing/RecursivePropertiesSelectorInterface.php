@@ -15,9 +15,9 @@ namespace Korowai\Testing;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-interface PropertiesProcessorInterface
+interface RecursivePropertiesSelectorInterface
 {
-    public function walk(PropertiesInterface $properties, &$result = null) : void;
+    public function selectProperties($subject) : ActualPropertiesInterface;
 }
 
 // vim: syntax=php sw=4 ts=4 et tw=119:

@@ -55,5 +55,36 @@ final class ActualPropertiesTest extends TestCase
     {
         $this->assertExtendsClass(AbstractProperties::class, ActualProperties::class);
     }
+
+    //
+    // canUnwrapChild()
+    //
+
+    public function prov__canUnwrapChild() : array
+    {
+        return [
+            // #0
+            [
+                'parent' => new ActualProperties,
+                'child'  => new ExpectedProperties,
+                'expect' => false,
+            ],
+
+            // #1
+            [
+                'parent' => new ActualProperties,
+                'child'  => new ActualProperties,
+                'expect' => true,
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider prov__canUnwrapChild
+     */
+    public function test__canUnwrapChild(PropertiesInterface $parent, PropertiesInterface $child, bool $expect) : void
+    {
+        $this->assertSame($expect, $parent->canUnwrapChild($child));
+    }
 }
 // vim: syntax=php sw=4 ts=4 et tw=119:

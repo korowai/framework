@@ -50,19 +50,45 @@ final class AbstractPropertiesTest extends TestCase
         $this->assertExtendsClass(\ArrayObject::class, AbstractProperties::class);
     }
 
-    public static function prov__canGetComparableFrom() : array
+    //
+    // canUnwrapChild()
+    //
+
+    public function prov__canUnwrapChild() : array
     {
+        $foo = new class extends AbstractProperties { };
+        $bar = new class extends AbstractProperties { };
+
         return [
+            // #0
+            [
+                'parent' => $foo,
+                'child'  => $bar,
+                'expect' => false,
+            ],
+
+            // #1
+            [
+                'parent' => $foo,
+                'child'  => $foo,
+                'expect' => true,
+            ],
+
+            // #2
+            [
+                'parent' => $foo,
+                'child'  => clone($foo),
+                'expect' => true,
+            ]
         ];
     }
 
-
     /**
-     * @dataProvider prov__canGetComparableFrom
+     * @dataProvider prov__canUnwrapChild
      */
-    public function test__canGetComparableFrom() : void
+    public function test__canUnwrapChild(PropertiesInterface $parent, PropertiesInterface $child, bool $expect) : void
     {
-        $this->makeTestIncomplete("not implemented yet");
+        $this->assertSame($expect, $parent->canUnwrapChild($child));
     }
 }
 // vim: syntax=php sw=4 ts=4 et tw=119:

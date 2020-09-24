@@ -20,6 +20,7 @@ use Korowai\Testing\TestCase;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Testing\Properties\ExpectedProperties
+ * @covers \Korowai\Tests\Testing\Properties\ExpectedPropertiesTestTrait
  *
  * @internal
  */

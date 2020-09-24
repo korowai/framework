@@ -38,6 +38,8 @@ trait ObjectPropertySelectorTestTrait
     //
     // canSelectFrom()
     //
+
+    // @codeCoverageIgnoreStart
     public function provObjectPropertySelectorCanSelectFrom(): array
     {
         return [
@@ -72,6 +74,7 @@ trait ObjectPropertySelectorTestTrait
             ],
         ];
     }
+    // @codeCoverageIgnoreEnd
 
     /**
      * @dataProvider provObjectPropertySelectorCanSelectFrom
@@ -87,6 +90,8 @@ trait ObjectPropertySelectorTestTrait
     //
     // selectProperty
     //
+
+    // @codeCoverageIgnoreStart
     public static function provObjectPropertySelectorSelectProperty(): array
     {
         return [
@@ -150,6 +155,7 @@ trait ObjectPropertySelectorTestTrait
             ],
         ];
     }
+    // @codeCoverageIgnoreEnd
 
     /**
      * @dataProvider provObjectPropertySelectorSelectProperty
@@ -170,6 +176,9 @@ trait ObjectPropertySelectorTestTrait
         $object = new class() {
             private function foo()
             {
+                // @codeCoverageIgnoreStart
+                return;
+                // @codeCoverageIgnoreEnd
             }
         };
         $properties = $this->createObjectPropertySelector();
@@ -178,6 +187,10 @@ trait ObjectPropertySelectorTestTrait
         $this->expectExceptionMessage('private method');
 
         $properties->selectProperty($object, 'foo()');
+
+        // @codeCoverageIgnoreStart
+        return;
+        // @codeCoverageIgnoreEnd
     }
 
     public function testObjectPropertySelectorSelectPropertyThrowsOnPrivateAttribute(): void
@@ -191,6 +204,10 @@ trait ObjectPropertySelectorTestTrait
         $this->expectExceptionMessage('private property');
 
         $properties->selectProperty($object, 'foo');
+
+        // @codeCoverageIgnoreStart
+        return;
+        // @codeCoverageIgnoreEnd
     }
 
     public function testObjectPropertySelectorSelectPropertyThrowsOnStaticProperty(): void
@@ -204,8 +221,13 @@ trait ObjectPropertySelectorTestTrait
         $this->expectErrorMessage('static property');
 
         $properties->selectProperty($object, 'foo');
+
+        // @codeCoverageIgnoreStart
+        return;
+        // @codeCoverageIgnoreEnd
     }
 
+    // @codeCoverageIgnoreStart
     public static function provObjectPropertySelectorSelectPropertyThrowsOnNonobject(): array
     {
         return [
@@ -222,6 +244,7 @@ trait ObjectPropertySelectorTestTrait
             ],
         ];
     }
+    // @codeCoverageIgnoreEnd
 
     /**
      * @dataProvider provObjectPropertySelectorSelectPropertyThrowsOnNonobject
@@ -235,6 +258,10 @@ trait ObjectPropertySelectorTestTrait
         $this->expectExceptionMessageMatches('/Argument #1 of '.$method.' must be an object/');
 
         $properties->selectProperty(123, $key);
+
+        // @codeCoverageIgnoreStart
+        return;
+        // @codeCoverageIgnoreEnd
     }
 }
 // vim: syntax=php sw=4 ts=4 et tw=119:

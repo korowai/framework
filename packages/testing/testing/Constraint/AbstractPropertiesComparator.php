@@ -30,21 +30,15 @@ use SebastianBergmann\Comparator\ComparisonFailure;
 use SebastianBergmann\Exporter\Exporter as BaseExporter;
 
 /**
- * Constraint that accepts objects/classes having properties identical to expected
- * ones.
+ * Constraint that accepts subjects (classes/objects) having properties
+ * identical to expected ones.
  *
- * Compares only properties present in the array of expectations.
- * A property is defined as either an attribute value or a value
- * returned by object/class method callable without arguments.
- *
+ * Compares only properties present in the array of expectations. A property is
+ * defined as either an attribute value or a value returned by object/class
+ * method callable without arguments.
  *
  * Any key in *$expected* array ending with ``"()"`` is considered to be a
  * method that returns property value.
- *
- *      // ...
- *      $matcher = new ObjectHasPropertiesIdenticalTo(
- *          ['getName()' => 'John', 'age' => 21],
- *      );
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */

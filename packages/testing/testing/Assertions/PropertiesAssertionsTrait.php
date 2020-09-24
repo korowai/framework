@@ -12,6 +12,9 @@ declare(strict_types=1);
 
 namespace Korowai\Testing\Assertions;
 
+use Korowai\Testing\Constraint\ClassHasPropertiesEqualTo;
+use Korowai\Testing\Constraint\ClassHasPropertiesIdenticalTo;
+use Korowai\Testing\Constraint\ObjectHasPropertiesEqualTo;
 use Korowai\Testing\Constraint\ObjectHasPropertiesIdenticalTo;
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\Constraint\LogicalNot;
@@ -165,11 +168,11 @@ trait PropertiesAssertionsTrait
         string $class,
         string $message = ''
     ): void {
-        static::assertThat($object, static::classHasPropertiesIdenticalTo($expected), $message);
+        static::assertThat($class, static::classHasPropertiesIdenticalTo($expected), $message);
     }
 
     /**
-     * Asserts that selected properties of *$object* are not identical to *$expected* ones.
+     * Asserts that selected properties of *$class* are not identical to *$expected* ones.
      *
      * @param array  $expected
      *                         An array of key => value pairs with property names as keys and
@@ -184,14 +187,14 @@ trait PropertiesAssertionsTrait
      */
     public static function assertNotClassHasPropertiesIdenticalTo(
         array $expected,
-        object $object,
+        string $class,
         string $message = ''
     ): void {
-        static::assertThat($object, new LogicalNot(static::classHasPropertiesIdenticalTo($expected)), $message);
+        static::assertThat($class, new LogicalNot(static::classHasPropertiesIdenticalTo($expected)), $message);
     }
 
     /**
-     * Compares selected properties of *$object* with *$expected* ones.
+     * Compares selected properties of *$class* with *$expected* ones.
      *
      * @param array $expected
      *                        An array of key => value pairs with expected values of attributes
@@ -204,7 +207,7 @@ trait PropertiesAssertionsTrait
     }
 
     /**
-     * Asserts that selected properties of *$object* are identical to *$expected* ones.
+     * Asserts that selected properties of *$class* are identical to *$expected* ones.
      *
      * @param array  $expected
      *                         An array of key => value pairs with property names as keys and
@@ -222,11 +225,11 @@ trait PropertiesAssertionsTrait
         string $class,
         string $message = ''
     ): void {
-        static::assertThat($object, static::classHasPropertiesEqualTo($expected), $message);
+        static::assertThat($class, static::classHasPropertiesEqualTo($expected), $message);
     }
 
     /**
-     * Asserts that selected properties of *$object* are not identical to *$expected* ones.
+     * Asserts that selected properties of *$class* are not identical to *$expected* ones.
      *
      * @param array  $expected
      *                         An array of key => value pairs with property names as keys and
@@ -244,11 +247,11 @@ trait PropertiesAssertionsTrait
         string $class,
         string $message = ''
     ): void {
-        static::assertThat($object, new LogicalNot(static::classHasPropertiesEqualTo($expected)), $message);
+        static::assertThat($class, new LogicalNot(static::classHasPropertiesEqualTo($expected)), $message);
     }
 
     /**
-     * Compares selected properties of *$object* with *$expected* ones.
+     * Compares selected properties of *$class* with *$expected* ones.
      *
      * @param array $expected
      *                        An array of key => value pairs with expected values of attributes

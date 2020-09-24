@@ -38,6 +38,8 @@ trait ClassPropertySelectorTestTrait
     //
     // canSelectFrom()
     //
+
+    // @codeCoverageIgnoreStart
     public static function provClassPropertySelectorCanSelectFrom(): array
     {
         return [
@@ -72,6 +74,7 @@ trait ClassPropertySelectorTestTrait
             ],
         ];
     }
+    // @codeCoverageIgnoreEnd
 
     /**
      * @dataProvider provClassPropertySelectorCanSelectFrom
@@ -87,6 +90,8 @@ trait ClassPropertySelectorTestTrait
     //
     // selectProperty
     //
+
+    // @codeCoverageIgnoreStart
     public static function provClassPropertySelectorSelectProperty(): array
     {
         return [
@@ -137,6 +142,7 @@ trait ClassPropertySelectorTestTrait
             ],
         ];
     }
+    // @codeCoverageIgnoreEnd
 
     /**
      * @dataProvider provClassPropertySelectorSelectProperty
@@ -157,6 +163,9 @@ trait ClassPropertySelectorTestTrait
         $class = get_class(new class() {
             private static function foo()
             {
+                // @codeCoverageIgnoreStart
+                return;
+                // @codeCoverageIgnoreEnd
             }
         });
         $selector = $this->createClassPropertySelector();
@@ -165,6 +174,10 @@ trait ClassPropertySelectorTestTrait
         $this->expectExceptionMessage('private method');
 
         $selector->selectProperty($class, 'foo()');
+
+        // @codeCoverageIgnoreStart
+        return;
+        // @codeCoverageIgnoreEnd
     }
 
     public function testClassPropertySelectorSelectPropertyThrowsOnPrivateAttribute(): void
@@ -178,6 +191,10 @@ trait ClassPropertySelectorTestTrait
         $this->expectExceptionMessage('private property');
 
         $selector->selectProperty($class, 'foo');
+
+        // @codeCoverageIgnoreStart
+        return;
+        // @codeCoverageIgnoreEnd
     }
 
     public function testClassPropertySelectorSelectPropertyThrowsOnNonStaticMethod(): void
@@ -185,6 +202,9 @@ trait ClassPropertySelectorTestTrait
         $class = get_class(new class() {
             public function foo()
             {
+                // @codeCoverageIgnoreStart
+                return;
+                // @codeCoverageIgnoreEnd
             }
         });
         $selector = $this->createClassPropertySelector();
@@ -193,6 +213,10 @@ trait ClassPropertySelectorTestTrait
         $this->expectErrorMessage('should not be called statically');
 
         $selector->selectProperty($class, 'foo()');
+
+        // @codeCoverageIgnoreStart
+        return;
+        // @codeCoverageIgnoreEnd
     }
 
     public function testClassPropertySelectorSelectPropertyThrowsOnNonStaticProperty(): void
@@ -206,8 +230,13 @@ trait ClassPropertySelectorTestTrait
         $this->expectExceptionMessage('undeclared static property');
 
         $selector->selectProperty($class, 'foo');
+
+        // @codeCoverageIgnoreStart
+        return;
+        // @codeCoverageIgnoreEnd
     }
 
+    // @codeCoverageIgnoreStart
     public static function provClassPropertySelectorSelectPropertyThrowsOnNonClass(): array
     {
         return [
@@ -224,6 +253,7 @@ trait ClassPropertySelectorTestTrait
             ],
         ];
     }
+    // @codeCoverageIgnoreEnd
 
     /**
      * @dataProvider provClassPropertySelectorSelectPropertyThrowsOnNonClass
@@ -237,6 +267,10 @@ trait ClassPropertySelectorTestTrait
         $this->expectExceptionMessageMatches('/Argument #1 of '.$method.' must be a class/');
 
         $selector->selectProperty(123, $key);
+
+        // @codeCoverageIgnoreStart
+        return;
+        // @codeCoverageIgnoreEnd
     }
 }
 // vim: syntax=php sw=4 ts=4 et tw=119:

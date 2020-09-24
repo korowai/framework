@@ -21,6 +21,7 @@ use Korowai\Testing\TestCase;
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Testing\Properties\AbstractPropertySelector
  * @covers \Korowai\Testing\Properties\ObjectPropertySelector
+ * @covers \Korowai\Tests\Testing\Properties\ObjectPropertySelectorTestTrait
  *
  * @internal
  */

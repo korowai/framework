@@ -40,6 +40,7 @@ trait ExpectedPropertiesTestTrait
     // canUnwrapChild()
     //
 
+    // @codeCoverageIgnoreStart
     public function provExpectedPropertiesCanUnwrapChild(): array
     {
         $selector = $this->createMock(PropertySelectorInterface::class);
@@ -60,6 +61,7 @@ trait ExpectedPropertiesTestTrait
             ],
         ];
     }
+    // @codeCoverageIgnoreEnd
 
     /**
      * @dataProvider provExpectedPropertiesCanUnwrapChild

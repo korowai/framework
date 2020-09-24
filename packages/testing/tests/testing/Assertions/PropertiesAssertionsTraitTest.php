@@ -15,6 +15,7 @@ namespace Korowai\Tests\Testing\Assertions;
 use Korowai\Testing\Assertions\PropertiesAssertionsTrait;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Constraint\UnaryOperator;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -59,6 +60,112 @@ final class PropertiesAssertionsTraitTest extends TestCase
         $method = new \ReflectionMethod(...$classAndMethod);
         self::assertTrue($method->isStatic());
     }
+
+    public static function provConstraintWithInvalidExpectationSpec(): array
+    {
+        $specs = [
+            '3-int-keys' => [
+                'array'  => [
+                    'a' => 'A', 0 => 'B', 2 => 'C', 7 => 'D', 'e' => 'E'
+                ],
+                'expect' => [
+                    'exception' => \PHPUnit\Framework\Exception::class,
+                    'message'   => 'The array of expected properties contains 3 invalid key(s)',
+                ]
+            ],
+        ];
+
+        return [
+            'PropertiesAssertionsTraitTest.php:'.__LINE__ => [
+                'method' => 'objectHasPropertiesIdenticalTo',
+            ] + $specs['3-int-keys'],
+
+            'PropertiesAssertionsTraitTest.php:'.__LINE__ => [
+                'method' => 'objectHasPropertiesEqualTo',
+            ] + $specs['3-int-keys'],
+
+            'PropertiesAssertionsTraitTest.php:'.__LINE__ => [
+                'method' => 'classHasPropertiesIdenticalTo',
+            ] + $specs['3-int-keys'],
+
+            'PropertiesAssertionsTraitTest.php:'.__LINE__ => [
+                'method' => 'classHasPropertiesEqualTo',
+            ] + $specs['3-int-keys'],
+        ];
+    }
+
+    /**
+     * @dataProvider provConstraintWithInvalidExpectationSpec
+     */
+    public function testConstraintWithInvalidExpectationSpec(string $method, array $array, array $expect): array
+    {
+        self::expectException($expect['exception']);
+        self::expectExceptionMessage($expect['message']);
+
+        call_user_func([self::class, $method], $array);
+    }
+
+    public static function provAssertionWithIncompatibleValue(): array
+    {
+        return [
+            'PropertiesAssertionsTraitTest.php:'.__LINE__ => [
+                'method' => 'objectHasPropertiesIdenticalTo',
+                'array'  => ['foo' => 'FOO'],
+                'value'  => 123,
+                'expect' => [
+                    'exception' => ExpectationFailedException::class,
+                    'message'   => '/^Failed asserting that 123 is an object with properties identical to specified.$/'
+                ],
+            ],
+
+            'PropertiesAssertionsTraitTest.php:'.__LINE__ => [
+                'method' => 'objectHasPropertiesEqualTo',
+                'array'  => ['foo' => 'FOO'],
+                'value'  => 123,
+                'expect' => [
+                    'exception' => ExpectationFailedException::class,
+                    'message'   => '/^Failed asserting that 123 is an object with properties equal to specified.$/'
+                ],
+            ],
+
+            'PropertiesAssertionsTraitTest.php:'.__LINE__ => [
+                'method' => 'classHasPropertiesIdenticalTo',
+                'array'  => ['foo' => 'FOO'],
+                'value'  => 123,
+                'expect' => [
+                    'exception' => ExpectationFailedException::class,
+                    'message'   => '/^Failed asserting that 123 is a class with properties identical to specified.$/'
+                ],
+            ],
+
+            'PropertiesAssertionsTraitTest.php:'.__LINE__ => [
+                'method' => 'classHasPropertiesEqualTo',
+                'array'  => ['foo' => 'FOO'],
+                'value'  => 123,
+                'expect' => [
+                    'exception' => ExpectationFailedException::class,
+                    'message'   => '/^Failed asserting that 123 is a class with properties equal to specified.$/'
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider provAssertionWithIncompatibleValue
+     */
+    public function testAssertionWithIncompatibleValue(string $method, array $array, $value, array $expect): void
+    {
+        $matcher = call_user_func([self::class, $method], $array);
+
+        self::expectException($expect['exception']);
+        self::expectExceptionMessageMatches($expect['message']);
+
+        self::assertThat($value, $matcher);
+    }
+
+    //
+    // object
+    //
 
     public static function provObjectPropertiesIdenticalTo(): array
     {
@@ -129,14 +236,12 @@ final class PropertiesAssertionsTraitTest extends TestCase
         $registry->addFamily('smith', [$esmith, $jsmith]);
 
         return [
-            // #0
-            [
+            'PropertiesAssertionsTraitTest.php:'.__LINE__ => [
                 'expect' => ['name' => 'John', 'last' => 'Smith', 'age' => 21, 'wife' => $esmith],
                 'object' => $jsmith,
             ],
 
-            // #1
-            [
+            'PropertiesAssertionsTraitTest.php:'.__LINE__ => [
                 'expect' => [
                     'name' => 'John',
                     'last' => 'Smith',
@@ -146,32 +251,27 @@ final class PropertiesAssertionsTraitTest extends TestCase
                 'object' => $jsmith,
             ],
 
-            // #2
-            [
+            'PropertiesAssertionsTraitTest.php:'.__LINE__ => [
                 'expect' => ['name' => 'John', 'last' => 'Smith', 'age' => 21],
                 'object' => $jsmith,
             ],
 
-            // #3
-            [
+            'PropertiesAssertionsTraitTest.php:'.__LINE__ => [
                 'expect' => ['name' => 'John', 'last' => 'Smith'],
                 'object' => $jsmith,
             ],
 
-            // #4
-            [
+            'PropertiesAssertionsTraitTest.php:'.__LINE__ => [
                 'expect' => ['age' => 21],
                 'object' => $jsmith,
             ],
 
-            // #5
-            [
+            'PropertiesAssertionsTraitTest.php:'.__LINE__ => [
                 'expect' => ['age' => 21, 'getSalary()' => 123, 'getDebit()' => -123],
                 'object' => $jsmith,
             ],
 
-            // #6
-            [
+            'PropertiesAssertionsTraitTest.php:'.__LINE__ => [
                 'expect' => [
                     'name' => 'John',
                     'last' => 'Smith',
@@ -187,8 +287,7 @@ final class PropertiesAssertionsTraitTest extends TestCase
                 'object' => $jsmith,
             ],
 
-            // #7
-            [
+            'PropertiesAssertionsTraitTest.php:'.__LINE__ => [
                 'expect' => [
                     'name' => 'John',
                     'last' => 'Smith',
@@ -209,16 +308,14 @@ final class PropertiesAssertionsTraitTest extends TestCase
                 'object' => $jsmith,
             ],
 
-            // #8
-            [
+            'PropertiesAssertionsTraitTest.php:'.__LINE__ => [
                 'expect' => [
                     'family' => [$esmith],
                 ],
                 'object' => $jsmith,
             ],
 
-            // #9
-            [
+            'PropertiesAssertionsTraitTest.php:'.__LINE__ => [
                 'expect' => [
                     'family' => [
                         self::objectHasPropertiesIdenticalTo(['name' => 'Emily', 'last' => 'Smith']),
@@ -227,8 +324,7 @@ final class PropertiesAssertionsTraitTest extends TestCase
                 'object' => $jsmith,
             ],
 
-            // #10
-            [
+            'PropertiesAssertionsTraitTest.php:'.__LINE__ => [
                 'expect' => [
                     'persons' => [
                         self::objectHasPropertiesIdenticalTo(['name' => 'Emily', 'last' => 'Smith']),
@@ -244,8 +340,7 @@ final class PropertiesAssertionsTraitTest extends TestCase
                 'object' => $registry,
             ],
 
-            // #11
-            [
+            'PropertiesAssertionsTraitTest.php:'.__LINE__ => [
                 'expect' => [
                     'persons' => [
                         $esmith,
@@ -263,7 +358,31 @@ final class PropertiesAssertionsTraitTest extends TestCase
         ];
     }
 
-    public static function provObjectPropertiesNotIdenticalTo(): array
+    public static function provObjectPropertiesEqualButNotIdenticalTo(): array
+    {
+        $object = new class() {
+            public $emptyString = '';
+            public $null;
+            public $string123 = '123';
+            public $int321 = 321;
+            public $boolFalse = false;
+        };
+
+        return [
+            'PropertiesAssertionsTraitTest.php:'.__LINE__ => [
+                'expect' => [
+                    'emptyString' => null,
+                    'null' => '',
+                    'string123' => 123,
+                    'int321' => '321',
+                    'boolFalse' => 0,
+                ],
+                'object' => $object,
+            ],
+        ];
+    }
+
+    public static function provObjectPropertiesNotEqualTo(): array
     {
         $hbrown = new class() {
             public $name = 'Helen';
@@ -338,50 +457,42 @@ final class PropertiesAssertionsTraitTest extends TestCase
         $registry->addFamily('smith', [$esmith, $jsmith]);
 
         return [
-            // #0
-            [
+            'PropertiesAssertionsTraitTest.php:'.__LINE__ => [
                 'expect' => ['name' => 'John', 'last' => 'Brown', 'age' => 21],
                 'object' => $jsmith,
             ],
 
-            // #1
-            [
+            'PropertiesAssertionsTraitTest.php:'.__LINE__ => [
                 'expect' => ['name' => 'John', 'last' => 'Smith', 'wife' => null],
                 'object' => $jsmith,
             ],
 
-            // #2
-            [
+            'PropertiesAssertionsTraitTest.php:'.__LINE__ => [
                 'expect' => ['name' => 'John', 'last' => 'Smith', 'wife' => 'Emily'],
                 'object' => $jsmith,
             ],
 
-            // #3
-            [
+            'PropertiesAssertionsTraitTest.php:'.__LINE__ => [
                 'expect' => ['name' => 'John', 'last' => 'Smith', 'wife' => $hbrown],
                 'object' => $jsmith,
             ],
 
-            // #4
-            [
+            'PropertiesAssertionsTraitTest.php:'.__LINE__ => [
                 'expect' => ['name' => 'John', 'last' => 'Brown'],
                 'object' => $jsmith,
             ],
 
-            // #5
-            [
+            'PropertiesAssertionsTraitTest.php:'.__LINE__ => [
                 'expect' => ['age' => 19],
                 'object' => $jsmith,
             ],
 
-            // #6
-            [
+            'PropertiesAssertionsTraitTest.php:'.__LINE__ => [
                 'expect' => ['age' => 21, 'getSalary()' => 1230],
                 'object' => $jsmith,
             ],
 
-            // #7
-            [
+            'PropertiesAssertionsTraitTest.php:'.__LINE__ => [
                 'expect' => [
                     'name' => 'John',
                     'last' => 'Smith',
@@ -402,8 +513,7 @@ final class PropertiesAssertionsTraitTest extends TestCase
                 'object' => $jsmith,
             ],
 
-            // #8
-            [
+            'PropertiesAssertionsTraitTest.php:'.__LINE__ => [
                 'expect' => [
                     'family' => [
                         ['name' => 'Emily', 'last' => 'Smith'],
@@ -412,8 +522,7 @@ final class PropertiesAssertionsTraitTest extends TestCase
                 'object' => $jsmith,
             ],
 
-            // #9
-            [
+            'PropertiesAssertionsTraitTest.php:'.__LINE__ => [
                 'expect' => [
                     'persons' => [
                         ['name' => 'Emily', 'last' => 'Smith'],
@@ -429,8 +538,7 @@ final class PropertiesAssertionsTraitTest extends TestCase
                 'object' => $registry,
             ],
 
-            // #10
-            [
+            'PropertiesAssertionsTraitTest.php:'.__LINE__ => [
                 'expect' => [
                     'persons' => [
                         $esmith,
@@ -458,31 +566,12 @@ final class PropertiesAssertionsTraitTest extends TestCase
     }
 
     /**
-     * @dataProvider provObjectPropertiesNotIdenticalTo
+     * @dataProvider provObjectPropertiesNotEqualTo
+     * @dataProvider provObjectPropertiesEqualButNotIdenticalTo
      */
     public function testLogicalNotObjectHasPropertiesIdenticalTo(array $expect, object $object)
     {
         self::assertThat($object, self::logicalNot(self::objectHasPropertiesIdenticalTo($expect)));
-    }
-
-    public function testObjectHasPropertiesIdenticalToWithNonObject(): void
-    {
-        $matcher = self::objectHasPropertiesIdenticalTo(['a' => 'A']);
-        $expectedMessage = '/^Failed asserting that 123 is an object '.
-            'with properties identical to specified.$/';
-
-        self::expectException(ExpectationFailedException::class);
-        self::expectExceptionMessageMatches($expectedMessage);
-
-        self::assertThat(123, $matcher);
-    }
-
-    public function testObjectHasPropertiesIdenticalToWithInvalidArray(): void
-    {
-        self::expectException(\PHPUnit\Framework\Exception::class);
-        self::expectExceptionMessage('The array of expected properties contains 3 invalid key(s)');
-
-        self::objectHasPropertiesIdenticalTo(['a' => 'A', 0 => 'B', 2 => 'C', 7 => 'D', 'e' => 'E']);
     }
 
     /**
@@ -494,7 +583,8 @@ final class PropertiesAssertionsTraitTest extends TestCase
     }
 
     /**
-     * @dataProvider provObjectPropertiesNotIdenticalTo
+     * @dataProvider provObjectPropertiesNotEqualTo
+     * @dataProvider provObjectPropertiesEqualButNotIdenticalTo
      */
     public function testAssertObjectHasPropertiesIdenticalToFails(array $expect, object $object)
     {
@@ -508,7 +598,7 @@ final class PropertiesAssertionsTraitTest extends TestCase
     }
 
     /**
-     * @dataProvider provObjectPropertiesNotIdenticalTo
+     * @dataProvider provObjectPropertiesNotEqualTo
      */
     public function testAssertNotObjectHasPropertiesIdenticalTo(array $expect, object $object)
     {
@@ -527,6 +617,340 @@ final class PropertiesAssertionsTraitTest extends TestCase
         self::expectExceptionMessageMatches($regexp);
 
         self::assertNotObjectHasPropertiesIdenticalTo($expect, $object, 'Lorem ipsum.');
+    }
+
+    /**
+     * @dataProvider provObjectPropertiesIdenticalTo
+     * @dataProvider provObjectPropertiesEqualButNotIdenticalTo
+     */
+    public function testObjectHasPropertiesEqualTo(array $expect, object $object)
+    {
+        self::assertThat($object, self::objectHasPropertiesEqualTo($expect));
+    }
+
+    /**
+     * @dataProvider provObjectPropertiesNotEqualTo
+     */
+    public function testLogicalNotObjectHasPropertiesEqualTo(array $expect, object $object)
+    {
+        self::assertThat($object, self::logicalNot(self::objectHasPropertiesEqualTo($expect)));
+    }
+
+    /**
+     * @dataProvider provObjectPropertiesIdenticalTo
+     * @dataProvider provObjectPropertiesEqualButNotIdenticalTo
+     */
+    public function testAssertObjectHasPropertiesEqualTo(array $expect, object $object)
+    {
+        self::assertObjectHasPropertiesEqualTo($expect, $object);
+    }
+
+    /**
+     * @dataProvider provObjectPropertiesNotEqualTo
+     */
+    public function testAssertObjectHasPropertiesEqualToFails(array $expect, object $object)
+    {
+        $regexp = '/^Lorem ipsum.\n'.
+            'Failed asserting that object class\@.+ is an object '.
+            'with properties equal to specified./';
+        self::expectException(ExpectationFailedException::class);
+        self::expectExceptionMessageMatches($regexp);
+
+        self::assertObjectHasPropertiesEqualTo($expect, $object, 'Lorem ipsum.');
+    }
+
+    /**
+     * @dataProvider provObjectPropertiesNotEqualTo
+     */
+    public function testAssertNotObjectHasPropertiesEqualTo(array $expect, object $object)
+    {
+        self::assertNotObjectHasPropertiesEqualTo($expect, $object);
+    }
+
+    /**
+     * @dataProvider provObjectPropertiesIdenticalTo
+     * @dataProvider provObjectPropertiesEqualButNotIdenticalTo
+     */
+    public function testAssertNotObjectHasPropertiesEqualToFails(array $expect, object $object)
+    {
+        $regexp = '/^Lorem ipsum.\n'.
+            'Failed asserting that object class@.+ fails to be an object '.
+            'with properties equal to specified./';
+        self::expectException(ExpectationFailedException::class);
+        self::expectExceptionMessageMatches($regexp);
+
+        self::assertNotObjectHasPropertiesEqualTo($expect, $object, 'Lorem ipsum.');
+    }
+
+
+    //
+    // class
+    //
+
+    public static function provClassPropertiesIdenticalTo(): array
+    {
+        return [
+            'PropertiesAssertionsTraitTest.php:'.__LINE__ => [
+                'expect' => [
+                    'emptyString' => '',
+                    'null' => null,
+                    'string123' => '123',
+                    'int321' => 321,
+                    'boolFalse' => false,
+                ],
+                'class' => get_class(new class() {
+                    public static $emptyString = '';
+                    public static $null;
+                    public static $string123 = '123';
+                    public static $int321 = 321;
+                    public static $boolFalse = false;
+                }),
+            ],
+        ];
+    }
+
+    public static function provClassPropertiesEqualButNotIdenticalTo(): array
+    {
+
+        return [
+            'PropertiesAssertionsTraitTest.php:'.__LINE__ => [
+                'expect' => [
+                    'emptyString' => null,
+                    'null' => '',
+                    'string123' => 123,
+                    'int321' => '321',
+                    'boolFalse' => 0,
+                ],
+                'class' => get_class(new class() {
+                    public static $emptyString = '';
+                    public static $null;
+                    public static $string123 = '123';
+                    public static $int321 = 321;
+                    public static $boolFalse = false;
+                }),
+            ],
+        ];
+    }
+
+    public static function provClassPropertiesNotEqualTo(): array
+    {
+
+        return [
+            'PropertiesAssertionsTraitTest.php:'.__LINE__ => [
+                'expect' => [
+                    'emptyString' => 'foo',
+                    'null' => 1,
+                    'string123' => '321',
+                    'int321' => 123,
+                    'boolFalse' => true,
+                ],
+                'class' => get_class(new class() {
+                    public static $emptyString = '';
+                    public static $null;
+                    public static $string123 = '123';
+                    public static $int321 = 321;
+                    public static $boolFalse = false;
+                }),
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider provClassPropertiesIdenticalTo
+     */
+    public function testClassHasPropertiesIdenticalTo(array $expect, string $class)
+    {
+        self::assertThat($class, self::classHasPropertiesIdenticalTo($expect));
+    }
+
+    /**
+     * @dataProvider provClassPropertiesNotEqualTo
+     * @dataProvider provClassPropertiesEqualButNotIdenticalTo
+     */
+    public function testLogicalNotClassHasPropertiesIdenticalTo(array $expect, string $class)
+    {
+        self::assertThat($class, self::logicalNot(self::classHasPropertiesIdenticalTo($expect)));
+    }
+
+    /**
+     * @dataProvider provClassPropertiesIdenticalTo
+     */
+    public function testAssertClassHasPropertiesIdenticalTo(array $expect, string $class)
+    {
+        self::assertClassHasPropertiesIdenticalTo($expect, $class);
+    }
+
+    /**
+     * @dataProvider provClassPropertiesNotEqualTo
+     * @dataProvider provClassPropertiesEqualButNotIdenticalTo
+     */
+    public function testAssertClassHasPropertiesIdenticalToFails(array $expect, string $class)
+    {
+        $regexp = '/^Lorem ipsum.\n'.
+            'Failed asserting that .+ is a class '.
+            'with properties identical to specified./';
+        self::expectException(ExpectationFailedException::class);
+        self::expectExceptionMessageMatches($regexp);
+
+        self::assertClassHasPropertiesIdenticalTo($expect, $class, 'Lorem ipsum.');
+    }
+
+    /**
+     * @dataProvider provClassPropertiesNotEqualTo
+     */
+    public function testAssertNotClassHasPropertiesIdenticalTo(array $expect, string $class)
+    {
+        self::assertNotClassHasPropertiesIdenticalTo($expect, $class);
+    }
+
+    /**
+     * @dataProvider provClassPropertiesIdenticalTo
+     */
+    public function testAssertNotClassHasPropertiesIdenticalToFails(array $expect, string $class)
+    {
+        $regexp = '/^Lorem ipsum.\n'.
+            'Failed asserting that .+ fails to be a class '.
+            'with properties identical to specified./';
+        self::expectException(ExpectationFailedException::class);
+        self::expectExceptionMessageMatches($regexp);
+
+        self::assertNotClassHasPropertiesIdenticalTo($expect, $class, 'Lorem ipsum.');
+    }
+
+    /**
+     * @dataProvider provClassPropertiesIdenticalTo
+     * @dataProvider provClassPropertiesEqualButNotIdenticalTo
+     */
+    public function testClassHasPropertiesEqualTo(array $expect, string $class)
+    {
+        self::assertThat($class, self::classHasPropertiesEqualTo($expect));
+    }
+
+    /**
+     * @dataProvider provClassPropertiesNotEqualTo
+     */
+    public function testLogicalNotClassHasPropertiesEqualTo(array $expect, string $class)
+    {
+        self::assertThat($class, self::logicalNot(self::classHasPropertiesEqualTo($expect)));
+    }
+
+    /**
+     * @dataProvider provClassPropertiesIdenticalTo
+     * @dataProvider provClassPropertiesEqualButNotIdenticalTo
+     */
+    public function testAssertClassHasPropertiesEqualTo(array $expect, string $class)
+    {
+        self::assertClassHasPropertiesEqualTo($expect, $class);
+    }
+
+    /**
+     * @dataProvider provClassPropertiesNotEqualTo
+     */
+    public function testAssertClassHasPropertiesEqualToFails(array $expect, string $class)
+    {
+        $regexp = '/^Lorem ipsum.\n'.
+            'Failed asserting that .+ is a class '.
+            'with properties equal to specified./';
+        self::expectException(ExpectationFailedException::class);
+        self::expectExceptionMessageMatches($regexp);
+
+        self::assertClassHasPropertiesEqualTo($expect, $class, 'Lorem ipsum.');
+    }
+
+    /**
+     * @dataProvider provClassPropertiesNotEqualTo
+     */
+    public function testAssertNotClassHasPropertiesEqualTo(array $expect, string $class)
+    {
+        self::assertNotClassHasPropertiesEqualTo($expect, $class);
+    }
+
+    /**
+     * @dataProvider provClassPropertiesIdenticalTo
+     * @dataProvider provClassPropertiesEqualButNotIdenticalTo
+     */
+    public function testAssertNotClassHasPropertiesEqualToFails(array $expect, string $class)
+    {
+        $regexp = '/^Lorem ipsum.\n'.
+            'Failed asserting that .+ fails to be a class '.
+            'with properties equal to specified./';
+        self::expectException(ExpectationFailedException::class);
+        self::expectExceptionMessageMatches($regexp);
+
+        self::assertNotClassHasPropertiesEqualTo($expect, $class, 'Lorem ipsum.');
+    }
+
+
+    //
+    // misc.
+    //
+
+    public function testObjectPropertiesConstraintsWithAndOperator(): void
+    {
+        $this->assertThat(
+            new class {
+                public $foo = 'FOO';
+                public $bar = '';
+            },
+            $this->logicalAnd(
+                $this->objectHasPropertiesIdenticalTo([
+                    'foo' => 'FOO'
+                ]),
+                $this->objectHasPropertiesEqualTo([
+                    'bar' => null
+                ])
+            )
+        );
+    }
+
+    public function testObjectPropertiesConstraintsWithAndOperatorFails(): void
+    {
+        $regexp = '/is an object with properties identical to specified'.
+            ' and is an object with properties equal to specified/';
+
+        self::expectException(ExpectationFailedException::class);
+        self::expectExceptionMessageMatches($regexp);
+
+        $this->assertThat(
+            new class {
+                public $foo = '';
+                public $bar = 'BAR';
+            },
+            $this->logicalAnd(
+                $this->objectHasPropertiesIdenticalTo([
+                    'foo' => 'FOO'
+                ]),
+                $this->objectHasPropertiesEqualTo([
+                    'bar' => null
+                ])
+            )
+        );
+    }
+
+    // for full coverage of failureDescriptionInContext()
+    public function testFailureDescriptionOfCustomUnaryOperator(): void
+    {
+        $constraint = $this->objectHasPropertiesIdenticalTo([
+            'foo' => 'FOO'
+        ]);
+
+        $unary = $this->getMockBuilder(UnaryOperator::class)
+                      ->setConstructorArgs([$constraint])
+                      ->getMockForAbstractClass();
+
+        $unary->expects($this->any())
+              ->method('operator')
+              ->willReturn('!');
+        $unary->expects($this->any())
+              ->method('precedence')
+              ->willReturn(1);
+
+        $regexp = '/is an object with properties identical to specified/';
+
+        self::expectException(ExpectationFailedException::class);
+        self::expectExceptionMessageMatches($regexp);
+
+        $this->assertThat(new class {}, $unary);
     }
 }
 

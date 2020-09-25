@@ -132,7 +132,7 @@ final class ResultTest extends TestCase
         $constraints = array_map(function ($ldapEntry) {
             return $this->logicalAnd(
                 $this->isInstanceOf(ResultEntry::class),
-                $this->objectHasPropertiesIdenticalTo(['getLdapResultEntry()' => $ldapEntry]),
+                $this->objectPropertiesIdenticalTo(['getLdapResultEntry()' => $ldapEntry]),
             );
         }, $ldapEntries);
 
@@ -218,7 +218,7 @@ final class ResultTest extends TestCase
         $constraints = array_map(function ($ldapReference) {
             return $this->logicalAnd(
                 $this->isInstanceOf(ResultReference::class),
-                $this->objectHasPropertiesIdenticalTo(['getLdapResultReference()' => $ldapReference]),
+                $this->objectPropertiesIdenticalTo(['getLdapResultReference()' => $ldapReference]),
             );
         }, $ldapReferences);
 

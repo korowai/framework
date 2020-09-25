@@ -3,7 +3,7 @@
 /**
  * @coversNothing
  */
-final class AssertObjectHasPropertiesIdenticalToTest extends \Korowai\Testing\TestCase
+final class AssertObjectPropertiesIdenticalToTest extends \Korowai\Testing\TestCase
 {
     public $attribute;
 
@@ -20,7 +20,7 @@ final class AssertObjectHasPropertiesIdenticalToTest extends \Korowai\Testing\Te
     public function testSuccess()
     {
         // assert that:
-        $this->assertObjectHasPropertiesIdenticalTo([
+        $this->assertObjectPropertiesIdenticalTo([
             'attribute'     => 'A',   // - attribute is 'A' (ok)
             'getValue()'    => 'V'    // - value is 'V' (ok)
         ], $this);
@@ -29,7 +29,7 @@ final class AssertObjectHasPropertiesIdenticalToTest extends \Korowai\Testing\Te
     public function testFailure()
     {
         // assert that:
-        $this->assertObjectHasPropertiesIdenticalTo([
+        $this->assertObjectPropertiesIdenticalTo([
             'attribute'     => 'A',   // - attribute is 'A' (ok)
             'getValue()'    => 'X'    // - value is 'X' (fail)
         ], $this);
@@ -38,11 +38,11 @@ final class AssertObjectHasPropertiesIdenticalToTest extends \Korowai\Testing\Te
     public function testFailureWithGetter()
     {
         // assert that:
-        $this->assertObjectHasPropertiesIdenticalTo([
+        $this->assertObjectPropertiesIdenticalTo([
             'attribute'     => 'A',   // - attribute is 'A' (ok)
             'value'         => 'X'    // - value is 'X' (fail)
         ], $this, '', function (object $object) {
-            return ($object instanceof AssertObjectHasPropertiesIdenticalToTest) ? ['value' => 'getValue'] : [];
+            return ($object instanceof AssertObjectPropertiesIdenticalToTest) ? ['value' => 'getValue'] : [];
         });
     }
 }

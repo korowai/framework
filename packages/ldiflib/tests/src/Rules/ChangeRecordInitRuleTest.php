@@ -47,12 +47,12 @@ final class ChangeRecordInitRuleTest extends TestCase
     {
         $rule = new ChangeRecordInitRule(...$args);
         $expect = array_merge([
-            'getRfcRule()' => self::objectHasPropertiesIdenticalTo([
+            'getRfcRule()' => self::objectPropertiesIdenticalTo([
                 'ruleSetClass()' => Rfc2849::class,
                 'name()' => 'CHANGERECORD_INIT',
             ]),
         ], $expect);
-        $this->assertObjectHasPropertiesIdenticalTo($expect, $rule);
+        $this->assertObjectPropertiesIdenticalTo($expect, $rule);
     }
 
     //
@@ -72,7 +72,7 @@ final class ChangeRecordInitRuleTest extends TestCase
                     'result' => true,
                     'value' => 'add',
                     'state' => [
-                        'getCursor()' => self::objectHasPropertiesIdenticalTo(['getOffset()' => 15]),
+                        'getCursor()' => self::objectPropertiesIdenticalTo(['getOffset()' => 15]),
                         'getErrors()' => [],
                         'getRecords()' => [],
                     ],
@@ -89,7 +89,7 @@ final class ChangeRecordInitRuleTest extends TestCase
                     'result' => true,
                     'value' => 'delete',
                     'state' => [
-                        'getCursor()' => self::objectHasPropertiesIdenticalTo(['getOffset()' => 18]),
+                        'getCursor()' => self::objectPropertiesIdenticalTo(['getOffset()' => 18]),
                         'getErrors()' => [],
                         'getRecords()' => [],
                     ],
@@ -106,7 +106,7 @@ final class ChangeRecordInitRuleTest extends TestCase
                     'result' => true,
                     'value' => 'moddn',
                     'state' => [
-                        'getCursor()' => self::objectHasPropertiesIdenticalTo(['getOffset()' => 17]),
+                        'getCursor()' => self::objectPropertiesIdenticalTo(['getOffset()' => 17]),
                         'getErrors()' => [],
                         'getRecords()' => [],
                     ],
@@ -123,7 +123,7 @@ final class ChangeRecordInitRuleTest extends TestCase
                     'result' => true,
                     'value' => 'modrdn',
                     'state' => [
-                        'getCursor()' => self::objectHasPropertiesIdenticalTo(['getOffset()' => 18]),
+                        'getCursor()' => self::objectPropertiesIdenticalTo(['getOffset()' => 18]),
                         'getErrors()' => [],
                         'getRecords()' => [],
                     ],
@@ -140,7 +140,7 @@ final class ChangeRecordInitRuleTest extends TestCase
                     'result' => true,
                     'value' => 'modify',
                     'state' => [
-                        'getCursor()' => self::objectHasPropertiesIdenticalTo(['getOffset()' => 18]),
+                        'getCursor()' => self::objectPropertiesIdenticalTo(['getOffset()' => 18]),
                         'getErrors()' => [],
                         'getRecords()' => [],
                     ],
@@ -157,9 +157,9 @@ final class ChangeRecordInitRuleTest extends TestCase
                     'result' => false,
                     'value' => null,
                     'state' => [
-                        'getCursor()' => self::objectHasPropertiesIdenticalTo(['getOffset()' => 15]),
+                        'getCursor()' => self::objectPropertiesIdenticalTo(['getOffset()' => 15]),
                         'getErrors()' => [
-                            self::objectHasPropertiesIdenticalTo([
+                            self::objectPropertiesIdenticalTo([
                                 'getSourceOffset()' => 12,
                                 'getMessage()' => 'syntax error: unsupported change type: "qux"',
                             ]),
@@ -178,9 +178,9 @@ final class ChangeRecordInitRuleTest extends TestCase
                     'result' => false,
                     'value' => null,
                     'state' => [
-                        'getCursor()' => self::objectHasPropertiesIdenticalTo(['getOffset()' => 15]),
+                        'getCursor()' => self::objectPropertiesIdenticalTo(['getOffset()' => 15]),
                         'getErrors()' => [
-                            self::objectHasPropertiesIdenticalTo([
+                            self::objectPropertiesIdenticalTo([
                                 'getSourceOffset()' => 15,
                                 'getMessage()' => 'internal error: missing or invalid capture group "chg_type"',
                             ]),
@@ -210,11 +210,11 @@ final class ChangeRecordInitRuleTest extends TestCase
         $this->assertSame($expect['result'], $result);
         if (is_array($expect['value'])) {
             $this->assertInstanceOf(ModSpecInterface::class, $value);
-            $this->assertObjectHasPropertiesIdenticalTo($expect['value'], $value);
+            $this->assertObjectPropertiesIdenticalTo($expect['value'], $value);
         } else {
             $this->assertSame($expect['value'], $value);
         }
-        $this->assertObjectHasPropertiesIdenticalTo($expect['state'], $state);
+        $this->assertObjectPropertiesIdenticalTo($expect['state'], $state);
     }
 
     //
@@ -233,7 +233,7 @@ final class ChangeRecordInitRuleTest extends TestCase
                     'result' => true,
                     'value' => 'add',
                     'state' => [
-                        'getCursor()' => self::objectHasPropertiesIdenticalTo([
+                        'getCursor()' => self::objectPropertiesIdenticalTo([
                             'getOffset()' => 15,
                             'getSourceOffset()' => 15,
                             'getSourceCharOffset()' => 15,
@@ -252,7 +252,7 @@ final class ChangeRecordInitRuleTest extends TestCase
                     'result' => true,
                     'value' => 'delete',
                     'state' => [
-                        'getCursor()' => self::objectHasPropertiesIdenticalTo([
+                        'getCursor()' => self::objectPropertiesIdenticalTo([
                             'getOffset()' => 18,
                             'getSourceOffset()' => 18,
                             'getSourceCharOffset()' => 18,
@@ -271,7 +271,7 @@ final class ChangeRecordInitRuleTest extends TestCase
                     'result' => true,
                     'value' => 'moddn',
                     'state' => [
-                        'getCursor()' => self::objectHasPropertiesIdenticalTo([
+                        'getCursor()' => self::objectPropertiesIdenticalTo([
                             'getOffset()' => 17,
                             'getSourceOffset()' => 17,
                             'getSourceCharOffset()' => 17,
@@ -290,7 +290,7 @@ final class ChangeRecordInitRuleTest extends TestCase
                     'result' => true,
                     'value' => 'modrdn',
                     'state' => [
-                        'getCursor()' => self::objectHasPropertiesIdenticalTo([
+                        'getCursor()' => self::objectPropertiesIdenticalTo([
                             'getOffset()' => 18,
                             'getSourceOffset()' => 18,
                             'getSourceCharOffset()' => 18,
@@ -309,7 +309,7 @@ final class ChangeRecordInitRuleTest extends TestCase
                     'result' => true,
                     'value' => 'modify',
                     'state' => [
-                        'getCursor()' => self::objectHasPropertiesIdenticalTo([
+                        'getCursor()' => self::objectPropertiesIdenticalTo([
                             'getOffset()' => 18,
                             'getSourceOffset()' => 18,
                             'getSourceCharOffset()' => 18,
@@ -328,13 +328,13 @@ final class ChangeRecordInitRuleTest extends TestCase
                     'result' => false,
                     'value' => null,
                     'state' => [
-                        'getCursor()' => self::objectHasPropertiesIdenticalTo([
+                        'getCursor()' => self::objectPropertiesIdenticalTo([
                             'getOffset()' => 0,
                             'getSourceOffset()' => 0,
                             'getSourceCharOffset()' => 0,
                         ]),
                         'getErrors()' => [
-                            self::objectHasPropertiesIdenticalTo([
+                            self::objectPropertiesIdenticalTo([
                                 'getSourceOffset()' => 0,
                                 'getMessage()' => 'syntax error: expected "changetype:" (RFC2849)',
                             ]),
@@ -352,7 +352,7 @@ final class ChangeRecordInitRuleTest extends TestCase
                     'result' => false,
                     'value' => null,
                     'state' => [
-                        'getCursor()' => self::objectHasPropertiesIdenticalTo([
+                        'getCursor()' => self::objectPropertiesIdenticalTo([
                             'getOffset()' => 0,
                             'getSourceOffset()' => 0,
                             'getSourceCharOffset()' => 0,
@@ -371,13 +371,13 @@ final class ChangeRecordInitRuleTest extends TestCase
                     'result' => false,
                     'value' => null,
                     'state' => [
-                        'getCursor()' => self::objectHasPropertiesIdenticalTo([
+                        'getCursor()' => self::objectPropertiesIdenticalTo([
                             'getOffset()' => 12,
                             'getSourceOffset()' => 12,
                             'getSourceCharOffset()' => 12,
                         ]),
                         'getErrors()' => [
-                            self::objectHasPropertiesIdenticalTo([
+                            self::objectPropertiesIdenticalTo([
                                 'getSourceOffset()' => 12,
                                 'getMessage()' => 'syntax error: missing or invalid change type (RFC2849)',
                             ]),
@@ -395,13 +395,13 @@ final class ChangeRecordInitRuleTest extends TestCase
                     'result' => false,
                     'value' => null,
                     'state' => [
-                        'getCursor()' => self::objectHasPropertiesIdenticalTo([
+                        'getCursor()' => self::objectPropertiesIdenticalTo([
                             'getOffset()' => 15,
                             'getSourceOffset()' => 15,
                             'getSourceCharOffset()' => 15,
                         ]),
                         'getErrors()' => [
-                            self::objectHasPropertiesIdenticalTo([
+                            self::objectPropertiesIdenticalTo([
                                 'getSourceOffset()' => 12,
                                 'getMessage()' => 'syntax error: missing or invalid change type (RFC2849)',
                             ]),
@@ -432,11 +432,11 @@ final class ChangeRecordInitRuleTest extends TestCase
 
         if (is_array($expect['value'])) {
             $this->assertInstanceOf(ModSpecInterface::class, $value);
-            $this->assertObjectHasPropertiesIdenticalTo($expect['value'], $value);
+            $this->assertObjectPropertiesIdenticalTo($expect['value'], $value);
         } else {
             $this->assertSame($expect['value'], $value);
         }
-        $this->assertObjectHasPropertiesIdenticalTo($expect['state'], $state);
+        $this->assertObjectPropertiesIdenticalTo($expect['state'], $state);
     }
 }
 

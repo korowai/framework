@@ -101,16 +101,16 @@ is the inverse of this.
   :linenos:
   :language: none
 
-.. _testing.assertions.assertObjectHasPropertiesIdenticalTo:
+.. _testing.assertions.assertObjectPropertiesIdenticalTo:
 
-assertObjectHasPropertiesIdenticalTo()
+assertObjectPropertiesIdenticalTo()
 --------------------------------------
 
 Synopsis:
 
 .. code:: php
 
-  function assertObjectHasPropertiesIdenticalTo(array $expected, object $object[, string $message = ''[, callable $getters = null]])
+  function assertObjectPropertiesIdenticalTo(array $expected, object $object[, string $message = ''[, callable $getters = null]])
 
 Reports an error identified by ``$message`` if ``$object``'s properties do not
 match expectations prescribed in the ``$expected`` array. Property is defined
@@ -138,16 +138,16 @@ The method
 
 .. code:: php
 
-  function assertNotObjectHasPropertiesIdenticalTo(array $expected, array $matches[, string $message = ''[, callable $getters = null]])
+  function assertNotObjectPropertiesIdenticalTo(array $expected, array $matches[, string $message = ''[, callable $getters = null]])
 
 is the inverse of this.
 
-.. literalinclude:: ../../examples/testing/AssertObjectHasPropertiesIdenticalToTest.php
+.. literalinclude:: ../../examples/testing/AssertObjectPropertiesIdenticalToTest.php
    :linenos:
-   :caption: Usage of assertObjectHasPropertiesIdenticalTo()
-   :name: testing.assertions.assertObjectHasPropertiesIdenticalTo.example
+   :caption: Usage of assertObjectPropertiesIdenticalTo()
+   :name: testing.assertions.assertObjectPropertiesIdenticalTo.example
 
-.. literalinclude:: ../../examples/testing/AssertObjectHasPropertiesIdenticalToTest.stdout
+.. literalinclude:: ../../examples/testing/AssertObjectPropertiesIdenticalToTest.stdout
   :linenos:
   :language: none
 

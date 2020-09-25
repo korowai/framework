@@ -12,10 +12,10 @@ declare(strict_types=1);
 
 namespace Korowai\Testing\Assertions;
 
-use Korowai\Testing\Constraint\ClassHasPropertiesEqualTo;
-use Korowai\Testing\Constraint\ClassHasPropertiesIdenticalTo;
-use Korowai\Testing\Constraint\ObjectHasPropertiesEqualTo;
-use Korowai\Testing\Constraint\ObjectHasPropertiesIdenticalTo;
+use Korowai\Testing\Constraint\ClassPropertiesEqualTo;
+use Korowai\Testing\Constraint\ClassPropertiesIdenticalTo;
+use Korowai\Testing\Constraint\ObjectPropertiesEqualTo;
+use Korowai\Testing\Constraint\ObjectPropertiesIdenticalTo;
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\Constraint\LogicalNot;
 use PHPUnit\Framework\ExpectationFailedException;
@@ -49,12 +49,12 @@ trait PropertiesAssertionsTrait
      * @throws ExpectationFailedException
      * @throws \PHPUnit\Framework\Exception when a non-string keys are found in *$expected*
      */
-    public static function assertObjectHasPropertiesIdenticalTo(
+    public static function assertObjectPropertiesIdenticalTo(
         array $expected,
         object $object,
         string $message = ''
     ): void {
-        static::assertThat($object, static::objectHasPropertiesIdenticalTo($expected), $message);
+        static::assertThat($object, static::objectPropertiesIdenticalTo($expected), $message);
     }
 
     /**
@@ -71,12 +71,12 @@ trait PropertiesAssertionsTrait
      * @throws ExpectationFailedException
      * @throws \PHPUnit\Framework\Exception when a non-string keys are found in *$expected*
      */
-    public static function assertNotObjectHasPropertiesIdenticalTo(
+    public static function assertNotObjectPropertiesIdenticalTo(
         array $expected,
         object $object,
         string $message = ''
     ): void {
-        static::assertThat($object, new LogicalNot(static::objectHasPropertiesIdenticalTo($expected)), $message);
+        static::assertThat($object, new LogicalNot(static::objectPropertiesIdenticalTo($expected)), $message);
     }
 
     /**
@@ -87,9 +87,9 @@ trait PropertiesAssertionsTrait
      *
      * @throws \PHPUnit\Framework\Exception when non-string keys are found in *$expected*
      */
-    public static function objectHasPropertiesIdenticalTo(array $expected): ObjectHasPropertiesIdenticalTo
+    public static function objectPropertiesIdenticalTo(array $expected): ObjectPropertiesIdenticalTo
     {
-        return ObjectHasPropertiesIdenticalTo::fromArray($expected);
+        return ObjectPropertiesIdenticalTo::fromArray($expected);
     }
 
     /**
@@ -106,12 +106,12 @@ trait PropertiesAssertionsTrait
      * @throws ExpectationFailedException
      * @throws \PHPUnit\Framework\Exception when a non-string keys are found in *$expected*
      */
-    public static function assertObjectHasPropertiesEqualTo(
+    public static function assertObjectPropertiesEqualTo(
         array $expected,
         object $object,
         string $message = ''
     ): void {
-        static::assertThat($object, static::objectHasPropertiesEqualTo($expected), $message);
+        static::assertThat($object, static::objectPropertiesEqualTo($expected), $message);
     }
 
     /**
@@ -128,12 +128,12 @@ trait PropertiesAssertionsTrait
      * @throws ExpectationFailedException
      * @throws \PHPUnit\Framework\Exception when a non-string keys are found in *$expected*
      */
-    public static function assertNotObjectHasPropertiesEqualTo(
+    public static function assertNotObjectPropertiesEqualTo(
         array $expected,
         object $object,
         string $message = ''
     ): void {
-        static::assertThat($object, new LogicalNot(static::objectHasPropertiesEqualTo($expected)), $message);
+        static::assertThat($object, new LogicalNot(static::objectPropertiesEqualTo($expected)), $message);
     }
 
     /**
@@ -144,9 +144,9 @@ trait PropertiesAssertionsTrait
      *
      * @throws \PHPUnit\Framework\Exception when non-string keys are found in *$expected*
      */
-    public static function objectHasPropertiesEqualTo(array $expected): ObjectHasPropertiesEqualTo
+    public static function objectPropertiesEqualTo(array $expected): ObjectPropertiesEqualTo
     {
-        return ObjectHasPropertiesEqualTo::fromArray($expected);
+        return ObjectPropertiesEqualTo::fromArray($expected);
     }
 
     /**
@@ -163,12 +163,12 @@ trait PropertiesAssertionsTrait
      * @throws ExpectationFailedException
      * @throws \PHPUnit\Framework\Exception when a non-string keys are found in *$expected*
      */
-    public static function assertClassHasPropertiesIdenticalTo(
+    public static function assertClassPropertiesIdenticalTo(
         array $expected,
         string $class,
         string $message = ''
     ): void {
-        static::assertThat($class, static::classHasPropertiesIdenticalTo($expected), $message);
+        static::assertThat($class, static::classPropertiesIdenticalTo($expected), $message);
     }
 
     /**
@@ -185,12 +185,12 @@ trait PropertiesAssertionsTrait
      * @throws ExpectationFailedException
      * @throws \PHPUnit\Framework\Exception when a non-string keys are found in *$expected*
      */
-    public static function assertNotClassHasPropertiesIdenticalTo(
+    public static function assertNotClassPropertiesIdenticalTo(
         array $expected,
         string $class,
         string $message = ''
     ): void {
-        static::assertThat($class, new LogicalNot(static::classHasPropertiesIdenticalTo($expected)), $message);
+        static::assertThat($class, new LogicalNot(static::classPropertiesIdenticalTo($expected)), $message);
     }
 
     /**
@@ -201,9 +201,9 @@ trait PropertiesAssertionsTrait
      *
      * @throws \PHPUnit\Framework\Exception when non-string keys are found in *$expected*
      */
-    public static function classHasPropertiesIdenticalTo(array $expected): ClassHasPropertiesIdenticalTo
+    public static function classPropertiesIdenticalTo(array $expected): ClassPropertiesIdenticalTo
     {
-        return ClassHasPropertiesIdenticalTo::fromArray($expected);
+        return ClassPropertiesIdenticalTo::fromArray($expected);
     }
 
     /**
@@ -220,12 +220,12 @@ trait PropertiesAssertionsTrait
      * @throws ExpectationFailedException
      * @throws \PHPUnit\Framework\Exception when a non-string keys are found in *$expected*
      */
-    public static function assertClassHasPropertiesEqualTo(
+    public static function assertClassPropertiesEqualTo(
         array $expected,
         string $class,
         string $message = ''
     ): void {
-        static::assertThat($class, static::classHasPropertiesEqualTo($expected), $message);
+        static::assertThat($class, static::classPropertiesEqualTo($expected), $message);
     }
 
     /**
@@ -242,12 +242,12 @@ trait PropertiesAssertionsTrait
      * @throws ExpectationFailedException
      * @throws \PHPUnit\Framework\Exception when a non-string keys are found in *$expected*
      */
-    public static function assertNotClassHasPropertiesEqualTo(
+    public static function assertNotClassPropertiesEqualTo(
         array $expected,
         string $class,
         string $message = ''
     ): void {
-        static::assertThat($class, new LogicalNot(static::classHasPropertiesEqualTo($expected)), $message);
+        static::assertThat($class, new LogicalNot(static::classPropertiesEqualTo($expected)), $message);
     }
 
     /**
@@ -258,9 +258,9 @@ trait PropertiesAssertionsTrait
      *
      * @throws \PHPUnit\Framework\Exception when non-string keys are found in *$expected*
      */
-    public static function classHasPropertiesEqualTo(array $expected): ClassHasPropertiesEqualTo
+    public static function classPropertiesEqualTo(array $expected): ClassPropertiesEqualTo
     {
-        return ClassHasPropertiesEqualTo::fromArray($expected);
+        return ClassPropertiesEqualTo::fromArray($expected);
     }
 }
 

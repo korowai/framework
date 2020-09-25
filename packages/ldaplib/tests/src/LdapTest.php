@@ -154,7 +154,7 @@ final class LdapTest extends TestCase
     public function testConstruct(array $args, array $expect): void
     {
         $bind = new Ldap(...$args);
-        $this->assertObjectHasPropertiesIdenticalTo($expect, $bind);
+        $this->assertObjectPropertiesIdenticalTo($expect, $bind);
     }
 }
 

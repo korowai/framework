@@ -49,7 +49,7 @@ final class AbstractRfcRuleTest extends TestCase
             '__construct(RuleSet1::class, "ASSIGNMENT_INT")' => [
                 'args' => [RuleSet1::class, 'ASSIGNMENT_INT'],
                 'expect' => [
-                    'getRfcRule()' => self::objectHasPropertiesIdenticalTo([
+                    'getRfcRule()' => self::objectPropertiesIdenticalTo([
                         'ruleSetClass()' => RuleSet1::class,
                         'name()' => 'ASSIGNMENT_INT',
                     ]),
@@ -68,7 +68,7 @@ final class AbstractRfcRuleTest extends TestCase
             ->getMockForAbstractClass()
         ;
 
-        $this->assertObjectHasPropertiesIdenticalTo($expect, $rule);
+        $this->assertObjectPropertiesIdenticalTo($expect, $rule);
     }
 
     //
@@ -86,12 +86,12 @@ final class AbstractRfcRuleTest extends TestCase
                 'expect' => [
                     'result' => false,
                     'state' => [
-                        'getCursor()' => self::objectHasPropertiesIdenticalTo([
+                        'getCursor()' => self::objectPropertiesIdenticalTo([
                             'getOffset()' => 0,
                         ]),
                         'getRecords()' => [],
                         'getErrors()' => [
-                            self::objectHasPropertiesIdenticalTo([
+                            self::objectPropertiesIdenticalTo([
                                 'getMessage()' => 'syntax error: missing "var_name =" in integer assignment',
                                 'getSourceOffset()' => 0,
                             ]),
@@ -108,7 +108,7 @@ final class AbstractRfcRuleTest extends TestCase
                 'expect' => [
                     'result' => false,
                     'state' => [
-                        'getCursor()' => self::objectHasPropertiesIdenticalTo([
+                        'getCursor()' => self::objectPropertiesIdenticalTo([
                             'getOffset()' => 0,
                         ]),
                         'getRecords()' => [],
@@ -125,12 +125,12 @@ final class AbstractRfcRuleTest extends TestCase
                 'expect' => [
                     'result' => false,
                     'state' => [
-                        'getCursor()' => self::objectHasPropertiesIdenticalTo([
+                        'getCursor()' => self::objectPropertiesIdenticalTo([
                             'getOffset()' => 0,
                         ]),
                         'getRecords()' => [],
                         'getErrors()' => [
-                            self::objectHasPropertiesIdenticalTo([
+                            self::objectPropertiesIdenticalTo([
                                 'getMessage()' => 'syntax error: missing "var_name =" in integer assignment',
                                 'getSourceOffset()' => 0,
                             ]),
@@ -152,7 +152,7 @@ final class AbstractRfcRuleTest extends TestCase
                 'expect' => [
                     'result' => false,
                     'state' => [
-                        'getCursor()' => self::objectHasPropertiesIdenticalTo([
+                        'getCursor()' => self::objectPropertiesIdenticalTo([
                             'getOffset()' => 0,
                         ]),
                         'getRecords()' => [],
@@ -174,12 +174,12 @@ final class AbstractRfcRuleTest extends TestCase
                 'expect' => [
                     'result' => false,
                     'state' => [
-                        'getCursor()' => self::objectHasPropertiesIdenticalTo([
+                        'getCursor()' => self::objectPropertiesIdenticalTo([
                             'getOffset()' => 6,
                         ]),
                         'getRecords()' => [],
                         'getErrors()' => [
-                            self::objectHasPropertiesIdenticalTo([
+                            self::objectPropertiesIdenticalTo([
                                 'getSourceOffset()' => 6,
                                 'getMessage()' => 'syntax error: malformed integer value',
                             ]),
@@ -201,12 +201,12 @@ final class AbstractRfcRuleTest extends TestCase
                 'expect' => [
                     'result' => false,
                     'state' => [
-                        'getCursor()' => self::objectHasPropertiesIdenticalTo([
+                        'getCursor()' => self::objectPropertiesIdenticalTo([
                             'getOffset()' => 9,
                         ]),
                         'getRecords()' => [],
                         'getErrors()' => [
-                            self::objectHasPropertiesIdenticalTo([
+                            self::objectPropertiesIdenticalTo([
                                 'getSourceOffset()' => 6,
                                 'getMessage()' => 'syntax error: malformed integer value',
                             ]),
@@ -228,12 +228,12 @@ final class AbstractRfcRuleTest extends TestCase
                 'expect' => [
                     'result' => false,
                     'state' => [
-                        'getCursor()' => self::objectHasPropertiesIdenticalTo([
+                        'getCursor()' => self::objectPropertiesIdenticalTo([
                             'getOffset()' => 9,
                         ]),
                         'getRecords()' => [],
                         'getErrors()' => [
-                            self::objectHasPropertiesIdenticalTo([
+                            self::objectPropertiesIdenticalTo([
                                 'getSourceOffset()' => 9,
                                 'getMessage()' => 'syntax error: malformed integer value',
                             ]),
@@ -255,7 +255,7 @@ final class AbstractRfcRuleTest extends TestCase
                 'expect' => [
                     'result' => true,
                     'state' => [
-                        'getCursor()' => self::objectHasPropertiesIdenticalTo([
+                        'getCursor()' => self::objectPropertiesIdenticalTo([
                             'getOffset()' => 10,
                         ]),
                         'getRecords()' => [],
@@ -292,7 +292,7 @@ final class AbstractRfcRuleTest extends TestCase
         $result = $rule->match($state, $matches, ...$trying);
 
         $this->assertSame($expect['result'] ?? true, $result);
-        $this->assertObjectHasPropertiesIdenticalTo($expect['state'], $state);
+        $this->assertObjectPropertiesIdenticalTo($expect['state'], $state);
         $this->assertHasPregCaptures($expect['matches'], $matches);
     }
 
@@ -331,7 +331,7 @@ final class AbstractRfcRuleTest extends TestCase
         $result = $rule->parse($state, $value, ...$trying);
 
         $this->assertSame($expect['result'] ?? true, $result);
-        $this->assertObjectHasPropertiesIdenticalTo($expect['state'], $state);
+        $this->assertObjectPropertiesIdenticalTo($expect['state'], $state);
     }
 }
 

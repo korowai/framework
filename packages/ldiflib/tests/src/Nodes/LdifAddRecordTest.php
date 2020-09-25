@@ -82,7 +82,7 @@ final class LdifAddRecordTest extends TestCase
     public function testConstruct(array $args, array $expect): void
     {
         $record = new LdifAddRecord(...$args);
-        $this->assertObjectHasPropertiesIdenticalTo($expect, $record);
+        $this->assertObjectPropertiesIdenticalTo($expect, $record);
     }
 
     public function testSetAttrValSpecs(): void

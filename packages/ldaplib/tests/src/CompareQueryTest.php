@@ -61,7 +61,7 @@ final class CompareQueryTest extends TestCase
         ;
         $query = new CompareQuery($link, 'dc=example,dc=org', 'attribute', 'value');
         $this->assertSame($link, $query->getLdapLink());
-        $this->assertObjectHasPropertiesIdenticalTo([
+        $this->assertObjectPropertiesIdenticalTo([
             'getDn()' => 'dc=example,dc=org',
             'getAttribute()' => 'attribute',
             'getValue()' => 'value',

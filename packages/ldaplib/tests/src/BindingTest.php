@@ -106,7 +106,7 @@ final class BindingTest extends TestCase
     public function testConstruct(array $args, array $expect): void
     {
         $bind = new Binding(...$args);
-        $this->assertObjectHasPropertiesIdenticalTo($expect, $bind);
+        $this->assertObjectPropertiesIdenticalTo($expect, $bind);
     }
 }
 

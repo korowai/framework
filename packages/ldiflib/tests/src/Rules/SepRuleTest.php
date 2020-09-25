@@ -47,12 +47,12 @@ final class SepRuleTest extends TestCase
     {
         $rule = new SepRule(...$args);
         $expect = array_merge([
-            'getRfcRule()' => self::objectHasPropertiesIdenticalTo([
+            'getRfcRule()' => self::objectPropertiesIdenticalTo([
                 'ruleSetClass()' => Rfc2849::class,
                 'name()' => 'SEP',
             ]),
         ], $expect);
-        $this->assertObjectHasPropertiesIdenticalTo($expect, $rule);
+        $this->assertObjectPropertiesIdenticalTo($expect, $rule);
     }
 
     public static function dnMatch__cases()
@@ -73,7 +73,7 @@ final class SepRuleTest extends TestCase
                     'result' => true,
                     'value' => "\n",
                     'state' => [
-                        'getCursor()' => self::objectHasPropertiesIdenticalTo([
+                        'getCursor()' => self::objectPropertiesIdenticalTo([
                             'getOffset()' => 1,
                             'getSourceOffset()' => 1,
                             'getSourceCharOffset()' => 1,
@@ -90,7 +90,7 @@ final class SepRuleTest extends TestCase
                     'result' => true,
                     'value' => "\r\n",
                     'state' => [
-                        'getCursor()' => self::objectHasPropertiesIdenticalTo([
+                        'getCursor()' => self::objectPropertiesIdenticalTo([
                             'getOffset()' => 2,
                             'getSourceOffset()' => 2,
                             'getSourceCharOffset()' => 2,
@@ -107,13 +107,13 @@ final class SepRuleTest extends TestCase
                     'result' => false,
                     'value' => null,
                     'state' => [
-                        'getCursor()' => self::objectHasPropertiesIdenticalTo([
+                        'getCursor()' => self::objectPropertiesIdenticalTo([
                             'getOffset()' => 2,
                             'getSourceOffset()' => 2,
                             'getSourceCharOffset()' => 2,
                         ]),
                         'getErrors()' => [
-                            self::objectHasPropertiesIdenticalTo([
+                            self::objectPropertiesIdenticalTo([
                                 'getSourceOffset()' => 2,
                                 'getSourceCharOffset()' => 2,
                                 'getMessage()' => 'internal error: missing or invalid capture group 0',
@@ -130,13 +130,13 @@ final class SepRuleTest extends TestCase
                     'result' => false,
                     'value' => null,
                     'state' => [
-                        'getCursor()' => self::objectHasPropertiesIdenticalTo([
+                        'getCursor()' => self::objectPropertiesIdenticalTo([
                             'getOffset()' => 2,
                             'getSourceOffset()' => 2,
                             'getSourceCharOffset()' => 2,
                         ]),
                         'getErrors()' => [
-                            self::objectHasPropertiesIdenticalTo([
+                            self::objectPropertiesIdenticalTo([
                                 'getSourceOffset()' => 2,
                                 'getSourceCharOffset()' => 2,
                                 'getMessage()' => 'internal error: missing or invalid capture group 0',
@@ -166,7 +166,7 @@ final class SepRuleTest extends TestCase
 
         $this->assertSame($expect['result'], $result);
         $this->assertSame($expect['value'], $value);
-        $this->assertObjectHasPropertiesIdenticalTo($expect['state'], $state);
+        $this->assertObjectPropertiesIdenticalTo($expect['state'], $state);
     }
 
     //
@@ -183,7 +183,7 @@ final class SepRuleTest extends TestCase
                     'result' => true,
                     'value' => "\n",
                     'state' => [
-                        'getCursor()' => self::objectHasPropertiesIdenticalTo([
+                        'getCursor()' => self::objectPropertiesIdenticalTo([
                             'getOffset()' => 1,
                             'getSourceOffset()' => 1,
                             'getSourceCharOffset()' => 1,
@@ -200,7 +200,7 @@ final class SepRuleTest extends TestCase
                     'result' => true,
                     'value' => "\r\n",
                     'state' => [
-                        'getCursor()' => self::objectHasPropertiesIdenticalTo([
+                        'getCursor()' => self::objectPropertiesIdenticalTo([
                             'getOffset()' => 2,
                             'getSourceOffset()' => 2,
                             'getSourceCharOffset()' => 2,
@@ -217,13 +217,13 @@ final class SepRuleTest extends TestCase
                     'result' => false,
                     'value' => null,
                     'state' => [
-                        'getCursor()' => self::objectHasPropertiesIdenticalTo([
+                        'getCursor()' => self::objectPropertiesIdenticalTo([
                             'getOffset()' => 0,
                             'getSourceOffset()' => 0,
                             'getSourceCharOffset()' => 0,
                         ]),
                         'getErrors()' => [
-                            self::objectHasPropertiesIdenticalTo([
+                            self::objectPropertiesIdenticalTo([
                                 'getSourceOffset()' => 0,
                                 'getSourceCharOffset()' => 0,
                                 'getMessage()' => 'syntax error: expected line separator (RFC2849)',
@@ -240,7 +240,7 @@ final class SepRuleTest extends TestCase
                     'result' => false,
                     'value' => null,
                     'state' => [
-                        'getCursor()' => self::objectHasPropertiesIdenticalTo([
+                        'getCursor()' => self::objectPropertiesIdenticalTo([
                             'getOffset()' => 0,
                             'getSourceOffset()' => 0,
                             'getSourceCharOffset()' => 0,
@@ -270,7 +270,7 @@ final class SepRuleTest extends TestCase
 
         $this->assertSame($expect['result'], $result);
         $this->assertSame($expect['value'], $value);
-        $this->assertObjectHasPropertiesIdenticalTo($expect['state'], $state);
+        $this->assertObjectPropertiesIdenticalTo($expect['state'], $state);
     }
 }
 

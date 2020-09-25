@@ -57,7 +57,7 @@ final class LdapLinkConfigTest extends TestCase
 
         $factory = LdapLinkConfig::fromArray($resolver, $config);
 
-        $this->assertObjectHasPropertiesIdenticalTo([
+        $this->assertObjectPropertiesIdenticalTo([
             'uri()' => $resolved['uri'],
             'tls()' => $resolved['tls'],
             'options()' => $resolved['options'],

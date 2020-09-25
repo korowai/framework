@@ -12,25 +12,25 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Testing\Constraint;
 
-use Korowai\Testing\Constraint\ClassHasPropertiesEqualTo;
+use Korowai\Testing\Constraint\ClassPropertiesEqualTo;
 use Korowai\Testing\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  * @covers \Korowai\Testing\Constraint\AbstractPropertiesComparator
- * @covers \Korowai\Testing\Constraint\ClassHasPropertiesEqualTo
+ * @covers \Korowai\Testing\Constraint\ClassPropertiesEqualTo
  * @covers \Korowai\Tests\Testing\Constraint\PropertiesComparatorTestTrait
  *
  * @internal
  */
-final class ClassHasPropertiesEqualToTest extends TestCase
+final class ClassPropertiesEqualToTest extends TestCase
 {
     use PropertiesComparatorTestTrait;
 
     // required by PropertiesComparatorTestTrait
     public function getPropertiesComparatorClass(): string
     {
-        return ClassHasPropertiesEqualTo::class;
+        return ClassPropertiesEqualTo::class;
     }
 }
 

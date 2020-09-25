@@ -91,7 +91,7 @@ trait AbstractLdapResultItemIteratorTestTrait
     {
         $iterator = $this->createIteratorInstance(...$args);
 
-        $this->assertObjectHasPropertiesIdenticalTo($expect, $iterator);
+        $this->assertObjectPropertiesIdenticalTo($expect, $iterator);
     }
 
     public function testNext(): void

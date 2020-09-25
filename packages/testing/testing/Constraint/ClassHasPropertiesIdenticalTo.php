@@ -43,13 +43,13 @@ use Korowai\Testing\Properties\PropertySelectorInterface;
  * method that returns property value.
  *
  *      // ...
- *      $matcher = new ClassHasPropertiesIdenticalTo(
+ *      $matcher = new ClassPropertiesIdenticalTo(
  *          ['getName()' => 'John', 'age' => 21],
  *      );
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-final class ClassHasPropertiesIdenticalTo extends AbstractPropertiesComparator
+final class ClassPropertiesIdenticalTo extends AbstractPropertiesComparator
 {
     public function subject(): string
     {

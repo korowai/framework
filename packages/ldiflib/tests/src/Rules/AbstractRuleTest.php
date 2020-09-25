@@ -70,7 +70,7 @@ final class AbstractRuleTest extends TestCase
                     'result' => true,
                     'value' => [],
                     'state' => [
-                        'getCursor()' => self::objectHasPropertiesIdenticalTo([
+                        'getCursor()' => self::objectPropertiesIdenticalTo([
                             'getOffset()' => 0,
                         ]),
                         'getErrors()' => [
@@ -88,11 +88,11 @@ final class AbstractRuleTest extends TestCase
                     'result' => false,
                     'value' => [],
                     'state' => [
-                        'getCursor()' => self::objectHasPropertiesIdenticalTo([
+                        'getCursor()' => self::objectPropertiesIdenticalTo([
                             'getOffset()' => 0,
                         ]),
                         'getErrors()' => [
-                            self::objectHasPropertiesIdenticalTo([
+                            self::objectPropertiesIdenticalTo([
                                 'getSourceOffset()' => 0,
                                 'getMessage()' => 'syntax error',
                             ]),
@@ -111,7 +111,7 @@ final class AbstractRuleTest extends TestCase
                     'result' => true,
                     'value' => [['FOO', 5]],
                     'state' => [
-                        'getCursor()' => self::objectHasPropertiesIdenticalTo([
+                        'getCursor()' => self::objectPropertiesIdenticalTo([
                             'getOffset()' => 9,
                         ]),
                         'getErrors()' => [
@@ -130,11 +130,11 @@ final class AbstractRuleTest extends TestCase
                     'result' => false,
                     'value' => [['FOO', 5]],
                     'state' => [
-                        'getCursor()' => self::objectHasPropertiesIdenticalTo([
+                        'getCursor()' => self::objectPropertiesIdenticalTo([
                             'getOffset()' => 9,
                         ]),
                         'getErrors()' => [
-                            self::objectHasPropertiesIdenticalTo([
+                            self::objectPropertiesIdenticalTo([
                                 'getSourceOffset()' => 9,
                                 'getMessage()' => 'syntax error',
                             ]),
@@ -153,7 +153,7 @@ final class AbstractRuleTest extends TestCase
                     'result' => true,
                     'value' => [['FOO', 5], ['BAR', 14]],
                     'state' => [
-                        'getCursor()' => self::objectHasPropertiesIdenticalTo([
+                        'getCursor()' => self::objectPropertiesIdenticalTo([
                             'getOffset()' => 18,
                         ]),
                         'getErrors()' => [
@@ -172,11 +172,11 @@ final class AbstractRuleTest extends TestCase
                     'result' => false,
                     'value' => [['FOO', 5], ['BAR', 14]],
                     'state' => [
-                        'getCursor()' => self::objectHasPropertiesIdenticalTo([
+                        'getCursor()' => self::objectPropertiesIdenticalTo([
                             'getOffset()' => 18,
                         ]),
                         'getErrors()' => [
-                            self::objectHasPropertiesIdenticalTo([
+                            self::objectPropertiesIdenticalTo([
                                 'getSourceOffset()' => 18,
                                 'getMessage()' => 'syntax error',
                             ]),
@@ -195,7 +195,7 @@ final class AbstractRuleTest extends TestCase
                     'result' => true,
                     'value' => [['FOO', 5]],
                     'state' => [
-                        'getCursor()' => self::objectHasPropertiesIdenticalTo([
+                        'getCursor()' => self::objectPropertiesIdenticalTo([
                             'getOffset()' => 9,
                         ]),
                         'getErrors()' => [
@@ -215,7 +215,7 @@ final class AbstractRuleTest extends TestCase
         $result = $rule->repeat($state, $value, ...$args);
         $this->assertSame($expect['result'], $result);
         $this->assertSame($expect['value'], $value);
-        $this->assertObjectHasPropertiesIdenticalTo($expect['state'], $state);
+        $this->assertObjectPropertiesIdenticalTo($expect['state'], $state);
     }
 }
 

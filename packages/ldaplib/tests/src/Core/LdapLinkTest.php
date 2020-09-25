@@ -462,7 +462,7 @@ final class LdapLinkTest extends TestCase
         if ($return) {
             $this->assertInstanceOf(LdapLink::class, $ldap);
             $this->assertSame($return, $ldap->getResource());
-            $this->assertObjectHasPropertiesIdenticalTo($expect, $ldap);
+            $this->assertObjectPropertiesIdenticalTo($expect, $ldap);
         } else {
             $this->assertSame($expect, $ldap);
         }
@@ -1820,7 +1820,7 @@ final class LdapLinkTest extends TestCase
                 'return' => 'ldap result 1',
                 'expect' => static::logicalAnd(
                     static::isInstanceOf(LdapResult::class),
-                    static::objectHasPropertiesIdenticalTo(['getResource()' => 'ldap result 1'])
+                    static::objectPropertiesIdenticalTo(['getResource()' => 'ldap result 1'])
                 ),
             ],
 
@@ -1830,7 +1830,7 @@ final class LdapLinkTest extends TestCase
                 'return' => 'ldap result 2',
                 'expect' => static::logicalAnd(
                     static::isInstanceOf(LdapResult::class),
-                    static::objectHasPropertiesIdenticalTo(['getResource()' => 'ldap result 2'])
+                    static::objectPropertiesIdenticalTo(['getResource()' => 'ldap result 2'])
                 ),
             ],
 
@@ -1840,7 +1840,7 @@ final class LdapLinkTest extends TestCase
                 'return' => 'ldap result 3',
                 'expect' => static::logicalAnd(
                     static::isInstanceOf(LdapResult::class),
-                    static::objectHasPropertiesIdenticalTo(['getResource()' => 'ldap result 3'])
+                    static::objectPropertiesIdenticalTo(['getResource()' => 'ldap result 3'])
                 ),
             ],
 
@@ -1850,7 +1850,7 @@ final class LdapLinkTest extends TestCase
                 'return' => 'ldap result 4',
                 'expect' => static::logicalAnd(
                     static::isInstanceOf(LdapResult::class),
-                    static::objectHasPropertiesIdenticalTo(['getResource()' => 'ldap result 4'])
+                    static::objectPropertiesIdenticalTo(['getResource()' => 'ldap result 4'])
                 ),
             ],
 
@@ -1860,7 +1860,7 @@ final class LdapLinkTest extends TestCase
                 'return' => 'ldap result 5',
                 'expect' => static::logicalAnd(
                     static::isInstanceOf(LdapResult::class),
-                    static::objectHasPropertiesIdenticalTo(['getResource()' => 'ldap result 5'])
+                    static::objectPropertiesIdenticalTo(['getResource()' => 'ldap result 5'])
                 ),
             ],
 
@@ -1870,7 +1870,7 @@ final class LdapLinkTest extends TestCase
                 'return' => 'ldap result 6',
                 'expect' => static::logicalAnd(
                     static::isInstanceOf(LdapResult::class),
-                    static::objectHasPropertiesIdenticalTo(['getResource()' => 'ldap result 6'])
+                    static::objectPropertiesIdenticalTo(['getResource()' => 'ldap result 6'])
                 ),
             ],
 
@@ -1880,7 +1880,7 @@ final class LdapLinkTest extends TestCase
                 'return' => 'ldap result 6',
                 'expect' => static::logicalAnd(
                     static::isInstanceOf(LdapResult::class),
-                    static::objectHasPropertiesIdenticalTo(['getResource()' => 'ldap result 6'])
+                    static::objectPropertiesIdenticalTo(['getResource()' => 'ldap result 6'])
                 ),
             ],
 

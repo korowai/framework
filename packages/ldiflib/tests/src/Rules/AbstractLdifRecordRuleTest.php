@@ -71,7 +71,7 @@ final class AbstractLdifRecordRuleTest extends TestCase
         $this->assertInstanceOf(DnSpecRule::class, $rule->getDnSpecRule());
         $this->assertInstanceOf(SepRule::class, $rule->getSepRule());
         $this->assertInstanceOf(AttrValSpecRule::class, $rule->getAttrValSpecRule());
-        $this->assertObjectHasPropertiesIdenticalTo($expect, $rule);
+        $this->assertObjectPropertiesIdenticalTo($expect, $rule);
     }
 
     public function testSetDnSpecRule(): void

@@ -112,7 +112,7 @@ trait SearchingTestTrait
 
         $this->assertInstanceOf(SearchQuery::class, $query);
         $this->assertSame($link, $query->getLdapLink());
-        $this->assertObjectHasPropertiesIdenticalTo($expect['properties'], $query);
+        $this->assertObjectPropertiesIdenticalTo($expect['properties'], $query);
 
         // FIXME: use self::assertEqualsKsorted() once it's implemented (see GH issue #3).
         $expectOptions = $expect['options'];

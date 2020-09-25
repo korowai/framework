@@ -6,8 +6,8 @@ Time: 00:00.548, Memory: 178.94 MB
 
 There were 2 failures:
 
-1) AssertObjectHasPropertiesIdenticalToTest::testFailure
-Failed asserting that object AssertObjectHasPropertiesIdenticalToTest is an object with properties identical to specified.
+1) AssertObjectPropertiesIdenticalToTest::testFailure
+Failed asserting that object AssertObjectPropertiesIdenticalToTest is an object with properties identical to specified.
 --- Expected
 +++ Actual
 @@ @@
@@ -20,10 +20,10 @@ Failed asserting that object AssertObjectHasPropertiesIdenticalToTest is an obje
 
 /code/packages/testing/testing/Constraint/AbstractPropertiesComparator.php:181
 /code/packages/testing/testing/Assertions/PropertiesAssertionsTrait.php:57
-/code/docs/sphinx/examples/testing/AssertObjectHasPropertiesIdenticalToTest.php:33
+/code/docs/sphinx/examples/testing/AssertObjectPropertiesIdenticalToTest.php:33
 
-2) AssertObjectHasPropertiesIdenticalToTest::testFailureWithGetter
-Failed asserting that object AssertObjectHasPropertiesIdenticalToTest is an object with properties identical to specified.
+2) AssertObjectPropertiesIdenticalToTest::testFailureWithGetter
+Failed asserting that object AssertObjectPropertiesIdenticalToTest is an object with properties identical to specified.
 --- Expected
 +++ Actual
 @@ @@
@@ -35,7 +35,7 @@ Failed asserting that object AssertObjectHasPropertiesIdenticalToTest is an obje
 
 /code/packages/testing/testing/Constraint/AbstractPropertiesComparator.php:181
 /code/packages/testing/testing/Assertions/PropertiesAssertionsTrait.php:57
-/code/docs/sphinx/examples/testing/AssertObjectHasPropertiesIdenticalToTest.php:46
+/code/docs/sphinx/examples/testing/AssertObjectPropertiesIdenticalToTest.php:46
 
 FAILURES!
 Tests: 3, Assertions: 6, Failures: 2.

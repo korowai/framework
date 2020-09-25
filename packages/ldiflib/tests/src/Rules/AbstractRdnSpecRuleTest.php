@@ -45,7 +45,7 @@ final class AbstractRdnSpecRuleTest extends TestCase
 //    public function testConstruct(array $args, array $expect)
 //    {
 //        $rule = new AbstractRdnSpecRule(...$args);
-//        $this->assertObjectHasPropertiesIdenticalTo($expect, $rule);
+//        $this->assertObjectPropertiesIdenticalTo($expect, $rule);
 //    }
 //
 //    public static function dnMatch__cases()
@@ -66,14 +66,14 @@ final class AbstractRdnSpecRuleTest extends TestCase
 //            $source = ['ł dn: '.$dn, 3 + 4 + strlen($dn)];
 //            // the 4 below is from strlen('dn: ')
 //            $errors = $result ? [] : [
-//                self::objectHasPropertiesIdenticalTo([
+//                self::objectPropertiesIdenticalTo([
 //                    'sourceOffset' => 3 + 4,
 //                    'sourceCharOffset' => 2 + 4,
 //                    'message' => 'syntax error: invalid DN syntax: "'.$dn.'"',
 //                ])
 //            ];
 //            $matches = [[$dn, 3 + 4], 'value_safe' => [$dn, 3 + 4]];
-//            $cursor = self::objectHasPropertiesIdenticalTo([
+//            $cursor = self::objectPropertiesIdenticalTo([
 //                'offset' => 3 + 4 + strlen($dn),
 //                'sourceOffset' => 3 + 4 + strlen($dn),
 //                'sourceCharOffset' => 2 + 4 + mb_strlen($dn),
@@ -100,14 +100,14 @@ final class AbstractRdnSpecRuleTest extends TestCase
 //            $source = ['ł dn:: '.$dnBase64, 3 + 5 + strlen($dnBase64)];
 //            // the 5 below is from strlen('dn:: ')
 //            $errors = $result ? [] : [
-//                self::objectHasPropertiesIdenticalTo([
+//                self::objectPropertiesIdenticalTo([
 //                    'sourceOffset' => 3 + 5,
 //                    'sourceCharOffset' => 2 + 5,
 //                    'message' => 'syntax error: invalid DN syntax: "'.$dn.'"',
 //                ]),
 //            ];
 //            $matches = [[$dnBase64, 3 + 5], 'value_b64' => [$dnBase64, 3 + 5]];
-//            $cursor = self::objectHasPropertiesIdenticalTo([
+//            $cursor = self::objectPropertiesIdenticalTo([
 //                'offset' => 3 + 5 + strlen($dnBase64),
 //                'sourceOffset' => 3 + 5 + strlen($dnBase64),
 //                'sourceCharOffset' => 2 + 5 + mb_strlen($dnBase64),
@@ -133,13 +133,13 @@ final class AbstractRdnSpecRuleTest extends TestCase
 //            $source = ['ł dn:: '.$dnBase64, 3 + 5 + $case['offset']];
 //            // the 5 below is from strlen('dn:: ')
 //            $errors = $result ? [] : [
-//                self::objectHasPropertiesIdenticalTo([
+//                self::objectPropertiesIdenticalTo([
 //                    'sourceOffset' => 3 + 5,
 //                    'sourceCharOffset' => 2 + 5,
 //                    'message' => 'syntax error: invalid BASE64 string',
 //                ]),
 //            ];
-//            $cursor = self::objectHasPropertiesIdenticalTo([
+//            $cursor = self::objectPropertiesIdenticalTo([
 //                'offset' => 3 + 5 + $case['offset'],
 //                'sourceOffset' => 3 + 5 + $case['offset'],
 //                'sourceCharOffset' => 2 + 5 + $case['offset'],
@@ -171,13 +171,13 @@ final class AbstractRdnSpecRuleTest extends TestCase
 //            $source = ['ł dn:: '.$dnBase64, 3 + 5 + $case['offset']];
 //            // the 5 below is from strlen('dn:: ')
 //            $errors = $result ? [] : [
-//                self::objectHasPropertiesIdenticalTo([
+//                self::objectPropertiesIdenticalTo([
 //                    'sourceOffset' => 3 + 5,
 //                    'sourceCharOffset' => 2 + 5,
 //                    'message' => 'syntax error: the string is not a valid UTF8',
 //                ]),
 //            ];
-//            $cursor = self::objectHasPropertiesIdenticalTo([
+//            $cursor = self::objectPropertiesIdenticalTo([
 //                'offset' => 3 + 5 + $case['offset'],
 //                'sourceOffset' => 3 + 5 + $case['offset'],
 //                'sourceCharOffset' => 2 + 5 + $case['charOffset'],
@@ -213,13 +213,13 @@ final class AbstractRdnSpecRuleTest extends TestCase
 //            $message = $type === 'BASE64' ? 'invalid BASE64 string' : 'invalid DN syntax: "'.$dn.'"';
 //            $dnOffset = strlen('dn:'.$sep) + $case[2];
 //            $errors = $result ? [] : [
-//                self::objectHasPropertiesIdenticalTo([
+//                self::objectPropertiesIdenticalTo([
 //                    'sourceOffset' => $dnOffset,
 //                    'sourceCharOffset' => $dnOffset,
 //                    'message' => 'syntax error: '.$message,
 //                ]),
 //            ];
-//            $cursor = self::objectHasPropertiesIdenticalTo([
+//            $cursor = self::objectPropertiesIdenticalTo([
 //                'offset' => strlen($source[0]),
 //                'sourceOffset' => strlen($source[0]),
 //                'sourceCharOffset' => mb_strlen($source[0]),
@@ -257,13 +257,13 @@ final class AbstractRdnSpecRuleTest extends TestCase
 //                    'init'   => 'preset string',
 //                    'dn'     => null,
 //                    'state'  => [
-//                        'cursor' => self::objectHasPropertiesIdenticalTo([
+//                        'cursor' => self::objectPropertiesIdenticalTo([
 //                            'offset' => 6,
 //                            'sourceOffset' => 6,
 //                            'sourceCharOffset' => 6,
 //                        ]),
 //                        'errors' => [
-//                            self::objectHasPropertiesIdenticalTo([
+//                            self::objectPropertiesIdenticalTo([
 //                                'sourceOffset' => 6,
 //                                'sourceCharOffset' => 6,
 //                                'message' => 'internal error: missing or invalid capture groups "value_safe" and "value_b64"'
@@ -306,7 +306,7 @@ final class AbstractRdnSpecRuleTest extends TestCase
 //
 //        $this->assertSame($expect['result'], $result);
 //        $this->assertSame($expect['dn'], $dn);
-//        $this->assertObjectHasPropertiesIdenticalTo($expect['state'], $state);
+//        $this->assertObjectPropertiesIdenticalTo($expect['state'], $state);
 //    }
 //
 //    //
@@ -319,7 +319,7 @@ final class AbstractRdnSpecRuleTest extends TestCase
 //            $args = $case['args'] ?? [];
 //            $optional = $args[0] ?? false;
 //            $errors = $optional ? [] : [
-//                self::objectHasPropertiesIdenticalTo([
+//                self::objectPropertiesIdenticalTo([
 //                    'sourceOffset' => $case['offset'],
 //                    'sourceCharOffset' => $case['charOffset'],
 //                    'message' => 'syntax error: expected "dn:" (RFC2849)',
@@ -333,7 +333,7 @@ final class AbstractRdnSpecRuleTest extends TestCase
 //                    'init' => 'preset string',
 //                    'dn' => null,
 //                    'state' => [
-//                        'cursor' => self::objectHasPropertiesIdenticalTo([
+//                        'cursor' => self::objectPropertiesIdenticalTo([
 //                            'offset' => $case['offset'],
 //                            'sourceOffset' => $case['offset'],
 //                            'sourceCharOffset' => $case['charOffset']
@@ -362,13 +362,13 @@ final class AbstractRdnSpecRuleTest extends TestCase
 //            $source = ['ł dn: '.$dn, 3];
 //            // the 4 below is from strlen('dn: ')
 //            $errors = $result ? [] : [
-//                self::objectHasPropertiesIdenticalTo([
+//                self::objectPropertiesIdenticalTo([
 //                    'sourceOffset' => 3 + 4,
 //                    'sourceCharOffset' => 2 + 4,
 //                    'message' => 'syntax error: invalid DN syntax: "'.$dn.'"',
 //                ]),
 //            ];
-//            $cursor = self::objectHasPropertiesIdenticalTo([
+//            $cursor = self::objectPropertiesIdenticalTo([
 //                'offset' => 3 + 4 + strlen($dn),
 //                'sourceOffset' => 3 + 4 + strlen($dn),
 //                'sourceCharOffset' => 2 + 4 + mb_strlen($dn),
@@ -399,13 +399,13 @@ final class AbstractRdnSpecRuleTest extends TestCase
 //            $source = ['ł dn:: '.$dnBase64, 3];
 //            // the 5 below is from strlen('dn:: ')
 //            $errors = $result ? [] : [
-//                self::objectHasPropertiesIdenticalTo([
+//                self::objectPropertiesIdenticalTo([
 //                    'sourceOffset' => 3 + 5,
 //                    'sourceCharOffset' => 2 + 5,
 //                    'message' => 'syntax error: invalid DN syntax: "'.$dn.'"',
 //                ]),
 //            ];
-//            $cursor = self::objectHasPropertiesIdenticalTo([
+//            $cursor = self::objectPropertiesIdenticalTo([
 //                'offset' => 3 + 5 + strlen($dnBase64),
 //                'sourceOffset' => 3 + 5 + strlen($dnBase64),
 //                'sourceCharOffset' => 2 + 5 + mb_strlen($dnBase64),
@@ -435,13 +435,13 @@ final class AbstractRdnSpecRuleTest extends TestCase
 //            $source = ['ł dn:: '.$dnBase64, 3];
 //            // the 5 below is from strlen('dn:: ')
 //            $errors = $result ? [] : [
-//                self::objectHasPropertiesIdenticalTo([
+//                self::objectPropertiesIdenticalTo([
 //                    'sourceOffset' => 3 + 5,
 //                    'sourceCharOffset' => 2 + 5,
 //                    'message' => 'syntax error: invalid BASE64 string',
 //                ]),
 //            ];
-//            $cursor = self::objectHasPropertiesIdenticalTo([
+//            $cursor = self::objectPropertiesIdenticalTo([
 //                'offset' => 3 + 5 + $case['offset'],
 //                'sourceOffset' => 3 + 5 + $case['offset'],
 //                'sourceCharOffset' => 2 + 5 + $case['offset'],
@@ -476,13 +476,13 @@ final class AbstractRdnSpecRuleTest extends TestCase
 //            $source = ['ł dn:: '.$dnBase64, 3];
 //            // the 5 below is from strlen('dn:: ')
 //            $errors = $result ? [] : [
-//                self::objectHasPropertiesIdenticalTo([
+//                self::objectPropertiesIdenticalTo([
 //                    'sourceOffset' => 3 + 5,
 //                    'sourceCharOffset' => 2 + 5,
 //                    'message' => 'syntax error: the string is not a valid UTF8',
 //                ])
 //            ];
-//            $cursor = self::objectHasPropertiesIdenticalTo([
+//            $cursor = self::objectPropertiesIdenticalTo([
 //                'offset' => 3 + 5 + $case['offset'],
 //                'sourceOffset' => 3 + 5 + $case['offset'],
 //                'sourceCharOffset' => 2 + 5 + $case['charOffset'],
@@ -519,13 +519,13 @@ final class AbstractRdnSpecRuleTest extends TestCase
 //            $type = substr($sep, 0, 1) === ':' ? 'BASE64': 'SAFE';
 //            $message = 'malformed '.$type.'-STRING (RFC2849)';
 //            $errors = $result ? [] : [
-//                self::objectHasPropertiesIdenticalTo([
+//                self::objectPropertiesIdenticalTo([
 //                    'sourceOffset' => strlen('dn:'.$sep) + $case[2],
 //                    'sourceCharOffset' => strlen('dn:'.$sep) + $case[2],
 //                    'message' => 'syntax error: '.$message,
 //                ]),
 //            ];
-//            $cursor = self::objectHasPropertiesIdenticalTo([
+//            $cursor = self::objectPropertiesIdenticalTo([
 //                'offset' => strlen($source[0]),
 //                'sourceOffset' => strlen($source[0]),
 //                'sourceCharOffset' => mb_strlen($source[0]),
@@ -580,7 +580,7 @@ final class AbstractRdnSpecRuleTest extends TestCase
 //
 //        $this->assertSame($expect['result'], $result);
 //        $this->assertSame($expect['dn'], $dn);
-//        $this->assertObjectHasPropertiesIdenticalTo($expect['state'], $state);
+//        $this->assertObjectPropertiesIdenticalTo($expect['state'], $state);
 //    }
 }
 

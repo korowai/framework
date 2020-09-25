@@ -44,7 +44,7 @@ final class AbstractNameSpecRuleTest extends TestCase
             ->getMockForAbstractClass()
         ;
 
-        $this->assertObjectHasPropertiesIdenticalTo($expect, $rule);
+        $this->assertObjectPropertiesIdenticalTo($expect, $rule);
     }
 
     public static function dnMatch__cases()
@@ -68,14 +68,14 @@ final class AbstractNameSpecRuleTest extends TestCase
             //          0234567
             $source = ['ł dn: '.$dn, strlen('ł dn: '.$dn)];
             $errors = $result ? [] : [
-                self::objectHasPropertiesIdenticalTo([
+                self::objectPropertiesIdenticalTo([
                     'getSourceOffset()' => strlen('ł dn: '),
                     'getSourceCharOffset()' => mb_strlen('ł dn: '),
                     'getMessage()' => 'syntax error: invalid DN syntax: "'.$dn.'"',
                 ]),
             ];
             $matches = [[$dn, strlen('ł dn: ')], 'value_safe' => [$dn, strlen('ł dn: ')]];
-            $cursor = self::objectHasPropertiesIdenticalTo([
+            $cursor = self::objectPropertiesIdenticalTo([
                 'getOffset()' => 3 + strlen('dn: ') + strlen($dn),
                 'getSourceOffset()' => 3 + strlen('dn: ') + strlen($dn),
                 'getSourceCharOffset()' => 2 + mb_strlen('dn: ') + mb_strlen($dn),
@@ -100,14 +100,14 @@ final class AbstractNameSpecRuleTest extends TestCase
             //          0234567
             $source = ['ł dn:: '.$dnBase64, 3 + strlen('dn:: ') + strlen($dnBase64)];
             $errors = $result ? [] : [
-                self::objectHasPropertiesIdenticalTo([
+                self::objectPropertiesIdenticalTo([
                     'getSourceOffset()' => 3 + strlen('dn:: '),
                     'getSourceCharOffset()' => 2 + mb_strlen('dn:: '),
                     'getMessage()' => 'syntax error: invalid DN syntax: "'.$dn.'"',
                 ]),
             ];
             $matches = [[$dnBase64, 3 + strlen('dn:: ')], 'value_b64' => [$dnBase64, 3 + strlen('dn:: ')]];
-            $cursor = self::objectHasPropertiesIdenticalTo([
+            $cursor = self::objectPropertiesIdenticalTo([
                 'getOffset()' => 3 + strlen('dn:: ') + strlen($dnBase64),
                 'getSourceOffset()' => 3 + strlen('dn:: ') + strlen($dnBase64),
                 'getSourceCharOffset()' => 2 + mb_strlen('dn:: ') + mb_strlen($dnBase64),
@@ -131,13 +131,13 @@ final class AbstractNameSpecRuleTest extends TestCase
             //          02345678
             $source = ['ł dn:: '.$dnBase64, 3 + strlen('dn:: ') + $case['offset']];
             $errors = $result ? [] : [
-                self::objectHasPropertiesIdenticalTo([
+                self::objectPropertiesIdenticalTo([
                     'getSourceOffset()' => 3 + strlen('dn:: '),
                     'getSourceCharOffset()' => 2 + mb_strlen('dn:: '),
                     'getMessage()' => 'syntax error: invalid BASE64 string',
                 ]),
             ];
-            $cursor = self::objectHasPropertiesIdenticalTo([
+            $cursor = self::objectPropertiesIdenticalTo([
                 'getOffset()' => 3 + strlen('dn:: ') + $case['offset'],
                 'getSourceOffset()' => 3 + strlen('dn:: ') + $case['offset'],
                 'getSourceCharOffset()' => 2 + mb_strlen('dn:: ') + $case['offset'],
@@ -167,13 +167,13 @@ final class AbstractNameSpecRuleTest extends TestCase
             //          02345678
             $source = ['ł dn:: '.$dnBase64, 3 + strlen('dn:: ') + $case['offset']];
             $errors = $result ? [] : [
-                self::objectHasPropertiesIdenticalTo([
+                self::objectPropertiesIdenticalTo([
                     'getSourceOffset()' => 3 + strlen('dn:: '),
                     'getSourceCharOffset()' => 2 + mb_strlen('dn:: '),
                     'getMessage()' => 'syntax error: the string is not a valid UTF8',
                 ]),
             ];
-            $cursor = self::objectHasPropertiesIdenticalTo([
+            $cursor = self::objectPropertiesIdenticalTo([
                 'getOffset()' => 3 + strlen('dn:: ') + $case['offset'],
                 'getSourceOffset()' => 3 + strlen('dn:: ') + $case['offset'],
                 'getSourceCharOffset()' => 2 + mb_strlen('dn:: ') + $case['charOffset'],
@@ -208,13 +208,13 @@ final class AbstractNameSpecRuleTest extends TestCase
             $message = 'BASE64' === $type ? 'invalid BASE64 string' : 'invalid DN syntax: "'.$dn.'"';
             $dnOffset = strlen('dn:'.$sep) + $case[2];
             $errors = $result ? [] : [
-                self::objectHasPropertiesIdenticalTo([
+                self::objectPropertiesIdenticalTo([
                     'getSourceOffset()' => $dnOffset,
                     'getSourceCharOffset()' => $dnOffset,
                     'getMessage()' => 'syntax error: '.$message,
                 ]),
             ];
-            $cursor = self::objectHasPropertiesIdenticalTo([
+            $cursor = self::objectPropertiesIdenticalTo([
                 'getOffset()' => strlen($source[0]),
                 'getSourceOffset()' => strlen($source[0]),
                 'getSourceCharOffset()' => mb_strlen($source[0]),
@@ -252,13 +252,13 @@ final class AbstractNameSpecRuleTest extends TestCase
                     'init' => 'preset string',
                     'dn' => null,
                     'state' => [
-                        'getCursor()' => self::objectHasPropertiesIdenticalTo([
+                        'getCursor()' => self::objectPropertiesIdenticalTo([
                             'getOffset()' => 6,
                             'getSourceOffset()' => 6,
                             'getSourceCharOffset()' => 6,
                         ]),
                         'getErrors()' => [
-                            self::objectHasPropertiesIdenticalTo([
+                            self::objectPropertiesIdenticalTo([
                                 'getSourceOffset()' => 6,
                                 'getSourceCharOffset()' => 6,
                                 'getMessage()' => 'internal error: missing or invalid capture groups "value_safe" and "value_b64"',
@@ -310,7 +310,7 @@ final class AbstractNameSpecRuleTest extends TestCase
 
         $this->assertSame($expect['result'], $result);
         $this->assertSame($expect['dn'], $dn);
-        $this->assertObjectHasPropertiesIdenticalTo($expect['state'], $state);
+        $this->assertObjectPropertiesIdenticalTo($expect['state'], $state);
     }
 }
 

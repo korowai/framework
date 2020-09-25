@@ -101,7 +101,7 @@ final class SearchQueryTest extends TestCase
         $this->assertSame($link, $query->getLdapLink());
 
         if (array_key_exists('properties', $expect)) {
-            $this->assertObjectHasPropertiesIdenticalTo($expect['properties'], $query);
+            $this->assertObjectPropertiesIdenticalTo($expect['properties'], $query);
         }
 
         if (array_key_exists('options', $expect)) {

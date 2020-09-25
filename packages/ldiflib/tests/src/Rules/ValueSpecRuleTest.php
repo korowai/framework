@@ -48,12 +48,12 @@ final class ValueSpecRuleTest extends TestCase
     {
         $rule = new ValueSpecRule(...$args);
         $expect = array_merge([
-            'getRfcRule()' => self::objectHasPropertiesIdenticalTo([
+            'getRfcRule()' => self::objectPropertiesIdenticalTo([
                 'ruleSetClass()' => Rfc2849::class,
                 'name()' => 'VALUE_SPEC',
             ]),
         ], $expect);
-        $this->assertObjectHasPropertiesIdenticalTo($expect, $rule);
+        $this->assertObjectPropertiesIdenticalTo($expect, $rule);
     }
 
     //
@@ -75,7 +75,7 @@ final class ValueSpecRuleTest extends TestCase
                         'getContent()' => 'Żółta łyżka',
                     ],
                     'state' => [
-                        'getCursor()' => self::objectHasPropertiesIdenticalTo(['getOffset()' => 121]),
+                        'getCursor()' => self::objectPropertiesIdenticalTo(['getOffset()' => 121]),
                         'getErrors()' => [],
                         'getRecords()' => [],
                     ],
@@ -90,9 +90,9 @@ final class ValueSpecRuleTest extends TestCase
                     'result' => false,
                     'value' => null,
                     'state' => [
-                        'getCursor()' => self::objectHasPropertiesIdenticalTo(['getOffset()' => 121]),
+                        'getCursor()' => self::objectPropertiesIdenticalTo(['getOffset()' => 121]),
                         'getErrors()' => [
-                            self::objectHasPropertiesIdenticalTo([
+                            self::objectPropertiesIdenticalTo([
                                 'getSourceOffset()' => 123,
                                 'getMessage()' => 'syntax error: invalid BASE64 string',
                             ]),
@@ -114,7 +114,7 @@ final class ValueSpecRuleTest extends TestCase
                         'getContent()' => 'John Smith',
                     ],
                     'state' => [
-                        'getCursor()' => self::objectHasPropertiesIdenticalTo(['getOffset()' => 121]),
+                        'getCursor()' => self::objectPropertiesIdenticalTo(['getOffset()' => 121]),
                         'getErrors()' => [],
                         'getRecords()' => [],
                     ],
@@ -133,7 +133,7 @@ final class ValueSpecRuleTest extends TestCase
                     'result' => true,
                     'value' => [
                         'getType()' => ValueSpecInterface::TYPE_URL,
-                        'getSpec()' => self::objectHasPropertiesIdenticalTo([
+                        'getSpec()' => self::objectPropertiesIdenticalTo([
                             '__toString()' => 'file:///home/jsmith/foo.txt',
                             'getScheme()' => 'file',
                             'getAuthority()' => '',
@@ -146,7 +146,7 @@ final class ValueSpecRuleTest extends TestCase
                         ]),
                     ],
                     'state' => [
-                        'getCursor()' => self::objectHasPropertiesIdenticalTo(['getOffset()' => 121]),
+                        'getCursor()' => self::objectPropertiesIdenticalTo(['getOffset()' => 121]),
                         'getErrors()' => [],
                         'getRecords()' => [],
                     ],
@@ -168,9 +168,9 @@ final class ValueSpecRuleTest extends TestCase
                     'result' => false,
                     'value' => null,
                     'state' => [
-                        'getCursor()' => self::objectHasPropertiesIdenticalTo(['getOffset()' => 43]),
+                        'getCursor()' => self::objectPropertiesIdenticalTo(['getOffset()' => 43]),
                         'getErrors()' => [
-                            self::objectHasPropertiesIdenticalTo([
+                            self::objectPropertiesIdenticalTo([
                                 'getSourceOffset()' => 43,
                                 'getMessage()' => 'syntax error: in URL: '.
                                              'The uri `file://example.org:80/home/jsmith/foo.txt` '.
@@ -192,9 +192,9 @@ final class ValueSpecRuleTest extends TestCase
                     'result' => false,
                     'value' => null,
                     'state' => [
-                        'getCursor()' => self::objectHasPropertiesIdenticalTo(['getOffset()' => 121]),
+                        'getCursor()' => self::objectPropertiesIdenticalTo(['getOffset()' => 121]),
                         'getErrors()' => [
-                            self::objectHasPropertiesIdenticalTo([
+                            self::objectPropertiesIdenticalTo([
                                 'getSourceOffset()' => 121,
                                 'getMessage()' => 'internal error: missing or invalid capture groups '.
                                              '"value_safe", "value_b64" and "value_url"',
@@ -225,11 +225,11 @@ final class ValueSpecRuleTest extends TestCase
         $this->assertSame($expect['result'], $result);
         if (is_array($expect['value'])) {
             $this->assertInstanceOf(ValueSpecInterface::class, $value);
-            $this->assertObjectHasPropertiesIdenticalTo($expect['value'], $value);
+            $this->assertObjectPropertiesIdenticalTo($expect['value'], $value);
         } else {
             $this->assertSame($expect['value'], $value);
         }
-        $this->assertObjectHasPropertiesIdenticalTo($expect['state'], $state);
+        $this->assertObjectPropertiesIdenticalTo($expect['state'], $state);
     }
 
     //
@@ -252,7 +252,7 @@ final class ValueSpecRuleTest extends TestCase
                         'getContent()' => 'Żółta łyżka',
                     ],
                     'state' => [
-                        'getCursor()' => self::objectHasPropertiesIdenticalTo([
+                        'getCursor()' => self::objectPropertiesIdenticalTo([
                             'getOffset()' => 26,
                             'getSourceOffset()' => 26,
                             'getSourceCharOffset()' => 26,
@@ -271,13 +271,13 @@ final class ValueSpecRuleTest extends TestCase
                     'result' => false,
                     'value' => null,
                     'state' => [
-                        'getCursor()' => self::objectHasPropertiesIdenticalTo([
+                        'getCursor()' => self::objectPropertiesIdenticalTo([
                             'getOffset()' => 25,
                             'getSourceOffset()' => 25,
                             'getSourceCharOffset()' => 25,
                         ]),
                         'getErrors()' => [
-                            self::objectHasPropertiesIdenticalTo([
+                            self::objectPropertiesIdenticalTo([
                                 'getSourceOffset()' => 2,
                                 'getMessage()' => 'syntax error: invalid BASE64 string',
                             ]),
@@ -299,7 +299,7 @@ final class ValueSpecRuleTest extends TestCase
                         'getContent()' => 'John Smith',
                     ],
                     'state' => [
-                        'getCursor()' => self::objectHasPropertiesIdenticalTo([
+                        'getCursor()' => self::objectPropertiesIdenticalTo([
                             'getOffset()' => 11,
                             'getSourceOffset()' => 11,
                             'getSourceCharOffset()' => 11,
@@ -318,7 +318,7 @@ final class ValueSpecRuleTest extends TestCase
                     'result' => true,
                     'value' => [
                         'getType()' => ValueSpecInterface::TYPE_URL,
-                        'getSpec()' => self::objectHasPropertiesIdenticalTo([
+                        'getSpec()' => self::objectPropertiesIdenticalTo([
                             '__toString()' => 'file:///home/jsmith/foo.txt',
                             'getScheme()' => 'file',
                             'getAuthority()' => '',
@@ -331,7 +331,7 @@ final class ValueSpecRuleTest extends TestCase
                         ]),
                     ],
                     'state' => [
-                        'getCursor()' => self::objectHasPropertiesIdenticalTo([
+                        'getCursor()' => self::objectPropertiesIdenticalTo([
                             'getOffset()' => 29,
                             'getSourceOffset()' => 29,
                             'getSourceCharOffset()' => 29,
@@ -363,11 +363,11 @@ final class ValueSpecRuleTest extends TestCase
 
         if (is_array($expect['value'])) {
             $this->assertInstanceOf(ValueSpecInterface::class, $value);
-            $this->assertObjectHasPropertiesIdenticalTo($expect['value'], $value);
+            $this->assertObjectPropertiesIdenticalTo($expect['value'], $value);
         } else {
             $this->assertSame($expect['value'], $value);
         }
-        $this->assertObjectHasPropertiesIdenticalTo($expect['state'], $state);
+        $this->assertObjectPropertiesIdenticalTo($expect['state'], $state);
     }
 }
 

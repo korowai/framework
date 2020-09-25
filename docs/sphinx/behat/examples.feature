@@ -93,14 +93,14 @@ Feature: Examples
     And I should see exit code <exit_code>
 
     Examples:
-      | example_file                                        | stdout_file                                           | stderr_file                                           | exit_code |
-      | "testing/AssertExtendsClassTest.php"                | "testing/AssertExtendsClassTest.stdout"               | "testing/AssertExtendsClassTest.stderr"               | 1         |
-      | "testing/AssertHasPregCapturesTest.php"             | "testing/AssertHasPregCapturesTest.stdout"            | "testing/AssertHasPregCapturesTest.stderr"            | 1         |
-      | "testing/AssertHasPropertiesIdenticalToTest.php"    | "testing/AssertHasPropertiesIdenticalToTest.stdout"   | "testing/AssertHasPropertiesIdenticalToTest.stderr"   | 1         |
-      | "testing/AssertImplementsInterfaceTest.php"         | "testing/AssertImplementsInterfaceTest.stdout"        | "testing/AssertImplementsInterfaceTest.stderr"        | 1         |
-      | "testing/AssertUsesTraitTest.php"                   | "testing/AssertUsesTraitTest.stdout"                  | "testing/AssertUsesTraitTest.stderr"                  | 1         |
-      | "testing/extendsClassTest.php"                      | "testing/extendsClassTest.stdout"                     | "testing/extendsClassTest.stderr"                     | 1         |
-      | "testing/hasPregCapturesTest.php"                   | "testing/hasPregCapturesTest.stdout"                  | "testing/hasPregCapturesTest.stderr"                  | 1         |
-      | "testing/objectHasPropertiesIdenticalToTest.php"    | "testing/objectHasPropertiesIdenticalToTest.stdout"   | "testing/objectHasPropertiesIdenticalToTest.stderr"   | 1         |
-      | "testing/implementsInterfaceTest.php"               | "testing/implementsInterfaceTest.stdout"              | "testing/implementsInterfaceTest.stderr"              | 1         |
-      | "testing/usesTraitTest.php"                         | "testing/usesTraitTest.stdout"                        | "testing/usesTraitTest.stderr"                        | 1         |
+      | example_file                                            | stdout_file                                               | stderr_file                                               | exit_code |
+      | "testing/AssertExtendsClassTest.php"                    | "testing/AssertExtendsClassTest.stdout"                   | "testing/AssertExtendsClassTest.stderr"                   | 1         |
+      | "testing/AssertHasPregCapturesTest.php"                 | "testing/AssertHasPregCapturesTest.stdout"                | "testing/AssertHasPregCapturesTest.stderr"                | 1         |
+      | "testing/AssertObjectHasPropertiesIdenticalToTest.php"  | "testing/AssertObjectHasPropertiesIdenticalToTest.stdout" | "testing/AssertObjectHasPropertiesIdenticalToTest.stderr" | 1         |
+      | "testing/AssertImplementsInterfaceTest.php"             | "testing/AssertImplementsInterfaceTest.stdout"            | "testing/AssertImplementsInterfaceTest.stderr"            | 1         |
+      | "testing/AssertUsesTraitTest.php"                       | "testing/AssertUsesTraitTest.stdout"                      | "testing/AssertUsesTraitTest.stderr"                      | 1         |
+      | "testing/extendsClassTest.php"                          | "testing/extendsClassTest.stdout"                         | "testing/extendsClassTest.stderr"                         | 1         |
+      | "testing/hasPregCapturesTest.php"                       | "testing/hasPregCapturesTest.stdout"                      | "testing/hasPregCapturesTest.stderr"                      | 1         |
+      | "testing/objectHasPropertiesIdenticalToTest.php"        | "testing/objectHasPropertiesIdenticalToTest.stdout"       | "testing/objectHasPropertiesIdenticalToTest.stderr"       | 1         |
+      | "testing/implementsInterfaceTest.php"                   | "testing/implementsInterfaceTest.stdout"                  | "testing/implementsInterfaceTest.stderr"                  | 1         |
+      | "testing/usesTraitTest.php"                             | "testing/usesTraitTest.stdout"                            | "testing/usesTraitTest.stderr"                            | 1         |

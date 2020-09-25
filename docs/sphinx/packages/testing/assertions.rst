@@ -116,9 +116,7 @@ Reports an error identified by ``$message`` if ``$object``'s properties do not
 match expectations prescribed in the ``$expected`` array. Property is defined
 as either an attribute value or a value returned by object's method that is
 callable without arguments. The method compares only properties described in
-``$expected``, so ``$expected = []`` accepts any ``$object``. Additional
-parameter ``$getters`` provides a callback that defines mappings between
-property names and corresponding getter methods for particular objects.
+``$expected``, so ``$expected = []`` accepts any ``$object``.
 
 The arguments are:
 
@@ -128,9 +126,6 @@ The arguments are:
   'F']`` requires method ``foo()`` to return ``'F'``,
 - ``$object`` - an object to be examined,
 - ``$message`` - optional failure message,
-- ``$getters`` - a function that defines mappings between property names and
-  their getter method names for particular objects. The prototype of the
-  getters method is
 
   .. code:: php
 
@@ -147,12 +142,12 @@ The method
 
 is the inverse of this.
 
-.. literalinclude:: ../../examples/testing/AssertHasPropertiesIdenticalToTest.php
+.. literalinclude:: ../../examples/testing/AssertObjectHasPropertiesIdenticalToTest.php
    :linenos:
    :caption: Usage of assertObjectHasPropertiesIdenticalTo()
    :name: testing.assertions.assertObjectHasPropertiesIdenticalTo.example
 
-.. literalinclude:: ../../examples/testing/AssertHasPropertiesIdenticalToTest.stdout
+.. literalinclude:: ../../examples/testing/AssertObjectHasPropertiesIdenticalToTest.stdout
   :linenos:
   :language: none
 

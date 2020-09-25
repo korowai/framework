@@ -1,38 +1,39 @@
-PHPUnit 8.5.2 by Sebastian Bergmann and contributors.
+PHPUnit 9.3.11 by Sebastian Bergmann and contributors.
 
 .FF                                                                 3 / 3 (100%)
 
-Time: 1.35 seconds, Memory: 179.89 MB
+Time: 00:00.551, Memory: 178.94 MB
 
 There were 2 failures:
 
 1) ObjectHasPropertiesIdenticalToTest::testFailure
-Failed asserting that object ObjectHasPropertiesIdenticalToTest has required properties with prescribed values.
+Failed asserting that object ObjectHasPropertiesIdenticalToTest is an object with properties identical to specified.
 --- Expected
 +++ Actual
 @@ @@
- Array &0 (
+-Properties <Expect> (
++Properties <Actual> (
      'attribute' => 'A'
 -    'getValue()' => 'X'
 +    'getValue()' => 'V'
  )
 
-/code/packages/testing/testing/Constraint/ObjectHasPropertiesIdenticalTo.php:134
-/code/docs/sphinx/examples/testing/objectHasPropertiesIdenticalToTest.php:30
+/code/packages/testing/testing/Constraint/AbstractPropertiesComparator.php:181
+/code/docs/sphinx/examples/testing/objectHasPropertiesIdenticalToTest.php:33
 
 2) ObjectHasPropertiesIdenticalToTest::testFailureWithGetter
-Failed asserting that object ObjectHasPropertiesIdenticalToTest has required properties with prescribed values.
+Failed asserting that object ObjectHasPropertiesIdenticalToTest is an object with properties identical to specified.
 --- Expected
 +++ Actual
 @@ @@
- Array &0 (
+-Properties <Expect> (
++Properties <Actual> (
      'attribute' => 'A'
 -    'value' => 'X'
-+    'value' => 'V'
  )
 
-/code/packages/testing/testing/Constraint/ObjectHasPropertiesIdenticalTo.php:134
-/code/docs/sphinx/examples/testing/objectHasPropertiesIdenticalToTest.php:43
+/code/packages/testing/testing/Constraint/AbstractPropertiesComparator.php:181
+/code/docs/sphinx/examples/testing/objectHasPropertiesIdenticalToTest.php:46
 
 FAILURES!
-Tests: 3, Assertions: 3, Failures: 2.
+Tests: 3, Assertions: 6, Failures: 2.

@@ -1,8 +1,8 @@
-PHPUnit 8.5.2 by Sebastian Bergmann and contributors.
+PHPUnit 9.3.11 by Sebastian Bergmann and contributors.
 
 .F                                                                  2 / 2 (100%)
 
-Time: 51 ms, Memory: 4.00 MB
+Time: 00:00.561, Memory: 178.94 MB
 
 There was 1 failure:
 
@@ -21,8 +21,8 @@ Failed asserting that array has expected PCRE capture groups.
 +    'city' => 'London'
  )
 
-/code/packages/testing/testing/Constraint/HasPregCaptures.php:96
-/code/docs/sphinx/examples/testing/hasPregCapturesTest.php:31
+/code/packages/testing/testing/Constraint/HasPregCaptures.php:97
+/code/docs/sphinx/examples/testing/hasPregCapturesTest.php:34
 
 FAILURES!
 Tests: 2, Assertions: 2, Failures: 1.

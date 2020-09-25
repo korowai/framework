@@ -77,4 +77,4 @@ interface StaticRuleSetInterface
     public static function getErrorMessage(string $errorKey, string $ruleName = null): string;
 }
 
-// vim: syntax=php sw=4 ts=4 et tw=119:
+// vim: syntax=php sw=4 ts=4 et:

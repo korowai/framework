@@ -249,4 +249,4 @@ final class RecursivePropertiesSelectorTest extends TestCase
         $this->assertSame($expect, $unwrapper->unwrap($selected));
     }
 }
-// vim: syntax=php sw=4 ts=4 et tw=119:
+// vim: syntax=php sw=4 ts=4 et:

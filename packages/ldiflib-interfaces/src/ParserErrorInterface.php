@@ -24,4 +24,4 @@ interface ParserErrorInterface extends SourceLocationInterface, \Throwable
     public function getMultilineMessage(): string;
 }
 
-// vim: syntax=php sw=4 ts=4 et tw=119:
+// vim: syntax=php sw=4 ts=4 et:

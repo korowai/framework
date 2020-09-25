@@ -93,4 +93,4 @@ final class LdapFactoryTest extends TestCase
         $this->assertSame($link, $ldap->getLdapLink());
     }
 }
-// vim: syntax=php sw=4 ts=4 et tw=119:
+// vim: syntax=php sw=4 ts=4 et:

@@ -59,4 +59,4 @@ interface EntryInterface
     public function setAttribute(string $name, array $values);
 }
 
-// vim: syntax=php sw=4 ts=4 et tw=119:
+// vim: syntax=php sw=4 ts=4 et:

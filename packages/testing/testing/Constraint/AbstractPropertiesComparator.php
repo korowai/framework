@@ -30,15 +30,10 @@ use SebastianBergmann\Comparator\ComparisonFailure;
 use SebastianBergmann\Exporter\Exporter as BaseExporter;
 
 /**
- * Constraint that accepts subjects (classes/objects) having properties
- * identical to expected ones.
+ * Abstract base for constraints that examine subject's properties.
  *
- * Compares only properties present in the array of expectations. A property is
- * defined as either an attribute value or a value returned by object/class
- * method callable without arguments.
- *
- * Any key in *$expected* array ending with ``"()"`` is considered to be a
- * method that returns property value.
+ * Objects and classes are examples of subjects that may be examined.
+ * Support for other kinds of beings may be implemented if necessary.
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
@@ -70,10 +65,27 @@ abstract class AbstractPropertiesComparator extends Constraint implements Expect
         $this->unwrapper = $unwrapper;
     }
 
+    /**
+     * Returns short description of subject type supported by this constraint.
+     *
+     * @return string
+     */
     abstract public function subject(): string;
 
+    /**
+     * Returns short description of the predicate used to compare properties.
+     *
+     * @return string
+     */
     abstract public function predicate(): string;
 
+    /**
+     * Creates constraint using array of expected property values as specification.
+     *
+     * @param array $expected
+     * @param RecursiveUnwrapperInterface|null $unwrapper
+     * @return self
+     */
     public static function fromArray(array $expected, RecursiveUnwrapperInterface $unwrapper = null): self
     {
         $valid = array_filter($expected, \is_string::class, ARRAY_FILTER_USE_KEY);
@@ -91,11 +103,23 @@ abstract class AbstractPropertiesComparator extends Constraint implements Expect
         return new static(new ExpectedProperties($selector, $expected), $unwrapper);
     }
 
+    /**
+     * Returns an instance of ExpectedPropertiesInterface which specifies
+     * expectations that the constrant uses to examine subjects' properties.
+     *
+     * @return ExpectedPropertiesInterface
+     */
     public function getExpectedProperties(): ExpectedPropertiesInterface
     {
         return $this->expected;
     }
 
+    /**
+     * Returns an instance of RecursiveUnwrapperInterface used to convert
+     * expected/actual properties objects to raw arrays.
+     *
+     * @return RecursiveUnwrapperInterface
+     */
     public function getPropertiesUnwrapper(): RecursiveUnwrapperInterface
     {
         return $this->unwrapper;
@@ -103,6 +127,8 @@ abstract class AbstractPropertiesComparator extends Constraint implements Expect
 
     /**
      * Returns a string representation of the constraint.
+     *
+     * @return string
      */
     public function toString(): string
     {
@@ -201,8 +227,21 @@ abstract class AbstractPropertiesComparator extends Constraint implements Expect
         return $this->compareArrays($expect, $actual);
     }
 
+    /**
+     * Creates instance of PropertySelectorInterface specific to the type of
+     * subjects supported by this constraint.
+     *
+     * @return PropertySelectorInterface
+     */
     abstract protected static function makePropertySelector(): PropertySelectorInterface;
 
+    /**
+     * Implements the operator used to compare properties.
+     *
+     * @param  array $expected
+     * @param  array $actual
+     * @return bool
+     */
     abstract protected function compareArrays(array $expected, array $actual): bool;
 
     protected function exporter(): BaseExporter
@@ -274,4 +313,4 @@ abstract class AbstractPropertiesComparator extends Constraint implements Expect
     }
 }
 
-// vim: syntax=php sw=4 ts=4 et tw=119:
+// vim: syntax=php sw=4 ts=4 et:

@@ -49,4 +49,4 @@ interface ResultInterface extends \IteratorAggregate
     public function getEntries(bool $use_keys = true): array;
 }
 
-// vim: syntax=php sw=4 ts=4 et tw=119:
+// vim: syntax=php sw=4 ts=4 et:

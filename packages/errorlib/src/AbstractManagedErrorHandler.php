@@ -40,4 +40,4 @@ abstract class AbstractManagedErrorHandler extends AbstractErrorHandler implemen
     abstract public function __invoke(int $severity, string $message, string $file, int $line): bool;
 }
 
-// vim: syntax=php sw=4 ts=4 et tw=119:
+// vim: syntax=php sw=4 ts=4 et:

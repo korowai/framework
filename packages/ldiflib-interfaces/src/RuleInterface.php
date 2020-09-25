@@ -66,4 +66,4 @@ interface RuleInterface
     public function parse(ParserStateInterface $state, &$value = null, bool $trying = false): bool;
 }
 
-// vim: syntax=php sw=4 ts=4 et tw=119:
+// vim: syntax=php sw=4 ts=4 et:

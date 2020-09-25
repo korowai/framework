@@ -78,4 +78,4 @@ trait InputInterfaceTrait
     }
 }
 
-// vim: syntax=php sw=4 ts=4 et tw=119:
+// vim: syntax=php sw=4 ts=4 et:

@@ -24,6 +24,44 @@ final class RecursivePropertiesUnwrapper implements RecursivePropertiesUnwrapper
      */
     private $seen;
 
+    /**
+     * @var bool
+     */
+    private $tagging;
+
+    /**
+     * Initializes the object.
+     *
+     * @param bool $tagging
+     *      If true, then a unique tag will be appended to the end of every
+     *      array that results from unwrapping of array of properties.
+     */
+    public function __construct(bool $tagging = true)
+    {
+        $this->tagging = $tagging;
+    }
+
+    /**
+     * Returns whether the algorithm is tagging the unwrapped arrays.
+     *
+     * @return bool
+     */
+    public function isTagging(): bool
+    {
+        return $this->tagging;
+    }
+
+    /**
+     * Walk recursively through $properties and unwrap nested instances of
+     * PropertiesInterface when suitable.
+     *
+     * A call to $properties->canUnwrapChild($child) is made to decide whether
+     * to unwrap given $child as well.
+     *
+     * @param  PropertiesInterface $properties
+     * @return array
+     * @throws CircularDependencyException
+     */
     public function unwrap(PropertiesInterface $properties): array
     {
         $this->seen = new \SplObjectStorage();
@@ -47,9 +85,12 @@ final class RecursivePropertiesUnwrapper implements RecursivePropertiesUnwrapper
         } finally {
             $this->seen->detach($current);
         }
-        // Distinguish unwrapped properties from regular arrays
-        // by adding UNIQUE TAG AT THE END of $array.
-        $array[self::UNIQUE_TAG] = true;
+
+        if ($this->tagging) {
+            // Distinguish unwrapped properties from regular arrays
+            // by adding UNIQUE TAG AT THE END of $array.
+            $array[self::UNIQUE_TAG] = true;
+        }
 
         return $array;
     }
@@ -76,4 +117,4 @@ final class RecursivePropertiesUnwrapper implements RecursivePropertiesUnwrapper
     }
 }
 
-// vim: syntax=php sw=4 ts=4 et tw=119:
+// vim: syntax=php sw=4 ts=4 et:

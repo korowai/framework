@@ -33,8 +33,8 @@ final class RecursivePropertiesUnwrapper implements RecursivePropertiesUnwrapper
      * Initializes the object.
      *
      * @param bool $tagging
-     *      If true, then a unique tag will be appended to the end of every
-     *      array that results from unwrapping of array of properties.
+     *                      If true, then a unique tag will be appended to the end of every
+     *                      array that results from unwrapping of array of properties
      */
     public function __construct(bool $tagging = true)
     {
@@ -43,8 +43,6 @@ final class RecursivePropertiesUnwrapper implements RecursivePropertiesUnwrapper
 
     /**
      * Returns whether the algorithm is tagging the unwrapped arrays.
-     *
-     * @return bool
      */
     public function isTagging(): bool
     {
@@ -58,8 +56,6 @@ final class RecursivePropertiesUnwrapper implements RecursivePropertiesUnwrapper
      * A call to $properties->canUnwrapChild($child) is made to decide whether
      * to unwrap given $child as well.
      *
-     * @param  PropertiesInterface $properties
-     * @return array
      * @throws CircularDependencyException
      */
     public function unwrap(PropertiesInterface $properties): array

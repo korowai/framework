@@ -45,8 +45,6 @@ final class ClassPropertiesEqualTo extends AbstractPropertiesComparator
 {
     /**
      * Returns short description of subject type supported by this constraint.
-     *
-     * @return string
      */
     public function subject(): string
     {
@@ -55,8 +53,6 @@ final class ClassPropertiesEqualTo extends AbstractPropertiesComparator
 
     /**
      * Returns short description of the predicate used to compare properties.
-     *
-     * @return string
      */
     public function predicate(): string
     {
@@ -65,8 +61,6 @@ final class ClassPropertiesEqualTo extends AbstractPropertiesComparator
 
     /**
      * Creates instance of ClassPropertySelector.
-     *
-     * @return PropertySelectorInterface
      */
     protected static function makePropertySelector(): PropertySelectorInterface
     {
@@ -75,10 +69,6 @@ final class ClassPropertiesEqualTo extends AbstractPropertiesComparator
 
     /**
      * Implements the operator used to compare properties.
-     *
-     * @param  array $expected
-     * @param  array $actual
-     * @return bool
      */
     protected function compareArrays(array $expected, array $actual): bool
     {

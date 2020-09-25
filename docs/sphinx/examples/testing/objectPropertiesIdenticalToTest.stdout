@@ -1,10 +1,10 @@
 PHPUnit 9.3.11 by Sebastian Bergmann and contributors.
 
-.FF                                                                 3 / 3 (100%)
+.F                                                                  2 / 2 (100%)
 
-Time: 00:00.551, Memory: 178.94 MB
+Time: 00:00.090, Memory: 28.13 MB
 
-There were 2 failures:
+There was 1 failure:
 
 1) ObjectPropertiesIdenticalToTest::testFailure
 Failed asserting that object ObjectPropertiesIdenticalToTest is an object with properties identical to specified.
@@ -12,28 +12,15 @@ Failed asserting that object ObjectPropertiesIdenticalToTest is an object with p
 +++ Actual
 @@ @@
 -Properties <Expect> (
+-    'attribute' => '123'
+-    'getValue()' => null
 +Properties <Actual> (
-     'attribute' => 'A'
--    'getValue()' => 'X'
-+    'getValue()' => 'V'
++    'attribute' => 123
++    'getValue()' => 321
  )
 
-/code/packages/testing/testing/Constraint/AbstractPropertiesComparator.php:181
-/code/docs/sphinx/examples/testing/objectPropertiesIdenticalToTest.php:33
-
-2) ObjectPropertiesIdenticalToTest::testFailureWithGetter
-Failed asserting that object ObjectPropertiesIdenticalToTest is an object with properties identical to specified.
---- Expected
-+++ Actual
-@@ @@
--Properties <Expect> (
-+Properties <Actual> (
-     'attribute' => 'A'
--    'value' => 'X'
- )
-
-/code/packages/testing/testing/Constraint/AbstractPropertiesComparator.php:181
-/code/docs/sphinx/examples/testing/objectPropertiesIdenticalToTest.php:46
+/code/packages/testing/testing/Constraint/AbstractPropertiesComparator.php:207
+/code/docs/sphinx/examples/testing/objectPropertiesIdenticalToTest.php:28
 
 FAILURES!
-Tests: 3, Assertions: 6, Failures: 2.
+Tests: 2, Assertions: 4, Failures: 1.

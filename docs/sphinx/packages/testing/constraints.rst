@@ -17,6 +17,63 @@ arguments that satisfy custom constraints). The methods of
 constraint objects.
 
 
+.. _testing.constraints.classPropertiesEqualTo:
+
+classPropertiesEqualTo
+-----------------------
+
+Synopsis:
+
+.. code:: php
+
+  function classPropertiesEqualTo(array $expected)
+
+Creates :class:`Korowai\\Testing\\Constraint\\ClassPropertiesEqualTo` constraint.
+
+The constraint accepts classes having selected properties equal to
+``$expected``.
+
+.. literalinclude:: ../../examples/testing/classPropertiesEqualToTest.php
+   :linenos:
+   :caption: Usage of classPropertiesEqualTo()
+   :name: testing.assertions.classPropertiesEqualTo.example
+
+.. literalinclude:: ../../examples/testing/classPropertiesEqualToTest.stdout
+  :linenos:
+  :language: none
+
+The constraint may be used recursively, i.e. it may be used to require given
+property to be an class with prescribed properties.
+
+
+.. _testing.constraints.classPropertiesIdenticalTo:
+
+classPropertiesIdenticalTo
+---------------------------
+
+Synopsis:
+
+.. code:: php
+
+  function classPropertiesIdenticalTo(array $expected)
+
+Creates :class:`Korowai\\Testing\\Constraint\\ClassPropertiesIdenticalTo` constraint.
+
+The constraint accepts classes having selected properties identical to
+``$expected``.
+
+.. literalinclude:: ../../examples/testing/classPropertiesIdenticalToTest.php
+   :linenos:
+   :caption: Usage of classPropertiesIdenticalTo()
+   :name: testing.assertions.classPropertiesIdenticalTo.example
+
+.. literalinclude:: ../../examples/testing/classPropertiesIdenticalToTest.stdout
+  :linenos:
+  :language: none
+
+The constraint may be used recursively, i.e. it may be used to require given
+property to be an class with prescribed properties.
+
 .. _testing.constraints.extendsClass:
 
 extendsClass
@@ -89,35 +146,6 @@ only with arrays obtained from ``preg_match()`` invoked with
   :language: none
 
 
-.. _testing.constraints.objectPropertiesIdenticalTo:
-
-objectPropertiesIdenticalTo
-------------------------------
-
-Synopsis:
-
-.. code:: php
-
-  function objectPropertiesIdenticalTo(array $expected[, callable $getters = null])
-
-Creates :class:`Korowai\\Testing\\Constraint\\ObjectPropertiesIdenticalTo` constraint.
-
-The constraint accepts objects having selected properties identical to
-``$expected``.
-
-.. literalinclude:: ../../examples/testing/objectPropertiesIdenticalToTest.php
-   :linenos:
-   :caption: Usage of objectPropertiesIdenticalTo()
-   :name: testing.assertions.objectPropertiesIdenticalTo.example
-
-.. literalinclude:: ../../examples/testing/objectPropertiesIdenticalToTest.stdout
-  :linenos:
-  :language: none
-
-The constraint may be used recursively, i.e. it may be used to require given
-property to be an object with prescribed properties.
-
-
 .. _testing.constraints.implementsInterface:
 
 implementsInterface
@@ -143,6 +171,63 @@ The constraint accepts objects (and classes/interfaces) that implement given
   :linenos:
   :language: none
 
+
+.. _testing.constraints.objectPropertiesEqualTo:
+
+objectPropertiesEqualTo
+-----------------------
+
+Synopsis:
+
+.. code:: php
+
+  function objectPropertiesEqualTo(array $expected)
+
+Creates :class:`Korowai\\Testing\\Constraint\\ObjectPropertiesEqualTo` constraint.
+
+The constraint accepts objects having selected properties equal to
+``$expected``.
+
+.. literalinclude:: ../../examples/testing/objectPropertiesEqualToTest.php
+   :linenos:
+   :caption: Usage of objectPropertiesEqualTo()
+   :name: testing.assertions.objectPropertiesEqualTo.example
+
+.. literalinclude:: ../../examples/testing/objectPropertiesEqualToTest.stdout
+  :linenos:
+  :language: none
+
+The constraint may be used recursively, i.e. it may be used to require given
+property to be an object with prescribed properties.
+
+
+.. _testing.constraints.objectPropertiesIdenticalTo:
+
+objectPropertiesIdenticalTo
+---------------------------
+
+Synopsis:
+
+.. code:: php
+
+  function objectPropertiesIdenticalTo(array $expected)
+
+Creates :class:`Korowai\\Testing\\Constraint\\ObjectPropertiesIdenticalTo` constraint.
+
+The constraint accepts objects having selected properties identical to
+``$expected``.
+
+.. literalinclude:: ../../examples/testing/objectPropertiesIdenticalToTest.php
+   :linenos:
+   :caption: Usage of objectPropertiesIdenticalTo()
+   :name: testing.assertions.objectPropertiesIdenticalTo.example
+
+.. literalinclude:: ../../examples/testing/objectPropertiesIdenticalToTest.stdout
+  :linenos:
+  :language: none
+
+The constraint may be used recursively, i.e. it may be used to require given
+property to be an object with prescribed properties.
 
 .. _testing.constraints.usesTrait:
 

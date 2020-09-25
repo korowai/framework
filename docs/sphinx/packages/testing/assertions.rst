@@ -10,6 +10,96 @@ This section lists the various assertion methods that are available. The
 methods are included in :class:`Korowai\\Testing\\TestCase` class. The
 assertion methods are declared as static and can be invoked from any context.
 
+.. _testing.assertions.assertClassPropertiesEqualTo:
+
+assertClassPropertiesEqualTo()
+------------------------------
+
+Synopsis:
+
+.. code:: php
+
+  function assertClassPropertiesEqualTo(array $expected, string $class[, string $message = ''])
+
+Reports an error identified by ``$message`` if properties of ``$class`` are not
+equal to ``$expected`` ones (tested with ``==`` operator).
+A property is either a static attribute value or a value returned by class's
+static method that is callable without arguments. The method compares only
+properties described in ``$expected``, so ``$expected = []`` accepts any
+existing ``$class``. If ``$class`` does not exists, the constraint fails as
+well.
+
+The arguments are:
+
+- ``$expected`` - an associative array with property names as keys and their
+  expected values as values, if a key ends with ``"()"``, then the property is
+  assumed to be a method, for example ``$expected = ['foo()' => 'F']`` requires
+  method ``foo()`` to return ``'F'``,
+- ``$class`` - name of the class to be examined,
+- ``$message`` - optional failure message,
+
+The method
+
+.. code:: php
+
+  function assertNotClassPropertiesEqualTo(array $expected, string $class[, string $message = ''])
+
+is the inverse of this.
+
+.. literalinclude:: ../../examples/testing/AssertClassPropertiesEqualToTest.php
+   :linenos:
+   :caption: Usage of assertClassPropertiesEqualTo()
+   :name: testing.assertions.assertClassPropertiesEqualTo.example
+
+.. literalinclude:: ../../examples/testing/AssertClassPropertiesEqualToTest.stdout
+  :linenos:
+  :language: none
+
+.. _testing.assertions.assertClassPropertiesEqualTo:
+
+assertClassPropertiesIdenticalTo()
+----------------------------------
+
+Synopsis:
+
+.. code:: php
+
+  function assertClassPropertiesIdenticalTo(array $expected, string $class[, string $message = ''])
+
+Reports an error identified by ``$message`` if properties of ``$class``'s are
+not identical to ``$expected`` ones (tested with ``===`` operator).
+A property is either a static attribute value or a value returned by
+``$class``'s static method that is callable without arguments. The method
+compares only properties described in ``$expected``, so ``$expected = []``
+accepts any existing ``$class``. If ``$class`` does not exist, the constraint
+fails as well.
+
+The arguments are:
+
+- ``$expected`` - an associative array with property names as keys and their
+  expected values as values, if a key ends with ``"()"``, then the property is
+  assumed to be a method, for example ``$expected = ['foo()' => 'F']`` requires
+  method ``foo()`` to return ``'F'``,
+- ``$class`` - name of the class to be examined,
+- ``$message`` - optional failure message,
+
+The method
+
+.. code:: php
+
+  function assertNotClassPropertiesIdenticalTo(array $expected, string $class[, string $message = ''])
+
+is the inverse of this.
+
+.. literalinclude:: ../../examples/testing/AssertClassPropertiesIdenticalToTest.php
+   :linenos:
+   :caption: Usage of assertClassPropertiesIdenticalTo()
+   :name: testing.assertions.assertClassPropertiesIdenticalTo.example
+
+.. literalinclude:: ../../examples/testing/AssertClassPropertiesIdenticalToTest.stdout
+  :linenos:
+  :language: none
+
 .. _testing.assertions.assertExtendsClass:
 
 assertExtendsClass()
@@ -101,56 +191,6 @@ is the inverse of this.
   :linenos:
   :language: none
 
-.. _testing.assertions.assertObjectPropertiesIdenticalTo:
-
-assertObjectPropertiesIdenticalTo()
---------------------------------------
-
-Synopsis:
-
-.. code:: php
-
-  function assertObjectPropertiesIdenticalTo(array $expected, object $object[, string $message = ''[, callable $getters = null]])
-
-Reports an error identified by ``$message`` if ``$object``'s properties do not
-match expectations prescribed in the ``$expected`` array. Property is defined
-as either an attribute value or a value returned by object's method that is
-callable without arguments. The method compares only properties described in
-``$expected``, so ``$expected = []`` accepts any ``$object``.
-
-The arguments are:
-
-- ``$expected`` - an array of *key => value* pairs with property names as keys
-  and their expected values as values, if *key* ends with ``"()"`` then the
-  property is assumed to be a method, for example ``$expected = ['foo()' =>
-  'F']`` requires method ``foo()`` to return ``'F'``,
-- ``$object`` - an object to be examined,
-- ``$message`` - optional failure message,
-
-  .. code:: php
-
-      function getters(object $object) : array;
-
-  the method must return an array which maps property names onto their
-  corresponding method names for given ``$object``.
-
-The method
-
-.. code:: php
-
-  function assertNotObjectPropertiesIdenticalTo(array $expected, array $matches[, string $message = ''[, callable $getters = null]])
-
-is the inverse of this.
-
-.. literalinclude:: ../../examples/testing/AssertObjectPropertiesIdenticalToTest.php
-   :linenos:
-   :caption: Usage of assertObjectPropertiesIdenticalTo()
-   :name: testing.assertions.assertObjectPropertiesIdenticalTo.example
-
-.. literalinclude:: ../../examples/testing/AssertObjectPropertiesIdenticalToTest.stdout
-  :linenos:
-  :language: none
-
 .. _testing.assertions.assertImplementsInterface:
 
 assertImplementsInterface()
@@ -193,6 +233,91 @@ is the inverse of this.
   :linenos:
   :language: none
 
+.. _testing.assertions.assertObjectPropertiesEqualTo:
+
+assertObjectPropertiesEqualTo()
+-------------------------------
+
+Synopsis:
+
+.. code:: php
+
+  function assertObjectPropertiesEqualTo(array $expected, object $object[, string $message = ''])
+
+Reports an error identified by ``$message`` if ``$object``'s properties are not
+equal to ``$expected`` ones (tested with ``==`` operator).
+A property is either an attribute value or a value returned by object's method
+that is callable without arguments. The method compares only properties
+described in ``$expected``, so ``$expected = []`` accepts any ``$object``.
+
+The arguments are:
+
+- ``$expected`` - an associative array with property names as keys and their
+  expected values as values, if a key ends with ``"()"``, then the property is
+  assumed to be a method, for example ``$expected = ['foo()' => 'F']`` requires
+  method ``foo()`` to return ``'F'``,
+- ``$object`` - an object to be examined,
+- ``$message`` - optional failure message,
+
+The method
+
+.. code:: php
+
+  function assertNotObjectPropertiesEqualTo(array $expected, object $object[, string $message = ''])
+
+is the inverse of this.
+
+.. literalinclude:: ../../examples/testing/AssertObjectPropertiesEqualToTest.php
+   :linenos:
+   :caption: Usage of assertObjectPropertiesEqualTo()
+   :name: testing.assertions.assertObjectPropertiesEqualTo.example
+
+.. literalinclude:: ../../examples/testing/AssertObjectPropertiesEqualToTest.stdout
+  :linenos:
+  :language: none
+
+.. _testing.assertions.assertObjectPropertiesEqualTo:
+
+assertObjectPropertiesIdenticalTo()
+-----------------------------------
+
+Synopsis:
+
+.. code:: php
+
+  function assertObjectPropertiesIdenticalTo(array $expected, object $object[, string $message = ''])
+
+Reports an error identified by ``$message`` if ``$object``'s properties are not
+identical with ``$expected`` ones (tested with ``===`` operator).
+A property is either an attribute value or a value returned by object's method
+that is callable without arguments. The method compares only properties
+described in ``$expected``, so ``$expected = []`` accepts any ``$object``.
+
+The arguments are:
+
+- ``$expected`` - an associative array with property names as keys and their
+  expected values as values, if a key ends with ``"()"``, then the property is
+  assumed to be a method, for example ``$expected = ['foo()' => 'F']`` requires
+  method ``foo()`` to return ``'F'``,
+- ``$object`` - an object to be examined,
+- ``$message`` - optional failure message,
+
+The method
+
+.. code:: php
+
+  function assertNotObjectPropertiesIdenticalTo(array $expected, array $matches[, string $message = ''])
+
+is the inverse of this.
+
+.. literalinclude:: ../../examples/testing/AssertObjectPropertiesIdenticalToTest.php
+   :linenos:
+   :caption: Usage of assertObjectPropertiesIdenticalTo()
+   :name: testing.assertions.assertObjectPropertiesIdenticalTo.example
+
+.. literalinclude:: ../../examples/testing/AssertObjectPropertiesIdenticalToTest.stdout
+  :linenos:
+  :language: none
 
 .. _testing.assertions.assertUsesTrait:
 

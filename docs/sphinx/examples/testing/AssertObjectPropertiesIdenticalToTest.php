@@ -5,24 +5,19 @@
  */
 final class AssertObjectPropertiesIdenticalToTest extends \Korowai\Testing\TestCase
 {
-    public $attribute;
+    public $attribute = 123;
 
     public function getValue()
     {
-        return 'V';
-    }
-
-    public function setUp() : void
-    {
-        $this->attribute = 'A';
+        return 321;
     }
 
     public function testSuccess()
     {
         // assert that:
         $this->assertObjectPropertiesIdenticalTo([
-            'attribute'     => 'A',   // - attribute is 'A' (ok)
-            'getValue()'    => 'V'    // - value is 'V' (ok)
+            'attribute'     => 123,     // - $this->attribute is 123 (ok)
+            'getValue()'    => 321,     // - $this->getValue() is 321 (ok)
         ], $this);
     }
 
@@ -30,19 +25,8 @@ final class AssertObjectPropertiesIdenticalToTest extends \Korowai\Testing\TestC
     {
         // assert that:
         $this->assertObjectPropertiesIdenticalTo([
-            'attribute'     => 'A',   // - attribute is 'A' (ok)
-            'getValue()'    => 'X'    // - value is 'X' (fail)
+            'attribute'     => '123',   // - $this->attribute is 123, not '123' (fail),
+            'getValue()'    => null,    // - $this->getValue() is 321, not null (fail)
         ], $this);
-    }
-
-    public function testFailureWithGetter()
-    {
-        // assert that:
-        $this->assertObjectPropertiesIdenticalTo([
-            'attribute'     => 'A',   // - attribute is 'A' (ok)
-            'value'         => 'X'    // - value is 'X' (fail)
-        ], $this, '', function (object $object) {
-            return ($object instanceof AssertObjectPropertiesIdenticalToTest) ? ['value' => 'getValue'] : [];
-        });
     }
 }

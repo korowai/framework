@@ -96,11 +96,17 @@ Feature: Examples
       | example_file                                            | stdout_file                                               | stderr_file                                               | exit_code |
       | "testing/AssertExtendsClassTest.php"                    | "testing/AssertExtendsClassTest.stdout"                   | "testing/AssertExtendsClassTest.stderr"                   | 1         |
       | "testing/AssertHasPregCapturesTest.php"                 | "testing/AssertHasPregCapturesTest.stdout"                | "testing/AssertHasPregCapturesTest.stderr"                | 1         |
-      | "testing/AssertObjectPropertiesIdenticalToTest.php"  | "testing/AssertObjectPropertiesIdenticalToTest.stdout" | "testing/AssertObjectPropertiesIdenticalToTest.stderr" | 1         |
+      | "testing/AssertClassPropertiesEqualToTest.php"          | "testing/AssertClassPropertiesEqualToTest.stdout"         | "testing/AssertClassPropertiesEqualToTest.stderr"         | 1         |
+      | "testing/AssertClassPropertiesIdenticalToTest.php"      | "testing/AssertClassPropertiesIdenticalToTest.stdout"     | "testing/AssertClassPropertiesIdenticalToTest.stderr"     | 1         |
+      | "testing/AssertObjectPropertiesEqualToTest.php"         | "testing/AssertObjectPropertiesEqualToTest.stdout"        | "testing/AssertObjectPropertiesEqualToTest.stderr"        | 1         |
+      | "testing/AssertObjectPropertiesIdenticalToTest.php"     | "testing/AssertObjectPropertiesIdenticalToTest.stdout"    | "testing/AssertObjectPropertiesIdenticalToTest.stderr"    | 1         |
       | "testing/AssertImplementsInterfaceTest.php"             | "testing/AssertImplementsInterfaceTest.stdout"            | "testing/AssertImplementsInterfaceTest.stderr"            | 1         |
       | "testing/AssertUsesTraitTest.php"                       | "testing/AssertUsesTraitTest.stdout"                      | "testing/AssertUsesTraitTest.stderr"                      | 1         |
       | "testing/extendsClassTest.php"                          | "testing/extendsClassTest.stdout"                         | "testing/extendsClassTest.stderr"                         | 1         |
       | "testing/hasPregCapturesTest.php"                       | "testing/hasPregCapturesTest.stdout"                      | "testing/hasPregCapturesTest.stderr"                      | 1         |
-      | "testing/objectPropertiesIdenticalToTest.php"        | "testing/objectPropertiesIdenticalToTest.stdout"       | "testing/objectPropertiesIdenticalToTest.stderr"       | 1         |
+      | "testing/classPropertiesEqualToTest.php"                | "testing/classPropertiesEqualToTest.stdout"               | "testing/classPropertiesEqualToTest.stderr"               | 1         |
+      | "testing/classPropertiesIdenticalToTest.php"            | "testing/classPropertiesIdenticalToTest.stdout"           | "testing/classPropertiesIdenticalToTest.stderr"           | 1         |
+      | "testing/objectPropertiesEqualToTest.php"               | "testing/objectPropertiesEqualToTest.stdout"              | "testing/objectPropertiesEqualToTest.stderr"              | 1         |
+      | "testing/objectPropertiesIdenticalToTest.php"           | "testing/objectPropertiesIdenticalToTest.stdout"          | "testing/objectPropertiesIdenticalToTest.stderr"          | 1         |
       | "testing/implementsInterfaceTest.php"                   | "testing/implementsInterfaceTest.stdout"                  | "testing/implementsInterfaceTest.stderr"                  | 1         |
       | "testing/usesTraitTest.php"                             | "testing/usesTraitTest.stdout"                            | "testing/usesTraitTest.stderr"                            | 1         |

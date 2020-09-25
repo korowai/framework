@@ -12,31 +12,15 @@ declare(strict_types=1);
 
 namespace Korowai\Testing\Constraint;
 
-//use Korowai\Testing\Properties\ActualProperties;
-//use Korowai\Testing\Properties\ActualPropertiesInterface;
-//use Korowai\Testing\Properties\ExpectedProperties;
-//use Korowai\Testing\Properties\ExpectedPropertiesInterface;
-//use Korowai\Testing\Properties\RecursivePropertiesUnwrapper;
-//use Korowai\Testing\Properties\RecursivePropertiesUnwrapperInterface;
 use Korowai\Testing\Properties\ClassPropertySelector;
 use Korowai\Testing\Properties\PropertySelectorInterface;
 
-//use Korowai\Testing\Properties\CircularDependencyException;
-//use Korowai\Testing\Exporter;
-//use PHPUnit\Framework\Constraint\Constraint;
-//use PHPUnit\Framework\Constraint\Operator;
-//use PHPUnit\Framework\Constraint\LogicalNot;
-//use PHPUnit\Framework\ExpectationFailedException;
-//use SebastianBergmann\Comparator\ComparisonFailure;
-//use SebastianBergmann\Exporter\Exporter as BaseExporter;
-
 /**
- * Constraint that accepts objects having properties identical to expected
- * ones.
+ * Constraint that accepts classes having properties identical to specified.
  *
- * Compares only properties present in the array of expectations.
- * A property is defined as either an attribute value or a value
- * returned by object's method callable without arguments.
+ * Compares only properties present in the array of expectations. A property is
+ * defined as either an attribute value or a value returned by object's method
+ * callable without arguments.
  *
  *
  * Any key in *$expected* array ending with ``"()"`` is considered to be a

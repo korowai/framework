@@ -21,6 +21,16 @@ final class EqualityComparator implements ComparatorInterface
     {
         return $left == $right;
     }
+
+    /**
+     * Returns an adjective that identifies this comparison operator.
+     *
+     * @return string "equal to"
+     */
+    public function adjective(): string
+    {
+        return 'equal to';
+    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

@@ -21,6 +21,16 @@ final class IdentityComparator implements ComparatorInterface
     {
         return $left === $right;
     }
+
+    /**
+     * Returns an adjective that identifies this comparison operator.
+     *
+     * @return string "identical to"
+     */
+    public function adjective(): string
+    {
+        return 'identical to';
+    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

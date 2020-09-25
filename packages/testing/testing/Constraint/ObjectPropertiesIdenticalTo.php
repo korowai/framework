@@ -54,14 +54,6 @@ final class ObjectPropertiesIdenticalTo extends AbstractPropertiesComparator
     }
 
     /**
-     * Returns short description of the predicate used to compare properties.
-     */
-    public function predicate(): string
-    {
-        return 'identical to';
-    }
-
-    /**
      * Creates instance of ObjectPropertySelector.
      */
     protected static function makePropertySelector(): PropertySelectorInterface

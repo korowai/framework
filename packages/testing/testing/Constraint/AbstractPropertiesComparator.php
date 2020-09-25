@@ -78,11 +78,6 @@ abstract class AbstractPropertiesComparator extends Constraint implements Expect
     abstract public function subject(): string;
 
     /**
-     * Returns short description of the predicate used to compare properties.
-     */
-    abstract public function predicate(): string;
-
-    /**
      * Creates constraint using array of expected property values as specification.
      */
     public static function fromArray(array $expected, RecursiveUnwrapperInterface $unwrapper = null): self
@@ -138,7 +133,7 @@ abstract class AbstractPropertiesComparator extends Constraint implements Expect
         return sprintf(
             'is %s with properties %s specified',
             $this->subject(),
-            $this->predicate()
+            $this->comparator->adjective()
         );
     }
 
@@ -163,7 +158,7 @@ abstract class AbstractPropertiesComparator extends Constraint implements Expect
             return sprintf(
                 'fails to be %s with properties %s specified',
                 $this->subject(),
-                $this->predicate()
+                $this->comparator->adjective()
             );
         }
 

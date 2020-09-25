@@ -54,14 +54,6 @@ final class ObjectPropertiesEqualTo extends AbstractPropertiesComparator
     }
 
     /**
-     * Returns short description of the predicate used to compare properties.
-     */
-    public function predicate(): string
-    {
-        return 'equal to';
-    }
-
-    /**
      * Creates instance of ObjectPropertySelector.
      */
     protected static function makePropertySelector(): PropertySelectorInterface

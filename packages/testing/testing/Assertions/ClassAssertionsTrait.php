@@ -40,7 +40,7 @@ trait ClassAssertionsTrait
     {
         static::assertThat(
             $object,
-            static::implementsInterface($interface, $object),
+            static::implementsInterface($interface),
             $message
         );
     }
@@ -86,7 +86,7 @@ trait ClassAssertionsTrait
     {
         static::assertThat(
             $object,
-            static::extendsClass($parent, $object),
+            static::extendsClass($parent),
             $message
         );
     }
@@ -132,7 +132,7 @@ trait ClassAssertionsTrait
     {
         static::assertThat(
             $object,
-            static::usesTrait($trait, $object),
+            static::usesTrait($trait),
             $message
         );
     }

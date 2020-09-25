@@ -14,6 +14,8 @@ namespace Korowai\Testing\Constraint;
 
 use Korowai\Testing\Properties\ClassPropertySelector;
 use Korowai\Testing\Properties\PropertySelectorInterface;
+use Korowai\Testing\Properties\ComparatorInterface;
+use Korowai\Testing\Properties\IdentityComparator;
 
 /**
  * Constraint that accepts classes having properties identical to specified ones.
@@ -68,11 +70,11 @@ final class ClassPropertiesIdenticalTo extends AbstractPropertiesComparator
     }
 
     /**
-     * Implements the operator used to compare properties.
+     * Creates instance of IdentityComparator.
      */
-    protected function compareArrays(array $expected, array $actual): bool
+    protected static function makeComparator(): ComparatorInterface
     {
-        return $expected === $actual;
+        return new IdentityComparator();
     }
 }
 

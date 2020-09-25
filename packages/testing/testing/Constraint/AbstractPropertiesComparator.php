@@ -22,6 +22,7 @@ use Korowai\Testing\Properties\PropertySelectorInterface;
 use Korowai\Testing\Properties\RecursivePropertiesSelector as RecursiveSelector;
 use Korowai\Testing\Properties\RecursivePropertiesUnwrapper as RecursiveUnwrapper;
 use Korowai\Testing\Properties\RecursivePropertiesUnwrapperInterface as RecursiveUnwrapperInterface;
+use Korowai\Testing\Properties\ComparatorInterface;
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\Constraint\LogicalNot;
 use PHPUnit\Framework\Constraint\Operator;
@@ -57,10 +58,16 @@ abstract class AbstractPropertiesComparator extends Constraint implements Expect
     private $exporter;
 
     /**
-     * @throws \PHPUnit\Framework\Exception when non-string keys are found in *$expected*
+     * @var ComparatorInterface
      */
-    final protected function __construct(ExpectedPropertiesInterface $expected, RecursiveUnwrapperInterface $unwrapper)
-    {
+    private $comparator;
+
+    final protected function __construct(
+        ComparatorInterface $comparator,
+        ExpectedPropertiesInterface $expected,
+        RecursiveUnwrapperInterface $unwrapper
+    ) {
+        $this->comparator = $comparator;
         $this->expected = $expected;
         $this->unwrapper = $unwrapper;
     }
@@ -87,12 +94,22 @@ abstract class AbstractPropertiesComparator extends Constraint implements Expect
             throw new \PHPUnit\Framework\Exception($message);
         }
 
+        $comparator = static::makeComparator();
         $selector = static::makePropertySelector();
         if (null === $unwrapper) {
             $unwrapper = new RecursiveUnwrapper();
         }
 
-        return new static(new ExpectedProperties($selector, $expected), $unwrapper);
+        return new static($comparator, new ExpectedProperties($selector, $expected), $unwrapper);
+    }
+
+    /**
+     * Returns an instance of ComparatorInterface which provides comparison
+     * operator (equality or identity).
+     */
+    public function getComparator(): ComparatorInterface
+    {
+        return $this->comparator;
     }
 
     /**
@@ -210,7 +227,7 @@ abstract class AbstractPropertiesComparator extends Constraint implements Expect
         $actual = $this->unwrapper->unwrap($this->selectActualProperties($other));
         $expect = $this->unwrapper->unwrap($this->expected);
 
-        return $this->compareArrays($expect, $actual);
+        return $this->comparator->compare($expect, $actual);
     }
 
     /**
@@ -220,9 +237,10 @@ abstract class AbstractPropertiesComparator extends Constraint implements Expect
     abstract protected static function makePropertySelector(): PropertySelectorInterface;
 
     /**
-     * Implements the operator used to compare properties.
+     * Creates instance of ComparatorInterface specific to the type of
+     * comparison (equality, identity) used by subclass.
      */
-    abstract protected function compareArrays(array $expected, array $actual): bool;
+    abstract protected static function makeComparator(): ComparatorInterface;
 
     protected function exporter(): BaseExporter
     {

@@ -19,6 +19,9 @@ interface PropertySelectorInterface
 {
     public function canSelectFrom($subject): bool;
 
+    /**
+     * @param string|int $key
+     */
     public function selectProperty($subject, $key, &$retval = null): bool;
 }
 

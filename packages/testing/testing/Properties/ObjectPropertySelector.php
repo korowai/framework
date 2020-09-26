@@ -44,13 +44,15 @@ final class ObjectPropertySelector extends AbstractPropertySelector
     }
 
     /**
+     * @param string|int $key
      * @psalm-assert object $subject
      */
-    protected function selectWithAttribute($subject, string $key, &$retval = null): bool
+    protected function selectWithAttribute($subject, $key, &$retval = null): bool
     {
         if (!is_object($subject)) {
             throw InvalidArgumentException::create(1, 'object');
         }
+        $key = (string)$key;
         if (!property_exists($subject, $key)) {
             return false;
         }

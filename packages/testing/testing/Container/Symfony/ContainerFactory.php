@@ -38,7 +38,7 @@ final class ContainerFactory implements ContainerFactoryInterface
      *
      * @psalm-return self
      */
-    public function setConfig(string $config): self
+    public function setConfig(string $config): ContainerFactoryInterface
     {
         $this->config = $config;
 

@@ -1,7 +1,7 @@
 {
     "name": "korowai/framework",
     "require": {
-        "php": ">=7.4",
+        "php": ">=7.3",
         "ext-ldap": "*",
         "ext-mbstring": "*",
         "league/uri": "^6.3",

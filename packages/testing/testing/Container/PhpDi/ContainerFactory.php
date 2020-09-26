@@ -29,7 +29,7 @@ final class ContainerFactory implements ContainerFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function setConfig(string $config): self
+    public function setConfig(string $config): ContainerFactoryInterface
     {
         $this->config = $config;
 

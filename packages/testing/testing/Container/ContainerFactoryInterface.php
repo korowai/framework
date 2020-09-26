@@ -22,7 +22,7 @@ interface ContainerFactoryInterface
     /**
      * Configure factory to use the $config file for a newly created container.
      */
-    public function setConfig(string $config): self;
+    public function setConfig(string $config): ContainerFactoryInterface;
 
     /**
      * Creates an instance of ContainerInterface.

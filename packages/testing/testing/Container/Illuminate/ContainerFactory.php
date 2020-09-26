@@ -31,7 +31,7 @@ final class ContainerFactory implements ContainerFactoryInterface
      *
      * @param mixed $config
      */
-    public function setConfig($config): self
+    public function setConfig($config): ContainerFactoryInterface
     {
         $this->config = $config;
 

@@ -22,17 +22,27 @@ use Psr\Container\ContainerInterface;
 final class ContainerFactory implements ContainerFactoryInterface
 {
     /**
-     * @var mixed
+     * @var string|null
      */
     private $config;
 
     /**
-     * Configure factory to use the $config when configuring a newly created container.
+     * Configure factory to use $config for a newly created container.
      *
-     * @param mixed $config
+     * @param mixed $config Must be a file name as string or null
+     * @throws \InvalidArgumentException
+     * @psalm-assert string|null $config
      */
     public function setConfig($config): ContainerFactoryInterface
     {
+        if ($config !== null && !is_string($config)) {
+            throw new \InvalidArgumentException(sprintf(
+                'Argument 1 to %s::setConfig() must be a string or null, %s given',
+                self::class,
+                is_object($config) ? get_class($config) : gettype($config)
+            ));
+        }
+
         $this->config = $config;
 
         return $this;
@@ -40,8 +50,6 @@ final class ContainerFactory implements ContainerFactoryInterface
 
     /**
      * Creates an instance of ContainerInterface.
-     *
-     * @param array $configs an array of configurations
      */
     public function createContainer(): ContainerInterface
     {

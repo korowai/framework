@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Korowai\Testing\Container\PhpDi;
 
 use DI\ContainerBuilder;
+use DI\Definition\Source\DefinitionSource;
 use Korowai\Testing\Container\ContainerFactoryInterface;
 use Psr\Container\ContainerInterface;
 
@@ -22,15 +23,29 @@ use Psr\Container\ContainerInterface;
 final class ContainerFactory implements ContainerFactoryInterface
 {
     /**
-     * @var array|string
+     * @var array|string|DefinitionSource
      */
     private $config = [];
 
     /**
-     * {@inheritdoc}
+     * Configure factory to use $config for a newly created container.
+     *
+     * @param mixed $config Must be an array, a string or a DefinitionSource object.
+     *
+     * @throws \InvalidArgumentException
+     * @psalm-assert array|string|DefinitionSource $config
      */
-    public function setConfig(string $config): ContainerFactoryInterface
+    public function setConfig($config): ContainerFactoryInterface
     {
+        if (!is_array($config) && !is_string($config) && !($config instanceof DefinitionSource)) {
+            throw new \InvalidArgumentException(sprintf(
+                'Argument 1 to %s::setConfig() must be an array, a string, or a %s object, %s given',
+                self::class,
+                DefinitionSource::class,
+                is_object($config) ? get_class($config) : gettype($config)
+            ));
+        }
+
         $this->config = $config;
 
         return $this;

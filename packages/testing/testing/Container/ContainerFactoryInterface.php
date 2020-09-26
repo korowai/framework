@@ -20,14 +20,14 @@ use Psr\Container\ContainerInterface;
 interface ContainerFactoryInterface
 {
     /**
-     * Configure factory to use the $config file for a newly created container.
+     * Configure factory to use the $config for a newly created container.
+     *
+     * @param mixed $config
      */
-    public function setConfig(string $config): ContainerFactoryInterface;
+    public function setConfig($config): ContainerFactoryInterface;
 
     /**
      * Creates an instance of ContainerInterface.
-     *
-     * @param array $configs an array of configurations
      */
     public function createContainer(): ContainerInterface;
 }

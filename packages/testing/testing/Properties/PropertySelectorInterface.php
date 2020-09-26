@@ -17,10 +17,16 @@ namespace Korowai\Testing\Properties;
  */
 interface PropertySelectorInterface
 {
+    /**
+     * @param mixed $subject
+     */
     public function canSelectFrom($subject): bool;
 
     /**
+     * @param mixed $subject
      * @param string|int $key
+     *
+     * @palm-param array-key $key
      */
     public function selectProperty($subject, $key, &$retval = null): bool;
 }

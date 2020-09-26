@@ -44,8 +44,8 @@ final class ClassPropertySelector extends AbstractPropertySelector
     }
 
     /**
-     * @param string|int $key
-     * @psalm-assert class $subject
+     * @psalm-param array-key $key
+     * @psalm-assert class-string $subject
      */
     protected function selectWithAttribute($subject, $key, &$retval = null): bool
     {

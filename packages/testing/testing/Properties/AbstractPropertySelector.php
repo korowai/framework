@@ -18,7 +18,7 @@ namespace Korowai\Testing\Properties;
 abstract class AbstractPropertySelector implements PropertySelectorInterface
 {
     /**
-     * @param string|int $key
+     * @psalm-param array-key $key
      */
     public function selectProperty($subject, $key, &$retval = null): bool
     {
@@ -35,7 +35,7 @@ abstract class AbstractPropertySelector implements PropertySelectorInterface
     abstract protected function selectWithMethod($subject, string $method, array &$retval = null): bool;
 
     /**
-     * @param int|string $key
+     * @psalm-param array-key $key
      */
     abstract protected function selectWithAttribute($subject, $key, array &$retval = null): bool;
 }

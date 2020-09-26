@@ -58,6 +58,54 @@ final class ContainerFactoryTest extends TestCase
     {
         $this->assertInstanceOf(ContainerFactory::class, $container->get(ContainerFactoryInterface::class));
     }
+
+    public static function provSetConfigThrowsExceptionOnInvalidConfigType(): array
+    {
+        $template = sprintf(
+            'Argument 1 to %s::setConfig() must be a string, %%s given',
+            ContainerFactory::class,
+        );
+
+        return [
+            'ContainerFactoryTest.php:'.__LINE__ => [
+                'config' => null,
+                'expect' => [
+                    'exception' => \InvalidArgumentException::class,
+                    'message' => sprintf($template, gettype(null)),
+                ],
+            ],
+
+            'ContainerFactoryTest.php:'.__LINE__ => [
+                'config' => 123,
+                'expect' => [
+                    'exception' => \InvalidArgumentException::class,
+                    'message' => sprintf($template, gettype(123)),
+                ],
+            ],
+
+            'ContainerFactoryTest.php:'.__LINE__ => [
+                'config' => new \Exception,
+                'expect' => [
+                    'exception' => \InvalidArgumentException::class,
+                    'message' => sprintf($template, \Exception::class),
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider provSetConfigThrowsExceptionOnInvalidConfigType
+     * @param mixed $config
+     */
+    public function testSetConfigThrowsExceptionOnInvalidConfigType($config, array $expect): void
+    {
+        $container = $this->getContainerFactory();
+
+        $this->expectException($expect['exception']);
+        $this->expectExceptionMessage($expect['message']);
+
+        $container->setConfig($config);
+    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

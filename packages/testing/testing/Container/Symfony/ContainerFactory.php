@@ -24,7 +24,7 @@ use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 final class ContainerFactory implements ContainerFactoryInterface
 {
     /**
-     * @var string
+     * @var string|null
      */
     private $config;
 
@@ -34,12 +34,22 @@ final class ContainerFactory implements ContainerFactoryInterface
     private $servicesVisibility = [];
 
     /**
-     * {@inheritdoc}
+     * Configure factory to use $config for a newly created container.
+     *
+     * @param mixed $config Must be a file name as string
      *
      * @psalm-return self
+     * @psalm-assert string $config
      */
-    public function setConfig(string $config): ContainerFactoryInterface
+    public function setConfig($config): ContainerFactoryInterface
     {
+        if (!is_string($config)) {
+            throw new \InvalidArgumentException(sprintf(
+                'Argument 1 to %s::setConfig() must be a string, %s given',
+                self::class,
+                is_object($config) ? get_class($config) : gettype($config)
+            ));
+        }
         $this->config = $config;
 
         return $this;

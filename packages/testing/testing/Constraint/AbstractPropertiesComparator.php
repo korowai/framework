@@ -99,9 +99,7 @@ abstract class AbstractPropertiesComparator extends Constraint implements Expect
             $unwrapper = new RecursiveUnwrapper();
         }
 
-        /**
-         * @psalm-var Subclass
-         */
+        /** @var Subclass */
         return new static($comparator, new ExpectedProperties($selector, $expected), $unwrapper);
     }
 

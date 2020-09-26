@@ -25,8 +25,9 @@ interface ComparatorInterface
     /**
      * Returns an adjective that identifies this comparison operator.
      *
-     * For equality comparison it shall be "equal to", for identity it sahll be
-     * "identical to".
+     * Shall return strings such as "equal to" (equality operator ``==``),
+     * "identical to" (identity operator ``===``), etc..
+     *
      */
     public function adjective(): string;
 }

@@ -32,7 +32,7 @@ abstract class AbstractPropertySelector implements PropertySelectorInterface
     /**
      * @param false|string $method
      */
-    abstract protected function selectWithMethod($subject, $method, array &$retval = null): bool;
+    abstract protected function selectWithMethod($subject, string $method, array &$retval = null): bool;
 
     abstract protected function selectWithAttribute($subject, string $key, array &$retval = null): bool;
 }

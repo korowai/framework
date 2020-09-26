@@ -30,7 +30,7 @@ final class ClassPropertySelector extends AbstractPropertySelector
     /**
      * @psalm-assert class $subject
      */
-    protected function selectWithMethod($subject, $method, &$retval = null): bool
+    protected function selectWithMethod($subject, string $method, &$retval = null): bool
     {
         if (!is_string($subject) || !class_exists($subject)) {
             throw InvalidArgumentException::create(1, 'class');
@@ -46,7 +46,7 @@ final class ClassPropertySelector extends AbstractPropertySelector
     /**
      * @psalm-assert class $subject
      */
-    protected function selectWithAttribute($subject, $key, &$retval = null): bool
+    protected function selectWithAttribute($subject, string $key, &$retval = null): bool
     {
         if (!is_string($subject) || !class_exists($subject)) {
             throw InvalidArgumentException::create(1, 'class');

@@ -19,6 +19,8 @@ interface ComparatorInterface
 {
     /**
      * Compares two values.
+     * @param mixed $left
+     * @param mixed $right
      */
     public function compare($left, $right): bool;
 
@@ -27,7 +29,6 @@ interface ComparatorInterface
      *
      * Shall return strings such as "equal to" (equality operator ``==``),
      * "identical to" (identity operator ``===``), etc..
-     *
      */
     public function adjective(): string;
 }

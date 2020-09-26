@@ -19,6 +19,9 @@ namespace Korowai\Testing\Examples;
  */
 trait ExampleQuxTrait
 {
+    /**
+     * @var mixed
+     */
     public $qux;
 
     /**

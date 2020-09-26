@@ -17,6 +17,9 @@ namespace Korowai\Testing\Dummies;
  */
 trait PhpIteratorAggregateTrait
 {
+    /**
+     * @var mixed
+     */
     public $iterator;
 
     public function getIterator()

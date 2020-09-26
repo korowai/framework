@@ -64,6 +64,9 @@ trait ExpectedPropertiesDecoratorTrait
     // PropertiesInterface
     //
 
+    /**
+     * @return array
+     */
     public function getArrayCopy()
     {
         return $this->getExpectedProperties()->getArrayCopy();

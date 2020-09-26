@@ -21,6 +21,9 @@ class ExampleFooClass implements ExampleFooInterface
 {
     use ExampleBazTrait;
 
+    /**
+     * @var mixed
+     */
     private $foo;
 
     /**

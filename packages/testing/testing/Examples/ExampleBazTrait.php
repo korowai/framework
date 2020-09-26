@@ -19,6 +19,9 @@ namespace Korowai\Testing\Examples;
  */
 trait ExampleBazTrait
 {
+    /**
+     * @var mixed
+     */
     private $baz;
 
     /**

@@ -17,6 +17,10 @@ namespace Korowai\Testing\Properties;
  */
 final class EqualityComparator implements ComparatorInterface
 {
+    /**
+     * @param mixed $left
+     * @param mixed $right
+     */
     public function compare($left, $right): bool
     {
         return $left == $right;

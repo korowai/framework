@@ -20,6 +20,7 @@ use PHPUnit\Framework\InvalidArgumentException;
 final class ObjectPropertySelector extends AbstractPropertySelector
 {
     /**
+     * @param mixed $subject
      * @psalm-assert-if-true object $subject
      */
     public function canSelectFrom($subject): bool
@@ -28,6 +29,9 @@ final class ObjectPropertySelector extends AbstractPropertySelector
     }
 
     /**
+     * @param mixed $subject
+     * @param string $method
+     * @param mixed $retval
      * @psalm-assert object $subject
      */
     protected function selectWithMethod($subject, string $method, &$retval = null): bool
@@ -44,6 +48,9 @@ final class ObjectPropertySelector extends AbstractPropertySelector
     }
 
     /**
+     * @param mixed $subject
+     * @param mixed $key
+     * @param mixed $retval
      * @psalm-param array-key $key
      * @psalm-assert object $subject
      */

@@ -28,7 +28,10 @@ final class ClassPropertySelector extends AbstractPropertySelector
     }
 
     /**
-     * @psalm-assert class $subject
+     * @param mixed $subject
+     * @param string $method
+     * @param mixed $retval
+     * @psalm-assert class-string $subject
      */
     protected function selectWithMethod($subject, string $method, &$retval = null): bool
     {
@@ -44,6 +47,9 @@ final class ClassPropertySelector extends AbstractPropertySelector
     }
 
     /**
+     * @param mixed $subject
+     * @param mixed $key
+     * @param mixed $retval
      * @psalm-param array-key $key
      * @psalm-assert class-string $subject
      */

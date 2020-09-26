@@ -21,6 +21,9 @@ final class ExampleBarClass extends ExampleFooClass implements ExampleBarInterfa
 {
     use ExampleQuxTrait;
 
+    /**
+     * @var mixed
+     */
     private $bar;
 
     /**

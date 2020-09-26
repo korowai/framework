@@ -35,7 +35,13 @@ final class Exporter extends SebastianBergmannExporter
     }
 
     /**
-     * {@inheritdoc}
+     * Recursive implementation of export.
+     *
+     * @param mixed   $value       The value to export
+     * @param int     $indentation The indentation level of the 2nd+ line
+     * @param Context $processed   Previously processed objects
+     *
+     * @return string
      */
     public function recursiveExport(&$value, $indentation, $processed = null)
     {
@@ -79,7 +85,17 @@ final class Exporter extends SebastianBergmannExporter
     }
 
     /**
-     * {@inheritdoc}
+     * Exports a value into a single-line string.
+     *
+     * The output of this method is similar to the output of
+     * SebastianBergmann\Exporter\Exporter::export().
+     *
+     * Newlines are replaced by the visible string '\n'.
+     * Contents of arrays and objects (if any) are replaced by '...'.
+     *
+     * @param mixed $value
+     *
+     * @return string
      */
     public function shortenedExport($value)
     {

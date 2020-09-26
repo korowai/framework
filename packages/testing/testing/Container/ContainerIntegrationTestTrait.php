@@ -23,6 +23,9 @@ trait ContainerIntegrationTestTrait
 
     abstract public function provideContainerConfigs(): iterable;
 
+    /**
+     * @param mixed $config
+     */
     abstract public function examineConfiguredContainer(ContainerInterface $container, $config): void;
 
     // See https://github.com/korowai/framework/issues/11

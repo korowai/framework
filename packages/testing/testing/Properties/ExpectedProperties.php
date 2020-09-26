@@ -23,6 +23,11 @@ final class ExpectedProperties extends \ArrayObject implements ExpectedPropertie
      */
     private $propertySelector;
 
+    /**
+     * @param PropertySelectorInterface $propertySelector
+     * @param mixed $input
+     * @psalm-assert array|object $input
+     */
     public function __construct(PropertySelectorInterface $propertySelector, $input = [])
     {
         $this->propertySelector = $propertySelector;

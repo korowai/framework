@@ -17,10 +17,25 @@ namespace Korowai\Testing\Dummies;
  */
 trait PhpIteratorTrait
 {
+    /**
+     * @var mixed
+     */
     public $current;
+    /**
+     * @var mixed
+     */
     public $key;
+    /**
+     * @var mixed
+     */
     public $next;
+    /**
+     * @var mixed
+     */
     public $rewind;
+    /**
+     * @var mixed
+     */
     public $valid;
 
     public function current()

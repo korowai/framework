@@ -293,6 +293,9 @@ abstract class AbstractPropertiesComparator extends Constraint implements Expect
         return $this->short($other).' '.$string;
     }
 
+    /**
+     * @param mixed $subject
+     */
     private function selectActualProperties($subject): ActualPropertiesInterface
     {
         return (new RecursiveSelector($this->expected))->selectProperties($subject);

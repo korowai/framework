@@ -27,6 +27,9 @@ final class RecursivePropertiesSelector implements RecursivePropertiesSelectorIn
         $this->expected = $expected;
     }
 
+    /**
+     * @param mixed $subject
+     */
     public function selectProperties($subject): ActualPropertiesInterface
     {
         return new ActualProperties($this->selectPropertiesArray($subject));

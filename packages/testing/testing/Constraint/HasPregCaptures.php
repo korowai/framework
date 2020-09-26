@@ -151,6 +151,9 @@ final class HasPregCaptures extends Constraint
         return [$expect, $actual];
     }
 
+    /**
+     * @param array-key $key
+     */
     private static function updateExpectForComparison(array &$expect, array $matches, $key, $value): void
     {
         $exists = null !== ($matches[$key] ?? [null, -1])[0];
@@ -163,6 +166,9 @@ final class HasPregCaptures extends Constraint
         }
     }
 
+    /**
+     * @param array-key $key
+     */
     private static function updateActualForComparison(array &$actual, array $matches, $key): void
     {
         if (array_key_exists($key, $matches)) {

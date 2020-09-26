@@ -17,6 +17,9 @@ namespace Korowai\Testing\Properties;
  */
 interface RecursivePropertiesSelectorInterface
 {
+    /**
+     * @param mixed $subject
+     */
     public function selectProperties($subject): ActualPropertiesInterface;
 }
 

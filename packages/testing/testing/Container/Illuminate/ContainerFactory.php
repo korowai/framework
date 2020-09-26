@@ -55,6 +55,7 @@ final class ContainerFactory implements ContainerFactoryInterface
     {
         $container = new Container();
         if (null !== $this->config) {
+            /** @psalm-suppress UnresolvableInvlude */
             $configure = require $this->config;
             $configure($container);
         }

@@ -49,12 +49,19 @@ final class ContainerFactoryTest extends TestCase
 
     public function provideContainerConfigs(): array
     {
-        return [config_path('php-di/services.php')];
+        return [
+            [],
+            config_path('php-di/services.php')
+        ];
     }
 
     public function examineConfiguredContainer(ContainerInterface $container, $config): void
     {
-        $this->assertInstanceOf(ContainerFactory::class, $container->get(ContainerFactoryInterface::class));
+        if ($config) {
+            $this->assertInstanceOf(ContainerFactory::class, $container->get(ContainerFactoryInterface::class));
+        } else {
+            $this->assertFalse($container->has(ContainerFactoryInterface::class));
+        }
     }
 
     public static function provSetConfigThrowsExceptionOnInvalidConfigType(): array

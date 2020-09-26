@@ -57,6 +57,7 @@ final class ContainerFactory implements ContainerFactoryInterface
     public function createContainer(): ContainerInterface
     {
         $builder = new ContainerBuilder();
+        $builder->useAutowiring(false);
         $builder->addDefinitions($this->config);
 
         return $builder->build();

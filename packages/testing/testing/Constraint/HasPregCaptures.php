@@ -153,6 +153,7 @@ final class HasPregCaptures extends Constraint
 
     /**
      * @param array-key $key
+     * @param mixed $value
      */
     private static function updateExpectForComparison(array &$expect, array $matches, $key, $value): void
     {

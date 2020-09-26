@@ -55,7 +55,7 @@ abstract class AbstractPropertiesComparator extends Constraint implements Expect
     private $unwrapper;
 
     /**
-     * @var Exporter
+     * @var null|Exporter
      */
     private $exporter;
 

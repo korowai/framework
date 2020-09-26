@@ -40,7 +40,7 @@ class ExampleFooClass implements ExampleFooInterface
      * @param mixed $foo
      *                   New attribute value
      *
-     * @return exampleFooInterface
+     * @return ExampleFooInterface
      *                             Returns *$this*
      */
     public function setFoo($foo): ExampleFooInterface

@@ -19,33 +19,42 @@ use PHPUnit\Framework\InvalidArgumentException;
  */
 final class ClassPropertySelector extends AbstractPropertySelector
 {
+    /**
+     * @psalm-assert-if-true class-string $subject
+     */
     public function canSelectFrom($subject): bool
     {
         return is_string($subject) && class_exists($subject);
     }
 
-    protected function selectWithMethod($class, $method, &$retval = null): bool
+    /**
+     * @psalm-assert class $subject
+     */
+    protected function selectWithMethod($subject, $method, &$retval = null): bool
     {
-        if (!is_string($class) || !class_exists($class)) {
+        if (!is_string($subject) || !class_exists($subject)) {
             throw InvalidArgumentException::create(1, 'class');
         }
-        if (!method_exists($class, $method)) {
+        if (!method_exists($subject, $method)) {
             return false;
         }
-        $retval = call_user_func([$class, $method]);
+        $retval = call_user_func([$subject, $method]);
 
         return true;
     }
 
-    protected function selectWithAttribute($class, $key, &$retval = null): bool
+    /**
+     * @psalm-assert class $subject
+     */
+    protected function selectWithAttribute($subject, $key, &$retval = null): bool
     {
-        if (!is_string($class) || !class_exists($class)) {
+        if (!is_string($subject) || !class_exists($subject)) {
             throw InvalidArgumentException::create(1, 'class');
         }
-        if (!property_exists($class, $key)) {
+        if (!property_exists($subject, $key)) {
             return false;
         }
-        $retval = $class::${$key};
+        $retval = $subject::${$key};
 
         return true;
     }

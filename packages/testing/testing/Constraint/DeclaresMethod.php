@@ -88,7 +88,7 @@ final class DeclaresMethod extends Constraint
      */
     protected function getSubjectString($other): string
     {
-        if (is_object($other) || is_string($other)) {
+        if (self::isSuitableForReflectionClass($other)) {
             try {
                 $reflection = new \ReflectionClass($other);
                 $kind = ($reflection->isInterface() ? 'interface' : ($reflection->isTrait() ? 'trait' : 'class'));
@@ -100,6 +100,19 @@ final class DeclaresMethod extends Constraint
         } else {
             return gettype($other);
         }
+    }
+
+    private static function isSuitableForReflectionClass($subject): bool
+    {
+        if (is_object($subject)) {
+            return true;
+        }
+
+        if (is_string($subject)) {
+            return class_exists($subject) || trait_exists($subject) || interface_exists($subject);
+        }
+
+        return false;
     }
 }
 

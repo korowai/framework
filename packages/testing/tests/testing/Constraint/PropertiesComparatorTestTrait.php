@@ -16,6 +16,7 @@ use Korowai\Testing\Constraint\AbstractPropertiesComparator;
 use Korowai\Testing\Properties\ExpectedPropertiesInterface;
 use Korowai\Testing\Properties\RecursivePropertiesUnwrapper;
 use Korowai\Testing\Properties\RecursivePropertiesUnwrapperInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -28,9 +29,28 @@ trait PropertiesComparatorTestTrait
 
     abstract public static function assertImplementsInterface(string $interface, $object, string $message = ''): void;
 
+    /**
+     * Asserts that two variables have the same type and value.
+     * Used on objects, it asserts that two variables reference
+     * the same object.
+     *
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     *
+     * @psalm-template ExpectedType
+     * @psalm-param ExpectedType $expected
+     * @psalm-assert =ExpectedType $actual
+     */
     abstract public static function assertSame($expected, $actual, string $message = ''): void;
 
-    abstract public function createMock(string $name);
+    /**
+     * Returns a mock object for the specified class.
+     *
+     * @psalm-template RealInstanceType of object
+     * @psalm-param class-string<RealInstanceType> $originalClassName
+     * @psalm-return MockObject&RealInstanceType
+     */
+    abstract public function createMock(string $originalClassName): MockObject;
 
     public function testExtendsAbstractPropertiesComparator(): void
     {

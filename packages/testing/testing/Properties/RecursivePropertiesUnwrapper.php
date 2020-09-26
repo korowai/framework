@@ -20,7 +20,7 @@ final class RecursivePropertiesUnwrapper implements RecursivePropertiesUnwrapper
     public const UNIQUE_TAG = 'unwrapped-properties:$1$zIlgusJc$ZZCyNRPOX1SbpKdzoD2hU/';
 
     /**
-     * @var null|SplObjectProperties
+     * @var \SplObjectStorage
      */
     private $seen;
 
@@ -39,6 +39,7 @@ final class RecursivePropertiesUnwrapper implements RecursivePropertiesUnwrapper
     public function __construct(bool $tagging = true)
     {
         $this->tagging = $tagging;
+        $this->seen = new \SplObjectStorage();
     }
 
     /**
@@ -61,11 +62,10 @@ final class RecursivePropertiesUnwrapper implements RecursivePropertiesUnwrapper
     public function unwrap(PropertiesInterface $properties): array
     {
         $this->seen = new \SplObjectStorage();
-
         try {
             $result = $this->walkRecursive($properties);
         } finally {
-            $this->seen = null;
+            $this->seen = new \SplObjectStorage();
         }
 
         return $result;

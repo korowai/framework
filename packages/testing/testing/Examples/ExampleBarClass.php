@@ -41,7 +41,7 @@ final class ExampleBarClass extends ExampleFooClass implements ExampleBarInterfa
      * @param mixed $bar
      *                   New attribute value
      *
-     * @return exampleBarInterface
+     * @return ExampleBarInterface
      *                             Returns *$this*
      */
     public function setBar($bar): ExampleBarInterface

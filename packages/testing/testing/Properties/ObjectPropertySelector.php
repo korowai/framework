@@ -19,33 +19,42 @@ use PHPUnit\Framework\InvalidArgumentException;
  */
 final class ObjectPropertySelector extends AbstractPropertySelector
 {
+    /**
+     * @psalm-assert-if-true object $subject
+     */
     public function canSelectFrom($subject): bool
     {
         return is_object($subject);
     }
 
-    protected function selectWithMethod($object, $method, &$retval = null): bool
+    /**
+     * @psalm-assert object $subject
+     */
+    protected function selectWithMethod($subject, $method, &$retval = null): bool
     {
-        if (!is_object($object)) {
+        if (!is_object($subject)) {
             throw InvalidArgumentException::create(1, 'object');
         }
-        if (!method_exists($object, $method)) {
+        if (!method_exists($subject, $method)) {
             return false;
         }
-        $retval = call_user_func([$object, $method]);
+        $retval = call_user_func([$subject, $method]);
 
         return true;
     }
 
-    protected function selectWithAttribute($object, $key, &$retval = null): bool
+    /**
+     * @psalm-assert object $subject
+     */
+    protected function selectWithAttribute($subject, $key, &$retval = null): bool
     {
-        if (!is_object($object)) {
+        if (!is_object($subject)) {
             throw InvalidArgumentException::create(1, 'object');
         }
-        if (!property_exists($object, $key)) {
+        if (!property_exists($subject, $key)) {
             return false;
         }
-        $retval = $object->{$key};
+        $retval = $subject->{$key};
 
         return true;
     }

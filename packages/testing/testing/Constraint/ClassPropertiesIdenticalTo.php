@@ -42,6 +42,8 @@ use Korowai\Testing\Properties\IdentityComparator;
  *      }), $matcher);
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ *
+ * @psalm-extends AbstractPropertiesComparator<ClassPropertiesIdenticalTo>
  */
 final class ClassPropertiesIdenticalTo extends AbstractPropertiesComparator
 {

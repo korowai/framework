@@ -37,6 +37,8 @@ use SebastianBergmann\Exporter\Exporter as BaseExporter;
  * Support for other kinds of beings may be implemented if necessary.
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ *
+ * @psalm-template Subclass of AbstractPropertiesComparator
  */
 abstract class AbstractPropertiesComparator extends Constraint implements ExpectedPropertiesInterface
 {
@@ -79,10 +81,12 @@ abstract class AbstractPropertiesComparator extends Constraint implements Expect
 
     /**
      * Creates constraint using array of expected property values as specification.
+     *
+     * @psalm-return Subclass
      */
     public static function fromArray(array $expected, RecursiveUnwrapperInterface $unwrapper = null): self
     {
-        $valid = array_filter($expected, \is_string::class, ARRAY_FILTER_USE_KEY);
+        $valid = array_filter($expected, 'is_string', ARRAY_FILTER_USE_KEY);
         if (($count = count($expected) - count($valid)) > 0) {
             $message = 'The array of expected properties contains '.$count.' invalid key(s)';
 
@@ -95,6 +99,9 @@ abstract class AbstractPropertiesComparator extends Constraint implements Expect
             $unwrapper = new RecursiveUnwrapper();
         }
 
+        /**
+         * @psalm-var Subclass
+         */
         return new static($comparator, new ExpectedProperties($selector, $expected), $unwrapper);
     }
 

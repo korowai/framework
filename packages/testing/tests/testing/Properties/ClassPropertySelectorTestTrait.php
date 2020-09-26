@@ -23,12 +23,27 @@ trait ClassPropertySelectorTestTrait
 {
     abstract public function createClassPropertySelector(): PropertySelectorInterface;
 
+    /**
+     * Asserts that two variables have the same type and value.
+     * Used on objects, it asserts that two variables reference
+     * the same object.
+     *
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     *
+     * @psalm-template ExpectedType
+     * @psalm-param ExpectedType $expected
+     * @psalm-assert =ExpectedType $actual
+     */
     abstract public static function assertSame($expected, $value, string $message = ''): void;
 
     abstract public function expectError(): void;
 
     abstract public function expectErrorMessage(string $message): void;
 
+    /**
+     * @psalm-param class-string<\Throwable> $exception
+     */
     abstract public function expectException(string $exception): void;
 
     abstract public function expectExceptionMessage(string $message): void;

@@ -19,6 +19,7 @@ final class ExpectedProperties extends \ArrayObject implements ExpectedPropertie
 {
     /**
      * @var PropertySelectorInterface
+     * @psalm-readonly
      */
     private $propertySelector;
 
@@ -28,11 +29,17 @@ final class ExpectedProperties extends \ArrayObject implements ExpectedPropertie
         parent::__construct($input);
     }
 
+    /**
+     * @psalm-mutation-free
+     */
     public function getPropertySelector(): PropertySelectorInterface
     {
         return $this->propertySelector;
     }
 
+    /**
+     * @psalm-mutation-free
+     */
     public function canUnwrapChild(PropertiesInterface $child): bool
     {
         return $child instanceof ExpectedPropertiesInterface;

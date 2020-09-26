@@ -17,6 +17,9 @@ namespace Korowai\Testing\Properties;
  */
 final class ActualProperties extends \ArrayObject implements ActualPropertiesInterface
 {
+    /**
+     * @psalm-mutation-free
+     */
     public function canUnwrapChild(PropertiesInterface $child): bool
     {
         return $child instanceof ActualPropertiesInterface;

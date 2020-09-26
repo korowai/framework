@@ -46,11 +46,16 @@ final class Exporter extends SebastianBergmannExporter
                 $processed = new Context();
             }
 
-            if ($hash = $processed->contains($value)) {
+            $hash = $processed->contains($value);
+            /** @psalm-var PropertiesInterface $value */
+
+            if ($hash) {
                 return $this->describe($value);
             }
 
             $hash = $processed->add($value);
+            /** @psalm-var PropertiesInterface $value */
+
             $values = '';
             $array = $this->toArray($value);
 

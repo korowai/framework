@@ -135,7 +135,12 @@ final class HasPregCaptures extends Constraint
         return $what.' '.$this->toString();
     }
 
-    private function getArraysForComparison(array $matches)
+    /**
+     * @return array[]
+     *
+     * @psalm-return array{0: array, 1: array}
+     */
+    private function getArraysForComparison(array $matches): array
     {
         [$expect, $actual] = [[], []];
         foreach ($this->expected as $key => $value) {
@@ -146,7 +151,7 @@ final class HasPregCaptures extends Constraint
         return [$expect, $actual];
     }
 
-    private static function updateExpectForComparison(array &$expect, array $matches, $key, $value)
+    private static function updateExpectForComparison(array &$expect, array $matches, $key, $value): void
     {
         $exists = null !== ($matches[$key] ?? [null, -1])[0];
         if ($value === $exists) {
@@ -158,7 +163,7 @@ final class HasPregCaptures extends Constraint
         }
     }
 
-    private static function updateActualForComparison(array &$actual, array $matches, $key)
+    private static function updateActualForComparison(array &$actual, array $matches, $key): void
     {
         if (array_key_exists($key, $matches)) {
             $actual[$key] = $matches[$key];

@@ -308,7 +308,12 @@ trait PregUtilsTrait
         return static::transformPregTuple($joint, $options);
     }
 
-    private static function stringsToPregTuplesWithoutNamedCapture(array $strings)
+    /**
+     * @return array[]
+     *
+     * @psalm-return array<array-key, array{0: mixed}>
+     */
+    private static function stringsToPregTuplesWithoutNamedCapture(array $strings): array
     {
         $result = [];
         // NOTE: we don't use array_map() with closure break process
@@ -320,7 +325,12 @@ trait PregUtilsTrait
         return $result;
     }
 
-    private static function stringsToPregTuplesWithNamedCapture(array $strings, string $key, int $offset)
+    /**
+     * @return ((int|mixed)[][]|mixed)[][]
+     *
+     * @psalm-return array<array-key, array{0: mixed, 1: array<string, array{0: mixed, 1: int}>}>
+     */
+    private static function stringsToPregTuplesWithNamedCapture(array $strings, string $key, int $offset): array
     {
         $result = [];
         // NOTE: we don't use array_map() with closure because closures

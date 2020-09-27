@@ -84,7 +84,7 @@ final class ContainerFactoryTest extends TestCase
             ],
 
             'ContainerFactoryTest.php:'.__LINE__ => [
-                'config' => new \Exception,
+                'config' => new \Exception(),
                 'expect' => [
                     'exception' => \InvalidArgumentException::class,
                     'message' => sprintf($template, \Exception::class),
@@ -95,6 +95,7 @@ final class ContainerFactoryTest extends TestCase
 
     /**
      * @dataProvider provSetConfigThrowsExceptionOnInvalidConfigType
+     *
      * @param mixed $config
      */
     public function testSetConfigThrowsExceptionOnInvalidConfigType($config, array $expect): void

@@ -22,7 +22,7 @@ use Psr\Container\ContainerInterface;
 final class ContainerFactory implements ContainerFactoryInterface
 {
     /**
-     * @var string|null
+     * @var null|string
      */
     private $config;
 
@@ -30,12 +30,13 @@ final class ContainerFactory implements ContainerFactoryInterface
      * Configure factory to use $config for a newly created container.
      *
      * @param mixed $config Must be a file name as string or null
+     *
      * @throws \InvalidArgumentException
      * @psalm-assert string|null $config
      */
     public function setConfig($config): ContainerFactoryInterface
     {
-        if ($config !== null && !is_string($config)) {
+        if (null !== $config && !is_string($config)) {
             throw new \InvalidArgumentException(sprintf(
                 'Argument 1 to %s::setConfig() must be a string or null, %s given',
                 self::class,

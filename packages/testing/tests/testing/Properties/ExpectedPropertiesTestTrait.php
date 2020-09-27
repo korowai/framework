@@ -33,12 +33,16 @@ trait ExpectedPropertiesTestTrait
      * Used on objects, it asserts that two variables reference
      * the same object.
      *
-     * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      *
      * @psalm-template ExpectedType
      * @psalm-param ExpectedType $expected
      * @psalm-assert =ExpectedType $actual
+     *
+     * @param mixed $expected
+     * @param mixed $actual
+     *
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
     abstract public static function assertSame($expected, $actual, string $message = ''): void;
 

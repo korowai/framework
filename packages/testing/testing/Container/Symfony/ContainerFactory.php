@@ -24,7 +24,7 @@ use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 final class ContainerFactory implements ContainerFactoryInterface
 {
     /**
-     * @var string|null
+     * @var null|string
      */
     private $config;
 

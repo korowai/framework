@@ -21,6 +21,8 @@ final class ClassPropertySelector extends AbstractPropertySelector
 {
     /**
      * @psalm-assert-if-true class-string $subject
+     *
+     * @param mixed $subject
      */
     public function canSelectFrom($subject): bool
     {
@@ -29,7 +31,6 @@ final class ClassPropertySelector extends AbstractPropertySelector
 
     /**
      * @param mixed $subject
-     * @param string $method
      * @param mixed $retval
      * @psalm-assert class-string $subject
      */
@@ -58,7 +59,7 @@ final class ClassPropertySelector extends AbstractPropertySelector
         if (!is_string($subject) || !class_exists($subject)) {
             throw InvalidArgumentException::create(1, 'class');
         }
-        $key = (string)$key;
+        $key = (string) $key;
         if (!property_exists($subject, $key)) {
             return false;
         }

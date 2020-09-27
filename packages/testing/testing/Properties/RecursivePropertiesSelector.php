@@ -55,6 +55,7 @@ final class RecursivePropertiesSelector implements RecursivePropertiesSelectorIn
     /**
      * @param mixed $actual
      * @param mixed $expect
+     *
      * @return mixed
      */
     private function adjustActualValue($actual, $expect)

@@ -50,13 +50,13 @@ final class ContainerFactoryTest extends TestCase
     {
         return [
             null,
-            config_path('illuminate/services.php')
+            config_path('illuminate/services.php'),
         ];
     }
 
     public function examineConfiguredContainer(ContainerInterface $container, $config): void
     {
-        if ($config !== null) {
+        if (null !== $config) {
             $this->assertInstanceOf(ContainerFactory::class, $container->get(ContainerFactoryInterface::class));
         } else {
             $this->assertFalse($container->has(ContainerFactoryInterface::class));
@@ -80,7 +80,7 @@ final class ContainerFactoryTest extends TestCase
             ],
 
             'ContainerFactoryTest.php:'.__LINE__ => [
-                'config' => new \Exception,
+                'config' => new \Exception(),
                 'expect' => [
                     'exception' => \InvalidArgumentException::class,
                     'message' => sprintf($template, \Exception::class),
@@ -91,6 +91,7 @@ final class ContainerFactoryTest extends TestCase
 
     /**
      * @dataProvider provSetConfigThrowsExceptionOnInvalidConfigType
+     *
      * @param mixed $config
      */
     public function testSetConfigThrowsExceptionOnInvalidConfigType($config, array $expect): void

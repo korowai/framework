@@ -26,7 +26,7 @@ abstract class AbstractPropertySelector implements PropertySelectorInterface
      */
     public function selectProperty($subject, $key, &$retval = null): bool
     {
-        $method = ('()' === substr((string)$key, -2)) ? substr((string)$key, 0, -2) : null;
+        $method = ('()' === substr((string) $key, -2)) ? substr((string) $key, 0, -2) : null;
         if (null !== $method) {
             return $this->selectWithMethod($subject, $method, $retval);
         }
@@ -38,7 +38,6 @@ abstract class AbstractPropertySelector implements PropertySelectorInterface
 
     /**
      * @param mixed $subject
-     * @param string $method
      * @param mixed $retval
      */
     abstract protected function selectWithMethod($subject, string $method, &$retval = null): bool;

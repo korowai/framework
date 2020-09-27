@@ -19,6 +19,7 @@ interface ComparatorInterface
 {
     /**
      * Compares two values.
+     *
      * @param mixed $left
      * @param mixed $right
      */

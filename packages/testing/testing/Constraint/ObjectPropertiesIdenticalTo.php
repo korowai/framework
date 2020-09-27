@@ -12,10 +12,10 @@ declare(strict_types=1);
 
 namespace Korowai\Testing\Constraint;
 
-use Korowai\Testing\Properties\ObjectPropertySelector;
-use Korowai\Testing\Properties\PropertySelectorInterface;
 use Korowai\Testing\Properties\ComparatorInterface;
 use Korowai\Testing\Properties\IdentityComparator;
+use Korowai\Testing\Properties\ObjectPropertySelector;
+use Korowai\Testing\Properties\PropertySelectorInterface;
 
 /**
  * Constraint that accepts objects having properties identical to specified ones.

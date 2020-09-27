@@ -23,14 +23,14 @@ use Psr\Container\ContainerInterface;
 final class ContainerFactory implements ContainerFactoryInterface
 {
     /**
-     * @var array|string|DefinitionSource
+     * @var array|DefinitionSource|string
      */
     private $config = [];
 
     /**
      * Configure factory to use $config for a newly created container.
      *
-     * @param mixed $config Must be an array, a string or a DefinitionSource object.
+     * @param mixed $config must be an array, a string or a DefinitionSource object
      *
      * @throws \InvalidArgumentException
      * @psalm-assert array|string|DefinitionSource $config

@@ -14,6 +14,7 @@ namespace Korowai\Testing\Constraint;
 
 use Korowai\Testing\Properties\ActualPropertiesInterface;
 use Korowai\Testing\Properties\CircularDependencyException;
+use Korowai\Testing\Properties\ComparatorInterface;
 use Korowai\Testing\Properties\ExpectedProperties;
 use Korowai\Testing\Properties\ExpectedPropertiesDecoratorTrait;
 use Korowai\Testing\Properties\ExpectedPropertiesInterface;
@@ -22,7 +23,6 @@ use Korowai\Testing\Properties\PropertySelectorInterface;
 use Korowai\Testing\Properties\RecursivePropertiesSelector as RecursiveSelector;
 use Korowai\Testing\Properties\RecursivePropertiesUnwrapper as RecursiveUnwrapper;
 use Korowai\Testing\Properties\RecursivePropertiesUnwrapperInterface as RecursiveUnwrapperInterface;
-use Korowai\Testing\Properties\ComparatorInterface;
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\Constraint\LogicalNot;
 use PHPUnit\Framework\Constraint\Operator;
@@ -101,6 +101,7 @@ abstract class AbstractPropertiesComparator extends Constraint implements Expect
 
         /** @psalm-var Subclass */
         $constraint = new static($comparator, new ExpectedProperties($selector, $expected), $unwrapper);
+
         return $constraint;
     }
 

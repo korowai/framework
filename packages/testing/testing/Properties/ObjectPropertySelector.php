@@ -30,7 +30,6 @@ final class ObjectPropertySelector extends AbstractPropertySelector
 
     /**
      * @param mixed $subject
-     * @param string $method
      * @param mixed $retval
      * @psalm-assert object $subject
      */
@@ -59,7 +58,7 @@ final class ObjectPropertySelector extends AbstractPropertySelector
         if (!is_object($subject)) {
             throw InvalidArgumentException::create(1, 'object');
         }
-        $key = (string)$key;
+        $key = (string) $key;
         if (!property_exists($subject, $key)) {
             return false;
         }

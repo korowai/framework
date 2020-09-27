@@ -62,6 +62,7 @@ final class RecursivePropertiesUnwrapper implements RecursivePropertiesUnwrapper
     public function unwrap(PropertiesInterface $properties): array
     {
         $this->seen = new \SplObjectStorage();
+
         try {
             $result = $this->walkRecursive($properties);
         } finally {

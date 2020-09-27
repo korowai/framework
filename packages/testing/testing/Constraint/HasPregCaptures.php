@@ -152,8 +152,9 @@ final class HasPregCaptures extends Constraint
     }
 
     /**
-     * @param array-key $key
+     * @param mixed $key
      * @param mixed $value
+     * @psalm-param array-key $key
      */
     private static function updateExpectForComparison(array &$expect, array $matches, $key, $value): void
     {
@@ -168,7 +169,8 @@ final class HasPregCaptures extends Constraint
     }
 
     /**
-     * @param array-key $key
+     * @param mixed $key
+     * @psalm-param array-key $key
      */
     private static function updateActualForComparison(array &$actual, array $matches, $key): void
     {

@@ -28,7 +28,7 @@ use PHPUnit\Framework\Constraint\LogicalNot;
 use PHPUnit\Framework\Constraint\Operator;
 use PHPUnit\Framework\ExpectationFailedException;
 use SebastianBergmann\Comparator\ComparisonFailure;
-use SebastianBergmann\Exporter\Exporter as BaseExporter;
+use SebastianBergmann\Exporter\Exporter as SebastianBergmannExporter;
 
 /**
  * Abstract base for constraints that examine subject's properties.
@@ -99,8 +99,9 @@ abstract class AbstractPropertiesComparator extends Constraint implements Expect
             $unwrapper = new RecursiveUnwrapper();
         }
 
-        /** @var Subclass */
-        return new static($comparator, new ExpectedProperties($selector, $expected), $unwrapper);
+        /** @psalm-var Subclass */
+        $constraint = new static($comparator, new ExpectedProperties($selector, $expected), $unwrapper);
+        return $constraint;
     }
 
     /**
@@ -242,7 +243,7 @@ abstract class AbstractPropertiesComparator extends Constraint implements Expect
      */
     abstract protected static function makeComparator(): ComparatorInterface;
 
-    protected function exporter(): BaseExporter
+    protected function exporter(): SebastianBergmannExporter
     {
         if (null === $this->exporter) {
             $this->exporter = new Exporter();

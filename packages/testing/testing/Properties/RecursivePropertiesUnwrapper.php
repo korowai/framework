@@ -91,6 +91,12 @@ final class RecursivePropertiesUnwrapper implements RecursivePropertiesUnwrapper
         return $array;
     }
 
+    /**
+     * @param mixed $value
+     * @param mixed $key
+     *
+     * @psalm-param array-key $key
+     */
     private function visit(&$value, $key, PropertiesInterface $parent): void
     {
         if ($value instanceof PropertiesInterface && $parent->canUnwrapChild($value)) {

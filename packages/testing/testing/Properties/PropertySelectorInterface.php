@@ -24,9 +24,10 @@ interface PropertySelectorInterface
 
     /**
      * @param mixed $subject
-     * @param string|int $key
+     * @param mixed $key
+     * @param mixed $retval
      *
-     * @palm-param array-key $key
+     * @psalm-param array-key $key
      */
     public function selectProperty($subject, $key, &$retval = null): bool;
 }

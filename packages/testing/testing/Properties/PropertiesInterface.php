@@ -17,6 +17,9 @@ namespace Korowai\Testing\Properties;
  */
 interface PropertiesInterface extends \IteratorAggregate, \ArrayAccess, \Countable
 {
+    /**
+     * @return array
+     */
     public function getArrayCopy();
 
     public function canUnwrapChild(PropertiesInterface $child): bool;

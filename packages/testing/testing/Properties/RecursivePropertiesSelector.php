@@ -35,6 +35,9 @@ final class RecursivePropertiesSelector implements RecursivePropertiesSelectorIn
         return new ActualProperties($this->selectPropertiesArray($subject));
     }
 
+    /**
+     * @param mixed $subject
+     */
     private function selectPropertiesArray($subject): array
     {
         $array = [];
@@ -49,6 +52,11 @@ final class RecursivePropertiesSelector implements RecursivePropertiesSelectorIn
         return $array;
     }
 
+    /**
+     * @param mixed $actual
+     * @param mixed $expect
+     * @return mixed
+     */
     private function adjustActualValue($actual, $expect)
     {
         if ($expect instanceof ExpectedPropertiesInterface) {

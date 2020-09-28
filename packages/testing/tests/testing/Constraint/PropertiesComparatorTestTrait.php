@@ -34,7 +34,6 @@ trait PropertiesComparatorTestTrait
      * Used on objects, it asserts that two variables reference
      * the same object.
      *
-     *
      * @psalm-template ExpectedType
      * @psalm-param ExpectedType $expected
      * @psalm-assert =ExpectedType $actual

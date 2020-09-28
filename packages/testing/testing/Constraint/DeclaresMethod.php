@@ -104,7 +104,7 @@ final class DeclaresMethod extends Constraint
 
     /**
      * @param mixed $subject
-     * @psalm-assert-if-true object|class-string|interface-string|trait-string $subject
+     * @psalm-assert-if-true object|class-string|trait-string $subject
      */
     private static function isSuitableForReflectionClass($subject): bool
     {

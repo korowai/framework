@@ -43,7 +43,7 @@ use Korowai\Testing\Properties\PropertySelectorInterface;
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  *
- * @psalm-extends AbstractPropertiesComparator<ObjectPropertiesIdenticalTo>
+ * @extends AbstractPropertiesComparator<ObjectPropertiesIdenticalTo>
  */
 final class ObjectPropertiesIdenticalTo extends AbstractPropertiesComparator
 {

@@ -13,16 +13,16 @@ declare(strict_types=1);
 namespace Korowai\Tests\Testing\Assertions;
 
 use Korowai\Testing\Assertions\InheritanceAssertionsTrait;
-use Korowai\Testing\Constraint\ImplementsInterface;
 use Korowai\Testing\Constraint\ExtendsClass;
+use Korowai\Testing\Constraint\ImplementsInterface;
 use Korowai\Testing\Constraint\UsesTraitConstraint;
 use Korowai\Testing\Examples\ExampleClassNotUsingTrait;
 use Korowai\Testing\Examples\ExampleClassUsingTrait;
 use Korowai\Testing\Examples\ExampleTrait;
 use Korowai\Testing\Examples\ExampleTraitUsingTrait;
-use PHPUnit\Framework\InvalidArgumentException;
-use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\Constraint\UnaryOperator;
+use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\Framework\InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -97,7 +97,7 @@ final class InheritanceAssertionsTraitTest extends TestCase
     /**
      * @dataProvider provImplementsInterface
      *
-     * @param string|object $subject
+     * @param object|string $subject
      */
     public function testAssertImplementsInterfaceSucceeds(string $interface, $subject): void
     {
@@ -119,6 +119,8 @@ final class InheritanceAssertionsTraitTest extends TestCase
 
     /**
      * @dataProvider provNotImplementsInterface
+     *
+     * @param mixed $subject
      */
     public function testAssertNotImplementsInterfaceSucceeds(string $interface, $subject): void
     {
@@ -127,6 +129,8 @@ final class InheritanceAssertionsTraitTest extends TestCase
 
     /**
      * @dataProvider provImplementsInterface
+     *
+     * @param mixed $subject
      */
     public function testAssertNotImplementsInterfaceFails(string $interface, $subject, string $message): void
     {
@@ -138,6 +142,8 @@ final class InheritanceAssertionsTraitTest extends TestCase
 
     /**
      * @dataProvider provNotImplementsInterface
+     *
+     * @param mixed $subject
      */
     public function testImplementsInterfaceFails(string $interface, $subject): void
     {
@@ -151,17 +157,17 @@ final class InheritanceAssertionsTraitTest extends TestCase
         return [
             'InheritanceAssertionsTraitTest.php:'.__LINE__ => [
                 'argument' => 'non-interface string',
-                'messsage' => sprintf($template, ImplementsInterface::class)
+                'messsage' => sprintf($template, ImplementsInterface::class),
             ],
 
             'InheritanceAssertionsTraitTest.php:'.__LINE__ => [
                 'argument' => \Exception::class,
-                'messsage' => sprintf($template, ImplementsInterface::class)
+                'messsage' => sprintf($template, ImplementsInterface::class),
             ],
 
             'InheritanceAssertionsTraitTest.php:'.__LINE__ => [
                 'argument' => ExampleTrait::class,
-                'messsage' => sprintf($template, ImplementsInterface::class)
+                'messsage' => sprintf($template, ImplementsInterface::class),
             ],
         ];
     }
@@ -240,6 +246,8 @@ final class InheritanceAssertionsTraitTest extends TestCase
 
     /**
      * @dataProvider provNotExtendsClass
+     *
+     * @param mixed $subject
      */
     public function testAssertExtendsClassFails(string $class, $subject, string $message): void
     {
@@ -299,17 +307,17 @@ final class InheritanceAssertionsTraitTest extends TestCase
         return [
             'InheritanceAssertionsTraitTest.php:'.__LINE__ => [
                 'argument' => 'non-class string',
-                'messsage' => sprintf($template, ExtendsClass::class)
+                'messsage' => sprintf($template, ExtendsClass::class),
             ],
 
             'InheritanceAssertionsTraitTest.php:'.__LINE__ => [
                 'argument' => \Throwable::class,
-                'messsage' => sprintf($template, ExtendsClass::class)
+                'messsage' => sprintf($template, ExtendsClass::class),
             ],
 
             'InheritanceAssertionsTraitTest.php:'.__LINE__ => [
                 'argument' => ExampleTrait::class,
-                'messsage' => sprintf($template, ExtendsClass::class)
+                'messsage' => sprintf($template, ExtendsClass::class),
             ],
         ];
     }
@@ -453,17 +461,17 @@ final class InheritanceAssertionsTraitTest extends TestCase
         return [
             'InheritanceAssertionsTraitTest.php:'.__LINE__ => [
                 'argument' => 'non-trait string',
-                'messsage' => sprintf($template, UsesTraitConstraint::class)
+                'messsage' => sprintf($template, UsesTraitConstraint::class),
             ],
 
             'InheritanceAssertionsTraitTest.php:'.__LINE__ => [
                 'argument' => \Exception::class,
-                'messsage' => sprintf($template, UsesTraitConstraint::class)
+                'messsage' => sprintf($template, UsesTraitConstraint::class),
             ],
 
             'InheritanceAssertionsTraitTest.php:'.__LINE__ => [
                 'argument' => \Throwable::class,
-                'messsage' => sprintf($template, UsesTraitConstraint::class)
+                'messsage' => sprintf($template, UsesTraitConstraint::class),
             ],
         ];
     }

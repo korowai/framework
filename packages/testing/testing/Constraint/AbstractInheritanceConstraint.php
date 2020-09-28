@@ -34,15 +34,7 @@ abstract class AbstractInheritanceConstraint extends Constraint
     private $expected;
 
     /**
-     * @throws InvalidArgumentException
-     * @psalm-return Subclass
-     */
-    abstract public static function fromString(string $expected): self;
-
-    /**
      * Initializes the constraint.
-     *
-     * @param string $expected
      */
     protected function __construct(string $expected)
     {
@@ -50,21 +42,10 @@ abstract class AbstractInheritanceConstraint extends Constraint
     }
 
     /**
-     * Returns short description of what we examine, e.g. ``'impements interface'``.
+     * @throws InvalidArgumentException
+     * @psalm-return Subclass
      */
-    abstract protected function verb(bool $negated = false): string;
-
-    /**
-     * Returns an array of "inherited classes" -- eiher interfaces *$class*
-     * implements, parent classes it extends or traits it uses, depending on
-     * the actual implementation of this constraint.
-     */
-    abstract protected function inheritance(string $class): array;
-
-    /**
-     * Checks if *$string* may be used as an argument to ``inheritance()``.
-     */
-    abstract protected function supportsActual(string $string): bool;
+    abstract public static function fromString(string $expected): self;
 
     /**
      * Returns a string representation of the constraint.
@@ -72,29 +53,6 @@ abstract class AbstractInheritanceConstraint extends Constraint
     final public function toString(): string
     {
         return sprintf('%s %s', $this->verb(), $this->expected);
-    }
-
-    /**
-     * Returns a custom string representation of the constraint object when it
-     * appears in context of an $operator expression.
-     *
-     * The purpose of this method is to provide meaningful descriptive string
-     * in context of operators such as LogicalNot. Native PHPUnit constraints
-     * are supported out of the box by LogicalNot, but externally developed
-     * ones had no way to provide correct strings in this context.
-     *
-     * The method shall return empty string, when it does not handle
-     * customization by itself.
-     *
-     * @param Operator $operator the $operator of the expression
-     * @param mixed    $role     role of $this constraint in the $operator expression
-     */
-    final protected function toStringInContext(Operator $operator, $role): string
-    {
-        if ($operator instanceof LogicalNot) {
-            return sprintf('%s %s', $this->verb(true), $this->expected);
-        }
-        return '';
     }
 
     /**
@@ -129,6 +87,47 @@ abstract class AbstractInheritanceConstraint extends Constraint
     }
 
     /**
+     * Returns short description of what we examine, e.g. ``'impements interface'``.
+     */
+    abstract protected function verb(bool $negated = false): string;
+
+    /**
+     * Returns an array of "inherited classes" -- eiher interfaces *$class*
+     * implements, parent classes it extends or traits it uses, depending on
+     * the actual implementation of this constraint.
+     */
+    abstract protected function inheritance(string $class): array;
+
+    /**
+     * Checks if *$string* may be used as an argument to ``inheritance()``.
+     */
+    abstract protected function supportsActual(string $string): bool;
+
+    /**
+     * Returns a custom string representation of the constraint object when it
+     * appears in context of an $operator expression.
+     *
+     * The purpose of this method is to provide meaningful descriptive string
+     * in context of operators such as LogicalNot. Native PHPUnit constraints
+     * are supported out of the box by LogicalNot, but externally developed
+     * ones had no way to provide correct strings in this context.
+     *
+     * The method shall return empty string, when it does not handle
+     * customization by itself.
+     *
+     * @param Operator $operator the $operator of the expression
+     * @param mixed    $role     role of $this constraint in the $operator expression
+     */
+    final protected function toStringInContext(Operator $operator, $role): string
+    {
+        if ($operator instanceof LogicalNot) {
+            return sprintf('%s %s', $this->verb(true), $this->expected);
+        }
+
+        return '';
+    }
+
+    /**
      * Returns the description of the failure when this constraint appears in
      * context of an $operator expression.
      *
@@ -148,7 +147,7 @@ abstract class AbstractInheritanceConstraint extends Constraint
     {
         $string = $this->toStringInContext($operator, $role);
 
-        if ($string === '') {
+        if ('' === $string) {
             return '';
         }
 

@@ -12,7 +12,6 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Testing\Constraint;
 
-use Korowai\Testing\Constraint\AbstractInheritanceConstraint;
 //use PHPUnit\Framework\MockObject\MockObject;
 
 /**

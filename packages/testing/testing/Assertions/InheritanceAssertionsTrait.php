@@ -30,7 +30,7 @@ trait InheritanceAssertionsTrait
      * Asserts that *$subject* implements *$interface*.
      *
      * @param string $interface name of the interface that is expected to be implemented
-     * @param mixed  $subject    an object or a class name that is being examined
+     * @param mixed  $subject   an object or a class name that is being examined
      * @param string $message   custom message
      *
      * @throws ExpectationFailedException
@@ -48,7 +48,7 @@ trait InheritanceAssertionsTrait
      * Asserts that *$subject* does not implement *$interface*.
      *
      * @param string $interface name of the interface that is expected to be implemented
-     * @param mixed  $subject    an object or a class name that is being examined
+     * @param mixed  $subject   an object or a class name that is being examined
      * @param string $message   custom message
      *
      * @throws ExpectationFailedException
@@ -76,7 +76,7 @@ trait InheritanceAssertionsTrait
      * Asserts that *$subject* extends the class *$parent*.
      *
      * @param string $parent  name of the class that is supposed to be extended by *$subject*
-     * @param mixed  $subject  an object or a class name that is being examined
+     * @param mixed  $subject an object or a class name that is being examined
      * @param string $message custom message
      *
      * @throws ExpectationFailedException
@@ -94,7 +94,7 @@ trait InheritanceAssertionsTrait
      * Asserts that *$subject* does not extend the class *$parent*.
      *
      * @param string $parent  name of the class that is expected to be extended by *$subject*
-     * @param mixed  $subject  an object or a class name that is being examined
+     * @param mixed  $subject an object or a class name that is being examined
      * @param string $message custom message
      *
      * @throws ExpectationFailedException
@@ -122,7 +122,7 @@ trait InheritanceAssertionsTrait
      * Asserts that *$subject* uses *$trait*.
      *
      * @param string $trait   name of the trait that is supposed to be included by *$subject*
-     * @param mixed  $subject  an object or a class name that is being examined
+     * @param mixed  $subject an object or a class name that is being examined
      * @param string $message custom message
      *
      * @throws ExpectationFailedException
@@ -140,7 +140,7 @@ trait InheritanceAssertionsTrait
      * Asserts that *$subject* does not use *$trait*.
      *
      * @param string $trait   name of the trait that is expected to be used by *$subject*
-     * @param mixed  $subject  an object or a class name that is being examined
+     * @param mixed  $subject an object or a class name that is being examined
      * @param string $message custom message
      *
      * @throws ExpectationFailedException

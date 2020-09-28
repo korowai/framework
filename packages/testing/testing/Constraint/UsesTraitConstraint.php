@@ -28,11 +28,12 @@ final class UsesTraitConstraint extends AbstractInheritanceConstraint
      *
      * @psalm-assert trait-string $expected
      */
-    public static function fromString(string $expected) : self
+    public static function fromString(string $expected): self
     {
         if (!trait_exists($expected)) {
             throw InvalidArgumentException::create(1, 'trait-string');
         }
+
         return new self($expected);
     }
 
@@ -44,6 +45,7 @@ final class UsesTraitConstraint extends AbstractInheritanceConstraint
         if ($negated) {
             return 'does not use trait';
         }
+
         return 'uses trait';
     }
 

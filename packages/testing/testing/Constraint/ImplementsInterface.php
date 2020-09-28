@@ -28,11 +28,12 @@ final class ImplementsInterface extends AbstractInheritanceConstraint
      *
      * @psalm-assert class-string $expected
      */
-    public static function fromString(string $expected) : self
+    public static function fromString(string $expected): self
     {
         if (!interface_exists($expected)) {
             throw InvalidArgumentException::create(1, 'interface-string');
         }
+
         return new self($expected);
     }
 
@@ -44,6 +45,7 @@ final class ImplementsInterface extends AbstractInheritanceConstraint
         if ($negated) {
             return 'does not implement interface';
         }
+
         return 'implements interface';
     }
 

@@ -15,7 +15,6 @@ namespace Korowai\Testing\Assertions;
 use Korowai\Testing\Constraint\DeclaresMethod;
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\Constraint\LogicalNot;
-use PHPUnit\Framework\ExpectationFailedException;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

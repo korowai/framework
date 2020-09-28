@@ -28,11 +28,12 @@ final class ExtendsClass extends AbstractInheritanceConstraint
      *
      * @psalm-assert class-string $expected
      */
-    public static function fromString(string $expected) : self
+    public static function fromString(string $expected): self
     {
         if (!class_exists($expected)) {
             throw InvalidArgumentException::create(1, 'class-string');
         }
+
         return new self($expected);
     }
 
@@ -44,6 +45,7 @@ final class ExtendsClass extends AbstractInheritanceConstraint
         if ($negated) {
             return 'does not extend class';
         }
+
         return 'extends class';
     }
 

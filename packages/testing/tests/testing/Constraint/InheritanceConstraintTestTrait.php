@@ -22,9 +22,9 @@ trait InheritanceConstraintTestTrait
 {
     abstract public function getInheritanceConstraintClass(): string;
 
-//    abstract public static function assertExtendsClass(string $parent, $object, string $message = ''): void;
+//    abstract public static function assertExtendsClass(string $parent, $subject, string $message = ''): void;
 
-//    abstract public static function assertImplementsInterface(string $interface, $object, string $message = ''): void;
+//    abstract public static function assertImplementsInterface(string $interface, $subject, string $message = ''): void;
 
     /**
      * Asserts that two variables have the same type and value.

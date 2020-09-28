@@ -64,7 +64,7 @@ abstract class AbstractPropertiesComparator extends Constraint implements Expect
      */
     private $comparator;
 
-    protected function __construct(
+    final protected function __construct(
         ComparatorInterface $comparator,
         ExpectedPropertiesInterface $expected,
         RecursiveUnwrapperInterface $unwrapper

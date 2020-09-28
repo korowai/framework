@@ -109,26 +109,26 @@ Synopsis:
 
 .. code:: php
 
-  function assertExtendsClass(string $parent, mixed $object[, string $message = ''])
+  function assertExtendsClass(string $parent, mixed $subject[, string $message = ''])
 
-Reports an error identified by ``$message`` if ``$object`` does not extend the
-``$parent`` class. The ``$object`` may be an ``object`` or a class name as
+Reports an error identified by ``$message`` if ``$subject`` does not extend the
+``$parent`` class. The ``$subject`` may be an ``object`` or a class name as
 ``string``:
 
-- if ``$object`` is an ``object``, then its class, as returned by
-  ``get_class($object)``, is examined against ``$parent``, the assertion
+- if ``$subject`` is an ``object``, then its class, as returned by
+  ``get_class($subject)``, is examined against ``$parent``, the assertion
   succeeds only if the class extends the ``$parent`` class,
 - otherwise, the necessary conditions for the assertion to succeed are that
 
-  - ``$object`` is a string,
-  - ``class_exists($object)`` is ``true``, and
-  - the ``$object`` class extends the ``$parent`` class.
+  - ``$subject`` is a string,
+  - ``class_exists($subject)`` is ``true``, and
+  - the ``$subject`` class extends the ``$parent`` class.
 
 The method
 
 .. code:: php
 
-  function assertNotExtendsClass(string $parent, mixed $object[, string $message = ''])
+  function assertNotExtendsClass(string $parent, mixed $subject[, string $message = ''])
 
 is the inverse of this.
 
@@ -200,27 +200,27 @@ Synopsis:
 
 .. code:: php
 
-  function assertImplementsInterface(string $interface, mixed $object[, string $message = ''])
+  function assertImplementsInterface(string $interface, mixed $subject[, string $message = ''])
 
-Reports an error identified by ``$message`` if ``$object`` does not implement
-the ``$interface``. The ``$object`` may be an ``object`` or a class/interface
+Reports an error identified by ``$message`` if ``$subject`` does not implement
+the ``$interface``. The ``$subject`` may be an ``object`` or a class/interface
 name as ``string``:
 
-- if ``$object`` is an ``object``, then its class, as returned by
-  ``get_class($object)``, is examined against ``$interface``, the assertion
+- if ``$subject`` is an ``object``, then its class, as returned by
+  ``get_class($subject)``, is examined against ``$interface``, the assertion
   succeeds only if the class implements the ``$interface``,
 - otherwise, the necessary conditions for the assertion to succeed are that
 
-  - ``$object`` is a string,
-  - ``class_exists($object)`` is ``true`` or ``interface_exists($object)`` is
+  - ``$subject`` is a string,
+  - ``class_exists($subject)`` is ``true`` or ``interface_exists($subject)`` is
     ``true``, and
-  - the ``$object`` implements the ``$interface``.
+  - the ``$subject`` implements the ``$interface``.
 
 The method
 
 .. code:: php
 
-  function assertNotImplementsInterface(string $interface, mixed $object[, string $message = ''])
+  function assertNotImplementsInterface(string $interface, mixed $subject[, string $message = ''])
 
 is the inverse of this.
 
@@ -328,25 +328,25 @@ Synopsis:
 
 .. code:: php
 
-  function assertUsesTrait(string $trait, mixed $object[, string $message = ''])
+  function assertUsesTrait(string $trait, mixed $subject[, string $message = ''])
 
-Reports an error identified by ``$message`` if ``$object`` does not use the
-``$trait``. The ``$object`` may be an ``object`` or a class name as ``string``:
+Reports an error identified by ``$message`` if ``$subject`` does not use the
+``$trait``. The ``$subject`` may be an ``object`` or a class name as ``string``:
 
-- if ``$object`` is an ``object``, then its class, as returned by
-  ``get_class($object)``, is examined against ``$trait``, the assertion
+- if ``$subject`` is an ``object``, then its class, as returned by
+  ``get_class($subject)``, is examined against ``$trait``, the assertion
   succeeds only if the class uses the ``$trait``,
 - otherwise, the necessary conditions for the assertion to succeed are that
 
-  - ``$object`` is a string,
-  - ``class_exists($object)`` is ``true``, and
-  - the ``$object`` implements the ``$trait``.
+  - ``$subject`` is a string,
+  - ``class_exists($subject)`` is ``true``, and
+  - the ``$subject`` implements the ``$trait``.
 
 The method
 
 .. code:: php
 
-  function assertNotUsesTrait(string $trait, mixed $object[, string $message = ''])
+  function assertNotUsesTrait(string $trait, mixed $subject[, string $message = ''])
 
 is the inverse of this.
 

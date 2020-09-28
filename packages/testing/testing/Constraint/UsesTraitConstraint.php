@@ -12,18 +12,38 @@ declare(strict_types=1);
 
 namespace Korowai\Testing\Constraint;
 
+use PHPUnit\Framework\InvalidArgumentException;
+
 /**
  * Constraint that accepts classes that extend given class.
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ *
+ * @extends AbstractInheritanceConstraint<UsesTraitConstraint>
  */
-final class UsesTrait extends InheritanceConstraint
+final class UsesTraitConstraint extends AbstractInheritanceConstraint
 {
+    /**
+     * @throws InvalidArgumentException
+     *
+     * @psalm-assert trait-string $expected
+     */
+    public static function fromString(string $expected) : self
+    {
+        if (!trait_exists($expected)) {
+            throw InvalidArgumentException::create(1, 'trait-string');
+        }
+        return new self($expected);
+    }
+
     /**
      * Returns short description of what we examine, e.g. ``'impements interface'``.
      */
-    public function getLeadingString(): string
+    protected function verb(bool $negated = false): string
     {
+        if ($negated) {
+            return 'does not use trait';
+        }
         return 'uses trait';
     }
 
@@ -32,15 +52,17 @@ final class UsesTrait extends InheritanceConstraint
      * implements, parent classes it extends or traits it uses, depending on
      * the actual implementation of this constraint.
      */
-    public function getInheritedClassesFor(string $class): array
+    protected function inheritance(string $class): array
     {
         return class_uses($class);
     }
 
     /**
      * Checks if *$class* may be used as an argument to ``getInheritedClassesFor()``.
+     *
+     * @psalm-assert-if-true class-string|trait-string $class
      */
-    public function supportsClass(string $class): bool
+    protected function supportsActual(string $class): bool
     {
         return class_exists($class) || trait_exists($class);
     }

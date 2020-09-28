@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Korowai\Testing;
 
 use Korowai\Testing\Assertions\ClassAssertionsTrait;
+use Korowai\Testing\Assertions\InheritanceAssertionsTrait;
 use Korowai\Testing\Assertions\PregAssertionsTrait;
 use Korowai\Testing\Assertions\PropertiesAssertionsTrait;
 use Korowai\Testing\Traits\PregUtilsTrait;
@@ -23,9 +24,10 @@ use Korowai\Testing\Traits\PregUtilsTrait;
 abstract class TestCase extends \PHPUnit\Framework\TestCase
 {
     use ClassAssertionsTrait;
-    use PropertiesAssertionsTrait;
+    use InheritanceAssertionsTrait;
     use PregAssertionsTrait;
     use PregUtilsTrait;
+    use PropertiesAssertionsTrait;
 }
 
 // vim: syntax=php sw=4 ts=4 et:

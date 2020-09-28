@@ -64,7 +64,7 @@ abstract class AbstractPropertiesComparator extends Constraint implements Expect
      */
     private $comparator;
 
-    final protected function __construct(
+    protected function __construct(
         ComparatorInterface $comparator,
         ExpectedPropertiesInterface $expected,
         RecursiveUnwrapperInterface $unwrapper
@@ -109,7 +109,7 @@ abstract class AbstractPropertiesComparator extends Constraint implements Expect
      * Returns an instance of ComparatorInterface which provides comparison
      * operator (equality or identity).
      */
-    public function getComparator(): ComparatorInterface
+    final public function getComparator(): ComparatorInterface
     {
         return $this->comparator;
     }
@@ -118,7 +118,7 @@ abstract class AbstractPropertiesComparator extends Constraint implements Expect
      * Returns an instance of ExpectedPropertiesInterface which specifies
      * expectations that the constrant uses to examine subjects' properties.
      */
-    public function getExpectedProperties(): ExpectedPropertiesInterface
+    final public function getExpectedProperties(): ExpectedPropertiesInterface
     {
         return $this->expected;
     }
@@ -127,7 +127,7 @@ abstract class AbstractPropertiesComparator extends Constraint implements Expect
      * Returns an instance of RecursiveUnwrapperInterface used to convert
      * expected/actual properties objects to raw arrays.
      */
-    public function getPropertiesUnwrapper(): RecursiveUnwrapperInterface
+    final public function getPropertiesUnwrapper(): RecursiveUnwrapperInterface
     {
         return $this->unwrapper;
     }
@@ -135,7 +135,7 @@ abstract class AbstractPropertiesComparator extends Constraint implements Expect
     /**
      * Returns a string representation of the constraint.
      */
-    public function toString(): string
+    final public function toString(): string
     {
         return sprintf(
             'is %s with properties %s specified',
@@ -159,7 +159,7 @@ abstract class AbstractPropertiesComparator extends Constraint implements Expect
      * @param Operator $operator the $operator of the expression
      * @param mixed    $role     role of $this constraint in the $operator expression
      */
-    public function toStringInContext(Operator $operator, $role): string
+    final public function toStringInContext(Operator $operator, $role): string
     {
         if ($operator instanceof LogicalNot) {
             return sprintf(
@@ -188,7 +188,7 @@ abstract class AbstractPropertiesComparator extends Constraint implements Expect
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws CircularDependencyException
      */
-    public function evaluate($other, string $description = '', bool $returnResult = false): ?bool
+    final public function evaluate($other, string $description = '', bool $returnResult = false): ?bool
     {
         $success = $this->matches($other);
 
@@ -221,7 +221,7 @@ abstract class AbstractPropertiesComparator extends Constraint implements Expect
      *
      * @param mixed $other value or object to evaluate
      */
-    public function matches($other): bool
+    final public function matches($other): bool
     {
         if (!$this->getPropertySelector()->canSelectFrom($other)) {
             return false;
@@ -244,7 +244,7 @@ abstract class AbstractPropertiesComparator extends Constraint implements Expect
      */
     abstract protected static function makeComparator(): ComparatorInterface;
 
-    protected function exporter(): SebastianBergmannExporter
+    final protected function exporter(): SebastianBergmannExporter
     {
         if (null === $this->exporter) {
             $this->exporter = new Exporter();
@@ -261,7 +261,7 @@ abstract class AbstractPropertiesComparator extends Constraint implements Expect
      *
      * @param mixed $other evaluated value or object
      */
-    protected function failureDescription($other): string
+    final protected function failureDescription($other): string
     {
         return $this->short($other).' '.$this->toString();
     }
@@ -282,7 +282,7 @@ abstract class AbstractPropertiesComparator extends Constraint implements Expect
      * @param mixed    $role     role of $this constraint in the $operator expression
      * @param mixed    $other    evaluated value or object
      */
-    protected function failureDescriptionInContext(Operator $operator, $role, $other): string
+    final protected function failureDescriptionInContext(Operator $operator, $role, $other): string
     {
         $string = $this->toStringInContext($operator, $role);
 

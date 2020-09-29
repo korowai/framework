@@ -14,7 +14,7 @@ namespace Korowai\Tests\Testing\Assertions;
 
 use Korowai\Testing\Assertions\InheritanceAssertionsTrait;
 use Korowai\Testing\Constraint\ExtendsClass;
-use Korowai\Testing\Constraint\ImplementsInterface;
+use Korowai\Testing\Constraint\ImplementsInterfaceConstraint;
 use Korowai\Testing\Constraint\UsesTraitConstraint;
 use Korowai\Testing\Examples\ExampleClassNotUsingTrait;
 use Korowai\Testing\Examples\ExampleClassUsingTrait;
@@ -30,7 +30,7 @@ use PHPUnit\Framework\TestCase;
  * @covers \Korowai\Testing\Assertions\InheritanceAssertionsTrait
  * @covers \Korowai\Testing\Constraint\AbstractInheritanceConstraint
  * @covers \Korowai\Testing\Constraint\ExtendsClass
- * @covers \Korowai\Testing\Constraint\ImplementsInterface
+ * @covers \Korowai\Testing\Constraint\ImplementsInterfaceConstraint
  * @covers \Korowai\Testing\Constraint\UsesTraitConstraint
  *
  * @internal
@@ -157,17 +157,17 @@ final class InheritanceAssertionsTraitTest extends TestCase
         return [
             'InheritanceAssertionsTraitTest.php:'.__LINE__ => [
                 'argument' => 'non-interface string',
-                'messsage' => sprintf($template, ImplementsInterface::class),
+                'messsage' => sprintf($template, ImplementsInterfaceConstraint::class),
             ],
 
             'InheritanceAssertionsTraitTest.php:'.__LINE__ => [
                 'argument' => \Exception::class,
-                'messsage' => sprintf($template, ImplementsInterface::class),
+                'messsage' => sprintf($template, ImplementsInterfaceConstraint::class),
             ],
 
             'InheritanceAssertionsTraitTest.php:'.__LINE__ => [
                 'argument' => ExampleTrait::class,
-                'messsage' => sprintf($template, ImplementsInterface::class),
+                'messsage' => sprintf($template, ImplementsInterfaceConstraint::class),
             ],
         ];
     }

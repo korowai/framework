@@ -157,7 +157,7 @@ Synopsis:
 
   function implementsInterface(array $interface)
 
-Creates :class:`Korowai\\Testing\\Constraint\\ImplementsInterface` constraint.
+Creates :class:`Korowai\\Testing\\Constraint\\ImplementsInterfaceConstraint` constraint.
 
 The constraint accepts objects (and classes/interfaces) that implement given
 ``$interface``.

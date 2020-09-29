@@ -19,7 +19,7 @@ use PHPUnit\Framework\InvalidArgumentException;
 
 /**
  * Abstract base class for inheritance constraints (ExtendsClass,
- * ImplementsInterface, UsesTraitConstraint, etc.).
+ * ImplementsInterfaceConstraint, UsesTraitConstraint, etc.).
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  *

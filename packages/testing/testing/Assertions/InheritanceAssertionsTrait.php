@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Korowai\Testing\Assertions;
 
 use Korowai\Testing\Constraint\ExtendsClass;
-use Korowai\Testing\Constraint\ImplementsInterface;
+use Korowai\Testing\Constraint\ImplementsInterfaceConstraint;
 use Korowai\Testing\Constraint\UsesTraitConstraint;
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\Constraint\LogicalNot;
@@ -67,9 +67,9 @@ trait InheritanceAssertionsTrait
      *
      * @param string $interface name of the interface that is expected to be implemented
      */
-    public static function implementsInterface(string $interface): ImplementsInterface
+    public static function implementsInterface(string $interface): ImplementsInterfaceConstraint
     {
-        return ImplementsInterface::fromString($interface);
+        return ImplementsInterfaceConstraint::fromString($interface);
     }
 
     /**

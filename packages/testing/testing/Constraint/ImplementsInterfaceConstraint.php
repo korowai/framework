@@ -19,9 +19,9 @@ use PHPUnit\Framework\InvalidArgumentException;
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  *
- * @extends AbstractInheritanceConstraint<ImplementsInterface>
+ * @extends AbstractInheritanceConstraint<ImplementsInterfaceConstraint>
  */
-final class ImplementsInterface extends AbstractInheritanceConstraint
+final class ImplementsInterfaceConstraint extends AbstractInheritanceConstraint
 {
     /**
      * @throws InvalidArgumentException

@@ -1,14 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 /*
- * This file is part of Korowai framework.
+ * This file is part of php-fox/phpunit-extensions.
  *
  * (c) Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  *
  * Distributed under MIT license.
  */
-
-declare(strict_types=1);
 
 namespace Korowai\Testing\Traits;
 
@@ -32,10 +32,10 @@ trait PregUtilsTrait
      *
      * for each ``$i`` from array_values(*$positions*).
      *
-     * @param array $array
-     *                         An array to take keys from
-     * @param array $positions
-     *                         An array of integer offsets
+     * @param array $array     An array to take keys from
+     * @param array $positions An array of integer offsets
+     * @psalm-param array<array-key,int> $positions
+     * @psalm-return array<int, array-key>
      */
     public static function pregTupleKeysAt(array $array, array $positions): array
     {
@@ -76,9 +76,9 @@ trait PregUtilsTrait
      */
     public static function shiftPregCaptures(array $captures, int $offset, bool $shiftMain = true): array
     {
-        foreach ($captures as $key => $capture) {
-            if ((0 !== $key || $shiftMain) && is_array($capture)) {
-                $captures[$key][1] += $offset;
+        foreach ($captures as $key => &$capture) {
+            if ((0 !== $key || $shiftMain) && is_array($capture) && count($capture) > 1 && is_int($capture[1])) {
+                $capture[1] += $offset;
             }
         }
 
@@ -89,26 +89,38 @@ trait PregUtilsTrait
      * Takes an array of capture groups, as returned by ``preg_match()``,
      * and transforms all captures with ``shiftPregCaptures($captures, strlen($prefix), !(bool)$prefixMain)``.
      *
-     * If *$prefixMain* is ``true`` aknd capture group ``$captures[0][0]`` is
+     * If *$prefixMain* is ``true`` and capture group ``$captures[0][0]`` is
      * present, the *$captures[0][0]* gets prefixed with *$prefix*. In this
      * case, its offset (``$captures[0][1]``) is preserved.
      *
      * @param mixed $prefixMain
      *
      * @return array returns the transformed captures
+     *
+     * @psalm-param null|string|bool $prefixMain
      */
     public static function prefixPregCaptures(array $captures, string $prefix, $prefixMain = false): array
     {
         if ($prefixMain) {
             $prefixMain = is_string($prefixMain) ? $prefixMain : $prefix;
-            if (is_array($captures[0] ?? null)) {
-                $captures[0][0] = $prefixMain.$captures[0][0];
-            } elseif (is_string($captures[0] ?? null)) {
-                $captures[0] = $prefixMain.$captures[0];
+            if (array_key_exists(0, $captures)) {
+                self::prefixMainPregCapture($captures[0], $prefixMain);
             }
         }
 
         return static::shiftPregCaptures($captures, strlen($prefix), !(bool) $prefixMain);
+    }
+
+    /**
+     * @param mixed $capture
+     */
+    private static function prefixMainPregCapture(&$capture, string $prefix): void
+    {
+        if (is_array($capture) && array_key_exists(0, $capture) && is_string($capture[0])) {
+            $capture[0] = $prefix.$capture[0];
+        } elseif (is_string($capture)) {
+            $capture = $prefix.$capture;
+        }
     }
 
     /**
@@ -129,6 +141,7 @@ trait PregUtilsTrait
      *      assert(self::mergePregCaptures(['A', 'x' => 'L'], ['B', 'x' => 'R'], 'M') === [0 => 'M', 'x' => 'R']);
      *
      * @param mixed $mergeMain
+     * @psalm-param null|bool|string|array $mergeMain
      */
     public static function mergePregCaptures(array $left, array $right, $mergeMain = null): array
     {
@@ -152,13 +165,17 @@ trait PregUtilsTrait
      *
      * @return array returns two-element array with prefixed *$tuple[0]* at
      *               offset 0 and transformed *tuple[1]* at offset 1
+     *
+     * @psalm-param null|bool|string $prefixMain
      */
     public static function prefixPregTuple(array $tuple, string $prefix, $prefixMain = false): array
     {
         [$_0, $_1] = self::pregTupleKeysAt($tuple, [0, 1]);
-        $tuple[$_0] = $prefix.$tuple[$_0];
-        if (null !== ($captures = $tuple[$_1] ?? null)) {
-            $tuple[$_1] = static::prefixPregCaptures($captures, $prefix, $prefixMain);
+        if (is_string($tuple[$_0])) {
+            $tuple[$_0] = $prefix.$tuple[$_0];
+        }
+        if (array_key_exists($_1, $tuple) && is_array($tuple[$_1])) {
+            $tuple[$_1] = static::prefixPregCaptures($tuple[$_1], $prefix, $prefixMain);
         }
 
         return $tuple;
@@ -176,16 +193,20 @@ trait PregUtilsTrait
      *
      * @return array returns two-element array with suffixed *$tuple[0]* at
      *               offset 0 and transformed *arguments[1]* at offset 1
+     *
+     * @psalm-param null|bool|string $suffixMain
      */
     public static function suffixPregTuple(array $tuple, string $suffix, $suffixMain = false): array
     {
         [$_0, $_1] = self::pregTupleKeysAt($tuple, [0, 1]);
-        $tuple[$_0] = $tuple[$_0].$suffix;
-        if (null !== ($captures = $tuple[$_1] ?? null)) {
-            if ($suffixMain && null !== ($captures[0][0] ?? null)) {
-                $captures[0][0] = $captures[0][0].(is_string($suffixMain) ? $suffixMain : $suffix);
+        if (is_string($tuple[$_0])) {
+            $tuple[$_0] = $tuple[$_0].$suffix;
+        }
+        if (array_key_exists($_1, $tuple) && is_array($tuple[$_1])) {
+            $captures00 = $tuple[$_1][0][0] ?? null;
+            if ($suffixMain && is_string($captures00)) {
+                $tuple[$_1][0][0] = $captures00.(is_string($suffixMain) ? $suffixMain : $suffix);
             }
-            $tuple[$_1] = $captures;
         }
 
         return $tuple;
@@ -228,11 +249,11 @@ trait PregUtilsTrait
     public static function transformPregTuple(array $tuple, array $options = []): array
     {
         static $defaults = [
-            'prefix' => null,
+            'prefix'     => null,
             'prefixMain' => null,
-            'merge' => [],
-            'mergeMain' => null,
-            'suffix' => null,
+            'merge'      => [],
+            'mergeMain'  => null,
+            'suffix'     => null,
             'suffixMain' => false,
         ];
         $options = array_merge($defaults, array_intersect_key($options, $defaults));
@@ -260,7 +281,7 @@ trait PregUtilsTrait
     public static function joinTwoPregTuples(array $left, array $right, array $options = [])
     {
         static $defaults = [
-            'glue' => '',
+            'glue'     => '',
             'joinMain' => false,
         ];
         $options = array_merge($defaults, array_intersect_key($options, $defaults));

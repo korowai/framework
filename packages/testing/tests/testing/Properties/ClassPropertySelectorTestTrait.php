@@ -229,8 +229,17 @@ trait ClassPropertySelectorTestTrait
         });
         $selector = $this->createClassPropertySelector();
 
-        $this->expectError();
-        $this->expectErrorMessage('should not be called statically');
+        if(PHP_VERSION_ID < 70400) {
+            // FIXME: find out at which version error changed to deprecation
+            $this->expectError();
+            $this->expectErrorMessage('should not be called statically');
+        } elseif (PHP_VERSION_ID < 80000) {
+            $this->expectDeprecation();
+            $this->expectDeprecationMessage('should not be called statically');
+        } else {
+            $this->expectError();
+            $this->expectErrorMessage('should not be called statically');
+        }
 
         $selector->selectProperty($class, 'foo()');
 

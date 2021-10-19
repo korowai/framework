@@ -169,7 +169,7 @@
         "php-mock/php-mock-phpunit": ">=2.4.0",
         "phpunit/phpunit": ">=9.3",
         "psr/container": "1.0",
-        "psy/psysh": "dev-master",
+        "psy/psysh": "dev-main",
         "symfony/config": ">=5.1.5",
         "symfony/dependency-injection": ">=5.1.5",
         "symplify/monorepo-builder": "^8.0.1",

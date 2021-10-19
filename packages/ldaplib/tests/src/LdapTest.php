@@ -54,19 +54,19 @@ final class LdapTest extends TestCase
     }
 
     // required by EntryManagerTrait
-    public function createEntryManagerInstance(LdapLinkinterface $ldapLink): EntryManagerInterface
+    public function createEntryManagerInstance(LdapLinkInterface $ldapLink): EntryManagerInterface
     {
         return new Ldap(...func_get_args());
     }
 
     // required by ComparingTestTrait
-    public function createComparingInstance(LdapLinkinterface $ldapLink): ComparingInterface
+    public function createComparingInstance(LdapLinkInterface $ldapLink): ComparingInterface
     {
         return new Ldap(...func_get_args());
     }
 
     // required by SearchingTestTrait
-    public function createSearchingInstance(LdapLinkinterface $ldapLink): SearchingInterface
+    public function createSearchingInstance(LdapLinkInterface $ldapLink): SearchingInterface
     {
         return new Ldap(...func_get_args());
     }

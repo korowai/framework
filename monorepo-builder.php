@@ -72,7 +72,7 @@ static function ($container) : void {
             'phake/phake' => '^3.0',
             'behat/behat' => '^3.4',
             'friendsofphp/php-cs-fixer' => '^2.16',
-            'psy/psysh' => 'dev-master',
+            'psy/psysh' => 'dev-main',
         ],
         'autoload-dev' => [
             'psr-4' => [

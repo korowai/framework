@@ -24,7 +24,7 @@ use PHPUnit\Framework\MockObject\MockObject;
  */
 trait EntryManagerTestTrait
 {
-    abstract public function createEntryManagerInstance(LdapLinkinterface $ldapLink): EntryManagerInterface;
+    abstract public function createEntryManagerInstance(LdapLinkInterface $ldapLink): EntryManagerInterface;
 
     abstract public function examineLdapLinkErrorHandler(
         callable $function,

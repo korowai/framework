@@ -23,6 +23,7 @@ jobs:
         with:
           php-version: ${{ matrix.php_version }}
           coverage: none
+          tools: composer:v2
       - run: |
           composer install --no-progress --ansi
       - run: |
@@ -62,10 +63,12 @@ jobs:
           composer install --no-progress --ansi
           vendor/bin/monorepo-builder localize-composer-paths --ansi
 
-          cd packages/${{ matrix.package_name }}
-          composer update --no-progress --ansi
+      - working-directory: packages/${{ matrix.package_name }}
+        run: composer update --no-progress --ansi
+        env:
+          # see https://github.com/composer/composer/issues/9368#issuecomment-718112361
+          COMPOSER_ROOT_VERSION: "dev-master"
 
-      - run: |
-          cd packages/${{ matrix.package_name }}
-          vendor/bin/phpunit --no-coverage
+      - working-directory: packages/${{ matrix.package_name }}
+        run: vendor/bin/phpunit --no-coverage
 

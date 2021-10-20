@@ -16,6 +16,9 @@ use Korowai\Lib\Ldap\Core\LdapResultEntryInterface;
 use Korowai\Lib\Ldap\Core\LdapResultEntryIterator;
 use Korowai\Lib\Ldap\Core\LdapResultEntryIteratorInterface;
 use Korowai\Testing\Ldaplib\TestCase;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
+use Tailors\PHPUnit\ExtendsClassTrait;
+use Tailors\PHPUnit\ObjectPropertiesIdenticalToTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -27,6 +30,9 @@ use Korowai\Testing\Ldaplib\TestCase;
 final class LdapResultEntryIteratorTest extends TestCase
 {
     use LdapResultItemIteratorTestTrait;
+    use ImplementsInterfaceTrait;
+    use ExtendsClassTrait;
+    use ObjectPropertiesIdenticalToTrait;
 
     protected function getIteratorItemInterface()
     {

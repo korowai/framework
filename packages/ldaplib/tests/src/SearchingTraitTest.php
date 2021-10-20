@@ -17,6 +17,7 @@ use Korowai\Lib\Ldap\SearchingInterface;
 use Korowai\Lib\Ldap\SearchingTrait;
 use Korowai\Testing\Ldaplib\ExamineLdapLinkErrorHandlerTrait;
 use Korowai\Testing\Ldaplib\TestCase;
+use Tailors\PHPUnit\ObjectPropertiesIdenticalToTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -30,6 +31,7 @@ final class SearchingTraitTest extends TestCase
 {
     use SearchingTestTrait;
     use ExamineLdapLinkErrorHandlerTrait;
+    use ObjectPropertiesIdenticalToTrait;
 
     // required by SearchingTestTrait
     public function createSearchingInstance(LdapLinkInterface $ldapLink): SearchingInterface

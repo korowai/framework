@@ -16,6 +16,7 @@ use Korowai\Lib\Ldap\AbstractResultItemIterator;
 use Korowai\Lib\Ldap\Core\LdapResultItemIteratorInterface;
 use Korowai\Lib\Ldap\ResultItemIteratorInterface;
 use Korowai\Testing\Ldaplib\TestCase;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -27,6 +28,7 @@ use Korowai\Testing\Ldaplib\TestCase;
 final class AbstractResultItemIteratorTest extends TestCase
 {
     use AbstractResultItemIteratorTestTrait;
+    use ImplementsInterfaceTrait;
 
     public function getIteratorClass(): string
     {

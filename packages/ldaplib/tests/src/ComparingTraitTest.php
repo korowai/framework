@@ -17,6 +17,7 @@ use Korowai\Lib\Ldap\ComparingTrait;
 use Korowai\Lib\Ldap\Core\LdapLinkInterface;
 use Korowai\Testing\Ldaplib\ExamineLdapLinkErrorHandlerTrait;
 use Korowai\Testing\Ldaplib\TestCase;
+use Tailors\PHPUnit\ObjectPropertiesIdenticalToTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -30,6 +31,7 @@ final class ComparingTraitTest extends TestCase
 {
     use ComparingTestTrait;
     use ExamineLdapLinkErrorHandlerTrait;
+    use ObjectPropertiesIdenticalToTrait;
 
     // required by ComparingTestTrait
     public function createComparingInstance(LdapLinkInterface $ldapLink): ComparingInterface

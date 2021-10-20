@@ -22,16 +22,19 @@ use Korowai\Lib\Ldap\SearchQuery;
 use Korowai\Testing\Ldaplib\LdapTriggerErrorTestFixture;
 use Korowai\Testing\Ldaplib\LdapTriggerErrorTestSubject;
 use PHPUnit\Framework\MockObject\MockObject;
-use Tailors\PHPUnit\ObjectPropertiesIdenticalToTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
 trait SearchingTestTrait
 {
-    use ObjectPropertiesIdenticalToTrait;
-
     abstract public function createSearchingInstance(LdapLinkInterface $ldapLink): SearchingInterface;
+
+    abstract public static function assertObjectPropertiesIdenticalTo(
+        array $expected,
+        object $object,
+        string $message = ''
+    ): void;
 
     abstract public function examineLdapLinkErrorHandler(
         callable $function,

@@ -12,15 +12,11 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Lib\Ldap;
 
-use Tailors\PHPUnit\ImplementsInterfaceTrait;
-
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
 trait AbstractResultItemIteratorTestTrait
 {
-    use ImplementsInterfaceTrait;
-
     abstract public function getIteratorInterface(): string;
 
     abstract public function getLdapIteratorInterface(): string;
@@ -28,6 +24,8 @@ trait AbstractResultItemIteratorTestTrait
     abstract public function getIteratorClass(): string;
 
     abstract public function createIteratorInstance(...$args);
+
+    abstract public static function assertImplementsInterface(string $interface, $subject, string $message = ''): void;
 
     public function testImplementsIteratorInterface(): void
     {

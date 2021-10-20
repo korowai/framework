@@ -14,7 +14,6 @@ namespace Korowai\Tests\Lib\Ldap;
 
 use Korowai\Lib\Ldap\AbstractResultItemIterator;
 use Korowai\Lib\Ldap\Core\LdapResultItemIteratorInterface;
-use Tailors\PHPUnit\ExtendsClassTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -22,11 +21,12 @@ use Tailors\PHPUnit\ExtendsClassTrait;
 trait ResultItemIteratorTestTrait
 {
     use AbstractResultItemIteratorTestTrait;
-    use ExtendsClassTrait;
 
     abstract public function getItemInterface(): string;
 
     abstract public function getLdapItemInterface(): string;
+
+    abstract public static function assertExtendsClass(string $parent, $subject, string $message = ''): void;
 
     public function testExtendsAbstractResultItemIterator(): void
     {

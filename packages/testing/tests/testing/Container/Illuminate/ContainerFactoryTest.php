@@ -19,6 +19,7 @@ use Korowai\Testing\Container\Illuminate\ContainerFactory;
 use Korowai\Testing\TestCase;
 use Korowai\Tests\Testing\Container\ContainerFactoryTestTrait;
 use Psr\Container\ContainerInterface;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -30,6 +31,7 @@ use Psr\Container\ContainerInterface;
 final class ContainerFactoryTest extends TestCase
 {
     use ContainerFactoryTestTrait;
+    use ImplementsInterfaceTrait;
 
     public function getContainerFactory(): ContainerFactoryInterface
     {

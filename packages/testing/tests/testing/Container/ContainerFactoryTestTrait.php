@@ -14,7 +14,6 @@ namespace Korowai\Tests\Testing\Container;
 
 use Korowai\Testing\Container\ContainerFactoryInterface;
 use Psr\Container\ContainerInterface;
-use Tailors\PHPUnit\ImplementsInterfaceTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -31,7 +30,7 @@ trait ContainerFactoryTestTrait
 
     abstract public function examineConfiguredContainer(ContainerInterface $container, $config): void;
 
-    use ImplementsInterfaceTrait;
+    abstract public static function assertImplementsInterface(string $interface, $subject, string $message = ''): void;
 
     public function testImplementsContainerFactoryInterface(): void
     {

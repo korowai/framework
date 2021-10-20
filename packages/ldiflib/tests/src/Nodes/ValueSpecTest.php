@@ -34,8 +34,8 @@ final class ValueSpecTest extends TestCase
 
     public function testConstructIsPrivate(): void
     {
-        $this->expectException(\Error::class);
-        $this->expectExceptionMessage('private');
+        $this->expectError();
+        $this->expectErrorMessage('private');
         new ValueSpec(0, 'v', 'c');
     }
 

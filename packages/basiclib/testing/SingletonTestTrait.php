@@ -33,8 +33,8 @@ trait SingletonTestTrait
         $class = static::getSingletonClassUnderTest();
 
         $regex = self::getPrivateErrorRegExp($class.'::__construct()');
-        $this->expectException(\Error::class);
-        $this->expectExceptionMessageMatches($regex);
+        $this->expectError();
+        $this->expectErrorMessageMatches($regex);
 
         new $class();
     }
@@ -47,8 +47,8 @@ trait SingletonTestTrait
 
         $regex = self::getPrivateErrorRegExp(get_class($obj).'::__clone()');
 
-        $this->expectException(\Error::class);
-        $this->expectExceptionMessageMatches($regex);
+        $this->expectError();
+        $this->expectErrorMessageMatches($regex);
 
         $obj->__clone();
     }
@@ -61,8 +61,8 @@ trait SingletonTestTrait
 
         $regex = self::getPrivateErrorRegExp(get_class($obj).'::__wakeup()');
 
-        $this->expectException(\Error::class);
-        $this->expectExceptionMessageMatches($regex);
+        $this->expectError();
+        $this->expectErrorMessageMatches($regex);
 
         $obj->__wakeup();
     }

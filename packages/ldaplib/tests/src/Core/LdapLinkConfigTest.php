@@ -70,8 +70,8 @@ final class LdapLinkConfigTest extends TestCase
 
     public function testConstruct(): void
     {
-        $this->expectException(\Error::class);
-        $this->expectExceptionMessageMatches('/private .*::__construct/');
+        $this->expectError();
+        $this->expectErrorMessageMatches('/private .*::__construct/');
 
         new LdapLinkConfig('ldap:///', false, []);
     }

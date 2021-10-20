@@ -203,8 +203,8 @@ trait ObjectPropertySelectorTestTrait
         };
         $properties = $this->createObjectPropertySelector();
 
-        $this->expectException(\Error::class);
-        $this->expectExceptionMessage('private method');
+        $this->expectError();
+        $this->expectErrorMessage('private method');
 
         $properties->selectProperty($object, 'foo()');
 
@@ -220,8 +220,8 @@ trait ObjectPropertySelectorTestTrait
         };
         $properties = $this->createObjectPropertySelector();
 
-        $this->expectException(\Error::class);
-        $this->expectExceptionMessage('private property');
+        $this->expectError();
+        $this->expectErrorMessage('private property');
 
         $properties->selectProperty($object, 'foo');
 

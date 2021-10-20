@@ -17,7 +17,10 @@
     ],
     "require": {
         "php": ">=7.4",
-        "korowai/basiclib": "*"
+        "korowai/basiclib": "*",
+        "phptailors/phpunit-inheritance": "dev-master",
+        "phptailors/phpunit-regexp": "dev-master",
+        "phptailors/phpunit-properties": "dev-master"
     },
     "require-dev": {
         "phpunit/phpunit": ">=9.3",
@@ -25,10 +28,7 @@
         "illuminate/container": ">=8.5.0",
         "php-di/php-di": ">=6.2.2",
         "symfony/config": ">=5.1.5",
-        "symfony/dependency-injection": ">=5.1.5",
-        "phptailors/phpunit-inheritance": "dev-master",
-        "phptailors/phpunit-regexp": "dev-master",
-        "phptailors/phpunit-properties": "dev-master"
+        "symfony/dependency-injection": ">=5.1.5"
     },
     "autoload": {
       "psr-4" : {

@@ -6,6 +6,9 @@
         "ext-mbstring": "*",
         "league/uri": "^6.3",
         "league/uri-interfaces": "^2.1",
+        "phptailors/phpunit-inheritance": "dev-master",
+        "phptailors/phpunit-properties": "dev-master",
+        "phptailors/phpunit-regexp": "dev-master",
         "symfony/options-resolver": ">=4.2"
     },
     "autoload": {

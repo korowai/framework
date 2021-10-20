@@ -16,6 +16,7 @@ use function Korowai\Lib\Context\with;
 use Korowai\Lib\Error\AbstractManagedErrorHandler;
 use Korowai\Lib\Error\ExceptionErrorHandler;
 use Korowai\Testing\TestCase;
+use Tailors\PHPUnit\ExtendsClassTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -26,6 +27,7 @@ use Korowai\Testing\TestCase;
 final class ExceptionErrorHandlerTest extends TestCase
 {
     use \phpmock\phpunit\PHPMock;
+    use ExtendsClassTrait;
 
     public function createHandler($arg = null, ...$tail)
     {

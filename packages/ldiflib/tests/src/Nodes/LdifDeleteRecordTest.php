@@ -18,6 +18,9 @@ use Korowai\Lib\Ldif\Nodes\LdifDeleteRecordInterface;
 use Korowai\Lib\Ldif\RecordVisitorInterface;
 use Korowai\Lib\Ldif\SnippetInterface;
 use Korowai\Testing\Ldiflib\TestCase;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
+use Tailors\PHPUnit\ExtendsClassTrait;
+use Tailors\PHPUnit\ObjectPropertiesIdenticalToTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -27,6 +30,10 @@ use Korowai\Testing\Ldiflib\TestCase;
  */
 final class LdifDeleteRecordTest extends TestCase
 {
+    use ImplementsInterfaceTrait;
+    use ExtendsClassTrait;
+    use ObjectPropertiesIdenticalToTrait;
+
     public function tets__extends__AbstractChangeRecord()
     {
         $this->assertExtendsClass(AbstractChangeRecord::class, LdifDeleteRecord::class);

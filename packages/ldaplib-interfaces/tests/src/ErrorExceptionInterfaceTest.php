@@ -15,6 +15,7 @@ namespace Korowai\Tests\Lib\Ldap;
 use Korowai\Lib\Ldap\ErrorExceptionInterface;
 use Korowai\Lib\Ldap\ExceptionInterface;
 use Korowai\Testing\LdaplibInterfaces\TestCase;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -24,6 +25,8 @@ use Korowai\Testing\LdaplibInterfaces\TestCase;
  */
 final class ErrorExceptionInterfaceTest extends TestCase
 {
+    use ImplementsInterfaceTrait;
+
     public static function createDummyInstance()
     {
         return new class() extends \ErrorException implements ErrorExceptionInterface {

@@ -20,6 +20,7 @@ use Korowai\Lib\Context\TrivialValueWrapper;
 use Korowai\Testing\Contextlib\ExpectFunctionOnceWillReturnTrait;
 use Korowai\Testing\Contextlib\GetContextFunctionMockTrait;
 use Korowai\Testing\TestCase;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -33,6 +34,7 @@ final class DefaultContextFactoryTest extends TestCase
     use \Korowai\Testing\Basiclib\SingletonTestTrait;
     use GetContextFunctionMockTrait;
     use ExpectFunctionOnceWillReturnTrait;
+    use ImplementsInterfaceTrait;
 
     public static function getSingletonClassUnderTest(): string
     {

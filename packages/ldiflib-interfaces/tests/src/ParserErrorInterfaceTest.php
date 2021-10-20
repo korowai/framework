@@ -15,6 +15,7 @@ namespace Korowai\Tests\Lib\Ldif;
 use Korowai\Lib\Ldif\ParserErrorInterface;
 use Korowai\Lib\Ldif\SourceLocationInterface;
 use Korowai\Testing\LdiflibInterfaces\TestCase;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -24,6 +25,8 @@ use Korowai\Testing\LdiflibInterfaces\TestCase;
  */
 final class ParserErrorInterfaceTest extends TestCase
 {
+    use ImplementsInterfaceTrait;
+
     public static function provExtendsInterface(): array
     {
         return [

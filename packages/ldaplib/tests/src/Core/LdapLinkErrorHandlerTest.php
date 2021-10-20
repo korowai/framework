@@ -24,6 +24,9 @@ use Korowai\Lib\Ldap\Core\LdapResultWrapperInterface;
 use Korowai\Lib\Ldap\ErrorException;
 use Korowai\Lib\Ldap\LdapException;
 use Korowai\Testing\Ldaplib\TestCase;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
+use Tailors\PHPUnit\ExtendsClassTrait;
+use Tailors\PHPUnit\UsesTraitTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -34,6 +37,9 @@ use Korowai\Testing\Ldaplib\TestCase;
 final class LdapLinkErrorHandlerTest extends TestCase
 {
     use \phpmock\phpunit\PHPMock;
+    use ImplementsInterfaceTrait;
+    use ExtendsClassTrait;
+    use UsesTraitTrait;
 
     public function testExtendsAbstractManagedErrorHandler(): void
     {

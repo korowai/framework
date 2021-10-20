@@ -16,6 +16,7 @@ use Korowai\Lib\Ldif\SourceLocationInterface;
 use Korowai\Lib\Ldif\Traits\DecoratesSourceLocationInterface;
 use Korowai\Lib\Ldif\Traits\ExposesSourceLocationInterface;
 use Korowai\Testing\Ldiflib\TestCase;
+use Tailors\PHPUnit\UsesTraitTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -25,6 +26,8 @@ use Korowai\Testing\Ldiflib\TestCase;
  */
 final class DecoratesSourceLocationInterfaceTest extends TestCase
 {
+    use UsesTraitTrait;
+
     public function getTestObject()
     {
         return new class() {

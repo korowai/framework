@@ -15,6 +15,8 @@ namespace Korowai\Tests\Lib\Ldap;
 use Korowai\Lib\Ldap\ErrorException;
 use Korowai\Lib\Ldap\ErrorExceptionInterface;
 use Korowai\Testing\LdaplibInterfaces\TestCase;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
+use Tailors\PHPUnit\ExtendsClassTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -24,6 +26,9 @@ use Korowai\Testing\LdaplibInterfaces\TestCase;
  */
 final class ErrorExceptionTest extends TestCase
 {
+    use ImplementsInterfaceTrait;
+    use ExtendsClassTrait;
+
     public function testExtendsErrorException(): void
     {
         $this->assertExtendsClass(\ErrorException::class, ErrorException::class);

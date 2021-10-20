@@ -16,6 +16,8 @@ use Korowai\Lib\Ldap\Core\LdapLinkConfig;
 use Korowai\Lib\Ldap\Core\LdapLinkConfigInterface;
 use Korowai\Lib\Ldap\Core\LdapLinkConfigResolverInterface;
 use Korowai\Testing\Ldaplib\TestCase;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
+use Tailors\PHPUnit\ObjectPropertiesIdenticalToTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -25,6 +27,9 @@ use Korowai\Testing\Ldaplib\TestCase;
  */
 final class LdapLinkConfigTest extends TestCase
 {
+    use ImplementsInterfaceTrait;
+    use ObjectPropertiesIdenticalToTrait;
+
     //
     //
     // TESTS

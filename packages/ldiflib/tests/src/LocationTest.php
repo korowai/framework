@@ -16,6 +16,7 @@ use Korowai\Lib\Ldif\InputInterface;
 use Korowai\Lib\Ldif\Location;
 use Korowai\Lib\Ldif\LocationInterface;
 use Korowai\Testing\Ldiflib\TestCase;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -25,6 +26,8 @@ use Korowai\Testing\Ldiflib\TestCase;
  */
 final class LocationTest extends TestCase
 {
+    use ImplementsInterfaceTrait;
+
     public function testImplementsLocationInterface(): void
     {
         $this->assertImplementsInterface(LocationInterface::class, Location::class);

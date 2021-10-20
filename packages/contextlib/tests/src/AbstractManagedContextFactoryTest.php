@@ -17,6 +17,7 @@ use Korowai\Lib\Context\ContextFactoryInterface;
 use Korowai\Lib\Context\ContextFactoryStack;
 use Korowai\Lib\Context\ContextManagerInterface;
 use Korowai\Testing\TestCase;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -26,6 +27,8 @@ use Korowai\Testing\TestCase;
  */
 final class AbstractManagedContextFactoryTest extends TestCase
 {
+    use ImplementsInterfaceTrait;
+
     public function testImplementsContextFactoryInterface(): void
     {
         $this->assertImplementsInterface(ContextFactoryInterface::class, AbstractManagedContextFactory::class);

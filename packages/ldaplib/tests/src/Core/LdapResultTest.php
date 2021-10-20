@@ -25,6 +25,9 @@ use Korowai\Testing\Ldaplib\ExamineCallWithMockedLdapFunctionTrait;
 use Korowai\Testing\Ldaplib\GetLdapFunctionMockTrait;
 use Korowai\Testing\Ldaplib\MakeArgsForLdapFunctionMockTrait;
 use Korowai\Testing\Ldaplib\TestCase;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
+use Tailors\PHPUnit\UsesTraitTrait;
+use Tailors\PHPUnit\ObjectPropertiesIdenticalToTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -40,6 +43,9 @@ final class LdapResultTest extends TestCase
     use ExamineCallWithMockedLdapFunctionTrait;
     use CreateLdapLinkMockTrait;
     use ResourceWrapperTestHelpersTrait;
+    use ImplementsInterfaceTrait;
+    use UsesTraitTrait;
+    use ObjectPropertiesIdenticalToTrait;
 
     //
     //

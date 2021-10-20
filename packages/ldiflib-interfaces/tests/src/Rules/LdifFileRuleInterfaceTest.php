@@ -17,6 +17,7 @@ use Korowai\Lib\Ldif\Rules\LdifChangesRuleInterface;
 use Korowai\Lib\Ldif\Rules\LdifContentRuleInterface;
 use Korowai\Lib\Ldif\Rules\LdifFileRuleInterface;
 use Korowai\Testing\LdiflibInterfaces\TestCase;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -26,6 +27,8 @@ use Korowai\Testing\LdiflibInterfaces\TestCase;
  */
 final class LdifFileRuleInterfaceTest extends TestCase
 {
+    use ImplementsInterfaceTrait;
+
     public static function createDummyInstance()
     {
         return new class() implements LdifFileRuleInterface {

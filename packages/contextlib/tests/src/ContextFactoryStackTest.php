@@ -17,6 +17,7 @@ use Korowai\Lib\Context\ContextFactoryStack;
 use Korowai\Lib\Context\ContextFactoryStackInterface;
 use Korowai\Lib\Context\ContextManagerInterface;
 use Korowai\Testing\TestCase;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -27,6 +28,7 @@ use Korowai\Testing\TestCase;
 final class ContextFactoryStackTest extends TestCase
 {
     use \Korowai\Testing\Basiclib\SingletonTestTrait;
+    use ImplementsInterfaceTrait;
 
     public static function getSingletonClassUnderTest(): string
     {

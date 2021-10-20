@@ -16,6 +16,8 @@ use Korowai\Lib\Ldif\ParserStateInterface;
 use Korowai\Lib\Ldif\RuleInterface;
 use Korowai\Lib\Ldif\Rules\AbstractRule;
 use Korowai\Testing\Ldiflib\TestCase;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
+use Tailors\PHPUnit\ObjectPropertiesIdenticalToTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -25,6 +27,9 @@ use Korowai\Testing\Ldiflib\TestCase;
  */
 final class AbstractRuleTest extends TestCase
 {
+    use ImplementsInterfaceTrait;
+    use ObjectPropertiesIdenticalToTrait;
+
     public function testImplementsRuleInterface(): void
     {
         $this->assertImplementsInterface(RuleInterface::class, AbstractRule::class);

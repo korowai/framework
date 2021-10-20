@@ -24,6 +24,9 @@ use Korowai\Testing\Ldaplib\ExamineLdapLinkErrorHandlerTrait;
 use Korowai\Testing\Ldaplib\LdapTriggerErrorTestFixture;
 use Korowai\Testing\Ldaplib\LdapTriggerErrorTestSubject;
 use Korowai\Testing\Ldaplib\TestCase;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
+use Tailors\PHPUnit\UsesTraitTrait;
+use Tailors\PHPUnit\ObjectPropertiesIdenticalToTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -35,6 +38,9 @@ use Korowai\Testing\Ldaplib\TestCase;
 final class SearchQueryTest extends TestCase
 {
     use ExamineLdapLinkErrorHandlerTrait;
+    use ImplementsInterfaceTrait;
+    use UsesTraitTrait;
+    use ObjectPropertiesIdenticalToTrait;
 
     public const SCOPES_METHODS = [
         'base' => 'read',

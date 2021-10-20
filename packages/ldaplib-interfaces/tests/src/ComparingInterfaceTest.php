@@ -15,6 +15,7 @@ namespace Korowai\Tests\Lib\Ldap;
 use Korowai\Lib\Ldap\CompareQueryInterface;
 use Korowai\Lib\Ldap\ComparingInterface;
 use Korowai\Testing\LdaplibInterfaces\TestCase;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -24,6 +25,8 @@ use Korowai\Testing\LdaplibInterfaces\TestCase;
  */
 final class ComparingInterfaceTest extends TestCase
 {
+    use ImplementsInterfaceTrait;
+
     public static function createDummyInstance()
     {
         return new class() implements ComparingInterface {

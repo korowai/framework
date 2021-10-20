@@ -14,6 +14,7 @@ namespace Korowai\Tests\Lib\Rfc;
 
 use Korowai\Lib\Rfc\InvalidRuleSetNameException;
 use Korowai\Testing\TestCase;
+use Tailors\PHPUnit\ExtendsClassTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -23,6 +24,8 @@ use Korowai\Testing\TestCase;
  */
 final class InvalidRuleSetNameExceptionTest extends TestCase
 {
+    use ExtendsClassTrait;
+
     public function testExtendsInvalidArgumentException(): void
     {
         $this->assertExtendsClass(\InvalidArgumentException::class, InvalidRuleSetNameException::class);

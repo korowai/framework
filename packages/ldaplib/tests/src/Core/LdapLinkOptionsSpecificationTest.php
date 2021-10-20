@@ -18,6 +18,7 @@ use Korowai\Lib\Ldap\Core\LdapLinkOptionsSpecification;
 use Korowai\Lib\Ldap\Core\LdapLinkOptionsSpecificationInterface;
 use Korowai\Testing\Ldaplib\TestCase;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -27,6 +28,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 final class LdapLinkOptionsSpecificationTest extends TestCase
 {
+    use ImplementsInterfaceTrait;
+
     //
     //
     // TESTS

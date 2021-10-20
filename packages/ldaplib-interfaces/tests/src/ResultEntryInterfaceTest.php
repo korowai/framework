@@ -16,6 +16,7 @@ use Korowai\Lib\Ldap\EntryInterface;
 use Korowai\Lib\Ldap\ResultAttributeIteratorInterface;
 use Korowai\Lib\Ldap\ResultEntryInterface;
 use Korowai\Testing\LdaplibInterfaces\TestCase;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -25,6 +26,8 @@ use Korowai\Testing\LdaplibInterfaces\TestCase;
  */
 final class ResultEntryInterfaceTest extends TestCase
 {
+    use ImplementsInterfaceTrait;
+
     public static function createDummyInstance()
     {
         return new class() implements ResultEntryInterface {

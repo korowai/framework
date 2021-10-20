@@ -16,6 +16,7 @@ use Korowai\Lib\Ldif\Nodes\Control;
 use Korowai\Lib\Ldif\Nodes\ControlInterface;
 use Korowai\Lib\Ldif\Nodes\ValueSpecInterface;
 use Korowai\Testing\Ldiflib\TestCase;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -25,6 +26,8 @@ use Korowai\Testing\Ldiflib\TestCase;
  */
 final class ControlTest extends TestCase
 {
+    use ImplementsInterfaceTrait;
+
     public function testImplmementsControlInterface(): void
     {
         $this->assertImplementsInterface(ControlInterface::class, Control::class);

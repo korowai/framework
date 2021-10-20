@@ -14,6 +14,7 @@ namespace Korowai\Tests\Lib\Ldif;
 
 use Korowai\Lib\Ldif\NoRulesDefinedException;
 use Korowai\Testing\TestCase;
+use Tailors\PHPUnit\ExtendsClassTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -23,6 +24,8 @@ use Korowai\Testing\TestCase;
  */
 final class NoRulesDefinedExceptionTest extends TestCase
 {
+    use ExtendsClassTrait;
+
     public function testExtendsInvalidArgumentException(): void
     {
         $this->assertExtendsClass(\RuntimeException::class, NoRulesDefinedException::class);

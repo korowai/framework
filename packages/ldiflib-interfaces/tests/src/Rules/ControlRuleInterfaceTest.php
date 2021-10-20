@@ -16,6 +16,7 @@ use Korowai\Lib\Ldif\RuleInterface;
 use Korowai\Lib\Ldif\Rules\ControlRuleInterface;
 use Korowai\Lib\Ldif\Rules\ValueSpecRuleInterface;
 use Korowai\Testing\LdiflibInterfaces\TestCase;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -25,6 +26,8 @@ use Korowai\Testing\LdiflibInterfaces\TestCase;
  */
 final class ControlRuleInterfaceTest extends TestCase
 {
+    use ImplementsInterfaceTrait;
+
     public static function createDummyInstance()
     {
         return new class() implements ControlRuleInterface {

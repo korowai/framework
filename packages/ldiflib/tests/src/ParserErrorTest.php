@@ -17,6 +17,9 @@ use Korowai\Lib\Ldif\ParserErrorInterface;
 use Korowai\Lib\Ldif\SourceLocationInterface;
 use Korowai\Lib\Ldif\Traits\DecoratesSourceLocationInterface;
 use Korowai\Testing\Ldiflib\TestCase;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
+use Tailors\PHPUnit\ExtendsClassTrait;
+use Tailors\PHPUnit\UsesTraitTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -26,6 +29,10 @@ use Korowai\Testing\Ldiflib\TestCase;
  */
 final class ParserErrorTest extends TestCase
 {
+    use ImplementsInterfaceTrait;
+    use ExtendsClassTrait;
+    use UsesTraitTrait;
+
     public function testImplementsParserErrorInterface(): void
     {
         $this->assertImplementsInterface(ParserErrorInterface::class, ParserError::class);

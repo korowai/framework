@@ -16,6 +16,8 @@ use Korowai\Lib\Ldif\Rules\AbstractRfcRule;
 use Korowai\Lib\Ldif\Rules\SepRule;
 use Korowai\Lib\Rfc\Rfc2849;
 use Korowai\Testing\Ldiflib\TestCase;
+use Tailors\PHPUnit\ExtendsClassTrait;
+use Tailors\PHPUnit\ObjectPropertiesIdenticalToTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -25,6 +27,9 @@ use Korowai\Testing\Ldiflib\TestCase;
  */
 final class SepRuleTest extends TestCase
 {
+    use ExtendsClassTrait;
+    use ObjectPropertiesIdenticalToTrait;
+
     public function testExtendsAbstractRfcRule(): void
     {
         $this->assertExtendsClass(AbstractRfcRule::class, SepRule::class);

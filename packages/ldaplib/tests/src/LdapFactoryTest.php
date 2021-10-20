@@ -20,6 +20,8 @@ use Korowai\Lib\Ldap\Ldap;
 use Korowai\Lib\Ldap\LdapFactory;
 use Korowai\Lib\Ldap\LdapFactoryInterface;
 use Korowai\Testing\Ldaplib\TestCase;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
+use Tailors\PHPUnit\ObjectPropertiesIdenticalToTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -29,6 +31,9 @@ use Korowai\Testing\Ldaplib\TestCase;
  */
 final class LdapFactoryTest extends TestCase
 {
+    use ImplementsInterfaceTrait;
+    use ObjectPropertiesIdenticalToTrait;
+
     //
     //
     // TESTS

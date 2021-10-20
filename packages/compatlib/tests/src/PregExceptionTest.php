@@ -14,6 +14,7 @@ namespace Korowai\Tests\Lib\Compat;
 
 use Korowai\Lib\Compat\PregException;
 use Korowai\Testing\TestCase;
+use Tailors\PHPUnit\ExtendsClassTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -23,6 +24,7 @@ use Korowai\Testing\TestCase;
  */
 final class PregExceptionTest extends TestCase
 {
+    use ExtendsClassTrait;
     public function testExtendsErrorException(): void
     {
         $this->assertExtendsClass(\ErrorException::class, PregException::class);

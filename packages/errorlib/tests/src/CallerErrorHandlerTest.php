@@ -16,6 +16,7 @@ use function Korowai\Lib\Context\with;
 use Korowai\Lib\Error\CallerErrorHandler;
 use Korowai\Lib\Error\ErrorHandler;
 use Korowai\Testing\TestCase;
+use Tailors\PHPUnit\ExtendsClassTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -25,6 +26,8 @@ use Korowai\Testing\TestCase;
  */
 final class CallerErrorHandlerTest extends TestCase
 {
+    use ExtendsClassTrait;
+
     public function handlerCallback1(array &$args = null)
     {
         return function (int $severity, string $message, string $file, int $lie) use (&$args): bool {

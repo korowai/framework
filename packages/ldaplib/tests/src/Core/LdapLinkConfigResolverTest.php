@@ -20,6 +20,7 @@ use Korowai\Lib\Ldap\Core\LdapLinkOptionsSpecificationInterface;
 use Korowai\Testing\Ldaplib\TestCase;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -29,6 +30,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 final class LdapLinkConfigResolverTest extends TestCase
 {
+    use ImplementsInterfaceTrait;
+
     // FIXME: this is duplicated in LdapFactoryTest
     public static function getDefaultConfig()
     {

@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Korowai\Tests\Testing\RfclibInterfaces;
 
 use Korowai\Testing\RfclibInterfaces\TestCase;
+use Tailors\PHPUnit\ExtendsClassTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -22,6 +23,8 @@ use Korowai\Testing\RfclibInterfaces\TestCase;
  */
 final class TestCaseTest extends TestCase
 {
+    use ExtendsClassTrait;
+
     public function testExtendsTestCase(): void
     {
         $this->assertExtendsClass(\Korowai\Testing\TestCase::class, parent::class);

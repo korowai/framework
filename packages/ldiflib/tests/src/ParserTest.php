@@ -16,6 +16,7 @@ use Korowai\Lib\Ldif\Parser;
 use Korowai\Lib\Ldif\ParserInterface;
 use Korowai\Testing\Ldiflib\TestCase;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -25,6 +26,8 @@ use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
  */
 final class ParserTest extends TestCase
 {
+    use ImplementsInterfaceTrait;
+
 //    protected static function getDefaultConfig()
 //    {
 //        return [

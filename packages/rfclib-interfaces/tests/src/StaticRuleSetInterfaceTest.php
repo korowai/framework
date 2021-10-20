@@ -14,6 +14,7 @@ namespace Korowai\Tests\Lib\Rfc;
 
 use Korowai\Lib\Rfc\StaticRuleSetInterface;
 use Korowai\Testing\RfclibInterfaces\TestCase;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -23,6 +24,8 @@ use Korowai\Testing\RfclibInterfaces\TestCase;
  */
 final class StaticRuleSetInterfaceTest extends TestCase
 {
+    use ImplementsInterfaceTrait;
+
     public static function createDummyClass()
     {
         return get_class(new class() implements StaticRuleSetInterface {

@@ -15,12 +15,17 @@ namespace Korowai\Tests\Lib\Ldap\Core;
 use Korowai\Lib\Ldap\Core\LdapLinkInterface;
 use Korowai\Lib\Ldap\ErrorException;
 use Korowai\Lib\Ldap\LdapException;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
+use Tailors\PHPUnit\ObjectPropertiesIdenticalToTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
 trait AbstractLdapResultItemIteratorTestTrait
 {
+    use ImplementsInterfaceTrait;
+    use ObjectPropertiesIdenticalToTrait;
+
     public function testImplementsIteratorInterface(): void
     {
         $this->assertImplementsInterface($this->getIteratorInterface(), $this->getIteratorClass());

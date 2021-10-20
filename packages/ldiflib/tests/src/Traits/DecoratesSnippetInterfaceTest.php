@@ -17,6 +17,7 @@ use Korowai\Lib\Ldif\Traits\DecoratesSnippetInterface;
 use Korowai\Lib\Ldif\Traits\ExposesSnippetInterface;
 use Korowai\Lib\Ldif\Traits\HasSnippet;
 use Korowai\Testing\Ldiflib\TestCase;
+use Tailors\PHPUnit\UsesTraitTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -26,6 +27,8 @@ use Korowai\Testing\Ldiflib\TestCase;
  */
 final class DecoratesSnippetInterfaceTest extends TestCase
 {
+    use UsesTraitTrait;
+
     public function testUsesExposesSnippetInterface(): void
     {
         $this->assertUsesTrait(ExposesSnippetInterface::class, DecoratesSnippetInterface::class);

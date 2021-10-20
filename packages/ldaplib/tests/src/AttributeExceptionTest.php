@@ -14,6 +14,7 @@ namespace Korowai\Tests\Lib\Ldap;
 
 use Korowai\Lib\Ldap\AttributeException;
 use Korowai\Testing\LdaplibInterfaces\TestCase;
+use Tailors\PHPUnit\ExtendsClassTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -23,6 +24,8 @@ use Korowai\Testing\LdaplibInterfaces\TestCase;
  */
 final class AttributeExceptionTest extends TestCase
 {
+    use ExtendsClassTrait;
+
     public function testExtendsOutOfRangeException(): void
     {
         $this->assertExtendsClass(\OutOfRangeException::class, AttributeException::class);

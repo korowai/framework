@@ -17,6 +17,7 @@ use Korowai\Lib\Context\ResourceContextManager;
 use Korowai\Testing\Contextlib\ExpectFunctionOnceWillReturnTrait;
 use Korowai\Testing\Contextlib\GetContextFunctionMockTrait;
 use Korowai\Testing\TestCase;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -29,6 +30,7 @@ final class ResourceContextManagerTest extends TestCase
     use \phpmock\phpunit\PHPMock;
     use GetContextFunctionMockTrait;
     use ExpectFunctionOnceWillReturnTrait;
+    use ImplementsInterfaceTrait;
 
     public function testImplementsContextManagerInterface(): void
     {

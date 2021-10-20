@@ -18,6 +18,7 @@ use Korowai\Testing\Ldiflib\TestCase;
 use League\Uri\Contracts\UriInterface;
 use League\Uri\Exceptions\SyntaxError;
 use League\Uri\Uri;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -27,6 +28,8 @@ use League\Uri\Uri;
  */
 final class ValueSpecTest extends TestCase
 {
+    use ImplementsInterfaceTrait;
+
     public function testImplmementsValueSpecInterface(): void
     {
         $this->assertImplementsInterface(ValueSpecInterface::class, ValueSpec::class);

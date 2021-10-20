@@ -15,6 +15,7 @@ namespace Korowai\Tests\Lib\Ldif\Nodes;
 use Korowai\Lib\Ldif\NodeInterface;
 use Korowai\Lib\Ldif\Nodes\DnSpecInterface;
 use Korowai\Testing\LdiflibInterfaces\TestCase;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -24,6 +25,8 @@ use Korowai\Testing\LdiflibInterfaces\TestCase;
  */
 final class DnSpecInterfaceTest extends TestCase
 {
+    use ImplementsInterfaceTrait;
+
     public static function createDummyInstance()
     {
         return new class() implements DnSpecInterface {

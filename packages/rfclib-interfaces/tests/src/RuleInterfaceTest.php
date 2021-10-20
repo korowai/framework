@@ -14,6 +14,7 @@ namespace Korowai\Tests\Lib\Rfc;
 
 use Korowai\Lib\Rfc\RuleInterface;
 use Korowai\Testing\RfclibInterfaces\TestCase;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -23,6 +24,8 @@ use Korowai\Testing\RfclibInterfaces\TestCase;
  */
 final class RuleInterfaceTest extends TestCase
 {
+    use ImplementsInterfaceTrait;
+
     public static function createDummyInstance()
     {
         return new class() implements RuleInterface {

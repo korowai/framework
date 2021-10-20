@@ -14,6 +14,7 @@ namespace Korowai\Tests\Lib\Error;
 
 use Korowai\Lib\Error\ErrorHandlerInterface;
 use Korowai\Testing\ErrorlibInterfaces\TestCase;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -23,6 +24,8 @@ use Korowai\Testing\ErrorlibInterfaces\TestCase;
  */
 final class ErrorHandlerInterfaceTest extends TestCase
 {
+    use ImplementsInterfaceTrait;
+
     public static function createDummyInstance()
     {
         return new class() implements ErrorHandlerInterface {

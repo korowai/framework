@@ -16,6 +16,7 @@ use Korowai\Lib\Ldif\Input;
 use Korowai\Lib\Ldif\InputInterface;
 use Korowai\Lib\Ldif\Util\IndexMap;
 use Korowai\Testing\Ldiflib\TestCase;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -25,6 +26,8 @@ use Korowai\Testing\Ldiflib\TestCase;
  */
 final class InputTest extends TestCase
 {
+    use ImplementsInterfaceTrait;
+
     public function testImplementsInputInterface(): void
     {
         $this->assertImplementsInterface(InputInterface::class, Input::class);

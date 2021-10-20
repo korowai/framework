@@ -20,12 +20,15 @@ use Korowai\Lib\Ldap\ErrorException;
 use Korowai\Testing\Ldaplib\LdapTriggerErrorTestFixture;
 use Korowai\Testing\Ldaplib\LdapTriggerErrorTestSubject;
 use PHPUnit\Framework\MockObject\MockObject;
+use Tailors\PHPUnit\ObjectPropertiesIdenticalToTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
 trait ComparingTestTrait
 {
+    use ObjectPropertiesIdenticalToTrait;
+
     abstract public function createComparingInstance(LdapLinkInterface $ldapLink): ComparingInterface;
 
     abstract public function examineLdapLinkErrorHandler(

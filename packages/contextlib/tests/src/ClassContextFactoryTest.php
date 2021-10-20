@@ -16,6 +16,7 @@ use Korowai\Lib\Context\AbstractManagedContextFactory;
 use Korowai\Lib\Context\ClassContextFactory;
 use Korowai\Lib\Context\ContextManagerInterface;
 use Korowai\Testing\TestCase;
+use Tailors\PHPUnit\ExtendsClassTrait;
 
 final class ClassYVO2VPY5
 {
@@ -61,6 +62,8 @@ final class ContextJG8MG9JQ extends BaseContextOLESLFOV
  */
 final class ClassContextFactoryTest extends TestCase
 {
+    use ExtendsClassTrait;
+
     public function testExtendsAbstractManagedContextFactory(): void
     {
         $this->assertExtendsClass(AbstractManagedContextFactory::class, ClassContextFactory::class);

@@ -17,6 +17,7 @@ use Korowai\Lib\Rfc\Rule;
 use Korowai\Lib\Rfc\RuleInterface;
 use Korowai\Testing\Rfclib\RuleDemo;
 use Korowai\Testing\TestCase;
+use Tailors\PHPUnit\ObjectPropertiesIdenticalToTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -26,6 +27,8 @@ use Korowai\Testing\TestCase;
  */
 final class RuleDemoTest extends TestCase
 {
+    use ObjectPropertiesIdenticalToTrait;
+
     public static function provConstruct(): array
     {
         $rule = new Rule(Rfc2849::class, 'DN_SPEC');

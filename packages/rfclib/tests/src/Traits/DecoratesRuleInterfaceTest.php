@@ -16,6 +16,7 @@ use Korowai\Lib\Rfc\RuleInterface;
 use Korowai\Lib\Rfc\Traits\DecoratesRuleInterface;
 use Korowai\Lib\Rfc\Traits\ExposesRuleInterface;
 use Korowai\Testing\TestCase;
+use Tailors\PHPUnit\UsesTraitTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -25,6 +26,8 @@ use Korowai\Testing\TestCase;
  */
 final class DecoratesRuleInterfaceTest extends TestCase
 {
+    use UsesTraitTrait;
+
     public function testUsesExposesRuleInterface(): void
     {
         $this->assertUsesTrait(ExposesRuleInterface::class, DecoratesRuleInterface::class);

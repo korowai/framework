@@ -20,6 +20,7 @@ use Korowai\Lib\Ldif\ParserState;
 use Korowai\Lib\Ldif\ParserStateInterface;
 use Korowai\Lib\Ldif\RecordInterface;
 use Korowai\Testing\Ldiflib\TestCase;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -29,6 +30,8 @@ use Korowai\Testing\Ldiflib\TestCase;
  */
 final class ParserStateTest extends TestCase
 {
+    use ImplementsInterfaceTrait;
+
     public function testImplementsParserStateInterface(): void
     {
         $this->assertImplementsInterface(ParserStateInterface::class, ParserState::class);

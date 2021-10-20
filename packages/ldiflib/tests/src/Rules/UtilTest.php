@@ -14,6 +14,7 @@ namespace Korowai\Tests\Lib\Ldif\Rules;
 
 use Korowai\Lib\Ldif\Rules\Util;
 use Korowai\Testing\Ldiflib\TestCase;
+use Tailors\PHPUnit\ObjectPropertiesIdenticalToTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -23,6 +24,8 @@ use Korowai\Testing\Ldiflib\TestCase;
  */
 final class UtilTest extends TestCase
 {
+    use ObjectPropertiesIdenticalToTrait;
+
     //
     // base64Decode()
     //

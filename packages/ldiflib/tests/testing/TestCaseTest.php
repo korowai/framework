@@ -15,6 +15,8 @@ namespace Korowai\Tests\Testing\Ldiflib;
 use Korowai\Testing\Ldiflib\TestCase;
 use Korowai\Testing\Ldiflib\Traits\ParserTestHelpers;
 use Korowai\Testing\TestCase as BaseTestCase;
+use Tailors\PHPUnit\ExtendsClassTrait;
+use Tailors\PHPUnit\UsesTraitTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -24,6 +26,9 @@ use Korowai\Testing\TestCase as BaseTestCase;
  */
 final class TestCaseTest extends TestCase
 {
+    use ExtendsClassTrait;
+    use UsesTraitTrait;
+
     public function testExtendsTestCase(): void
     {
         $this->assertExtendsClass(BaseTestCase::class, parent::class);

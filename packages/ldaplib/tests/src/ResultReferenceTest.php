@@ -25,6 +25,8 @@ use Korowai\Testing\Ldaplib\GetLdapFunctionMockTrait;
 use Korowai\Testing\Ldaplib\LdapTriggerErrorTestFixture;
 use Korowai\Testing\Ldaplib\LdapTriggerErrorTestSubject;
 use Korowai\Testing\Ldaplib\TestCase;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
+use Tailors\PHPUnit\UsesTraitTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -40,6 +42,8 @@ final class ResultReferenceTest extends TestCase
     use CreateLdapResultMockTrait;
     use CreateLdapResultReferenceMockTrait;
     use ExamineLdapLinkErrorHandlerTrait;
+    use ImplementsInterfaceTrait;
+    use UsesTraitTrait;
 
     //
     //

@@ -16,6 +16,7 @@ use Korowai\Lib\Ldif\NodeInterface;
 use Korowai\Lib\Ldif\Nodes\LdifChangeRecordInterface;
 use Korowai\Lib\Ldif\Nodes\LdifModDnRecordInterface;
 use Korowai\Testing\LdiflibInterfaces\TestCase;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -25,6 +26,8 @@ use Korowai\Testing\LdiflibInterfaces\TestCase;
  */
 final class LdifModDnRecordInterfaceTest extends TestCase
 {
+    use ImplementsInterfaceTrait;
+
     public static function createDummyInstance()
     {
         return new class() implements LdifModDnRecordInterface {

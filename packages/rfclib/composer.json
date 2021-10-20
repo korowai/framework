@@ -22,7 +22,10 @@
     },
     "require-dev": {
         "phpunit/phpunit": ">=9.3",
-        "korowai/testing": "*"
+        "korowai/testing": "*",
+        "phptailors/phpunit-inheritance": "dev-master",
+        "phptailors/phpunit-properties": "dev-master",
+        "phptailors/phpunit-regexp": "dev-master"
     },
     "autoload": {
       "psr-4" : {

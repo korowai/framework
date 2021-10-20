@@ -15,6 +15,8 @@ namespace Korowai\Tests\Lib\Ldif\Rules;
 use Korowai\Lib\Ldif\Rules\AbstractNameSpecRule;
 use Korowai\Lib\Ldif\Rules\AbstractRdnSpecRule;
 use Korowai\Testing\Ldiflib\TestCase;
+use Tailors\PHPUnit\ExtendsClassTrait;
+use Tailors\PHPUnit\ObjectPropertiesIdenticalToTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -24,6 +26,9 @@ use Korowai\Testing\Ldiflib\TestCase;
  */
 final class AbstractRdnSpecRuleTest extends TestCase
 {
+    use ExtendsClassTrait;
+    use ObjectPropertiesIdenticalToTrait;
+
     public function testExtendsAbstractNameSpecRule(): void
     {
         $this->assertExtendsClass(AbstractNameSpecRule::class, AbstractRdnSpecRule::class);

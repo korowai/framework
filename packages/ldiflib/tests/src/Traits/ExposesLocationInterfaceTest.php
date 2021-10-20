@@ -17,6 +17,7 @@ use Korowai\Lib\Ldif\LocationInterface;
 use Korowai\Lib\Ldif\Traits\ExposesLocationInterface;
 use Korowai\Lib\Ldif\Traits\ExposesSourceLocationInterface;
 use Korowai\Testing\Ldiflib\TestCase;
+use Tailors\PHPUnit\UsesTraitTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -26,6 +27,8 @@ use Korowai\Testing\Ldiflib\TestCase;
  */
 final class ExposesLocationInterfaceTest extends TestCase
 {
+    use UsesTraitTrait;
+
     public function getTestObject(LocationInterface $location = null)
     {
         $obj = new class($location) implements LocationInterface {

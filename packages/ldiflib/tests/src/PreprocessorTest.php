@@ -17,6 +17,7 @@ use Korowai\Lib\Ldif\Preprocessor;
 use Korowai\Lib\Ldif\PreprocessorInterface;
 use Korowai\Lib\Ldif\Util\IndexMap;
 use Korowai\Testing\Ldiflib\TestCase;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -26,6 +27,8 @@ use Korowai\Testing\Ldiflib\TestCase;
  */
 final class PreprocessorTest extends TestCase
 {
+    use ImplementsInterfaceTrait;
+
     public function testImplementsPreprocessorInterface(): void
     {
         $this->assertImplementsInterface(PreprocessorInterface::class, Preprocessor::class);

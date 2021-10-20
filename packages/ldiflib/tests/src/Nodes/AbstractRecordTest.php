@@ -17,6 +17,8 @@ use Korowai\Lib\Ldif\RecordInterface;
 use Korowai\Lib\Ldif\SnippetInterface;
 use Korowai\Lib\Ldif\Traits\HasSnippet;
 use Korowai\Testing\Ldiflib\TestCase;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
+use Tailors\PHPUnit\UsesTraitTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -26,6 +28,9 @@ use Korowai\Testing\Ldiflib\TestCase;
  */
 final class AbstractRecordTest extends TestCase
 {
+    use ImplementsInterfaceTrait;
+    use UsesTraitTrait;
+
     public function testImplementsRecordInterface(): void
     {
         $this->assertImplementsInterface(RecordInterface::class, AbstractRecord::class);

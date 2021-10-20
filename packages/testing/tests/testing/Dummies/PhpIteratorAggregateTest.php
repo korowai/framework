@@ -14,6 +14,7 @@ namespace Korowai\Tests;
 
 use Korowai\Testing\Dummies\PhpIteratorAggregateTrait;
 use Korowai\Testing\TestCase;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -23,6 +24,8 @@ use Korowai\Testing\TestCase;
  */
 final class PhpIteratorAggregateTest extends TestCase
 {
+    use ImplementsInterfaceTrait;
+
     public static function createDummyInstance()
     {
         return new class() implements \IteratorAggregate {

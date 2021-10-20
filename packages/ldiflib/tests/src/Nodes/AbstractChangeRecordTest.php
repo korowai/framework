@@ -16,6 +16,7 @@ use Korowai\Lib\Ldif\Nodes\AbstractChangeRecord;
 use Korowai\Lib\Ldif\Nodes\AbstractRecord;
 use Korowai\Lib\Ldif\SnippetInterface;
 use Korowai\Testing\Ldiflib\TestCase;
+use Tailors\PHPUnit\ExtendsClassTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -25,6 +26,8 @@ use Korowai\Testing\Ldiflib\TestCase;
  */
 final class AbstractChangeRecordTest extends TestCase
 {
+    use ExtendsClassTrait;
+
     public function testExtendsAbstractRecord(): void
     {
         $this->assertExtendsClass(AbstractRecord::class, AbstractChangeRecord::class);

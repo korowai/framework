@@ -18,6 +18,7 @@ use Korowai\Lib\Ldap\Core\LdapResultInterface;
 use Korowai\Lib\Ldap\Core\LdapResultItemTrait;
 use Korowai\Lib\Ldap\Core\LdapResultWrapperTrait;
 use Korowai\Testing\Ldaplib\TestCase;
+use Tailors\PHPUnit\UsesTraitTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -27,6 +28,8 @@ use Korowai\Testing\Ldaplib\TestCase;
  */
 final class LdapResultItemTraitTest extends TestCase
 {
+    use UsesTraitTrait;
+
     public function testUsesResourceWrapperTrait(): void
     {
         $this->assertUsesTrait(ResourceWrapperTrait::class, LdapResultItemTrait::class);

@@ -14,6 +14,7 @@ namespace Korowai\Tests\Lib\Ldap\Core;
 
 use Korowai\Lib\Ldap\Core\AbstractLdapResultItemIterator;
 use Korowai\Lib\Ldap\Core\LdapResultItemInterface;
+use Tailors\PHPUnit\ExtendsClassTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -21,6 +22,7 @@ use Korowai\Lib\Ldap\Core\LdapResultItemInterface;
 trait LdapResultItemIteratorTestTrait
 {
     use AbstractLdapResultItemIteratorTestTrait;
+    use ExtendsClassTrait;
 
     public function testExtendsAbstractLdapResultItemIterator(): void
     {

@@ -20,6 +20,9 @@ use Korowai\Lib\Ldap\Core\LdapLinkWrapperInterface;
 use Korowai\Lib\Ldap\Core\LdapLinkWrapperTrait;
 use Korowai\Testing\Ldaplib\ExamineLdapLinkErrorHandlerTrait;
 use Korowai\Testing\Ldaplib\TestCase;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
+use Tailors\PHPUnit\UsesTraitTrait;
+use Tailors\PHPUnit\ObjectPropertiesIdenticalToTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -33,6 +36,9 @@ final class BindingTest extends TestCase
 {
     use BindingTestTrait;
     use ExamineLdapLinkErrorHandlerTrait;
+    use ImplementsInterfaceTrait;
+    use UsesTraitTrait;
+    use ObjectPropertiesIdenticalToTrait;
 
     // required by BindingTestTrait
     public function createBindingInstance(LdapLinkInterface $ldapLink, bool $bound = false): BindingInterface

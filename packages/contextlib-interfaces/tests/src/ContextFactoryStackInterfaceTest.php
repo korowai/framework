@@ -15,6 +15,7 @@ namespace Korowai\Tests\Lib\Context;
 use Korowai\Lib\Context\ContextFactoryInterface;
 use Korowai\Lib\Context\ContextFactoryStackInterface;
 use Korowai\Testing\ContextlibInterfaces\TestCase;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -24,6 +25,8 @@ use Korowai\Testing\ContextlibInterfaces\TestCase;
  */
 final class ContextFactoryStackInterfaceTest extends TestCase
 {
+    use ImplementsInterfaceTrait;
+
     public static function createDummyInstance()
     {
         return new class() implements ContextFactoryStackInterface {

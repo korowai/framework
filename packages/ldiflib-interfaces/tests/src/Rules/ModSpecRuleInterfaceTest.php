@@ -18,6 +18,7 @@ use Korowai\Lib\Ldif\Rules\ModSpecInitRuleInterface;
 use Korowai\Lib\Ldif\Rules\ModSpecRuleInterface;
 use Korowai\Lib\Ldif\Rules\SepRuleInterface;
 use Korowai\Testing\LdiflibInterfaces\TestCase;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -27,6 +28,8 @@ use Korowai\Testing\LdiflibInterfaces\TestCase;
  */
 final class ModSpecRuleInterfaceTest extends TestCase
 {
+    use ImplementsInterfaceTrait;
+
     public static function createDummyInstance()
     {
         return new class() implements ModSpecRuleInterface {

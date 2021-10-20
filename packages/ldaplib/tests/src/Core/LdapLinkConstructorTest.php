@@ -19,6 +19,8 @@ use Korowai\Lib\Ldap\ErrorException;
 use Korowai\Testing\Ldaplib\GetLdapFunctionMockTrait;
 use Korowai\Testing\Ldaplib\MakeArgsForLdapFunctionMockTrait;
 use Korowai\Testing\Ldaplib\TestCase;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
+use Tailors\PHPUnit\ObjectPropertiesIdenticalToTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -31,6 +33,8 @@ final class LdapLinkConstructorTest extends TestCase
     use \phpmock\phpunit\PHPMock;
     use GetLdapFunctionMockTrait;
     use MakeArgsForLdapFunctionMockTrait;
+    use ImplementsInterfaceTrait;
+    use ObjectPropertiesIdenticalToTrait;
 
     //
     //

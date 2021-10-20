@@ -19,6 +19,8 @@ use Korowai\Lib\Ldif\Rules\AttrValSpecRule;
 use Korowai\Lib\Ldif\Rules\ModSpecInitRule;
 use Korowai\Lib\Ldif\Rules\ModSpecRule;
 use Korowai\Testing\Ldiflib\TestCase;
+use Tailors\PHPUnit\ExtendsClassTrait;
+use Tailors\PHPUnit\ObjectPropertiesIdenticalToTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -28,6 +30,9 @@ use Korowai\Testing\Ldiflib\TestCase;
  */
 final class ModSpecRuleTest extends TestCase
 {
+    use ExtendsClassTrait;
+    use ObjectPropertiesIdenticalToTrait;
+
     public function testExtendsAbstractRule(): void
     {
         $this->assertExtendsClass(AbstractRule::class, ModSpecRule::class);

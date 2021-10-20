@@ -26,6 +26,8 @@ use Korowai\Lib\Ldif\Rules\LdifChangeRecordRule;
 use Korowai\Lib\Ldif\Rules\ModSpecRule;
 use Korowai\Lib\Ldif\Rules\SepRule;
 use Korowai\Testing\Ldiflib\TestCase;
+use Tailors\PHPUnit\ExtendsClassTrait;
+use Tailors\PHPUnit\ObjectPropertiesIdenticalToTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -35,6 +37,9 @@ use Korowai\Testing\Ldiflib\TestCase;
  */
 final class LdifChangeRecordRuleTest extends TestCase
 {
+    use ExtendsClassTrait;
+    use ObjectPropertiesIdenticalToTrait;
+
     public function testExtendsAbstractLdifRecordRule(): void
     {
         $this->assertExtendsClass(AbstractLdifRecordRule::class, LdifChangeRecordRule::class);

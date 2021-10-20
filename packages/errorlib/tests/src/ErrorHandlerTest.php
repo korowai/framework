@@ -15,6 +15,7 @@ namespace Korowai\Tests\Lib\Error;
 use Korowai\Lib\Error\AbstractManagedErrorHandler;
 use Korowai\Lib\Error\ErrorHandler;
 use Korowai\Testing\TestCase;
+use Tailors\PHPUnit\ExtendsClassTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -24,6 +25,8 @@ use Korowai\Testing\TestCase;
  */
 final class ErrorHandlerTest extends TestCase
 {
+    use ExtendsClassTrait;
+
     public function testExtendsAbstractManagedErrorHandler(): void
     {
         $this->assertExtendsClass(AbstractManagedErrorHandler::class, ErrorHandler::class);

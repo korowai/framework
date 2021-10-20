@@ -16,6 +16,7 @@ use function Korowai\Lib\Context\with;
 use Korowai\Lib\Error\CallerExceptionErrorHandler;
 use Korowai\Lib\Error\ExceptionErrorHandler;
 use Korowai\Testing\TestCase;
+use Tailors\PHPUnit\ExtendsClassTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -25,6 +26,8 @@ use Korowai\Testing\TestCase;
  */
 final class CallerExceptionErrorHandlerTest extends TestCase
 {
+    use ExtendsClassTrait;
+
     public function testExtendsExceptionErrorHandler(): void
     {
         $this->assertExtendsClass(ExceptionErrorHandler::class, CallerExceptionErrorHandler::class);

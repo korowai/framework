@@ -17,6 +17,8 @@ use Korowai\Lib\Ldif\CursorInterface;
 use Korowai\Lib\Ldif\Input;
 use Korowai\Lib\Ldif\Location;
 use Korowai\Testing\Ldiflib\TestCase;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
+use Tailors\PHPUnit\ExtendsClassTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -26,6 +28,9 @@ use Korowai\Testing\Ldiflib\TestCase;
  */
 final class CursorTest extends TestCase
 {
+    use ImplementsInterfaceTrait;
+    use ExtendsClassTrait;
+
     public function testImplementsCursorInterface(): void
     {
         $this->assertImplementsInterface(CursorInterface::class, Cursor::class);

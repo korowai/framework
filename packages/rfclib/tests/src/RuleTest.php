@@ -20,6 +20,7 @@ use Korowai\Testing\Rfclib\RuleSet0;
 use Korowai\Testing\Rfclib\RuleSet1;
 use Korowai\Testing\Rfclib\RuleSet2;
 use Korowai\Testing\TestCase;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -29,6 +30,8 @@ use Korowai\Testing\TestCase;
  */
 final class RuleTest extends TestCase
 {
+    use ImplementsInterfaceTrait;
+
     public function testImplementsRuleInterface(): void
     {
         $this->assertImplementsInterface(RuleInterface::class, Rule::class);

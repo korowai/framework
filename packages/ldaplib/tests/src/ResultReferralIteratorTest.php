@@ -15,6 +15,8 @@ namespace Korowai\Tests\Lib\Ldap;
 use Korowai\Lib\Ldap\ResultReferralIterator;
 use Korowai\Lib\Ldap\ResultReferralIteratorInterface;
 use Korowai\Testing\Ldaplib\TestCase;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
+use Tailors\PHPUnit\ExtendsClassTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -24,6 +26,9 @@ use Korowai\Testing\Ldaplib\TestCase;
  */
 final class ResultReferralIteratorTest extends TestCase
 {
+    use ImplementsInterfaceTrait;
+    use ExtendsClassTrait;
+
     public function testImplementsResultReferralIteratorInterface(): void
     {
         $this->assertImplementsInterface(ResultReferralIteratorInterface::class, ResultReferralIterator::class);

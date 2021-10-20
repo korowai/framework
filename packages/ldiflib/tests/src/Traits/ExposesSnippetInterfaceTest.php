@@ -16,6 +16,7 @@ use Korowai\Lib\Ldif\SnippetInterface;
 use Korowai\Lib\Ldif\Traits\ExposesLocationInterface;
 use Korowai\Lib\Ldif\Traits\ExposesSnippetInterface;
 use Korowai\Testing\Ldiflib\TestCase;
+use Tailors\PHPUnit\UsesTraitTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -25,6 +26,8 @@ use Korowai\Testing\Ldiflib\TestCase;
  */
 final class ExposesSnippetInterfaceTest extends TestCase
 {
+    use UsesTraitTrait;
+
     public function getTestObject(SnippetInterface $snippet = null)
     {
         $obj = new class($snippet) implements SnippetInterface {

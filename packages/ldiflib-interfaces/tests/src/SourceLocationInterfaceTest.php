@@ -14,6 +14,7 @@ namespace Korowai\Tests\Lib\Ldif;
 
 use Korowai\Lib\Ldif\SourceLocationInterface;
 use Korowai\Testing\LdiflibInterfaces\TestCase;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -23,6 +24,8 @@ use Korowai\Testing\LdiflibInterfaces\TestCase;
  */
 final class SourceLocationInterfaceTest extends TestCase
 {
+    use ImplementsInterfaceTrait;
+
     public function testDummyImplementation(): void
     {
         $dummy = new class() implements SourceLocationInterface {

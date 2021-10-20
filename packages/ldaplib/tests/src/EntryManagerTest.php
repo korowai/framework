@@ -20,6 +20,8 @@ use Korowai\Lib\Ldap\EntryManagerInterface;
 use Korowai\Lib\Ldap\EntryManagerTrait;
 use Korowai\Testing\Ldaplib\ExamineLdapLinkErrorHandlerTrait;
 use Korowai\Testing\Ldaplib\TestCase;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
+use Tailors\PHPUnit\UsesTraitTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -33,6 +35,8 @@ final class EntryManagerTest extends TestCase
 {
     use EntryManagerTestTrait;
     use ExamineLdapLinkErrorHandlerTrait;
+    use ImplementsInterfaceTrait;
+    use UsesTraitTrait;
 
     // required by EntryManagerTestTrait
     public function createEntryManagerInstance(LdapLinkInterface $ldapLink): EntryManagerInterface

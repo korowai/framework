@@ -14,6 +14,7 @@ namespace Korowai\Tests\Lib\Ldif;
 
 use Korowai\Lib\Ldif\ParserInterface;
 use Korowai\Testing\LdiflibInterfaces\TestCase;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -23,6 +24,7 @@ use Korowai\Testing\LdiflibInterfaces\TestCase;
  */
 final class ParserInterfaceTest extends TestCase
 {
+    use ImplementsInterfaceTrait;
 //    public static function provExtendsInterface(): array
 //    {
 //        return [

@@ -20,6 +20,8 @@ use Korowai\Lib\Ldif\Snippet;
 use Korowai\Lib\Ldif\SnippetInterface;
 use Korowai\Lib\Ldif\Traits\DecoratesLocationInterface;
 use Korowai\Testing\Ldiflib\TestCase;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
+use Tailors\PHPUnit\UsesTraitTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -29,6 +31,9 @@ use Korowai\Testing\Ldiflib\TestCase;
  */
 final class SnippetTest extends TestCase
 {
+    use ImplementsInterfaceTrait;
+    use UsesTraitTrait;
+
     public function testImplementsSnippetInterface(): void
     {
         $this->assertImplementsInterface(SnippetInterface::class, Snippet::class);

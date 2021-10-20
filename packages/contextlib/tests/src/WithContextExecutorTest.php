@@ -16,6 +16,7 @@ use Korowai\Lib\Context\ContextManagerInterface;
 use Korowai\Lib\Context\ExecutorInterface;
 use Korowai\Lib\Context\WithContextExecutor;
 use Korowai\Testing\TestCase;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
 
 final class ExceptionEB3IB4EL extends \Exception
 {
@@ -29,6 +30,8 @@ final class ExceptionEB3IB4EL extends \Exception
  */
 final class WithContextExecutorTest extends TestCase
 {
+    use ImplementsInterfaceTrait;
+
     public function testImplementsExecutorInterface(): void
     {
         $this->assertImplementsInterface(ExecutorInterface::class, WithContextExecutor::class);

@@ -19,6 +19,7 @@ use Korowai\Lib\Ldif\Rules\DnSpecRuleInterface;
 use Korowai\Lib\Ldif\Rules\LdifChangeRecordRuleInterface;
 use Korowai\Lib\Ldif\Rules\SepRuleInterface;
 use Korowai\Testing\LdiflibInterfaces\TestCase;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -28,6 +29,8 @@ use Korowai\Testing\LdiflibInterfaces\TestCase;
  */
 final class LdifChangeRecordRuleInterfaceTest extends TestCase
 {
+    use ImplementsInterfaceTrait;
+
     public static function createDummyInstance()
     {
         return new class() implements LdifChangeRecordRuleInterface {

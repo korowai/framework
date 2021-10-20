@@ -19,6 +19,10 @@ use Korowai\Lib\Ldif\RecordVisitorInterface;
 use Korowai\Lib\Ldif\SnippetInterface;
 use Korowai\Lib\Ldif\Traits\HasAttrValSpecs;
 use Korowai\Testing\Ldiflib\TestCase;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
+use Tailors\PHPUnit\ExtendsClassTrait;
+use Tailors\PHPUnit\UsesTraitTrait;
+use Tailors\PHPUnit\ObjectPropertiesIdenticalToTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -28,6 +32,11 @@ use Korowai\Testing\Ldiflib\TestCase;
  */
 final class LdifAttrValRecordTest extends TestCase
 {
+    use ImplementsInterfaceTrait;
+    use ExtendsClassTrait;
+    use UsesTraitTrait;
+    use ObjectPropertiesIdenticalToTrait;
+
     public function tets__extends__AbstractRecord()
     {
         $this->assertExtendsClass(AbstractRecord::class, LdifAttrValRecord::class);

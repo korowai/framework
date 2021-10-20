@@ -16,6 +16,11 @@ use Korowai\Lib\Ldif\Rules\AbstractRfcRule;
 use Korowai\Lib\Ldif\Rules\AbstractRule;
 use Korowai\Testing\Ldiflib\TestCase;
 use Korowai\Testing\Rfclib\RuleSet1;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
+use Tailors\PHPUnit\ExtendsClassTrait;
+use Tailors\PHPUnit\UsesTraitTrait;
+use Tailors\PHPUnit\ObjectPropertiesIdenticalToTrait;
+use Tailors\PHPUnit\HasPregCapturesTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -25,6 +30,12 @@ use Korowai\Testing\Rfclib\RuleSet1;
  */
 final class AbstractRfcRuleTest extends TestCase
 {
+    use ImplementsInterfaceTrait;
+    use ExtendsClassTrait;
+    use UsesTraitTrait;
+    use ObjectPropertiesIdenticalToTrait;
+    use HasPregCapturesTrait;
+
     public function testExtendsAbstractRule(): void
     {
         $this->assertExtendsClass(AbstractRule::class, AbstractRfcRule::class);

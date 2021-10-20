@@ -15,6 +15,7 @@ namespace Korowai\Tests\Lib\Ldap;
 use Korowai\Lib\Ldap\Entry;
 use Korowai\Lib\Ldap\EntryInterface;
 use Korowai\Testing\TestCase;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -24,6 +25,8 @@ use Korowai\Testing\TestCase;
  */
 final class EntryTest extends TestCase
 {
+    use ImplementsInterfaceTrait;
+
     public function testImplementsEntryInterface(): void
     {
         $this->assertImplementsInterface(EntryInterface::class, Entry::class);

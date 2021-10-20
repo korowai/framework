@@ -17,6 +17,8 @@ use Korowai\Lib\Ldap\Core\LdapResultEntryWrapperTrait;
 use Korowai\Lib\Ldap\ResultAttributeIterator;
 use Korowai\Lib\Ldap\ResultAttributeIteratorInterface;
 use Korowai\Testing\Ldaplib\TestCase;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
+use Tailors\PHPUnit\UsesTraitTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -26,6 +28,9 @@ use Korowai\Testing\Ldaplib\TestCase;
  */
 final class ResultAttributeIteratorTest extends TestCase
 {
+    use ImplementsInterfaceTrait;
+    use UsesTraitTrait;
+
     public function testImplementsResultAttributeIteratorInterface(): void
     {
         $this->assertImplementsInterface(ResultAttributeIteratorInterface::class, ResultAttributeIterator::class);

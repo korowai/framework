@@ -15,6 +15,7 @@ namespace Korowai\Tests\Lib\Ldif\Rules;
 use Korowai\Lib\Ldif\Rules\AbstractDnSpecRule;
 use Korowai\Lib\Ldif\Rules\AbstractNameSpecRule;
 use Korowai\Testing\Ldiflib\TestCase;
+use Tailors\PHPUnit\ExtendsClassTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -24,6 +25,8 @@ use Korowai\Testing\Ldiflib\TestCase;
  */
 final class AbstractDnSpecRuleTest extends TestCase
 {
+    use ExtendsClassTrait;
+
     public function testExtendsAbstractNameSpecRule(): void
     {
         $this->assertExtendsClass(AbstractNameSpecRule::class, AbstractDnSpecRule::class);

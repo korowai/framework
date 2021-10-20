@@ -12,6 +12,9 @@ declare(strict_types=1);
 
 namespace Korowai\Testing\BasiclibInterfaces;
 
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
+use Tailors\PHPUnit\ExtendsClassTrait;
+
 /**
  * Abstract base class for korowai/basiclib-interfaces unit tests.
  *
@@ -19,6 +22,8 @@ namespace Korowai\Testing\BasiclibInterfaces;
  */
 abstract class TestCase extends \Korowai\Testing\TestCase
 {
+    use ImplementsInterfaceTrait;
+    use ExtendsClassTrait;
 }
 
 // vim: syntax=php sw=4 ts=4 et:

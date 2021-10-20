@@ -16,6 +16,7 @@ use Korowai\Lib\Ldif\Nodes\AttrValSpec;
 use Korowai\Lib\Ldif\Nodes\AttrValSpecInterface;
 use Korowai\Lib\Ldif\Nodes\ValueSpecInterface;
 use Korowai\Testing\Ldiflib\TestCase;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -25,6 +26,8 @@ use Korowai\Testing\Ldiflib\TestCase;
  */
 final class AttrValSpecTest extends TestCase
 {
+    use ImplementsInterfaceTrait;
+
     public function testImplmementsAttrValSpecInterface(): void
     {
         $this->assertImplementsInterface(AttrValSpecInterface::class, AttrValSpec::class);

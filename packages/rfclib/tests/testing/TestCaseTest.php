@@ -14,6 +14,7 @@ namespace Korowai\Tests\Testing\Rfclib;
 
 use Korowai\Testing\Rfclib\TestCase;
 use Korowai\Testing\TestCase as BaseTestCase;
+use Tailors\PHPUnit\ExtendsClassTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -23,6 +24,8 @@ use Korowai\Testing\TestCase as BaseTestCase;
  */
 final class TestCaseTest extends TestCase
 {
+    use ExtendsClassTrait;
+
     public const FOO = '(?<foo>foo)';
     public const BAR = '(?<bar>bar)';
 

@@ -15,6 +15,7 @@ namespace Korowai\Tests\Lib\Ldap\Core;
 use Korowai\Lib\Ldap\Core\LdapLinkOptionsMapper;
 use Korowai\Lib\Ldap\Core\LdapLinkOptionsMapperInterface;
 use Korowai\Testing\Ldaplib\TestCase;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -24,6 +25,8 @@ use Korowai\Testing\Ldaplib\TestCase;
  */
 final class LdapLinkOptionsMapperTest extends TestCase
 {
+    use ImplementsInterfaceTrait;
+
     public const EXPECTED_MAPPINGS = [
         'deref' => 'LDAP_OPT_DEREF',
         'sizelimit' => 'LDAP_OPT_SIZELIMIT',

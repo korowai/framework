@@ -16,6 +16,7 @@ use Korowai\Lib\Context\ContextManagerInterface;
 use Korowai\Lib\Error\AbstractManagedErrorHandler;
 use Korowai\Lib\Error\ErrorHandlerInterface;
 use Korowai\Testing\TestCase;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -26,6 +27,7 @@ use Korowai\Testing\TestCase;
 final class AbstractManagedErrorHandlerTest extends TestCase
 {
     use \phpmock\phpunit\PHPMock;
+    use ImplementsInterfaceTrait;
 
     public function testImplementsErrorHandlerInterface(): void
     {

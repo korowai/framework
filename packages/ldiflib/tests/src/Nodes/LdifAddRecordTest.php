@@ -18,6 +18,10 @@ use Korowai\Lib\Ldif\Nodes\LdifAddRecordInterface;
 use Korowai\Lib\Ldif\RecordVisitorInterface;
 use Korowai\Lib\Ldif\Traits\HasAttrValSpecs;
 use Korowai\Testing\Ldiflib\TestCase;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
+use Tailors\PHPUnit\ExtendsClassTrait;
+use Tailors\PHPUnit\UsesTraitTrait;
+use Tailors\PHPUnit\ObjectPropertiesIdenticalToTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -27,6 +31,11 @@ use Korowai\Testing\Ldiflib\TestCase;
  */
 final class LdifAddRecordTest extends TestCase
 {
+    use ImplementsInterfaceTrait;
+    use ExtendsClassTrait;
+    use UsesTraitTrait;
+    use ObjectPropertiesIdenticalToTrait;
+
     public function tets__extends__AbstractChangeRecord()
     {
         $this->assertExtendsClass(AbstractChangeRecord::class, LdifAddRecord::class);

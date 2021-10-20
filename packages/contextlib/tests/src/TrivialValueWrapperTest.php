@@ -15,6 +15,7 @@ namespace Korowai\Tests\Lib\Context;
 use Korowai\Lib\Context\ContextManagerInterface;
 use Korowai\Lib\Context\TrivialValueWrapper;
 use Korowai\Testing\TestCase;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -24,6 +25,7 @@ use Korowai\Testing\TestCase;
  */
 final class TrivialValueWrapperTest extends TestCase
 {
+    use ImplementsInterfaceTrait;
     public function testImplementsContextManagerInterface(): void
     {
         $this->assertImplementsInterface(ContextManagerInterface::class, TrivialValueWrapper::class);

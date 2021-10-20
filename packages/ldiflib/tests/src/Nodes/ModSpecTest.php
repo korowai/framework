@@ -17,6 +17,9 @@ use Korowai\Lib\Ldif\Nodes\ModSpec;
 use Korowai\Lib\Ldif\Nodes\ModSpecInterface;
 use Korowai\Lib\Ldif\Traits\HasAttrValSpecs;
 use Korowai\Testing\Ldiflib\TestCase;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
+use Tailors\PHPUnit\UsesTraitTrait;
+use Tailors\PHPUnit\ObjectPropertiesIdenticalToTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -26,6 +29,10 @@ use Korowai\Testing\Ldiflib\TestCase;
  */
 final class ModSpecTest extends TestCase
 {
+    use ImplementsInterfaceTrait;
+    use UsesTraitTrait;
+    use ObjectPropertiesIdenticalToTrait;
+
     public function testImplementsModSpecInterface(): void
     {
         $this->assertImplementsInterface(ModSpecInterface::class, ModSpec::class);

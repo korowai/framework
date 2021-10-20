@@ -15,6 +15,7 @@ namespace Korowai\Tests\Lib\Rfc;
 use Korowai\Lib\Rfc\AbstractRuleSet;
 use Korowai\Lib\Rfc\Rfc2849;
 use Korowai\Testing\Rfclib\TestCase;
+use Tailors\PHPUnit\ExtendsClassTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -24,6 +25,8 @@ use Korowai\Testing\Rfclib\TestCase;
  */
 final class Rfc2849Test extends TestCase
 {
+    use ExtendsClassTrait;
+
     public static function getRfcClass(): string
     {
         return Rfc2849::class;

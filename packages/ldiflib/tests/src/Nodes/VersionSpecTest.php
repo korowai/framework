@@ -16,6 +16,7 @@ use Korowai\Lib\Ldif\Nodes\VersionSpec;
 use Korowai\Lib\Ldif\Nodes\VersionSpecInterface;
 use Korowai\Lib\Ldif\SnippetInterface;
 use Korowai\Testing\Ldiflib\TestCase;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -25,6 +26,8 @@ use Korowai\Testing\Ldiflib\TestCase;
  */
 final class VersionSpecTest extends TestCase
 {
+    use ImplementsInterfaceTrait;
+
     public function testImplementsVersionSpecInterface(): void
     {
         $this->assertImplementsInterface(VersionSpecInterface::class, VersionSpec::class);

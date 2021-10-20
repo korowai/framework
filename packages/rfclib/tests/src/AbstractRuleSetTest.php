@@ -19,6 +19,8 @@ use Korowai\Testing\Rfclib\RuleSet0;
 use Korowai\Testing\Rfclib\RuleSet1;
 use Korowai\Testing\Rfclib\RuleSet2;
 use Korowai\Testing\TestCase;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
+use Tailors\PHPUnit\UsesTraitTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -28,6 +30,9 @@ use Korowai\Testing\TestCase;
  */
 final class AbstractRuleSetTest extends TestCase
 {
+    use ImplementsInterfaceTrait;
+    use UsesTraitTrait;
+
     public function testImplementsStaticRuleSetInterface(): void
     {
         $this->assertImplementsInterface(StaticRuleSetInterface::class, AbstractRuleSet::class);

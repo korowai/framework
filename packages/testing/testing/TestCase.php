@@ -12,22 +12,30 @@ declare(strict_types=1);
 
 namespace Korowai\Testing;
 
-use Korowai\Testing\Assertions\ClassAssertionsTrait;
-use Korowai\Testing\Assertions\InheritanceAssertionsTrait;
-use Korowai\Testing\Assertions\PregAssertionsTrait;
-use Korowai\Testing\Assertions\PropertiesAssertionsTrait;
 use Korowai\Testing\Traits\PregUtilsTrait;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
+use Tailors\PHPUnit\ExtendsClassTrait;
+use Tailors\PHPUnit\UsesTraitTrait;
+use Tailors\PHPUnit\HasPregCapturesTrait;
+use Tailors\PHPUnit\ObjectPropertiesEqualToTrait;
+use Tailors\PHPUnit\ObjectPropertiesIdenticalToTrait;
+use Tailors\PHPUnit\ClassPropertiesEqualToTrait;
+use Tailors\PHPUnit\ClassPropertiesIdenticalToTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
 abstract class TestCase extends \PHPUnit\Framework\TestCase
 {
-    use ClassAssertionsTrait;
-    use InheritanceAssertionsTrait;
-    use PregAssertionsTrait;
     use PregUtilsTrait;
-    use PropertiesAssertionsTrait;
+    use ImplementsInterfaceTrait;
+    use ExtendsClassTrait;
+    use UsesTraitTrait;
+    use HasPregCapturesTrait;
+    use ObjectPropertiesEqualToTrait;
+    use ObjectPropertiesIdenticalToTrait;
+    use ClassPropertiesEqualToTrait;
+    use ClassPropertiesIdenticalToTrait;
 }
 
 // vim: syntax=php sw=4 ts=4 et:

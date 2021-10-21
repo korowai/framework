@@ -20,7 +20,9 @@ $finder = PhpCsFixer\Finder::create()
     ->name('*.php')
 ;
 
-return PhpCsFixer\Config::create()
+$config = new PhpCsFixer\Config();
+
+$config
     ->setFinder($finder)
     ->setRiskyAllowed(true)
     ->setRules([
@@ -32,7 +34,9 @@ return PhpCsFixer\Config::create()
             'location' => 'after_open',
         ],
         'array_syntax' => ['syntax' => 'short'],
-        'psr4' => true,
+        'psr_autoloading' => true,
     ])
 ;
+
+return $config;
 // vim: syntax=php sw=4 ts=4 et:

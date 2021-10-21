@@ -20,7 +20,7 @@ use Tailors\PHPUnit\ExtendsClassTrait;
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-abstract class TestCase extends \Korowai\Testing\TestCase
+abstract class TestCase extends \PHPUnit\Framework\TestCase
 {
     use ImplementsInterfaceTrait;
     use ExtendsClassTrait;

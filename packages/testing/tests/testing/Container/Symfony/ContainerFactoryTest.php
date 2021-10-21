@@ -15,7 +15,7 @@ namespace Korowai\Tests\Testing\Container\Symfony;
 use function Korowai\Testing\config_path;
 use Korowai\Testing\Container\ContainerFactoryInterface;
 use Korowai\Testing\Container\Symfony\ContainerFactory;
-use Korowai\Testing\TestCase;
+use PHPUnit\Framework\TestCase;
 use Korowai\Tests\Testing\Container\ContainerFactoryTestTrait;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

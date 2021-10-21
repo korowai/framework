@@ -19,7 +19,7 @@ use Korowai\Lib\Context\ResourceContextManager;
 use Korowai\Lib\Context\TrivialValueWrapper;
 use Korowai\Testing\Contextlib\ExpectFunctionOnceWillReturnTrait;
 use Korowai\Testing\Contextlib\GetContextFunctionMockTrait;
-use Korowai\Testing\TestCase;
+use PHPUnit\Framework\TestCase;
 use Tailors\PHPUnit\ImplementsInterfaceTrait;
 
 /**

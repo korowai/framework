@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Ldif;
 
 use Korowai\Lib\Ldif\NoRulesDefinedException;
-use Korowai\Testing\TestCase;
+use PHPUnit\Framework\TestCase;
 use Tailors\PHPUnit\ExtendsClassTrait;
 
 /**

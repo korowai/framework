@@ -16,7 +16,7 @@ use Korowai\Lib\Rfc\Rfc2849;
 use Korowai\Lib\Rfc\Rule;
 use Korowai\Lib\Rfc\RuleInterface;
 use Korowai\Testing\Rfclib\RuleDemo;
-use Korowai\Testing\TestCase;
+use PHPUnit\Framework\TestCase;
 use Tailors\PHPUnit\ObjectPropertiesIdenticalToTrait;
 
 /**

@@ -17,7 +17,7 @@ use DI\Definition\Source\DefinitionSource;
 use function Korowai\Testing\config_path;
 use Korowai\Testing\Container\ContainerFactoryInterface;
 use Korowai\Testing\Container\PhpDi\ContainerFactory;
-use Korowai\Testing\TestCase;
+use PHPUnit\Framework\TestCase;
 use Korowai\Tests\Testing\Container\ContainerFactoryTestTrait;
 use Psr\Container\ContainerInterface;
 use Tailors\PHPUnit\ImplementsInterfaceTrait;

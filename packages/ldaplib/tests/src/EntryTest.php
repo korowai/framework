@@ -14,7 +14,7 @@ namespace Korowai\Tests\Lib\Ldap;
 
 use Korowai\Lib\Ldap\Entry;
 use Korowai\Lib\Ldap\EntryInterface;
-use Korowai\Testing\TestCase;
+use PHPUnit\Framework\TestCase;
 use Tailors\PHPUnit\ImplementsInterfaceTrait;
 
 /**

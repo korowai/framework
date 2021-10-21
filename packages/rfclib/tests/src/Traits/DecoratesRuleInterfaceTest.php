@@ -15,7 +15,7 @@ namespace Korowai\Tests\Lib\Rfc\Traits;
 use Korowai\Lib\Rfc\RuleInterface;
 use Korowai\Lib\Rfc\Traits\DecoratesRuleInterface;
 use Korowai\Lib\Rfc\Traits\ExposesRuleInterface;
-use Korowai\Testing\TestCase;
+use PHPUnit\Framework\TestCase;
 use Tailors\PHPUnit\UsesTraitTrait;
 
 /**

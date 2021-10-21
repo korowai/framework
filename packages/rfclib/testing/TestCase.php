@@ -13,15 +13,17 @@ declare(strict_types=1);
 namespace Korowai\Testing\Rfclib;
 
 use Tailors\PHPUnit\HasPregCapturesTrait;
+use Korowai\Testing\Traits\PregUtilsTrait;
 
 /**
  * Abstract base class for korowai/rfclib unit tests.
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-abstract class TestCase extends \Korowai\Testing\TestCase
+abstract class TestCase extends \PHPUnit\Framework\TestCase
 {
     use HasPregCapturesTrait;
+    use PregUtilsTrait;
 
     /**
      * Returns the name of RFC class being tested.

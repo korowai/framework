@@ -16,7 +16,7 @@ use Korowai\Lib\Ldif\Cursor;
 use Korowai\Lib\Ldif\Input;
 use Korowai\Lib\Ldif\ParserState;
 use Korowai\Testing\Ldiflib\Traits\ParserTestHelpers;
-use Korowai\Testing\TestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

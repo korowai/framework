@@ -15,7 +15,7 @@ namespace Korowai\Tests\Lib\Context;
 use Korowai\Lib\Context\ContextManagerInterface;
 use Korowai\Lib\Context\ExecutorInterface;
 use Korowai\Lib\Context\WithContextExecutor;
-use Korowai\Testing\TestCase;
+use PHPUnit\Framework\TestCase;
 use Tailors\PHPUnit\ImplementsInterfaceTrait;
 
 final class ExceptionEB3IB4EL extends \Exception

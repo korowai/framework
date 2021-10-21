@@ -14,7 +14,7 @@ namespace Korowai\Tests\Lib\Compat;
 
 use Korowai\Lib\Compat\Preg;
 use Korowai\Lib\Compat\PregException;
-use Korowai\Testing\TestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

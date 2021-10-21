@@ -15,7 +15,7 @@ namespace Korowai\Tests\Lib\Basic;
 use Korowai\Lib\Basic\ResourceWrapperInterface;
 use Korowai\Lib\Basic\ResourceWrapperTrait;
 use Korowai\Testing\Basiclib\ResourceWrapperTestHelpersTrait;
-use Korowai\Testing\TestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

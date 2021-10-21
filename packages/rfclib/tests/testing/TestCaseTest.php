@@ -13,8 +13,11 @@ declare(strict_types=1);
 namespace Korowai\Tests\Testing\Rfclib;
 
 use Korowai\Testing\Rfclib\TestCase;
-use Korowai\Testing\TestCase as BaseTestCase;
+use PHPUnit\Framework\TestCase as BaseTestCase;
 use Tailors\PHPUnit\ExtendsClassTrait;
+use Tailors\PHPUnit\UsesTraitTrait;
+use Korowai\Testing\Traits\PregUtilsTrait;
+use Tailors\PHPUnit\HasPregCapturesTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -25,6 +28,7 @@ use Tailors\PHPUnit\ExtendsClassTrait;
 final class TestCaseTest extends TestCase
 {
     use ExtendsClassTrait;
+    use UsesTraitTrait;
 
     public const FOO = '(?<foo>foo)';
     public const BAR = '(?<bar>bar)';
@@ -37,6 +41,16 @@ final class TestCaseTest extends TestCase
     public function testExtendsTestCase(): void
     {
         $this->assertExtendsClass(BaseTestCase::class, parent::class);
+    }
+
+    public function testUsesHasPregCapturesTrait(): void
+    {
+        $this->assertUsesTrait(HasPregCapturesTrait::class, parent::class);
+    }
+
+    public function testUsesPregUtilsTrait(): void
+    {
+        $this->assertUsesTrait(PregUtilsTrait::class, parent::class);
     }
 
     public function testGetRfcFqdnConstName(): void

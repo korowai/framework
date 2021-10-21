@@ -15,7 +15,7 @@ namespace Korowai\Tests\Lib\Context;
 use Korowai\Lib\Context\TrivialValueWrapper;
 use function Korowai\Lib\Context\with;
 use Korowai\Lib\Context\WithContextExecutor;
-use Korowai\Testing\TestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

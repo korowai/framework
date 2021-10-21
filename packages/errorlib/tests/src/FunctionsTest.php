@@ -22,7 +22,7 @@ use Korowai\Lib\Error\ErrorHandler;
 use function Korowai\Lib\Error\errorHandler;
 use Korowai\Lib\Error\ExceptionErrorHandler;
 use function Korowai\Lib\Error\exceptionErrorHandler;
-use Korowai\Testing\TestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

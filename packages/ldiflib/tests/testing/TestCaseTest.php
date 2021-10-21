@@ -14,7 +14,7 @@ namespace Korowai\Tests\Testing\Ldiflib;
 
 use Korowai\Testing\Ldiflib\TestCase;
 use Korowai\Testing\Ldiflib\Traits\ParserTestHelpers;
-use Korowai\Testing\TestCase as BaseTestCase;
+use PHPUnit\Framework\TestCase as BaseTestCase;
 use Tailors\PHPUnit\ExtendsClassTrait;
 use Tailors\PHPUnit\UsesTraitTrait;
 

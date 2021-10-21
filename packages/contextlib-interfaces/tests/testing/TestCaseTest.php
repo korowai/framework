@@ -27,7 +27,7 @@ final class TestCaseTest extends TestCase
 
     public function testExtendsTestCase(): void
     {
-        $this->assertExtendsClass(\Korowai\Testing\TestCase::class, parent::class);
+        $this->assertExtendsClass(\PHPUnit\Framework\TestCase::class, parent::class);
     }
 }
 

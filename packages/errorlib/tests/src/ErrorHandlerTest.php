@@ -14,7 +14,7 @@ namespace Korowai\Tests\Lib\Error;
 
 use Korowai\Lib\Error\AbstractManagedErrorHandler;
 use Korowai\Lib\Error\ErrorHandler;
-use Korowai\Testing\TestCase;
+use PHPUnit\Framework\TestCase;
 use Tailors\PHPUnit\ExtendsClassTrait;
 
 /**

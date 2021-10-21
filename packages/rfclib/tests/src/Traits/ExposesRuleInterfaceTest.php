@@ -14,7 +14,7 @@ namespace Korowai\Tests\Lib\Rfc\Traits;
 
 use Korowai\Lib\Rfc\RuleInterface;
 use Korowai\Lib\Rfc\Traits\ExposesRuleInterface;
-use Korowai\Testing\TestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

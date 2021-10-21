@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Korowai\Tests;
 
 use Korowai\Testing\Dummies\PhpIteratorAggregateTrait;
-use Korowai\Testing\TestCase;
+use PHPUnit\Framework\TestCase;
 use Tailors\PHPUnit\ImplementsInterfaceTrait;
 
 /**

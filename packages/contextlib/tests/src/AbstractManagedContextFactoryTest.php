@@ -16,7 +16,7 @@ use Korowai\Lib\Context\AbstractManagedContextFactory;
 use Korowai\Lib\Context\ContextFactoryInterface;
 use Korowai\Lib\Context\ContextFactoryStack;
 use Korowai\Lib\Context\ContextManagerInterface;
-use Korowai\Testing\TestCase;
+use PHPUnit\Framework\TestCase;
 use Tailors\PHPUnit\ImplementsInterfaceTrait;
 
 /**

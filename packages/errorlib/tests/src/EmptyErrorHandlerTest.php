@@ -15,7 +15,7 @@ namespace Korowai\Tests\Lib\Error;
 use Korowai\Lib\Context\ContextManagerInterface;
 use Korowai\Lib\Error\EmptyErrorHandler;
 use Korowai\Lib\Error\ErrorHandlerInterface;
-use Korowai\Testing\TestCase;
+use PHPUnit\Framework\TestCase;
 use Tailors\PHPUnit\ImplementsInterfaceTrait;
 
 /**

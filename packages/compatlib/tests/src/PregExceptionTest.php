@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Compat;
 
 use Korowai\Lib\Compat\PregException;
-use Korowai\Testing\TestCase;
+use PHPUnit\Framework\TestCase;
 use Tailors\PHPUnit\ExtendsClassTrait;
 
 /**

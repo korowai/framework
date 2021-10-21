@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Korowai\Tests\Lib\Rfc;
 
 use Korowai\Lib\Rfc\InvalidRuleSetNameException;
-use Korowai\Testing\TestCase;
+use PHPUnit\Framework\TestCase;
 use Tailors\PHPUnit\ExtendsClassTrait;
 
 /**

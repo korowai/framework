@@ -19,7 +19,7 @@ use Korowai\Lib\Rfc\StaticRuleSetInterface;
 use Korowai\Testing\Rfclib\RuleSet0;
 use Korowai\Testing\Rfclib\RuleSet1;
 use Korowai\Testing\Rfclib\RuleSet2;
-use Korowai\Testing\TestCase;
+use PHPUnit\Framework\TestCase;
 use Tailors\PHPUnit\ImplementsInterfaceTrait;
 
 /**

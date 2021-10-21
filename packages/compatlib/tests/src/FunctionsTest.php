@@ -21,7 +21,7 @@ use function Korowai\Lib\Compat\preg_replace_callback;
 use function Korowai\Lib\Compat\preg_replace_callback_array;
 use function Korowai\Lib\Compat\preg_split;
 use Korowai\Lib\Compat\PregException;
-use Korowai\Testing\TestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

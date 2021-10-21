@@ -14,7 +14,7 @@ namespace Korowai\Tests\Lib\Context;
 
 use Korowai\Lib\Context\ContextManagerInterface;
 use Korowai\Lib\Context\TrivialValueWrapper;
-use Korowai\Testing\TestCase;
+use PHPUnit\Framework\TestCase;
 use Tailors\PHPUnit\ImplementsInterfaceTrait;
 
 /**

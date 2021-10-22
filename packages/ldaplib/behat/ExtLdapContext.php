@@ -14,22 +14,32 @@ namespace Korowai\Lib\Ldap\Behat;
 
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\PyStringNode;
-use Korowai\Lib\Ldap\Core\Adapter as ExtLdapAdapter;
 use Korowai\Lib\Ldap\Ldap;
+use Korowai\Lib\Ldap\LdapInterface;
 use Korowai\Lib\Ldap\LdapException;
+use Korowai\Lib\Ldap\Core\LdapLink;
+use Korowai\Lib\Ldap\ErrorException;
 use Korowai\Testing\Ldaplib\TestCase;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
+use Psr\Container\ContainerInterface;
 
 /**
  * Defines application features from the specific context.
  */
 class ExtLdapContext implements Context
 {
-    use LdapHelper;
-    use CommonHelpers;
+    use LdapHelperTrait;
+    use ExceptionLogTrait;
+    use ResultLogTrait;
+    use CommonHelpersTrait;
 
     /**
-     * @var Ldap
+     * @var ContainerInterface;
+     */
+    private $container;
+
+    /**
+     * @var LdapInterface|null
      */
     private $ldap;
 
@@ -43,6 +53,25 @@ class ExtLdapContext implements Context
     public function __construct()
     {
         $this->initLdapHelper();
+
+        $builder = new \DI\ContainerBuilder();
+        $builder->addDefinitions(\Korowai\Ldaplib\config_path('php-di/services.php'));
+        $this->container = $builder->build();
+    }
+
+    public function getContainer(): ContainerInterface
+    {
+        return $this->container;
+    }
+
+    public function getLdap(): ?LdapInterface
+    {
+        return $this->ldap;
+    }
+
+    protected function setLdap(?LdapInterface $ldap): void
+    {
+        $this->ldap = $ldap;
     }
 
     /**
@@ -96,12 +125,7 @@ class ExtLdapContext implements Context
     public function iAmConnectedToUri($uri)
     {
         $config = ['uri' => $uri];
-
-        try {
-            $this->ldap = Ldap::createWithConfig($config);
-        } catch (\Exception $e) {
-            $this->appendException($e);
-        }
+        $this->createLdapLinkWithConfig($config);
     }
 
     /**
@@ -226,11 +250,11 @@ class ExtLdapContext implements Context
     }
 
     /**
-     * @Then I should see ldap exception with message :arg1
+     * @Then I should see ldap LdapException with message :arg1
      *
      * @param mixed $arg1
      */
-    public function iShouldSeeLdapExceptionWithMessage($arg1)
+    public function iShouldSeeLdapLdapExceptionWithMessage($arg1)
     {
         $matchedExceptions = array_filter($this->exceptions, function ($e) use ($arg1) {
             return ($e instanceof LdapException) && $e->getMessage() == $arg1;
@@ -247,14 +271,35 @@ class ExtLdapContext implements Context
     }
 
     /**
-     * @Then I should see ldap exception with code :arg1
+     * @Then I should see ldap LdapException with code :arg1
      *
      * @param mixed $arg1
      */
-    public function iShouldSeeLdapExceptionWithCode($arg1)
+    public function iShouldSeeLdapLdapExceptionWithCode($arg1)
     {
         TestCase::assertInstanceOf(LdapException::class, $this->lastException());
         TestCase::assertEquals($arg1, $this->lastException()->getCode());
+    }
+
+    /**
+     * @Then I should see ldap ErrorException with message :arg1
+     *
+     * @param mixed $arg1
+     */
+    public function iShouldSeeLdapErrorExceptionWithMessage($arg1)
+    {
+        $matchedExceptions = array_filter($this->exceptions, function ($e) use ($arg1) {
+            return ($e instanceof ErrorException) && $e->getMessage() == $arg1;
+        });
+        $expectedException = ErrorException::class.'("'.$arg1.'")';
+        $foundExceptions = array_map(
+            function ($e) {
+                return get_class($e).'("'.$e->getMessage().'")';
+            },
+            $this->exceptions
+        );
+        $foundExceptionsStr = '[ '.implode(', ', $foundExceptions).' ]';
+        TestCase::assertTrue(count($matchedExceptions) > 0, $expectedException.' not found in '.$foundExceptionsStr);
     }
 
     /**
@@ -284,10 +329,10 @@ class ExtLdapContext implements Context
     public function iShouldHaveAValidLdapLink()
     {
         TestCase::assertInstanceOf(Ldap::class, $this->ldap);
-        /** @var ExtLdapAdapter */
-        $adapter = $this->ldap->getAdapter();
-        TestCase::assertInstanceOf(ExtLdapAdapter::class, $adapter);
-        TestCase::assertTrue($adapter->getLdapLink()->isValid());
+        /** @var LdapLink */
+        $link = $this->ldap->getLdapLink();
+        TestCase::assertInstanceOf(LdapLink::class, $link);
+        TestCase::assertTrue($link->isValid());
     }
 
     /**

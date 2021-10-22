@@ -20,4 +20,4 @@ Feature: Compare
     Given I am connected to uri "ldap://ldap-service"
     And I am bound with binddn "cn=admin,dc=example,dc=org" and password "admin"
     When I compare dn "uid=inexistent,ou=people,dc=example,dc=org", attribute "userpassword" with value "secret"
-    Then I should see ldap exception with message "ldap_compare(): Compare: No such object"
+    Then I should see ldap LdapException with message "ldap_compare(): Compare: No such object"

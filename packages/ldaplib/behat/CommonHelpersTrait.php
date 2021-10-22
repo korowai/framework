@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldap\Behat;
 
-trait CommonHelpers
+trait CommonHelpersTrait
 {
     protected static function encryptForComparison(string $password, string $actual_password)
     {

@@ -12,18 +12,18 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldap\Behat;
 
-trait ExceptionLog
+trait ExceptionLogTrait
 {
     protected $exceptions = [];
 
-    protected function clearExceptions()
+    protected function clearExceptions(): void
     {
         $this->exceptions = [];
     }
 
-    protected function appendException($e)
+    protected function appendException($exception): void
     {
-        $this->exceptions[] = $e;
+        $this->exceptions[] = $exception;
     }
 
     protected function lastException()

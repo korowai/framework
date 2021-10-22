@@ -186,7 +186,7 @@ Feature: Search
     Given I am connected to uri "ldap://ldap-service"
     And I am bound with binddn "cn=admin,dc=example,dc=org" and password "admin"
     When I search with basedn "cn=inexistent,dc=example,dc=org", filter "(objectclass=dcObject)" and options '{"scope": "one"}'
-    Then I should see ldap exception with message "ldap_list(): Search: No such object"
+    Then I should see ldap LdapException with message "ldap_list(): Search: No such object"
 
 
   Scenario: Successful search with chased referral as base

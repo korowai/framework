@@ -12,16 +12,16 @@ declare(strict_types=1);
 
 namespace Korowai\Lib\Ldap\Behat;
 
-trait ResultLog
+trait ResultLogTrait
 {
     protected $results = [];
 
-    protected function clearResults()
+    protected function clearResults(): void
     {
         $this->results = [];
     }
 
-    protected function appendResult($result)
+    protected function appendResult($result): void
     {
         $this->results[] = $result;
     }

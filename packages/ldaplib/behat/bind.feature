@@ -19,8 +19,7 @@ Feature: Simple bind
     Examples:
       |         config                        |           binddn             | password  |
       | '{"uri":"ldap://ldap-service"}'       | 'cn=admin,dc=example,dc=org' | 'admin'   |
-      | '{"host":"ldap-service"}'             | 'cn=admin,dc=example,dc=org' | 'admin'   |
-      | '{"host":"ldap-service","port":389}'  | 'cn=admin,dc=example,dc=org' | 'admin'   |
+      | '{"uri":"ldap://ldap-service:389"}'   | 'cn=admin,dc=example,dc=org' | 'admin'   |
 
   Scenario Outline: Successful anonymous bind
     Given I am connected to uri <uri>
@@ -35,7 +34,7 @@ Feature: Simple bind
   Scenario Outline: LDAP link creation failure
     Given I am disconnected
     When I create ldap link with config <config>
-    Then I should see ldap exception with message "ldap_connect(): Could not create session handle: Bad parameter to an ldap routine"
+    Then I should see ldap ErrorException with message "ldap_connect(): Could not create session handle: Bad parameter to an ldap routine"
     And I should have no valid LDAP link
 
     Examples:
@@ -45,19 +44,19 @@ Feature: Simple bind
   Scenario Outline: Unsuccessful bind because of connection problems
     Given I am connected using config <config>
     When I bind with binddn <binddn> and password <password>
-    Then I should see ldap exception with message "ldap_bind(): Unable to bind to server: Can't contact LDAP server"
+    Then I should see ldap LdapException with message "ldap_bind(): Unable to bind to server: Can't contact LDAP server"
     And I should have a valid ldap link
     And I should not be bound
 
     Examples:
       |         config                        |           binddn             | password  |
-      | '{"host":"invalid-host"}'             | 'cn=admin,dc=example,dc=org' | 'admin'   |
-      | '{"host":"ldap-service","port":111}'  | 'cn=admin,dc=example,dc=org' | 'admin'   |
+      | '{"uri":"ldap://invalid-host"}'       | 'cn=admin,dc=example,dc=org' | 'admin'   |
+      | '{"uri":"ldap://ldap-service:111"}'   | 'cn=admin,dc=example,dc=org' | 'admin'   |
 
   Scenario Outline: Unsuccessful bind because of invalid credentials
     Given I am connected to uri <uri>
     When I bind with binddn <binddn> and password <password>
-    Then I should see ldap exception with message "ldap_bind(): Unable to bind to server: Invalid credentials"
+    Then I should see ldap LdapException with message "ldap_bind(): Unable to bind to server: Invalid credentials"
     And I should not be bound
 
     Examples:
@@ -68,7 +67,7 @@ Feature: Simple bind
   Scenario Outline: Unsuccessful bind because of missing password
     Given I am connected to uri <uri>
     When I bind with binddn <binddn>
-    Then I should see ldap exception with message "ldap_bind(): Unable to bind to server: Server is unwilling to perform"
+    Then I should see ldap LdapException with message "ldap_bind(): Unable to bind to server: Server is unwilling to perform"
     And I should not be bound
 
     Examples:

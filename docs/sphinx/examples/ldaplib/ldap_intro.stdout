@@ -1,100 +1,110 @@
-ou=people,dc=example,dc=org => Array
+0 => Array
 (
-    [objectclass] => Array
+    [dn] => ou=people,dc=example,dc=org
+    [attributes] => Array
         (
-            [0] => top
-            [1] => organizationalUnit
-        )
+            [objectclass] => Array
+                (
+                    [0] => top
+                    [1] => organizationalUnit
+                )
 
-    [ou] => Array
-        (
-            [0] => people
+            [ou] => Array
+                (
+                    [0] => people
+                )
+
         )
 
 )
-uid=jsmith,ou=people,dc=example,dc=org => Array
+1 => Array
 (
-    [uid] => Array
+    [dn] => uid=jsmith,ou=people,dc=example,dc=org
+    [attributes] => Array
         (
-            [0] => jsmith
-        )
+            [uid] => Array
+                (
+                    [0] => jsmith
+                )
 
-    [uidnumber] => Array
-        (
-            [0] => 5678
-        )
+            [uidnumber] => Array
+                (
+                    [0] => 5678
+                )
 
-    [objectclass] => Array
-        (
-            [0] => top
-            [1] => inetOrgPerson
-            [2] => shadowAccount
-            [3] => posixAccount
-        )
+            [objectclass] => Array
+                (
+                    [0] => top
+                    [1] => inetOrgPerson
+                    [2] => shadowAccount
+                    [3] => posixAccount
+                )
 
-    [cn] => Array
-        (
-            [0] => John Smith
-        )
+            [cn] => Array
+                (
+                    [0] => John Smith
+                )
 
-    [displayname] => Array
-        (
-            [0] => John Smith
-        )
+            [displayname] => Array
+                (
+                    [0] => John Smith
+                )
 
-    [gecos] => Array
-        (
-            [0] => John Smith,,,
-        )
+            [gecos] => Array
+                (
+                    [0] => John Smith,,,
+                )
 
-    [gidnumber] => Array
-        (
-            [0] => 5000
-        )
+            [gidnumber] => Array
+                (
+                    [0] => 5000
+                )
 
-    [givenname] => Array
-        (
-            [0] => John
-        )
+            [givenname] => Array
+                (
+                    [0] => John
+                )
 
-    [sn] => Array
-        (
-            [0] => Smith
-        )
+            [sn] => Array
+                (
+                    [0] => Smith
+                )
 
-    [homedirectory] => Array
-        (
-            [0] => /home/jsmith
-        )
+            [homedirectory] => Array
+                (
+                    [0] => /home/jsmith
+                )
 
-    [initials] => Array
-        (
-            [0] => J. S
-        )
+            [initials] => Array
+                (
+                    [0] => J. S
+                )
 
-    [loginshell] => Array
-        (
-            [0] => /bin/bash
-        )
+            [loginshell] => Array
+                (
+                    [0] => /bin/bash
+                )
 
-    [mail] => Array
-        (
-            [0] => jsmith@example.org
-        )
+            [mail] => Array
+                (
+                    [0] => jsmith@example.org
+                )
 
-    [roomnumber] => Array
-        (
-            [0] => 114
-        )
+            [roomnumber] => Array
+                (
+                    [0] => 114
+                )
 
-    [telephonenumber] => Array
-        (
-            [0] => +12 34 567 8908
-        )
+            [telephonenumber] => Array
+                (
+                    [0] => +12 34 567 8908
+                )
 
-    [userpassword] => Array
-        (
-            [0] => secret
+            [userpassword] => Array
+                (
+                    [0] => secret
+                )
+
         )
 
 )

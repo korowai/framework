@@ -12,13 +12,13 @@ Feature: Examples
     Examples:
       | example_file                      | stdout_file                          | stderr_file                          | exit_code |
       | "ldaplib/ldap_intro.php"          | "ldaplib/ldap_intro.stdout"          | "ldaplib/ldap_intro.stderr"          | 0         |
-      | "ldaplib/adapter_manual_inst.php" | "ldaplib/adapter_manual_inst.stdout" | "ldaplib/adapter_manual_inst.stderr" | 0         |
-      | "ldaplib/adapter_factory_1.php"   | "ldaplib/adapter_factory_1.stdout"   | "ldaplib/adapter_factory_1.stderr"   | 0         |
-      | "ldaplib/adapter_factory_2.php"   | "ldaplib/adapter_factory_2.stdout"   | "ldaplib/adapter_factory_2.stderr"   | 0         |
-      | "ldaplib/attribute_exception.php" | "ldaplib/attribute_exception.stdout" | "ldaplib/attribute_exception.stderr" | 1         |
-      | "ldaplib/ldap_exception_1.php"    | "ldaplib/ldap_exception_1.stdout"    | "ldaplib/ldap_exception_1.stderr"    | 1         |
-      | "ldaplib/ldap_exception_2.php"    | "ldaplib/ldap_exception_2.stdout"    | "ldaplib/ldap_exception_2.stderr"    | 2         |
-      | "ldaplib/mock_searchquery.php"    | "ldaplib/mock_searchquery.stdout"    | "ldaplib/mock_searchquery.stderr"    | 0         |
+#      | "ldaplib/adapter_manual_inst.php" | "ldaplib/adapter_manual_inst.stdout" | "ldaplib/adapter_manual_inst.stderr" | 0         |
+#      | "ldaplib/adapter_factory_1.php"   | "ldaplib/adapter_factory_1.stdout"   | "ldaplib/adapter_factory_1.stderr"   | 0         |
+#      | "ldaplib/adapter_factory_2.php"   | "ldaplib/adapter_factory_2.stdout"   | "ldaplib/adapter_factory_2.stderr"   | 0         |
+#      | "ldaplib/attribute_exception.php" | "ldaplib/attribute_exception.stdout" | "ldaplib/attribute_exception.stderr" | 1         |
+#      | "ldaplib/ldap_exception_1.php"    | "ldaplib/ldap_exception_1.stdout"    | "ldaplib/ldap_exception_1.stderr"    | 1         |
+#      | "ldaplib/ldap_exception_2.php"    | "ldaplib/ldap_exception_2.stdout"    | "ldaplib/ldap_exception_2.stderr"    | 2         |
+#      | "ldaplib/mock_searchquery.php"    | "ldaplib/mock_searchquery.stdout"    | "ldaplib/mock_searchquery.stderr"    | 0         |
 
   @basiclib
   Scenario Outline: Examples for korowai/basiclib

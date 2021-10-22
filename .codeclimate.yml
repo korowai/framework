@@ -28,6 +28,7 @@ exclude_patterns:
 plugins:
   phpcodesniffer:
     enabled: true
+    channel: beta
 
   duplication:
     enabled: true

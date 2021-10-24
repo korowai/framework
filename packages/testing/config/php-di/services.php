@@ -18,7 +18,9 @@ use Psr\Container\ContainerInterface;
 return [
     Container\ContainerFactoryInterface::class => get(Container\PhpDi\ContainerFactory::class),
 
-    Container\PhpDi\ContainerFactory::class => function (ContainerInterface $container): Container\PhpDi\ContainerFactory {
+    Container\PhpDi\ContainerFactory::class => function (
+        ContainerInterface $container
+    ): Container\PhpDi\ContainerFactory {
         return new Container\PhpDi\ContainerFactory();
     },
 ];

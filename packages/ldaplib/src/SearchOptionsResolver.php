@@ -85,20 +85,17 @@ final class SearchOptionsResolver
     private function configureOptionsResolver(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(static::getDefaultOptions());
+        $this->configureAttributes($resolver);
+        $this->configureAttrsOnly($resolver);
+        $this->configureDeref($resolver);
+        $this->configureScope($resolver);
+        $this->configureSizeLimit($resolver);
+        $this->configureTimeLimit($resolver);
+    }
 
+    private function configureAttributes(OptionsResolver $resolver): void
+    {
         $resolver->setAllowedTypes('attributes', ['string', 'array']);
-        $resolver->setAllowedTypes('attrsOnly', ['bool', 'int']);
-        $resolver->setAllowedValues(
-            'deref',
-            array_merge(
-                array_keys(self::DEREF_OPTIONS),
-                array_values(self::DEREF_OPTIONS)
-            )
-        );
-        $resolver->setAllowedValues('scope', ['base', 'one', 'sub']);
-        $resolver->setAllowedTypes('sizeLimit', ['int']);
-        $resolver->setAllowedTypes('timeLimit', ['int']);
-
         $resolver->setNormalizer(
             'attributes',
             /** @psalm-param mixed $value */
@@ -106,15 +103,11 @@ final class SearchOptionsResolver
                 return is_array($value) ? $value : [$value];
             }
         );
+    }
 
-        $resolver->setNormalizer(
-            'deref',
-            /** @psalm-param mixed $value */
-            function (Options $options, $value): int {
-                return is_string($value) ? self::DEREF_OPTIONS[$value] : $value;
-            }
-        );
-
+    private function configureAttrsOnly(OptionsResolver $resolver): void
+    {
+        $resolver->setAllowedTypes('attrsOnly', ['bool', 'int']);
         $resolver->setNormalizer(
             'attrsOnly',
             /** @psalm-param mixed $value */
@@ -122,6 +115,39 @@ final class SearchOptionsResolver
                 return (int) ((bool) $value);
             }
         );
+    }
+
+    private function configureDeref(OptionsResolver $resolver): void
+    {
+        $resolver->setAllowedValues(
+            'deref',
+            array_merge(
+                array_keys(self::DEREF_OPTIONS),
+                array_values(self::DEREF_OPTIONS)
+            )
+        );
+        $resolver->setNormalizer(
+            'deref',
+            /** @psalm-param mixed $value */
+            function (Options $options, $value): int {
+                return is_string($value) ? self::DEREF_OPTIONS[$value] : $value;
+            }
+        );
+    }
+
+    private function configureScope(OptionsResolver $resolver): void
+    {
+        $resolver->setAllowedValues('scope', ['base', 'one', 'sub']);
+    }
+
+    private function configureSizeLimit(OptionsResolver $resolver): void
+    {
+        $resolver->setAllowedTypes('sizeLimit', ['int']);
+    }
+
+    private function configureTimeLimit(OptionsResolver $resolver): void
+    {
+        $resolver->setAllowedTypes('timeLimit', ['int']);
     }
 }
 

@@ -33,15 +33,7 @@ trait CreateLdapResultEntryMockTrait
     ): LdapResultEntryInterface {
         $builder = $this->getMockBuilder(LdapResultEntryInterface::class);
 
-        if (null !== $result && !in_array('getLdapResult', $methods)) {
-            $methods[] = 'getLdapResult';
-        }
-
-        if (null !== $resource && !in_array('getResource', $methods)) {
-            $methods[] = 'getResource';
-        }
-
-        $builder->setMethods($methods);
+        $builder->setMethods($this->selectLdapResultEntryMockMethods($result, $resource, $methods));
 
         $mock = $builder->getMockForAbstractClass();
 
@@ -59,6 +51,19 @@ trait CreateLdapResultEntryMockTrait
         }
 
         return $mock;
+    }
+
+    private function selectLdapResultEntryMockMethods(?LdapResultInterface $result, $resource, array $methods): array
+    {
+        if (null !== $result && !in_array('getLdapResult', $methods)) {
+            $methods[] = 'getLdapResult';
+        }
+
+        if (null !== $resource && !in_array('getResource', $methods)) {
+            $methods[] = 'getResource';
+        }
+
+        return $methods;
     }
 }
 

@@ -46,7 +46,9 @@ return [
         return new Core\LdapLinkOptionsMapper();
     },
 
-    Core\LdapLinkOptionsSpecification::class => function (ContainerInterface $container): Core\LdapLinkOptionsSpecification {
+    Core\LdapLinkOptionsSpecification::class => function (
+        ContainerInterface $container
+    ): Core\LdapLinkOptionsSpecification {
         return new Core\LdapLinkOptionsSpecification($container->get(Core\LdapLinkOptionsMapperInterface::class));
     },
 ];

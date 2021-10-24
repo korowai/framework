@@ -50,9 +50,9 @@ final class LdapLinkConfig implements LdapLinkConfigInterface
      * @param bool   $tls
      *                        If set to true, start_tls() will be called on each newly created LdapLink
      * @param array  $options
-     *                        An array of options to be set to each newly created LdapLink. It must be an array of key => value pairs
-     *                        with integers as keys. Each key must be a valid LDAP option identifier. $options are not validated by the
-     *                        constructor, though.
+     *                        An array of options to be set to each newly created LdapLink. It must be an array of
+     *                        key => value pairs with integers as keys. Each key must be a valid LDAP option
+     *                        identifier. $options are not validated by the constructor, though.
      */
     private function __construct(string $uri, bool $tls, array $options)
     {

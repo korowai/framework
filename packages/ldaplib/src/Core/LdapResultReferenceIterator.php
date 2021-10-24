@@ -15,7 +15,8 @@ namespace Korowai\Lib\Ldap\Core;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-final class LdapResultReferenceIterator extends AbstractLdapResultItemIterator implements LdapResultReferenceIteratorInterface
+final class LdapResultReferenceIterator extends AbstractLdapResultItemIterator implements
+    LdapResultReferenceIteratorInterface
 {
     /**
      * Initializes the iterator.
@@ -24,8 +25,8 @@ final class LdapResultReferenceIterator extends AbstractLdapResultItemIterator i
      *                                                   The first result reference in the list (``null`` to create an
      *                                                   iterator over empty sequence which is always invalid)
      * @param null|ldapResultReferenceInterface $current
-     *                                                   The item currently pointed to by iterator (``null`` to create an
-     *                                                   invalid/past the end iterator)
+     *                                                   The item currently pointed to by iterator (``null`` to create
+     *                                                   an invalid/past the end iterator)
      * @param int                               $offset
      *                                                   The offset of the $current item in the chain
      */

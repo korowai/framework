@@ -165,7 +165,6 @@
     "license": "MIT",
     "require-dev": {
         "behat/behat": "^3.4",
-        "friendsofphp/php-cs-fixer": "^3.2",
         "illuminate/container": ">=8.5.0",
         "phake/phake": "^3.0",
         "php-di/php-di": ">=6.2.2",

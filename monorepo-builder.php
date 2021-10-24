@@ -71,7 +71,6 @@ static function ($container) : void {
             'php-mock/php-mock-phpunit' => '>=2.4.0',
             'phake/phake' => '^3.0',
             'behat/behat' => '^3.4',
-            'friendsofphp/php-cs-fixer' => '^2.16',
             'psy/psysh' => 'dev-main',
         ],
         'autoload-dev' => [

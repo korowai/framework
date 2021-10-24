@@ -15,8 +15,8 @@ namespace Korowai\Tests\Lib\Ldap;
 use Korowai\Lib\Ldap\LdapException;
 use Korowai\Lib\Ldap\LdapExceptionInterface;
 use Korowai\Testing\LdaplibInterfaces\TestCase;
-use Tailors\PHPUnit\ImplementsInterfaceTrait;
 use Tailors\PHPUnit\ExtendsClassTrait;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

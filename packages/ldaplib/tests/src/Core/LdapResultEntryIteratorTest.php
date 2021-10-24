@@ -16,8 +16,8 @@ use Korowai\Lib\Ldap\Core\LdapResultEntryInterface;
 use Korowai\Lib\Ldap\Core\LdapResultEntryIterator;
 use Korowai\Lib\Ldap\Core\LdapResultEntryIteratorInterface;
 use Korowai\Testing\Ldaplib\TestCase;
-use Tailors\PHPUnit\ImplementsInterfaceTrait;
 use Tailors\PHPUnit\ExtendsClassTrait;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
 use Tailors\PHPUnit\ObjectPropertiesIdenticalToTrait;
 
 /**

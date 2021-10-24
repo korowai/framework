@@ -12,8 +12,8 @@ declare(strict_types=1);
 
 namespace Korowai\Testing\Rfclib;
 
-use Tailors\PHPUnit\HasPregCapturesTrait;
 use Korowai\Testing\Traits\PregUtilsTrait;
+use Tailors\PHPUnit\HasPregCapturesTrait;
 
 /**
  * Abstract base class for korowai/rfclib unit tests.

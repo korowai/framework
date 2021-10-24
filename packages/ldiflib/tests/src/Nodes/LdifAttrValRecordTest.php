@@ -19,10 +19,10 @@ use Korowai\Lib\Ldif\RecordVisitorInterface;
 use Korowai\Lib\Ldif\SnippetInterface;
 use Korowai\Lib\Ldif\Traits\HasAttrValSpecs;
 use Korowai\Testing\Ldiflib\TestCase;
-use Tailors\PHPUnit\ImplementsInterfaceTrait;
 use Tailors\PHPUnit\ExtendsClassTrait;
-use Tailors\PHPUnit\UsesTraitTrait;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
 use Tailors\PHPUnit\ObjectPropertiesIdenticalToTrait;
+use Tailors\PHPUnit\UsesTraitTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

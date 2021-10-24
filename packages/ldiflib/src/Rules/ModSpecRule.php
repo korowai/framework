@@ -87,8 +87,8 @@ final class ModSpecRule extends AbstractRule
      */
     public function parse(State $state, &$value = null, bool $trying = false): bool
     {
-        if (!$this->getModSpecInitRule()->parse($state, $value, $trying) ||
-            !$this->getAttrValSpecRule()->repeat($state, $attrVals)) {
+        if (!$this->getModSpecInitRule()->parse($state, $value, $trying)
+            || !$this->getAttrValSpecRule()->repeat($state, $attrVals)) {
             return false;
         }
         $value->setAttrValSpecs($attrVals);

@@ -25,6 +25,7 @@ use Tailors\PHPUnit\ImplementsInterfaceTrait;
 final class ParserInterfaceTest extends TestCase
 {
     use ImplementsInterfaceTrait;
+
 //    public static function provExtendsInterface(): array
 //    {
 //        return [

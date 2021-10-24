@@ -31,7 +31,7 @@ class LdapService
      *
      * @var null|LdapService
      */
-    private static $instance = null;
+    private static $instance;
 
     /**
      * @var null|array

@@ -14,14 +14,14 @@ namespace Korowai\Lib\Ldap\Behat;
 
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\PyStringNode;
-use Korowai\Lib\Ldap\Ldap;
-use Korowai\Lib\Ldap\LdapInterface;
-use Korowai\Lib\Ldap\LdapException;
 use Korowai\Lib\Ldap\Core\LdapLink;
 use Korowai\Lib\Ldap\ErrorException;
+use Korowai\Lib\Ldap\Ldap;
+use Korowai\Lib\Ldap\LdapException;
+use Korowai\Lib\Ldap\LdapInterface;
 use Korowai\Testing\Ldaplib\TestCase;
-use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 use Psr\Container\ContainerInterface;
+use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 
 /**
  * Defines application features from the specific context.
@@ -39,7 +39,7 @@ class ExtLdapContext implements Context
     private $container;
 
     /**
-     * @var LdapInterface|null
+     * @var null|LdapInterface
      */
     private $ldap;
 
@@ -67,11 +67,6 @@ class ExtLdapContext implements Context
     public function getLdap(): ?LdapInterface
     {
         return $this->ldap;
-    }
-
-    protected function setLdap(?LdapInterface $ldap): void
-    {
-        $this->ldap = $ldap;
     }
 
     /**
@@ -415,6 +410,11 @@ class ExtLdapContext implements Context
     public function iShouldHaveLastResultFalse()
     {
         TestCase::assertFalse($this->lastResult());
+    }
+
+    protected function setLdap(?LdapInterface $ldap): void
+    {
+        $this->ldap = $ldap;
     }
 }
 

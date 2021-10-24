@@ -17,8 +17,8 @@ use Korowai\Lib\Ldif\CursorInterface;
 use Korowai\Lib\Ldif\Input;
 use Korowai\Lib\Ldif\Location;
 use Korowai\Testing\Ldiflib\TestCase;
-use Tailors\PHPUnit\ImplementsInterfaceTrait;
 use Tailors\PHPUnit\ExtendsClassTrait;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

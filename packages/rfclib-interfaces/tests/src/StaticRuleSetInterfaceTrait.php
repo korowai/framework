@@ -17,14 +17,14 @@ namespace Korowai\Tests\Lib\Rfc;
  */
 trait StaticRuleSetInterfaceTrait
 {
-    public static $rules = null;
-    public static $regexp = null;
-    public static $captures = null;
-    public static $errorCaptures = null;
-    public static $valueCaptures = null;
-    public static $findCapturedErrors = null;
-    public static $findCapturedValues = null;
-    public static $errorMessage = null;
+    public static $rules;
+    public static $regexp;
+    public static $captures;
+    public static $errorCaptures;
+    public static $valueCaptures;
+    public static $findCapturedErrors;
+    public static $findCapturedValues;
+    public static $errorMessage;
 
     public static function rules(): array
     {

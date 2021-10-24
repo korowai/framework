@@ -57,9 +57,9 @@ final class LdifAttrValRecordRule extends AbstractLdifRecordRule
     public function parse(State $state, &$value = null, bool $trying = false): bool
     {
         $begin = $state->getCursor()->getClonedLocation();
-        if (!$this->getDnSpecRule()->parse($state, $dn, $trying) ||
-            !$this->getSepRule()->parse($state) ||
-            !$this->getAttrValSpecRule()->repeat($state, $attrVals, 1)) {
+        if (!$this->getDnSpecRule()->parse($state, $dn, $trying)
+            || !$this->getSepRule()->parse($state)
+            || !$this->getAttrValSpecRule()->repeat($state, $attrVals, 1)) {
             $value = null;
 
             return false;

@@ -21,14 +21,19 @@ trait LdapHelperTrait
     abstract public function getContainer(): ContainerInterface;
 
     abstract public function getLdap(): ?LdapInterface;
+
     abstract protected function setLdap(?LdapInterface $ldap): void;
 
     abstract protected function clearResults(): void;
+
     abstract protected function appendResult($result): void;
+
     abstract protected function lastResult();
 
     abstract protected function clearExceptions(): void;
+
     abstract protected function appendException($exception): void;
+
     abstract protected function lastException();
 
     protected function initLdapHelper()

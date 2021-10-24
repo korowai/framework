@@ -19,8 +19,8 @@ use Korowai\Lib\Ldif\Nodes\LdifModDnRecordInterface;
 use Korowai\Lib\Ldif\RecordVisitorInterface;
 use Korowai\Lib\Ldif\SnippetInterface;
 use Korowai\Testing\Ldiflib\TestCase;
-use Tailors\PHPUnit\ImplementsInterfaceTrait;
 use Tailors\PHPUnit\ExtendsClassTrait;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
 use Tailors\PHPUnit\ObjectPropertiesIdenticalToTrait;
 
 /**

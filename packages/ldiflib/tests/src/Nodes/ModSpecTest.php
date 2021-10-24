@@ -18,8 +18,8 @@ use Korowai\Lib\Ldif\Nodes\ModSpecInterface;
 use Korowai\Lib\Ldif\Traits\HasAttrValSpecs;
 use Korowai\Testing\Ldiflib\TestCase;
 use Tailors\PHPUnit\ImplementsInterfaceTrait;
-use Tailors\PHPUnit\UsesTraitTrait;
 use Tailors\PHPUnit\ObjectPropertiesIdenticalToTrait;
+use Tailors\PHPUnit\UsesTraitTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

@@ -24,8 +24,8 @@ use Korowai\Lib\Ldap\Core\LdapResultWrapperInterface;
 use Korowai\Lib\Ldap\ErrorException;
 use Korowai\Lib\Ldap\LdapException;
 use Korowai\Testing\Ldaplib\TestCase;
-use Tailors\PHPUnit\ImplementsInterfaceTrait;
 use Tailors\PHPUnit\ExtendsClassTrait;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
 use Tailors\PHPUnit\UsesTraitTrait;
 
 /**

@@ -103,7 +103,7 @@ abstract class AbstractNameSpecRule extends AbstractRfcRule
     protected function checkWith(callable $func, State $state, ?string &$value, int $offset)
     {
         if (null === $value) {
-            return  false;
+            return false;
         }
         if (!call_user_func_array($func, [$state, $value, $offset])) {
             $value = null;

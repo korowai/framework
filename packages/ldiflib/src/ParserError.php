@@ -55,7 +55,7 @@ class ParserError extends \Exception implements ParserErrorInterface
     {
         [$line, $char] = ($line_and_char ?? $this->getSourceLineAndCharOffset());
 
-        return  $this->getSourceFileName().':'.($line + 1).':'.($char + 1);
+        return $this->getSourceFileName().':'.($line + 1).':'.($char + 1);
     }
 
     /**

@@ -12,8 +12,8 @@ declare(strict_types=1);
 
 namespace Korowai\Testing\BasiclibInterfaces;
 
-use Tailors\PHPUnit\ImplementsInterfaceTrait;
 use Tailors\PHPUnit\ExtendsClassTrait;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
 
 /**
  * Abstract base class for korowai/basiclib-interfaces unit tests.

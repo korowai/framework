@@ -13,11 +13,11 @@ declare(strict_types=1);
 namespace Korowai\Tests\Testing\Rfclib;
 
 use Korowai\Testing\Rfclib\TestCase;
+use Korowai\Testing\Traits\PregUtilsTrait;
 use PHPUnit\Framework\TestCase as BaseTestCase;
 use Tailors\PHPUnit\ExtendsClassTrait;
-use Tailors\PHPUnit\UsesTraitTrait;
-use Korowai\Testing\Traits\PregUtilsTrait;
 use Tailors\PHPUnit\HasPregCapturesTrait;
+use Tailors\PHPUnit\UsesTraitTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

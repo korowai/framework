@@ -17,8 +17,8 @@ use Korowai\Lib\Ldif\ParserErrorInterface;
 use Korowai\Lib\Ldif\SourceLocationInterface;
 use Korowai\Lib\Ldif\Traits\DecoratesSourceLocationInterface;
 use Korowai\Testing\Ldiflib\TestCase;
-use Tailors\PHPUnit\ImplementsInterfaceTrait;
 use Tailors\PHPUnit\ExtendsClassTrait;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
 use Tailors\PHPUnit\UsesTraitTrait;
 
 /**

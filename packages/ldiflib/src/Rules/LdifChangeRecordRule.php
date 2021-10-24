@@ -131,10 +131,10 @@ final class LdifChangeRecordRule extends AbstractLdifRecordRule
     public function parse(State $state, &$value = null, bool $trying = false): bool
     {
         $begin = $state->getCursor()->getClonedLocation();
-        if (!$this->getDnSpecRule()->parse($state, $dn, $trying) ||
-            !$this->getSepRule()->parse($state) ||
-            !$this->getControlRule()->repeat($state, $controls) ||
-            !$this->parseRecord($state, $value, compact('dn', 'controls'))) {
+        if (!$this->getDnSpecRule()->parse($state, $dn, $trying)
+            || !$this->getSepRule()->parse($state)
+            || !$this->getControlRule()->repeat($state, $controls)
+            || !$this->parseRecord($state, $value, compact('dn', 'controls'))) {
             $value = null;
 
             return false;

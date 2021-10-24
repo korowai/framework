@@ -1,5 +1,13 @@
 <?php
 
+/*
+ * This file is part of Korowai framework.
+ *
+ * (c) Paweł Tomulik <ptomulik@meil.pw.edu.pl>
+ *
+ * Distributed under MIT license.
+ */
+
 declare(strict_types=1);
 
 /*
@@ -109,18 +117,6 @@ trait PregUtilsTrait
         }
 
         return static::shiftPregCaptures($captures, strlen($prefix), !(bool) $prefixMain);
-    }
-
-    /**
-     * @param mixed $capture
-     */
-    private static function prefixMainPregCapture(&$capture, string $prefix): void
-    {
-        if (is_array($capture) && array_key_exists(0, $capture) && is_string($capture[0])) {
-            $capture[0] = $prefix.$capture[0];
-        } elseif (is_string($capture)) {
-            $capture = $prefix.$capture;
-        }
     }
 
     /**
@@ -249,11 +245,11 @@ trait PregUtilsTrait
     public static function transformPregTuple(array $tuple, array $options = []): array
     {
         static $defaults = [
-            'prefix'     => null,
+            'prefix' => null,
             'prefixMain' => null,
-            'merge'      => [],
-            'mergeMain'  => null,
-            'suffix'     => null,
+            'merge' => [],
+            'mergeMain' => null,
+            'suffix' => null,
             'suffixMain' => false,
         ];
         $options = array_merge($defaults, array_intersect_key($options, $defaults));
@@ -281,7 +277,7 @@ trait PregUtilsTrait
     public static function joinTwoPregTuples(array $left, array $right, array $options = [])
     {
         static $defaults = [
-            'glue'     => '',
+            'glue' => '',
             'joinMain' => false,
         ];
         $options = array_merge($defaults, array_intersect_key($options, $defaults));
@@ -327,6 +323,18 @@ trait PregUtilsTrait
         }
 
         return static::transformPregTuple($joint, $options);
+    }
+
+    /**
+     * @param mixed $capture
+     */
+    private static function prefixMainPregCapture(&$capture, string $prefix): void
+    {
+        if (is_array($capture) && array_key_exists(0, $capture) && is_string($capture[0])) {
+            $capture[0] = $prefix.$capture[0];
+        } elseif (is_string($capture)) {
+            $capture = $prefix.$capture;
+        }
     }
 
     /**

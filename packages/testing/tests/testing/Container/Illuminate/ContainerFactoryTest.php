@@ -16,8 +16,8 @@ use Illuminate\Container\Container;
 use function Korowai\Testing\config_path;
 use Korowai\Testing\Container\ContainerFactoryInterface;
 use Korowai\Testing\Container\Illuminate\ContainerFactory;
-use PHPUnit\Framework\TestCase;
 use Korowai\Tests\Testing\Container\ContainerFactoryTestTrait;
+use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use Tailors\PHPUnit\ImplementsInterfaceTrait;
 

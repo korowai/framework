@@ -26,8 +26,8 @@ use Korowai\Testing\Ldaplib\GetLdapFunctionMockTrait;
 use Korowai\Testing\Ldaplib\MakeArgsForLdapFunctionMockTrait;
 use Korowai\Testing\Ldaplib\TestCase;
 use Tailors\PHPUnit\ImplementsInterfaceTrait;
-use Tailors\PHPUnit\UsesTraitTrait;
 use Tailors\PHPUnit\ObjectPropertiesIdenticalToTrait;
+use Tailors\PHPUnit\UsesTraitTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

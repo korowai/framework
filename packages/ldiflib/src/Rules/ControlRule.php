@@ -78,8 +78,8 @@ final class ControlRule extends AbstractRfcRule
     public function parseMatched(State $state, array $matches, &$value = null): bool
     {
         if (Scan::matched('ctl_type', $matches, $ctl_type, $offset)) {
-            if (!$this->parseCriticalityIfMatched($state, $matches, $ctl_crit) ||
-                !$this->parseValueSpecIfMatched($state, $matches, $ctl_value)) {
+            if (!$this->parseCriticalityIfMatched($state, $matches, $ctl_crit)
+                || !$this->parseValueSpecIfMatched($state, $matches, $ctl_value)) {
                 $value = null;
 
                 return false;
@@ -112,10 +112,12 @@ final class ControlRule extends AbstractRfcRule
                 $criticality = true;
 
                 break;
+
             case 'false':
                 $criticality = false;
 
                 break;
+
             default:
                 $criticality = null;
                 $state->errorAt($offset, 'syntax error: invalid control criticality: "'.$ctl_crit.'"');
@@ -133,9 +135,9 @@ final class ControlRule extends AbstractRfcRule
      */
     protected function parseValueSpecIfMatched(State $state, array $matches, ValueSpecInterface &$value = null)
     {
-        if (!Scan::matched('value_safe', $matches) &&
-            !Scan::matched('value_b64', $matches) &&
-            !Scan::matched('value_url', $matches)) {
+        if (!Scan::matched('value_safe', $matches)
+            && !Scan::matched('value_b64', $matches)
+            && !Scan::matched('value_url', $matches)) {
             $value = null;
 
             return true;

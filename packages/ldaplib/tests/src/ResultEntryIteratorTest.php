@@ -18,8 +18,8 @@ use Korowai\Lib\Ldap\ResultEntryInterface;
 use Korowai\Lib\Ldap\ResultEntryIterator;
 use Korowai\Lib\Ldap\ResultEntryIteratorInterface;
 use Korowai\Testing\Ldaplib\TestCase;
-use Tailors\PHPUnit\ImplementsInterfaceTrait;
 use Tailors\PHPUnit\ExtendsClassTrait;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

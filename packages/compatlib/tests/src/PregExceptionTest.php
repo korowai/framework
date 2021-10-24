@@ -25,6 +25,7 @@ use Tailors\PHPUnit\ExtendsClassTrait;
 final class PregExceptionTest extends TestCase
 {
     use ExtendsClassTrait;
+
     public function testExtendsErrorException(): void
     {
         $this->assertExtendsClass(\ErrorException::class, PregException::class);

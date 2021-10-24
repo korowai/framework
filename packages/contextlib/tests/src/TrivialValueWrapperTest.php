@@ -26,6 +26,7 @@ use Tailors\PHPUnit\ImplementsInterfaceTrait;
 final class TrivialValueWrapperTest extends TestCase
 {
     use ImplementsInterfaceTrait;
+
     public function testImplementsContextManagerInterface(): void
     {
         $this->assertImplementsInterface(ContextManagerInterface::class, TrivialValueWrapper::class);

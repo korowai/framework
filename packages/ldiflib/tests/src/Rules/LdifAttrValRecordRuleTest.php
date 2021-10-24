@@ -20,8 +20,8 @@ use Korowai\Lib\Ldif\Rules\DnSpecRule;
 use Korowai\Lib\Ldif\Rules\LdifAttrValRecordRule;
 use Korowai\Lib\Ldif\Rules\SepRule;
 use Korowai\Testing\Ldiflib\TestCase;
-use Tailors\PHPUnit\ImplementsInterfaceTrait;
 use Tailors\PHPUnit\ExtendsClassTrait;
+use Tailors\PHPUnit\ImplementsInterfaceTrait;
 use Tailors\PHPUnit\ObjectPropertiesIdenticalToTrait;
 
 /**

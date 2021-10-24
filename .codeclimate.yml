@@ -4,9 +4,6 @@ version: "2"
 ##  argument-count:
 ##    config:
 ##      threshold: 5
-patterns:
-  - "src/"
-  - "packages/"
 exclude_patterns:
   - ".psalm/"
   - "build/"

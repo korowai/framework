@@ -175,7 +175,7 @@ final class ResourceContextManagerTest extends TestCase
     public function testConstructSetsDefaultDestructorOci8Collection(): void
     {
         $resource = $this->getMockBuilder(\StdClass::class)
-            ->setMethods(['free'])
+            ->addMethods(['free'])
             ->getMock()
         ;
         $resource->expects($this->once())
@@ -197,7 +197,7 @@ final class ResourceContextManagerTest extends TestCase
     public function testConstructSetsDefaultDestructorOci8Lob(): void
     {
         $resource = $this->getMockBuilder(\StdClass::class)
-            ->setMethods(['free'])
+            ->addMethods(['free'])
             ->getMock()
         ;
         $resource->expects($this->once())
@@ -256,7 +256,7 @@ final class ResourceContextManagerTest extends TestCase
     public function testExitContextWithCallableDestructor(): void
     {
         $destructor = $this->getMockBuilder(\StdClass::class)
-            ->setMethods(['__invoke'])
+            ->addMethods(['__invoke'])
             ->getMock()
         ;
         $destructor->expects($this->once())

@@ -292,7 +292,7 @@ final class AbstractRfcRuleTest extends TestCase
 
         $rule = $this->getMockBuilder(AbstractRfcRule::class)
             ->setConstructorArgs($args)
-            ->setMethods(['parseMatched'])
+            ->onlyMethods(['parseMatched'])
             ->getMockForAbstractClass()
         ;
 
@@ -320,7 +320,7 @@ final class AbstractRfcRuleTest extends TestCase
 
         $rule = $this->getMockBuilder(AbstractRfcRule::class)
             ->setConstructorArgs($args)
-            ->setMethods(['parseMatched'])
+            ->onlyMethods(['parseMatched'])
             ->getMockForAbstractClass()
         ;
 

@@ -33,7 +33,7 @@ trait CreateLdapResultEntryMockTrait
     ): LdapResultEntryInterface {
         $builder = $this->getMockBuilder(LdapResultEntryInterface::class);
 
-        $builder->setMethods($this->selectLdapResultEntryMockMethods($result, $resource, $methods));
+        $builder->onlyMethods($this->selectLdapResultEntryMockMethods($result, $resource, $methods));
 
         $mock = $builder->getMockForAbstractClass();
 

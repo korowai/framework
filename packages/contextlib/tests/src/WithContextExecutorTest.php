@@ -55,7 +55,7 @@ final class WithContextExecutorTest extends TestCase
         $exit = [];
 
         $cm1 = $this->getMockBuilder(ContextManagerInterface::class)
-            ->setMethods(['enterContext', 'exitContext'])
+            ->onlyMethods(['enterContext', 'exitContext'])
             ->getMock()
         ;
         $cm1->expects($this->once())
@@ -81,7 +81,7 @@ final class WithContextExecutorTest extends TestCase
         ;
 
         $cm2 = $this->getMockBuilder(ContextManagerInterface::class)
-            ->setMethods(['enterContext', 'exitContext'])
+            ->onlyMethods(['enterContext', 'exitContext'])
             ->getMock()
         ;
         $cm2->expects($this->once())
@@ -139,7 +139,7 @@ final class WithContextExecutorTest extends TestCase
         $throw = new ExceptionEB3IB4EL('testing exception');
 
         $cm1 = $this->getMockBuilder(ContextManagerInterface::class)
-            ->setMethods(['enterContext', 'exitContext'])
+            ->onlyMethods(['enterContext', 'exitContext'])
             ->getMock()
         ;
         $cm1->expects($this->once())
@@ -166,7 +166,7 @@ final class WithContextExecutorTest extends TestCase
         ;
 
         $cm2 = $this->getMockBuilder(ContextManagerInterface::class)
-            ->setMethods(['enterContext', 'exitContext'])
+            ->onlyMethods(['enterContext', 'exitContext'])
             ->getMock()
         ;
         $cm2->expects($this->once())
@@ -229,7 +229,7 @@ final class WithContextExecutorTest extends TestCase
         $throw = new ExceptionEB3IB4EL('testing exception');
 
         $cm1 = $this->getMockBuilder(ContextManagerInterface::class)
-            ->setMethods(['enterContext', 'exitContext'])
+            ->onlyMethods(['enterContext', 'exitContext'])
             ->getMock()
         ;
         $cm1->expects($this->once())
@@ -256,7 +256,7 @@ final class WithContextExecutorTest extends TestCase
         ;
 
         $cm2 = $this->getMockBuilder(ContextManagerInterface::class)
-            ->setMethods(['enterContext', 'exitContext'])
+            ->onlyMethods(['enterContext', 'exitContext'])
             ->getMock()
         ;
         $cm2->expects($this->once())
@@ -320,7 +320,7 @@ final class WithContextExecutorTest extends TestCase
         $throw = new ExceptionEB3IB4EL('testing exception');
 
         $cm1 = $this->getMockBuilder(ContextManagerInterface::class)
-            ->setMethods(['enterContext', 'exitContext'])
+            ->onlyMethods(['enterContext', 'exitContext'])
             ->getMock()
         ;
         $cm1->expects($this->once())
@@ -347,7 +347,7 @@ final class WithContextExecutorTest extends TestCase
         ;
 
         $cm2 = $this->getMockBuilder(ContextManagerInterface::class)
-            ->setMethods(['enterContext', 'exitContext'])
+            ->onlyMethods(['enterContext', 'exitContext'])
             ->getMock()
         ;
         $cm2->expects($this->once())

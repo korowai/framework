@@ -78,7 +78,7 @@ final class LdapLinkErrorHandlerTest extends TestCase
             ->getMockForAbstractClass()
         ;
         $wrap = $this->getMockBuilder(LdapLinkWrapperInterface::class)
-            ->setMethods(['getLdapLink'])
+            ->onlyMethods(['getLdapLink'])
             ->getMockForAbstractClass()
         ;
 
@@ -101,11 +101,11 @@ final class LdapLinkErrorHandlerTest extends TestCase
             ->getMockForAbstractClass()
         ;
         $result = $this->getMockBuilder(LdapResultInterface::class)
-            ->setMethods(['getLdapLink'])
+            ->onlyMethods(['getLdapLink'])
             ->getMockForAbstractClass()
         ;
         $wrap = $this->getMockBuilder(LdapResultWrapperInterface::class)
-            ->setMethods(['getLdapResult'])
+            ->onlyMethods(['getLdapResult'])
             ->getMockForAbstractClass()
         ;
 
@@ -132,15 +132,15 @@ final class LdapLinkErrorHandlerTest extends TestCase
             ->getMockForAbstractClass()
         ;
         $result = $this->getMockBuilder(LdapResultInterface::class)
-            ->setMethods(['getLdapLink'])
+            ->onlyMethods(['getLdapLink'])
             ->getMockForAbstractClass()
         ;
         $item = $this->getMockBuilder(LdapResultItemInterface::class)
-            ->setMethods(['getLdapResult'])
+            ->onlyMethods(['getLdapResult'])
             ->getMockForAbstractClass()
         ;
         $wrap = $this->getMockBuilder(LdapResultItemWrapperInterface::class)
-            ->setMethods(['getLdapResultItem'])
+            ->onlyMethods(['getLdapResultItem'])
             ->getMockForAbstractClass()
         ;
 
@@ -169,7 +169,7 @@ final class LdapLinkErrorHandlerTest extends TestCase
     public function testInvokeWithInvalidLdapLink(): void
     {
         $ldap = $this->getMockBuilder(LdapLinkInterface::class)
-            ->setMethods(['isValid'])
+            ->onlyMethods(['isValid'])
             ->getMockForAbstractClass()
         ;
 
@@ -198,7 +198,7 @@ final class LdapLinkErrorHandlerTest extends TestCase
     public function testInvokeWithNonLdapError(): void
     {
         $ldap = $this->getMockBuilder(LdapLinkInterface::class)
-            ->setMethods(['isValid', 'errno'])
+            ->onlyMethods(['isValid', 'errno'])
             ->getMockForAbstractClass()
         ;
 
@@ -232,7 +232,7 @@ final class LdapLinkErrorHandlerTest extends TestCase
     public function testInvokeWithLdapError(): void
     {
         $ldap = $this->getMockBuilder(LdapLinkInterface::class)
-            ->setMethods(['isValid', 'errno'])
+            ->onlyMethods(['isValid', 'errno'])
             ->getMockForAbstractClass()
         ;
 

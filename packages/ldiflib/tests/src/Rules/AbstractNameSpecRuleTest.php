@@ -302,7 +302,7 @@ final class AbstractNameSpecRuleTest extends TestCase
 
         $rule = $this->getMockBuilder(AbstractNameSpecRule::class)
             ->disableOriginalConstructor()
-            ->setMethods(['prefix'])
+            ->onlyMethods(['prefix'])
             ->getMockForAbstractClass()
         ;
 

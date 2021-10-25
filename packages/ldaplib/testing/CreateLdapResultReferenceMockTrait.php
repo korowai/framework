@@ -41,7 +41,7 @@ trait CreateLdapResultReferenceMockTrait
             $methods[] = 'getResource';
         }
 
-        $builder->setMethods($methods);
+        $builder->onlyMethods($methods);
 
         $mock = $builder->getMockForAbstractClass();
 

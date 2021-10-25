@@ -50,11 +50,11 @@ final class SnippetTest extends TestCase
             ->getMockForAbstractClass()
         ;
         $begin = $this->getMockBuilder(LocationInterface::class)
-            ->setMethods(['getInput', 'getOffset'])
+            ->onlyMethods(['getInput', 'getOffset'])
             ->getMockForAbstractClass()
         ;
         $end = $this->getMockBuilder(LocationInterface::class)
-            ->setMethods(['getInput', 'getOffset'])
+            ->onlyMethods(['getInput', 'getOffset'])
             ->getMockForAbstractClass()
         ;
 
@@ -90,11 +90,11 @@ final class SnippetTest extends TestCase
             ->getMockForAbstractClass()
         ;
         $begin = $this->getMockBuilder(LocationInterface::class)
-            ->setMethods(['getInput', 'getOffset'])
+            ->onlyMethods(['getInput', 'getOffset'])
             ->getMockForAbstractClass()
         ;
         $end = $this->getMockBuilder(LocationInterface::class)
-            ->setMethods(['getInput', 'getOffset'])
+            ->onlyMethods(['getInput', 'getOffset'])
             ->getMockForAbstractClass()
         ;
         $begin->expects($this->once())
@@ -121,15 +121,15 @@ final class SnippetTest extends TestCase
             ->getMockForAbstractClass()
         ;
         $begin = $this->getMockBuilder(LocationInterface::class)
-            ->setMethods(['getInput', 'getOffset'])
+            ->onlyMethods(['getInput', 'getOffset'])
             ->getMockForAbstractClass()
         ;
         $cursor = $this->getMockBuilder(CursorInterface::class)
-            ->setMethods(['getInput', 'getOffset'])
+            ->onlyMethods(['getInput', 'getOffset'])
             ->getMockForAbstractClass()
         ;
         $state = $this->getMockBuilder(ParserStateInterface::class)
-            ->setMethods(['getCursor'])
+            ->onlyMethods(['getCursor'])
             ->getMockForAbstractClass()
         ;
 
@@ -169,15 +169,15 @@ final class SnippetTest extends TestCase
             ->getMockForAbstractClass()
         ;
         $begin = $this->getMockBuilder(LocationInterface::class)
-            ->setMethods(['getInput'])
+            ->onlyMethods(['getInput'])
             ->getMockForAbstractClass()
         ;
         $cursor = $this->getMockBuilder(CursorInterface::class)
-            ->setMethods(['getInput'])
+            ->onlyMethods(['getInput'])
             ->getMockForAbstractClass()
         ;
         $state = $this->getMockBuilder(ParserStateInterface::class)
-            ->setMethods(['getCursor'])
+            ->onlyMethods(['getCursor'])
             ->getMockForAbstractClass()
         ;
 

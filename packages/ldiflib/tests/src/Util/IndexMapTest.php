@@ -265,7 +265,7 @@ final class IndexMapTest extends TestCase
     {
         // apply() is already tested, so we only check that it's properly used
         $im = $this->getMockBuilder(IndexMap::class)
-            ->setMethods(['apply'])
+            ->onlyMethods(['apply'])
             ->disableOriginalConstructor()
             ->getMock()
         ;
@@ -306,7 +306,7 @@ final class IndexMapTest extends TestCase
         // combineWithArray() is already tested, so we only check that
         // combineWith() calls the combineWithArray() correctly.
         $im = $this->getMockBuilder(IndexMap::class)
-            ->setMethods(['combineWithArray'])
+            ->onlyMethods(['combineWithArray'])
             ->disableOriginalConstructor()
             ->getMock()
         ;

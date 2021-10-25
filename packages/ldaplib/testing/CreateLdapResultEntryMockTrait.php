@@ -15,6 +15,7 @@ namespace Korowai\Testing\Ldaplib;
 use Korowai\Lib\Ldap\Core\LdapResultEntryInterface;
 use Korowai\Lib\Ldap\Core\LdapResultInterface;
 use PHPUnit\Framework\MockObject\MockBuilder;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\Rule\AnyInvokedCount;
 
 /**
@@ -22,9 +23,9 @@ use PHPUnit\Framework\MockObject\Rule\AnyInvokedCount;
  */
 trait CreateLdapResultEntryMockTrait
 {
-    abstract public static function any(): AnyInvokedCount;
-
     abstract public function getMockBuilder(string $className): MockBuilder;
+
+    abstract public static function any(): AnyInvokedCount;
 
     private function createLdapResultEntryMock(
         LdapResultInterface $result = null,
@@ -37,18 +38,7 @@ trait CreateLdapResultEntryMockTrait
 
         $mock = $builder->getMockForAbstractClass();
 
-        if (null !== $result) {
-            $mock->expects($this->any())
-                ->method('getLdapResult')
-                ->willReturn($result)
-            ;
-        }
-        if (null !== $resource) {
-            $mock->expects($this->any())
-                ->method('getResource')
-                ->willReturn($resource)
-            ;
-        }
+        $this->setLdapResultEntryMockExpectations($mock, $result, $resource);
 
         return $mock;
     }
@@ -64,6 +54,26 @@ trait CreateLdapResultEntryMockTrait
         }
 
         return $methods;
+    }
+
+    private function setLdapResultEntryMockExpectations(
+        MockObject $mock,
+        ?LdapResultInterface $result,
+        $resource
+    ): void {
+        if (null !== $result) {
+            $mock->expects($this->any())
+                ->method('getLdapResult')
+                ->willReturn($result)
+            ;
+        }
+
+        if (null !== $resource) {
+            $mock->expects($this->any())
+                ->method('getResource')
+                ->willReturn($resource)
+            ;
+        }
     }
 }
 

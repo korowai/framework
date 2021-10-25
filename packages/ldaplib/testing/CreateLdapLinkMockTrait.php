@@ -14,7 +14,6 @@ namespace Korowai\Testing\Ldaplib;
 
 use Korowai\Lib\Ldap\Core\LdapLinkInterface;
 use PHPUnit\Framework\MockObject\MockBuilder;
-use PHPUnit\Framework\MockObject\Rule\AnyInvokedCount;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -22,8 +21,6 @@ use PHPUnit\Framework\MockObject\Rule\AnyInvokedCount;
 trait CreateLdapLinkMockTrait
 {
     abstract public function getMockBuilder(string $className): MockBuilder;
-
-    abstract public static function any(): AnyInvokedCount;
 
     /**
      * Creates LdapLinkInterface mock.
@@ -35,20 +32,13 @@ trait CreateLdapLinkMockTrait
     {
         $builder = $this->getMockBuilder(LdapLinkInterface::class);
 
-        if (null !== $resource && !in_array('getResource', $methods)) {
-            $methods[] = 'getResource';
-        }
+        $config = new LdapLinkMockConfigurator($this, $resource);
 
-        $builder->onlyMethods($methods);
+        $builder->onlyMethods($config->selectMethods($methods));
 
         $mock = $builder->getMockForAbstractClass();
 
-        if (null !== $resource) {
-            $mock->expects($this->any())
-                ->method('getResource')
-                ->willReturn($resource)
-            ;
-        }
+        $config->setExpectations($mock);
 
         return $mock;
     }

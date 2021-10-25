@@ -24,7 +24,8 @@ class Scan
      *
      * @param string            $pattern  the pattern to search for, as a string
      * @param LocationInterface $location provides the subject string and offset
-     * @param int               $flags    Flags passed to [preg_match()](https://www.php.net/manual/en/function.preg-match.php).
+     * @param int               $flags    Flags passed to
+     *                                    [preg_match()](https://www.php.net/manual/en/function.preg-match.php).
      *
      * @throws PregException
      *                       When [preg_match()](https://www.php.net/manual/en/function.preg-match.php)

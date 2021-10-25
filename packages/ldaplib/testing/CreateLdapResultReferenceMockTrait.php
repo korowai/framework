@@ -51,6 +51,7 @@ trait CreateLdapResultReferenceMockTrait
                 ->willReturn($result)
             ;
         }
+
         if (null !== $resource) {
             $mock->expects($this->any())
                 ->method('getResource')

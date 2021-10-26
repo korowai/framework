@@ -15,7 +15,7 @@ namespace Korowai\Testing\Ldaplib;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-final class LdapLinkMockConfigurator extends AbstractResourceWrapperMockConfigurator
+final class LdapLinkMockBuilder extends AbstractResourceWrapperMockBuilder
 {
 }
 

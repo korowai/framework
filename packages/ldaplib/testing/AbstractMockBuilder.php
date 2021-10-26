@@ -18,17 +18,17 @@ use PHPUnit\Framework\TestCase;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-abstract class AbstractResourceWrapperMockBuilder
+abstract class AbstractMockMockBuilder
 {
     private TestCase $testCase;
     private array $options;
-    private array $onlyMethods;
+//    private array $onlyMethods;
 
     public function __construct(TestCase $testCase, array $options = [])
     {
         $this->testCase = $testCase;
         $this->options = $options;
-        $this->onlyMethods = addDefaultOptionsMethods($options['onlyMethods'] ?? []);
+//        $this->onlyMethods = appendDefaultMethods($options['onlyMethods'] ?? []);
     }
 
     final public function hasOption(string $key): bool
@@ -41,16 +41,16 @@ abstract class AbstractResourceWrapperMockBuilder
         return $this->options[$key] ?? null;
     }
 
+    /**
+     * Returns an array that maps option names onto method names that shall
+     * become available once the given options are provided to constructor.
+     */
     protected function defaultOptionsMethods(): array
     {
-        return [
-            'resource' => 'getResource',
-            'supportedResourceTypes' => 'supportsResourceType',
-            'isValid' => 'isValid',
-        ];
+        return [];
     }
 
-    final private function addDefaultOptionsMethods(array $methods = []): array
+    final private function appendDefaultMethods(array $methods = []): array
     {
         $optionMethods = $this->defaultOptionsMethods();
         foreach ($optionMethods as $option => $method) {
@@ -94,7 +94,7 @@ abstract class AbstractResourceWrapperMockBuilder
     public function getMock(array $methods = []): void
     {
         $builder = $this->getMockBuilder();
-        $builder->onlyMethods($this->addDefaultOptionsMethods($methods));
+        $builder->onlyMethods($this->appendDefaultMethods($methods));
         $mock = $builder->getMockForAbstractClass();
         $this->setExpectations($mock);
         return $mock;

@@ -18,7 +18,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-abstract class AbstractMockMockBuilder
+abstract class AbstractMockBuilder
 {
     private TestCase $testCase;
     private array $options;

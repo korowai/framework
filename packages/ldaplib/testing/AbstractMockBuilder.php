@@ -17,17 +17,20 @@ use PHPUnit\Framework\MockObject\MockBuilder;
 use PHPUnit\Framework\TestCase;
 
 /**
+ * An abstract base class for specialized mock builders.
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
 abstract class AbstractMockBuilder
 {
     private TestCase $testCase;
     private MockBuilder $builder;
+    private boolean $builderDefaultsApplied;
 
     public function __construct(TestCase $testCase)
     {
         $this->testCase = $testCase;
         $this->builder = $testCase->getMockBuilder($this->mockedType());
+        $this->builderDefaultsApplied = false;
     }
 
     final public function getTestCase(): TestCase
@@ -47,6 +50,45 @@ abstract class AbstractMockBuilder
      */
     abstract public function mockedType(): string;
 
+
+    final public function getMock(): MockObject
+    {
+        return $this->getMockWith('getMock');
+    }
+
+    final public function getMockForAbstractClass(): MockObject
+    {
+        return $this->getMockWith('getMockForAbstractClass');
+    }
+
+    final public function getMockForTrait(): MockObject
+    {
+        return $this->getMockWith('getMockForTrait');
+    }
+
+    protected function applyBuilderDefaults(): void
+    {
+    }
+
+    protected function applyMockDefaults($mock): void
+    {
+    }
+
+    final private function getMockWith(string $method): MockObject
+    {
+        $this->applyBuilderDefaultsOnce();
+        $mock = call_user_func($this->builder, $method);
+        $this->applyMockDefaults($mock);
+        return $mock;
+    }
+
+    final private function applyBuilderDefaultsOnce(): void
+    {
+        if (!$this->builderDefaultsApplied) {
+            $this->applyBuilderDefaults();
+            $this->builderDefaultsApplied = true;
+        }
+    }
 
 //    /**
 //     * Creates new mock using builder.

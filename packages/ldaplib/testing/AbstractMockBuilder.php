@@ -19,20 +19,35 @@ use PHPUnit\Framework\TestCase;
 /**
  * An abstract base class for specialized mock builders.
  *
- * A final implementation of this object must define the name of the mocked
- * type by implementing the ``mockedType()`` method. In addition a subclass may
- * privide implementation of ``applyBuilderDefaults()`` and
- * ``applyMockDefaults()``. The builder gets preconfigured with defaults
- * during a first call to ``getMock()``, ``getMockForAbstractClass()`` or
- * ``getMockForTrait()``.
+ * A subclass must implement the ``mockedType()`` method which returns the
+ * name of the mocked class, interface, or trait. In addition, the subclass may
+ * provide its own implementation of ``applyBuilderDefaults()`` and
+ * ``applyMockDefaults()``. The builder gets preconfigured with defaults during
+ * a first call to ``getMock()``, ``getMockForAbstractClass()`` or
+ * ``getMockForTrait()``. Each created mock is then configured with
+ * ``applyMockDefaults()`` before it gets returned.
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
 abstract class AbstractMockBuilder
 {
-    private TestCase $testCase;
-    private MockBuilder $builder;
-    private bool $builderDefaultsApplied;
+    use MockBuilderWrapperTrait;
+    use MockBuilderSetupTrait;
+
+    /**
+     * @var TestCase
+     */
+    private $testCase;
+
+//    /**
+//     * @var MockBuilder
+//     */
+//    private $builder;
+
+    /**
+     * @var bool
+     */
+    private $builderDefaultsApplied;
 
     public function __construct(TestCase $testCase)
     {
@@ -44,11 +59,6 @@ abstract class AbstractMockBuilder
     final public function getTestCase(): TestCase
     {
         return $this->testCase;
-    }
-
-    final public function getBuilder(): MockBuilder
-    {
-        return $this->builder;
     }
 
     /**

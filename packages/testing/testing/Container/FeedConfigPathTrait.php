@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Testing\Traits;
+namespace Korowai\Testing\Container;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

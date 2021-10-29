@@ -18,14 +18,14 @@ declare(strict_types=1);
  * Distributed under MIT license.
  */
 
-namespace Korowai\Tests\Testing\Traits;
+namespace Korowai\Tests\Testing\Preg;
 
-use Korowai\Testing\Traits\PregUtilsTrait;
+use Korowai\Testing\Preg\PregUtilsTrait;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @covers \PHPFox\PHPUnit\Traits\PregUtilsTrait
+ * @covers \PHPFox\PHPUnit\Preg\PregUtilsTrait
  *
  * @internal
  */

@@ -10,14 +10,14 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Tests\Testing\Traits;
+namespace Korowai\Tests\Testing\Container;
 
-use Korowai\Testing\Traits\FeedConfigPathTrait;
+use Korowai\Testing\Container\FeedConfigPathTrait;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @covers \Korowai\Testing\Traits\FeedConfigPathTrait
+ * @covers \Korowai\Testing\Container\FeedConfigPathTrait
  *
  * @internal
  */

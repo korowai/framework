@@ -14,7 +14,7 @@ namespace Korowai\Tests\LdapLib;
 
 use function Korowai\Ldaplib\config_path;
 use Korowai\Testing\Ldaplib\TestCase;
-use Korowai\Testing\Traits\FeedConfigPathTrait;
+use Korowai\Testing\Container\FeedConfigPathTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

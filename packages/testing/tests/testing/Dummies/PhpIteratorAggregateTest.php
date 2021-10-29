@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Tests;
+namespace Korowai\Tests\Testing\Dummies;
 
 use Korowai\Testing\Dummies\PhpIteratorAggregateTrait;
 use PHPUnit\Framework\TestCase;

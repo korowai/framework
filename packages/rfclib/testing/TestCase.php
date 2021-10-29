@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Korowai\Testing\Rfclib;
 
-use Korowai\Testing\Traits\PregUtilsTrait;
+use Korowai\Testing\Preg\PregUtilsTrait;
 use Tailors\PHPUnit\HasPregCapturesTrait;
 
 /**

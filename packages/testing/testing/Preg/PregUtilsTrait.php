@@ -18,7 +18,7 @@ declare(strict_types=1);
  * Distributed under MIT license.
  */
 
-namespace Korowai\Testing\Traits;
+namespace Korowai\Testing\Preg;
 
 /**
  * Provides methods manipulation of captures returned by preg_match().

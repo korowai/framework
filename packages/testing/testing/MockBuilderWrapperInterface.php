@@ -10,32 +10,21 @@
 
 declare(strict_types=1);
 
-namespace Korowai\Testing\Ldaplib;
+namespace Korowai\Testing;
 
 use PHPUnit\Framework\MockObject\MockBuilder;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- *
- * @psalm-immutable
  */
-trait MockBuilderWrapperTrait
+interface MockBuilderWrapperInterface
 {
-    /**
-     * @var MockBuilder
-     * @psalm-readonly
-     */
-    private $builder;
-
     /**
      * Returns the encapsulated MockBuilder instance.
      *
      * @psalm-mutation-free
      */
-    public function getBuilder(): MockBuilder
-    {
-        return $this->builder;
-    }
+    public function getMockBuilder(): MockBuilder;
 }
 
 // vim: syntax=php sw=4 ts=4 et:

@@ -23,23 +23,6 @@ use PHPUnit\Framework\MockObject\MockBuilder;
  */
 final class AbstractMockBuilderTest extends \PHPUnit\Framework\TestCase
 {
-    protected function createAbstractMockBuilderMock(string $mockedType = null)
-    {
-        $builder = $this->getMockBuilder(AbstractMockBuilder::class);
-        if ($mockedType !== null) {
-            $mock = $builder->disableOriginalConstructor()
-                            ->getMockForAbstractClass();
-            $mock->expects($this->any())
-                 ->method('mockedType')
-                 ->willReturn($mockedType);
-            $mock->__construct($this);
-        } else {
-            $mock = $builder->setConstructorArgs([$this])
-                            ->getMockForAbstractClass();
-        }
-        return $mock;
-    }
-
     public function testGetTestCase(): void
     {
         $builder = $this->createAbstractMockBuilderMock();
@@ -52,6 +35,27 @@ final class AbstractMockBuilderTest extends \PHPUnit\Framework\TestCase
 
         $this->assertInstanceOf(MockBuilder::class, $builder->getBuilder());
         $this->assertInstanceOf(\Exception::class, $builder->getBuilder()->getMock());
+    }
+
+    protected function createAbstractMockBuilderMock(string $mockedType = null)
+    {
+        $builder = $this->getMockBuilder(AbstractMockBuilder::class);
+        if (null !== $mockedType) {
+            $mock = $builder->disableOriginalConstructor()
+                ->getMockForAbstractClass()
+            ;
+            $mock->expects($this->any())
+                ->method('mockedType')
+                ->willReturn($mockedType)
+            ;
+            $mock->__construct($this);
+        } else {
+            $mock = $builder->setConstructorArgs([$this])
+                ->getMockForAbstractClass()
+            ;
+        }
+
+        return $mock;
     }
 }
 

@@ -12,10 +12,10 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Testing;
 
-use Korowai\Testing\MockBuilderWrapperTrait;
 use Korowai\Testing\MockBuilderWrapperInterface;
-use PHPUnit\Framework\TestCase;
+use Korowai\Testing\MockBuilderWrapperTrait;
 use PHPUnit\Framework\MockObject\MockBuilder;
+use PHPUnit\Framework\TestCase;
 use Tailors\PHPUnit\ImplementsInterfaceTrait;
 
 /**
@@ -33,7 +33,8 @@ final class MockBuilderWrapperTraitTest extends TestCase
         return new class($mockBuilder) implements MockBuilderWrapperInterface {
             use MockBuilderWrapperTrait;
 
-            public function __construct(MockBuilder $mockBuilder = null) {
+            public function __construct(MockBuilder $mockBuilder = null)
+            {
                 $this->mockBuilder = $mockBuilder;
             }
         };

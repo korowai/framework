@@ -13,8 +13,8 @@ declare(strict_types=1);
 namespace Korowai\Tests\LdapLib;
 
 use function Korowai\Ldaplib\config_path;
-use Korowai\Testing\Ldaplib\TestCase;
 use Korowai\Testing\Container\FeedConfigPathTrait;
+use Korowai\Testing\Ldaplib\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>

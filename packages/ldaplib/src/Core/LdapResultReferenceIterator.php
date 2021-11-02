@@ -15,8 +15,7 @@ namespace Korowai\Lib\Ldap\Core;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-final class LdapResultReferenceIterator extends AbstractLdapResultItemIterator implements
-    LdapResultReferenceIteratorInterface
+final class LdapResultReferenceIterator extends AbstractLdapResultItemIterator implements LdapResultReferenceIteratorInterface
 {
     /**
      * Initializes the iterator.

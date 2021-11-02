@@ -12,8 +12,8 @@ declare(strict_types=1);
 
 namespace Korowai\Testing\Ldaplib;
 
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\MockBuilder;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -63,11 +63,8 @@ abstract class AbstractMockBuilder
 
     /**
      * Returns the name of the mocked type.
-     *
-     * @return string
      */
     abstract public function mockedType(): string;
-
 
     final public function getMock(): MockObject
     {
@@ -97,6 +94,7 @@ abstract class AbstractMockBuilder
         $this->applyBuilderDefaultsOnce();
         $mock = call_user_func($this->builder, $method);
         $this->applyMockDefaults($mock);
+
         return $mock;
     }
 

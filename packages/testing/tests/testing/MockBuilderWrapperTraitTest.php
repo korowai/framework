@@ -12,11 +12,12 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Testing;
 
-use Korowai\Testing\MockBuilderWrapperInterface;
+use Korowai\Testing\MockBuilderInterface;
 use Korowai\Testing\MockBuilderWrapperTrait;
 use PHPUnit\Framework\MockObject\MockBuilder;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Tailors\PHPUnit\ImplementsInterfaceTrait;
+use Tailors\PHPUnit\UsesTraitTrait;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
@@ -26,32 +27,102 @@ use Tailors\PHPUnit\ImplementsInterfaceTrait;
  */
 final class MockBuilderWrapperTraitTest extends TestCase
 {
-    use ImplementsInterfaceTrait;
+    use UsesTraitTrait;
 
-    public static function createMockBuilderWrapper(MockBuilder $mockBuilder = null)
+    private static function createMockBuilderWrapper(MockBuilder $mockBuilder): MockBuilderInterface
     {
-        return new class($mockBuilder) implements MockBuilderWrapperInterface {
+        return new class($mockBuilder) implements MockBuilderInterface {
             use MockBuilderWrapperTrait;
 
-            public function __construct(MockBuilder $mockBuilder = null)
+            private $mockBuilder;
+
+            public function __construct(MockBuilder $mockBuilder)
             {
                 $this->mockBuilder = $mockBuilder;
+            }
+
+            public function getMockBuilder(): MockBuilder
+            {
+                return $this->mockBuilder;
             }
         };
     }
 
-    public function testMockBuilderWrapperImplementation(): void
+    public static function provGetMock(): array
     {
-        $wrapper = $this->createMockBuilderWrapper();
-        $this->assertImplementsInterface(MockBuilderWrapperInterface::class, $wrapper);
+        return [
+            ['getMock', \StdClass::class],
+            ['getMockForAbstractClass', \StdClass::class],
+            ['getMockForTrait', MockBuilderWrapperTrait::class],
+        ];
     }
 
-    public function testGetMockBuilder(): void
+    /**
+     * @dataProvider provGetMock
+     */
+    public function testGetMock(string $method, string $mockedType): void
     {
-        $wrapped = $this->getMockBuilder(\Std::class);
-        $wrapper = $this->createMockBuilderWrapper($wrapped);
+        $mockedBuilder = $this->getMockBuilder(MockBuilder::class)
+                            ->disableOriginalConstructor()
+                            ->getMock();
 
-        $this->assertSame($wrapped, $wrapper->getMockBuilder());
+        $wrapper = $this->createMockBuilderWrapper($mockedBuilder);
+
+        $mockBuilder = $this->getMockBuilder($mockedType)
+                            ->disableOriginalConstructor()
+                            ->onlyMethods([]);
+
+        $mock = call_user_func([$mockBuilder, $method]);
+
+        $mockedBuilder->expects($this->once())
+                    ->method($method)
+                    ->willReturn($mock);
+
+        $this->assertSame($mock, call_user_func([$wrapper, $method]));
+    }
+
+    public static function provSetterMethod(): array
+    {
+        return [
+            ['onlyMethods', [[]]],
+            ['addMethods', [[]]],
+            ['setConstructorArgs', [[]]],
+            ['setMockClassName', ['']],
+            ['disableOriginalConstructor', []],
+            ['enableOriginalConstructor', []],
+            ['disableOriginalClone', []],
+            ['enableOriginalClone', []],
+            ['disableAutoload', []],
+            ['enableAutoload', []],
+            ['disableArgumentCloning', []],
+            ['enableArgumentCloning', []],
+            ['disableProxyingToOriginalMethods', []],
+            ['enableProxyingToOriginalMethods', []],
+            ['setProxyTarget', [new \StdClass]],
+            ['allowMockingUnknownTypes', []],
+            ['disallowMockingUnknownTypes', []],
+            ['disableAutoReturnValueGeneration', []],
+            ['enableAutoReturnValueGeneration', []],
+        ];
+    }
+
+    /**
+     * @dataProvider provSetterMethod
+     */
+    public function testSetterMethod(string $method, array $args): void
+    {
+        $mockedBuilder = $this->getMockBuilder(MockBuilder::class)
+                            ->disableOriginalConstructor()
+                            ->getMock();
+
+        $wrapper = $this->createMockBuilderWrapper($mockedBuilder);
+
+        $mockedBuilder->expects($this->once())
+                    ->method($method)
+                    ->with(...$args)
+                    ->willReturn($mockedBuilder);
+
+        $this->assertSame($wrapper, call_user_func([$wrapper, $method], ...$args));
     }
 }
 

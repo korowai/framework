@@ -17,4 +17,7 @@
       <directory suffix="Test.php">tests</directory>
     </testsuite>
   </testsuites>
+  <extensions>
+    <extension class="Korowai\Tests\Testing\BypassFinalHook">
+  </extensions>
 </phpunit>

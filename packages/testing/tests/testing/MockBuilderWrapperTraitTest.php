@@ -15,7 +15,6 @@ namespace Korowai\Tests\Testing;
 use Korowai\Testing\MockBuilderInterface;
 use Korowai\Testing\MockBuilderWrapperTrait;
 use PHPUnit\Framework\MockObject\MockBuilder;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Tailors\PHPUnit\UsesTraitTrait;
 
@@ -28,25 +27,6 @@ use Tailors\PHPUnit\UsesTraitTrait;
 final class MockBuilderWrapperTraitTest extends TestCase
 {
     use UsesTraitTrait;
-
-    private static function createMockBuilderWrapper(MockBuilder $mockBuilder): MockBuilderInterface
-    {
-        return new class($mockBuilder) implements MockBuilderInterface {
-            use MockBuilderWrapperTrait;
-
-            private $mockBuilder;
-
-            public function __construct(MockBuilder $mockBuilder)
-            {
-                $this->mockBuilder = $mockBuilder;
-            }
-
-            public function getMockBuilder(): MockBuilder
-            {
-                return $this->mockBuilder;
-            }
-        };
-    }
 
     public static function provGetMock(): array
     {
@@ -63,20 +43,23 @@ final class MockBuilderWrapperTraitTest extends TestCase
     public function testGetMock(string $method, string $mockedType): void
     {
         $mockedBuilder = $this->getMockBuilder(MockBuilder::class)
-                            ->disableOriginalConstructor()
-                            ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
 
         $wrapper = $this->createMockBuilderWrapper($mockedBuilder);
 
         $mockBuilder = $this->getMockBuilder($mockedType)
-                            ->disableOriginalConstructor()
-                            ->onlyMethods([]);
+            ->disableOriginalConstructor()
+            ->onlyMethods([])
+        ;
 
         $mock = call_user_func([$mockBuilder, $method]);
 
         $mockedBuilder->expects($this->once())
-                    ->method($method)
-                    ->willReturn($mock);
+            ->method($method)
+            ->willReturn($mock)
+        ;
 
         $this->assertSame($mock, call_user_func([$wrapper, $method]));
     }
@@ -98,7 +81,7 @@ final class MockBuilderWrapperTraitTest extends TestCase
             ['enableArgumentCloning', []],
             ['disableProxyingToOriginalMethods', []],
             ['enableProxyingToOriginalMethods', []],
-            ['setProxyTarget', [new \StdClass]],
+            ['setProxyTarget', [new \StdClass()]],
             ['allowMockingUnknownTypes', []],
             ['disallowMockingUnknownTypes', []],
             ['disableAutoReturnValueGeneration', []],
@@ -112,17 +95,38 @@ final class MockBuilderWrapperTraitTest extends TestCase
     public function testSetterMethod(string $method, array $args): void
     {
         $mockedBuilder = $this->getMockBuilder(MockBuilder::class)
-                            ->disableOriginalConstructor()
-                            ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock()
+        ;
 
         $wrapper = $this->createMockBuilderWrapper($mockedBuilder);
 
         $mockedBuilder->expects($this->once())
-                    ->method($method)
-                    ->with(...$args)
-                    ->willReturn($mockedBuilder);
+            ->method($method)
+            ->with(...$args)
+            ->willReturn($mockedBuilder)
+        ;
 
         $this->assertSame($wrapper, call_user_func([$wrapper, $method], ...$args));
+    }
+
+    private static function createMockBuilderWrapper(MockBuilder $mockBuilder): MockBuilderInterface
+    {
+        return new class($mockBuilder) implements MockBuilderInterface {
+            use MockBuilderWrapperTrait;
+
+            private $mockBuilder;
+
+            public function __construct(MockBuilder $mockBuilder)
+            {
+                $this->mockBuilder = $mockBuilder;
+            }
+
+            public function getMockBuilder(): MockBuilder
+            {
+                return $this->mockBuilder;
+            }
+        };
     }
 }
 

@@ -17,12 +17,14 @@ namespace Korowai\Testing\Basiclib;
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-interface ResourceWrapperMockBuilderInterface// extends MockBuilderInterface
+interface ResourceWrapperMockBuilderInterface // extends MockBuilderInterface
 {
     /**
-     * Sets the $resource value as
+     * Sets the $resource value as.
      *
      * @psalm-return $this
+     *
+     * @param mixed $resource
      */
     public function setResource($resource): ResourceWrapperMockBuilderInterface;
 

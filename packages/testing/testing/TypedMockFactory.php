@@ -19,8 +19,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * Creates a mock for a predefined type.
  *
- * A subclass must implement ``getMockedType()``. Optionally, it may also
- * implement ``setupMockBuilder()`` and ``configureMock()``.
+ * A subclass must implement at least the ``getMockedType()`` method.
  *
  * @psalm-template MockedType
  *
@@ -38,7 +37,7 @@ abstract class TypedMockFactory implements TypedMockFactoryInterface
     final public function getMock(TestCase $testCase): MockObject
     {
         $builder = $this->createMockBuilder($testCase);
-        $this->setupMockBuilder($testCase, $builder);
+        $this->setupMockBuilder($builder);
         $mock = $this->createMock($builder);
         $this->configureMock($testCase, $mock);
 
@@ -55,21 +54,57 @@ abstract class TypedMockFactory implements TypedMockFactoryInterface
         return $testCase->getMockBuilder($this->getMockedType());
     }
 
-    protected function setupMockBuilder(TestCase $testCase, MockBuilder $builder): void
+    /**
+     * Setup mock builder used to create mock.
+     */
+    protected function setupMockBuilder(MockBuilder $builder): void
+    {
+        $this->setupMockBuilderMethods($builder);
+        $this->setupMockBuilderConstructor($builder);
+    }
+
+    /**
+     * Shall only call ``$builder->onlyMethods()`` and/or
+     * ``$builder->addMethods()`` if necessary.
+     */
+    protected function setupMockBuilderMethods(MockBuilder $builder): void
     {
         // empty
     }
 
+    /**
+     * Shall only call ``$builder->setConstructorArgs()``,
+     * ``$builder->disableOriginalContructor()`` and/or
+     * ``$builder->enableOriginalConstructor()`` if necessary.
+     */
+    protected function setupMockBuilderConstructor(MockBuilder $builder): void
+    {
+        // empty
+    }
+
+    /**
+     * Configure the new mock before it gets returned.
+     */
     protected function configureMock(TestCase $testCase, MockObject $mock): void
     {
         $this->configureMockedMethods($testCase, $mock);
     }
 
+    /**
+     * Configure methods on the new mock (set expectations etc.).
+     */
     protected function configureMockedMethods(TestCase $testCase, MockObject $mock): void
     {
         // empty
     }
 
+    /**
+     * Creates a new mock with MockBuilder.
+     *
+     * Automatically uses either ``$builder->getMock()``,
+     * ``$builder->getMockForAbstractClass()``, or
+     * ``$builder->getMockForTrait()``.
+     */
     final protected function createMock(MockBuilder $builder): MockObject
     {
         $reflection = new \ReflectionClass($this->getMockedType());

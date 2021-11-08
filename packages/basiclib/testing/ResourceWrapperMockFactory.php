@@ -22,116 +22,53 @@ use PHPUnit\Framework\TestCase;
  */
 abstract class ResourceWrapperMockFactory extends TypedMockFactory
 {
-//    protected $methodConfigOptions = [
-//        'getResource' => [ 'return' => null ],
-//        'isValid' => [ 'return' => false ],
-//        'supportsResourceType' => ['types' => [] ],
-//    ];
-//
-//    /**
-//     * @var array<string,bool>
-//     */
-//    protected $methodConfigEnabled = [
-//        'getResource' => true,
-//        'isValid' => true,
-//        'supportsResourceType' => true,
-//    ];
-//
-//    /**
-//     * @psalm-return $this
-//     */
-//    final public function setResource($resource): ResourceWrapperMockBuilderInterface
-//    {
-//        $this->methodConfigOptions['getResouce']['return'] = $resource;
-//
-//        return $this;
-//    }
-//
-//    /**
-//     * @psalm-return $this;
-//     */
-//    final public function setResourceIsValid(bool $isValid): ResourceWrapperMockBuilderInterface
-//    {
-//        $this->methodConfigOptions['isValid']['return'] = $isValid;
-//        return $this;
-//    }
-//
-//    final public function setSupportedResourceTypes(array $types): ResourceWrapperMockBuilderInterface
-//    {
-//        $this->methodConfigOptions['supportsResourceType']['types'] = $types;
-//        return $this;
-//    }
-//
-//    /**
-//     * Disables automatic configuration of the ``$method`` on a mock object
-//     * being returned.
-//     *
-//     * @psalm-return $this
-//     */
-//    final public function disableMethodConfig(string $method): ResourceWrapperMockBuilderInterface
-//    {
-//        $this->methodConfigEnabled[$method] = false;
-//        return $this;
-//    }
-//
-//    /**
-//     * Enables automatic configuration of the ``$method`` on a mock object
-//     * being returned.
-//     *
-//     * @psalm-return $this
-//     */
-//    final public function enableMethodConfig(string $method): ResourceWrapperMockBuilderInterface
-//    {
-//        $this->methodConfigEnabled[$method] = false;
-//        return $this;
-//    }
-//
-//    /**
-//     * Returns whether the config for given method is enabled.
-//     */
-//    final public function isMethodConfigEnabled(string $method): bool
-//    {
-//        return $this->methodConfigEnabled[$method] ?? false;
-//    }
-//
-//    protected function setupMockBuilder(TestCase $testCase, MockBuilder $builder): void
-//    {
-//        parent::setupMockBuilder($testCase, $builder);
-//    }
-//
-//    protected function configureMock(TestCase $testCase, MockObject $mock): void
-//    {
-//        $this->configureResourceWrapperMethods($testCase, $mock);
-//        parent::configureMock($testCase, $mock);
-//    }
-//
-//    protected function configureMockedMethods(TestCase $testCase, MockObject $mock): void
-//    {
-//        $this->configureMockedResourceWrapperMethods($testCase, $mock);
-//    }
-//
-//    protected function configureMockedResourceWrapperMethods(TestCase $testCase, MockObject $mock): void
-//    {
-//        if ($this->isMethodConfigEnabled('getResource')) {
-//            $mock->expects($testCase->any())
-//                 -> method('getResource')
-//                 ->willReturn($this->methodConfigOptions['getResource']['return']);
-//        }
-//
-//        if ($this->isMethodConfigEnabled(['isValid'])) {
-//            $mock->expects($testCase->any())
-//                 ->method('isValid')
-//                 ->willReturn($this->methodConfigOptions['isValid']['return']);
-//        }
-//
-//        if ($this->isMethodConfigEnabled('supportsResourceType')) {
-//            $mock->expects($testCase->any())
-//                 ->method('supportsResourceType')
-//                 ->willReturnCallback(function (string $type): bool use ($this) {
-//                     return in_array($type, $this->methodConfigOptions['supportsResourceType']['types']);
-//                 });
-//        }
-//    }
+    private $resource = null;
+
+    private $isResourceValid = false;
+
+    private $supportedResourceTypes = [];
+
+    final public function setResource($resource): ResourceWrapperMockFactory
+    {
+        $this->resource = $resource;
+        return $this;
+    }
+
+    final public function getResource()
+    {
+        return $this->resource;
+    }
+
+    final public function setIsResourceValid(bool $isResourceValid): ResourceWrapperMockFactory
+    {
+        $this->isResourceValid = $isResourceValid;
+        return $this;
+    }
+
+    final public function getIsResourceValid(): bool
+    {
+        return $this->isResourceValid;
+    }
+
+    final public function setSupportedResourceTypes(array $supportedResourceTypes): ResourceWrapperMockFactory
+    {
+        $this->supportedResourceTypes = $supportedResourceTypes;
+        return $this;
+    }
+
+    final public function getSupportedResourceTypes(): array
+    {
+        return $this->supportedResourceTypes;
+    }
+
+    protected function setupMockBuilderMethods(): void
+    {
+        $onlyMethods = [];
+
+        if ($this->getResource() !== null) {
+
+        }
+    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

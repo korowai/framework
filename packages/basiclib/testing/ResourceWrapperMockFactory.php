@@ -13,16 +13,13 @@ declare(strict_types=1);
 namespace Korowai\Testing\Basiclib;
 
 use Korowai\Testing\TypedMockFactory;
-use PHPUnit\Framework\MockObject\MockBuilder;
-use PHPUnit\Framework\MockObject\MockObject;
-use PHPUnit\Framework\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
 abstract class ResourceWrapperMockFactory extends TypedMockFactory
 {
-    private $resource = null;
+    private $resource;
 
     private $isResourceValid = false;
 
@@ -31,6 +28,7 @@ abstract class ResourceWrapperMockFactory extends TypedMockFactory
     final public function setResource($resource): ResourceWrapperMockFactory
     {
         $this->resource = $resource;
+
         return $this;
     }
 
@@ -42,6 +40,7 @@ abstract class ResourceWrapperMockFactory extends TypedMockFactory
     final public function setIsResourceValid(bool $isResourceValid): ResourceWrapperMockFactory
     {
         $this->isResourceValid = $isResourceValid;
+
         return $this;
     }
 
@@ -53,6 +52,7 @@ abstract class ResourceWrapperMockFactory extends TypedMockFactory
     final public function setSupportedResourceTypes(array $supportedResourceTypes): ResourceWrapperMockFactory
     {
         $this->supportedResourceTypes = $supportedResourceTypes;
+
         return $this;
     }
 
@@ -65,8 +65,7 @@ abstract class ResourceWrapperMockFactory extends TypedMockFactory
     {
         $onlyMethods = [];
 
-        if ($this->getResource() !== null) {
-
+        if (null !== $this->getResource()) {
         }
     }
 }

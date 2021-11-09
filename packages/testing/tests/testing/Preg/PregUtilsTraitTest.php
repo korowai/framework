@@ -10,14 +10,6 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of php-fox/phpunit-extensions.
- *
- * (c) Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- *
- * Distributed under MIT license.
- */
-
 namespace Korowai\Tests\Testing\Preg;
 
 use Korowai\Testing\Preg\PregUtilsTrait;
@@ -25,7 +17,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
- * @covers \PHPFox\PHPUnit\Preg\PregUtilsTrait
+ * @covers \Korowai\Testing\Preg\PregUtilsTrait
  *
  * @internal
  */

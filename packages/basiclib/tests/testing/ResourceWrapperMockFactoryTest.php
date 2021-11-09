@@ -12,9 +12,9 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Testing\Basiclib;
 
-use PHPUnit\Framework\TestCase;
 use Korowai\Testing\Basiclib\ResourceWrapperMockFactory;
 use Korowai\Testing\TypedMockFactory;
+use PHPUnit\Framework\TestCase;
 use Tailors\PHPUnit\ExtendsClassTrait;
 
 /**
@@ -35,7 +35,8 @@ final class ResourceWrapperMockFactoryTest extends TestCase
     public function testSetResource(): void
     {
         $factory = $this->getMockBuilder(ResourceWrapperMockFactory::class)
-                        ->getMockForAbstractClass();
+            ->getMockForAbstractClass()
+        ;
 
         $this->assertSame($factory, $factory->setResource('foo'));
         $this->assertSame('foo', $factory->getResource());
@@ -44,7 +45,8 @@ final class ResourceWrapperMockFactoryTest extends TestCase
     public function testSetIsResourceValid(): void
     {
         $factory = $this->getMockBuilder(ResourceWrapperMockFactory::class)
-                        ->getMockForAbstractClass();
+            ->getMockForAbstractClass()
+        ;
 
         $this->assertSame($factory, $factory->setIsResourceValid(true));
         $this->assertTrue($factory->getIsResourceValid());
@@ -53,7 +55,8 @@ final class ResourceWrapperMockFactoryTest extends TestCase
     public function testSetSupportedResourceTypes(): void
     {
         $factory = $this->getMockBuilder(ResourceWrapperMockFactory::class)
-                        ->getMockForAbstractClass();
+            ->getMockForAbstractClass()
+        ;
 
         $this->assertSame($factory, $factory->setSupportedResourceTypes(['a']));
         $this->assertSame(['a'], $factory->getSupportedResourceTypes());

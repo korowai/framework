@@ -12,8 +12,10 @@ declare(strict_types=1);
 
 namespace Korowai\Testing;
 
+use PHPUnit\Framework\MockObject\MockObject;
+
 /**
- * Creates a mock for a predefined type.
+ * Creates a mock object with "one shot".
  *
  * @psalm-template MockedType
  *
@@ -21,14 +23,14 @@ namespace Korowai\Testing;
  *
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
-interface TypedMockFactoryInterface extends MockFactoryInterface
+interface MockFactoryInterface
 {
     /**
-     * Returns the mocked type (as returned by ``getMock()``).
+     * Creates a mock object.
      *
-     * @psalm-return MockedType
+     * @psalm-return MockObject&MockedType
      */
-    public function getMockedType(): string;
+    public function getMock(): MockObject;
 }
 
 // vim: syntax=php sw=4 ts=4 et:

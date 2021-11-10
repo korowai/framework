@@ -18,7 +18,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 /**
  * Creates a mock with predefined settings.
  *
- * A subclass must implement the ``createMockBuilder()`` method. Other
+ * A subclass must implement ``createMockBuilder()`` and ``createMock()``. Other
  * protected methods may be overwritten to customize the mock configuration.
  *
  * @psalm-template MockedType
@@ -45,9 +45,16 @@ abstract class AbstractMockFactory implements MockFactoryInterface
     }
 
     /**
-     * Creates new mock builder.
+     * Creates a new mock builder.
      */
     abstract protected function createMockBuilder(): MockBuilder;
+
+    /**
+     * Creates a new mock using mock builder.
+     *
+     * @psalm-return MockObject&MockedType
+     */
+    abstract protected function createMock(MockBuilder $builder): MockObject;
 
     /**
      * Setup the mock builder used to create the mock.
@@ -81,7 +88,7 @@ abstract class AbstractMockFactory implements MockFactoryInterface
 
     protected function setupConstructorArgs(MockBuilder $builder): void
     {
-        if (null !== ($ctorAgs = $this->getConstructorArgs())) {
+        if (null !== ($ctorArgs = $this->getConstructorArgs())) {
             $builder->setConstructorArgs($ctorArgs);
         }
     }
@@ -194,27 +201,6 @@ abstract class AbstractMockFactory implements MockFactoryInterface
     protected function configureMockMethods(MockObject $mock): void
     {
         // empty
-    }
-
-    /**
-     * Creates a new mock.
-     *
-     * The base implementation automatically uses one of
-     * ``$builder->getMock()``,
-     * ``$builder->getMockForAbstractClass()``, or
-     * ``$builder->getMockForTrait()``.
-     */
-    protected function createMock(MockBuilder $builder): MockObject
-    {
-        $reflection = new \ReflectionClass($this->getMockedType());
-        if ($reflection->isTrait()) {
-            return $builder->getMockForTrait();
-        }
-        if ($reflection->isAbstract() || $reflection->isInterface()) {
-            return $builder->getMockForAbstractClass();
-        }
-
-        return $builder->getMock();
     }
 }
 

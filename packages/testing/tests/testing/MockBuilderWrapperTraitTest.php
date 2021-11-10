@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Testing;
 
+use Korowai\Testing\Fixtures\EmptyClass;
 use Korowai\Testing\MockBuilderInterface;
 use Korowai\Testing\MockBuilderWrapperTrait;
 use PHPUnit\Framework\MockObject\MockBuilder;
@@ -31,8 +32,8 @@ final class MockBuilderWrapperTraitTest extends TestCase
     public static function provGetMock(): array
     {
         return [
-            ['getMock', \StdClass::class],
-            ['getMockForAbstractClass', \StdClass::class],
+            ['getMock', EmptyClass::class],
+            ['getMockForAbstractClass', EmptyClass::class],
             ['getMockForTrait', MockBuilderWrapperTrait::class],
         ];
     }
@@ -81,7 +82,7 @@ final class MockBuilderWrapperTraitTest extends TestCase
             ['enableArgumentCloning', []],
             ['disableProxyingToOriginalMethods', []],
             ['enableProxyingToOriginalMethods', []],
-            ['setProxyTarget', [new \StdClass()]],
+            ['setProxyTarget', [new EmptyClass()]],
             ['allowMockingUnknownTypes', []],
             ['disallowMockingUnknownTypes', []],
             ['disableAutoReturnValueGeneration', []],

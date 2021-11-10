@@ -32,35 +32,35 @@ final class ResourceWrapperMockFactoryTest extends TestCase
         $this->assertExtendsClass(TypedMockFactory::class, ResourceWrapperMockFactory::class);
     }
 
-    public function testSetResource(): void
-    {
-        $factory = $this->getMockBuilder(ResourceWrapperMockFactory::class)
-            ->getMockForAbstractClass()
-        ;
-
-        $this->assertSame($factory, $factory->setResource('foo'));
-        $this->assertSame('foo', $factory->getResource());
-    }
-
-    public function testSetIsResourceValid(): void
-    {
-        $factory = $this->getMockBuilder(ResourceWrapperMockFactory::class)
-            ->getMockForAbstractClass()
-        ;
-
-        $this->assertSame($factory, $factory->setIsResourceValid(true));
-        $this->assertTrue($factory->getIsResourceValid());
-    }
-
-    public function testSetSupportedResourceTypes(): void
-    {
-        $factory = $this->getMockBuilder(ResourceWrapperMockFactory::class)
-            ->getMockForAbstractClass()
-        ;
-
-        $this->assertSame($factory, $factory->setSupportedResourceTypes(['a']));
-        $this->assertSame(['a'], $factory->getSupportedResourceTypes());
-    }
+//    public function testSetResource(): void
+//    {
+//        $factory = $this->getMockBuilder(ResourceWrapperMockFactory::class)
+//            ->getMockForAbstractClass()
+//        ;
+//
+//        $this->assertSame($factory, $factory->setResource('foo'));
+//        $this->assertSame('foo', $factory->getResource());
+//    }
+//
+//    public function testSetIsResourceValid(): void
+//    {
+//        $factory = $this->getMockBuilder(ResourceWrapperMockFactory::class)
+//            ->getMockForAbstractClass()
+//        ;
+//
+//        $this->assertSame($factory, $factory->setIsResourceValid(true));
+//        $this->assertTrue($factory->getIsResourceValid());
+//    }
+//
+//    public function testSetSupportedResourceTypes(): void
+//    {
+//        $factory = $this->getMockBuilder(ResourceWrapperMockFactory::class)
+//            ->getMockForAbstractClass()
+//        ;
+//
+//        $this->assertSame($factory, $factory->setSupportedResourceTypes(['a']));
+//        $this->assertSame(['a'], $factory->getSupportedResourceTypes());
+//    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

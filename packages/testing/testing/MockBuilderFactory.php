@@ -23,15 +23,21 @@ use PHPUnit\Framework\TestCase;
  */
 final class MockBuilderFactory implements MockBuilderFactoryInterface
 {
-    private static $setValueOptions = [
+    /**
+     * @var array<string,string>
+     */
+    private static $mixedOptions = [
         'onlyMethods' => 'onlyMethods',
         'addMethods' => 'addMethods',
         'constructorArgs' => 'setConstructorArgs',
         'mockClassName' => 'setMockClassName',
-        'proxyTarget' => 'setProxyTarget'
+        'proxyTarget' => 'setProxyTarget',
     ];
 
-    private static $enableDisableOptions = [
+    /**
+     * @var array<string,array{0: string, 1:string}>
+     */
+    private static $boolOptions = [
         'originalConstructor' => ['enableOriginalConstructor', 'disableOriginalConstructor'],
         'originalClone' => ['enableOriginalClone', 'disableOriginalClone'],
         'autoload' => ['enableAutoload', 'disableAutoload'],
@@ -61,95 +67,47 @@ final class MockBuilderFactory implements MockBuilderFactoryInterface
     {
         $builder = new MockBuilder($this->testCase->getMockBuilder($config->mockedType()));
         $this->setupMockBuilder($builder, $config);
+
         return $builder;
     }
 
     private function setupMockBuilder(MockBuilderInterface $builder, MockBuilderConfigInterface $config): void
     {
-        foreach (self::$setValueOptions as $getter => $setter) {
-            if (null !== ($value = call_user_func([$config, $getter]))) {
-                call_user_func([$builder, $setter], $value);
-            }
+        foreach (self::$mixedOptions as $getter => $setter) {
+            $value = self::getOptionValue($config, $getter);
+            self::handleMixedOption($builder, $setter, $value);
         }
 
-        foreach (self::$enableDisableOptions as $getter => $setters) {
-            if (null !== ($flag = call_user_func([$config, $getter]))) {
-                call_user_func([$builder, $setters[$flag ? 0 : 1]]);
-            }
+        foreach (self::$boolOptions as $getter => $setters) {
+            $value = self::getOptionValue($config, $getter);
+            self::handleBoolOption($builder, $setters, $value);
         }
-//
-//        $this->setOption($builder, 'onlyMethods', $config->onlyMethods());
-//        $this->setOption($builder, 'addMethods', $config->addMethods());
-//        $this->setOption($builder, 'setConstructorArgs', $config->constructorArgs());
-//        $this->setOption($builder, 'setMockClassName', $config->mockClassName());
-//        $this->enableOrDisableOption(
-//            $builder,
-//            'enableOriginalConstructor',
-//            'disableOriginalConstructor',
-//            $config->originalConstructor()
-//        );
-//        $this->enableOrDisableOption(
-//            $builder,
-//            'enableOriginalClone',
-//            'disableOriginalClone',
-//            $config->originalClone()
-//        );
-//        $this->enableOrDisableOption(
-//            $builder,
-//            'enableAutoload',
-//            'disableAutoload',
-//            $config->autoload()
-//        );
-//        $this->enableOrDisableOption(
-//            $builder,
-//            'enableArgumentCloning',
-//            'disableArgumentCloning',
-//            $config->argumentCloning()
-//        );
-//        $this->enableOrDisableOption(
-//            $builder,
-//            'enableProxyingToOriginalMethods',
-//            'disableProxyingToOriginalMethods',
-//            $config->proxyingToOriginalMethods()
-//        );
-//        $this->setOption($builder, 'setProxyTarget', $config->proxyTarget());
-//        $this->enableOrDisableOption(
-//            $builder,
-//            'allowMockingUnknownTypes',
-//            'disallowMockingUnknownTypes',
-//            $config->mockUnknownTypes()
-//        );
-//        $this->enableOrDisableOption(
-//            $builder,
-//            'enableAutoReturnValueGeneration',
-//            'disableAutoReturnValueGeneration',
-//            $config->autoReturnValueGeneration()
-//        );
     }
-//
-//    private function setOption(MockBuilderInterface $builder, string $setter,$value): void
-//    {
-//        if (null !== $value) {
-//            call_user_func([$builder, $setter], $value);
-//        }
-//    }
-//
-//    private function enableOrDisableOption(
-//        MockBuilderInterface $builder,
-//        string $enabler,
-//        string $disabler,
-//        ?bool $value
-//    ): void {
-//        if (null === $value) {
-//            return;
-//        }
-//
-//        if ($value) {
-//            call_user_func([$builder, $enabler]);
-//        } else {
-//            call_user_func([$builder, $disabler]);
-//        }
-//    }
+
+    /**
+     * @psalm-return mixed
+     */
+    private static function getOptionValue(MockBuilderConfigInterface $config, string $getter)
+    {
+        return call_user_func([$config, $getter]);
+    }
+
+    /**
+     * @param mixed $value
+     */
+    private static function handleMixedOption(MockBuilderInterface $builder, string $setter, $value): void
+    {
+        if (null !== $value) {
+            call_user_func([$builder, $setter], $value);
+        }
+    }
+
+    private static function handleBoolOption(MockBuilderInterface $builder, array $setters, ?bool $flag): void
+    {
+        if (null !== $flag) {
+            call_user_func([$builder, $setters[$flag ? 0 : 1]]);
+        }
+    }
 }
 
 // vim: syntax=php sw=4 ts=4 et:

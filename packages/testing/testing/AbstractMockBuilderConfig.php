@@ -41,7 +41,6 @@ abstract class AbstractMockBuilderConfig implements MockBuilderConfigInterface
         return null;
     }
 
-
     /**
      * Constructor arguments.
      *

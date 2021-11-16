@@ -56,7 +56,8 @@ final class AbstractMockBuilderConfigTest extends TestCase
     public function testMethod(string $method): void
     {
         $object = $this->getMockBuilder(AbstractMockBuilderConfig::class)
-                       ->getMockForAbstractClass();
+            ->getMockForAbstractClass()
+        ;
 
         $this->assertNull(call_user_func([$object, $method]));
     }

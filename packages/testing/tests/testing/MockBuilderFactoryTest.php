@@ -12,12 +12,11 @@ declare(strict_types=1);
 
 namespace Korowai\Tests\Testing;
 
-use Korowai\Testing\MockBuilderFactoryInterface;
-use Korowai\Testing\MockBuilderFactory;
-use Korowai\Testing\MockBuilderInterface;
-use Korowai\Testing\MockBuilderConfigInterface;
 use Korowai\Testing\Fixtures\EmptyClass;
 use Korowai\Testing\MockBuilder;
+use Korowai\Testing\MockBuilderConfigInterface;
+use Korowai\Testing\MockBuilderFactory;
+use Korowai\Testing\MockBuilderFactoryInterface;
 //use PHPUnit\Framework\MockObject\MockBuilder;
 use PHPUnit\Framework\TestCase;
 use Tailors\PHPUnit\ImplementsInterfaceTrait;
@@ -47,30 +46,6 @@ final class MockBuilderFactoryTest extends TestCase
         'autoReturnValueGeneration' => ['enableAutoReturnValueGeneration', 'disableAutoReturnValueGeneration'],
     ];
 
-    protected function getMockBuilderConfig(string $mockedType, array $config = []): MockBuilderConfigInterface
-    {
-        $configObj = $this->getMockBuilder(MockBuilderConfigInterface::class)
-                        ->getMock();
-
-        $configObj->expects($this->any())
-                  ->method('mockedType')
-                  ->willReturn($mockedType);
-
-        foreach (array_keys(self::$configOptions) as $method) {
-            if (array_key_exists($method, $config)) {
-                $configObj->expects($this->once())
-                          ->method($method)
-                          ->willReturn($config[$method]);
-            } else {
-                $configObj->expects($this->once())
-                          ->method($method)
-                          ->willReturn(null);
-            }
-        }
-
-        return $configObj;
-    }
-
     public function testImplementsMockBuilderFactoryInterface(): void
     {
         $this->assertImplementsInterface(MockBuilderFactoryInterface::class, MockBuilderFactory::class);
@@ -96,9 +71,10 @@ final class MockBuilderFactoryTest extends TestCase
 
         $builder = $this->getMockBuilder(EmptyClass::class);
         $testCase->expects($this->once())
-                 ->method('getMockBuilder')
-                 ->with(EmptyClass::class)
-                 ->willReturn($builder);
+            ->method('getMockBuilder')
+            ->with(EmptyClass::class)
+            ->willReturn($builder)
+        ;
 
 //        foreach ($config as $method => $value) {
 //            $setter = self::$configOptions[$method];
@@ -127,6 +103,34 @@ final class MockBuilderFactoryTest extends TestCase
         $wrapper = $factory->getMockBuilder($configObj);
 
         $this->assertInstanceOf(MockBuilder::class, $wrapper);
+    }
+
+    protected function getMockBuilderConfig(string $mockedType, array $config = []): MockBuilderConfigInterface
+    {
+        $configObj = $this->getMockBuilder(MockBuilderConfigInterface::class)
+            ->getMock()
+        ;
+
+        $configObj->expects($this->any())
+            ->method('mockedType')
+            ->willReturn($mockedType)
+        ;
+
+        foreach (array_keys(self::$configOptions) as $method) {
+            if (array_key_exists($method, $config)) {
+                $configObj->expects($this->once())
+                    ->method($method)
+                    ->willReturn($config[$method])
+                ;
+            } else {
+                $configObj->expects($this->once())
+                    ->method($method)
+                    ->willReturn(null)
+                ;
+            }
+        }
+
+        return $configObj;
     }
 }
 

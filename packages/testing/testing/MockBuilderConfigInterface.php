@@ -42,7 +42,6 @@ interface MockBuilderConfigInterface
      */
     public function addMethods(): ?array;
 
-
     /**
      * Constructor arguments.
      *

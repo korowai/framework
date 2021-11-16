@@ -15,6 +15,7 @@ namespace Korowai\Testing;
 use PHPUnit\Framework\MockObject\MockBuilder;
 
 /**
+ * @psalm-template MockedType
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  */
 interface MockBuilderAggregateInterface
@@ -23,6 +24,7 @@ interface MockBuilderAggregateInterface
      * Returns the encapsulated MockBuilder instance.
      *
      * @psalm-mutation-free
+     * @psalm-return MockBuilder<MockedType>
      */
     public function getMockBuilder(): MockBuilder;
 }

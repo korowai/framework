@@ -18,11 +18,12 @@ use PHPUnit\Framework\MockObject\MockBuilder;
  * @author Paweł Tomulik <ptomulik@meil.pw.edu.pl>
  *
  * @psalm-immutable
+ * @psalm-template MockedType
  */
 trait MockBuilderAggregateTrait
 {
     /**
-     * @var MockBuilder
+     * @var MockBuilder<MockedType>
      * @psalm-readonly
      */
     private $mockBuilder;
@@ -31,6 +32,7 @@ trait MockBuilderAggregateTrait
      * Returns the encapsulated MockBuilder instance.
      *
      * @psalm-mutation-free
+     * @psalm-return MockBuilder<MockedType>
      */
     public function getMockBuilder(): MockBuilder
     {

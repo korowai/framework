@@ -52,7 +52,7 @@ interface MockBuilderInterface
     public function getMockForTrait(): MockObject;
 
     /**
-     * Specifies the subset of methods to mock, requireing each to exiest in
+     * Specifies the subset of methods to mock, requiring each to exiest in
      * the classs.
      *
      * @return $this

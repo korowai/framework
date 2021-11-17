@@ -25,7 +25,7 @@ trait MockBuilderWrapperTrait
     /**
      * @psalm-return MockBuilder<MockedType>
      */
-    abstract public function getMockBuilder(): MockBuilder;
+   // abstract public function getMockBuilder(): MockBuilder;
 
     /**
      * Creates a mock object.
@@ -76,6 +76,12 @@ trait MockBuilderWrapperTrait
         return $this->getMockBuilder()->getMockForTrait();
     }
 
+    /**
+     * Specifies the subset of methods to mock, requiring each to exiest in
+     * the classs.
+     *
+     * @return $this
+     */
     final public function onlyMethods(array $methods): MockBuilderInterface
     {
         $this->getMockBuilder()->onlyMethods($methods);
@@ -83,6 +89,11 @@ trait MockBuilderWrapperTrait
         return $this;
     }
 
+    /**
+     * Specifies methods that don't exist in the calss which you want to mock.
+     *
+     * @return $this
+     */
     final public function addMethods(array $methods): MockBuilderInterface
     {
         $this->getMockBuilder()->addMethods($methods);
@@ -90,6 +101,11 @@ trait MockBuilderWrapperTrait
         return $this;
     }
 
+    /**
+     * Specifies the argument for the constructor.
+     *
+     * @return $this
+     */
     final public function setConstructorArgs(array $arguments): MockBuilderInterface
     {
         $this->getMockBuilder()->setConstructorArgs($arguments);
@@ -97,6 +113,11 @@ trait MockBuilderWrapperTrait
         return $this;
     }
 
+    /**
+     * Specifies the name for the mock class.
+     *
+     * @return $this
+     */
     final public function setMockClassName(string $name): MockBuilderInterface
     {
         $this->getMockBuilder()->setMockClassName($name);
@@ -104,6 +125,11 @@ trait MockBuilderWrapperTrait
         return $this;
     }
 
+    /**
+     * Disables the invocation of the original constructor.
+     *
+     * @return $this
+     */
     final public function disableOriginalConstructor(): MockBuilderInterface
     {
         $this->getMockBuilder()->disableOriginalConstructor();
@@ -111,6 +137,11 @@ trait MockBuilderWrapperTrait
         return $this;
     }
 
+    /**
+     * Enables the invocation of the original constructor.
+     *
+     * @return $this
+     */
     final public function enableOriginalConstructor(): MockBuilderInterface
     {
         $this->getMockBuilder()->enableOriginalConstructor();
@@ -118,6 +149,11 @@ trait MockBuilderWrapperTrait
         return $this;
     }
 
+    /**
+     * Disables the invocation of the original clone constructor.
+     *
+     * @return $this
+     */
     final public function disableOriginalClone(): MockBuilderInterface
     {
         $this->getMockBuilder()->disableOriginalClone();
@@ -125,6 +161,11 @@ trait MockBuilderWrapperTrait
         return $this;
     }
 
+    /**
+     * Enables the invocation of the original clone constructor.
+     *
+     * @return $this
+     */
     final public function enableOriginalClone(): MockBuilderInterface
     {
         $this->getMockBuilder()->enableOriginalClone();
@@ -132,6 +173,11 @@ trait MockBuilderWrapperTrait
         return $this;
     }
 
+    /**
+     * Disables the use of class autoloading while creating the mock object.
+     *
+     * @return $this
+     */
     final public function disableAutoload(): MockBuilderInterface
     {
         $this->getMockBuilder()->disableAutoload();
@@ -139,6 +185,11 @@ trait MockBuilderWrapperTrait
         return $this;
     }
 
+    /**
+     * Enables the use of class autoloading while creating the mock object.
+     *
+     * @return $this
+     */
     final public function enableAutoload(): MockBuilderInterface
     {
         $this->getMockBuilder()->enableAutoload();
@@ -146,6 +197,11 @@ trait MockBuilderWrapperTrait
         return $this;
     }
 
+    /**
+     * Disables cloning of arguments passed to mocked methods.
+     *
+     * @return $this
+     */
     final public function disableArgumentCloning(): MockBuilderInterface
     {
         $this->getMockBuilder()->disableArgumentCloning();
@@ -153,6 +209,11 @@ trait MockBuilderWrapperTrait
         return $this;
     }
 
+    /**
+     * Enables clonging of arguments passed to mocked methods.
+     *
+     * @return $this
+     */
     final public function enableArgumentCloning(): MockBuilderInterface
     {
         $this->getMockBuilder()->enableArgumentCloning();
@@ -160,6 +221,11 @@ trait MockBuilderWrapperTrait
         return $this;
     }
 
+    /**
+     * Disables the invocation of the original methods.
+     *
+     * @return $this
+     */
     final public function disableProxyingToOriginalMethods(): MockBuilderInterface
     {
         $this->getMockBuilder()->disableProxyingToOriginalMethods();
@@ -167,6 +233,11 @@ trait MockBuilderWrapperTrait
         return $this;
     }
 
+    /**
+     * Enables the invocation of the original methods.
+     *
+     * @return $this
+     */
     final public function enableProxyingToOriginalMethods(): MockBuilderInterface
     {
         $this->getMockBuilder()->enableProxyingToOriginalMethods();
@@ -174,6 +245,11 @@ trait MockBuilderWrapperTrait
         return $this;
     }
 
+    /**
+     * Sets the proxy target.
+     *
+     * @return $this
+     */
     final public function setProxyTarget(object $object): MockBuilderInterface
     {
         $this->getMockBuilder()->setProxyTarget($object);
@@ -181,6 +257,11 @@ trait MockBuilderWrapperTrait
         return $this;
     }
 
+    /**
+     * Allows mocking unknown types.
+     *
+     * @return $this
+     */
     final public function allowMockingUnknownTypes(): MockBuilderInterface
     {
         $this->getMockBuilder()->allowMockingUnknownTypes();
@@ -188,6 +269,11 @@ trait MockBuilderWrapperTrait
         return $this;
     }
 
+    /**
+     * Disallows mocking unknown types.
+     *
+     * @return $this
+     */
     final public function disallowMockingUnknownTypes(): MockBuilderInterface
     {
         $this->getMockBuilder()->disallowMockingUnknownTypes();
@@ -195,6 +281,11 @@ trait MockBuilderWrapperTrait
         return $this;
     }
 
+    /**
+     * Disables automatic generation of return values.
+     *
+     * @return $this
+     */
     final public function disableAutoReturnValueGeneration(): MockBuilderInterface
     {
         $this->getMockBuilder()->disableAutoReturnValueGeneration();
@@ -202,6 +293,11 @@ trait MockBuilderWrapperTrait
         return $this;
     }
 
+    /**
+     * Enables automatic generation of return values.
+     *
+     * @return $this
+     */
     final public function enableAutoReturnValueGeneration(): MockBuilderInterface
     {
         $this->getMockBuilder()->enableAutoReturnValueGeneration();
@@ -209,5 +305,8 @@ trait MockBuilderWrapperTrait
         return $this;
     }
 }
+
+
+
 
 // vim: syntax=php sw=4 ts=4 et:

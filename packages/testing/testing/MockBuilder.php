@@ -23,6 +23,11 @@ use PHPUnit\Framework\MockObject\MockBuilder as PHPUnitMockBuilder;
  * final class without an interface and can't be mocked.
  *
  * @psalm-template MockedType
+ * @template-implements MockBuilderInterface<MockedType>
+ * @template-implements MockBuilderAggregateInterface<MockedType>
+ *
+ * @template-use MockBuilderAggregateTrait<MockedType>
+ * @template-use MockBuilderWrapperTrait<MockedType>
  *
  * @no-named-arguments Parameter names ore not coverted by the backward compatibility promise
  *
@@ -31,17 +36,19 @@ use PHPUnit\Framework\MockObject\MockBuilder as PHPUnitMockBuilder;
 final class MockBuilder implements MockBuilderInterface, MockBuilderAggregateInterface
 {
     /**
-     * @use MockBuilderWrapperTrait<MockedType>
-     */
-    use MockBuilderWrapperTrait;
-
-    /**
-     * @use MockBuilderAggregateTrait<MockedType>
+     * @template-use MockBuilderAggregateTrait<MockedType>
      */
     use MockBuilderAggregateTrait;
 
     /**
+     * @template-use MockBuilderWrapperTrait<MockedType>
+     */
+    use MockBuilderWrapperTrait;
+
+    /**
      * Initializes the mock builder.
+     *
+     * @psalm-param PHPUnitMockBuilder<MockedType> $mockBuilder
      */
     public function __construct(PHPUnitMockBuilder $mockBuilder)
     {

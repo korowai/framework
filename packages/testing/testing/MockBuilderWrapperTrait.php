@@ -25,7 +25,7 @@ trait MockBuilderWrapperTrait
     /**
      * @psalm-return MockBuilder<MockedType>
      */
-   // abstract public function getMockBuilder(): MockBuilder;
+    abstract public function getMockBuilder(): MockBuilder;
 
     /**
      * Creates a mock object.
